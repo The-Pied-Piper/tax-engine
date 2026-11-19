@@ -1,20 +1,58 @@
 # Form NL428 (Newfoundland and Labrador Tax, CRA 5001-C) line 104 "Line 104: Line 98 minus line 103
-# (if negative, enter "0")". One core/subtract_not_below_zero step: the low-income tax reduction
-# (line 98, `ca-nl/nl428_low_income_reduction_line_98`) less line 103 (`ca-nl/nl428_line_103`), not
-# below 0, rounded half-up to the cent by the dataset's rule (the form states no rounding rule).
-# Both lines are always present, so the step has no blank rule. The form's own label for the line
-# ("Newfoundland and Labrador tax") is not a title the engine takes for a reduction amount, so the
-# step has none. The output is `ca-nl/nl428_line_104`, which is not exported yet.
+# (if negative, enter "0")", and the instruction under line 87: "If you are claiming an amount on
+# line 86, enter the amount from line 87 on line 94, enter "0" on line 104, and continue on line
+# 105." Line 94 is line 87 whether or not line 86 is claimed and is a copy line with no step of its
+# own (owner ruling, 18 Nov 2026), so only line 104 changes with line 86, and line 105 reads it.
+# Four steps. 1. core/subtract_not_below_zero: line 98 (`ca-nl/nl428_low_income_reduction_line_98`)
+# less line 103 (`ca-nl/nl428_line_103`), not below 0, rounded half-up to the cent by the dataset's
+# rule (the form states no rounding rule); both lines are always present, so it has no blank rule.
+# It is the figure before the line 86 check, not printed, so it has no title and no reference.
+# 2. core/sum over line 86 alone: line 86 is an optional input that a salary-only caller leaves
+# blank, and the band step cannot take a blank, so a blank is read as 0 here, as line 87 reads it.
+# 3. core/amount_by_band over that figure: the `ca-nl/low_income_reduction_line_86_gate` dataset
+# gives 0 where an amount is claimed on line 86 (above 0) and 1 where line 86 is 0.00. It is a
+# switch, not a printed figure, and not a line of the form. 4. core/multiply: the figure of step 1
+# times the gate, so line 104 is "0" where line 86 is claimed and the figure of step 1 otherwise.
+# The step is line 104; the form prints no title the engine takes for a reduction amount, so it has
+# none. The output is `ca-nl/nl428_line_104`, which is not exported yet.
 form:
   name: ca-nl/nl428
 capabilities:
   - name: core/subtract_not_below_zero
-    reference: "104"
     unit: ca/cad
     params:
       rounding: ca-nl/cent_rounding
     consumes:
       amount: ca-nl/nl428_low_income_reduction_line_98
       less: ca-nl/nl428_line_103
+    produces:
+      output: ca-nl/nl428_line_104_before_line_86_check
+  - name: core/sum
+    unit: ca/cad
+    params:
+      rounding: ca-nl/cent_rounding
+    consumes:
+      parts:
+        - ca-nl/nl428_unused_low_income_reduction_from_spouse_line_86
+    blank:
+      parts: "0"
+    produces:
+      output: ca-nl/nl428_unused_low_income_reduction_from_spouse_claimed_line_86
+  - name: core/amount_by_band
+    unit: ca/cad
+    params:
+      table: ca-nl/low_income_reduction_line_86_gate
+    consumes:
+      base: ca-nl/nl428_unused_low_income_reduction_from_spouse_claimed_line_86
+    produces:
+      output: ca-nl/nl428_line_104_line_86_gate
+  - name: core/multiply
+    reference: "104"
+    unit: ca/cad
+    params:
+      rounding: ca-nl/cent_rounding
+    consumes:
+      multiplicand: ca-nl/nl428_line_104_before_line_86_check
+      multiplier: ca-nl/nl428_line_104_line_86_gate
     produces:
       output: ca-nl/nl428_line_104

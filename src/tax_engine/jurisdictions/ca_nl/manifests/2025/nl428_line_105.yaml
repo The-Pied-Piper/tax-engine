@@ -6,8 +6,8 @@
 # copy line with no step of its own (owner ruling, 18 Nov 2026), so the step reads line 87
 # (`ca-nl/nl428_tax_line_87`) directly. Both lines are always present, so the step has no blank
 # rule. The form prints no title for the line, so the step has none. The form's instruction at line
-# 87 to enter 0 on line 104 when line 86 is claimed is not built here (a later review-track
-# ticket). Line 105 is the output `ca-nl/nl428_newfoundland_and_labrador_tax_line_105`, the tax
+# 87 to enter 0 on line 104 when line 86 is claimed is built in line 104, which this step reads, so
+# with line 86 claimed line 105 is line 87. Line 105 is the output `ca-nl/nl428_newfoundland_and_labrador_tax_line_105`, the tax
 # entered on line 42800, supplied through the form's `ca/provincial_tax.amount` in nl428.yaml.
 form:
   name: ca-nl/nl428

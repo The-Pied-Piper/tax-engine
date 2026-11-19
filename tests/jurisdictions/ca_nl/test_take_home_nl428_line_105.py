@@ -6,13 +6,15 @@ line 104 (if negative, enter \"0\") Enter this amount on line 42800 of your retu
 and Labrador tax =". One core/subtract_not_below_zero step over line 94 and line 104, rounded
 half-up to the cent by `ca-nl/cent_rounding`. Line 94 is a copy of line 87 and has no step (owner
 ruling, 18 Nov 2026), so the step reads line 87. The form prints no title for the line, so the step
-is untitled. The form's branch for a claim on line 86 (enter 0 on line 104) is not built here
-(a later review-track ticket), so no test claims line 86.
+is untitled. The form's branch for a claim on line 86 (enter 0 on line 104) is built in line 104,
+so with line 86 claimed line 105 is line 87.
 
 Figures (hand-computed from the printed form, not a CRA example): line 87 is 663.23 / 6,147.49 /
 27,192.33 and line 104 is 997.00 / 0.00 / 0.00 at salaries of 20,000 / 70,000 / 200,000, so line
 105 is 0.00 / 6,147.49 / 27,192.33. At a salary of 28,000 line 104 is 384.68 and line 87 is
-1,306.40, so line 105 is 921.72.
+1,306.40, so line 105 is 921.72. With a line 86 of 500.00 at a salary of 20,000 line 87 is 163.23
+and line 104 is 0.00, so line 105 is 163.23; at a salary of 70,000 line 87 is 5,647.49 and line
+105 is 5,647.49.
 """
 
 from __future__ import annotations
@@ -50,6 +52,7 @@ NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / 
 FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = NL_PARTS / "nl428_line_105.yaml"
 LINE_87 = "ca-nl/nl428_tax_line_87"
+LINE_86 = "ca-nl/nl428_unused_low_income_reduction_from_spouse_line_86"
 LINE_104 = "ca-nl/nl428_line_104"
 IDENTIFIER = "ca-nl/nl428_newfoundland_and_labrador_tax_line_105"
 FORM_NAME = "ca-nl/nl428"
@@ -299,6 +302,20 @@ def test_line_105_is_the_difference_when_line_104_is_below_line_87(tmp_path: Pat
     assert _value(sheet, LINE_104) == D("384.68")
     assert _value(sheet, LINE_87) == D("1306.40")
     assert _value(sheet, IDENTIFIER) == D("921.72")
+
+
+@pytest.mark.parametrize(
+    ("salary", "line_87"),
+    [("20000", "163.23"), ("70000", "5647.49")],
+)
+def test_line_105_is_line_87_when_line_86_is_claimed(
+    tmp_path: Path, salary: str, line_87: str
+) -> None:
+    sheet = _sheet(tmp_path, salary, FORM_NAME, {LINE_86: "500.00"})
+
+    assert _value(sheet, LINE_87) == D(line_87)
+    assert _value(sheet, LINE_104) == D("0.00")
+    assert _value(sheet, IDENTIFIER) == D(line_87)
 
 
 def test_line_105_is_one_untitled_subtract_not_below_zero_step() -> None:

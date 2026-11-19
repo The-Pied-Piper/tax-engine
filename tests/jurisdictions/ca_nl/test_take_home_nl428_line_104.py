@@ -1,14 +1,21 @@
 """NL428 (2025) line 104, line 98 minus line 103 (not below 0), real parts.
 
 Form text (Form NL428, CRA 5001-C, 5001-c-25e.txt): "Line 104: Line 98 minus line 103 (if negative,
-enter "0")". One core/subtract_not_below_zero step over line 98 (the low-income tax reduction) and
-line 103, rounded half-up to the cent by `ca-nl/cent_rounding`. The form prints no title the engine
-takes for the line, so the step is untitled.
+enter "0")", and under line 87: "If you are claiming an amount on line 86, enter the amount from
+line 87 on line 94, enter "0" on line 104, and continue on line 105." Four steps: a
+core/subtract_not_below_zero over line 98 (the low-income tax reduction) and line 103, rounded
+half-up to the cent by `ca-nl/cent_rounding`; a core/sum over line 86 alone (a blank read as 0); a
+core/amount_by_band over that figure through the `ca-nl/low_income_reduction_line_86_gate` dataset
+(1 at 0.00, 0 from one cent); and a core/multiply of the first figure by the gate, which is line 104
+and the only step with the reference. The form prints no title the engine takes for the line, so
+the step is untitled. Line 94 is line 87 whether or not line 86 is claimed (a copy line with no
+step), so only line 104 changes with line 86.
 
 Figures (hand-computed from the printed form, not a CRA example): line 98 is 997.00 at every salary
 with lines 96 and 97 blank; line 103 is 0.00 / 7,265.12 / 27,999.68 at salaries of 20,000 / 70,000 /
 200,000, so line 104 is 997.00 / 0.00 / 0.00. At a salary of 28,000 line 103 is 612.32 and line 104
-is 384.68.
+is 384.68. With a line 86 of 500.00 line 104 is 0.00 at every salary, where line 98 less line 103 is
+997.00 at a salary of 20,000.
 """
 
 from __future__ import annotations
@@ -47,6 +54,10 @@ FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = NL_PARTS / "nl428_line_104.yaml"
 LINE_98 = "ca-nl/nl428_low_income_reduction_line_98"
 LINE_103 = "ca-nl/nl428_line_103"
+LINE_86 = "ca-nl/nl428_unused_low_income_reduction_from_spouse_line_86"
+BEFORE_CHECK = "ca-nl/nl428_line_104_before_line_86_check"
+CLAIMED_86 = "ca-nl/nl428_unused_low_income_reduction_from_spouse_claimed_line_86"
+GATE = "ca-nl/nl428_line_104_line_86_gate"
 IDENTIFIER = "ca-nl/nl428_line_104"
 FORM_NAME = "ca-nl/nl428"
 FEDERAL_PARTS = (
@@ -112,6 +123,7 @@ NL_PART_NAMES = (
     "nl428_credits_line_58.yaml",
     "nl428_credits_line_61_input.yaml",
     "nl428_credits_line_62.yaml",
+    "nl428_line_86_input.yaml",
     "nl428_line_96_input.yaml",
     "nl428_line_96.yaml",
     "nl428_line_97.yaml",
@@ -265,7 +277,44 @@ def test_line_104_is_the_difference_when_line_103_is_below_line_98(tmp_path: Pat
     assert _value(sheet, IDENTIFIER) == D("384.68")
 
 
-def test_line_104_is_one_untitled_subtract_not_below_zero_step() -> None:
+@pytest.mark.parametrize("salary", ["20000", "28000", "70000"])
+def test_line_104_is_0_when_line_86_is_claimed(tmp_path: Path, salary: str) -> None:
+    sheet = _sheet(tmp_path, salary, FORM_NAME, {LINE_86: "500.00"})
+
+    assert _value(sheet, CLAIMED_86) == D("500.00")
+    assert _value(sheet, GATE) == D("0")
+    assert _value(sheet, IDENTIFIER) == D("0.00")
+    assert str(_value(sheet, IDENTIFIER)) == "0.00"
+
+
+def test_line_104_before_the_line_86_check_is_still_line_98_minus_line_103(tmp_path: Path) -> None:
+    """At a salary of 20,000 with a line 86 of 500.00 the figure before the check is 997.00 and
+    line 104 is the printed 0."""
+    sheet = _sheet(tmp_path, "20000", FORM_NAME, {LINE_86: "500.00"})
+
+    assert _value(sheet, BEFORE_CHECK) == D("997.00")
+    assert _value(sheet, IDENTIFIER) == D("0.00")
+
+
+def test_line_104_is_0_when_line_86_is_one_cent(tmp_path: Path) -> None:
+    sheet = _sheet(tmp_path, "20000", FORM_NAME, {LINE_86: "0.01"})
+
+    assert _value(sheet, GATE) == D("0")
+    assert _value(sheet, IDENTIFIER) == D("0.00")
+
+
+@pytest.mark.parametrize("given", [None, "0.00"])
+def test_line_104_stands_when_line_86_is_blank_or_0(tmp_path: Path, given: str | None) -> None:
+    lines = None if given is None else {LINE_86: given}
+
+    sheet = _sheet(tmp_path, "20000", FORM_NAME, lines)
+
+    assert _value(sheet, CLAIMED_86) == D("0.00")
+    assert _value(sheet, GATE) == D("1")
+    assert _value(sheet, IDENTIFIER) == D("997.00")
+
+
+def test_line_104_is_four_steps_and_only_the_last_is_line_104() -> None:
     part: Any = yaml.safe_load(LINE_PART.read_text(encoding="utf-8"))
 
     assert part == {
@@ -273,11 +322,33 @@ def test_line_104_is_one_untitled_subtract_not_below_zero_step() -> None:
         "capabilities": [
             {
                 "name": "core/subtract_not_below_zero",
-                "reference": "104",
                 "unit": "ca/cad",
                 "params": {"rounding": "ca-nl/cent_rounding"},
                 "consumes": {"amount": LINE_98, "less": LINE_103},
+                "produces": {"output": BEFORE_CHECK},
+            },
+            {
+                "name": "core/sum",
+                "unit": "ca/cad",
+                "params": {"rounding": "ca-nl/cent_rounding"},
+                "consumes": {"parts": [LINE_86]},
+                "blank": {"parts": "0"},
+                "produces": {"output": CLAIMED_86},
+            },
+            {
+                "name": "core/amount_by_band",
+                "unit": "ca/cad",
+                "params": {"table": "ca-nl/low_income_reduction_line_86_gate"},
+                "consumes": {"base": CLAIMED_86},
+                "produces": {"output": GATE},
+            },
+            {
+                "name": "core/multiply",
+                "reference": "104",
+                "unit": "ca/cad",
+                "params": {"rounding": "ca-nl/cent_rounding"},
+                "consumes": {"multiplicand": BEFORE_CHECK, "multiplier": GATE},
                 "produces": {"output": IDENTIFIER},
-            }
+            },
         ],
     }
