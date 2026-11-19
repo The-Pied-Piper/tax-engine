@@ -9,7 +9,7 @@
 
 Tax rules live as data taken as printed from the tax authority's own forms. Each form line is one small, tested step. You can follow any figure back to the form line it came from. It powers the live take-home calculator at [aftertaxlens.com](https://aftertaxlens.com).
 
-Supported today: Canada (federal), Ontario, Alberta, British Columbia, Manitoba, Saskatchewan and Newfoundland and Labrador, tax years 2025 and 2026 (2026 is provisional; Newfoundland and Labrador is 2025 only so far). More forms, lines, years and jurisdictions are added over time (see [Coverage](#coverage)).
+Supported today: Canada (federal), Ontario, Alberta, British Columbia, Manitoba, Saskatchewan and Newfoundland and Labrador, tax years 2025 and 2026 (2026 is provisional). More forms, lines, years and jurisdictions are added over time (see [Coverage](#coverage)).
 
 ## Example: a $70,000 salary (tax year 2025)
 
@@ -90,7 +90,7 @@ for form, form_sheets in sheets.items():
             print(sentence if line.label is None else f"{names.of_label(line.label)}: {sentence}")
 ```
 
-The example uses Ontario (`CA-ON`) and tax year 2025. Change `CA-ON` to `CA-AB` for Alberta, `CA-BC` for British Columbia, `CA-MB` for Manitoba, `CA-SK` for Saskatchewan or `CA-NL` for Newfoundland and Labrador (2025 only), and `2025` to `2026` for the provisional 2026 year.
+The example uses Ontario (`CA-ON`) and tax year 2025. Change `CA-ON` to `CA-AB` for Alberta, `CA-BC` for British Columbia, `CA-MB` for Manitoba, `CA-SK` for Saskatchewan or `CA-NL` for Newfoundland and Labrador, and `2025` to `2026` for the provisional 2026 year.
 
 ## How it works
 
@@ -106,7 +106,7 @@ A jurisdiction's manifest lists the forms that make up a return. Each form is bu
 | British Columbia | 2025, 2026 (provisional) | BC428 (British Columbia tax), BC479 (BC refundable tax credits) |
 | Manitoba | 2025, 2026 (provisional) | MB428 (Manitoba tax), Worksheet MB428 (basic personal amount), MB428-A (family tax benefit), MB479 (Manitoba credits) |
 | Saskatchewan | 2025, 2026 (provisional) | SK428 (Saskatchewan tax) |
-| Newfoundland and Labrador | 2025 | NL428 (Newfoundland and Labrador tax), Worksheet NL428 (age amount and disability amount for self) |
+| Newfoundland and Labrador | 2025, 2026 (provisional) | NL428 (Newfoundland and Labrador tax), Worksheet NL428 (age amount and disability amount for self) |
 
 Roadmap: more forms and lines, and the other provinces and territories. Forms are added one at a time, each built line by line from the CRA's own text.
 
