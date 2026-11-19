@@ -96,3 +96,9 @@ NL428_DISABILITY_AMOUNT_SELF_LINE_40 = AmountKind.declare(
 """Disability amount for self, NL428 line 40 "Line 40 and line 58440: Disability amount for self
 (claim $7,467 or, if you were under 18 years of age, use Worksheet NL428)": the printed $7,467 when
 the claim is 1, 0 when the claim is blank or 0."""
+
+NL428_CPP_CONTRIBUTIONS_LINE_27 = AmountKind.declare(
+    CATALOG, "nl428_cpp_contributions_line_27", non_negative=True
+)
+"""CPP or QPP contributions, NL428 line 27 and line 58240 "Amount from line 30800 of your return": a
+copy of Schedule 8 line 25, the CPP base contributions on the return."""
