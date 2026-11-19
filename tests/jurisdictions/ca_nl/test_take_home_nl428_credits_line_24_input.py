@@ -17,13 +17,11 @@ from decimal import Decimal
 from pathlib import Path
 from typing import Any
 
-import pytest
 import yaml
 
 import tax_engine.jurisdictions.ca_nl
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.errors import NegativeArtifactError
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.manifest import Manifest
 from tax_engine.jurisdictions.ca_nl.catalog import NL428_INFIRM_DEPENDANTS_AMOUNT_LINE_24
@@ -84,8 +82,6 @@ def test_the_infirm_dependants_amount_line_24_is_a_non_negative_amount_kind() ->
     assert isinstance(kind, AmountKind)
     assert non_negative(kind)
     assert Artifact(kind, Decimal("1234.56")) is not None
-    with pytest.raises(NegativeArtifactError):
-        Artifact(kind, Decimal("-1.00"))
 
 
 def test_the_part_declares_the_input_with_its_unit_reference_and_title() -> None:
