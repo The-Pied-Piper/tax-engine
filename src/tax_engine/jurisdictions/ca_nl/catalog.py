@@ -377,6 +377,13 @@ Newfoundland and Labrador political contribution tax credit (use Worksheet NL428
 the entered amount, passed on unchanged when it is at most the printed maximum, blank when left
 out; above the maximum it is refused, not capped."""
 
+NL428_DIRECT_EQUITY_TAX_CREDIT_LINE_78 = AmountKind.declare(
+    CATALOG, "nl428_direct_equity_tax_credit_line_78", non_negative=True
+)
+"""Direct equity tax credit, NL428 line 78 "Line 78: Direct equity tax credit (complete Form
+T1272)": the credit from Form T1272, an optional input that a salary-only caller leaves out; a
+blank input is read as blank."""
+
 NL428_UCCB_RDSP_REPAYMENTS_LINE_89 = AmountKind.declare(
     CATALOG, "nl428_uccb_rdsp_repayments_line_89", non_negative=True
 )
