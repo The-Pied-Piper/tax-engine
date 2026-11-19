@@ -327,6 +327,13 @@ NL428_MINIMUM_TAX_CARRYOVER_AMOUNT_LINE_68 = AmountKind.declare(
 40427 of your return": the amount from line 40427 of the T1 return, an optional input, box A of the
 line, as the filer gives it; a blank input is read as blank."""
 
+NL428_MINIMUM_TAX_CARRYOVER_LINE_68 = AmountKind.declare(
+    CATALOG, "nl428_minimum_tax_carryover_line_68", non_negative=True
+)
+"""Newfoundland and Labrador minimum tax carryover, NL428 line 68 and line 61540 "Amount from line
+40427 of your return multiplied by 60% =": calculated, the amount from line 40427 multiplied by
+60%."""
+
 NL428_NEWFOUNDLAND_AND_LABRADOR_TAX_LINE_105 = AmountKind.declare(
     CATALOG, "nl428_newfoundland_and_labrador_tax_line_105", non_negative=True
 )
