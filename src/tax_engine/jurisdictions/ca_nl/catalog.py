@@ -134,6 +134,12 @@ NL428_ADOPTION_EXPENSES_LINE_34 = AmountKind.declare(
 """Adoption expenses, NL428 line 34 "Line 34 and line 58330: Adoption expenses": the amount as the
 filer gives it, an optional input; a blank input is read as blank."""
 
+NL428_CAREGIVER_AMOUNT_LINE_38 = AmountKind.declare(
+    CATALOG, "nl428_caregiver_amount_line_38", non_negative=True
+)
+"""Caregiver amount, NL428 line 38 "Line 38 and line 58400: Caregiver amount (use Worksheet NL428)":
+the amount as the filer gives it, an optional input; a blank input is read as blank."""
+
 NL428_NON_REFUNDABLE_CREDITS_LINE_62 = AmountKind.declare(
     CATALOG, "nl428_non_refundable_credits_line_62", non_negative=True
 )
