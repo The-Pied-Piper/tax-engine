@@ -703,3 +703,11 @@ NL428_FAMILY_INCOME_LINE_90 = AmountKind.declare(
 """Line 88 plus line 89, NL428 line 90 "Line 88 plus line 89", column 1 (you): the net income of
 line 88 plus the UCCB and RDSP repayments of line 89. Line 88 can be negative, so the kind is
 signed."""
+
+NL428_SPOUSE_FAMILY_INCOME_LINE_90 = AmountKind.declare(
+    CATALOG, "nl428_spouse_family_income_line_90", non_negative=False
+)
+"""Line 88 plus line 89, NL428 line 90 "Line 90: Line 88 plus line 89", column 2 (your spouse or
+common-law partner): the spouse's net income of line 88 plus the spouse's UCCB and RDSP repayments
+of line 89. Line 88 can be negative, so the kind is signed; both lines are optional inputs, so the
+result is blank when line 88 is."""
