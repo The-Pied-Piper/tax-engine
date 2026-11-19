@@ -1,0 +1,14 @@
+# NL428 (2025) line 86's input, which a salary-only caller does not give.
+# Line 86: "Line 86 and line 61860: Amount from line 108 of your spouse's or common-law partner's Form
+# NL428, if any" (Form NL428, CRA 5001-C). The amount is taken from the spouse or common-law
+# partner's own Form NL428, which is not built, so the line is one optional input, as the form
+# takes it. A salary-only single filer has no partner, so a request that leaves the line out is
+# read as blank; the step that reads line 86 reads that blank as 0.
+inputs:
+  - name: ca-nl/nl428_unused_low_income_reduction_from_spouse_line_86
+    title: "Unused low-income tax reduction from your spouse or common-law partner"
+    reference: "86"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 86 and line 61860: Amount from line 108 of your spouse's or common-law partner's Form NL428, if any"
