@@ -1,0 +1,21 @@
+# Form NL428 (Newfoundland and Labrador Tax, 2025, 5001-C) Part A, line 12. Each of the four columns
+# of lines 9 to 15 prints "Line 12:" with its rate: "Line 12: Rate 19.8%", "Line 12: Rate 20.8%",
+# "Line 12: Rate 21.3%" and "Line 12: Rate 21.8%", under "Column 1: Line 1 is more than $220,910 but
+# not more than $282,214", "Column 2: Line 1 is more than $282,214 but not more than $564,429",
+# "Column 3: Line 1 is more than $564,429 but not more than $1,128,858" and "Column 4: Line 1 is
+# more than $1,128,858". Line 12 is the printed rate of the column that line 1 falls in, and a
+# line 1 exactly at a column's upper bound falls in the lower column. It is blank when line 1 is
+# $220,910 or less (outside the table; lines 2 to 8 apply). Line 1 is read from its producing part
+# (nl428_credits_line_1.yaml), so this part does not produce it again.
+form:
+  name: ca-nl/nl428_credits
+capabilities:
+  - name: core/bracket_column_rate
+    title: "Rate"
+    reference: "12"
+    params:
+      schedule: ca-nl/brackets_lines_9_to_15
+    consumes:
+      base: ca-nl/nl428_taxable_income_line_1
+    produces:
+      output: ca-nl/nl428_bracket_rate_line_12
