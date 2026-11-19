@@ -27,6 +27,7 @@ SOURCE = YamlParameterSource(
     newfoundland_parameter_parsers(),
 )
 FAMILY = "ca-nl/political_contribution_tax_credit_maximum"
+CRA_FORM_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5001-c/5001-c-25e.txt"
 
 
 def test_2025_political_contribution_tax_credit_maximum_is_500() -> None:
@@ -39,3 +40,9 @@ def test_2025_political_contribution_tax_credit_maximum_rounds_half_up_to_the_ce
     data = SOURCE.get(FAMILY, 2025, CREDIT)
 
     assert data.rounding == RoundTo(D("0.01"), RoundingMode.HALF_UP)
+
+
+def test_2025_political_contribution_tax_credit_maximum_cites_the_form() -> None:
+    data = SOURCE.get(FAMILY, 2025, CREDIT)
+
+    assert data.sources == (CRA_FORM_TEXT,)
