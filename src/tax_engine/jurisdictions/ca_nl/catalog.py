@@ -366,6 +366,13 @@ NL428_TAX_LINE_70 = AmountKind.declare(CATALOG, "nl428_tax_line_70", non_negativ
 "0") =": line 65 (the tax before credits) less line 69 (the credits total), floored at 0 as the form
 prints, rounded half-up to the cent."""
 
+NL428_TAX_WITH_MINIMUM_TAX_LINE_72 = AmountKind.declare(
+    CATALOG, "nl428_tax_with_minimum_tax_line_72", non_negative=True
+)
+"""Newfoundland and Labrador tax with the additional tax for minimum tax purposes, NL428 line 72
+"Line 72: Line 70 plus line 71 =": line 70 (the tax) plus line 71 (the additional tax for minimum
+tax purposes, blank Form T691 amount read as 0), rounded half-up to the cent."""
+
 NL428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_73 = AmountKind.declare(
     CATALOG, "nl428_provincial_foreign_tax_credit_line_73", non_negative=True
 )
