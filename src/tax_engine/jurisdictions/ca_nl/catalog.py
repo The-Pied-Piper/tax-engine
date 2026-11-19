@@ -14,6 +14,12 @@ from tax_engine.jurisdictions.ca_nl import NAMESPACE
 
 CATALOG = ArtifactCatalog(Namespace(NAMESPACE))
 
+WORKSHEET_NL428_AGE_AMOUNT_MAXIMUM_LINE_1 = AmountKind.declare(
+    CATALOG, "worksheet_nl428_age_amount_maximum_line_1", non_negative=True
+)
+"""Maximum amount, Worksheet NL428 line 1 "Line 1: Maximum amount 7,064.00": the printed
+maximum."""
+
 WORKSHEET_NL428_AGE_AMOUNT_NET_INCOME_LINE_2 = AmountKind.declare(
     CATALOG, "worksheet_nl428_age_amount_net_income_line_2", non_negative=True
 )
@@ -245,3 +251,9 @@ NL428_ELIGIBLE_DEPENDANT_AMOUNT_LINE_23 = AmountKind.declare(
 """Amount for an eligible dependant, NL428 line 23 "Line 23 and line 58160: Line 21 minus line 22
 (if negative, enter "0") (maximum $9,043) =": line 21 less line 22, not below 0, at most the printed
 maximum."""
+
+NL428_TAXABLE_INCOME_LINE_1 = AmountKind.declare(
+    CATALOG, "nl428_taxable_income_line_1", non_negative=True
+)
+"""Taxable income, Form NL428 Line 1 "Enter your taxable income from line 26000 of your return": the
+T1 taxable income, read directly by line 2."""
