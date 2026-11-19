@@ -1,0 +1,22 @@
+# Form NL428 (CRA 5001-C) line 39: "Line 39: Add lines 36 to 38. = ^". Line 36 is the credits subtotal
+# (nl428_credits_line_36.yaml), line 37 the pension income amount (nl428_credits_line_37.yaml) and line
+# 38 the caregiver amount, an optional input (nl428_credits_line_38_input.yaml). Lines 37 and 38 are
+# blank for a salary-only filer and read as 0. Step 1 adds them with core/sum.
+form:
+  name: ca-nl/nl428_credits
+capabilities:
+  - name: core/sum
+    reference: "39"
+    unit: ca/cad
+    params:
+      rounding: ca-nl/cent_rounding
+    consumes:
+      parts:
+        - ca-nl/nl428_credits_subtotal_line_36
+        - ca-nl/nl428_pension_income_amount_line_37
+        - ca-nl/nl428_caregiver_amount_line_38
+    blank:
+      ca-nl/nl428_pension_income_amount_line_37: "0"
+      ca-nl/nl428_caregiver_amount_line_38: "0"
+    produces:
+      output: ca-nl/nl428_credits_subtotal_line_39
