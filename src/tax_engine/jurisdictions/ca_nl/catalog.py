@@ -475,6 +475,12 @@ NL428_MEDICAL_EXPENSES_OVER_LIMIT_LINE_53 = AmountKind.declare(
 """Medical expenses over the limit, NL428 line 53 "Line 48 minus line 52 (if negative, enter "0")":
 line 48 less line 52, not below 0; a blank line 48 is read as 0."""
 
+NL428_MEDICAL_EXPENSES_ALLOWABLE_LINE_55 = AmountKind.declare(
+    CATALOG, "nl428_medical_expenses_allowable_line_55", non_negative=True
+)
+"""Allowable medical expenses, NL428 line 55 "Line 53 plus line 54": line 53 plus line 54, line 54
+being an optional input read as 0 when blank."""
+
 NL428_BRACKET_LOWER_BOUND_LINE_10 = AmountKind.declare(
     CATALOG, "nl428_bracket_lower_bound_line_10", non_negative=True
 )
