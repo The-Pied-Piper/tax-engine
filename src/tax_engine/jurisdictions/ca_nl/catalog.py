@@ -554,3 +554,10 @@ NL428_BRACKET_TAX_AT_START_LINE_14 = AmountKind.declare(
 )
 """Tax at the start of the column, NL428 line 14 "Line 14: 32,454.04": the printed tax at the start
 of the column of lines 9 to 15 that line 1 falls in, blank when line 1 is 220,910 or less."""
+
+NL428_DIVIDEND_TAX_CREDIT_LINE_67 = AmountKind.declare(
+    CATALOG, "nl428_dividend_tax_credit_line_67", non_negative=True
+)
+"""Newfoundland and Labrador dividend tax credit, NL428 line 67 "Line 67 and line 61520:
+Newfoundland and Labrador dividend tax credit (use Worksheet NL428)": the amount as the filer gives
+it, an optional input; a blank input is read as blank."""
