@@ -102,3 +102,7 @@ NL428_CPP_CONTRIBUTIONS_LINE_27 = AmountKind.declare(
 )
 """CPP or QPP contributions, NL428 line 27 and line 58240 "Amount from line 30800 of your return": a
 copy of Schedule 8 line 25, the CPP base contributions on the return."""
+
+BASIC_PERSONAL_AMOUNT = AmountKind.declare(CATALOG, "basic_personal_amount", non_negative=True)
+"""Basic personal amount, NL428 line 16 "Line 16 and line 58040: Basic personal amount Claim
+$11,067": the printed $11,067, claimed whole and not income-tested."""

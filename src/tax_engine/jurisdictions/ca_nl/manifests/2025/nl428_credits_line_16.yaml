@@ -1,0 +1,14 @@
+# Form NL428 (CRA 5001-C) line 16 and line 58040, the basic personal amount. "Basic personal amount
+# Claim $11,067". The $11,067 is the `ca-nl/basic_personal_amount` dataset, claimed whole through
+# core/credit_amount, so it is the same at every salary.
+form:
+  name: ca-nl/nl428_credits
+capabilities:
+  - name: core/credit_amount
+    title: "Basic personal amount"
+    reference: "16"
+    unit: ca/cad
+    params:
+      amount: ca-nl/basic_personal_amount
+    produces:
+      output: ca-nl/basic_personal_amount
