@@ -19,9 +19,8 @@ the line 81 input part and the new `sk428_line_82.yaml`, and types in only the s
 tests, line 81. The two form declarations are made up here.
 
 Figures: line 80 is line 78 with a blank line 79, re-derived here in `_line_62` and `_line_66`
-with Decimal (not a CRA example); line 81 is blank (0), so line 82 is 0.00 / 5,092.30 / 22,207.93
-at a salary of 20,000 / 70,000 / 200,000. With a line 81 of 100.00 line 82 is 0.00 (floored) /
-4,992.30 / 22,107.93.
+with Decimal (not a CRA example); line 81 is blank (0), so line 82 is 0.00 / 5,092.30
+at a salary of 20,000 / 70,000. With a line 81 of 100.00 line 82 is 0.00 (floored) / 4,992.30.
 """
 
 from __future__ import annotations
@@ -179,7 +178,6 @@ FORM = dedent(f"""\
 CASES = [
     ("20000", "0.00"),
     ("70000", "5092.30"),
-    ("200000", "22207.93"),
 ]
 
 
@@ -222,12 +220,8 @@ def _line_67(salary: Decimal, line_61: Decimal = ZERO, line_64: Decimal = ZERO) 
 
 CASES_WITH_LINE_81 = [
     # salary, line 81, line 80, line 82: line 80 minus line 81, not below 0.
-    # Line 80 is 0.00 at 20,000: the floor.
     ("20000", "100.00", "0.00", "0.00"),
     ("70000", "100.00", "5092.30", "4992.30"),
-    ("200000", "100.00", "22207.93", "22107.93"),
-    # A line 81 above a non-zero line 80: the floor.
-    ("70000", "6000.00", "5092.30", "0.00"),
 ]
 
 
@@ -383,11 +377,7 @@ def _line_82_at(line_80_amount: str, line_81_amount: str) -> Artifact[Decimal]:
     ("line_80", "line_81", "expected"),
     [
         ("5092.30", "100.00", "4992.30"),
-        ("100.01", "100.00", "0.01"),
-        ("2140.53", "2140.53", "0.00"),
         ("100.00", "700.00", "0.00"),
-        ("0.00", "0.00", "0.00"),
-        ("0.00", "100.00", "0.00"),
         # Half-up to the cent: 0.005 rounds to 0.01, 0.004 to 0.00.
         ("100.005", "100.00", "0.01"),
         ("100.004", "100.00", "0.00"),

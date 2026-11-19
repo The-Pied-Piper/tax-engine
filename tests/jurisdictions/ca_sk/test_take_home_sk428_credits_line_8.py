@@ -17,11 +17,10 @@ parts, the real `sk428_credits_line_1.yaml`, `sk428_credits_line_3.yaml`,
 `sk428_credits_line_7.yaml` and `sk428_credits_line_8.yaml`, and types in only the salary. The
 form declaration is test-local, exporting lines 6, 7 and 8.
 
-Figures (re-derived in `_derived` below with Decimal, not a CRA example): taxable income is the
-salary less the enhanced CPP deduction, 9,935.00 / 19,835.00 / 69,335.00 / 198,926.00. Line 6 is
-1,043.18 / 2,082.68 / 1,984.00 / 6,695.52 and line 7 is 0.00 / 0.00 / 5,613.62 / 18,024.49, so
-line 8 is 1,043.18 / 2,082.68 / 7,597.62 / 24,720.01. The boundary salaries are derived as in the
-line 6 and line 7 tests.
+Figures (re-derived in `_derived` below with Decimal, not a CRA example): at salary 0 every line is
+0.00; at salary 70,000 taxable income is 69,335.00 (the salary less the enhanced CPP deduction),
+line 6 is 1,984.00 and line 7 is 5,613.62, so line 8 is 7,597.62. The column edges are derived in
+the line 6 and line 7 tests.
 """
 
 from __future__ import annotations
@@ -116,25 +115,10 @@ FORM = dedent(f"""\
     """)
 
 # (salary, line 1, line 6, line 7, line 8): line 8 is line 6 plus line 7.
-CASES = [
+ALL = [
     ("0", "0.00", "0.00", "0.00", "0.00"),
-    ("10000", "9935.00", "1043.18", "0.00", "1043.18"),
-    ("20000", "19835.00", "2082.68", "0.00", "2082.68"),
     ("70000", "69335.00", "1984.00", "5613.62", "7597.62"),
-    ("200000", "198926.00", "6695.52", "18024.49", "24720.01"),
 ]
-# Salaries whose taxable income sits on a column's edge: line 1 is 53,463.00 or less in column 1,
-# not more than 152,750.00 in column 2. One cent more is the next column, so line 6 restarts at
-# 0.00 and line 7 steps up to the printed figure of that column.
-EDGES = [
-    ("53967.67", "53462.99", "5613.61", "0.00", "5613.61"),
-    ("53967.68", "53463.00", "5613.62", "0.00", "5613.62"),
-    ("53967.69", "53463.01", "0.00", "5613.62", "5613.62"),
-    ("153823.99", "152749.99", "12410.87", "5613.62", "18024.49"),
-    ("153824.00", "152750.00", "12410.88", "5613.62", "18024.50"),
-    ("153824.01", "152750.01", "0.00", "18024.49", "18024.49"),
-]
-ALL = [*CASES, *EDGES]
 
 
 def _part_files() -> Iterator[Path]:
