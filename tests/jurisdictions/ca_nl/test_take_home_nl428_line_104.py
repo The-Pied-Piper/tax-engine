@@ -7,9 +7,9 @@ core/subtract_not_below_zero over line 98 (the low-income tax reduction) and lin
 half-up to the cent by `ca-nl/cent_rounding`; a core/sum over line 86 alone (a blank read as 0); a
 core/amount_by_band over that figure through the `ca-nl/low_income_reduction_line_86_gate` dataset
 (1 at 0.00, 0 from one cent); and a core/multiply of the first figure by the gate, which is line 104
-and the only step with the reference. The form prints no title the engine takes for the line, so
-the four steps carry the titles in the manifest. Line 94 is line 87 whether or not line 86 is claimed (a copy line with no
-step), so only line 104 changes with line 86.
+and the only step with the reference. The four steps carry plain-words titles, since the form
+prints no title the engine takes for the line. Line 94 is line 87 whether or not line 86 is claimed
+(a copy line with no step), so only line 104 changes with line 86.
 
 Figures (hand-computed from the printed form, not a CRA example): line 98 is 997.00 at every salary
 with lines 96 and 97 blank; line 103 is 0.00 / 7,265.12 / 27,999.68 at salaries of 20,000 / 70,000 /
