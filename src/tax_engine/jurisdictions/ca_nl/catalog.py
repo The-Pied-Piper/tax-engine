@@ -384,6 +384,13 @@ Newfoundland and Labrador political contribution tax credit (use Worksheet NL428
 the entered amount, passed on unchanged when it is at most the printed maximum, blank when left
 out; above the maximum it is refused, not capped."""
 
+NL428_DIRECT_EQUITY_TAX_CREDIT_LINE_78 = AmountKind.declare(
+    CATALOG, "nl428_direct_equity_tax_credit_line_78", non_negative=True
+)
+"""Direct equity tax credit, NL428 line 78 "Line 78: Direct equity tax credit (complete Form
+T1272)": the credit from Form T1272, an optional input that a salary-only caller leaves out; a
+blank input is read as blank."""
+
 NL428_UCCB_RDSP_REPAYMENTS_LINE_89 = AmountKind.declare(
     CATALOG, "nl428_uccb_rdsp_repayments_line_89", non_negative=True
 )
@@ -648,3 +655,11 @@ NL428_SPOUSE_NET_INCOME_LINE_88 = AmountKind.declare(
 "if negative, show in brackets")": the amount as the filer gives it, an optional input. It is
 signed because the line takes the amount as if negative were shown in brackets; a blank input is
 read as blank."""
+
+NL428_SPOUSE_UCCB_AND_RDSP_REPAYMENT_LINE_89 = AmountKind.declare(
+    CATALOG, "nl428_spouse_uccb_and_rdsp_repayment_line_89", non_negative=True
+)
+"""Spouse or common-law partner's UCCB and RDSP repayment, NL428 line 89 column 2 "Line 89: Total of
+the universal child care benefit (UCCB) repayment (line 21300 of the return) and the registered
+disability savings plan (RDSP) income repayment (included on line 23200 of the return)": the amount
+as the filer gives it, an optional input; a blank input is read as blank."""
