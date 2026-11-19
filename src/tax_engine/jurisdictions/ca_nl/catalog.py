@@ -134,6 +134,26 @@ NL428_ADOPTION_EXPENSES_LINE_34 = AmountKind.declare(
 """Adoption expenses, NL428 line 34 "Line 34 and line 58330: Adoption expenses": the amount as the
 filer gives it, an optional input; a blank input is read as blank."""
 
+NL428_PENSION_INCOME_AMOUNT_CLAIMED_LINE_37 = AmountKind.declare(
+    CATALOG, "nl428_pension_income_amount_claimed_line_37", non_negative=True
+)
+"""Pension income amount claimed, NL428 line 37 "Line 37 and line 58360: Pension income amount
+(maximum $1,000)": the amount as the filer gives it, an optional input; a blank input is read as
+blank, and the line 37 step checks it against the printed maximum."""
+
+NL428_PENSION_INCOME_AMOUNT_MAXIMUM = AmountKind.declare(
+    CATALOG, "nl428_pension_income_amount_maximum", non_negative=True
+)
+"""Pension income amount maximum, printed on NL428 line 37 "(maximum $1,000)": the printed maximum,
+from the `ca-nl/pension_income_amount_maximum` dataset; the bound line 37 cannot pass."""
+
+NL428_PENSION_INCOME_AMOUNT_LINE_37 = AmountKind.declare(
+    CATALOG, "nl428_pension_income_amount_line_37", non_negative=True
+)
+"""Pension income amount, NL428 line 37 "Line 37 and line 58360: Pension income amount (maximum
+$1,000)": the entered amount, passed on unchanged when it is at most the printed maximum, blank when
+left out; above the maximum it is refused, not capped."""
+
 NL428_NON_REFUNDABLE_CREDITS_LINE_62 = AmountKind.declare(
     CATALOG, "nl428_non_refundable_credits_line_62", non_negative=True
 )
