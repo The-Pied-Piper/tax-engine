@@ -12,10 +12,10 @@ step. Line 14 is `core/bracket_column_tax_at_start` over line 1
 
 The table covers only a line 1 above 220,910.00 (a line 1 of 220,910 or less is in
 lines 2 to 8, the low table), so line 14 is left blank there: at $20,000, $70,000 and $200,000
-(line 1 is 198,926.00) it is blank, at $250,000 (line 1 is 248,926.00) it is 220,910.00.
+(line 1 is 198,926.00) it is blank, at $250,000 (line 1 is 248,926.00) it is 32,454.04.
 A blank output is read from the
 Worksheet as an artifact whose `is_blank` is true (its `value` raises), and its trace is one
-`BracketOutsideRangeLine` (output, base, base amount)
+`BracketOutsideRangeLine` (output, base, base amount).
 
 Line 1 is a salary's T1 taxable income, so the exact thresholds (220,910.00 and 220,910.01) are
 tested through the capability and the real dataset directly, as
@@ -99,7 +99,7 @@ HEADER = dedent("""\
       - ca/employment_income
     capabilities: []
     """)
-# The NL428 declaration, test-local: lines 1 and 10 are composed, so it exports those.
+# The NL428 declaration, test-local: lines 1 and 14 are composed, so it exports those.
 FORM_TEXT = dedent(f"""\
     form:
       name: {FORM}
