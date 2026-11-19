@@ -2,12 +2,12 @@
 # claimed an amount on line 96 or line 97, enter $40,460; if not, enter $23,928."
 #
 # Step 1 counts the printed condition through ca/count_by_conditions: 1 when an amount is claimed on
-# line 96 or on line 97, else 0. Line 96 and line 97 are blank when nothing is claimed (Umar, 2026-11-19 16:24Z);
-# the step reads a blank as 0, so a blank line is no claim. Steps 2 and 3 produce the two printed figures from the
-# `ca-nl/low_income_threshold` ($23,928) and `ca-nl/low_income_threshold_with_spouse_or_dependant`
-# ($40,460) datasets through core/credit_amount; neither is a line of the form, so each has no
-# title and no reference. Step 4 chooses between them with core/choose_by_count: $23,928 for a
-# count of 0, $40,460 for a count of 1.
+# line 96 or on line 97, else 0. Line 96 and line 97 are blank when nothing is claimed; the step
+# reads a blank as 0, so a blank line is no claim. Steps 2 and 3 produce the two printed figures
+# from the `ca-nl/low_income_threshold` ($23,928) and `ca-
+# nl/low_income_threshold_with_spouse_or_dependant` ($40,460) datasets through core/credit_amount;
+# neither is a line of the form, so each has no title and no reference. Step 4 chooses between them
+# with core/choose_by_count: $23,928 for a count of 0, $40,460 for a count of 1.
 form:
   name: ca-nl/nl428
 capabilities:

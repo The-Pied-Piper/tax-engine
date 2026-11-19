@@ -2,11 +2,11 @@
 # "Line 96 and line 61880: Reduction for spouse or common-law partner Claim $557".
 #
 # Step 1 reads the optional claim (1 when the reduction is claimed) and refuses a count above 1
-# through ca/yes_or_no_count; a blank claim is passed on blank. Step 2 produces the printed $557 from
-# the `ca-nl/low_income_reduction_spouse` dataset through core/credit_amount; it is not a line of the
-# form, so it has no title and no reference. Step 3 multiplies that amount by the checked claim, so
-# line 96 is $557 when claimed, 0.00 for a claim of 0 and BLANK when the claim is left blank (Umar,
-# 2026-11-19 16:24Z): the paper form leaves the line empty when nothing is claimed.
+# through ca/yes_or_no_count; a blank claim is passed on blank. Step 2 produces the printed $557
+# from the `ca-nl/low_income_reduction_spouse` dataset through core/credit_amount; it is not a line
+# of the form, so it has no title and no reference. Step 3 multiplies that amount by the checked
+# claim, so line 96 is $557 when claimed, 0.00 for a claim of 0 and BLANK when the claim is left
+# blank: the paper form leaves the line empty when nothing is claimed.
 form:
   name: ca-nl/nl428
 capabilities:

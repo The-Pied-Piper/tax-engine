@@ -5,8 +5,8 @@ for spouse or common-law partner Claim $557". The part has three steps: `ca/yes_
 the optional claim (a blank passed on) and refuses a count above 1; `core/credit_amount`
 supplies the printed $557 from the `ca-nl/low_income_reduction_spouse` dataset; `core/times_count`
 multiplies it by the checked claim, rounded through `ca-nl/cent_rounding`, as line 40 does for its
-claim, a blank claim passed on. A salary-only filer leaves the claim out, so line 96 is blank
-(Umar, 2026-11-19 16:24Z); a claim of 0 gives 0.00.
+claim, a blank claim passed on. A salary-only filer leaves the claim out, so line 96 is blank;
+a claim of 0 gives 0.00.
 
 The real input part and the new `nl428_line_96.yaml` are loaded under a test-local header and form
 over the Newfoundland and Labrador package list of `support.py`.
@@ -136,6 +136,8 @@ def test_the_part_has_the_check_the_dataset_and_line_96_in_order() -> None:
     ]
     assert [step.get("reference") for step in steps] == [None, None, "96"]
     assert steps[2]["title"] == "Reduction for spouse or common-law partner"
+    assert steps[0]["blank"] == {"count": "pass_on"}
+    assert steps[2]["blank"] == {"count": "pass_on"}
 
 
 @pytest.mark.parametrize(

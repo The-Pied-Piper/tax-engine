@@ -3,7 +3,7 @@
 Form text (Form NL428, CRA 5001-C, 5001-c-25e.txt): "Line 97 and line 61890: Reduction for an
 eligible dependant claimed on line 58160 Claim $557". Line 58160 is line 23 of the other form
 `ca-nl/nl428_credits`. A salary-only caller leaves line 22 blank, so line 23 is blank and line 97
-is blank too (Umar, 2026-11-19 16:24Z; hand-computed from the printed form, not a CRA
+is blank too (hand-computed from the printed form, not a CRA
 example); a line 22 of 0 claims the dependant and gives 557, and a line 22 of 9,948 or more
 leaves line 23 at 0 and line 97 at 0.
 """

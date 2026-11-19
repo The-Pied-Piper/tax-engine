@@ -1,10 +1,10 @@
-# NL428 (2025) line 98, the low-income tax reduction. Form NL428 (CRA 5001-C): "Line 98: Add lines 95
-# to 97. (maximum $1,554) =". Lines 95 to 97 are the basic reduction ($997), the reduction for a
+# NL428 (2025) line 98, the low-income tax reduction. Form NL428 (CRA 5001-C): "Line 98: Add lines
+# 95 to 97. (maximum $1,554) =". Lines 95 to 97 are the basic reduction ($997), the reduction for a
 # spouse or common-law partner ($557) and the reduction for an eligible dependant ($557); lines 96
-# and 97 are blank when nothing is claimed (Umar, 2026-11-19 16:24Z), and the sum reads each blank
-# as 0. All three together come to $2,111, so the printed maximum is applied: core/capped_amount takes the
-# lesser of the sum and the `ca-nl/low_income_reduction_maximum` dataset ($1,554). The sum is not a
-# line of the form, so it has no title and no reference; the line's number is on the capped step.
+# and 97 are blank when nothing is claimed, and the sum reads each blank as 0. All three together
+# come to $2,111, so the printed maximum is applied: core/capped_amount takes the lesser of the sum
+# and the `ca-nl/low_income_reduction_maximum` dataset ($1,554). The sum is not a line of the form,
+# so it has no title and no reference; the line's number is on the capped step.
 form:
   name: ca-nl/nl428
 capabilities:
