@@ -741,3 +741,17 @@ NL428_SPOUSE_FAMILY_INCOME_LINE_90 = AmountKind.declare(
 common-law partner): the spouse's net income of line 88 plus the spouse's UCCB and RDSP repayments
 of line 89. Line 88 can be negative, so the kind is signed; both lines are optional inputs, so the
 result is blank when line 88 is."""
+
+NL428_ELIGIBLE_DEPENDANT_CLAIMED_LINE_97 = AmountKind.declare(
+    CATALOG, "nl428_eligible_dependant_claimed_line_97", non_negative=True
+)
+"""Amount claimed on line 58160, read by NL428 line 97 "Line 97 and line 61890: Reduction for an
+eligible dependant claimed on line 58160 Claim $557": line 23 of the credits form, the amount for
+an eligible dependant, read across the forms. A blank line 23 is read as 0."""
+
+NL428_LOW_INCOME_REDUCTION_DEPENDANT_LINE_97 = AmountKind.declare(
+    CATALOG, "nl428_low_income_reduction_dependant_line_97", non_negative=True
+)
+"""Reduction for an eligible dependant, NL428 line 97 and line 61890 "Reduction for an eligible
+dependant claimed on line 58160 Claim $557": the printed 557 where an amount is claimed on line
+58160, and 0 where line 23 is 0 or blank."""
