@@ -320,19 +320,19 @@ NL428_TAX_ON_SPLIT_INCOME_LINE_64 = AmountKind.declare(
 Newfoundland and Labrador tax on split income (complete Form T1206)": the amount as the filer gives
 it, an optional input; a blank input is read as blank."""
 
-NL428_NEWFOUNDLAND_AND_LABRADOR_TAX_LINE_105 = AmountKind.declare(
-    CATALOG, "nl428_newfoundland_and_labrador_tax_line_105", non_negative=True
-)
-"""Newfoundland and Labrador tax, NL428 line 105 "Line 105: Line 94 minus line 104 (if negative,
-enter "0") Enter this amount on line 42800 of your return.": line 94 less line 104, not below 0,
-entered on T1 line 42800."""
-
 NL428_MINIMUM_TAX_CARRYOVER_AMOUNT_LINE_68 = AmountKind.declare(
     CATALOG, "nl428_minimum_tax_carryover_amount_line_68", non_negative=True
 )
 """Newfoundland and Labrador minimum tax carryover, NL428 line 68 (line 61540) "Amount from line
 40427 of your return": the amount from line 40427 of the T1 return, an optional input, box A of the
 line, as the filer gives it; a blank input is read as blank."""
+
+NL428_NEWFOUNDLAND_AND_LABRADOR_TAX_LINE_105 = AmountKind.declare(
+    CATALOG, "nl428_newfoundland_and_labrador_tax_line_105", non_negative=True
+)
+"""Newfoundland and Labrador tax, NL428 line 105 "Line 105: Line 94 minus line 104 (if negative,
+enter "0") Enter this amount on line 42800 of your return.": line 94 less line 104, not below 0,
+entered on T1 line 42800."""
 
 NL428_DISABILITY_AMOUNT_SELF_CLAIMED_LINE_40 = CountKind.declare(
     CATALOG, "nl428_disability_amount_self_claimed_line_40", non_negative=True
