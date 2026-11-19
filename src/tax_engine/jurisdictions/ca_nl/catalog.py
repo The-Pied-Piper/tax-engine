@@ -641,3 +641,19 @@ NL428_SPOUSE_NET_INCOME_LINE_88 = AmountKind.declare(
 "if negative, show in brackets")": the amount as the filer gives it, an optional input. It is
 signed because the line takes the amount as if negative were shown in brackets; a blank input is
 read as blank."""
+
+NL428_NET_INCOME_LINE_88 = AmountKind.declare(
+    CATALOG, "nl428_net_income_line_88", non_negative=False
+)
+"""Net income, NL428 line 88 column 1 "Line 88: Net income from line 23600 of the return (or the
+amount you would have entered if the instructions on line 23600 said "if negative, show in
+brackets")": the net income of the T1 return before its floor, read from the signed T1 net income
+export (`ca/net_income_signed`). The form shows a negative net income in brackets, so the kind is
+signed."""
+
+NL428_FAMILY_INCOME_LINE_90 = AmountKind.declare(
+    CATALOG, "nl428_family_income_line_90", non_negative=False
+)
+"""Line 88 plus line 89, NL428 line 90 "Line 88 plus line 89", column 1 (you): the net income of
+line 88 plus the UCCB and RDSP repayments of line 89. Line 88 can be negative, so the kind is
+signed."""
