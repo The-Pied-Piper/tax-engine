@@ -1,0 +1,18 @@
+# Eligible dependant amount gate on the spouse amount, 2025 tax year (Form NL428 line 23): "Line 23
+# and line 58160: Line 21 minus line 22 (if negative, enter "0") (maximum $9,043)". The form text
+# prints no table and is silent on a claim of both lines 20 and 23; NL Income Tax Act, 2000, s.
+# 9(1)(b) gives the eligible dependant amount only to an individual who does not claim the spouse
+# amount. The rows are a switch giving the most line 23 may be: the printed maximum 9,043 where
+# line 20 is 0.00 and 0 where an amount is claimed on line 20 (one cent or more).
+# A base exactly at a row's `over` is in the lower band, so the second row starts above 0.005: no
+# cent amount is in the first band but 0.00, and 0.01 is in the second.
+family: ca-nl/eligible_dependant_spouse_gate
+tax_year: 2025
+kind: amount_by_band
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5001-c/5001-c-25e.txt
+  - https://assembly.nl.ca/legislation/sr/statutes/i01-1.htm
+rounding: {increment: "0.01", mode: half_up}
+rows:
+  - {over: "0", amount: "9043"}
+  - {over: "0.005", amount: "0"}
