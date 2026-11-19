@@ -790,3 +790,28 @@ NL428_SPOUSE_FAMILY_INCOME_LESS_UCCB_RDSP_LINE_92 = AmountKind.declare(
 column 2 (your spouse or common-law partner): the spouse's family income of line 90 less the
 spouse's UCCB and RDSP income of line 91, not below 0, so the kind is non-negative. The result is
 blank when line 90 is."""
+
+LOW_INCOME_THRESHOLD = AmountKind.declare(CATALOG, "low_income_threshold", non_negative=True)
+"""Low-income threshold, NL428 line 100 "Line 100: If you claimed an amount on line 96 or line 97,
+enter $40,460; if not, enter $23,928": the printed $23,928, the figure when no amount is claimed on
+line 96 or line 97."""
+
+LOW_INCOME_THRESHOLD_WITH_SPOUSE_OR_DEPENDANT = AmountKind.declare(
+    CATALOG, "low_income_threshold_with_spouse_or_dependant", non_negative=True
+)
+"""Low-income threshold with a spouse or dependant, NL428 line 100 "Line 100: If you claimed an
+amount on line 96 or line 97, enter $40,460; if not, enter $23,928": the printed $40,460, the figure
+when an amount is claimed on line 96 or line 97."""
+
+NL428_LOW_INCOME_THRESHOLD_CONDITIONS_COUNT_LINE_100 = CountKind.declare(
+    CATALOG, "nl428_low_income_threshold_conditions_count_line_100", non_negative=True
+)
+"""Conditions count for NL428 line 100 "If you claimed an amount on line 96 or line 97": 1 when an
+amount is claimed on line 96 or line 97, else 0."""
+
+NL428_LOW_INCOME_THRESHOLD_LINE_100 = AmountKind.declare(
+    CATALOG, "nl428_low_income_threshold_line_100", non_negative=True
+)
+"""Low-income threshold, NL428 line 100 "Line 100: If you claimed an amount on line 96 or line 97,
+enter $40,460; if not, enter $23,928": $40,460 when an amount is claimed on line 96 or line 97,
+else $23,928."""
