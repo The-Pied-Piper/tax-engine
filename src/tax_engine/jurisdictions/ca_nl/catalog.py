@@ -96,3 +96,7 @@ NL428_DISABILITY_AMOUNT_SELF_LINE_40 = AmountKind.declare(
 """Disability amount for self, NL428 line 40 "Line 40 and line 58440: Disability amount for self
 (claim $7,467 or, if you were under 18 years of age, use Worksheet NL428)": the printed $7,467 when
 the claim is 1, 0 when the claim is blank or 0."""
+
+BASIC_PERSONAL_AMOUNT = AmountKind.declare(CATALOG, "basic_personal_amount", non_negative=True)
+"""Basic personal amount, NL428 line 16 "Line 16 and line 58040: Basic personal amount Claim
+$11,067": the printed $11,067, claimed whole and not income-tested."""
