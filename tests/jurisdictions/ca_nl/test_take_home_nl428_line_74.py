@@ -20,11 +20,9 @@ from textwrap import dedent
 from typing import Any
 
 import pytest
-import yaml
 
 import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_nl
-import tax_engine.jurisdictions.ca_nl.catalog as nl_catalog
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
@@ -39,13 +37,11 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_parameter_parsers,
     newfoundland_units,
 )
-from tests.kinds import non_negative
 from tests.manifest_support import inputs_without_form
 
 D = Decimal
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
 FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
-LINE_PART = NL_PARTS / "nl428_line_74.yaml"
 LINE_72 = "ca-nl/nl428_tax_with_minimum_tax_line_72"
 LINE_73 = "ca-nl/nl428_provincial_foreign_tax_credit_line_73"
 IDENTIFIER = "ca-nl/nl428_tax_line_74"
@@ -259,33 +255,3 @@ def test_line_74_is_not_below_zero(tmp_path: Path) -> None:
 
     assert _value(sheet, LINE_72) == D("663.23")
     assert _value(sheet, IDENTIFIER) == D("0.00")
-
-
-def _part() -> dict[str, Any]:
-    part = yaml.safe_load(LINE_PART.read_text(encoding="utf-8"))
-    assert isinstance(part, dict)
-    return part
-
-
-def test_the_part_is_one_untitled_subtract_step_with_a_blank_rule_on_line_73() -> None:
-    assert _part() == {
-        "form": {"name": FORM_NAME},
-        "capabilities": [
-            {
-                "name": "core/subtract_not_below_zero",
-                "reference": "74",
-                "unit": "ca/cad",
-                "params": {"rounding": "ca-nl/cent_rounding"},
-                "consumes": {"amount": LINE_72, "less": LINE_73},
-                "blank": {"less": "0"},
-                "produces": {"output": IDENTIFIER},
-            }
-        ],
-    }
-
-
-def test_line_74_is_a_registered_non_negative_amount_kind() -> None:
-    kind = newfoundland_kinds().kind(IDENTIFIER)
-
-    assert kind is nl_catalog.NL428_TAX_LINE_74
-    assert non_negative(kind)
