@@ -1,0 +1,19 @@
+# Form NL428 (Newfoundland and Labrador Tax, CRA 5001-C) line 70 "Line 70: Line 65 minus line 69 (if
+# negative, enter "0") =". One core/subtract_not_below_zero step: the tax before credits (line 65,
+# `ca-nl/nl428_tax_before_credits_line_65`) less the credits total (line 69,
+# `ca-nl/nl428_credits_total_line_69`), not below 0. Both lines are always computed, so the step
+# needs no blank rule. The form prints no title for the line, so the step has none. The output is
+# `ca-nl/nl428_tax_line_70`, which is not exported yet.
+form:
+  name: ca-nl/nl428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "70"
+    unit: ca/cad
+    params:
+      rounding: ca-nl/cent_rounding
+    consumes:
+      amount: ca-nl/nl428_tax_before_credits_line_65
+      less: ca-nl/nl428_credits_total_line_69
+    produces:
+      output: ca-nl/nl428_tax_line_70

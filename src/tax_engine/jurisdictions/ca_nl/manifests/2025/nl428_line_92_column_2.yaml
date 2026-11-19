@@ -1,0 +1,24 @@
+# Form NL428 (Newfoundland and Labrador Tax, CRA 5001-C) line 92, column 2 (your spouse or
+# common-law partner): "Line 92: Line 90 minus line 91 (if negative, enter "0")". One
+# core/subtract_not_below_zero step over line 90 (the spouse's net income plus the UCCB and RDSP
+# repayments, `ca-nl/nl428_spouse_family_income_line_90`) and line 91 (the spouse's UCCB and RDSP
+# income, `ca-nl/nl428_spouse_uccb_rdsp_income_line_91`), rounded half-up to the cent by the dataset's
+# rule. Both come from optional inputs a salary-only single filer leaves out. Line 90 passes its blank
+# on, so with no spouse the step and the line are blank; line 91 is read as 0 when blank. The form
+# prints no title for the line, so the step has none.
+form:
+  name: ca-nl/nl428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "92 (column 2)"
+    unit: ca/cad
+    params:
+      rounding: ca-nl/cent_rounding
+    consumes:
+      amount: ca-nl/nl428_spouse_family_income_line_90
+      less: ca-nl/nl428_spouse_uccb_rdsp_income_line_91
+    blank:
+      amount: pass_on
+      less: "0"
+    produces:
+      output: ca-nl/nl428_spouse_family_income_less_uccb_rdsp_line_92
