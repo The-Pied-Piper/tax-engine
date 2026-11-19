@@ -1,0 +1,34 @@
+# Worksheet NL428 (CRA 5001-D) 2025, section "Line 58080 - Age amount", lines 2 to 4:
+# "Line 2: Amount from line 23600 of your return", "Line 3: Income threshold 38,712.00" and
+# "Line 4: Line 2 minus line 3 (if negative, enter "0") = ^". The form names no label for any of the
+# three lines, so no step has a title. Line 4 is the line's final step and carries the number; lines
+# 2 and 3 are steps toward it, so they carry no reference. Line 2 arrives as a record list from the
+# T1 (net income, line 23600 after its floor): core/record_total. Line 3 is the printed threshold
+# from the `ca-nl/age_income_threshold` dataset, claimed whole: core/credit_amount. Line 4 is line 2
+# minus line 3, not below zero, rounded half-up to the cent. Neither input is ever blank, so the
+# subtraction has no blank rule.
+form:
+  name: ca-nl/nl428_worksheet
+capabilities:
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/t1_taxable_income.net_income
+    produces:
+      output: ca-nl/worksheet_nl428_age_amount_net_income_line_2
+  - name: core/credit_amount
+    unit: ca/cad
+    params:
+      amount: ca-nl/age_income_threshold
+    produces:
+      output: ca-nl/worksheet_nl428_age_amount_income_threshold_line_3
+  - name: core/subtract_not_below_zero
+    reference: "4"
+    unit: ca/cad
+    params:
+      rounding: ca-nl/cent_rounding
+    consumes:
+      amount: ca-nl/worksheet_nl428_age_amount_net_income_line_2
+      less: ca-nl/worksheet_nl428_age_amount_income_threshold_line_3
+    produces:
+      output: ca-nl/worksheet_nl428_age_amount_line_4
