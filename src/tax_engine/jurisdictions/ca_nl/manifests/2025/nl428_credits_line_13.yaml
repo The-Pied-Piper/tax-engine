@@ -1,0 +1,21 @@
+# Form NL428 (Newfoundland and Labrador Tax, CRA 5001-C) Part A, line 13, "Line 13: Line 11
+# multiplied by the percentage from line 12 =": the tax on the taxable income over the column's
+# lower bound. Line 13 is line 11 times the printed rate of the column from line 12, rounded half-up
+# to the cent by the dataset's rounding rule (the form states no rounding rule). At or below
+# 220,910 lines 11 and 12 are blank (lines 2 to 8 apply), so line 13 is blank too.
+form:
+  name: ca-nl/nl428_credits
+capabilities:
+  - name: core/multiply_by_rate
+    reference: "13"
+    unit: ca/cad
+    params:
+      rounding: ca-nl/cent_rounding
+    consumes:
+      base: ca-nl/nl428_taxable_income_over_lower_bound_line_11
+      rate: ca-nl/nl428_bracket_rate_line_12
+    blank:
+      base: pass_on
+      rate: pass_on
+    produces:
+      output: ca-nl/nl428_tax_on_excess_line_13

@@ -1,0 +1,21 @@
+# Form NL428 (Newfoundland and Labrador Tax, CRA 5001-C) line 92, column 1 (you): "Line 92: Line 90
+# minus line 91 (if negative, enter "0")". One core/subtract_not_below_zero step over line 90 (the
+# net income plus the UCCB and RDSP repayments, `ca-nl/nl428_family_income_line_90`) and line 91 (the
+# UCCB and RDSP income, `ca-nl/nl428_uccb_rdsp_income_line_91`), rounded half-up to the cent by the
+# dataset's rule. Line 91 is an optional input that a salary-only caller leaves out, so the blank
+# rule below reads it as 0. The form prints no title for the line, so the step has none.
+form:
+  name: ca-nl/nl428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "92 (column 1)"
+    unit: ca/cad
+    params:
+      rounding: ca-nl/cent_rounding
+    consumes:
+      amount: ca-nl/nl428_family_income_line_90
+      less: ca-nl/nl428_uccb_rdsp_income_line_91
+    blank:
+      less: "0"
+    produces:
+      output: ca-nl/nl428_family_income_less_uccb_rdsp_line_92
