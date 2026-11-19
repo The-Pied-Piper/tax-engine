@@ -3,9 +3,10 @@
 # Marginal rate gate, 2026 tax year. Not a CRA figure and not printed on any form: the rows are a
 # switch the Newfoundland and Labrador return summary uses so that a rate counts only where its
 # own tax is above zero. A base of 0.00 gives the rate 0 and a base of one cent or more gives the
-# rate 1; the summary reads T1 line 42900 "Basic federal tax" and NL428 line 85 "Line 81 minus
-# line 84 (if negative, enter "0")" through it. The form is listed as a source only because the
-# gated figure, NL428 line 85, is on it; the rows are not from it.
+# rate 1; the summary reads T1 line 42900 "Basic federal tax", NL428 line 105 "Line 94 minus line
+# 104 (if negative, enter "0")" and NL428 line 104 (the low-income tax reduction) through it. The
+# form is listed as a source only because the gated figures, NL428 lines 104 and 105, are on it; the
+# rows are not from it.
 # A base exactly at a row's `over` is in the lower band, so the second row starts above 0.005: no
 # cent amount is in the first band but 0.00, and 0.01 is in the second.
 family: ca-nl/marginal_rate_gate

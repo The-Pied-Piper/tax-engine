@@ -3,11 +3,12 @@
 (jurisdictions do not read each other's datasets).
 
 Not a printed form figure: no CRA text is quoted. The Newfoundland and Labrador return summary
-reads T1 line 42900 "Basic federal tax" and NL428 line 85 "Line 81 minus line 84 (if negative,
-enter "0")" through it (two `core/amount_by_band_rate` steps), so that the bracket-rate part of
-the marginal tax rate counts only where its own tax is above zero. A base of 0.00 gives the rate
-0 and a base of 0.01 or more gives the rate 1; a base exactly at the second row's `over` (0.005)
-is in the lower band, so no cent amount but 0.00 is in the first band.
+reads T1 line 42900 "Basic federal tax", NL428 line 105 "Line 94 minus line 104 (if negative,
+enter "0")" and NL428 line 104 (the low-income tax reduction) through it (three
+`core/amount_by_band_rate` steps), so that the bracket-rate part of the marginal tax rate counts
+only where its own tax is above zero and the reduction's slope only while the reduction is. A
+base of 0.00 gives the rate 0 and a base of 0.01 or more gives the rate 1; a base exactly at the
+second row's `over` (0.005) is in the lower band, so no cent amount but 0.00 is in the first band.
 The 2026 file carries the 2025 rows forward (an absent year is never carried forward)."""
 
 from __future__ import annotations

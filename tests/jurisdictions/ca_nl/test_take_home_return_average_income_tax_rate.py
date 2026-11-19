@@ -29,6 +29,7 @@ from pathlib import Path
 from textwrap import dedent
 
 import pytest
+import yaml
 
 import tax_engine.jurisdictions.ca_nl
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
@@ -119,6 +120,17 @@ CASES = [
 ]
 
 
+def _average_part() -> str:
+    """The real `return.yaml` cut to the steps of line 167 and the average rate: the marginal rate
+    steps after them read figures this test does not stand in for (they have their own tests)."""
+    part = yaml.safe_load(RETURN_PART.read_text(encoding="utf-8"))
+    kept = {"ca/refund_or_balance_owing", "ca/total_payable", "ca-nl/average_income_tax_rate"}
+    part["capabilities"] = [
+        step for step in part["capabilities"] if step["produces"]["output"] in kept
+    ]
+    return yaml.safe_dump(part, sort_keys=False)
+
+
 def _service(tmp_path: Path) -> TaxComputationService:
     """The engine over a temporary Newfoundland and Labrador manifest of a test header, the T1 form
     declaration, the stand-in steps and the real salary and return parts."""
@@ -130,7 +142,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
         ("02_credits_input.yaml", CREDITS_INPUT),
         ("03_t1_steps.yaml", T1_STEPS),
         ("04_salary.yaml", (NL_PARTS / "salary.yaml").read_text(encoding="utf-8")),
-        ("05_return.yaml", RETURN_PART.read_text(encoding="utf-8")),
+        ("05_return.yaml", _average_part()),
     ]
     for name, text in texts:
         (folder / name).write_text(text, encoding="utf-8")
