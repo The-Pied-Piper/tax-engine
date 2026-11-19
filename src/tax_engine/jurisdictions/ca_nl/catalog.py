@@ -850,3 +850,15 @@ NL428_ADJUSTED_FAMILY_INCOME_LINE_93 = AmountKind.declare(
 Enter this amount on line 99. Adjusted family income": line 92 of column 1 (you) plus line 92 of
 column 2 (your spouse or common-law partner), both not below 0, so the kind is non-negative.
 Column 2 is taken as 0 when left blank."""
+
+NL428_LOW_INCOME_REDUCTION_BEFORE_MAXIMUM_LINE_98 = AmountKind.declare(
+    CATALOG, "nl428_low_income_reduction_before_maximum_line_98", non_negative=True
+)
+"""Low-income tax reduction before the maximum, NL428 line 98 "Line 98: Add lines 95 to 97. (maximum
+$1,554)": lines 95 to 97 added, before the maximum is applied."""
+
+NL428_LOW_INCOME_REDUCTION_LINE_98 = AmountKind.declare(
+    CATALOG, "nl428_low_income_reduction_line_98", non_negative=True
+)
+"""Low-income tax reduction, NL428 line 98 "Line 98: Add lines 95 to 97. (maximum $1,554)": lines 95
+to 97 added, and not more than the printed $1,554."""
