@@ -425,6 +425,14 @@ tax credit from Certificate(s) NL VCTC (line 82) plus the unused credit from the
 of assessment or reassessment (line 83), taken as one optional input that a salary-only caller
 leaves out; a blank input is read as blank."""
 
+NL428_UNUSED_LOW_INCOME_REDUCTION_FROM_SPOUSE_LINE_86 = AmountKind.declare(
+    CATALOG, "nl428_unused_low_income_reduction_from_spouse_line_86", non_negative=True
+)
+"""Unused low-income tax reduction from your spouse or common-law partner, NL428 line 86 "Line 86
+and line 61860: Amount from line 108 of your spouse's or common-law partner's Form NL428, if any":
+the amount from line 108 of the partner's own form, an optional input that a single filer leaves
+out; a blank input is read as blank."""
+
 NL428_UCCB_RDSP_REPAYMENTS_LINE_89 = AmountKind.declare(
     CATALOG, "nl428_uccb_rdsp_repayments_line_89", non_negative=True
 )
@@ -439,6 +447,12 @@ NL428_UCCB_RDSP_INCOME_LINE_91 = AmountKind.declare(
 """UCCB and RDSP income, NL428 line 91 "Line 91: Total of the UCCB income (line 11700 of the return)
 and the RDSP income (line 12500 of the return)": the total of the two incomes as the filer gives it,
 an optional input; a blank input is read as blank, column 1 (you) only."""
+
+LOW_INCOME_REDUCTION_BASIC = AmountKind.declare(
+    CATALOG, "low_income_reduction_basic", non_negative=True
+)
+"""Basic reduction, NL428 line 95 "Line 95 and line 61870: Basic reduction Claim $997": the printed
+$997, claimed whole and not income-tested."""
 
 NL428_REDUCTION_FOR_SPOUSE_OR_COMMON_LAW_PARTNER_CLAIMED_LINE_96 = CountKind.declare(
     CATALOG,
