@@ -220,6 +220,26 @@ NL428_DISABILITY_AMOUNT_SELF_LINE_40 = AmountKind.declare(
 (claim $7,467 or, if you were under 18 years of age, use Worksheet NL428)": the printed $7,467 when
 the claim is 1, 0 when the claim is blank or 0."""
 
+NL428_AGE_AMOUNT_WORKSHEET_LINE_17 = AmountKind.declare(
+    CATALOG, "nl428_age_amount_worksheet_line_17", non_negative=True
+)
+"""Age amount from the worksheet, NL428 line 17 and line 58080 "Age amount (if you were born in 1960
+or earlier) (use Worksheet NL428) (maximum $7,064)": Worksheet NL428 line 7, read from that form,
+before the born-in-1960-or-earlier claim is applied."""
+
+NL428_AGE_AMOUNT_LINE_17 = AmountKind.declare(
+    CATALOG, "nl428_age_amount_line_17", non_negative=True
+)
+"""Age amount, NL428 line 17 and line 58080 "Age amount (if you were born in 1960 or earlier) (use
+Worksheet NL428) (maximum $7,064)": the worksheet amount when the filer was born in 1960 or
+earlier, 0 when not."""
+
+NL428_CREDITS_SUBTOTAL_LINE_25 = AmountKind.declare(
+    CATALOG, "nl428_credits_subtotal_line_25", non_negative=True
+)
+"""Personal amounts subtotal, NL428 line 25 "Line 25: Add lines 16, 17, 20, 23, and 24. = ^": the
+sum of lines 16, 17, 20, 23 and 24, lines 20, 23 and 24 being optional and read as 0 when blank."""
+
 NL428_CPP_CONTRIBUTIONS_LINE_27 = AmountKind.declare(
     CATALOG, "nl428_cpp_contributions_line_27", non_negative=True
 )
