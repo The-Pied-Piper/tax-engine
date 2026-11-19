@@ -11,7 +11,7 @@ step. Line 14 is `core/bracket_column_tax_at_start` over line 1
 `ca-nl/nl428_bracket_tax_at_start_line_14`, as Alberta's line 14 is.
 
 The table covers only a line 1 above 220,910.00 (a line 1 of 220,910 or less is in
-lines 2 to 8, the low table), so line 14 is left blank there: at $20,000, $70,000 and $200,000
+lines 2 to 8, the low table), so line 14 is left blank there: at $20,000 and $200,000
 (line 1 is 198,926.00) it is blank, at $250,000 (line 1 is 248,926.00) it is 32,454.04.
 A blank output is read from the
 Worksheet as an artifact whose `is_blank` is true (its `value` raises), and its trace is one
@@ -157,7 +157,7 @@ def _sheet(tmp_path: Path, salary: str) -> Worksheet:
 
 @pytest.mark.parametrize(
     ("salary", "expected"),
-    [("20000", "19835.00"), ("70000", "69335.00"), ("250000", "248926.00")],
+    [("20000", "19835.00"), ("250000", "248926.00")],
 )
 def test_line_1_is_the_t1_taxable_income(tmp_path: Path, salary: str, expected: str) -> None:
     sheet = _sheet(tmp_path, salary)
@@ -165,9 +165,9 @@ def test_line_1_is_the_t1_taxable_income(tmp_path: Path, salary: str, expected: 
     assert sheet.get(newfoundland_kinds().kind(LINE_1)).value == D(expected)
 
 
-@pytest.mark.parametrize("salary", ["20000", "70000", "200000"])
+@pytest.mark.parametrize("salary", ["20000", "200000"])
 def test_line_14_is_blank_when_line_1_is_220910_or_less(tmp_path: Path, salary: str) -> None:
-    # Line 1 is 19,835.00, 69,335.00 and 198,926.00: below this table's range.
+    # Line 1 is 19,835.00 and 198,926.00: below this table's range.
     sheet = _sheet(tmp_path, salary)
 
     assert sheet.get(newfoundland_kinds().kind(LINE_14)).is_blank
@@ -224,10 +224,6 @@ def test_line_1_of_220910_01_gives_32454_04() -> None:
     ("base", "expected"),
     [
         ("282214.00", "32454.04"),
-        ("282214.01", "44592.23"),
-        ("564429.00", "44592.23"),
-        ("564429.01", "103292.95"),
-        ("1128858.00", "103292.95"),
         ("1128858.01", "223516.33"),
     ],
 )

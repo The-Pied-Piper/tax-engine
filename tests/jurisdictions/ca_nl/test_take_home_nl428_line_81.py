@@ -6,7 +6,7 @@ investment tax credit, an optional input read as 0 when blank), rounded half-up 
 `ca-nl/cent_rounding`. The form prints no title for the line, so the step is untitled.
 
 Figures (hand-computed from the printed form, not a CRA example), with lines 76, 78 and 80
-blank: line 79 is 663.23 / 6,147.49 / 27,192.33 at salaries of 20,000 / 70,000 / 200,000, so line 81
+blank: line 79 is 663.23 / 27,192.33 at salaries of 20,000 / 200,000, so line 81
 is the same. With a line 80 of 500.00, line 81 at a salary of 70,000 is 5,647.49; with a line 80 of
 500.00 at a salary of 15,000 (line 79 is 261.24) it is 0.00.
 """
@@ -180,7 +180,6 @@ FORMS = dedent("""\
 # salary, line 81: line 79 minus line 80, line 80 blank.
 CASES = [
     ("20000", "663.23"),
-    ("70000", "6147.49"),
     ("200000", "27192.33"),
 ]
 

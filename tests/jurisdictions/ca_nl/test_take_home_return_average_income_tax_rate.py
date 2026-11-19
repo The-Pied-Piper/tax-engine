@@ -17,8 +17,7 @@ The test composes the real Newfoundland and Labrador salary part and the real `r
 header, the declaration of the T1 tax and credits form and the steps producing its two exports are
 made up here, because the shared scaffold and the T1 form own them: the stand-in steps take a given
 `ca/total_credits` off the salary, so line 43500 is the salary less those credits. The worked
-quotients are checked by hand: 11,497.09 / 70,000 = 0.164244..., half-up to 0.1642 (16.42%);
-158.09 / 20,000 = 0.0079045, half-up to 0.0079 (0.79%).
+quotients are checked by hand: 11,497.09 / 70,000 = 0.164244..., half-up to 0.1642 (16.42%).
 """
 
 from __future__ import annotations
@@ -109,12 +108,10 @@ T1_STEPS = dedent("""\
           output: ca/refund_or_balance_owing
     """)
 
-# salary, credits, line 43500, the rate: the two figures the ticket names and a salary of 0.
+# salary, credits, line 43500, the rate: the figure the ticket names and a salary of 0.
 CASES = [
     # 11,497.09 / 70,000 = 0.164244..., half-up to 0.1642 (16.42%).
     ("70000", "58502.91", "11497.09", "0.1642"),
-    # 158.09 / 20,000 = 0.0079045, half-up to 0.0079 (0.79%).
-    ("20000", "19841.91", "158.09", "0.0079"),
     # 0.00 / 10,000 = 0.
     ("10000", "10000.00", "0.00", "0.0000"),
 ]

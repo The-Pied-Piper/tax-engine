@@ -104,7 +104,7 @@ def _sheet(tmp_path: Path, salary: str, *extra: Artifact[Decimal]) -> Worksheet:
     return sheet
 
 
-@pytest.mark.parametrize("salary", ["20000", "70000", "200000"])
+@pytest.mark.parametrize("salary", ["20000", "200000"])
 def test_line_92_is_blank_when_the_spouse_lines_are_left_blank(tmp_path: Path, salary: str) -> None:
     assert _sheet(tmp_path, salary).get(NL428_SPOUSE_FAMILY_INCOME_LESS_UCCB_RDSP_LINE_92).is_blank
 

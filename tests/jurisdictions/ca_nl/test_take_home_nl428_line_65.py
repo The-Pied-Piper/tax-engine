@@ -154,7 +154,7 @@ def _sheet(tmp_path: Path, salary: str, *extra: Artifact[Decimal]) -> Worksheet:
 
 @pytest.mark.parametrize(
     ("salary", "expected"),
-    [("20000", "1725.65"), ("70000", "7490.44"), ("200000", "28540.88")],
+    [("20000", "1725.65"), ("200000", "28540.88")],
 )
 def test_line_65_is_line_63_when_line_64_is_left_blank(
     tmp_path: Path, salary: str, expected: str

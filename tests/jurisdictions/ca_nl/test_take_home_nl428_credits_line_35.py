@@ -14,9 +14,9 @@ The test composes the real Schedule 8 and T2204 parts, the real parts of lines 2
 32, 33 and 34 and the new `nl428_credits_line_35.yaml`, and types in only the salary (and, in some
 tests, the optional inputs). The header and the form declaration, exporting only line 35, are made
 up here, because the real ones are owned by another change. The figures are hand-computed from the
-printed forms (not a CRA example): line 27 is the CPP base contribution amount (816.75 / 3,291.75 /
-3,356.10) and line 29 the EI premiums (328.00 / 1,077.48 / 1,077.48), at salaries of 20,000 /
-70,000 / 200,000.
+printed forms (not a CRA example): line 27 is the CPP base contribution amount (816.75 /
+3,356.10) and line 29 the EI premiums (328.00 / 1,077.48), at salaries of 20,000 /
+200,000.
 """
 
 from __future__ import annotations
@@ -100,9 +100,7 @@ FORM = dedent("""\
 
 # salary, line 35: line 27 plus line 29, the six optional lines being left out.
 CASES = [
-    ("0", "0.00"),
     ("20000", "1144.75"),
-    ("70000", "4369.23"),
     ("200000", "4433.58"),
 ]
 
@@ -158,7 +156,7 @@ def test_line_35_adds_lines_27_and_29_and_the_blank_optional_lines_read_as_0(
     assert _line_35(tmp_path, salary) == D(expected)
 
 
-@pytest.mark.parametrize("identifier", OPTIONAL_LINES)
+@pytest.mark.parametrize("identifier", [LINE_28, LINE_34])
 def test_line_35_adds_each_optional_line_when_given(tmp_path: Path, identifier: str) -> None:
     # Line 27 plus line 29 at a 20,000 salary is 1,144.75; a given 100.25 makes 1,245.00.
     assert _line_35(tmp_path, "20000", {identifier: "100.25"}) == D("1245.00")

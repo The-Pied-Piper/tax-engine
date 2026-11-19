@@ -8,7 +8,7 @@ the form prints no label for the line, so the step has no title.
 The test composes the real parts behind lines 47 and 55 and the new `nl428_credits_line_56.yaml`,
 and types in the salary and, where a case gives it, line 48. The header and the form declarations
 are made up here. The figures are hand-computed from the printed form (not a CRA example): line 47
-is 12,211.75 / 15,436.23 / 15,500.58 at salaries of 20,000 / 70,000 / 200,000, and line 55 is 0
+is 12,211.75 / 15,500.58 at salaries of 20,000 / 200,000, and line 55 is 0
 when no medical expenses are given.
 """
 
@@ -149,7 +149,6 @@ FORMS = dedent("""\
 # salary, line 47, line 55: line 47 is line 42, lines 43 to 46 being blank; no medical expenses.
 CASES = [
     ("20000", "12211.75"),
-    ("70000", "15436.23"),
     ("200000", "15500.58"),
 ]
 

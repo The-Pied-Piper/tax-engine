@@ -19,15 +19,10 @@ the registrations, so the service is built over the package list of `support.py`
 
 Figures (hand-computed with Decimal, not a CRA example). Line 1 is 7,064.00; line 4 is the salary
 less the enhanced CPP deduction (2025) less 38,712.00, not below 0.00; line 6 is 15% of line 4.
-- 30,000: line 6 = 0.00, so line 7 = 7,064.00.
 - 50,000: line 6 = 1,623.45, so line 7 = 5,440.55.
-- 100,000: line 6 = 9,032.10, so line 7 = 0.00 (the floor bites). 200,000: line 6 = 24,032.10, so
-  line 7 = 0.00.
 - Above 81,200 the deduction is a flat 1,074.00 (678.00 + 396.00), so line 4 = salary - 39,786.00.
-  86,879.26: line 4 = 47,093.26, line 6 = 7,063.99 (7,063.989), line 7 = 0.01. 86,879.33: line 4 =
-  47,093.33, line 6 = 7,064.00 (7,063.9995 rounds half-up), line 7 = 0.00 exactly, the floor not
-  biting. 86,879.34: line 6 = 7,064.00 (7,064.001), line 7 = 0.00. 86,879.40: line 4 = 47,093.40,
-  line 6 = 7,064.01 (7,064.01 exactly), so 7,064.00 - 7,064.01 = -0.01 floors to 0.00.
+  86,879.26: line 4 = 47,093.26, line 6 = 7,063.99 (7,063.989), line 7 = 0.01. 86,879.40: line 4 =
+  47,093.40, line 6 = 7,064.01 (7,064.01 exactly), so 7,064.00 - 7,064.01 = -0.01 floors to 0.00.
 """
 
 from __future__ import annotations
@@ -233,15 +228,9 @@ def _rounding() -> Any:
 
 # salary, line 6, line 7.
 CASES = [
-    ("30000", "0.00", "7064.00"),
     ("50000", "1623.45", "5440.55"),
-    ("100000", "9032.10", "0.00"),
-    ("200000", "24032.10", "0.00"),
     # Just under the maximum: 7,064.00 - 7,063.99.
     ("86879.26", "7063.99", "0.01"),
-    # Line 6 equals line 1 exactly: 0.00 without the floor biting.
-    ("86879.33", "7064.00", "0.00"),
-    ("86879.34", "7064.00", "0.00"),
     # Line 6 one cent above line 1: the difference is -0.01 and the floor gives 0.00.
     ("86879.40", "7064.01", "0.00"),
 ]

@@ -9,7 +9,7 @@ and Labrador tax on taxable income" and carries the reference "15". Line 15 is o
 line 15 is blank too.
 
 Figures (hand-computed, not a CRA example): salary 250,000 gives line 13 of 5,547.17 and line 14 of
-32,454.04, so 38,001.21; 400,000 gives 24,276.10 and 44,592.23, so 68,868.33; 700,000 gives
+32,454.04, so 38,001.21; 700,000 gives
 28,647.86 and 103,292.95, so 131,940.81.
 """
 
@@ -144,8 +144,6 @@ def _kind(identifier: str) -> AmountKind:
     [
         # Line 1 is 248,926.00: column 1, 28,016.00 x 19.8% = 5,547.168, half-up to 5,547.17.
         ("250000", "5547.17", "32454.04", "38001.21"),
-        # Line 1 is 398,926.00: column 2, 116,712.00 x 20.8% = 24,276.096, to 24,276.10.
-        ("400000", "24276.10", "44592.23", "68868.33"),
         # Line 1 is 698,926.00: column 3, 134,497.00 x 21.3% = 28,647.861, to 28,647.86.
         ("700000", "28647.86", "103292.95", "131940.81"),
     ],

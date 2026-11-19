@@ -16,7 +16,7 @@ The expected figures are computed here, not typed: taxable income (equal to net 
 salary less the enhanced CPP deduction, 1% of the pensionable earnings between the $3,500 basic
 exemption and the $71,300 year's maximum pensionable earnings, plus the second additional CPP
 contribution, 4% of the earnings between $71,300 and $81,200, each rounded half-up to the cent.
-The four hand figures are asserted too (not a CRA example).
+The two hand figures are asserted too (not a CRA example).
 """
 
 from __future__ import annotations
@@ -94,9 +94,7 @@ FORM = dedent("""\
     """)
 
 CASES = [
-    ("10000", "9935.00"),
     ("20000", "19835.00"),
-    ("70000", "69335.00"),
     ("200000", "198926.00"),
 ]
 

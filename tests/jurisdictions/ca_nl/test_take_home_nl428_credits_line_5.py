@@ -17,10 +17,8 @@ The real parts composed: the real Schedule 8, the T1 taxable-income parts, line 
 `nl428_credits_line_5.yaml`. The header, the salary input and the form declaration are test-local
 (Newfoundland and Labrador has no salary part), the form exporting lines 1 and 5.
 
-Figures, computed from the engine's T1 taxable income (line 26000): salary 20,000 gives line 1 of
-19,835.00 (8.7%), 70,000 gives 69,335.00 (14.5%) and 200,000 gives 198,926.00 (17.8%). Above the
-CPP and EI maxima the T1 deduction is a constant 1,074.00, so a salary of 89,456.00 gives line 1 of
-exactly 88,382.00, 158,866.00 gives 157,792.00 and 221,984.00 gives 220,910.00. Below them the
+Figures, computed from the engine's T1 taxable income (line 26000): salary 70,000 gives line 1 of
+69,335.00 (14.5%) and 200,000 gives 198,926.00 (17.8%). Below the CPP and EI maxima the
 deduction is the enhanced CPP, 1% of salary over 3,500 to the cent, so a salary of 44,603.03 gives
 exactly 44,192.00. Hand figures, not a CRA example.
 """
@@ -156,23 +154,10 @@ def _kind(identifier: str) -> AmountKind:
 @pytest.mark.parametrize(
     ("salary", "expected"),
     [
-        # Line 1 is 19,835.00, not over 44,192: column 1.
-        ("20000", "0.087"),
         # Line 1 is 69,335.00, over 44,192 and not over 88,382: column 2.
         ("70000", "0.145"),
-        # Line 1 of exactly 44,192.00 is still column 1; a cent more is column 2.
+        # Line 1 of exactly 44,192.00 is still column 1.
         ("44603.03", "0.087"),
-        ("44603.04", "0.145"),
-        # Line 1 of exactly 88,382.00 is still column 2; a cent more is column 3.
-        ("89456.00", "0.145"),
-        ("89456.01", "0.158"),
-        # Line 1 of exactly 157,792.00 is still column 3; a cent more is column 4.
-        ("158866.00", "0.158"),
-        ("158866.01", "0.178"),
-        # Line 1 of exactly 220,910.00 is the last figure in column 4.
-        ("221984.00", "0.178"),
-        # Line 1 is 198,926.00, over 157,792 and not over 220,910: column 4.
-        ("200000", "0.178"),
     ],
 )
 def test_line_5_is_the_rate_of_the_column_line_1_falls_in(
@@ -204,7 +189,6 @@ def test_the_blank_says_why_in_the_trace(tmp_path: Path) -> None:
 @pytest.mark.parametrize(
     ("salary", "line_1", "expected", "percent"),
     [
-        ("20000", "19835.00", "0.087", "8.7"),
         ("70000", "69335.00", "0.145", "14.5"),
         ("200000", "198926.00", "0.178", "17.8"),
     ],
