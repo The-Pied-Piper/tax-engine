@@ -1,7 +1,8 @@
 """The 2025 `ca-nl/eligible_dependant_spouse_gate` dataset: a two-band switch giving the most NL428
 line 23 may be, the printed maximum 9,043 where line 20 is 0.00 and 0 where it is at least one cent
 (Form NL428, CRA 5001-C 2025: "Line 23 and line 58160: Line 21 minus line 22 (if negative, enter
-"0") (maximum $9,043)"). The form text is silent on a claim of both lines; NL Income Tax Act, 2000,
+"0") (maximum $9,043)"). Guide 5000-G, line 30400: "If you did not claim an amount on line 30300 of
+your return, you may be able to claim this amount for one dependant"; NL Income Tax Act, 2000,
 s. 9(1)(b) gives the eligible dependant amount only to an individual who does not claim the spouse
 amount.
 
@@ -77,6 +78,7 @@ def test_the_gate_names_the_form_and_the_act_as_its_sources() -> None:
 
     assert data.sources == (
         "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5001-c/5001-c-25e.txt",
+        "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-g/5000-g-25e.txt",
         "https://assembly.nl.ca/legislation/sr/statutes/i01-1.htm",
     )
 
