@@ -313,6 +313,20 @@ NL428_NON_REFUNDABLE_CREDITS_LINE_62 = AmountKind.declare(
 Line 58 plus line 61 Enter this amount on line 66.": line 58 plus line 61, read by line 66 on the
 tax form."""
 
+NL428_TAX_ON_SPLIT_INCOME_LINE_64 = AmountKind.declare(
+    CATALOG, "nl428_tax_on_split_income_line_64", non_negative=True
+)
+"""Newfoundland and Labrador tax on split income, NL428 line 64 "Line 64 and line 61510:
+Newfoundland and Labrador tax on split income (complete Form T1206)": the amount as the filer gives
+it, an optional input; a blank input is read as blank."""
+
+NL428_MINIMUM_TAX_CARRYOVER_AMOUNT_LINE_68 = AmountKind.declare(
+    CATALOG, "nl428_minimum_tax_carryover_amount_line_68", non_negative=True
+)
+"""Newfoundland and Labrador minimum tax carryover, NL428 line 68 (line 61540) "Amount from line
+40427 of your return": the amount from line 40427 of the T1 return, an optional input, box A of the
+line, as the filer gives it; a blank input is read as blank."""
+
 NL428_NEWFOUNDLAND_AND_LABRADOR_TAX_LINE_105 = AmountKind.declare(
     CATALOG, "nl428_newfoundland_and_labrador_tax_line_105", non_negative=True
 )
@@ -496,6 +510,12 @@ NL428_MEDICAL_EXPENSES_ALLOWABLE_LINE_55 = AmountKind.declare(
 """Allowable medical expenses, NL428 line 55 "Line 53 plus line 54": line 53 plus line 54, line 54
 being an optional input read as 0 when blank."""
 
+NL428_CREDITS_TOTAL_LINE_56 = AmountKind.declare(
+    CATALOG, "nl428_credits_total_line_56", non_negative=True
+)
+"""Credits total, NL428 line 56 "Line 47 plus line 55": the credits subtotal of line 47 plus the
+allowable medical expenses of line 55."""
+
 NL428_BRACKET_LOWER_BOUND_LINE_10 = AmountKind.declare(
     CATALOG, "nl428_bracket_lower_bound_line_10", non_negative=True
 )
@@ -515,11 +535,25 @@ NL428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
 """Tax at the start of the column, NL428 line 7 "Line 7: 0.00": the printed tax at the start of the
 column of lines 2 to 8 that line 1 falls in, blank when line 1 is above 220,910."""
 
+NL428_TAX_ON_EXCESS_LINE_13 = AmountKind.declare(
+    CATALOG, "nl428_tax_on_excess_line_13", non_negative=True
+)
+"""Tax on the taxable income over the lower bound, NL428 line 13 "Line 13: Line 11 multiplied by the
+percentage from line 12 =": line 11 times the line 12 rate, rounded half-up to the cent. It is
+blank when line 11 or line 12 is blank, at or below 220,910."""
+
 NL428_BRACKET_TAX_AT_START_LINE_14 = AmountKind.declare(
     CATALOG, "nl428_bracket_tax_at_start_line_14", non_negative=True
 )
 """Tax at the start of the column, NL428 line 14 "Line 14: 32,454.04": the printed tax at the start
 of the column of lines 9 to 15 that line 1 falls in, blank when line 1 is 220,910 or less."""
+
+NL428_DIVIDEND_TAX_CREDIT_LINE_67 = AmountKind.declare(
+    CATALOG, "nl428_dividend_tax_credit_line_67", non_negative=True
+)
+"""Newfoundland and Labrador dividend tax credit, NL428 line 67 "Line 67 and line 61520:
+Newfoundland and Labrador dividend tax credit (use Worksheet NL428)": the amount as the filer gives
+it, an optional input; a blank input is read as blank."""
 
 NL428_T691_AMOUNT_LINE_71 = AmountKind.declare(
     CATALOG, "nl428_t691_amount_line_71", non_negative=True
