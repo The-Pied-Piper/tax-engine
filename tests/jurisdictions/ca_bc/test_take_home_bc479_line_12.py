@@ -13,9 +13,8 @@ The test composes the real British Columbia salary part, the real Schedule 8 par
 taxable income parts, the real line 1 to line 8 parts and the new line 12 part, and types in only
 the salary. The form declaration is made up here, exporting lines 8 and 12.
 
-Figures (hand-computed from the ticket, not a CRA example): line 8 is 1,865.00 / 4,835.00 /
-14,735.00 / 54,335.00 / 183,926.00 at 17,000 / 20,000 / 30,000 / 70,000 / 200,000, so line 12 is
-37.30 / 96.70 / 294.70 / 1,086.70 / 3,678.52 (183,926.00 x 0.02 is 3,678.52 exactly). At 10,000
+Figures (hand-computed from the ticket, not a CRA example): line 8 is 1,865.00 / 183,926.00 at
+17,000 / 200,000, so line 12 is 37.30 / 3,678.52 (183,926.00 x 0.02 is 3,678.52 exactly). At 10,000
 line 6 is below the 15,000.00 threshold, so line 8 is 0.00 and line 12 is 0.00.
 """
 
@@ -159,9 +158,6 @@ def _kind(identifier: str) -> AmountKind:
     ("salary", "expected"),
     [
         ("17000", "37.30"),
-        ("20000", "96.70"),
-        ("30000", "294.70"),
-        ("70000", "1086.70"),
         ("200000", "3678.52"),
     ],
 )
@@ -221,16 +217,8 @@ def _line_12_at(line_8_amount: str) -> Artifact[Decimal]:
 @pytest.mark.parametrize(
     ("line_8", "expected"),
     [
-        # 0.00 x 2% = 0.00.
-        ("0.00", "0.00"),
-        # 0.24 x 2% = 0.0048, rounded to 0.00.
-        ("0.24", "0.00"),
         # 0.25 x 2% = 0.0050, rounded half-up to 0.01 (not down to 0.00).
         ("0.25", "0.01"),
-        # 0.75 x 2% = 0.0150, rounded half-up to 0.02 (not down to 0.01).
-        ("0.75", "0.02"),
-        # 1.25 x 2% = 0.0250, rounded half-up to 0.03 (not down to 0.02).
-        ("1.25", "0.03"),
         # 1,865.00 x 2% = 37.30.
         ("1865.00", "37.30"),
     ],

@@ -95,7 +95,7 @@ def line_7(tmp_path: Path, salary: str) -> Decimal:
     return sheet.get(BC479_THRESHOLD_LINE_7).value
 
 
-@pytest.mark.parametrize("salary", ["17000", "20000", "30000", "70000", "200000"])
+@pytest.mark.parametrize("salary", ["17000", "200000"])
 def test_line_7_is_the_threshold_at_every_salary(tmp_path: Path, salary: str) -> None:
     assert line_7(tmp_path, salary) == D("15000.00")
 

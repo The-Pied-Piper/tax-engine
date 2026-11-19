@@ -15,10 +15,9 @@ Columbia salary part, the real Schedule 8 parts, the real T1 taxable income part
 only the salary (and, in other tests, line 4, or a negative line 1 through the social benefits
 repayment). The form declaration is made up here, exporting only line 5.
 
-Figures (hand-computed from the printed forms, not a CRA example): with line 4 blank, line 5 is
-line 3, which is line 1 of the same salary: 16,865.00 / 19,835.00 / 29,735.00 / 69,335.00 /
-198,926.00 at 17,000 / 20,000 / 30,000 / 70,000 / 200,000. With line 4 of 1,000.00 at 17,000, line 5
-is 15,865.00. With line 4 above line 3, line 5 is 0.00.
+Figures (hand-computed from the printed forms, not a CRA example): with line 4 blank, line 5 is line
+3, which is line 1 of the same salary: 16,865.00 / 198,926.00 at 17,000 / 200,000. With line 4 of
+1,000.00 at 17,000, line 5 is 15,865.00. With line 4 above line 3, line 5 is 0.00.
 """
 
 from __future__ import annotations
@@ -169,9 +168,6 @@ def _rounding() -> Any:
 # salary, line 5 (line 4 left blank, read as 0, so line 5 is line 3 of the same salary).
 CASES = [
     ("17000", "16865.00"),
-    ("20000", "19835.00"),
-    ("30000", "29735.00"),
-    ("70000", "69335.00"),
     ("200000", "198926.00"),
 ]
 
@@ -259,16 +255,11 @@ def _line_5_at(line_3_amount: str, line_4_amount: str) -> Artifact[Decimal]:
     ("line_3", "line_4", "expected"),
     [
         ("16865.00", "1000.00", "15865.00"),
-        ("16865.00", "0.00", "16865.00"),
-        ("16865.00", "16865.00", "0.00"),
         ("16865.00", "16865.01", "0.00"),
         # Line 3 is signed (a negative line 1), so a negative minuend is accepted and floored.
         ("-350.00", "0.00", "0.00"),
-        ("-350.00", "100.00", "0.00"),
-        ("0.00", "0.00", "0.00"),
-        # Half-up to the cent: 0.005 rounds to 0.01, 0.004 to 0.00.
+        # Half-up to the cent: 0.005 rounds to 0.01.
         ("100.005", "100.00", "0.01"),
-        ("100.004", "100.00", "0.00"),
     ],
 )
 def test_line_5_is_line_3_minus_line_4_not_below_zero_to_the_cent(

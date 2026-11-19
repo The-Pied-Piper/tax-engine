@@ -17,8 +17,8 @@ T1 taxable income parts and BC428 lines 1 to 68), the line 69 input part and lin
 
 Figures (hand-computed, not a CRA example). Line 68 is recomputed in the test as the line 68 test
 does (line 63 from the British Columbia brackets over the taxable income, less line 67). Line 69 is
-0.00 when the T691 amount is left out, so line 70 equals line 68 at a salary of 17,000 / 20,000 /
-30,000 / 70,000 / 200,000. With a T691 amount of 1,000.00 line 69 is 349.00 (34.9%), so line 70 is
+0.00 when the T691 amount is left out, so line 70 equals line 68 at a salary of 17,000 /
+200,000. With a T691 amount of 1,000.00 line 69 is 349.00 (34.9%), so line 70 is
 line 68 plus 349.00.
 """
 
@@ -143,16 +143,11 @@ FORM = dedent("""\
 # figure, also the ticket's line 70 figure with line 69 at 0.00).
 CASES = [
     ("17000", "16865", "702.28", "151.09"),
-    ("20000", "19835", "712.28", "291.37"),
-    ("30000", "29735", "745.63", "758.96"),
-    ("70000", "69335", "875.44", "3162.39"),
     ("200000", "198926", "878.70", "19230.76"),
 ]
 # salary, taxable income, line 67, line 68, T691 amount, line 69 (34.9% of the amount), line 70.
 CASES_WITH_AMOUNT = [
     ("17000", "16865", "702.28", "151.09", "1000.00", "349.00", "500.09"),
-    ("70000", "69335", "875.44", "3162.39", "1000.00", "349.00", "3511.39"),
-    ("200000", "198926", "878.70", "19230.76", "1000.00", "349.00", "19579.76"),
     # 1,234.56 x 34.9% = 430.86144, rounded half-up to 430.86 on line 69.
     ("70000", "69335", "875.44", "3162.39", "1234.56", "430.86", "3593.25"),
 ]

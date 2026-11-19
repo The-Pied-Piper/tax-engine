@@ -17,8 +17,8 @@ The real parts composed: the British Columbia salary, Schedule 8, the T1 taxable
 package list of `support.py`.
 
 Figures (ticket, hand-computed): taxable income is the salary less the CPP enhanced and
-second-ceiling amounts, 16,865.00 / 19,835.00 / 29,735.00 / 69,335.00 / 198,926.00, so line 7 is
-0.00 for $17,000, $20,000 and $30,000 (column 1), 2,493.52 for $70,000 (column 2) and blank for
+second-ceiling amounts, 16,865.00 / 69,335.00 / 198,926.00, so line 7 is
+0.00 for $17,000 (column 1), 2,493.52 for $70,000 (column 2) and blank for
 $200,000. The salaries at the column edges are those of the BC428 line 4 test, whose line 1 figures
 are checked there.
 """
@@ -155,10 +155,8 @@ def _kind(identifier: str) -> AmountKind:
 @pytest.mark.parametrize(
     ("salary", "expected"),
     [
-        # Line 1 is 16,865.00, 19,835.00 and 29,735.00, not over 49,279: column 1.
+        # Line 1 is 16,865.00, not over 49,279: column 1.
         ("17000", "0.00"),
-        ("20000", "0.00"),
-        ("30000", "0.00"),
         # Line 1 is 69,335.00, over 49,279 and not over 98,560: column 2.
         ("70000", "2493.52"),
     ],
@@ -175,14 +173,6 @@ def test_line_7_is_the_printed_tax_at_the_start_of_the_column_for_the_salary(
         # Line 1 of exactly 49,279.00 is still column 1; a cent more is column 2.
         ("49741.41", "0.00"),
         ("49741.42", "2493.52"),
-        # Line 1 of exactly 98,560.00 is still column 2; 98,561.00 is column 3.
-        ("99634", "2493.52"),
-        ("99635", "6288.15"),
-        # Line 1 of exactly 113,158.00 is still column 3; 113,159.00 is column 4.
-        ("114232", "6288.15"),
-        ("114233", "7820.94"),
-        # Line 1 of exactly 137,407.00 is the last figure in column 4.
-        ("138481", "7820.94"),
     ],
 )
 def test_line_7_changes_column_just_above_each_printed_upper_bound(

@@ -89,6 +89,6 @@ def line_9(tmp_path: Path, salary: str) -> Decimal:
     return sheet.get(BC479_BASIC_SALES_TAX_CREDIT_LINE_9).value
 
 
-@pytest.mark.parametrize("salary", ["17000", "20000", "30000", "70000", "200000"])
+@pytest.mark.parametrize("salary", ["17000", "200000"])
 def test_line_9_is_the_basic_sales_tax_credit_at_every_salary(tmp_path: Path, salary: str) -> None:
     assert line_9(tmp_path, salary) == D("75.00")

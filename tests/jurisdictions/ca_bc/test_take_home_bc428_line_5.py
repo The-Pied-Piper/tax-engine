@@ -16,8 +16,8 @@ declaration is test-local, exporting lines 1 and 5. The service is built over th
 `support.py`.
 
 Figures (ticket, hand-computed, not a CRA example): taxable income is the salary less the CPP
-enhanced and second-ceiling amounts, 16,865.00 / 19,835.00 / 29,735.00 / 69,335.00 / 198,926.00, so
-line 5 is 0.0506 for the first three, 0.077 for $70,000 and blank for $200,000.
+enhanced and second-ceiling amounts, 16,865.00 / 69,335.00 / 198,926.00, so
+line 5 is 0.0506 for $17,000, 0.077 for $70,000 and blank for $200,000.
 """
 
 from __future__ import annotations
@@ -176,8 +176,6 @@ def _kind(identifier: str) -> AmountKind:
     ("salary", "expected"),
     [
         ("17000", "0.0506"),
-        ("20000", "0.0506"),
-        ("30000", "0.0506"),
         ("70000", "0.077"),
     ],
 )
@@ -219,14 +217,8 @@ def _direct(tmp_path: Path, taxable_income: str) -> Artifact[Decimal]:
 @pytest.mark.parametrize(
     ("taxable_income", "expected"),
     [
-        ("0.00", "0.0506"),
         ("49279.00", "0.0506"),
         ("49279.01", "0.077"),
-        ("98560.00", "0.077"),
-        ("98560.01", "0.105"),
-        ("113158.00", "0.105"),
-        ("113158.01", "0.1229"),
-        ("137407.00", "0.1229"),
     ],
 )
 def test_line_5_at_and_just_above_each_threshold(

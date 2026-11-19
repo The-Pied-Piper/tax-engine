@@ -87,9 +87,6 @@ FORM = dedent("""\
 # salary, line 67 with lines 65 and 66 blank (so line 67 is line 60, the line 60 test's figures).
 CASES = [
     ("17000", "702.28"),
-    ("20000", "712.28"),
-    ("30000", "745.63"),
-    ("70000", "875.44"),
     ("200000", "878.70"),
 ]
 

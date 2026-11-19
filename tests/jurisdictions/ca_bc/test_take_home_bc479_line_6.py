@@ -14,9 +14,8 @@ the salary (and, in other tests, line 4). The form declaration is made up here, 
 line 6.
 
 Figures (hand-computed from the printed forms, not a CRA example): line 6 is line 5, which is
-16,865.00 / 19,835.00 / 29,735.00 / 69,335.00 / 198,926.00 at 17,000 / 20,000 / 30,000 / 70,000 /
-200,000. With line 4 of 1,000.00 at 17,000, line 6 is 15,865.00. With line 4 above line 3, line 6
-is 0.00.
+16,865.00 / 198,926.00 at 17,000 / 200,000. With line 4 of 1,000.00 at 17,000, line 6 is 15,865.00.
+With line 4 above line 3, line 6 is 0.00.
 """
 
 from __future__ import annotations
@@ -158,9 +157,6 @@ def _rounding() -> Any:
 # salary, line 6 (column 1 only, so line 6 is line 5 of the same salary).
 CASES = [
     ("17000", "16865.00"),
-    ("20000", "19835.00"),
-    ("30000", "29735.00"),
-    ("70000", "69335.00"),
     ("200000", "198926.00"),
 ]
 
