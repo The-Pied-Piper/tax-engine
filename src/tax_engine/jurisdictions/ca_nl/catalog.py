@@ -641,3 +641,11 @@ NL428_SPOUSE_NET_INCOME_LINE_88 = AmountKind.declare(
 "if negative, show in brackets")": the amount as the filer gives it, an optional input. It is
 signed because the line takes the amount as if negative were shown in brackets; a blank input is
 read as blank."""
+
+NL428_SPOUSE_UCCB_RDSP_INCOME_LINE_91 = AmountKind.declare(
+    CATALOG, "nl428_spouse_uccb_rdsp_income_line_91", non_negative=True
+)
+"""Spouse or common-law partner's UCCB and RDSP income, NL428 line 91 column 2 "Line 91: Total of
+the UCCB income (line 11700 of the return) and the RDSP income (line 12500 of the return)": the
+total of the two incomes as the filer gives it, an optional input; a blank input is read as
+blank."""
