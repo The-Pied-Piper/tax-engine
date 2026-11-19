@@ -153,6 +153,12 @@ NL428_CPP_EI_AND_OTHER_LINE_35 = AmountKind.declare(
 sum of lines 27 to 34, lines 28, 30, 31, 32, 33 and 34 being optional inputs read as 0.
 """
 
+NL428_CREDITS_SUBTOTAL_LINE_36 = AmountKind.declare(
+    CATALOG, "nl428_credits_subtotal_line_36", non_negative=True
+)
+"""Credits subtotal, NL428 line 36 "Line 36: Line 26 plus line 35 = ^": line 26 (a copy of line 25)
+plus line 35."""
+
 NL428_CAREGIVER_AMOUNT_LINE_38 = AmountKind.declare(
     CATALOG, "nl428_caregiver_amount_line_38", non_negative=True
 )
