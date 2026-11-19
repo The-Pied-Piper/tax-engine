@@ -1,0 +1,13 @@
+# NL428 (2025) inputs a salary-only caller does not give.
+# Line 34: "Line 34 and line 58330: Adoption expenses" (Form NL428, CRA 5001-C).
+# The engine does not compute the adoption expenses, so the figure is taken as one optional input
+# the way the form takes it, a dollar amount entered on the line. A request that leaves the line
+# out is read as blank.
+inputs:
+  - name: ca-nl/nl428_adoption_expenses_line_34
+    title: "Adoption expenses"
+    reference: "34"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 34 and line 58330: Adoption expenses"

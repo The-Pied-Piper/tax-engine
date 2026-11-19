@@ -1,0 +1,13 @@
+# NL428 (2025) inputs a salary-only caller does not give.
+# Line 46: "Line 46 and line 58640: Amounts transferred from your spouse or common-law partner (attach Schedule NL(S2))" (Form NL428, CRA 5001-C).
+# The engine does not build Schedule NL(S2), so the figure is taken as one optional input the way the
+# form takes it, the result of that schedule. A request that leaves the line out is read as blank.
+# The form prints no sum for lines 43 to 46 alone: line 47 (a later ticket) adds line 42 as well.
+inputs:
+  - name: ca-nl/nl428_amounts_transferred_from_your_spouse_or_common_law_partner_line_46
+    title: "Amounts transferred from your spouse or common-law partner (attach Schedule NL(S2))"
+    reference: "46"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 46 and line 58640: Amounts transferred from your spouse or common-law partner (attach Schedule NL(S2))"

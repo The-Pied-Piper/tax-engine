@@ -1,0 +1,21 @@
+# Form NL428 (Newfoundland and Labrador Tax, CRA 5001-C) line 65 "Line 65: Line 63 plus line 64 =".
+# One core/sum step over line 63 (`ca-nl/nl428_newfoundland_and_labrador_tax_on_taxable_income_line_63`)
+# and line 64 (`ca-nl/nl428_tax_on_split_income_line_64`). Line 63 is always computed and needs no
+# blank rule; line 64 is an optional input a salary-only caller leaves out, so the blank rule below
+# reads it as 0. The form prints no title for the line, so the step has none.
+form:
+  name: ca-nl/nl428
+capabilities:
+  - name: core/sum
+    reference: "65"
+    unit: ca/cad
+    params:
+      rounding: ca-nl/cent_rounding
+    consumes:
+      parts:
+        - ca-nl/nl428_newfoundland_and_labrador_tax_on_taxable_income_line_63
+        - ca-nl/nl428_tax_on_split_income_line_64
+    blank:
+      ca-nl/nl428_tax_on_split_income_line_64: "0"
+    produces:
+      output: ca-nl/nl428_tax_before_credits_line_65

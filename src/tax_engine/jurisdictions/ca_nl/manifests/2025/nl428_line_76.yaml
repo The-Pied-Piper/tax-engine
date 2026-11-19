@@ -1,0 +1,28 @@
+# NL428 (2025) line 76, the political contribution tax credit. Form NL428 (CRA 5001-C): "Line 76:
+# Newfoundland and Labrador political contribution tax credit (use Worksheet NL428) (maximum $500)".
+# No arithmetic is printed, so line 76 is an entry line in two steps. The first,
+# core/credit_amount, supplies the printed maximum from the
+# `ca-nl/political_contribution_tax_credit_maximum` dataset; it is not a line of the form, so it has
+# no title and no reference. The second, core/at_most, is line 76: the entered amount
+# (nl428_line_76_input.yaml) passed on unchanged. An entry above the printed maximum is refused, not
+# capped. A blank entry passes on as blank; line 77 reads it as 0.
+form:
+  name: ca-nl/nl428
+capabilities:
+  - name: core/credit_amount
+    unit: ca/cad
+    params:
+      amount: ca-nl/political_contribution_tax_credit_maximum
+    produces:
+      output: ca-nl/nl428_political_contribution_tax_credit_maximum
+  - name: core/at_most
+    title: "Newfoundland and Labrador political contribution tax credit"
+    reference: "76"
+    unit: ca/cad
+    consumes:
+      amount: ca-nl/nl428_political_contribution_tax_credit_claimed_line_76
+      bound: ca-nl/nl428_political_contribution_tax_credit_maximum
+    blank:
+      amount: pass_on
+    produces:
+      output: ca-nl/nl428_political_contribution_tax_credit_line_76

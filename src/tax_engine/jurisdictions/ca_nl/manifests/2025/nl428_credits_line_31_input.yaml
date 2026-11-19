@@ -1,0 +1,13 @@
+# NL428 (2025) inputs a salary-only caller does not give.
+# Line 31: "Line 31 and line 58315: Volunteer firefighters' amount" (Form NL428, CRA 5001-C).
+# The engine does not compute the volunteer firefighters' amount, so the figure is taken as one
+# optional input the way the form takes it, a dollar amount entered on the line. A request that
+# leaves the line out is read as blank.
+inputs:
+  - name: ca-nl/nl428_volunteer_firefighters_amount_line_31
+    title: "Volunteer firefighters' amount"
+    reference: "31"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 31 and line 58315: Volunteer firefighters' amount"

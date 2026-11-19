@@ -1,0 +1,13 @@
+# NL428 (2025) line 80's input, which a salary-only caller does not give.
+# Line 80: "Line 80: Resort property investment tax credit (complete Form T1297)" (Form NL428, CRA
+# 5001-C). Form T1297 is not built, so the line is taken as one optional input, as the form takes
+# it. A request that leaves the line out is read as blank; the step that reads line 80 reads that
+# blank as 0.
+inputs:
+  - name: ca-nl/nl428_resort_property_investment_tax_credit_line_80
+    title: "Resort property investment tax credit"
+    reference: "80"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 80: Resort property investment tax credit (complete Form T1297)"

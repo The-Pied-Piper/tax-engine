@@ -1,0 +1,13 @@
+# NL428 (2025) inputs a salary-only caller does not give.
+# Line 45: "Line 45 and line 58600: Tuition and education amounts transferred from a child or
+# grandchild" (Form NL428, CRA 5001-C). Schedules NL(S11) and NL(S2) are not built, so the figure
+# is taken as one optional input the way the form takes it. A request that leaves the line out is
+# read as blank. Line 47 (a later ticket) reads it.
+inputs:
+  - name: ca-nl/nl428_tuition_and_education_amounts_transferred_from_a_child_or_grandchild_line_45
+    title: "Tuition and education amounts transferred from a child or grandchild"
+    reference: "45"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 45 and line 58600: Tuition and education amounts transferred from a child or grandchild"
