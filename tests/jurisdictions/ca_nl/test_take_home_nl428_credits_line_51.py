@@ -1,16 +1,15 @@
-"""NL428 (2025) lines 49 and 51, net income and net income times 3%, from the salary, real parts.
+"""NL428 (2025) line 51, line 49 multiplied by the 3% rate, from the salary, real parts.
 
-Form text (Form NL428, CRA 5001-C, confirmed 2026-11-18): "Line 49: Amount from line 23600 of your
-return", "Line 50: Applicable rate 3%" and "Line 51: Line 49 multiplied by the percentage from
-line 50 =". Line 49 is read as the T1 form exports it, floored, `ca/t1_taxable_income.net_income`,
-which reaches this form only as a record list, so it is a core/record_total over it, as line 1 is.
-Line 50 is the printed 3%, the `ca-nl/medical_expense_rate` dataset, and has no step. Line 51 is a
-core/apply_rate step that applies it to line 49, rounded half-up to the cent by the dataset's rule.
-The form prints no label for either line, so neither step has a title.
+Form text (Form NL428, CRA 5001-C, confirmed 2026-11-18): "Line 50: Applicable rate 3%" and
+"Line 51: Line 49 multiplied by the percentage from line 50 =". Line 50 is the printed 3%, the
+`ca-nl/medical_expense_rate` dataset, and has no step. Line 51 is a core/apply_rate step that
+applies it to line 49, rounded half-up to the cent by the dataset's rule. The form prints no label
+for the line, so the step has no title.
 
-The test composes the real Schedule 8 parts, the real T1 taxable income parts and the real line
-part (`nl428_credits_line_51.yaml`), and types in only the salary. The header, the salary input and
-the form declaration are made up here, the form exporting the two lines.
+The test composes the real Schedule 8 parts, the real T1 taxable income parts and the real line 49
+and line 51 parts (`nl428_credits_line_49.yaml`, `nl428_credits_line_51.yaml`), and types in only
+the salary. The header, the salary input and the form declaration are made up here, the form
+exporting line 51.
 
 The expected figures are computed here, not typed: net income is the salary less the enhanced CPP
 deduction, 1% of the pensionable earnings between the $3,500 basic exemption and the $71,300 year's
@@ -59,11 +58,12 @@ D = Decimal
 CENT = D("0.01")
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
 FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
+LINE_49_PART = NL_PARTS / "nl428_credits_line_49.yaml"
 LINE_PART = NL_PARTS / "nl428_credits_line_51.yaml"
 FORM_NAME = "ca-nl/nl428_credits"
 LINE_49 = "ca-nl/nl428_net_income_line_49"
 KIND = "ca-nl/nl428_medical_expenses_rate_amount_line_51"
-# The real federal parts the T1 taxable-income form needs, beside the salary and lines 49 and 51.
+# The real federal parts the T1 taxable-income form needs, beside the salary, line 49 and line 51.
 T1_PARTS = (
     "t1_taxable_income_inputs.yaml",
     "t1_taxable_income_line_15000.yaml",
@@ -93,7 +93,6 @@ FORM = dedent("""\
       name: ca-nl/nl428_credits
       required: true
       exports:
-        - ca-nl/nl428_net_income_line_49
         - ca-nl/nl428_medical_expenses_rate_amount_line_51
     capabilities: []
     """)
@@ -131,6 +130,7 @@ def _part_files() -> Iterator[Path]:
     yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
     for name in T1_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
+    yield LINE_49_PART
     yield LINE_PART
 
 
@@ -189,78 +189,58 @@ def test_line_51_is_net_income_times_3_percent(
 
     sheet = _sheet(tmp_path, salary)
 
-    assert _value(sheet, LINE_49) == D(net_income)
     assert _value(sheet, KIND) == D(expected)
 
 
-def _steps() -> list[dict[str, Any]]:
+def _step() -> dict[str, Any]:
     part = yaml.safe_load(LINE_PART.read_text(encoding="utf-8"))
     assert isinstance(part, dict)
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": FORM_NAME}
-    steps = part["capabilities"]
-    assert isinstance(steps, list)
-    return steps
+    (step,) = part["capabilities"]
+    assert isinstance(step, dict)
+    return step
 
 
-def test_the_part_is_an_untitled_record_total_then_an_untitled_apply_rate_step() -> None:
-    assert _steps() == [
-        {
-            "name": "core/record_total",
-            "reference": "49",
-            "unit": "ca/cad",
-            "consumes": {"records": "ca/t1_taxable_income.net_income"},
-            "produces": {"output": LINE_49},
-        },
-        {
-            "name": "core/apply_rate",
-            "reference": "51",
-            "unit": "ca/cad",
-            "params": {"rate": "ca-nl/medical_expense_rate"},
-            "consumes": {"base": LINE_49},
-            "produces": {"output": KIND},
-        },
-    ]
+def test_the_part_is_one_untitled_apply_rate_step_over_line_49() -> None:
+    assert _step() == {
+        "name": "core/apply_rate",
+        "reference": "51",
+        "unit": "ca/cad",
+        "params": {"rate": "ca-nl/medical_expense_rate"},
+        "consumes": {"base": LINE_49},
+        "produces": {"output": KIND},
+    }
 
 
 def test_the_step_keys_are_in_order_and_there_is_no_title() -> None:
-    first, second = _steps()
-
-    assert list(first) == ["name", "reference", "unit", "consumes", "produces"]
-    assert list(second) == ["name", "reference", "unit", "params", "consumes", "produces"]
+    assert list(_step()) == ["name", "reference", "unit", "params", "consumes", "produces"]
 
 
-@pytest.mark.parametrize(
-    ("identifier", "declared"),
-    [
-        (LINE_49, nl_catalog.NL428_NET_INCOME_LINE_49),
-        (KIND, nl_catalog.NL428_MEDICAL_EXPENSES_RATE_AMOUNT_LINE_51),
-    ],
-)
-def test_each_kind_is_a_registered_non_negative_decimal_amount(
-    identifier: str, declared: AmountKind
-) -> None:
+def test_line_51_is_a_registered_non_negative_amount_kind() -> None:
     kinds = newfoundland_kinds()
 
-    assert identifier in kinds.identifiers()
-    kind = kinds.kind(identifier)
-    assert kind is declared
+    assert KIND in kinds.identifiers()
+    kind = kinds.kind(KIND)
     assert isinstance(kind, AmountKind)
     assert kind.value_type is Decimal
     assert non_negative(kind)
+    assert kind is nl_catalog.NL428_MEDICAL_EXPENSES_RATE_AMOUNT_LINE_51
+
+
+def test_the_kind_rejects_a_negative_amount() -> None:
     with pytest.raises(NegativeArtifactError):
-        Artifact(kind, D("-0.01"))
+        Artifact(newfoundland_kinds().kind(KIND), D("-0.01"))
 
 
-def test_the_docstrings_quote_the_form_text() -> None:
-    assert 'line 49 "Amount from line 23600 of your return"' in squashed(docstring_of(LINE_49))
+def test_the_docstring_quotes_the_form_text() -> None:
     doc = squashed(docstring_of(KIND))
 
     assert 'line 51 "Line 49 multiplied by the percentage from line 50"' in doc
 
 
 @pytest.mark.parametrize("salary", ["20000", "70000"])
-def test_no_left_blank_row_is_printed_for_lines_49_and_51(tmp_path: Path, salary: str) -> None:
+def test_no_left_blank_row_is_printed_for_line_51(tmp_path: Path, salary: str) -> None:
     sheet = _sheet(tmp_path, salary)
 
     rows = EnglishTraceRenderer().render_all(sheet.trace, sheet)
