@@ -1,0 +1,16 @@
+# Solidarity tax credit, the family income: TP-1 line 275, "Net income" (Schedule D reads it as
+# the income the credit is reduced from; Revenu Quebec "Calculation of the Credit"). Line 275 is
+# the export of the TP-1 net income form, which another form reads only as a record list
+# (`ca-qc/tp1_net_income.tp1_net_income_line_275`), so core/record_total totals it, as Schedule P
+# line 10 reads line 101. Rounding is none: core/record_total never rounds. The credit is for the
+# payment period July 2026 to June 2027, from the 2025 return. The form prints no line for this
+# figure, so the step has no reference or title.
+form:
+  name: ca-qc/solidarity_credit
+capabilities:
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp1_net_income.tp1_net_income_line_275
+    produces:
+      output: ca-qc/solidarity_family_income

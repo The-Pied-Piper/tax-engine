@@ -1,0 +1,28 @@
+# Solidarity tax credit (Schedule D, TP-1.D.D-V (2025-12), Part A), the optional answers, each an
+# input of the form line that uses it. A caller who gives no answer gets the default (owner ruling
+# 19 Nov 2026): not alone, neither tenant nor owner, one owner or tenant.
+# Line 12: "Did you live alone in a dwelling throughout 2025? (You are considered to have lived alone
+# if everyone you lived with was under 18.)" A count, 1 for yes and 0 for no.
+# Lines 32 and 33 for a tenant or subtenant on December 31, 2025, lines 35 and 36 for an owner: one
+# answer, 1 for a tenant, subtenant or owner, 0 for neither. Line 33 is the "Number from box B of
+# the RL-31 slip issued in your name" and line 36 the "Number of owners living in your dwelling": one
+# answer, the number of owners or tenants. Lines 13 to 16, 32 (dwelling number), 35 (roll number) and
+# Part B (spouse) are identifiers or spouse lines and are not built.
+form:
+  name: ca-qc/solidarity_credit
+inputs:
+  - name: ca-qc/solidarity_lived_alone_line_12
+    reference: "12"
+    required: false
+    default: "0"
+    basis: "Lived alone in a dwelling throughout 2025"
+  - name: ca-qc/solidarity_tenant_or_owner_lines_32_36
+    reference: "32 to 36"
+    required: false
+    default: "0"
+    basis: "Tenant, subtenant or owner of your place of residence on December 31, 2025"
+  - name: ca-qc/solidarity_occupants_lines_33_36
+    reference: "33 and 36"
+    required: false
+    default: "1"
+    basis: "Number of owners or tenants of the dwelling"
