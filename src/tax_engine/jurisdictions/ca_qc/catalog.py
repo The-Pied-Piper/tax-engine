@@ -1051,3 +1051,10 @@ input a salary-only caller does not give; line 389 reads a blank as 0
 TP1_LINE_389 = AmountKind.declare(CATALOG, "tp1_line_389", non_negative=True)
 """TP-1 line 389 "Multiply line 388 by 20%": line 388 at the printed 20%, rounded half-up to the
 cent. Produced by one core/apply_rate (`tp1_credits_line_389.yaml`)."""
+
+
+TP1_UNION_DUES_LINE_397_1 = AmountKind.declare(
+    CATALOG, "tp1_union_dues_line_397_1", non_negative=True
+)
+"""TP-1 line 397.1 "Union, professional or other dues": one optional input a salary-only caller does
+not give; line 397 reads a blank as 0 (`tp1_credits_line_397_1_input.yaml`)."""

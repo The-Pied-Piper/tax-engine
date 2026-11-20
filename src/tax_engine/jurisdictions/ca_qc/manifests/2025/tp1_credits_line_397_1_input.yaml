@@ -1,0 +1,13 @@
+# TP-1 (2025) line 397.1: "Union, professional or other dues 397.1 x 10%" (page 4, Non-refundable
+# tax credits). A salary-only filer pays none that the take-home reads, so it is an optional input
+# left blank; line 397 reads a blank as 0.
+form:
+  name: ca-qc/tp1_credits
+inputs:
+  - name: ca-qc/tp1_union_dues_line_397_1
+    title: "Union, professional or other dues"
+    reference: "397.1"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Union, professional or other dues"
