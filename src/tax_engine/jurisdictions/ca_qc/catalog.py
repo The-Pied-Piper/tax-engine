@@ -1900,3 +1900,7 @@ TP1_FINANCIAL_COMPENSATION_LINE_466 = AmountKind.declare(
 )
 """TP-1 line 466 "Financial compensation for home-support services": an optional input a salary-only
 caller does not give; line 468 reads a blank as 0 (`tp1_totals_line_466_input.yaml`)."""
+
+TP1_LINE_468 = AmountKind.declare(CATALOG, "tp1_line_468", non_negative=True)
+"""TP-1 line 468 "Add lines 465 and 466": rounded half-up to the cent. Produced by one core/sum
+(`tp1_totals_line_468.yaml`)."""
