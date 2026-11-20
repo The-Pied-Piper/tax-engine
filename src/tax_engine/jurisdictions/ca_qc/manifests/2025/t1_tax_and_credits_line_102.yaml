@@ -1,0 +1,22 @@
+# 5005-R (2025) line 102. The form prints: "Line 102: Add lines 86, 100, and 101. =" (page 6). Line 86
+# "Enter the amount from line 85 of the previous page" is a pure copy, so the step reads line 85
+# (`ca-qc/credit_amounts_line_85`) directly; line 100 is the credits of lines 87 to 99; line 101 (line
+# 31400, the pension income amount) is an optional input, a blank for a salary-only filer and read as
+# 0. One step: core/sum in form line order, rounded half-up to the cent through `ca-qc/cent_rounding`.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/sum
+    reference: "102"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/credit_amounts_line_85
+        - ca-qc/credits_line_100
+        - ca-qc/pension_income_amount_line_101
+    blank:
+      ca-qc/pension_income_amount_line_101: "0"
+    produces:
+      output: ca-qc/credits_line_102

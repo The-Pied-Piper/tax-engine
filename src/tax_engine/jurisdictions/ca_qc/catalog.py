@@ -785,6 +785,19 @@ and PPIP lines, the Canada employment amount and the optional lines 88, 90, 92 t
 99, each blank read as 0. Produced by one core/sum (`t1_tax_and_credits_line_100.yaml`); line
 102 reads it."""
 
+PENSION_INCOME_AMOUNT_LINE_101 = AmountKind.declare(
+    CATALOG, "pension_income_amount_line_101", non_negative=True
+)
+"""Pension income amount, 5005-R line 101 and line 31400: an optional input a salary-only caller
+does not give; the line that reads it takes a blank as 0
+(`t1_tax_and_credits_line_31400_inputs.yaml`)."""
+
+CREDITS_LINE_102 = AmountKind.declare(CATALOG, "credits_line_102", non_negative=True)
+"""Credits of lines 86, 100 and 101, 5005-R line 102 "Line 102: Add lines 86, 100, and 101. =":
+the credit amounts through line 84 plus the credits of lines 87 to 99 plus the pension income
+amount, each blank read as 0, from one core/sum (`t1_tax_and_credits_line_102.yaml`); line 105
+reads it."""
+
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
 Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line

@@ -58,6 +58,15 @@ LINE_100_INPUT_PARTS = (
     "t1_tax_and_credits_line_31285_inputs.yaml",
     "t1_tax_and_credits_line_31300_inputs.yaml",
 )
+# The parts of lines 101 to 122, in form line order (5005-R Step 5 Part B, from the pension income
+# amount to the total federal non-refundable tax credits).
+LINES_101_TO_122_PARTS: tuple[str, ...] = (
+    "t1_tax_and_credits_line_31400_inputs.yaml",
+    "t1_tax_and_credits_line_102.yaml",
+)
+# The line outputs a test reads that the real form declaration does not export (it exports only the
+# figures a later form reads); the test-local declaration below adds them.
+EXTRA_EXPORTS: tuple[str, ...] = ("ca-qc/credits_line_102",)
 CREDIT_PARTS = (
     *LINE_85_INPUT_PARTS,
     "t1_tax_and_credits_line_85.yaml",
@@ -67,6 +76,7 @@ CREDIT_PARTS = (
     "t1_tax_and_credits_line_31260.yaml",
     *LINE_100_INPUT_PARTS,
     "t1_tax_and_credits_line_100.yaml",
+    *LINES_101_TO_122_PARTS,
 )
 STEP_4_PARTS = (
     "t1_taxable_income_line_25700_inputs.yaml",
@@ -99,7 +109,14 @@ HEADER = (
     + real_import("ca/t2204")
 )
 # The real tax and credits declaration is the form; the real T1 declaration is the first part.
-FORM = (QUEBEC_PARTS / "t1_tax_and_credits.yaml").read_text(encoding="utf-8")
+FORM = (
+    (QUEBEC_PARTS / "t1_tax_and_credits.yaml")
+    .read_text(encoding="utf-8")
+    .replace(
+        "    - ca-qc/credits_line_100\n",
+        "    - ca-qc/credits_line_100\n" + "".join(f"    - {name}\n" for name in EXTRA_EXPORTS),
+    )
+)
 
 
 def sheets(
