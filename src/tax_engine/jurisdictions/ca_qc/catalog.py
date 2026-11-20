@@ -617,3 +617,10 @@ FEDERAL_BRACKET_LOWER_BOUND_LINE_72 = AmountKind.declare(
 """5005-R Step 5 Part A line 72 (0.00, 57,375.00, 114,750.00, 177,882.00 or 253,414.00): the
 printed lower bound of the column that line 71 falls in. Produced by one
 core/bracket_column_lower_bound (`t1_tax_and_credits_line_72.yaml`)."""
+
+FEDERAL_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_73 = AmountKind.declare(
+    CATALOG, "federal_taxable_income_over_lower_bound_line_73", non_negative=True
+)
+"""5005-R Step 5 Part A line 73 "Line 71 minus line 72 (cannot be negative) =": line 71 minus line
+72, not below zero, rounded half-up to the cent. Produced by one core/subtract_not_below_zero
+(`t1_tax_and_credits_line_73.yaml`)."""
