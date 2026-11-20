@@ -10,4 +10,5 @@ form:
     - ca-qc/solidarity_qst_base_amount
     - ca-qc/solidarity_living_alone_amount
     - ca-qc/solidarity_housing_single_amount
+    - ca-qc/solidarity_housing_multiple_amount
 capabilities: []
