@@ -1,0 +1,18 @@
+# 5005-R (2025) line 48 and line 22215. The form prints: "Line 48 and line 22215: Deduction for CPP or
+# QPP enhanced contributions on employment income (complete Schedule 8 or Form RC381, whichever
+# applies) (maximum $1,074.00)" (page 4). The figure is Schedule 8 line 28, which the shared
+# `ca/schedule_8` exports; another form's export is read only as a record list
+# (`ca/schedule_8.schedule_8_cpp_enhanced_contributions_on_return`, one amount), so the one step is
+# core/record_total, as the federal line 23300 step is. Lines 35 to 47 and 49 to 53 are blank for a
+# salary-only filer and are not built.
+form:
+  name: ca-qc/t1_taxable_income
+capabilities:
+  - name: core/record_total
+    title: "Deduction for CPP or QPP enhanced contributions on employment income"
+    reference: "22215"
+    unit: ca/cad
+    consumes:
+      records: ca/schedule_8.schedule_8_cpp_enhanced_contributions_on_return
+    produces:
+      output: ca-qc/t1_line_48
