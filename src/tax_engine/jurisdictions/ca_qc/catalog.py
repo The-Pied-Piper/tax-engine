@@ -582,6 +582,52 @@ brackets")". Net income before adjustments (line 55) less the social benefits re
 signed. Produced by one core/subtract (`t1_taxable_income_line_23600_signed.yaml`) and supplied to
 the neutral name `ca/t1_taxable_income.net_income_signed` by the form declaration."""
 
+TP1_DEDUCTION_FOR_WORKERS_LINE_201 = AmountKind.declare(
+    CATALOG, "tp1_deduction_for_workers_line_201"
+)
+"""TP-1 line 201 "Deduction for workers": the result of Work Chart 201 line 9, carried to the line
+("Carry the result to line 201 of your return"). Signed, as the chart's line 9 is."""
+
+TP1_QPP_DEDUCTION_LINE_248 = AmountKind.declare(CATALOG, "tp1_qpp_deduction_line_248")
+"""TP-1 line 248 "Deduction for QPP and CPP contributions and QPIP premiums": Schedule U line 23,
+the deduction for QPP contributions on employment income, carried to the line ("Carry the result to
+line 248 of your return"). Signed, as Schedule U line 23 is."""
+
+TP1_OTHER_DEDUCTIONS_LINES_205_TO_252 = AmountKind.declare(
+    CATALOG, "tp1_other_deductions_lines_205_to_252", non_negative=True
+)
+"""The deductions of TP-1 lines 205 through 207, 214 through 231 and 234 through 252 (line 248.1
+included), summed, line 248 apart: the figure the caller gives for "Add lines 201 through 207, 214
+through 231, and 234 through 252" besides lines 201 and 248; blank when the caller has none, and
+line 254 reads it as 0."""
+
+TP1_TOTAL_DEDUCTIONS_LINE_254 = AmountKind.declare(CATALOG, "tp1_total_deductions_line_254")
+"""Total deductions, TP-1 line 254 "Add lines 201 through 207, 214 through 231, and 234 through
+252": line 201, line 248 and the other deductions, rounded half-up to the cent. Signed, as lines 201
+and 248 are."""
+
+TP1_NET_INCOME_TOTAL_INCOME_LINE_199 = AmountKind.declare(
+    CATALOG, "tp1_net_income_total_income_line_199", non_negative=True
+)
+"""Total income of TP-1 line 199, as the net income lines read it ("Amount from line 199") from the
+TP-1 income form."""
+
+TP1_INCOME_LESS_DEDUCTIONS_LINE_256 = AmountKind.declare(
+    CATALOG, "tp1_income_less_deductions_line_256"
+)
+"""TP-1 line 256 "Subtract line 254 from line 199": total income less total deductions, rounded
+half-up to the cent. The form prints no floor, so the figure can be negative."""
+
+TP1_INVESTMENT_EXPENSES_ADJUSTMENT_LINE_260 = AmountKind.declare(
+    CATALOG, "tp1_investment_expenses_adjustment_line_260", non_negative=True
+)
+"""TP-1 line 260 "Adjustment of investment expenses. Complete Schedule N": an input a salary-only
+caller does not give; line 275 reads it as 0 when it is left out."""
+
+TP1_NET_INCOME_LINE_275 = AmountKind.declare(CATALOG, "tp1_net_income_line_275", non_negative=True)
+"""Net income, TP-1 line 275 "Add lines 256 and 260. If the result is negative, enter 0": line 256
+plus line 260, not below zero, rounded half-up to the cent."""
+
 BASIC_PERSONAL_AMOUNT_NET_INCOME_LINE_3 = AmountKind.declare(
     CATALOG, "basic_personal_amount_net_income_line_3", non_negative=True
 )
