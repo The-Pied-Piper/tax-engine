@@ -2128,3 +2128,9 @@ TP1_INCOME_TAX_AND_CONTRIBUTIONS_RETURN = AmountKind.declare(
 )
 """Quebec return summary: TP-1 line 450 "Income tax and contributions", read from the totals form's
 export. One core/record_total (`return.yaml`)."""
+
+TP1_WORK_PREMIUM_TAX_CREDITS_RETURN = AmountKind.declare(
+    CATALOG, "tp1_work_premium_tax_credits_return", non_negative=True
+)
+"""Quebec return summary: TP-1 line 456 "Tax credits respecting the work premium", read from the
+totals form's export. One core/record_total (`return.yaml`)."""

@@ -33,3 +33,9 @@ capabilities:
       records: ca-qc/tp1_totals.tp1_income_tax_and_contributions_line_450
     produces:
       output: ca-qc/tp1_income_tax_and_contributions_return
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp1_totals.tp1_work_premium_tax_credits_line_456
+    produces:
+      output: ca-qc/tp1_work_premium_tax_credits_return
