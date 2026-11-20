@@ -677,3 +677,11 @@ SCHEDULE_K_AMOUNT_LINE_41 = AmountKind.declare(
 enter $19,890": the printed $19,890 of a filer without a spouse, a dataset figure
 (`ca-qc/schedule_k_line_41_amount`) claimed whole by one core/credit_amount
 (`tp1_schedule_k_line_41.yaml`)."""
+
+SCHEDULE_K_DEPENDENT_CHILD_AMOUNT_LINE_42_OR_44 = AmountKind.declare(
+    CATALOG, "schedule_k_dependent_child_amount_line_42_or_44", non_negative=True
+)
+"""Dependent child amount, Schedule K line 42 or line 44, the "as applicable" lines that line 46
+adds to line 41: an input, the amount of whichever of the two lines applies. The take-home has no
+dependent child, so the caller leaves it out and line 46 reads it as 0 (owner ruling, 19 Nov
+2026)."""
