@@ -6,6 +6,7 @@ form:
   name: ca-qc/tp1_schedule_k
 capabilities:
   - name: core/credit_amount
+    title: "Months in the year"
     unit: core/months
     params:
       amount: ca-qc/schedule_k_months_in_year_line_85

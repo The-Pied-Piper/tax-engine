@@ -125,20 +125,43 @@ def _part() -> dict[str, Any]:
     return part
 
 
-def test_the_part_is_one_sum_of_line_456_and_the_optional_lines() -> None:
+def _subtotal(title: str, parts: list[str], output: str) -> dict[str, object]:
+    return {
+        "name": "core/sum",
+        "title": title,
+        "unit": "ca/cad",
+        "params": {"rounding": "ca-qc/cent_rounding"},
+        "consumes": {"parts": parts},
+        "blank": {name: "0" for name in parts if name in OPTIONAL},
+        "produces": {"output": f"ca-qc/{output}"},
+    }
+
+
+def test_the_part_is_two_subtotals_and_the_sum_of_line_456_and_the_optional_lines() -> None:
     part = _part()
 
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": FORM}
-    (step,) = part["capabilities"]
+    first, last, step = part["capabilities"]
+    # Two unprinted subtotals keep the sentence of the numbered line short; the line adds them.
+    assert first == _subtotal(
+        "Lines 451.2 to 456 added up", PARTS[:7], "tp1_totals_lines_451_2_to_456_subtotal"
+    )
+    assert last == _subtotal(
+        "Lines 457 to 463 added up", PARTS[7:], "tp1_totals_lines_457_to_463_subtotal"
+    )
     assert step == {
         "name": "core/sum",
         "title": "Income tax paid and other credits",
         "reference": "465",
         "unit": "ca/cad",
         "params": {"rounding": "ca-qc/cent_rounding"},
-        "consumes": {"parts": PARTS},
-        "blank": {name: "0" for name in OPTIONAL},
+        "consumes": {
+            "parts": [
+                "ca-qc/tp1_totals_lines_451_2_to_456_subtotal",
+                "ca-qc/tp1_totals_lines_457_to_463_subtotal",
+            ]
+        },
         "produces": {"output": IDENTIFIER},
     }
 

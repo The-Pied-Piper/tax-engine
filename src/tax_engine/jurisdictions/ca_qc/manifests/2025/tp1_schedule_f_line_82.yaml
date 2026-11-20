@@ -9,6 +9,7 @@ form:
   name: ca-qc/tp1_schedule_f
 capabilities:
   - name: core/sum
+    title: "Contribution before the maximum"
     unit: ca/cad
     params:
       rounding: ca-qc/cent_rounding
@@ -22,6 +23,7 @@ capabilities:
     produces:
       output: ca-qc/tp1_schedule_f_contribution_before_maximum
   - name: core/amount_by_band
+    title: "Maximum for the column"
     unit: ca/cad
     params:
       table: ca-qc/tp1_schedule_f_maximum

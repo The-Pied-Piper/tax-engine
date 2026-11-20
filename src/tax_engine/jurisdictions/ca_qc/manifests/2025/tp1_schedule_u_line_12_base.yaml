@@ -7,6 +7,7 @@ form:
   name: ca-qc/tp1_schedule_u
 capabilities:
   - name: core/record_total
+    title: "Pensionable salary or wages (QPP)"
     unit: ca/cad
     consumes:
       records: ca-qc/tp1_income.tp1_pensionable_salary_line_98_1

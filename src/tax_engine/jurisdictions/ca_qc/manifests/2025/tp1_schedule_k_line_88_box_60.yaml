@@ -8,6 +8,7 @@ form:
   name: ca-qc/tp1_schedule_k
 capabilities:
   - name: core/multiply
+    title: "Premium for the months from January to June"
     unit: ca/cad
     params:
       rounding: ca-qc/cent_rounding

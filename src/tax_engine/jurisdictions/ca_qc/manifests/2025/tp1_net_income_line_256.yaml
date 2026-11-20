@@ -9,6 +9,7 @@ form:
   name: ca-qc/tp1_net_income
 capabilities:
   - name: core/record_total
+    title: "Total income"
     unit: ca/cad
     consumes:
       records: ca-qc/tp1_income.tp1_total_income_line_199

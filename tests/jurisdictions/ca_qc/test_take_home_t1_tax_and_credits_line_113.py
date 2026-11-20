@@ -38,7 +38,7 @@ def test_the_trace_names_the_lesser(take_home_service: TakeHomeService) -> None:
     _, sheet = sheets(take_home_service, "200000")
 
     assert (
-        "Lesser of line 112 (CA$5967.78) and the medical threshold ceiling (CA$2834.00) "
+        "Lesser of line 112 (CA$5967.78) and the maximum (CA$2834.00) "
         "gives CA$2834.00 (rounded to the nearest cent)."
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
 
