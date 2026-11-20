@@ -38,9 +38,14 @@ def test_the_return_declares_no_capabilities_and_no_outputs_yet() -> None:
     assert "outputs" not in header
 
 
-def test_the_federal_forms_are_imported_in_order_and_t2204_reads_the_quebec_ei_dataset() -> None:
+def test_the_federal_forms_are_imported_in_order_and_read_the_quebec_datasets() -> None:
     assert _header()["imports"] == [
-        "ca/schedule_8",
+        {
+            "form": "ca/schedule_8",
+            "datasets": {
+                "ca/cpp_line_11_base_contribution": "ca-qc/qpp_line_11_base_contribution",
+            },
+        },
         "ca/schedule_6",
         {"form": "ca/t2204", "datasets": {"ca/ei_premium": "ca-qc/ei_premium"}},
     ]
