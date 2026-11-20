@@ -70,3 +70,12 @@ capabilities:
       records: ca-qc/t1_tax_and_credits.refundable_quebec_abatement_line_156
     produces:
       output: ca-qc/refundable_quebec_abatement_return
+  - name: core/subtract
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/federal_total_payable_return
+      less: ca-qc/refundable_quebec_abatement_return
+    produces:
+      output: ca-qc/federal_total_payable_less_abatement_return
