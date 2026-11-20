@@ -161,6 +161,15 @@ SCHEDULE_P_FIRST_PARTS = (
     *WORK_CHART_201_PARTS,
     "schedule_p_line_10.yaml",
 )
+SCHEDULE_P_WORK_INCOME_PARTS = (
+    *SCHEDULE_P_FIRST_PARTS,
+    "schedule_p_line_13_inputs.yaml",
+    "schedule_p_line_14_inputs.yaml",
+    "schedule_p_line_15_inputs.yaml",
+    "schedule_p_line_18.yaml",
+    "schedule_p_line_22_inputs.yaml",
+    "schedule_p_line_29.yaml",
+)
 
 
 def schedule_p_form(*exports: str) -> str:
