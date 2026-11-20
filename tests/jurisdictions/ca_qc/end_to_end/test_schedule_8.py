@@ -44,6 +44,7 @@ from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.deductions import (
     CPP_PART_3_LINE_2,
     CPP_PART_3_LINE_4,
+    CPP_PART_3_LINE_5,
 )
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca.catalog.rc381_cpp_qpp import (
@@ -113,3 +114,13 @@ def test_line_4_matches_the_printed_form(tmp_path: Path, salary: str, expected: 
     sheet = schedule_8(tmp_path, salary)
 
     assert sheet.get(CPP_PART_3_LINE_4).value == D(expected)
+
+
+@pytest.mark.parametrize(
+    ("salary", "expected"), [("20000", "20000.00"), ("70000", "70000.00"), ("200000", "71300.00")]
+)
+def test_line_5_matches_the_printed_form(tmp_path: Path, salary: str, expected: str) -> None:
+    # Line 5: line 2 less line 4, not below 0.
+    sheet = schedule_8(tmp_path, salary)
+
+    assert sheet.get(CPP_PART_3_LINE_5).value == D(expected)
