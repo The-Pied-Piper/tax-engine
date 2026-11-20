@@ -711,3 +711,7 @@ SCHEDULE_B_LINE_30 = AmountKind.declare(CATALOG, "schedule_b_line_30", non_negat
 """Schedule B Part B line 30, "Add lines 20 through 28": line 20 alone, the only amount the
 take-home builds (lines 21, 22, 23, 27 and 28 are not built), rounded half-up to the cent. Produced
 by one core/sum (`schedule_b_line_30.yaml`)."""
+
+SCHEDULE_B_LINE_31 = AmountKind.declare(CATALOG, "schedule_b_line_31", non_negative=True)
+"""Schedule B Part B line 31, "Amount from line 18 x 18.75%": line 18 at the printed rate, rounded
+half-up to the cent. Produced by one core/apply_rate (`schedule_b_line_31.yaml`)."""

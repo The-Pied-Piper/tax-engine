@@ -18,7 +18,7 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     SCHEDULE_B_LIVED_ALONE_LINE_20,
 )
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
-from tests.jurisdictions.ca_qc.schedule_b_support import FIRST_PARTS, schedule_b_sheet
+from tests.jurisdictions.ca_qc.schedule_b_support import LINE_20_PARTS, schedule_b_sheet
 from tests.jurisdictions.ca_qc.support import quebec_kinds
 from tests.kinds import non_negative
 
@@ -26,7 +26,7 @@ PART = "schedule_b_line_30.yaml"
 FORM = "ca-qc/schedule_b"
 IDENTIFIER = "ca-qc/schedule_b_line_30"
 EXPORTS = (IDENTIFIER,)
-PARTS = (*FIRST_PARTS, PART)
+PARTS = (*LINE_20_PARTS, PART)
 
 
 def line_30(take_home_service: TakeHomeService, salary: str, *given: Artifact[Any]) -> str:
