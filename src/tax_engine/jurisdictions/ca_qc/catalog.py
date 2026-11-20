@@ -1065,6 +1065,10 @@ FEDERAL_TAX_LESS_FOREIGN_TAX_CREDIT_LINE_134 = AmountKind.declare(CATALOG, "fede
 less the federal foreign tax credit (line 133), a blank read as 0; the form prints no floor, so
 the figure is signed from one core/subtract (`t1_tax_and_credits_line_134.yaml`)."""
 
+INVESTMENT_TAX_CREDIT_RECAPTURE_LINE_135 = AmountKind.declare(CATALOG, "investment_tax_credit_recapture_line_135", non_negative=True)
+"""Recapture of investment tax credit, 5005-R line 135: an optional input a salary-only caller does
+not give; the line that reads it takes a blank as 0 (`t1_tax_and_credits_line_135_inputs.yaml`)."""
+
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
 Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line
