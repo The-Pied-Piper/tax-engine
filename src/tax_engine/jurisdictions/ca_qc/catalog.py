@@ -111,3 +111,31 @@ TP1_TOTAL_INCOME_LINE_199 = AmountKind.declare(
 )
 """Total income, TP-1 line 199 "Add lines 101 and 105 through 164. Total income": line 101, the
 salary, plus the optional income of lines 105 through 164, rounded half-up to the cent."""
+
+SCHEDULE_P_TP1_LINE_101 = AmountKind.declare(CATALOG, "schedule_p_tp1_line_101")
+"""Schedule P (TP-1.D.P-V) line 10, first step: the amount from line 101 of the TP-1 return,
+"Employment income, RL-1 slip, box A", read from the TP-1 income form as a record list and
+totalled."""
+
+TP1_LINE_105 = AmountKind.declare(CATALOG, "tp1_line_105")
+"""The amount of TP-1 line 105 as the caller gives it, the figure Schedule P line 10 adds "if it is
+positive"; blank when the caller has none, and the Schedule P step reads it as 0."""
+
+SCHEDULE_P_LINE_105_IF_POSITIVE = AmountKind.declare(
+    CATALOG, "schedule_p_line_105_if_positive", non_negative=True
+)
+"""Schedule P line 10, second step: the amount of TP-1 line 105 if it is positive, else 0, rounded
+half-up to the cent."""
+
+SCHEDULE_P_LINE_101_PLUS_105 = AmountKind.declare(CATALOG, "schedule_p_line_101_plus_105")
+"""Schedule P line 10, third step: the amount of TP-1 line 101 plus the amount of line 105 if it is
+positive, rounded half-up to the cent."""
+
+RL1_BOX_211 = AmountKind.declare(CATALOG, "rl1_box_211", non_negative=True)
+"""The amount of box 211 of the RL-1 slip as the caller gives it, which Schedule P line 10
+subtracts "if applicable"; blank when the caller has none, and the step reads it as 0."""
+
+SCHEDULE_P_LINE_10 = AmountKind.declare(CATALOG, "schedule_p_line_10")
+"""Schedule P (TP-1.D.P-V) Part A line 10, "Amount from line 101 of your return, plus the amount
+from line 105 if it is positive, minus the amount from box 211 of your RL-1 slip, if applicable",
+rounded half-up to the cent."""
