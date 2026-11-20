@@ -1078,3 +1078,10 @@ SCHEDULE_K_PREMIUM_ON_EXCESS_LINE_81 = AmountKind.declare(
 )
 """Schedule K line 81, "Multiply line 79 by line 80": line 79 times the column's rate, rounded
 half-up to the cent. One core/multiply_by_rate (`tp1_schedule_k_line_81.yaml`)."""
+
+SCHEDULE_K_COLUMN_CONSTANT_LINE_82 = AmountKind.declare(
+    CATALOG, "schedule_k_column_constant_line_82", non_negative=True
+)
+"""Schedule K line 82, "+ 82 | 000 00 | 392 00": the printed constant of the column that line 48 falls
+in (0.00 and 392.00), taken as printed. One core/bracket_column_tax_at_start
+(`tp1_schedule_k_line_82.yaml`)."""
