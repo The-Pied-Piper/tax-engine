@@ -377,3 +377,21 @@ TP1_SCHEDULE_F_COLUMN_CONSTANT_LINE_81 = AmountKind.declare(
 )
 """Schedule F line 81, "+ 81 0 00 | 150 00": the printed constant of the column that line 76 falls
 in (0.00 and 150.00); blank for a line 76 of $18,130 or less."""
+
+TP1_SCHEDULE_F_CONTRIBUTION_BEFORE_MAXIMUM = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_contribution_before_maximum", non_negative=True
+)
+"""Schedule F line 82, "Add lines 80 and 81", before its maximum is applied: the sum of the two
+lines, each read as 0 when blank. Not printed on its own, so it is engine-internal."""
+
+TP1_SCHEDULE_F_COLUMN_MAXIMUM = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_column_maximum", non_negative=True
+)
+"""Schedule F line 82, "Maximum: $150 | Maximum: $1,000": the printed maximum of the column that
+line 76 falls in; blank for a line 76 of $18,130 or less."""
+
+TP1_SCHEDULE_F_CONTRIBUTION_LINE_82 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_contribution_line_82", non_negative=True
+)
+"""Schedule F line 82, "Contribution to the health services fund", carried to TP-1 line 446: the
+lesser of lines 80 plus 81 and the column's maximum; 0.00 when Part B is not completed."""

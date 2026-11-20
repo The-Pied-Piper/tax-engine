@@ -1,0 +1,45 @@
+# Schedule F (2025) Part B, line 82: "Add lines 80 and 81 ... Maximum: $150 | Maximum: $1,000 ...
+# Carry the result to line 446 of your return. Contribution to the health services fund". Three
+# steps, the last of which is line 82: the sum of lines 80 and 81 (each read as 0 when blank), the
+# printed maximum of the column that line 76 falls in, and the lesser of the two. Only the last step
+# prints the line's reference; the first two are engine-internal. For a line 76 of $18,130 or less
+# Part B is not completed: lines 80 and 81 and the maximum are blank, the sum is 0.00, and the
+# maximum, blank, is read as 0, so line 82 is 0.00 and TP-1 line 446 carries 0.00.
+form:
+  name: ca-qc/tp1_schedule_f
+capabilities:
+  - name: core/sum
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/tp1_schedule_f_contribution_on_excess_line_80
+        - ca-qc/tp1_schedule_f_column_constant_line_81
+    blank:
+      ca-qc/tp1_schedule_f_contribution_on_excess_line_80: "0"
+      ca-qc/tp1_schedule_f_column_constant_line_81: "0"
+    produces:
+      output: ca-qc/tp1_schedule_f_contribution_before_maximum
+  - name: core/amount_by_band
+    unit: ca/cad
+    params:
+      table: ca-qc/tp1_schedule_f_maximum
+    consumes:
+      base: ca-qc/tp1_schedule_f_lower_bound_line_77
+    blank:
+      base: pass_on
+    produces:
+      output: ca-qc/tp1_schedule_f_column_maximum
+  - name: core/lesser_of
+    title: "Contribution to the health services fund"
+    reference: "82"
+    unit: ca/cad
+    consumes:
+      amounts:
+        - ca-qc/tp1_schedule_f_contribution_before_maximum
+        - ca-qc/tp1_schedule_f_column_maximum
+    blank:
+      amounts: "0"
+    produces:
+      output: ca-qc/tp1_schedule_f_contribution_line_82
