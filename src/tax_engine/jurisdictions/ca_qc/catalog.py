@@ -649,3 +649,10 @@ Taxable income =": net income (line 58, a copy of line 57) less the deductions f
 69, an optional input read as 0), not below zero. Produced by one core/subtract_not_below_zero
 (`t1_taxable_income_line_26000.yaml`); the federal bracket columns (line 71 onward) start from
 it."""
+
+SCHEDULE_K_NET_INCOME_LINE_36 = AmountKind.declare(
+    CATALOG, "schedule_k_net_income_line_36", non_negative=True
+)
+"""Net income, Schedule K line 36 "Amount from line 275 of your return": a copy of TP-1 line 275.
+The amount arrives from the TP-1 net income form as a record list of one, so the one step is
+core/record_total (`tp1_schedule_k_line_36.yaml`)."""
