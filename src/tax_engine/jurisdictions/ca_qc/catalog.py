@@ -1237,6 +1237,13 @@ REFUNDABLE_MEDICAL_EXPENSE_SUPPLEMENT_LINE_160 = AmountKind.declare(
 salary-only caller does not give; the sum on line 171 takes a blank as 0
 (`t1_tax_and_credits_line_45200_inputs.yaml`)."""
 
+CANADA_TRAINING_CREDIT_LINE_162 = AmountKind.declare(
+    CATALOG, "canada_training_credit_line_162", non_negative=True
+)
+"""Canada training credit (CTC), 5005-R line 162 and line 45350: an optional input a salary-only
+caller does not give; the sum on line 171 takes a blank as 0
+(`t1_tax_and_credits_line_45350_inputs.yaml`)."""
+
 CWB_LINE_161 = AmountKind.declare(CATALOG, "cwb_line_161", non_negative=True)
 """Canada workers benefit (CWB), 5005-R line 161 and line 45300 "(complete Schedule 6)": Schedule 6
 line 28, read from the Schedule 6 export by one core/record_total
