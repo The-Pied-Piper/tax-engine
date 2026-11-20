@@ -2116,3 +2116,9 @@ TP1_BALANCE_DUE_LINE_479 = AmountKind.declare(CATALOG, "tp1_balance_due_line_479
 """TP-1 line 479 "Subtract line 477 from line 475. Balance due": rounded half-up to the cent, signed
 as given. The "not required to pay a balance of less than $2" note is a payment note and is not
 built. Produced by one core/subtract (`tp1_totals_line_479.yaml`) and exported by the form."""
+
+FEDERAL_REFUND_OR_BALANCE_OWING_RETURN = AmountKind.declare(
+    CATALOG, "federal_refund_or_balance_owing_return"
+)
+"""Quebec return summary: 5005-R line 172 "Refund or balance owing", read from the form's export
+(signed: negative is a refund, positive a balance owing). One core/record_total (`return.yaml`)."""
