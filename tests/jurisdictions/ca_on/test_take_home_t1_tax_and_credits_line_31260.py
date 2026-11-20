@@ -12,8 +12,8 @@ line 31260 of your return."
 The line is two steps. The first is a `core/sum` of `ca/employment_income` and
 `ca/other_employment_income` into `ca/canada_employment_amount_income`, carried exactly (the form
 prints no rounding). The second is a `core/capped_amount` over the 2025 dataset
-`ca/canada_employment_amount` ($1,471, half-up to the cent), which produces `ca/canada_employment_amount`. The line 10400 input is optional
-and reads as 0 when the caller gives none, so a salary-only request is the salary.
+`ca/canada_employment_amount` ($1,471, half-up to the cent), which produces
+`ca/canada_employment_amount`. The line 10400 input is optional and reads as 0 when the caller gives none, so a salary-only request is the salary.
 
 The test's form declaration is test-local: it exports `ca/canada_employment_amount` as its one
 export. The caller gives the salary, and in some tests an other-employment-income amount as well.
