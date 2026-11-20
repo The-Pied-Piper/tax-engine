@@ -9,10 +9,11 @@ the next. Every optional input is left out unless a test gives it.
 from __future__ import annotations
 
 from decimal import Decimal
+from typing import Any
 
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.kinds import AmountKind
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_qc.catalog import (
@@ -49,28 +50,34 @@ NET_INCOME_PARTS = (
 )
 
 
-def form_part(export: str) -> str:
-    """A test form declaration of Schedule K exporting `export`."""
-    return f"form:\n  name: {FORM_NAME}\n  required: true\n  exports:\n    - {export}\n"
+def form_part(export: str | tuple[str, ...]) -> str:
+    """A test form declaration of Schedule K exporting `export`, one kind or several."""
+    exports = (export,) if isinstance(export, str) else export
+    lines = "".join(f"    - {kind}\n" for kind in exports)
+    return f"form:\n  name: {FORM_NAME}\n  required: true\n  exports:\n{lines}"
 
 
 def schedule_k_sheet(
     take_home_service: TakeHomeService,
     salary: str,
-    export: str,
+    export: str | tuple[str, ...],
     parts: tuple[str, ...],
-    *given: tuple[AmountKind, str],
+    *given: tuple[AmountKind | CountKind, str],
 ) -> Worksheet:
     """The Schedule K worksheet for a salary, over the upstream and net income parts and the
     Schedule K `parts`; every optional input is left out unless in `given`."""
-    starting = [
+    starting: list[Artifact[Any]] = [
         Artifact(EMPLOYMENT_INCOME, D(salary)),
         Artifact(TP1_QPP_CONTRIBUTION_LINE_98, D(UPSTREAM_98[salary])),
         Artifact(TP1_ADDITIONAL_QPP_CONTRIBUTION_LINE_98_2, D(UPSTREAM_98_2[salary])),
         Artifact(TP1_PENSIONABLE_SALARY_LINE_98_1, D(UPSTREAM_98_1[salary])),
         Artifact(TP1_QPIP_PREMIUM_LINE_97, D("0")),
     ]
-    starting.extend(Artifact(kind, D(value)) for kind, value in given)
+    for kind, value in given:
+        if isinstance(kind, CountKind):
+            starting.append(Artifact(kind, int(value)))
+        else:
+            starting.append(Artifact(kind, D(value)))
     service = take_home_service(
         HEADER, form_part(export), *UPSTREAM_PARTS, *NET_INCOME_PARTS, *parts
     )

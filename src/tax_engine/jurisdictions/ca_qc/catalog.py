@@ -1454,3 +1454,18 @@ SCHEDULE_K_PREMIUM_LINE_84 = AmountKind.declare(
 printed maximum of $766 ("is more than $14,669, enter $766 on line 84"): the lesser of line 83 and
 `ca-qc/schedule_k_line_84_maximum`. One core/capped_amount (`tp1_schedule_k_line_84.yaml`). The
 form exports it; the lines after it read it."""
+
+SCHEDULE_K_MONTHS_IN_YEAR_LINE_85 = AmountKind.declare(
+    CATALOG, "schedule_k_months_in_year_line_85", non_negative=True
+)
+"""The printed 12 of Schedule K line 85, "Amount from line 84 x Number of months entered in box 62 /
+12", in months: the months of the year, taken as printed from the
+`ca-qc/schedule_k_months_in_year_line_85` dataset. One core/credit_amount
+(`tp1_schedule_k_line_85.yaml`); it is not a line of the form."""
+
+SCHEDULE_K_PREMIUM_FOR_MONTHS_LINE_85 = AmountKind.declare(
+    CATALOG, "schedule_k_premium_for_months_line_85", non_negative=True
+)
+"""Schedule K line 85, "Amount from line 84 x Number of months entered in box 62 / 12": line 84
+times the months checked in the year over 12, formed as one exact fraction and rounded once,
+half-up to the cent. One core/apply_ratio (`tp1_schedule_k_line_85.yaml`)."""
