@@ -46,6 +46,7 @@ from tax_engine.jurisdictions.ca.catalog.deductions import (
     CPP_PART_3_LINE_4,
     CPP_PART_3_LINE_5,
     CPP_PART_3_LINE_7,
+    CPP_PART_3_LINE_11,
 )
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca.catalog.rc381_cpp_qpp import (
@@ -135,3 +136,21 @@ def test_line_7_matches_the_printed_form(tmp_path: Path, salary: str, expected: 
     sheet = schedule_8(tmp_path, salary)
 
     assert sheet.get(CPP_PART_3_LINE_7).value == D(expected)
+
+
+@pytest.mark.parametrize(
+    ("salary", "expected"), [("20000", "891.00"), ("70000", "3591.00"), ("200000", "3661.20")]
+)
+def test_line_11_matches_the_printed_form(tmp_path: Path, salary: str, expected: str) -> None:
+    # Line 11: 5.4% of line 7, at most 3,661.20 (the federal 4.95% would give 3,291.75 at 70,000).
+    sheet = schedule_8(tmp_path, salary)
+
+    assert sheet.get(CPP_PART_3_LINE_11).value == D(expected)
+
+
+def test_line_11_without_the_swap_is_the_federal_figure(tmp_path: Path) -> None:
+    # The shared form's own files still read the federal dataset: a manifest that imports
+    # `ca/schedule_8` bare gets 4.95% of 66,500.00 = 3,291.75, so the swap is local to Quebec.
+    sheet = schedule_8(tmp_path, "70000", BARE_HEADER)
+
+    assert sheet.get(CPP_PART_3_LINE_11).value == D("3291.75")
