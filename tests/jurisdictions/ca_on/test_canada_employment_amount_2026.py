@@ -1,8 +1,8 @@
 """The 2026 Canada employment amount cap, taken from T4127 (122nd edition, January 2026).
 
 T4127 Table 8.2 "Other rates and amounts for 2026", row Federal: CEA 1,501; formula K4 =
-0.14 x $1,501. A plain amount (the `amount` kind) as in 2025, rounded half-up to the cent. The
-dataset is provisional until the 2026 T1 (5000-R) is published.
+0.14 x $1,501. A plain amount (the `amount` kind) as in 2025,
+carried as it is (no printed rounding rule). The dataset is provisional until the 2026 T1 (5000-R) is published.
 """
 
 from __future__ import annotations

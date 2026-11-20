@@ -5,8 +5,8 @@ line 2.", where line 1 (line 10100) is "Employment income (box 14 of all T4 slip
 (line 10400) is "Other employment income". Other employment income is not modelled, so the cap
 applies to employment income alone. The $1,471 is a plain amount (the `amount` kind), not a
 credit: the rate is applied once to the total of the credit amounts (line 33500), of which the
-capped amount is one part. Line 92 is a dollars-and-cents box, so the lesser is rounded half-up
-to the cent.
+capped amount is one part. The form prints no rounding rule for line 92, so the lesser is
+carried as it is.
 """
 
 from __future__ import annotations

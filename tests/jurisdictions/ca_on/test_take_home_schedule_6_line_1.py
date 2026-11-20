@@ -105,7 +105,7 @@ def test_an_omitted_other_employment_income_is_read_as_zero(
 @pytest.mark.parametrize(
     ("salary", "other", "expected"),
     [
-        # Line 1 adds line 10400 to line 10100 to the cent.
+        # Line 1 adds line 10400 to line 10100, exactly.
         ("70000", "5000.50", "75000.50"),
         # Other employment income alone: no salary, so line 1 is the other income.
         ("0", "5000", "5000.00"),
