@@ -1029,3 +1029,9 @@ TP1_AGE_LIVING_ALONE_RETIREMENT_AMOUNT_LINE_361 = AmountKind.declare(
 """TP-1 line 361 "Age amount, amount for a person living alone and amount for retirement income.
 Complete Schedule B": the figure Schedule B carries from its line 34, which is signed. Produced by
 one core/record_total over the Schedule B export (`tp1_credits_line_361.yaml`)."""
+
+
+TP1_LINE_377 = AmountKind.declare(CATALOG, "tp1_line_377")
+"""TP-1 line 377 "Add lines 359 through 376": lines 359 and 361, rounded half-up to the cent (lines
+367 and 376 are not built). Signed, as its parts are. Produced by one core/sum
+(`tp1_credits_line_377.yaml`)."""
