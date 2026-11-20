@@ -1,0 +1,19 @@
+# 5005-R (2025) line 134. The form prints: "Line 134: Line 132 minus line 133 =" (page 7). The form
+# prints no floor, so the difference is not floored and may be negative. Line 133 is an optional
+# input, a blank for a salary-only filer and read as 0. One step: core/subtract, rounded half-up to
+# the cent through `ca-qc/cent_rounding`.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/subtract
+    reference: "134"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/federal_tax_with_surtax_line_132
+      less: ca-qc/federal_foreign_tax_credit_line_133
+    blank:
+      less: "0"
+    produces:
+      output: ca-qc/federal_tax_less_foreign_tax_credit_line_134

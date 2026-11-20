@@ -48,6 +48,9 @@ PARTS = (
     "t1_taxable_income_line_23500_inputs.yaml",
     "t1_taxable_income_line_23600.yaml",
     "t1_taxable_income_line_23600_signed.yaml",
+    # Step 4 parts: the form declaration now exports taxable income, which needs its producer.
+    "t1_taxable_income_line_25700_inputs.yaml",
+    "t1_taxable_income_line_26000.yaml",
 )
 HEADER = (
     dedent("""\

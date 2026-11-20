@@ -1,11 +1,14 @@
 # Revenu Quebec TP-1.D.P-V (2025-12), Schedule P (Tax Credits Respecting the Work Premium), Part A
-# "Work income", column "You": lines 10 to 29. This part names the form; each line's capability is a
-# part of its own with the same `form.name`. The spouse column (lines 30 to 49) is left out, as the
-# take-home is a single filer's. The export is the work income of line 29, which Part E reads.
+# "Work income", column "You": lines 10 to 29, Part C "Family income": lines 52 to 54, Part D
+# "Supplement to the work premium": lines 56 to 60, and Part E, section 2, column 1 "Work premium":
+# lines 64 to 84 and 87. This part names the form; each line's capability is a part of its own with
+# the same `form.name`. The spouse column (lines 30 to 49) and the adapted work premium (column 2) are left
+# out, as the take-home is a single filer's. The export is the work premium of line 87 (line 84,
+# as column 2 is left out), which Part F reads; the other lines are read inside the form.
 form:
   name: ca-qc/schedule_p
   title: "Schedule P: Tax Credits Respecting the Work Premium"
   required: true
   exports:
-    - ca-qc/schedule_p_work_income_line_29
+    - ca-qc/schedule_p_work_premium_line_87
 capabilities: []

@@ -1,0 +1,21 @@
+# Schedule P (TP-1.D.P-V, 2025-12) Part E, section 2, column 1 "Work premium", line 84: "Subtract line
+# 83 from line 76. If the result is negative, enter 0." Line 76 is the work premium before the
+# reduction (schedule_p_line_76.yaml) and line 83 the reduction (schedule_p_line_83.yaml). The step
+# is core/subtract_not_below_zero, rounded to the cent by `ca-qc/cent_rounding`. The form prints no
+# label for the line, so the step is untitled. Line 87 ("Amount from line 84 in column 1 or column 2,
+# whichever is greater") has no step: the adapted work premium of column 2 is left out of the
+# take-home, so the greater of the two is line 84, and this step's output is the figure line 87
+# carries to Part F.
+form:
+  name: ca-qc/schedule_p
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "84"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/schedule_p_work_premium_before_reduction_line_76
+      less: ca-qc/schedule_p_work_premium_reduction_line_83
+    produces:
+      output: ca-qc/schedule_p_work_premium_line_87

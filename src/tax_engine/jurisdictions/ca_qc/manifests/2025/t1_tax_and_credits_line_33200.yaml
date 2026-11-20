@@ -1,0 +1,20 @@
+# 5005-R (2025) line 116 and line 33200. The form prints: "Line 116 and line 33200: Line 114 plus line 115
+# =" (page 6). Line 114 is the step before it; line 115 (line 33199, allowable medical expenses for
+# other dependants) is an optional input, a blank for a salary-only filer and read as 0. One step:
+# core/sum in form line order, rounded half-up to the cent through `ca-qc/cent_rounding`.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/sum
+    reference: "33200"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/medical_expenses_over_threshold_line_114
+        - ca-qc/medical_expenses_other_dependants_line_115
+    blank:
+      ca-qc/medical_expenses_other_dependants_line_115: "0"
+    produces:
+      output: ca-qc/medical_expenses_line_116

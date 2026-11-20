@@ -1,0 +1,15 @@
+# Federal Worksheet 5000-D1, line 30000, line 3 (2025): "Amount from line 23600 of your return",
+# the figure 5005-R line 78 reads through the worksheet. It is a copy of net income (line 57 and
+# line 23600), so it is a step: another form's export is read only as a record list
+# (`ca-qc/t1_taxable_income.net_income`), and core/record_total totals the one amount into line 3,
+# as the federal worksheet line 3 does.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/record_total
+    title: "Amount from line 23600 of your return"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/t1_taxable_income.net_income
+    produces:
+      output: ca-qc/basic_personal_amount_net_income_line_3

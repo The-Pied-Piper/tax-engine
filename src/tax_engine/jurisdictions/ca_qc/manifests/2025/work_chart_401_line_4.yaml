@@ -1,0 +1,17 @@
+# Work Chart 401 (TP-1.D.GR-V 2025-12), line 4: "Subtract line 3 from line 2." Line 2 is a copy of
+# line 1 (the taxable income) and has no step of its own, so line 4 reads line 1 directly. Line 3 is
+# the printed lower bound of the column that line 1 falls in, so the result is never below zero; it
+# is rounded half-up to the cent (`ca-qc/cent_rounding`) as every dollars-and-cents line is.
+form:
+  name: ca-qc/work_chart_401
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "4"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/work_chart_401_taxable_income_line_1
+      less: ca-qc/work_chart_401_lower_bound_line_3
+    produces:
+      output: ca-qc/work_chart_401_income_over_lower_bound_line_4

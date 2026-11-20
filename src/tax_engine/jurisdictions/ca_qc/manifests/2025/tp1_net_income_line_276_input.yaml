@@ -1,0 +1,12 @@
+# TP-1 (2025) line 276: "Adjustment of deductions. Specify: 277 + 276". An input a salary-only
+# caller does not give (the owner's decision of 19 Nov 2026: its own optional input). The line 279
+# part (tp1_net_income_line_279.yaml) reads the blank as 0.
+form:
+  name: ca-qc/tp1_net_income
+inputs:
+  - name: ca-qc/tp1_adjustment_of_deductions_line_276
+    reference: "276"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Adjustment of deductions. Specify: 277 + 276'

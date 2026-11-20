@@ -1,0 +1,17 @@
+# 5005-R (2025) line 130. The form prints: "Line 130 and line 42900: Line 125 minus line 129 (if
+# negative, enter "0") Basic federal tax =" (page 7).  One step: core/subtract_not_below_zero,
+# rounded half-up to the cent through `ca-qc/cent_rounding`.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/subtract_not_below_zero
+    title: "Basic federal tax"
+    reference: "42900"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/federal_tax_with_split_income_line_125
+      less: ca-qc/federal_credits_and_carryovers_line_129
+    produces:
+      output: ca-qc/basic_federal_tax_line_130

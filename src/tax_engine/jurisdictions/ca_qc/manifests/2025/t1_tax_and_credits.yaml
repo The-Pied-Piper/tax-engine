@@ -1,0 +1,24 @@
+# 5005-R (2025), the T1 return for Quebec residents, from Step 5 (non-refundable credits) onward. This
+# part names the form and its exports; each line's capability goes in a part of its own with the
+# same `form.name`. The form carries the printed title of the return, as `ca-qc/t1_taxable_income`
+# does. Exports:
+#   - The credit amounts of line 85 (`ca-qc/credit_amounts_line_85`, lines 78 to 84) and of line 100
+#     (`ca-qc/credits_line_100`, lines 87 to 99), which the sums on line 102 add. Line 78 (the basic
+#     personal amount) is read inside the form and need not be exported.
+#   - The total federal non-refundable tax credits of line 122 (`ca-qc/non_refundable_tax_credits_line_122`),
+#     which Part C line 126 copies.
+#   - Part C: the basic federal tax of line 130 and line 42900 (`ca-qc/basic_federal_tax_line_130`),
+#     which the Quebec abatement on line 156 reads, and the federal tax of line 138 and line 40600
+#     (`ca-qc/federal_tax_line_138`), which line 143 reads. Lines 123 and 126 are copies and have no
+#     step. Later tickets of Step 5 to Step 9 add the exports the return summary reads.
+form:
+  name: ca-qc/t1_tax_and_credits
+  title: "T1 Income Tax and Benefit Return"
+  required: true
+  exports:
+    - ca-qc/credit_amounts_line_85
+    - ca-qc/credits_line_100
+    - ca-qc/non_refundable_tax_credits_line_122
+    - ca-qc/basic_federal_tax_line_130
+    - ca-qc/federal_tax_line_138
+capabilities: []

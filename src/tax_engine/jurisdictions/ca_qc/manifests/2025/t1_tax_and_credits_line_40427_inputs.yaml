@@ -1,0 +1,13 @@
+# 5005-R (2025) line 128 input a salary-only caller does not give.
+# Line 128 and line 40427: "Minimum tax carryover (complete Form T691)" (page 7). A salary-only filer has no such amount, so it is an
+# optional input left blank; the sum or difference that reads it takes a blank as 0.
+form:
+  name: ca-qc/t1_tax_and_credits
+inputs:
+  - name: ca-qc/minimum_tax_carryover_line_128
+    title: "Minimum tax carryover"
+    reference: "40427"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Minimum tax carryover (complete Form T691)"

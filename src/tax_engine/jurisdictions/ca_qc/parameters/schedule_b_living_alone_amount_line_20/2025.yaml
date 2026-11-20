@@ -1,0 +1,11 @@
+# Revenu Quebec TP-1.D.B-V (2025-12), Schedule B, Part B, line 20: "If, throughout 2025, you
+# maintained and ordinarily lived in a dwelling in which you lived alone or only with ... enter
+# $2,128." The printed figure, taken as printed and claimed whole; half-up to the cent changes
+# nothing.
+family: ca-qc/schedule_b_living_alone_amount_line_20
+tax_year: 2025
+kind: credit
+sources:
+  - Revenu Quebec TP-1.D.B-V (2025-12), Schedule B, Part B
+rounding: {increment: "0.01", mode: half_up}
+amount: "2128"

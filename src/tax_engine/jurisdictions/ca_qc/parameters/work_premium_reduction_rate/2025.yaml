@@ -1,0 +1,11 @@
+# Revenu Quebec TP-1.D-V (2025-12), Schedule P (TP-1.D.P-V), Part E, section 2 "Individual without a
+# spouse on December 31, 2025", column 1 "Work premium", line 83: "Multiply line 82 by 10%." The printed
+# 10% is a rate. Line 83 is a dollars-and-cents line, so the product rounds half-up to the cent, the
+# project's choice, as the form states no rounding rule.
+family: ca-qc/work_premium_reduction_rate
+tax_year: 2025
+kind: rate
+sources:
+  - Revenu Quebec TP-1.D-V (2025-12), Schedule P (TP-1.D.P-V), Part E
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.1"

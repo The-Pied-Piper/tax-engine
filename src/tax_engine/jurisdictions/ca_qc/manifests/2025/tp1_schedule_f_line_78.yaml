@@ -1,0 +1,18 @@
+# Schedule F (2025) Part B, line 78: "Subtract line 77 from line 76. If the result is negative, enter
+# 0." Line 76 is a copy of line 70 and has no step of its own. Line 78 is blank when line 77 is blank,
+# which is for a line 76 of $18,130 or less, as no contribution is due then.
+form:
+  name: ca-qc/tp1_schedule_f
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "78"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/tp1_schedule_f_income_subject_line_70
+      less: ca-qc/tp1_schedule_f_lower_bound_line_77
+    blank:
+      less: pass_on
+    produces:
+      output: ca-qc/tp1_schedule_f_income_over_lower_bound_line_78

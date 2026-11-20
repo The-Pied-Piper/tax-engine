@@ -1,0 +1,15 @@
+# Schedule K (2025) line 41: "If you had a spouse on December 31, 2025, enter $32,240; otherwise,
+# enter $19,890." (Revenu Quebec TP-1.D.K-V (2025-12), Part A). The take-home is a single filer, so
+# the printed $19,890 is a dataset figure, claimed whole through core/credit_amount (as Schedule P
+# line 70 claims its printed 2,400); line 46 adds it. The form prints no label for the line, so the
+# step is untitled.
+form:
+  name: ca-qc/tp1_schedule_k
+capabilities:
+  - name: core/credit_amount
+    reference: "41"
+    unit: ca/cad
+    params:
+      amount: ca-qc/schedule_k_line_41_amount
+    produces:
+      output: ca-qc/schedule_k_amount_line_41
