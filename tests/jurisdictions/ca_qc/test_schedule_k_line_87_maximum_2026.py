@@ -22,7 +22,13 @@ PROVISIONAL_HEADER = (
     "not printed on a 2026 form; to be confirmed against the 2026 form text when Revenu "
     "Quebec publishes it."
 )
-DERIVATION_PREFIX = "# Derivation: (766 + 789) / 2 = 777.50, "
+DERIVATION_HEADER = (
+    "# Derivation: (766 + 789) / 2 = 777.50, the same averaging that gives the printed 2025 "
+    "figure 755 = (744 + 766) / 2. 766 and 789 are RAMQ's maximum annual premium for 1 July "
+    "2025 to 30 June 2026 and from 1 July 2026 (RAMQ release of 30 June 2026, "
+    '"Ajustement des tarifs pour les personnes couvertes par le regime public '
+    "d'assurance medicaments\")."
+)
 EXPECTED: dict[str, Any] = {
     "family": "ca-qc/schedule_k_line_87_maximum",
     "tax_year": 2026,
@@ -52,4 +58,4 @@ def test_the_2026_file_is_provisional_and_states_its_derivation() -> None:
     lines = PATH.read_text().splitlines()
 
     assert lines[0] == PROVISIONAL_HEADER
-    assert lines[1].startswith(DERIVATION_PREFIX)
+    assert lines[1] == DERIVATION_HEADER

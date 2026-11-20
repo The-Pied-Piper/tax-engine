@@ -21,20 +21,26 @@ PATH = (
     / "2026.yaml"
 )
 PROVISIONAL_HEADER = (
-    "# Provisional: taken from the 2025 form text named in sources; to be "
-    "confirmed against the 2026 form text when Revenu Quebec publishes it."
+    "# Provisional: derived from the published 2025-26 premium-year maximum, "
+    "not printed on a 2026 form; to be confirmed against the 2026 form text when Revenu "
+    "Quebec publishes it."
 )
 DERIVATION_HEADER = (
-    "# Derivation: carried forward unchanged from the 2025 file; the 2026 form is"
-    " not yet published."
+    "# Derivation: 766 / 12 = 63.83, the 2025 form's own method (744 / 12 = 62.00 for January to "
+    "June 2025); 766 is RAMQ's maximum annual premium for 1 July 2025 to 30 June 2026 (RAMQ "
+    "release of 30 June 2026)."
 )
 EXPECTED: dict[str, Any] = {
     "family": "ca-qc/schedule_k_monthly_amount_box_60",
     "tax_year": 2026,
     "kind": "credit",
-    "sources": ["Revenu Quebec TP-1.D.K-V (2025-12), Schedule K, Part C"],
+    "sources": [
+        "Revenu Quebec TP-1.D.K-V (2025-12), Schedule K, Part C",
+        "Regie de l'assurance maladie du Quebec, release of 30 June 2026 "
+        "(annual premium maximums 766 and 789)",
+    ],
     "rounding": {"increment": "0.01", "mode": "half_up"},
-    "amount": "62.00",
+    "amount": "63.83",
 }
 
 
