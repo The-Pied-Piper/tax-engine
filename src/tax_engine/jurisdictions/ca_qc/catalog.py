@@ -158,3 +158,10 @@ TP1_SCHEDULE_F_INCOME_LINE_18 = AmountKind.declare(CATALOG, "tp1_schedule_f_inco
 """Schedule F line 18, "Subtract line 16 from line 10": no floor is printed, so it can be
 negative."""
 
+
+TP1_SCHEDULE_F_LINES_20_TO_33_TOTAL_LINE_34 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_lines_20_to_33_total_line_34", non_negative=True
+)
+"""Schedule F line 34, "Add lines 20, 22 and 25 through 33": the printed sum of the skipped lines,
+one optional input; blank when the caller has none, and line 36 reads it as 0."""
+

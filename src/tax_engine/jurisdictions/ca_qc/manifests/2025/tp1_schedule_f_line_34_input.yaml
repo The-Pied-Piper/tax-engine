@@ -1,0 +1,12 @@
+# Schedule F (2025) line 34: "Add lines 20, 22 and 25 through 33." Those lines are skipped (the
+# optional lines ruling), so their printed sum is one input a salary-only caller does not give; line
+# 36 reads it as 0 when it is left out.
+form:
+  name: ca-qc/tp1_schedule_f
+inputs:
+  - name: ca-qc/tp1_schedule_f_lines_20_to_33_total_line_34
+    reference: "34"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Add lines 20, 22 and 25 through 33.'
