@@ -1,6 +1,5 @@
-# Provisional (2026): QPIP: employee rate 0.430%, maximum insurable earnings 103,000, maximum
-# 442.90. Taken from the published 2026 parameters (not a 2026 form); to be confirmed against the
-# 2026 form text when it is published. The comment below is the 2025 derivation, kept for the
+# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text when Revenu Quebec publishes it.
+# Derivation: figure as printed in T4127 (Jan 2026): QPIP: employee rate 0.430%, maximum insurable earnings 103,000, maximum 442.90; no rounding applied here.
 # printed wording; the figures of this file replace its 2025 figures.
 # Quebec parental insurance plan (PPIP) premium on employment income, 2025 tax year (the 2025 T1
 # return for Quebec residents, form 5005-R). 5005-R, page 6: "Line 91 and line 31205: Provincial
@@ -12,6 +11,7 @@
 # Premiums are in dollars and cents, so the tier rounds half-up to the cent. Revenu Quebec's page
 # "Maximum insurable earnings and the Quebec Parental Insurance Plan premium rate" gives the same
 # three figures for 2025; it is a web page, kept as a listed check on the ticket.
+# The description above is of the 2025 form line; the figures of this file are 2026. The 2026 form is not yet published, so they are not yet confirmed against it.
 family: ca-qc/ppip_premium
 tax_year: 2026
 kind: contribution_tier

@@ -1,11 +1,11 @@
-# Provisional: no 2026 figure is published yet (the 2026 forms are not out), so the 2025 figure is
-# carried. To be replaced when Revenu Quebec and CRA publish the 2026 forms. The comment below is
-# the 2025 derivation.
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when Revenu Quebec publishes it.
+# Derivation: carried forward unchanged from the 2025 file; the 2026 form is not yet published.
 # Revenu Quebec TP-1.D.K-V (2025-12), Schedule K, Part A, line 41: "If you had a spouse on December 31,
 # 2025, enter $32,240; otherwise, enter $19,890." The take-home is a single filer with no spouse, so
 # the figure is the printed $19,890, taken as printed and claimed whole. The spouse figure $32,240 is
 # printed but belongs to the spouse path, which is left out of the take-home (owner ruling, 19 Nov
 # 2026). Half-up to the cent changes nothing.
+# The 2026 form is not yet published, so the figure is not yet confirmed against it.
 family: ca-qc/schedule_k_line_41_amount
 tax_year: 2026
 kind: credit

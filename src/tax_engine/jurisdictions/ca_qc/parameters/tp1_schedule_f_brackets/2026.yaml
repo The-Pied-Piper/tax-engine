@@ -1,8 +1,5 @@
-# Provisional (2026): Health Services Fund thresholds 18,500 and 64,355 (Table 3); the 0.01 rates
-# and the 150.00 at the second start are those of 2025 (the 2026 form is not published). Taken from
-# the published 2026 parameters (not a 2026 form); to be confirmed against the 2026 form text when
-# it is published. The comment below is the 2025 derivation, kept for the printed wording; the
-# figures of this file replace its 2025 figures.
+# Provisional: taken from Quebec Finance, Parameters of the Personal Income Tax System for 2026 (Nov 2025), Table 3; to be confirmed against the 2026 form text when Revenu Quebec publishes it.
+# Derivation: figure as printed in the Quebec Finance parameters for 2026: Health Services Fund thresholds 18,500 and 64,355 (Table 3); the 0.01 rates and the 150.00 at the second start are those of 2025 (the 2026 form is not published); no rounding applied here.
 # Quebec Schedule F (TP-1.D.F-V, 2025-12), Part B, "Contribution to the Health Services Fund": the
 # two columns the form prints side by side, "If $63,060 or less" and "If more than $63,060", filled
 # in only for a line 70 above $18,130 (a line 70 of $18,130 or less owes no contribution and Part B
@@ -16,6 +13,7 @@
 # The range starts above 18,130.00 (more than): a line 70 at or below it is outside the range, so
 # lines 77 and 81 are blank and Part B has no figure to carry. The maximum of each column is
 # `ca-qc/tp1_schedule_f_maximum`.
+# The description above is of the 2025 form line; the figures of this file are 2026. The 2026 form is not yet published, so they are not yet confirmed against it.
 family: ca-qc/tp1_schedule_f_brackets
 tax_year: 2026
 kind: brackets

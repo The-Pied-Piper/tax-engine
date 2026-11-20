@@ -1,11 +1,11 @@
-# Provisional: no 2026 figure is published yet (the 2026 forms are not out), so the 2025 figure is
-# carried. To be replaced when Revenu Quebec and CRA publish the 2026 forms. The comment below is
-# the 2025 derivation.
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when Revenu Quebec publishes it.
+# Derivation: carried forward unchanged from the 2025 file; the 2026 form is not yet published.
 # Schedule K (2025) box 60, "Number of months checked from January to June" (Revenu Quebec TP-1.D.K-V
 # (2025-12), Part B, section 1). The form prints no table: the box counts the months checked on
 # line 50. Line 50 means covered all year (owner's optional-answer ruling, 19 Nov 2026), so a yes
 # checks all 6 months of the half and a no checks none. The rows are the months for each answer to
 # line 50, 0 and 1. Whole months, so rounding to the cent changes none of them.
+# The 2026 form is not yet published, so the figure is not yet confirmed against it.
 family: ca-qc/schedule_k_months_box_60
 tax_year: 2026
 kind: amount_by_count
