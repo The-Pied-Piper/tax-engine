@@ -1040,3 +1040,9 @@ TP1_LINE_377 = AmountKind.declare(CATALOG, "tp1_line_377")
 TP1_LINE_377_1 = AmountKind.declare(CATALOG, "tp1_line_377_1")
 """TP-1 line 377.1 "Multiply line 377 by 14%": line 377 at the printed 14%, rounded half-up to the
 cent. Signed, as line 377 is. Produced by one core/apply_rate (`tp1_credits_line_377_1.yaml`)."""
+
+
+TP1_LINE_388 = AmountKind.declare(CATALOG, "tp1_line_388", non_negative=True)
+"""TP-1 line 388 "Add lines 378 through 385": the printed sum of lines 378 to 385, one optional
+input a salary-only caller does not give; line 389 reads a blank as 0
+(`tp1_credits_line_388_input.yaml`)."""
