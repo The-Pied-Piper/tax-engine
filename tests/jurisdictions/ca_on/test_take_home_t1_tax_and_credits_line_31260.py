@@ -34,7 +34,7 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME, OTHER_EMPLOYMENT_INCOME
-from tests.jurisdictions.ca_on.conftest import T1_INCOME_PARTS, TakeHomeService
+from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService
 from tests.kinds import bundled_kinds, non_negative
 
 D = Decimal
@@ -46,7 +46,19 @@ CAP = "ca/canada_employment_amount"
 # and the part under test.
 PARTS = (
     "salary.yaml",
-    *T1_INCOME_PARTS,
+    *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
+    "t1_taxable_income_inputs.yaml",
+    "t1_taxable_income_line_10100.yaml",
+    "t1_taxable_income_line_10400.yaml",
+    "t1_taxable_income_line_10400_inputs.yaml",
+    "t1_taxable_income_line_15000.yaml",
+    "t1_taxable_income_line_23300.yaml",
+    "t1_taxable_income_line_23400.yaml",
+    "t1_taxable_income_line_23600.yaml",
+    "t1_taxable_income_line_23600_signed.yaml",
+    "t1_taxable_income_line_25700_inputs.yaml",
+    "t1_taxable_income_line_26000.yaml",
+    "t1_taxable_income.yaml",
     "t1_tax_and_credits_line_31260.yaml",
 )
 HEADER = dedent("""\

@@ -54,26 +54,6 @@ def header_without_imports() -> str:
     return re.sub(r"^imports:\n(?:  - .*\n)+", "", header, flags=re.MULTILINE)
 
 
-# The real parts of the T1 taxable-income form (with the Schedule 8 parts its line 23300 reads), for
-# a test of a form that imports one of its exports (lines 10100 and 10400): the T1 is composed
-# beside it.
-T1_INCOME_PARTS = (
-    *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
-    "t1_taxable_income_inputs.yaml",
-    "t1_taxable_income_line_10100.yaml",
-    "t1_taxable_income_line_10400.yaml",
-    "t1_taxable_income_line_10400_inputs.yaml",
-    "t1_taxable_income_line_15000.yaml",
-    "t1_taxable_income_line_23300.yaml",
-    "t1_taxable_income_line_23400.yaml",
-    "t1_taxable_income_line_23600.yaml",
-    "t1_taxable_income_line_23600_signed.yaml",
-    "t1_taxable_income_line_25700_inputs.yaml",
-    "t1_taxable_income_line_26000.yaml",
-    "t1_taxable_income.yaml",
-)
-
-
 class TakeHomeService(Protocol):
     """Builds the engine over a temporary Ontario manifest made of a test header, a form
     declaration and real part files of the take-home folder."""

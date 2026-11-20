@@ -24,9 +24,26 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.canada_workers_benefit import CWB_FAMILY_WORKING_INCOME
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tests.jurisdictions.ca_on.conftest import T1_INCOME_PARTS, TakeHomeService
+from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService
 
 D = Decimal
+# The real T1 taxable-income parts (with the Schedule 8 parts its line 23300 reads), composed beside
+# the form under test, which imports T1 lines 10100 and 10400 from the T1.
+T1_PARTS = (
+    *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
+    "t1_taxable_income_inputs.yaml",
+    "t1_taxable_income_line_10100.yaml",
+    "t1_taxable_income_line_10400.yaml",
+    "t1_taxable_income_line_10400_inputs.yaml",
+    "t1_taxable_income_line_15000.yaml",
+    "t1_taxable_income_line_23300.yaml",
+    "t1_taxable_income_line_23400.yaml",
+    "t1_taxable_income_line_23600.yaml",
+    "t1_taxable_income_line_23600_signed.yaml",
+    "t1_taxable_income_line_25700_inputs.yaml",
+    "t1_taxable_income_line_26000.yaml",
+    "t1_taxable_income.yaml",
+)
 LINE_1_PART = "schedule_6_line_1.yaml"
 LINE_10400_PART = "t1_taxable_income_line_10400_inputs.yaml"
 LINE_5_PART = "schedule_6_line_5.yaml"
@@ -53,7 +70,7 @@ FORM = dedent("""\
 
 def line_6(take_home_service: TakeHomeService, salary: str) -> Decimal:
     worksheets = take_home_service(
-        HEADER, FORM, *T1_INCOME_PARTS, LINE_1_PART, LINE_5_PART, LINE_6_PART
+        HEADER, FORM, *T1_PARTS, LINE_1_PART, LINE_5_PART, LINE_6_PART
     ).compute(
         JurisdictionCode("CA-ON"),
         2025,

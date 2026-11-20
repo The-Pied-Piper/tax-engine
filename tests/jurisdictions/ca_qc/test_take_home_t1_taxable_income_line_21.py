@@ -29,6 +29,8 @@ from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 D = Decimal
 PART = "t1_taxable_income_line_21.yaml"
 INPUTS = "t1_taxable_income_line_10400_inputs.yaml"
+LINE_10100_PART = "t1_taxable_income_line_10100.yaml"
+LINE_10400_PART = "t1_taxable_income_line_10400.yaml"
 
 HEADER = dedent("""\
     jurisdiction: CA-QC
@@ -57,8 +59,8 @@ def line_21(take_home_service: TakeHomeService, salary: str, *other: str) -> Dec
         HEADER,
         FORM,
         INPUTS,
-        "t1_taxable_income_line_10100.yaml",
-        "t1_taxable_income_line_10400.yaml",
+        LINE_10100_PART,
+        LINE_10400_PART,
         PART,
     ).compute(JurisdictionCode("CA-QC"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary)), *given)
     (sheet,) = worksheets["ca-qc/t1_taxable_income"]
