@@ -1,0 +1,91 @@
+# TP-1 (2025) line 457, "QPIP overpayment" (Revenu Quebec TP-1.D-V (2025-12) page 5; guide
+# TP-1.G-V (2025-12), line 457): "If the total of your net business income, your employment income
+# subject to the QPIP and your insurable earnings as a person responsible for a family-type resource
+# or an intermediate resource is less than $2,000, carry the amount from line 97 to line 457. If the
+# amount on line 97 is more than $484.12, enter the overpayment (that is, the excess) on line 457."
+# The line is eight steps, as Schedule B line 20 is built, and the form prints no figure on any of
+# them but line 457 itself, so only the last carries a reference and no step rounds:
+# 1. core/record_total reads line 101 (the employment income, the income form's export).
+# 2. core/record_total reads line 97 (the income form's export).
+# 3. core/sum of line 101 and the two Schedule L inputs, a blank read as 0.
+# 4. ca/count_by_conditions: 0 when that total is $2,000 or more, else 1. No condition reads "less
+#    than", so the printed test is its two complements, equal to and more than $2,000.
+# 5. core/credit_amount: the printed $484.12.
+# 6. core/lesser_of: line 97 or $484.12.
+# 7. core/subtract: line 97 less that, the excess over $484.12 (0 when line 97 is not above it).
+# 8. core/choose_by_count: line 97 for a count of 1, else the excess: line 457.
+form:
+  name: ca-qc/tp1_totals
+capabilities:
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp1_income.employment_income
+    produces:
+      output: ca-qc/tp1_employment_income_for_line_457
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp1_income.tp1_qpip_premium_line_97
+    produces:
+      output: ca-qc/tp1_line_97_for_line_457
+  - name: core/sum
+    title: "Employment income, net business income and family-resource earnings added up"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/exact_rounding
+    consumes:
+      parts:
+        - ca-qc/tp1_employment_income_for_line_457
+        - ca-qc/tp1_net_business_income_schedule_l_line_27
+        - ca-qc/tp1_family_resource_earnings_schedule_l_line_40
+    blank:
+      ca-qc/tp1_net_business_income_schedule_l_line_27: "0"
+      ca-qc/tp1_family_resource_earnings_schedule_l_line_40: "0"
+    produces:
+      output: ca-qc/tp1_line_457_income_total
+  - name: ca/count_by_conditions
+    title: "The total is less than $2,000"
+    params:
+      conditions: ca-qc/tp1_line_457_conditions
+    consumes:
+      counts: []
+      amounts:
+        - ca-qc/tp1_line_457_income_total
+    produces:
+      output: ca-qc/tp1_line_457_under_threshold_count
+  - name: core/credit_amount
+    unit: ca/cad
+    params:
+      amount: ca-qc/tp1_line_457_maximum_premium
+    produces:
+      output: ca-qc/tp1_line_457_maximum_premium
+  - name: core/lesser_of
+    title: "QPIP premium up to the maximum"
+    unit: ca/cad
+    consumes:
+      amounts:
+        - ca-qc/tp1_line_97_for_line_457
+        - ca-qc/tp1_line_457_maximum_premium
+    produces:
+      output: ca-qc/tp1_line_97_within_maximum_for_line_457
+  - name: core/subtract
+    title: "QPIP premium above the maximum"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/exact_rounding
+    consumes:
+      amount: ca-qc/tp1_line_97_for_line_457
+      less: ca-qc/tp1_line_97_within_maximum_for_line_457
+    produces:
+      output: ca-qc/tp1_line_457_excess
+  - name: core/choose_by_count
+    title: "QPIP overpayment"
+    reference: "457"
+    unit: ca/cad
+    consumes:
+      count: ca-qc/tp1_line_457_under_threshold_count
+      when_none: ca-qc/tp1_line_457_excess
+      when_any: ca-qc/tp1_line_97_for_line_457
+    produces:
+      output: ca-qc/tp1_line_457

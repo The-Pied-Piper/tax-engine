@@ -9,10 +9,11 @@ are printed lines, each read from the form that prints it:
 - 5005-R line 151 and line 43500: "Add lines 147 to 150. Total payable =";
 - 5005-R line 156 and line 44000: "Amount from Line 42900 multiplied by 16.5% =" (refundable Quebec
   abatement);
-- TP-1 line 450 "Add lines 432 through 447. Income tax and contributions" and line 456 "Tax credits
-  respecting the work premium" (Revenu Quebec TP-1.D-V (2025-12), page 5).
+- TP-1 line 450 "Add lines 432 through 447. Income tax and contributions", line 456 "Tax credits
+  respecting the work premium" and line 457 "QPIP overpayment" (Revenu Quebec TP-1.D-V (2025-12),
+  page 5).
 TP-1 lines 470 to 479 (450 less 468) are not used, because the credits that line 468 collects are
-left out of the take-home by ruling, so for this filer only line 456 reduces line 450.
+left out of the take-home by ruling, so for this filer only lines 456 and 457 reduce line 450.
 
 The tests run the real return part over the real parts of the three forms it reads, at a salary
 of $20,000, $70,000 and $200,000, and pin the part's shape. The figures are hand-computed from
@@ -43,6 +44,7 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     TOTAL_PAYABLE,
     TP1_INCOME_TAX_AND_CONTRIBUTIONS_RETURN,
     TP1_INCOME_TAX_LESS_WORK_PREMIUM_RETURN,
+    TP1_QPIP_OVERPAYMENT_RETURN,
     TP1_WORK_PREMIUM_TAX_CREDITS_RETURN,
 )
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
@@ -105,6 +107,31 @@ def test_the_two_differences_the_sums_add(take_home_service: TakeHomeService, sa
     less_work_premium = sheet.get(TP1_INCOME_TAX_LESS_WORK_PREMIUM_RETURN)
     assert str(less_abatement.value) == LESS_ABATEMENT[salary]
     assert str(less_work_premium.value) == LESS_WORK_PREMIUM[salary]
+
+
+@pytest.mark.parametrize(
+    ("salary", "overpayment"),
+    [("1000", "4.94"), ("1999", "9.88"), ("2000", "0")],
+)
+def test_the_qpip_overpayment_reduces_the_refund_or_balance_owing(
+    take_home_service: TakeHomeService, salary: str, overpayment: str
+) -> None:
+    # Line 457 refunds the premium below $2,000 of work income: $1,000 x 0.494% = $4.94. The
+    # refund or balance owing is line 172 plus line 450 less lines 456 and 457; the total payable
+    # (lines 43500, 44000 and 450) is not reduced by it.
+    sheet = return_sheet(take_home_service, salary)
+
+    assert sheet.get(TP1_QPIP_OVERPAYMENT_RETURN).value == D(overpayment)
+    assert sheet.get(REFUND_OR_BALANCE_OWING).value == (
+        sheet.get(FEDERAL_REFUND_OR_BALANCE_OWING_RETURN).value
+        + sheet.get(TP1_INCOME_TAX_AND_CONTRIBUTIONS_RETURN).value
+        - sheet.get(TP1_WORK_PREMIUM_TAX_CREDITS_RETURN).value
+        - D(overpayment)
+    )
+    assert sheet.get(TOTAL_PAYABLE).value == (
+        sheet.get(FEDERAL_TOTAL_PAYABLE_LESS_ABATEMENT_RETURN).value
+        + sheet.get(TP1_INCOME_TAX_AND_CONTRIBUTIONS_RETURN).value
+    )
 
 
 @pytest.mark.parametrize(
@@ -220,12 +247,23 @@ STEPS = {
         },
         "ca-qc/tp1_income_tax_less_work_premium_return",
     ),
+    "ca-qc/tp1_qpip_overpayment_return": _read(
+        "ca-qc/tp1_totals.tp1_line_457", "ca-qc/tp1_qpip_overpayment_return"
+    ),
+    "ca-qc/tp1_income_tax_less_credits_return": _computed(
+        "core/subtract",
+        {
+            "amount": "ca-qc/tp1_income_tax_less_work_premium_return",
+            "less": "ca-qc/tp1_qpip_overpayment_return",
+        },
+        "ca-qc/tp1_income_tax_less_credits_return",
+    ),
     "ca/refund_or_balance_owing": _computed(
         "core/sum",
         {
             "parts": [
                 "ca-qc/federal_refund_or_balance_owing_return",
-                "ca-qc/tp1_income_tax_less_work_premium_return",
+                "ca-qc/tp1_income_tax_less_credits_return",
             ]
         },
         "ca/refund_or_balance_owing",
@@ -262,10 +300,10 @@ STEPS = {
 }
 
 
-def test_the_part_is_the_ten_steps_and_nothing_else() -> None:
+def test_the_part_is_the_twelve_steps_and_nothing_else() -> None:
     steps = {step["produces"]["output"]: step for step in _steps()}
 
-    assert len(_steps()) == len(STEPS) == 10
+    assert len(_steps()) == len(STEPS) == 12
     assert set(steps) == set(STEPS)
 
 
@@ -290,6 +328,8 @@ def test_the_solidarity_credit_is_in_neither_sum() -> None:
         ("ca-qc/solidarity_credit", True),
         ("ca-qc/federal_refund_or_balance_owing_return", False),
         ("ca-qc/tp1_income_tax_less_work_premium_return", False),
+        ("ca-qc/tp1_income_tax_less_credits_return", False),
+        ("ca-qc/tp1_qpip_overpayment_return", True),
         ("ca-qc/federal_total_payable_less_abatement_return", False),
         ("ca-qc/tp1_income_tax_and_contributions_return", True),
         ("ca-qc/tp1_work_premium_tax_credits_return", True),
