@@ -46,7 +46,16 @@ def test_the_federal_forms_are_imported_in_order_and_read_the_quebec_datasets() 
                 "ca/cpp_line_11_base_contribution": "ca-qc/qpp_line_11_base_contribution",
             },
         },
-        "ca/schedule_6",
+        {
+            "form": "ca/schedule_6",
+            "datasets": {
+                "ca/cwb_base_amount": "ca-qc/cwb_base_amount",
+                "ca/cwb_rate": "ca-qc/cwb_rate",
+                "ca/cwb_maximum": "ca-qc/cwb_maximum",
+                "ca/cwb_reduction_threshold": "ca-qc/cwb_reduction_threshold",
+                "ca/cwb_reduction_rate": "ca-qc/cwb_reduction_rate",
+            },
+        },
         {"form": "ca/t2204", "datasets": {"ca/ei_premium": "ca-qc/ei_premium"}},
     ]
 

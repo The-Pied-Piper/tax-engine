@@ -1,0 +1,15 @@
+# 5005-R (2025) line 149 and line 42200. The form prints: "Line 149 and line 42200: Social benefits
+# repayment (amount from line 23500)" (page 7). Line 23500 is line 56 of Step 3, an input of the T1
+# taxable-income form, so it is a copy read from that form's export: another form's export is read only
+# as a record list (`ca-qc/t1_taxable_income.social_benefits_repayment`), and core/record_total
+# totals the one amount into line 149, as line 71 does for taxable income.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/record_total
+    reference: "42200"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/t1_taxable_income.social_benefits_repayment
+    produces:
+      output: ca-qc/social_benefits_repayment_line_149

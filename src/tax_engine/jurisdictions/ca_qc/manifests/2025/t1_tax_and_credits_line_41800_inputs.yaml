@@ -1,0 +1,13 @@
+# 5005-R (2025) line 145 input a salary-only caller does not give.
+# Line 145 and line 41800: "Special taxes" (page 7). A salary-only filer has no such amount, so it is an
+# optional input left blank; the sum or difference that reads it takes a blank as 0.
+form:
+  name: ca-qc/t1_tax_and_credits
+inputs:
+  - name: ca-qc/special_taxes_line_145
+    title: "Special taxes"
+    reference: "41800"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Special taxes"

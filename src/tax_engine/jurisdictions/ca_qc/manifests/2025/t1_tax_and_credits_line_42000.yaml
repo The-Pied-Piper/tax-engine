@@ -1,0 +1,23 @@
+# 5005-R (2025) line 146 and line 42000. The form prints: "Line 146 and line 42000: Add lines 143 to
+# 145. Net federal tax =" (page 7). Lines 144 and 145 are optional inputs, a blank for a salary-only
+# filer and read as 0. One step: core/sum, rounded half-up to the cent through `ca-qc/cent_rounding`.
+# Line 147 is "Amount from line 42000", a pure copy, so line 146 is read directly and 147 is not a step.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/sum
+    title: "Net federal tax"
+    reference: "42000"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/federal_tax_less_credits_line_143
+        - ca-qc/advanced_canada_workers_benefit_line_144
+        - ca-qc/special_taxes_line_145
+    blank:
+      ca-qc/advanced_canada_workers_benefit_line_144: "0"
+      ca-qc/special_taxes_line_145: "0"
+    produces:
+      output: ca-qc/net_federal_tax_line_146

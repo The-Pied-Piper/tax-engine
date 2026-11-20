@@ -1,0 +1,19 @@
+# Schedule P (TP-1.D.P-V, 2025-12) Part F "Tax credits respecting the work premium", line 90: "Add
+# lines 88 and 89. Carry the result to line 456 of your return." Line 88 ("Amount from line 60") and
+# line 89 ("Amount from line 87") are copies and have no step: the step reads line 60 and line 87
+# directly. One core/sum, rounded half-up to the cent (`ca-qc/cent_rounding`), titled as printed.
+form:
+  name: ca-qc/schedule_p
+capabilities:
+  - name: core/sum
+    title: "Tax credits respecting the work premium"
+    reference: "90"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/schedule_p_supplement_line_60
+        - ca-qc/schedule_p_work_premium_line_87
+    produces:
+      output: ca-qc/schedule_p_tax_credits_line_90
