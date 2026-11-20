@@ -1082,8 +1082,8 @@ half-up to the cent. One core/multiply_by_rate (`tp1_schedule_k_line_81.yaml`)."
 SCHEDULE_K_COLUMN_CONSTANT_LINE_82 = AmountKind.declare(
     CATALOG, "schedule_k_column_constant_line_82", non_negative=True
 )
-"""Schedule K line 82, "+ 82 | 000 00 | 392 00": the printed constant of the column that line 48 falls
-in (0.00 and 392.00), taken as printed. One core/bracket_column_tax_at_start
+"""Schedule K line 82, "+ 82 | 000 00 | 392 00": the printed constant of the column that line 48
+falls in (0.00 and 392.00), taken as printed. One core/bracket_column_tax_at_start
 (`tp1_schedule_k_line_82.yaml`)."""
 
 SCHEDULE_K_COLUMN_PREMIUM_LINE_83 = AmountKind.declare(
@@ -1096,7 +1096,7 @@ this figure is above 766 for a line 48 over about $8,180."""
 SCHEDULE_K_PREMIUM_LINE_84 = AmountKind.declare(
     CATALOG, "schedule_k_premium_line_84", non_negative=True
 )
-"""Premium, Schedule K line 84 "Amount from line 83 of column A or B, as applicable", with the printed
-maximum of $766 ("is more than $14,669, enter $766 on line 84"): the lesser of line 83 and
+"""Premium, Schedule K line 84 "Amount from line 83 of column A or B, as applicable", with the
+printed maximum of $766 ("is more than $14,669, enter $766 on line 84"): the lesser of line 83 and
 `ca-qc/schedule_k_line_84_maximum`. One core/capped_amount (`tp1_schedule_k_line_84.yaml`). The
 form exports it; the lines after it read it."""
