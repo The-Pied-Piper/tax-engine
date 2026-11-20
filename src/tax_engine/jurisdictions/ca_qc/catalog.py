@@ -155,3 +155,9 @@ SCHEDULE_P_SCHEDULE_L_INCOME_LINE_14 = AmountKind.declare(
 )
 """Schedule P line 14, "Total of lines 22 through 26.1 of Schedule L. Do not include losses.", as
 the caller gives it; blank when the caller has none, and line 18 reads it as 0."""
+
+SCHEDULE_P_WEPP_PAYMENTS_LINE_15 = AmountKind.declare(
+    CATALOG, "schedule_p_wepp_payments_line_15", non_negative=True
+)
+"""Schedule P line 15, "Wage Earner Protection Program (WEPP) payments (line 154, point 12)", as
+the caller gives it; blank when the caller has none, and line 18 reads it as 0."""
