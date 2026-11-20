@@ -638,3 +638,10 @@ FEDERAL_EXCESS_TIMES_COLUMN_RATE_LINE_75 = AmountKind.declare(
 """5005-R Step 5 Part A line 75 "Line 73 multiplied by the percentage from line 74 =": line 73
 times line 74, rounded half-up to the cent. Produced by one core/multiply_by_rate
 (`t1_tax_and_credits_line_75.yaml`)."""
+
+FEDERAL_TAX_AT_COLUMN_START_LINE_76 = AmountKind.declare(
+    CATALOG, "federal_tax_at_column_start_line_76", non_negative=True
+)
+"""5005-R Step 5 Part A line 76 (0.00, 8,319.38, 20,081.25, 36,495.57 or 58,399.85): the printed
+constant of the column that line 71 falls in, taken as printed. Produced by one
+core/bracket_column_tax_at_start (`t1_tax_and_credits_line_76.yaml`)."""
