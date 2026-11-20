@@ -163,10 +163,9 @@ T1_AT_70000: dict[str, tuple[AmountKind, str]] = {
 # Lines that are the form's printed bound or rate, not a computed dollar figure.
 PRINTED_AS_IS = {"71", "73"}
 
-# The 31260 sum "line 1 plus line 2", the line 96 sum "Add lines 86 to 95", and the lines 45000
-# (EI overpayment) and 45300 (Canada workers benefit) they read from T2204 and Schedule 6: the
-# forms print no rounding rule for them, so they are carried exactly (a zero prints as 0).
-CARRIED_EXACT = {"31260 income", "31260", "96", "45000", "45300"}
+# The 31260 sum "line 1 plus line 2": the form prints no rounding rule for it, so it is carried
+# exactly.
+CARRIED_EXACT = {"31260 income", "31260"}
 
 # The return's line 167 and the payroll figures the calculator reads, by salary, with sources:
 # (salary, line 167, federal tax after credits, Ontario tax line 90, CPP base + enhanced, EI, CWB).

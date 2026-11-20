@@ -3,8 +3,7 @@
 Form text (CRA 5005-R page 6, https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5005-r/5005-r-25e.txt):
 "Line 100: Add lines 87 to 99. =". Lines 87, 89, 91 and 96 are steps; lines 88, 90, 92 to 95 and 97
 to 99 are optional inputs, each left blank by a salary-only filer and read as 0. One core/sum,
-carried exactly (the form prints no rounding rule). The hand figures at 20,000, 70,000 and
-200,000 add the printed lines:
+rounded half-up to the cent. The hand figures at 20,000, 70,000 and 200,000 add the printed lines:
 891.00 + 262.00 + 98.80 + 1,471.00, 3,591.00 + 860.67 + 345.80 + 1,471.00 and 3,661.20 + 860.67 +
 484.12 + 1,471.00 (not a CRA example), which with line 85 give the line 117 figures of the ticket.
 """
@@ -86,17 +85,9 @@ def test_the_trace_adds_the_lines_in_form_order(take_home_service: TakeHomeServi
 
     assert (
         '"Lines 87 to 93 added up" (CA$4797.47) plus "Lines 94 to 99 added up" (CA$1471.00) '
-        "gives CA$6268.47 (not rounded)."
+        "gives CA$6268.47 (rounded to the nearest cent)."
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
 
 
 def test_the_line_100_kind_is_non_negative() -> None:
     assert non_negative(CREDITS_LINE_100) is True
-
-
-def test_a_sub_cent_line_100_is_carried_unrounded(take_home_service: TakeHomeService) -> None:
-    # The form prints no rounding rule for line 100, so the sum is carried exactly: 6,268.47 plus
-    # a 0.004 optional line is 6,268.474, not 6,268.47.
-    _, sheet = sheets(take_home_service, "70000", (OPTIONAL_LINES[0], "0.004"))
-
-    assert sheet.get(CREDITS_LINE_100).value == D("6268.474")

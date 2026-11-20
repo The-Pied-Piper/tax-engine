@@ -25,9 +25,6 @@ import pytest
 
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.parameters.rounding import NO_ROUNDING
-from tax_engine.domain.trace import SubtractedNotBelowZeroLine
-from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.canada_workers_benefit import CWB_BENEFIT_LINE_28
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME, OTHER_EMPLOYMENT_INCOME
 from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService
@@ -88,9 +85,7 @@ FORM = dedent("""\
     """)
 
 
-def schedule_6(
-    take_home_service: TakeHomeService, salary: str, other: str | None = None
-) -> Worksheet:
+def line_28(take_home_service: TakeHomeService, salary: str, other: str | None = None) -> Decimal:
     artifacts = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if other is not None:
         artifacts.append(Artifact(OTHER_EMPLOYMENT_INCOME, D(other)))
@@ -98,11 +93,7 @@ def schedule_6(
         JurisdictionCode("CA-ON"), 2025, *artifacts
     )
     (sheet,) = worksheets["ca/schedule_6"]
-    return sheet
-
-
-def line_28(take_home_service: TakeHomeService, salary: str, other: str | None = None) -> Decimal:
-    return schedule_6(take_home_service, salary, other).get(CWB_BENEFIT_LINE_28).value
+    return sheet.get(CWB_BENEFIT_LINE_28).value
 
 
 @pytest.mark.parametrize(
@@ -120,6 +111,7 @@ def test_schedule_6_line_28_is_line_22_minus_line_27_not_below_zero(
 ) -> None:
     value = line_28(take_home_service, salary)
     assert value == D(expected)
+    assert value.as_tuple().exponent == -2
 
 
 @pytest.mark.parametrize("salary", ["40000", "70000"])
@@ -131,6 +123,7 @@ def test_schedule_6_line_28_is_zero_when_line_27_exceeds_line_22(
     # negative amount on T1 line 45300.
     value = line_28(take_home_service, salary)
     assert value == D("0.00")
+    assert value.as_tuple().exponent == -2
 
 
 def test_schedule_6_line_28_counts_other_employment_income(
@@ -142,16 +135,4 @@ def test_schedule_6_line_28_counts_other_employment_income(
     # leaves line 28 at $1,633.00.
     value = line_28(take_home_service, "20000", "10000")
     assert value == D("1186.00")
-
-
-def test_the_line_28_step_is_carried_exactly(take_home_service: TakeHomeService) -> None:
-    # 5000-S6 prints no rounding rule for line 28, so the difference carries no rounding.
-    sheet = schedule_6(take_home_service, "30000")
-
-    (line,) = [
-        line
-        for line in sheet.trace
-        if isinstance(line, SubtractedNotBelowZeroLine) and line.output == CWB_BENEFIT_LINE_28
-    ]
-
-    assert line.rounding == NO_ROUNDING
+    assert value.as_tuple().exponent == -2

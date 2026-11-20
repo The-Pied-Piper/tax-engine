@@ -4,8 +4,8 @@
 #
 # Line 22 is `ca/cwb_basic_benefit_line_22` (from schedule_6_line_22.yaml) and line 27 is
 # `ca/cwb_reduction_line_27` (from schedule_6_line_27.yaml). The result is not below zero. The form
-# prints no rounding rule, so the step is carried exactly (`ca/exact_rounding`), as on lines 18 and
-# 25. Step 3 is not completed (no disability tax credit), so line 28 goes straight to
+# prints no rounding rule, so the cent rounding (`ca/cent_rounding`) is the project's choice, as on
+# lines 18 and 25. Step 3 is not completed (no disability tax credit), so line 28 goes straight to
 # T1 line 45300.
 form:
   name: ca/schedule_6
@@ -14,7 +14,7 @@ capabilities:
     reference: "28"
     unit: ca/cad
     params:
-      rounding: ca/exact_rounding
+      rounding: ca/cent_rounding
     consumes:
       amount: ca/cwb_basic_benefit_line_22
       less: ca/cwb_reduction_line_27

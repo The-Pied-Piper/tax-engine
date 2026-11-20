@@ -94,6 +94,7 @@ def test_schedule_6_line_5_is_line_1_to_4_sum_with_only_line_1(
 ) -> None:
     value = line_5(take_home_service, salary)
     assert value == D(expected)
+    assert value.as_tuple().exponent == -2
 
 
 def test_schedule_6_line_5_includes_other_employment_income(
@@ -103,11 +104,4 @@ def test_schedule_6_line_5_includes_other_employment_income(
     # $75,000.50.
     value = line_5(take_home_service, "70000", "5000.50")
     assert value == D("75000.50")
-
-
-def test_a_sub_cent_line_1_is_carried_unrounded_to_line_5(
-    take_home_service: TakeHomeService,
-) -> None:
-    # 5000-S6 prints no rounding rule for line 5, so the sum is carried exactly: 70000 plus
-    # 0.004 is 70000.004, not 70000.00.
-    assert line_5(take_home_service, "70000", "0.004") == D("70000.004")
+    assert value.as_tuple().exponent == -2

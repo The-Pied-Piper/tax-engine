@@ -4,8 +4,8 @@
 # Line 23 is "Adjusted family net income from line 15", a copy of line 15, so step 1 reads line 15
 # directly (`ca/adjusted_family_net_income`, from schedule_6_line_15.yaml), not a copy of it. Line 24
 # is the reduction threshold (`ca/cwb_reduction_threshold`, from schedule_6_line_24.yaml). The
-# result is not below zero. The form prints no rounding rule, so the step is carried exactly
-# (`ca/exact_rounding`), as on line 18.
+# result is not below zero. The form prints no rounding rule, so the cent rounding
+# (`ca/cent_rounding`) is the project's choice, as on line 18.
 form:
   name: ca/schedule_6
 capabilities:
@@ -13,7 +13,7 @@ capabilities:
     reference: "25"
     unit: ca/cad
     params:
-      rounding: ca/exact_rounding
+      rounding: ca/cent_rounding
     consumes:
       amount: ca/adjusted_family_net_income
       less: ca/cwb_reduction_threshold

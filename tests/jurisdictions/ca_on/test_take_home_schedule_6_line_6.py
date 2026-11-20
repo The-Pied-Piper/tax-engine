@@ -96,11 +96,4 @@ def test_schedule_6_line_6_is_line_5_column_1_alone(
 ) -> None:
     value = line_6(take_home_service, salary)
     assert value == D(expected)
-
-
-def test_a_sub_cent_line_5_is_carried_unrounded_to_line_6(
-    take_home_service: TakeHomeService,
-) -> None:
-    # 5000-S6 prints no rounding rule for line 6, so the sum is carried exactly, not rounded to the
-    # cent.
-    assert line_6(take_home_service, "70000.004") == D("70000.004")
+    assert value.as_tuple().exponent == -2

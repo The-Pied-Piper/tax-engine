@@ -108,6 +108,7 @@ def test_schedule_6_line_13_is_line_12_column_1_alone(
 
     value = sheet.get(bundled_kinds().kind(LINE_13)).value
     assert value == D(expected)
+    assert value.as_tuple().exponent == -2
 
 
 @pytest.mark.parametrize(
@@ -126,6 +127,7 @@ def test_schedule_6_line_13_follows_line_12_when_line_11_is_given(
 
     value = sheet.get(bundled_kinds().kind(LINE_13)).value
     assert value == D(expected)
+    assert value.as_tuple().exponent == -2
 
 
 def test_the_line_13_kind_is_registered_and_non_negative() -> None:
@@ -135,11 +137,3 @@ def test_the_line_13_kind_is_registered_and_non_negative() -> None:
 
     assert kind.identifier == LINE_13
     assert non_negative(kind) is True
-
-
-def test_a_sub_cent_line_13_is_carried_unrounded(take_home_service: TakeHomeService) -> None:
-    # 5000-S6 prints no rounding rule for line 13, so the sum is carried exactly: 19,835.00 less
-    # 0.001 on line 11 is 19,834.999, not 19,835.00.
-    sheet = _schedule_6(take_home_service, "20000.004", "0.001")
-
-    assert sheet.get(bundled_kinds().kind(LINE_13)).value == D("19834.999")

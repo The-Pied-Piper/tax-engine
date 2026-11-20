@@ -22,9 +22,6 @@ import pytest
 
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.parameters.rounding import NO_ROUNDING
-from tax_engine.domain.trace import SubtractedNotBelowZeroLine
-from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.canada_workers_benefit import (
     CWB_NET_INCOME_OVER_BASE_AMOUNT,
 )
@@ -80,16 +77,12 @@ FORM = dedent("""\
     """)
 
 
-def schedule_6(take_home_service: TakeHomeService, salary: str) -> Worksheet:
+def line_25(take_home_service: TakeHomeService, salary: str) -> Decimal:
     worksheets = take_home_service(HEADER, FORM, *PARTS).compute(
         JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
     )
     (sheet,) = worksheets["ca/schedule_6"]
-    return sheet
-
-
-def line_25(take_home_service: TakeHomeService, salary: str) -> Decimal:
-    return schedule_6(take_home_service, salary).get(CWB_NET_INCOME_OVER_BASE_AMOUNT).value
+    return sheet.get(CWB_NET_INCOME_OVER_BASE_AMOUNT).value
 
 
 @pytest.mark.parametrize(
@@ -107,17 +100,4 @@ def test_schedule_6_line_25_is_line_15_less_the_base_amount_not_below_zero(
 ) -> None:
     value = line_25(take_home_service, salary)
     assert value == D(expected)
-
-
-def test_the_line_25_step_is_carried_exactly(take_home_service: TakeHomeService) -> None:
-    # 5000-S6 prints no rounding rule for line 25, so the difference carries no rounding.
-    sheet = schedule_6(take_home_service, "30000")
-
-    (line,) = [
-        line
-        for line in sheet.trace
-        if isinstance(line, SubtractedNotBelowZeroLine)
-        and line.output == CWB_NET_INCOME_OVER_BASE_AMOUNT
-    ]
-
-    assert line.rounding == NO_ROUNDING
+    assert value.as_tuple().exponent == -2

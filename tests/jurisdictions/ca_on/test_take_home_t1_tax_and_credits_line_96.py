@@ -11,8 +11,8 @@ The part has three steps. Lines 86 and 88 are pure reads of other forms, so each
 `core/record_total` over the record list the other form exports (the engine lets one form read
 another form's exports only as record lists): the Schedule 8 record list
 `ca/schedule_8.schedule_8_cpp_base_contributions_on_return` and the T2204 record list
-`ca/t2204.t2204_line_16`. Line 96 is a `core/sum`, carried exactly (the form prints no rounding
-rule), of the two new kinds and the line 31260 amount. All three new kinds are non-negative amounts.
+`ca/t2204.t2204_line_16`. Line 96 is a `core/sum`, rounded to the cent, of the two new kinds and
+the line 31260 amount. All three new kinds are non-negative amounts.
 
 The real parts are composed beside a test-local header: the salary, the real Schedule 8 and T2204
 parts (their headers export the two read kinds), the real T1 taxable-income parts, the real 31260
@@ -181,7 +181,7 @@ def test_the_line_96_kinds_are_registered_and_non_negative(kind_identifier: str)
     assert non_negative(kind) is True
 
 
-def test_line_96_names_its_three_parts_and_that_it_is_not_rounded_in_the_trace(
+def test_line_96_names_its_three_parts_and_its_rounding_in_the_trace(
     take_home_service: TakeHomeService,
 ) -> None:
     sheet, _, _ = _sheets(take_home_service, "70000")
@@ -189,14 +189,5 @@ def test_line_96_names_its_three_parts_and_that_it_is_not_rounded_in_the_trace(
     assert (
         "Line 30800 (CA$3291.75) plus line 31200 (CA$1077.48) plus line 31260 (CA$1471.00) "
         "gives CA$5840.23 "
-        "(not rounded)."
+        "(rounded to the nearest cent)."
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
-
-
-def test_a_sub_cent_line_96_is_carried_unrounded(take_home_service: TakeHomeService) -> None:
-    # The form prints no rounding rule for line 96, so the sum is carried exactly. At 1,000.004
-    # the CPP and EI are 0 and the Canada employment amount is the salary itself, so line 96 is
-    # 1,000.004, not 1,000.00.
-    sheet, _, _ = _sheets(take_home_service, "1000.004")
-
-    assert _value(sheet, LINE_96) == D("1000.004")

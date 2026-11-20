@@ -8,9 +8,7 @@
 # is (the project's rule: round only where the form says to). The cent rule of `ca/cent_rounding`
 # does not apply to them. The same holds for the sums and products the forms print with no rounding
 # rule: T1 line 31260 "line 1 plus line 2" (5006-r-25e.txt), Schedule 6 line 1 (5000-s6-25e.txt) and
-# T2204 line 1 (t2204-25e.pdf, note (1)), T1 line 96 "Add lines 86 to 95." (5006-r-25e.txt),
-# Schedule 6 lines 5, 6, 10, 12, 13, 15, 18, 25 and 28 (5000-s6-25e.txt) and T2204 lines 6, 7, 8, 13
-# and 15 (t2204-25e.pdf).
+# T2204 line 1 (t2204-25e.pdf, note (1)).
 family: ca/exact_rounding
 tax_year: 2026
 kind: rounding_only

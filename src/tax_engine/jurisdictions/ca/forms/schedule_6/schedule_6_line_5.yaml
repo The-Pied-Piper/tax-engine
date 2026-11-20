@@ -12,7 +12,7 @@ capabilities:
     reference: "5"
     unit: ca/cad
     params:
-      rounding: ca/exact_rounding
+      rounding: ca/cent_rounding
     consumes:
       parts: [ca/cwb_employment_income]
     produces:

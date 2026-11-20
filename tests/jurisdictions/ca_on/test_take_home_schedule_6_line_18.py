@@ -101,9 +101,4 @@ def test_schedule_6_line_18_is_line_6_less_the_base_amount_not_below_zero(
 ) -> None:
     value = line_18(take_home_service, salary)
     assert value == D(expected)
-
-
-def test_a_sub_cent_line_18_is_carried_unrounded(take_home_service: TakeHomeService) -> None:
-    # 5000-S6 prints no rounding rule for line 18, so the difference is carried exactly: 70000.004
-    # less the 3000 base amount is 67000.004, not 67000.00.
-    assert line_18(take_home_service, "70000.004") == D("67000.004")
+    assert value.as_tuple().exponent == -2

@@ -280,12 +280,16 @@ def test_a_negative_salary_is_refused(take_home_service: TakeHomeService) -> Non
 
 
 @pytest.mark.parametrize("salary", ["70000", "20000"])
-def test_the_ei_overpayment_is_a_plain_zero_at_salary_only(
+def test_the_ei_overpayment_prints_cents_at_70000_and_20000(
     take_home_service: TakeHomeService, salary: str
 ) -> None:
-    # The EI overpayment (times count, a count of 0 at salary only) is 0: T2204 prints no
-    # rounding rule for line 15, so it carries no rounding and is not printed as 0.00.
-    assert salary_only(take_home_service, salary).get(EI_OVERPAYMENT).value == 0
+    # The EI overpayment (times count, a count of 0 at salary only) takes the cent rule of its
+    # rounding dataset. Lines 1 and 3 do not: the form prints no rounding for them, so they carry
+    # the salary exactly (see the next tests).
+    value = salary_only(take_home_service, salary).get(EI_OVERPAYMENT).value
+
+    assert str(value) == "0.00"
+    assert value.as_tuple().exponent == -2
 
 
 @pytest.mark.parametrize("salary", ["70000", "20000"])
