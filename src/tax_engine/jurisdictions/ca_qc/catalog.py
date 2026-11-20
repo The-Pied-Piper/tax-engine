@@ -603,3 +603,10 @@ Taxable income =": net income (line 58, a copy of line 57) less the deductions f
 69, an optional input read as 0), not below zero. Produced by one core/subtract_not_below_zero
 (`t1_taxable_income_line_26000.yaml`); the federal bracket columns (line 71 onward) start from
 it."""
+
+FEDERAL_TAXABLE_INCOME_LINE_71 = AmountKind.declare(
+    CATALOG, "federal_taxable_income_line_71", non_negative=True
+)
+"""5005-R Step 5 Part A line 71 "Amount from line 26000": taxable income read from the T1 taxable
+income export (`ca-qc/taxable_income`, line 70 and line 26000) into Part A, Federal tax on
+taxable income. Produced by one core/record_total (`t1_tax_and_credits_line_71.yaml`)."""
