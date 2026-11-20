@@ -159,3 +159,11 @@ NET_INCOME = AmountKind.declare(CATALOG, "net_income", non_negative=True)
 Net income =": net income before adjustments (line 55) less the social benefits repayment (line
 56), not below zero. Produced by one core/subtract_not_below_zero
 (`t1_taxable_income_line_23600.yaml`); Step 4 starts from it."""
+
+NET_INCOME_SIGNED = AmountKind.declare(CATALOG, "net_income_signed")
+"""Net income before its floor, 5005-R line 57 and line 23600 "Line 55 minus line 56 (if negative,
+enter "0")" as the shared Schedule 6 line 7 reads it: "Net income from line 23600 of the return (or
+the amount you would have entered if the instructions on line 23600 said "if negative, show in
+brackets")". Net income before adjustments (line 55) less the social benefits repayment (line 56),
+signed. Produced by one core/subtract (`t1_taxable_income_line_23600_signed.yaml`) and supplied to
+the neutral name `ca/t1_taxable_income.net_income_signed` by the form declaration."""

@@ -71,6 +71,8 @@ def test_line_57_is_line_55_less_line_56(take_home_service: TakeHomeService) -> 
     assert net_income(take_home_service, "69335.00", "1000") == D("68335.00")
 
 
-def test_a_negative_difference_is_entered_as_zero(take_home_service: TakeHomeService) -> None:
-    assert net_income(take_home_service, "1000.00", "5000") == D("0.00")
-    assert net_income(take_home_service, "-765.00", None) == D("0.00")
+@pytest.mark.parametrize(("line_55", "line_56"), [("1000.00", "5000"), ("-765.00", None)])
+def test_a_negative_difference_is_entered_as_zero(
+    take_home_service: TakeHomeService, line_55: str, line_56: str | None
+) -> None:
+    assert net_income(take_home_service, line_55, line_56) == D("0.00")
