@@ -1776,3 +1776,9 @@ TP1_TOTALS_LINE_432 = AmountKind.declare(CATALOG, "tp1_totals_line_432", non_neg
 """TP-1 page 5 "Amount from line 432": a copy of the tax form's line 432, the income tax after
 credits. Produced by one core/record_total over the tax form's export (`tp1_totals_line_432.yaml`).
 """
+
+TP1_HEALTH_SERVICES_FUND_LINE_446 = AmountKind.declare(
+    CATALOG, "tp1_health_services_fund_line_446", non_negative=True
+)
+"""TP-1 line 446 "Contribution to the health services fund": Schedule F line 82, a copy. Produced by
+one core/record_total over Schedule F's export (`tp1_totals_line_446.yaml`)."""

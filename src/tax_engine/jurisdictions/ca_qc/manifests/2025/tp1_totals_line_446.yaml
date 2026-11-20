@@ -1,0 +1,17 @@
+# TP-1 (2025) line 446: "Contribution to the health services fund. Complete Schedule F. + 446" (page
+# 5). The figure is Schedule F line 82 ("Carry the result to line 446 of your return"), which that
+# form exports; another form reads an export only as a record list
+# (`ca-qc/tp1_schedule_f.tp1_schedule_f_contribution_line_82`), so the one step is core/record_total
+# over those records (as line 406 reads the credits form). Line 82 is always computed (0.00 for a
+# salary-only filer), so there is no blank rule.
+form:
+  name: ca-qc/tp1_totals
+capabilities:
+  - name: core/record_total
+    title: "Contribution to the health services fund"
+    reference: "446"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp1_schedule_f.tp1_schedule_f_contribution_line_82
+    produces:
+      output: ca-qc/tp1_health_services_fund_line_446
