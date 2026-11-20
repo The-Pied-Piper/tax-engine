@@ -1,0 +1,18 @@
+# Schedule P (TP-1.D.P-V, 2025-12) Part D line 60: "Multiply line 56 by line 59. Carry the result to
+# line 88 on page 2." One core/times_count: the amount for each month (line 56, the printed 200.00)
+# times the months of line 59, rounded half-up to the cent (`ca-qc/cent_rounding`). The form prints
+# no label for the line, so the step is untitled. The take-home's months are all 0, so the line is
+# 0.00.
+form:
+  name: ca-qc/schedule_p
+capabilities:
+  - name: core/times_count
+    reference: "60"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/schedule_p_work_premium_supplement_amount_line_56
+      count: ca-qc/schedule_p_lesser_months_line_59
+    produces:
+      output: ca-qc/schedule_p_supplement_line_60
