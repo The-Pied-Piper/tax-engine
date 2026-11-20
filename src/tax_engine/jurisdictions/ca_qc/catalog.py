@@ -887,6 +887,21 @@ negative, enter "0") =": the medical expenses of line 111 (a blank read as 0) le
 of line 113, not below zero, from one core/subtract_not_below_zero
 (`t1_tax_and_credits_line_114.yaml`); line 116 adds line 115 to it."""
 
+MEDICAL_EXPENSES_OTHER_DEPENDANTS_LINE_115 = AmountKind.declare(
+    CATALOG, "medical_expenses_other_dependants_line_115", non_negative=True
+)
+"""Allowable amount of medical expenses for other dependants, 5005-R line 115 and line 33199: an
+optional input a salary-only caller does not give; the line that reads it takes a blank as 0
+(`t1_tax_and_credits_line_33199_inputs.yaml`)."""
+
+MEDICAL_EXPENSES_LINE_116 = AmountKind.declare(
+    CATALOG, "medical_expenses_line_116", non_negative=True
+)
+"""Medical expenses for the credit, 5005-R line 116 and line 33200 "Line 114 plus line 115 =":
+the medical expenses over the threshold plus the allowable medical expenses for other dependants
+(line 115, a blank read as 0), from one core/sum (`t1_tax_and_credits_line_33200.yaml`); line 117
+adds it to line 110."""
+
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
 Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line
