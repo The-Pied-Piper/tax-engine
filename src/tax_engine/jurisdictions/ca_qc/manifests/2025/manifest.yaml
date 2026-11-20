@@ -25,4 +25,7 @@ imports:
     datasets:
       ca/cpp_line_11_base_contribution: ca-qc/qpp_line_11_base_contribution
   - ca/schedule_6
-  - ca/t2204
+  # Quebec's EI rate is 1.31% (T2204 line 11, 5005-S10 line 19): the shared T2204 reads the Quebec dataset.
+  - form: ca/t2204
+    datasets:
+      ca/ei_premium: ca-qc/ei_premium
