@@ -1,0 +1,11 @@
+# Quebec Schedule 6 (5005-S6, 2025 edition) line 19: Line 19: If you had an eligible dependant but did not have an eligible spouse, enter 20%. If you had both an eligible spouse and an eligible dependant, enter 23.9%. If not, enter 37.3%.
+# The filer takes the "If not" branch (no eligible spouse, no eligible dependant): the printed 37.3% for a filer with no eligible spouse and no eligible dependant, held as a rate of 0.373, so line
+# 19 has no step of its own; line 20 ("Line 18 multiplied by the percentage from line 19") applies it to line 18. It replaces `ca/cwb_rate` in the Quebec manifest's import of
+# Schedule 6. A dollars-and-cents figure, so it rounds half-up to the cent.
+family: ca-qc/cwb_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5005-s6/5005-s6-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.373"

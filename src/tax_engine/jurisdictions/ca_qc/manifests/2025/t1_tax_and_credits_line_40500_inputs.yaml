@@ -1,0 +1,13 @@
+# 5005-R (2025) line 133 input a salary-only caller does not give.
+# Line 133 and line 40500: "Federal foreign tax credit (complete Form T2209)" (page 7). A salary-only filer has no such amount, so it is an
+# optional input left blank; the sum or difference that reads it takes a blank as 0.
+form:
+  name: ca-qc/t1_tax_and_credits
+inputs:
+  - name: ca-qc/federal_foreign_tax_credit_line_133
+    title: "Federal foreign tax credit"
+    reference: "40500"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Federal foreign tax credit (complete Form T2209)"

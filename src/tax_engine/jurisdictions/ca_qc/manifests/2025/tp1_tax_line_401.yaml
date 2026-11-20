@@ -1,0 +1,17 @@
+# TP-1 (2025) line 401: "Income tax on taxable income. Complete Work Chart 401. ... 401" (page 4,
+# Income tax and contributions). The figure is Work Chart 401 line 8 ("Carry the result to line 401
+# of your return"), which the chart's own form exports; another form reads an export only as a
+# record list (`ca-qc/work_chart_401.work_chart_401_income_tax_line_8`), so the one step is
+# core/record_total over those records (as line 201 reads Work Chart 201 line 9). The chart's line 8
+# is always computed, so there is no blank rule.
+form:
+  name: ca-qc/tp1_tax
+capabilities:
+  - name: core/record_total
+    title: "Income tax on taxable income"
+    reference: "401"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/work_chart_401.work_chart_401_income_tax_line_8
+    produces:
+      output: ca-qc/tp1_income_tax_on_taxable_income_line_401
