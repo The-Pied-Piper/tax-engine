@@ -596,3 +596,10 @@ less, enter $16,129. If the amount on line 23600 is $253,414 or more, enter $14,
 the Federal Worksheet to calculate the amount to enter. (maximum $16,129)": Federal Worksheet
 5000-D1 lines 1 to 11, one ca/tapered_amount step over the dataset `ca/basic_personal_amount`
 (`t1_tax_and_credits_line_30000.yaml`); the credit sums read it."""
+
+TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
+"""Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
+Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line
+69, an optional input read as 0), not below zero. Produced by one core/subtract_not_below_zero
+(`t1_taxable_income_line_26000.yaml`); the federal bracket columns (line 71 onward) start from
+it."""

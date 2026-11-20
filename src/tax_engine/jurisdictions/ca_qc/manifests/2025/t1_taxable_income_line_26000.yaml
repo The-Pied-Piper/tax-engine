@@ -1,0 +1,20 @@
+# 5005-R (2025) line 70 and line 26000. The form prints: "Line 70 and line 26000: Line 58 minus line 69
+# (if negative, enter "0") Taxable income =" (page 5). Line 58 is a copy of line 57 ("Enter the amount
+# from line 57 of the previous page"), so the step reads net income (`ca-qc/net_income`) directly, and
+# line 69 is the optional input (t1_taxable_income_line_25700_inputs.yaml, default "0"). One step:
+# core/subtract_not_below_zero, so a deduction above net income gives "0", as the form says, rounded
+# through `ca-qc/cent_rounding`.
+form:
+  name: ca-qc/t1_taxable_income
+capabilities:
+  - name: core/subtract_not_below_zero
+    title: "Taxable income"
+    reference: "26000"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/net_income
+      less: ca/deductions_from_net_income
+    produces:
+      output: ca-qc/taxable_income

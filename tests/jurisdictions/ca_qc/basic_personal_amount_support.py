@@ -31,9 +31,14 @@ STEP_3_PARTS = (
     "t1_taxable_income_line_23600.yaml",
     "t1_taxable_income_line_23600_signed.yaml",
 )
+STEP_4_PARTS = (
+    "t1_taxable_income_line_25700_inputs.yaml",
+    "t1_taxable_income_line_26000.yaml",
+)
 PARTS = (
     "t1_taxable_income.yaml",
     *STEP_3_PARTS,
+    *STEP_4_PARTS,
     "t1_tax_and_credits_line_30000_line_3.yaml",
     "t1_tax_and_credits_line_30000.yaml",
 )
