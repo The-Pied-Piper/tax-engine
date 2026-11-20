@@ -1,0 +1,19 @@
+# TP-1 (2025) line 397: "Multiply line 397.1 by 10%. Tax credit for union, professional or other
+# dues = 397" (page 4, Non-refundable tax credits). The printed 10% is the `ca-qc/tp1_line_397_rate`
+# dataset, so the line is one core/apply_rate, rounded half-up to the cent by the dataset's rule.
+# Line 397.1 is an optional input; a blank is read as 0.
+form:
+  name: ca-qc/tp1_credits
+capabilities:
+  - name: core/apply_rate
+    title: "Tax credit for union, professional or other dues"
+    reference: "397"
+    unit: ca/cad
+    params:
+      rate: ca-qc/tp1_line_397_rate
+    consumes:
+      base: ca-qc/tp1_union_dues_line_397_1
+    blank:
+      base: "0"
+    produces:
+      output: ca-qc/tp1_union_dues_credit_line_397

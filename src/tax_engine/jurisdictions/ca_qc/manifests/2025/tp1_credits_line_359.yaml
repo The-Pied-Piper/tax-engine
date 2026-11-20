@@ -1,0 +1,19 @@
+# TP-1 (2025) line 359: "Subtract line 358 from line 350. = 359" (page 4, Non-refundable tax credits;
+# the line has no title). One step, core/subtract; the form prints no floor, so the result is not
+# floored. Line 358 is an optional input; a blank is read as 0. Rounded half-up to the cent through
+# ca-qc/cent_rounding.
+form:
+  name: ca-qc/tp1_credits
+capabilities:
+  - name: core/subtract
+    reference: "359"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/tp1_basic_personal_amount_line_350
+      less: ca-qc/tp1_income_replacement_adjustment_line_358
+    blank:
+      less: "0"
+    produces:
+      output: ca-qc/tp1_line_359
