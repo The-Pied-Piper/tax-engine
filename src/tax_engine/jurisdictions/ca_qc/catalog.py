@@ -1040,6 +1040,11 @@ FEDERAL_CREDITS_AND_CARRYOVERS_LINE_129 = AmountKind.declare(CATALOG, "federal_c
 plus the federal dividend tax credit (line 127) and the minimum tax carryover (line 128), each
 blank read as 0 from one core/sum (`t1_tax_and_credits_line_129.yaml`)."""
 
+BASIC_FEDERAL_TAX_LINE_130 = AmountKind.declare(CATALOG, "basic_federal_tax_line_130", non_negative=True)
+"""Basic federal tax, 5005-R line 130 and line 42900 "Line 125 minus line 129 (if negative, enter
+"0") Basic federal tax =": line 125 less line 129, not below zero from one
+core/subtract_not_below_zero (`t1_tax_and_credits_line_42900.yaml`)."""
+
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
 Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line
