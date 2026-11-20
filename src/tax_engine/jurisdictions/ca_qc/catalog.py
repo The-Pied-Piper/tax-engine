@@ -2159,3 +2159,8 @@ FEDERAL_TOTAL_PAYABLE_LESS_ABATEMENT_RETURN = AmountKind.declare(
 )
 """Quebec return summary: 5005-R line 43500 less line 44000, signed (no floor). One core/subtract
 (`return.yaml`)."""
+
+TOTAL_PAYABLE = AmountKind.declare(CATALOG, "total_payable")
+"""Quebec return summary: the total payable of both returns, 5005-R line 43500 less line 44000 plus
+TP-1 line 450. A `ca-qc` kind, because `ca/total_payable` is the federal kind the shared forms
+declare. One core/sum (`return.yaml`); the second output of the return."""

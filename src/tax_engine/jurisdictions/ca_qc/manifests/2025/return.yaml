@@ -79,3 +79,13 @@ capabilities:
       less: ca-qc/refundable_quebec_abatement_return
     produces:
       output: ca-qc/federal_total_payable_less_abatement_return
+  - name: core/sum
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/federal_total_payable_less_abatement_return
+        - ca-qc/tp1_income_tax_and_contributions_return
+    produces:
+      output: ca-qc/total_payable
