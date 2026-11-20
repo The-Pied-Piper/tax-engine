@@ -1,0 +1,17 @@
+# 5005-R (2025) line 119 and line 33800. The form prints: "Line 118: Federal non-refundable tax credit
+# rate 14.5%" and "Line 119 and line 33800: Line 117 multiplied by the percentage from line 118 =" (page
+# 6). Line 118 is a printed rate, held in the shared `ca/credit_rate` dataset, so it has no step. One
+# step: core/apply_rate of line 117 by it, as the federal line 33800 is built; the dataset's rule
+# rounds the product half-up to the cent.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/apply_rate
+    reference: "33800"
+    unit: ca/cad
+    params:
+      rate: ca/credit_rate
+    consumes:
+      base: ca-qc/credit_amounts_line_117
+    produces:
+      output: ca-qc/credits_at_credit_rate_line_119

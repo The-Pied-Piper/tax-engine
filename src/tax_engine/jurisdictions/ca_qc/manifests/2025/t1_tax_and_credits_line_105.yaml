@@ -1,0 +1,23 @@
+# 5005-R (2025) line 105. The form prints: "Line 105: Add lines 102 to 104. =" (page 6). Line 102 is the
+# credits step before it; lines 103 (line 31600, disability amount for self) and 104 (line 31800,
+# disability amount transferred from a dependant) are optional inputs, a blank for a salary-only filer
+# and read as 0. One step: core/sum in form line order, rounded half-up to the cent through
+# `ca-qc/cent_rounding`.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/sum
+    reference: "105"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/credits_line_102
+        - ca-qc/disability_amount_self_line_103
+        - ca-qc/disability_amount_transferred_line_104
+    blank:
+      ca-qc/disability_amount_self_line_103: "0"
+      ca-qc/disability_amount_transferred_line_104: "0"
+    produces:
+      output: ca-qc/credits_line_105

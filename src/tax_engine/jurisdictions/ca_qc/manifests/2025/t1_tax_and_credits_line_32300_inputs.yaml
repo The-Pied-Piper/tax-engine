@@ -1,0 +1,13 @@
+# 5005-R (2025) line 107 input a salary-only caller does not give.
+# Line 107 and line 32300: "Your federal tuition amount (complete Schedule 11)" (page 6). A salary-only filer has no such amount, so it is an
+# optional input left blank; the sum or difference that reads it takes a blank as 0.
+form:
+  name: ca-qc/t1_tax_and_credits
+inputs:
+  - name: ca-qc/federal_tuition_amount_line_107
+    title: "Your federal tuition amount"
+    reference: "32300"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Your federal tuition amount (complete Schedule 11)"
