@@ -114,8 +114,9 @@ salary, plus the optional income of lines 105 through 164, rounded half-up to th
 
 WORK_CHART_201_LINE_105 = AmountKind.declare(CATALOG, "tp1_line_105", non_negative=True)
 """TP-1 line 105, as Work Chart 201 line 1 reads it ("lines 101, 107 and, if positive, 105"): an
-optional input, blank when the caller has none and read as 0. It is taken as non-negative, so the
-chart's "if positive" test on it never changes the figure."""
+optional input, blank when the caller has none and read as 0. A negative figure is refused, which
+is the engine's rule for an input, so the chart's "if positive" test never has a negative to
+skip."""
 
 WORK_CHART_201_LINE_107 = AmountKind.declare(CATALOG, "tp1_line_107", non_negative=True)
 """TP-1 line 107, as Work Chart 201 line 1 reads it: an optional input, blank when the caller has
@@ -126,16 +127,17 @@ WORK_CHART_201_RL1_BOX_211 = AmountKind.declare(CATALOG, "rl1_slip_box_211", non
 RL-1 slip"): an optional input, blank when the caller has none and read as 0."""
 
 WORK_CHART_201_ELIGIBLE_WORK_INCOME_BEFORE_BOX_211 = AmountKind.declare(
-    CATALOG, "work_chart_201_eligible_work_income_before_box_211", non_negative=True
+    CATALOG, "work_chart_201_eligible_work_income_before_box_211"
 )
 """Work Chart 201 line 1, the sum before box 211 is taken off: lines 101, 107 and 105. Not a printed
 line; the first operation of line 1."""
 
 WORK_CHART_201_ELIGIBLE_WORK_INCOME_LINE_1 = AmountKind.declare(
-    CATALOG, "work_chart_201_eligible_work_income_line_1", non_negative=True
+    CATALOG, "work_chart_201_eligible_work_income_line_1"
 )
 """Work Chart 201 line 1 "Eligible work income": lines 101, 107 and, if positive, 105, minus the
-amount from box 211 of the RL-1 slip, not below zero, rounded half-up to the cent."""
+amount from box 211 of the RL-1 slip, rounded half-up to the cent. The form prints no floor, so it
+is signed."""
 
 WORK_CHART_201_WORK_INCENTIVE_AMOUNTS_LINE_2 = AmountKind.declare(
     CATALOG, "work_chart_201_work_incentive_amounts_line_2", non_negative=True
@@ -162,10 +164,9 @@ WORK_CHART_201_NET_BUSINESS_INCOME_LINE_5 = AmountKind.declare(
 enter 0": an optional input, taken as the form takes it, so never negative; blank when the caller
 has none and read as 0."""
 
-WORK_CHART_201_TOTAL_LINE_6 = AmountKind.declare(
-    CATALOG, "work_chart_201_total_line_6", non_negative=True
-)
-"""Work Chart 201 line 6 "Add lines 1 through 5": the sum, rounded half-up to the cent."""
+WORK_CHART_201_TOTAL_LINE_6 = AmountKind.declare(CATALOG, "work_chart_201_total_line_6")
+"""Work Chart 201 line 6 "Add lines 1 through 5": the sum, rounded half-up to the cent. Signed, as
+line 1 is."""
 
 WORK_CHART_201_LINE_293_AMOUNT_LINE_7 = AmountKind.declare(
     CATALOG, "work_chart_201_line_293_amount_line_7", non_negative=True

@@ -2,8 +2,9 @@
 # positive, 105, minus the amount from box 211 of your RL-1 slip)". Two steps for the one printed
 # line, as NL428 line 98 has a sum before its capped step. Line 101 is the salary
 # (`ca/employment_income`); lines 107 and 105 and box 211 are optional inputs, read as 0 when blank.
-# Line 105 is "if positive": it is an input that cannot be negative, so the test never changes it.
-# The result is not below zero and is rounded half-up to the cent (`ca-qc/cent_rounding`).
+# Line 105 is "if positive": the engine refuses a negative input, so the test never has a negative
+# to skip. The form prints no floor on the subtraction, so the result is signed (core/subtract, as
+# T1 line 23400) and is rounded half-up to the cent (`ca-qc/cent_rounding`).
 form:
   name: ca-qc/work_chart_201
 capabilities:
@@ -18,7 +19,7 @@ capabilities:
       ca-qc/tp1_line_105: "0"
     produces:
       output: ca-qc/work_chart_201_eligible_work_income_before_box_211
-  - name: core/subtract_not_below_zero
+  - name: core/subtract
     title: "Eligible work income"
     reference: "1"
     unit: ca/cad

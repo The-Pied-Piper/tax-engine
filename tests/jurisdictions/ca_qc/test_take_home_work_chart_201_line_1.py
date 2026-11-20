@@ -4,8 +4,8 @@ take-home manifest parts wire it.
 Form text: "1. Eligible work income (lines 101, 107 and, if positive, 105, minus the amount from box
 211 of your RL-1 slip)." Line 101 is the salary; lines 107 and 105 and box 211 are optional inputs,
 read as 0 when left out. A salary-only filer's line 1 is the salary ($20,000, $70,000, $200,000).
-The sum is `core/sum`, the subtraction `core/subtract_not_below_zero`, both rounded half-up to the
-cent by `ca-qc/cent_rounding`.
+The sum is `core/sum`, the subtraction `core/subtract` (the form prints no floor, so box 211 above
+the income gives a negative line 1), both rounded half-up to the cent by `ca-qc/cent_rounding`.
 """
 
 from __future__ import annotations
@@ -93,10 +93,10 @@ def test_box_211_is_taken_off(take_home_service: TakeHomeService) -> None:
     assert str(sheet.get(WORK_CHART_201_ELIGIBLE_WORK_INCOME_LINE_1).value) == "67499.90"
 
 
-def test_box_211_above_the_income_leaves_zero(take_home_service: TakeHomeService) -> None:
+def test_the_form_prints_no_floor_on_line_1(take_home_service: TakeHomeService) -> None:
     sheet = chart(take_home_service, "1000", box_211="1500")
 
-    assert str(sheet.get(WORK_CHART_201_ELIGIBLE_WORK_INCOME_LINE_1).value) == "0.00"
+    assert str(sheet.get(WORK_CHART_201_ELIGIBLE_WORK_INCOME_LINE_1).value) == "-500.00"
 
 
 def test_the_sum_is_rounded_half_up_to_the_cent(take_home_service: TakeHomeService) -> None:
