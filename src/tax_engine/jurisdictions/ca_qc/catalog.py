@@ -1827,3 +1827,64 @@ TP1_WORK_PREMIUM_TAX_CREDITS_LINE_456 = AmountKind.declare(
 )
 """TP-1 line 456 "Tax credits respecting the work premium": Schedule P line 90, a copy. Produced by
 one core/record_total over Schedule P's export (`tp1_totals_line_456.yaml`)."""
+
+TP1_LINE_451_2 = AmountKind.declare(CATALOG, "tp1_line_451_2", non_negative=True)
+"""TP-1 line 451.2, one of the lines that line 465 adds ("Add lines 451.2 through 463"): Quebec
+income tax withheld at source after line 451.1. One optional input a salary-only caller does not
+give; line 465 reads a blank as 0 (`tp1_totals_line_465_inputs.yaml`)."""
+
+TP1_LINE_451_3 = AmountKind.declare(CATALOG, "tp1_line_451_3", non_negative=True)
+"""TP-1 line 451.3, one of the lines that line 465 adds ("Add lines 451.2 through 463"): Quebec
+income tax withholding transferred by the spouse. One optional input a salary-only caller does not
+give; line 465 reads a blank as 0 (`tp1_totals_line_465_inputs.yaml`)."""
+
+TP1_LINE_452 = AmountKind.declare(CATALOG, "tp1_line_452", non_negative=True)
+"""TP-1 line 452, one of the lines that line 465 adds ("Add lines 451.2 through 463"): the QPP or
+CPP overpayment. One optional input a salary-only caller does not give; line 465 reads a blank as 0
+(`tp1_totals_line_465_inputs.yaml`)."""
+
+TP1_LINE_453 = AmountKind.declare(CATALOG, "tp1_line_453", non_negative=True)
+"""TP-1 line 453, one of the lines that line 465 adds ("Add lines 451.2 through 463"): income tax
+paid in instalments. One optional input a salary-only caller does not give; line 465 reads a blank
+as 0 (`tp1_totals_line_465_inputs.yaml`)."""
+
+TP1_LINE_454 = AmountKind.declare(CATALOG, "tp1_line_454", non_negative=True)
+"""TP-1 line 454, one of the lines that line 465 adds ("Add lines 451.2 through 463"): the
+transferable portion of the income tax withheld for another province. One optional input a
+salary-only caller does not give; line 465 reads a blank as 0 (`tp1_totals_line_465_inputs.yaml`).
+"""
+
+TP1_LINE_455 = AmountKind.declare(CATALOG, "tp1_line_455", non_negative=True)
+"""TP-1 line 455, one of the lines that line 465 adds ("Add lines 451.2 through 463"): the tax
+credit for childcare expenses. One optional input a salary-only caller does not give; line 465 reads
+a blank as 0 (`tp1_totals_line_465_inputs.yaml`)."""
+
+TP1_LINE_457 = AmountKind.declare(CATALOG, "tp1_line_457", non_negative=True)
+"""TP-1 line 457, one of the lines that line 465 adds ("Add lines 451.2 through 463"): the QPIP
+overpayment. One optional input a salary-only caller does not give; line 465 reads a blank as 0
+(`tp1_totals_line_465_inputs.yaml`)."""
+
+TP1_LINE_458 = AmountKind.declare(CATALOG, "tp1_line_458", non_negative=True)
+"""TP-1 line 458, one of the lines that line 465 adds ("Add lines 451.2 through 463"): the tax
+credit for home-support services for seniors. One optional input a salary-only caller does not give;
+line 465 reads a blank as 0 (`tp1_totals_line_465_inputs.yaml`)."""
+
+TP1_LINE_459 = AmountKind.declare(CATALOG, "tp1_line_459", non_negative=True)
+"""TP-1 line 459, one of the lines that line 465 adds ("Add lines 451.2 through 463"): the QST
+rebate for employees and partners. One optional input a salary-only caller does not give; line 465
+reads a blank as 0 (`tp1_totals_line_465_inputs.yaml`)."""
+
+TP1_LINE_460 = AmountKind.declare(CATALOG, "tp1_line_460", non_negative=True)
+"""TP-1 line 460, one of the lines that line 465 adds ("Add lines 451.2 through 463"): the tax
+shield. One optional input a salary-only caller does not give; line 465 reads a blank as 0
+(`tp1_totals_line_465_inputs.yaml`)."""
+
+TP1_LINE_462 = AmountKind.declare(CATALOG, "tp1_line_462", non_negative=True)
+"""TP-1 line 462, one of the lines that line 465 adds ("Add lines 451.2 through 463"): other
+credits. One optional input a salary-only caller does not give; line 465 reads a blank as 0
+(`tp1_totals_line_465_inputs.yaml`)."""
+
+TP1_LINE_463 = AmountKind.declare(CATALOG, "tp1_line_463", non_negative=True)
+"""TP-1 line 463, one of the lines that line 465 adds ("Add lines 451.2 through 463"): the senior
+assistance tax credit. One optional input a salary-only caller does not give; line 465 reads a blank
+as 0 (`tp1_totals_line_465_inputs.yaml`)."""
