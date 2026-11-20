@@ -14,40 +14,28 @@ the Quebec package list of `support.py`.
 from __future__ import annotations
 
 from decimal import Decimal
-from pathlib import Path
 from textwrap import dedent
 from typing import Any
 
 import pytest
 import yaml
 
-import tax_engine.jurisdictions.ca_qc
-from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InputAboveBoundError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import CountKind
-from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_qc.catalog import (
     SCHEDULE_K_GROUP_PLAN_COVERED_CHECKED_LINE_50,
     SCHEDULE_K_GROUP_PLAN_COVERED_LINE_50,
 )
-from tests.jurisdictions.ca_qc.support import (
-    quebec_capabilities,
-    quebec_kinds,
-    quebec_packages,
-    quebec_parameter_parsers,
-    quebec_units,
-)
+from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
+from tests.jurisdictions.ca_qc.support import quebec_kinds
 from tests.kinds import non_negative
 
 D = Decimal
-QC_PARTS = Path(tax_engine.jurisdictions.ca_qc.__file__).parent / "manifests" / "2025"
-INPUT_PART = QC_PARTS / "tp1_schedule_k_line_50_input.yaml"
-LINE_PART = QC_PARTS / "tp1_schedule_k_line_50.yaml"
+INPUT_PART = QUEBEC_PARTS / "tp1_schedule_k_line_50_input.yaml"
+LINE_PART = QUEBEC_PARTS / "tp1_schedule_k_line_50.yaml"
 FORM = "ca-qc/tp1_schedule_k"
 CHECKED = "ca-qc/schedule_k_group_plan_covered_checked_line_50"
 HEADER = dedent("""\
@@ -71,49 +59,38 @@ FORM_PART = dedent(f"""\
     """)
 
 
-def _service(tmp_path: Path) -> TaxComputationService:
-    folder = tmp_path / "manifests" / "2025"
-    folder.mkdir(parents=True)
-    (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
-    (folder / "01_form.yaml").write_text(FORM_PART, encoding="utf-8")
-    for number, found in enumerate((INPUT_PART, LINE_PART), start=2):
-        (folder / f"{number:02d}_{found.name}").write_text(
-            found.read_text(encoding="utf-8"), encoding="utf-8"
-        )
-    roots = {**quebec_packages().roots(), Namespace("ca-qc"): tmp_path}
-    return TaxComputationService(
-        YamlJurisdictionSource(roots, quebec_kinds(), quebec_units()),
-        YamlParameterSource(quebec_packages().roots(), quebec_parameter_parsers(), quebec_units()),
-        quebec_capabilities(),
-    )
-
-
-def _line_50(tmp_path: Path, salary: str, answer: int | None = None) -> int:
+def _line_50(take_home_service: TakeHomeService, salary: str, answer: int | None = None) -> int:
     given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if answer is not None:
         given.append(Artifact(SCHEDULE_K_GROUP_PLAN_COVERED_LINE_50, answer))
-    worksheets = _service(tmp_path).compute(JurisdictionCode("CA-QC"), 2025, *given)
+    worksheets = take_home_service(
+        HEADER, FORM_PART, *(part.name for part in (INPUT_PART, LINE_PART))
+    ).compute(JurisdictionCode("CA-QC"), 2025, *given)
     (sheet,) = worksheets[FORM]
     return sheet.get(SCHEDULE_K_GROUP_PLAN_COVERED_CHECKED_LINE_50).value
 
 
 @pytest.mark.parametrize("salary", ["20000", "70000", "200000"])
-def test_line_50_is_0_when_the_caller_gives_no_answer(tmp_path: Path, salary: str) -> None:
-    assert _line_50(tmp_path, salary) == 0
+def test_line_50_is_0_when_the_caller_gives_no_answer(
+    take_home_service: TakeHomeService, salary: str
+) -> None:
+    assert _line_50(take_home_service, salary) == 0
 
 
 @pytest.mark.parametrize("salary", ["20000", "70000", "200000"])
-def test_line_50_is_1_when_the_answer_is_yes(tmp_path: Path, salary: str) -> None:
-    assert _line_50(tmp_path, salary, 1) == 1
+def test_line_50_is_1_when_the_answer_is_yes(
+    take_home_service: TakeHomeService, salary: str
+) -> None:
+    assert _line_50(take_home_service, salary, 1) == 1
 
 
-def test_line_50_is_0_when_the_answer_is_no(tmp_path: Path) -> None:
-    assert _line_50(tmp_path, "70000", 0) == 0
+def test_line_50_is_0_when_the_answer_is_no(take_home_service: TakeHomeService) -> None:
+    assert _line_50(take_home_service, "70000", 0) == 0
 
 
-def test_an_answer_above_1_is_refused(tmp_path: Path) -> None:
+def test_an_answer_above_1_is_refused(take_home_service: TakeHomeService) -> None:
     with pytest.raises(InputAboveBoundError):
-        _line_50(tmp_path, "70000", 2)
+        _line_50(take_home_service, "70000", 2)
 
 
 def test_the_input_part_declares_the_optional_answer_with_the_default_0() -> None:
