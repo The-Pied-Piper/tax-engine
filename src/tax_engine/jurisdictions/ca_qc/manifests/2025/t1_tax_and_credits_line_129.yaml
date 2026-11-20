@@ -1,0 +1,22 @@
+# 5005-R (2025) line 129. The form prints: "Line 129: Add lines 126 to 128. =" (page 7). Line 126 is
+# "Amount from line 35000", a pure copy of line 122, so line 122 is read directly and is not a step.
+# Lines 127 and 128 are optional inputs, a blank for a salary-only filer and read as 0. One step:
+# core/sum, rounded half-up to the cent through `ca-qc/cent_rounding`.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/sum
+    reference: "129"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/non_refundable_tax_credits_line_122
+        - ca-qc/federal_dividend_tax_credit_line_127
+        - ca-qc/minimum_tax_carryover_line_128
+    blank:
+      ca-qc/federal_dividend_tax_credit_line_127: "0"
+      ca-qc/minimum_tax_carryover_line_128: "0"
+    produces:
+      output: ca-qc/federal_credits_and_carryovers_line_129
