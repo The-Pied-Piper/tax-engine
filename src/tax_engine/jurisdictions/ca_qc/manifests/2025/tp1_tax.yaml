@@ -4,7 +4,7 @@
 # 399), each as that form's export. Export: line 432, the figure that line 450 reads.
 form:
   name: ca-qc/tp1_tax
-  title: "Income tax and contributions"
+  title: "Income Tax Return"
   required: true
   exports:
     - ca-qc/tp1_line_432
