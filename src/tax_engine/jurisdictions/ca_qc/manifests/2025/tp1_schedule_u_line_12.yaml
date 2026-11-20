@@ -1,6 +1,6 @@
 # Schedule U (Revenu Quebec TP-1.D.U-V, 2025-12), Part B, line 12: "Pensionable salary or wages
 # (QPP) (line 98.1 of your return) (maximum $71,300)." The line takes the TP-1 line 98.1 figure
-# (`ca-qc/tp1_pensionable_salary_line_98_1`), and its printed "(maximum $71,300)" is the `ca-
+# (`ca-qc/schedule_u_line_98_1_for_line_12`, read from the TP-1 income form), and its printed "(maximum $71,300)" is the `ca-
 # qc/schedule_u_line_12_maximum` dataset figure, so the step is `core/capped_amount`, as Schedule 8
 # line 7 does for its printed maximum. Line 98.1 runs to $81,200 (the additional maximum pensionable
 # earnings), so above $71,300 the line is the printed maximum.
@@ -14,6 +14,6 @@ capabilities:
     params:
       cap: ca-qc/schedule_u_line_12_maximum
     consumes:
-      base: ca-qc/tp1_pensionable_salary_line_98_1
+      base: ca-qc/schedule_u_line_98_1_for_line_12
     produces:
       output: ca-qc/schedule_u_pensionable_salary_line_12
