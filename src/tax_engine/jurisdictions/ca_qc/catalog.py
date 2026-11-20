@@ -257,6 +257,9 @@ SCHEDULE_U_LINE_19 = AmountKind.declare(CATALOG, "schedule_u_line_19", non_negat
 """Schedule U line 19 "Subtract line 18.9 from line 18.8. If the result is negative, enter 0": the
 additional maximum pensionable earnings less the maximum pensionable earnings, not below 0."""
 
+SCHEDULE_U_LINE_20 = AmountKind.declare(CATALOG, "schedule_u_line_20", non_negative=True)
+"""Schedule U line 20 "Amount from line 18.7 or line 19, whichever is less"."""
+
 T1_LINE_21 = AmountKind.declare(CATALOG, "t1_line_21")
 """Add lines 1 to 20, 5005-R line 21 "Line 21: Add lines 1 to 20.": the employment income of line 1
 (`ca/employment_income`) and line 2 (`ca/other_employment_income`); lines 3 to 20 are not built (the
