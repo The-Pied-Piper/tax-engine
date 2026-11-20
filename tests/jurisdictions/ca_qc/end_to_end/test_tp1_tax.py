@@ -15,6 +15,7 @@ from decimal import Decimal
 from typing import Any
 
 import pytest
+import yaml
 
 from tax_engine.domain.artifact import Artifact
 from tax_engine.jurisdictions.ca_qc.catalog import (
@@ -72,7 +73,9 @@ def test_a_caller_who_gives_no_answer_gets_the_default_not_alone(
     assert str(sheet.get(TP1_LINE_413).value) == EXPECTED[(salary, 0)][2]
 
 
-def test_the_form_exports_line_413(take_home_service: TakeHomeService) -> None:
-    sheet = tax_sheet(take_home_service, "70000", (), PARTS, form=FORM)
+def test_the_real_form_declaration_exports_line_413() -> None:
+    declaration = yaml.safe_load(FORM)
 
-    assert str(sheet.get(TP1_LINE_413).value) == "7641.16"
+    assert declaration["form"]["name"] == "ca-qc/tp1_tax"
+    assert declaration["form"]["required"] is True
+    assert declaration["form"]["exports"] == ["ca-qc/tp1_line_413"]

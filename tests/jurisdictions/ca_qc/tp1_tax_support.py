@@ -8,6 +8,7 @@ the net income tests) and the tax parts under test. The salary is $20,000, $70,0
 
 from __future__ import annotations
 
+from decimal import Decimal
 from typing import Any
 
 from tax_engine.domain.artifact import Artifact
@@ -33,8 +34,8 @@ from tests.jurisdictions.ca_qc.tp1_net_income_support import (
     UPSTREAM_98_2,
     UPSTREAM_PARTS,
 )
-from tests.jurisdictions.ca_qc.work_chart_401_support import D
 
+D = Decimal
 FORM = "ca-qc/tp1_tax"
 # The real chart declaration (it exports line 8) and its parts, over the net income chain.
 CHART_PARTS = (
