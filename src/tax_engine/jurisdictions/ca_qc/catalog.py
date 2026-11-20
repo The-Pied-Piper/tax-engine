@@ -1175,6 +1175,13 @@ EI_PREMIUMS_SELF_EMPLOYED_LINE_148 = AmountKind.declare(
 148 and line 42120: an optional input a salary-only caller does not give; the line that reads it
 takes a blank as 0 (`t1_tax_and_credits_line_42120_inputs.yaml`)."""
 
+SOCIAL_BENEFITS_REPAYMENT_LINE_149 = AmountKind.declare(
+    CATALOG, "social_benefits_repayment_line_149", non_negative=True
+)
+"""Social benefits repayment, 5005-R line 149 and line 42200 "Social benefits repayment (amount from
+line 23500)": a copy of line 56, read from the T1 taxable-income export by one core/record_total
+(`t1_tax_and_credits_line_42200.yaml`)."""
+
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
 Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line
