@@ -10,7 +10,10 @@
 #   - Part C: the basic federal tax of line 130 and line 42900 (`ca-qc/basic_federal_tax_line_130`),
 #     which the Quebec abatement on line 156 reads, and the federal tax of line 138 and line 40600
 #     (`ca-qc/federal_tax_line_138`), which line 143 reads. Lines 123 and 126 are copies and have no
-#     step. Later tickets of Step 5 to Step 9 add the exports the return summary reads.
+#     step.
+#   - Step 6: the total payable of line 151 and line 43500 (`ca-qc/total_payable_line_151`), the
+#     federal figure the return summary reads. Line 147 is a copy and has no step. Later tickets of Step 5 to
+#     Step 9 add the exports the return summary reads.
 form:
   name: ca-qc/t1_tax_and_credits
   title: "T1 Income Tax and Benefit Return"
@@ -21,4 +24,5 @@ form:
     - ca-qc/non_refundable_tax_credits_line_122
     - ca-qc/basic_federal_tax_line_130
     - ca-qc/federal_tax_line_138
+    - ca-qc/total_payable_line_151
 capabilities: []
