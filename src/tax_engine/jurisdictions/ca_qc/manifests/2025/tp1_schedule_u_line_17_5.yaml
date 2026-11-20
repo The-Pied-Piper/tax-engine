@@ -1,6 +1,6 @@
 # Schedule U (Revenu Quebec TP-1.D.U-V, 2025-12), Part B, line 17.5: "Add lines 17.3 and 17.4."
-# Line 17.4 is "Additional contribution to the QPP (line 98.2 of your return)", a copy of `ca-
-# qc/tp1_additional_qpp_contribution_line_98_2` with no step of its own. The step is `core/sum`,
+# Line 17.4 is "Additional contribution to the QPP (line 98.2 of your return)", read by its
+# own step (`ca-qc/schedule_u_line_17_4`). The step is `core/sum`,
 # rounded to the cent by `ca-qc/cent_rounding`. The form prints no label for the line, so the step
 # is untitled.
 form:
@@ -14,6 +14,6 @@ capabilities:
     consumes:
       parts:
         - ca-qc/schedule_u_line_17_3
-        - ca-qc/tp1_additional_qpp_contribution_line_98_2
+        - ca-qc/schedule_u_line_17_4
     produces:
       output: ca-qc/schedule_u_line_17_5
