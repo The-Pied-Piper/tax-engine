@@ -669,3 +669,11 @@ SCHEDULE_K_INCOME_LINE_40 = AmountKind.declare(
 )
 """Income, Schedule K line 40 "Add lines 36 and 37": the net income of the return and of the spouse,
 added by one core/sum (`tp1_schedule_k_line_40.yaml`), line 37 read as 0 when left blank."""
+
+SCHEDULE_K_AMOUNT_LINE_41 = AmountKind.declare(
+    CATALOG, "schedule_k_amount_line_41", non_negative=True
+)
+"""Amount, Schedule K line 41 "If you had a spouse on December 31, 2025, enter $32,240; otherwise,
+enter $19,890": the printed $19,890 of a filer without a spouse, a dataset figure
+(`ca-qc/schedule_k_line_41_amount`) claimed whole by one core/credit_amount
+(`tp1_schedule_k_line_41.yaml`)."""
