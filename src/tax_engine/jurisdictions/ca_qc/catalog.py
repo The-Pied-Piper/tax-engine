@@ -114,15 +114,15 @@ salary, plus the optional income of lines 105 through 164, rounded half-up to th
 
 WORK_CHART_201_LINE_105 = AmountKind.declare(CATALOG, "tp1_line_105", non_negative=True)
 """TP-1 line 105, as Work Chart 201 line 1 reads it ("lines 101, 107 and, if positive, 105"): an
-optional input, blank when the caller has none and read as 0. A negative figure is refused, which
-is the engine's rule for an input, so the chart's "if positive" test never has a negative to
-skip."""
+optional input, blank when the caller has none and read as 0. A negative figure is refused:
+the owner decided on the ticket (19 Nov 2026) that the chart's "if positive" test on line 105 is
+moot, with no step for it."""
 
-WORK_CHART_201_LINE_107 = AmountKind.declare(CATALOG, "tp1_line_107", non_negative=True)
+WORK_CHART_201_LINE_107 = AmountKind.declare(CATALOG, "tp1_line_107")
 """TP-1 line 107, as Work Chart 201 line 1 reads it: an optional input, blank when the caller has
 none and read as 0."""
 
-WORK_CHART_201_RL1_BOX_211 = AmountKind.declare(CATALOG, "rl1_slip_box_211", non_negative=True)
+WORK_CHART_201_RL1_BOX_211 = AmountKind.declare(CATALOG, "rl1_slip_box_211")
 """RL-1 slip box 211, taken off by Work Chart 201 line 1 ("minus the amount from box 211 of your
 RL-1 slip"): an optional input, blank when the caller has none and read as 0."""
 
@@ -140,19 +140,19 @@ amount from box 211 of the RL-1 slip, rounded half-up to the cent. The form prin
 is signed."""
 
 WORK_CHART_201_WORK_INCENTIVE_AMOUNTS_LINE_2 = AmountKind.declare(
-    CATALOG, "work_chart_201_work_incentive_amounts_line_2", non_negative=True
+    CATALOG, "work_chart_201_work_incentive_amounts_line_2"
 )
 """Work Chart 201 line 2 "Amounts received under a work-incentive project": an optional input,
 blank when the caller has none and read as 0."""
 
 WORK_CHART_201_RESEARCH_GRANTS_LINE_3 = AmountKind.declare(
-    CATALOG, "work_chart_201_research_grants_line_3", non_negative=True
+    CATALOG, "work_chart_201_research_grants_line_3"
 )
 """Work Chart 201 line 3 "Net amount of research grants": an optional input, blank when the caller
 has none and read as 0."""
 
 WORK_CHART_201_WEPP_PAYMENTS_LINE_4 = AmountKind.declare(
-    CATALOG, "work_chart_201_wepp_payments_line_4", non_negative=True
+    CATALOG, "work_chart_201_wepp_payments_line_4"
 )
 """Work Chart 201 line 4 "Wage Earner Protection Program (WEPP) payments": an optional input, blank
 when the caller has none and read as 0."""
@@ -169,7 +169,7 @@ WORK_CHART_201_TOTAL_LINE_6 = AmountKind.declare(CATALOG, "work_chart_201_total_
 line 1 is."""
 
 WORK_CHART_201_LINE_293_AMOUNT_LINE_7 = AmountKind.declare(
-    CATALOG, "work_chart_201_line_293_amount_line_7", non_negative=True
+    CATALOG, "work_chart_201_line_293_amount_line_7"
 )
 """Work Chart 201 line 7 "Amount included in the income above and entitling you to a deduction on
 line 293": an optional input, blank when the caller has none and read as 0."""

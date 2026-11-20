@@ -2,8 +2,8 @@
 # positive, 105, minus the amount from box 211 of your RL-1 slip)". Two steps for the one printed
 # line, as NL428 line 98 has a sum before its capped step. Line 101 is the salary
 # (`ca/employment_income`); lines 107 and 105 and box 211 are optional inputs, read as 0 when blank.
-# Line 105 is "if positive": the engine refuses a negative input, so the test never has a negative
-# to skip. The form prints no floor on the subtraction, so the result is signed (core/subtract, as
+# Line 105 is "if positive": the owner decided on the ticket (19 Nov 2026) that the test is moot,
+# so line 105 is an input that refuses a negative and the step has no test for it. The form prints no floor on the subtraction, so the result is signed (core/subtract, as
 # T1 line 23400) and is rounded half-up to the cent (`ca-qc/cent_rounding`).
 form:
   name: ca-qc/work_chart_201
