@@ -6,6 +6,7 @@ form:
   name: ca-on/on428_a
 capabilities:
   - name: core/record_total
+    title: "Amount from line 10100 of your return"
     reference: "1"
     unit: ca/cad
     consumes:
@@ -13,6 +14,7 @@ capabilities:
     produces:
       output: ca-on/on428_a_employment_income_line_1
   - name: core/record_total
+    title: "Amount from line 10400 of your return"
     reference: "2"
     unit: ca/cad
     consumes:
