@@ -20,14 +20,19 @@ import tax_engine.jurisdictions.ca_qc
 import tax_engine.jurisdictions.core
 from tax_engine.adapters.outbound.jurisdiction_packages import JurisdictionPackages
 from tax_engine.adapters.outbound.parameter_parser import ParameterParserRegistry
+from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact, ArtifactRegistry
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import AmountKind
+from tax_engine.domain.manifest import InputDeclaration
+from tax_engine.domain.registry import Namespace
 from tax_engine.domain.unit import UnitRegistry
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca.catalog.refund import T2204_PREMIUMS_DEDUCTED_GIVEN
+from tests.manifest_support import inputs_without_form
 
 
 @cache
@@ -113,3 +118,81 @@ def t2204_worksheet(
         starting.append(Artifact(T2204_PREMIUMS_DEDUCTED_GIVEN, Decimal(given)))
     (sheet,) = service.compute(JurisdictionCode("CA-QC"), 2025, *starting)["ca/t2204"]
     return sheet
+
+
+SCHEDULE_P_HEADER = dedent("""\
+    jurisdiction: CA-QC
+    version: 1
+    valid_from_tax_year: 2025
+    outputs:
+      - ca/employment_income
+    """)
+TP1_PARTS = (
+    "salary.yaml",
+    "tp1_income.yaml",
+    "tp1_income_line_97_input.yaml",
+    "tp1_income_line_97.yaml",
+    "tp1_income_line_98_input.yaml",
+    "tp1_income_line_98.yaml",
+    "tp1_income_line_98_1_input.yaml",
+    "tp1_income_line_98_1.yaml",
+    "tp1_income_line_98_2_input.yaml",
+    "tp1_income_line_98_2.yaml",
+    "tp1_income_line_199_input.yaml",
+    "tp1_income_line_199.yaml",
+)
+WORK_CHART_201_PARTS = (
+    "work_chart_201.yaml",
+    "work_chart_201_line_1_input_105.yaml",
+    "work_chart_201_line_1_input_107.yaml",
+    "work_chart_201_line_1_input_box_211.yaml",
+    "work_chart_201_line_1.yaml",
+    "work_chart_201_line_2_input.yaml",
+    "work_chart_201_line_3_input.yaml",
+    "work_chart_201_line_4_input.yaml",
+    "work_chart_201_line_5_input.yaml",
+    "work_chart_201_line_6.yaml",
+    "work_chart_201_line_7_input.yaml",
+    "work_chart_201_line_8.yaml",
+    "work_chart_201_line_9.yaml",
+)
+SCHEDULE_P_FIRST_PARTS = (
+    *TP1_PARTS,
+    *WORK_CHART_201_PARTS,
+    "schedule_p_line_10.yaml",
+)
+
+
+def schedule_p_form(*exports: str) -> str:
+    """A Schedule P form declaration that exports only the lines a test builds."""
+    lines = "".join(f"    - {export}\n" for export in exports)
+    return f"form:\n  name: ca-qc/schedule_p\n  required: true\n  exports:\n{lines}"
+
+
+def schedule_p_worksheet(
+    take_home_service: Callable[..., TaxComputationService],
+    form: str,
+    parts: tuple[str, ...],
+    salary: str,
+    *given: tuple[AmountKind, str],
+) -> Worksheet:
+    """The Schedule P worksheet of a salary, over the real TP-1 income parts and the Schedule P
+    `parts` of a test; `given` are the optional answers the test passes."""
+    starting = [Artifact(EMPLOYMENT_INCOME, Decimal(salary))]
+    starting += [Artifact(kind, Decimal(value)) for kind, value in given]
+    (sheet,) = take_home_service(SCHEDULE_P_HEADER, form, *parts).compute(
+        JurisdictionCode("CA-QC"), 2025, *starting
+    )["ca-qc/schedule_p"]
+    return sheet
+
+
+def schedule_p_input(tmp_path: Path, part: str, name: str) -> InputDeclaration:
+    """The declaration of input `name` in the Schedule P inputs `part`, loaded through the Quebec
+    manifest source under a test header (the part's `form:` header is left out, as the inputs of a
+    part joined to the default form are the caller's own)."""
+    folder = tmp_path / "manifest"
+    folder.mkdir(parents=True)
+    (folder / "header.yaml").write_text(SCHEDULE_P_HEADER + "capabilities: []\n", encoding="utf-8")
+    (folder / part).write_text(inputs_without_form(MANIFEST.parent / part), encoding="utf-8")
+    roots = {**quebec_packages().roots(), Namespace("ca-qc"): tmp_path}
+    return YamlJurisdictionSource(roots, quebec_kinds(), quebec_units()).load(folder).inputs[name]

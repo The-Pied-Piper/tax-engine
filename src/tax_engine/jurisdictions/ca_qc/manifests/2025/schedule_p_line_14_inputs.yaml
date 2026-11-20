@@ -1,0 +1,12 @@
+# Schedule P (TP-1.D.P-V, 2025-12) Part A line 14: "Total of lines 22 through 26.1 of Schedule L.
+# Do not include losses."
+# An input a salary-only caller does not give; a blank is read as 0 by line 18, which adds it.
+form:
+  name: ca-qc/schedule_p
+inputs:
+  - name: ca-qc/schedule_p_schedule_l_income_line_14
+    reference: "14"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Total of lines 22 through 26.1 of Schedule L. Do not include losses.'

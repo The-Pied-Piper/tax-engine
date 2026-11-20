@@ -1,0 +1,12 @@
+# Schedule F (2025) line 10: "Total income (line 199 of your return) plus the amount for income
+# averaging for forest producers (included on line 276 of your return)". The amount of line 276 is an
+# input a salary-only caller does not give; line 10 reads it as 0 when it is left out.
+form:
+  name: ca-qc/tp1_schedule_f
+inputs:
+  - name: ca-qc/tp1_forest_producer_averaging_line_276
+    reference: "276"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Total income (line 199 of your return) plus the amount for income averaging for forest producers (included on line 276 of your return).'

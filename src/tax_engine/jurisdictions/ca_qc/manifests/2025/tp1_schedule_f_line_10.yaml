@@ -1,0 +1,26 @@
+# Schedule F (2025) line 10: "Total income (line 199 of your return) plus the amount for income
+# averaging for forest producers (included on line 276 of your return)". Two steps: the first reads
+# TP-1 line 199, which arrives from the TP-1 income form as a record list of one, so it is
+# `core/record_total` (as ON428 line 19 reads Schedule 8); the second adds the forest averaging
+# amount of line 276, read as 0 when blank. The sum is rounded half-up to the cent.
+form:
+  name: ca-qc/tp1_schedule_f
+capabilities:
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp1_income.tp1_total_income_line_199
+    produces:
+      output: ca-qc/tp1_schedule_f_total_income_line_199
+  - name: core/sum
+    reference: "10"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        [ca-qc/tp1_schedule_f_total_income_line_199, ca-qc/tp1_forest_producer_averaging_line_276]
+    blank:
+      ca-qc/tp1_forest_producer_averaging_line_276: "0"
+    produces:
+      output: ca-qc/tp1_schedule_f_income_line_10

@@ -1,0 +1,26 @@
+# Work Chart 201 (TP-1.D.GR-V 2025-12), line 9: "x 6% Multiply line 8 by 6%. / 9. Carry the result to
+# line 201 of your return (maximum $1,420). Deduction for workers". The 6% (`ca-qc/work_chart_201_rate`)
+# and the maximum (`ca-qc/work_chart_201_maximum`) are printed figures, so they are datasets and have
+# no step. Two operations for the one printed line, as ON428-A line 5: core/apply_rate, unrounded,
+# then core/capped_amount, which rounds half-up to the cent once.
+form:
+  name: ca-qc/work_chart_201
+capabilities:
+  - name: core/apply_rate
+    unit: ca/cad
+    params:
+      rate: ca-qc/work_chart_201_rate
+    consumes:
+      base: ca-qc/work_chart_201_line_8
+    produces:
+      output: ca-qc/work_chart_201_deduction_before_maximum
+  - name: core/capped_amount
+    title: "Deduction for workers"
+    reference: "9"
+    unit: ca/cad
+    params:
+      cap: ca-qc/work_chart_201_maximum
+    consumes:
+      base: ca-qc/work_chart_201_deduction_before_maximum
+    produces:
+      output: ca-qc/work_chart_201_deduction_for_workers_line_9
