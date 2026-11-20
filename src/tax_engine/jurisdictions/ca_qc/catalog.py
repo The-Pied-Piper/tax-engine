@@ -587,6 +587,12 @@ SCHEDULE_P_SUPPLEMENT_MONTHS_LINE_58 = CountKind.declare(
 claiming the supplement to the work premium (see the guide)", as the caller gives it; blank when the
 caller has none, and line 59 reads it as 0."""
 
+SCHEDULE_P_LESSER_MONTHS_LINE_59 = CountKind.declare(
+    CATALOG, "schedule_p_lesser_months_line_59", non_negative=True
+)
+"""Schedule P Part D line 59, "Number from line 57 or line 58, whichever is less": the lesser of the
+months of line 57 and of line 58, each blank read as 0."""
+
 T1_LINE_48 = AmountKind.declare(CATALOG, "t1_line_48", non_negative=True)
 """Deduction for CPP or QPP enhanced contributions on employment income, 5005-R line 48 and line
 22215 "Deduction for CPP or QPP enhanced contributions on employment income (complete Schedule 8 or
