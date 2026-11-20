@@ -587,3 +587,8 @@ TP1_DEDUCTION_FOR_WORKERS_LINE_201 = AmountKind.declare(
 )
 """TP-1 line 201 "Deduction for workers": the result of Work Chart 201 line 9, carried to the line
 ("Carry the result to line 201 of your return"). Signed, as the chart's line 9 is."""
+
+TP1_QPP_DEDUCTION_LINE_248 = AmountKind.declare(CATALOG, "tp1_qpp_deduction_line_248")
+"""TP-1 line 248 "Deduction for QPP and CPP contributions and QPIP premiums": Schedule U line 23,
+the deduction for QPP contributions on employment income, carried to the line ("Carry the result to
+line 248 of your return"). Signed, as Schedule U line 23 is."""
