@@ -1,0 +1,13 @@
+# Provisional: no 2026 figure is published yet (the 2026 forms are not out), so the 2025 figure is
+# carried. To be replaced when Revenu Quebec and CRA publish the 2026 forms. The comment below is
+# the 2025 derivation.
+# Revenu Quebec TP-1.D.K-V (2025-12), Schedule K, Part C, line 87: "Maximum premium for 2025 ... 87
+# 755 00". The printed figure is 755.00. Taken as printed and claimed whole, never recomputed from
+# the line 84 maximum of 766; half-up to the cent changes nothing.
+family: ca-qc/schedule_k_line_87_maximum
+tax_year: 2026
+kind: credit
+sources:
+  - Revenu Quebec TP-1.D.K-V (2025-12), Schedule K, Part C
+rounding: {increment: "0.01", mode: half_up}
+amount: "755"

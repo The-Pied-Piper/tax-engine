@@ -1,0 +1,14 @@
+# Provisional: no 2026 figure is published yet (the 2026 forms are not out), so the 2025 figure is
+# carried. To be replaced when Revenu Quebec and CRA publish the 2026 forms. The comment below is
+# the 2025 derivation.
+# Revenu Quebec TP-1.D.B-V (2025-12), Schedule B, Part B, line 31: "Amount from line 18 ... x 18.75%".
+# The printed rate, 18.75%, is a rate of 0.1875, taken as printed. The product is a
+# dollars-and-cents line, so it rounds half-up to the cent, the project's choice, as the form states
+# no rounding rule.
+family: ca-qc/schedule_b_line_31_rate
+tax_year: 2026
+kind: rate
+sources:
+  - Revenu Quebec TP-1.D.B-V (2025-12), Schedule B, Part B
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.1875"

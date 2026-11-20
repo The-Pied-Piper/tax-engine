@@ -1,0 +1,14 @@
+# Provisional (2026): Additional maximum pensionable earnings 85,000. Taken from the published 2026
+# parameters (not a 2026 form); to be confirmed against the 2026 form text when it is published. The
+# comment below is the 2025 derivation, kept for the printed wording; the figures of this file
+# replace its 2025 figures.
+# Revenu Quebec TP-1.D-V (2025-12), Schedule U (TP-1.D.U-V), Part B, line 18.8. The printed figure
+# is $81,200, taken as printed. Claimed whole; half-up to the cent changes nothing.
+family: ca-qc/schedule_u_line_18_8_additional_maximum_pensionable_earnings
+tax_year: 2026
+kind: credit
+sources:
+  - Revenu Quebec TP-1.D-V (2025-12), Schedule U (TP-1.D.U-V), Part B
+  - Revenu Quebec, Maximum Pensionable Earnings and Quebec Pension Plan Contribution Rate (web page, 2026 row; CRA T4127 (Jan 2026) Tables 8.3 to 8.6, QPP rows)
+rounding: {increment: "0.01", mode: half_up}
+amount: "85000"

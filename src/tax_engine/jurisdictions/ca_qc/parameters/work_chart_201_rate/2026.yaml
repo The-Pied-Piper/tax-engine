@@ -1,0 +1,14 @@
+# Provisional: no 2026 figure is published yet (the 2026 forms are not out), so the 2025 figure is
+# carried. To be replaced when Revenu Quebec and CRA publish the 2026 forms. The comment below is
+# the 2025 derivation.
+# Quebec Work Chart 201 rate, 2025 tax year (Revenu Quebec TP-1.D.GR-V 2025-12, Work Chart "Deduction
+# for workers"): "x 6% Multiply line 8 by 6%." The printed rate, applied by line 9 to line 8. The
+# product is not rounded here: the maximum on the same line (`ca-qc/work_chart_201_maximum`) rounds
+# it once, half-up to the cent (the form states no rounding rule).
+family: ca-qc/work_chart_201_rate
+tax_year: 2026
+kind: rate
+sources:
+  - Revenu Quebec TP-1.D.GR-V (2025-12)
+rounding: none
+rate: "0.06"
