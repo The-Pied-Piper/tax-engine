@@ -40,10 +40,13 @@ PART_B = (
 )
 # The Part C lines 85 to 98 in form order; a test takes the first parts up to the line it checks.
 PART_D = (
+    "tp1_schedule_k_line_85_months_in_year.yaml",
     "tp1_schedule_k_line_85.yaml",
     "tp1_schedule_k_line_86.yaml",
     "tp1_schedule_k_line_87.yaml",
+    "tp1_schedule_k_line_88_box_60_amount.yaml",
     "tp1_schedule_k_line_88_box_60.yaml",
+    "tp1_schedule_k_line_88_box_61_amount.yaml",
     "tp1_schedule_k_line_88_box_61.yaml",
     "tp1_schedule_k_line_88.yaml",
     "tp1_schedule_k_line_89.yaml",

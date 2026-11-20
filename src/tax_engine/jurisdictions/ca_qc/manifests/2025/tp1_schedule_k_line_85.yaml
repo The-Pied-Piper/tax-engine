@@ -1,20 +1,12 @@
 # Schedule K (2025) Part C, line 85: "Amount from line 84 x Number of months entered in box 62 / 12".
-# Two steps. 1. core/credit_amount: the printed 12, the months of the year, from the
-# `ca-qc/schedule_k_months_in_year_line_85` dataset (a printed constant is a dataset figure, taken as
-# printed). It is not a line of the form, so it has no reference and no title. 2. core/apply_ratio:
-# line 84 times box 62 over that 12, formed as an exact fraction and rounded once, half-up to the cent
+# One step: core/apply_ratio, line 84 times box 62 over the printed 12 (`tp1_schedule_k_line_85_
+# months_in_year.yaml`), formed as an exact fraction and rounded once, half-up to the cent
 # (`ca-qc/cent_rounding`), as the Rounding ruling says for a printed division. Box 62 is read as a
 # plain figure of months (owner decision, 19 Nov 2026: the boxes stay amounts). The form prints no
 # label for the line, so the step is untitled.
 form:
   name: ca-qc/tp1_schedule_k
 capabilities:
-  - name: core/credit_amount
-    unit: core/months
-    params:
-      amount: ca-qc/schedule_k_months_in_year_line_85
-    produces:
-      output: ca-qc/schedule_k_months_in_year_line_85
   - name: core/apply_ratio
     reference: "85"
     unit: ca/cad

@@ -27,7 +27,7 @@ from tests.jurisdictions.ca_qc.support import quebec_kinds
 from tests.kinds import non_negative
 
 LINE = "ca-qc/schedule_k_premium_line_90"
-PARTS = PART_D[:8]
+PARTS = PART_D[:11]
 FILE = "tp1_schedule_k_line_90.yaml"
 
 

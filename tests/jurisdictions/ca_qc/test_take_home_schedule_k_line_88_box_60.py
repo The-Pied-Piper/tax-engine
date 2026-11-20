@@ -28,7 +28,7 @@ from tests.jurisdictions.ca_qc.support import quebec_kinds
 from tests.kinds import non_negative
 
 LINE = "ca-qc/schedule_k_amount_for_months_box_60"
-PARTS = PART_D[3:4]
+PARTS = PART_D[4:6]
 FILE = "tp1_schedule_k_line_88_box_60.yaml"
 
 
@@ -60,12 +60,6 @@ def test_the_part_is_as_printed() -> None:
     assert part["form"] == {"name": FORM_NAME}
     assert part["capabilities"] == [
         {
-            "name": "core/credit_amount",
-            "unit": "ca/cad",
-            "params": {"amount": "ca-qc/schedule_k_monthly_amount_box_60"},
-            "produces": {"output": "ca-qc/schedule_k_monthly_amount_box_60"},
-        },
-        {
             "name": "core/multiply",
             "unit": "ca/cad",
             "params": {"rounding": "ca-qc/cent_rounding"},
@@ -83,3 +77,20 @@ def test_the_kind_is_a_registered_non_negative_decimal_amount() -> None:
 
     assert kind is SCHEDULE_K_AMOUNT_FOR_MONTHS_BOX_60
     assert non_negative(kind)
+
+
+def test_the_printed_amount_of_box_60_is_its_own_part() -> None:
+    part = yaml.safe_load(
+        (QUEBEC_PARTS / "tp1_schedule_k_line_88_box_60_amount.yaml").read_text("utf-8")
+    )
+
+    assert list(part) == ["form", "capabilities"]
+    assert part["form"] == {"name": FORM_NAME}
+    assert part["capabilities"] == [
+        {
+            "name": "core/credit_amount",
+            "unit": "ca/cad",
+            "params": {"amount": "ca-qc/schedule_k_monthly_amount_box_60"},
+            "produces": {"output": "ca-qc/schedule_k_monthly_amount_box_60"},
+        }
+    ]
