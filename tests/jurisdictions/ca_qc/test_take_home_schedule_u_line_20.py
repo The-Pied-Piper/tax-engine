@@ -36,8 +36,6 @@ PARTS = (
     "tp1_schedule_u_line_20.yaml",
 )
 
-# The TP-1 figures that Schedule U reads, as the TP-1 income steps give them for each salary.
-
 HEADER = dedent("""\
     jurisdiction: CA-QC
     version: 1

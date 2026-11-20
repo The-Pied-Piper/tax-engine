@@ -915,8 +915,16 @@ dataset `ca/canada_employment_amount`) and line 1 plus line 2, from one core/cap
 CREDITS_LINE_100 = AmountKind.declare(CATALOG, "credits_line_100", non_negative=True)
 """Credits of lines 87 to 99, 5005-R line 100 "Line 100: Add lines 87 to 99. =": the base QPP, EI
 and PPIP lines, the Canada employment amount and the optional lines 88, 90, 92 to 95 and 97 to
-99, each blank read as 0. Produced by one core/sum (`t1_tax_and_credits_line_100.yaml`); line
+99, each blank read as 0. Produced by core/sum steps (`t1_tax_and_credits_line_100.yaml`); line
 102 reads it."""
+
+CREDITS_LINES_87_TO_93_SUBTOTAL = AmountKind.declare(CATALOG, "credits_lines_87_to_93_subtotal")
+"""Unprinted subtotal of the first parts of 5005-R line 100, so that the sentence of the line stays
+short: lines 87 to 93 added up."""
+
+CREDITS_LINES_94_TO_99_SUBTOTAL = AmountKind.declare(CATALOG, "credits_lines_94_to_99_subtotal")
+"""Unprinted subtotal of the last parts of 5005-R line 100, so that the sentence of the line stays
+short: lines 94 to 99 added up."""
 
 PENSION_INCOME_AMOUNT_LINE_101 = AmountKind.declare(
     CATALOG, "pension_income_amount_line_101", non_negative=True
@@ -1329,8 +1337,20 @@ TOTAL_CREDITS_LINE_171 = AmountKind.declare(CATALOG, "total_credits_line_171")
 """Total credits, 5005-R line 171 and line 48200 "Add lines 155, 156, and 159 to 170. Total credits
 =": the refundable Quebec abatement (line 156), the net EI overpayment (line 159) and the Canada
 workers benefit (line 161) plus the optional lines 155, 160 and 162 to 170 (each blank read as 0),
-from one core/sum (`t1_tax_and_credits_line_48200.yaml`); line 172 reads it.
+from core/sum steps (`t1_tax_and_credits_line_48200.yaml`); line 172 reads it.
 Signed, as the line prints no floor."""
+
+TOTAL_CREDITS_LINES_155_TO_161_SUBTOTAL = AmountKind.declare(
+    CATALOG, "total_credits_lines_155_to_161_subtotal"
+)
+"""Unprinted subtotal of the first parts of 5005-R line 171, so that the sentence of the line stays
+short: lines 155 to 161 added up."""
+
+TOTAL_CREDITS_LINES_162_TO_170_SUBTOTAL = AmountKind.declare(
+    CATALOG, "total_credits_lines_162_to_170_subtotal"
+)
+"""Unprinted subtotal of the last parts of 5005-R line 171, so that the sentence of the line stays
+short: lines 162 to 170 added up."""
 
 REFUND_OR_BALANCE_OWING_LINE_172 = AmountKind.declare(CATALOG, "refund_or_balance_owing_line_172")
 """Refund or balance owing, 5005-R line 172 "Line 152 minus line 171 ... Refund or balance owing =":
@@ -1727,8 +1747,20 @@ TP1_NON_REFUNDABLE_TAX_CREDITS_LINE_399 = AmountKind.declare(
 )
 """TP-1 line 399 "Add lines 377.1, 389 through 392, 395 through 397, 398 and 398.1. Non-refundable
 tax credits": the sum, rounded half-up to the cent; the optional lines read as 0 when blank. Signed,
-as line 377.1 is. Produced by one core/sum (`tp1_credits_line_399.yaml`) and exported by the form
+as line 377.1 is. Produced by core/sum steps (`tp1_credits_line_399.yaml`) and exported by the form
 for TP-1 line 406."""
+
+TP1_CREDITS_LINES_377_1_TO_392_SUBTOTAL = AmountKind.declare(
+    CATALOG, "tp1_credits_lines_377_1_to_392_subtotal"
+)
+"""Unprinted subtotal of the first parts of TP-1 line 399, so that the sentence of the line stays
+short: lines 377.1 to 392 added up."""
+
+TP1_CREDITS_LINES_395_TO_398_1_SUBTOTAL = AmountKind.declare(
+    CATALOG, "tp1_credits_lines_395_to_398_1_subtotal"
+)
+"""Unprinted subtotal of the last parts of TP-1 line 399, so that its sentence stays short:
+lines 395 to 398.1 added up."""
 
 SCHEDULE_K_COLUMN_LOWER_BOUND_LINE_78 = AmountKind.declare(
     CATALOG, "schedule_k_column_lower_bound_line_78", non_negative=True
@@ -2088,7 +2120,19 @@ TP1_INCOME_TAX_PAID_AND_OTHER_CREDITS_LINE_465 = AmountKind.declare(
     CATALOG, "tp1_income_tax_paid_and_other_credits_line_465", non_negative=True
 )
 """TP-1 line 465 "Add lines 451.2 through 463. Income tax paid and other credits": rounded half-up
-to the cent. Produced by one core/sum (`tp1_totals_line_465.yaml`)."""
+to the cent. Produced by core/sum steps (`tp1_totals_line_465.yaml`)."""
+
+TP1_TOTALS_LINES_451_2_TO_456_SUBTOTAL = AmountKind.declare(
+    CATALOG, "tp1_totals_lines_451_2_to_456_subtotal"
+)
+"""Unprinted subtotal of the first parts of TP-1 line 465, so that the sentence of the line stays
+short: lines 451.2 to 456 added up."""
+
+TP1_TOTALS_LINES_457_TO_463_SUBTOTAL = AmountKind.declare(
+    CATALOG, "tp1_totals_lines_457_to_463_subtotal"
+)
+"""Unprinted subtotal of the last parts of TP-1 line 465, so that its sentence stays short:
+lines 457 to 463 added up."""
 
 TP1_FINANCIAL_COMPENSATION_LINE_466 = AmountKind.declare(
     CATALOG, "tp1_financial_compensation_line_466", non_negative=True
@@ -2191,47 +2235,3 @@ SOLIDARITY_CREDIT = AmountKind.declare(CATALOG, "solidarity_credit", non_negativ
 """Quebec return summary: the solidarity tax credit for July 2026 to June 2027, read from the
 solidarity form's export and shown as its own yearly amount next to the result, not added to the
 2025 refund or balance owing or the total payable. One core/record_total (`return.yaml`)."""
-
-CREDITS_LINES_87_TO_93_SUBTOTAL = AmountKind.declare(CATALOG, "credits_lines_87_to_93_subtotal")
-"""Unprinted subtotal of the first parts of 5005-R line 100, so that the sentence of the line stays
-short: lines 87 to 93 added up."""
-
-CREDITS_LINES_94_TO_99_SUBTOTAL = AmountKind.declare(CATALOG, "credits_lines_94_to_99_subtotal")
-"""Unprinted subtotal of the last parts of 5005-R line 100, so that the sentence of the line stays
-short: lines 94 to 99 added up."""
-
-TOTAL_CREDITS_LINES_155_TO_161_SUBTOTAL = AmountKind.declare(
-    CATALOG, "total_credits_lines_155_to_161_subtotal"
-)
-"""Unprinted subtotal of the first parts of 5005-R line 171, so that the sentence of the line stays
-short: lines 155 to 161 added up."""
-
-TOTAL_CREDITS_LINES_162_TO_170_SUBTOTAL = AmountKind.declare(
-    CATALOG, "total_credits_lines_162_to_170_subtotal"
-)
-"""Unprinted subtotal of the last parts of 5005-R line 171, so that the sentence of the line stays
-short: lines 162 to 170 added up."""
-
-TP1_CREDITS_LINES_377_1_TO_392_SUBTOTAL = AmountKind.declare(
-    CATALOG, "tp1_credits_lines_377_1_to_392_subtotal"
-)
-"""Unprinted subtotal of the first parts of TP-1 line 399, so that the sentence of the line stays
-short: lines 377.1 to 392 added up."""
-
-TP1_CREDITS_LINES_395_TO_398_1_SUBTOTAL = AmountKind.declare(
-    CATALOG, "tp1_credits_lines_395_to_398_1_subtotal"
-)
-"""Unprinted subtotal of the last parts of TP-1 line 399, so that its sentence stays short:
-lines 395 to 398.1 added up."""
-
-TP1_TOTALS_LINES_451_2_TO_456_SUBTOTAL = AmountKind.declare(
-    CATALOG, "tp1_totals_lines_451_2_to_456_subtotal"
-)
-"""Unprinted subtotal of the first parts of TP-1 line 465, so that the sentence of the line stays
-short: lines 451.2 to 456 added up."""
-
-TP1_TOTALS_LINES_457_TO_463_SUBTOTAL = AmountKind.declare(
-    CATALOG, "tp1_totals_lines_457_to_463_subtotal"
-)
-"""Unprinted subtotal of the last parts of TP-1 line 465, so that its sentence stays short:
-lines 457 to 463 added up."""

@@ -21,13 +21,9 @@ capabilities:
         - ca-qc/net_ei_overpayment_line_159
         - ca-qc/refundable_medical_expense_supplement_line_160
         - ca-qc/cwb_line_161
-        - ca-qc/canada_training_credit_line_162
-        - ca-qc/multigenerational_home_renovation_credit_line_163
     blank:
       ca-qc/income_tax_deducted_net_line_155: "0"
       ca-qc/refundable_medical_expense_supplement_line_160: "0"
-      ca-qc/canada_training_credit_line_162: "0"
-      ca-qc/multigenerational_home_renovation_credit_line_163: "0"
     produces:
       output: ca-qc/total_credits_lines_155_to_161_subtotal
   - name: core/sum
@@ -37,6 +33,8 @@ capabilities:
       rounding: ca-qc/cent_rounding
     consumes:
       parts:
+        - ca-qc/canada_training_credit_line_162
+        - ca-qc/multigenerational_home_renovation_credit_line_163
         - ca-qc/investment_tax_credit_refund_line_164
         - ca-qc/part_xii_2_tax_credit_line_165
         - ca-qc/gst_hst_rebate_line_166
@@ -45,6 +43,8 @@ capabilities:
         - ca-qc/fuel_charge_farmers_credit_line_169
         - ca-qc/tax_paid_by_instalments_line_170
     blank:
+      ca-qc/canada_training_credit_line_162: "0"
+      ca-qc/multigenerational_home_renovation_credit_line_163: "0"
       ca-qc/investment_tax_credit_refund_line_164: "0"
       ca-qc/part_xii_2_tax_credit_line_165: "0"
       ca-qc/gst_hst_rebate_line_166: "0"
