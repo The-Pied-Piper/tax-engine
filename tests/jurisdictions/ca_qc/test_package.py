@@ -27,18 +27,18 @@ def test_importing_the_package_imports_its_capabilities() -> None:
     assert capabilities.NAMESPACE == "ca-qc"
 
 
-def test_the_catalog_is_in_the_quebec_and_labrador_namespace() -> None:
+def test_the_catalog_is_in_the_quebec_namespace() -> None:
     from tax_engine.jurisdictions.ca_qc.catalog import CATALOG
 
     assert CATALOG.namespace == Namespace("ca-qc")
 
 
-def test_the_quebec_and_labrador_package_list_registers_without_a_clash() -> None:
+def test_the_quebec_package_list_registers_without_a_clash() -> None:
     assert quebec_kinds().identifiers()
     assert quebec_capabilities() is not None
 
 
-def test_the_roots_map_the_quebec_and_labrador_namespace_to_its_directory() -> None:
+def test_the_roots_map_the_quebec_namespace_to_its_directory() -> None:
     directory = Path(tax_engine.jurisdictions.ca_qc.__file__).parent
 
     assert quebec_packages().roots()[Namespace("ca-qc")] == directory

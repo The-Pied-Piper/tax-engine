@@ -54,3 +54,11 @@ def test_the_quebec_return_does_not_import_the_federal_t1_forms() -> None:
 
 def test_the_header_declares_no_inputs() -> None:
     assert "inputs" not in _header()
+
+
+def test_every_manifest_part_file_loads() -> None:
+    parts = sorted(MANIFEST.parent.glob("*.yaml"))
+
+    assert MANIFEST in parts
+    for part in parts:
+        assert isinstance(yaml.safe_load(part.read_text(encoding="utf-8")), dict)
