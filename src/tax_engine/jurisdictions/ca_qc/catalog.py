@@ -33,3 +33,9 @@ SCHEDULE_K_MONTHS_JANUARY_TO_JUNE_BOX_60 = AmountKind.declare(
 )
 """Number of months checked from January to June, Schedule K box 60: 6 when line 50 is yes (the
 answer means covered all year), 0 when no, in months."""
+
+SCHEDULE_K_MONTHS_JULY_TO_DECEMBER_BOX_61 = AmountKind.declare(
+    CATALOG, "schedule_k_months_july_to_december_box_61", non_negative=True
+)
+"""Number of months checked from July to December, Schedule K box 61: 6 when line 50 is yes (the
+answer means covered all year), 0 when no, in months."""
