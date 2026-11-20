@@ -1,0 +1,22 @@
+# 5005-R (2025), Step 5 Part B line 78 and line 30000 "Basic personal amount": "If the amount on line
+# 23600 is $177,882 or less, enter $16,129. If the amount on line 23600 is $253,414 or more, enter
+# $14,538. Otherwise, use the Federal Worksheet to calculate the amount to enter. (maximum
+# $16,129)". The Federal Worksheet 5000-D1 (CRA 5000-D1-25E) lines 1 to 11 are one
+# ca/tapered_amount step, as the federal line 30000 is built, over the shared dataset
+# `ca/basic_personal_amount` (base 14,538, supplement 1,591, threshold 177,882, range 75,532). The
+# taper keeps the printed division (worksheet line 7) as an exact fraction and rounds once, half-up
+# to the cent, through the dataset's own rounding rule (worksheet line 9). Worksheet line 3 is the
+# step in `t1_tax_and_credits_line_30000_line_3.yaml`.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: ca/tapered_amount
+    title: "Basic personal amount"
+    reference: "30000"
+    unit: ca/cad
+    params:
+      taper: ca/basic_personal_amount
+    consumes:
+      base: ca-qc/basic_personal_amount_net_income_line_3
+    produces:
+      output: ca-qc/basic_personal_amount
