@@ -132,3 +132,10 @@ TP1_SCHEDULE_F_INCOME_LINE_10 = AmountKind.declare(
 for forest producers (included on line 276 of your return)": line 199 plus line 276, rounded
 half-up to the cent."""
 
+
+TP1_SCHEDULE_F_EMPLOYMENT_INCOME_LINE_12 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_employment_income_line_12", non_negative=True
+)
+"""Schedule F line 12, "Employment income (line 101)": TP-1 line 101, read from the TP-1 income
+form."""
+
