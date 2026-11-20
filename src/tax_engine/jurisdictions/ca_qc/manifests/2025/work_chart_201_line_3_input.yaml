@@ -1,0 +1,13 @@
+# Work Chart 201 (TP-1.D.GR-V 2025-12), line 3, "Net amount of research grants". An optional input a salary-only caller does
+# not give: a request that leaves it out is read as blank, and the line 6 part
+# (work_chart_201_line_6.yaml) reads the blank as 0.
+form:
+  name: ca-qc/work_chart_201
+inputs:
+  - name: ca-qc/work_chart_201_research_grants_line_3
+    title: "Net amount of research grants"
+    reference: "3"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Net amount of research grants (see line 154, point 3(j), in the guide)'

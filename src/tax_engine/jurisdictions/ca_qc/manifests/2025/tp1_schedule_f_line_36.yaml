@@ -1,0 +1,19 @@
+# Schedule F (2025) line 36: "Subtract line 34 from line 18. If the result is $18,130 or less, you do
+# not have to pay a contribution." Line 34 is read as 0 when blank. No floor is printed and the stop
+# is not a step.
+form:
+  name: ca-qc/tp1_schedule_f
+capabilities:
+  - name: core/subtract
+    title: "Income"
+    reference: "36"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/tp1_schedule_f_income_line_18
+      less: ca-qc/tp1_schedule_f_lines_20_to_33_total_line_34
+    blank:
+      less: "0"
+    produces:
+      output: ca-qc/tp1_schedule_f_income_line_36

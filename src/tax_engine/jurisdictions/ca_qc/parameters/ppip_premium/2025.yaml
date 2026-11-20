@@ -1,0 +1,21 @@
+# Quebec parental insurance plan (PPIP) premium on employment income, 2025 tax year (the 2025 T1
+# return for Quebec residents, form 5005-R). 5005-R, page 6: "Line 91 and line 31205: Provincial
+# parental insurance plan (PPIP) premiums paid (box 55 of all T4 slips) (maximum $484.12)", and
+# "Line 92 and line 31210: on employment income (maximum $484.12)". 5005-S10 (Schedule 10), Part B,
+# as printed: "Line 12: Maximum PPIP insurable income 98,000.00" and "Line 16: PPIP rate on
+# employment income 0.494%". So the tier is 0.494% of the earnings from 0 to the $98,000 maximum
+# insurable income, with no exemption, and 0.494% of 98,000 is exactly the printed $484.12.
+# Premiums are in dollars and cents, so the tier rounds half-up to the cent. Revenu Quebec's page
+# "Maximum insurable earnings and the Quebec Parental Insurance Plan premium rate" gives the same
+# three figures for 2025; it is a web page, kept as a listed check on the ticket.
+family: ca-qc/ppip_premium
+tax_year: 2025
+kind: contribution_tier
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5005-r/5005-r-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5005-s10/5005-s10-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.00494"
+lower: "0"
+upper: "98000"
+maximum: "484.12"

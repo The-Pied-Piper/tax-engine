@@ -1,0 +1,16 @@
+# Schedule U (Revenu Quebec TP-1.D.U-V, 2025-12), Part B, line 13 "Personal QPP exemption. See the
+# instructions for Part B." The instructions for line 13 say "enter $3,500". A take-home filer is a
+# single filer with a salary only, so none of the situations of Table 1 applies; the printed $3,500
+# is the `ca-qc/schedule_u_line_13_personal_qpp_exemption` dataset figure, claimed whole. Line 14.2
+# copies this line, so it has no step.
+form:
+  name: ca-qc/tp1_schedule_u
+capabilities:
+  - name: core/credit_amount
+    title: "Personal QPP exemption"
+    reference: "13"
+    unit: ca/cad
+    params:
+      amount: ca-qc/schedule_u_line_13_personal_qpp_exemption
+    produces:
+      output: ca-qc/schedule_u_personal_qpp_exemption_line_13

@@ -1,0 +1,10 @@
+# Revenu Quebec TP-1.D-V (2025-12), Schedule U (TP-1.D.U-V), Part B, line 11. The printed figure is
+# 0.156250, taken as printed. A dollars-and-cents line, so it rounds half-up to the cent (the
+# project's choice, as the form states no rounding rule).
+family: ca-qc/schedule_u_line_11_rate
+tax_year: 2025
+kind: rate
+sources:
+  - Revenu Quebec TP-1.D-V (2025-12), Schedule U (TP-1.D.U-V), Part B
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.15625"

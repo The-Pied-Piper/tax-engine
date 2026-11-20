@@ -1,0 +1,13 @@
+# Work Chart 201 (TP-1.D.GR-V 2025-12), line 2, "Amounts received under a work-incentive project". An optional input a salary-only caller does
+# not give: a request that leaves it out is read as blank, and the line 6 part
+# (work_chart_201_line_6.yaml) reads the blank as 0.
+form:
+  name: ca-qc/work_chart_201
+inputs:
+  - name: ca-qc/work_chart_201_work_incentive_amounts_line_2
+    title: "Amounts received under a work-incentive project"
+    reference: "2"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Amounts received under a work-incentive project (see line 154, point 2, in the guide)'

@@ -1,0 +1,14 @@
+# Schedule K (2025) line 50's input, which a salary-only caller may leave out.
+# Part B, section 1, line 50: "You were covered by basic prescription drug insurance provided by a
+# group insurance plan (see line 447 in the guide) of which you, your spouse, your father or your
+# mother was a member, and this plan covered the cost of medications" (Revenu Quebec TP-1.D.K-V
+# (2025-12)). The answer is a count, 1 for yes and 0 for no. A caller who gives no answer gets the
+# default 0, not covered (owner ruling 19 Nov 2026).
+form:
+  name: ca-qc/tp1_schedule_k
+inputs:
+  - name: ca-qc/schedule_k_group_plan_covered_line_50
+    reference: "50"
+    required: false
+    default: "0"
+    basis: "Covered by basic prescription drug insurance provided by a group insurance plan"
