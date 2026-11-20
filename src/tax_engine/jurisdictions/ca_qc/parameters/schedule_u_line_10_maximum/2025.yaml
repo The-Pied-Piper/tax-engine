@@ -1,0 +1,11 @@
+# Revenu Quebec TP-1.D-V (2025-12), Schedule U (TP-1.D.U-V), Part B, line 10. The printed
+# "(maximum $4,339.20)" cap of the line, taken as printed; half-up to the cent changes nothing.
+family: ca-qc/schedule_u_line_10_maximum
+tax_year: 2025
+kind: amount
+title: "maximum"
+unit: ca/cad
+sources:
+  - Revenu Quebec TP-1.D-V (2025-12), Schedule U (TP-1.D.U-V), Part B
+rounding: {increment: "0.01", mode: half_up}
+amount: "4339.20"

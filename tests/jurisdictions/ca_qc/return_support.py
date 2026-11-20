@@ -1,12 +1,11 @@
 """Shared helpers of the Quebec return summary tests: the real return part over the real chains it
 reads (5005-R, TP-1 totals and the solidarity credit).
 
-The header is the real manifest header (the return's identity, its federal imports and its outputs)
-with the four TP-1 slip figures that Schedule U reads added as plain starting inputs, as in the
-other TP-1 tests. The salary is $20,000, $70,000 and $200,000; every optional input is left out and
-the three optional answers take their defaults (not alone, neither tenant nor owner, not covered
-by a group drug plan). The expected figures are hand-computed from the printed lines, not a CRA
-or Revenu Quebec example.
+The header is the real manifest header (the return's identity, its federal imports and its outputs),
+the TP-1 slip figures that Schedule U reads coming from the real TP-1 income parts. The salary is
+$20,000, $70,000 and $200,000; every optional input is left out and the three optional answers take
+their defaults (not alone, neither tenant nor owner, not covered by a group drug plan). The
+expected figures are hand-computed from the printed lines, not a CRA or Revenu Quebec example.
 """
 
 from __future__ import annotations
@@ -22,13 +21,11 @@ from tests.jurisdictions.ca_qc.basic_personal_amount_support import PARTS as T1_
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 from tests.jurisdictions.ca_qc.solidarity_maximum_support import ANSWERS_PART
 from tests.jurisdictions.ca_qc.support import MANIFEST
-from tests.jurisdictions.ca_qc.tp1_net_income_support import HEADER, slip_artifacts
+from tests.jurisdictions.ca_qc.tp1_net_income_support import slip_artifacts
 from tests.jurisdictions.ca_qc.tp1_totals_support import ALL_PARTS, CHAIN_PARTS
 from tests.jurisdictions.ca_qc.tp1_totals_support import EXPECTED as TOTALS_EXPECTED
 
 D = Decimal
-# The slip inputs of the TP-1 net income header, without its outputs.
-SLIP_INPUTS = HEADER[HEADER.index("inputs:") : HEADER.index("outputs:")]
 RETURN_PART = "return.yaml"
 # The solidarity credit parts, over the TP-1 net income lines the family income reads.
 SOLIDARITY_PARTS = (
@@ -77,9 +74,8 @@ EXPECTED: dict[str, dict[str, str]] = {
 
 
 def header() -> str:
-    """The real manifest header with the TP-1 slip figures added as starting inputs."""
-    text = MANIFEST.read_text(encoding="utf-8")
-    return text.replace("title: Return summary\n", "title: Return summary\n" + SLIP_INPUTS)
+    """The real manifest header: the TP-1 slip figures come from the real TP-1 income parts."""
+    return MANIFEST.read_text(encoding="utf-8")
 
 
 def return_sheet(
