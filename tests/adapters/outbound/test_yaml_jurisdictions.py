@@ -2556,7 +2556,7 @@ def test_a_form_without_a_reference_has_none(tmp_path: Path) -> None:
     [
         pytest.param(
             FORM_RENTAL.replace("  required: true\n", "  required: true\n  reference: ''\n"),
-            "reference",
+            "must not be empty",
             id="empty-form-reference",
         ),
         pytest.param(

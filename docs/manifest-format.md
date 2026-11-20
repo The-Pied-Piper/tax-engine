@@ -250,8 +250,12 @@ A capability must list the slot in `BLANK_ALLOWED` for a blank rule to be allowe
 
 ## Titles
 
-`title` and `reference` are for the reader of a trace. A form's reference is carried on each of its worksheets as `form_reference` (also through `FormInstanceLine.printed`), the form's `title` when its manifest gives no `reference`, and `None` when it gives neither. All are non-empty text, optional, and never
+`title` and `reference` are for the reader of a trace. All are non-empty text, optional, and never
 used to look anything up: the identifier stays the unique name.
+
+A form's reference is carried on each of its worksheets as `form_reference` (also through
+`FormInstanceLine.printed`). It is the form's `reference` when its manifest gives one, else its
+`title`, and `None` when it gives neither.
 
 ## Units
 
