@@ -26,3 +26,16 @@ TP1_PENSIONABLE_SALARY_LINE_98_1 = AmountKind.declare(
 )
 """Pensionable salary or wages (QPP), TP-1 line 98.1 "Pensionable salary or wages (QPP). RL-1 slip,
 box G": the figure given, else the salary up to $81,200."""
+
+TP1_QPP_CONTRIBUTION_GIVEN_LINE_98 = AmountKind.declare(
+    CATALOG, "tp1_qpp_contribution_given_line_98", non_negative=True
+)
+"""QPP contribution as given, TP-1 line 98 "QPP contribution. RL-1 slip, box B.A": the figure the
+caller copies from the RL-1 slip; blank when the caller does not give it, and line 98 is then
+computed from the salary."""
+
+TP1_QPP_CONTRIBUTION_LINE_98 = AmountKind.declare(
+    CATALOG, "tp1_qpp_contribution_line_98", non_negative=True
+)
+"""QPP contribution, TP-1 line 98 "QPP contribution. RL-1 slip, box B.A": the figure given, else
+6.40% from $3,500 to $71,300, at most $4,339.20."""
