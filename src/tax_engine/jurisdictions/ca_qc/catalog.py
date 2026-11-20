@@ -112,6 +112,46 @@ TP1_TOTAL_INCOME_LINE_199 = AmountKind.declare(
 """Total income, TP-1 line 199 "Add lines 101 and 105 through 164. Total income": line 101, the
 salary, plus the optional income of lines 105 through 164, rounded half-up to the cent."""
 
+SCHEDULE_U_LINE_11 = AmountKind.declare(CATALOG, "schedule_u_line_11", non_negative=True)
+"""Schedule U line 11 "Multiply line 10 by 0.156250": line 10 (the TP-1 line 98 QPP contribution) at
+the printed rate, rounded half-up to the cent."""
+
+SCHEDULE_U_PENSIONABLE_SALARY_LINE_12 = AmountKind.declare(
+    CATALOG, "schedule_u_pensionable_salary_line_12", non_negative=True
+)
+"""Schedule U line 12 "Pensionable salary or wages (QPP) (line 98.1 of your return) (maximum
+$71,300)": the TP-1 line 98.1 figure, at most the printed $71,300."""
+
+SCHEDULE_U_PERSONAL_QPP_EXEMPTION_LINE_13 = AmountKind.declare(
+    CATALOG, "schedule_u_personal_qpp_exemption_line_13", non_negative=True
+)
+"""Schedule U line 13 "Personal QPP exemption": the printed $3,500 of the instructions for Part B
+("enter $3,500", when none of the situations of Table 1 applied), claimed whole."""
+
+SCHEDULE_U_LINE_14 = AmountKind.declare(CATALOG, "schedule_u_line_14")
+"""Schedule U line 14 "Subtract line 13 from line 12": the pensionable salary (TP-1 line 98.1) less
+the personal QPP exemption. The line prints no floor, so the figure can be negative."""
+
+SCHEDULE_U_MAXIMUM_PENSIONABLE_EARNINGS_LINE_14_1 = AmountKind.declare(
+    CATALOG, "schedule_u_maximum_pensionable_earnings_line_14_1", non_negative=True
+)
+"""Schedule U line 14.1 "Maximum pensionable earnings": the printed $71,300 of the instructions for
+Part B ("enter $71,300", when none of the situations of Table 1 applied), claimed whole."""
+
+SCHEDULE_U_LINE_14_3 = AmountKind.declare(CATALOG, "schedule_u_line_14_3", non_negative=True)
+"""Schedule U line 14.3 "Subtract line 14.2 from line 14.1. If the result is negative, enter 0": the
+maximum pensionable earnings less the personal QPP exemption, not below 0."""
+
+SCHEDULE_U_LINE_14_4 = AmountKind.declare(CATALOG, "schedule_u_line_14_4")
+"""Schedule U line 14.4 "Amount from line 14 or line 14.3, whichever is less"."""
+
+SCHEDULE_U_LINE_15 = AmountKind.declare(CATALOG, "schedule_u_line_15")
+"""Schedule U line 15 "Multiply line 14.4 by 1%": line 14.4 at the printed rate, rounded half-up to
+the cent."""
+
+SCHEDULE_U_LINE_16 = AmountKind.declare(CATALOG, "schedule_u_line_16")
+"""Schedule U line 16 "Amount from line 11 or line 15, whichever is less": the QPP contribution
+amount of Part B."""
 T1_LINE_21 = AmountKind.declare(CATALOG, "t1_line_21")
 """Add lines 1 to 20, 5005-R line 21 "Line 21: Add lines 1 to 20.": the employment income of line 1
 (`ca/employment_income`) and line 2 (`ca/other_employment_income`); lines 3 to 20 are not built (the

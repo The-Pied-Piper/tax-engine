@@ -1,0 +1,16 @@
+# Schedule U (Revenu Quebec TP-1.D.U-V, 2025-12), Part B, line 15: "Multiply line 14.4 by 1%." The
+# printed 1% is the `ca-qc/schedule_u_line_15_rate` dataset figure; the product of line 14.4 (`ca-
+# qc/schedule_u_line_14_4`) is rounded half-up to the cent. The form prints no label for the line,
+# so the step is untitled.
+form:
+  name: ca-qc/tp1_schedule_u
+capabilities:
+  - name: core/apply_rate
+    reference: "15"
+    unit: ca/cad
+    params:
+      rate: ca-qc/schedule_u_line_15_rate
+    consumes:
+      base: ca-qc/schedule_u_line_14_4
+    produces:
+      output: ca-qc/schedule_u_line_15

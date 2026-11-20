@@ -1,0 +1,18 @@
+# Schedule U (Revenu Quebec TP-1.D.U-V, 2025-12), Part B, line 14: "Subtract line 13 from line 12."
+# Line 12 is the pensionable salary (`ca-qc/schedule_u_pensionable_salary_line_12`); line 13 is the
+# personal QPP exemption (`ca-qc/schedule_u_personal_qpp_exemption_line_13`). The line prints no "if
+# negative, enter 0", so `core/subtract` gives a negative figure as it is, rounded to the cent by
+# `ca-qc/cent_rounding`. The form prints no label for the line, so the step is untitled.
+form:
+  name: ca-qc/tp1_schedule_u
+capabilities:
+  - name: core/subtract
+    reference: "14"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/schedule_u_pensionable_salary_line_12
+      less: ca-qc/schedule_u_personal_qpp_exemption_line_13
+    produces:
+      output: ca-qc/schedule_u_line_14
