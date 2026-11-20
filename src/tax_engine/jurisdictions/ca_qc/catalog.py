@@ -1200,9 +1200,7 @@ TOTAL_PAYABLE_LINE_151 = AmountKind.declare(CATALOG, "total_payable_line_151", n
 repayment (line 149) from one core/sum (`t1_tax_and_credits_line_43500.yaml`);
 Step 6 line 152 reads it."""
 
-INCOME_TAX_DEDUCTED_NET_LINE_155 = AmountKind.declare(
-    CATALOG, "income_tax_deducted_net_line_155", non_negative=True
-)
+INCOME_TAX_DEDUCTED_NET_LINE_155 = AmountKind.declare(CATALOG, "income_tax_deducted_net_line_155")
 """Total income tax deducted less the tax transfer for residents of Quebec, 5005-R line 155 and line
 43850 "Line 153 minus line 154 =": lines 153 (43700) and 154 (43800) are left out of the take-home
 (no T4 slip, so tax deducted is 0), so the difference is one optional input a salary-only caller

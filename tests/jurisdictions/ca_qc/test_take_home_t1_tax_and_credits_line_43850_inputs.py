@@ -56,5 +56,6 @@ def test_a_request_that_leaves_out_line_155_is_read_as_blank(
     assert default is not None and default.is_blank
 
 
-def test_the_line_155_input_kind_is_registered_and_non_negative() -> None:
-    assert non_negative(quebec_kinds().kind(NAME)) is True
+def test_the_line_155_input_kind_is_registered_and_signed() -> None:
+    # The form prints no floor on line 155, so the kind refuses nothing.
+    assert non_negative(quebec_kinds().kind(NAME)) is False
