@@ -1,0 +1,17 @@
+# Revenu Quebec TP-1.D-V (2025-12), page 2, line 98.1: "Pensionable salary or wages (QPP). RL-1
+# slip, box G". The form prints no rate or ceiling for the slip box. A salary-only caller has no
+# RL-1 slip, so the figure is the salary up to the additional maximum pensionable earnings, $81,200
+# in 2025 (Revenu Quebec, "Maximum Pensionable Earnings and Quebec Pension Plan Contribution
+# Rate", a web page: a listed check). As a tier: rate 1 (the whole of the earnings), from 0 to the
+# ceiling, at most the ceiling. Dollars and cents, half-up to the cent.
+family: ca-qc/tp1_line_98_1_pensionable_salary
+tax_year: 2025
+kind: contribution_tier
+sources:
+  - Revenu Quebec TP-1.D-V (2025-12)
+  - Revenu Quebec, Maximum Pensionable Earnings and Quebec Pension Plan Contribution Rate (web page)
+rounding: {increment: "0.01", mode: half_up}
+rate: "1"
+lower: "0"
+upper: "81200"
+maximum: "81200"

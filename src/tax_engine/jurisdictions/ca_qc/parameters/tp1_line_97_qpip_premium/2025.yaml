@@ -1,0 +1,17 @@
+# Revenu Quebec TP-1.D-V (2025-12), page 2, line 97: "QPIP premium. RL-1 slip, box H". The form
+# prints no rate or ceiling for the slip box. A salary-only caller has no RL-1 slip, so the figure
+# is the employee's QPIP premium from the Revenu Quebec page "Maximum Insurable Earnings and the
+# Quebec Parental Insurance Plan Premium Rate" (a web page: a listed check): 0.494% of the earnings
+# up to the $98,000 maximum insurable earnings, at most $484.12 (0.494% of $98,000, exactly).
+# Dollars and cents, half-up to the cent.
+family: ca-qc/tp1_line_97_qpip_premium
+tax_year: 2025
+kind: contribution_tier
+sources:
+  - Revenu Quebec TP-1.D-V (2025-12)
+  - Revenu Quebec, Maximum Insurable Earnings and the Quebec Parental Insurance Plan Premium Rate (web page)
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.00494"
+lower: "0"
+upper: "98000"
+maximum: "484.12"

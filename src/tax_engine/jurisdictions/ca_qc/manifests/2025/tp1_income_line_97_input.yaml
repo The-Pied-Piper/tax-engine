@@ -1,0 +1,13 @@
+# TP-1 (2025) line 97, 'QPIP premium. RL-1 slip, box H': an input a salary-only
+# caller does not give. A request that leaves it out is read as blank, and the line 97 part
+# (tp1_income_line_97.yaml) computes it from the salary.
+form:
+  name: ca-qc/tp1_income
+inputs:
+  - name: ca-qc/tp1_qpip_premium_given_line_97
+    title: "QPIP premium"
+    reference: "97"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'QPIP premium. RL-1 slip, box H'
