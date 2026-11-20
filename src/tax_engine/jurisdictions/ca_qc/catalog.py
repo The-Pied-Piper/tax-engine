@@ -1045,6 +1045,11 @@ BASIC_FEDERAL_TAX_LINE_130 = AmountKind.declare(CATALOG, "basic_federal_tax_line
 "0") Basic federal tax =": line 125 less line 129, not below zero from one
 core/subtract_not_below_zero (`t1_tax_and_credits_line_42900.yaml`)."""
 
+FEDERAL_SURTAX_OUTSIDE_CANADA_LINE_131 = AmountKind.declare(CATALOG, "federal_surtax_outside_canada_line_131", non_negative=True)
+"""Federal surtax on income earned outside Canada, 5005-R line 131: an optional input a salary-only
+caller does not give; the line that reads it takes a blank as 0
+(`t1_tax_and_credits_line_131_inputs.yaml`)."""
+
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
 Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line
