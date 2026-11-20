@@ -1,5 +1,5 @@
 # TP-1 (2025) line 399: "Add lines 377.1, 389 through 392, 395 through 397, 398 and 398.1.
-# Non-refundable tax credits = 399" (page 4). One step, core/sum, rounded half-up to the cent through
+# Non-refundable tax credits = 399" (page 4). Two subtotal steps and a core/sum of both, rounded half-up to the cent through
 # ca-qc/cent_rounding. Lines 377.1, 389 and 397 are steps; lines 390, 391, 392, 395, 396, 398 and
 # 398.1 are optional inputs, read as 0 when left blank. The form exports line 399 for TP-1 line 406.
 # The sentence of a numbered line stays at 40 words or fewer (tests/jurisdictions/test_trace_english_
@@ -9,7 +9,7 @@ form:
   name: ca-qc/tp1_credits
 capabilities:
   - name: core/sum
-    title: "Lines 377.1 to 392 added up"
+    title: "Lines 377.1 and 389 to 392 added up"
     unit: ca/cad
     params:
       rounding: ca-qc/cent_rounding

@@ -10,7 +10,7 @@ form:
   name: ca-qc/t1_tax_and_credits
 capabilities:
   - name: core/sum
-    title: "Lines 155 to 161 added up"
+    title: "Lines 155, 156 and 159 to 161 added up"
     unit: ca/cad
     params:
       rounding: ca-qc/cent_rounding

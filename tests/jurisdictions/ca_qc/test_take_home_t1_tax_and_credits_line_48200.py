@@ -82,7 +82,7 @@ def test_the_trace_prints_the_line(take_home_service: TakeHomeService) -> None:
     _, sheet = sheets(take_home_service, "20000")
 
     assert (
-        '"Lines 155 to 161 added up" (CA$2702.59) plus "Lines 162 to 170 added up" (CA$0.00) '
+        '"Lines 155, 156 and 159 to 161 added up" (CA$2702.59) plus "Lines 162 to 170 added up" (CA$0.00) '
         "gives CA$2702.59 (rounded to the nearest cent)."
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
 

@@ -122,7 +122,7 @@ def test_the_part_is_two_subtotals_and_a_sum_with_the_optional_lines_read_as_zer
     ]
     # Two unprinted subtotals keep the sentence of the numbered line short; the line adds them.
     assert first == _subtotal(
-        "Lines 377.1 to 392 added up",
+        "Lines 377.1 and 389 to 392 added up",
         first_parts,
         optional,
         "tp1_credits_lines_377_1_to_392_subtotal",

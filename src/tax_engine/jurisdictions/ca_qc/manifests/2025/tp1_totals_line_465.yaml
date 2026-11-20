@@ -1,5 +1,5 @@
 # TP-1 (2025) line 465: "Add lines 451.2 through 463. Income tax paid and other credits = 465" (page
-# 5). One step, core/sum, rounded half-up to the cent through ca-qc/cent_rounding. Line 456 is a
+# 5). Two subtotal steps and a core/sum of both, rounded half-up to the cent through ca-qc/cent_rounding. Line 456 is a
 # step; lines 451.2, 451.3, 452 to 455, 457 to 460, 462 and 463 are optional inputs, read as 0 when
 # left blank.
 # The sentence of a numbered line stays at 40 words or fewer (tests/jurisdictions/test_trace_english_

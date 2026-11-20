@@ -1364,7 +1364,7 @@ TOTAL_CREDITS_LINES_155_TO_161_SUBTOTAL = AmountKind.declare(
     CATALOG, "total_credits_lines_155_to_161_subtotal"
 )
 """Unprinted subtotal of the first parts of 5005-R line 171, so that the sentence of the line stays
-short: lines 155 to 161 added up."""
+short: lines 155, 156 and 159 to 161 added up."""
 
 TOTAL_CREDITS_LINES_162_TO_170_SUBTOTAL = AmountKind.declare(
     CATALOG, "total_credits_lines_162_to_170_subtotal"
@@ -1774,7 +1774,7 @@ TP1_CREDITS_LINES_377_1_TO_392_SUBTOTAL = AmountKind.declare(
     CATALOG, "tp1_credits_lines_377_1_to_392_subtotal"
 )
 """Unprinted subtotal of the first parts of TP-1 line 399, so that the sentence of the line stays
-short: lines 377.1 to 392 added up."""
+short: lines 377.1 and 389 to 392 added up."""
 
 TP1_CREDITS_LINES_395_TO_398_1_SUBTOTAL = AmountKind.declare(
     CATALOG, "tp1_credits_lines_395_to_398_1_subtotal"

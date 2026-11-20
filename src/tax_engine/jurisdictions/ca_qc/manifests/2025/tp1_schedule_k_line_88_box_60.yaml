@@ -3,7 +3,7 @@
 # (`tp1_schedule_k_line_88_box_60_amount.yaml`), rounded half-up to the cent (`ca-qc/cent_rounding`).
 # Box 60 is a plain figure of months (owner decision, 19 Nov 2026: the boxes stay amounts and
 # core/multiply replaces core/per_unit_amount). The row has no line number and the form prints no
-# label for it, so the step has no reference and no title; line 88 adds the two rows.
+# label for it, so the step has no reference and a plain-words title; line 88 adds the two rows.
 form:
   name: ca-qc/tp1_schedule_k
 capabilities:
