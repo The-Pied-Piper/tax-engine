@@ -915,6 +915,28 @@ CREDITS_AT_CREDIT_RATE_LINE_119 = AmountKind.declare(
 `ca/credit_rate`), from one core/apply_rate (`t1_tax_and_credits_line_33800.yaml`); line 122 adds
 the donations and the top-up to it."""
 
+DONATIONS_AND_GIFTS_LINE_120 = AmountKind.declare(
+    CATALOG, "donations_and_gifts_line_120", non_negative=True
+)
+"""Donations and gifts, 5005-R line 120 and line 34900: an optional input a salary-only caller
+does not give; the line that reads it takes a blank as 0
+(`t1_tax_and_credits_line_34900_inputs.yaml`)."""
+
+TOP_UP_TAX_CREDIT_LINE_121 = AmountKind.declare(
+    CATALOG, "top_up_tax_credit_line_121", non_negative=True
+)
+"""Top-up tax credit, 5005-R line 121 and line 34990: an optional input a salary-only caller does
+not give; the line that reads it takes a blank as 0
+(`t1_tax_and_credits_line_34990_inputs.yaml`)."""
+
+NON_REFUNDABLE_TAX_CREDITS_LINE_122 = AmountKind.declare(
+    CATALOG, "non_refundable_tax_credits_line_122", non_negative=True
+)
+"""Total federal non-refundable tax credits, 5005-R line 122 and line 35000 "Add lines 119 to
+121.": the credits at the credit rate plus the donations and gifts (line 120) and the top-up tax
+credit (line 121), each blank read as 0, from one core/sum
+(`t1_tax_and_credits_line_35000.yaml`); Part C line 126 copies it."""
+
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
 Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line

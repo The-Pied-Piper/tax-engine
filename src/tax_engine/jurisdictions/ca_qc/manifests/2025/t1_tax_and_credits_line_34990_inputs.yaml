@@ -1,0 +1,13 @@
+# 5005-R (2025) line 121 input a salary-only caller does not give.
+# Line 121 and line 34990: "Top-up tax credit (use Federal Worksheet)" (page 6). A salary-only filer has no such amount, so it is an
+# optional input left blank; the sum or difference that reads it takes a blank as 0.
+form:
+  name: ca-qc/t1_tax_and_credits
+inputs:
+  - name: ca-qc/top_up_tax_credit_line_121
+    title: "Top-up tax credit"
+    reference: "34990"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Top-up tax credit (use Federal Worksheet)"
