@@ -1,9 +1,9 @@
 """The 2025 `ca-qc/tp1_schedule_f_maximum` dataset, checked against Revenu Quebec Schedule F
 (TP-1.D.F-V, 2025-12), Part B, line 82.
 
-Form text: "Maximum: $150 | Maximum: $1,000", under the columns "If $63,060 or less" and "If more than
-$63,060". The take-home step reads line 77, the column's printed lower bound (18,130 or 63,060),
-so the band bounds put 18,130 in the first row and 63,060 in the second. The figures are printed
+Form text: "Maximum: $150 | Maximum: $1,000", under the columns "If $63,060 or less" and "If more
+than $63,060". The take-home step reads line 77, the column's printed lower bound (18,130 or
+63,060), so the band bounds put 18,130 in the first row and 63,060 in the second. The figures are printed
 and kept whole; the cent rounding only gives them the scale of a dollars-and-cents box.
 """
 
