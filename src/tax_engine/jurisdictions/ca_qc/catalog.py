@@ -127,3 +127,7 @@ SCHEDULE_U_PERSONAL_QPP_EXEMPTION_LINE_13 = AmountKind.declare(
 )
 """Schedule U line 13 "Personal QPP exemption": the printed $3,500 of the instructions for Part B
 ("enter $3,500", when none of the situations of Table 1 applied), claimed whole."""
+
+SCHEDULE_U_LINE_14 = AmountKind.declare(CATALOG, "schedule_u_line_14")
+"""Schedule U line 14 "Subtract line 13 from line 12": the pensionable salary (TP-1 line 98.1) less
+the personal QPP exemption. The line prints no floor, so the figure can be negative."""
