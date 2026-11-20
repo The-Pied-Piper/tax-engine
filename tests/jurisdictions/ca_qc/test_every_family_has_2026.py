@@ -36,7 +36,6 @@ CARRIED_FORWARD_FAMILIES = [
     "schedule_k_brackets",
     "schedule_k_line_41_amount",
     "schedule_k_line_83_maximum",
-    "schedule_k_line_87_maximum",
     "schedule_k_monthly_amount_box_60",
     "schedule_k_monthly_amount_box_61",
     "schedule_k_months_box_60",
