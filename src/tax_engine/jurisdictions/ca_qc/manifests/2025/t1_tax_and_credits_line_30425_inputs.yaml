@@ -1,0 +1,13 @@
+# 5005-R (2025) line 82 input a salary-only caller does not give.
+# Line 82 and line 30425: "Canada caregiver amount for spouse or common-law partner, or eligible dependant age 18 or older (complete Schedule 5)" (page 5). A salary-only filer has no such amount, so it is an
+# optional input left blank; the sum that adds it reads a blank as 0.
+form:
+  name: ca-qc/t1_tax_and_credits
+inputs:
+  - name: ca-qc/caregiver_amount_spouse_line_82
+    title: "Canada caregiver amount for spouse or common-law partner, or eligible dependant age 18 or older"
+    reference: "30425"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Canada caregiver amount for spouse or common-law partner, or eligible dependant age 18 or older (complete Schedule 5)"

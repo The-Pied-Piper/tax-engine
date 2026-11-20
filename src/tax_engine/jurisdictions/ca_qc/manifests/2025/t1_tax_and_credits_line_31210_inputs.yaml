@@ -1,0 +1,13 @@
+# 5005-R (2025) line 92 input a salary-only caller does not give.
+# Line 92 and line 31210: "on employment income (maximum $484.12)" (page 6). A salary-only filer has no such amount, so it is an
+# optional input left blank; the sum that adds it reads a blank as 0.
+form:
+  name: ca-qc/t1_tax_and_credits
+inputs:
+  - name: ca-qc/ppip_premiums_payable_line_92
+    title: "PPIP premiums payable on employment income"
+    reference: "31210"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "on employment income (maximum $484.12)"
