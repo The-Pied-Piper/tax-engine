@@ -8,7 +8,7 @@ Amounts are `Decimal`, non-negative unless the form prints no floor. Federal kin
 from __future__ import annotations
 
 from tax_engine.domain.artifact import ArtifactCatalog
-from tax_engine.domain.kinds import AmountKind
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca_qc import NAMESPACE
 
@@ -112,6 +112,46 @@ TP1_TOTAL_INCOME_LINE_199 = AmountKind.declare(
 """Total income, TP-1 line 199 "Add lines 101 and 105 through 164. Total income": line 101, the
 salary, plus the optional income of lines 105 through 164, rounded half-up to the cent."""
 
+SCHEDULE_U_LINE_11 = AmountKind.declare(CATALOG, "schedule_u_line_11", non_negative=True)
+"""Schedule U line 11 "Multiply line 10 by 0.156250": line 10 (the TP-1 line 98 QPP contribution) at
+the printed rate, rounded half-up to the cent."""
+
+SCHEDULE_U_PENSIONABLE_SALARY_LINE_12 = AmountKind.declare(
+    CATALOG, "schedule_u_pensionable_salary_line_12", non_negative=True
+)
+"""Schedule U line 12 "Pensionable salary or wages (QPP) (line 98.1 of your return) (maximum
+$71,300)": the TP-1 line 98.1 figure, at most the printed $71,300."""
+
+SCHEDULE_U_PERSONAL_QPP_EXEMPTION_LINE_13 = AmountKind.declare(
+    CATALOG, "schedule_u_personal_qpp_exemption_line_13", non_negative=True
+)
+"""Schedule U line 13 "Personal QPP exemption": the printed $3,500 of the instructions for Part B
+("enter $3,500", when none of the situations of Table 1 applied), claimed whole."""
+
+SCHEDULE_U_LINE_14 = AmountKind.declare(CATALOG, "schedule_u_line_14")
+"""Schedule U line 14 "Subtract line 13 from line 12": the pensionable salary (TP-1 line 98.1) less
+the personal QPP exemption. The line prints no floor, so the figure can be negative."""
+
+SCHEDULE_U_MAXIMUM_PENSIONABLE_EARNINGS_LINE_14_1 = AmountKind.declare(
+    CATALOG, "schedule_u_maximum_pensionable_earnings_line_14_1", non_negative=True
+)
+"""Schedule U line 14.1 "Maximum pensionable earnings": the printed $71,300 of the instructions for
+Part B ("enter $71,300", when none of the situations of Table 1 applied), claimed whole."""
+
+SCHEDULE_U_LINE_14_3 = AmountKind.declare(CATALOG, "schedule_u_line_14_3", non_negative=True)
+"""Schedule U line 14.3 "Subtract line 14.2 from line 14.1. If the result is negative, enter 0": the
+maximum pensionable earnings less the personal QPP exemption, not below 0."""
+
+SCHEDULE_U_LINE_14_4 = AmountKind.declare(CATALOG, "schedule_u_line_14_4")
+"""Schedule U line 14.4 "Amount from line 14 or line 14.3, whichever is less"."""
+
+SCHEDULE_U_LINE_15 = AmountKind.declare(CATALOG, "schedule_u_line_15")
+"""Schedule U line 15 "Multiply line 14.4 by 1%": line 14.4 at the printed rate, rounded half-up to
+the cent."""
+
+SCHEDULE_U_LINE_16 = AmountKind.declare(CATALOG, "schedule_u_line_16")
+"""Schedule U line 16 "Amount from line 11 or line 15, whichever is less": the QPP contribution
+amount of Part B."""
 T1_LINE_21 = AmountKind.declare(CATALOG, "t1_line_21")
 """Add lines 1 to 20, 5005-R line 21 "Line 21: Add lines 1 to 20.": the employment income of line 1
 (`ca/employment_income`) and line 2 (`ca/other_employment_income`); lines 3 to 20 are not built (the
@@ -135,6 +175,115 @@ TOTAL_INCOME = AmountKind.declare(CATALOG, "total_income")
 """Total income, 5005-R line 33 and line 15000 "Line 33 and line 15000: Line 28 plus line 32 =".
 Not floored, so a loss larger than the other income is shown in brackets as the form prints it.
 Produced by one core/sum (`t1_taxable_income_line_15000.yaml`); Step 3 starts from it."""
+
+SCHEDULE_K_GROUP_PLAN_COVERED_LINE_50 = CountKind.declare(
+    CATALOG, "schedule_k_group_plan_covered_line_50", non_negative=True
+)
+"""Group drug plan answer, Schedule K line 50 "You were covered by basic prescription drug
+insurance provided by a group insurance plan (see line 447 in the guide) of which you, your spouse,
+your father or your mother was a member, and this plan covered the cost of medications": 1 for yes,
+0 for no, read as 0 when the caller gives no answer."""
+
+SCHEDULE_K_GROUP_PLAN_COVERED_CHECKED_LINE_50 = CountKind.declare(
+    CATALOG, "schedule_k_group_plan_covered_checked_line_50", non_negative=True
+)
+"""Group drug plan answer, checked, Schedule K line 50: the answer, refused above 1 so that the
+situation cannot be checked twice."""
+
+SCHEDULE_K_MONTHS_JANUARY_TO_JUNE_BOX_60 = AmountKind.declare(
+    CATALOG, "schedule_k_months_january_to_june_box_60", non_negative=True
+)
+"""Number of months checked from January to June, Schedule K box 60: 6 when line 50 is yes (the
+answer means covered all year), 0 when no, in months."""
+
+SCHEDULE_K_MONTHS_JULY_TO_DECEMBER_BOX_61 = AmountKind.declare(
+    CATALOG, "schedule_k_months_july_to_december_box_61", non_negative=True
+)
+"""Number of months checked from July to December, Schedule K box 61: 6 when line 50 is yes (the
+answer means covered all year), 0 when no, in months."""
+
+SCHEDULE_K_MONTHS_TOTAL_BOX_62 = AmountKind.declare(
+    CATALOG, "schedule_k_months_total_box_62", non_negative=True
+)
+"""Months checked, Add boxes 60 and 61, Schedule K box 62: boxes 60 and 61 added, in months."""
+
+PPIP_PREMIUMS_GIVEN = AmountKind.declare(CATALOG, "ppip_premiums_given", non_negative=True)
+"""PPIP premiums paid as given, 5005-R line 91 "Line 91 and line 31205: Provincial parental
+insurance plan (PPIP) premiums paid (box 55 of all T4 slips) (maximum $484.12)": the figure the
+caller gives, from the T4 slips; blank when the caller does not give it, and line 91 is then
+computed."""
+
+PPIP_PREMIUMS_PAID = AmountKind.declare(CATALOG, "ppip_premiums_paid", non_negative=True)
+"""PPIP premiums paid, 5005-R line 91 "Line 91 and line 31205: Provincial parental insurance plan
+(PPIP) premiums paid (box 55 of all T4 slips) (maximum $484.12)": the given figure
+(`ca-qc/ppip_premiums_given`) or, when none is given, 0.494% of the employment income to the
+$98,000 maximum insurable income (maximum $484.12). TP-1 line 97 (RL-1 box H) is the same figure."""
+
+SOLIDARITY_FAMILY_INCOME = AmountKind.declare(
+    CATALOG, "solidarity_family_income", non_negative=True
+)
+"""Solidarity tax credit, family income (TP-1 line 275, fiche 110201): the income the reduction is
+figured on, consumed here by name."""
+
+SOLIDARITY_INCOME_OVER_THRESHOLD = AmountKind.declare(
+    CATALOG, "solidarity_income_over_threshold", non_negative=True
+)
+"""Solidarity tax credit, family income over the reduction threshold (fiche 110201, Table C.9):
+family income less the printed threshold, not below 0."""
+
+SOLIDARITY_REDUCTION_AT_RATE = AmountKind.declare(
+    CATALOG, "solidarity_reduction_at_rate", non_negative=True
+)
+"""Solidarity tax credit, reduction at 6% (fiche 110201, Table C.9): 6% of the family income over
+the reduction threshold, rounded half-up to the cent."""
+
+SOLIDARITY_REDUCTION_AT_ONE_COMPONENT_RATE = AmountKind.declare(
+    CATALOG, "solidarity_reduction_at_one_component_rate", non_negative=True
+)
+"""Solidarity tax credit, reduction at 3% (fiche 110201, Table C.9): 3% of the family income over
+the reduction threshold, rounded half-up to the cent, for a person who receives only one of the
+three components."""
+
+SOLIDARITY_HOUSING_RECEIVED = CountKind.declare(
+    CATALOG, "solidarity_housing_received", non_negative=True
+)
+"""Solidarity tax credit, housing component received (fiche 110201): 1 when the housing component
+is received, 0 when it is not; consumed here by name."""
+
+SOLIDARITY_REDUCTION = AmountKind.declare(CATALOG, "solidarity_reduction", non_negative=True)
+"""Solidarity tax credit, reduction chosen (fiche 110201, Table C.9): the 3% reduction when the
+housing component is not received (one component only), else the 6% reduction."""
+
+SOLIDARITY_MAXIMUM_BEFORE_REDUCTION = AmountKind.declare(
+    CATALOG, "solidarity_maximum_before_reduction", non_negative=True
+)
+"""Solidarity tax credit, maximum before reduction (fiche 110201, Table C.9): the components
+received added together; consumed here by name."""
+
+SOLIDARITY_MAXIMUM_LESS_REDUCTION = AmountKind.declare(
+    CATALOG, "solidarity_maximum_less_reduction", non_negative=True
+)
+"""Solidarity tax credit, maximum less the reduction (fiche 110201, Table C.9): the maximum before
+reduction less the chosen reduction, not below 0."""
+
+SOLIDARITY_QST_COMPONENT_AMOUNT = AmountKind.declare(
+    CATALOG, "solidarity_qst_component_amount", non_negative=True
+)
+"""Solidarity tax credit, QST component amount (fiche 110201, Table C.9): the base amount plus the
+living-alone amount when it applies; consumed here by name."""
+
+SOLIDARITY_QST_COMPONENT_LESS_REDUCTION = AmountKind.declare(
+    CATALOG, "solidarity_qst_component_less_reduction", non_negative=True
+)
+"""Solidarity tax credit, QST component less the 3% reduction (fiche 110201, Table C.9): the floor
+of the credit, the QST component amount less the 3% reduction on the same excess, not below 0."""
+
+SOLIDARITY_CREDIT_AFTER_REDUCTION = AmountKind.declare(
+    CATALOG, "solidarity_credit_after_reduction", non_negative=True
+)
+"""Solidarity tax credit after the reduction (fiche 110201, Table C.9): the greater of the maximum
+less the reduction and the QST component less the 3% reduction, so the credit never falls below
+the QST-only credit."""
 
 TP1_FOREST_PRODUCER_AVERAGING_LINE_276 = AmountKind.declare(
     CATALOG, "tp1_forest_producer_averaging_line_276", non_negative=True

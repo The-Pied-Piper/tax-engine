@@ -1,0 +1,14 @@
+# Schedule K (2025) line 50, the group plan answer (Revenu Quebec TP-1.D.K-V (2025-12), Part B,
+# section 1): the answer is checked through ca/yes_or_no_count, which refuses a count above 1, so
+# the situation cannot be checked twice. Mirrors NL428 line 96's check
+# (`ca_nl/manifests/2025/nl428_line_96.yaml`).
+form:
+  name: ca-qc/tp1_schedule_k
+capabilities:
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca-qc/schedule_k_group_plan_covered_line_50
+    blank:
+      count: pass_on
+    produces:
+      output: ca-qc/schedule_k_group_plan_covered_checked_line_50

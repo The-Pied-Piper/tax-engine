@@ -1,0 +1,15 @@
+# Schedule U (Revenu Quebec TP-1.D.U-V, 2025-12), Part B, line 14.1 "Maximum pensionable earnings.
+# See the instructions for Part B." The instructions for line 14.1 say "enter $71,300" when none of
+# the situations of Table 1 applied to the filer, as for a take-home filer. The printed $71,300 is
+# the `ca-qc/schedule_u_line_14_1_maximum_pensionable_earnings` dataset figure, claimed whole.
+form:
+  name: ca-qc/tp1_schedule_u
+capabilities:
+  - name: core/credit_amount
+    title: "Maximum pensionable earnings"
+    reference: "14.1"
+    unit: ca/cad
+    params:
+      amount: ca-qc/schedule_u_line_14_1_maximum_pensionable_earnings
+    produces:
+      output: ca-qc/schedule_u_maximum_pensionable_earnings_line_14_1
