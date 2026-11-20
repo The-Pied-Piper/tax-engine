@@ -1,11 +1,12 @@
-# Provisional: the 2026 T1 (5006-R) is not published yet, so the 2025 figure is carried. It is read
-# only by the medical expenses lines (107 to 110), which are blank in a take-home. To be replaced
-# when CRA publishes the 2026 form. The comment below is the 2025 derivation.
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: carried forward unchanged from the 2025 file; the 2026 form is not yet published.
 # Medical expenses threshold ceiling, 2025 tax year (T1-2025, form 5006-R): line 109 "Enter
 # whichever is less: $2,834 or the amount from line 108." It is a plain cap on the share of
 # the net income that line 110 takes off the filer's own medical expenses.
 # Line 109 is a dollars-and-cents box, so the lesser rounds half-up to the cent, the
 # project's choice, as the form states no rounding rule.
+# It is read only by the medical expenses lines (107 to 110), which are blank in a take-home.
+# The 2026 form is not yet published, so the figure is not yet confirmed against it.
 family: ca/medical_threshold_ceiling
 tax_year: 2026
 kind: amount
