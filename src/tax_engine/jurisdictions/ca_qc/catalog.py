@@ -864,6 +864,14 @@ MEDICAL_NET_INCOME_SHARE_LINE_112 = AmountKind.declare(
 multiplied by 3% =": net income times the printed 3% (the dataset `ca/medical_net_income_rate`),
 from one core/apply_rate (`t1_tax_and_credits_line_112.yaml`); line 113 caps it."""
 
+MEDICAL_THRESHOLD_LINE_113 = AmountKind.declare(
+    CATALOG, "medical_threshold_line_113", non_negative=True
+)
+"""Medical expenses threshold, 5005-R line 113 "Line 113: Enter whichever is less: $2,834 or the
+amount from line 112.": the lesser of the printed $2,834 (the dataset
+`ca/medical_threshold_ceiling`) and line 112, from one core/capped_amount
+(`t1_tax_and_credits_line_113.yaml`); line 114 takes it off line 111."""
+
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
 Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line
