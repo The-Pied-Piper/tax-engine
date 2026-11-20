@@ -14,6 +14,40 @@ from tax_engine.jurisdictions.ca_qc import NAMESPACE
 
 CATALOG = ArtifactCatalog(Namespace(NAMESPACE))
 
+SOLIDARITY_QST_BASE_AMOUNT = AmountKind.declare(
+    CATALOG, "solidarity_qst_base_amount", non_negative=True
+)
+"""Solidarity tax credit, QST component, base amount ("montant de base" 363, Table C.9 of fiche
+110201, July 2026 to June 2027): the printed figure, claimed whole."""
+
+SOLIDARITY_LIVING_ALONE_AMOUNT = AmountKind.declare(
+    CATALOG, "solidarity_living_alone_amount", non_negative=True
+)
+"""Solidarity tax credit, QST component, living-alone amount ("montant pour personne vivant seule"
+172, Table C.9 of fiche 110201, July 2026 to June 2027): the printed figure, claimed whole."""
+
+SOLIDARITY_HOUSING_SINGLE_AMOUNT = AmountKind.declare(
+    CATALOG, "solidarity_housing_single_amount", non_negative=True
+)
+"""Solidarity tax credit, housing component, basic housing amount for a single person or a
+single-parent family ("montant de base pour frais de logement", 746, Table C.9 of fiche 110201,
+July 2026 to June 2027): the printed figure, claimed whole."""
+
+SOLIDARITY_HOUSING_MULTIPLE_AMOUNT = AmountKind.declare(
+    CATALOG, "solidarity_housing_multiple_amount", non_negative=True
+)
+"""Solidarity tax credit, housing component, basic housing amount for multiple owners or tenants
+("montant de base pour frais de logement", 906, Table C.9 of fiche 110201, July 2026 to June
+2027): the printed figure before the division by the number of owners, tenants or subtenants (note
+2), claimed whole."""
+
+SOLIDARITY_REDUCTION_THRESHOLD = AmountKind.declare(
+    CATALOG, "solidarity_reduction_threshold", non_negative=True
+)
+"""Solidarity tax credit, reduction threshold ("seuil de réduction", 43195, Table C.9 of fiche
+110201, July 2026 to June 2027, note 4: rounded to the nearest $5): the printed figure, claimed
+whole."""
+
 SCHEDULE_K_GROUP_PLAN_COVERED_LINE_50 = CountKind.declare(
     CATALOG, "schedule_k_group_plan_covered_line_50", non_negative=True
 )
