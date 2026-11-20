@@ -2,7 +2,7 @@
 part wires it.
 
 Schedule U line 14 "Subtract line 13 from line 12": the pensionable salary (TP-1 line 98.1) less the
-personal QPP exemption. The line prints no floor, so the figure can be negative.
+personal QPP exemption. Not below 0: the printed line has no floor, the floor is the owner's ruling (QPP Act ss. 42 to 44, 5005-S8 line 7).
 The salary is the starting input; the TP-1 figures that Schedule U reads (lines 98 and 98.1) are
 plain starting inputs here, as in the 5005-R tests. The expected figures are hand-computed from the
 printed lines, not an official example.
@@ -75,8 +75,8 @@ def test_line_14_at_each_salary(
     assert str(value) == expected
 
 
-def test_a_salary_below_the_exemption_gives_a_negative_figure(
+def test_a_salary_below_the_exemption_gives_zero(
     take_home_service: TakeHomeService,
 ) -> None:
-    """The form prints no "if negative, enter 0" on this line, so the figure is signed."""
-    assert str(schedule_u(take_home_service, "3000").get(SCHEDULE_U_LINE_14).value) == "-500.00"
+    """Below the $3,500 exemption line 14 is floored at 0 (the owner's ruling, departing from the printed line; QPP Act ss. 42 to 44, 5005-S8 line 7), so this line is 0."""
+    assert str(schedule_u(take_home_service, "3000").get(SCHEDULE_U_LINE_14).value) == "0.00"
