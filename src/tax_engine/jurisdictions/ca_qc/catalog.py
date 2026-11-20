@@ -685,3 +685,10 @@ SCHEDULE_K_DEPENDENT_CHILD_AMOUNT_LINE_42_OR_44 = AmountKind.declare(
 adds to line 41: an input, the amount of whichever of the two lines applies. The take-home has no
 dependent child, so the caller leaves it out and line 46 reads it as 0 (owner ruling, 19 Nov
 2026)."""
+
+SCHEDULE_K_TOTAL_LINE_46 = AmountKind.declare(
+    CATALOG, "schedule_k_total_line_46", non_negative=True
+)
+"""Total, Schedule K line 46 "Add line 41 and, as applicable, line 42 or line 44": line 41 and the
+dependent child input, added by one core/sum (`tp1_schedule_k_line_46.yaml`), the input read as 0
+when left blank."""
