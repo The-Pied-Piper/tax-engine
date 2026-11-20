@@ -1,0 +1,67 @@
+"""Shared set-up of the 5005-R line 78 tests: the real Step 3 chain, the real form declarations
+and the real Schedule 8 and Schedule 6 imports, so line 23600 is read from the salary through the
+real lines. The header is made up."""
+
+from __future__ import annotations
+
+from decimal import Decimal
+from textwrap import dedent
+
+from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
+from tests.jurisdictions.ca_qc.support import real_import
+
+D = Decimal
+T1_FORM = "ca-qc/t1_taxable_income"
+TAX_FORM = "ca-qc/t1_tax_and_credits"
+STEP_3_PARTS = (
+    "t1_taxable_income_line_10400_inputs.yaml",
+    "t1_taxable_income_line_21.yaml",
+    "t1_taxable_income_line_27_inputs.yaml",
+    "t1_taxable_income_line_28.yaml",
+    "t1_taxable_income_line_32_inputs.yaml",
+    "t1_taxable_income_line_15000.yaml",
+    "t1_taxable_income_line_22215.yaml",
+    "t1_taxable_income_line_23300.yaml",
+    "t1_taxable_income_line_23400.yaml",
+    "t1_taxable_income_line_23500_inputs.yaml",
+    "t1_taxable_income_line_23600.yaml",
+    "t1_taxable_income_line_23600_signed.yaml",
+)
+PARTS = (
+    "t1_taxable_income.yaml",
+    *STEP_3_PARTS,
+    "t1_tax_and_credits_line_30000_line_3.yaml",
+    "t1_tax_and_credits_line_30000.yaml",
+)
+HEADER = (
+    dedent("""\
+    jurisdiction: CA-QC
+    version: 1
+    valid_from_tax_year: 2025
+    inputs:
+      - name: ca/employment_income
+        required: true
+    outputs:
+      - ca/employment_income
+    capabilities: []
+    imports:
+    """)
+    + real_import("ca/schedule_8")
+    + "  - ca/schedule_6\n"
+)
+# The real tax and credits declaration is the form; the real T1 declaration is the first part.
+FORM = (QUEBEC_PARTS / "t1_tax_and_credits.yaml").read_text(encoding="utf-8")
+
+
+def sheets(take_home_service: TakeHomeService, salary: str) -> tuple[Worksheet, Worksheet]:
+    """The T1 taxable-income sheet and the tax and credits sheet for `salary`."""
+    worksheets = take_home_service(HEADER, FORM, *PARTS).compute(
+        JurisdictionCode("CA-QC"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
+    )
+    (t1,) = worksheets[T1_FORM]
+    (sheet,) = worksheets[TAX_FORM]
+    return t1, sheet

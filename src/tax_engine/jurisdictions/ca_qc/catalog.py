@@ -522,3 +522,11 @@ the amount you would have entered if the instructions on line 23600 said "if neg
 brackets")". Net income before adjustments (line 55) less the social benefits repayment (line 56),
 signed. Produced by one core/subtract (`t1_taxable_income_line_23600_signed.yaml`) and supplied to
 the neutral name `ca/t1_taxable_income.net_income_signed` by the form declaration."""
+
+BASIC_PERSONAL_AMOUNT_NET_INCOME_LINE_3 = AmountKind.declare(
+    CATALOG, "basic_personal_amount_net_income_line_3", non_negative=True
+)
+"""Federal Worksheet 5000-D1, line 30000 line 3 "Amount from line 23600 of your return": the
+floored net income, read from the T1 taxable income export (`ca-qc/net_income`, 5005-R line 57 and
+line 23600) into the taper of the basic personal amount. Produced by one core/record_total
+(`t1_tax_and_credits_line_30000_line_3.yaml`)."""
