@@ -1,17 +1,32 @@
 # 5005-R (2025) line 21. The form prints: "Line 21: Add lines 1 to 20. =" (page 3). Line 1 is the salary
 # (`ca/employment_income`, line 10100) and line 2 is the optional input read as 0
 # (`ca/other_employment_income`, line 10400). Lines 3 to 20 hold nothing for a salary-only filer and
-# are not built, as the federal form reads only lines 10100 and 10400. One step: core/sum in form
-# line order.
+# are not built, as the federal form reads only lines 10100 and 10400. Lines 1 and 2 belong to the Quebec T1
+# employment income form and are read as its exports (a record list each, totalled by core/record_total),
+# then summed by core/sum in form line order.
 form:
   name: ca-qc/t1_taxable_income
 capabilities:
+  - name: core/record_total
+    title: "Employment income from line 10100"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/t1_employment_income.employment_income_line_10100
+    produces:
+      output: ca-qc/t1_line_21_employment_income_line_10100
+  - name: core/record_total
+    title: "Other employment income from line 10400"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/t1_employment_income.other_employment_income_line_10400
+    produces:
+      output: ca-qc/t1_line_21_other_employment_income_line_10400
   - name: core/sum
     reference: "21"
     unit: ca/cad
     params:
       rounding: ca-qc/cent_rounding
     consumes:
-      parts: [ca-qc/employment_income_line_10100, ca-qc/other_employment_income_line_10400]
+      parts: [ca-qc/t1_line_21_employment_income_line_10100, ca-qc/t1_line_21_other_employment_income_line_10400]
     produces:
       output: ca-qc/t1_line_21

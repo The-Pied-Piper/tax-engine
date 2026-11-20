@@ -82,11 +82,18 @@ SWAPPED = (
 HEADER = HEADER_TEMPLATE.replace("{schedule_8}", SWAPPED)
 # The composed folder needs a form declaration beside the header; Schedule 8 is the imported form.
 FORM_PART = "capabilities: []\n"
+# The real Quebec T1 employment income parts: Schedule 8 line 1 reads line 10100 from that form.
+T1_EMPLOYMENT_INCOME_PARTS = (
+    "t1_employment_income.yaml",
+    "t1_employment_income_line_10100.yaml",
+    "t1_employment_income_line_10400.yaml",
+    "t1_employment_income_line_10400_inputs.yaml",
+)
 BARE_HEADER = HEADER_TEMPLATE.replace("{schedule_8}", "ca/schedule_8")
 
 
 def schedule_8(take_home_service: TakeHomeService, salary: str, header: str = HEADER) -> Worksheet:
-    worksheets = take_home_service(header, FORM_PART).compute(
+    worksheets = take_home_service(header, FORM_PART, *T1_EMPLOYMENT_INCOME_PARTS).compute(
         JurisdictionCode("CA-QC"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
     )
     (sheet,) = worksheets["ca/schedule_8"]
