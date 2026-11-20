@@ -66,6 +66,18 @@ line 2.": line 1 (line 10100, "Employment income (box 14 of all T4 slips)") plus
 10400, "Other employment income"), in line order, the base the cap is applied to.
 """
 
+CANADA_EMPLOYMENT_AMOUNT_LINE_1 = AmountKind.declare(
+    CATALOG, "canada_employment_amount_line_1", non_negative=True
+)
+"""Canada employment amount, line 31260 "line 1 plus line 2", line 1: T1 line 10100 (employment
+income), read as the T1 form's export."""
+
+CANADA_EMPLOYMENT_AMOUNT_LINE_2 = AmountKind.declare(
+    CATALOG, "canada_employment_amount_line_2", non_negative=True
+)
+"""Canada employment amount, line 31260 "line 1 plus line 2", line 2: T1 line 10400 (other
+employment income), read as the T1 form's export."""
+
 CANADA_EMPLOYMENT_AMOUNT = AmountKind.declare(
     CATALOG, "canada_employment_amount", non_negative=True
 )
