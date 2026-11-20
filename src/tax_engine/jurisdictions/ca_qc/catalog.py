@@ -1050,3 +1050,54 @@ WORK_CHART_401_INCOME_TAX_LINE_8 = AmountKind.declare(
 """Work Chart 401 line 8 "Add lines 6 and 7. Income tax on taxable income": line 6 plus line 7,
 rounded half-up to the cent, which the chart carries to line 401 of the return. Produced by one
 core/sum (`work_chart_401_line_8.yaml`); the chart exports it."""
+
+SCHEDULE_K_NET_INCOME_LINE_36 = AmountKind.declare(
+    CATALOG, "schedule_k_net_income_line_36", non_negative=True
+)
+"""Net income, Schedule K line 36 "Amount from line 275 of your return": a copy of TP-1 line 275.
+The amount arrives from the TP-1 net income form as a record list of one, so the one step is
+core/record_total (`tp1_schedule_k_line_36.yaml`)."""
+
+SCHEDULE_K_SPOUSE_NET_INCOME_LINE_37 = AmountKind.declare(
+    CATALOG, "schedule_k_spouse_net_income_line_37", non_negative=True
+)
+"""Spouse's net income, Schedule K line 37 "Amount from line 275 of your spouse's return (spouse on
+December 31, 2025)": an input, the spouse's TP-1 line 275. A single filer has no spouse, so the
+caller leaves it out and line 40 reads it as 0."""
+
+SCHEDULE_K_INCOME_LINE_40 = AmountKind.declare(
+    CATALOG, "schedule_k_income_line_40", non_negative=True
+)
+"""Income, Schedule K line 40 "Add lines 36 and 37": the net income of the return and of the spouse,
+added by one core/sum (`tp1_schedule_k_line_40.yaml`), line 37 read as 0 when left blank."""
+
+SCHEDULE_K_AMOUNT_LINE_41 = AmountKind.declare(
+    CATALOG, "schedule_k_amount_line_41", non_negative=True
+)
+"""Amount, Schedule K line 41 "If you had a spouse on December 31, 2025, enter $32,240; otherwise,
+enter $19,890": the printed $19,890 of a filer without a spouse, a dataset figure
+(`ca-qc/schedule_k_line_41_amount`) claimed whole by one core/credit_amount
+(`tp1_schedule_k_line_41.yaml`)."""
+
+SCHEDULE_K_DEPENDENT_CHILD_AMOUNT_LINE_42_OR_44 = AmountKind.declare(
+    CATALOG, "schedule_k_dependent_child_amount_line_42_or_44", non_negative=True
+)
+"""Dependent child amount, Schedule K line 42 or line 44, the "as applicable" lines that line 46
+adds to line 41: an input, the amount of whichever of the two lines applies. The take-home has no
+dependent child, so the caller leaves it out and line 46 reads it as 0 (owner ruling, 19 Nov
+2026)."""
+
+SCHEDULE_K_TOTAL_LINE_46 = AmountKind.declare(
+    CATALOG, "schedule_k_total_line_46", non_negative=True
+)
+"""Total, Schedule K line 46 "Add line 41 and, as applicable, line 42 or line 44": line 41 and the
+dependent child input, added by one core/sum (`tp1_schedule_k_line_46.yaml`), the input read as 0
+when left blank."""
+
+SCHEDULE_K_PREMIUM_INCOME_LINE_48 = AmountKind.declare(
+    CATALOG, "schedule_k_premium_income_line_48", non_negative=True
+)
+"""Income used to calculate the premium, Schedule K line 48 "Subtract line 46 from line 40. If the
+result is negative, enter 0. In this case, you do not have to pay a premium": one
+core/subtract_not_below_zero (`tp1_schedule_k_line_48.yaml`). The form exports it; Part C reads
+it."""

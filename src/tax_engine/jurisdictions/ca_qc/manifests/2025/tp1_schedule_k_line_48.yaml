@@ -1,0 +1,19 @@
+# Schedule K (2025) line 48: "Subtract line 46 from line 40. If the result is negative, enter 0. In
+# this case, you do not have to pay a premium. Income used to calculate the premium" (Revenu Quebec
+# TP-1.D.K-V (2025-12), Part A). One step: core/subtract_not_below_zero, rounded half-up to the cent
+# (`ca-qc/cent_rounding`), so a zero prints as 0.00. The title is the printed label. Export: Part C
+# reads this line.
+form:
+  name: ca-qc/tp1_schedule_k
+capabilities:
+  - name: core/subtract_not_below_zero
+    title: "Income used to calculate the premium"
+    reference: "48"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/schedule_k_income_line_40
+      less: ca-qc/schedule_k_total_line_46
+    produces:
+      output: ca-qc/schedule_k_premium_income_line_48
