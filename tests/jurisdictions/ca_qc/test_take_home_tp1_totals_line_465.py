@@ -130,7 +130,7 @@ def _subtotal(title: str, parts: list[str], output: str) -> dict[str, object]:
         "name": "core/sum",
         "title": title,
         "unit": "ca/cad",
-        "params": {"rounding": "ca-qc/cent_rounding"},
+        "params": {"rounding": "ca-qc/exact_rounding"},
         "consumes": {"parts": parts},
         "blank": {name: "0" for name in parts if name in OPTIONAL},
         "produces": {"output": f"ca-qc/{output}"},

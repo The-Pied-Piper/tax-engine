@@ -1,5 +1,5 @@
 # TP-1 (2025) line 465: "Add lines 451.2 through 463. Income tax paid and other credits = 465" (page
-# 5). Two subtotal steps and a core/sum of both, rounded half-up to the cent through ca-qc/cent_rounding. Line 456 is a
+# 5). Two subtotal steps and a core/sum of both, the printed line rounded half-up to the cent through ca-qc/cent_rounding. The two subtotals are not printed on the form, so they carry their sum unrounded (`ca-qc/exact_rounding`; round only where the form says); the printed line rounds once. Line 456 is a
 # step; lines 451.2, 451.3, 452 to 455, 457 to 460, 462 and 463 are optional inputs, read as 0 when
 # left blank.
 # The sentence of a numbered line stays at 40 words or fewer (tests/jurisdictions/test_trace_english_
@@ -12,7 +12,7 @@ capabilities:
     title: "Lines 451.2 to 456 added up"
     unit: ca/cad
     params:
-      rounding: ca-qc/cent_rounding
+      rounding: ca-qc/exact_rounding
     consumes:
       parts:
         - ca-qc/tp1_line_451_2
@@ -35,7 +35,7 @@ capabilities:
     title: "Lines 457 to 463 added up"
     unit: ca/cad
     params:
-      rounding: ca-qc/cent_rounding
+      rounding: ca-qc/exact_rounding
     consumes:
       parts:
         - ca-qc/tp1_line_457

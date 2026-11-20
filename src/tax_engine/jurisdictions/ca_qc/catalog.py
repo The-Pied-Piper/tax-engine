@@ -938,11 +938,15 @@ and PPIP lines, the Canada employment amount and the optional lines 88, 90, 92 t
 99, each blank read as 0. Produced by core/sum steps (`t1_tax_and_credits_line_100.yaml`); line
 102 reads it."""
 
-CREDITS_LINES_87_TO_93_SUBTOTAL = AmountKind.declare(CATALOG, "credits_lines_87_to_93_subtotal")
+CREDITS_LINES_87_TO_93_SUBTOTAL = AmountKind.declare(
+    CATALOG, "credits_lines_87_to_93_subtotal", non_negative=True
+)
 """Unprinted subtotal of the first parts of 5005-R line 100, so that the sentence of the line stays
 short: lines 87 to 93 added up."""
 
-CREDITS_LINES_94_TO_99_SUBTOTAL = AmountKind.declare(CATALOG, "credits_lines_94_to_99_subtotal")
+CREDITS_LINES_94_TO_99_SUBTOTAL = AmountKind.declare(
+    CATALOG, "credits_lines_94_to_99_subtotal", non_negative=True
+)
 """Unprinted subtotal of the last parts of 5005-R line 100, so that the sentence of the line stays
 short: lines 94 to 99 added up."""
 
@@ -2142,13 +2146,13 @@ TP1_INCOME_TAX_PAID_AND_OTHER_CREDITS_LINE_465 = AmountKind.declare(
 to the cent. Produced by core/sum steps (`tp1_totals_line_465.yaml`)."""
 
 TP1_TOTALS_LINES_451_2_TO_456_SUBTOTAL = AmountKind.declare(
-    CATALOG, "tp1_totals_lines_451_2_to_456_subtotal"
+    CATALOG, "tp1_totals_lines_451_2_to_456_subtotal", non_negative=True
 )
 """Unprinted subtotal of the first parts of TP-1 line 465, so that the sentence of the line stays
 short: lines 451.2 to 456 added up."""
 
 TP1_TOTALS_LINES_457_TO_463_SUBTOTAL = AmountKind.declare(
-    CATALOG, "tp1_totals_lines_457_to_463_subtotal"
+    CATALOG, "tp1_totals_lines_457_to_463_subtotal", non_negative=True
 )
 """Unprinted subtotal of the last parts of TP-1 line 465, so that its sentence stays short:
 lines 457 to 463 added up."""

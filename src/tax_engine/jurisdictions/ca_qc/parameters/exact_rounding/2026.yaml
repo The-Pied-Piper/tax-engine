@@ -5,7 +5,9 @@
 # employment income), which the T1 prints no rounding rule for (5005-r-25e.txt, "Line 1 and line
 # 10100", "Line 2 and line 10400"). The form prints no rounding rule for them, so the figure is
 # carried as it is (the project's rule: round only where the form says to). The cent rule of
-# `ca-qc/cent_rounding` does not apply to them.
+# `ca-qc/cent_rounding` does not apply to them. The unprinted subtotals of the long sums (5005-R
+# lines 100 and 171, TP-1 lines 399 and 465) use it too: the form prints no subtotal, so only the
+# printed line rounds.
 # The 2026 form is not yet published, so the rule is not yet confirmed against it.
 family: ca-qc/exact_rounding
 tax_year: 2026

@@ -72,6 +72,19 @@ def test_line_399_adds_lines_389_397_390_and_398_1(take_home_service: TakeHomeSe
     assert str(sheet.get(LINE_399).value) == "2864.69"
 
 
+def test_line_399_rounds_once_so_sub_cent_parts_in_different_subtotals_add_before_rounding(
+    take_home_service: TakeHomeService,
+) -> None:
+    given = (
+        Artifact(TP1_LINE_390, D("0.005")),
+        Artifact(TP1_LINE_398_1, D("0.005")),
+    )
+    sheet = chain_sheet(take_home_service, "70000", EXPORTS, LINE_399_PARTS, *given)
+
+    # 2,599.94 + 0.005 + 0.005 = 2,599.95: the unprinted subtotals do not round, the line does.
+    assert str(sheet.get(LINE_399).value) == "2599.95"
+
+
 def test_line_358_lowers_line_399(take_home_service: TakeHomeService) -> None:
     given = Artifact(TP1_INCOME_REPLACEMENT_ADJUSTMENT_LINE_358, D("1000"))
     sheet = chain_sheet(take_home_service, "70000", EXPORTS, LINE_399_PARTS, given)
@@ -91,7 +104,7 @@ def _subtotal(title: str, parts: list[str], optional: list[str], output: str) ->
         "name": "core/sum",
         "title": title,
         "unit": "ca/cad",
-        "params": {"rounding": "ca-qc/cent_rounding"},
+        "params": {"rounding": "ca-qc/exact_rounding"},
         "consumes": {"parts": parts},
         "blank": {name: "0" for name in parts if name in optional},
         "produces": {"output": f"ca-qc/{output}"},
