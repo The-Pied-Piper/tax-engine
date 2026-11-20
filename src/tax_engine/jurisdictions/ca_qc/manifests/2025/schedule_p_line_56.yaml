@@ -1,0 +1,14 @@
+# Schedule P (TP-1.D.P-V, 2025-12) Part D "Supplement to the work premium", line 56: the printed
+# figure 200.00, the amount for each month. It is a dataset figure, so core/credit_amount claims it
+# whole (`ca-qc/work_premium_supplement_amount`); line 60 multiplies it by the months of line 59. The
+# form prints no label for the line, so the step is untitled.
+form:
+  name: ca-qc/schedule_p
+capabilities:
+  - name: core/credit_amount
+    reference: "56"
+    unit: ca/cad
+    params:
+      amount: ca-qc/work_premium_supplement_amount
+    produces:
+      output: ca-qc/schedule_p_work_premium_supplement_amount_line_56
