@@ -1,0 +1,16 @@
+# TP-1 (2025) line 475: "Amount from line 470, if it is positive" (page 5). One core/greater_of of
+# line 470 and the zero of `ca-qc/tp1_zero_line_474_475`: line 470 if it is positive, else 0 (no
+# capability returns the positive part of a signed amount; owner decision, 19 Nov 2026). Neither
+# rounds, as both are already cents. The line prints no title of its own, so the step has none.
+form:
+  name: ca-qc/tp1_totals
+capabilities:
+  - name: core/greater_of
+    reference: "475"
+    unit: ca/cad
+    consumes:
+      amounts:
+        - ca-qc/tp1_line_470
+        - ca-qc/tp1_zero_line_474_475
+    produces:
+      output: ca-qc/tp1_line_475

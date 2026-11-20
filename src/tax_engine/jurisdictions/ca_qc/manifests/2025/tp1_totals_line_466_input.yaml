@@ -1,0 +1,13 @@
+# TP-1 (2025) line 466: "Financial compensation for home-support services + 466" (page 5). The
+# take-home has no such compensation, so it is an optional input left blank; line 468 reads a blank
+# as 0.
+form:
+  name: ca-qc/tp1_totals
+inputs:
+  - name: ca-qc/tp1_financial_compensation_line_466
+    title: "Financial compensation for home-support services"
+    reference: "466"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Financial compensation for home-support services"

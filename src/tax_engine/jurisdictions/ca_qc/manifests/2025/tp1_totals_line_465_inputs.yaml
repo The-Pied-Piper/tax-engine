@@ -1,0 +1,84 @@
+# TP-1 (2025) lines 451.2, 451.3, 452 to 455, 457 to 460, 462 and 463: the lines that line 465 adds
+# besides line 456 ("Add lines 451.2 through 463. Income tax paid and other credits = 465", page 5):
+# Quebec income tax withheld at source after line 451.1, withholding transferred by the spouse, the
+# QPP or CPP overpayment, income tax paid in instalments, the transferable portion of the tax
+# withheld for another province, the childcare credit, the QPIP overpayment, the home-support
+# services credit for seniors, the QST rebate for employees and partners, the tax shield, other
+# credits and the senior assistance credit. The take-home gives none of them (tax withheld, line
+# 451, is left out by ruling), so each is an optional input left blank, read as 0 by line 465.
+# Line 461 is the code that line 462 specifies, not an amount, and has no input.
+form:
+  name: ca-qc/tp1_totals
+inputs:
+  - name: ca-qc/tp1_line_451_2
+    reference: "451.2"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Add lines 451.2 through 463."
+  - name: ca-qc/tp1_line_451_3
+    reference: "451.3"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Add lines 451.2 through 463."
+  - name: ca-qc/tp1_line_452
+    reference: "452"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Add lines 451.2 through 463."
+  - name: ca-qc/tp1_line_453
+    reference: "453"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Add lines 451.2 through 463."
+  - name: ca-qc/tp1_line_454
+    reference: "454"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Add lines 451.2 through 463."
+  - name: ca-qc/tp1_line_455
+    reference: "455"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Add lines 451.2 through 463."
+  - name: ca-qc/tp1_line_457
+    reference: "457"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Add lines 451.2 through 463."
+  - name: ca-qc/tp1_line_458
+    reference: "458"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Add lines 451.2 through 463."
+  - name: ca-qc/tp1_line_459
+    reference: "459"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Add lines 451.2 through 463."
+  - name: ca-qc/tp1_line_460
+    reference: "460"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Add lines 451.2 through 463."
+  - name: ca-qc/tp1_line_462
+    reference: "462"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Add lines 451.2 through 463."
+  - name: ca-qc/tp1_line_463
+    reference: "463"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Add lines 451.2 through 463."

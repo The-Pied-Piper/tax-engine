@@ -1,0 +1,19 @@
+# TP-1 (2025) line 468: "Add lines 465 and 466. = 468" (page 5). One core/sum, rounded half-up to
+# the cent through ca-qc/cent_rounding. Line 466 is an optional input, read as 0 when left blank.
+# The line prints no title of its own, so the step has none.
+form:
+  name: ca-qc/tp1_totals
+capabilities:
+  - name: core/sum
+    reference: "468"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/tp1_income_tax_paid_and_other_credits_line_465
+        - ca-qc/tp1_financial_compensation_line_466
+    blank:
+      ca-qc/tp1_financial_compensation_line_466: "0"
+    produces:
+      output: ca-qc/tp1_line_468

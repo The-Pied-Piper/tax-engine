@@ -1,0 +1,43 @@
+# TP-1 (2025) line 465: "Add lines 451.2 through 463. Income tax paid and other credits = 465" (page
+# 5). One step, core/sum, rounded half-up to the cent through ca-qc/cent_rounding. Line 456 is a
+# step; lines 451.2, 451.3, 452 to 455, 457 to 460, 462 and 463 are optional inputs, read as 0 when
+# left blank.
+form:
+  name: ca-qc/tp1_totals
+capabilities:
+  - name: core/sum
+    title: "Income tax paid and other credits"
+    reference: "465"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/tp1_line_451_2
+        - ca-qc/tp1_line_451_3
+        - ca-qc/tp1_line_452
+        - ca-qc/tp1_line_453
+        - ca-qc/tp1_line_454
+        - ca-qc/tp1_line_455
+        - ca-qc/tp1_work_premium_tax_credits_line_456
+        - ca-qc/tp1_line_457
+        - ca-qc/tp1_line_458
+        - ca-qc/tp1_line_459
+        - ca-qc/tp1_line_460
+        - ca-qc/tp1_line_462
+        - ca-qc/tp1_line_463
+    blank:
+      ca-qc/tp1_line_451_2: "0"
+      ca-qc/tp1_line_451_3: "0"
+      ca-qc/tp1_line_452: "0"
+      ca-qc/tp1_line_453: "0"
+      ca-qc/tp1_line_454: "0"
+      ca-qc/tp1_line_455: "0"
+      ca-qc/tp1_line_457: "0"
+      ca-qc/tp1_line_458: "0"
+      ca-qc/tp1_line_459: "0"
+      ca-qc/tp1_line_460: "0"
+      ca-qc/tp1_line_462: "0"
+      ca-qc/tp1_line_463: "0"
+    produces:
+      output: ca-qc/tp1_income_tax_paid_and_other_credits_line_465

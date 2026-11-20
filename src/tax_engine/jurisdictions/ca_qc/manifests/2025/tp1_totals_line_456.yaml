@@ -1,0 +1,17 @@
+# TP-1 (2025) line 456: "Tax credits respecting the work premium. Complete Schedule P. + 456" (page
+# 5). The figure is Schedule P line 90 ("Carry the result to line 456 of your return"), which that
+# form exports; another form reads an export only as a record list
+# (`ca-qc/schedule_p.schedule_p_tax_credits_line_90`), so the one step is core/record_total over
+# those records (as line 406 reads the credits form). Line 90 is always computed (0.00 when there
+# is no work premium), so there is no blank rule.
+form:
+  name: ca-qc/tp1_totals
+capabilities:
+  - name: core/record_total
+    title: "Tax credits respecting the work premium"
+    reference: "456"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/schedule_p.schedule_p_tax_credits_line_90
+    produces:
+      output: ca-qc/tp1_work_premium_tax_credits_line_456

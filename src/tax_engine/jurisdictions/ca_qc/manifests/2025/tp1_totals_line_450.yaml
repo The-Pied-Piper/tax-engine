@@ -1,0 +1,30 @@
+# TP-1 (2025) line 450: "Add lines 432 through 447. Income tax and contributions = 450" (page 5).
+# One step, core/sum, rounded half-up to the cent through ca-qc/cent_rounding. Lines 432, 446 and
+# 447 are steps; lines 438, 439, 441, 443 and 445 are optional inputs, read as 0 when left blank.
+form:
+  name: ca-qc/tp1_totals
+capabilities:
+  - name: core/sum
+    title: "Income tax and contributions"
+    reference: "450"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/tp1_totals_line_432
+        - ca-qc/tp1_line_438
+        - ca-qc/tp1_line_439
+        - ca-qc/tp1_line_441
+        - ca-qc/tp1_line_443
+        - ca-qc/tp1_line_445
+        - ca-qc/tp1_health_services_fund_line_446
+        - ca-qc/tp1_drug_insurance_premium_line_447
+    blank:
+      ca-qc/tp1_line_438: "0"
+      ca-qc/tp1_line_439: "0"
+      ca-qc/tp1_line_441: "0"
+      ca-qc/tp1_line_443: "0"
+      ca-qc/tp1_line_445: "0"
+    produces:
+      output: ca-qc/tp1_income_tax_and_contributions_line_450

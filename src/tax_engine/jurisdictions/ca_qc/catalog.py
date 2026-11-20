@@ -1945,3 +1945,174 @@ SOLIDARITY_HOUSING_AMOUNT = AmountKind.declare(
 )
 """Solidarity tax credit, housing component amount (fiche 110201, Table C.9): the basic housing
 amount when the filer is a tenant, a subtenant or an owner, 0 otherwise."""
+TP1_TOTALS_LINE_432 = AmountKind.declare(CATALOG, "tp1_totals_line_432", non_negative=True)
+"""TP-1 page 5 "Amount from line 432": a copy of the tax form's line 432, the income tax after
+credits. Produced by one core/record_total over the tax form's export (`tp1_totals_line_432.yaml`).
+"""
+
+TP1_HEALTH_SERVICES_FUND_LINE_446 = AmountKind.declare(
+    CATALOG, "tp1_health_services_fund_line_446", non_negative=True
+)
+"""TP-1 line 446 "Contribution to the health services fund": Schedule F line 82, a copy. Produced by
+one core/record_total over Schedule F's export (`tp1_totals_line_446.yaml`)."""
+
+TP1_DRUG_INSURANCE_PREMIUM_LINE_447 = AmountKind.declare(
+    CATALOG, "tp1_drug_insurance_premium_line_447", non_negative=True
+)
+"""TP-1 line 447 "Premium payable under the Quebec prescription drug insurance plan": Schedule K
+line 98, a copy. Produced by one core/record_total over Schedule K's export
+(`tp1_totals_line_447.yaml`)."""
+
+TP1_LINE_438 = AmountKind.declare(CATALOG, "tp1_line_438", non_negative=True)
+"""TP-1 line 438, one of the lines that line 450 adds ("Add lines 432 through 447"): the annual
+registration fee for the enterprise register. One optional input a salary-only caller does not give;
+line 450 reads a blank as 0 (`tp1_totals_line_450_inputs.yaml`)."""
+
+TP1_LINE_439 = AmountKind.declare(CATALOG, "tp1_line_439", non_negative=True)
+"""TP-1 line 439, one of the lines that line 450 adds ("Add lines 432 through 447"): the QPIP
+premium on income from self-employment or employment outside Quebec. One optional input a
+salary-only caller does not give; line 450 reads a blank as 0 (`tp1_totals_line_450_inputs.yaml`).
+"""
+
+TP1_LINE_441 = AmountKind.declare(CATALOG, "tp1_line_441", non_negative=True)
+"""TP-1 line 441, one of the lines that line 450 adds ("Add lines 432 through 447"): advance
+payments of tax credits. One optional input a salary-only caller does not give; line 450 reads a
+blank as 0 (`tp1_totals_line_450_inputs.yaml`)."""
+
+TP1_LINE_443 = AmountKind.declare(CATALOG, "tp1_line_443", non_negative=True)
+"""TP-1 line 443, one of the lines that line 450 adds ("Add lines 432 through 447"): special taxes
+and tax adjustment. One optional input a salary-only caller does not give; line 450 reads a blank as
+0 (`tp1_totals_line_450_inputs.yaml`)."""
+
+TP1_LINE_445 = AmountKind.declare(CATALOG, "tp1_line_445", non_negative=True)
+"""TP-1 line 445, one of the lines that line 450 adds ("Add lines 432 through 447"): the QPP
+contribution on income from self-employment. One optional input a salary-only caller does not give;
+line 450 reads a blank as 0 (`tp1_totals_line_450_inputs.yaml`)."""
+
+TP1_INCOME_TAX_AND_CONTRIBUTIONS_LINE_450 = AmountKind.declare(
+    CATALOG, "tp1_income_tax_and_contributions_line_450", non_negative=True
+)
+"""TP-1 line 450 "Add lines 432 through 447. Income tax and contributions": rounded half-up to the
+cent. Produced by one core/sum (`tp1_totals_line_450.yaml`)."""
+
+TP1_WORK_PREMIUM_TAX_CREDITS_LINE_456 = AmountKind.declare(
+    CATALOG, "tp1_work_premium_tax_credits_line_456", non_negative=True
+)
+"""TP-1 line 456 "Tax credits respecting the work premium": Schedule P line 90, a copy. Produced by
+one core/record_total over Schedule P's export (`tp1_totals_line_456.yaml`)."""
+
+TP1_LINE_451_2 = AmountKind.declare(CATALOG, "tp1_line_451_2", non_negative=True)
+"""TP-1 line 451.2, one of the lines that line 465 adds ("Add lines 451.2 through 463"): Quebec
+income tax withheld at source after line 451.1. One optional input a salary-only caller does not
+give; line 465 reads a blank as 0 (`tp1_totals_line_465_inputs.yaml`)."""
+
+TP1_LINE_451_3 = AmountKind.declare(CATALOG, "tp1_line_451_3", non_negative=True)
+"""TP-1 line 451.3, one of the lines that line 465 adds ("Add lines 451.2 through 463"): Quebec
+income tax withholding transferred by the spouse. One optional input a salary-only caller does not
+give; line 465 reads a blank as 0 (`tp1_totals_line_465_inputs.yaml`)."""
+
+TP1_LINE_452 = AmountKind.declare(CATALOG, "tp1_line_452", non_negative=True)
+"""TP-1 line 452, one of the lines that line 465 adds ("Add lines 451.2 through 463"): the QPP or
+CPP overpayment. One optional input a salary-only caller does not give; line 465 reads a blank as 0
+(`tp1_totals_line_465_inputs.yaml`)."""
+
+TP1_LINE_453 = AmountKind.declare(CATALOG, "tp1_line_453", non_negative=True)
+"""TP-1 line 453, one of the lines that line 465 adds ("Add lines 451.2 through 463"): income tax
+paid in instalments. One optional input a salary-only caller does not give; line 465 reads a blank
+as 0 (`tp1_totals_line_465_inputs.yaml`)."""
+
+TP1_LINE_454 = AmountKind.declare(CATALOG, "tp1_line_454", non_negative=True)
+"""TP-1 line 454, one of the lines that line 465 adds ("Add lines 451.2 through 463"): the
+transferable portion of the income tax withheld for another province. One optional input a
+salary-only caller does not give; line 465 reads a blank as 0 (`tp1_totals_line_465_inputs.yaml`).
+"""
+
+TP1_LINE_455 = AmountKind.declare(CATALOG, "tp1_line_455", non_negative=True)
+"""TP-1 line 455, one of the lines that line 465 adds ("Add lines 451.2 through 463"): the tax
+credit for childcare expenses. One optional input a salary-only caller does not give; line 465 reads
+a blank as 0 (`tp1_totals_line_465_inputs.yaml`)."""
+
+TP1_LINE_457 = AmountKind.declare(CATALOG, "tp1_line_457", non_negative=True)
+"""TP-1 line 457, one of the lines that line 465 adds ("Add lines 451.2 through 463"): the QPIP
+overpayment. One optional input a salary-only caller does not give; line 465 reads a blank as 0
+(`tp1_totals_line_465_inputs.yaml`)."""
+
+TP1_LINE_458 = AmountKind.declare(CATALOG, "tp1_line_458", non_negative=True)
+"""TP-1 line 458, one of the lines that line 465 adds ("Add lines 451.2 through 463"): the tax
+credit for home-support services for seniors. One optional input a salary-only caller does not give;
+line 465 reads a blank as 0 (`tp1_totals_line_465_inputs.yaml`)."""
+
+TP1_LINE_459 = AmountKind.declare(CATALOG, "tp1_line_459", non_negative=True)
+"""TP-1 line 459, one of the lines that line 465 adds ("Add lines 451.2 through 463"): the QST
+rebate for employees and partners. One optional input a salary-only caller does not give; line 465
+reads a blank as 0 (`tp1_totals_line_465_inputs.yaml`)."""
+
+TP1_LINE_460 = AmountKind.declare(CATALOG, "tp1_line_460", non_negative=True)
+"""TP-1 line 460, one of the lines that line 465 adds ("Add lines 451.2 through 463"): the tax
+shield. One optional input a salary-only caller does not give; line 465 reads a blank as 0
+(`tp1_totals_line_465_inputs.yaml`)."""
+
+TP1_LINE_462 = AmountKind.declare(CATALOG, "tp1_line_462", non_negative=True)
+"""TP-1 line 462, one of the lines that line 465 adds ("Add lines 451.2 through 463"): other
+credits. One optional input a salary-only caller does not give; line 465 reads a blank as 0
+(`tp1_totals_line_465_inputs.yaml`)."""
+
+TP1_LINE_463 = AmountKind.declare(CATALOG, "tp1_line_463", non_negative=True)
+"""TP-1 line 463, one of the lines that line 465 adds ("Add lines 451.2 through 463"): the senior
+assistance tax credit. One optional input a salary-only caller does not give; line 465 reads a blank
+as 0 (`tp1_totals_line_465_inputs.yaml`)."""
+
+TP1_INCOME_TAX_PAID_AND_OTHER_CREDITS_LINE_465 = AmountKind.declare(
+    CATALOG, "tp1_income_tax_paid_and_other_credits_line_465", non_negative=True
+)
+"""TP-1 line 465 "Add lines 451.2 through 463. Income tax paid and other credits": rounded half-up
+to the cent. Produced by one core/sum (`tp1_totals_line_465.yaml`)."""
+
+TP1_FINANCIAL_COMPENSATION_LINE_466 = AmountKind.declare(
+    CATALOG, "tp1_financial_compensation_line_466", non_negative=True
+)
+"""TP-1 line 466 "Financial compensation for home-support services": an optional input a salary-only
+caller does not give; line 468 reads a blank as 0 (`tp1_totals_line_466_input.yaml`)."""
+
+TP1_LINE_468 = AmountKind.declare(CATALOG, "tp1_line_468", non_negative=True)
+"""TP-1 line 468 "Add lines 465 and 466": rounded half-up to the cent. Produced by one core/sum
+(`tp1_totals_line_468.yaml`)."""
+
+TP1_LINE_470 = AmountKind.declare(CATALOG, "tp1_line_470")
+"""TP-1 line 470 "Subtract line 468 from line 450": signed, as the form prints no floor (negative is
+a refund, positive a balance due). Rounded half-up to the cent. Produced by one core/subtract
+(`tp1_totals_line_470.yaml`)."""
+
+TP1_ZERO_LINE_474_475 = AmountKind.declare(CATALOG, "tp1_zero_line_474_475", non_negative=True)
+"""The "0" of the other side of the sign of line 470, for TP-1 lines 474 and 475: the `ca-
+qc/tp1_zero_line_474_475` dataset's amount. Not a line of the form. Produced by one
+core/credit_amount (`tp1_totals_zero_line_474_475.yaml`)."""
+
+TP1_LINE_475 = AmountKind.declare(CATALOG, "tp1_line_475", non_negative=True)
+"""TP-1 line 475 "Amount from line 470, if it is positive": the greater of line 470 and 0. Produced
+by one core/greater_of (`tp1_totals_line_475.yaml`)."""
+
+TP1_LINE_474 = AmountKind.declare(CATALOG, "tp1_line_474", non_negative=True)
+"""TP-1 line 474 "Amount from line 470, if it is negative": the refund as a positive figure, 0 less
+line 470 not below 0. Produced by one core/subtract_not_below_zero (`tp1_totals_line_474.yaml`)."""
+
+TP1_REFUND_TRANSFERRED_TO_SPOUSE_LINE_476 = AmountKind.declare(
+    CATALOG, "tp1_refund_transferred_to_spouse_line_476", non_negative=True
+)
+"""TP-1 line 476 "Refund transferred to your spouse": an optional input a single filer does not
+give; line 478 reads a blank as 0 (`tp1_totals_line_476_input.yaml`)."""
+
+TP1_AMOUNT_TRANSFERRED_BY_SPOUSE_LINE_477 = AmountKind.declare(
+    CATALOG, "tp1_amount_transferred_by_spouse_line_477", non_negative=True
+)
+"""TP-1 line 477 "Amount transferred by your spouse": an optional input a single filer does not
+give; line 479 reads a blank as 0 (`tp1_totals_line_477_input.yaml`)."""
+
+TP1_REFUND_LINE_478 = AmountKind.declare(CATALOG, "tp1_refund_line_478")
+"""TP-1 line 478 "Subtract line 476 from line 474. Refund": rounded half-up to the cent, signed as
+given. Produced by one core/subtract (`tp1_totals_line_478.yaml`) and exported by the form."""
+
+TP1_BALANCE_DUE_LINE_479 = AmountKind.declare(CATALOG, "tp1_balance_due_line_479")
+"""TP-1 line 479 "Subtract line 477 from line 475. Balance due": rounded half-up to the cent, signed
+as given. The "not required to pay a balance of less than $2" note is a payment note and is not
+built. Produced by one core/subtract (`tp1_totals_line_479.yaml`) and exported by the form."""

@@ -1,0 +1,19 @@
+# TP-1 (2025) line 474: "Amount from line 470, if it is negative" (page 5). One
+# core/subtract_not_below_zero of the zero of `ca-qc/tp1_zero_line_474_475` less line 470: the
+# refund as a positive figure when line 470 is negative, else 0 (no capability returns the negative
+# part of a signed amount; owner decision, 19 Nov 2026). The return summary turns the sign. Rounded
+# half-up to the cent through ca-qc/cent_rounding. The line prints no title of its own, so the step
+# has none.
+form:
+  name: ca-qc/tp1_totals
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "474"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/tp1_zero_line_474_475
+      less: ca-qc/tp1_line_470
+    produces:
+      output: ca-qc/tp1_line_474

@@ -1,0 +1,21 @@
+# TP-1 (2025) line 479: "Subtract line 477 from line 475. You are not required to pay a balance of
+# less than $2. Balance due = 479" (page 5). One core/subtract, rounded half-up to the cent through
+# ca-qc/cent_rounding. Line 477 is an optional input, read as 0 when left blank. The note about a
+# balance of less than $2 is a payment note, not a calculation (owner decision, 19 Nov 2026): the
+# line prints the exact balance and the return summary decides. The form exports lines 478 and 479.
+form:
+  name: ca-qc/tp1_totals
+capabilities:
+  - name: core/subtract
+    title: "Balance due"
+    reference: "479"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/tp1_line_475
+      less: ca-qc/tp1_amount_transferred_by_spouse_line_477
+    blank:
+      less: "0"
+    produces:
+      output: ca-qc/tp1_balance_due_line_479

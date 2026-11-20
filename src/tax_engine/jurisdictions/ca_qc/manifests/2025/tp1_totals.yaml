@@ -1,0 +1,15 @@
+# Revenu Quebec TP-1.D-V (2025-12), page 5, "Income tax and contributions" and "Refund or balance
+# due": lines 432 to 479. This part names the form; each printed line's capability is a part of its
+# own with the same `form.name`. Lines 432, 446, 447 and 456 read the tax form, Schedule F,
+# Schedule K and Schedule P, each as that form's export. Lines 438, 439, 441, 443, 445, 451.2 to 455,
+# 457 to 460, 462, 463, 466, 476 and 477 are optional inputs, read as 0 when left out; tax withheld
+# (line 451) is left out by ruling. Exports: line 478 (the refund) and line 479 (the balance due),
+# which the Quebec return summary reads.
+form:
+  name: ca-qc/tp1_totals
+  title: "Refund or balance due"
+  required: true
+  exports:
+    - ca-qc/tp1_refund_line_478
+    - ca-qc/tp1_balance_due_line_479
+capabilities: []

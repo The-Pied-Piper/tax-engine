@@ -1,0 +1,12 @@
+# TP-1 (2025) line 477: "Amount transferred by your spouse – 477" (page 5). A single filer has no
+# spouse, so it is an optional input left blank; line 479 reads a blank as 0.
+form:
+  name: ca-qc/tp1_totals
+inputs:
+  - name: ca-qc/tp1_amount_transferred_by_spouse_line_477
+    title: "Amount transferred by your spouse"
+    reference: "477"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Amount transferred by your spouse"
