@@ -20,7 +20,9 @@ from decimal import Decimal
 import pytest
 import yaml
 
+from tax_engine.domain.artifact import Artifact
 from tax_engine.jurisdictions.ca_qc.catalog import (
+    SCHEDULE_B_LIVED_ALONE_LINE_20,
     TP1_BALANCE_DUE_LINE_479,
     TP1_DRUG_INSURANCE_PREMIUM_LINE_447,
     TP1_HEALTH_SERVICES_FUND_LINE_446,
@@ -96,6 +98,41 @@ def test_the_refund_or_the_balance_due_of_a_salary_only_filer(
 
     assert str(sheet.get(TP1_REFUND_LINE_478).value) == refund
     assert str(sheet.get(TP1_BALANCE_DUE_LINE_479).value) == balance
+
+
+# Lines 432, 450, 465, 470, 478 and 479 for a person who lived alone: Schedule B line 34 is 0.00 at
+# $70,000 and $200,000, so only $20,000 changes (line 432 is floored at 0.00, so line 450 is 0.00).
+ALONE = {
+    "20000": ("0.00", "0.00", "584.02", "-584.02", "584.02", "0.00"),
+    "70000": ("7641.16", "8396.16", "0.00", "8396.16", "0.00", "8396.16"),
+    "200000": ("38002.53", "38757.53", "0.00", "38757.53", "0.00", "38757.53"),
+}
+
+
+@pytest.mark.parametrize("salary", SALARIES)
+def test_the_chain_for_a_person_who_lived_alone(
+    take_home_service: TakeHomeService, salary: str
+) -> None:
+    given = Artifact(SCHEDULE_B_LIVED_ALONE_LINE_20, 1)
+    sheet = totals_sheet(take_home_service, salary, real_totals_form(), ALL_PARTS, given)
+
+    line_432, line_450, line_465, line_470, refund, balance = ALONE[salary]
+    assert str(sheet.get(TP1_TOTALS_LINE_432).value) == line_432
+    assert str(sheet.get(TP1_INCOME_TAX_AND_CONTRIBUTIONS_LINE_450).value) == line_450
+    assert str(sheet.get(TP1_INCOME_TAX_PAID_AND_OTHER_CREDITS_LINE_465).value) == line_465
+    assert str(sheet.get(TP1_LINE_470).value) == line_470
+    assert str(sheet.get(TP1_REFUND_LINE_478).value) == refund
+    assert str(sheet.get(TP1_BALANCE_DUE_LINE_479).value) == balance
+
+
+@pytest.mark.parametrize("salary", SALARIES)
+def test_a_caller_who_gives_no_answer_gets_the_default_not_alone(
+    take_home_service: TakeHomeService, salary: str
+) -> None:
+    sheet = totals_sheet(take_home_service, salary, real_totals_form(), ALL_PARTS)
+
+    assert str(sheet.get(TP1_TOTALS_LINE_432).value) == EXPECTED[salary]["432"]
+    assert str(sheet.get(TP1_LINE_470).value) == EXPECTED[salary]["470"]
 
 
 def test_the_real_form_declaration_exports_lines_478_and_479() -> None:
