@@ -645,3 +645,10 @@ FEDERAL_TAX_AT_COLUMN_START_LINE_76 = AmountKind.declare(
 """5005-R Step 5 Part A line 76 (0.00, 8,319.38, 20,081.25, 36,495.57 or 58,399.85): the printed
 constant of the column that line 71 falls in, taken as printed. Produced by one
 core/bracket_column_tax_at_start (`t1_tax_and_credits_line_76.yaml`)."""
+
+FEDERAL_TAX_ON_TAXABLE_INCOME_LINE_77 = AmountKind.declare(
+    CATALOG, "federal_tax_on_taxable_income_line_77", non_negative=True
+)
+"""5005-R Step 5 Part A line 77 "Line 75 plus line 76 Federal tax on taxable income =": line 75
+plus line 76, rounded half-up to the cent, which the form enters on line 123. Produced by one
+core/sum (`t1_tax_and_credits_line_77.yaml`)."""
