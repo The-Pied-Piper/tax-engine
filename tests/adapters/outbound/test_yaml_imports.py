@@ -154,23 +154,6 @@ def test_a_manifest_loads_the_imported_forms_parts_with_its_own(tmp_path: Path) 
     assert "ex-on/levy" in names(manifest)
 
 
-def test_an_imported_form_keeps_the_title_and_reference_its_part_gives(tmp_path: Path) -> None:
-    write_federal(
-        tmp_path,
-        {
-            "00-federal.yaml": FEDERAL.replace(
-                "  required: true\n", "  required: true\n  title: Federal\n  reference: Fed\n"
-            )
-        },
-    )
-    write_province(tmp_path)
-
-    federal = next(form for form in manifest_of(tmp_path).forms if form.name == "ex/federal")
-
-    assert federal.title == "Federal"
-    assert federal.reference == "Fed"
-
-
 def test_the_forms_run_default_then_imported_in_imports_order_then_own(tmp_path: Path) -> None:
     write_federal(tmp_path)
     write(

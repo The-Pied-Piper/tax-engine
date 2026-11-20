@@ -462,11 +462,6 @@ def test_a_worksheet_gives_the_titles_it_was_given_by_label() -> None:
     assert worksheet.title("a") == "First figure"
 
 
-def test_a_worksheet_gives_the_form_reference_it_was_given() -> None:
-    assert Worksheet(form_title="Schedule A", form_reference="A").form_reference == "A"
-    assert Worksheet(form_title="Schedule A").form_reference is None
-
-
 def test_a_worksheet_gives_the_references_it_was_given_by_label() -> None:
     worksheet = Worksheet(Artifact(A, D(1)), figure_references={"a": "Box 3"})
 

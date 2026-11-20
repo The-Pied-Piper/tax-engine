@@ -64,7 +64,6 @@ capabilities:
 | `outputs` | yes | Non-empty list of artifact identifiers, none repeated: the exports of the default form. |
 | `capabilities` | yes | List of capability selections (below). |
 | `title` | no | Printed name of the default form. |
-| `reference` | no | What the default form is known by beside other forms; its title if left out. |
 | `imports` | no | List of forms to import, each a form identifier `<namespace>/<snake_case>` or a form with dataset rebinds (see Imported forms). |
 
 An identifier that is in both `inputs` and `outputs` is an input carried onto the return as entered.
@@ -95,7 +94,6 @@ The `form:` block has these keys:
 | `min_instances` | Integer of at least 0, not above `max_instances`: the fewest. |
 | `exclusive_group` | Identifier shared by forms of which at most one may have instances. |
 | `title` | The form's printed name, such as `Schedule 8`. |
-| `reference` | What the form is known by beside other forms; its `title` if left out. Parts of one form that print one title give each form the same `reference`. Optional, in the part that declares `exports`. |
 | `supplies` | Mapping from a neutral identifier to one of the form's own exports (see Supplied figures). |
 
 A form may span several parts that carry the same `form.name`, in part order. Exactly one of them
@@ -252,10 +250,6 @@ A capability must list the slot in `BLANK_ALLOWED` for a blank rule to be allowe
 
 `title` and `reference` are for the reader of a trace. All are non-empty text, optional, and never
 used to look anything up: the identifier stays the unique name.
-
-A form's reference is carried on each of its worksheets as `form_reference` (also through
-`FormInstanceLine.printed`). It is the form's `reference` when its manifest gives one, else its
-`title`, and `None` when it gives neither.
 
 ## Units
 

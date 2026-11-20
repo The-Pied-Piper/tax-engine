@@ -7,7 +7,6 @@
 form:
   name: ca-nl/nl428_credits
   title: "Form NL428: Newfoundland and Labrador Tax"
-  reference: "Form NL428: Newfoundland and Labrador Tax"
   required: true
   exports:
     - ca-nl/nl428_bracket_rate_line_5
