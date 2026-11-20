@@ -1001,3 +1001,10 @@ FEDERAL_TAX_ON_TAXABLE_INCOME_LINE_77 = AmountKind.declare(
 """5005-R Step 5 Part A line 77 "Line 75 plus line 76 Federal tax on taxable income =": line 75
 plus line 76, rounded half-up to the cent, which the form enters on line 123. Produced by one
 core/sum (`t1_tax_and_credits_line_77.yaml`)."""
+
+WORK_CHART_401_TAXABLE_INCOME_LINE_1 = AmountKind.declare(
+    CATALOG, "work_chart_401_taxable_income_line_1", non_negative=True
+)
+"""Work Chart 401 line 1 "Taxable income (line 299 of your return)": TP-1 line 299, read from the
+net income form's export. Produced by one core/record_total (`work_chart_401_line_1.yaml`); line 2
+is a copy of it and has no step."""
