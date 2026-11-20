@@ -1,0 +1,18 @@
+# TP-1 (2025) line 389: "Multiply line 388 by 20%. x 20% = 389" (page 4, Non-refundable tax credits;
+# the line has no title). The printed 20% is the `ca-qc/tp1_line_389_rate` dataset, so the line is
+# one core/apply_rate, rounded half-up to the cent by the dataset's rule. Line 388 is an optional
+# input; a blank is read as 0 (a blank base gives 0.00).
+form:
+  name: ca-qc/tp1_credits
+capabilities:
+  - name: core/apply_rate
+    reference: "389"
+    unit: ca/cad
+    params:
+      rate: ca-qc/tp1_line_389_rate
+    consumes:
+      base: ca-qc/tp1_line_388
+    blank:
+      base: "0"
+    produces:
+      output: ca-qc/tp1_line_389
