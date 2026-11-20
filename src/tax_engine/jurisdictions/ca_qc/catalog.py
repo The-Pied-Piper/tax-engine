@@ -1150,6 +1150,13 @@ FEDERAL_TAX_LESS_CREDITS_LINE_143 = AmountKind.declare(
 enter "0") =": line 138 less the credits of line 142, a blank read as 0, not below zero from one
 core/subtract_not_below_zero (`t1_tax_and_credits_line_41700.yaml`)."""
 
+ADVANCED_CANADA_WORKERS_BENEFIT_LINE_144 = AmountKind.declare(
+    CATALOG, "advanced_canada_workers_benefit_line_144", non_negative=True
+)
+"""Advanced Canada workers benefit (ACWB), 5005-R line 144 and line 41500: an optional input a
+salary-only caller does not give; the line that reads it takes a blank as 0
+(`t1_tax_and_credits_line_41500_inputs.yaml`)."""
+
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
 Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line
