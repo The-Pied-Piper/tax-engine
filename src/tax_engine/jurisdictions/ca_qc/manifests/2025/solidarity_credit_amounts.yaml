@@ -14,3 +14,8 @@ capabilities:
       amount: ca-qc/solidarity_living_alone_amount
     produces:
       output: ca-qc/solidarity_living_alone_amount
+  - name: core/credit_amount
+    params:
+      amount: ca-qc/solidarity_housing_single_amount
+    produces:
+      output: ca-qc/solidarity_housing_single_amount
