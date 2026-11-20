@@ -7,7 +7,7 @@
 # by one after line 49) and Revenu Quebec's TP-1. Both are built as Quebec's own form parts, so
 # `ca/t1_taxable_income` and `ca/t1_tax_and_credits` are not imported. Schedules 8 and 6 and the EI
 # form (T2204) are the shared federal forms; each gets its Quebec `datasets` swap from its own
-# ticket.
+# ticket (Schedule 8's is in place below).
 #
 # The `outputs` list is set by the Quebec return summary ticket. Quebec is not yet listed in
 # `registrations.JURISDICTIONS`; that is done by the end-to-end ticket, last, after the manifest is
@@ -19,6 +19,10 @@ valid_from_tax_year: 2025
 title: Return summary
 capabilities: []
 imports:
-  - ca/schedule_8
+  # Quebec prints its own Schedule 8 (5005-S8): the shared form reads the Quebec line 11 dataset
+  # (5.4%, maximum $3,661.20) instead of the federal one; every other figure is the same.
+  - form: ca/schedule_8
+    datasets:
+      ca/cpp_line_11_base_contribution: ca-qc/qpp_line_11_base_contribution
   - ca/schedule_6
   - ca/t2204
