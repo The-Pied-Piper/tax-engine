@@ -1,0 +1,19 @@
+# Revenu Quebec TP-1.D-V (2025-12), page 2, "Employment income" and "Total income": lines 97 to
+# 199. This part names the form; each line's capability is a part of its own with the same
+# `form.name`.
+# Line 101 "Employment income, RL-1 slip, box A" is the salary the caller gives
+# (`ca/employment_income`, from the salary part): a copy of the one input, so it has no step.
+# Exports: line 199 (the total income) and the slip figures of lines 97, 98, 98.1 and 98.2, which
+# Schedule U, the Schedule F and K steps and the net income lines read.
+form:
+  name: ca-qc/tp1_income
+  title: "Income Tax Return"
+  required: true
+  exports:
+    - ca/employment_income
+    - ca-qc/tp1_pensionable_salary_line_98_1
+    - ca-qc/tp1_qpp_contribution_line_98
+    - ca-qc/tp1_additional_qpp_contribution_line_98_2
+    - ca-qc/tp1_qpip_premium_line_97
+    - ca-qc/tp1_total_income_line_199
+capabilities: []

@@ -1,0 +1,13 @@
+# TP-1 (2025) line 98.1, 'Pensionable salary or wages (QPP). RL-1 slip, box G': an input a salary-only
+# caller does not give. A request that leaves it out is read as blank, and the line 98.1 part
+# (tp1_income_line_98_1.yaml) computes it from the salary.
+form:
+  name: ca-qc/tp1_income
+inputs:
+  - name: ca-qc/tp1_pensionable_salary_given_line_98_1
+    title: "Pensionable salary or wages (QPP)"
+    reference: "98.1"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Pensionable salary or wages (QPP). RL-1 slip, box G'

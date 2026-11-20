@@ -1,0 +1,13 @@
+# TP-1 (2025) line 98, 'QPP contribution. RL-1 slip, box B.A': an input a salary-only
+# caller does not give. A request that leaves it out is read as blank, and the line 98 part
+# (tp1_income_line_98.yaml) computes it from the salary.
+form:
+  name: ca-qc/tp1_income
+inputs:
+  - name: ca-qc/tp1_qpp_contribution_given_line_98
+    title: "QPP contribution"
+    reference: "98"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'QPP contribution. RL-1 slip, box B.A'
