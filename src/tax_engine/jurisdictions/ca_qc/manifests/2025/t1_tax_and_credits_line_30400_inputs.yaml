@@ -1,0 +1,13 @@
+# 5005-R (2025) line 81 input a salary-only caller does not give.
+# Line 81 and line 30400: "Amount for an eligible dependant (complete Schedule 5)" (page 5). A salary-only filer has no such amount, so it is an
+# optional input left blank; the sum that adds it reads a blank as 0.
+form:
+  name: ca-qc/t1_tax_and_credits
+inputs:
+  - name: ca-qc/eligible_dependant_amount_line_81
+    title: "Amount for an eligible dependant"
+    reference: "30400"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Amount for an eligible dependant (complete Schedule 5)"

@@ -1,0 +1,40 @@
+# 5005-R (2025) line 100. The form prints: "Line 100: Add lines 87 to 99. =" (page 6). Lines 87 (base QPP
+# through employment), 89 (EI through employment), 91 (PPIP premiums paid) and 96 (Canada employment
+# amount) are steps; lines 88, 90, 92 to 95 and 97 to 99 are optional inputs, each a blank for a
+# salary-only filer and read as 0. One step: core/sum in form line order, rounded half-up to the cent
+# through `ca-qc/cent_rounding`.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/sum
+    reference: "100"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/qpp_base_contributions_line_87
+        - ca-qc/qpp_base_self_employment_line_88
+        - ca-qc/ei_premiums_line_89
+        - ca-qc/ei_premiums_self_employment_line_90
+        - ca-qc/ppip_premiums_line_91
+        - ca-qc/ppip_premiums_payable_line_92
+        - ca-qc/ppip_premiums_payable_self_employment_line_93
+        - ca-qc/volunteer_firefighters_amount_line_94
+        - ca-qc/search_and_rescue_amount_line_95
+        - ca-qc/canada_employment_amount
+        - ca-qc/home_buyers_amount_line_97
+        - ca-qc/home_accessibility_expenses_line_98
+        - ca-qc/adoption_expenses_line_99
+    blank:
+      ca-qc/qpp_base_self_employment_line_88: "0"
+      ca-qc/ei_premiums_self_employment_line_90: "0"
+      ca-qc/ppip_premiums_payable_line_92: "0"
+      ca-qc/ppip_premiums_payable_self_employment_line_93: "0"
+      ca-qc/volunteer_firefighters_amount_line_94: "0"
+      ca-qc/search_and_rescue_amount_line_95: "0"
+      ca-qc/home_buyers_amount_line_97: "0"
+      ca-qc/home_accessibility_expenses_line_98: "0"
+      ca-qc/adoption_expenses_line_99: "0"
+    produces:
+      output: ca-qc/credits_line_100

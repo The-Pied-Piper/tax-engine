@@ -1,0 +1,21 @@
+# TP-1 (2025) line 275: "Add lines 256 and 260. If the result is negative, enter 0. Net income".
+# One step: core/sum_not_below_zero, so a negative total is entered as 0, as the form says. Line 260
+# is an optional input, read as 0 when the caller leaves it out. Rounded half-up to the cent
+# (`ca-qc/cent_rounding`), so a zero prints as 0.00.
+form:
+  name: ca-qc/tp1_net_income
+capabilities:
+  - name: core/sum_not_below_zero
+    title: "Net income"
+    reference: "275"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/tp1_income_less_deductions_line_256
+        - ca-qc/tp1_investment_expenses_adjustment_line_260
+    blank:
+      ca-qc/tp1_investment_expenses_adjustment_line_260: "0"
+    produces:
+      output: ca-qc/tp1_net_income_line_275

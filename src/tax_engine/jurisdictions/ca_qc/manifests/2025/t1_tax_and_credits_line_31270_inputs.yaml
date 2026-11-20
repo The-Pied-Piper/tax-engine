@@ -1,0 +1,13 @@
+# 5005-R (2025) line 97 input a salary-only caller does not give.
+# Line 97 and line 31270: "Home buyers' amount (maximum $10,000)" (page 6). A salary-only filer has no such amount, so it is an
+# optional input left blank; the sum that adds it reads a blank as 0.
+form:
+  name: ca-qc/t1_tax_and_credits
+inputs:
+  - name: ca-qc/home_buyers_amount_line_97
+    title: "Home buyers' amount"
+    reference: "31270"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Home buyers' amount (maximum $10,000)"

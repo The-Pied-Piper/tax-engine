@@ -582,6 +582,80 @@ brackets")". Net income before adjustments (line 55) less the social benefits re
 signed. Produced by one core/subtract (`t1_taxable_income_line_23600_signed.yaml`) and supplied to
 the neutral name `ca/t1_taxable_income.net_income_signed` by the form declaration."""
 
+TP1_DEDUCTION_FOR_WORKERS_LINE_201 = AmountKind.declare(
+    CATALOG, "tp1_deduction_for_workers_line_201"
+)
+"""TP-1 line 201 "Deduction for workers": the result of Work Chart 201 line 9, carried to the line
+("Carry the result to line 201 of your return"). Signed, as the chart's line 9 is."""
+
+TP1_QPP_DEDUCTION_LINE_248 = AmountKind.declare(CATALOG, "tp1_qpp_deduction_line_248")
+"""TP-1 line 248 "Deduction for QPP and CPP contributions and QPIP premiums": Schedule U line 23,
+the deduction for QPP contributions on employment income, carried to the line ("Carry the result to
+line 248 of your return"). Signed, as Schedule U line 23 is."""
+
+TP1_OTHER_DEDUCTIONS_LINES_205_TO_252 = AmountKind.declare(
+    CATALOG, "tp1_other_deductions_lines_205_to_252", non_negative=True
+)
+"""The deductions of TP-1 lines 205 through 207, 214 through 231 and 234 through 252 (line 248.1
+included), summed, line 248 apart: the figure the caller gives for "Add lines 201 through 207, 214
+through 231, and 234 through 252" besides lines 201 and 248; blank when the caller has none, and
+line 254 reads it as 0."""
+
+TP1_TOTAL_DEDUCTIONS_LINE_254 = AmountKind.declare(CATALOG, "tp1_total_deductions_line_254")
+"""Total deductions, TP-1 line 254 "Add lines 201 through 207, 214 through 231, and 234 through
+252": line 201, line 248 and the other deductions, rounded half-up to the cent. Signed, as lines 201
+and 248 are."""
+
+TP1_NET_INCOME_TOTAL_INCOME_LINE_199 = AmountKind.declare(
+    CATALOG, "tp1_net_income_total_income_line_199", non_negative=True
+)
+"""Total income of TP-1 line 199, as the net income lines read it ("Amount from line 199") from the
+TP-1 income form."""
+
+TP1_INCOME_LESS_DEDUCTIONS_LINE_256 = AmountKind.declare(
+    CATALOG, "tp1_income_less_deductions_line_256"
+)
+"""TP-1 line 256 "Subtract line 254 from line 199": total income less total deductions, rounded
+half-up to the cent. The form prints no floor, so the figure can be negative."""
+
+TP1_INVESTMENT_EXPENSES_ADJUSTMENT_LINE_260 = AmountKind.declare(
+    CATALOG, "tp1_investment_expenses_adjustment_line_260", non_negative=True
+)
+"""TP-1 line 260 "Adjustment of investment expenses. Complete Schedule N": an input a salary-only
+caller does not give; line 275 reads it as 0 when it is left out."""
+
+TP1_NET_INCOME_LINE_275 = AmountKind.declare(CATALOG, "tp1_net_income_line_275", non_negative=True)
+"""Net income, TP-1 line 275 "Add lines 256 and 260. If the result is negative, enter 0": line 256
+plus line 260, not below zero, rounded half-up to the cent."""
+
+TP1_ADJUSTMENT_OF_DEDUCTIONS_LINE_276 = AmountKind.declare(
+    CATALOG, "tp1_adjustment_of_deductions_line_276", non_negative=True
+)
+"""TP-1 line 276 "Adjustment of deductions. Specify": an input a salary-only caller does not give;
+line 279 reads it as 0 when it is left out."""
+
+TP1_BENEFIT_AND_DISABILITY_SAVINGS_INCOME_LINE_278 = AmountKind.declare(
+    CATALOG, "tp1_benefit_and_disability_savings_income_line_278", non_negative=True
+)
+"""TP-1 line 278 "Universal Child Care Benefit and income from a registered disability savings
+plan": an input a salary-only caller does not give; line 279 reads it as 0 when it is left out."""
+
+TP1_LINE_279 = AmountKind.declare(CATALOG, "tp1_line_279", non_negative=True)
+"""TP-1 line 279 "Add lines 275 through 278": net income plus lines 276 and 278, rounded half-up to
+the cent."""
+
+TP1_TOTAL_DEDUCTIONS_LINE_298 = AmountKind.declare(
+    CATALOG, "tp1_total_deductions_line_298", non_negative=True
+)
+"""TP-1 line 298 "Add lines 287 through 297. Total deductions": the printed sum of lines 287 to 297,
+one optional input a salary-only caller does not give; read as 0 (default "0")."""
+
+TP1_TAXABLE_INCOME_LINE_299 = AmountKind.declare(
+    CATALOG, "tp1_taxable_income_line_299", non_negative=True
+)
+"""Taxable income, TP-1 line 299 "Subtract line 298 from line 279. If the result is negative, enter
+0": line 279 less line 298, not below zero, rounded half-up to the cent."""
+
 BASIC_PERSONAL_AMOUNT_NET_INCOME_LINE_3 = AmountKind.declare(
     CATALOG, "basic_personal_amount_net_income_line_3", non_negative=True
 )
@@ -597,12 +671,287 @@ the Federal Worksheet to calculate the amount to enter. (maximum $16,129)": Fede
 5000-D1 lines 1 to 11, one ca/tapered_amount step over the dataset `ca/basic_personal_amount`
 (`t1_tax_and_credits_line_30000.yaml`); the credit sums read it."""
 
+AGE_AMOUNT_LINE_79 = AmountKind.declare(CATALOG, "age_amount_line_79", non_negative=True)
+"""Age amount, 5005-R line 79 and line 30100: an optional input a salary-only caller does not give;
+the credit sum that adds it reads a blank as 0 (`t1_tax_and_credits_line_30100_inputs.yaml`)."""
+
+SPOUSE_AMOUNT_LINE_80 = AmountKind.declare(CATALOG, "spouse_amount_line_80", non_negative=True)
+"""Spouse or common-law partner amount, 5005-R line 80 and line 30300: an optional input a salary-
+only caller does not give; the credit sum that adds it reads a blank as 0
+(`t1_tax_and_credits_line_30300_inputs.yaml`)."""
+
+ELIGIBLE_DEPENDANT_AMOUNT_LINE_81 = AmountKind.declare(
+    CATALOG, "eligible_dependant_amount_line_81", non_negative=True
+)
+"""Amount for an eligible dependant, 5005-R line 81 and line 30400: an optional input a salary-only
+caller does not give; the credit sum that adds it reads a blank as 0
+(`t1_tax_and_credits_line_30400_inputs.yaml`)."""
+
+CAREGIVER_AMOUNT_SPOUSE_LINE_82 = AmountKind.declare(
+    CATALOG, "caregiver_amount_spouse_line_82", non_negative=True
+)
+"""Canada caregiver amount for spouse or common-law partner, or eligible dependant age 18 or older,
+5005-R line 82 and line 30425: an optional input a salary-only caller does not give; the credit
+sum that adds it reads a blank as 0 (`t1_tax_and_credits_line_30425_inputs.yaml`)."""
+
+CAREGIVER_AMOUNT_INFIRM_DEPENDANTS_LINE_83 = AmountKind.declare(
+    CATALOG, "caregiver_amount_infirm_dependants_line_83", non_negative=True
+)
+"""Canada caregiver amount for other infirm dependants age 18 or older, 5005-R line 83 and line
+30450: an optional input a salary-only caller does not give; the credit sum that adds it reads a
+blank as 0 (`t1_tax_and_credits_line_30450_inputs.yaml`)."""
+
+CAREGIVER_AMOUNT_INFIRM_CHILDREN_LINE_84 = AmountKind.declare(
+    CATALOG, "caregiver_amount_infirm_children_line_84", non_negative=True
+)
+"""Canada caregiver amount for infirm children under 18 years of age, 5005-R line 84 and line
+30500: an optional input a salary-only caller does not give; the credit sum that adds it reads a
+blank as 0 (`t1_tax_and_credits_line_30500_inputs.yaml`)."""
+
+QPP_BASE_SELF_EMPLOYMENT_LINE_88 = AmountKind.declare(
+    CATALOG, "qpp_base_self_employment_line_88", non_negative=True
+)
+"""Base CPP or QPP contributions on self-employment income and other earnings, 5005-R line 88 and
+line 31000: an optional input a salary-only caller does not give; the credit sum that adds it
+reads a blank as 0 (`t1_tax_and_credits_line_31000_inputs.yaml`)."""
+
+EI_PREMIUMS_SELF_EMPLOYMENT_LINE_90 = AmountKind.declare(
+    CATALOG, "ei_premiums_self_employment_line_90", non_negative=True
+)
+"""Employment insurance premiums on self-employment and other eligible earnings, 5005-R line 90 and
+line 31217: an optional input a salary-only caller does not give; the credit sum that adds it
+reads a blank as 0 (`t1_tax_and_credits_line_31217_inputs.yaml`)."""
+
+PPIP_PREMIUMS_PAYABLE_LINE_92 = AmountKind.declare(
+    CATALOG, "ppip_premiums_payable_line_92", non_negative=True
+)
+"""PPIP premiums payable on employment income, 5005-R line 92 and line 31210: an optional input a
+salary-only caller does not give; the credit sum that adds it reads a blank as 0
+(`t1_tax_and_credits_line_31210_inputs.yaml`)."""
+
+PPIP_PREMIUMS_PAYABLE_SELF_EMPLOYMENT_LINE_93 = AmountKind.declare(
+    CATALOG, "ppip_premiums_payable_self_employment_line_93", non_negative=True
+)
+"""PPIP premiums payable on self-employment income, 5005-R line 93 and line 31215: an optional
+input a salary-only caller does not give; the credit sum that adds it reads a blank as 0
+(`t1_tax_and_credits_line_31215_inputs.yaml`)."""
+
+VOLUNTEER_FIREFIGHTERS_AMOUNT_LINE_94 = AmountKind.declare(
+    CATALOG, "volunteer_firefighters_amount_line_94", non_negative=True
+)
+"""Volunteer firefighters' amount (VFA), 5005-R line 94 and line 31220: an optional input a salary-
+only caller does not give; the credit sum that adds it reads a blank as 0
+(`t1_tax_and_credits_line_31220_inputs.yaml`)."""
+
+SEARCH_AND_RESCUE_AMOUNT_LINE_95 = AmountKind.declare(
+    CATALOG, "search_and_rescue_amount_line_95", non_negative=True
+)
+"""Search and rescue volunteers' amount (SRVA), 5005-R line 95 and line 31240: an optional input a
+salary-only caller does not give; the credit sum that adds it reads a blank as 0
+(`t1_tax_and_credits_line_31240_inputs.yaml`)."""
+
+HOME_BUYERS_AMOUNT_LINE_97 = AmountKind.declare(
+    CATALOG, "home_buyers_amount_line_97", non_negative=True
+)
+"""Home buyers' amount, 5005-R line 97 and line 31270: an optional input a salary-only caller does
+not give; the credit sum that adds it reads a blank as 0
+(`t1_tax_and_credits_line_31270_inputs.yaml`)."""
+
+HOME_ACCESSIBILITY_EXPENSES_LINE_98 = AmountKind.declare(
+    CATALOG, "home_accessibility_expenses_line_98", non_negative=True
+)
+"""Home accessibility expenses, 5005-R line 98 and line 31285: an optional input a salary-only
+caller does not give; the credit sum that adds it reads a blank as 0
+(`t1_tax_and_credits_line_31285_inputs.yaml`)."""
+
+ADOPTION_EXPENSES_LINE_99 = AmountKind.declare(
+    CATALOG, "adoption_expenses_line_99", non_negative=True
+)
+"""Adoption expenses, 5005-R line 99 and line 31300: an optional input a salary-only caller does
+not give; the credit sum that adds it reads a blank as 0
+(`t1_tax_and_credits_line_31300_inputs.yaml`)."""
+
+CREDIT_AMOUNTS_LINE_85 = AmountKind.declare(CATALOG, "credit_amounts_line_85", non_negative=True)
+"""Credit amounts through line 84, 5005-R line 85 "Line 85: Add lines 78 to 84. =": the basic
+personal amount (line 78) plus the optional lines 79 to 84, each blank read as 0. Produced by
+one core/sum (`t1_tax_and_credits_line_85.yaml`); line 86 is its copy, so it has no step."""
+
+QPP_BASE_CONTRIBUTIONS_LINE_87 = AmountKind.declare(
+    CATALOG, "qpp_base_contributions_line_87", non_negative=True
+)
+"""Base CPP or QPP contributions through employment income, 5005-R line 87 and line 30800 (maximum
+$3,661.20): a copy of Schedule 8 line 25, read from the Schedule 8 export by one
+core/record_total (`t1_tax_and_credits_line_30800.yaml`)."""
+
+EI_PREMIUMS_LINE_89 = AmountKind.declare(CATALOG, "ei_premiums_line_89", non_negative=True)
+"""Employment insurance premiums through employment, 5005-R line 89 and line 31200 (maximum
+$860.67): a copy of T2204 line 16, read from the T2204 export by one core/record_total
+(`t1_tax_and_credits_line_31200.yaml`)."""
+
+PPIP_PREMIUMS_LINE_91 = AmountKind.declare(CATALOG, "ppip_premiums_line_91", non_negative=True)
+"""Provincial parental insurance plan (PPIP) premiums paid, 5005-R line 91 and line 31205 (maximum
+$484.12): a copy of the PPIP premium figure, read from the `ca-qc/ppip_premium` export by one
+core/record_total (`t1_tax_and_credits_line_31205.yaml`)."""
+
+CANADA_EMPLOYMENT_AMOUNT_INCOME = AmountKind.declare(
+    CATALOG, "canada_employment_amount_income", non_negative=True
+)
+"""Line 1 plus line 2, 5005-R line 96 and line 31260 "Enter whichever is less: $1,471 or line 1
+plus line 2.": the base the cap is applied to, from one core/sum
+(`t1_tax_and_credits_line_31260.yaml`)."""
+
+CANADA_EMPLOYMENT_AMOUNT = AmountKind.declare(
+    CATALOG, "canada_employment_amount", non_negative=True
+)
+"""Canada employment amount, 5005-R line 96 and line 31260: the lesser of the printed $1,471 (the
+dataset `ca/canada_employment_amount`) and line 1 plus line 2, from one core/capped_amount
+(`t1_tax_and_credits_line_31260.yaml`)."""
+
+CREDITS_LINE_100 = AmountKind.declare(CATALOG, "credits_line_100", non_negative=True)
+"""Credits of lines 87 to 99, 5005-R line 100 "Line 100: Add lines 87 to 99. =": the base QPP, EI
+and PPIP lines, the Canada employment amount and the optional lines 88, 90, 92 to 95 and 97 to
+99, each blank read as 0. Produced by one core/sum (`t1_tax_and_credits_line_100.yaml`); line
+102 reads it."""
+
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
 Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line
 69, an optional input read as 0), not below zero. Produced by one core/subtract_not_below_zero
 (`t1_taxable_income_line_26000.yaml`); the federal bracket columns (line 71 onward) start from
 it."""
+
+TP1_SCHEDULE_F_LOWER_BOUND_LINE_77 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_lower_bound_line_77", non_negative=True
+)
+"""Schedule F line 77, the printed lower bound of the column that line 76 falls in (each column
+prints 18,130.00 under "If $63,060 or less" and 63,060.00 under "If more than $63,060"); blank
+when line 76 is $18,130 or less, because Part B is then not completed."""
+
+TP1_SCHEDULE_F_INCOME_OVER_LOWER_BOUND_LINE_78 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_income_over_lower_bound_line_78", non_negative=True
+)
+"""Schedule F line 78, "Subtract line 77 from line 76. If the result is negative, enter 0": the
+part of line 76 over the column's lower bound; blank when line 77 is blank."""
+
+TP1_SCHEDULE_F_COLUMN_RATE = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_column_rate", non_negative=True
+)
+"""Schedule F, Part B, the row "x 1%" below line 78 (the form gives it no line number): the printed
+rate of the column that line 76 falls in; blank for a line 76 of $18,130 or less."""
+
+TP1_SCHEDULE_F_CONTRIBUTION_ON_EXCESS_LINE_80 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_contribution_on_excess_line_80", non_negative=True
+)
+"""Schedule F line 80, "Multiply line 78 by 1%": line 78 times the column's rate, rounded half-up to
+the cent; blank when line 78 or the rate is blank."""
+
+TP1_SCHEDULE_F_COLUMN_CONSTANT_LINE_81 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_column_constant_line_81", non_negative=True
+)
+"""Schedule F line 81, "+ 81 0 00 | 150 00": the printed constant of the column that line 76 falls
+in (0.00 and 150.00); blank for a line 76 of $18,130 or less."""
+
+TP1_SCHEDULE_F_CONTRIBUTION_BEFORE_MAXIMUM = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_contribution_before_maximum", non_negative=True
+)
+"""Schedule F line 82, "Add lines 80 and 81", before its maximum is applied: the sum of the two
+lines, each read as 0 when blank. Not printed on its own, so it is engine-internal."""
+
+TP1_SCHEDULE_F_COLUMN_MAXIMUM = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_column_maximum", non_negative=True
+)
+"""Schedule F line 82, "Maximum: $150 | Maximum: $1,000": the printed maximum of the column that
+line 76 falls in; blank for a line 76 of $18,130 or less."""
+
+TP1_SCHEDULE_F_CONTRIBUTION_LINE_82 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_contribution_line_82", non_negative=True
+)
+"""Schedule F line 82, "Contribution to the health services fund", carried to TP-1 line 446: the
+lesser of lines 80 plus 81 and the column's maximum; 0.00 when Part B is not completed."""
+
+SCHEDULE_B_LINE_10 = AmountKind.declare(CATALOG, "schedule_b_line_10", non_negative=True)
+"""Schedule B (TP-1.D.B-V) Part A line 10, "Amount from line 275 of your return": the net income of
+the TP-1 net income form, read from its export. Produced by one core/record_total
+(`schedule_b_line_10.yaml`)."""
+
+SCHEDULE_B_LINE_12 = AmountKind.declare(CATALOG, "schedule_b_line_12", non_negative=True)
+"""Schedule B Part A line 12, "Amount from line 275 of your spouse's return (spouse on December 31,
+2025)": an optional input, a spouse line a salary-only caller does not give; line 14 reads it as 0
+when it is left out."""
+
+SCHEDULE_B_LINE_14 = AmountKind.declare(CATALOG, "schedule_b_line_14", non_negative=True)
+"""Schedule B Part A line 14, "Add lines 10 and 12. Family income", rounded half-up to the cent.
+Produced by one core/sum (`schedule_b_line_14.yaml`)."""
+
+SCHEDULE_B_THRESHOLD_LINE_16 = AmountKind.declare(
+    CATALOG, "schedule_b_threshold_line_16", non_negative=True
+)
+"""Schedule B Part A line 16, the printed 42,090.00 subtracted from the family income, claimed
+whole (`schedule_b_line_16.yaml`)."""
+
+SCHEDULE_B_LINE_18 = AmountKind.declare(CATALOG, "schedule_b_line_18", non_negative=True)
+"""Schedule B Part A line 18, "Subtract line 16 from line 15. If the result is negative, enter 0":
+the family income (line 15, a copy of line 14) less line 16, not below zero, rounded half-up to the
+cent. Produced by one core/subtract_not_below_zero (`schedule_b_line_18.yaml`)."""
+
+SCHEDULE_B_LIVED_ALONE_LINE_20 = CountKind.declare(
+    CATALOG, "schedule_b_lived_alone_line_20", non_negative=True
+)
+"""Lived alone answer, Schedule B line 20 "If, throughout 2025, you maintained and ordinarily lived
+in a dwelling in which you lived alone or only with ...": 1 for yes, 0 for no, read as 0 (not alone)
+when the caller gives no answer."""
+
+SCHEDULE_B_LIVED_ALONE_CHECKED_LINE_20 = CountKind.declare(
+    CATALOG, "schedule_b_lived_alone_checked_line_20", non_negative=True
+)
+"""Lived alone answer, checked, Schedule B line 20: the answer, refused above 1 so that the
+situation cannot be checked twice."""
+
+SCHEDULE_B_LIVING_ALONE_AMOUNT_LINE_20 = AmountKind.declare(
+    CATALOG, "schedule_b_living_alone_amount_line_20", non_negative=True
+)
+"""Schedule B line 20, the printed $2,128 for a person living alone, claimed whole."""
+
+SCHEDULE_B_LINE_18_GATE_COUNT_LINE_20 = CountKind.declare(
+    CATALOG, "schedule_b_line_18_gate_count_line_20", non_negative=True
+)
+"""Schedule B line 20's income gate: 0 when the amount on line 18 is more than $64,699 (not entitled
+to the amount, no spouse), else 1."""
+
+SCHEDULE_B_LIVING_ALONE_AMOUNT_IF_ALONE_LINE_20 = AmountKind.declare(
+    CATALOG, "schedule_b_living_alone_amount_if_alone_line_20", non_negative=True
+)
+"""Schedule B line 20, fourth step: the printed $2,128 when the answer is yes, 0 when it is no,
+rounded half-up to the cent."""
+
+SCHEDULE_B_LINE_20 = AmountKind.declare(CATALOG, "schedule_b_line_20", non_negative=True)
+"""Schedule B Part B line 20, the amount for a person living alone: $2,128 when the answer is yes
+and the income gate does not apply, else 0, rounded half-up to the cent."""
+
+SCHEDULE_B_LINE_30 = AmountKind.declare(CATALOG, "schedule_b_line_30", non_negative=True)
+"""Schedule B Part B line 30, "Add lines 20 through 28": line 20 alone, the only amount the
+take-home builds (lines 21, 22, 23, 27 and 28 are not built), rounded half-up to the cent. Produced
+by one core/sum (`schedule_b_line_30.yaml`)."""
+
+SCHEDULE_B_LINE_31 = AmountKind.declare(CATALOG, "schedule_b_line_31", non_negative=True)
+"""Schedule B Part B line 31, "Amount from line 18 x 18.75%": line 18 at the printed rate, rounded
+half-up to the cent. Produced by one core/apply_rate (`schedule_b_line_31.yaml`)."""
+
+SCHEDULE_B_LINE_32 = AmountKind.declare(CATALOG, "schedule_b_line_32", non_negative=True)
+"""Schedule B Part B line 32, "Subtract line 31 from line 30. If the result is negative, enter 0.
+Amount to which you or, if applicable, your spouse is entitled", rounded half-up to the cent.
+Produced by one core/subtract_not_below_zero (`schedule_b_line_32.yaml`)."""
+
+SCHEDULE_B_LINE_33 = AmountKind.declare(CATALOG, "schedule_b_line_33", non_negative=True)
+"""Schedule B Part B line 33, "Amount claimed on line 361 of your spouse's return (spouse on
+December 31, 2025)": an optional input, a spouse line a salary-only caller does not give; line 34
+reads it as 0 when it is left out."""
+
+SCHEDULE_B_LINE_34 = AmountKind.declare(CATALOG, "schedule_b_line_34")
+"""Schedule B Part B line 34, "Subtract line 33 from line 32. Carry the result to line 361 of your
+return. Age amount, amount for a person living alone and amount for retirement income", rounded
+half-up to the cent. The form prints no floor, so the figure is signed. Produced by one
+core/subtract (`schedule_b_line_34.yaml`) and exported by the form for TP-1 line 361."""
 
 FEDERAL_TAXABLE_INCOME_LINE_71 = AmountKind.declare(
     CATALOG, "federal_taxable_income_line_71", non_negative=True
