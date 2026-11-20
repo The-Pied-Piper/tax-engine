@@ -3,9 +3,14 @@
 # Quebec Schedule 6 (5005-S6, 2025 edition) line 24: Line 24: If you did not have an eligible spouse or an eligible dependant, enter $14,170.05. If you had an eligible spouse but did not have an eligible dependant, enter $21,787.19. ...
 # The filer takes the "If not" branch (no eligible spouse, no eligible dependant): the printed $14,170.05 for a filer with no eligible spouse and no eligible dependant, claimed whole through core/credit_amount, so no salary reaches this line, so line
 # 24 has no step of its own; line 25 subtracts it from line 23. It replaces `ca/cwb_reduction_threshold` in the Quebec manifest's import of
-# Schedule 6. A dollars-and-cents figure, so it rounds half-up to the cent, which changes nothing.
+# Schedule 6. The cent rounding of the file changes nothing on a whole-dollar figure.
 # The 2026 form is not yet published, so the figure is not yet confirmed against it.
-# Doubt: it is not confirmed that the federal 2% is the factor Quebec Schedule 6 uses; the Quebec indexation rate for 2026 is 2.05%, and the 2025 figure was set against Quebec's own work premium threshold, which is 12,808 in 2026. MUST BE REPLACED from the printed figure when CRA posts the 2026 Quebec Schedule 6.
+# Doubt: it is not confirmed that the federal 2% is the factor Quebec Schedule 6 uses. Quebec's own 2026 indexation rate is 2.05% (Quebec Finance,
+# Parameters of the Personal Income Tax System for 2026, Nov 2025), and the 2025 figure is tied to Quebec's work premium reduction threshold:
+# 37.3% x (12,620 - 2,400) = 3,812.06; that threshold is 12,808 in 2026 (Table 3), revalued by its own formula, not by 2.05%.
+# Readings of the 2026 figure: federal 2% (this file), Quebec 2.05% (14,461), or tied to 12,808 (not derivable); they differ by up to about $7.
+# The 19 Nov nearest-dollar ruling rounds to the whole dollar although the form prints cents.
+# MUST BE REPLACED from the printed figure when CRA posts the 2026 Quebec Schedule 6.
 family: ca-qc/cwb_reduction_threshold
 tax_year: 2026
 kind: credit
