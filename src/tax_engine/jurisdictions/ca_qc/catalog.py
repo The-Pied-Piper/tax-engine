@@ -1222,6 +1222,14 @@ EI_OVERPAYMENT_LINE_157 = AmountKind.declare(CATALOG, "ei_overpayment_line_157",
 (0 when line 15 is not more than $1), read from the T2204 export by one core/record_total
 (`t1_tax_and_credits_line_45000.yaml`); line 159 reads it."""
 
+NET_EI_OVERPAYMENT_LINE_159 = AmountKind.declare(
+    CATALOG, "net_ei_overpayment_line_159", non_negative=True
+)
+"""Net EI overpayment, 5005-R line 159 and line 45100 "Line 157 minus line 158 (if negative, enter
+"0") =": line 157 less line 158 (a copy of line 92, a blank read as 0), not below zero from one
+core/subtract_not_below_zero (`t1_tax_and_credits_line_45100.yaml`); the total credits of line 171
+add it."""
+
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
 Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line
