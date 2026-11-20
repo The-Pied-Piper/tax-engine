@@ -11,6 +11,7 @@ from __future__ import annotations
 
 from decimal import Decimal
 from textwrap import dedent
+from typing import Any
 
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -80,6 +81,17 @@ HEADER = dedent("""\
     outputs:
       - ca/employment_income
     """)
+
+
+def slip_artifacts(salary: str) -> list[Artifact[Any]]:
+    """The salary and the TP-1 slip figures Schedule U reads, as plain starting inputs."""
+    return [
+        Artifact(EMPLOYMENT_INCOME, D(salary)),
+        Artifact(TP1_QPP_CONTRIBUTION_LINE_98, D(UPSTREAM_98[salary])),
+        Artifact(TP1_ADDITIONAL_QPP_CONTRIBUTION_LINE_98_2, D(UPSTREAM_98_2[salary])),
+        Artifact(TP1_PENSIONABLE_SALARY_LINE_98_1, D(UPSTREAM_98_1[salary])),
+        Artifact(TP1_QPIP_PREMIUM_LINE_97, D("0")),
+    ]
 
 
 def form_part(*exports: str) -> str:

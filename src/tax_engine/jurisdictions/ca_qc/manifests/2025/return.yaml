@@ -1,0 +1,97 @@
+# The Quebec take-home return summary: the refund or balance owing, the total payable and the
+# solidarity credit, from the two Quebec returns (the federal 5005-R and Revenu Quebec's TP-1).
+# No printed line adds the two returns, so the summary is the engine's own step, as T1 line 167 is
+# in the other provinces; its steps print no line of their own and carry no title or reference.
+# Each form's export is read only as a record list, so every figure comes in through
+# core/record_total (as `ca_nl` reads `ca/t1_tax_and_credits.refund_or_balance_owing`), and every
+# step that computes is unit ca/cad and rounds half-up to the cent with `ca-qc/cent_rounding`.
+#
+# Refund or balance owing (the default output, `ca/refund_or_balance_owing`): positive is owing,
+# negative is a refund, as T1 line 167 in the other provinces. 5005-R line 172 is the federal
+# figure and TP-1 line 450 less line 456 is the Quebec one, added with no floor. TP-1 lines 470 to
+# 479 (450 less 468) are not used, because the credits that line 468 collects (tax withheld,
+# instalments and so on) are left out of the take-home, so only line 456 reduces line 450.
+#
+# Total payable (`ca-qc/total_payable`; `ca/total_payable` is the federal kind the shared forms
+# declare): 5005-R line 43500 less line 44000 (the refundable Quebec abatement) plus TP-1 line 450.
+#
+# The solidarity credit (`ca-qc/solidarity_credit`) is the yearly amount of the payment period July
+# 2026 to June 2027; it is its own output, added to neither of the two figures above.
+#
+# The average and marginal income tax rates the other provinces export are left for a later ticket
+# (owner, 19 Nov 2026).
+capabilities:
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-qc/t1_tax_and_credits.refund_or_balance_owing_line_172
+    produces:
+      output: ca-qc/federal_refund_or_balance_owing_return
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp1_totals.tp1_income_tax_and_contributions_line_450
+    produces:
+      output: ca-qc/tp1_income_tax_and_contributions_return
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp1_totals.tp1_work_premium_tax_credits_line_456
+    produces:
+      output: ca-qc/tp1_work_premium_tax_credits_return
+  - name: core/subtract
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/tp1_income_tax_and_contributions_return
+      less: ca-qc/tp1_work_premium_tax_credits_return
+    produces:
+      output: ca-qc/tp1_income_tax_less_work_premium_return
+  - name: core/sum
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/federal_refund_or_balance_owing_return
+        - ca-qc/tp1_income_tax_less_work_premium_return
+    produces:
+      output: ca/refund_or_balance_owing
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-qc/t1_tax_and_credits.total_payable_line_151
+    produces:
+      output: ca-qc/federal_total_payable_return
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-qc/t1_tax_and_credits.refundable_quebec_abatement_line_156
+    produces:
+      output: ca-qc/refundable_quebec_abatement_return
+  - name: core/subtract
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/federal_total_payable_return
+      less: ca-qc/refundable_quebec_abatement_return
+    produces:
+      output: ca-qc/federal_total_payable_less_abatement_return
+  - name: core/sum
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/federal_total_payable_less_abatement_return
+        - ca-qc/tp1_income_tax_and_contributions_return
+    produces:
+      output: ca-qc/total_payable
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-qc/solidarity_credit.solidarity_credit_after_reduction
+    produces:
+      output: ca-qc/solidarity_credit
