@@ -135,7 +135,7 @@ def test_a_caller_who_gives_no_answer_gets_the_default_not_alone(
     assert str(sheet.get(TP1_LINE_470).value) == EXPECTED[salary]["470"]
 
 
-def test_the_real_form_declaration_exports_lines_478_and_479() -> None:
+def test_the_real_form_declaration_exports_lines_450_456_478_and_479() -> None:
     declaration = yaml.safe_load(real_totals_form())
 
     assert list(declaration["form"]) == ["name", "title", "required", "exports"]
@@ -143,6 +143,8 @@ def test_the_real_form_declaration_exports_lines_478_and_479() -> None:
     assert declaration["form"]["title"] == "Refund or balance due"
     assert declaration["form"]["required"] is True
     assert declaration["form"]["exports"] == [
+        "ca-qc/tp1_income_tax_and_contributions_line_450",
+        "ca-qc/tp1_work_premium_tax_credits_line_456",
         "ca-qc/tp1_refund_line_478",
         "ca-qc/tp1_balance_due_line_479",
     ]
