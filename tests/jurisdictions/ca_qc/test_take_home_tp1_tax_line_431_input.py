@@ -51,6 +51,7 @@ def test_a_request_that_leaves_out_line_431_is_read_as_blank(
     assert not declaration.required
     assert declaration.basis == PRINTED_BASIS
     assert declaration.reference == "431"
+    assert declaration.title == PRINTED_BASIS
     assert default is not None and default.is_blank
 
 

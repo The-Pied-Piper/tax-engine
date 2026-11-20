@@ -5,6 +5,7 @@ form:
   name: ca-qc/tp1_tax
 inputs:
   - name: ca-qc/tp1_credits_transferred_between_spouses_line_431
+    title: "Credits transferred from one spouse to the other"
     reference: "431"
     unit: ca/cad
     required: false
