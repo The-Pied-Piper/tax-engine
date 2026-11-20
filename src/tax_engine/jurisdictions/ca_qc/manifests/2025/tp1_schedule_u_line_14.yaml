@@ -1,12 +1,20 @@
 # Schedule U (Revenu Quebec TP-1.D.U-V, 2025-12), Part B, line 14: "Subtract line 13 from line 12."
 # Line 12 is the pensionable salary (`ca-qc/schedule_u_pensionable_salary_line_12`); line 13 is the
-# personal QPP exemption (`ca-qc/schedule_u_personal_qpp_exemption_line_13`). The line prints no "if
-# negative, enter 0", so `core/subtract` gives a negative figure as it is, rounded to the cent by
+# personal QPP exemption (`ca-qc/schedule_u_personal_qpp_exemption_line_13`).
+# DEPARTURE FROM THE PRINTED FORM, ruled by the owner (20 Nov 2026): the line prints no "if negative,
+# enter 0", but a salary under the $3,500 exemption gives a negative figure, and every line below it
+# (14.4, 15, 16, 17.2, 22.1, 23, and TP-1 line 248) would carry a negative deduction, which adds to
+# income. No such deduction exists: the QPP contribution is nil on earnings at or under the basic
+# exemption. Act respecting the Quebec Pension Plan, s. 42 (the Basic Exemption is $3,500), s. 43 (the
+# personal exemption equals it) and s. 44 (contributory earnings are the maximum pensionable earnings
+# less the personal exemption); the federal Schedule 8 (5005-S8), Part 2 line 7, floors the same
+# subtraction ("Line 5 minus line 6 (if negative, enter "0")"); and Schedule U itself floors lines
+# 14.3, 17.3, 18.7 and 19. So the step is `core/subtract_not_below_zero`, rounded to the cent by
 # `ca-qc/cent_rounding`. The form prints no label for the line, so the step is untitled.
 form:
   name: ca-qc/tp1_schedule_u
 capabilities:
-  - name: core/subtract
+  - name: core/subtract_not_below_zero
     reference: "14"
     unit: ca/cad
     params:
