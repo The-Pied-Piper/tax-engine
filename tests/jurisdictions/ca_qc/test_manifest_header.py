@@ -1,6 +1,6 @@
 """The header of the Quebec 2025 manifest: the return's identity and its federal imports (Schedules
-8 and 6 and T2204; T2204 reads the Quebec EI premium dataset, 5005-S10). It declares no inputs or
-outputs yet; later tickets add them."""
+8 and 6 and T2204; T2204 reads the Quebec EI premium dataset, 5005-S10). It declares no inputs; its
+outputs are the three figures of the return summary (`return.yaml`)."""
 
 from __future__ import annotations
 
@@ -31,11 +31,15 @@ def test_the_return_identity() -> None:
     assert header["title"] == "Return summary"
 
 
-def test_the_return_declares_no_capabilities_and_no_outputs_yet() -> None:
+def test_the_return_declares_no_capabilities_and_the_three_outputs() -> None:
     header = _header()
 
     assert header["capabilities"] == []
-    assert "outputs" not in header
+    assert header["outputs"] == [
+        "ca/refund_or_balance_owing",
+        "ca-qc/total_payable",
+        "ca-qc/solidarity_credit",
+    ]
 
 
 def test_the_federal_forms_are_imported_in_order_and_read_the_quebec_datasets() -> None:
