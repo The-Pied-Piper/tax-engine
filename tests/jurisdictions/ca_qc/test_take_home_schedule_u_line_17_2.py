@@ -79,8 +79,8 @@ def test_line_17_2_at_each_salary(
     assert str(value) == expected
 
 
-def test_a_salary_below_the_exemption_gives_a_negative_figure(
+def test_a_salary_below_the_exemption_gives_zero(
     take_home_service: TakeHomeService,
 ) -> None:
-    """The form prints no "if negative, enter 0" on this line, so the figure is signed."""
-    assert str(schedule_u(take_home_service, "3000").get(SCHEDULE_U_LINE_17_2).value) == "-32.00"
+    """Below the $3,500 exemption line 14 is floored at 0 (the owner's ruling, departing from the printed line; QPP Act ss. 42 to 44, 5005-S8 line 7), so this line is 0."""
+    assert str(schedule_u(take_home_service, "3000").get(SCHEDULE_U_LINE_17_2).value) == "0.00"

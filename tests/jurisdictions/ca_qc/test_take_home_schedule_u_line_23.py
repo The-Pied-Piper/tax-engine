@@ -99,9 +99,8 @@ def test_line_23_at_each_salary(
 def test_a_salary_below_the_exemption_follows_the_printed_lines(
     take_home_service: TakeHomeService,
 ) -> None:
-    """At a $3,000 salary line 14.4 is -500.00, so line 15 and line 16 are -5.00 (the form prints no
-    floor on line 14); line 17.5 is 32.00 but line 21 is 0.00, so line 22 is 0.00 and line 23 is
-    -5.00."""
+    """At a $3,000 salary line 14 is floored at 0 (owner's ruling), so lines 14.4, 15, 16 and 17.5 are
+    0.00, line 21 is 0.00, line 22 is 0.00 and line 23 is 0.00."""
     sheet = schedule_u(take_home_service, "3000")
 
-    assert str(sheet.get(SCHEDULE_U_LINE_23).value) == "-5.00"
+    assert str(sheet.get(SCHEDULE_U_LINE_23).value) == "0.00"
