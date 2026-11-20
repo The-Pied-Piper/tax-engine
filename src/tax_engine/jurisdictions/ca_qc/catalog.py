@@ -1406,3 +1406,10 @@ TP1_NON_REFUNDABLE_TAX_CREDITS_LINE_399 = AmountKind.declare(
 tax credits": the sum, rounded half-up to the cent; the optional lines read as 0 when blank. Signed,
 as line 377.1 is. Produced by one core/sum (`tp1_credits_line_399.yaml`) and exported by the form
 for TP-1 line 406."""
+
+TP1_INCOME_TAX_ON_TAXABLE_INCOME_LINE_401 = AmountKind.declare(
+    CATALOG, "tp1_income_tax_on_taxable_income_line_401", non_negative=True
+)
+"""TP-1 line 401 "Income tax on taxable income. Complete Work Chart 401": the chart's line 8, which
+it says to carry to line 401. Produced by one core/record_total over the chart's export
+(`tp1_tax_line_401.yaml`)."""
