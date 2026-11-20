@@ -556,6 +556,12 @@ SCHEDULE_P_WORK_PREMIUM_REDUCTION_THRESHOLD_LINE_80 = AmountKind.declare(
 """Schedule P Part E, section 2, column 1 "Work premium", line 80: the printed 12,620, claimed
 whole."""
 
+SCHEDULE_P_FAMILY_INCOME_OVER_THRESHOLD_LINE_82 = AmountKind.declare(
+    CATALOG, "schedule_p_family_income_over_threshold_line_82", non_negative=True
+)
+"""Schedule P Part E, section 2, column 1, line 82, "Subtract line 80 from line 78. If the result is
+negative, enter 0", rounded half-up to the cent."""
+
 SCHEDULE_P_NET_INCOME_LINE_52 = AmountKind.declare(
     CATALOG, "schedule_p_net_income_line_52", non_negative=True
 )
