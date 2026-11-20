@@ -1,0 +1,14 @@
+# 5005-R (2025) line 27 input a salary-only caller does not give.
+# Line 27: "Line 27: Add lines 22 to 26. Net self-employment income =" (page 3). Lines 22 to 26 (business
+# to fishing income) are blank for a salary-only filer, so the printed sum that collects them is one
+# optional input read as 0; the skipped lines have no step.
+form:
+  name: ca-qc/t1_taxable_income
+inputs:
+  - name: ca-qc/net_self_employment_income
+    title: "Net self-employment income"
+    reference: "27"
+    unit: ca/cad
+    required: false
+    default: "0"
+    basis: "Line 27: Add lines 22 to 26. Net self-employment income"

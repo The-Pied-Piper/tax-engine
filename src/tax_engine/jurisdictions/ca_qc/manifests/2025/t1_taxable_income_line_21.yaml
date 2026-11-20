@@ -1,0 +1,17 @@
+# 5005-R (2025) line 21. The form prints: "Line 21: Add lines 1 to 20. =" (page 3). Line 1 is the salary
+# (`ca/employment_income`, line 10100) and line 2 is the optional input read as 0
+# (`ca/other_employment_income`, line 10400). Lines 3 to 20 hold nothing for a salary-only filer and
+# are not built, as the federal form reads only lines 10100 and 10400. One step: core/sum in form
+# line order.
+form:
+  name: ca-qc/t1_taxable_income
+capabilities:
+  - name: core/sum
+    reference: "21"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts: [ca/employment_income, ca/other_employment_income]
+    produces:
+      output: ca-qc/t1_line_21
