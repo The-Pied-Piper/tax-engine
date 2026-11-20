@@ -1,0 +1,19 @@
+# 5005-R (2025) line 57 and line 23600. The form prints: "Line 57 and line 23600: Line 55 minus line 56
+# (if negative, enter "0") ... Net income =" (page 4). Line 55 is net income before adjustments
+# (line 23400) and line 56 is the social benefits repayment (line 23500). One step:
+# core/subtract_not_below_zero, so a negative difference gives "0", as the form says, rounded through
+# `ca-qc/cent_rounding`.
+form:
+  name: ca-qc/t1_taxable_income
+capabilities:
+  - name: core/subtract_not_below_zero
+    title: "Net income"
+    reference: "23600"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/t1_line_55
+      less: ca/social_benefits_repayment
+    produces:
+      output: ca-qc/net_income

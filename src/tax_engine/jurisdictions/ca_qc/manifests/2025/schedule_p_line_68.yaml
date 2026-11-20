@@ -1,0 +1,17 @@
+# Schedule P (TP-1.D.P-V, 2025-12) Part E, section 2, column 1 "Work premium", line 68: "Amount from
+# line 64 or line 66, whichever is less." Line 64 is a copy of line 29 (`ca-qc/schedule_p_work_income_
+# line_29`, from schedule_p_line_29.yaml), so it has no step; line 66 is the printed 12,620
+# (from schedule_p_line_66.yaml). A tie keeps the first amount listed, line 64, in form order. The
+# form prints no label for the line, so the step is untitled.
+form:
+  name: ca-qc/schedule_p
+capabilities:
+  - name: core/lesser_of
+    reference: "68"
+    unit: ca/cad
+    consumes:
+      amounts:
+        - ca-qc/schedule_p_work_income_line_29
+        - ca-qc/schedule_p_work_premium_income_ceiling_line_66
+    produces:
+      output: ca-qc/schedule_p_work_premium_income_line_68

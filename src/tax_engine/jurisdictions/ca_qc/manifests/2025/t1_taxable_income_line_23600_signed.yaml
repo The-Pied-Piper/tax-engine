@@ -1,0 +1,22 @@
+# 5005-R (2025) line 57 and line 23600 before its floor: "Line 55 minus line 56 (if negative, enter "0")"
+# (page 4). The shared Schedule 6 line 7 prints the amount before that floor: "Net income from line
+# 23600 of the return (or the amount you would have entered if the instructions on line 23600 said
+# "if negative, show in brackets")" (5000-S6). Line 55 is net income before adjustments (line 23400)
+# and line 56 is the social benefits repayment (line 23500).
+#
+# One step: core/subtract with no floor, rounded through `ca-qc/cent_rounding`. The floored net
+# income is `t1_taxable_income_line_23600.yaml`, which this step does not replace. It carries no
+# reference: the step that outputs the final result of line 23600 is the floored one, and this one is
+# engine-internal.
+form:
+  name: ca-qc/t1_taxable_income
+capabilities:
+  - name: core/subtract
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/t1_line_55
+      less: ca/social_benefits_repayment
+    produces:
+      output: ca-qc/net_income_signed

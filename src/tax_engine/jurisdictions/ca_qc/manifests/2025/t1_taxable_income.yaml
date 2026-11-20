@@ -1,0 +1,18 @@
+# 5005-R (2025), the T1 return for Quebec residents, Steps 2 to 4. This part names the form and its
+# exports; each line's capability goes in a part of its own with the same `form.name`. Exports:
+#   - Net income (`ca-qc/net_income`, line 57 and line 23600) starts Step 4.
+#   - Line 23600 before its floor (`ca-qc/net_income_signed`, line 55 less line 56, not floored) is
+#     read by the shared Schedule 6 line 7, which reads it from the neutral name below, as the form's
+#     "if negative, show in brackets" wording asks.
+# Lines 33 (line 15000), 48 (line 22215), 54 (line 23300) and 55 (line 23400) are read inside the
+# form and are not exported.
+form:
+  name: ca-qc/t1_taxable_income
+  title: "T1 Income Tax and Benefit Return"
+  required: true
+  exports:
+    - ca-qc/net_income
+    - ca-qc/net_income_signed
+  supplies:
+    ca/t1_taxable_income.net_income_signed: ca-qc/net_income_signed
+capabilities: []
