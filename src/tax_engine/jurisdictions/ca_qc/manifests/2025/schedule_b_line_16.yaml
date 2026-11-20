@@ -1,0 +1,14 @@
+# Schedule B (TP-1.D.B-V, 2025-12) Part A line 16: the printed figure 42,090.00, subtracted from the
+# family income. It is a dataset figure, so the step claims it whole through core/credit_amount. The
+# form prints no label for the line, so the step is untitled. Line 15 is "Amount from line 14", a
+# copy, with no step.
+form:
+  name: ca-qc/schedule_b
+capabilities:
+  - name: core/credit_amount
+    reference: "16"
+    unit: ca/cad
+    params:
+      amount: ca-qc/schedule_b_threshold_line_16
+    produces:
+      output: ca-qc/schedule_b_line_16

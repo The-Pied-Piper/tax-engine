@@ -663,3 +663,7 @@ when it is left out."""
 SCHEDULE_B_LINE_14 = AmountKind.declare(CATALOG, "schedule_b_line_14", non_negative=True)
 """Schedule B Part A line 14, "Add lines 10 and 12. Family income", rounded half-up to the cent.
 Produced by one core/sum (`schedule_b_line_14.yaml`)."""
+
+SCHEDULE_B_LINE_16 = AmountKind.declare(CATALOG, "schedule_b_line_16", non_negative=True)
+"""Schedule B Part A line 16, the printed 42,090.00 subtracted from the family income, claimed
+whole (`schedule_b_line_16.yaml`)."""
