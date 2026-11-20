@@ -1,5 +1,5 @@
-"""The Quebec trace lines: facts in the vocabulary of Quebec and
-Labrador's own forms.
+"""The Quebec trace lines: facts in the vocabulary of Quebec's own
+forms.
 
 Each line's English text is in `tax_engine.jurisdictions.ca_qc.trace_english`. The generic lines
 are in `tax_engine.domain.trace`.
