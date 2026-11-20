@@ -37,7 +37,9 @@ from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca.catalog.refund import REFUND_OR_BALANCE_OWING
 from tax_engine.jurisdictions.ca_qc.catalog import (
     CWB_LINE_161,
+    FEDERAL_TOTAL_PAYABLE_RETURN,
     REFUND_OR_BALANCE_OWING_LINE_172,
+    REFUNDABLE_QUEBEC_ABATEMENT_RETURN,
     SCHEDULE_B_LIVED_ALONE_LINE_20,
     SCHEDULE_K_GROUP_PLAN_COVERED_LINE_50,
     SOLIDARITY_CREDIT,
@@ -220,3 +222,20 @@ def test_5005_r_line_45300(salary: str, scenario: str, expected: str) -> None:
     sheet = _sheets(salary, scenario)["ca-qc/t1_tax_and_credits"]
 
     assert sheet.get(CWB_LINE_161).value == D(expected)
+
+
+@pytest.mark.parametrize("scenario", SCENARIOS)
+@pytest.mark.parametrize("salary", SALARIES)
+def test_the_refund_and_the_total_payable_follow_from_the_printed_lines(
+    salary: str, scenario: str
+) -> None:
+    sheets = _sheets(salary, scenario)
+    line_172 = sheets["ca-qc/t1_tax_and_credits"].get(REFUND_OR_BALANCE_OWING_LINE_172).value
+    line_450 = sheets["ca-qc/tp1_totals"].get(TP1_INCOME_TAX_AND_CONTRIBUTIONS_LINE_450).value
+    line_456 = sheets["ca-qc/tp1_totals"].get(TP1_WORK_PREMIUM_TAX_CREDITS_LINE_456).value
+    summary = sheets["ca-qc/return"]
+
+    assert summary.get(REFUND_OR_BALANCE_OWING).value == line_172 + line_450 - line_456
+    line_43500 = summary.get(FEDERAL_TOTAL_PAYABLE_RETURN).value
+    line_44000 = summary.get(REFUNDABLE_QUEBEC_ABATEMENT_RETURN).value
+    assert summary.get(TOTAL_PAYABLE).value == line_43500 - line_44000 + line_450
