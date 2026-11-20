@@ -626,6 +626,13 @@ SCHEDULE_P_SUPPLEMENT_LINE_60 = AmountKind.declare(
 amount for each month times the months, rounded half-up to the cent. Carried to line 88 on
 page 2."""
 
+SCHEDULE_P_TAX_CREDITS_LINE_90 = AmountKind.declare(
+    CATALOG, "schedule_p_tax_credits_line_90", non_negative=True
+)
+"""Schedule P Part F line 90, "Add lines 88 and 89" (the supplement of line 60 and the work premium
+of line 87), "Tax credits respecting the work premium", rounded half-up to the cent. Carried to
+line 456 of the TP-1."""
+
 T1_LINE_48 = AmountKind.declare(CATALOG, "t1_line_48", non_negative=True)
 """Deduction for CPP or QPP enhanced contributions on employment income, 5005-R line 48 and line
 22215 "Deduction for CPP or QPP enhanced contributions on employment income (complete Schedule 8 or
@@ -1632,3 +1639,23 @@ SCHEDULE_K_PREMIUM_LINE_84 = AmountKind.declare(
 printed maximum of $766 ("is more than $14,669, enter $766 on line 84"): the lesser of line 83 and
 `ca-qc/schedule_k_line_84_maximum`. One core/capped_amount (`tp1_schedule_k_line_84.yaml`). The
 form exports it; the lines after it read it."""
+
+TP1_INCOME_TAX_ON_TAXABLE_INCOME_LINE_401 = AmountKind.declare(
+    CATALOG, "tp1_income_tax_on_taxable_income_line_401", non_negative=True
+)
+"""TP-1 line 401 "Income tax on taxable income. Complete Work Chart 401": the chart's line 8, which
+it says to carry to line 401. Produced by one core/record_total over the chart's export
+(`tp1_tax_line_401.yaml`)."""
+
+TP1_NON_REFUNDABLE_TAX_CREDITS_LINE_406 = AmountKind.declare(
+    CATALOG, "tp1_non_refundable_tax_credits_line_406"
+)
+"""TP-1 line 406 "Non-refundable tax credits (line 399)": the credits form's line 399, a copy.
+Signed, as line 399 is. Produced by one core/record_total over the credits form's export
+(`tp1_tax_line_406.yaml`)."""
+
+TP1_LINE_413 = AmountKind.declare(CATALOG, "tp1_line_413")
+"""TP-1 line 413 "Subtract line 406 from line 401": the income tax on taxable income less the
+non-refundable tax credits, rounded half-up to the cent. The form prints no floor, so the figure is
+signed (line 432 floors it). Produced by one core/subtract (`tp1_tax_line_413.yaml`) and exported by
+the form for lines 425 and 430."""

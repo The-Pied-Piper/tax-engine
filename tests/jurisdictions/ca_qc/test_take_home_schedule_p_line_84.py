@@ -2,7 +2,7 @@
 "Subtract line 83 from line 76. If the result is negative, enter 0", as the Quebec take-home
 manifest wires it: one `core/subtract_not_below_zero` of line 83 from line 76, rounded half-up to
 the cent. Line 87 ("Amount from line 84 in column 1 or column 2, whichever is greater") has no
-step: column 2 is left out, so line 87 is line 84, and the form part exports it for Part F.
+step: column 2 is left out, so line 87 is line 84, and line 90 reads it.
 
 The line 52 to 54 and line 76 chains run for real, over the real TP-1 income parts. The expected
 figures of a salary-only filer are hand-computed from the printed lines (the Quebec 2025 hand
@@ -11,12 +11,11 @@ calculation of 19 Nov 2026), not from a Revenu Quebec example."""
 from __future__ import annotations
 
 import pytest
-import yaml
 
 from tax_engine.jurisdictions.ca_qc.catalog import (
     SCHEDULE_P_WORK_PREMIUM_LINE_87,
 )
-from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
+from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 from tests.jurisdictions.ca_qc.schedule_p_family_income_support import family_income_worksheet
 from tests.jurisdictions.ca_qc.support import schedule_p_form
 
@@ -67,13 +66,3 @@ def test_line_84_is_line_76_less_line_83_not_below_zero(
     take_home_service: TakeHomeService, salary: str, expected: str
 ) -> None:
     assert value(take_home_service, salary) == expected
-
-
-def test_the_form_part_names_titles_and_exports_line_87() -> None:
-    part = yaml.safe_load((QUEBEC_PARTS / "schedule_p.yaml").read_text(encoding="utf-8"))
-
-    assert list(part["form"]) == ["name", "title", "required", "exports"]
-    assert part["form"]["name"] == "ca-qc/schedule_p"
-    assert part["form"]["title"] == "Schedule P: Tax Credits Respecting the Work Premium"
-    assert part["form"]["exports"] == ["ca-qc/schedule_p_work_premium_line_87"]
-    assert part["capabilities"] == []
