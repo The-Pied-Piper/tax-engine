@@ -1,0 +1,15 @@
+# 5005-R (2025) Step 5 Part A line 73, "Line 71 minus line 72 (cannot be negative)", rounded half-up
+# to the cent through `ca-qc/cent_rounding`.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "73"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/federal_taxable_income_line_71
+      less: ca-qc/federal_bracket_lower_bound_line_72
+    produces:
+      output: ca-qc/federal_taxable_income_over_lower_bound_line_73

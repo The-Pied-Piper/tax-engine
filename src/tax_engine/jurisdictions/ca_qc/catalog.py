@@ -952,3 +952,52 @@ SCHEDULE_B_LINE_34 = AmountKind.declare(CATALOG, "schedule_b_line_34")
 return. Age amount, amount for a person living alone and amount for retirement income", rounded
 half-up to the cent. The form prints no floor, so the figure is signed. Produced by one
 core/subtract (`schedule_b_line_34.yaml`) and exported by the form for TP-1 line 361."""
+
+FEDERAL_TAXABLE_INCOME_LINE_71 = AmountKind.declare(
+    CATALOG, "federal_taxable_income_line_71", non_negative=True
+)
+"""5005-R Step 5 Part A line 71 "Amount from line 26000": taxable income read from the T1 taxable
+income export (`ca-qc/taxable_income`, line 70 and line 26000) into Part A, Federal tax on
+taxable income. Produced by one core/record_total (`t1_tax_and_credits_line_71.yaml`)."""
+
+FEDERAL_BRACKET_LOWER_BOUND_LINE_72 = AmountKind.declare(
+    CATALOG, "federal_bracket_lower_bound_line_72", non_negative=True
+)
+"""5005-R Step 5 Part A line 72 (0.00, 57,375.00, 114,750.00, 177,882.00 or 253,414.00): the
+printed lower bound of the column that line 71 falls in. Produced by one
+core/bracket_column_lower_bound (`t1_tax_and_credits_line_72.yaml`)."""
+
+FEDERAL_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_73 = AmountKind.declare(
+    CATALOG, "federal_taxable_income_over_lower_bound_line_73", non_negative=True
+)
+"""5005-R Step 5 Part A line 73 "Line 71 minus line 72 (cannot be negative) =": line 71 minus line
+72, not below zero, rounded half-up to the cent. Produced by one core/subtract_not_below_zero
+(`t1_tax_and_credits_line_73.yaml`)."""
+
+FEDERAL_BRACKET_COLUMN_RATE_LINE_74 = AmountKind.declare(
+    CATALOG, "federal_bracket_column_rate_line_74", non_negative=True
+)
+"""5005-R Step 5 Part A line 74 "Rate" (14.5%, 20.5%, 26%, 29% or 33%): the printed rate of the
+column that line 71 falls in, a fraction (0.205 for 20.5%). Produced by one
+core/bracket_column_rate (`t1_tax_and_credits_line_74.yaml`)."""
+
+FEDERAL_EXCESS_TIMES_COLUMN_RATE_LINE_75 = AmountKind.declare(
+    CATALOG, "federal_excess_times_column_rate_line_75", non_negative=True
+)
+"""5005-R Step 5 Part A line 75 "Line 73 multiplied by the percentage from line 74 =": line 73
+times line 74, rounded half-up to the cent. Produced by one core/multiply_by_rate
+(`t1_tax_and_credits_line_75.yaml`)."""
+
+FEDERAL_TAX_AT_COLUMN_START_LINE_76 = AmountKind.declare(
+    CATALOG, "federal_tax_at_column_start_line_76", non_negative=True
+)
+"""5005-R Step 5 Part A line 76 (0.00, 8,319.38, 20,081.25, 36,495.57 or 58,399.85): the printed
+constant of the column that line 71 falls in, taken as printed. Produced by one
+core/bracket_column_tax_at_start (`t1_tax_and_credits_line_76.yaml`)."""
+
+FEDERAL_TAX_ON_TAXABLE_INCOME_LINE_77 = AmountKind.declare(
+    CATALOG, "federal_tax_on_taxable_income_line_77", non_negative=True
+)
+"""5005-R Step 5 Part A line 77 "Line 75 plus line 76 Federal tax on taxable income =": line 75
+plus line 76, rounded half-up to the cent, which the form enters on line 123. Produced by one
+core/sum (`t1_tax_and_credits_line_77.yaml`)."""
