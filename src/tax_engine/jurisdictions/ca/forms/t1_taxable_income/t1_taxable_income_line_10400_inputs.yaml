@@ -7,7 +7,6 @@ form:
 inputs:
   - name: ca/other_employment_income
     title: "Other employment income"
-    reference: "10400"
     unit: ca/cad
     required: false
     default: "0"

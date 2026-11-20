@@ -322,6 +322,18 @@ T1_LINE_32 = AmountKind.declare(CATALOG, "t1_line_32")
 the printed sum of the skipped block of workers' compensation, social assistance and net federal
 supplements, one optional input read as 0."""
 
+EMPLOYMENT_INCOME_LINE_10100 = AmountKind.declare(
+    CATALOG, "employment_income_line_10100", non_negative=True
+)
+"""Employment income as 5005-R line 1 and T1 line 10100 print it: the salary input carried to line
+21, the one place the Quebec T1 lists it (`t1_taxable_income_line_10100.yaml`)."""
+
+OTHER_EMPLOYMENT_INCOME_LINE_10400 = AmountKind.declare(
+    CATALOG, "other_employment_income_line_10400", non_negative=True
+)
+"""Other employment income as 5005-R line 2 and T1 line 10400 print it: the optional input carried
+to line 21, the one place the Quebec T1 lists it (`t1_taxable_income_line_10400.yaml`)."""
+
 TOTAL_INCOME = AmountKind.declare(CATALOG, "total_income")
 """Total income, 5005-R line 33 and line 15000 "Line 33 and line 15000: Line 28 plus line 32 =".
 Not floored, so a loss larger than the other income is shown in brackets as the form prints it.

@@ -9,6 +9,7 @@ from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
 from tax_engine.jurisdictions.ca.catalog import (
     CREDITS_AGAINST_BASIC_FEDERAL_TAX,
     EMPLOYMENT_INCOME,
+    EMPLOYMENT_INCOME_LINE_10100,
     FUEL_CHARGE_FARM_STATEMENT_COUNT,
     FUEL_CHARGE_FARMS_IN_PROVINCE_AB,
     FUEL_CHARGE_FARMS_IN_PROVINCE_MB,
@@ -21,6 +22,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     FUEL_CHARGE_FARMS_OUTSIDE_EIGHT,
     FUEL_CHARGE_MULTIPLE_PROVINCES_BOX,
     OTHER_EMPLOYMENT_INCOME,
+    OTHER_EMPLOYMENT_INCOME_LINE_10400,
     TOTAL_INCOME,
 )
 from tests.jurisdictions.ca.catalog_snapshot import (
@@ -70,6 +72,8 @@ def test_the_income_kinds_are_money() -> None:
         EMPLOYMENT_INCOME,
         TOTAL_INCOME,
         OTHER_EMPLOYMENT_INCOME,
+        EMPLOYMENT_INCOME_LINE_10100,
+        OTHER_EMPLOYMENT_INCOME_LINE_10400,
         CREDITS_AGAINST_BASIC_FEDERAL_TAX,
     ):
         assert kind.value_type is Decimal, kind.identifier

@@ -43,7 +43,9 @@ from tax_engine.jurisdictions.ca.catalog.deductions import (
 )
 from tax_engine.jurisdictions.ca.catalog.income import (
     EMPLOYMENT_INCOME,
+    EMPLOYMENT_INCOME_LINE_10100,
     OTHER_EMPLOYMENT_INCOME,
+    OTHER_EMPLOYMENT_INCOME_LINE_10400,
     TOTAL_INCOME,
 )
 from tax_engine.jurisdictions.ca.catalog.taxable_income import (
@@ -215,18 +217,27 @@ def test_every_line_matches_the_printed_form(
 def test_the_form_exports_the_return_lines_and_the_worksheet_holds_them_at_70000(
     take_home_service: TakeHomeService,
 ) -> None:
-    # The exports the form declares are the lines other forms read: net income (23600), net income
-    # before its floor (23600, signed, read by Schedule 6 line 7 and ON428-A line 6) and taxable
-    # income (26000). Lines 15000 and 23300 are read inside the form and not exported.
+    # The exports the form declares are the lines other forms read: employment income (10100),
+    # other employment income (10400), net income (23600), net income before its floor (23600,
+    # signed, read by Schedule 6 line 7 and ON428-A line 6) and taxable income (26000). Lines 15000
+    # and 23300 are read inside the form and not exported.
     service = take_home_service(HEADER, FORM, *PARTS_15000)
     code = JurisdictionCode("CA-ON")
     (form,) = (f for f in service.compose(code, 2025).forms if f.name == "ca/t1_taxable_income")
-    assert form.exports == (NET_INCOME, NET_INCOME_SIGNED, TAXABLE_INCOME)
+    assert form.exports == (
+        EMPLOYMENT_INCOME_LINE_10100,
+        OTHER_EMPLOYMENT_INCOME_LINE_10400,
+        NET_INCOME,
+        NET_INCOME_SIGNED,
+        TAXABLE_INCOME,
+    )
 
     worksheets = service.compute(code, 2025, Artifact(EMPLOYMENT_INCOME, D("70000")))
     (sheet,) = worksheets["ca/t1_taxable_income"]
 
     assert [sheet.get(kind).value for kind in form.exports] == [
+        D("70000.00"),
+        D("0.00"),
         D("69335.00"),
         D("69335.00"),
         D("69335.00"),

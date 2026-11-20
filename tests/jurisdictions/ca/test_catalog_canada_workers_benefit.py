@@ -9,10 +9,12 @@ from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
 from tax_engine.jurisdictions.ca.catalog import (
     ADJUSTED_FAMILY_NET_INCOME,
     CWB_EMPLOYMENT_INCOME,
+    CWB_EMPLOYMENT_INCOME_LINE_10100,
     CWB_MAXIMUM,
     CWB_NET_INCOME_LESS_UCCB_RDSP_LINE_12,
     CWB_NET_INCOME_LINE_7,
     CWB_NET_INCOME_TOTAL_LINE_10,
+    CWB_OTHER_EMPLOYMENT_INCOME_LINE_10400,
     CWB_REDUCTION_THRESHOLD,
     WORKING_INCOME,
 )
@@ -30,6 +32,8 @@ def test_the_cwb_maximum_is_registered_money_and_non_negative(registry: Artifact
 def test_the_canada_workers_benefit_kinds_are_money() -> None:
     for kind in (
         CWB_EMPLOYMENT_INCOME,
+        CWB_EMPLOYMENT_INCOME_LINE_10100,
+        CWB_OTHER_EMPLOYMENT_INCOME_LINE_10400,
         WORKING_INCOME,
         CWB_NET_INCOME_LINE_7,
         CWB_NET_INCOME_TOTAL_LINE_10,

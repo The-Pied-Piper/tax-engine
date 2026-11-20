@@ -14,6 +14,18 @@ employment income from line 10100 and line 10400 of the return": the employment 
 other employment income added. The take-home sum adds line 10400 (`ca/other_employment_income`,
 which reads as 0 when the filer has none) to line 10100. The quote is from Schedule 6 (5000-S6)."""
 
+CWB_EMPLOYMENT_INCOME_LINE_10100 = AmountKind.declare(
+    CATALOG, "cwb_employment_income_line_10100", non_negative=True
+)
+"""Schedule 6 line 1, the part from T1 line 10100 (employment income): the T1's line, read as the
+form's export."""
+
+CWB_OTHER_EMPLOYMENT_INCOME_LINE_10400 = AmountKind.declare(
+    CATALOG, "cwb_other_employment_income_line_10400", non_negative=True
+)
+"""Schedule 6 line 1, the part from T1 line 10400 (other employment income): the T1's line, read as
+the form's export."""
+
 WORKING_INCOME = AmountKind.declare(CATALOG, "working_income", non_negative=True)
 """Working income, Schedule 6 line 5 "Add lines 1 to 4. Enter the result, even if it is "0".
 Working income". The take-home sum has line 1 only: line 1 "Employment income and other employment

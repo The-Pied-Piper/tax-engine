@@ -82,6 +82,8 @@ LINE_7 = "ca-mb/mb428_bracket_tax_at_start_line_7"
 LINE_8 = "ca-mb/mb428_tax_on_taxable_income_line_8"
 T1_PARTS = (
     "t1_taxable_income_inputs.yaml",
+    "t1_taxable_income_line_10100.yaml",
+    "t1_taxable_income_line_10400.yaml",
     "t1_taxable_income_line_15000.yaml",
     "t1_taxable_income_line_23300.yaml",
     "t1_taxable_income_line_23400.yaml",

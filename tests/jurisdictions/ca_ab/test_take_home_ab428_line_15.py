@@ -81,6 +81,8 @@ LINE_14_PART = ALBERTA_PARTS / "ab428_line_14.yaml"
 LINE_15_PART = ALBERTA_PARTS / "ab428_line_15.yaml"
 T1_PARTS = (
     "t1_taxable_income_inputs.yaml",
+    "t1_taxable_income_line_10100.yaml",
+    "t1_taxable_income_line_10400.yaml",
     "t1_taxable_income_line_15000.yaml",
     "t1_taxable_income_line_23300.yaml",
     "t1_taxable_income_line_23400.yaml",

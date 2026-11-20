@@ -59,6 +59,8 @@ LINE_65 = "ca-mb/mb479_odour_control_credit_line_65"
 EXPENSES_61 = "ca-mb/mb479_fertility_treatment_expenses_line_61"
 T1_PARTS = (
     "t1_taxable_income_inputs.yaml",
+    "t1_taxable_income_line_10100.yaml",
+    "t1_taxable_income_line_10400.yaml",
     "t1_taxable_income_line_15000.yaml",
     "t1_taxable_income_line_23300.yaml",
     "t1_taxable_income_line_23400.yaml",
