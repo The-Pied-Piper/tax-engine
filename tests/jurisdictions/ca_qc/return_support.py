@@ -17,37 +17,18 @@ from typing import Any
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
-from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tax_engine.jurisdictions.ca_qc.catalog import (
-    TP1_ADDITIONAL_QPP_CONTRIBUTION_LINE_98_2,
-    TP1_PENSIONABLE_SALARY_LINE_98_1,
-    TP1_QPIP_PREMIUM_LINE_97,
-    TP1_QPP_CONTRIBUTION_LINE_98,
-)
 from tests.jurisdictions.ca_qc.basic_personal_amount_support import FORM as T1_FORM
 from tests.jurisdictions.ca_qc.basic_personal_amount_support import PARTS as T1_PARTS
-from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
+from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 from tests.jurisdictions.ca_qc.solidarity_maximum_support import ANSWERS_PART
-from tests.jurisdictions.ca_qc.tp1_net_income_support import (
-    UPSTREAM_98,
-    UPSTREAM_98_1,
-    UPSTREAM_98_2,
-)
+from tests.jurisdictions.ca_qc.support import MANIFEST
+from tests.jurisdictions.ca_qc.tp1_net_income_support import HEADER, slip_artifacts
 from tests.jurisdictions.ca_qc.tp1_totals_support import ALL_PARTS, CHAIN_PARTS
 
 D = Decimal
 SALARIES = ("20000", "70000", "200000")
-SLIP_INPUTS = """\
-inputs:
-  - name: ca-qc/tp1_qpp_contribution_line_98
-    required: true
-  - name: ca-qc/tp1_additional_qpp_contribution_line_98_2
-    required: true
-  - name: ca-qc/tp1_pensionable_salary_line_98_1
-    required: true
-  - name: ca-qc/tp1_qpip_premium_line_97
-    required: true
-"""
+# The slip inputs of the TP-1 net income header, without its outputs.
+SLIP_INPUTS = HEADER[HEADER.index("inputs:") : HEADER.index("outputs:")]
 RETURN_PART = "return.yaml"
 # The solidarity credit parts, over the TP-1 net income lines the family income reads.
 SOLIDARITY_PARTS = (
@@ -107,7 +88,7 @@ EXPECTED: dict[str, dict[str, str]] = {
 
 def header() -> str:
     """The real manifest header with the TP-1 slip figures added as starting inputs."""
-    text = (QUEBEC_PARTS / "manifest.yaml").read_text(encoding="utf-8")
+    text = MANIFEST.read_text(encoding="utf-8")
     return text.replace("title: Return summary\n", "title: Return summary\n" + SLIP_INPUTS)
 
 
@@ -116,14 +97,7 @@ def return_sheet(
 ) -> Worksheet:
     """The return summary worksheet for a salary, over the real chains; every optional input is
     left out unless in `given`."""
-    starting: list[Artifact[Any]] = [
-        Artifact(EMPLOYMENT_INCOME, D(salary)),
-        Artifact(TP1_QPP_CONTRIBUTION_LINE_98, D(UPSTREAM_98[salary])),
-        Artifact(TP1_ADDITIONAL_QPP_CONTRIBUTION_LINE_98_2, D(UPSTREAM_98_2[salary])),
-        Artifact(TP1_PENSIONABLE_SALARY_LINE_98_1, D(UPSTREAM_98_1[salary])),
-        Artifact(TP1_QPIP_PREMIUM_LINE_97, D("0")),
-        *given,
-    ]
+    starting = [*slip_artifacts(salary), *given]
     service = take_home_service(header(), T1_FORM, *PARTS)
     (sheet,) = service.compute(JurisdictionCode("CA-QC"), 2025, *starting)["ca-qc/return"]
     return sheet

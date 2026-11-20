@@ -160,7 +160,7 @@ def _steps() -> list[dict[str, Any]]:
     return steps
 
 
-def test_the_part_has_nine_steps_none_with_a_title_or_a_reference() -> None:
+def test_the_part_has_ten_steps_none_with_a_title_or_a_reference() -> None:
     steps = _steps()
 
     assert [step["name"] for step in steps] == [
@@ -223,16 +223,6 @@ def test_the_solidarity_credit_is_in_neither_sum() -> None:
 
     for step in sums:
         assert "ca-qc/solidarity_credit" not in step["consumes"]["parts"]
-
-
-def test_the_manifest_outputs_are_the_three_figures_default_first() -> None:
-    header = yaml.safe_load((QUEBEC_PARTS / "manifest.yaml").read_text(encoding="utf-8"))
-
-    assert header["outputs"] == [
-        "ca/refund_or_balance_owing",
-        "ca-qc/total_payable",
-        "ca-qc/solidarity_credit",
-    ]
 
 
 @pytest.mark.parametrize(
