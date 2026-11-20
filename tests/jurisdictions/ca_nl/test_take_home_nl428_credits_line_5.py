@@ -158,6 +158,8 @@ def _kind(identifier: str) -> AmountKind:
         ("70000", "0.145"),
         # Line 1 of exactly 44,192.00 is still column 1.
         ("44603.03", "0.087"),
+        # Line 1 is 88,382.01, over 88,382 and not over 157,792: column 3.
+        ("89456.01", "0.158"),
     ],
 )
 def test_line_5_is_the_rate_of_the_column_line_1_falls_in(

@@ -115,6 +115,9 @@ FORM_TEXT = dedent(f"""\
 # column, and line 6 is line 4 times the rate, rounded half-up to the cent.
 CASES = [
     ("70000", "69335.00", "25143.00", "0.145", "3645.74"),
+    # Column 3 (15.8%) and column 4 (17.8%): the last figure of column 3, and 200,000.
+    ("158866.00", "157792.00", "69410.00", "0.158", "10966.78"),
+    ("200000", "198926.00", "41134.00", "0.178", "7321.85"),
 ]
 # Rounding, half-up to the cent: 25,143.00 x 14.5% = 3,645.735 is exactly half a cent and goes up
 # (above, in CASES); line 4 of 0.03 at 14.5% is 0.00435 and goes down to 0.00.

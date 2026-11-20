@@ -18,7 +18,7 @@ the new `mb428_line_67.yaml`, and types in only the salary (and, in some tests, 
 line 66). The header and the form declarations are made up here: the credits form exports lines 1,
 3 to 8 and 57, and `ca-mb/mb428` exports only line 67. The figures are line 65 (the line 65 test)
 plus line 66 (the line 66 test, 0.00 with the T691 amount left out), hand-computed from the printed
-forms, not a CRA example: 0.00 / 5,747.59.
+forms, not a CRA example: 0.00 / 5,747.59 / 26,863.55.
 """
 
 from __future__ import annotations
@@ -200,10 +200,12 @@ FORM = dedent(f"""\
 CASES = [
     ("10000", "0.00"),
     ("70000", "5747.59"),
+    ("200000", "26863.55"),
 ]
 LINES_60_AND_64 = {
     "10000": ("1072.98", "1883.15"),
     "70000": ("7923.71", "2176.12"),
+    "200000": ("29046.62", "2183.07"),
 }
 
 
