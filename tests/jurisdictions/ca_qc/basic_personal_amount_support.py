@@ -95,7 +95,15 @@ CREDIT_PARTS = (
     *LINES_101_TO_122_PARTS,
 )
 # Part A of Step 5 as printed: lines 71 to 77, then Part C (lines 123 to 138, in form line order).
-PART_A_PARTS = tuple(f"t1_tax_and_credits_line_{line}.yaml" for line in range(71, 78))
+PART_A_PARTS: tuple[str, ...] = (
+    "t1_tax_and_credits_line_71.yaml",
+    "t1_tax_and_credits_line_72.yaml",
+    "t1_tax_and_credits_line_73.yaml",
+    "t1_tax_and_credits_line_74.yaml",
+    "t1_tax_and_credits_line_75.yaml",
+    "t1_tax_and_credits_line_76.yaml",
+    "t1_tax_and_credits_line_77.yaml",
+)
 PART_C_PARTS: tuple[str, ...] = (
     "t1_tax_and_credits_line_40424_inputs.yaml",
     "t1_tax_and_credits_line_40400.yaml",
