@@ -1821,3 +1821,9 @@ TP1_INCOME_TAX_AND_CONTRIBUTIONS_LINE_450 = AmountKind.declare(
 )
 """TP-1 line 450 "Add lines 432 through 447. Income tax and contributions": rounded half-up to the
 cent. Produced by one core/sum (`tp1_totals_line_450.yaml`)."""
+
+TP1_WORK_PREMIUM_TAX_CREDITS_LINE_456 = AmountKind.declare(
+    CATALOG, "tp1_work_premium_tax_credits_line_456", non_negative=True
+)
+"""TP-1 line 456 "Tax credits respecting the work premium": Schedule P line 90, a copy. Produced by
+one core/record_total over Schedule P's export (`tp1_totals_line_456.yaml`)."""
