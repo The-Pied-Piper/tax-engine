@@ -25,12 +25,12 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     TP1_NON_REFUNDABLE_TAX_CREDITS_LINE_406,
 )
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
-from tests.jurisdictions.ca_qc.tp1_tax_support import LINE_401_CHAIN, LINE_406_CHAIN, tax_sheet
+from tests.jurisdictions.ca_qc.tp1_tax_support import LINE_413_CHAIN, tax_sheet
 
 D = Decimal
 FORM = (QUEBEC_PARTS / "tp1_tax.yaml").read_text(encoding="utf-8")
 PARTS = (
-    *dict.fromkeys((*LINE_401_CHAIN, *LINE_406_CHAIN)),
+    *LINE_413_CHAIN,
     "tp1_tax_line_401.yaml",
     "tp1_tax_line_406.yaml",
     "tp1_tax_line_413.yaml",

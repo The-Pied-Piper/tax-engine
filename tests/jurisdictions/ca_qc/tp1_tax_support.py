@@ -59,6 +59,8 @@ LINE_406_CHAIN = (
     "tp1_credits.yaml",
     *LINE_399_PARTS,
 )
+# Line 413 reads lines 401 and 406, so its chain is the two chains, each shared part once.
+LINE_413_CHAIN = tuple(dict.fromkeys((*LINE_401_CHAIN, *LINE_406_CHAIN)))
 
 
 def tax_form(*exports: str) -> str:

@@ -19,8 +19,7 @@ from tax_engine.jurisdictions.ca_qc.catalog import SCHEDULE_B_LIVED_ALONE_LINE_2
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
 from tests.jurisdictions.ca_qc.support import quebec_kinds
 from tests.jurisdictions.ca_qc.tp1_tax_support import (
-    LINE_401_CHAIN,
-    LINE_406_CHAIN,
+    LINE_413_CHAIN,
     tax_sheet,
 )
 
@@ -28,15 +27,7 @@ PART = "tp1_tax_line_413.yaml"
 FORM = "ca-qc/tp1_tax"
 IDENTIFIER = "ca-qc/tp1_line_413"
 EXPORTS = (IDENTIFIER,)
-# The chain of line 401 and of line 406 share the upstream and net income parts, so the union keeps
-# the first occurrence of each part.
-CHAIN = tuple(dict.fromkeys((*LINE_401_CHAIN, *LINE_406_CHAIN)))
-PARTS = (
-    *CHAIN,
-    "tp1_tax_line_401.yaml",
-    "tp1_tax_line_406.yaml",
-    PART,
-)
+PARTS = (*LINE_413_CHAIN, "tp1_tax_line_401.yaml", "tp1_tax_line_406.yaml", PART)
 
 
 @pytest.mark.parametrize(
