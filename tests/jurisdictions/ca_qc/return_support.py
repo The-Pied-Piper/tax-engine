@@ -24,9 +24,9 @@ from tests.jurisdictions.ca_qc.solidarity_maximum_support import ANSWERS_PART
 from tests.jurisdictions.ca_qc.support import MANIFEST
 from tests.jurisdictions.ca_qc.tp1_net_income_support import HEADER, slip_artifacts
 from tests.jurisdictions.ca_qc.tp1_totals_support import ALL_PARTS, CHAIN_PARTS
+from tests.jurisdictions.ca_qc.tp1_totals_support import EXPECTED as TOTALS_EXPECTED
 
 D = Decimal
-SALARIES = ("20000", "70000", "200000")
 # The slip inputs of the TP-1 net income header, without its outputs.
 SLIP_INPUTS = HEADER[HEADER.index("inputs:") : HEADER.index("outputs:")]
 RETURN_PART = "return.yaml"
@@ -53,36 +53,26 @@ PARTS = tuple(
     )
 )
 
-# The printed lines at each salary, default answers (not alone, neither tenant nor owner, not
-# covered by a group drug plan, so the 755.00 premium is on TP-1 line 447 at $70,000 and $200,000):
-# 5005-R line 172, line 43500 and line 44000, TP-1 line 450 and line 456, and the solidarity credit
-# (July 2026 to June 2027). Line 172 is line 43500 less line 44000 less the Canada workers benefit
-# (45300, 2,679.07 at $20,000).
+# The printed lines the return adds, at each salary, default answers (not alone, neither tenant nor
+# owner, not covered by a group drug plan, so the 755.00 premium is on TP-1 line 447 at $70,000 and
+# $200,000): 5005-R line 172, line 43500 and line 44000, and the solidarity credit (July 2026 to
+# June 2027). TP-1 lines 450 and 456 are the totals support's. Line 172 is line 43500 less line
+# 44000 less the Canada workers benefit (45300, 2,679.07 at $20,000).
 EXPECTED: dict[str, dict[str, str]] = {
-    "20000": {
-        "172": "-2560.02",
-        "43500": "142.57",
-        "44000": "23.52",
-        "450": "8.96",
-        "456": "584.02",
-        "solidarity": "363.00",
-    },
-    "70000": {
-        "172": "6282.16",
-        "43500": "7523.55",
-        "44000": "1241.39",
-        "450": "8396.16",
-        "456": "0.00",
-        "solidarity": "0.00",
-    },
-    "200000": {
-        "172": "32886.26",
-        "43500": "39384.74",
-        "44000": "6498.48",
-        "450": "38757.53",
-        "456": "0.00",
-        "solidarity": "0.00",
-    },
+    salary: {
+        **TOTALS_EXPECTED[salary],
+        **printed,
+    }
+    for salary, printed in {
+        "20000": {"172": "-2560.02", "43500": "142.57", "44000": "23.52", "solidarity": "363.00"},
+        "70000": {"172": "6282.16", "43500": "7523.55", "44000": "1241.39", "solidarity": "0.00"},
+        "200000": {
+            "172": "32886.26",
+            "43500": "39384.74",
+            "44000": "6498.48",
+            "solidarity": "0.00",
+        },
+    }.items()
 }
 
 

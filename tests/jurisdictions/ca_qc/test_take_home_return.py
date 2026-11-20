@@ -39,8 +39,9 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     TOTAL_PAYABLE,
 )
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
-from tests.jurisdictions.ca_qc.return_support import EXPECTED, RETURN_PART, SALARIES, return_sheet
+from tests.jurisdictions.ca_qc.return_support import EXPECTED, RETURN_PART, return_sheet
 from tests.jurisdictions.ca_qc.support import quebec_kinds
+from tests.jurisdictions.ca_qc.tp1_totals_support import SALARIES
 
 D = Decimal
 
