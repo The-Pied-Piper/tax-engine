@@ -902,6 +902,11 @@ the medical expenses over the threshold plus the allowable medical expenses for 
 (line 115, a blank read as 0), from one core/sum (`t1_tax_and_credits_line_33200.yaml`); line 117
 adds it to line 110."""
 
+CREDIT_AMOUNTS_LINE_117 = AmountKind.declare(CATALOG, "credit_amounts_line_117", non_negative=True)
+"""Total credit amounts, 5005-R line 117 and line 33500 "Line 110 plus line 116 =": the credits
+of lines 85 to 110 plus the medical expenses of line 116, from one core/sum
+(`t1_tax_and_credits_line_33500.yaml`); line 119 applies the federal credit rate to it."""
+
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
 Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line
