@@ -1,0 +1,14 @@
+# Work Chart 201 (TP-1.D.GR-V 2025-12), line 7, "Amount included in the income above and entitling
+# you to a deduction on line 293". An optional input a salary-only caller does not give: a request
+# that leaves it out is read as blank, and the line 8 part (work_chart_201_line_8.yaml) reads the
+# blank as 0.
+form:
+  name: ca-qc/work_chart_201
+inputs:
+  - name: ca-qc/work_chart_201_line_293_amount_line_7
+    title: "Amount included in the income above and entitling you to a deduction on line 293"
+    reference: "7"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Amount included in the income above and entitling you to a deduction on line 293'

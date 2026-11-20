@@ -166,3 +166,13 @@ WORK_CHART_201_TOTAL_LINE_6 = AmountKind.declare(
     CATALOG, "work_chart_201_total_line_6", non_negative=True
 )
 """Work Chart 201 line 6 "Add lines 1 through 5": the sum, rounded half-up to the cent."""
+
+WORK_CHART_201_LINE_293_AMOUNT_LINE_7 = AmountKind.declare(
+    CATALOG, "work_chart_201_line_293_amount_line_7", non_negative=True
+)
+"""Work Chart 201 line 7 "Amount included in the income above and entitling you to a deduction on
+line 293": an optional input, blank when the caller has none and read as 0."""
+
+WORK_CHART_201_LINE_8 = AmountKind.declare(CATALOG, "work_chart_201_line_8")
+"""Work Chart 201 line 8 "Subtract line 7 from line 6": the difference, rounded half-up to the cent.
+The form prints no floor, so it is signed."""
