@@ -1,0 +1,14 @@
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when Revenu Quebec publishes it.
+# Derivation: carried forward unchanged from the 2025 file; the 2026 form is not yet published.
+# Revenu Quebec TP-1.D-V (2025-12), Schedule P (TP-1.D.P-V), Part D "Supplement to the work premium
+# (for former recipients of last-resort financial assistance or financial assistance under the Aim
+# for Employment Program)", line 56: the printed figure is 200.00, the amount for each month. Taken
+# as printed and claimed whole; half-up to the cent changes nothing.
+# The 2026 form is not yet published, so the figure is not yet confirmed against it.
+family: ca-qc/work_premium_supplement_amount
+tax_year: 2026
+kind: credit
+sources:
+  - Revenu Quebec TP-1.D-V (2025-12), Schedule P (TP-1.D.P-V), Part D
+rounding: {increment: "0.01", mode: half_up}
+amount: "200"

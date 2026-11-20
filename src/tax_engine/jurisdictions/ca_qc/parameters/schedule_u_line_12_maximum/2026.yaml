@@ -1,0 +1,16 @@
+# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text when Revenu Quebec publishes it.
+# Derivation: figure as printed in T4127 (Jan 2026): maximum pensionable earnings 74,600; no rounding applied here.
+# Revenu Quebec TP-1.D-V (2025-12), Schedule U (TP-1.D.U-V), Part B, line 12. The printed figure is
+# $71,300 (maximum), taken as printed. The printed "(maximum $71,300)" cap of the line; half-up to
+# the cent changes nothing.
+# The description above is of the 2025 form line; the figures of this file are 2026. The 2026 form is not yet published, so they are not yet confirmed against it.
+family: ca-qc/schedule_u_line_12_maximum
+tax_year: 2026
+kind: amount
+title: "maximum"
+unit: ca/cad
+sources:
+  - Revenu Quebec TP-1.D-V (2025-12), Schedule U (TP-1.D.U-V), Part B
+  - Revenu Quebec, Maximum Pensionable Earnings and Quebec Pension Plan Contribution Rate (web page, 2026 row; CRA T4127 (Jan 2026) Tables 8.3 to 8.6, QPP rows)
+rounding: {increment: "0.01", mode: half_up}
+amount: "74600"

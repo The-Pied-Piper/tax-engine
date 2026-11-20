@@ -1,0 +1,13 @@
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when Revenu Quebec publishes it.
+# Derivation: carried forward unchanged from the 2025 file; the 2026 form is not yet published.
+# Revenu Quebec TP-1.D.K-V (2025-12), Schedule K, Part C, line 85: "Amount from line 84 x Number of
+# months entered in box 62 / 12". The printed 12 is the months of the year, taken as printed. It is a
+# figure in months, claimed whole; half-up to the cent changes nothing.
+# The 2026 form is not yet published, so the figure is not yet confirmed against it.
+family: ca-qc/schedule_k_months_in_year_line_85
+tax_year: 2026
+kind: credit
+sources:
+  - Revenu Quebec TP-1.D.K-V (2025-12), Schedule K, Part C
+rounding: {increment: "0.01", mode: half_up}
+amount: "12"
