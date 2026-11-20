@@ -6,6 +6,7 @@ form:
   name: ca-qc/tp1_schedule_k
 capabilities:
   - name: ca/yes_or_no_count
+    title: "Covered by a group drug plan, checked"
     consumes:
       count: ca-qc/schedule_k_group_plan_covered_line_50
     blank:
