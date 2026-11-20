@@ -92,7 +92,9 @@ def line_1(take_home_service: TakeHomeService, salary: str, other: str | None = 
 def test_schedule_6_line_1_is_employment_income_alone(
     take_home_service: TakeHomeService, salary: str, expected: str
 ) -> None:
-    assert line_1(take_home_service, salary) == D(expected)
+    value = line_1(take_home_service, salary)
+    assert value == D(expected)
+    assert value.as_tuple().exponent == -2
 
 
 def test_an_omitted_other_employment_income_is_read_as_zero(
@@ -106,7 +108,7 @@ def test_an_omitted_other_employment_income_is_read_as_zero(
 @pytest.mark.parametrize(
     ("salary", "other", "expected"),
     [
-        # Line 1 adds line 10400 to line 10100, exactly.
+        # Line 1 adds line 10400 to line 10100 to the cent.
         ("70000", "5000.50", "75000.50"),
         # Other employment income alone: no salary, so line 1 is the other income.
         ("0", "5000", "5000.00"),
@@ -115,10 +117,6 @@ def test_an_omitted_other_employment_income_is_read_as_zero(
 def test_schedule_6_line_1_adds_other_employment_income_to_employment_income(
     take_home_service: TakeHomeService, salary: str, other: str, expected: str
 ) -> None:
-    assert line_1(take_home_service, salary, other) == D(expected)
-
-
-def test_a_sub_cent_sum_is_carried_unrounded(take_home_service: TakeHomeService) -> None:
-    # 5000-S6 prints no rounding rule for line 1, so the sum is carried exactly, not rounded to the
-    # cent: 70000.004 plus 0.003 is 70000.007, not 70000.01.
-    assert line_1(take_home_service, "70000.004", "0.003") == D("70000.007")
+    value = line_1(take_home_service, salary, other)
+    assert value == D(expected)
+    assert value.as_tuple().exponent == -2

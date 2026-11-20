@@ -1,7 +1,6 @@
 """The 2026 `ca/exact_rounding` dataset: the rule of a federal form line the engine only carries
-through, or sums its lines, with no rounding rule printed for it:
-T1 line 10100 (employment income) and line 10400 (other
-employment income), so nothing is rounded (`rounding: none`).
+through, for an unprinted working step (not a line the form prints), so nothing is rounded
+ (`rounding: none`).
 The 2026 file is carried forward unchanged from 2025 (provisional)."""
 
 from __future__ import annotations

@@ -56,7 +56,7 @@ def line_10100(take_home_service: TakeHomeService, salary: str, other: str | Non
 
 @pytest.mark.parametrize(
     ("salary", "expected"),
-    [("70000", "70000.00"), ("0", "0"), ("1000.5", "1000.50"), ("70000.005", "70000.005")],
+    [("70000", "70000.00"), ("0", "0"), ("1000.5", "1000.50"), ("70000.005", "70000.01")],
 )
 def test_line_10100_is_the_salary(
     take_home_service: TakeHomeService, salary: str, expected: str
