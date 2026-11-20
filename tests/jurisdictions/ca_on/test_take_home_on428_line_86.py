@@ -37,6 +37,7 @@ LINE_86 = "ca-on/on428_tax_after_lift_credit_line_86"
 PARTS = (
     "salary.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
+    *(part.name for part in sorted(TAKE_HOME.rglob("t1_employment_income*.yaml"))),
     *(part.name for part in sorted(TAKE_HOME.rglob("t1_taxable_income*.yaml"))),
     *(part.name for part in sorted(TAKE_HOME.rglob("on428_a*.yaml"))),
     "on428_line_85.yaml",

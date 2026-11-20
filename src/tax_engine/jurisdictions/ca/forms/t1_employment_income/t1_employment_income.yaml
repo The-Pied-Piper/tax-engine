@@ -1,0 +1,18 @@
+# T1 General 2025 (form 5006-R), the employment income lines 10100 and 10400. The T1 taxable income form
+# reads them and Schedule 8 line 1 reads line 10100 (the salary stands in for box 26 there), and Schedule 8
+# feeds line 22215 of the taxable income form, so the two lines are a form of their own: a form that read
+# them from the taxable income form while that form read Schedule 8 would make the two need each other.
+# This part names the form and its exports; each line's capability goes in a part of its own with the
+# same `form.name`.
+# Exports: a line is an input only for the form it belongs to, and every other form imports it from here.
+#   - Lines 10100 and 10400 (`ca/employment_income_line_10100`, `ca/other_employment_income_line_10400`) are
+#     read by T1 line 15000, Schedule 8 line 1, Schedule 6 line 1, T2204 line 1, line 31260 and ON428-A
+#     lines 1 and 2.
+form:
+  name: ca/t1_employment_income
+  title: "T1 Income Tax and Benefit Return"
+  required: true
+  exports:
+    - ca/employment_income_line_10100
+    - ca/other_employment_income_line_10400
+capabilities: []

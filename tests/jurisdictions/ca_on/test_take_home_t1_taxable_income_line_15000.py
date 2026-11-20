@@ -28,8 +28,9 @@ from tests.jurisdictions.ca_on.conftest import TakeHomeService
 
 D = Decimal
 PARTS = (
-    "t1_taxable_income_line_10100.yaml",
-    "t1_taxable_income_line_10400.yaml",
+    "t1_employment_income.yaml",
+    "t1_employment_income_line_10100.yaml",
+    "t1_employment_income_line_10400.yaml",
     "t1_taxable_income_line_15000.yaml",
 )
 

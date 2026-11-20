@@ -73,6 +73,7 @@ CASES = [("20000", "816.75"), ("200000", "3356.10")]
 def _part_files() -> Iterator[Path]:
     yield ALBERTA_PARTS / "salary.yaml"
     yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
+    yield from sorted(FEDERAL_FORMS.rglob("t1_employment_income*.yaml"))
     yield LINE_PART
 
 

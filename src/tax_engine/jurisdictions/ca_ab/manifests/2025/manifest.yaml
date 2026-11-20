@@ -27,6 +27,7 @@ outputs:
   - ca-ab/marginal_tax_rate
 capabilities: []
 imports:
+  - ca/t1_employment_income
   - ca/t1_taxable_income
   - ca/t1_tax_and_credits
   # Alberta prints its own Schedule 6 (5009-S6): the shared form reads the Alberta datasets instead.

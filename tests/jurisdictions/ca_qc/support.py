@@ -93,19 +93,20 @@ T2204_HEADER = dedent("""\
     capabilities: []
     imports:
     """)
-# The T2204 reads T1 line 10100 from the Quebec T1, so the test declares that form, exporting line
-# 10100 alone under the neutral name the shared form reads, and composes the real line 10100 part.
+# The T2204 reads T1 line 10100 from the Quebec T1 employment income form, so the test declares that
+# form, exporting line 10100 alone under the neutral name the shared form reads, and composes the
+# real line 10100 part.
 T2204_FORM = dedent("""\
     form:
-      name: ca-qc/t1_taxable_income
+      name: ca-qc/t1_employment_income
       required: true
       exports:
         - ca-qc/employment_income_line_10100
       supplies:
-        ca/t1_taxable_income.employment_income_line_10100: ca-qc/employment_income_line_10100
+        ca/t1_employment_income.employment_income_line_10100: ca-qc/employment_income_line_10100
     capabilities: []
     """)
-T2204_T1_PART = "t1_taxable_income_line_10100.yaml"
+T2204_T1_PART = "t1_employment_income_line_10100.yaml"
 
 
 def real_import(form: str) -> str:
