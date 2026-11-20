@@ -99,3 +99,9 @@ def test_the_kinds_are_registered_non_negative_decimal_amounts(name: str, expect
 
     assert kind is expected
     assert non_negative(kind)
+
+
+def test_the_form_declaration_exports_line_83() -> None:
+    declaration = yaml.safe_load((QUEBEC_PARTS / "tp1_schedule_k.yaml").read_text("utf-8"))
+
+    assert LINE in declaration["form"]["exports"]
