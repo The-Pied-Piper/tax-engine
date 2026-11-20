@@ -65,3 +65,10 @@ SOLIDARITY_REDUCTION_AT_RATE = AmountKind.declare(
 )
 """Solidarity tax credit, reduction at 6% (fiche 110201, Table C.9): 6% of the family income over
 the reduction threshold, rounded half-up to the cent."""
+
+SOLIDARITY_REDUCTION_AT_ONE_COMPONENT_RATE = AmountKind.declare(
+    CATALOG, "solidarity_reduction_at_one_component_rate", non_negative=True
+)
+"""Solidarity tax credit, reduction at 3% (fiche 110201, Table C.9): 3% of the family income over
+the reduction threshold, rounded half-up to the cent, for a person who receives only one of the
+three components."""
