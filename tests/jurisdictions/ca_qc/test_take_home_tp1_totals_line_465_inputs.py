@@ -1,4 +1,4 @@
-"""TP-1 (2025) lines 451.2, 451.3, 452 to 455, 457 to 460, 462 and 463: the lines that line 465 adds
+"""TP-1 (2025) lines 451.2, 451.3, 452 to 455, 458 to 460, 462 and 463: the lines that line 465 adds
 besides line 456. The take-home gives none of them, so each is an optional input; a blank is read as
 0 by line 465. The real part is loaded under a test-local header and form declaration over the
 Quebec package list of `support.py`."""
@@ -24,7 +24,6 @@ LINES = (
     "453",
     "454",
     "455",
-    "457",
     "458",
     "459",
     "460",
@@ -54,7 +53,7 @@ def _manifest(take_home_service: TakeHomeService, tmp_path: Path) -> Manifest:
     )
 
 
-def test_the_part_declares_exactly_the_12_lines(
+def test_the_part_declares_exactly_the_11_lines(
     take_home_service: TakeHomeService, tmp_path: Path
 ) -> None:
     inputs = _manifest(take_home_service, tmp_path).inputs

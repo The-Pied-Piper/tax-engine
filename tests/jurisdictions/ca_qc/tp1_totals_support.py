@@ -134,7 +134,13 @@ LINE_450_PARTS = (
     "tp1_totals_line_450.yaml",
 )
 LINE_456_PARTS = ("tp1_totals_line_456.yaml",)
-LINE_465_PARTS = (*LINE_456_PARTS, "tp1_totals_line_465_inputs.yaml", "tp1_totals_line_465.yaml")
+LINE_457_PARTS = ("tp1_totals_line_457_inputs.yaml", "tp1_totals_line_457.yaml")
+LINE_465_PARTS = (
+    *LINE_456_PARTS,
+    *LINE_457_PARTS,
+    "tp1_totals_line_465_inputs.yaml",
+    "tp1_totals_line_465.yaml",
+)
 LINE_468_PARTS = (*LINE_465_PARTS, "tp1_totals_line_466_input.yaml", "tp1_totals_line_468.yaml")
 LINE_470_PARTS = (*LINE_450_PARTS, *LINE_468_PARTS, "tp1_totals_line_470.yaml")
 ZERO_PARTS = ("tp1_totals_zero_line_474_475.yaml",)

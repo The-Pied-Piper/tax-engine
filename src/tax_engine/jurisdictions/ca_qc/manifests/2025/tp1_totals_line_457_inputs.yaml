@@ -1,0 +1,28 @@
+# TP-1 (2025) line 457, "QPIP overpayment" (guide, line 457): "If the total of your net business
+# income, your employment income subject to the QPIP and your insurable earnings as a person
+# responsible for a family-type resource or an intermediate resource is less than $2,000, carry the
+# amount from line 97 to line 457." Net business income (Schedule L line 27) and the insurable
+# earnings of a family-type resource (Schedule L line 40) come from Schedule L, which the engine does
+# not compute, so each is an optional input the take-home does not give, read as 0 when left blank
+# (`tp1_totals_line_457.yaml`). The employment income subject to the QPIP is line 101 of the return
+# (Schedule R reads RL-1 box I, box A when blank; a salary-only caller has the same figure for both).
+# The guide (line 439) takes the family-resource earnings from line 40 of Schedule L if an RL-29 slip
+# was received, otherwise line 27 of Schedule L; the caller gives whichever applies, and a loss in
+# line 27 as 0, as Schedule R line 10 prints.
+form:
+  name: ca-qc/tp1_totals
+inputs:
+  - name: ca-qc/tp1_net_business_income_schedule_l_line_27
+    title: "Net business income"
+    reference: "Schedule L, line 27"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "your net business income"
+  - name: ca-qc/tp1_family_resource_earnings_schedule_l_line_40
+    title: "Insurable earnings of a person responsible for a family-type resource or an intermediate resource"
+    reference: "Schedule L, line 40"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "your insurable earnings as a person responsible for a family-type resource or an intermediate resource"
