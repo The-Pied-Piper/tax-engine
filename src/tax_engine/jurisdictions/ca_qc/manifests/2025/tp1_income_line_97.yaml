@@ -1,0 +1,23 @@
+# Revenu Quebec TP-1.D-V (2025-12), page 2, line 97, 'QPIP premium. RL-1 slip, box H'.
+# The line is an input of the form, copied from the RL-1 slip. A take-home caller gives only the
+# salary, so `ca-qc/tp1_qpip_premium_given_line_97` is optional.
+# A request that gives it has that figure as line 97, unchanged. A request that leaves it out
+# has line 97 computed from line 101, the salary: 0.494% up to $98,000, at most $484.12, half-up
+# to the
+# cent, from the `ca-qc/tp1_line_97_qpip_premium` dataset, as T2204 line 4 does.
+form:
+  name: ca-qc/tp1_income
+capabilities:
+  - name: ca/given_or_contribution_tier
+    title: "QPIP premium"
+    reference: "97"
+    unit: ca/cad
+    params:
+      tier: ca-qc/tp1_line_97_qpip_premium
+    consumes:
+      given: ca-qc/tp1_qpip_premium_given_line_97
+      earnings: ca/employment_income
+    blank:
+      given: compute
+    produces:
+      output: ca-qc/tp1_qpip_premium_line_97
