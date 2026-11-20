@@ -1904,3 +1904,8 @@ caller does not give; line 468 reads a blank as 0 (`tp1_totals_line_466_input.ya
 TP1_LINE_468 = AmountKind.declare(CATALOG, "tp1_line_468", non_negative=True)
 """TP-1 line 468 "Add lines 465 and 466": rounded half-up to the cent. Produced by one core/sum
 (`tp1_totals_line_468.yaml`)."""
+
+TP1_LINE_470 = AmountKind.declare(CATALOG, "tp1_line_470")
+"""TP-1 line 470 "Subtract line 468 from line 450": signed, as the form prints no floor (negative is
+a refund, positive a balance due). Rounded half-up to the cent. Produced by one core/subtract
+(`tp1_totals_line_470.yaml`)."""

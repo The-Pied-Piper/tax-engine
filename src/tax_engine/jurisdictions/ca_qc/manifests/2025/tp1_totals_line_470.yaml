@@ -1,0 +1,18 @@
+# TP-1 (2025) line 470: "Subtract line 468 from line 450. If the result is negative, enter it on
+# line 474 below. If the result is positive, enter it on line 475 below. = 470" (page 5). One
+# core/subtract, rounded half-up to the cent through ca-qc/cent_rounding. The form prints no floor,
+# so the figure is signed: negative is a refund and positive is a balance due. Lines 474 and 475 only
+# route the sign. The line prints no title of its own, so the step has none.
+form:
+  name: ca-qc/tp1_totals
+capabilities:
+  - name: core/subtract
+    reference: "470"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/tp1_income_tax_and_contributions_line_450
+      less: ca-qc/tp1_line_468
+    produces:
+      output: ca-qc/tp1_line_470
