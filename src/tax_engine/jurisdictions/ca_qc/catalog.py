@@ -1406,3 +1406,51 @@ TP1_NON_REFUNDABLE_TAX_CREDITS_LINE_399 = AmountKind.declare(
 tax credits": the sum, rounded half-up to the cent; the optional lines read as 0 when blank. Signed,
 as line 377.1 is. Produced by one core/sum (`tp1_credits_line_399.yaml`) and exported by the form
 for TP-1 line 406."""
+
+SCHEDULE_K_COLUMN_LOWER_BOUND_LINE_78 = AmountKind.declare(
+    CATALOG, "schedule_k_column_lower_bound_line_78", non_negative=True
+)
+"""Schedule K line 78, the printed lower bound of the column that line 77 (a copy of line 48) falls
+in: 0.00 under column A ($5,000 or less) and 5,000.00 under column B (more than $5,000). One
+core/bracket_column_lower_bound (`tp1_schedule_k_line_78.yaml`)."""
+
+SCHEDULE_K_INCOME_OVER_LOWER_BOUND_LINE_79 = AmountKind.declare(
+    CATALOG, "schedule_k_income_over_lower_bound_line_79", non_negative=True
+)
+"""Schedule K line 79, "Subtract line 78 from line 77": the part of line 48 over the column's lower
+bound, rounded half-up to the cent. One core/subtract_not_below_zero
+(`tp1_schedule_k_line_79.yaml`)."""
+
+SCHEDULE_K_COLUMN_RATE_LINE_80 = AmountKind.declare(
+    CATALOG, "schedule_k_column_rate_line_80", non_negative=True
+)
+"""Schedule K line 80, the row "x 80 | 7.84% | 11.76%": the printed rate of the column that line 48
+falls in. One core/bracket_column_rate (`tp1_schedule_k_line_80.yaml`)."""
+
+SCHEDULE_K_PREMIUM_ON_EXCESS_LINE_81 = AmountKind.declare(
+    CATALOG, "schedule_k_premium_on_excess_line_81", non_negative=True
+)
+"""Schedule K line 81, "Multiply line 79 by line 80": line 79 times the column's rate, rounded
+half-up to the cent. One core/multiply_by_rate (`tp1_schedule_k_line_81.yaml`)."""
+
+SCHEDULE_K_COLUMN_CONSTANT_LINE_82 = AmountKind.declare(
+    CATALOG, "schedule_k_column_constant_line_82", non_negative=True
+)
+"""Schedule K line 82, "+ 82 | 000 00 | 392 00": the printed constant of the column that line 48
+falls in (0.00 and 392.00), taken as printed. One core/bracket_column_tax_at_start
+(`tp1_schedule_k_line_82.yaml`)."""
+
+SCHEDULE_K_COLUMN_PREMIUM_LINE_83 = AmountKind.declare(
+    CATALOG, "schedule_k_column_premium_line_83", non_negative=True
+)
+"""Schedule K line 83, "Add lines 81 and 82 (maximum $766)": the two lines added, rounded half-up to
+the cent. One core/sum (`tp1_schedule_k_line_83.yaml`); line 84 applies the printed maximum, so
+this figure is above 766 for a line 48 over about $8,180."""
+
+SCHEDULE_K_PREMIUM_LINE_84 = AmountKind.declare(
+    CATALOG, "schedule_k_premium_line_84", non_negative=True
+)
+"""Premium, Schedule K line 84 "Amount from line 83 of column A or B, as applicable", with the
+printed maximum of $766 ("is more than $14,669, enter $766 on line 84"): the lesser of line 83 and
+`ca-qc/schedule_k_line_84_maximum`. One core/capped_amount (`tp1_schedule_k_line_84.yaml`). The
+form exports it; the lines after it read it."""

@@ -1,0 +1,15 @@
+# Schedule K (2025) Part C, line 82: "+ 82 | 000 00 | 392 00", the printed constant of the column
+# that line 48 falls in (line 77 is a copy of line 48 and has no step of its own), taken as printed.
+# The form prints no label for the line, so the step is untitled.
+form:
+  name: ca-qc/tp1_schedule_k
+capabilities:
+  - name: core/bracket_column_tax_at_start
+    reference: "82"
+    unit: ca/cad
+    params:
+      schedule: ca-qc/schedule_k_brackets
+    consumes:
+      base: ca-qc/schedule_k_premium_income_line_48
+    produces:
+      output: ca-qc/schedule_k_column_constant_line_82
