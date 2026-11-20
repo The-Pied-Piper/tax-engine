@@ -1,6 +1,7 @@
-"""The Quebec form `ca-qc/solidarity_credit` (the solidarity tax credit) and the five kinds it
+"""The Quebec form `ca-qc/solidarity_credit` (the solidarity tax credit) and the six kinds it
 exports: the QST base amount, the living-alone amount, the two housing amounts and the reduction
-threshold of Table C.9 of fiche 110201 (July 2026 to June 2027).
+threshold of Table C.9 of fiche 110201 (July 2026 to June 2027), and the credit after the
+reduction, the yearly amount.
 
 The part file names the form and its exports; the amounts part carries the capabilities. Quebec is
 not yet listed in the bundled package list, so the part is read as YAML and the kinds are taken
@@ -27,6 +28,7 @@ EXPORTS = [
     "ca-qc/solidarity_housing_single_amount",
     "ca-qc/solidarity_housing_multiple_amount",
     "ca-qc/solidarity_reduction_threshold",
+    "ca-qc/solidarity_credit_after_reduction",
 ]
 
 
@@ -45,7 +47,7 @@ def test_the_form_is_named_titled_and_required() -> None:
     assert form["required"] is True
 
 
-def test_the_form_exports_the_five_amounts_in_order() -> None:
+def test_the_form_exports_the_six_amounts_in_order() -> None:
     assert _part()["form"]["exports"] == EXPORTS
 
 

@@ -1,4 +1,4 @@
-"""Shared helpers of the TP-1 tax line tests (TP-1.D-V, 2025-12, page 4, lines 401 to 413).
+"""Shared helpers of the TP-1 tax line tests (TP-1.D-V, 2025-12, page 4, lines 401 to 432).
 
 Line 401 reads Work Chart 401 (line 8), which reads line 299 of the TP-1 net income form; line 406
 reads line 399 of the credits form, which reads Schedule B. The tests run the real parts of those
@@ -61,6 +61,14 @@ LINE_406_CHAIN = (
 )
 # Line 413 reads lines 401 and 406, so its chain is the two chains, each shared part once.
 LINE_413_CHAIN = tuple(dict.fromkeys((*LINE_401_CHAIN, *LINE_406_CHAIN)))
+# Lines 430 and 432 read line 413 (and the optional lines 425 and 431), so they take its chain and
+# its part.
+LINE_430_CHAIN = (
+    *LINE_413_CHAIN,
+    "tp1_tax_line_401.yaml",
+    "tp1_tax_line_406.yaml",
+    "tp1_tax_line_413.yaml",
+)
 
 
 def tax_form(*exports: str) -> str:

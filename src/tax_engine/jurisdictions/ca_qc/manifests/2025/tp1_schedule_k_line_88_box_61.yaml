@@ -1,0 +1,18 @@
+# Schedule K (2025) Part C, line 88, the row "Number of months entered in box 61 x $63.83". One
+# step: core/multiply, the months of box 61 times the printed $63.83
+# (`tp1_schedule_k_line_88_box_61_amount.yaml`), rounded half-up to the cent (`ca-qc/cent_rounding`).
+# Box 61 is a plain figure of months (owner decision, 19 Nov 2026: the boxes stay amounts and
+# core/multiply replaces core/per_unit_amount). The row has no line number and the form prints no
+# label for it, so the step has no reference and no title; line 88 adds the two rows.
+form:
+  name: ca-qc/tp1_schedule_k
+capabilities:
+  - name: core/multiply
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      multiplicand: ca-qc/schedule_k_months_july_to_december_box_61
+      multiplier: ca-qc/schedule_k_monthly_amount_box_61
+    produces:
+      output: ca-qc/schedule_k_amount_for_months_box_61

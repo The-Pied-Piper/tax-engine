@@ -1756,6 +1756,97 @@ printed maximum of $766 ("is more than $14,669, enter $766 on line 84"): the les
 `ca-qc/schedule_k_line_84_maximum`. One core/capped_amount (`tp1_schedule_k_line_84.yaml`). The
 form exports it; the lines after it read it."""
 
+SCHEDULE_K_MONTHS_IN_YEAR_LINE_85 = AmountKind.declare(
+    CATALOG, "schedule_k_months_in_year_line_85", non_negative=True
+)
+"""The printed 12 of Schedule K line 85, "Amount from line 84 x Number of months entered in box 62 /
+12", in months: the months of the year, taken as printed from the
+`ca-qc/schedule_k_months_in_year_line_85` dataset. One core/credit_amount
+(`tp1_schedule_k_line_85.yaml`); it is not a line of the form."""
+
+SCHEDULE_K_PREMIUM_FOR_MONTHS_LINE_85 = AmountKind.declare(
+    CATALOG, "schedule_k_premium_for_months_line_85", non_negative=True
+)
+"""Schedule K line 85, "Amount from line 84 x Number of months entered in box 62 / 12": line 84
+times the months checked in the year over 12, formed as one exact fraction and rounded once,
+half-up to the cent. One core/apply_ratio (`tp1_schedule_k_line_85.yaml`)."""
+
+SCHEDULE_K_PREMIUM_AFTER_MONTHS_LINE_86 = AmountKind.declare(
+    CATALOG, "schedule_k_premium_after_months_line_86", non_negative=True
+)
+"""Schedule K line 86, "Subtract line 85 from line 84": the premium left after the months covered by
+a group plan, rounded half-up to the cent. One core/subtract (`tp1_schedule_k_line_86.yaml`)."""
+
+SCHEDULE_K_MAXIMUM_PREMIUM_LINE_87 = AmountKind.declare(
+    CATALOG, "schedule_k_maximum_premium_line_87", non_negative=True
+)
+"""Schedule K line 87, "Maximum premium for 2025": the printed 755.00, taken as printed from
+`ca-qc/schedule_k_line_87_maximum` and never recomputed. One core/credit_amount
+(`tp1_schedule_k_line_87.yaml`)."""
+
+SCHEDULE_K_MONTHLY_AMOUNT_BOX_60 = AmountKind.declare(
+    CATALOG, "schedule_k_monthly_amount_box_60", non_negative=True
+)
+"""The printed 62.00 of the Schedule K line 88 row "Number of months entered in box 60 x $62.00":
+the amount for each month, taken as printed from `ca-qc/schedule_k_monthly_amount_box_60`. One
+core/credit_amount (`tp1_schedule_k_line_88_box_60.yaml`); it is not a line of the form."""
+
+SCHEDULE_K_AMOUNT_FOR_MONTHS_BOX_60 = AmountKind.declare(
+    CATALOG, "schedule_k_amount_for_months_box_60", non_negative=True
+)
+"""Schedule K line 88, the row "Number of months entered in box 60 x $62.00": the months of box
+60 times 62.00, rounded half-up to the cent. One core/multiply
+(`tp1_schedule_k_line_88_box_60.yaml`); line 88 adds the two rows."""
+
+SCHEDULE_K_MONTHLY_AMOUNT_BOX_61 = AmountKind.declare(
+    CATALOG, "schedule_k_monthly_amount_box_61", non_negative=True
+)
+"""The printed 63.83 of the Schedule K line 88 row "Number of months entered in box 61 x $63.83":
+the amount for each month, taken as printed from `ca-qc/schedule_k_monthly_amount_box_61`. One
+core/credit_amount (`tp1_schedule_k_line_88_box_61.yaml`); it is not a line of the form."""
+
+SCHEDULE_K_AMOUNT_FOR_MONTHS_BOX_61 = AmountKind.declare(
+    CATALOG, "schedule_k_amount_for_months_box_61", non_negative=True
+)
+"""Schedule K line 88, the row "Number of months entered in box 61 x $63.83": the months of box
+61 times 63.83, rounded half-up to the cent. One core/multiply
+(`tp1_schedule_k_line_88_box_61.yaml`); line 88 adds the two rows."""
+
+SCHEDULE_K_MONTHS_PREMIUM_LINE_88 = AmountKind.declare(
+    CATALOG, "schedule_k_months_premium_line_88", non_negative=True
+)
+"""Schedule K line 88, "Add the results": the two rows (box 60 months times 62.00 and box 61
+months times 63.83) added, rounded half-up to the cent. One core/sum
+(`tp1_schedule_k_line_88.yaml`)."""
+
+SCHEDULE_K_PREMIUM_REMAINING_LINE_89 = AmountKind.declare(
+    CATALOG, "schedule_k_premium_remaining_line_89", non_negative=True
+)
+"""Schedule K line 89, "Subtract line 88 from line 87": the maximum premium of 755.00 less the
+premium of the months checked, rounded half-up to the cent. One core/subtract
+(`tp1_schedule_k_line_89.yaml`)."""
+
+SCHEDULE_K_PREMIUM_LINE_90 = AmountKind.declare(
+    CATALOG, "schedule_k_premium_line_90", non_negative=True
+)
+"""Schedule K line 90, "Enter the amount from line 86 or line 89, whichever is less": the lesser
+of the two lines. One core/lesser_of (`tp1_schedule_k_line_90.yaml`)."""
+
+SCHEDULE_K_SPOUSE_PREMIUM_LINE_97 = AmountKind.declare(
+    CATALOG, "schedule_k_spouse_premium_line_97", non_negative=True
+)
+"""Spouse's premium, Schedule K line 97 ("+ 97", the sum of lines 91 through 97 for the spouse's
+premium): an input. A single filer pays no spouse's premium, so the caller leaves it out and
+line 98 reads it as 0."""
+
+SCHEDULE_K_PREMIUM_PAYABLE_LINE_98 = AmountKind.declare(
+    CATALOG, "schedule_k_premium_payable_line_98", non_negative=True
+)
+"""Premium payable under the Quebec prescription drug insurance plan, Schedule K line 98, "Add
+lines 90 and 97": line 90 and the optional line 97 (read as 0 when left out) added, rounded
+half-up to the cent. One core/sum (`tp1_schedule_k_line_98.yaml`). The form exports it for
+TP-1 line 447."""
+
 TP1_INCOME_TAX_ON_TAXABLE_INCOME_LINE_401 = AmountKind.declare(
     CATALOG, "tp1_income_tax_on_taxable_income_line_401", non_negative=True
 )
@@ -1775,3 +1866,82 @@ TP1_LINE_413 = AmountKind.declare(CATALOG, "tp1_line_413")
 non-refundable tax credits, rounded half-up to the cent. The form prints no floor, so the figure is
 signed (line 432 floors it). Produced by one core/subtract (`tp1_tax_line_413.yaml`) and exported by
 the form for lines 425 and 430."""
+
+TP1_LINE_425 = AmountKind.declare(CATALOG, "tp1_line_425", non_negative=True)
+"""TP-1 line 425 "Add lines 414 through 424": the printed sum of lines 414 to 424, one optional
+input a salary-only caller does not give; line 430 reads a blank as 0
+(`tp1_tax_line_425_input.yaml`)."""
+
+TP1_LINE_430 = AmountKind.declare(CATALOG, "tp1_line_430")
+"""TP-1 line 430 "Subtract line 425 from line 413": signed, as the form prints no floor here (line
+432 floors it). Rounded half-up to the cent. Produced by one core/subtract
+(`tp1_tax_line_430.yaml`)."""
+
+TP1_CREDITS_TRANSFERRED_BETWEEN_SPOUSES_LINE_431 = AmountKind.declare(
+    CATALOG, "tp1_credits_transferred_between_spouses_line_431", non_negative=True
+)
+"""TP-1 line 431 "Credits transferred from one spouse to the other": an optional input a single
+salary-only caller does not give; line 432 reads a blank as 0 (`tp1_tax_line_431_input.yaml`)."""
+
+TP1_LINE_432 = AmountKind.declare(CATALOG, "tp1_line_432", non_negative=True)
+"""TP-1 line 432 "Subtract line 431 from line 430": the income tax after credits, floored at 0 as
+the form prints, rounded half-up to the cent. Produced by one core/subtract_not_below_zero
+(`tp1_tax_line_432.yaml`) and exported by the form for line 450."""
+
+SOLIDARITY_LIVED_ALONE_LINE_12 = CountKind.declare(
+    CATALOG, "solidarity_lived_alone_line_12", non_negative=True
+)
+"""Solidarity tax credit answer, Schedule D line 12 "Did you live alone in a dwelling throughout
+2025? (You are considered to have lived alone if everyone you lived with was under 18.)": 1 for
+yes, 0 for no, read as 0 when the caller gives no answer."""
+
+SOLIDARITY_LIVED_ALONE_CHECKED_LINE_12 = CountKind.declare(
+    CATALOG, "solidarity_lived_alone_checked_line_12", non_negative=True
+)
+"""Solidarity tax credit answer, Schedule D line 12, checked: the answer, refused above 1 so that
+the situation cannot be checked twice."""
+
+SOLIDARITY_TENANT_OR_OWNER_LINES_32_36 = CountKind.declare(
+    CATALOG, "solidarity_tenant_or_owner_lines_32_36", non_negative=True
+)
+"""Solidarity tax credit answer, Schedule D lines 32 and 33 (tenant or subtenant on December 31,
+2025) or lines 35 and 36 (owner): 1 when the filer was a tenant, a subtenant or an owner, 0 when
+neither, read as 0 when the caller gives no answer."""
+
+SOLIDARITY_OCCUPANTS_LINES_33_36 = CountKind.declare(
+    CATALOG, "solidarity_occupants_lines_33_36", non_negative=True
+)
+"""Solidarity tax credit answer, Schedule D line 33 "Number from box B of the RL-31 slip issued in
+your name" or line 36 "Number of owners living in your dwelling": the number of owners or tenants,
+read as 1 when the caller gives no answer."""
+
+SOLIDARITY_LIVING_ALONE_AMOUNT_CLAIMED = AmountKind.declare(
+    CATALOG, "solidarity_living_alone_amount_claimed", non_negative=True
+)
+"""Solidarity tax credit, living-alone amount claimed (fiche 110201, Table C.9): the living-alone
+amount when the filer lived alone, 0 otherwise."""
+
+SOLIDARITY_MORE_THAN_ONE_OCCUPANT = CountKind.declare(
+    CATALOG, "solidarity_more_than_one_occupant", non_negative=True
+)
+"""Solidarity tax credit, more than one owner or tenant (fiche 110201, Table C.9): 1 when the number
+of owners or tenants is more than one, 0 otherwise."""
+
+SOLIDARITY_HOUSING_MULTIPLE_AMOUNT_PER_OCCUPANT = AmountKind.declare(
+    CATALOG, "solidarity_housing_multiple_amount_per_occupant", non_negative=True
+)
+"""Solidarity tax credit, housing amount for multiple owners or tenants shared among them (fiche
+110201, Table C.9): the basic housing amount for multiple owners or tenants divided by their
+number."""
+
+SOLIDARITY_HOUSING_BASIC_AMOUNT = AmountKind.declare(
+    CATALOG, "solidarity_housing_basic_amount", non_negative=True
+)
+"""Solidarity tax credit, basic housing amount (fiche 110201, Table C.9): the single amount for one
+owner or tenant, the shared multiple amount for more than one."""
+
+SOLIDARITY_HOUSING_AMOUNT = AmountKind.declare(
+    CATALOG, "solidarity_housing_amount", non_negative=True
+)
+"""Solidarity tax credit, housing component amount (fiche 110201, Table C.9): the basic housing
+amount when the filer is a tenant, a subtenant or an owner, 0 otherwise."""
