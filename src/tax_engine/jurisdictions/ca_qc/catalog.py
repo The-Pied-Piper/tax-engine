@@ -359,3 +359,9 @@ TP1_SCHEDULE_F_INCOME_OVER_LOWER_BOUND_LINE_78 = AmountKind.declare(
 )
 """Schedule F line 78, "Subtract line 77 from line 76. If the result is negative, enter 0": the
 part of line 76 over the column's lower bound; blank when line 77 is blank."""
+
+TP1_SCHEDULE_F_COLUMN_RATE = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_column_rate", non_negative=True
+)
+"""Schedule F, Part B, the row "x 1%" below line 78 (the form gives it no line number): the printed
+rate of the column that line 76 falls in; blank for a line 76 of $18,130 or less."""
