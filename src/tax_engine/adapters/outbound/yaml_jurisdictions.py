@@ -40,7 +40,7 @@ from tax_engine.domain.unit import Unit, UnitRegistry
 _MANIFEST_KEYS = frozenset(
     {"jurisdiction", "version", "valid_from_tax_year", "inputs", "outputs", "capabilities"}
 )
-_OPTIONAL_MANIFEST_KEYS = frozenset({"title", "reference", "imports"})
+_OPTIONAL_MANIFEST_KEYS = frozenset({"title", "imports"})
 _PART_KEYS = _MANIFEST_KEYS | _OPTIONAL_MANIFEST_KEYS | {"form"}
 _FORM_KEYS = frozenset({"name"})
 _OPTIONAL_FORM_KEYS = frozenset(
@@ -55,7 +55,6 @@ _OPTIONAL_FORM_KEYS = frozenset(
         "basis",
         "fields",
         "title",
-        "reference",
         "supplies",
     }
 )
@@ -66,7 +65,7 @@ _CAPABILITY_KEYS = frozenset({"name", "produces"})
 _OPTIONAL_CAPABILITY_KEYS = frozenset(
     {"params", "consumes", "blank", "optional", "title", "reference", "unit"}
 )
-_SCALAR_KEYS = ("jurisdiction", "version", "valid_from_tax_year", "title", "reference")
+_SCALAR_KEYS = ("jurisdiction", "version", "valid_from_tax_year", "title")
 _IDENTIFIER_LISTS = ("inputs", "outputs", "imports")
 _PATTERNS = ("*.yaml", "*.yml")
 
@@ -97,7 +96,6 @@ class _Declaration(NamedTuple):
     required_when: str | None
     basis: str | None
     title: str | None
-    reference: str | None
     fields: tuple[InputDeclaration, ...]
     supplies: Mapping[str, str]
 
@@ -115,7 +113,6 @@ class _Declaration(NamedTuple):
             required_when=self.required_when,
             basis=self.basis,
             title=self.title,
-            reference=self.reference,
             fields=self.fields,
             supplies=self.supplies,
         )
@@ -274,15 +271,14 @@ class YamlJurisdictionSource:
 
         Takes `form` and `capabilities` out of `contents` and gives the form's name; a second part
         declaring the exports of a form is rejected, naming the part that did, and so is a manifest
-        `title` or `reference` beside `form:`.
+        `title` beside `form:`.
         """
         name, declared = self._form_header(contents.pop("form"))
-        for key in ("title", "reference"):
-            if key in contents:
-                raise InvalidManifestError(
-                    f"{part}: form {name!r}: the manifest `{key}` belongs to the default form; "
-                    f"the form's own {key} goes in its `form:` block"
-                )
+        if "title" in contents:
+            raise InvalidManifestError(
+                f"{part}: form {name!r}: the manifest `title` belongs to the default form; "
+                "the form's own title goes in its `form:` block"
+            )
         if contents.keys() & {"outputs", "imports"}:
             raise InvalidManifestError(
                 f"{part}: form {name!r}: exports are declared in the form: block, so the part "
@@ -450,7 +446,6 @@ class YamlJurisdictionSource:
         basis = node.optional_field("basis")
         fields = node.optional_field("fields")
         title = node.optional_field("title")
-        reference = node.optional_field("reference")
         supplies = node.optional_field("supplies")
         if exports is None:
             if instances is not None:
@@ -466,7 +461,6 @@ class YamlJurisdictionSource:
                 ("basis", basis),
                 ("fields", fields),
                 ("title", title),
-                ("reference", reference),
                 ("supplies", supplies),
             ):
                 if limit is not None:
@@ -490,7 +484,6 @@ class YamlJurisdictionSource:
             else required_when.require_non_empty_string(),
             basis=None if basis is None else basis.require_non_empty_string(),
             title=None if title is None else self._title(title),
-            reference=None if reference is None else self._title(reference),
             fields=()
             if fields is None
             else self._declarations(
@@ -523,9 +516,8 @@ class YamlJurisdictionSource:
             for key in ("version", "valid_from_tax_year"):
                 if key in contents:
                     contents[key].require_integer()
-            for key in ("title", "reference"):
-                if key in contents:
-                    self._title(contents[key])
+            if "title" in contents:
+                self._title(contents["title"])
             if "inputs" in contents:
                 self._declarations(contents["inputs"], self._input_kind)
             if "outputs" in contents:
@@ -622,7 +614,6 @@ class YamlJurisdictionSource:
         Form.check_exports("outputs", sorted(outputs))
         default = code.namespace.identifier(_DEFAULT_FORM)
         title = doc.optional_field("title")
-        reference = doc.optional_field("reference")
         imports = doc.optional_field("imports")
         found = _LoadedImports((), ()) if imports is None else imported(self._import_list(imports))
         forms_imported = found.forms
@@ -638,7 +629,6 @@ class YamlJurisdictionSource:
                 ),
                 required=True,
                 title=None if title is None else self._title(title),
-                reference=None if reference is None else self._title(reference),
             ),
             *forms_imported,
             *forms_beside(default),

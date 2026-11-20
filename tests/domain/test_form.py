@@ -267,39 +267,6 @@ def test_a_worksheet_carries_the_titles_its_form_and_selections_were_given() -> 
     assert sheet.title(AMOUNT.label) is None
 
 
-def _form_with(title: str | None, reference: str | None) -> FormComposition:
-    return composition(
-        "ex/titled",
-        [Sum(EXACT_TOTAL, (AMOUNT,), STEP_TOTAL)],
-        exports=[STEP_TOTAL],
-        starting=frozenset({AMOUNT}),
-        title=title,
-        reference=reference,
-    )
-
-
-@pytest.mark.parametrize(
-    ("title", "reference", "expected"),
-    [
-        pytest.param("Titled form", None, "Titled form", id="defaults-to-the-title"),
-        pytest.param("Titled form", "Ref", "Ref", id="the-reference-when-given"),
-        pytest.param(None, "Ref", "Ref", id="a-reference-without-a-title"),
-        pytest.param(None, None, None, id="neither"),
-    ],
-)
-def test_a_worksheet_carries_the_reference_of_its_form_defaulting_to_the_title(
-    title: str | None, reference: str | None, expected: str | None
-) -> None:
-    form = _form_with(title, reference)
-
-    sheets = FormSet([form], inputs=frozenset({AMOUNT})).compute(Artifact(AMOUNT, D(1)))
-    (sheet,) = sheets["ex/titled"]
-
-    assert form.reference == expected
-    assert sheet.form_reference == expected
-    assert sheet.form_title == title
-
-
 def test_a_worksheet_carries_the_title_and_reference_of_the_inputs_it_reads() -> None:
     titled = composition(
         "ex/titled",

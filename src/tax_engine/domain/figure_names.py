@@ -33,11 +33,6 @@ class FigureNames(Protocol):
         """The printed title of the form, if its manifest gives one."""
         ...
 
-    @property
-    def form_reference(self) -> str | None:
-        """What the form is known by: its manifest's reference, else its title."""
-        ...
-
     def title(self, label: str) -> str | None:
         """The printed title of the figure `label`, if the form prints one."""
         ...

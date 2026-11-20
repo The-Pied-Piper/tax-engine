@@ -30,7 +30,6 @@ class Worksheet:
         self,
         *artifacts: Artifact[Any],
         form_title: str | None = None,
-        form_reference: str | None = None,
         figure_titles: Mapping[str, str] | None = None,
         figure_references: Mapping[str, str] | None = None,
         figure_units: Mapping[str, Unit] | None = None,
@@ -43,7 +42,6 @@ class Worksheet:
         self._check_artifacts(artifacts)
         defaulted_kinds = frozenset(defaulted)
         self._form_title = form_title
-        self._form_reference = form_reference
         self._figure_titles = dict(figure_titles or {})
         self._figure_references = dict(figure_references or {})
         self._figure_units = dict(figure_units or {})
@@ -73,12 +71,6 @@ class Worksheet:
     def form_title(self) -> str | None:
         """The readable title of the form this is a copy of; `None` if its manifest gives none."""
         return self._form_title
-
-    @property
-    def form_reference(self) -> str | None:
-        """What the form this is a copy of is known by: its manifest's reference, else its title;
-        `None` if it has neither."""
-        return self._form_reference
 
     def title(self, label: str) -> str | None:
         """The readable title of the figure `label`; `None` if the manifest gives none."""

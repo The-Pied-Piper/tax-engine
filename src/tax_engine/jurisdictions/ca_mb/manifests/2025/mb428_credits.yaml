@@ -6,7 +6,6 @@
 form:
   name: ca-mb/mb428_credits
   title: "Form MB428: Manitoba Tax"
-  reference: "Form MB428: Manitoba Tax"
   required: true
   exports:
     - ca-mb/mb428_bracket_rate_line_5

@@ -66,7 +66,7 @@ def test_the_form_supplies_nothing_and_the_part_declares_no_capabilities() -> No
 def test_the_part_keys_mirror_the_ontario_on428_part() -> None:
     part = _part()
 
-    assert list(part["form"]) == ["name", "title", "reference", "required", "exports"]
+    assert list(part["form"]) == ["name", "title", "required", "exports"]
     assert list(part) == ["form", "capabilities"]
 
 
