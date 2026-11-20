@@ -23,19 +23,20 @@ import yaml
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca_qc.catalog import (
+    RL1_SLIP_BOX_211,
     SCHEDULE_K_INCOME_LINE_40,
+    SCHEDULE_K_SPOUSE_NET_INCOME_LINE_37,
     SCHEDULE_P_LINE_10,
     SCHEDULE_P_LINE_18,
     SCHEDULE_P_RESEARCH_GRANTS_LINE_13,
     SCHEDULE_P_SPOUSE_NET_INCOME_LINE_53,
     SCHEDULE_P_TP1_LINE_107,
     SCHEDULE_P_WEPP_PAYMENTS_LINE_15,
+    TP1_LINE_105,
+    TP1_LINE_107,
     TP1_SPOUSE_NET_INCOME_LINE_275,
     WORK_CHART_201_ELIGIBLE_WORK_INCOME_LINE_1,
-    WORK_CHART_201_LINE_105,
-    WORK_CHART_201_LINE_107,
     WORK_CHART_201_RESEARCH_GRANTS_LINE_3,
-    WORK_CHART_201_RL1_BOX_211,
     WORK_CHART_201_TOTAL_LINE_6,
     WORK_CHART_201_WEPP_PAYMENTS_LINE_4,
 )
@@ -116,9 +117,9 @@ def test_lines_105_and_107_and_box_211_given_once_reach_work_chart_201_and_sched
     (sheets,) = _forms(
         take_home_service,
         (
-            (WORK_CHART_201_LINE_105, "1000.25"),
-            (WORK_CHART_201_LINE_107, "2000.50"),
-            (WORK_CHART_201_RL1_BOX_211, "300.10"),
+            (TP1_LINE_105, "1000.25"),
+            (TP1_LINE_107, "2000.50"),
+            (RL1_SLIP_BOX_211, "300.10"),
         ),
     )
 
@@ -163,3 +164,36 @@ def test_the_spouse_net_income_given_once_reaches_schedule_k_and_schedule_p(
     assert line_40 - blank["ca-qc/tp1_schedule_k"].get(SCHEDULE_K_INCOME_LINE_40).value == D(
         "1000.50"
     )
+
+
+def test_the_printed_lines_that_read_another_forms_export_are_rounded_to_the_cent(
+    take_home_service: TakeHomeService,
+) -> None:
+    (sheets,) = _forms(
+        take_home_service,
+        (
+            (TP1_LINE_107, "2000.505"),
+            (WORK_CHART_201_RESEARCH_GRANTS_LINE_3, "400.404"),
+            (WORK_CHART_201_WEPP_PAYMENTS_LINE_4, "500.505"),
+            (TP1_SPOUSE_NET_INCOME_LINE_275, "600.505"),
+        ),
+    )
+
+    schedule_p = sheets["ca-qc/schedule_p"]
+    assert schedule_p.get(SCHEDULE_P_TP1_LINE_107).value == D("2000.51")
+    assert schedule_p.get(SCHEDULE_P_RESEARCH_GRANTS_LINE_13).value == D("400.40")
+    assert schedule_p.get(SCHEDULE_P_WEPP_PAYMENTS_LINE_15).value == D("500.51")
+    assert schedule_p.get(SCHEDULE_P_SPOUSE_NET_INCOME_LINE_53).value == D("600.51")
+    assert sheets["ca-qc/tp1_schedule_k"].get(SCHEDULE_K_SPOUSE_NET_INCOME_LINE_37).value == D(
+        "600.51"
+    )
+    # Line 18 adds the printed (rounded) lines: 70,000 + 2,000.51 + 400.40 + 500.51.
+    assert schedule_p.get(SCHEDULE_P_LINE_18).value == D("72901.42")
+
+
+def test_every_part_of_the_split_tp1_shares_the_printed_title() -> None:
+    forms = ("tp1_income", "tp1_net_income", "tp1_credits", "tp1_tax", "tp1_totals")
+
+    for form in forms:
+        part = yaml.safe_load((QUEBEC_PARTS / f"{form}.yaml").read_text(encoding="utf-8"))
+        assert part["form"]["title"] == "Income Tax Return"

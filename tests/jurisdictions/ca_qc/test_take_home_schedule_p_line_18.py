@@ -12,7 +12,7 @@ import pytest
 from tax_engine.jurisdictions.ca_qc.catalog import (
     SCHEDULE_P_LINE_18,
     SCHEDULE_P_SCHEDULE_L_INCOME_LINE_14,
-    WORK_CHART_201_LINE_107,
+    TP1_LINE_107,
     WORK_CHART_201_RESEARCH_GRANTS_LINE_3,
     WORK_CHART_201_WEPP_PAYMENTS_LINE_4,
 )
@@ -26,6 +26,9 @@ from tests.jurisdictions.ca_qc.support import (
 PARTS = (
     *SCHEDULE_P_FIRST_PARTS,
     "schedule_p_line_14_inputs.yaml",
+    "schedule_p_line_12.yaml",
+    "schedule_p_line_13.yaml",
+    "schedule_p_line_15.yaml",
     "schedule_p_line_18.yaml",
 )
 FORM = schedule_p_form("ca-qc/schedule_p_line_18")
@@ -48,7 +51,7 @@ def test_lines_12_to_15_are_added_to_line_10(take_home_service: TakeHomeService)
         FORM,
         PARTS,
         "70000",
-        (WORK_CHART_201_LINE_107, "100.10"),
+        (TP1_LINE_107, "100.10"),
         (WORK_CHART_201_RESEARCH_GRANTS_LINE_3, "200.20"),
         (SCHEDULE_P_SCHEDULE_L_INCOME_LINE_14, "300.30"),
         (WORK_CHART_201_WEPP_PAYMENTS_LINE_4, "400.40"),

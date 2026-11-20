@@ -7,12 +7,21 @@ form:
 capabilities:
   - name: core/record_total
     title: "Amount from line 275 of your spouse's return"
-    reference: "53"
     unit: ca/cad
     consumes:
       records: ca-qc/tp1_net_income.tp1_spouse_net_income_line_275
     blank:
       records:
         ca-qc/tp1_spouse_net_income_line_275: "0"
+    produces:
+      output: ca-qc/schedule_p_spouse_net_income_line_53_total
+  - name: core/sum
+    title: "Amount from line 275 of your spouse's return"
+    reference: "53"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts: [ca-qc/schedule_p_spouse_net_income_line_53_total]
     produces:
       output: ca-qc/schedule_p_spouse_net_income_line_53

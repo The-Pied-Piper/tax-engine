@@ -156,17 +156,6 @@ TP1_PARTS = (
     "tp1_income_line_199_input.yaml",
     "tp1_income_line_199.yaml",
 )
-TP1_INCOME_WORK_INCOME_FORM = dedent("""\
-    form:
-      name: ca-qc/tp1_income
-      required: true
-      exports:
-        - ca-qc/tp1_line_105
-        - ca-qc/tp1_line_107
-        - ca-qc/rl1_slip_box_211
-    """)
-"""The TP-1 income form declaration for a test that lists only the three optional inputs that
-Work Chart 201 reads from it (lines 105 and 107 and RL-1 box 211), not the whole form."""
 WORK_CHART_201_PARTS = (
     "work_chart_201.yaml",
     "work_chart_201_line_1.yaml",
@@ -187,6 +176,9 @@ SCHEDULE_P_FIRST_PARTS = (
 SCHEDULE_P_WORK_INCOME_PARTS = (
     *SCHEDULE_P_FIRST_PARTS,
     "schedule_p_line_14_inputs.yaml",
+    "schedule_p_line_12.yaml",
+    "schedule_p_line_13.yaml",
+    "schedule_p_line_15.yaml",
     "schedule_p_line_18.yaml",
     "schedule_p_line_22_inputs.yaml",
     "schedule_p_line_29.yaml",

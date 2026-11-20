@@ -39,10 +39,12 @@ def test_line_53_reads_the_net_income_form_export_and_declares_no_input_of_its_o
     part = _part("schedule_p_line_53.yaml")
 
     assert "inputs" not in part
-    (step,) = part["capabilities"]
-    assert step["name"] == "core/record_total"
-    assert step["reference"] == "53"
-    assert step["consumes"] == {"records": "ca-qc/tp1_net_income.tp1_spouse_net_income_line_275"}
+    read, printed = part["capabilities"]
+    assert read["name"] == "core/record_total"
+    assert read["consumes"] == {"records": "ca-qc/tp1_net_income.tp1_spouse_net_income_line_275"}
+    assert printed["name"] == "core/sum"
+    assert printed["reference"] == "53"
+    assert printed["params"] == {"rounding": "ca-qc/cent_rounding"}
 
 
 def test_a_request_that_leaves_out_the_spouse_amount_gives_line_53_as_0(
@@ -61,3 +63,11 @@ def test_the_spouse_amount_given_to_the_net_income_form_is_line_53(
     )
 
     assert sheet.get(SCHEDULE_P_SPOUSE_NET_INCOME_LINE_53).value == Decimal("30000.25")
+
+
+def test_line_53_is_rounded_half_up_to_the_cent(take_home_service: TakeHomeService) -> None:
+    sheet = family_income_worksheet(
+        take_home_service, FORM, PARTS, "70000", (TP1_SPOUSE_NET_INCOME_LINE_275, "1000.505")
+    )
+
+    assert sheet.get(SCHEDULE_P_SPOUSE_NET_INCOME_LINE_53).value == Decimal("1000.51")

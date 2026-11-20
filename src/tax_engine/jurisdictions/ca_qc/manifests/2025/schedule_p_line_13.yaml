@@ -1,0 +1,27 @@
+# Schedule P (TP-1.D.P-V, 2025-12) Part A line 13: "Net amount of research grants (see line 154,
+# point 3(j), in the guide)". Work Chart 201 line 3 takes the figure and exports it, so this step reads
+# that export (a record list of one) with core/record_total (a blank read as 0), then rounds it half-up to the cent
+# through core/sum; line 18 adds it.
+form:
+  name: ca-qc/schedule_p
+capabilities:
+  - name: core/record_total
+    title: "Net amount of research grants"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/work_chart_201.work_chart_201_research_grants_line_3
+    blank:
+      records:
+        ca-qc/work_chart_201_research_grants_line_3: "0"
+    produces:
+      output: ca-qc/schedule_p_research_grants_line_13_total
+  - name: core/sum
+    title: "Net amount of research grants"
+    reference: "13"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts: [ca-qc/schedule_p_research_grants_line_13_total]
+    produces:
+      output: ca-qc/schedule_p_research_grants_line_13

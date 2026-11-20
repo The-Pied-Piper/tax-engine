@@ -1,0 +1,27 @@
+# Schedule P (TP-1.D.P-V, 2025-12) Part A line 15: "Wage Earner Protection Program (WEPP) payments
+# (line 154, point 12)". Work Chart 201 line 4 takes the figure and exports it, so this step reads that
+# export (a record list of one) with core/record_total (a blank read as 0), then rounds it half-up to the cent
+# through core/sum; line 18 adds it.
+form:
+  name: ca-qc/schedule_p
+capabilities:
+  - name: core/record_total
+    title: "Wage Earner Protection Program (WEPP) payments"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/work_chart_201.work_chart_201_wepp_payments_line_4
+    blank:
+      records:
+        ca-qc/work_chart_201_wepp_payments_line_4: "0"
+    produces:
+      output: ca-qc/schedule_p_wepp_payments_line_15_total
+  - name: core/sum
+    title: "Wage Earner Protection Program (WEPP) payments"
+    reference: "15"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts: [ca-qc/schedule_p_wepp_payments_line_15_total]
+    produces:
+      output: ca-qc/schedule_p_wepp_payments_line_15

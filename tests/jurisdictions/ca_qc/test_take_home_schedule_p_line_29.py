@@ -15,7 +15,7 @@ import pytest
 from tax_engine.jurisdictions.ca_qc.catalog import (
     SCHEDULE_P_DEDUCTIBLE_INCOME_LINE_22,
     SCHEDULE_P_WORK_INCOME_LINE_29,
-    WORK_CHART_201_LINE_105,
+    TP1_LINE_105,
 )
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 from tests.jurisdictions.ca_qc.support import (
@@ -27,6 +27,9 @@ from tests.jurisdictions.ca_qc.support import (
 PARTS = (
     *SCHEDULE_P_FIRST_PARTS,
     "schedule_p_line_14_inputs.yaml",
+    "schedule_p_line_12.yaml",
+    "schedule_p_line_13.yaml",
+    "schedule_p_line_15.yaml",
     "schedule_p_line_18.yaml",
     "schedule_p_line_22_inputs.yaml",
     "schedule_p_line_29.yaml",
@@ -53,7 +56,7 @@ def test_line_22_is_subtracted_from_line_18(take_home_service: TakeHomeService) 
         FORM,
         PARTS,
         "70000",
-        (WORK_CHART_201_LINE_105, "500"),
+        (TP1_LINE_105, "500"),
         (SCHEDULE_P_DEDUCTIBLE_INCOME_LINE_22, "250.50"),
     )
 

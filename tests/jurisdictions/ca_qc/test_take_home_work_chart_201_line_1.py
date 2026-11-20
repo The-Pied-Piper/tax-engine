@@ -20,21 +20,18 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_qc.catalog import (
+    RL1_SLIP_BOX_211,
+    TP1_LINE_105,
+    TP1_LINE_107,
     WORK_CHART_201_ELIGIBLE_WORK_INCOME_LINE_1,
-    WORK_CHART_201_LINE_105,
-    WORK_CHART_201_LINE_107,
-    WORK_CHART_201_RL1_BOX_211,
 )
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
-from tests.jurisdictions.ca_qc.support import TP1_INCOME_WORK_INCOME_FORM
+from tests.jurisdictions.ca_qc.support import TP1_PARTS
 
 D = Decimal
 
 PARTS = (
-    "salary.yaml",
-    "tp1_income_line_105_input.yaml",
-    "tp1_income_line_107_input.yaml",
-    "tp1_income_line_box_211_input.yaml",
+    *TP1_PARTS,
     "work_chart_201_line_1.yaml",
 )
 
@@ -58,15 +55,15 @@ def chart(take_home_service: TakeHomeService, salary: str, **given: str) -> Work
     """The Work Chart 201 worksheet for a salary; `line_105`, `line_107` and `box_211` are left
     out unless passed."""
     kinds = {
-        "line_105": WORK_CHART_201_LINE_105,
-        "line_107": WORK_CHART_201_LINE_107,
-        "box_211": WORK_CHART_201_RL1_BOX_211,
+        "line_105": TP1_LINE_105,
+        "line_107": TP1_LINE_107,
+        "box_211": RL1_SLIP_BOX_211,
     }
     starting = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     starting += [Artifact(kinds[name], D(value)) for name, value in given.items()]
-    (sheet,) = take_home_service(
-        HEADER, FORM, *PARTS, extra_forms=(TP1_INCOME_WORK_INCOME_FORM,)
-    ).compute(JurisdictionCode("CA-QC"), 2025, *starting)["ca-qc/work_chart_201"]
+    (sheet,) = take_home_service(HEADER, FORM, *PARTS).compute(
+        JurisdictionCode("CA-QC"), 2025, *starting
+    )["ca-qc/work_chart_201"]
     return sheet
 
 
