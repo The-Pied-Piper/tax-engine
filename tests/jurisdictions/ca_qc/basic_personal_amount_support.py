@@ -94,7 +94,8 @@ CREDIT_PARTS = (
     "t1_tax_and_credits_line_100.yaml",
     *LINES_101_TO_122_PARTS,
 )
-# Part A of Step 5 as printed: lines 71 to 77, then Part C (lines 123 to 138, in form line order).
+# Part A of Step 5 as printed: lines 71 to 77, then Part C and Step 6 (lines 123 to
+# 150, in form line order).
 PART_A_PARTS: tuple[str, ...] = (
     "t1_tax_and_credits_line_71.yaml",
     "t1_tax_and_credits_line_72.yaml",
@@ -119,6 +120,15 @@ PART_C_PARTS: tuple[str, ...] = (
     "t1_tax_and_credits_line_136.yaml",
     "t1_tax_and_credits_line_137_inputs.yaml",
     "t1_tax_and_credits_line_40600.yaml",
+    "t1_tax_and_credits_line_41600_inputs.yaml",
+    "t1_tax_and_credits_line_41700.yaml",
+    "t1_tax_and_credits_line_41500_inputs.yaml",
+    "t1_tax_and_credits_line_41800_inputs.yaml",
+    "t1_tax_and_credits_line_42000.yaml",
+    "t1_tax_and_credits_line_42120_inputs.yaml",
+    "t1_tax_and_credits_line_42200.yaml",
+    "t1_tax_and_credits_line_42800_inputs.yaml",
+    "t1_tax_and_credits_line_43500.yaml",
 )
 STEP_4_PARTS = (
     "t1_taxable_income_line_25700_inputs.yaml",

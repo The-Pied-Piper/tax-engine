@@ -1,0 +1,14 @@
+# 5005-R (2025) line 142 input a salary-only caller does not give. Line 142 sums lines 139 to 141 (the
+# political contribution, investment tax and labour-sponsored funds credits), a block skipped for a
+# salary-only filer, so the sum is one optional input (owner, 19 Nov 2026).
+# Line 142 and line 41600: "Add lines 139 to 141. =" (page 7). A salary-only filer has no such amount, so it is an
+# optional input left blank; the sum or difference that reads it takes a blank as 0.
+form:
+  name: ca-qc/t1_tax_and_credits
+inputs:
+  - name: ca-qc/federal_credits_line_142
+    reference: "41600"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Add lines 139 to 141. ="

@@ -626,6 +626,13 @@ SCHEDULE_P_SUPPLEMENT_LINE_60 = AmountKind.declare(
 amount for each month times the months, rounded half-up to the cent. Carried to line 88 on
 page 2."""
 
+SCHEDULE_P_TAX_CREDITS_LINE_90 = AmountKind.declare(
+    CATALOG, "schedule_p_tax_credits_line_90", non_negative=True
+)
+"""Schedule P Part F line 90, "Add lines 88 and 89" (the supplement of line 60 and the work premium
+of line 87), "Tax credits respecting the work premium", rounded half-up to the cent. Carried to
+line 456 of the TP-1."""
+
 T1_LINE_48 = AmountKind.declare(CATALOG, "t1_line_48", non_negative=True)
 """Deduction for CPP or QPP enhanced contributions on employment income, 5005-R line 48 and line
 22215 "Deduction for CPP or QPP enhanced contributions on employment income (complete Schedule 8 or
@@ -1135,6 +1142,63 @@ FEDERAL_TAX_LINE_138 = AmountKind.declare(CATALOG, "federal_tax_line_138", non_n
 Federal tax =": line 136 less the federal logging tax credit (line 137), a blank read as 0, not
 below zero; line 143 and the Quebec abatement read it from one core/subtract_not_below_zero
 (`t1_tax_and_credits_line_40600.yaml`)."""
+
+FEDERAL_CREDITS_LINE_142 = AmountKind.declare(
+    CATALOG, "federal_credits_line_142", non_negative=True
+)
+"""Federal political contribution, investment tax and labour-sponsored funds credits (the sum of
+lines 139 to 141), 5005-R line 142 and line 41600: an optional input a salary-only caller does not
+give; the line that reads it takes a blank as 0 (`t1_tax_and_credits_line_41600_inputs.yaml`)."""
+
+FEDERAL_TAX_LESS_CREDITS_LINE_143 = AmountKind.declare(
+    CATALOG, "federal_tax_less_credits_line_143", non_negative=True
+)
+"""Federal tax less credits, 5005-R line 143 and line 41700 "Line 138 minus line 142 (if negative,
+enter "0") =": line 138 less the credits of line 142, a blank read as 0, not below zero from one
+core/subtract_not_below_zero (`t1_tax_and_credits_line_41700.yaml`)."""
+
+ADVANCED_CANADA_WORKERS_BENEFIT_LINE_144 = AmountKind.declare(
+    CATALOG, "advanced_canada_workers_benefit_line_144", non_negative=True
+)
+"""Advanced Canada workers benefit (ACWB), 5005-R line 144 and line 41500: an optional input a
+salary-only caller does not give; the line that reads it takes a blank as 0
+(`t1_tax_and_credits_line_41500_inputs.yaml`)."""
+
+SPECIAL_TAXES_LINE_145 = AmountKind.declare(CATALOG, "special_taxes_line_145", non_negative=True)
+"""Special taxes, 5005-R line 145 and line 41800: an optional input a salary-only caller does not
+give; the line that reads it takes a blank as 0 (`t1_tax_and_credits_line_41800_inputs.yaml`)."""
+
+NET_FEDERAL_TAX_LINE_146 = AmountKind.declare(
+    CATALOG, "net_federal_tax_line_146", non_negative=True
+)
+"""Net federal tax, 5005-R line 146 and line 42000 "Add lines 143 to 145. Net federal tax =": line
+143 plus the advanced Canada workers benefit (line 144) and the special taxes (line 145), each
+blank read as 0, from one core/sum (`t1_tax_and_credits_line_42000.yaml`); line 147 copies it."""
+
+EI_PREMIUMS_SELF_EMPLOYED_LINE_148 = AmountKind.declare(
+    CATALOG, "ei_premiums_self_employed_line_148", non_negative=True
+)
+"""Employment insurance premiums payable on self-employment and other eligible earnings, 5005-R line
+148 and line 42120: an optional input a salary-only caller does not give; the line that reads it
+takes a blank as 0 (`t1_tax_and_credits_line_42120_inputs.yaml`)."""
+
+SOCIAL_BENEFITS_REPAYMENT_LINE_149 = AmountKind.declare(
+    CATALOG, "social_benefits_repayment_line_149", non_negative=True
+)
+"""Social benefits repayment, 5005-R line 149 and line 42200 "Social benefits repayment (amount from
+line 23500)": a copy of line 56, read from the T1 taxable-income export by one core/record_total
+(`t1_tax_and_credits_line_42200.yaml`)."""
+
+PROVINCIAL_TAX_LINE_150 = AmountKind.declare(CATALOG, "provincial_tax_line_150", non_negative=True)
+"""Provincial or territorial tax (from Form T2203, if applicable), 5005-R line 150 and line
+42800: an optional input a salary-only caller does not give; the line that reads it takes a
+blank as 0 (`t1_tax_and_credits_line_42800_inputs.yaml`)."""
+
+TOTAL_PAYABLE_LINE_151 = AmountKind.declare(CATALOG, "total_payable_line_151", non_negative=True)
+"""Total payable, 5005-R line 151 and line 43500 "Add lines 147 to 150. Total payable =": line
+147 (a copy of line 146) plus the lines 148 and 150 (blank, read as 0), the social benefits
+repayment (line 149) from one core/sum (`t1_tax_and_credits_line_43500.yaml`);
+Step 6 line 152 reads it."""
 
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
@@ -1686,3 +1750,24 @@ TP1_LINE_413 = AmountKind.declare(CATALOG, "tp1_line_413")
 non-refundable tax credits, rounded half-up to the cent. The form prints no floor, so the figure is
 signed (line 432 floors it). Produced by one core/subtract (`tp1_tax_line_413.yaml`) and exported by
 the form for lines 425 and 430."""
+
+TP1_LINE_425 = AmountKind.declare(CATALOG, "tp1_line_425", non_negative=True)
+"""TP-1 line 425 "Add lines 414 through 424": the printed sum of lines 414 to 424, one optional
+input a salary-only caller does not give; line 430 reads a blank as 0
+(`tp1_tax_line_425_input.yaml`)."""
+
+TP1_LINE_430 = AmountKind.declare(CATALOG, "tp1_line_430")
+"""TP-1 line 430 "Subtract line 425 from line 413": signed, as the form prints no floor here (line
+432 floors it). Rounded half-up to the cent. Produced by one core/subtract
+(`tp1_tax_line_430.yaml`)."""
+
+TP1_CREDITS_TRANSFERRED_BETWEEN_SPOUSES_LINE_431 = AmountKind.declare(
+    CATALOG, "tp1_credits_transferred_between_spouses_line_431", non_negative=True
+)
+"""TP-1 line 431 "Credits transferred from one spouse to the other": an optional input a single
+salary-only caller does not give; line 432 reads a blank as 0 (`tp1_tax_line_431_input.yaml`)."""
+
+TP1_LINE_432 = AmountKind.declare(CATALOG, "tp1_line_432", non_negative=True)
+"""TP-1 line 432 "Subtract line 431 from line 430": the income tax after credits, floored at 0 as
+the form prints, rounded half-up to the cent. Produced by one core/subtract_not_below_zero
+(`tp1_tax_line_432.yaml`) and exported by the form for line 450."""
