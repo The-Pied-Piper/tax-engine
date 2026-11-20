@@ -1894,3 +1894,9 @@ TP1_INCOME_TAX_PAID_AND_OTHER_CREDITS_LINE_465 = AmountKind.declare(
 )
 """TP-1 line 465 "Add lines 451.2 through 463. Income tax paid and other credits": rounded half-up
 to the cent. Produced by one core/sum (`tp1_totals_line_465.yaml`)."""
+
+TP1_FINANCIAL_COMPENSATION_LINE_466 = AmountKind.declare(
+    CATALOG, "tp1_financial_compensation_line_466", non_negative=True
+)
+"""TP-1 line 466 "Financial compensation for home-support services": an optional input a salary-only
+caller does not give; line 468 reads a blank as 0 (`tp1_totals_line_466_input.yaml`)."""
