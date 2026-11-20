@@ -50,6 +50,7 @@ from tax_engine.jurisdictions.ca.catalog.deductions import (
     CPP_PART_3_LINE_12,
     CPP_PART_3_LINE_22,
     SCHEDULE_8_CPP_BASE_CONTRIBUTIONS_ON_RETURN,
+    SCHEDULE_8_CPP_ENHANCED_CONTRIBUTIONS_ON_RETURN,
 )
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca.catalog.rc381_cpp_qpp import (
@@ -179,6 +180,16 @@ def test_line_25_matches_the_printed_form(tmp_path: Path, salary: str, expected:
     sheet = schedule_8(tmp_path, salary)
 
     assert sheet.get(SCHEDULE_8_CPP_BASE_CONTRIBUTIONS_ON_RETURN).value == D(expected)
+
+
+@pytest.mark.parametrize(
+    ("salary", "expected"), [("20000", "165.00"), ("70000", "665.00"), ("200000", "1074.00")]
+)
+def test_line_28_matches_the_printed_form(tmp_path: Path, salary: str, expected: str) -> None:
+    # Line 28: lines 12 and 22 added, for T1 line 22215.
+    sheet = schedule_8(tmp_path, salary)
+
+    assert sheet.get(SCHEDULE_8_CPP_ENHANCED_CONTRIBUTIONS_ON_RETURN).value == D(expected)
 
 
 def test_line_11_without_the_swap_is_the_federal_figure(tmp_path: Path) -> None:
