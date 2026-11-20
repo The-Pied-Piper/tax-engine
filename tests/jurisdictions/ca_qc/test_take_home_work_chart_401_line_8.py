@@ -7,12 +7,13 @@ The expected figures are hand-computed from the printed lines (not an official e
 from __future__ import annotations
 
 import pytest
+import yaml
 
 from tax_engine.jurisdictions.ca_qc.catalog import (
     TP1_TOTAL_DEDUCTIONS_LINE_298,
     WORK_CHART_401_INCOME_TAX_LINE_8,
 )
-from tests.jurisdictions.ca_qc.conftest import TakeHomeService
+from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
 from tests.jurisdictions.ca_qc.work_chart_401_support import chart_sheet
 
 LINE = WORK_CHART_401_INCOME_TAX_LINE_8
@@ -66,3 +67,11 @@ def test_line_8_at_the_edges(
     sheet = chart_sheet(take_home_service, salary, EXPORTS, PARTS, given)
 
     assert str(sheet.get(LINE).value) == expected
+
+
+def test_the_real_form_declaration_exports_line_8() -> None:
+    declaration = yaml.safe_load((QUEBEC_PARTS / "work_chart_401.yaml").read_text(encoding="utf-8"))
+
+    assert declaration["form"]["name"] == "ca-qc/work_chart_401"
+    assert declaration["form"]["required"] is True
+    assert declaration["form"]["exports"] == ["ca-qc/work_chart_401_income_tax_line_8"]
