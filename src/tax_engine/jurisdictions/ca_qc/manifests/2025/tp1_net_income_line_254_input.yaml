@@ -1,0 +1,13 @@
+# TP-1 (2025) lines 205 to 207, 214 to 231, 234 to 247 and 249 to 252, the deductions that line 254
+# adds to lines 201 and 248: an input a salary-only caller does not give (the owner's decision of
+# 19 Nov 2026: one optional input for their sum). The caller gives the sum or leaves it out, and the
+# line 254 part (tp1_net_income_line_254.yaml) reads the blank as 0, as the T1 line 25700 part does.
+form:
+  name: ca-qc/tp1_net_income
+inputs:
+  - name: ca-qc/tp1_other_deductions_lines_205_to_252
+    reference: "205 to 252"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Add lines 201 through 207, 214 through 231, and 234 through 252.'

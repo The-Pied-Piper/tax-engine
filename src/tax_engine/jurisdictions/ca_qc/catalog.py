@@ -592,3 +592,16 @@ TP1_QPP_DEDUCTION_LINE_248 = AmountKind.declare(CATALOG, "tp1_qpp_deduction_line
 """TP-1 line 248 "Deduction for QPP and CPP contributions and QPIP premiums": Schedule U line 23,
 the deduction for QPP contributions on employment income, carried to the line ("Carry the result to
 line 248 of your return"). Signed, as Schedule U line 23 is."""
+
+TP1_OTHER_DEDUCTIONS_LINES_205_TO_252 = AmountKind.declare(
+    CATALOG, "tp1_other_deductions_lines_205_to_252", non_negative=True
+)
+"""The deductions of TP-1 lines 205 through 207, 214 through 231, 234 through 247 and 249 through
+252, summed: the figure the caller gives for "Add lines 201 through 207, 214 through 231, and 234
+through 252" besides lines 201 and 248; blank when the caller has none, and line 254 reads it as
+0."""
+
+TP1_TOTAL_DEDUCTIONS_LINE_254 = AmountKind.declare(CATALOG, "tp1_total_deductions_line_254")
+"""Total deductions, TP-1 line 254 "Add lines 201 through 207, 214 through 231, and 234 through
+252": line 201, line 248 and the other deductions, rounded half-up to the cent. Signed, as lines 201
+and 248 are."""
