@@ -1,6 +1,6 @@
 """5005-R (2025) line 103 and line 31600, "Disability amount for self": an optional input a
-salary-only caller does not give, so the line has no step. A blank is read as 0 by the line that
-reads it.
+salary-only caller does not give, so the line has no step. A blank is read as 0 by the line
+that reads it.
 
 The real part is loaded under a test-local header and form declaration over the Quebec package
 list of `support.py`."""

@@ -818,6 +818,40 @@ through line 102 plus the disability amount for self (line 103) and the disabili
 transferred from a dependant (line 104), each blank read as 0, from one core/sum
 (`t1_tax_and_credits_line_105.yaml`); line 110 reads it."""
 
+STUDENT_LOAN_INTEREST_LINE_106 = AmountKind.declare(
+    CATALOG, "student_loan_interest_line_106", non_negative=True
+)
+"""Interest paid on your student loans, 5005-R line 106 and line 31900: an optional input a
+salary-only caller does not give; the line that reads it takes a blank as 0
+(`t1_tax_and_credits_line_31900_inputs.yaml`)."""
+
+FEDERAL_TUITION_AMOUNT_LINE_107 = AmountKind.declare(
+    CATALOG, "federal_tuition_amount_line_107", non_negative=True
+)
+"""Your federal tuition amount, 5005-R line 107 and line 32300: an optional input a salary-only
+caller does not give; the line that reads it takes a blank as 0
+(`t1_tax_and_credits_line_32300_inputs.yaml`)."""
+
+TUITION_AMOUNT_TRANSFERRED_LINE_108 = AmountKind.declare(
+    CATALOG, "tuition_amount_transferred_line_108", non_negative=True
+)
+"""Tuition amount transferred from a child or grandchild, 5005-R line 108 and line 32400: an
+optional input a salary-only caller does not give; the line that reads it takes a blank as 0
+(`t1_tax_and_credits_line_32400_inputs.yaml`)."""
+
+AMOUNTS_TRANSFERRED_FROM_SPOUSE_LINE_109 = AmountKind.declare(
+    CATALOG, "amounts_transferred_from_spouse_line_109", non_negative=True
+)
+"""Amounts transferred from your spouse or common-law partner, 5005-R line 109 and line 32600: an
+optional input a salary-only caller does not give; the line that reads it takes a blank as 0
+(`t1_tax_and_credits_line_32600_inputs.yaml`)."""
+
+CREDITS_LINE_110 = AmountKind.declare(CATALOG, "credits_line_110", non_negative=True)
+"""Credits of lines 105 to 109, 5005-R line 110 "Line 110: Add lines 105 to 109. =": the credits
+through line 105 plus the student loan interest, the federal tuition amount, the tuition amount
+transferred and the amounts transferred from a spouse (lines 106 to 109), each blank read as 0,
+from one core/sum (`t1_tax_and_credits_line_110.yaml`); line 117 reads it."""
+
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
 Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line
