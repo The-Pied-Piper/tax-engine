@@ -9,6 +9,7 @@
 form:
   name: ca-ab/ab428_credits
   title: "Form AB428: Alberta Tax and Credits"
+  reference: "Form AB428: Alberta Tax and Credits"
   required: true
   exports:
     - ca-ab/ab428_bracket_rate_line_5

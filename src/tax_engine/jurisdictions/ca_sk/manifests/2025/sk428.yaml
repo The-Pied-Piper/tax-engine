@@ -7,6 +7,7 @@
 form:
   name: ca-sk/sk428
   title: "Form SK428: Saskatchewan Tax"
+  reference: "Form SK428: Saskatchewan Tax"
   required: true
   exports:
     - ca-sk/sk428_tax_after_credits_line_67
