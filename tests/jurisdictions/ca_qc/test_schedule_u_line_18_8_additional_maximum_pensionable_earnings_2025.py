@@ -1,5 +1,5 @@
-"""The 2025 `ca-qc/schedule_u_line_18_8_additional_maximum_pensionable_earnings` dataset (Schedule U,
-Part B). Revenu Quebec TP-1.D-V (2025-12), Schedule U, Part B, line 18.8: the printed figure is
+"""The 2025 `ca-qc/schedule_u_line_18_8_additional_maximum_pensionable_earnings` dataset (Schedule
+U, Part B). Revenu Quebec TP-1.D-V (2025-12), Schedule U, Part B, line 18.8: the printed figure is
 $81,200. It is a printed figure, so the dataset holds it as printed, the `credit` kind. The line is
 a dollars-and-cents line, so the figure rounds half-up to the cent, the project's choice, as the
 form states no rounding rule.

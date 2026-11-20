@@ -1,0 +1,20 @@
+# Schedule U (Revenu Quebec TP-1.D.U-V, 2025-12), Part B, line 23: "Add lines 22 and 22.1. Carry the result to line 248 of
+# your return. Deduction for QPP contributions on employment income." Line 22.1 is "Amount from line
+# 16", a copy of `ca-qc/schedule_u_line_16` with no step of its own. The step is `core/sum`, rounded to
+# the cent by `ca-qc/cent_rounding`. The printed "Deduction for QPP contributions on employment
+# income" is its title. Line 22.1 can be negative (line 14 prints no floor), so the figure can be.
+form:
+  name: ca-qc/tp1_schedule_u
+capabilities:
+  - name: core/sum
+    title: "Deduction for QPP contributions on employment income"
+    reference: "23"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/schedule_u_line_22
+        - ca-qc/schedule_u_line_16
+    produces:
+      output: ca-qc/schedule_u_line_23

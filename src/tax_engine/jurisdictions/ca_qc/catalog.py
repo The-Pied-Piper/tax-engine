@@ -250,8 +250,9 @@ pensionable salary (TP-1 line 98.1) less the maximum pensionable earnings, not b
 SCHEDULE_U_ADDITIONAL_MAXIMUM_PENSIONABLE_EARNINGS_LINE_18_8 = AmountKind.declare(
     CATALOG, "schedule_u_additional_maximum_pensionable_earnings_line_18_8", non_negative=True
 )
-"""Schedule U line 18.8 "Additional maximum pensionable earnings": the printed $81,200 of the instructions
-for Part B ("enter $81,200", when none of the situations of Table 1 applied), claimed whole."""
+"""Schedule U line 18.8 "Additional maximum pensionable earnings": the printed $81,200 of the
+instructions for Part B ("enter $81,200", when none of the situations of Table 1 applied), claimed
+whole."""
 
 SCHEDULE_U_LINE_19 = AmountKind.declare(CATALOG, "schedule_u_line_19", non_negative=True)
 """Schedule U line 19 "Subtract line 18.9 from line 18.8. If the result is negative, enter 0": the
@@ -261,10 +262,16 @@ SCHEDULE_U_LINE_20 = AmountKind.declare(CATALOG, "schedule_u_line_20", non_negat
 """Schedule U line 20 "Amount from line 18.7 or line 19, whichever is less"."""
 
 SCHEDULE_U_LINE_21 = AmountKind.declare(CATALOG, "schedule_u_line_21", non_negative=True)
-"""Schedule U line 21 "Multiply line 20 by 4%": line 20 at the printed rate, rounded half-up to the cent."""
+"""Schedule U line 21 "Multiply line 20 by 4%": line 20 at the printed rate, rounded half-up to the
+cent."""
 
 SCHEDULE_U_LINE_22 = AmountKind.declare(CATALOG, "schedule_u_line_22", non_negative=True)
 """Schedule U line 22 "Amount from line 17.5 or line 21, whichever is less"."""
+
+SCHEDULE_U_LINE_23 = AmountKind.declare(CATALOG, "schedule_u_line_23")
+"""Schedule U line 23 "Add lines 22 and 22.1", "Deduction for QPP contributions on employment
+income": the figure TP-1 line 248 takes, rounded half-up to the cent. Line 22.1 (a copy of line 16)
+can be negative."""
 
 T1_LINE_21 = AmountKind.declare(CATALOG, "t1_line_21")
 """Add lines 1 to 20, 5005-R line 21 "Line 21: Add lines 1 to 20.": the employment income of line 1
