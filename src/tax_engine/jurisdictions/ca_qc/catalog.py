@@ -1496,3 +1496,17 @@ SCHEDULE_K_AMOUNT_FOR_MONTHS_BOX_60 = AmountKind.declare(
 """Schedule K line 88, the row "Number of months entered in box 60 x $62.00": the months of box
 60 times 62.00, rounded half-up to the cent. One core/multiply
 (`tp1_schedule_k_line_88_box_60.yaml`); line 88 adds the two rows."""
+
+SCHEDULE_K_MONTHLY_AMOUNT_BOX_61 = AmountKind.declare(
+    CATALOG, "schedule_k_monthly_amount_box_61", non_negative=True
+)
+"""The printed 63.83 of the Schedule K line 88 row "Number of months entered in box 61 x $63.83":
+the amount for each month, taken as printed from `ca-qc/schedule_k_monthly_amount_box_61`. One
+core/credit_amount (`tp1_schedule_k_line_88_box_61.yaml`); it is not a line of the form."""
+
+SCHEDULE_K_AMOUNT_FOR_MONTHS_BOX_61 = AmountKind.declare(
+    CATALOG, "schedule_k_amount_for_months_box_61", non_negative=True
+)
+"""Schedule K line 88, the row "Number of months entered in box 61 x $63.83": the months of box
+61 times 63.83, rounded half-up to the cent. One core/multiply
+(`tp1_schedule_k_line_88_box_61.yaml`); line 88 adds the two rows."""
