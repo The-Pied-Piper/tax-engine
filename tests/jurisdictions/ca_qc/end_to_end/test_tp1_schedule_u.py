@@ -42,6 +42,7 @@ from tests.jurisdictions.ca_qc.tp1_net_income_support import TP1_INCOME_PARTS
 D = Decimal
 PARTS = (
     *TP1_INCOME_PARTS,
+    "tp1_schedule_u_line_10_base.yaml",
     "tp1_schedule_u_line_10.yaml",
     "tp1_schedule_u_line_11.yaml",
     "tp1_schedule_u_line_12_base.yaml",

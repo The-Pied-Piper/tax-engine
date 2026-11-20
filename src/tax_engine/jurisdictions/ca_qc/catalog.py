@@ -194,9 +194,15 @@ SCHEDULE_U_LINE_11 = AmountKind.declare(CATALOG, "schedule_u_line_11", non_negat
 """Schedule U line 11 "Multiply line 10 by 0.156250": line 10 (the TP-1 line 98 QPP contribution) at
 the printed rate, rounded half-up to the cent."""
 
+SCHEDULE_U_LINE_98_FOR_LINE_10 = AmountKind.declare(
+    CATALOG, "schedule_u_line_98_for_line_10", non_negative=True
+)
+"""The TP-1 line 98 figure that Schedule U line 10 caps at its printed maximum, read from the TP-1
+income form. The form prints no line of its own for it."""
+
 SCHEDULE_U_LINE_10 = AmountKind.declare(CATALOG, "schedule_u_line_10", non_negative=True)
-"""Schedule U line 10 "QPP contribution (line 98 of your return)": the TP-1 line 98 figure, read
-from the TP-1 income form."""
+"""Schedule U line 10 "QPP contribution (line 98 of your return) (maximum $4,339.20)": the TP-1
+line 98 figure, held at the printed maximum."""
 
 SCHEDULE_U_PENSIONABLE_SALARY_LINE_12 = AmountKind.declare(
     CATALOG, "schedule_u_pensionable_salary_line_12", non_negative=True

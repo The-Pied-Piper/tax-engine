@@ -43,6 +43,7 @@ UPSTREAM_PARTS = (
     *TP1_INCOME_PARTS,
     *WORK_CHART_201_PARTS,
     "tp1_schedule_u.yaml",
+    "tp1_schedule_u_line_10_base.yaml",
     "tp1_schedule_u_line_10.yaml",
     "tp1_schedule_u_line_11.yaml",
     "tp1_schedule_u_line_12_base.yaml",
