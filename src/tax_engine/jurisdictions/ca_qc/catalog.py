@@ -1015,3 +1015,9 @@ TP1_INCOME_REPLACEMENT_ADJUSTMENT_LINE_358 = AmountKind.declare(
 )
 """TP-1 line 358 "Adjustment for income replacement indemnities": one optional input a salary-only
 caller does not give; line 359 reads a blank as 0 (`tp1_credits_line_358_input.yaml`)."""
+
+
+TP1_LINE_359 = AmountKind.declare(CATALOG, "tp1_line_359")
+"""TP-1 line 359 "Subtract line 358 from line 350": the basic personal amount less the adjustment,
+rounded half-up to the cent. The form prints no floor, so the figure is signed. Produced by one
+core/subtract (`tp1_credits_line_359.yaml`)."""
