@@ -60,7 +60,7 @@ def test_the_trace_names_the_sum_and_the_limit(take_home_service: TakeHomeServic
     trace = EnglishTraceRenderer().render_all(sheet.trace, sheet)
 
     assert (
-        "Employment income (70000.00) plus line 10400 (CA$0.00) gives CA$70000.00 "
+        'Employment income (70000.00) plus "Other employment income" (CA$0.00) gives CA$70000.00 '
         "(rounded to the nearest cent)."
     ) in trace
     assert (

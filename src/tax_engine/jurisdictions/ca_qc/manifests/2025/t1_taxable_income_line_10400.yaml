@@ -1,0 +1,17 @@
+# 5005-R (2025) line 2, other employment income: "Line 2 and line 10400: Other employment income"
+# (5005-R page 3). The optional input (`ca/other_employment_income`, 0 when the filer has none) is
+# read by this step, the one line the Quebec T1 prints for it, exported so the shared forms that read
+# T1 line 10400 import it from here. Line 21 reads this step.
+form:
+  name: ca-qc/t1_taxable_income
+capabilities:
+  - name: core/sum
+    title: "Other employment income"
+    reference: "10400"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts: [ca/other_employment_income]
+    produces:
+      output: ca-qc/other_employment_income_line_10400

@@ -4,6 +4,9 @@
 #   - Line 23600 before its floor (`ca/net_income_signed`, net income from line 23400 less line 23500,
 #     signed, `core/subtract`) is read by Schedule 6 line 7 and the provincial credit forms, which print the amount
 #     as the form has it ("if negative, show in brackets").
+#   - Lines 10100 and 10400 (`ca/employment_income_line_10100`, `ca/other_employment_income_line_10400`) are
+#     read by Schedule 6 line 1, line 31260 and ON428-A lines 1 and 2: a line is an input only for the form it
+#     belongs to, and every other form imports it from there.
 #   - Line 23600 (net income, `ca/net_income`, floored at "0") is read by T1 line 77 (line 30000).
 #   - Line 26000 (taxable income, `ca/taxable_income`) is read by T1 line 70 and the provincial tax form.
 # Lines 15000 and 23300 are read inside the form by line 23400 and are not exported.
@@ -12,6 +15,8 @@ form:
   title: "T1 Income Tax and Benefit Return"
   required: true
   exports:
+    - ca/employment_income_line_10100
+    - ca/other_employment_income_line_10400
     - ca/net_income
     - ca/net_income_signed
     - ca/taxable_income

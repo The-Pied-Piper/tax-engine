@@ -15,7 +15,7 @@ another form's exports only as record lists): the Schedule 8 record list
 the line 31260 amount. All three new kinds are non-negative amounts.
 
 The real parts are composed beside a test-local header: the salary, the real Schedule 8 and T2204
-parts (their headers export the two read kinds), the real line 10400 input, the real line 31260
+parts (their headers export the two read kinds), the real T1 taxable-income parts, the real 31260
 part and the part under test. The form declaration of line 96 is test-local: its one export is
 line 96.
 """
@@ -33,7 +33,7 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService
+from tests.jurisdictions.ca_on.conftest import T1_INCOME_PARTS, TAKE_HOME, TakeHomeService
 from tests.kinds import bundled_kinds, non_negative
 
 D = Decimal
@@ -49,12 +49,11 @@ LINE_88 = "ca/ei_premiums_line_88"
 LINE_96 = "ca/credits_subtotal_line_96"
 # The real parts composed beside the test's header: the salary, the real Schedule 8 and T2204 parts
 # (every part of each, so their on-return and line 16 kinds are produced as they are on the return),
-# the real line 10400 input, the real line 31260 part, and the part under test.
+# the real T1 taxable-income parts, the real line 31260 part, and the part under test.
 PARTS = (
     "salary.yaml",
-    *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
     *(part.name for part in sorted(TAKE_HOME.rglob("t2204*.yaml"))),
-    "t1_taxable_income_line_10400_inputs.yaml",
+    *T1_INCOME_PARTS,
     "t1_tax_and_credits_line_31260.yaml",
     "t1_tax_and_credits_line_96.yaml",
 )

@@ -1,16 +1,30 @@
 # ON428-A (5006-a-25e) "Line 1: Amount from line 10100 of your return / Line 2: Amount from line
-# 10400 of your return / Line 3: Line 1 plus line 2". Line 1 is the salary input (employment income,
-# T1 line 10100); line 2 is the optional T1 line 10400 input (other employment income), which reads as
-# 0 when the filer has none, as in T1 line 15000. Line 3 is their sum in line order.
+# 10400 of your return / Line 3: Line 1 plus line 2". Lines 1 and 2 belong to the T1 taxable income
+# form, which exports them; another form reads an export only as a record list, so each is core/record_total
+# over those records (as ON428 line 1 reads line 26000). Line 3 is their sum in line order.
 form:
   name: ca-on/on428_a
 capabilities:
+  - name: core/record_total
+    reference: "1"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_taxable_income.employment_income_line_10100
+    produces:
+      output: ca-on/on428_a_employment_income_line_1
+  - name: core/record_total
+    reference: "2"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_taxable_income.other_employment_income_line_10400
+    produces:
+      output: ca-on/on428_a_other_employment_income_line_2
   - name: core/sum
     reference: "3"
     unit: ca/cad
     params:
       rounding: ca-on/cent_rounding
     consumes:
-      parts: [ca/employment_income, ca/other_employment_income]
+      parts: [ca-on/on428_a_employment_income_line_1, ca-on/on428_a_other_employment_income_line_2]
     produces:
       output: ca-on/lift_employment_income

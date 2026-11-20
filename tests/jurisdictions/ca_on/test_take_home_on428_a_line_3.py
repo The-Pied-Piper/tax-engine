@@ -24,7 +24,7 @@ from tax_engine.jurisdictions.ca.catalog.income import (
     OTHER_EMPLOYMENT_INCOME,
 )
 from tax_engine.jurisdictions.ca_on.catalog import LIFT_EMPLOYMENT_INCOME
-from tests.jurisdictions.ca_on.conftest import TakeHomeService
+from tests.jurisdictions.ca_on.conftest import T1_INCOME_PARTS, TakeHomeService
 
 D = Decimal
 PART = "on428_a_line_3.yaml"
@@ -35,8 +35,6 @@ HEADER = dedent("""\
     valid_from_tax_year: 2025
     inputs:
       - name: ca/employment_income
-        required: true
-      - name: ca/other_employment_income
         required: true
     outputs:
       - ca/employment_income
@@ -51,7 +49,7 @@ FORM = dedent("""\
 
 
 def line_3(take_home_service: TakeHomeService, salary: str, other: str) -> Decimal:
-    worksheets = take_home_service(HEADER, FORM, PART).compute(
+    worksheets = take_home_service(HEADER, FORM, *T1_INCOME_PARTS, PART).compute(
         JurisdictionCode("CA-ON"),
         2025,
         Artifact(EMPLOYMENT_INCOME, D(salary)),

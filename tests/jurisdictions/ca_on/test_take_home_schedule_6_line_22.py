@@ -27,7 +27,7 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.canada_workers_benefit import CWB_BASIC_BENEFIT_LINE_22
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tests.jurisdictions.ca_on.conftest import TakeHomeService
+from tests.jurisdictions.ca_on.conftest import T1_INCOME_PARTS, TakeHomeService
 
 D = Decimal
 LINE_1_PART = "schedule_6_line_1.yaml"
@@ -63,7 +63,7 @@ def line_22(take_home_service: TakeHomeService, salary: str) -> Decimal:
     worksheets = take_home_service(
         HEADER,
         FORM,
-        LINE_10400_PART,
+        *T1_INCOME_PARTS,
         LINE_1_PART,
         LINE_5_PART,
         LINE_6_PART,

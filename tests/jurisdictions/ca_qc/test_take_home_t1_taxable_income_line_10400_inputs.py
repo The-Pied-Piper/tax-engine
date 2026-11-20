@@ -56,6 +56,7 @@ def test_a_request_that_leaves_out_other_employment_income_is_read_as_zero(
     default = declaration.default_artifact(quebec_kinds().kind(KIND))
     assert not declaration.required
     assert declaration.basis == PRINTED_BASIS
-    assert declaration.reference == "10400"
+    # The line is printed once, by the Quebec T1's own line 10400 step, not by the input.
+    assert declaration.reference is None
     assert default is not None and not default.is_blank
     assert default.value == D("0")

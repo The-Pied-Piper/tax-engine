@@ -53,9 +53,14 @@ FORM = dedent("""\
 
 def line_21(take_home_service: TakeHomeService, salary: str, *other: str) -> Decimal:
     given = [Artifact(OTHER_EMPLOYMENT_INCOME, D(amount)) for amount in other]
-    worksheets = take_home_service(HEADER, FORM, INPUTS, PART).compute(
-        JurisdictionCode("CA-QC"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary)), *given
-    )
+    worksheets = take_home_service(
+        HEADER,
+        FORM,
+        INPUTS,
+        "t1_taxable_income_line_10100.yaml",
+        "t1_taxable_income_line_10400.yaml",
+        PART,
+    ).compute(JurisdictionCode("CA-QC"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary)), *given)
     (sheet,) = worksheets["ca-qc/t1_taxable_income"]
     return sheet.get(T1_LINE_21).value
 

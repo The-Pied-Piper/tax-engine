@@ -7,6 +7,8 @@
 #   - Line 23600 before its floor (`ca-qc/net_income_signed`, line 55 less line 56, not floored) is
 #     read by the shared Schedule 6 line 7, which reads it from the neutral name below, as the form's
 #     "if negative, show in brackets" wording asks.
+#   - Lines 10100 and 10400 (`ca-qc/employment_income_line_10100`, `ca-qc/other_employment_income_line_10400`)
+#     are read by the shared Schedule 6 line 1 and line 31260, which read them from the neutral names below.
 # Lines 33 (line 15000), 48 (line 22215), 54 (line 23300) and 55 (line 23400) are read inside the
 # form and are not exported.
 form:
@@ -14,10 +16,14 @@ form:
   title: "T1 Income Tax and Benefit Return"
   required: true
   exports:
+    - ca-qc/employment_income_line_10100
+    - ca-qc/other_employment_income_line_10400
     - ca-qc/net_income
     - ca-qc/net_income_signed
     - ca-qc/taxable_income
     - ca/social_benefits_repayment
   supplies:
     ca/t1_taxable_income.net_income_signed: ca-qc/net_income_signed
+    ca/t1_taxable_income.employment_income_line_10100: ca-qc/employment_income_line_10100
+    ca/t1_taxable_income.other_employment_income_line_10400: ca-qc/other_employment_income_line_10400
 capabilities: []

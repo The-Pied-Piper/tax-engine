@@ -1,0 +1,17 @@
+# 5005-R (2025) line 1, employment income: "Line 2 and line 10400" is line 2; this is line 1, "Line 1
+# and line 10100: Employment income" (5005-R page 3). The salary is the form's input
+# (`ca/employment_income`); this step is the line the Quebec T1 prints for it, and it is exported
+# so the shared forms that read T1 line 10100 import it from here. Line 21 reads this step.
+form:
+  name: ca-qc/t1_taxable_income
+capabilities:
+  - name: core/sum
+    title: "Employment income"
+    reference: "10100"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts: [ca/employment_income]
+    produces:
+      output: ca-qc/employment_income_line_10100

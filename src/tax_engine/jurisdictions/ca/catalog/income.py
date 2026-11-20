@@ -44,6 +44,30 @@ OTHER_EMPLOYMENT_INCOME_LINE_10400 = AmountKind.declare(
 optional input (`ca/other_employment_income`) carried to line 15000, the one place the T1 lists
 it."""
 
+CWB_EMPLOYMENT_INCOME_LINE_10100 = AmountKind.declare(
+    CATALOG, "cwb_employment_income_line_10100", non_negative=True
+)
+"""Schedule 6 line 1, the part from T1 line 10100 (employment income): the T1's line, read as the
+form's export."""
+
+CWB_OTHER_EMPLOYMENT_INCOME_LINE_10400 = AmountKind.declare(
+    CATALOG, "cwb_other_employment_income_line_10400", non_negative=True
+)
+"""Schedule 6 line 1, the part from T1 line 10400 (other employment income): the T1's line, read as
+the form's export."""
+
+CANADA_EMPLOYMENT_AMOUNT_LINE_1 = AmountKind.declare(
+    CATALOG, "canada_employment_amount_line_1", non_negative=True
+)
+"""Canada employment amount, line 31260 "line 1 plus line 2", line 1: T1 line 10100 (employment
+income), read as the T1 form's export."""
+
+CANADA_EMPLOYMENT_AMOUNT_LINE_2 = AmountKind.declare(
+    CATALOG, "canada_employment_amount_line_2", non_negative=True
+)
+"""Canada employment amount, line 31260 "line 1 plus line 2", line 2: T1 line 10400 (other
+employment income), read as the T1 form's export."""
+
 CREDITS_AGAINST_BASIC_FEDERAL_TAX = AmountKind.declare(
     CATALOG, "credits_against_basic_federal_tax", non_negative=True
 )
