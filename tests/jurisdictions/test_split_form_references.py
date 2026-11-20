@@ -55,7 +55,7 @@ def test_the_two_parts_of_the_t1_share_one_reference_but_keep_their_titles(
     (income,) = sheets["ca/t1_taxable_income"]
     (tax,) = sheets["ca/t1_tax_and_credits"]
 
-    assert income.form_reference == tax.form_reference == "T1 return"
+    assert income.form_reference == tax.form_reference == "T1 Income Tax and Benefit Return"
     assert income.form_title != tax.form_title
 
 
