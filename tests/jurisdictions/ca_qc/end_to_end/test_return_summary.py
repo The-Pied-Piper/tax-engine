@@ -200,3 +200,23 @@ def test_the_solidarity_credit(salary: str, scenario: str, expected: str) -> Non
     sheet = _sheets(salary, scenario)["ca-qc/return"]
 
     assert sheet.get(SOLIDARITY_CREDIT).value == D(expected)
+
+
+LINE_45300_FIGURES = {
+    ("20000", DEFAULT): "2679.07",
+    ("70000", DEFAULT): "0.00",
+    ("200000", DEFAULT): "0.00",
+    ("20000", GROUP_PLAN): "2679.07",
+    ("70000", GROUP_PLAN): "0.00",
+    ("200000", GROUP_PLAN): "0.00",
+    ("20000", ALONE_AND_TENANT): "2679.07",
+    ("70000", ALONE_AND_TENANT): "0.00",
+    ("200000", ALONE_AND_TENANT): "0.00",
+}
+
+
+@pytest.mark.parametrize(("salary", "scenario", "expected"), _cases(LINE_45300_FIGURES))
+def test_5005_r_line_45300(salary: str, scenario: str, expected: str) -> None:
+    sheet = _sheets(salary, scenario)["ca-qc/t1_tax_and_credits"]
+
+    assert sheet.get(CWB_LINE_161).value == D(expected)
