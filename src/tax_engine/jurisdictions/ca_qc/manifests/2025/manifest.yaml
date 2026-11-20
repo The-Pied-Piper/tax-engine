@@ -24,7 +24,11 @@ imports:
   - form: ca/schedule_8
     datasets:
       ca/cpp_line_11_base_contribution: ca-qc/qpp_line_11_base_contribution
-  - ca/schedule_6
+  # Quebec prints its own Schedule 6 (5005-S6): the shared form reads the Quebec figures of lines 17,
+  # 19, 21, 24 and 26 (no eligible spouse or dependant) instead of the federal ones.
+  - form: ca/schedule_6
+    datasets:
+      ca/cwb_base_amount: ca-qc/cwb_base_amount
   # Quebec's EI rate is 1.31% (T2204 line 11, 5005-S10 line 19): the shared T2204 reads the Quebec dataset.
   - form: ca/t2204
     datasets:

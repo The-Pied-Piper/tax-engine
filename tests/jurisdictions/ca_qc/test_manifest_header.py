@@ -46,7 +46,12 @@ def test_the_federal_forms_are_imported_in_order_and_read_the_quebec_datasets() 
                 "ca/cpp_line_11_base_contribution": "ca-qc/qpp_line_11_base_contribution",
             },
         },
-        "ca/schedule_6",
+        {
+            "form": "ca/schedule_6",
+            "datasets": {
+                "ca/cwb_base_amount": "ca-qc/cwb_base_amount",
+            },
+        },
         {"form": "ca/t2204", "datasets": {"ca/ei_premium": "ca-qc/ei_premium"}},
     ]
 
