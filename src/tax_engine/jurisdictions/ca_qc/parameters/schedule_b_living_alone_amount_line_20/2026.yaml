@@ -1,0 +1,15 @@
+# Provisional: taken from Quebec Finance, Parameters of the Personal Income Tax System for 2026 (Nov 2025), Table 3; to be confirmed against the 2026 form text when Revenu Quebec publishes it.
+# Derivation: figure as printed in the Quebec Finance parameters for 2026: amount for a person living alone, basic amount 2,172 (Table 3); no rounding applied here.
+# Revenu Quebec TP-1.D.B-V (2025-12), Schedule B, Part B, line 20: "If, throughout 2025, you
+# maintained and ordinarily lived in a dwelling in which you lived alone or only with ... enter
+# $2,128." The printed figure, taken as printed and claimed whole; half-up to the cent changes
+# nothing.
+# The description above is of the 2025 form line; the figures of this file are 2026. The 2026 form is not yet published, so they are not yet confirmed against it.
+family: ca-qc/schedule_b_living_alone_amount_line_20
+tax_year: 2026
+kind: credit
+sources:
+  - Revenu Quebec TP-1.D.B-V (2025-12), Schedule B, Part B
+  - Quebec Ministere des Finances, Parameters of the Personal Income Tax System for 2026 (Nov 2025), Table 3, https://cdn-contenu.quebec.ca/cdn-contenu/adm/min/finances/publications-adm/parametres/AUTEN_IncomeTax2026.pdf
+rounding: {increment: "0.01", mode: half_up}
+amount: "2172"

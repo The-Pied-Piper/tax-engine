@@ -1,0 +1,14 @@
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when Revenu Quebec publishes it.
+# Derivation: the 2025 rate 0.156250 is 1 / 6.4% (the 2025 total QPP contribution rate, and 1.00 / 6.4 = 0.15625); 1 / 6.30% (the 2026 total rate, T4127 (Jan 2026) Table 8.3) = 0.158730; inferred, as the 2026 Schedule U (TP-1.D.U-V) is not yet published.
+# Revenu Quebec TP-1.D-V (2025-12), Schedule U (TP-1.D.U-V), Part B, line 11. The printed figure is
+# 0.156250, taken as printed. A dollars-and-cents line, so it rounds half-up to the cent (the
+# project's choice, as the form states no rounding rule).
+# The 2026 Schedule U is not yet published, so the figure is inferred, not confirmed against it.
+family: ca-qc/schedule_u_line_11_rate
+tax_year: 2026
+kind: rate
+sources:
+  - Revenu Quebec TP-1.D-V (2025-12), Schedule U (TP-1.D.U-V), Part B
+  - Revenu Quebec, Maximum Pensionable Earnings and Quebec Pension Plan Contribution Rate (web page, 2026 row; CRA T4127 (Jan 2026) Tables 8.3 to 8.6, QPP rows)
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.15873"

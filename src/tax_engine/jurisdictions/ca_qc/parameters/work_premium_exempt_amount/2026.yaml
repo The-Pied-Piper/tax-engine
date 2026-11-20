@@ -1,0 +1,14 @@
+# Provisional: taken from Quebec Finance, Parameters of the Personal Income Tax System for 2026 (Nov 2025), section 3; to be confirmed against the 2026 form text when Revenu Quebec publishes it.
+# Derivation: figure as printed in section 3 of the Quebec Finance parameters for 2026 (the first $2,400 of earned income of a household of one adult is excluded, unchanged from 2025); no rounding applied here.
+# Revenu Quebec TP-1.D-V (2025-12), Schedule P (TP-1.D.P-V), Part E, section 2 "Individual without a
+# spouse on December 31, 2025", column 1 "Work premium", line 70: the printed figure is $2,400 (printed
+# with a minus sign). Taken as printed and claimed whole; half-up to the cent changes nothing.
+# The 2026 form is not yet published, so the figure is not yet confirmed against it.
+family: ca-qc/work_premium_exempt_amount
+tax_year: 2026
+kind: credit
+sources:
+  - Revenu Quebec TP-1.D-V (2025-12), Schedule P (TP-1.D.P-V), Part E
+  - Quebec Ministere des Finances, Parameters of the Personal Income Tax System for 2026 (Nov 2025), https://cdn-contenu.quebec.ca/cdn-contenu/adm/min/finances/publications-adm/parametres/AUTEN_IncomeTax2026.pdf
+rounding: {increment: "0.01", mode: half_up}
+amount: "2400"

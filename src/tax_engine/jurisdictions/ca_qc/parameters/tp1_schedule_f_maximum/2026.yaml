@@ -1,0 +1,22 @@
+# Provisional: taken from Quebec Finance, Parameters of the Personal Income Tax System for 2026 (Nov 2025), Table 3; to be confirmed against the 2026 form text when Revenu Quebec publishes it.
+# Derivation: figure as printed in the Quebec Finance parameters for 2026: Health Services Fund first bracket threshold 18,500 (Table 3); the 150 and 1,000 maximums are those of 2025 (the 2026 form is not published); no rounding applied here.
+# Quebec Schedule F (TP-1.D.F-V, 2025-12), Part B, line 82's printed maximums: "Maximum: $150" under
+# the column "If $63,060 or less" and "Maximum: $1,000" under the column "If more than $63,060". The
+# contribution is the lesser of lines 80 plus 81 and the maximum of the column that line 76 falls in.
+# The step reads line 77, the printed lower bound of that column (18,130 or 63,060), so the band
+# "over" figures are chosen to put each lower bound in its own column: 18,130 is not over 18,130, so
+# it takes the first row ($150), and 63,060 is over it, so it takes the second ($1,000). Line 77 is
+# blank for a line 76 of $18,130 or less, for which no contribution is due. Printed figures, taken
+# whole and never recomputed; the printed dollars are given the scale of a dollars-and-cents box by
+# the cent rounding, which changes nothing.
+# The description above is of the 2025 form line; the figures of this file are 2026. The 2026 form is not yet published, so they are not yet confirmed against it.
+family: ca-qc/tp1_schedule_f_maximum
+tax_year: 2026
+kind: amount_by_band
+sources:
+  - Revenu Quebec TP-1.D.F-V (2025-12), Schedule F, Part B
+  - Quebec Ministere des Finances, Parameters of the Personal Income Tax System for 2026 (Nov 2025), Table 3, https://cdn-contenu.quebec.ca/cdn-contenu/adm/min/finances/publications-adm/parametres/AUTEN_IncomeTax2026.pdf
+rounding: {increment: "0.01", mode: half_up}
+rows:
+  - {over: "0", amount: "150"}
+  - {over: "18500", amount: "1000"}

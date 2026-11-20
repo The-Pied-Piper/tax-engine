@@ -1,0 +1,15 @@
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when Revenu Quebec publishes it.
+# Derivation: carried forward unchanged from the 2025 file. Table 4 of the Quebec Finance parameters for 2026 prints the same figure for July 2026 to June 2027 (the credit paid on the 2025 return); the July 2027 to June 2028 figure, which a 2026 return receives, is not yet published.
+# Quebec solidarity tax credit, housing amount for one owner or tenant, for the payment period July
+# 2026 to June 2027 (the credit of the 2025 return): "montant de base pour frais de logement 746",
+# Table C.9 of the Quebec Ministry of Finance fiche 110201 (Dépenses fiscales 2025), a web page, so
+# the figure is a listed check until a printed source is found. Claimed whole. A dollars-and-cents
+# figure, so it rounds half-up to the cent, the project's choice, which changes nothing.
+# The 2026 form is not yet published, so the figure is not yet confirmed against it.
+family: ca-qc/solidarity_housing_single_amount
+tax_year: 2026
+kind: credit
+sources:
+  - https://www.revenuquebec.ca/en/citizens/tax-credits/solidarity-tax-credit/calculation-of-the-credit/
+rounding: {increment: "0.01", mode: half_up}
+amount: "746"

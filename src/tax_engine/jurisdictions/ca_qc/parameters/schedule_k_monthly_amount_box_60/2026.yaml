@@ -1,0 +1,13 @@
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when Revenu Quebec publishes it.
+# Derivation: carried forward unchanged from the 2025 file; the 2026 form is not yet published.
+# Revenu Quebec TP-1.D.K-V (2025-12), Schedule K, Part C, line 88: "Number of months entered in box
+# 60 x $62.00". The printed figure is 62.00, the amount for each month of box 60. Taken as
+# printed and claimed whole; half-up to the cent changes nothing.
+# The 2026 form is not yet published, so the figure is not yet confirmed against it.
+family: ca-qc/schedule_k_monthly_amount_box_60
+tax_year: 2026
+kind: credit
+sources:
+  - Revenu Quebec TP-1.D.K-V (2025-12), Schedule K, Part C
+rounding: {increment: "0.01", mode: half_up}
+amount: "62.00"
