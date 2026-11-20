@@ -147,3 +147,9 @@ T1_LINE_54 = AmountKind.declare(CATALOG, "t1_line_54", non_negative=True)
 """Deductions from total income, 5005-R line 54 and line 23300 "Add lines 35 to 53.": line 48 alone,
 the only deduction a salary-only filer has (lines 35 to 47 and 49 to 53 are blank and not built).
 Produced by one core/sum (`t1_taxable_income_line_23300.yaml`)."""
+
+T1_LINE_55 = AmountKind.declare(CATALOG, "t1_line_55")
+"""Net income before adjustments, 5005-R line 55 and line 23400 "Line 34 minus line 54 (if negative,
+show in brackets) Net income before adjustments =": total income (line 33, copied to line 34) less
+line 54, not floored, so a deduction above income is shown in brackets as the form prints it.
+Produced by one core/subtract (`t1_taxable_income_line_23400.yaml`)."""
