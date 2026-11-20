@@ -19,3 +19,9 @@ SOLIDARITY_QST_BASE_AMOUNT = AmountKind.declare(
 )
 """Solidarity tax credit, QST component, base amount ("montant de base" 363, Table C.9 of fiche
 110201, July 2026 to June 2027): the printed figure, claimed whole."""
+
+SOLIDARITY_LIVING_ALONE_AMOUNT = AmountKind.declare(
+    CATALOG, "solidarity_living_alone_amount", non_negative=True
+)
+"""Solidarity tax credit, QST component, living-alone amount ("montant pour personne vivant seule"
+172, Table C.9 of fiche 110201, July 2026 to June 2027): the printed figure, claimed whole."""
