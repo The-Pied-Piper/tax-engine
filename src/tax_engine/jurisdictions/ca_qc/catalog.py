@@ -1030,6 +1030,11 @@ FEDERAL_DIVIDEND_TAX_CREDIT_LINE_127 = AmountKind.declare(CATALOG, "federal_divi
 caller does not give; the line that reads it takes a blank as 0
 (`t1_tax_and_credits_line_40425_inputs.yaml`)."""
 
+MINIMUM_TAX_CARRYOVER_LINE_128 = AmountKind.declare(CATALOG, "minimum_tax_carryover_line_128", non_negative=True)
+"""Minimum tax carryover, 5005-R line 128 and line 40427: an optional input a salary-only caller
+does not give; the line that reads it takes a blank as 0
+(`t1_tax_and_credits_line_40427_inputs.yaml`)."""
+
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
 Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line
