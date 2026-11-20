@@ -153,3 +153,9 @@ T1_LINE_55 = AmountKind.declare(CATALOG, "t1_line_55")
 show in brackets) Net income before adjustments =": total income (line 33, copied to line 34) less
 line 54, not floored, so a deduction above income is shown in brackets as the form prints it.
 Produced by one core/subtract (`t1_taxable_income_line_23400.yaml`)."""
+
+NET_INCOME = AmountKind.declare(CATALOG, "net_income", non_negative=True)
+"""Net income, 5005-R line 57 and line 23600 "Line 55 minus line 56 (if negative, enter "0") ...
+Net income =": net income before adjustments (line 55) less the social benefits repayment (line
+56), not below zero. Produced by one core/subtract_not_below_zero
+(`t1_taxable_income_line_23600.yaml`); Step 4 starts from it."""
