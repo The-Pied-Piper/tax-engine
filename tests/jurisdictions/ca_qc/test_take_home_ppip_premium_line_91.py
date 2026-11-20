@@ -11,44 +11,32 @@ is the same figure. The figures are hand-computed from the printed forms, not a 
 printed maximum 484.12.
 
 The test composes the real input part and the real line 91 part under a made-up header, which
-declares the salary, and the real form declaration. Quebec is not yet in
-`registrations.JURISDICTIONS`, so the service is built over the Quebec package list of `support.py`.
+declares the salary, and the real form declaration, on the shared Quebec `take_home_service`
+fixture.
 """
 
 from __future__ import annotations
 
 from decimal import Decimal
-from pathlib import Path
 from textwrap import dedent
 from typing import Any
 
 import pytest
 import yaml
 
-import tax_engine.jurisdictions.ca_qc
-from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
-from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_qc.catalog import PPIP_PREMIUMS_GIVEN, PPIP_PREMIUMS_PAID
-from tests.jurisdictions.ca_qc.support import (
-    quebec_capabilities,
-    quebec_kinds,
-    quebec_packages,
-    quebec_parameter_parsers,
-    quebec_units,
-)
+from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
+from tests.jurisdictions.ca_qc.support import quebec_kinds
 from tests.kinds import non_negative
 
 D = Decimal
-QC_PARTS = Path(tax_engine.jurisdictions.ca_qc.__file__).parent / "manifests" / "2025"
-FORM_PART = QC_PARTS / "ppip_premium.yaml"
-INPUTS_PART = QC_PARTS / "ppip_premium_inputs.yaml"
-LINE_PART = QC_PARTS / "ppip_premium_line_91.yaml"
+FORM_PART = QUEBEC_PARTS / "ppip_premium.yaml"
+INPUTS_PART = "ppip_premium_inputs.yaml"
+LINE_PART = QUEBEC_PARTS / "ppip_premium_line_91.yaml"
 IDENTIFIER = "ca-qc/ppip_premiums_paid"
 
 HEADER = dedent("""\
@@ -64,30 +52,14 @@ HEADER = dedent("""\
     """)
 
 
-def _service(tmp_path: Path) -> TaxComputationService:
-    """The engine over a temporary Quebec manifest of a test header and the real PPIP parts, every
-    other namespace being the package list's own."""
-    folder = tmp_path / "manifests" / "2025"
-    folder.mkdir(parents=True)
-    (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
-    for number, found in enumerate((FORM_PART, INPUTS_PART, LINE_PART), start=1):
-        (folder / f"{number:02d}_{found.name}").write_text(
-            found.read_text(encoding="utf-8"), encoding="utf-8"
-        )
-    roots = {**quebec_packages().roots(), Namespace("ca-qc"): tmp_path}
-    return TaxComputationService(
-        YamlJurisdictionSource(roots, quebec_kinds(), quebec_units()),
-        YamlParameterSource(quebec_packages().roots(), quebec_parameter_parsers(), quebec_units()),
-        quebec_capabilities(),
-    )
-
-
-def _line_91(tmp_path: Path, salary: str, given: str | None = None) -> Decimal:
+def _line_91(take_home_service: TakeHomeService, salary: str, given: str | None = None) -> Decimal:
     starting = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if given is not None:
         starting.append(Artifact(PPIP_PREMIUMS_GIVEN, D(given)))
-    worksheets = _service(tmp_path).compute(JurisdictionCode("CA-QC"), 2025, *starting)
-    (sheet,) = worksheets["ca-qc/ppip_premium"]
+    service = take_home_service(
+        HEADER, FORM_PART.read_text(encoding="utf-8"), INPUTS_PART, LINE_PART.name
+    )
+    (sheet,) = service.compute(JurisdictionCode("CA-QC"), 2025, *starting)["ca-qc/ppip_premium"]
     return sheet.get(PPIP_PREMIUMS_PAID).value
 
 
@@ -113,23 +85,27 @@ def _step() -> dict[str, Any]:
     ],
 )
 def test_a_blank_line_91_is_the_ppip_premium_on_the_salary(
-    tmp_path: Path, salary: str, expected: str
+    take_home_service: TakeHomeService, salary: str, expected: str
 ) -> None:
-    assert _line_91(tmp_path, salary) == D(expected)
+    assert _line_91(take_home_service, salary) == D(expected)
 
 
-def test_a_blank_line_91_is_computed_to_the_cent(tmp_path: Path) -> None:
-    assert str(_line_91(tmp_path, "70000")) == "345.80"
+def test_a_blank_line_91_is_computed_to_the_cent(take_home_service: TakeHomeService) -> None:
+    assert str(_line_91(take_home_service, "70000")) == "345.80"
 
 
 @pytest.mark.parametrize("given", ["400.00", "0"])
-def test_a_given_line_91_is_the_output_unchanged(tmp_path: Path, given: str) -> None:
-    assert str(_line_91(tmp_path, "70000", given)) == given
+def test_a_given_line_91_is_the_output_unchanged(
+    take_home_service: TakeHomeService, given: str
+) -> None:
+    assert str(_line_91(take_home_service, "70000", given)) == given
 
 
-def test_a_given_line_91_is_not_computed_from_the_salary(tmp_path: Path) -> None:
+def test_a_given_line_91_is_not_computed_from_the_salary(
+    take_home_service: TakeHomeService,
+) -> None:
     # 20,000 would give 98.80; the figure typed from the T4 is line 91 as it is.
-    assert str(_line_91(tmp_path, "20000", "400.00")) == "400.00"
+    assert str(_line_91(take_home_service, "20000", "400.00")) == "400.00"
 
 
 def test_the_part_is_one_given_or_contribution_tier_step_on_the_salary() -> None:
