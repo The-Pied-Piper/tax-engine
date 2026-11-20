@@ -33,7 +33,6 @@ The expected figures are hand-computed from the printed lines for a full year (1
 from __future__ import annotations
 
 from decimal import Decimal
-from pathlib import Path
 from textwrap import dedent
 
 import pytest
@@ -56,7 +55,7 @@ from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca.catalog.rc381_cpp_qpp import (
     T4_CPP_PENSIONABLE_EARNINGS_OUTSIDE_QUEBEC,
 )
-from tests.jurisdictions.ca_qc.support import quebec_service
+from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 
 D = Decimal
 HEADER_TEMPLATE = dedent("""\
@@ -81,11 +80,13 @@ SWAPPED = (
     "      ca/cpp_line_11_base_contribution: ca-qc/qpp_line_11_base_contribution"
 )
 HEADER = HEADER_TEMPLATE.replace("{schedule_8}", SWAPPED)
+# The composed folder needs a form declaration beside the header; Schedule 8 is the imported form.
+FORM_PART = "capabilities: []\n"
 BARE_HEADER = HEADER_TEMPLATE.replace("{schedule_8}", "ca/schedule_8")
 
 
-def schedule_8(tmp_path: Path, salary: str, header: str = HEADER) -> Worksheet:
-    worksheets = quebec_service(tmp_path, header).compute(
+def schedule_8(take_home_service: TakeHomeService, salary: str, header: str = HEADER) -> Worksheet:
+    worksheets = take_home_service(header, FORM_PART).compute(
         JurisdictionCode("CA-QC"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
     )
     (sheet,) = worksheets["ca/schedule_8"]
@@ -95,9 +96,11 @@ def schedule_8(tmp_path: Path, salary: str, header: str = HEADER) -> Worksheet:
 @pytest.mark.parametrize(
     ("salary", "expected"), [("20000", "20000.00"), ("70000", "70000.00"), ("200000", "81200.00")]
 )
-def test_line_1_matches_the_printed_form(tmp_path: Path, salary: str, expected: str) -> None:
+def test_line_1_matches_the_printed_form(
+    take_home_service: TakeHomeService, salary: str, expected: str
+) -> None:
     # Line 1: the salary, at most 81,200.00 per slip.
-    sheet = schedule_8(tmp_path, salary)
+    sheet = schedule_8(take_home_service, salary)
 
     assert sheet.get(T4_CPP_PENSIONABLE_EARNINGS_OUTSIDE_QUEBEC).value == D(expected)
 
@@ -105,9 +108,11 @@ def test_line_1_matches_the_printed_form(tmp_path: Path, salary: str, expected: 
 @pytest.mark.parametrize(
     ("salary", "expected"), [("20000", "20000.00"), ("70000", "70000.00"), ("200000", "81200.00")]
 )
-def test_line_2_matches_the_printed_form(tmp_path: Path, salary: str, expected: str) -> None:
+def test_line_2_matches_the_printed_form(
+    take_home_service: TakeHomeService, salary: str, expected: str
+) -> None:
     # Line 2: the lesser of line D (81,200.00) and line 1.
-    sheet = schedule_8(tmp_path, salary)
+    sheet = schedule_8(take_home_service, salary)
 
     assert sheet.get(CPP_PART_3_LINE_2).value == D(expected)
 
@@ -115,9 +120,11 @@ def test_line_2_matches_the_printed_form(tmp_path: Path, salary: str, expected: 
 @pytest.mark.parametrize(
     ("salary", "expected"), [("20000", "0.00"), ("70000", "0.00"), ("200000", "9900.00")]
 )
-def test_line_4_matches_the_printed_form(tmp_path: Path, salary: str, expected: str) -> None:
+def test_line_4_matches_the_printed_form(
+    take_home_service: TakeHomeService, salary: str, expected: str
+) -> None:
     # Line 4: line 2 less line 3 (71,300.00), not below 0.
-    sheet = schedule_8(tmp_path, salary)
+    sheet = schedule_8(take_home_service, salary)
 
     assert sheet.get(CPP_PART_3_LINE_4).value == D(expected)
 
@@ -125,9 +132,11 @@ def test_line_4_matches_the_printed_form(tmp_path: Path, salary: str, expected: 
 @pytest.mark.parametrize(
     ("salary", "expected"), [("20000", "20000.00"), ("70000", "70000.00"), ("200000", "71300.00")]
 )
-def test_line_5_matches_the_printed_form(tmp_path: Path, salary: str, expected: str) -> None:
+def test_line_5_matches_the_printed_form(
+    take_home_service: TakeHomeService, salary: str, expected: str
+) -> None:
     # Line 5: line 2 less line 4, not below 0.
-    sheet = schedule_8(tmp_path, salary)
+    sheet = schedule_8(take_home_service, salary)
 
     assert sheet.get(CPP_PART_3_LINE_5).value == D(expected)
 
@@ -135,9 +144,11 @@ def test_line_5_matches_the_printed_form(tmp_path: Path, salary: str, expected: 
 @pytest.mark.parametrize(
     ("salary", "expected"), [("20000", "16500.00"), ("70000", "66500.00"), ("200000", "67800.00")]
 )
-def test_line_7_matches_the_printed_form(tmp_path: Path, salary: str, expected: str) -> None:
+def test_line_7_matches_the_printed_form(
+    take_home_service: TakeHomeService, salary: str, expected: str
+) -> None:
     # Line 7: line 5 less line 6 (3,500.00), not below 0, at most 67,800.00.
-    sheet = schedule_8(tmp_path, salary)
+    sheet = schedule_8(take_home_service, salary)
 
     assert sheet.get(CPP_PART_3_LINE_7).value == D(expected)
 
@@ -145,9 +156,11 @@ def test_line_7_matches_the_printed_form(tmp_path: Path, salary: str, expected: 
 @pytest.mark.parametrize(
     ("salary", "expected"), [("20000", "891.00"), ("70000", "3591.00"), ("200000", "3661.20")]
 )
-def test_line_11_matches_the_printed_form(tmp_path: Path, salary: str, expected: str) -> None:
+def test_line_11_matches_the_printed_form(
+    take_home_service: TakeHomeService, salary: str, expected: str
+) -> None:
     # Line 11: 5.4% of line 7, at most 3,661.20 (the federal 4.95% would give 3,291.75 at 70,000).
-    sheet = schedule_8(tmp_path, salary)
+    sheet = schedule_8(take_home_service, salary)
 
     assert sheet.get(CPP_PART_3_LINE_11).value == D(expected)
 
@@ -155,9 +168,11 @@ def test_line_11_matches_the_printed_form(tmp_path: Path, salary: str, expected:
 @pytest.mark.parametrize(
     ("salary", "expected"), [("20000", "165.00"), ("70000", "665.00"), ("200000", "678.00")]
 )
-def test_line_12_matches_the_printed_form(tmp_path: Path, salary: str, expected: str) -> None:
+def test_line_12_matches_the_printed_form(
+    take_home_service: TakeHomeService, salary: str, expected: str
+) -> None:
     # Line 12: 1% of line 7, at most 678.00.
-    sheet = schedule_8(tmp_path, salary)
+    sheet = schedule_8(take_home_service, salary)
 
     assert sheet.get(CPP_PART_3_LINE_12).value == D(expected)
 
@@ -165,9 +180,11 @@ def test_line_12_matches_the_printed_form(tmp_path: Path, salary: str, expected:
 @pytest.mark.parametrize(
     ("salary", "expected"), [("20000", "0.00"), ("70000", "0.00"), ("200000", "396.00")]
 )
-def test_line_22_matches_the_printed_form(tmp_path: Path, salary: str, expected: str) -> None:
+def test_line_22_matches_the_printed_form(
+    take_home_service: TakeHomeService, salary: str, expected: str
+) -> None:
     # Line 22: 4% of line 4, at most 396.00.
-    sheet = schedule_8(tmp_path, salary)
+    sheet = schedule_8(take_home_service, salary)
 
     assert sheet.get(CPP_PART_3_LINE_22).value == D(expected)
 
@@ -175,9 +192,11 @@ def test_line_22_matches_the_printed_form(tmp_path: Path, salary: str, expected:
 @pytest.mark.parametrize(
     ("salary", "expected"), [("20000", "891.00"), ("70000", "3591.00"), ("200000", "3661.20")]
 )
-def test_line_25_matches_the_printed_form(tmp_path: Path, salary: str, expected: str) -> None:
+def test_line_25_matches_the_printed_form(
+    take_home_service: TakeHomeService, salary: str, expected: str
+) -> None:
     # Line 25: the line 15 copy of line 11, for T1 line 30800.
-    sheet = schedule_8(tmp_path, salary)
+    sheet = schedule_8(take_home_service, salary)
 
     assert sheet.get(SCHEDULE_8_CPP_BASE_CONTRIBUTIONS_ON_RETURN).value == D(expected)
 
@@ -185,16 +204,18 @@ def test_line_25_matches_the_printed_form(tmp_path: Path, salary: str, expected:
 @pytest.mark.parametrize(
     ("salary", "expected"), [("20000", "165.00"), ("70000", "665.00"), ("200000", "1074.00")]
 )
-def test_line_28_matches_the_printed_form(tmp_path: Path, salary: str, expected: str) -> None:
+def test_line_28_matches_the_printed_form(
+    take_home_service: TakeHomeService, salary: str, expected: str
+) -> None:
     # Line 28: lines 12 and 22 added, for T1 line 22215.
-    sheet = schedule_8(tmp_path, salary)
+    sheet = schedule_8(take_home_service, salary)
 
     assert sheet.get(SCHEDULE_8_CPP_ENHANCED_CONTRIBUTIONS_ON_RETURN).value == D(expected)
 
 
-def test_line_11_without_the_swap_is_the_federal_figure(tmp_path: Path) -> None:
+def test_line_11_without_the_swap_is_the_federal_figure(take_home_service: TakeHomeService) -> None:
     # The shared form's own files still read the federal dataset: a manifest that imports
     # `ca/schedule_8` bare gets 4.95% of 66,500.00 = 3,291.75, so the swap is local to Quebec.
-    sheet = schedule_8(tmp_path, "70000", BARE_HEADER)
+    sheet = schedule_8(take_home_service, "70000", BARE_HEADER)
 
     assert sheet.get(CPP_PART_3_LINE_11).value == D("3291.75")
