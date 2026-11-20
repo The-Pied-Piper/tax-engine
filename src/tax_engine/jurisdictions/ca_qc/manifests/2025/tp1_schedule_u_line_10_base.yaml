@@ -2,11 +2,12 @@
 # QPP contribution. TP-1 income is its own form, so line 98 arrives as that form's export, a record
 # list of one amount; this step is `core/record_total` over it, and the line 10 part
 # (`tp1_schedule_u_line_10.yaml`) caps it at the printed maximum. It prints no line of its own, so it
-# has no reference and no title.
+# has no reference and a plain-words title.
 form:
   name: ca-qc/tp1_schedule_u
 capabilities:
   - name: core/record_total
+    title: "QPP contribution"
     unit: ca/cad
     consumes:
       records: ca-qc/tp1_income.tp1_qpp_contribution_line_98
