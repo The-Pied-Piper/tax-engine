@@ -1,0 +1,19 @@
+# Schedule K (2025) box 62, "Add boxes 60 and 61." (Revenu Quebec TP-1.D.K-V (2025-12), Part B,
+# section 1): the months checked in the year, boxes 60 and 61 added through core/sum. The sum is
+# exact (whole months) and its rounding is the Quebec cent rounding, which changes nothing. The
+# form prints no name for the box, so it has no title. Mirrors NL428 line 15
+# (`ca_nl/manifests/2025/nl428_credits_line_15.yaml`).
+form:
+  name: ca-qc/tp1_schedule_k
+capabilities:
+  - name: core/sum
+    reference: "62"
+    unit: core/months
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/schedule_k_months_january_to_june_box_60
+        - ca-qc/schedule_k_months_july_to_december_box_61
+    produces:
+      output: ca-qc/schedule_k_months_total_box_62
