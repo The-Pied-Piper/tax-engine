@@ -624,3 +624,10 @@ FEDERAL_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_73 = AmountKind.declare(
 """5005-R Step 5 Part A line 73 "Line 71 minus line 72 (cannot be negative) =": line 71 minus line
 72, not below zero, rounded half-up to the cent. Produced by one core/subtract_not_below_zero
 (`t1_tax_and_credits_line_73.yaml`)."""
+
+FEDERAL_BRACKET_COLUMN_RATE_LINE_74 = AmountKind.declare(
+    CATALOG, "federal_bracket_column_rate_line_74", non_negative=True
+)
+"""5005-R Step 5 Part A line 74 "Rate" (14.5%, 20.5%, 26%, 29% or 33%): the printed rate of the
+column that line 71 falls in, a fraction (0.205 for 20.5%). Produced by one
+core/bracket_column_rate (`t1_tax_and_credits_line_74.yaml`)."""

@@ -1,0 +1,14 @@
+# 5005-R (2025) Step 5 Part A line 74, "Rate": the printed rate of the column line 71 falls in (14.5%,
+# 20.5%, 26%, 29% or 33%), from the shared `ca/brackets` dataset.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/bracket_column_rate
+    title: "Rate"
+    reference: "74"
+    params:
+      schedule: ca/brackets
+    consumes:
+      base: ca-qc/federal_taxable_income_line_71
+    produces:
+      output: ca-qc/federal_bracket_column_rate_line_74
