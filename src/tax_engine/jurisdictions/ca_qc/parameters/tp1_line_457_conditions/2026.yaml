@@ -1,0 +1,25 @@
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when Revenu Quebec publishes it.
+# Derivation: carried forward unchanged from the 2025 file; the 2026 form is not yet published.
+# Condition of TP-1 line 457 (Revenu Quebec TP-1.G-V (2025-12), guide, line 457): "If the total of your
+# net business income, your employment income subject to the QPIP and your insurable earnings as a
+# person responsible for a family-type resource or an intermediate resource is less than $2,000, carry
+# the amount from line 97 to line 457." No condition kind reads "less than", so this dataset copies the
+# test as its two complements: the count is 0 when the total is equal to or more than $2,000 and 1
+# when it is less, whatever cents it has. The result is a count, not a dollars-and-cents box, so there
+# is no rounding.
+family: ca-qc/tp1_line_457_conditions
+tax_year: 2026
+kind: conditions
+sources:
+  - Revenu Quebec TP-1.G-V (2025-12), guide, line 457
+rounding: none
+count_when_any_applies: "0"
+conditions:
+  - text: The total is equal to $2,000
+    parts:
+      - tests:
+          - {reads: amount, position: "1", relation: equal_to, than: "2000"}
+  - text: The total is more than $2,000
+    parts:
+      - tests:
+          - {reads: amount, position: "1", relation: more_than, than: "2000"}

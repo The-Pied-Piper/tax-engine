@@ -49,7 +49,7 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
+from tests.manifest_support import T1_LINE_10100_FORM, inputs_without_form
 
 D = Decimal
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
@@ -108,6 +108,8 @@ CASES = [
 def _part_files() -> Iterator[Path]:
     yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
     yield from sorted(FEDERAL_FORMS.rglob("t2204*.yaml"))
+    yield T1_LINE_10100_FORM
+    yield FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml"
     for name in CREDIT_PARTS:
         yield NL_PARTS / name
     yield LINE_PART

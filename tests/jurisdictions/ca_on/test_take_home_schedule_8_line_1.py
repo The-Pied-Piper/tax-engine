@@ -3,7 +3,7 @@ take-home manifest part wires it: the salary capped at the printed "(maximum $81
 
 The manifest part is loaded from the package. The header, the salary input and the form's export
 are made up here, because the shared scaffold owns them. The caller has no T4, so line 1 reads the
-salary typed once (T1 line 10100) in place of box 26.
+salary (T1 line 10100, the T1 employment income form's export) in place of box 26.
 """
 
 from __future__ import annotations
@@ -20,6 +20,7 @@ from tax_engine.jurisdictions.ca.catalog.rc381_cpp_qpp import (
     T4_CPP_PENSIONABLE_EARNINGS_OUTSIDE_QUEBEC,
 )
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
+from tests.manifest_support import T1_LINE_10100_PARTS
 
 D = Decimal
 PART = "schedule_8_line_1.yaml"
@@ -44,7 +45,7 @@ FORM = dedent("""\
 
 
 def line_1(take_home_service: TakeHomeService, salary: str) -> Decimal:
-    worksheets = take_home_service(HEADER, FORM, PART).compute(
+    worksheets = take_home_service(HEADER, FORM, *T1_LINE_10100_PARTS, PART).compute(
         JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
     )
     (sheet,) = worksheets["ca/schedule_8"]

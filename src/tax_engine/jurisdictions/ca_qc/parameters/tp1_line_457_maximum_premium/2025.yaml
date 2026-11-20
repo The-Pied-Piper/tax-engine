@@ -1,0 +1,10 @@
+# Revenu Quebec TP-1.G-V (2025-12), guide, line 457: "If the amount on line 97 is more than $484.12,
+# enter the overpayment (that is, the excess) on line 457." The printed $484.12 is taken as printed
+# and claimed whole, never recomputed from the rate and the maximum insurable earnings.
+family: ca-qc/tp1_line_457_maximum_premium
+tax_year: 2025
+kind: credit
+sources:
+  - Revenu Quebec TP-1.G-V (2025-12), guide, line 457
+rounding: {increment: "0.01", mode: half_up}
+amount: "484.12"

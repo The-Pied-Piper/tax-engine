@@ -475,6 +475,12 @@ Quebec (box 18 and box 55 of your T4 slips)": the given figure (`ca/t2204_premiu
 or, when none is given, 1.64% of the EI insurable earnings of line 1 (maximum $1,077.48), computed
 as line 10 is. Lines 6 and 9 read it as typed; the form prints no limit on line 4."""
 
+T2204_EMPLOYMENT_INCOME_LINE_10100 = AmountKind.declare(
+    CATALOG, "t2204_employment_income_line_10100", non_negative=True
+)
+"""Form T2204 line 1, the salary standing in for box 24 or box 14: T1 line 10100 (employment
+income), read as the T1 form's export."""
+
 T2204_LINE_1_COUNT = CountKind.declare(CATALOG, "t2204_line_1_count", non_negative=True)
 """Count of the note (1) on Form T2204 line 1 "If you have no self-employment earnings and your
 total EI insurable earnings on your T4 slips are less than $2,000, enter "0"": 0 when the note

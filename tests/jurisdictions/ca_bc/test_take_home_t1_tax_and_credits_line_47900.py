@@ -53,8 +53,9 @@ BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / 
 FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 T1_PARTS = (
     "t1_taxable_income_inputs.yaml",
-    "t1_taxable_income_line_10100.yaml",
-    "t1_taxable_income_line_10400.yaml",
+    "t1_employment_income.yaml",
+    "t1_employment_income_line_10100.yaml",
+    "t1_employment_income_line_10400.yaml",
     "t1_taxable_income_line_15000.yaml",
     "t1_taxable_income_line_23300.yaml",
     "t1_taxable_income_line_23400.yaml",
@@ -63,7 +64,7 @@ T1_PARTS = (
     "t1_taxable_income_line_25700_inputs.yaml",
     "t1_taxable_income_line_26000.yaml",
     "t1_taxable_income.yaml",
-    "t1_taxable_income_line_10400_inputs.yaml",
+    "t1_employment_income_line_10400_inputs.yaml",
 )
 HEADER = dedent("""\
     jurisdiction: CA-BC

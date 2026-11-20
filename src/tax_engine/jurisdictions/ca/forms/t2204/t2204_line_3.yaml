@@ -2,8 +2,9 @@
 # line 1 is the salary typed once (T1 line 10100), as the line 1 part describes, and line 2 is the
 # optional self-employment earnings input, left out when the caller has none.
 #
-# Step 1 adds line 1 and line 2. A blank line 2 counts as "0": the blank rule is keyed by the line 2
-# kind, so a blank in that part reads as 0 while a blank line 1 is still refused.
+# Step 1 adds line 1 and line 2. The form prints no rounding rule for the sum, so it is carried
+# exactly. A blank line 2 counts as "0": the blank rule is keyed by the line 2 kind, so a blank in
+# that part reads as 0 while a blank line 1 is still refused.
 #
 # Step 2 caps the sum at the printed maximum: the sum itself when it is under $65,700, else $65,700.
 form:
@@ -13,7 +14,7 @@ capabilities:
     title: "Insured pay plus self-employment and other earnings eligible for EI, before the limit"
     unit: ca/cad
     params:
-      rounding: ca/cent_rounding
+      rounding: ca/exact_rounding
     consumes:
       parts:
         - ca/t2204_line_1

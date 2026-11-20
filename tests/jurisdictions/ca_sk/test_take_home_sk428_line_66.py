@@ -52,7 +52,7 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
+from tests.manifest_support import T1_LINE_10100_FORM, inputs_without_form
 
 D = Decimal
 CENT = D("0.01")
@@ -150,6 +150,8 @@ def _part_files() -> Iterator[Path]:
     yield SK_PARTS / "salary.yaml"
     yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
     yield from sorted(FEDERAL_FORMS.rglob("t2204*.yaml"))
+    yield T1_LINE_10100_FORM
+    yield FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml"
     for name in CREDITS_PARTS:
         yield SK_PARTS / name
     for name in SK_LINE_PARTS:

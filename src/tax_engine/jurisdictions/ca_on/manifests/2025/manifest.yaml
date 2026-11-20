@@ -20,6 +20,7 @@ outputs:
   - ca-on/marginal_tax_rate
 capabilities: []
 imports:
+  - ca/t1_employment_income
   - ca/t1_taxable_income
   - ca/t1_tax_and_credits
   - ca/schedule_6

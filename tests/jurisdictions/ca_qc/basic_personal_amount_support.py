@@ -19,9 +19,10 @@ D = Decimal
 T1_FORM = "ca-qc/t1_taxable_income"
 TAX_FORM = "ca-qc/t1_tax_and_credits"
 STEP_3_PARTS = (
-    "t1_taxable_income_line_10400_inputs.yaml",
-    "t1_taxable_income_line_10100.yaml",
-    "t1_taxable_income_line_10400.yaml",
+    "t1_employment_income_line_10400_inputs.yaml",
+    "t1_employment_income.yaml",
+    "t1_employment_income_line_10100.yaml",
+    "t1_employment_income_line_10400.yaml",
     "t1_taxable_income_line_21.yaml",
     "t1_taxable_income_line_27_inputs.yaml",
     "t1_taxable_income_line_28.yaml",

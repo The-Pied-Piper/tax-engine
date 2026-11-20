@@ -1,4 +1,4 @@
-"""5005-R (2025) line 10400, other employment income, as the Quebec manifest part wires it.
+"""5005-R (2025) line 10100, employment income, as the Quebec manifest part wires it.
 
 The step is one core/sum over its one input, carried as it is (the form prints no rounding on this
 line), and it prints the line once, with its printed title and reference. The header and the
@@ -11,20 +11,15 @@ from decimal import Decimal
 from textwrap import dedent
 from typing import Any
 
-import pytest
-
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
-from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME, OTHER_EMPLOYMENT_INCOME
-from tax_engine.jurisdictions.ca_qc.catalog import OTHER_EMPLOYMENT_INCOME_LINE_10400
+from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca_qc.catalog import EMPLOYMENT_INCOME_LINE_10100
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 
 D = Decimal
-PARTS = (
-    "t1_taxable_income_line_10400_inputs.yaml",
-    "t1_taxable_income_line_10400.yaml",
-)
+PARTS = ("t1_employment_income_line_10100.yaml",)
 
 HEADER = dedent("""\
     jurisdiction: CA-QC
@@ -39,10 +34,10 @@ HEADER = dedent("""\
     """)
 FORM = dedent("""\
     form:
-      name: ca-qc/t1_taxable_income
+      name: ca-qc/t1_employment_income
       required: true
       exports:
-        - ca-qc/other_employment_income_line_10400
+        - ca-qc/employment_income_line_10100
     capabilities: []
     """)
 
@@ -51,22 +46,18 @@ def sheet_of(take_home_service: TakeHomeService, *artifacts: Artifact[Any]) -> W
     worksheets = take_home_service(HEADER, FORM, *PARTS).compute(
         JurisdictionCode("CA-QC"), 2025, Artifact(EMPLOYMENT_INCOME, D("70000")), *artifacts
     )
-    (sheet,) = worksheets["ca-qc/t1_taxable_income"]
+    (sheet,) = worksheets["ca-qc/t1_employment_income"]
     return sheet
 
 
-@pytest.mark.parametrize(("other", "expected"), [(None, "0"), ("1500", "1500.00")])
-def test_line_10400_is_the_other_income_and_zero_when_none_is_given(
-    take_home_service: TakeHomeService, other: str | None, expected: str
-) -> None:
-    given = [] if other is None else [Artifact(OTHER_EMPLOYMENT_INCOME, D(other))]
-    sheet = sheet_of(take_home_service, *given)
-    assert sheet.get(OTHER_EMPLOYMENT_INCOME_LINE_10400).value == D(expected)
+def test_line_10100_is_the_salary(take_home_service: TakeHomeService) -> None:
+    sheet = sheet_of(take_home_service)
+    assert sheet.get(EMPLOYMENT_INCOME_LINE_10100).value == D("70000.00")
 
 
-def test_line_10400_is_listed_once_with_its_title_and_reference(
+def test_line_10100_is_listed_once_with_its_title_and_reference(
     take_home_service: TakeHomeService,
 ) -> None:
     sheet = sheet_of(take_home_service)
-    assert sheet.reference("other_employment_income_line_10400") == "10400"
-    assert sheet.reference("other_employment_income") is None
+    assert sheet.reference("employment_income_line_10100") == "10100"
+    assert sheet.title("employment_income_line_10100") == "Employment income"

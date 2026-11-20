@@ -1,9 +1,9 @@
 """Revenu Quebec TP-1 (2025) line 465, "Add lines 451.2 through 463. Income tax paid and other
 credits", as the Quebec take-home manifest wires it: one `core/sum`, rounded half-up to the cent by
-`ca-qc/cent_rounding`. Line 456 is a step and lines 451.2, 451.3, 452 to 455, 457 to 460, 462 and
-463 are optional inputs, read as 0 when left blank. The chain runs the real Schedule P parts (see
-`tp1_totals_support.py`). The expected figures are hand-computed from the printed lines, not a
-Revenu Quebec example: line 456 is 584.02 at $20,000 and 0.00 at the other salaries."""
+`ca-qc/cent_rounding`. Lines 456 and 457 are steps and lines 451.2, 451.3, 452 to 455, 458 to 460,
+462 and 463 are optional inputs, read as 0 when left blank. The chain runs the real Schedule P
+parts (see `tp1_totals_support.py`). The expected figures are hand-computed from the printed lines,
+not a Revenu Quebec example: line 456 is 584.02 at $20,000 and 0.00 at the other salaries."""
 
 from __future__ import annotations
 
@@ -23,7 +23,6 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     TP1_LINE_453,
     TP1_LINE_454,
     TP1_LINE_455,
-    TP1_LINE_457,
     TP1_LINE_458,
     TP1_LINE_459,
     TP1_LINE_460,
@@ -64,7 +63,6 @@ OPTIONAL = (
     "ca-qc/tp1_line_453",
     "ca-qc/tp1_line_454",
     "ca-qc/tp1_line_455",
-    "ca-qc/tp1_line_457",
     "ca-qc/tp1_line_458",
     "ca-qc/tp1_line_459",
     "ca-qc/tp1_line_460",
@@ -74,6 +72,7 @@ OPTIONAL = (
 PARTS = [
     *OPTIONAL[:6],
     "ca-qc/tp1_work_premium_tax_credits_line_456",
+    "ca-qc/tp1_line_457",
     *OPTIONAL[6:],
 ]
 
@@ -96,7 +95,6 @@ def test_every_optional_line_is_added(take_home_service: TakeHomeService) -> Non
         TP1_LINE_453,
         TP1_LINE_454,
         TP1_LINE_455,
-        TP1_LINE_457,
         TP1_LINE_458,
         TP1_LINE_459,
         TP1_LINE_460,
@@ -108,8 +106,9 @@ def test_every_optional_line_is_added(take_home_service: TakeHomeService) -> Non
         take_home_service, "20000", totals_form(IDENTIFIER), LINE_465_PARTS, *given
     )
 
-    # 1 + 2 + ... + 12 = 78, and the work premium of 584.02.
-    assert str(sheet.get(TP1_INCOME_TAX_PAID_AND_OTHER_CREDITS_LINE_465).value) == "662.02"
+    # 1 + 2 + ... + 11 = 66, the work premium of 584.02 and a line 457 of 0 (the premium on
+    # $20,000 is under the maximum and the total is above $2,000).
+    assert str(sheet.get(TP1_INCOME_TAX_PAID_AND_OTHER_CREDITS_LINE_465).value) == "650.02"
 
 
 def test_an_amount_with_cents_is_added_whole(take_home_service: TakeHomeService) -> None:

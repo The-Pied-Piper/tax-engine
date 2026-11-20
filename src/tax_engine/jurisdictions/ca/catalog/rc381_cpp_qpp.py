@@ -28,11 +28,18 @@ slips (if box 26 is blank, enter the amount from box 14) (maximum $81,200 per sl
 prints "Total CPP pensionable earnings from box 26 of all of your T4 slips where the province of
 employment is not Quebec". In the take-home build the
 caller has no T4, so Schedule 8 line 1 (`schedule_8_line_1.yaml`) computes it: the salary (T1 line
-10100, `ca/employment_income`) capped at the printed $81,200 by `core/capped_amount` with dataset
-`ca/cpp_pensionable_earnings_per_slip_maximum`, standing in for box 26 of the one slip a single
-salaried filer has. Elsewhere it is the one figure both forms take (Schedule 8 and Form RC381 are
-an exclusive group), and the form's box 14 fallback and per-slip maximum are the filer's to apply;
-the check of the box 26 total (`ca/t4_cpp_pensionable_earnings_slip_checked`) reads this amount."""
+10100, read as the T1 employment income form's export) capped at the printed $81,200 by
+`core/capped_amount` with dataset `ca/cpp_pensionable_earnings_per_slip_maximum`, standing in for
+box 26 of the one slip a single salaried filer has. Elsewhere it is the one figure both forms take
+(Schedule 8 and Form RC381 are an exclusive group), and the form's box 14 fallback and per-slip
+maximum are the filer's to apply; the check of the box 26 total
+(`ca/t4_cpp_pensionable_earnings_slip_checked`) reads this amount."""
+
+SCHEDULE_8_EMPLOYMENT_INCOME_LINE_10100 = AmountKind.declare(
+    CATALOG, "schedule_8_employment_income_line_10100", non_negative=True
+)
+"""Schedule 8 line 1, the salary standing in for box 26: T1 line 10100 (employment income), read as
+the T1 employment income form's export, before the per-slip maximum."""
 
 T4_CPP_SLIP_COUNT = CountKind.declare(CATALOG, "t4_cpp_slip_count", non_negative=True)
 """Number of T4 slips with CPP pensionable earnings, Schedule 8 Part 3 line 1 and Form RC381 Part 3

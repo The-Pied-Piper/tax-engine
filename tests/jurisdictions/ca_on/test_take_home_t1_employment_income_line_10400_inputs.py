@@ -20,7 +20,7 @@ from tests.jurisdictions.ca_on.conftest import TakeHomeService
 D = Decimal
 OTHER_EMPLOYMENT_INCOME = "ca/other_employment_income"
 PRINTED_BASIS = "Line 2 and line 10400: Other employment income"
-PART = "t1_taxable_income_line_10400_inputs.yaml"
+PART = "t1_employment_income_line_10400_inputs.yaml"
 HEADER = """\
 jurisdiction: CA-ON
 version: 1
@@ -30,7 +30,7 @@ capabilities: []
 """
 FORM = """\
 form:
-  name: ca/t1_taxable_income
+  name: ca/t1_employment_income
   required: true
   exports:
     - ca/other_employment_income

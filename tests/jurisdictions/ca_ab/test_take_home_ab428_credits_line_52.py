@@ -49,7 +49,7 @@ from tests.jurisdictions.ca_ab.support import (
     alberta_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
+from tests.manifest_support import T1_LINE_10100_FORM, inputs_without_form
 
 D = Decimal
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
@@ -83,6 +83,8 @@ def _part_files() -> Iterator[Path]:
     yield ALBERTA_PARTS / "salary.yaml"
     yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
     yield from sorted(FEDERAL_FORMS.rglob("t2204*.yaml"))
+    yield T1_LINE_10100_FORM
+    yield FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml"
     yield ALBERTA_PARTS / "ab428_line_16.yaml"
     yield ALBERTA_PARTS / "ab428_line_25.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_27.yaml"

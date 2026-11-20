@@ -29,6 +29,7 @@ from tax_engine.jurisdictions.ca.catalog.refund import (
     T2204_SELF_EMPLOYMENT_EARNINGS,
 )
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
+from tests.manifest_support import T1_LINE_10100_PARTS
 
 D = Decimal
 
@@ -71,7 +72,7 @@ def t2204(
     ]
     if self_employment is not None:
         starting.append(Artifact(T2204_SELF_EMPLOYMENT_EARNINGS, D(self_employment)))
-    (sheet,) = take_home_service(HEADER, FORM, LINE_1_PART, PART).compute(
+    (sheet,) = take_home_service(HEADER, FORM, *T1_LINE_10100_PARTS, LINE_1_PART, PART).compute(
         JurisdictionCode("CA-ON"), 2025, *starting
     )["ca/t2204"]
     return sheet
@@ -126,14 +127,17 @@ def test_a_blank_line_2_counts_as_0(
 
 
 @pytest.mark.parametrize(
-    ("salary", "printed"),
+    ("salary", "expected"),
     [("70000", "70000.00"), ("20000", "20000.00")],
 )
-def test_line_1_plus_line_2_prints_cents_at_70000_and_20000(
-    take_home_service: TakeHomeService, salary: str, printed: str
+def test_line_1_plus_line_2_is_carried_exactly_at_70000_and_20000(
+    take_home_service: TakeHomeService, salary: str, expected: str
 ) -> None:
-    # The sum step takes its cent rule from the shared rounding dataset; line 2 is left out.
+    # The form prints no rounding rule for the sum, so it is carried exactly; line 2 is left out.
     total = t2204(take_home_service, salary).get(T2204_LINE_1_PLUS_2).value
 
-    assert str(total) == printed
-    assert total.as_tuple().exponent == -2
+    assert total == D(expected)
+
+
+def test_line_1_plus_line_2_is_carried_unrounded(take_home_service: TakeHomeService) -> None:
+    assert t2204(take_home_service, "2000.004").get(T2204_LINE_1_PLUS_2).value == D("2000.004")

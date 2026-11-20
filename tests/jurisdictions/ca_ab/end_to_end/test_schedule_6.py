@@ -61,6 +61,7 @@ HEADER_TEMPLATE = dedent("""\
         unit: ca/cad
         required: true
     imports:
+      - ca/t1_employment_income
       - ca/t1_taxable_income
       - {schedule_6}
       - ca/schedule_8

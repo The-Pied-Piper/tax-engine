@@ -1,8 +1,9 @@
 """The 2026 Canada employment amount cap, taken from T4127 (122nd edition, January 2026).
 
 T4127 Table 8.2 "Other rates and amounts for 2026", row Federal: CEA 1,501; formula K4 =
-0.14 x $1,501. A plain amount (the `amount` kind) as in 2025, rounded half-up to the cent. The
-dataset is provisional until the 2026 T1 (5000-R) is published.
+0.14 x $1,501. A plain amount (the `amount` kind) as in 2025,
+carried as it is (no printed rounding rule). The dataset is provisional until the 2026 T1
+(5000-R) is published.
 """
 
 from __future__ import annotations
@@ -16,7 +17,7 @@ from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
-from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.core.capabilities.capped_amount import CappedAmount
 
@@ -42,7 +43,7 @@ def test_2026_cap_is_1501() -> None:
     data = SOURCE.get(FAMILY, 2026, AMOUNT)
 
     assert data.values == Amount(D("1501"))
-    assert data.rounding == RoundTo(D("0.01"), RoundingMode.HALF_UP)
+    assert data.rounding == NO_ROUNDING
 
 
 def test_2026_cap_cites_t4127() -> None:

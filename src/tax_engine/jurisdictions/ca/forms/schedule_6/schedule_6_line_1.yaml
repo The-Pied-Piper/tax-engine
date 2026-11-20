@@ -13,14 +13,14 @@ capabilities:
     title: "Amount from line 10100 of the return"
     unit: ca/cad
     consumes:
-      records: ca/t1_taxable_income.employment_income_line_10100
+      records: ca/t1_employment_income.employment_income_line_10100
     produces:
       output: ca/cwb_employment_income_line_10100
   - name: core/record_total
     title: "Amount from line 10400 of the return"
     unit: ca/cad
     consumes:
-      records: ca/t1_taxable_income.other_employment_income_line_10400
+      records: ca/t1_employment_income.other_employment_income_line_10400
     produces:
       output: ca/cwb_other_employment_income_line_10400
   - name: core/sum
@@ -28,7 +28,7 @@ capabilities:
     reference: "1"
     unit: ca/cad
     params:
-      rounding: ca/cent_rounding
+      rounding: ca/exact_rounding
     consumes:
       parts: [ca/cwb_employment_income_line_10100, ca/cwb_other_employment_income_line_10400]
     produces:
