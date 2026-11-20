@@ -194,6 +194,10 @@ SCHEDULE_U_LINE_11 = AmountKind.declare(CATALOG, "schedule_u_line_11", non_negat
 """Schedule U line 11 "Multiply line 10 by 0.156250": line 10 (the TP-1 line 98 QPP contribution) at
 the printed rate, rounded half-up to the cent."""
 
+SCHEDULE_U_LINE_10 = AmountKind.declare(CATALOG, "schedule_u_line_10", non_negative=True)
+"""Schedule U line 10 "QPP contribution (line 98 of your return)": the TP-1 line 98 figure, read
+from the TP-1 income form."""
+
 SCHEDULE_U_PENSIONABLE_SALARY_LINE_12 = AmountKind.declare(
     CATALOG, "schedule_u_pensionable_salary_line_12", non_negative=True
 )
