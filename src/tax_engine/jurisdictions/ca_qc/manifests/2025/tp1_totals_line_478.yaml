@@ -1,0 +1,19 @@
+# TP-1 (2025) line 478: "Subtract line 476 from line 474. Refund = 478" (page 5). One core/subtract,
+# rounded half-up to the cent through ca-qc/cent_rounding. Line 476 is an optional input, read as 0
+# when left blank. The form prints no floor, so the figure is signed as given.
+form:
+  name: ca-qc/tp1_totals
+capabilities:
+  - name: core/subtract
+    title: "Refund"
+    reference: "478"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/tp1_line_474
+      less: ca-qc/tp1_refund_transferred_to_spouse_line_476
+    blank:
+      less: "0"
+    produces:
+      output: ca-qc/tp1_refund_line_478

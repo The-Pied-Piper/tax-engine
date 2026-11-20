@@ -1934,3 +1934,7 @@ TP1_AMOUNT_TRANSFERRED_BY_SPOUSE_LINE_477 = AmountKind.declare(
 )
 """TP-1 line 477 "Amount transferred by your spouse": an optional input a single filer does not
 give; line 479 reads a blank as 0 (`tp1_totals_line_477_input.yaml`)."""
+
+TP1_REFUND_LINE_478 = AmountKind.declare(CATALOG, "tp1_refund_line_478")
+"""TP-1 line 478 "Subtract line 476 from line 474. Refund": rounded half-up to the cent, signed as
+given. Produced by one core/subtract (`tp1_totals_line_478.yaml`) and exported by the form."""
