@@ -1,0 +1,24 @@
+# Quebec 2025 take-home manifest: the return's identity and the federal forms it imports. The caller
+# gives the gross salary and nothing else. Quebec's own forms are parts beside this one, so a line
+# ticket adds only its own part file; the federal forms are imported by name below, their parts in
+# the `ca` package (`ca/forms/<name>/`).
+#
+# Quebec has two returns: the federal T1 for Quebec residents (CRA 5005-R, whose line numbers shift
+# by one after line 49) and Revenu Quebec's TP-1. Both are built as Quebec's own form parts, so
+# `ca/t1_taxable_income` and `ca/t1_tax_and_credits` are not imported. Schedules 8 and 6 and the EI
+# form (T2204) are the shared federal forms; each gets its Quebec `datasets` swap from its own
+# ticket.
+#
+# The `outputs` list is set by the Quebec return summary ticket. Quebec is not yet listed in
+# `registrations.JURISDICTIONS`; that is done by the end-to-end ticket, last, after the manifest is
+# complete.
+jurisdiction: CA-QC
+version: 1
+valid_from_tax_year: 2025
+# The title is the engine's own wording for the default form, not a printed form heading.
+title: Return summary
+capabilities: []
+imports:
+  - ca/schedule_8
+  - ca/schedule_6
+  - ca/t2204
