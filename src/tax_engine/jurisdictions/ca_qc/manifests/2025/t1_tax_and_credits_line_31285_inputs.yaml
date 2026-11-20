@@ -1,0 +1,13 @@
+# 5005-R (2025) line 98 input a salary-only caller does not give.
+# Line 98 and line 31285: "Home accessibility expenses (use Federal Worksheet) (maximum $20,000)" (page 6). A salary-only filer has no such amount, so it is an
+# optional input left blank; the sum that adds it reads a blank as 0.
+form:
+  name: ca-qc/t1_tax_and_credits
+inputs:
+  - name: ca-qc/home_accessibility_expenses_line_98
+    title: "Home accessibility expenses"
+    reference: "31285"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Home accessibility expenses (use Federal Worksheet) (maximum $20,000)"

@@ -1,0 +1,13 @@
+# 5005-R (2025) line 88 input a salary-only caller does not give.
+# Line 88 and line 31000: "on self-employment income and other earnings" (page 6). A salary-only filer has no such amount, so it is an
+# optional input left blank; the sum that adds it reads a blank as 0.
+form:
+  name: ca-qc/t1_tax_and_credits
+inputs:
+  - name: ca-qc/qpp_base_self_employment_line_88
+    title: "Base CPP or QPP contributions on self-employment income and other earnings"
+    reference: "31000"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "on self-employment income and other earnings"
