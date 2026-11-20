@@ -21,27 +21,25 @@ from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_qc.catalog import (
     SCHEDULE_U_LINE_11,
-    TP1_QPP_CONTRIBUTION_LINE_98,
 )
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
+from tests.jurisdictions.ca_qc.tp1_net_income_support import TP1_INCOME_PARTS
 
 D = Decimal
 
-PARTS = ("tp1_schedule_u_line_11.yaml",)
+PARTS = (
+    *TP1_INCOME_PARTS,
+    "tp1_schedule_u_line_10.yaml",
+    "tp1_schedule_u_line_11.yaml",
+)
 
 # The TP-1 figures (lines 98 and 98.1) that Schedule U reads, as the TP-1 income steps give them
 # for each salary.
-UPSTREAM_98 = {"20000": "1056.00", "70000": "4256.00", "200000": "4339.20", "3000": "0"}
 
 HEADER = dedent("""\
     jurisdiction: CA-QC
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/employment_income
-        required: true
-      - name: ca-qc/tp1_qpp_contribution_line_98
-        required: true
     outputs:
       - ca/employment_income
     capabilities: []
@@ -62,7 +60,6 @@ def schedule_u(take_home_service: TakeHomeService, salary: str) -> Worksheet:
         JurisdictionCode("CA-QC"),
         2025,
         Artifact(EMPLOYMENT_INCOME, D(salary)),
-        Artifact(TP1_QPP_CONTRIBUTION_LINE_98, D(UPSTREAM_98[salary])),
     )["ca-qc/tp1_schedule_u"]
     return sheet
 

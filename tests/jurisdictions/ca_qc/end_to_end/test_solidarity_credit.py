@@ -27,10 +27,6 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     SOLIDARITY_CREDIT_AFTER_REDUCTION,
     SOLIDARITY_FAMILY_INCOME,
     SOLIDARITY_MAXIMUM_BEFORE_REDUCTION,
-    TP1_ADDITIONAL_QPP_CONTRIBUTION_LINE_98_2,
-    TP1_PENSIONABLE_SALARY_LINE_98_1,
-    TP1_QPIP_PREMIUM_LINE_97,
-    TP1_QPP_CONTRIBUTION_LINE_98,
 )
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
 from tests.jurisdictions.ca_qc.solidarity_maximum_support import (
@@ -43,9 +39,6 @@ from tests.jurisdictions.ca_qc.solidarity_maximum_support import (
 from tests.jurisdictions.ca_qc.support import quebec_kinds
 from tests.jurisdictions.ca_qc.tp1_net_income_support import (
     HEADER,
-    UPSTREAM_98,
-    UPSTREAM_98_1,
-    UPSTREAM_98_2,
     UPSTREAM_PARTS,
 )
 
@@ -87,10 +80,6 @@ def sheet(
     its default)."""
     given: list[Artifact[Any]] = [
         Artifact(EMPLOYMENT_INCOME, D(salary)),
-        Artifact(TP1_QPP_CONTRIBUTION_LINE_98, D(UPSTREAM_98[salary])),
-        Artifact(TP1_ADDITIONAL_QPP_CONTRIBUTION_LINE_98_2, D(UPSTREAM_98_2[salary])),
-        Artifact(TP1_PENSIONABLE_SALARY_LINE_98_1, D(UPSTREAM_98_1[salary])),
-        Artifact(TP1_QPIP_PREMIUM_LINE_97, D("0")),
     ]
     for name, answer in ((ALONE, alone), (TENANT, tenant), (OCCUPANTS, occupants)):
         if answer is not None:
