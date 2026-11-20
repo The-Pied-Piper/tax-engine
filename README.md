@@ -113,11 +113,11 @@ Roadmap: more forms and lines, and the other provinces and territories. Forms ar
 
 ## Disclaimer and limits
 
-tax-engine is not tax advice and is not an official CRA product. It comes with no warranty, as the Apache-2.0 license says.
+tax-engine is not tax advice and is not an official CRA or Revenu Quebec product. It comes with no warranty, as the Apache-2.0 license says.
 
 It covers tax years 2025 and 2026 (2026 is provisional), Canada (federal), Ontario, Alberta, British Columbia, Manitoba, Saskatchewan, Newfoundland and Labrador and Quebec only, and only the forms and lines listed under Coverage. A return with items the engine does not model will not come out right. The take-home example assumes a single filer with salary as the only income.
 
-Check any result against the CRA's own forms or with a professional before relying on it.
+Check any result against the CRA's own forms (and Revenu Quebec's for Quebec) or with a professional before relying on it.
 
 ## Contributing
 

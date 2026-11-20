@@ -18,8 +18,8 @@ Each printed figure of the chain is one test, over the three salaries and the sc
 - TP-1 line 456, "Tax credits respecting the work premium";
 - the solidarity tax credit of July 2026 to June 2027, its own yearly amount;
 - 5005-R line 45300, the Canada workers benefit.
-The figures are hand-computed from the printed lines (the return summary tests carry the working),
-not a CRA or Revenu Quebec example.
+The figures are hand-computed from the printed lines of the two returns, not a CRA or Revenu
+Quebec example.
 """
 
 from __future__ import annotations
