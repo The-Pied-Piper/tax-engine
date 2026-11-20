@@ -47,3 +47,15 @@ SOLIDARITY_REDUCTION_THRESHOLD = AmountKind.declare(
 """Solidarity tax credit, reduction threshold ("seuil de réduction", 43195, Table C.9 of fiche
 110201, July 2026 to June 2027, note 4: rounded to the nearest $5): the printed figure, claimed
 whole."""
+
+SOLIDARITY_FAMILY_INCOME = AmountKind.declare(
+    CATALOG, "solidarity_family_income", non_negative=True
+)
+"""Solidarity tax credit, family income (TP-1 line 275, fiche 110201): the income the reduction is
+figured on, consumed here by name."""
+
+SOLIDARITY_INCOME_OVER_THRESHOLD = AmountKind.declare(
+    CATALOG, "solidarity_income_over_threshold", non_negative=True
+)
+"""Solidarity tax credit, family income over the reduction threshold (fiche 110201, Table C.9):
+family income less the printed threshold, not below 0."""

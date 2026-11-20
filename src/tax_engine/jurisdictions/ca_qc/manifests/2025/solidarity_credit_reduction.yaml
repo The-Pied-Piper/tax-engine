@@ -1,0 +1,20 @@
+# Quebec solidarity tax credit, the reduction rule (fiche 110201, Table C.9, and the Revenu Quebec
+# page "Calculation of the Credit"): the maximum is reduced by 6% of each dollar of family income
+# above the reduction threshold, or by 3% when only one of the three components is received, and the
+# credit cannot be less than the QST component alone reduced the same way (owner ruling).
+# The figures are a listed check: the fiche is a web page. Family income, the maximum before
+# reduction, the QST component amount and the housing yes/no count are consumed by name; the
+# solidarity wiring produces them. Steps mirror Schedule 6 lines 18 to 28 (excess, rate, subtract not
+# below zero) and the NL428 line 20 greater/lesser-of construction.
+form:
+  name: ca-qc/solidarity_credit
+capabilities:
+  - name: core/subtract_not_below_zero
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/solidarity_family_income
+      less: ca-qc/solidarity_reduction_threshold
+    produces:
+      output: ca-qc/solidarity_income_over_threshold
