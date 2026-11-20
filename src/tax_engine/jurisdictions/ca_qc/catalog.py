@@ -8,7 +8,7 @@ Amounts are `Decimal`, non-negative unless the form prints no floor. Federal kin
 from __future__ import annotations
 
 from tax_engine.domain.artifact import ArtifactCatalog
-from tax_engine.domain.kinds import AmountKind
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca_qc import NAMESPACE
 
@@ -72,3 +72,13 @@ SOLIDARITY_REDUCTION_AT_ONE_COMPONENT_RATE = AmountKind.declare(
 """Solidarity tax credit, reduction at 3% (fiche 110201, Table C.9): 3% of the family income over
 the reduction threshold, rounded half-up to the cent, for a person who receives only one of the
 three components."""
+
+SOLIDARITY_HOUSING_RECEIVED = CountKind.declare(
+    CATALOG, "solidarity_housing_received", non_negative=True
+)
+"""Solidarity tax credit, housing component received (fiche 110201): 1 when the housing component
+is received, 0 when it is not; consumed here by name."""
+
+SOLIDARITY_REDUCTION = AmountKind.declare(CATALOG, "solidarity_reduction", non_negative=True)
+"""Solidarity tax credit, reduction chosen (fiche 110201, Table C.9): the 3% reduction when the
+housing component is not received (one component only), else the 6% reduction."""

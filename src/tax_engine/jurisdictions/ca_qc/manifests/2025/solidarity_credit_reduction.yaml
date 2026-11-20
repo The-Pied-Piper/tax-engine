@@ -34,3 +34,11 @@ capabilities:
       base: ca-qc/solidarity_income_over_threshold
     produces:
       output: ca-qc/solidarity_reduction_at_one_component_rate
+  - name: core/choose_by_count
+    unit: ca/cad
+    consumes:
+      count: ca-qc/solidarity_housing_received
+      when_none: ca-qc/solidarity_reduction_at_one_component_rate
+      when_any: ca-qc/solidarity_reduction_at_rate
+    produces:
+      output: ca-qc/solidarity_reduction
