@@ -1,9 +1,10 @@
 """Shared helpers of the Schedule K Part C line tests for lines 85 to 98.
 
-Lines 85 to 98 read line 84 of Part C and boxes 60 to 62 of Part B. Most tests give those four
-figures straight to the form (the header takes them as inputs), so a test can pick the months
-without going through line 50. The salary tests run the real Part A, Part B and Part C chains from a
-salary, for the default answer to line 50 (not covered) and for the answer yes (covered). Every
+Lines 85 to 98 read line 83 of Part C (line 84 is a copy of it) and boxes 60 to 62 of Part B.
+Most tests give those four figures straight to the form (the header takes them as inputs), so a test
+can pick the months without going through line 50. The salary tests run the real Part A, Part B and
+Part C chains from a salary, for the default answer to line 50 (not covered) and for the answer yes
+(covered). Every
 figure below is hand-computed from the printed lines, not an official example.
 """
 
@@ -20,11 +21,11 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca_qc.catalog import (
+    SCHEDULE_K_COLUMN_PREMIUM_LINE_83,
     SCHEDULE_K_GROUP_PLAN_COVERED_LINE_50,
     SCHEDULE_K_MONTHS_JANUARY_TO_JUNE_BOX_60,
     SCHEDULE_K_MONTHS_JULY_TO_DECEMBER_BOX_61,
     SCHEDULE_K_MONTHS_TOTAL_BOX_62,
-    SCHEDULE_K_PREMIUM_LINE_84,
 )
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
 from tests.jurisdictions.ca_qc.schedule_k_part_c_support import PART_A, PART_C
@@ -55,7 +56,7 @@ PART_D = (
     "tp1_schedule_k_line_98.yaml",
 )
 INPUTS = (
-    SCHEDULE_K_PREMIUM_LINE_84,
+    SCHEDULE_K_COLUMN_PREMIUM_LINE_83,
     SCHEDULE_K_MONTHS_JANUARY_TO_JUNE_BOX_60,
     SCHEDULE_K_MONTHS_JULY_TO_DECEMBER_BOX_61,
     SCHEDULE_K_MONTHS_TOTAL_BOX_62,
@@ -85,8 +86,8 @@ def unconsumed(parts: tuple[str, ...]) -> tuple[str, ...]:
 
 
 def header(parts: tuple[str, ...]) -> str:
-    """A test header that takes line 84 and boxes 60 to 62; those no part reads are its outputs, or
-    line 84 when every one is read."""
+    """A test header that takes line 83 and boxes 60 to 62; those no part reads are its outputs, or
+    line 83 when every one is read."""
     consumed: set[str] = set()
     for step in _steps(parts):
         for value in (step.get("consumes") or {}).values():
@@ -107,11 +108,11 @@ def header(parts: tuple[str, ...]) -> str:
     )
 
 
-# Printed lines 85 to 98 for a line 84, box 60 and box 61 given straight to the form (box 62 is
-# their sum): (line 84, box 60, box 61) -> (85, 86, product of box 60, product of box 61, 88, 89,
-# 90, 98). Line 85 is line 84 times box 62 over 12, rounded once half-up to the cent. The products
-# are box 60 times $62.00 and box 61 times $63.83. Line 90 is the lesser of lines 86 and 89; line 98
-# is line 90 with a spouse premium of 0.
+# Printed lines 85 to 98 for a line 83, box 60 and box 61 given straight to the form (box 62 is
+# their sum): (line 83, box 60, box 61) -> (85, 86, product of box 60, product of box 61, 88, 89,
+# 90, 98). Line 85 is line 83 (line 84) times box 62 over 12, rounded once half-up to the cent.
+# The products are box 60 times $62.00 and box 61 times $63.83. Line 90 is the lesser of lines 86
+# and 89; line 98 is line 90 with a spouse premium of 0.
 COLUMNS = {
     ("0.00", "0", "0"): ("0.00", "0.00", "0.00", "0.00", "0.00", "755.00", "0.00", "0.00"),
     ("766.00", "0", "0"): ("0.00", "766.00", "0.00", "0.00", "0.00", "755.00", "755.00", "755.00"),
@@ -158,7 +159,7 @@ COLUMNS = {
     ),
     ("0.01", "3", "3"): ("0.01", "0.00", "186.00", "191.49", "377.49", "377.51", "0.00", "0.00"),
 }
-# The same lines for the three salaries, by the answer to line 50: line 84 is 0.00, 766.00 and
+# The same lines for the three salaries, by the answer to line 50: line 83 is 0.00, 766.00 and
 # 766.00; the default answer (not covered, no months) and the answer yes (covered, 12 months).
 SALARY_COLUMNS = {
     ("20000", "default"): ("0.00", "0.00", "0.00", "0.00", "0.00", "755.00", "0.00", "0.00"),
@@ -192,12 +193,12 @@ INDEX = {"85": 0, "86": 1, "p60": 2, "p61": 3, "88": 4, "89": 5, "90": 6, "98": 
 def part_d(
     take_home_service: TakeHomeService, key: tuple[str, str, str], parts: tuple[str, ...]
 ) -> Worksheet:
-    """The Schedule K worksheet of `parts` for a line 84 and boxes 60 and 61 given straight in."""
+    """The Schedule K worksheet of `parts` for a line 83 and boxes 60 and 61 given straight in."""
     line_84, box_60, box_61 = key
     (sheet,) = take_home_service(header(parts), form_part(unconsumed(parts)), *parts).compute(
         JurisdictionCode("CA-QC"),
         2025,
-        Artifact(SCHEDULE_K_PREMIUM_LINE_84, D(line_84)),
+        Artifact(SCHEDULE_K_COLUMN_PREMIUM_LINE_83, D(line_84)),
         Artifact(SCHEDULE_K_MONTHS_JANUARY_TO_JUNE_BOX_60, D(box_60)),
         Artifact(SCHEDULE_K_MONTHS_JULY_TO_DECEMBER_BOX_61, D(box_61)),
         Artifact(SCHEDULE_K_MONTHS_TOTAL_BOX_62, D(box_60) + D(box_61)),
@@ -212,7 +213,7 @@ def salary_sheet(
     parts: tuple[str, ...],
     *extra: tuple[AmountKind, str],
 ) -> Worksheet:
-    """The Schedule K worksheet of Parts A and B, Part C to line 84 and the Part D `parts`, run
+    """The Schedule K worksheet of Parts A and B, Part C to line 83 and the Part D `parts`, run
     from a salary; `answer` is "default" (line 50 left out) or "yes"; `extra` gives optional
     inputs."""
     given: list[tuple[AmountKind | CountKind, str]] = []

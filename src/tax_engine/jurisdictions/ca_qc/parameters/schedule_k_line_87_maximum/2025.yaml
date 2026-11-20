@@ -1,6 +1,6 @@
 # Revenu Quebec TP-1.D.K-V (2025-12), Schedule K, Part C, line 87: "Maximum premium for 2025 ... 87
 # 755 00". The printed figure is 755.00. Taken as printed and claimed whole, never recomputed from
-# the line 84 maximum of 766; half-up to the cent changes nothing.
+# the line 83 maximum of 766; half-up to the cent changes nothing.
 family: ca-qc/schedule_k_line_87_maximum
 tax_year: 2025
 kind: credit

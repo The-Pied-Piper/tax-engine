@@ -1741,20 +1741,19 @@ SCHEDULE_K_COLUMN_CONSTANT_LINE_82 = AmountKind.declare(
 falls in (0.00 and 392.00), taken as printed. One core/bracket_column_tax_at_start
 (`tp1_schedule_k_line_82.yaml`)."""
 
+SCHEDULE_K_COLUMN_PREMIUM_BEFORE_MAXIMUM = AmountKind.declare(
+    CATALOG, "schedule_k_column_premium_before_maximum", non_negative=True
+)
+"""Schedule K line 83, "Add lines 81 and 82 (maximum $766)", before the maximum: the two lines
+added, rounded half-up to the cent. One core/sum, the first step of `tp1_schedule_k_line_83.yaml`;
+engine-internal, not a line of the form. It is above 766 for a line 48 over about $8,180."""
+
 SCHEDULE_K_COLUMN_PREMIUM_LINE_83 = AmountKind.declare(
     CATALOG, "schedule_k_column_premium_line_83", non_negative=True
 )
-"""Schedule K line 83, "Add lines 81 and 82 (maximum $766)": the two lines added, rounded half-up to
-the cent. One core/sum (`tp1_schedule_k_line_83.yaml`); line 84 applies the printed maximum, so
-this figure is above 766 for a line 48 over about $8,180."""
-
-SCHEDULE_K_PREMIUM_LINE_84 = AmountKind.declare(
-    CATALOG, "schedule_k_premium_line_84", non_negative=True
-)
-"""Premium, Schedule K line 84 "Amount from line 83 of column A or B, as applicable", with the
-printed maximum of $766 ("is more than $14,669, enter $766 on line 84"): the lesser of line 83 and
-`ca-qc/schedule_k_line_84_maximum`. One core/capped_amount (`tp1_schedule_k_line_84.yaml`). The
-form exports it; the lines after it read it."""
+"""Schedule K line 83, "Add lines 81 and 82 (maximum $766)": the lesser of the two lines added and
+the printed maximum `ca-qc/schedule_k_line_83_maximum` (766.00). One core/capped_amount, the last
+step of `tp1_schedule_k_line_83.yaml`."""
 
 SCHEDULE_K_MONTHS_IN_YEAR_LINE_85 = AmountKind.declare(
     CATALOG, "schedule_k_months_in_year_line_85", non_negative=True

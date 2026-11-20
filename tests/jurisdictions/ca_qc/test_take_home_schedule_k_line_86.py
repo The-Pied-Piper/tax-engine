@@ -66,7 +66,7 @@ def test_the_part_is_as_printed() -> None:
             "unit": "ca/cad",
             "params": {"rounding": "ca-qc/cent_rounding"},
             "consumes": {
-                "amount": "ca-qc/schedule_k_premium_line_84",
+                "amount": "ca-qc/schedule_k_column_premium_line_83",
                 "less": "ca-qc/schedule_k_premium_for_months_line_85",
             },
             "produces": {"output": LINE},
