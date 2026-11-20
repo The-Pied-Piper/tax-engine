@@ -1052,3 +1052,10 @@ SCHEDULE_K_PREMIUM_INCOME_LINE_48 = AmountKind.declare(
 result is negative, enter 0. In this case, you do not have to pay a premium": one
 core/subtract_not_below_zero (`tp1_schedule_k_line_48.yaml`). The form exports it; Part C reads
 it."""
+
+SCHEDULE_K_COLUMN_LOWER_BOUND_LINE_78 = AmountKind.declare(
+    CATALOG, "schedule_k_column_lower_bound_line_78", non_negative=True
+)
+"""Schedule K line 78, the printed lower bound of the column that line 77 (a copy of line 48) falls
+in: 0.00 under column A ($5,000 or less) and 5,000.00 under column B (more than $5,000). One
+core/bracket_column_lower_bound (`tp1_schedule_k_line_78.yaml`)."""

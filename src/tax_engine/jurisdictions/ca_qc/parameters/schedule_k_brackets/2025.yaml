@@ -1,0 +1,20 @@
+# Revenu Quebec TP-1.D.K-V (2025-12), Schedule K, Part C, "Premium payable under the Quebec
+# prescription drug insurance plan", table "Individual without a spouse on December 31": the two
+# columns the form prints side by side, A for a line 48 of $5,000 or less and B for a line 48 above
+# $5,000. In each column: line 78 the printed lower bound (0.00 and 5,000.00); line 80 the rate
+# (7.84% and 11.76%); line 82 the printed constant (0.00 and 392.00). Each bracket's `tax_at_start`
+# is the line 82 figure of its column, taken as printed: not recomputed from the rates, and not
+# rounded. The "individual with a spouse" table is left out with the spouse lines.
+# This dataset has no rounding rule, as the form states none. The take-home build rounds lines 79,
+# 81 and 83 half-up to the cent in its own parts (ca-qc/cent_rounding).
+# Column B has no upper end: the form's "more than $14,669, enter $766 on line 84" is the printed
+# maximum of line 83, applied by `ca-qc/schedule_k_line_84_maximum`, not a third column.
+family: ca-qc/schedule_k_brackets
+tax_year: 2025
+kind: brackets
+sources:
+  - Revenu Quebec TP-1.D.K-V (2025-12), Schedule K, Part C
+rounding: none
+brackets:
+  - {from: "0.00", rate: "0.0784", tax_at_start: "0.00"}
+  - {from: "5000.00", rate: "0.1176", tax_at_start: "392.00"}
