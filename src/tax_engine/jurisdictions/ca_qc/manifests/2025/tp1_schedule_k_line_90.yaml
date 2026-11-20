@@ -1,0 +1,15 @@
+# Schedule K (2025) Part C, line 90: "Enter the amount from line 86 or line 89, whichever is less."
+# One step: core/lesser_of over the two lines, listed in form order so a tie keeps line 86, as
+# Schedule P line 68 does. The form prints no label for the line, so the step is untitled.
+form:
+  name: ca-qc/tp1_schedule_k
+capabilities:
+  - name: core/lesser_of
+    reference: "90"
+    unit: ca/cad
+    consumes:
+      amounts:
+        - ca-qc/schedule_k_premium_after_months_line_86
+        - ca-qc/schedule_k_premium_remaining_line_89
+    produces:
+      output: ca-qc/schedule_k_premium_line_90

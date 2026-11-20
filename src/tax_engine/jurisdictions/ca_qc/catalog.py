@@ -1640,6 +1640,97 @@ printed maximum of $766 ("is more than $14,669, enter $766 on line 84"): the les
 `ca-qc/schedule_k_line_84_maximum`. One core/capped_amount (`tp1_schedule_k_line_84.yaml`). The
 form exports it; the lines after it read it."""
 
+SCHEDULE_K_MONTHS_IN_YEAR_LINE_85 = AmountKind.declare(
+    CATALOG, "schedule_k_months_in_year_line_85", non_negative=True
+)
+"""The printed 12 of Schedule K line 85, "Amount from line 84 x Number of months entered in box 62 /
+12", in months: the months of the year, taken as printed from the
+`ca-qc/schedule_k_months_in_year_line_85` dataset. One core/credit_amount
+(`tp1_schedule_k_line_85.yaml`); it is not a line of the form."""
+
+SCHEDULE_K_PREMIUM_FOR_MONTHS_LINE_85 = AmountKind.declare(
+    CATALOG, "schedule_k_premium_for_months_line_85", non_negative=True
+)
+"""Schedule K line 85, "Amount from line 84 x Number of months entered in box 62 / 12": line 84
+times the months checked in the year over 12, formed as one exact fraction and rounded once,
+half-up to the cent. One core/apply_ratio (`tp1_schedule_k_line_85.yaml`)."""
+
+SCHEDULE_K_PREMIUM_AFTER_MONTHS_LINE_86 = AmountKind.declare(
+    CATALOG, "schedule_k_premium_after_months_line_86", non_negative=True
+)
+"""Schedule K line 86, "Subtract line 85 from line 84": the premium left after the months covered by
+a group plan, rounded half-up to the cent. One core/subtract (`tp1_schedule_k_line_86.yaml`)."""
+
+SCHEDULE_K_MAXIMUM_PREMIUM_LINE_87 = AmountKind.declare(
+    CATALOG, "schedule_k_maximum_premium_line_87", non_negative=True
+)
+"""Schedule K line 87, "Maximum premium for 2025": the printed 755.00, taken as printed from
+`ca-qc/schedule_k_line_87_maximum` and never recomputed. One core/credit_amount
+(`tp1_schedule_k_line_87.yaml`)."""
+
+SCHEDULE_K_MONTHLY_AMOUNT_BOX_60 = AmountKind.declare(
+    CATALOG, "schedule_k_monthly_amount_box_60", non_negative=True
+)
+"""The printed 62.00 of the Schedule K line 88 row "Number of months entered in box 60 x $62.00":
+the amount for each month, taken as printed from `ca-qc/schedule_k_monthly_amount_box_60`. One
+core/credit_amount (`tp1_schedule_k_line_88_box_60.yaml`); it is not a line of the form."""
+
+SCHEDULE_K_AMOUNT_FOR_MONTHS_BOX_60 = AmountKind.declare(
+    CATALOG, "schedule_k_amount_for_months_box_60", non_negative=True
+)
+"""Schedule K line 88, the row "Number of months entered in box 60 x $62.00": the months of box
+60 times 62.00, rounded half-up to the cent. One core/multiply
+(`tp1_schedule_k_line_88_box_60.yaml`); line 88 adds the two rows."""
+
+SCHEDULE_K_MONTHLY_AMOUNT_BOX_61 = AmountKind.declare(
+    CATALOG, "schedule_k_monthly_amount_box_61", non_negative=True
+)
+"""The printed 63.83 of the Schedule K line 88 row "Number of months entered in box 61 x $63.83":
+the amount for each month, taken as printed from `ca-qc/schedule_k_monthly_amount_box_61`. One
+core/credit_amount (`tp1_schedule_k_line_88_box_61.yaml`); it is not a line of the form."""
+
+SCHEDULE_K_AMOUNT_FOR_MONTHS_BOX_61 = AmountKind.declare(
+    CATALOG, "schedule_k_amount_for_months_box_61", non_negative=True
+)
+"""Schedule K line 88, the row "Number of months entered in box 61 x $63.83": the months of box
+61 times 63.83, rounded half-up to the cent. One core/multiply
+(`tp1_schedule_k_line_88_box_61.yaml`); line 88 adds the two rows."""
+
+SCHEDULE_K_MONTHS_PREMIUM_LINE_88 = AmountKind.declare(
+    CATALOG, "schedule_k_months_premium_line_88", non_negative=True
+)
+"""Schedule K line 88, "Add the results": the two rows (box 60 months times 62.00 and box 61
+months times 63.83) added, rounded half-up to the cent. One core/sum
+(`tp1_schedule_k_line_88.yaml`)."""
+
+SCHEDULE_K_PREMIUM_REMAINING_LINE_89 = AmountKind.declare(
+    CATALOG, "schedule_k_premium_remaining_line_89", non_negative=True
+)
+"""Schedule K line 89, "Subtract line 88 from line 87": the maximum premium of 755.00 less the
+premium of the months checked, rounded half-up to the cent. One core/subtract
+(`tp1_schedule_k_line_89.yaml`)."""
+
+SCHEDULE_K_PREMIUM_LINE_90 = AmountKind.declare(
+    CATALOG, "schedule_k_premium_line_90", non_negative=True
+)
+"""Schedule K line 90, "Enter the amount from line 86 or line 89, whichever is less": the lesser
+of the two lines. One core/lesser_of (`tp1_schedule_k_line_90.yaml`)."""
+
+SCHEDULE_K_SPOUSE_PREMIUM_LINE_97 = AmountKind.declare(
+    CATALOG, "schedule_k_spouse_premium_line_97", non_negative=True
+)
+"""Spouse's premium, Schedule K line 97 ("+ 97", the sum of lines 91 through 97 for the spouse's
+premium): an input. A single filer pays no spouse's premium, so the caller leaves it out and
+line 98 reads it as 0."""
+
+SCHEDULE_K_PREMIUM_PAYABLE_LINE_98 = AmountKind.declare(
+    CATALOG, "schedule_k_premium_payable_line_98", non_negative=True
+)
+"""Premium payable under the Quebec prescription drug insurance plan, Schedule K line 98, "Add
+lines 90 and 97": line 90 and the optional line 97 (read as 0 when left out) added, rounded
+half-up to the cent. One core/sum (`tp1_schedule_k_line_98.yaml`). The form exports it for
+TP-1 line 447."""
+
 TP1_INCOME_TAX_ON_TAXABLE_INCOME_LINE_401 = AmountKind.declare(
     CATALOG, "tp1_income_tax_on_taxable_income_line_401", non_negative=True
 )
