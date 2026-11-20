@@ -179,3 +179,20 @@ def test_line_27_matches_the_printed_form(
     sheet = schedule_6(take_home_service, salary)
 
     assert sheet.get(CWB_REDUCTION_LINE_27).value == D(expected)
+
+
+@pytest.mark.parametrize(
+    ("salary", "expected"),
+    [
+        # Line 22 less line 27, floored at 0: 3,812.06 - 1,132.99 = 2,679.07; then negative.
+        ("20000", "2679.07"),
+        ("70000", "0.00"),
+        ("200000", "0.00"),
+    ],
+)
+def test_line_28_matches_the_printed_form(
+    take_home_service: TakeHomeService, salary: str, expected: str
+) -> None:
+    sheet = schedule_6(take_home_service, salary)
+
+    assert sheet.get(CWB_BENEFIT_LINE_28).value == D(expected)
