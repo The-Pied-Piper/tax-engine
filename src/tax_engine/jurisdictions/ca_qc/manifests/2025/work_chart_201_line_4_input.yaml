@@ -1,0 +1,13 @@
+# Work Chart 201 (TP-1.D.GR-V 2025-12), line 4, "Wage Earner Protection Program (WEPP) payments". An optional input a salary-only caller does
+# not give: a request that leaves it out is read as blank, and the line 6 part
+# (work_chart_201_line_6.yaml) reads the blank as 0.
+form:
+  name: ca-qc/work_chart_201
+inputs:
+  - name: ca-qc/work_chart_201_wepp_payments_line_4
+    title: "Wage Earner Protection Program (WEPP) payments"
+    reference: "4"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Wage Earner Protection Program (WEPP) payments (see line 154, point 12, in the guide)'

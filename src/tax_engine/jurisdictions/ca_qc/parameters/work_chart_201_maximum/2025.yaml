@@ -1,0 +1,13 @@
+# Quebec Work Chart 201 maximum, 2025 tax year (Revenu Quebec TP-1.D.GR-V 2025-12, Work Chart
+# "Deduction for workers"), line 9: "Carry the result to line 201 of your return (maximum $1,420)."
+# Line 9 is a dollars-and-cents box, so the capped amount rounds half-up to the cent, the project's
+# choice, as the form states no rounding rule.
+family: ca-qc/work_chart_201_maximum
+tax_year: 2025
+kind: amount
+title: "maximum"
+unit: ca/cad
+sources:
+  - Revenu Quebec TP-1.D.GR-V (2025-12)
+rounding: {increment: "0.01", mode: half_up}
+amount: "1420"

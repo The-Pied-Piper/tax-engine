@@ -1,0 +1,19 @@
+# Work Chart 201 (TP-1.D.GR-V 2025-12), line 8: "Subtract line 7 from line 6." The form prints no
+# floor, so the difference is signed (core/subtract, as T1 line 23400), rounded half-up to the cent
+# (`ca-qc/cent_rounding`). Line 7 is an optional input, read as 0 when blank. The form prints no
+# title for the line.
+form:
+  name: ca-qc/work_chart_201
+capabilities:
+  - name: core/subtract
+    reference: "8"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/work_chart_201_total_line_6
+      less: ca-qc/work_chart_201_line_293_amount_line_7
+    blank:
+      less: "0"
+    produces:
+      output: ca-qc/work_chart_201_line_8

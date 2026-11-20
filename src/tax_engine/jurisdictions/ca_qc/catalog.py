@@ -112,6 +112,84 @@ TP1_TOTAL_INCOME_LINE_199 = AmountKind.declare(
 """Total income, TP-1 line 199 "Add lines 101 and 105 through 164. Total income": line 101, the
 salary, plus the optional income of lines 105 through 164, rounded half-up to the cent."""
 
+WORK_CHART_201_LINE_105 = AmountKind.declare(CATALOG, "tp1_line_105", non_negative=True)
+"""TP-1 line 105, as Work Chart 201 line 1 reads it ("lines 101, 107 and, if positive, 105"): an
+optional input, blank when the caller has none and read as 0. A negative figure is refused:
+the owner decided on the ticket (19 Nov 2026) that the chart's "if positive" test on line 105 is
+moot, with no step for it."""
+
+WORK_CHART_201_LINE_107 = AmountKind.declare(CATALOG, "tp1_line_107")
+"""TP-1 line 107, as Work Chart 201 line 1 reads it: an optional input, blank when the caller has
+none and read as 0."""
+
+WORK_CHART_201_RL1_BOX_211 = AmountKind.declare(CATALOG, "rl1_slip_box_211")
+"""RL-1 slip box 211, taken off by Work Chart 201 line 1 ("minus the amount from box 211 of your
+RL-1 slip"): an optional input, blank when the caller has none and read as 0."""
+
+WORK_CHART_201_ELIGIBLE_WORK_INCOME_BEFORE_BOX_211 = AmountKind.declare(
+    CATALOG, "work_chart_201_eligible_work_income_before_box_211"
+)
+"""Work Chart 201 line 1, the sum before box 211 is taken off: lines 101, 107 and 105. Not a printed
+line; the first operation of line 1."""
+
+WORK_CHART_201_ELIGIBLE_WORK_INCOME_LINE_1 = AmountKind.declare(
+    CATALOG, "work_chart_201_eligible_work_income_line_1"
+)
+"""Work Chart 201 line 1 "Eligible work income": lines 101, 107 and, if positive, 105, minus the
+amount from box 211 of the RL-1 slip, rounded half-up to the cent. The form prints no floor, so it
+is signed."""
+
+WORK_CHART_201_WORK_INCENTIVE_AMOUNTS_LINE_2 = AmountKind.declare(
+    CATALOG, "work_chart_201_work_incentive_amounts_line_2"
+)
+"""Work Chart 201 line 2 "Amounts received under a work-incentive project": an optional input,
+blank when the caller has none and read as 0."""
+
+WORK_CHART_201_RESEARCH_GRANTS_LINE_3 = AmountKind.declare(
+    CATALOG, "work_chart_201_research_grants_line_3"
+)
+"""Work Chart 201 line 3 "Net amount of research grants": an optional input, blank when the caller
+has none and read as 0."""
+
+WORK_CHART_201_WEPP_PAYMENTS_LINE_4 = AmountKind.declare(
+    CATALOG, "work_chart_201_wepp_payments_line_4"
+)
+"""Work Chart 201 line 4 "Wage Earner Protection Program (WEPP) payments": an optional input, blank
+when the caller has none and read as 0."""
+
+WORK_CHART_201_NET_BUSINESS_INCOME_LINE_5 = AmountKind.declare(
+    CATALOG, "work_chart_201_net_business_income_line_5", non_negative=True
+)
+"""Work Chart 201 line 5 "Net business income (line 27 of Schedule L). If the result is negative,
+enter 0": an optional input, taken as the form takes it, so never negative; blank when the caller
+has none and read as 0."""
+
+WORK_CHART_201_TOTAL_LINE_6 = AmountKind.declare(CATALOG, "work_chart_201_total_line_6")
+"""Work Chart 201 line 6 "Add lines 1 through 5": the sum, rounded half-up to the cent. Signed, as
+line 1 is."""
+
+WORK_CHART_201_LINE_293_AMOUNT_LINE_7 = AmountKind.declare(
+    CATALOG, "work_chart_201_line_293_amount_line_7"
+)
+"""Work Chart 201 line 7 "Amount included in the income above and entitling you to a deduction on
+line 293": an optional input, blank when the caller has none and read as 0."""
+
+WORK_CHART_201_LINE_8 = AmountKind.declare(CATALOG, "work_chart_201_line_8")
+"""Work Chart 201 line 8 "Subtract line 7 from line 6": the difference, rounded half-up to the cent.
+The form prints no floor, so it is signed."""
+
+WORK_CHART_201_DEDUCTION_BEFORE_MAXIMUM = AmountKind.declare(
+    CATALOG, "work_chart_201_deduction_before_maximum"
+)
+"""Work Chart 201 line 9, the first operation: line 8 multiplied by 6%, unrounded. Not a printed
+line; the cap of line 9 rounds it once."""
+
+WORK_CHART_201_DEDUCTION_FOR_WORKERS_LINE_9 = AmountKind.declare(
+    CATALOG, "work_chart_201_deduction_for_workers_line_9"
+)
+"""Work Chart 201 line 9 "Deduction for workers" (maximum $1,420), the figure TP-1 line 201 reads:
+6% of line 8, at most the printed maximum, rounded half-up to the cent. Signed, as line 8 is."""
+
 SCHEDULE_U_LINE_11 = AmountKind.declare(CATALOG, "schedule_u_line_11", non_negative=True)
 """Schedule U line 11 "Multiply line 10 by 0.156250": line 10 (the TP-1 line 98 QPP contribution) at
 the printed rate, rounded half-up to the cent."""
