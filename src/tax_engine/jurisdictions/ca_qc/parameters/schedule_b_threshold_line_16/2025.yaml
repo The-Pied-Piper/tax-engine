@@ -1,0 +1,10 @@
+# Revenu Quebec TP-1.D.B-V (2025-12), Schedule B, Part A, line 16: the printed figure is 42,090.00,
+# subtracted from the family income of line 15. Taken as printed and claimed whole; half-up to the
+# cent changes nothing.
+family: ca-qc/schedule_b_threshold_line_16
+tax_year: 2025
+kind: credit
+sources:
+  - Revenu Quebec TP-1.D.B-V (2025-12), Schedule B, Part A
+rounding: {increment: "0.01", mode: half_up}
+amount: "42090"

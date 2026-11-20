@@ -1,0 +1,16 @@
+# 5005-R (2025) Step 5 Part A line 77, "Line 75 plus line 76 Federal tax on taxable income =",
+# rounded through `ca-qc/cent_rounding`. The form says to enter it on line 123 (Part C), which a later
+# ticket builds; the line is read inside the form, so it is not exported here.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/sum
+    title: "Federal tax on taxable income"
+    reference: "77"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts: [ca-qc/federal_excess_times_column_rate_line_75, ca-qc/federal_tax_at_column_start_line_76]
+    produces:
+      output: ca-qc/federal_tax_on_taxable_income_line_77

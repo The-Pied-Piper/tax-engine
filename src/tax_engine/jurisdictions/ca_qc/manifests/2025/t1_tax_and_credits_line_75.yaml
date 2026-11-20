@@ -1,0 +1,16 @@
+# 5005-R (2025) Step 5 Part A line 75, "Line 73 multiplied by the percentage from line 74", rounded
+# half-up to the cent through `ca-qc/cent_rounding` before line 76 is added, as the form's
+# dollars-and-cents box does.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/multiply_by_rate
+    reference: "75"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      base: ca-qc/federal_taxable_income_over_lower_bound_line_73
+      rate: ca-qc/federal_bracket_column_rate_line_74
+    produces:
+      output: ca-qc/federal_excess_times_column_rate_line_75
