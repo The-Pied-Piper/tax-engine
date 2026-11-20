@@ -90,7 +90,7 @@ for form, form_sheets in sheets.items():
             print(sentence if line.label is None else f"{names.of_label(line.label)}: {sentence}")
 ```
 
-The example uses Ontario (`CA-ON`) and tax year 2025. Change `CA-ON` to `CA-AB` for Alberta, `CA-BC` for British Columbia, `CA-MB` for Manitoba, `CA-SK` for Saskatchewan or `CA-NL` for Newfoundland and Labrador or `CA-QC` for Quebec, and `2025` to `2026` for the provisional 2026 year.
+The example uses Ontario (`CA-ON`) and tax year 2025. Change `CA-ON` to `CA-AB` for Alberta, `CA-BC` for British Columbia, `CA-MB` for Manitoba, `CA-SK` for Saskatchewan, `CA-NL` for Newfoundland and Labrador or `CA-QC` for Quebec, and `2025` to `2026` for the provisional 2026 year.
 
 ## How it works
 
