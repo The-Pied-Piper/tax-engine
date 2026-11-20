@@ -1,0 +1,14 @@
+# 5005-R (2025) line 69 and line 25700 input a salary-only caller does not give.
+# Line 69 and line 25700: "Add lines 59 to 68. =" (page 5). Lines 59 to 68 (line 24400 to line 25600,
+# the deductions from net income) are blank for a salary-only filer, so the printed sum that collects
+# them is one optional input read as 0; the skipped lines have no step. The name stays
+# `ca/deductions_from_net_income`, as the federal part names it.
+form:
+  name: ca-qc/t1_taxable_income
+inputs:
+  - name: ca/deductions_from_net_income
+    reference: "25700"
+    unit: ca/cad
+    required: false
+    default: "0"
+    basis: "Line 69 and line 25700: Add lines 59 to 68."

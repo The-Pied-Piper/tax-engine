@@ -627,3 +627,25 @@ caller does not give; line 275 reads it as 0 when it is left out."""
 TP1_NET_INCOME_LINE_275 = AmountKind.declare(CATALOG, "tp1_net_income_line_275", non_negative=True)
 """Net income, TP-1 line 275 "Add lines 256 and 260. If the result is negative, enter 0": line 256
 plus line 260, not below zero, rounded half-up to the cent."""
+
+BASIC_PERSONAL_AMOUNT_NET_INCOME_LINE_3 = AmountKind.declare(
+    CATALOG, "basic_personal_amount_net_income_line_3", non_negative=True
+)
+"""Federal Worksheet 5000-D1, line 30000 line 3 "Amount from line 23600 of your return": the
+floored net income, read from the T1 taxable income export (`ca-qc/net_income`, 5005-R line 57 and
+line 23600) into the taper of the basic personal amount. Produced by one core/record_total
+(`t1_tax_and_credits_line_30000_line_3.yaml`)."""
+
+BASIC_PERSONAL_AMOUNT = AmountKind.declare(CATALOG, "basic_personal_amount", non_negative=True)
+"""Basic personal amount, 5005-R line 78 and line 30000 "If the amount on line 23600 is $177,882 or
+less, enter $16,129. If the amount on line 23600 is $253,414 or more, enter $14,538. Otherwise, use
+the Federal Worksheet to calculate the amount to enter. (maximum $16,129)": Federal Worksheet
+5000-D1 lines 1 to 11, one ca/tapered_amount step over the dataset `ca/basic_personal_amount`
+(`t1_tax_and_credits_line_30000.yaml`); the credit sums read it."""
+
+TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
+"""Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
+Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line
+69, an optional input read as 0), not below zero. Produced by one core/subtract_not_below_zero
+(`t1_taxable_income_line_26000.yaml`); the federal bracket columns (line 71 onward) start from
+it."""
