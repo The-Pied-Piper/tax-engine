@@ -1,0 +1,31 @@
+# 5005-R (2025) line 85. The form prints: "Line 85: Add lines 78 to 84. =" (page 5). Line 78 is the basic
+# personal amount (`ca-qc/basic_personal_amount`); lines 79 to 84 are optional inputs, each a blank for a
+# salary-only filer and read as 0. One step: core/sum in form line order, rounded half-up to the cent
+# through `ca-qc/cent_rounding`. Line 86 "Enter the amount from line 85 of the previous page" is a pure
+# copy, so it is not a step.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/sum
+    reference: "85"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/basic_personal_amount
+        - ca-qc/age_amount_line_79
+        - ca-qc/spouse_amount_line_80
+        - ca-qc/eligible_dependant_amount_line_81
+        - ca-qc/caregiver_amount_spouse_line_82
+        - ca-qc/caregiver_amount_infirm_dependants_line_83
+        - ca-qc/caregiver_amount_infirm_children_line_84
+    blank:
+      ca-qc/age_amount_line_79: "0"
+      ca-qc/spouse_amount_line_80: "0"
+      ca-qc/eligible_dependant_amount_line_81: "0"
+      ca-qc/caregiver_amount_spouse_line_82: "0"
+      ca-qc/caregiver_amount_infirm_dependants_line_83: "0"
+      ca-qc/caregiver_amount_infirm_children_line_84: "0"
+    produces:
+      output: ca-qc/credit_amounts_line_85

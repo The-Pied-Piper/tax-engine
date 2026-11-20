@@ -1,0 +1,13 @@
+# Revenu Quebec TP-1.D.B-V (2025-12), Schedule B (Tax Relief Measures), Part A "family income" and
+# Part B, lines 10 to 34: the amount for a person living alone, which line 34 carries to line 361 of
+# the TP-1. This part names the form; each printed line's capability is a part of its own with the
+# same `form.name`. The spouse lines (12, 33 and the spouse gate of line 20) are taken as blank
+# optional inputs or left out, as the take-home is a single filer's. Lines 21 to 28 (the other
+# amounts of line 30) are not built. Export: line 34, the figure TP-1 line 361 reads.
+form:
+  name: ca-qc/schedule_b
+  title: "Schedule B: Tax Relief Measures"
+  required: true
+  exports:
+    - ca-qc/schedule_b_line_34
+capabilities: []

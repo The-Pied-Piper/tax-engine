@@ -1,0 +1,15 @@
+# 5005-R (2025) Step 5 Part A line 71 (federal tax on taxable income): "Use the amount from line 26000
+# to complete the appropriate column below." Line 71 is "Amount from line 26000", a copy of taxable
+# income (line 70 and line 26000), so it is a step: another form's export is read only as a record
+# list (`ca-qc/t1_taxable_income.taxable_income`), and core/record_total totals the one amount into
+# line 71, as the federal Part A line 70 does. Lines 71 to 77 are printed the same in every column.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/record_total
+    reference: "71"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/t1_taxable_income.taxable_income
+    produces:
+      output: ca-qc/federal_taxable_income_line_71

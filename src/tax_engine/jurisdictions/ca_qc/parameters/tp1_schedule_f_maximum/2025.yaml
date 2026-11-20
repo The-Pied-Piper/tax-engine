@@ -1,0 +1,18 @@
+# Quebec Schedule F (TP-1.D.F-V, 2025-12), Part B, line 82's printed maximums: "Maximum: $150" under
+# the column "If $63,060 or less" and "Maximum: $1,000" under the column "If more than $63,060". The
+# contribution is the lesser of lines 80 plus 81 and the maximum of the column that line 76 falls in.
+# The step reads line 77, the printed lower bound of that column (18,130 or 63,060), so the band
+# "over" figures are chosen to put each lower bound in its own column: 18,130 is not over 18,130, so
+# it takes the first row ($150), and 63,060 is over it, so it takes the second ($1,000). Line 77 is
+# blank for a line 76 of $18,130 or less, for which no contribution is due. Printed figures, taken
+# whole and never recomputed; the printed dollars are given the scale of a dollars-and-cents box by
+# the cent rounding, which changes nothing.
+family: ca-qc/tp1_schedule_f_maximum
+tax_year: 2025
+kind: amount_by_band
+sources:
+  - Revenu Quebec TP-1.D.F-V (2025-12), Schedule F, Part B
+rounding: {increment: "0.01", mode: half_up}
+rows:
+  - {over: "0", amount: "150"}
+  - {over: "18130", amount: "1000"}

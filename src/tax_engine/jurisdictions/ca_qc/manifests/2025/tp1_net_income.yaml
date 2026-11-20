@@ -3,11 +3,14 @@
 # read from the TP-1 income form, line 201 from Work Chart 201 and line 248 from Schedule U, each as
 # the other form's export (a record list of one amount). Lines 205 to 207, 214 to 231, 234 to 252 (line 248.1
 # included, line 248 is a step) are one optional input (lines 205 to 252) and line 260 is an optional input, each read
-# as 0 when left out. The title is the printed page heading. Export: line 275, the net income that the schedules read.
+# as 0 when left out. The title is the printed page heading. Lines 276 and 278 are optional inputs, read as 0, and
+# line 298 is an optional input, default 0 (page 3, "Taxable income"). Exports: line 275, the net income that
+# the schedules read, and line 299, the taxable income that Work Chart 401 reads.
 form:
   name: ca-qc/tp1_net_income
   title: "Net income"
   required: true
   exports:
     - ca-qc/tp1_net_income_line_275
+    - ca-qc/tp1_taxable_income_line_299
 capabilities: []

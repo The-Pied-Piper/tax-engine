@@ -1,11 +1,14 @@
 # Schedule K (2025), Premium Payable Under the Quebec Prescription Drug Insurance Plan (Revenu
 # Quebec TP-1.D.K-V (2025-12)). This part names the form and its export; the input and line parts
-# carry the capabilities. The form is one form, so its lines read each other directly. The export,
-# box 62 (`ca-qc/schedule_k_months_total_box_62`), is the months checked in the year.
+# carry the capabilities. The form is one form, so its lines read each other directly. The exports are
+# box 62 (`ca-qc/schedule_k_months_total_box_62`), the months checked in the year, and line 48
+# (`ca-qc/schedule_k_premium_income_line_48`), the income used to calculate the premium, which Part C
+# reads.
 form:
   name: ca-qc/tp1_schedule_k
   title: "Premium Payable Under the Quebec Prescription Drug Insurance Plan"
   required: true
   exports:
     - ca-qc/schedule_k_months_total_box_62
+    - ca-qc/schedule_k_premium_income_line_48
 capabilities: []

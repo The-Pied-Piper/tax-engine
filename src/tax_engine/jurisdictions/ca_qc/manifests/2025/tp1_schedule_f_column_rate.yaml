@@ -1,0 +1,13 @@
+# Schedule F (2025) Part B, the row below line 78 that prints "x 1%" in each column (it has no line
+# number). It is the printed rate of the column that line 76 falls in. Line 76 is a copy of line 70
+# and has no step of its own. Blank for a line 76 of $18,130 or less, as no contribution is due then.
+form:
+  name: ca-qc/tp1_schedule_f
+capabilities:
+  - name: core/bracket_column_rate
+    params:
+      schedule: ca-qc/tp1_schedule_f_brackets
+    consumes:
+      base: ca-qc/tp1_schedule_f_income_subject_line_70
+    produces:
+      output: ca-qc/tp1_schedule_f_column_rate
