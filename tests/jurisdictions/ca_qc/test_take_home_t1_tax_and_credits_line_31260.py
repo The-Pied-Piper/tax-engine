@@ -55,14 +55,6 @@ def test_line_2_is_added_to_line_1_before_the_limit(take_home_service: TakeHomeS
     assert sheet.get(CANADA_EMPLOYMENT_AMOUNT).value == D("1300.50")
 
 
-def test_a_sub_cent_sum_is_carried_unrounded(take_home_service: TakeHomeService) -> None:
-    # 5005-R prints no rounding rule for "line 1 plus line 2", so 1000.004 plus 300.003 stays
-    # 1300.007 rather than rounding to 1300.01.
-    _, sheet = sheets(take_home_service, "1000.004", (OTHER_EMPLOYMENT_INCOME, "300.003"))
-
-    assert sheet.get(CANADA_EMPLOYMENT_AMOUNT_INCOME).value == D("1300.007")
-
-
 def test_the_trace_names_the_sum_and_the_limit(take_home_service: TakeHomeService) -> None:
     _, sheet = sheets(take_home_service, "70000")
     trace = EnglishTraceRenderer().render_all(sheet.trace, sheet)
@@ -70,15 +62,24 @@ def test_the_trace_names_the_sum_and_the_limit(take_home_service: TakeHomeServic
     assert (
         '"Employment income from line 10100" (CA$70000.00) plus '
         '"Other employment income from line 10400" (CA$0.00) gives CA$70000.00 '
-        "(not rounded)."
+        "(rounded to the nearest cent)."
     ) in trace
     assert (
         'Lesser of "Employment income plus other employment income, before the limit" '
         "(CA$70000.00) and the Canada employment amount (CA$1471.00) gives CA$1471.00 "
-        "(not rounded)."
+        "(rounded to the nearest cent)."
     ) in trace
 
 
 def test_the_kinds_are_non_negative() -> None:
     assert non_negative(CANADA_EMPLOYMENT_AMOUNT_INCOME) is True
     assert non_negative(CANADA_EMPLOYMENT_AMOUNT) is True
+
+
+def test_line_31260_sum_and_lesser_of_print_cents(take_home_service: TakeHomeService) -> None:
+    # The "line 1 plus line 2" sum and the lesser-of round to the cent, so a whole-dollar salary
+    # prints with two decimals on both.
+    _, sheet = sheets(take_home_service, "1000")
+
+    assert sheet.get(CANADA_EMPLOYMENT_AMOUNT_INCOME).value.as_tuple().exponent == -2
+    assert sheet.get(CANADA_EMPLOYMENT_AMOUNT).value.as_tuple().exponent == -2

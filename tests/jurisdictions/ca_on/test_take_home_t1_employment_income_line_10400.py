@@ -55,7 +55,7 @@ def line_10400(take_home_service: TakeHomeService, salary: str, other: str | Non
 
 
 @pytest.mark.parametrize(
-    ("other", "expected"), [(None, "0"), ("0", "0"), ("1500", "1500.00"), ("300.505", "300.505")]
+    ("other", "expected"), [(None, "0"), ("0", "0"), ("1500", "1500.00"), ("300.505", "300.51")]
 )
 def test_line_10400_is_the_other_income_and_zero_when_none_is_given(
     take_home_service: TakeHomeService, other: str | None, expected: str

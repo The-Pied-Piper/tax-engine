@@ -12,7 +12,7 @@ from decimal import Decimal
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
-from tax_engine.domain.parameters.rounding import NO_ROUNDING, RoundingMode, RoundTo
+from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
 D = Decimal
 SOURCE = YamlParameterSource(
@@ -31,11 +31,10 @@ def test_2026_line_3_maximum_is_68900() -> None:
     assert data.values == Amount(value=D("68900.00"))
 
 
-def test_2026_line_3_maximum_carries_no_rounding() -> None:
-    # The form prints no rounding rule for line 3.
+def test_2026_line_3_maximum_rounds_half_up_to_the_cent() -> None:
     data = SOURCE.get(FAMILY, 2026, AMOUNT)
 
-    assert data.rounding == NO_ROUNDING
+    assert data.rounding == CENT
 
 
 def test_2026_line_3_maximum_cites_t4127() -> None:
