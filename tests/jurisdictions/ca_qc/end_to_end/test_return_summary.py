@@ -120,3 +120,23 @@ def test_the_total_payable(salary: str, scenario: str, expected: str) -> None:
     sheet = _sheets(salary, scenario)["ca-qc/return"]
 
     assert sheet.get(TOTAL_PAYABLE).value == D(expected)
+
+
+LINE_172_FIGURES = {
+    ("20000", DEFAULT): "-2560.02",
+    ("70000", DEFAULT): "6282.16",
+    ("200000", DEFAULT): "32886.26",
+    ("20000", GROUP_PLAN): "-2560.02",
+    ("70000", GROUP_PLAN): "6282.16",
+    ("200000", GROUP_PLAN): "32886.26",
+    ("20000", ALONE_AND_TENANT): "-2560.02",
+    ("70000", ALONE_AND_TENANT): "6282.16",
+    ("200000", ALONE_AND_TENANT): "32886.26",
+}
+
+
+@pytest.mark.parametrize(("salary", "scenario", "expected"), _cases(LINE_172_FIGURES))
+def test_5005_r_line_172(salary: str, scenario: str, expected: str) -> None:
+    sheet = _sheets(salary, scenario)["ca-qc/t1_tax_and_credits"]
+
+    assert sheet.get(REFUND_OR_BALANCE_OWING_LINE_172).value == D(expected)
