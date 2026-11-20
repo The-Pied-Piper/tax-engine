@@ -1254,3 +1254,106 @@ SCHEDULE_K_PREMIUM_INCOME_LINE_48 = AmountKind.declare(
 result is negative, enter 0. In this case, you do not have to pay a premium": one
 core/subtract_not_below_zero (`tp1_schedule_k_line_48.yaml`). The form exports it; Part C reads
 it."""
+
+TP1_BASIC_PERSONAL_AMOUNT_LINE_350 = AmountKind.declare(
+    CATALOG, "tp1_basic_personal_amount_line_350", non_negative=True
+)
+"""TP-1 line 350 "Basic personal amount": the printed figure 18,571.00, claimed whole. Produced by
+one core/credit_amount over the dataset of the same name (`tp1_credits_line_350.yaml`). It is its
+own kind: `ca-qc/basic_personal_amount` is the federal basic personal amount of 5005-R line 78."""
+
+
+TP1_INCOME_REPLACEMENT_ADJUSTMENT_LINE_358 = AmountKind.declare(
+    CATALOG, "tp1_income_replacement_adjustment_line_358", non_negative=True
+)
+"""TP-1 line 358 "Adjustment for income replacement indemnities": one optional input a salary-only
+caller does not give; line 359 reads a blank as 0 (`tp1_credits_line_358_input.yaml`)."""
+
+
+TP1_LINE_359 = AmountKind.declare(CATALOG, "tp1_line_359")
+"""TP-1 line 359 "Subtract line 358 from line 350": the basic personal amount less the adjustment,
+rounded half-up to the cent. The form prints no floor, so the figure is signed. Produced by one
+core/subtract (`tp1_credits_line_359.yaml`)."""
+
+
+TP1_AGE_LIVING_ALONE_RETIREMENT_AMOUNT_LINE_361 = AmountKind.declare(
+    CATALOG, "tp1_age_living_alone_retirement_amount_line_361"
+)
+"""TP-1 line 361 "Age amount, amount for a person living alone and amount for retirement income.
+Complete Schedule B": the figure Schedule B carries from its line 34, which is signed. Produced by
+one core/record_total over the Schedule B export (`tp1_credits_line_361.yaml`)."""
+
+
+TP1_LINE_377 = AmountKind.declare(CATALOG, "tp1_line_377")
+"""TP-1 line 377 "Add lines 359 through 376": lines 359 and 361, rounded half-up to the cent (lines
+367 and 376 are not built). Signed, as its parts are. Produced by one core/sum
+(`tp1_credits_line_377.yaml`)."""
+
+
+TP1_LINE_377_1 = AmountKind.declare(CATALOG, "tp1_line_377_1")
+"""TP-1 line 377.1 "Multiply line 377 by 14%": line 377 at the printed 14%, rounded half-up to the
+cent. Signed, as line 377 is. Produced by one core/apply_rate (`tp1_credits_line_377_1.yaml`)."""
+
+
+TP1_LINE_388 = AmountKind.declare(CATALOG, "tp1_line_388", non_negative=True)
+"""TP-1 line 388 "Add lines 378 through 385": the printed sum of lines 378 to 385, one optional
+input a salary-only caller does not give; line 389 reads a blank as 0
+(`tp1_credits_line_388_input.yaml`)."""
+
+
+TP1_LINE_389 = AmountKind.declare(CATALOG, "tp1_line_389", non_negative=True)
+"""TP-1 line 389 "Multiply line 388 by 20%": line 388 at the printed 20%, rounded half-up to the
+cent. Produced by one core/apply_rate (`tp1_credits_line_389.yaml`)."""
+
+
+TP1_UNION_DUES_LINE_397_1 = AmountKind.declare(
+    CATALOG, "tp1_union_dues_line_397_1", non_negative=True
+)
+"""TP-1 line 397.1 "Union, professional or other dues": one optional input a salary-only caller does
+not give; line 397 reads a blank as 0 (`tp1_credits_line_397_1_input.yaml`)."""
+
+
+TP1_UNION_DUES_CREDIT_LINE_397 = AmountKind.declare(
+    CATALOG, "tp1_union_dues_credit_line_397", non_negative=True
+)
+"""TP-1 line 397 "Multiply line 397.1 by 10%. Tax credit for union, professional or other dues":
+line 397.1 at the printed 10%, rounded half-up to the cent. Produced by one core/apply_rate
+(`tp1_credits_line_397.yaml`)."""
+
+
+TP1_LINE_390 = AmountKind.declare(CATALOG, "tp1_line_390", non_negative=True)
+"""TP-1 line 390, one of the lines that line 399 adds ("Add lines 377.1, 389 through 392, 395
+through 397, 398 and 398.1"): one optional input a salary-only caller does not give; line 399 reads
+a blank as 0 (`tp1_credits_line_399_inputs.yaml`)."""
+
+TP1_LINE_391 = AmountKind.declare(CATALOG, "tp1_line_391", non_negative=True)
+"""TP-1 line 391, one of the lines that line 399 adds: an optional input, read as 0 when blank
+(`tp1_credits_line_399_inputs.yaml`)."""
+
+TP1_LINE_392 = AmountKind.declare(CATALOG, "tp1_line_392", non_negative=True)
+"""TP-1 line 392, one of the lines that line 399 adds: an optional input, read as 0 when blank
+(`tp1_credits_line_399_inputs.yaml`)."""
+
+TP1_LINE_395 = AmountKind.declare(CATALOG, "tp1_line_395", non_negative=True)
+"""TP-1 line 395, one of the lines that line 399 adds: an optional input, read as 0 when blank
+(`tp1_credits_line_399_inputs.yaml`)."""
+
+TP1_LINE_396 = AmountKind.declare(CATALOG, "tp1_line_396", non_negative=True)
+"""TP-1 line 396, one of the lines that line 399 adds: an optional input, read as 0 when blank
+(`tp1_credits_line_399_inputs.yaml`)."""
+
+TP1_LINE_398 = AmountKind.declare(CATALOG, "tp1_line_398", non_negative=True)
+"""TP-1 line 398, one of the lines that line 399 adds: an optional input, read as 0 when blank
+(`tp1_credits_line_399_inputs.yaml`)."""
+
+TP1_LINE_398_1 = AmountKind.declare(CATALOG, "tp1_line_398_1", non_negative=True)
+"""TP-1 line 398.1, one of the lines that line 399 adds: an optional input, read as 0 when blank
+(`tp1_credits_line_399_inputs.yaml`)."""
+
+TP1_NON_REFUNDABLE_TAX_CREDITS_LINE_399 = AmountKind.declare(
+    CATALOG, "tp1_non_refundable_tax_credits_line_399"
+)
+"""TP-1 line 399 "Add lines 377.1, 389 through 392, 395 through 397, 398 and 398.1. Non-refundable
+tax credits": the sum, rounded half-up to the cent; the optional lines read as 0 when blank. Signed,
+as line 377.1 is. Produced by one core/sum (`tp1_credits_line_399.yaml`) and exported by the form
+for TP-1 line 406."""

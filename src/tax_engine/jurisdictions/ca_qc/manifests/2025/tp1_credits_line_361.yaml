@@ -1,0 +1,16 @@
+# TP-1 (2025) line 361: "Age amount, amount for a person living alone and amount for retirement
+# income. Complete Schedule B. + 361" (page 4, Non-refundable tax credits). The figure is Schedule B
+# line 34, which the Schedule B form exports; another form reads an export only as a record list
+# (`ca-qc/schedule_b.schedule_b_line_34`), so the one step is core/record_total over those records
+# (as Schedule P line 10 reads the TP-1 income form).
+form:
+  name: ca-qc/tp1_credits
+capabilities:
+  - name: core/record_total
+    title: "Age amount, amount for a person living alone and amount for retirement income"
+    reference: "361"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/schedule_b.schedule_b_line_34
+    produces:
+      output: ca-qc/tp1_age_living_alone_retirement_amount_line_361
