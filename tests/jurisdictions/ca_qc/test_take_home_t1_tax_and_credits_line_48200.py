@@ -82,5 +82,5 @@ def test_the_trace_prints_the_line(take_home_service: TakeHomeService) -> None:
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
 
 
-def test_the_line_171_kind_is_non_negative() -> None:
-    assert non_negative(TOTAL_CREDITS_LINE_171) is True
+def test_the_line_171_kind_is_signed() -> None:
+    assert non_negative(TOTAL_CREDITS_LINE_171) is False

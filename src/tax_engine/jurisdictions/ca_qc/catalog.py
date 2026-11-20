@@ -1303,11 +1303,12 @@ line 28, read from the Schedule 6 export by one core/record_total
 (`t1_tax_and_credits_line_45300.yaml`); the total credits of line 171 add it, and the Quebec return
 summary reads it."""
 
-TOTAL_CREDITS_LINE_171 = AmountKind.declare(CATALOG, "total_credits_line_171", non_negative=True)
+TOTAL_CREDITS_LINE_171 = AmountKind.declare(CATALOG, "total_credits_line_171")
 """Total credits, 5005-R line 171 and line 48200 "Add lines 155, 156, and 159 to 170. Total credits
 =": the refundable Quebec abatement (line 156), the net EI overpayment (line 159) and the Canada
 workers benefit (line 161) plus the optional lines 155, 160 and 162 to 170 (each blank read as 0),
-from one core/sum (`t1_tax_and_credits_line_48200.yaml`); line 172 reads it."""
+from one core/sum (`t1_tax_and_credits_line_48200.yaml`); line 172 reads it.
+Signed, as the line prints no floor."""
 
 REFUND_OR_BALANCE_OWING_LINE_172 = AmountKind.declare(CATALOG, "refund_or_balance_owing_line_172")
 """Refund or balance owing, 5005-R line 172 "Line 152 minus line 171 ... Refund or balance owing =":
