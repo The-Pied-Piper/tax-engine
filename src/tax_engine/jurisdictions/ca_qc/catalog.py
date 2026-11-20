@@ -738,3 +738,10 @@ CREDITS_LINE_100 = AmountKind.declare(CATALOG, "credits_line_100", non_negative=
 and PPIP lines, the Canada employment amount and the optional lines 88, 90, 92 to 95 and 97 to
 99, each blank read as 0. Produced by one core/sum (`t1_tax_and_credits_line_100.yaml`); line
 102 reads it."""
+
+TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
+"""Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
+Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line
+69, an optional input read as 0), not below zero. Produced by one core/subtract_not_below_zero
+(`t1_taxable_income_line_26000.yaml`); the federal bracket columns (line 71 onward) start from
+it."""

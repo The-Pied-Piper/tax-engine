@@ -68,10 +68,15 @@ CREDIT_PARTS = (
     *LINE_100_INPUT_PARTS,
     "t1_tax_and_credits_line_100.yaml",
 )
+STEP_4_PARTS = (
+    "t1_taxable_income_line_25700_inputs.yaml",
+    "t1_taxable_income_line_26000.yaml",
+)
 PARTS = (
     *PPIP_PARTS,
     "t1_taxable_income.yaml",
     *STEP_3_PARTS,
+    *STEP_4_PARTS,
     "t1_tax_and_credits_line_30000_line_3.yaml",
     "t1_tax_and_credits_line_30000.yaml",
     *CREDIT_PARTS,
