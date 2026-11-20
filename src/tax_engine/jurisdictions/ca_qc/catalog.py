@@ -1244,6 +1244,13 @@ CANADA_TRAINING_CREDIT_LINE_162 = AmountKind.declare(
 caller does not give; the sum on line 171 takes a blank as 0
 (`t1_tax_and_credits_line_45350_inputs.yaml`)."""
 
+MULTIGENERATIONAL_HOME_RENOVATION_CREDIT_LINE_163 = AmountKind.declare(
+    CATALOG, "multigenerational_home_renovation_credit_line_163", non_negative=True
+)
+"""Multigenerational home renovation tax credit (MHRTC), 5005-R line 163 and line 45355: an optional
+input a salary-only caller does not give; the sum on line 171 takes a blank as 0
+(`t1_tax_and_credits_line_45355_inputs.yaml`)."""
+
 CWB_LINE_161 = AmountKind.declare(CATALOG, "cwb_line_161", non_negative=True)
 """Canada workers benefit (CWB), 5005-R line 161 and line 45300 "(complete Schedule 6)": Schedule 6
 line 28, read from the Schedule 6 export by one core/record_total

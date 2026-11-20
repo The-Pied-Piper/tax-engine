@@ -1,0 +1,13 @@
+# 5005-R (2025) line 163 input a salary-only caller does not give.
+# Line 163 and line 45355: "Multigenerational home renovation tax credit (MHRTC) (complete Schedule 12)" (page 8). A salary-only filer has no such amount, so it is an
+# optional input left blank; the sum that reads it takes a blank as 0.
+form:
+  name: ca-qc/t1_tax_and_credits
+inputs:
+  - name: ca-qc/multigenerational_home_renovation_credit_line_163
+    title: "Multigenerational home renovation tax credit (MHRTC)"
+    reference: "45355"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Multigenerational home renovation tax credit (MHRTC) (complete Schedule 12)"
