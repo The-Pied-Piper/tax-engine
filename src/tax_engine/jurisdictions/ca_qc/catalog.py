@@ -143,3 +143,9 @@ rounded half-up to the cent."""
 TP1_LINE_107 = AmountKind.declare(CATALOG, "tp1_line_107")
 """The amount of TP-1 line 107 as the caller gives it, which Schedule P line 12 copies ("Amount from
 line 107 of the return"); blank when the caller has none, and line 18 reads it as 0."""
+
+SCHEDULE_P_RESEARCH_GRANTS_LINE_13 = AmountKind.declare(
+    CATALOG, "schedule_p_research_grants_line_13", non_negative=True
+)
+"""Schedule P line 13, "Net amount of research grants (see line 154, point 3(j), in the guide)", as
+the caller gives it; blank when the caller has none, and line 18 reads it as 0."""
