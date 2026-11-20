@@ -1072,3 +1072,9 @@ SCHEDULE_K_COLUMN_RATE_LINE_80 = AmountKind.declare(
 )
 """Schedule K line 80, the row "x 80 | 7.84% | 11.76%": the printed rate of the column that line 48
 falls in. One core/bracket_column_rate (`tp1_schedule_k_line_80.yaml`)."""
+
+SCHEDULE_K_PREMIUM_ON_EXCESS_LINE_81 = AmountKind.declare(
+    CATALOG, "schedule_k_premium_on_excess_line_81", non_negative=True
+)
+"""Schedule K line 81, "Multiply line 79 by line 80": line 79 times the column's rate, rounded
+half-up to the cent. One core/multiply_by_rate (`tp1_schedule_k_line_81.yaml`)."""
