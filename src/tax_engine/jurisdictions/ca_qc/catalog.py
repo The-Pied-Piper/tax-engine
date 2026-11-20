@@ -1230,6 +1230,13 @@ NET_EI_OVERPAYMENT_LINE_159 = AmountKind.declare(
 core/subtract_not_below_zero (`t1_tax_and_credits_line_45100.yaml`); the total credits of line 171
 add it."""
 
+REFUNDABLE_MEDICAL_EXPENSE_SUPPLEMENT_LINE_160 = AmountKind.declare(
+    CATALOG, "refundable_medical_expense_supplement_line_160", non_negative=True
+)
+"""Refundable medical expense supplement, 5005-R line 160 and line 45200: an optional input a
+salary-only caller does not give; the sum on line 171 takes a blank as 0
+(`t1_tax_and_credits_line_45200_inputs.yaml`)."""
+
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
 Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line

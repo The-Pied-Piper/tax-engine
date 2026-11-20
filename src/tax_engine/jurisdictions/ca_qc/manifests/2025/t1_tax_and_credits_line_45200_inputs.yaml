@@ -1,0 +1,13 @@
+# 5005-R (2025) line 160 input a salary-only caller does not give.
+# Line 160 and line 45200: "Refundable medical expense supplement (use Federal Worksheet)" (page 8). A salary-only filer has no such amount, so it is an
+# optional input left blank; the sum that reads it takes a blank as 0.
+form:
+  name: ca-qc/t1_tax_and_credits
+inputs:
+  - name: ca-qc/refundable_medical_expense_supplement_line_160
+    title: "Refundable medical expense supplement"
+    reference: "45200"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Refundable medical expense supplement (use Federal Worksheet)"
