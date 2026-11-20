@@ -1020,6 +1020,11 @@ FEDERAL_TAX_ON_SPLIT_INCOME_LINE_124 = AmountKind.declare(CATALOG, "federal_tax_
 salary-only caller does not give; the line that reads it takes a blank as 0
 (`t1_tax_and_credits_line_40424_inputs.yaml`)."""
 
+FEDERAL_TAX_WITH_SPLIT_INCOME_LINE_125 = AmountKind.declare(CATALOG, "federal_tax_with_split_income_line_125", non_negative=True)
+"""Net federal tax before credits, 5005-R line 125 and line 40400 "Line 123 plus line 124 =": line
+77 (line 123 copies it) plus the federal tax on split income (line 124), a blank read as 0 from
+one core/sum (`t1_tax_and_credits_line_40400.yaml`)."""
+
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
 Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line
