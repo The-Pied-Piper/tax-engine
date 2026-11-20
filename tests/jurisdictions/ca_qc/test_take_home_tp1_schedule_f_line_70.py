@@ -9,10 +9,13 @@ stop is not a step: Part B prints it.
 from __future__ import annotations
 
 from decimal import Decimal
+from pathlib import Path
 from textwrap import dedent
 
 import pytest
+import yaml
 
+import tax_engine.jurisdictions.ca_qc
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
@@ -26,6 +29,13 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 
 D = Decimal
+
+FORM_PART = (
+    Path(tax_engine.jurisdictions.ca_qc.__file__).parent
+    / "manifests"
+    / "2025"
+    / "tp1_schedule_f.yaml"
+)
 
 PARTS = (
     "salary.yaml",
@@ -99,3 +109,12 @@ def test_line_68_is_taken_off_line_36(take_home_service: TakeHomeService) -> Non
     )
 
     assert str(value) == "699.75"
+
+
+def test_the_form_part_names_the_form_and_exports_line_70() -> None:
+    part = yaml.safe_load(FORM_PART.read_text(encoding="utf-8"))
+
+    assert part["form"]["name"] == "ca-qc/tp1_schedule_f"
+    assert part["form"]["title"] == "Contribution to the Health Services Fund"
+    assert part["form"]["exports"] == ["ca-qc/tp1_schedule_f_income_subject_line_70"]
+    assert part["capabilities"] == []
