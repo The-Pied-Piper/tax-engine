@@ -562,6 +562,12 @@ SCHEDULE_P_FAMILY_INCOME_OVER_THRESHOLD_LINE_82 = AmountKind.declare(
 """Schedule P Part E, section 2, column 1, line 82, "Subtract line 80 from line 78. If the result is
 negative, enter 0", rounded half-up to the cent."""
 
+SCHEDULE_P_WORK_PREMIUM_REDUCTION_LINE_83 = AmountKind.declare(
+    CATALOG, "schedule_p_work_premium_reduction_line_83", non_negative=True
+)
+"""Schedule P Part E, section 2, column 1, line 83, "Multiply line 82 by 10%": the reduction of the
+work premium by family income, rounded half-up to the cent."""
+
 SCHEDULE_P_NET_INCOME_LINE_52 = AmountKind.declare(
     CATALOG, "schedule_p_net_income_line_52", non_negative=True
 )
