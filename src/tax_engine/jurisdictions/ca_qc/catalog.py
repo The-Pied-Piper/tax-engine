@@ -1008,3 +1008,10 @@ WORK_CHART_401_TAXABLE_INCOME_LINE_1 = AmountKind.declare(
 """Work Chart 401 line 1 "Taxable income (line 299 of your return)": TP-1 line 299, read from the
 net income form's export. Produced by one core/record_total (`work_chart_401_line_1.yaml`); line 2
 is a copy of it and has no step."""
+
+WORK_CHART_401_LOWER_BOUND_LINE_3 = AmountKind.declare(
+    CATALOG, "work_chart_401_lower_bound_line_3", non_negative=True
+)
+"""Work Chart 401 line 3 (0.00, 53,255.00, 106,495.00 or 129,590.00): the printed lower bound of the
+column that line 1 falls in. Produced by one core/bracket_column_lower_bound
+(`work_chart_401_line_3.yaml`)."""
