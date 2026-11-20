@@ -80,5 +80,6 @@ def test_line_14_4_at_each_salary(
 def test_a_salary_below_the_exemption_gives_zero(
     take_home_service: TakeHomeService,
 ) -> None:
-    """Below the $3,500 exemption line 14 is floored at 0 (the owner's ruling, departing from the printed line; QPP Act ss. 42 to 44, 5005-S8 line 7), so this line is 0."""
+    """Below the $3,500 exemption line 14 is floored at 0 (the owner's ruling, departing from the
+    printed line; QPP Act ss. 42 to 44, 5005-S8 line 7), so this line is 0."""
     assert str(schedule_u(take_home_service, "3000").get(SCHEDULE_U_LINE_14_4).value) == "0.00"

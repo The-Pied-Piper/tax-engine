@@ -109,6 +109,6 @@ def test_line_17_5_adds_the_excess_and_the_additional_contribution(
 def test_a_salary_below_the_exemption_follows_the_printed_lines(
     take_home_service: TakeHomeService,
 ) -> None:
-    """Line 14 is floored at 0 below the exemption (owner's ruling), so line 17.2 and line 17.3 are 0
-    and line 17.4 is 0."""
+    """Line 14 is floored at 0 below the exemption (owner's ruling), so line 17.2 and line 17.3
+    are 0 and line 17.4 is 0."""
     assert str(schedule_u(take_home_service, "3000").get(SCHEDULE_U_LINE_17_5).value) == "0.00"
