@@ -2122,3 +2122,9 @@ FEDERAL_REFUND_OR_BALANCE_OWING_RETURN = AmountKind.declare(
 )
 """Quebec return summary: 5005-R line 172 "Refund or balance owing", read from the form's export
 (signed: negative is a refund, positive a balance owing). One core/record_total (`return.yaml`)."""
+
+TP1_INCOME_TAX_AND_CONTRIBUTIONS_RETURN = AmountKind.declare(
+    CATALOG, "tp1_income_tax_and_contributions_return", non_negative=True
+)
+"""Quebec return summary: TP-1 line 450 "Income tax and contributions", read from the totals form's
+export. One core/record_total (`return.yaml`)."""

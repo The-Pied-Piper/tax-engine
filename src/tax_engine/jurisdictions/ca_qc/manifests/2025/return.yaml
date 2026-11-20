@@ -27,3 +27,9 @@ capabilities:
       records: ca-qc/t1_tax_and_credits.refund_or_balance_owing_line_172
     produces:
       output: ca-qc/federal_refund_or_balance_owing_return
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp1_totals.tp1_income_tax_and_contributions_line_450
+    produces:
+      output: ca-qc/tp1_income_tax_and_contributions_return
