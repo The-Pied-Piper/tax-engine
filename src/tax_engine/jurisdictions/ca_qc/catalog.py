@@ -725,3 +725,9 @@ SCHEDULE_B_LINE_33 = AmountKind.declare(CATALOG, "schedule_b_line_33", non_negat
 """Schedule B Part B line 33, "Amount claimed on line 361 of your spouse's return (spouse on
 December 31, 2025)": an optional input, a spouse line a salary-only caller does not give; line 34
 reads it as 0 when it is left out."""
+
+SCHEDULE_B_LINE_34 = AmountKind.declare(CATALOG, "schedule_b_line_34")
+"""Schedule B Part B line 34, "Subtract line 33 from line 32. Carry the result to line 361 of your
+return. Age amount, amount for a person living alone and amount for retirement income", rounded
+half-up to the cent. The form prints no floor, so the figure is signed. Produced by one
+core/subtract (`schedule_b_line_34.yaml`) and exported by the form for TP-1 line 361."""
