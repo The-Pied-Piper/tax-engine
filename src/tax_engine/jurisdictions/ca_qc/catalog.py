@@ -1066,3 +1066,9 @@ SCHEDULE_K_INCOME_OVER_LOWER_BOUND_LINE_79 = AmountKind.declare(
 """Schedule K line 79, "Subtract line 78 from line 77": the part of line 48 over the column's lower
 bound, rounded half-up to the cent. One core/subtract_not_below_zero
 (`tp1_schedule_k_line_79.yaml`)."""
+
+SCHEDULE_K_COLUMN_RATE_LINE_80 = AmountKind.declare(
+    CATALOG, "schedule_k_column_rate_line_80", non_negative=True
+)
+"""Schedule K line 80, the row "x 80 | 7.84% | 11.76%": the printed rate of the column that line 48
+falls in. One core/bracket_column_rate (`tp1_schedule_k_line_80.yaml`)."""
