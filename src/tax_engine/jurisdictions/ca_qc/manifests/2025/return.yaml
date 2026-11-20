@@ -39,3 +39,12 @@ capabilities:
       records: ca-qc/tp1_totals.tp1_work_premium_tax_credits_line_456
     produces:
       output: ca-qc/tp1_work_premium_tax_credits_return
+  - name: core/subtract
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/tp1_income_tax_and_contributions_return
+      less: ca-qc/tp1_work_premium_tax_credits_return
+    produces:
+      output: ca-qc/tp1_income_tax_less_work_premium_return

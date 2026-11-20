@@ -2134,3 +2134,10 @@ TP1_WORK_PREMIUM_TAX_CREDITS_RETURN = AmountKind.declare(
 )
 """Quebec return summary: TP-1 line 456 "Tax credits respecting the work premium", read from the
 totals form's export. One core/record_total (`return.yaml`)."""
+
+TP1_INCOME_TAX_LESS_WORK_PREMIUM_RETURN = AmountKind.declare(
+    CATALOG, "tp1_income_tax_less_work_premium_return"
+)
+"""Quebec return summary: TP-1 line 450 less line 456, signed (no floor). For a salary-only filer
+only line 456 reduces line 450, because the credits that TP-1 line 468 collects are left out of the
+take-home. One core/subtract (`return.yaml`)."""
