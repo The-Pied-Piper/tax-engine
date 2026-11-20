@@ -204,6 +204,12 @@ SCHEDULE_U_PENSIONABLE_SALARY_LINE_12 = AmountKind.declare(
 """Schedule U line 12 "Pensionable salary or wages (QPP) (line 98.1 of your return) (maximum
 $71,300)": the TP-1 line 98.1 figure, at most the printed $71,300."""
 
+SCHEDULE_U_LINE_98_1_FOR_LINE_12 = AmountKind.declare(
+    CATALOG, "schedule_u_line_98_1_for_line_12", non_negative=True
+)
+"""The TP-1 line 98.1 figure that Schedule U line 12 caps at its printed maximum, read from the TP-1
+income form. The form prints no line of its own for it."""
+
 SCHEDULE_U_PERSONAL_QPP_EXEMPTION_LINE_13 = AmountKind.declare(
     CATALOG, "schedule_u_personal_qpp_exemption_line_13", non_negative=True
 )
