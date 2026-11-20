@@ -1209,6 +1209,14 @@ INCOME_TAX_DEDUCTED_NET_LINE_155 = AmountKind.declare(
 does not give; the sum on line 171 takes a blank as 0
 (`t1_tax_and_credits_line_43850_inputs.yaml`)."""
 
+REFUNDABLE_QUEBEC_ABATEMENT_LINE_156 = AmountKind.declare(
+    CATALOG, "refundable_quebec_abatement_line_156", non_negative=True
+)
+"""Refundable Quebec abatement, 5005-R line 156 and line 44000 "Amount from Line 42900 multiplied by
+16.5% =": line 130 (line 42900) at the printed 16.5% from one core/apply_rate
+(`t1_tax_and_credits_line_44000.yaml`); the total credits of line 171 add it, and the Quebec return
+summary reads it."""
+
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
 Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line
