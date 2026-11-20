@@ -74,9 +74,7 @@ HEADER = HEADER_TEMPLATE + real_import("ca/schedule_8") + real_import("ca/schedu
 BARE_HEADER = HEADER_TEMPLATE + "  - ca/schedule_8\n  - ca/schedule_6\n"
 # The real Quebec T1 parts that give Schedule 6 line 7 its net income; the form declaration is the
 # first of them. Every other T1 input is blank for a salary-only filer.
-T1_PARTS = sorted(
-    path.name for path in QUEBEC_PARTS.glob("t1_taxable_income*.yaml")
-)
+T1_PARTS = sorted(path.name for path in QUEBEC_PARTS.glob("t1_taxable_income*.yaml"))
 FORM_PART = "capabilities: []\n"
 
 AMOUNT_LINES: dict[str, AmountKind] = {
@@ -86,9 +84,7 @@ AMOUNT_LINES: dict[str, AmountKind] = {
 }
 
 
-def schedule_6(
-    take_home_service: TakeHomeService, salary: str, header: str = HEADER
-) -> Worksheet:
+def schedule_6(take_home_service: TakeHomeService, salary: str, header: str = HEADER) -> Worksheet:
     worksheets = take_home_service(header, FORM_PART, *T1_PARTS).compute(
         JurisdictionCode("CA-QC"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
     )
@@ -196,3 +192,28 @@ def test_line_28_matches_the_printed_form(
     sheet = schedule_6(take_home_service, salary)
 
     assert sheet.get(CWB_BENEFIT_LINE_28).value == D(expected)
+
+
+@pytest.mark.parametrize("salary", ["20000", "70000", "200000"])
+def test_the_swapped_lines_read_the_quebec_figures(
+    take_home_service: TakeHomeService, salary: str
+) -> None:
+    # Lines 17, 21 and 24 print a figure that the Quebec datasets hold as printed.
+    sheet = schedule_6(take_home_service, salary)
+
+    assert {line: sheet.get(kind).value for line, kind in AMOUNT_LINES.items()} == {
+        "17": D("2400.00"),
+        "21": D("3812.06"),
+        "24": D("14170.05"),
+    }
+
+
+def test_the_same_salary_without_the_swaps_still_gets_the_federal_figures(
+    take_home_service: TakeHomeService,
+) -> None:
+    # The shared form's own files still read the federal datasets (3,000, 27%, 1,633, 26,855, 15%):
+    # a manifest that imports `ca/schedule_6` bare gets 1,633.00 at $20,000, so the swap is local.
+    sheet = schedule_6(take_home_service, "20000", BARE_HEADER)
+
+    assert sheet.get(CWB_BASE_AMOUNT).value == D("3000.00")
+    assert sheet.get(CWB_BENEFIT_LINE_28).value == D("1633.00")

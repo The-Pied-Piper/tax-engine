@@ -1,7 +1,8 @@
-"""The 2025 figure of `ca-qc/cwb_reduction_rate`, checked against Schedule 6 (5005-S6, 2025, Quebec edition).
+"""The 2025 figure of `ca-qc/cwb_reduction_rate`, checked against Schedule 6 (5005-S6, 2025, Quebec
+edition).
 
-CRA 5005-S6 (2025), page 4 or 5, "Line 26: Rate 20%"
-The filer takes the "If not" branch, so the dataset holds the printed 20%, held as a rate of 0.20.
+CRA 5005-S6 (2025), page 4 or 5, "Line 26: Rate 20%" The filer takes the "If not" branch, so the
+dataset holds the printed 20%, held as a rate of 0.20.
 """
 
 from __future__ import annotations

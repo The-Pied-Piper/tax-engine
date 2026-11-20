@@ -1,7 +1,10 @@
-"""The 2025 figure of `ca-qc/cwb_maximum`, checked against Schedule 6 (5005-S6, 2025, Quebec edition).
+"""The 2025 figure of `ca-qc/cwb_maximum`, checked against Schedule 6 (5005-S6, 2025, Quebec
+edition).
 
-CRA 5005-S6 (2025), page 4 or 5, "Line 21: If you did not have an eligible spouse or an eligible dependant, enter $3,812.06. If you had an eligible spouse but did not have an eligible dependant, enter $5,943.38. ..."
-The filer takes the "If not" branch, so the dataset holds the printed $3,812.06 for a filer with no eligible spouse and no eligible dependant, claimed whole.
+CRA 5005-S6 (2025), page 4 or 5, "Line 21: If you did not have an eligible spouse or an eligible
+dependant, enter $3,812.06. If you had an eligible spouse but did not have an eligible dependant,
+enter $5,943.38. ..." The filer takes the "If not" branch, so the dataset holds the printed
+$3,812.06 for a filer with no eligible spouse and no eligible dependant, claimed whole.
 """
 
 from __future__ import annotations

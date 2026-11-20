@@ -1,7 +1,9 @@
 """The 2025 figure of `ca-qc/cwb_rate`, checked against Schedule 6 (5005-S6, 2025, Quebec edition).
 
-CRA 5005-S6 (2025), page 4 or 5, "Line 19: If you had an eligible dependant but did not have an eligible spouse, enter 20%. If you had both an eligible spouse and an eligible dependant, enter 23.9%. If not, enter 37.3%."
-The filer takes the "If not" branch, so the dataset holds the printed 37.3% for a filer with no eligible spouse and no eligible dependant, held as a rate of 0.373.
+CRA 5005-S6 (2025), page 4 or 5, "Line 19: If you had an eligible dependant but did not have an
+eligible spouse, enter 20%. If you had both an eligible spouse and an eligible dependant, enter
+23.9%. If not, enter 37.3%." The filer takes the "If not" branch, so the dataset holds the printed
+37.3% for a filer with no eligible spouse and no eligible dependant, held as a rate of 0.373.
 """
 
 from __future__ import annotations
