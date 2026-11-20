@@ -1,5 +1,6 @@
 """The header of the Quebec 2025 manifest: the return's identity and its federal imports (Schedules
-8 and 6 and T2204). It declares no inputs or outputs yet; later tickets add them."""
+8 and 6 and T2204; T2204 reads the Quebec EI premium dataset, 5005-S10). It declares no inputs or
+outputs yet; later tickets add them."""
 
 from __future__ import annotations
 
@@ -37,11 +38,16 @@ def test_the_return_declares_no_capabilities_and_no_outputs_yet() -> None:
     assert "outputs" not in header
 
 
-def test_the_federal_forms_are_imported_in_order() -> None:
+def test_the_federal_forms_are_imported_in_order_and_read_the_quebec_datasets() -> None:
     assert _header()["imports"] == [
-        "ca/schedule_8",
+        {
+            "form": "ca/schedule_8",
+            "datasets": {
+                "ca/cpp_line_11_base_contribution": "ca-qc/qpp_line_11_base_contribution",
+            },
+        },
         "ca/schedule_6",
-        "ca/t2204",
+        {"form": "ca/t2204", "datasets": {"ca/ei_premium": "ca-qc/ei_premium"}},
     ]
 
 
