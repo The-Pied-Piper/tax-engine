@@ -111,3 +111,7 @@ TP1_TOTAL_INCOME_LINE_199 = AmountKind.declare(
 )
 """Total income, TP-1 line 199 "Add lines 101 and 105 through 164. Total income": line 101, the
 salary, plus the optional income of lines 105 through 164, rounded half-up to the cent."""
+
+SCHEDULE_U_LINE_11 = AmountKind.declare(CATALOG, "schedule_u_line_11", non_negative=True)
+"""Schedule U line 11 "Multiply line 10 by 0.156250": line 10 (the TP-1 line 98 QPP contribution) at
+the printed rate, rounded half-up to the cent."""
