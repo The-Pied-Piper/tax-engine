@@ -1,0 +1,40 @@
+# TP-1 (2025) lines 438, 439, 441, 443 and 445: the lines that line 450 adds besides lines 432, 446
+# and 447 ("Add lines 432 through 447. Income tax and contributions = 450", page 5): the annual
+# registration fee for the enterprise register, the QPIP premium on income from self-employment or
+# employment outside Quebec, advance payments of tax credits, special taxes and tax adjustment, and
+# the QPP contribution on income from self-employment. The take-home gives none of them, so each is
+# an optional input left blank, read as 0 by line 450. Lines 436, 437, 442, 444 and 449 are answers
+# and codes, not amounts, and have no input.
+form:
+  name: ca-qc/tp1_totals
+inputs:
+  - name: ca-qc/tp1_line_438
+    reference: "438"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Add lines 432 through 447."
+  - name: ca-qc/tp1_line_439
+    reference: "439"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Add lines 432 through 447."
+  - name: ca-qc/tp1_line_441
+    reference: "441"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Add lines 432 through 447."
+  - name: ca-qc/tp1_line_443
+    reference: "443"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Add lines 432 through 447."
+  - name: ca-qc/tp1_line_445
+    reference: "445"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Add lines 432 through 447."

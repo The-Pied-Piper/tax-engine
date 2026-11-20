@@ -1789,3 +1789,29 @@ TP1_DRUG_INSURANCE_PREMIUM_LINE_447 = AmountKind.declare(
 """TP-1 line 447 "Premium payable under the Quebec prescription drug insurance plan": Schedule K
 line 98, a copy. Produced by one core/record_total over Schedule K's export
 (`tp1_totals_line_447.yaml`)."""
+
+TP1_LINE_438 = AmountKind.declare(CATALOG, "tp1_line_438", non_negative=True)
+"""TP-1 line 438, one of the lines that line 450 adds ("Add lines 432 through 447"): the annual
+registration fee for the enterprise register. One optional input a salary-only caller does not give;
+line 450 reads a blank as 0 (`tp1_totals_line_450_inputs.yaml`)."""
+
+TP1_LINE_439 = AmountKind.declare(CATALOG, "tp1_line_439", non_negative=True)
+"""TP-1 line 439, one of the lines that line 450 adds ("Add lines 432 through 447"): the QPIP
+premium on income from self-employment or employment outside Quebec. One optional input a
+salary-only caller does not give; line 450 reads a blank as 0 (`tp1_totals_line_450_inputs.yaml`).
+"""
+
+TP1_LINE_441 = AmountKind.declare(CATALOG, "tp1_line_441", non_negative=True)
+"""TP-1 line 441, one of the lines that line 450 adds ("Add lines 432 through 447"): advance
+payments of tax credits. One optional input a salary-only caller does not give; line 450 reads a
+blank as 0 (`tp1_totals_line_450_inputs.yaml`)."""
+
+TP1_LINE_443 = AmountKind.declare(CATALOG, "tp1_line_443", non_negative=True)
+"""TP-1 line 443, one of the lines that line 450 adds ("Add lines 432 through 447"): special taxes
+and tax adjustment. One optional input a salary-only caller does not give; line 450 reads a blank as
+0 (`tp1_totals_line_450_inputs.yaml`)."""
+
+TP1_LINE_445 = AmountKind.declare(CATALOG, "tp1_line_445", non_negative=True)
+"""TP-1 line 445, one of the lines that line 450 adds ("Add lines 432 through 447"): the QPP
+contribution on income from self-employment. One optional input a salary-only caller does not give;
+line 450 reads a blank as 0 (`tp1_totals_line_450_inputs.yaml`)."""
