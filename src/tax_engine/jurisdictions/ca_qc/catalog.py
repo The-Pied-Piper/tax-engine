@@ -59,3 +59,9 @@ SOLIDARITY_INCOME_OVER_THRESHOLD = AmountKind.declare(
 )
 """Solidarity tax credit, family income over the reduction threshold (fiche 110201, Table C.9):
 family income less the printed threshold, not below 0."""
+
+SOLIDARITY_REDUCTION_AT_RATE = AmountKind.declare(
+    CATALOG, "solidarity_reduction_at_rate", non_negative=True
+)
+"""Solidarity tax credit, reduction at 6% (fiche 110201, Table C.9): 6% of the family income over
+the reduction threshold, rounded half-up to the cent."""

@@ -18,3 +18,11 @@ capabilities:
       less: ca-qc/solidarity_reduction_threshold
     produces:
       output: ca-qc/solidarity_income_over_threshold
+  - name: core/apply_rate
+    unit: ca/cad
+    params:
+      rate: ca-qc/solidarity_reduction_rate
+    consumes:
+      base: ca-qc/solidarity_income_over_threshold
+    produces:
+      output: ca-qc/solidarity_reduction_at_rate
