@@ -172,3 +172,7 @@ SCHEDULE_P_DEDUCTIBLE_INCOME_LINE_22 = AmountKind.declare(
 """Schedule P line 22, "Amount included in one of the above sources of income and entitling you to
 a deduction on line 293 of your return", as the caller gives it; blank when the caller has none, and
 line 29 reads it as 0."""
+
+SCHEDULE_P_WORK_INCOME_LINE_29 = AmountKind.declare(CATALOG, "schedule_p_work_income_line_29")
+"""Schedule P Part A line 29, "Subtract line 22 from line 18", "Work income", column "You", rounded
+half-up to the cent. The form prints no floor."""
