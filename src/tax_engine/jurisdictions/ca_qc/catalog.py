@@ -2164,3 +2164,8 @@ TOTAL_PAYABLE = AmountKind.declare(CATALOG, "total_payable")
 """Quebec return summary: the total payable of both returns, 5005-R line 43500 less line 44000 plus
 TP-1 line 450. A `ca-qc` kind, because `ca/total_payable` is the federal kind the shared forms
 declare. One core/sum (`return.yaml`); the second output of the return."""
+
+SOLIDARITY_CREDIT = AmountKind.declare(CATALOG, "solidarity_credit", non_negative=True)
+"""Quebec return summary: the solidarity tax credit for July 2026 to June 2027, read from the
+solidarity form's export and shown as its own yearly amount next to the result, not added to the
+2025 refund or balance owing or the total payable. One core/record_total (`return.yaml`)."""

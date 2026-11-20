@@ -89,3 +89,9 @@ capabilities:
         - ca-qc/tp1_income_tax_and_contributions_return
     produces:
       output: ca-qc/total_payable
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-qc/solidarity_credit.solidarity_credit_after_reduction
+    produces:
+      output: ca-qc/solidarity_credit
