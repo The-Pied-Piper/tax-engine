@@ -19,7 +19,7 @@ tax_year: 2026
 kind: brackets
 sources:
   - Revenu Quebec TP-1.D.GR-V (2025-12), Work Chart 401
-  - Quebec Ministere des Finances, Parameters of the Personal Income Tax System for 2026 (Nov 2025), Table 3 (cra-docs revenu-quebec-2025/AUTEN_IncomeTax2026.pdf)
+  - Quebec Ministere des Finances, Parameters of the Personal Income Tax System for 2026 (Nov 2025), Table 3, https://cdn-contenu.quebec.ca/cdn-contenu/adm/min/finances/publications-adm/parametres/AUTEN_IncomeTax2026.pdf
 rounding: none
 brackets:
   - {from: "0.00", rate: "0.14", tax_at_start: "0.00"}
