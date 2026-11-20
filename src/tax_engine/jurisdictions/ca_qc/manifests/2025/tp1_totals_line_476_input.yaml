@@ -1,0 +1,12 @@
+# TP-1 (2025) line 476: "Refund transferred to your spouse – 476" (page 5). A single filer has no
+# spouse, so it is an optional input left blank; line 478 reads a blank as 0.
+form:
+  name: ca-qc/tp1_totals
+inputs:
+  - name: ca-qc/tp1_refund_transferred_to_spouse_line_476
+    title: "Refund transferred to your spouse"
+    reference: "476"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Refund transferred to your spouse"

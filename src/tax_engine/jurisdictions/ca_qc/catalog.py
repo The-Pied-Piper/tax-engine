@@ -1922,3 +1922,9 @@ by one core/greater_of (`tp1_totals_line_475.yaml`)."""
 TP1_LINE_474 = AmountKind.declare(CATALOG, "tp1_line_474", non_negative=True)
 """TP-1 line 474 "Amount from line 470, if it is negative": the refund as a positive figure, 0 less
 line 470 not below 0. Produced by one core/subtract_not_below_zero (`tp1_totals_line_474.yaml`)."""
+
+TP1_REFUND_TRANSFERRED_TO_SPOUSE_LINE_476 = AmountKind.declare(
+    CATALOG, "tp1_refund_transferred_to_spouse_line_476", non_negative=True
+)
+"""TP-1 line 476 "Refund transferred to your spouse": an optional input a single filer does not
+give; line 478 reads a blank as 0 (`tp1_totals_line_476_input.yaml`)."""
