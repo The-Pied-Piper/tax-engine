@@ -1,0 +1,15 @@
+# Provisional (2026): Reduction threshold of the credit for a person living alone 42,955 (Table 3).
+# Taken from the published 2026 parameters (not a 2026 form); to be confirmed against the 2026 form
+# text when it is published. The comment below is the 2025 derivation, kept for the printed wording;
+# the figures of this file replace its 2025 figures.
+# Revenu Quebec TP-1.D.B-V (2025-12), Schedule B, Part A, line 16: the printed figure is 42,090.00,
+# subtracted from the family income of line 15. Taken as printed and claimed whole; half-up to the
+# cent changes nothing.
+family: ca-qc/schedule_b_threshold_line_16
+tax_year: 2026
+kind: credit
+sources:
+  - Revenu Quebec TP-1.D.B-V (2025-12), Schedule B, Part A
+  - Quebec Ministere des Finances, Parameters of the Personal Income Tax System for 2026 (Nov 2025), Table 3 (cra-docs revenu-quebec-2025/AUTEN_IncomeTax2026.pdf)
+rounding: {increment: "0.01", mode: half_up}
+amount: "42955"

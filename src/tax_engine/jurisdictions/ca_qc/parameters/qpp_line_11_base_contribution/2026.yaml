@@ -1,0 +1,26 @@
+# Provisional (2026): Base QPP rate 5.30% on the contributory earnings 71,100, maximum 3,768.30
+# (T4127 Table 8.4). Taken from the published 2026 parameters (not a 2026 form); to be confirmed
+# against the 2026 form text when it is published. The comment below is the 2025 derivation, kept
+# for the printed wording; the figures of this file replace its 2025 figures.
+# Required base QPP contributions, Schedule 8 Part 2 line 11 (T1-2025 Schedule 8, Quebec edition
+# 5005-S8): "amount from line 7 multiplied by 5.4% (maximum $3,661.20)". Line 7 is "Line 5 minus
+# line 6 (if negative, enter "0") (maximum $67,800)", so line 7 already holds the earnings above
+# the basic exemption and the tier starts at 0, not at the $3,500 exemption. Its upper bound is line
+# 7's printed maximum, $67,800, the finite top the tier needs above its lower bound.
+# Line 11 is the only figure of Part 2 that differs from the federal edition; this dataset replaces
+# `ca/cpp_line_11_base_contribution` in the Quebec manifest's import of Schedule 8.
+# Part 2a line 25 "Enter the amount from line 15. Enter this amount (in dollars and cents) on line
+# 30800 of your return." Line 15 copies line 11, so the figure is in dollars and cents; the form
+# names no rounding mode, and half-up is the engine's convention.
+# The rate, the upper bound and the maximum are the dataset figures as printed.
+family: ca-qc/qpp_line_11_base_contribution
+tax_year: 2026
+kind: contribution_tier
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5005-s8/5005-s8-25e.txt
+  - Revenu Quebec, Maximum Pensionable Earnings and Quebec Pension Plan Contribution Rate (web page, 2026 row; CRA T4127 (Jan 2026) Tables 8.3 to 8.6, QPP rows)
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.053"
+lower: "0"
+upper: "71100"
+maximum: "3768.30"

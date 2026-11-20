@@ -1,0 +1,17 @@
+# Provisional: no 2026 figure is published yet (the 2026 forms are not out), so the 2025 figure is
+# carried. To be replaced when Revenu Quebec and CRA publish the 2026 forms. The comment below is
+# the 2025 derivation.
+# The "0" of TP-1 lines 474 and 475 (2025 tax year, Revenu Quebec TP-1.D-V (2025-12), page 5): line
+# 474 is "Amount from line 470, if it is negative" and line 475 is "Amount from line 470, if it is
+# positive", so each takes its half of the signed line 470 and is 0 on the other side. The form
+# prints no zero; it is the other side of the sign, and a dollars-and-cents box, so the amount is
+# "0" to the cent, which the rounding of the dataset keeps. No capability returns the positive or
+# negative part of a signed amount, so line 475 is the greater of line 470 and this zero, and line
+# 474 is this zero less line 470, not below zero (owner decision, 19 Nov 2026).
+family: ca-qc/tp1_zero_line_474_475
+tax_year: 2026
+kind: credit
+sources:
+  - Revenu Quebec TP-1.D-V (2025-12), page 5
+rounding: {increment: "0.01", mode: half_up}
+amount: "0"
