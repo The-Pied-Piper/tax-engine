@@ -872,6 +872,21 @@ amount from line 112.": the lesser of the printed $2,834 (the dataset
 `ca/medical_threshold_ceiling`) and line 112, from one core/capped_amount
 (`t1_tax_and_credits_line_113.yaml`); line 114 takes it off line 111."""
 
+MEDICAL_EXPENSES_LINE_111 = AmountKind.declare(
+    CATALOG, "medical_expenses_line_111", non_negative=True
+)
+"""Medical expenses for self, spouse or common-law partner and your dependent children under 18
+years of age, 5005-R line 111 and line 33099: an optional input a salary-only caller does not
+give; the line that reads it takes a blank as 0 (`t1_tax_and_credits_line_33099_inputs.yaml`)."""
+
+MEDICAL_EXPENSES_OVER_THRESHOLD_LINE_114 = AmountKind.declare(
+    CATALOG, "medical_expenses_over_threshold_line_114", non_negative=True
+)
+"""Medical expenses over the threshold, 5005-R line 114 "Line 114: Line 111 minus line 113 (if
+negative, enter "0") =": the medical expenses of line 111 (a blank read as 0) less the threshold
+of line 113, not below zero, from one core/subtract_not_below_zero
+(`t1_tax_and_credits_line_114.yaml`); line 116 adds line 115 to it."""
+
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
 Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line

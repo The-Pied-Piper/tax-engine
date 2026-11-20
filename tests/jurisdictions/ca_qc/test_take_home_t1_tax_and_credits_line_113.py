@@ -1,6 +1,5 @@
 """5005-R (2025) line 113, "Enter whichever is less: $2,834 or the amount from line 112".
 
-
 Form text (CRA 5005-R page 6, https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5005-r/5005-r-25e.txt):
 "Line 113: Enter whichever is less: $2,834 or the amount from line 112." One core/capped_amount at
 the printed $2,834 (the shared dataset `ca/medical_threshold_ceiling`). Line 112 is 595.05 at 20,000
