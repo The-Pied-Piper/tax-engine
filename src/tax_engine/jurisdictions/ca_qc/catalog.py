@@ -112,6 +112,30 @@ TP1_TOTAL_INCOME_LINE_199 = AmountKind.declare(
 """Total income, TP-1 line 199 "Add lines 101 and 105 through 164. Total income": line 101, the
 salary, plus the optional income of lines 105 through 164, rounded half-up to the cent."""
 
+T1_LINE_21 = AmountKind.declare(CATALOG, "t1_line_21")
+"""Add lines 1 to 20, 5005-R line 21 "Line 21: Add lines 1 to 20.": the employment income of line 1
+(`ca/employment_income`) and line 2 (`ca/other_employment_income`); lines 3 to 20 are not built (the
+salary-only filer has none). Produced by one core/sum (`t1_taxable_income_line_21.yaml`)."""
+
+NET_SELF_EMPLOYMENT_INCOME = AmountKind.declare(CATALOG, "net_self_employment_income")
+"""Net self-employment income, 5005-R line 27 "Line 27: Add lines 22 to 26. Net self-employment
+income =": the printed sum of the skipped block of lines 22 to 26, one optional input read as 0. Not
+floored: the form prints no floor and a loss is shown in brackets."""
+
+T1_LINE_28 = AmountKind.declare(CATALOG, "t1_line_28")
+"""Line 21 plus line 27, 5005-R line 28 "Line 28: Line 21 plus line 27 =". Not floored: line 27 may
+be a loss. Produced by one core/sum (`t1_taxable_income_line_28.yaml`)."""
+
+T1_LINE_32 = AmountKind.declare(CATALOG, "t1_line_32")
+"""Add lines 29 to 31, 5005-R line 32 and line 14700 "Line 32 and line 14700: Add lines 29 to 31":
+the printed sum of the skipped block of workers' compensation, social assistance and net federal
+supplements, one optional input read as 0."""
+
+TOTAL_INCOME = AmountKind.declare(CATALOG, "total_income")
+"""Total income, 5005-R line 33 and line 15000 "Line 33 and line 15000: Line 28 plus line 32 =".
+Not floored, so a loss larger than the other income is shown in brackets as the form prints it.
+Produced by one core/sum (`t1_taxable_income_line_15000.yaml`); Step 3 starts from it."""
+
 SCHEDULE_P_TP1_LINE_101 = AmountKind.declare(CATALOG, "schedule_p_tp1_line_101")
 """Schedule P (TP-1.D.P-V) line 10, first step: the amount from line 101 of the TP-1 return,
 "Employment income, RL-1 slip, box A", read from the TP-1 income form as a record list and
