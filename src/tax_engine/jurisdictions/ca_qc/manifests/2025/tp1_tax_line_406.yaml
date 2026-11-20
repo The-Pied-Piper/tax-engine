@@ -1,0 +1,17 @@
+# TP-1 (2025) line 406: "Non-refundable tax credits (line 399) – 406" (page 4, Income tax and
+# contributions). The figure is line 399 of the credits form, which the credits form exports;
+# another form reads an export only as a record list
+# (`ca-qc/tp1_credits.tp1_non_refundable_tax_credits_line_399`), so the one step is
+# core/record_total over those records (as line 401 reads Work Chart 401). Line 399 is always
+# computed, so there is no blank rule. The figure is signed, as line 399 is.
+form:
+  name: ca-qc/tp1_tax
+capabilities:
+  - name: core/record_total
+    title: "Non-refundable tax credits"
+    reference: "406"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp1_credits.tp1_non_refundable_tax_credits_line_399
+    produces:
+      output: ca-qc/tp1_non_refundable_tax_credits_line_406

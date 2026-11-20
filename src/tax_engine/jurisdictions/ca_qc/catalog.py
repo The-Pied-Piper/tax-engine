@@ -1413,3 +1413,10 @@ TP1_INCOME_TAX_ON_TAXABLE_INCOME_LINE_401 = AmountKind.declare(
 """TP-1 line 401 "Income tax on taxable income. Complete Work Chart 401": the chart's line 8, which
 it says to carry to line 401. Produced by one core/record_total over the chart's export
 (`tp1_tax_line_401.yaml`)."""
+
+TP1_NON_REFUNDABLE_TAX_CREDITS_LINE_406 = AmountKind.declare(
+    CATALOG, "tp1_non_refundable_tax_credits_line_406"
+)
+"""TP-1 line 406 "Non-refundable tax credits (line 399)": the credits form's line 399, a copy. Signed,
+as line 399 is. Produced by one core/record_total over the credits form's export
+(`tp1_tax_line_406.yaml`)."""
