@@ -631,3 +631,10 @@ FEDERAL_BRACKET_COLUMN_RATE_LINE_74 = AmountKind.declare(
 """5005-R Step 5 Part A line 74 "Rate" (14.5%, 20.5%, 26%, 29% or 33%): the printed rate of the
 column that line 71 falls in, a fraction (0.205 for 20.5%). Produced by one
 core/bracket_column_rate (`t1_tax_and_credits_line_74.yaml`)."""
+
+FEDERAL_EXCESS_TIMES_COLUMN_RATE_LINE_75 = AmountKind.declare(
+    CATALOG, "federal_excess_times_column_rate_line_75", non_negative=True
+)
+"""5005-R Step 5 Part A line 75 "Line 73 multiplied by the percentage from line 74 =": line 73
+times line 74, rounded half-up to the cent. Produced by one core/multiply_by_rate
+(`t1_tax_and_credits_line_75.yaml`)."""
