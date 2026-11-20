@@ -1510,3 +1510,10 @@ SCHEDULE_K_AMOUNT_FOR_MONTHS_BOX_61 = AmountKind.declare(
 """Schedule K line 88, the row "Number of months entered in box 61 x $63.83": the months of box
 61 times 63.83, rounded half-up to the cent. One core/multiply
 (`tp1_schedule_k_line_88_box_61.yaml`); line 88 adds the two rows."""
+
+SCHEDULE_K_MONTHS_PREMIUM_LINE_88 = AmountKind.declare(
+    CATALOG, "schedule_k_months_premium_line_88", non_negative=True
+)
+"""Schedule K line 88, "Add the results": the two rows (box 60 months times 62.00 and box 61
+months times 63.83) added, rounded half-up to the cent. One core/sum
+(`tp1_schedule_k_line_88.yaml`)."""
