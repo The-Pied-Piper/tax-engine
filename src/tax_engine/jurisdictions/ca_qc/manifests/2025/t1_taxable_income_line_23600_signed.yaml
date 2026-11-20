@@ -12,6 +12,7 @@ form:
   name: ca-qc/t1_taxable_income
 capabilities:
   - name: core/subtract
+    title: "Net income, which can be below zero"
     unit: ca/cad
     params:
       rounding: ca-qc/cent_rounding

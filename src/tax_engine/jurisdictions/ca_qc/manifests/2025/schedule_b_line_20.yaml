@@ -29,6 +29,7 @@ capabilities:
     produces:
       output: ca-qc/schedule_b_living_alone_amount_line_20
   - name: ca/count_by_conditions
+    title: "Line 18 within the limit for the living-alone amount"
     params:
       conditions: ca-qc/schedule_b_line_20_conditions
     consumes:
@@ -38,6 +39,7 @@ capabilities:
     produces:
       output: ca-qc/schedule_b_line_18_gate_count_line_20
   - name: core/times_count
+    title: "Living-alone amount, if you lived alone"
     unit: ca/cad
     params:
       rounding: ca-qc/cent_rounding
