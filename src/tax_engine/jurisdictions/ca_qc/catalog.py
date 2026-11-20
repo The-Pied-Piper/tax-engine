@@ -2116,3 +2116,56 @@ TP1_BALANCE_DUE_LINE_479 = AmountKind.declare(CATALOG, "tp1_balance_due_line_479
 """TP-1 line 479 "Subtract line 477 from line 475. Balance due": rounded half-up to the cent, signed
 as given. The "not required to pay a balance of less than $2" note is a payment note and is not
 built. Produced by one core/subtract (`tp1_totals_line_479.yaml`) and exported by the form."""
+
+FEDERAL_REFUND_OR_BALANCE_OWING_RETURN = AmountKind.declare(
+    CATALOG, "federal_refund_or_balance_owing_return"
+)
+"""Quebec return summary: 5005-R line 172 "Refund or balance owing", read from the form's export
+(signed: negative is a refund, positive a balance owing). One core/record_total (`return.yaml`)."""
+
+TP1_INCOME_TAX_AND_CONTRIBUTIONS_RETURN = AmountKind.declare(
+    CATALOG, "tp1_income_tax_and_contributions_return", non_negative=True
+)
+"""Quebec return summary: TP-1 line 450 "Income tax and contributions", read from the totals form's
+export. One core/record_total (`return.yaml`)."""
+
+TP1_WORK_PREMIUM_TAX_CREDITS_RETURN = AmountKind.declare(
+    CATALOG, "tp1_work_premium_tax_credits_return", non_negative=True
+)
+"""Quebec return summary: TP-1 line 456 "Tax credits respecting the work premium", read from the
+totals form's export. One core/record_total (`return.yaml`)."""
+
+TP1_INCOME_TAX_LESS_WORK_PREMIUM_RETURN = AmountKind.declare(
+    CATALOG, "tp1_income_tax_less_work_premium_return"
+)
+"""Quebec return summary: TP-1 line 450 less line 456, signed (no floor). For a salary-only filer
+only line 456 reduces line 450, because the credits that TP-1 line 468 collects are left out of the
+take-home. One core/subtract (`return.yaml`)."""
+
+FEDERAL_TOTAL_PAYABLE_RETURN = AmountKind.declare(
+    CATALOG, "federal_total_payable_return", non_negative=True
+)
+"""Quebec return summary: 5005-R line 43500 "Total payable", read from the form's export. One
+core/record_total (`return.yaml`)."""
+
+REFUNDABLE_QUEBEC_ABATEMENT_RETURN = AmountKind.declare(
+    CATALOG, "refundable_quebec_abatement_return", non_negative=True
+)
+"""Quebec return summary: 5005-R line 44000 "Refundable Quebec abatement", read from the form's
+export. One core/record_total (`return.yaml`)."""
+
+FEDERAL_TOTAL_PAYABLE_LESS_ABATEMENT_RETURN = AmountKind.declare(
+    CATALOG, "federal_total_payable_less_abatement_return"
+)
+"""Quebec return summary: 5005-R line 43500 less line 44000, signed (no floor). One core/subtract
+(`return.yaml`)."""
+
+TOTAL_PAYABLE = AmountKind.declare(CATALOG, "total_payable")
+"""Quebec return summary: the total payable of both returns, 5005-R line 43500 less line 44000 plus
+TP-1 line 450. A `ca-qc` kind, because `ca/total_payable` is the federal kind the shared forms
+declare. One core/sum (`return.yaml`); the second output of the return."""
+
+SOLIDARITY_CREDIT = AmountKind.declare(CATALOG, "solidarity_credit", non_negative=True)
+"""Quebec return summary: the solidarity tax credit for July 2026 to June 2027, read from the
+solidarity form's export and shown as its own yearly amount next to the result, not added to the
+2025 refund or balance owing or the total payable. One core/record_total (`return.yaml`)."""

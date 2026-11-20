@@ -9,14 +9,18 @@
 # form (T2204) are the shared federal forms; each gets its Quebec `datasets` swap from its own
 # ticket (Schedule 8's is in place below).
 #
-# The `outputs` list is set by the Quebec return summary ticket. Quebec is not yet listed in
-# `registrations.JURISDICTIONS`; that is done by the end-to-end ticket, last, after the manifest is
-# complete.
+# The `outputs` list is set by the Quebec return summary ticket (`return.yaml`). Quebec is not yet
+# listed in `registrations.JURISDICTIONS`; that is done by the end-to-end ticket, last, after the
+# manifest is complete.
 jurisdiction: CA-QC
 version: 1
 valid_from_tax_year: 2025
 # The title is the engine's own wording for the default form, not a printed form heading.
 title: Return summary
+outputs:
+  - ca/refund_or_balance_owing
+  - ca-qc/total_payable
+  - ca-qc/solidarity_credit
 capabilities: []
 imports:
   # Quebec prints its own Schedule 8 (5005-S8): the shared form reads the Quebec line 11 dataset
