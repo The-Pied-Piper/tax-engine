@@ -1482,3 +1482,17 @@ SCHEDULE_K_MAXIMUM_PREMIUM_LINE_87 = AmountKind.declare(
 """Schedule K line 87, "Maximum premium for 2025": the printed 755.00, taken as printed from
 `ca-qc/schedule_k_line_87_maximum` and never recomputed. One core/credit_amount
 (`tp1_schedule_k_line_87.yaml`)."""
+
+SCHEDULE_K_MONTHLY_AMOUNT_BOX_60 = AmountKind.declare(
+    CATALOG, "schedule_k_monthly_amount_box_60", non_negative=True
+)
+"""The printed 62.00 of the Schedule K line 88 row "Number of months entered in box 60 x $62.00":
+the amount for each month, taken as printed from `ca-qc/schedule_k_monthly_amount_box_60`. One
+core/credit_amount (`tp1_schedule_k_line_88_box_60.yaml`); it is not a line of the form."""
+
+SCHEDULE_K_AMOUNT_FOR_MONTHS_BOX_60 = AmountKind.declare(
+    CATALOG, "schedule_k_amount_for_months_box_60", non_negative=True
+)
+"""Schedule K line 88, the row "Number of months entered in box 60 x $62.00": the months of box
+60 times 62.00, rounded half-up to the cent. One core/multiply
+(`tp1_schedule_k_line_88_box_60.yaml`); line 88 adds the two rows."""
