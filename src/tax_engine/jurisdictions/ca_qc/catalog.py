@@ -649,3 +649,52 @@ Taxable income =": net income (line 58, a copy of line 57) less the deductions f
 69, an optional input read as 0), not below zero. Produced by one core/subtract_not_below_zero
 (`t1_taxable_income_line_26000.yaml`); the federal bracket columns (line 71 onward) start from
 it."""
+
+TP1_SCHEDULE_F_LOWER_BOUND_LINE_77 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_lower_bound_line_77", non_negative=True
+)
+"""Schedule F line 77, the printed lower bound of the column that line 76 falls in (each column
+prints 18,130.00 under "If $63,060 or less" and 63,060.00 under "If more than $63,060"); blank
+when line 76 is $18,130 or less, because Part B is then not completed."""
+
+TP1_SCHEDULE_F_INCOME_OVER_LOWER_BOUND_LINE_78 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_income_over_lower_bound_line_78", non_negative=True
+)
+"""Schedule F line 78, "Subtract line 77 from line 76. If the result is negative, enter 0": the
+part of line 76 over the column's lower bound; blank when line 77 is blank."""
+
+TP1_SCHEDULE_F_COLUMN_RATE = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_column_rate", non_negative=True
+)
+"""Schedule F, Part B, the row "x 1%" below line 78 (the form gives it no line number): the printed
+rate of the column that line 76 falls in; blank for a line 76 of $18,130 or less."""
+
+TP1_SCHEDULE_F_CONTRIBUTION_ON_EXCESS_LINE_80 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_contribution_on_excess_line_80", non_negative=True
+)
+"""Schedule F line 80, "Multiply line 78 by 1%": line 78 times the column's rate, rounded half-up to
+the cent; blank when line 78 or the rate is blank."""
+
+TP1_SCHEDULE_F_COLUMN_CONSTANT_LINE_81 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_column_constant_line_81", non_negative=True
+)
+"""Schedule F line 81, "+ 81 0 00 | 150 00": the printed constant of the column that line 76 falls
+in (0.00 and 150.00); blank for a line 76 of $18,130 or less."""
+
+TP1_SCHEDULE_F_CONTRIBUTION_BEFORE_MAXIMUM = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_contribution_before_maximum", non_negative=True
+)
+"""Schedule F line 82, "Add lines 80 and 81", before its maximum is applied: the sum of the two
+lines, each read as 0 when blank. Not printed on its own, so it is engine-internal."""
+
+TP1_SCHEDULE_F_COLUMN_MAXIMUM = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_column_maximum", non_negative=True
+)
+"""Schedule F line 82, "Maximum: $150 | Maximum: $1,000": the printed maximum of the column that
+line 76 falls in; blank for a line 76 of $18,130 or less."""
+
+TP1_SCHEDULE_F_CONTRIBUTION_LINE_82 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_contribution_line_82", non_negative=True
+)
+"""Schedule F line 82, "Contribution to the health services fund", carried to TP-1 line 446: the
+lesser of lines 80 plus 81 and the column's maximum; 0.00 when Part B is not completed."""

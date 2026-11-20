@@ -2,11 +2,13 @@
 # lines 10 to 70. This part names the form; each line's capability is a part of its own with the same
 # `form.name`. Lines 20 to 33 and 41 to 62 are skipped (the optional lines ruling): their printed
 # sums, lines 34 and 68, are one optional input each, read as 0.
-# Export: line 70, the income subject to the contribution, which Part B tests against $18,130.
+# Part B: lines 76 to 82, in their own parts. Exports: line 70, the income subject to the
+# contribution, which Part B reads, and line 82, the contribution, which TP-1 line 446 carries.
 form:
   name: ca-qc/tp1_schedule_f
   title: "Contribution to the Health Services Fund"
   required: true
   exports:
     - ca-qc/tp1_schedule_f_income_subject_line_70
+    - ca-qc/tp1_schedule_f_contribution_line_82
 capabilities: []

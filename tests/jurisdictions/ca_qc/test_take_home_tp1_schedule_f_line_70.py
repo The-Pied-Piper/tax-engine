@@ -111,10 +111,13 @@ def test_line_68_is_taken_off_line_36(take_home_service: TakeHomeService) -> Non
     assert str(value) == "699.75"
 
 
-def test_the_form_part_names_the_form_and_exports_line_70() -> None:
+def test_the_form_part_names_the_form_and_exports_lines_70_and_82() -> None:
     part = yaml.safe_load(FORM_PART.read_text(encoding="utf-8"))
 
     assert part["form"]["name"] == "ca-qc/tp1_schedule_f"
     assert part["form"]["title"] == "Contribution to the Health Services Fund"
-    assert part["form"]["exports"] == ["ca-qc/tp1_schedule_f_income_subject_line_70"]
+    assert part["form"]["exports"] == [
+        "ca-qc/tp1_schedule_f_income_subject_line_70",
+        "ca-qc/tp1_schedule_f_contribution_line_82",
+    ]
     assert part["capabilities"] == []

@@ -1,0 +1,16 @@
+# Schedule F (2025) Part B, line 81: "Add lines 80 and 81", where line 81 prints the constant
+# 0.00 in the column "If $63,060 or less" and 150.00 in the column "If more than $63,060". Line 81
+# is the printed constant of the column that line 76 falls in; line 76 is a copy of line 70 and has
+# no step of its own. Blank for a line 76 of $18,130 or less, as no contribution is due then.
+form:
+  name: ca-qc/tp1_schedule_f
+capabilities:
+  - name: core/bracket_column_tax_at_start
+    reference: "81"
+    unit: ca/cad
+    params:
+      schedule: ca-qc/tp1_schedule_f_brackets
+    consumes:
+      base: ca-qc/tp1_schedule_f_income_subject_line_70
+    produces:
+      output: ca-qc/tp1_schedule_f_column_constant_line_81
