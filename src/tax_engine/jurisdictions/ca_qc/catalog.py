@@ -1475,3 +1475,10 @@ SCHEDULE_K_PREMIUM_AFTER_MONTHS_LINE_86 = AmountKind.declare(
 )
 """Schedule K line 86, "Subtract line 85 from line 84": the premium left after the months covered by
 a group plan, rounded half-up to the cent. One core/subtract (`tp1_schedule_k_line_86.yaml`)."""
+
+SCHEDULE_K_MAXIMUM_PREMIUM_LINE_87 = AmountKind.declare(
+    CATALOG, "schedule_k_maximum_premium_line_87", non_negative=True
+)
+"""Schedule K line 87, "Maximum premium for 2025": the printed 755.00, taken as printed from
+`ca-qc/schedule_k_line_87_maximum` and never recomputed. One core/credit_amount
+(`tp1_schedule_k_line_87.yaml`)."""

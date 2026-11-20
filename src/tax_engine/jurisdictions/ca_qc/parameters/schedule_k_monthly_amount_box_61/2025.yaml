@@ -1,0 +1,10 @@
+# Revenu Quebec TP-1.D.K-V (2025-12), Schedule K, Part C, line 88: "Number of months entered in box
+# 61 x $63.83". The printed figure is 63.83, the amount for each month of box 61. Taken as
+# printed and claimed whole; half-up to the cent changes nothing.
+family: ca-qc/schedule_k_monthly_amount_box_61
+tax_year: 2025
+kind: credit
+sources:
+  - Revenu Quebec TP-1.D.K-V (2025-12), Schedule K, Part C
+rounding: {increment: "0.01", mode: half_up}
+amount: "63.83"
