@@ -36,8 +36,8 @@ def test_line_248_at_each_salary(
 def test_a_salary_below_the_exemption_carries_a_nil_line_23(
     take_home_service: TakeHomeService,
 ) -> None:
-    """Schedule U line 14 is floored at 0 below the exemption (owner's ruling), so at a $3,000 salary
-    line 23 is 0.00 and line 248 carries it."""
+    """Schedule U line 14 is floored at 0 below the exemption (owner's ruling), so at a $3,000
+    salary line 23 is 0.00 and line 248 carries it."""
     value = net_income_sheet(take_home_service, "3000", EXPORTS, PARTS).get(LINE).value
 
     assert str(value) == "0.00"
