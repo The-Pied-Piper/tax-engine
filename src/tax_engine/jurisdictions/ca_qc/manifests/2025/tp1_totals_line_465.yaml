@@ -2,12 +2,14 @@
 # 5). One step, core/sum, rounded half-up to the cent through ca-qc/cent_rounding. Line 456 is a
 # step; lines 451.2, 451.3, 452 to 455, 457 to 460, 462 and 463 are optional inputs, read as 0 when
 # left blank.
+# The sentence of a numbered line stays at 40 words or fewer (tests/jurisdictions/test_trace_english_
+# printed_names.py), so the parts are added in two unprinted subtotals, each titled in plain words
+# and with no reference, and the printed line adds the two.
 form:
   name: ca-qc/tp1_totals
 capabilities:
   - name: core/sum
-    title: "Income tax paid and other credits"
-    reference: "465"
+    title: "Lines 451.2 to 456 added up"
     unit: ca/cad
     params:
       rounding: ca-qc/cent_rounding
@@ -20,12 +22,6 @@ capabilities:
         - ca-qc/tp1_line_454
         - ca-qc/tp1_line_455
         - ca-qc/tp1_work_premium_tax_credits_line_456
-        - ca-qc/tp1_line_457
-        - ca-qc/tp1_line_458
-        - ca-qc/tp1_line_459
-        - ca-qc/tp1_line_460
-        - ca-qc/tp1_line_462
-        - ca-qc/tp1_line_463
     blank:
       ca-qc/tp1_line_451_2: "0"
       ca-qc/tp1_line_451_3: "0"
@@ -33,11 +29,39 @@ capabilities:
       ca-qc/tp1_line_453: "0"
       ca-qc/tp1_line_454: "0"
       ca-qc/tp1_line_455: "0"
+    produces:
+      output: ca-qc/tp1_totals_lines_451_2_to_456_subtotal
+  - name: core/sum
+    title: "Lines 457 to 463 added up"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/tp1_line_457
+        - ca-qc/tp1_line_458
+        - ca-qc/tp1_line_459
+        - ca-qc/tp1_line_460
+        - ca-qc/tp1_line_462
+        - ca-qc/tp1_line_463
+    blank:
       ca-qc/tp1_line_457: "0"
       ca-qc/tp1_line_458: "0"
       ca-qc/tp1_line_459: "0"
       ca-qc/tp1_line_460: "0"
       ca-qc/tp1_line_462: "0"
       ca-qc/tp1_line_463: "0"
+    produces:
+      output: ca-qc/tp1_totals_lines_457_to_463_subtotal
+  - name: core/sum
+    title: "Income tax paid and other credits"
+    reference: "465"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/tp1_totals_lines_451_2_to_456_subtotal
+        - ca-qc/tp1_totals_lines_457_to_463_subtotal
     produces:
       output: ca-qc/tp1_income_tax_paid_and_other_credits_line_465
