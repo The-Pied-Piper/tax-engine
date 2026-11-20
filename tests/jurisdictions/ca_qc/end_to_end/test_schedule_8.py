@@ -47,6 +47,7 @@ from tax_engine.jurisdictions.ca.catalog.deductions import (
     CPP_PART_3_LINE_5,
     CPP_PART_3_LINE_7,
     CPP_PART_3_LINE_11,
+    CPP_PART_3_LINE_12,
 )
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca.catalog.rc381_cpp_qpp import (
@@ -146,6 +147,16 @@ def test_line_11_matches_the_printed_form(tmp_path: Path, salary: str, expected:
     sheet = schedule_8(tmp_path, salary)
 
     assert sheet.get(CPP_PART_3_LINE_11).value == D(expected)
+
+
+@pytest.mark.parametrize(
+    ("salary", "expected"), [("20000", "165.00"), ("70000", "665.00"), ("200000", "678.00")]
+)
+def test_line_12_matches_the_printed_form(tmp_path: Path, salary: str, expected: str) -> None:
+    # Line 12: 1% of line 7, at most 678.00.
+    sheet = schedule_8(tmp_path, salary)
+
+    assert sheet.get(CPP_PART_3_LINE_12).value == D(expected)
 
 
 def test_line_11_without_the_swap_is_the_federal_figure(tmp_path: Path) -> None:
