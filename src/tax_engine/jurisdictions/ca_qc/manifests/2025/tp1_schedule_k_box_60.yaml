@@ -1,0 +1,18 @@
+# Schedule K (2025) box 60, "Number of months checked from January to June" (Revenu Quebec TP-1.D.K-V
+# (2025-12), Part B, section 1): the months of the half in which line 50 applied, from the
+# `ca-qc/schedule_k_months_box_60` dataset by the checked answer to line 50 through
+# ca/amount_by_count. The months are a figure in months, not dollars. Mirrors Schedule 8 line B
+# (`ca/forms/schedule_8/schedule_8_line_b.yaml`).
+form:
+  name: ca-qc/tp1_schedule_k
+capabilities:
+  - name: ca/amount_by_count
+    title: "Number of months checked from January to June"
+    reference: "60"
+    unit: core/months
+    params:
+      table: ca-qc/schedule_k_months_box_60
+    consumes:
+      count: ca-qc/schedule_k_group_plan_covered_checked_line_50
+    produces:
+      output: ca-qc/schedule_k_months_january_to_june_box_60

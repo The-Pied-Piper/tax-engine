@@ -1,0 +1,15 @@
+# Schedule U (Revenu Quebec TP-1.D.U-V, 2025-12), Part B, line 16: "Amount from line 11 or line 15,
+# whichever is less." One `core/lesser_of` step over line 11 (`ca-qc/schedule_u_line_11`) and line
+# 15 (`ca-qc/schedule_u_line_15`). The form prints no label for the line, so the step is untitled.
+form:
+  name: ca-qc/tp1_schedule_u
+capabilities:
+  - name: core/lesser_of
+    reference: "16"
+    unit: ca/cad
+    consumes:
+      amounts:
+        - ca-qc/schedule_u_line_11
+        - ca-qc/schedule_u_line_15
+    produces:
+      output: ca-qc/schedule_u_line_16

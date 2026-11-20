@@ -1,0 +1,21 @@
+# Schedule F (2025) line 16: "Add lines 12 and 14, or subtract line 14 from line 12, as applicable."
+# Line 14 is carried with its sign, so a subtraction is a negative line 14 and the step is the one
+# sum; a blank line 14 is read as 0. The sum is rounded half-up to the cent.
+form:
+  name: ca-qc/tp1_schedule_f
+capabilities:
+  - name: core/sum
+    reference: "16"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        [
+          ca-qc/tp1_schedule_f_employment_income_line_12,
+          ca-qc/tp1_schedule_f_employment_income_correction_line_14,
+        ]
+    blank:
+      ca-qc/tp1_schedule_f_employment_income_correction_line_14: "0"
+    produces:
+      output: ca-qc/tp1_schedule_f_employment_income_total_line_16
