@@ -1,0 +1,19 @@
+# 5005-R (2025) line 55 and line 23400. The form prints: "Line 55 and line 23400: Line 34 minus line 54
+# (if negative, show in brackets) Net income before adjustments =" (page 4). Line 34 ("Enter the amount
+# from line 33 of the previous page.") is a copy and has no step, so the step reads line 33
+# (`ca-qc/total_income`, line 15000). One step: core/subtract, with no floor (the form shows a negative
+# in brackets), rounded through `ca-qc/cent_rounding`.
+form:
+  name: ca-qc/t1_taxable_income
+capabilities:
+  - name: core/subtract
+    title: "Net income before adjustments"
+    reference: "23400"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/total_income
+      less: ca-qc/t1_line_54
+    produces:
+      output: ca-qc/t1_line_55

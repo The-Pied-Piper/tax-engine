@@ -230,6 +230,19 @@ the cent."""
 SCHEDULE_U_LINE_16 = AmountKind.declare(CATALOG, "schedule_u_line_16")
 """Schedule U line 16 "Amount from line 11 or line 15, whichever is less": the QPP contribution
 amount of Part B."""
+
+SCHEDULE_U_LINE_17_2 = AmountKind.declare(CATALOG, "schedule_u_line_17_2")
+"""Schedule U line 17.2 "Multiply line 17.1 by 6.4%": line 17.1 (a copy of line 14.4) at the printed
+rate, rounded half-up to the cent. Line 14.4 can be negative, so the figure can be."""
+
+SCHEDULE_U_LINE_17_3 = AmountKind.declare(CATALOG, "schedule_u_line_17_3", non_negative=True)
+"""Schedule U line 17.3 "Subtract line 17.2 from line 17. If the result is negative, enter 0": the
+QPP contribution (TP-1 line 98) less line 17.2, not below 0."""
+
+SCHEDULE_U_LINE_17_5 = AmountKind.declare(CATALOG, "schedule_u_line_17_5", non_negative=True)
+"""Schedule U line 17.5 "Add lines 17.3 and 17.4": the excess over the base contribution plus the
+additional QPP contribution (TP-1 line 98.2), rounded half-up to the cent."""
+
 T1_LINE_21 = AmountKind.declare(CATALOG, "t1_line_21")
 """Add lines 1 to 20, 5005-R line 21 "Line 21: Add lines 1 to 20.": the employment income of line 1
 (`ca/employment_income`) and line 2 (`ca/other_employment_income`); lines 3 to 20 are not built (the
@@ -506,3 +519,35 @@ SCHEDULE_P_WORK_PREMIUM_BEFORE_REDUCTION_LINE_76 = AmountKind.declare(
 )
 """Schedule P Part E, section 2, column 1, line 76, "Multiply line 72 by line 74 or line 75 (as
 applicable)": the work premium before the family-income reduction, rounded half-up to the cent."""
+
+T1_LINE_48 = AmountKind.declare(CATALOG, "t1_line_48", non_negative=True)
+"""Deduction for CPP or QPP enhanced contributions on employment income, 5005-R line 48 and line
+22215 "Deduction for CPP or QPP enhanced contributions on employment income (complete Schedule 8 or
+Form RC381, whichever applies) (maximum $1,074.00)": the figure Schedule 8 line 28 exports
+(`ca/schedule_8.schedule_8_cpp_enhanced_contributions_on_return`, a record list of one amount),
+totalled by one core/record_total (`t1_taxable_income_line_22215.yaml`)."""
+
+T1_LINE_54 = AmountKind.declare(CATALOG, "t1_line_54", non_negative=True)
+"""Deductions from total income, 5005-R line 54 and line 23300 "Add lines 35 to 53.": line 48 alone,
+the only deduction a salary-only filer has (lines 35 to 47 and 49 to 53 are blank and not built).
+Produced by one core/sum (`t1_taxable_income_line_23300.yaml`)."""
+
+T1_LINE_55 = AmountKind.declare(CATALOG, "t1_line_55")
+"""Net income before adjustments, 5005-R line 55 and line 23400 "Line 34 minus line 54 (if negative,
+show in brackets) Net income before adjustments =": total income (line 33, copied to line 34) less
+line 54, not floored, so a deduction above income is shown in brackets as the form prints it.
+Produced by one core/subtract (`t1_taxable_income_line_23400.yaml`)."""
+
+NET_INCOME = AmountKind.declare(CATALOG, "net_income", non_negative=True)
+"""Net income, 5005-R line 57 and line 23600 "Line 55 minus line 56 (if negative, enter "0") ...
+Net income =": net income before adjustments (line 55) less the social benefits repayment (line
+56), not below zero. Produced by one core/subtract_not_below_zero
+(`t1_taxable_income_line_23600.yaml`); Step 4 starts from it."""
+
+NET_INCOME_SIGNED = AmountKind.declare(CATALOG, "net_income_signed")
+"""Net income before its floor, 5005-R line 57 and line 23600 "Line 55 minus line 56 (if negative,
+enter "0")" as the shared Schedule 6 line 7 reads it: "Net income from line 23600 of the return (or
+the amount you would have entered if the instructions on line 23600 said "if negative, show in
+brackets")". Net income before adjustments (line 55) less the social benefits repayment (line 56),
+signed. Produced by one core/subtract (`t1_taxable_income_line_23600_signed.yaml`) and supplied to
+the neutral name `ca/t1_taxable_income.net_income_signed` by the form declaration."""
