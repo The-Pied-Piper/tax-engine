@@ -1200,6 +1200,122 @@ TOTAL_PAYABLE_LINE_151 = AmountKind.declare(CATALOG, "total_payable_line_151", n
 repayment (line 149) from one core/sum (`t1_tax_and_credits_line_43500.yaml`);
 Step 6 line 152 reads it."""
 
+INCOME_TAX_DEDUCTED_NET_LINE_155 = AmountKind.declare(CATALOG, "income_tax_deducted_net_line_155")
+"""Total income tax deducted less the tax transfer for residents of Quebec, 5005-R line 155 and line
+43850 "Line 153 minus line 154 =": lines 153 (43700) and 154 (43800) are left out of the take-home
+(no T4 slip, so tax deducted is 0), so the difference is one optional input a salary-only caller
+does not give; the sum on line 171 takes a blank as 0
+(`t1_tax_and_credits_line_43850_inputs.yaml`)."""
+
+REFUNDABLE_QUEBEC_ABATEMENT_LINE_156 = AmountKind.declare(
+    CATALOG, "refundable_quebec_abatement_line_156", non_negative=True
+)
+"""Refundable Quebec abatement, 5005-R line 156 and line 44000 "Amount from Line 42900 multiplied by
+16.5% =": line 130 (line 42900) at the printed 16.5% from one core/apply_rate
+(`t1_tax_and_credits_line_44000.yaml`); the total credits of line 171 add it, and the Quebec return
+summary reads it."""
+
+EI_OVERPAYMENT_LINE_157 = AmountKind.declare(CATALOG, "ei_overpayment_line_157", non_negative=True)
+"""Employment insurance (EI) overpayment, 5005-R line 157 and line 45000: the T2204 line 15 amount
+(0 when line 15 is not more than $1), read from the T2204 export by one core/record_total
+(`t1_tax_and_credits_line_45000.yaml`); line 159 reads it."""
+
+NET_EI_OVERPAYMENT_LINE_159 = AmountKind.declare(
+    CATALOG, "net_ei_overpayment_line_159", non_negative=True
+)
+"""Net EI overpayment, 5005-R line 159 and line 45100 "Line 157 minus line 158 (if negative, enter
+"0") =": line 157 less line 158 (a copy of line 92, a blank read as 0), not below zero from one
+core/subtract_not_below_zero (`t1_tax_and_credits_line_45100.yaml`); the total credits of line 171
+add it."""
+
+REFUNDABLE_MEDICAL_EXPENSE_SUPPLEMENT_LINE_160 = AmountKind.declare(
+    CATALOG, "refundable_medical_expense_supplement_line_160", non_negative=True
+)
+"""Refundable medical expense supplement, 5005-R line 160 and line 45200: an optional input a
+salary-only caller does not give; the sum on line 171 takes a blank as 0
+(`t1_tax_and_credits_line_45200_inputs.yaml`)."""
+
+CANADA_TRAINING_CREDIT_LINE_162 = AmountKind.declare(
+    CATALOG, "canada_training_credit_line_162", non_negative=True
+)
+"""Canada training credit (CTC), 5005-R line 162 and line 45350: an optional input a salary-only
+caller does not give; the sum on line 171 takes a blank as 0
+(`t1_tax_and_credits_line_45350_inputs.yaml`)."""
+
+MULTIGENERATIONAL_HOME_RENOVATION_CREDIT_LINE_163 = AmountKind.declare(
+    CATALOG, "multigenerational_home_renovation_credit_line_163", non_negative=True
+)
+"""Multigenerational home renovation tax credit (MHRTC), 5005-R line 163 and line 45355: an optional
+input a salary-only caller does not give; the sum on line 171 takes a blank as 0
+(`t1_tax_and_credits_line_45355_inputs.yaml`)."""
+
+INVESTMENT_TAX_CREDIT_REFUND_LINE_164 = AmountKind.declare(
+    CATALOG, "investment_tax_credit_refund_line_164", non_negative=True
+)
+"""Refund of investment tax credit, 5005-R line 164 and line 45400: an optional input a salary-only
+caller does not give; the sum on line 171 takes a blank as 0
+(`t1_tax_and_credits_line_45400_inputs.yaml`)."""
+
+PART_XII_2_TAX_CREDIT_LINE_165 = AmountKind.declare(
+    CATALOG, "part_xii_2_tax_credit_line_165", non_negative=True
+)
+"""Part XII.2 tax credit, 5005-R line 165 and line 45600: an optional input a salary-only caller
+does not give; the sum on line 171 takes a blank as 0
+(`t1_tax_and_credits_line_45600_inputs.yaml`)."""
+
+GST_HST_REBATE_LINE_166 = AmountKind.declare(CATALOG, "gst_hst_rebate_line_166", non_negative=True)
+"""Employee and partner GST/HST rebate, 5005-R line 166 and line 45700: an optional input a
+salary-only caller does not give; the sum on line 171 takes a blank as 0
+(`t1_tax_and_credits_line_45700_inputs.yaml`)."""
+
+ELIGIBLE_EDUCATOR_CREDIT_LINE_167 = AmountKind.declare(
+    CATALOG, "eligible_educator_credit_line_167", non_negative=True
+)
+"""Eligible educator school supply tax credit, 5005-R line 167 and line 46900: an optional input a
+salary-only caller does not give (the credit of line 46800 at 25% is a block skipped for a
+salary-only filer); the sum on line 171 takes a blank as 0
+(`t1_tax_and_credits_line_46900_inputs.yaml`)."""
+
+JOURNALISM_LABOUR_CREDIT_LINE_168 = AmountKind.declare(
+    CATALOG, "journalism_labour_credit_line_168", non_negative=True
+)
+"""Canadian journalism labour tax credit, 5005-R line 168 and line 47555: an optional input a
+salary-only caller does not give; the sum on line 171 takes a blank as 0
+(`t1_tax_and_credits_line_47555_inputs.yaml`)."""
+
+FUEL_CHARGE_FARMERS_CREDIT_LINE_169 = AmountKind.declare(
+    CATALOG, "fuel_charge_farmers_credit_line_169", non_negative=True
+)
+"""Return of fuel charge proceeds to farmers tax credit, 5005-R line 169 and line 47556: an optional
+input a salary-only caller does not give; the sum on line 171 takes a blank as 0
+(`t1_tax_and_credits_line_47556_inputs.yaml`)."""
+
+TAX_PAID_BY_INSTALMENTS_LINE_170 = AmountKind.declare(
+    CATALOG, "tax_paid_by_instalments_line_170", non_negative=True
+)
+"""Tax paid by instalments, 5005-R line 170 and line 47600: an optional input a salary-only caller
+does not give; the sum on line 171 takes a blank as 0
+(`t1_tax_and_credits_line_47600_inputs.yaml`)."""
+
+CWB_LINE_161 = AmountKind.declare(CATALOG, "cwb_line_161", non_negative=True)
+"""Canada workers benefit (CWB), 5005-R line 161 and line 45300 "(complete Schedule 6)": Schedule 6
+line 28, read from the Schedule 6 export by one core/record_total
+(`t1_tax_and_credits_line_45300.yaml`); the total credits of line 171 add it, and the Quebec return
+summary reads it."""
+
+TOTAL_CREDITS_LINE_171 = AmountKind.declare(CATALOG, "total_credits_line_171")
+"""Total credits, 5005-R line 171 and line 48200 "Add lines 155, 156, and 159 to 170. Total credits
+=": the refundable Quebec abatement (line 156), the net EI overpayment (line 159) and the Canada
+workers benefit (line 161) plus the optional lines 155, 160 and 162 to 170 (each blank read as 0),
+from one core/sum (`t1_tax_and_credits_line_48200.yaml`); line 172 reads it.
+Signed, as the line prints no floor."""
+
+REFUND_OR_BALANCE_OWING_LINE_172 = AmountKind.declare(CATALOG, "refund_or_balance_owing_line_172")
+"""Refund or balance owing, 5005-R line 172 "Line 152 minus line 171 ... Refund or balance owing =":
+line 152 (a copy of line 151) less the total credits of line 171 from one core/subtract
+(`t1_tax_and_credits_line_172.yaml`). Signed, as the line prints no floor: negative is a refund
+(line 48400), positive a balance owing (line 48500); the Quebec return summary reads it."""
+
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
 Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line

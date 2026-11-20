@@ -1,0 +1,13 @@
+# 5005-R (2025) line 155 input a salary-only caller does not give.
+# Line 155 and line 43850: "Line 153 minus line 154 =" (page 8). A salary-only filer has no such amount, so it is an
+# optional input left blank; the sum that reads it takes a blank as 0.
+# Lines 153 and 154 are left out of the take-home (owner, 19 Nov 2026), so their difference is the optional input.
+form:
+  name: ca-qc/t1_tax_and_credits
+inputs:
+  - name: ca-qc/income_tax_deducted_net_line_155
+    reference: "43850"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 153 minus line 154 ="

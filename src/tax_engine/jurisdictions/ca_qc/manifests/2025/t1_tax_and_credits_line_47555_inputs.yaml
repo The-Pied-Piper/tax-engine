@@ -1,0 +1,13 @@
+# 5005-R (2025) line 168 input a salary-only caller does not give.
+# Line 168 and line 47555: "Canadian journalism labour tax credit (box 236 of all T5013 slips)" (page 8). A salary-only filer has no such amount, so it is an
+# optional input left blank; the sum that reads it takes a blank as 0.
+form:
+  name: ca-qc/t1_tax_and_credits
+inputs:
+  - name: ca-qc/journalism_labour_credit_line_168
+    title: "Canadian journalism labour tax credit"
+    reference: "47555"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Canadian journalism labour tax credit (box 236 of all T5013 slips)"

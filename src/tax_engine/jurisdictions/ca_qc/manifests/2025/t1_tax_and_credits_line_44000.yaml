@@ -1,0 +1,18 @@
+# 5005-R (2025) line 156 and line 44000. The form prints: "Refundable Quebec abatement: Line 156 and
+# line 44000: Amount from Line 42900 multiplied by 16.5% =" (page 8). Line 42900 is line 130, the basic
+# federal tax. One step: core/apply_rate over line 130 with the printed rate as a dataset figure
+# (`ca-qc/quebec_abatement_rate`, 16.5%); the dataset's rounding rule rounds the product half-up to
+# the cent.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/apply_rate
+    title: "Refundable Quebec abatement"
+    reference: "44000"
+    unit: ca/cad
+    params:
+      rate: ca-qc/quebec_abatement_rate
+    consumes:
+      base: ca-qc/basic_federal_tax_line_130
+    produces:
+      output: ca-qc/refundable_quebec_abatement_line_156

@@ -1,0 +1,44 @@
+# 5005-R (2025) line 171 and line 48200. The form prints: "Line 171 and line 48200: Add lines 155, 156,
+# and 159 to 170. Total credits =" (page 8). Line 155 (the tax deducted less the tax transfer, both
+# left out of the take-home), lines 160 and 162 to 170 are optional inputs, a blank for a salary-only
+# filer and read as 0; lines 156, 159 and 161 are steps above. One step: core/sum, rounded half-up to
+# the cent through `ca-qc/cent_rounding`.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/sum
+    title: "Total credits"
+    reference: "48200"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/income_tax_deducted_net_line_155
+        - ca-qc/refundable_quebec_abatement_line_156
+        - ca-qc/net_ei_overpayment_line_159
+        - ca-qc/refundable_medical_expense_supplement_line_160
+        - ca-qc/cwb_line_161
+        - ca-qc/canada_training_credit_line_162
+        - ca-qc/multigenerational_home_renovation_credit_line_163
+        - ca-qc/investment_tax_credit_refund_line_164
+        - ca-qc/part_xii_2_tax_credit_line_165
+        - ca-qc/gst_hst_rebate_line_166
+        - ca-qc/eligible_educator_credit_line_167
+        - ca-qc/journalism_labour_credit_line_168
+        - ca-qc/fuel_charge_farmers_credit_line_169
+        - ca-qc/tax_paid_by_instalments_line_170
+    blank:
+      ca-qc/income_tax_deducted_net_line_155: "0"
+      ca-qc/refundable_medical_expense_supplement_line_160: "0"
+      ca-qc/canada_training_credit_line_162: "0"
+      ca-qc/multigenerational_home_renovation_credit_line_163: "0"
+      ca-qc/investment_tax_credit_refund_line_164: "0"
+      ca-qc/part_xii_2_tax_credit_line_165: "0"
+      ca-qc/gst_hst_rebate_line_166: "0"
+      ca-qc/eligible_educator_credit_line_167: "0"
+      ca-qc/journalism_labour_credit_line_168: "0"
+      ca-qc/fuel_charge_farmers_credit_line_169: "0"
+      ca-qc/tax_paid_by_instalments_line_170: "0"
+    produces:
+      output: ca-qc/total_credits_line_171

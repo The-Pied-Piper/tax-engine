@@ -1,0 +1,13 @@
+# 5005-R (2025) line 165 input a salary-only caller does not give.
+# Line 165 and line 45600: "Part XII.2 tax credit (box 38 of all T3 slips and box 209 of all T5013 slips)" (page 8). A salary-only filer has no such amount, so it is an
+# optional input left blank; the sum that reads it takes a blank as 0.
+form:
+  name: ca-qc/t1_tax_and_credits
+inputs:
+  - name: ca-qc/part_xii_2_tax_credit_line_165
+    title: "Part XII.2 tax credit"
+    reference: "45600"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Part XII.2 tax credit (box 38 of all T3 slips and box 209 of all T5013 slips)"
