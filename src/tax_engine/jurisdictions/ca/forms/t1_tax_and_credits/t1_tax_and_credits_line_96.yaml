@@ -5,7 +5,7 @@
 # are 0 for this filer and are left out.
 # Lines 86 and 88 are pure copies, so each is a core/record_total over the record list its form
 # exports (the engine reads another form's export only as a record list). Line 96 is a core/sum,
-# rounded once, half-up to the cent, through the shared ca/cent_rounding dataset.
+# carried exactly through the ca/exact_rounding dataset: the form prints no rounding rule for it.
 form:
   name: ca/t1_tax_and_credits
 capabilities:
@@ -29,7 +29,7 @@ capabilities:
     reference: "96"
     unit: ca/cad
     params:
-      rounding: ca/cent_rounding
+      rounding: ca/exact_rounding
     consumes:
       parts:
         - ca/cpp_base_contributions_line_86

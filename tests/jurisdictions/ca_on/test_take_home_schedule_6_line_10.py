@@ -25,6 +25,8 @@ import pytest
 
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.parameters.rounding import NO_ROUNDING
+from tax_engine.domain.trace import SumLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService
@@ -97,7 +99,6 @@ def test_line_10_is_the_sum_of_line_7(
 
     value = sheet.get(bundled_kinds().kind(LINE_10)).value
     assert value == D(expected)
-    assert value.as_tuple().exponent == -2
 
 
 def test_the_line_10_kind_is_registered_and_signed() -> None:
@@ -106,3 +107,17 @@ def test_the_line_10_kind_is_registered_and_signed() -> None:
 
     assert kind.identifier == LINE_10
     assert non_negative(kind) is False
+
+
+def test_the_line_10_step_is_carried_exactly(take_home_service: TakeHomeService) -> None:
+    # 5000-S6 prints no rounding rule for line 10 ("Add lines 7 to 9."), so the sum carries no
+    # rounding (the line 7 figure feeding it is still rounded by the T1 lines before it).
+    sheet = _schedule_6(take_home_service, "70000")
+
+    (line,) = [
+        line
+        for line in sheet.trace
+        if isinstance(line, SumLine) and line.output.identifier == LINE_10
+    ]
+
+    assert line.rounding == NO_ROUNDING

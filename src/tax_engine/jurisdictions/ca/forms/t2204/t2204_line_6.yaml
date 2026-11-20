@@ -12,7 +12,7 @@ capabilities:
     reference: "6"
     unit: ca/cad
     params:
-      rounding: ca/cent_rounding
+      rounding: ca/exact_rounding
     consumes:
       parts:
         - ca/t2204_premiums_deducted

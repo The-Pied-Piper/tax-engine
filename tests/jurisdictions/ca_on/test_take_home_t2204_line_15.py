@@ -100,12 +100,16 @@ def test_line_15_count_and_ei_overpayment(
 
 
 @pytest.mark.parametrize("line_4", ["1077.48", "328.00"], ids=["salary_70000", "salary_20000"])
-def test_ei_overpayment_prints_cents_at_70000_and_20000(
+def test_ei_overpayment_is_a_plain_zero_at_salary_only(
     take_home_service: TakeHomeService, line_4: str
 ) -> None:
-    # Salary only, so line 14 is 0: the count is 0 and the overpayment is the cent zero of the
-    # rounding dataset, not a bare 0.
-    overpayment = t2204(take_home_service, line_4, "0").get(EI_OVERPAYMENT).value
+    # Salary only, so line 14 is 0: the count is 0 and the overpayment is 0. T2204 prints no
+    # rounding rule for line 15, so the zero is not turned into "0.00".
+    assert t2204(take_home_service, line_4, "0").get(EI_OVERPAYMENT).value == 0
 
-    assert str(overpayment) == "0.00"
-    assert overpayment.as_tuple().exponent == -2
+
+def test_a_sub_cent_ei_overpayment_is_carried_unrounded(take_home_service: TakeHomeService) -> None:
+    # The product of line 15 and its count is carried exactly: 22.996 is not rounded to 23.00.
+    sheet = t2204(take_home_service, "32.96", "22.996")
+
+    assert sheet.get(EI_OVERPAYMENT).value == D("22.996")

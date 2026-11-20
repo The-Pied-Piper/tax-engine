@@ -75,3 +75,9 @@ def test_line_7_is_line_3_less_2000_and_not_below_zero(
 
 def test_the_exemption_is_the_2000_of_the_form(take_home_service: TakeHomeService) -> None:
     assert t2204(take_home_service, "65700").get(T2204_EXEMPTION).value == D("2000.00")
+
+
+def test_a_sub_cent_difference_is_carried_unrounded(take_home_service: TakeHomeService) -> None:
+    # T2204 prints no rounding rule for line 7, so the difference is carried exactly: 2000.004
+    # less the 2000 exemption is 0.004, not 0.00.
+    assert t2204(take_home_service, "2000.004").get(T2204_LINE_7).value == D("0.004")

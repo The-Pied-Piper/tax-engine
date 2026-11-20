@@ -101,7 +101,6 @@ def test_line_12_equals_line_10_when_line_11_is_blank(
 
     value = sheet.get(bundled_kinds().kind(LINE_12)).value
     assert value == D(expected)
-    assert value.as_tuple().exponent == -2
 
 
 @pytest.mark.parametrize(
@@ -120,7 +119,6 @@ def test_line_12_subtracts_line_11_and_floors_at_zero(
 
     value = sheet.get(bundled_kinds().kind(LINE_12)).value
     assert value == D(expected)
-    assert value.as_tuple().exponent == -2
 
 
 def test_the_line_12_kind_is_registered_and_non_negative() -> None:
@@ -136,3 +134,11 @@ def test_the_line_11_input_kind_is_registered_and_non_negative() -> None:
 
     assert kind.identifier == LINE_11
     assert non_negative(kind) is True
+
+
+def test_a_sub_cent_line_12_is_carried_unrounded(take_home_service: TakeHomeService) -> None:
+    # 5000-S6 prints no rounding rule for line 12, so the difference is carried exactly: 19,835.00
+    # less 0.001 is 19,834.999, not 19,835.00.
+    sheet = _schedule_6(take_home_service, "20000.004", "0.001")
+
+    assert sheet.get(bundled_kinds().kind(LINE_12)).value == D("19834.999")

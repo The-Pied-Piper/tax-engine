@@ -74,3 +74,9 @@ def test_line_8_is_line_6_less_line_7_and_not_below_zero(
     take_home_service: TakeHomeService, line_6: str, line_7: str, expected: str
 ) -> None:
     assert t2204(take_home_service, line_6, line_7).get(T2204_LINE_8).value == D(expected)
+
+
+def test_a_sub_cent_difference_is_carried_unrounded(take_home_service: TakeHomeService) -> None:
+    # T2204 prints no rounding rule for line 8, so the difference is carried exactly: 100.007 less
+    # 0.002 is 100.005, not 100.01.
+    assert t2204(take_home_service, "100.007", "0.002").get(T2204_LINE_8).value == D("100.005")

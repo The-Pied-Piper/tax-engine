@@ -17,7 +17,7 @@ capabilities:
     reference: "7"
     unit: ca/cad
     params:
-      rounding: ca/cent_rounding
+      rounding: ca/exact_rounding
     consumes:
       amount: ca/t2204_line_3
       less: ca/t2204_exemption

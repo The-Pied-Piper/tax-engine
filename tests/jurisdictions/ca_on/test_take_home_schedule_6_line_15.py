@@ -25,7 +25,7 @@ import pytest
 
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.domain.trace import SubtractedLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
@@ -33,7 +33,6 @@ from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService
 from tests.kinds import bundled_kinds, non_negative
 
 D = Decimal
-CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 ONTARIO = JurisdictionCode("CA-ON")
 FORM = "ca/schedule_6"
 LINE_15 = "ca/adjusted_family_net_income"
@@ -112,7 +111,6 @@ def test_schedule_6_line_15_is_line_13_when_line_14_is_blank(
 
     value = sheet.get(bundled_kinds().kind(LINE_15)).value
     assert value == D(expected)
-    assert value.as_tuple().exponent == -2
 
 
 @pytest.mark.parametrize(
@@ -131,7 +129,6 @@ def test_schedule_6_line_15_subtracts_line_14_without_a_floor(
 
     value = sheet.get(bundled_kinds().kind(LINE_15)).value
     assert value == D(expected)
-    assert value.as_tuple().exponent == -2
 
 
 def test_the_line_15_kind_is_registered_and_signed() -> None:
@@ -144,27 +141,25 @@ def test_the_line_15_kind_is_registered_and_signed() -> None:
 
 
 @pytest.mark.parametrize(
-    ("salary", "exemption", "printed"),
+    ("exemption", "expected"),
     [
-        ("70000", None, "69335.00"),
-        # Rounded half-up to the cent on the exact difference: 19,835.00 less 0.005 is 19,834.995,
-        # on the tie, so 19,835.00; less 0.006 is 19,834.994, so 19,834.99.
-        ("20000", "0.005", "19835.00"),
-        ("20000", "0.006", "19834.99"),
+        # The form prints no rounding rule for line 15, so the exact difference is carried:
+        # 19,835.00 less 0.005 is 19,834.995 and less 0.006 is 19,834.994.
+        ("0.005", "19834.995"),
+        ("0.006", "19834.994"),
     ],
 )
-def test_line_15_prints_cents_through_the_shared_rounding_dataset(
-    take_home_service: TakeHomeService, salary: str, exemption: str | None, printed: str
+def test_a_sub_cent_line_15_is_carried_unrounded(
+    take_home_service: TakeHomeService, exemption: str, expected: str
 ) -> None:
     value = (
-        _schedule_6(take_home_service, salary, exemption).get(bundled_kinds().kind(LINE_15)).value
+        _schedule_6(take_home_service, "20000", exemption).get(bundled_kinds().kind(LINE_15)).value
     )
 
-    assert str(value) == printed
-    assert value.as_tuple().exponent == -2
+    assert value == D(expected)
 
 
-def test_the_line_15_step_traces_the_cent_rounding(take_home_service: TakeHomeService) -> None:
+def test_the_line_15_step_traces_no_rounding(take_home_service: TakeHomeService) -> None:
     sheet = _schedule_6(take_home_service, "70000")
 
     (line,) = [
@@ -173,5 +168,4 @@ def test_the_line_15_step_traces_the_cent_rounding(take_home_service: TakeHomeSe
         if isinstance(line, SubtractedLine) and line.output.identifier == LINE_15
     ]
 
-    assert line.rounding == CENT
-    assert str(line.result) == "69335.00"
+    assert line.rounding == NO_ROUNDING

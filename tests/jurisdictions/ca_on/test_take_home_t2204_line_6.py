@@ -111,3 +111,17 @@ def test_a_blank_line_5_is_traced_as_a_fallback_of_0(take_home_service: TakeHome
 def test_a_blank_line_4_is_still_refused(take_home_service: TakeHomeService) -> None:
     with pytest.raises(BlankNotAllowedError, match="may not be left blank"):
         t2204(take_home_service, [Artifact(T2204_PREMIUMS_DEDUCTED, BLANK)])
+
+
+def test_a_sub_cent_sum_is_carried_unrounded(take_home_service: TakeHomeService) -> None:
+    # T2204 prints no rounding rule for line 6, so the sum is carried exactly: 100.004 plus 0.003
+    # is 100.007, not 100.01.
+    sheet = t2204(
+        take_home_service,
+        [
+            Artifact(T2204_PREMIUMS_DEDUCTED, D("100.004")),
+            Artifact(T2204_LINE_5, D("0.003")),
+        ],
+    )
+
+    assert sheet.get(T2204_LINE_6).value == D("100.007")

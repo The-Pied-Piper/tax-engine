@@ -12,7 +12,7 @@ capabilities:
     reference: "12"
     unit: ca/cad
     params:
-      rounding: ca/cent_rounding
+      rounding: ca/exact_rounding
     consumes:
       amount: ca/cwb_net_income_total_line_10
       less: ca/uccb_and_rdsp_income

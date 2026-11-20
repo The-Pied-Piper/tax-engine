@@ -82,9 +82,9 @@ PARTS = (
 
 # Amount lines by form line. The printed rates (27% on line 19, 15% on line 26) are dataset figures
 # with no figure of their own: they are pinned through lines 20 and 27.
-# Line 1 is a sum the form prints no rounding rule for, so it is carried exactly (a whole-dollar
-# salary stays a whole-dollar figure).
-CARRIED_EXACT = {"1"}
+# Lines 1 to 28 here are sums and differences the form prints no rounding rule for, so they are
+# carried exactly (a whole-dollar salary stays a whole-dollar figure).
+CARRIED_EXACT = {"1", "5", "6", "10", "12", "13", "15", "18", "25", "28"}
 
 AMOUNT_LINES: dict[str, AmountKind] = {
     "1": CWB_EMPLOYMENT_INCOME,
