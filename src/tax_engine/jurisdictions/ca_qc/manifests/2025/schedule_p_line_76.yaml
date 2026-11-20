@@ -4,7 +4,7 @@
 # it has no step; the take-home designates no child, so line 75 does not apply. Line 72 is
 # `ca-qc/schedule_p_work_premium_income_over_exempt_line_72` (schedule_p_line_72.yaml). The product is
 # rounded half-up to the cent by the rate dataset. The form prints no label for the line, so the step
-# is untitled. The figure is exported for the work premium reduction (line 84).
+# is untitled. Line 84 reads the figure.
 form:
   name: ca-qc/schedule_p
 capabilities:

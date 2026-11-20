@@ -568,6 +568,14 @@ SCHEDULE_P_WORK_PREMIUM_REDUCTION_LINE_83 = AmountKind.declare(
 """Schedule P Part E, section 2, column 1, line 83, "Multiply line 82 by 10%": the reduction of the
 work premium by family income, rounded half-up to the cent."""
 
+SCHEDULE_P_WORK_PREMIUM_LINE_87 = AmountKind.declare(
+    CATALOG, "schedule_p_work_premium_line_87", non_negative=True
+)
+"""Schedule P Part E, section 2, column 1, line 84, "Subtract line 83 from line 76. If the result is
+negative, enter 0", the work premium after the reduction, rounded half-up to the cent. Line 87
+("Amount from line 84 in column 1 or column 2, whichever is greater") carries it to Part F: column 2
+is left out, so line 87 is this figure."""
+
 SCHEDULE_P_NET_INCOME_LINE_52 = AmountKind.declare(
     CATALOG, "schedule_p_net_income_line_52", non_negative=True
 )
