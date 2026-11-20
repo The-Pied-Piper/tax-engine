@@ -672,3 +672,37 @@ SCHEDULE_B_LINE_18 = AmountKind.declare(CATALOG, "schedule_b_line_18", non_negat
 """Schedule B Part A line 18, "Subtract line 16 from line 15. If the result is negative, enter 0":
 the family income (line 15, a copy of line 14) less line 16, not below zero, rounded half-up to the
 cent. Produced by one core/subtract_not_below_zero (`schedule_b_line_18.yaml`)."""
+
+SCHEDULE_B_LIVED_ALONE_LINE_20 = CountKind.declare(
+    CATALOG, "schedule_b_lived_alone_line_20", non_negative=True
+)
+"""Lived alone answer, Schedule B line 20 "If, throughout 2025, you maintained and ordinarily lived
+in a dwelling in which you lived alone or only with ...": 1 for yes, 0 for no, read as 0 (not alone)
+when the caller gives no answer."""
+
+SCHEDULE_B_LIVED_ALONE_CHECKED_LINE_20 = CountKind.declare(
+    CATALOG, "schedule_b_lived_alone_checked_line_20", non_negative=True
+)
+"""Lived alone answer, checked, Schedule B line 20: the answer, refused above 1 so that the
+situation cannot be checked twice."""
+
+SCHEDULE_B_LIVING_ALONE_AMOUNT_LINE_20 = AmountKind.declare(
+    CATALOG, "schedule_b_living_alone_amount_line_20", non_negative=True
+)
+"""Schedule B line 20, the printed $2,128 for a person living alone, claimed whole."""
+
+SCHEDULE_B_LINE_18_GATE_COUNT_LINE_20 = CountKind.declare(
+    CATALOG, "schedule_b_line_18_gate_count_line_20", non_negative=True
+)
+"""Schedule B line 20's income gate: 0 when the amount on line 18 is more than $64,699 (not entitled
+to the amount, no spouse), else 1."""
+
+SCHEDULE_B_LIVING_ALONE_AMOUNT_IF_ALONE_LINE_20 = AmountKind.declare(
+    CATALOG, "schedule_b_living_alone_amount_if_alone_line_20", non_negative=True
+)
+"""Schedule B line 20, fourth step: the printed $2,128 when the answer is yes, 0 when it is no,
+rounded half-up to the cent."""
+
+SCHEDULE_B_LINE_20 = AmountKind.declare(CATALOG, "schedule_b_line_20", non_negative=True)
+"""Schedule B Part B line 20, the amount for a person living alone: $2,128 when the answer is yes
+and the income gate does not apply, else 0, rounded half-up to the cent."""
