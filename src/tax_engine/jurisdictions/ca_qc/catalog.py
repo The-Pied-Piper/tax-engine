@@ -1015,6 +1015,11 @@ NON_REFUNDABLE_TAX_CREDITS_LINE_122 = AmountKind.declare(
 credit (line 121), each blank read as 0, from one core/sum
 (`t1_tax_and_credits_line_35000.yaml`); Part C line 126 copies it."""
 
+FEDERAL_TAX_ON_SPLIT_INCOME_LINE_124 = AmountKind.declare(CATALOG, "federal_tax_on_split_income_line_124", non_negative=True)
+"""Federal tax on split income (TOSI), 5005-R line 124 and line 40424: an optional input a
+salary-only caller does not give; the line that reads it takes a blank as 0
+(`t1_tax_and_credits_line_40424_inputs.yaml`)."""
+
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
 Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line

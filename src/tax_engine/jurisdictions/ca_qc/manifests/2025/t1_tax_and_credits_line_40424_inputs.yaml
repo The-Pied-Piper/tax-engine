@@ -1,0 +1,13 @@
+# 5005-R (2025) line 124 input a salary-only caller does not give.
+# Line 124 and line 40424: "Federal tax on split income (TOSI) (complete Form T1206)" (page 7). A salary-only filer has no such amount, so it is an
+# optional input left blank; the sum or difference that reads it takes a blank as 0.
+form:
+  name: ca-qc/t1_tax_and_credits
+inputs:
+  - name: ca-qc/federal_tax_on_split_income_line_124
+    title: "Federal tax on split income (TOSI)"
+    reference: "40424"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Federal tax on split income (TOSI) (complete Form T1206)"
