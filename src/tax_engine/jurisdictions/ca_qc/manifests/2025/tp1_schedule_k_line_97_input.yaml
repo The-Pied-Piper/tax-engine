@@ -1,0 +1,14 @@
+# Schedule K (2025) line 97's input, which a salary-only caller may leave out.
+# Part C: "If you wish to pay your spouse's premium, complete lines 91 through 97" (Revenu Quebec
+# TP-1.D.K-V (2025-12)); line 97 prints "+ 97", the spouse's premium. The take-home is a single filer
+# and the block of lines 91 to 96 is skipped (owner ruling, 19 Nov 2026), so the printed sum that
+# collects it is one optional input, left blank and read as 0 by line 98, as line 37 is by line 40.
+form:
+  name: ca-qc/tp1_schedule_k
+inputs:
+  - name: ca-qc/schedule_k_spouse_premium_line_97
+    reference: "97"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "If you wish to pay your spouse's premium, complete lines 91 through 97"

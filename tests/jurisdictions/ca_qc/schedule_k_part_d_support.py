@@ -17,6 +17,7 @@ import yaml
 
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca_qc.catalog import (
     SCHEDULE_K_GROUP_PLAN_COVERED_LINE_50,
@@ -81,7 +82,8 @@ def unconsumed(parts: tuple[str, ...]) -> tuple[str, ...]:
 
 
 def header(parts: tuple[str, ...]) -> str:
-    """A test header that takes line 84 and boxes 60 to 62; those no part reads are its outputs."""
+    """A test header that takes line 84 and boxes 60 to 62; those no part reads are its outputs, or
+    line 84 when every one is read."""
     consumed: set[str] = set()
     for step in _steps(parts):
         for value in (step.get("consumes") or {}).values():
@@ -201,10 +203,18 @@ def part_d(
 
 
 def salary_sheet(
-    take_home_service: TakeHomeService, salary: str, answer: str, parts: tuple[str, ...]
+    take_home_service: TakeHomeService,
+    salary: str,
+    answer: str,
+    parts: tuple[str, ...],
+    *extra: tuple[AmountKind, str],
 ) -> Worksheet:
     """The Schedule K worksheet of Parts A and B, Part C to line 84 and the Part D `parts`, run
-    from a salary; `answer` is "default" (line 50 left out) or "yes"."""
-    given = ((SCHEDULE_K_GROUP_PLAN_COVERED_LINE_50, "1"),) if answer == "yes" else ()
+    from a salary; `answer` is "default" (line 50 left out) or "yes"; `extra` gives optional
+    inputs."""
+    given: list[tuple[AmountKind | CountKind, str]] = []
+    if answer == "yes":
+        given.append((SCHEDULE_K_GROUP_PLAN_COVERED_LINE_50, "1"))
+    given.extend(extra)
     chain = PART_A + PART_B + PART_C + parts
     return schedule_k_sheet(take_home_service, salary, unconsumed(chain), chain, *given)

@@ -1530,3 +1530,10 @@ SCHEDULE_K_PREMIUM_LINE_90 = AmountKind.declare(
 )
 """Schedule K line 90, "Enter the amount from line 86 or line 89, whichever is less": the lesser
 of the two lines. One core/lesser_of (`tp1_schedule_k_line_90.yaml`)."""
+
+SCHEDULE_K_SPOUSE_PREMIUM_LINE_97 = AmountKind.declare(
+    CATALOG, "schedule_k_spouse_premium_line_97", non_negative=True
+)
+"""Spouse's premium, Schedule K line 97 ("+ 97", the sum of lines 91 through 97 for the spouse's
+premium): an input. A single filer pays no spouse's premium, so the caller leaves it out and
+line 98 reads it as 0."""
