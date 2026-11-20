@@ -21,15 +21,19 @@ from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_qc.catalog import (
     SCHEDULE_U_LINE_17_5,
-    TP1_ADDITIONAL_QPP_CONTRIBUTION_LINE_98_2,
-    TP1_PENSIONABLE_SALARY_LINE_98_1,
-    TP1_QPP_CONTRIBUTION_LINE_98,
+    TP1_ADDITIONAL_QPP_CONTRIBUTION_GIVEN_LINE_98_2,
+    TP1_QPP_CONTRIBUTION_GIVEN_LINE_98,
 )
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
+from tests.jurisdictions.ca_qc.tp1_net_income_support import TP1_INCOME_PARTS
 
 D = Decimal
 
 PARTS = (
+    *TP1_INCOME_PARTS,
+    "tp1_schedule_u_line_17.yaml",
+    "tp1_schedule_u_line_17_4.yaml",
+    "tp1_schedule_u_line_12_base.yaml",
     "tp1_schedule_u_line_12.yaml",
     "tp1_schedule_u_line_13.yaml",
     "tp1_schedule_u_line_14.yaml",
@@ -41,25 +45,10 @@ PARTS = (
     "tp1_schedule_u_line_17_5.yaml",
 )
 
-# The TP-1 figures (lines 98 and 98.1) that Schedule U reads, as the TP-1 income steps give them
-# for each salary.
-UPSTREAM_98 = {"20000": "1056.00", "70000": "4256.00", "200000": "4339.20", "3000": "0"}
-UPSTREAM_98_2 = {"20000": "0", "70000": "0", "200000": "396.00", "3000": "0"}
-UPSTREAM_98_1 = {"20000": "20000", "70000": "70000", "200000": "81200", "3000": "3000"}
-
 HEADER = dedent("""\
     jurisdiction: CA-QC
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/employment_income
-        required: true
-      - name: ca-qc/tp1_qpp_contribution_line_98
-        required: true
-      - name: ca-qc/tp1_additional_qpp_contribution_line_98_2
-        required: true
-      - name: ca-qc/tp1_pensionable_salary_line_98_1
-        required: true
     outputs:
       - ca/employment_income
     capabilities: []
@@ -86,9 +75,12 @@ def schedule_u(
         JurisdictionCode("CA-QC"),
         2025,
         Artifact(EMPLOYMENT_INCOME, D(salary)),
-        Artifact(TP1_QPP_CONTRIBUTION_LINE_98, D(line_98 or UPSTREAM_98[salary])),
-        Artifact(TP1_ADDITIONAL_QPP_CONTRIBUTION_LINE_98_2, D(line_98_2 or UPSTREAM_98_2[salary])),
-        Artifact(TP1_PENSIONABLE_SALARY_LINE_98_1, D(UPSTREAM_98_1[salary])),
+        *([Artifact(TP1_QPP_CONTRIBUTION_GIVEN_LINE_98, D(line_98))] if line_98 else []),
+        *(
+            [Artifact(TP1_ADDITIONAL_QPP_CONTRIBUTION_GIVEN_LINE_98_2, D(line_98_2))]
+            if line_98_2
+            else []
+        ),
     )["ca-qc/tp1_schedule_u"]
     return sheet
 

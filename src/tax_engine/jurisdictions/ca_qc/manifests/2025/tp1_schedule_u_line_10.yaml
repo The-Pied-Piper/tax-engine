@@ -1,0 +1,19 @@
+# Schedule U (Revenu Quebec TP-1.D.U-V, 2025-12), Part B, line 10: "QPP contribution (line 98 of your
+# return) (maximum $4,339.20)". The line takes the TP-1 line 98 figure
+# (`ca-qc/schedule_u_line_98_for_line_10`, read from the TP-1 income form), and its printed "(maximum
+# $4,339.20)" is the `ca-qc/schedule_u_line_10_maximum` dataset figure, so the step is
+# `core/capped_amount`, as line 12 does for its printed maximum. The computed line 98 is already
+# held at that figure, so the cap matters only for a line 98 given above it.
+form:
+  name: ca-qc/tp1_schedule_u
+capabilities:
+  - name: core/capped_amount
+    title: "QPP contribution"
+    reference: "10"
+    unit: ca/cad
+    params:
+      cap: ca-qc/schedule_u_line_10_maximum
+    consumes:
+      base: ca-qc/schedule_u_line_98_for_line_10
+    produces:
+      output: ca-qc/schedule_u_line_10

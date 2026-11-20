@@ -1,9 +1,8 @@
 """Revenu Quebec Schedule U (2025, TP-1.D.U-V) Part B, lines 10 to 23, as one chain.
 
-Lines 11 to 23 are built from the real parts. Lines 10, 12, 17, 17.4 and 18.5 take the TP-1 figures
-of lines 98, 98.1 and 98.2, which are plain starting inputs here, as the TP-1 income steps give them
-for the salary. The expected figures are hand-computed from the printed lines (not an official
-example); the salary is $20,000, $70,000 and $200,000.
+Lines 10 to 23 are built from the real parts; lines 10, 12, 17, 17.4 and 18.5 read the TP-1 figures
+of lines 98, 98.1 and 98.2 from the real TP-1 income parts. The expected figures are hand-computed
+from the printed lines (not an official example); the salary is $20,000, $70,000 and $200,000.
 """
 
 from __future__ import annotations
@@ -36,15 +35,17 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     SCHEDULE_U_MAXIMUM_PENSIONABLE_EARNINGS_LINE_14_1,
     SCHEDULE_U_PENSIONABLE_SALARY_LINE_12,
     SCHEDULE_U_PERSONAL_QPP_EXEMPTION_LINE_13,
-    TP1_ADDITIONAL_QPP_CONTRIBUTION_LINE_98_2,
-    TP1_PENSIONABLE_SALARY_LINE_98_1,
-    TP1_QPP_CONTRIBUTION_LINE_98,
 )
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
+from tests.jurisdictions.ca_qc.tp1_net_income_support import TP1_INCOME_PARTS
 
 D = Decimal
 PARTS = (
+    *TP1_INCOME_PARTS,
+    "tp1_schedule_u_line_10_base.yaml",
+    "tp1_schedule_u_line_10.yaml",
     "tp1_schedule_u_line_11.yaml",
+    "tp1_schedule_u_line_12_base.yaml",
     "tp1_schedule_u_line_12.yaml",
     "tp1_schedule_u_line_13.yaml",
     "tp1_schedule_u_line_14.yaml",
@@ -54,8 +55,11 @@ PARTS = (
     "tp1_schedule_u_line_15.yaml",
     "tp1_schedule_u_line_16.yaml",
     "tp1_schedule_u_line_17_2.yaml",
+    "tp1_schedule_u_line_17.yaml",
     "tp1_schedule_u_line_17_3.yaml",
+    "tp1_schedule_u_line_17_4.yaml",
     "tp1_schedule_u_line_17_5.yaml",
+    "tp1_schedule_u_line_18_5.yaml",
     "tp1_schedule_u_line_18_7.yaml",
     "tp1_schedule_u_line_18_8.yaml",
     "tp1_schedule_u_line_19.yaml",
@@ -69,15 +73,6 @@ HEADER = dedent("""\
     jurisdiction: CA-QC
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/employment_income
-        required: true
-      - name: ca-qc/tp1_qpp_contribution_line_98
-        required: true
-      - name: ca-qc/tp1_additional_qpp_contribution_line_98_2
-        required: true
-      - name: ca-qc/tp1_pensionable_salary_line_98_1
-        required: true
     outputs:
       - ca/employment_income
     capabilities: []
@@ -166,9 +161,6 @@ def test_lines_11_to_23_at_each_salary(take_home_service: TakeHomeService, salar
         JurisdictionCode("CA-QC"),
         2025,
         Artifact(EMPLOYMENT_INCOME, D(salary)),
-        Artifact(TP1_QPP_CONTRIBUTION_LINE_98, D(line_98)),
-        Artifact(TP1_ADDITIONAL_QPP_CONTRIBUTION_LINE_98_2, D(line_98_2)),
-        Artifact(TP1_PENSIONABLE_SALARY_LINE_98_1, D(line_98_1)),
     )["ca-qc/tp1_schedule_u"]
 
     kinds = (

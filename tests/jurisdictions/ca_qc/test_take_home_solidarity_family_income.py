@@ -22,19 +22,12 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_qc.catalog import (
     SOLIDARITY_FAMILY_INCOME,
-    TP1_ADDITIONAL_QPP_CONTRIBUTION_LINE_98_2,
-    TP1_PENSIONABLE_SALARY_LINE_98_1,
-    TP1_QPIP_PREMIUM_LINE_97,
-    TP1_QPP_CONTRIBUTION_LINE_98,
 )
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
 from tests.jurisdictions.ca_qc.solidarity_maximum_support import FORM
 from tests.jurisdictions.ca_qc.support import quebec_kinds
 from tests.jurisdictions.ca_qc.tp1_net_income_support import (
     HEADER,
-    UPSTREAM_98,
-    UPSTREAM_98_1,
-    UPSTREAM_98_2,
     UPSTREAM_PARTS,
 )
 from tests.kinds import non_negative
@@ -70,10 +63,6 @@ def test_family_income_is_line_275(
     service = take_home_service(HEADER, FORM_PART, *UPSTREAM_PARTS, *NET_INCOME_PARTS, PART)
     starting: list[Artifact[Any]] = [
         Artifact(EMPLOYMENT_INCOME, D(salary)),
-        Artifact(TP1_QPP_CONTRIBUTION_LINE_98, D(UPSTREAM_98[salary])),
-        Artifact(TP1_ADDITIONAL_QPP_CONTRIBUTION_LINE_98_2, D(UPSTREAM_98_2[salary])),
-        Artifact(TP1_PENSIONABLE_SALARY_LINE_98_1, D(UPSTREAM_98_1[salary])),
-        Artifact(TP1_QPIP_PREMIUM_LINE_97, D("0")),
     ]
 
     (sheet,) = service.compute(JurisdictionCode("CA-QC"), 2025, *starting)[FORM]

@@ -194,11 +194,27 @@ SCHEDULE_U_LINE_11 = AmountKind.declare(CATALOG, "schedule_u_line_11", non_negat
 """Schedule U line 11 "Multiply line 10 by 0.156250": line 10 (the TP-1 line 98 QPP contribution) at
 the printed rate, rounded half-up to the cent."""
 
+SCHEDULE_U_LINE_98_FOR_LINE_10 = AmountKind.declare(
+    CATALOG, "schedule_u_line_98_for_line_10", non_negative=True
+)
+"""The TP-1 line 98 figure that Schedule U line 10 caps at its printed maximum, read from the TP-1
+income form. The form prints no line of its own for it."""
+
+SCHEDULE_U_LINE_10 = AmountKind.declare(CATALOG, "schedule_u_line_10", non_negative=True)
+"""Schedule U line 10 "QPP contribution (line 98 of your return) (maximum $4,339.20)": the TP-1
+line 98 figure, held at the printed maximum."""
+
 SCHEDULE_U_PENSIONABLE_SALARY_LINE_12 = AmountKind.declare(
     CATALOG, "schedule_u_pensionable_salary_line_12", non_negative=True
 )
 """Schedule U line 12 "Pensionable salary or wages (QPP) (line 98.1 of your return) (maximum
 $71,300)": the TP-1 line 98.1 figure, at most the printed $71,300."""
+
+SCHEDULE_U_LINE_98_1_FOR_LINE_12 = AmountKind.declare(
+    CATALOG, "schedule_u_line_98_1_for_line_12", non_negative=True
+)
+"""The TP-1 line 98.1 figure that Schedule U line 12 caps at its printed maximum, read from the TP-1
+income form. The form prints no line of its own for it."""
 
 SCHEDULE_U_PERSONAL_QPP_EXEMPTION_LINE_13 = AmountKind.declare(
     CATALOG, "schedule_u_personal_qpp_exemption_line_13", non_negative=True
@@ -235,13 +251,25 @@ SCHEDULE_U_LINE_17_2 = AmountKind.declare(CATALOG, "schedule_u_line_17_2")
 """Schedule U line 17.2 "Multiply line 17.1 by 6.4%": line 17.1 (a copy of line 14.4) at the printed
 rate, rounded half-up to the cent. Line 14.4 can be negative, so the figure can be."""
 
+SCHEDULE_U_LINE_17 = AmountKind.declare(CATALOG, "schedule_u_line_17", non_negative=True)
+"""Schedule U line 17 "QPP contribution (line 98 of your return)": the TP-1 line 98 figure, read
+from the TP-1 income form."""
+
 SCHEDULE_U_LINE_17_3 = AmountKind.declare(CATALOG, "schedule_u_line_17_3", non_negative=True)
 """Schedule U line 17.3 "Subtract line 17.2 from line 17. If the result is negative, enter 0": the
 QPP contribution (TP-1 line 98) less line 17.2, not below 0."""
 
+SCHEDULE_U_LINE_17_4 = AmountKind.declare(CATALOG, "schedule_u_line_17_4", non_negative=True)
+"""Schedule U line 17.4 "Additional contribution to the QPP (line 98.2 of your return)": the TP-1
+line 98.2 figure, read from the TP-1 income form."""
+
 SCHEDULE_U_LINE_17_5 = AmountKind.declare(CATALOG, "schedule_u_line_17_5", non_negative=True)
 """Schedule U line 17.5 "Add lines 17.3 and 17.4": the excess over the base contribution plus the
 additional QPP contribution (TP-1 line 98.2), rounded half-up to the cent."""
+
+SCHEDULE_U_LINE_18_5 = AmountKind.declare(CATALOG, "schedule_u_line_18_5", non_negative=True)
+"""Schedule U line 18.5 "Pensionable salary or wages (QPP) (line 98.1 of your return)": the TP-1
+line 98.1 figure, read from the TP-1 income form."""
 
 SCHEDULE_U_LINE_18_7 = AmountKind.declare(CATALOG, "schedule_u_line_18_7", non_negative=True)
 """Schedule U line 18.7 "Subtract line 18.6 from line 18.5. If the result is negative, enter 0": the
@@ -1753,20 +1781,19 @@ SCHEDULE_K_COLUMN_CONSTANT_LINE_82 = AmountKind.declare(
 falls in (0.00 and 392.00), taken as printed. One core/bracket_column_tax_at_start
 (`tp1_schedule_k_line_82.yaml`)."""
 
+SCHEDULE_K_COLUMN_PREMIUM_BEFORE_MAXIMUM = AmountKind.declare(
+    CATALOG, "schedule_k_column_premium_before_maximum", non_negative=True
+)
+"""Schedule K line 83, "Add lines 81 and 82 (maximum $766)", before the maximum: the two lines
+added, rounded half-up to the cent. One core/sum, the first step of `tp1_schedule_k_line_83.yaml`;
+engine-internal, not a line of the form. It is above 766 for a line 48 over about $8,180."""
+
 SCHEDULE_K_COLUMN_PREMIUM_LINE_83 = AmountKind.declare(
     CATALOG, "schedule_k_column_premium_line_83", non_negative=True
 )
-"""Schedule K line 83, "Add lines 81 and 82 (maximum $766)": the two lines added, rounded half-up to
-the cent. One core/sum (`tp1_schedule_k_line_83.yaml`); line 84 applies the printed maximum, so
-this figure is above 766 for a line 48 over about $8,180."""
-
-SCHEDULE_K_PREMIUM_LINE_84 = AmountKind.declare(
-    CATALOG, "schedule_k_premium_line_84", non_negative=True
-)
-"""Premium, Schedule K line 84 "Amount from line 83 of column A or B, as applicable", with the
-printed maximum of $766 ("is more than $14,669, enter $766 on line 84"): the lesser of line 83 and
-`ca-qc/schedule_k_line_84_maximum`. One core/capped_amount (`tp1_schedule_k_line_84.yaml`). The
-form exports it; the lines after it read it."""
+"""Schedule K line 83, "Add lines 81 and 82 (maximum $766)": the lesser of the two lines added and
+the printed maximum `ca-qc/schedule_k_line_83_maximum` (766.00). One core/capped_amount, the last
+step of `tp1_schedule_k_line_83.yaml`."""
 
 SCHEDULE_K_MONTHS_IN_YEAR_LINE_85 = AmountKind.declare(
     CATALOG, "schedule_k_months_in_year_line_85", non_negative=True

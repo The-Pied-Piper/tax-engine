@@ -1,5 +1,6 @@
 # Schedule K (2025) Part C, line 85: "Amount from line 84 x Number of months entered in box 62 / 12".
-# One step: core/apply_ratio, line 84 times box 62 over the printed 12 (`tp1_schedule_k_line_85_
+# Line 84 is a pure copy of line 83, so it is not a step and line 83 is read directly. One step:
+# core/apply_ratio, line 84 (line 83) times box 62 over the printed 12 (`tp1_schedule_k_line_85_
 # months_in_year.yaml`), formed as an exact fraction and rounded once, half-up to the cent
 # (`ca-qc/cent_rounding`), as the Rounding ruling says for a printed division. Box 62 is read as a
 # plain figure of months (owner decision, 19 Nov 2026: the boxes stay amounts). The form prints no
@@ -13,7 +14,7 @@ capabilities:
     params:
       rounding: ca-qc/cent_rounding
     consumes:
-      amount: ca-qc/schedule_k_premium_line_84
+      amount: ca-qc/schedule_k_column_premium_line_83
       numerator: ca-qc/schedule_k_months_total_box_62
       denominator: ca-qc/schedule_k_months_in_year_line_85
     produces:
