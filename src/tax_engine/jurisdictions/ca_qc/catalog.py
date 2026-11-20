@@ -371,3 +371,9 @@ TP1_SCHEDULE_F_CONTRIBUTION_ON_EXCESS_LINE_80 = AmountKind.declare(
 )
 """Schedule F line 80, "Multiply line 78 by 1%": line 78 times the column's rate, rounded half-up to
 the cent; blank when line 78 or the rate is blank."""
+
+TP1_SCHEDULE_F_COLUMN_CONSTANT_LINE_81 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_column_constant_line_81", non_negative=True
+)
+"""Schedule F line 81, "+ 81 0 00 | 150 00": the printed constant of the column that line 76 falls
+in (0.00 and 150.00); blank for a line 76 of $18,130 or less."""
