@@ -26,14 +26,15 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     WORK_CHART_201_WORK_INCENTIVE_AMOUNTS_LINE_2,
 )
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
+from tests.jurisdictions.ca_qc.support import TP1_INCOME_WORK_INCOME_FORM
 
 D = Decimal
 
 PARTS = (
     "salary.yaml",
-    "work_chart_201_line_1_input_105.yaml",
-    "work_chart_201_line_1_input_107.yaml",
-    "work_chart_201_line_1_input_box_211.yaml",
+    "tp1_income_line_105_input.yaml",
+    "tp1_income_line_107_input.yaml",
+    "tp1_income_line_box_211_input.yaml",
     "work_chart_201_line_1.yaml",
     "work_chart_201_line_2_input.yaml",
     "work_chart_201_line_3_input.yaml",
@@ -69,9 +70,9 @@ def chart(take_home_service: TakeHomeService, salary: str, **given: str) -> Work
     """The Work Chart 201 worksheet for a salary; lines 2 to 5 are left out unless passed."""
     starting = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     starting += [Artifact(LINES[name], D(value)) for name, value in given.items()]
-    (sheet,) = take_home_service(HEADER, FORM, *PARTS).compute(
-        JurisdictionCode("CA-QC"), 2025, *starting
-    )["ca-qc/work_chart_201"]
+    (sheet,) = take_home_service(
+        HEADER, FORM, *PARTS, extra_forms=(TP1_INCOME_WORK_INCOME_FORM,)
+    ).compute(JurisdictionCode("CA-QC"), 2025, *starting)["ca-qc/work_chart_201"]
     return sheet
 
 

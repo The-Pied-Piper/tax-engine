@@ -25,9 +25,12 @@ QUEBEC_PARTS = Path(tax_engine.jurisdictions.ca_qc.__file__).parent / "manifests
 
 class TakeHomeService(Protocol):
     """Builds the engine over a temporary Quebec manifest made of a test header, a form
-    declaration and real part files of the Quebec take-home folder."""
+    declaration and real part files of the Quebec take-home folder. `extra_forms` are further form
+    declarations, for a form whose parts a test lists without the form's own declaration."""
 
-    def __call__(self, header: str, form: str, *parts: str) -> TaxComputationService: ...
+    def __call__(
+        self, header: str, form: str, *parts: str, extra_forms: tuple[str, ...] = ()
+    ) -> TaxComputationService: ...
 
 
 @pytest.fixture
@@ -41,11 +44,15 @@ def take_home_service(tmp_path: Path) -> TakeHomeService:
     service is built over the Quebec package list of `support.py`.
     """
 
-    def build(header: str, form: str, *parts: str) -> TaxComputationService:
+    def build(
+        header: str, form: str, *parts: str, extra_forms: tuple[str, ...] = ()
+    ) -> TaxComputationService:
         folder = tmp_path / "manifests" / "2025"
         folder.mkdir(parents=True)
         (folder / "00_header.yaml").write_text(header, encoding="utf-8")
         (folder / "01_form.yaml").write_text(form, encoding="utf-8")
+        for number, text in enumerate(extra_forms, start=1):
+            (folder / f"01_form_{number}.yaml").write_text(text, encoding="utf-8")
         for number, part in enumerate(parts, start=2):
             (folder / f"{number:02d}_{part}").write_text(
                 (QUEBEC_PARTS / part).read_text(encoding="utf-8"), encoding="utf-8"

@@ -22,7 +22,7 @@ from tests.jurisdictions.ca_qc.schedule_k_support import FORM_NAME, form_part, s
 D = Decimal
 PART_A = (
     "tp1_schedule_k_line_36.yaml",
-    "tp1_schedule_k_line_37_input.yaml",
+    "tp1_schedule_k_line_37.yaml",
     "tp1_schedule_k_line_40.yaml",
     "tp1_schedule_k_line_41.yaml",
     "tp1_schedule_k_line_42_or_44_input.yaml",

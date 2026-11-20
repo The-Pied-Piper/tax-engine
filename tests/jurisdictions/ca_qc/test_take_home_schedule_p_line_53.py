@@ -1,28 +1,63 @@
 """Quebec Schedule P (TP-1.D.P-V, 2025) Part C line 53, "Amount from line 275 of your spouse's
-return (spouse on December 31, 2025)", as the Quebec take-home manifest wires it: an optional input
-that a salary-only caller does not give, so the line has no step. A blank is read as 0 by line 54,
-which adds it."""
+return (spouse on December 31, 2025)", as the Quebec take-home manifest wires it: the spouse's
+line 275 is an optional input of the TP-1 net income form, which exports it, so the line is one
+`core/record_total` over that export, a blank read as 0. Line 54 adds it."""
 
 from __future__ import annotations
 
+from decimal import Decimal
 from pathlib import Path
+from typing import Any
 
-from tests.jurisdictions.ca_qc.support import quebec_kinds, schedule_p_input
-from tests.kinds import non_negative
+import yaml
 
-PART = "schedule_p_line_53_inputs.yaml"
-NAME = "ca-qc/schedule_p_spouse_net_income_line_53"
-PRINTED_BASIS = "Amount from line 275 of your spouse's return (spouse on December 31, 2025)"
+from tax_engine.jurisdictions.ca_qc.catalog import (
+    SCHEDULE_P_SPOUSE_NET_INCOME_LINE_53,
+    TP1_SPOUSE_NET_INCOME_LINE_275,
+)
+from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
+from tests.jurisdictions.ca_qc.schedule_p_family_income_support import family_income_worksheet
+from tests.jurisdictions.ca_qc.support import schedule_p_form
+
+PARTS = (
+    "schedule_p_line_52.yaml",
+    "schedule_p_line_53.yaml",
+    "schedule_p_line_54.yaml",
+)
+FORM = schedule_p_form(
+    "ca-qc/schedule_p_spouse_net_income_line_53", "ca-qc/schedule_p_family_income_line_54"
+)
 
 
-def test_a_request_that_leaves_out_line_53_is_read_as_blank(tmp_path: Path) -> None:
-    declaration = schedule_p_input(tmp_path, PART, NAME)
-    default = declaration.default_artifact(quebec_kinds().kind(NAME))
-
-    assert not declaration.required
-    assert declaration.basis == PRINTED_BASIS
-    assert default is not None and default.is_blank
+def _part(name: str) -> dict[str, Any]:
+    part = yaml.safe_load(Path(QUEBEC_PARTS / name).read_text(encoding="utf-8"))
+    assert isinstance(part, dict)
+    return part
 
 
-def test_the_line_53_input_kind_is_registered_and_non_negative() -> None:
-    assert non_negative(quebec_kinds().kind(NAME)) is True
+def test_line_53_reads_the_net_income_form_export_and_declares_no_input_of_its_own() -> None:
+    part = _part("schedule_p_line_53.yaml")
+
+    assert "inputs" not in part
+    (step,) = part["capabilities"]
+    assert step["name"] == "core/record_total"
+    assert step["reference"] == "53"
+    assert step["consumes"] == {"records": "ca-qc/tp1_net_income.tp1_spouse_net_income_line_275"}
+
+
+def test_a_request_that_leaves_out_the_spouse_amount_gives_line_53_as_0(
+    take_home_service: TakeHomeService,
+) -> None:
+    sheet = family_income_worksheet(take_home_service, FORM, PARTS, "70000")
+
+    assert sheet.get(SCHEDULE_P_SPOUSE_NET_INCOME_LINE_53).value == Decimal(0)
+
+
+def test_the_spouse_amount_given_to_the_net_income_form_is_line_53(
+    take_home_service: TakeHomeService,
+) -> None:
+    sheet = family_income_worksheet(
+        take_home_service, FORM, PARTS, "70000", (TP1_SPOUSE_NET_INCOME_LINE_275, "30000.25")
+    )
+
+    assert sheet.get(SCHEDULE_P_SPOUSE_NET_INCOME_LINE_53).value == Decimal("30000.25")

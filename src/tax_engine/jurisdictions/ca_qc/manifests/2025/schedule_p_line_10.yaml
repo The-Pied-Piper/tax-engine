@@ -1,6 +1,7 @@
 # Schedule P (TP-1.D.P-V, 2025-12) Part A line 10: "Amount from line 101 of your return, plus the
 # amount from line 105 if it is positive, minus the amount from box 211 of your RL-1 slip, if
-# applicable". Four steps, one per operation, the last carrying the line reference:
+# applicable". Six steps, the first three reads of the TP-1 income form's exports and the last three one per
+# operation, the last carrying the line reference:
 # 1. TP-1 line 101 is the salary on the TP-1 income form, which exports it; another form reads an
 #    export only as a record list (`ca-qc/tp1_income.employment_income`), so core/record_total
 #    totals it, as ON428 line 1 reads the T1 taxable income.
@@ -8,8 +9,9 @@
 #    is read as 0.
 # 3. core/sum adds the two.
 # 4. core/subtract takes box 211 off (a blank is read as 0); the form prints no floor.
-# TP-1 line 105 and RL-1 box 211 are the optional inputs the Work Chart 201 line 1 parts already
-# declare (`ca-qc/tp1_line_105`, `ca-qc/rl1_slip_box_211`); they are read here, not declared again.
+# TP-1 line 105 and RL-1 box 211 are optional inputs the TP-1 income form takes and exports; they are
+# read here as that form's exports (`ca-qc/tp1_income.tp1_line_105`, `ca-qc/tp1_income.rl1_slip_box_211`),
+# each a record list of one totalled by core/record_total with a blank read as 0, not declared again.
 # Every printed dollars-and-cents result is rounded half-up to the cent through ca-qc/cent_rounding.
 form:
   name: ca-qc/schedule_p
@@ -20,14 +22,32 @@ capabilities:
       records: ca-qc/tp1_income.employment_income
     produces:
       output: ca-qc/schedule_p_tp1_line_101
+  - name: core/record_total
+    title: "TP-1 line 105"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp1_income.tp1_line_105
+    blank:
+      records:
+        ca-qc/tp1_line_105: "0"
+    produces:
+      output: ca-qc/schedule_p_tp1_line_105
+  - name: core/record_total
+    title: "RL-1 slip, box 211"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp1_income.rl1_slip_box_211
+    blank:
+      records:
+        ca-qc/rl1_slip_box_211: "0"
+    produces:
+      output: ca-qc/schedule_p_rl1_slip_box_211
   - name: core/sum_not_below_zero
     unit: ca/cad
     params:
       rounding: ca-qc/cent_rounding
     consumes:
-      parts: [ca-qc/tp1_line_105]
-    blank:
-      ca-qc/tp1_line_105: "0"
+      parts: [ca-qc/schedule_p_tp1_line_105]
     produces:
       output: ca-qc/schedule_p_line_105_if_positive
   - name: core/sum
@@ -46,8 +66,6 @@ capabilities:
       rounding: ca-qc/cent_rounding
     consumes:
       amount: ca-qc/schedule_p_line_101_plus_105
-      less: ca-qc/rl1_slip_box_211
-    blank:
-      less: "0"
+      less: ca-qc/schedule_p_rl1_slip_box_211
     produces:
       output: ca-qc/schedule_p_line_10

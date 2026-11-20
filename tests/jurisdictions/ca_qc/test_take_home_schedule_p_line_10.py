@@ -90,8 +90,17 @@ def test_only_the_last_step_carries_the_line_reference() -> None:
 
     assert [step["name"] for step in part["capabilities"]] == [
         "core/record_total",
+        "core/record_total",
+        "core/record_total",
         "core/sum_not_below_zero",
         "core/sum",
         "core/subtract",
     ]
-    assert [step.get("reference") for step in part["capabilities"]] == [None, None, None, "10"]
+    assert [step.get("reference") for step in part["capabilities"]] == [
+        None,
+        None,
+        None,
+        None,
+        None,
+        "10",
+    ]

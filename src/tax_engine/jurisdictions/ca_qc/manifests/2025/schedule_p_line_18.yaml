@@ -1,11 +1,46 @@
 # Schedule P (TP-1.D.P-V, 2025-12) Part A line 18: "Add lines 10 through 15 and, if applicable,
 # lines 30 through 35." Column "You": lines 10, 12, 13, 14 and 15 (the spouse
-# lines 30 to 35 are left out). Line 12 is a copy of TP-1 line 107, the optional input the Work Chart 201 line 1 part declares
-# (`ca-qc/tp1_line_107`); lines 13 to 15 are optional inputs (their own parts). Each blank is read
-# as 0. The sum is rounded half-up to the cent (`ca-qc/cent_rounding`).
+# lines 30 to 35 are left out). Line 12 is a copy of TP-1 line 107, an optional input the TP-1 income form takes and exports; it
+# is read as that export (`ca-qc/tp1_income.tp1_line_107`, totalled by core/record_total, a blank
+# read as 0). Line 13 is the research grants and line 15 the WEPP payments of Work Chart 201 lines 3
+# and 4, read as that form's exports; line 14 is an optional input (its own part). Each blank is
+# read as 0. The sum is rounded half-up to the cent (`ca-qc/cent_rounding`).
 form:
   name: ca-qc/schedule_p
 capabilities:
+  - name: core/record_total
+    title: "Amount from line 107 of your return"
+    reference: "12"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp1_income.tp1_line_107
+    blank:
+      records:
+        ca-qc/tp1_line_107: "0"
+    produces:
+      output: ca-qc/schedule_p_tp1_line_107
+  - name: core/record_total
+    title: "Net amount of research grants"
+    reference: "13"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/work_chart_201.work_chart_201_research_grants_line_3
+    blank:
+      records:
+        ca-qc/work_chart_201_research_grants_line_3: "0"
+    produces:
+      output: ca-qc/schedule_p_research_grants_line_13
+  - name: core/record_total
+    title: "Wage Earner Protection Program (WEPP) payments"
+    reference: "15"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/work_chart_201.work_chart_201_wepp_payments_line_4
+    blank:
+      records:
+        ca-qc/work_chart_201_wepp_payments_line_4: "0"
+    produces:
+      output: ca-qc/schedule_p_wepp_payments_line_15
   - name: core/sum
     reference: "18"
     unit: ca/cad
@@ -14,14 +49,11 @@ capabilities:
     consumes:
       parts:
         - ca-qc/schedule_p_line_10
-        - ca-qc/tp1_line_107
+        - ca-qc/schedule_p_tp1_line_107
         - ca-qc/schedule_p_research_grants_line_13
         - ca-qc/schedule_p_schedule_l_income_line_14
         - ca-qc/schedule_p_wepp_payments_line_15
     blank:
-      ca-qc/tp1_line_107: "0"
-      ca-qc/schedule_p_research_grants_line_13: "0"
       ca-qc/schedule_p_schedule_l_income_line_14: "0"
-      ca-qc/schedule_p_wepp_payments_line_15: "0"
     produces:
       output: ca-qc/schedule_p_line_18

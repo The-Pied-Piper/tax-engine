@@ -26,9 +26,7 @@ from tests.jurisdictions.ca_qc.support import (
 
 PARTS = (
     *SCHEDULE_P_FIRST_PARTS,
-    "schedule_p_line_13_inputs.yaml",
     "schedule_p_line_14_inputs.yaml",
-    "schedule_p_line_15_inputs.yaml",
     "schedule_p_line_18.yaml",
     "schedule_p_line_22_inputs.yaml",
     "schedule_p_line_29.yaml",

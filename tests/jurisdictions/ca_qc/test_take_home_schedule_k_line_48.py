@@ -18,7 +18,7 @@ import yaml
 from tax_engine.jurisdictions.ca_qc.catalog import (
     SCHEDULE_K_DEPENDENT_CHILD_AMOUNT_LINE_42_OR_44,
     SCHEDULE_K_PREMIUM_INCOME_LINE_48,
-    SCHEDULE_K_SPOUSE_NET_INCOME_LINE_37,
+    TP1_SPOUSE_NET_INCOME_LINE_275,
 )
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
 from tests.jurisdictions.ca_qc.schedule_k_support import FORM_NAME, schedule_k_sheet
@@ -29,7 +29,7 @@ D = Decimal
 LINE_48 = "ca-qc/schedule_k_premium_income_line_48"
 PARTS = (
     "tp1_schedule_k_line_36.yaml",
-    "tp1_schedule_k_line_37_input.yaml",
+    "tp1_schedule_k_line_37.yaml",
     "tp1_schedule_k_line_40.yaml",
     "tp1_schedule_k_line_41.yaml",
     "tp1_schedule_k_line_42_or_44_input.yaml",
@@ -51,7 +51,7 @@ def test_line_48_at_each_salary(
 
 
 def test_the_spouse_amount_raises_line_48(take_home_service: TakeHomeService) -> None:
-    given = (SCHEDULE_K_SPOUSE_NET_INCOME_LINE_37, "1000.50")
+    given = (TP1_SPOUSE_NET_INCOME_LINE_275, "1000.50")
     sheet = schedule_k_sheet(take_home_service, "70000", LINE_48, PARTS, given)
 
     assert str(sheet.get(SCHEDULE_K_PREMIUM_INCOME_LINE_48).value) == "49025.50"

@@ -12,7 +12,7 @@ import pytest
 
 from tax_engine.jurisdictions.ca_qc.catalog import (
     SCHEDULE_K_INCOME_LINE_40,
-    SCHEDULE_K_SPOUSE_NET_INCOME_LINE_37,
+    TP1_SPOUSE_NET_INCOME_LINE_275,
 )
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 from tests.jurisdictions.ca_qc.schedule_k_support import schedule_k_sheet
@@ -20,7 +20,7 @@ from tests.jurisdictions.ca_qc.schedule_k_support import schedule_k_sheet
 EXPORT = "ca-qc/schedule_k_income_line_40"
 PARTS = (
     "tp1_schedule_k_line_36.yaml",
-    "tp1_schedule_k_line_37_input.yaml",
+    "tp1_schedule_k_line_37.yaml",
     "tp1_schedule_k_line_40.yaml",
 )
 
@@ -38,14 +38,14 @@ def test_a_single_filer_line_40_is_line_36(
 
 
 def test_the_spouse_amount_of_line_37_is_added(take_home_service: TakeHomeService) -> None:
-    given = (SCHEDULE_K_SPOUSE_NET_INCOME_LINE_37, "30000.50")
+    given = (TP1_SPOUSE_NET_INCOME_LINE_275, "30000.50")
     sheet = schedule_k_sheet(take_home_service, "70000", EXPORT, PARTS, given)
 
     assert str(sheet.get(SCHEDULE_K_INCOME_LINE_40).value) == "97915.50"
 
 
 def test_the_sum_is_rounded_half_up_to_the_cent(take_home_service: TakeHomeService) -> None:
-    given = (SCHEDULE_K_SPOUSE_NET_INCOME_LINE_37, "0.005")
+    given = (TP1_SPOUSE_NET_INCOME_LINE_275, "0.005")
     sheet = schedule_k_sheet(take_home_service, "70000", EXPORT, PARTS, given)
 
     assert str(sheet.get(SCHEDULE_K_INCOME_LINE_40).value) == "67915.01"
