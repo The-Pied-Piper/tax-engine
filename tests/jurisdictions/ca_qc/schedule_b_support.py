@@ -34,7 +34,7 @@ from tests.jurisdictions.ca_qc.tp1_net_income_support import (
 
 D = Decimal
 FORM = "ca-qc/schedule_b"
-# The real net income form declaration (it exports line 275) and its line parts.
+# The real net income form declaration (it exports lines 275 and 299) and its line parts.
 NET_INCOME_PARTS = (
     "tp1_net_income.yaml",
     "tp1_net_income_line_201.yaml",
@@ -44,6 +44,11 @@ NET_INCOME_PARTS = (
     "tp1_net_income_line_256.yaml",
     "tp1_net_income_line_260_input.yaml",
     "tp1_net_income_line_275.yaml",
+    "tp1_net_income_line_276_input.yaml",
+    "tp1_net_income_line_278_input.yaml",
+    "tp1_net_income_line_279.yaml",
+    "tp1_net_income_line_298_input.yaml",
+    "tp1_net_income_line_299.yaml",
 )
 # Line 275 at each salary, as the TP-1 net income chain gives it.
 LINE_275 = {"20000": "18635.00", "70000": "67915.00", "200000": "197506.00"}
