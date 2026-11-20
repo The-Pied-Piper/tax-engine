@@ -1,0 +1,13 @@
+# 5005-R (2025) line 104 input a salary-only caller does not give.
+# Line 104 and line 31800: "Disability amount transferred from a dependant (use Federal Worksheet)" (page 6). A salary-only filer has no such amount, so it is an
+# optional input left blank; the sum or difference that reads it takes a blank as 0.
+form:
+  name: ca-qc/t1_tax_and_credits
+inputs:
+  - name: ca-qc/disability_amount_transferred_line_104
+    title: "Disability amount transferred from a dependant"
+    reference: "31800"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Disability amount transferred from a dependant (use Federal Worksheet)"

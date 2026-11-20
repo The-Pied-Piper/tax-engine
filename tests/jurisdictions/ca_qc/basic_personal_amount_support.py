@@ -63,10 +63,16 @@ LINE_100_INPUT_PARTS = (
 LINES_101_TO_122_PARTS: tuple[str, ...] = (
     "t1_tax_and_credits_line_31400_inputs.yaml",
     "t1_tax_and_credits_line_102.yaml",
+    "t1_tax_and_credits_line_31600_inputs.yaml",
+    "t1_tax_and_credits_line_31800_inputs.yaml",
+    "t1_tax_and_credits_line_105.yaml",
 )
 # The line outputs a test reads that the real form declaration does not export (it exports only the
 # figures a later form reads); the test-local declaration below adds them.
-EXTRA_EXPORTS: tuple[str, ...] = ("ca-qc/credits_line_102",)
+EXTRA_EXPORTS: tuple[str, ...] = (
+    "ca-qc/credits_line_102",
+    "ca-qc/credits_line_105",
+)
 CREDIT_PARTS = (
     *LINE_85_INPUT_PARTS,
     "t1_tax_and_credits_line_85.yaml",

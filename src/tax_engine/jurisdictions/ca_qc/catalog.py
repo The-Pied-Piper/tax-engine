@@ -798,6 +798,26 @@ the credit amounts through line 84 plus the credits of lines 87 to 99 plus the p
 amount, each blank read as 0, from one core/sum (`t1_tax_and_credits_line_102.yaml`); line 105
 reads it."""
 
+DISABILITY_AMOUNT_SELF_LINE_103 = AmountKind.declare(
+    CATALOG, "disability_amount_self_line_103", non_negative=True
+)
+"""Disability amount for self, 5005-R line 103 and line 31600: an optional input a salary-only
+caller does not give; the line that reads it takes a blank as 0
+(`t1_tax_and_credits_line_31600_inputs.yaml`)."""
+
+DISABILITY_AMOUNT_TRANSFERRED_LINE_104 = AmountKind.declare(
+    CATALOG, "disability_amount_transferred_line_104", non_negative=True
+)
+"""Disability amount transferred from a dependant, 5005-R line 104 and line 31800: an optional
+input a salary-only caller does not give; the line that reads it takes a blank as 0
+(`t1_tax_and_credits_line_31800_inputs.yaml`)."""
+
+CREDITS_LINE_105 = AmountKind.declare(CATALOG, "credits_line_105", non_negative=True)
+"""Credits of lines 102 to 104, 5005-R line 105 "Line 105: Add lines 102 to 104. =": the credits
+through line 102 plus the disability amount for self (line 103) and the disability amount
+transferred from a dependant (line 104), each blank read as 0, from one core/sum
+(`t1_tax_and_credits_line_105.yaml`); line 110 reads it."""
+
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
 Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line
