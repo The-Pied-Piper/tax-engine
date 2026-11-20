@@ -41,7 +41,13 @@ def test_a_salary_only_line_129_is_the_printed_figure(
     assert sheet.get(FEDERAL_CREDITS_AND_CARRYOVERS_LINE_129).value == D(expected)
 
 
-@pytest.mark.parametrize(("kind", "expected"), [(FEDERAL_DIVIDEND_TAX_CREDIT_LINE_127, "3347.73"), (MINIMUM_TAX_CARRYOVER_LINE_128, "3347.73")])
+@pytest.mark.parametrize(
+    ("kind", "expected"),
+    [
+        (FEDERAL_DIVIDEND_TAX_CREDIT_LINE_127, "3347.73"),
+        (MINIMUM_TAX_CARRYOVER_LINE_128, "3347.73"),
+    ],
+)
 def test_each_optional_line_is_taken(
     take_home_service: TakeHomeService, kind: AmountKind, expected: str
 ) -> None:
@@ -66,8 +72,8 @@ def test_the_trace_prints_the_line(take_home_service: TakeHomeService) -> None:
     sheet = sheets(take_home_service, "70000", LAST)
 
     assert (
-        'Line 35000 (CA$3247.63) plus line 40425 (CA$0.00) plus line 40427 (CA$0.00)'
-        ' gives CA$3247.63 (rounded to the nearest cent).'
+        "Line 35000 (CA$3247.63) plus line 40425 (CA$0.00) plus line 40427 (CA$0.00)"
+        " gives CA$3247.63 (rounded to the nearest cent)."
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
 
 

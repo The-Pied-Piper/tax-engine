@@ -71,7 +71,10 @@ def sheets(
     """The tax and credits sheet for `salary`, with the Part C parts up to `last` composed and the
     optional figures in `given` typed in."""
     upto = PART_C_PARTS.index(last) + 1
-    exports = (LINE_122, *(STEP_EXPORTS[part] for part in PART_C_PARTS[:upto] if part in STEP_EXPORTS))
+    exports = (
+        LINE_122,
+        *(STEP_EXPORTS[part] for part in PART_C_PARTS[:upto] if part in STEP_EXPORTS),
+    )
     parts = (*PARTS, *PART_A_PARTS, *PART_C_PARTS[:upto])
     worksheets = take_home_service(HEADER, form(exports), *parts).compute(
         JurisdictionCode("CA-QC"),

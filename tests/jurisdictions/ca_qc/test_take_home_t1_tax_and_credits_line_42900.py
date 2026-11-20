@@ -52,9 +52,7 @@ def test_line_130_is_line_77_less_line_122(take_home_service: TakeHomeService, s
 
 
 def test_a_negative_difference_is_entered_as_zero(take_home_service: TakeHomeService) -> None:
-    sheet = sheets(
-        take_home_service, "70000", LAST, (MINIMUM_TAX_CARRYOVER_LINE_128, "100000")
-    )
+    sheet = sheets(take_home_service, "70000", LAST, (MINIMUM_TAX_CARRYOVER_LINE_128, "100000"))
 
     assert sheet.get(BASIC_FEDERAL_TAX_LINE_130).value == D("0.00")
 
@@ -63,8 +61,8 @@ def test_the_trace_prints_the_line(take_home_service: TakeHomeService) -> None:
     sheet = sheets(take_home_service, "70000", LAST)
 
     assert (
-        'Line 40400 (CA$10771.18) less line 129 (CA$3247.63), not below 0,'
-        ' gives CA$7523.55 (rounded to the nearest cent).'
+        "Line 40400 (CA$10771.18) less line 129 (CA$3247.63), not below 0,"
+        " gives CA$7523.55 (rounded to the nearest cent)."
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
 
 

@@ -41,7 +41,9 @@ def test_a_salary_only_line_136_is_the_printed_figure(
     assert sheet.get(FEDERAL_TAX_WITH_ITC_RECAPTURE_LINE_136).value == D(expected)
 
 
-@pytest.mark.parametrize(("kind", "expected"), [(INVESTMENT_TAX_CREDIT_RECAPTURE_LINE_135, "7623.65")])
+@pytest.mark.parametrize(
+    ("kind", "expected"), [(INVESTMENT_TAX_CREDIT_RECAPTURE_LINE_135, "7623.65")]
+)
 def test_each_optional_line_is_taken(
     take_home_service: TakeHomeService, kind: AmountKind, expected: str
 ) -> None:
@@ -51,9 +53,7 @@ def test_each_optional_line_is_taken(
 
 
 def test_a_negative_figure_is_kept(take_home_service: TakeHomeService) -> None:
-    sheet = sheets(
-        take_home_service, "70000", LAST, (FEDERAL_FOREIGN_TAX_CREDIT_LINE_133, "10000")
-    )
+    sheet = sheets(take_home_service, "70000", LAST, (FEDERAL_FOREIGN_TAX_CREDIT_LINE_133, "10000"))
 
     assert sheet.get(FEDERAL_TAX_WITH_ITC_RECAPTURE_LINE_136).value == D("-2476.45")
 
@@ -62,8 +62,8 @@ def test_the_trace_prints_the_line(take_home_service: TakeHomeService) -> None:
     sheet = sheets(take_home_service, "70000", LAST)
 
     assert (
-        'Line 134 (CA$7523.55) plus line 135 (CA$0.00)'
-        ' gives CA$7523.55 (rounded to the nearest cent).'
+        "Line 134 (CA$7523.55) plus line 135 (CA$0.00)"
+        " gives CA$7523.55 (rounded to the nearest cent)."
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
 
 

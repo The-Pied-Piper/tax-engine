@@ -51,7 +51,10 @@ def test_each_optional_line_is_taken(
 
 @pytest.mark.parametrize(
     "given",
-    [(FEDERAL_LOGGING_TAX_CREDIT_LINE_137, "10000"), (FEDERAL_FOREIGN_TAX_CREDIT_LINE_133, "10000")],
+    [
+        (FEDERAL_LOGGING_TAX_CREDIT_LINE_137, "10000"),
+        (FEDERAL_FOREIGN_TAX_CREDIT_LINE_133, "10000"),
+    ],
 )
 def test_a_negative_difference_is_entered_as_zero(
     take_home_service: TakeHomeService, given: tuple[AmountKind, str]
@@ -65,8 +68,8 @@ def test_the_trace_prints_the_line(take_home_service: TakeHomeService) -> None:
     sheet = sheets(take_home_service, "70000", LAST)
 
     assert (
-        'Line 136 (CA$7523.55) less line 137 (CA$0.00), not below 0,'
-        ' gives CA$7523.55 (rounded to the nearest cent).'
+        "Line 136 (CA$7523.55) less line 137 (CA$0.00), not below 0,"
+        " gives CA$7523.55 (rounded to the nearest cent)."
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
 
 

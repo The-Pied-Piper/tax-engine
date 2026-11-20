@@ -1015,66 +1015,92 @@ NON_REFUNDABLE_TAX_CREDITS_LINE_122 = AmountKind.declare(
 credit (line 121), each blank read as 0, from one core/sum
 (`t1_tax_and_credits_line_35000.yaml`); Part C line 126 copies it."""
 
-FEDERAL_TAX_ON_SPLIT_INCOME_LINE_124 = AmountKind.declare(CATALOG, "federal_tax_on_split_income_line_124", non_negative=True)
+FEDERAL_TAX_ON_SPLIT_INCOME_LINE_124 = AmountKind.declare(
+    CATALOG, "federal_tax_on_split_income_line_124", non_negative=True
+)
 """Federal tax on split income (TOSI), 5005-R line 124 and line 40424: an optional input a
 salary-only caller does not give; the line that reads it takes a blank as 0
 (`t1_tax_and_credits_line_40424_inputs.yaml`)."""
 
-FEDERAL_TAX_WITH_SPLIT_INCOME_LINE_125 = AmountKind.declare(CATALOG, "federal_tax_with_split_income_line_125", non_negative=True)
+FEDERAL_TAX_WITH_SPLIT_INCOME_LINE_125 = AmountKind.declare(
+    CATALOG, "federal_tax_with_split_income_line_125", non_negative=True
+)
 """Net federal tax before credits, 5005-R line 125 and line 40400 "Line 123 plus line 124 =": line
 77 (line 123 copies it) plus the federal tax on split income (line 124), a blank read as 0 from
 one core/sum (`t1_tax_and_credits_line_40400.yaml`)."""
 
-FEDERAL_DIVIDEND_TAX_CREDIT_LINE_127 = AmountKind.declare(CATALOG, "federal_dividend_tax_credit_line_127", non_negative=True)
+FEDERAL_DIVIDEND_TAX_CREDIT_LINE_127 = AmountKind.declare(
+    CATALOG, "federal_dividend_tax_credit_line_127", non_negative=True
+)
 """Federal dividend tax credit, 5005-R line 127 and line 40425: an optional input a salary-only
 caller does not give; the line that reads it takes a blank as 0
 (`t1_tax_and_credits_line_40425_inputs.yaml`)."""
 
-MINIMUM_TAX_CARRYOVER_LINE_128 = AmountKind.declare(CATALOG, "minimum_tax_carryover_line_128", non_negative=True)
+MINIMUM_TAX_CARRYOVER_LINE_128 = AmountKind.declare(
+    CATALOG, "minimum_tax_carryover_line_128", non_negative=True
+)
 """Minimum tax carryover, 5005-R line 128 and line 40427: an optional input a salary-only caller
 does not give; the line that reads it takes a blank as 0
 (`t1_tax_and_credits_line_40427_inputs.yaml`)."""
 
-FEDERAL_CREDITS_AND_CARRYOVERS_LINE_129 = AmountKind.declare(CATALOG, "federal_credits_and_carryovers_line_129", non_negative=True)
+FEDERAL_CREDITS_AND_CARRYOVERS_LINE_129 = AmountKind.declare(
+    CATALOG, "federal_credits_and_carryovers_line_129", non_negative=True
+)
 """Credits and carryovers, 5005-R line 129 "Add lines 126 to 128. =": line 122 (line 126 copies it)
 plus the federal dividend tax credit (line 127) and the minimum tax carryover (line 128), each
 blank read as 0 from one core/sum (`t1_tax_and_credits_line_129.yaml`)."""
 
-BASIC_FEDERAL_TAX_LINE_130 = AmountKind.declare(CATALOG, "basic_federal_tax_line_130", non_negative=True)
+BASIC_FEDERAL_TAX_LINE_130 = AmountKind.declare(
+    CATALOG, "basic_federal_tax_line_130", non_negative=True
+)
 """Basic federal tax, 5005-R line 130 and line 42900 "Line 125 minus line 129 (if negative, enter
 "0") Basic federal tax =": line 125 less line 129, not below zero from one
 core/subtract_not_below_zero (`t1_tax_and_credits_line_42900.yaml`)."""
 
-FEDERAL_SURTAX_OUTSIDE_CANADA_LINE_131 = AmountKind.declare(CATALOG, "federal_surtax_outside_canada_line_131", non_negative=True)
+FEDERAL_SURTAX_OUTSIDE_CANADA_LINE_131 = AmountKind.declare(
+    CATALOG, "federal_surtax_outside_canada_line_131", non_negative=True
+)
 """Federal surtax on income earned outside Canada, 5005-R line 131: an optional input a salary-only
 caller does not give; the line that reads it takes a blank as 0
 (`t1_tax_and_credits_line_131_inputs.yaml`)."""
 
-FEDERAL_TAX_WITH_SURTAX_LINE_132 = AmountKind.declare(CATALOG, "federal_tax_with_surtax_line_132", non_negative=True)
+FEDERAL_TAX_WITH_SURTAX_LINE_132 = AmountKind.declare(
+    CATALOG, "federal_tax_with_surtax_line_132", non_negative=True
+)
 """Federal tax with the surtax, 5005-R line 132 "Line 130 plus line 131 =": line 130 plus the
 federal surtax on income earned outside Canada (line 131), a blank read as 0 from one core/sum
 (`t1_tax_and_credits_line_132.yaml`)."""
 
-FEDERAL_FOREIGN_TAX_CREDIT_LINE_133 = AmountKind.declare(CATALOG, "federal_foreign_tax_credit_line_133", non_negative=True)
+FEDERAL_FOREIGN_TAX_CREDIT_LINE_133 = AmountKind.declare(
+    CATALOG, "federal_foreign_tax_credit_line_133", non_negative=True
+)
 """Federal foreign tax credit, 5005-R line 133 and line 40500: an optional input a salary-only
 caller does not give; the line that reads it takes a blank as 0
 (`t1_tax_and_credits_line_40500_inputs.yaml`)."""
 
-FEDERAL_TAX_LESS_FOREIGN_TAX_CREDIT_LINE_134 = AmountKind.declare(CATALOG, "federal_tax_less_foreign_tax_credit_line_134")
+FEDERAL_TAX_LESS_FOREIGN_TAX_CREDIT_LINE_134 = AmountKind.declare(
+    CATALOG, "federal_tax_less_foreign_tax_credit_line_134"
+)
 """Federal tax less the foreign tax credit, 5005-R line 134 "Line 132 minus line 133 =": line 132
 less the federal foreign tax credit (line 133), a blank read as 0; the form prints no floor, so
 the figure is signed from one core/subtract (`t1_tax_and_credits_line_134.yaml`)."""
 
-INVESTMENT_TAX_CREDIT_RECAPTURE_LINE_135 = AmountKind.declare(CATALOG, "investment_tax_credit_recapture_line_135", non_negative=True)
+INVESTMENT_TAX_CREDIT_RECAPTURE_LINE_135 = AmountKind.declare(
+    CATALOG, "investment_tax_credit_recapture_line_135", non_negative=True
+)
 """Recapture of investment tax credit, 5005-R line 135: an optional input a salary-only caller does
 not give; the line that reads it takes a blank as 0 (`t1_tax_and_credits_line_135_inputs.yaml`)."""
 
-FEDERAL_TAX_WITH_ITC_RECAPTURE_LINE_136 = AmountKind.declare(CATALOG, "federal_tax_with_itc_recapture_line_136")
+FEDERAL_TAX_WITH_ITC_RECAPTURE_LINE_136 = AmountKind.declare(
+    CATALOG, "federal_tax_with_itc_recapture_line_136"
+)
 """Federal tax with the investment tax credit recapture, 5005-R line 136 "Line 134 plus line 135
 =": line 134 plus the recapture of investment tax credit (line 135), a blank read as 0; the
 figure is signed from one core/sum (`t1_tax_and_credits_line_136.yaml`)."""
 
-FEDERAL_LOGGING_TAX_CREDIT_LINE_137 = AmountKind.declare(CATALOG, "federal_logging_tax_credit_line_137", non_negative=True)
+FEDERAL_LOGGING_TAX_CREDIT_LINE_137 = AmountKind.declare(
+    CATALOG, "federal_logging_tax_credit_line_137", non_negative=True
+)
 """Federal logging tax credit, 5005-R line 137: an optional input a salary-only caller does not
 give; the line that reads it takes a blank as 0 (`t1_tax_and_credits_line_137_inputs.yaml`)."""
 

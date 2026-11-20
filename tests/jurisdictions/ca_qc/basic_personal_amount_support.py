@@ -125,7 +125,17 @@ HEADER = (
     + real_import("ca/t2204")
 )
 # The real tax and credits declaration is the form; the real T1 declaration is the first part.
-FORM = (QUEBEC_PARTS / "t1_tax_and_credits.yaml").read_text(encoding="utf-8")
+# The Part C exports (line 130 and line 138) are left out: these tests do not compose Part A or
+# Part C, which `net_federal_tax_support.py` does.
+FORM = "".join(
+    line
+    for line in (QUEBEC_PARTS / "t1_tax_and_credits.yaml")
+    .read_text(encoding="utf-8")
+    .splitlines(True)
+    if not line.startswith(
+        ("    - ca-qc/basic_federal_tax_line_130", "    - ca-qc/federal_tax_line_138")
+    )
+)
 
 
 def sheets(

@@ -39,7 +39,9 @@ def test_a_salary_only_line_132_is_the_printed_figure(
     assert sheet.get(FEDERAL_TAX_WITH_SURTAX_LINE_132).value == D(expected)
 
 
-@pytest.mark.parametrize(("kind", "expected"), [(FEDERAL_SURTAX_OUTSIDE_CANADA_LINE_131, "7623.65")])
+@pytest.mark.parametrize(
+    ("kind", "expected"), [(FEDERAL_SURTAX_OUTSIDE_CANADA_LINE_131, "7623.65")]
+)
 def test_each_optional_line_is_taken(
     take_home_service: TakeHomeService, kind: AmountKind, expected: str
 ) -> None:
@@ -52,8 +54,8 @@ def test_the_trace_prints_the_line(take_home_service: TakeHomeService) -> None:
     sheet = sheets(take_home_service, "70000", LAST)
 
     assert (
-        'Line 42900 (CA$7523.55) plus line 131 (CA$0.00)'
-        ' gives CA$7523.55 (rounded to the nearest cent).'
+        "Line 42900 (CA$7523.55) plus line 131 (CA$0.00)"
+        " gives CA$7523.55 (rounded to the nearest cent)."
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
 
 
