@@ -1187,6 +1187,12 @@ PROVINCIAL_TAX_LINE_150 = AmountKind.declare(CATALOG, "provincial_tax_line_150",
 42800: an optional input a salary-only caller does not give; the line that reads it takes a
 blank as 0 (`t1_tax_and_credits_line_42800_inputs.yaml`)."""
 
+TOTAL_PAYABLE_LINE_151 = AmountKind.declare(CATALOG, "total_payable_line_151", non_negative=True)
+"""Total payable, 5005-R line 151 and line 43500 "Add lines 147 to 150. Total payable =": line
+147 (a copy of line 146) plus the lines 148 and 150 (blank, read as 0), the social benefits
+repayment (line 149) from one core/sum (`t1_tax_and_credits_line_43500.yaml`);
+Step 6 line 152 reads it."""
+
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
 Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line
