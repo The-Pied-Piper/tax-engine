@@ -605,3 +605,15 @@ TP1_TOTAL_DEDUCTIONS_LINE_254 = AmountKind.declare(CATALOG, "tp1_total_deduction
 """Total deductions, TP-1 line 254 "Add lines 201 through 207, 214 through 231, and 234 through
 252": line 201, line 248 and the other deductions, rounded half-up to the cent. Signed, as lines 201
 and 248 are."""
+
+TP1_NET_INCOME_TOTAL_INCOME_LINE_199 = AmountKind.declare(
+    CATALOG, "tp1_net_income_total_income_line_199", non_negative=True
+)
+"""Total income of TP-1 line 199, as the net income lines read it ("Amount from line 199") from the
+TP-1 income form."""
+
+TP1_INCOME_LESS_DEDUCTIONS_LINE_256 = AmountKind.declare(
+    CATALOG, "tp1_income_less_deductions_line_256"
+)
+"""TP-1 line 256 "Subtract line 254 from line 199": total income less total deductions, rounded
+half-up to the cent. The form prints no floor, so the figure can be negative."""
