@@ -1021,3 +1021,11 @@ TP1_LINE_359 = AmountKind.declare(CATALOG, "tp1_line_359")
 """TP-1 line 359 "Subtract line 358 from line 350": the basic personal amount less the adjustment,
 rounded half-up to the cent. The form prints no floor, so the figure is signed. Produced by one
 core/subtract (`tp1_credits_line_359.yaml`)."""
+
+
+TP1_AGE_LIVING_ALONE_RETIREMENT_AMOUNT_LINE_361 = AmountKind.declare(
+    CATALOG, "tp1_age_living_alone_retirement_amount_line_361"
+)
+"""TP-1 line 361 "Age amount, amount for a person living alone and amount for retirement income.
+Complete Schedule B": the figure Schedule B carries from its line 34, which is signed. Produced by
+one core/record_total over the Schedule B export (`tp1_credits_line_361.yaml`)."""
