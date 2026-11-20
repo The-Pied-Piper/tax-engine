@@ -1,6 +1,7 @@
 """T1 (5006-R, 2025) line 10100, employment income, as the Ontario take-home manifest parts wire it.
 
-The step is one core/sum over its one input, so the line prints the figure once, with the printed
+The step is one core/sum over its one input, carried as it is (the form prints no rounding on this
+line), so the line prints the figure once, with the printed
 title and reference, and exports it for the forms that import it.
 """
 
@@ -54,7 +55,8 @@ def line_10100(take_home_service: TakeHomeService, salary: str, other: str | Non
 
 
 @pytest.mark.parametrize(
-    ("salary", "expected"), [("70000", "70000.00"), ("0", "0"), ("1000.5", "1000.50")]
+    ("salary", "expected"),
+    [("70000", "70000.00"), ("0", "0"), ("1000.5", "1000.50"), ("70000.005", "70000.005")],
 )
 def test_line_10100_is_the_salary(
     take_home_service: TakeHomeService, salary: str, expected: str

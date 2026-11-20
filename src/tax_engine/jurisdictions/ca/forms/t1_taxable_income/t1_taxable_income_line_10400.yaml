@@ -11,7 +11,7 @@ capabilities:
     reference: "10400"
     unit: ca/cad
     params:
-      rounding: ca/cent_rounding
+      rounding: ca/exact_rounding
     consumes:
       parts: [ca/other_employment_income]
     produces:

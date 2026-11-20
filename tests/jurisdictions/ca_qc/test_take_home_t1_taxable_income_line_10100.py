@@ -1,7 +1,8 @@
 """5005-R (2025) line 10100, employment income, as the Quebec manifest part wires it.
 
-The step is one core/sum over its one input, rounded through `ca-qc/cent_rounding`, and it prints
-the line once, with its printed title and reference. The header and the form's export are made up.
+The step is one core/sum over its one input, carried as it is (the form prints no rounding on this
+line), and it prints the line once, with its printed title and reference. The header and the
+form's export are made up.
 """
 
 from __future__ import annotations
