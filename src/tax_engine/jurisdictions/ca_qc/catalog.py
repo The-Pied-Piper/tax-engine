@@ -1069,6 +1069,11 @@ INVESTMENT_TAX_CREDIT_RECAPTURE_LINE_135 = AmountKind.declare(CATALOG, "investme
 """Recapture of investment tax credit, 5005-R line 135: an optional input a salary-only caller does
 not give; the line that reads it takes a blank as 0 (`t1_tax_and_credits_line_135_inputs.yaml`)."""
 
+FEDERAL_TAX_WITH_ITC_RECAPTURE_LINE_136 = AmountKind.declare(CATALOG, "federal_tax_with_itc_recapture_line_136")
+"""Federal tax with the investment tax credit recapture, 5005-R line 136 "Line 134 plus line 135
+=": line 134 plus the recapture of investment tax credit (line 135), a blank read as 0; the
+figure is signed from one core/sum (`t1_tax_and_credits_line_136.yaml`)."""
+
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
 Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line
