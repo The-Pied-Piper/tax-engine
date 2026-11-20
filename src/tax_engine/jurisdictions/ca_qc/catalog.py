@@ -562,6 +562,12 @@ SCHEDULE_P_SPOUSE_NET_INCOME_LINE_53 = AmountKind.declare(
 """Schedule P Part C line 53, "Amount from line 275 of your spouse's return (spouse on December 31,
 2025)", as the caller gives it; blank when the caller has none, and line 54 reads it as 0."""
 
+SCHEDULE_P_FAMILY_INCOME_LINE_54 = AmountKind.declare(
+    CATALOG, "schedule_p_family_income_line_54", non_negative=True
+)
+"""Schedule P Part C line 54, "Add lines 52 and 53", "Family income": the net income of line 52 plus
+the spouse's of line 53 (blank, read as 0), rounded half-up to the cent."""
+
 T1_LINE_48 = AmountKind.declare(CATALOG, "t1_line_48", non_negative=True)
 """Deduction for CPP or QPP enhanced contributions on employment income, 5005-R line 48 and line
 22215 "Deduction for CPP or QPP enhanced contributions on employment income (complete Schedule 8 or
