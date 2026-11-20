@@ -284,3 +284,65 @@ SOLIDARITY_CREDIT_AFTER_REDUCTION = AmountKind.declare(
 """Solidarity tax credit after the reduction (fiche 110201, Table C.9): the greater of the maximum
 less the reduction and the QST component less the 3% reduction, so the credit never falls below
 the QST-only credit."""
+
+TP1_FOREST_PRODUCER_AVERAGING_LINE_276 = AmountKind.declare(
+    CATALOG, "tp1_forest_producer_averaging_line_276", non_negative=True
+)
+"""The amount for income averaging for forest producers, included on TP-1 line 276, which Schedule F
+line 10 adds to total income; blank when the caller has none, and line 10 reads it as 0."""
+
+TP1_SCHEDULE_F_TOTAL_INCOME_LINE_199 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_total_income_line_199", non_negative=True
+)
+"""Total income of TP-1 line 199, as Schedule F line 10 reads it from the TP-1 income form."""
+
+TP1_SCHEDULE_F_INCOME_LINE_10 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_income_line_10", non_negative=True
+)
+"""Schedule F line 10, "Total income (line 199 of your return) plus the amount for income averaging
+for forest producers (included on line 276 of your return)": line 199 plus line 276, rounded
+half-up to the cent."""
+
+TP1_SCHEDULE_F_EMPLOYMENT_INCOME_LINE_12 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_employment_income_line_12", non_negative=True
+)
+"""Schedule F line 12, "Employment income (line 101)": TP-1 line 101, read from the TP-1 income
+form."""
+
+TP1_SCHEDULE_F_EMPLOYMENT_INCOME_CORRECTION_LINE_14 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_employment_income_correction_line_14"
+)
+"""Schedule F line 14, "Correction of employment income (line 105)", signed: a figure to subtract is
+negative. Blank when the caller has none, and line 16 reads it as 0."""
+
+TP1_SCHEDULE_F_EMPLOYMENT_INCOME_TOTAL_LINE_16 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_employment_income_total_line_16"
+)
+"""Schedule F line 16, "Add lines 12 and 14, or subtract line 14 from line 12, as applicable":
+line 12 plus the signed line 14, rounded half-up to the cent."""
+
+TP1_SCHEDULE_F_INCOME_LINE_18 = AmountKind.declare(CATALOG, "tp1_schedule_f_income_line_18")
+"""Schedule F line 18, "Subtract line 16 from line 10": no floor is printed, so it can be
+negative."""
+
+TP1_SCHEDULE_F_LINES_20_TO_33_TOTAL_LINE_34 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_lines_20_to_33_total_line_34", non_negative=True
+)
+"""Schedule F line 34, "Add lines 20, 22 and 25 through 33": the printed sum of the skipped lines,
+one optional input; blank when the caller has none, and line 36 reads it as 0."""
+
+TP1_SCHEDULE_F_INCOME_LINE_36 = AmountKind.declare(CATALOG, "tp1_schedule_f_income_line_36")
+"""Schedule F line 36, "Income": line 18 less line 34; no floor is printed, so it can be
+negative."""
+
+TP1_SCHEDULE_F_DEDUCTIONS_LINE_68 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_deductions_line_68", non_negative=True
+)
+"""Schedule F line 68, "Deductions": the printed sum of lines 41 through 62, which are skipped, as
+one optional input; blank when the caller has none, and line 70 reads it as 0."""
+
+TP1_SCHEDULE_F_INCOME_SUBJECT_LINE_70 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_income_subject_line_70"
+)
+"""Schedule F line 70, "Income subject to the contribution": line 36 less line 68; no floor is
+printed, so it can be negative. Part B tests it against $18,130."""

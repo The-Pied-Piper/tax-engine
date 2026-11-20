@@ -1,0 +1,16 @@
+# Schedule F (2025) line 18: "Subtract line 16 from line 10. If the result is $18,130 or less, you do
+# not have to pay a contribution." The form prints no floor and the stop is not a step: the figure is
+# carried on, and Part B tests it against $18,130.
+form:
+  name: ca-qc/tp1_schedule_f
+capabilities:
+  - name: core/subtract
+    reference: "18"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/tp1_schedule_f_income_line_10
+      less: ca-qc/tp1_schedule_f_employment_income_total_line_16
+    produces:
+      output: ca-qc/tp1_schedule_f_income_line_18
