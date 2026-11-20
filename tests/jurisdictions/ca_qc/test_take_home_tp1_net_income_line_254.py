@@ -1,8 +1,9 @@
 """Revenu Quebec TP-1 (2025) line 254, "Add lines 201 through 207, 214 through 231, and 234 through
 252. Total deductions", as the Quebec take-home manifest part wires it: line 201, line 248 and the
-other deductions. Lines 205 to 207, 214 to 231, 234 to 247 and 249 to 252 are one optional input
-(`ca-qc/tp1_other_deductions_lines_205_to_252`), read as 0 when the caller leaves it out. The sum is
-`core/sum`, rounded half-up to the cent by `ca-qc/cent_rounding`. The expected figures are
+other deductions. Lines 205 to 207, 214 to 231 and 234 to 252 (line 248.1 included, line 248
+apart) are one optional input (`ca-qc/tp1_other_deductions_lines_205_to_252`), read as 0 when the
+caller leaves it out. The sum is `core/sum`, rounded half-up to the cent by `ca-qc/cent_rounding`.
+The expected figures are
 hand-computed from the printed lines, not an official example.
 """
 

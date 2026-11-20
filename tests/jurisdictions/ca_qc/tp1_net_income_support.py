@@ -24,27 +24,18 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     TP1_QPP_CONTRIBUTION_LINE_98,
 )
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
+from tests.jurisdictions.ca_qc.support import WORK_CHART_201_PARTS
 
 D = Decimal
 
+# Only line 199 of the TP-1 income parts: Schedule U reads the TP-1 slip figures (lines 97 to 98.2)
+# as plain starting inputs, which the full TP-1 income parts would also produce.
 UPSTREAM_PARTS = (
     "salary.yaml",
     "tp1_income.yaml",
     "tp1_income_line_199_input.yaml",
     "tp1_income_line_199.yaml",
-    "work_chart_201.yaml",
-    "work_chart_201_line_1_input_105.yaml",
-    "work_chart_201_line_1_input_107.yaml",
-    "work_chart_201_line_1_input_box_211.yaml",
-    "work_chart_201_line_1.yaml",
-    "work_chart_201_line_2_input.yaml",
-    "work_chart_201_line_3_input.yaml",
-    "work_chart_201_line_4_input.yaml",
-    "work_chart_201_line_5_input.yaml",
-    "work_chart_201_line_6.yaml",
-    "work_chart_201_line_7_input.yaml",
-    "work_chart_201_line_8.yaml",
-    "work_chart_201_line_9.yaml",
+    *WORK_CHART_201_PARTS,
     "tp1_schedule_u.yaml",
     "tp1_schedule_u_line_11.yaml",
     "tp1_schedule_u_line_12.yaml",
