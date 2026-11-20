@@ -1,6 +1,7 @@
 # T2204 (2025) line 1: "Total EI insurable earnings (box 24 or, if blank, box 14 of your T4 slips)
 # (1)". The take-home caller has no T4, so the salary typed once (T1 line 10100) is the earnings, in
-# place of box 24 or box 14 of the one slip a salaried filer has.
+# place of box 24 or box 14 of the one slip a salaried filer has. Line 10100 belongs to the T1 taxable
+# income form, so it is read as that form's export (a record list, totalled by core/record_total).
 #
 # Note (1): "If you have no self-employment earnings and your total EI insurable earnings on your
 # T4 slips are less than $2,000, enter "0". However, if you have self-employment earnings and have
@@ -20,6 +21,13 @@
 form:
   name: ca/t2204
 capabilities:
+  - name: core/record_total
+    title: "Amount from line 10100 of the return"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_taxable_income.employment_income_line_10100
+    produces:
+      output: ca/t2204_employment_income_line_10100
   - name: ca/count_by_conditions
     title: "Multiplier that is 1 unless the low-pay rule applies"
     params:
@@ -29,7 +37,7 @@ capabilities:
       amounts:
         - ca/t2204_self_employment_earnings
         - ca/t2204_exemption
-        - ca/employment_income
+        - ca/t2204_employment_income_line_10100
     blank:
       amounts: "0"
     produces:
@@ -41,7 +49,7 @@ capabilities:
     params:
       rounding: ca/cent_rounding
     consumes:
-      amount: ca/employment_income
+      amount: ca/t2204_employment_income_line_10100
       count: ca/t2204_line_1_count
     produces:
       output: ca/t2204_line_1

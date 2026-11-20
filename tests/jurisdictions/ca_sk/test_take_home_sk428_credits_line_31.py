@@ -46,7 +46,7 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
+from tests.manifest_support import T1_LINE_10100_FORM, inputs_without_form
 
 D = Decimal
 SK_PARTS = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / "manifests" / "2025"
@@ -93,6 +93,8 @@ def _part_files() -> Iterator[Path]:
     yield SK_PARTS / "salary.yaml"
     yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
     yield from sorted(FEDERAL_FORMS.rglob("t2204*.yaml"))
+    yield T1_LINE_10100_FORM
+    yield FEDERAL_FORMS / "t1_taxable_income" / "t1_taxable_income_line_10100.yaml"
     yield SK_PARTS / "sk428_credits_line_22.yaml"
     yield SK_PARTS / "sk428_credits_line_24.yaml"
     yield PART

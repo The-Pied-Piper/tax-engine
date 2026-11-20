@@ -18,7 +18,7 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.registrations import JURISDICTIONS, parameter_parsers, units
 from tests.capabilities import bundled_capabilities
 from tests.kinds import bundled_kinds
-from tests.manifest_support import inputs_without_form
+from tests.manifest_support import T1_LINE_10100_FORM, inputs_without_form
 
 ONTARIO_PARTS = Path(tax_engine.jurisdictions.ca_on.__file__).parent / "manifests" / "2025"
 FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
@@ -77,7 +77,11 @@ def take_home_service(tmp_path: Path) -> TakeHomeService:
         (folder / "00_header.yaml").write_text(header, encoding="utf-8")
         (folder / "01_form.yaml").write_text(form, encoding="utf-8")
         for number, part in enumerate(parts, start=2):
-            found = next(TAKE_HOME.rglob(part))
+            found = (
+                T1_LINE_10100_FORM
+                if part == T1_LINE_10100_FORM.name
+                else next(TAKE_HOME.rglob(part))
+            )
             (folder / f"{number:02d}_{part}").write_text(
                 inputs_without_form(found)
                 if part.endswith("_inputs.yaml") and found.is_relative_to(FEDERAL_FORMS)
