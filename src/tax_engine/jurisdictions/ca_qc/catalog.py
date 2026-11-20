@@ -40,3 +40,10 @@ SOLIDARITY_HOUSING_MULTIPLE_AMOUNT = AmountKind.declare(
 ("montant de base pour frais de logement", 906, Table C.9 of fiche 110201, July 2026 to June
 2027): the printed figure before the division by the number of owners, tenants or subtenants (note
 2), claimed whole."""
+
+SOLIDARITY_REDUCTION_THRESHOLD = AmountKind.declare(
+    CATALOG, "solidarity_reduction_threshold", non_negative=True
+)
+"""Solidarity tax credit, reduction threshold ("seuil de réduction", 43195, Table C.9 of fiche
+110201, July 2026 to June 2027, note 4: rounded to the nearest $5): the printed figure, claimed
+whole."""

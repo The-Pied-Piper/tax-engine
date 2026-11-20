@@ -24,3 +24,8 @@ capabilities:
       amount: ca-qc/solidarity_housing_multiple_amount
     produces:
       output: ca-qc/solidarity_housing_multiple_amount
+  - name: core/credit_amount
+    params:
+      amount: ca-qc/solidarity_reduction_threshold
+    produces:
+      output: ca-qc/solidarity_reduction_threshold
