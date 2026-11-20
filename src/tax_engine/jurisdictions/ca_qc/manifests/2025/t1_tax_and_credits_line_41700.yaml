@@ -1,0 +1,19 @@
+# 5005-R (2025) line 143 and line 41700. The form prints: "Line 143 and line 41700: Line 138 minus
+# line 142 (if negative, enter "0") =" (page 7). Line 142 is one optional input, a blank for a
+# salary-only filer and read as 0. One step: core/subtract_not_below_zero, rounded half-up to the cent
+# through `ca-qc/cent_rounding`.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "41700"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/federal_tax_line_138
+      less: ca-qc/federal_credits_line_142
+    blank:
+      less: "0"
+    produces:
+      output: ca-qc/federal_tax_less_credits_line_143
