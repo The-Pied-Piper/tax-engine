@@ -64,6 +64,7 @@ def test_the_part_is_the_sum_then_the_cap_and_only_the_cap_prints_the_line() -> 
     total, cap = part["capabilities"]
     assert total == {
         "name": "core/sum",
+        "title": "Lines 81 and 82 added up",
         "unit": "ca/cad",
         "params": {"rounding": "ca-qc/cent_rounding"},
         "consumes": {

@@ -1,8 +1,8 @@
 """The Quebec package list and the registries built over it.
 
-Quebec is not yet listed in `tax_engine.registrations.JURISDICTIONS`, so the
-tests of this package build their own package list (core, federal, Quebec)
-here and take their kinds and capabilities from it. Each registry is built once per test process;
+Quebec is listed in `tax_engine.registrations.JURISDICTIONS`; the line tests of this package build
+their own package list (core, federal, Quebec) here and take their kinds and capabilities from it,
+and the end-to-end tests run the registered engine. Each registry is built once per test process;
 never register into one.
 """
 

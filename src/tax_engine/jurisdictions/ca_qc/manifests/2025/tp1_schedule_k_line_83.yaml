@@ -2,13 +2,14 @@
 # which is line 83: the sum of lines 81 and 82, rounded half-up to the cent (`ca-qc/cent_rounding`),
 # and the lesser of that sum and the printed maximum (`ca-qc/schedule_k_line_83_maximum`, 766.00),
 # as Schedule F line 82 does its cap in the line itself. Only the last step prints the line's
-# reference; the first is engine-internal. Above a line 48 of $14,669 the form enters $766 on line
-# 84, which is this line's capped figure. The form prints no label for the line, so the steps are
-# untitled.
+# reference; the first is engine-internal and has a plain-words title. Above a line 48 of $14,669 the form enters $766 on line
+# 84, which is this line's capped figure. The form prints no label for the line, so the last
+# step is untitled.
 form:
   name: ca-qc/tp1_schedule_k
 capabilities:
   - name: core/sum
+    title: "Lines 81 and 82 added up"
     unit: ca/cad
     params:
       rounding: ca-qc/cent_rounding
