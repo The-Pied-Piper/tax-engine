@@ -1,4 +1,4 @@
-"""Fixtures for the Quebec tests."""
+"""Fixtures of the Quebec tests."""
 
 from __future__ import annotations
 
@@ -25,20 +25,20 @@ QUEBEC_PARTS = Path(tax_engine.jurisdictions.ca_qc.__file__).parent / "manifests
 
 class TakeHomeService(Protocol):
     """Builds the engine over a temporary Quebec manifest made of a test header, a form
-    declaration and real part files of the Quebec manifest folder."""
+    declaration and real part files of the Quebec take-home folder."""
 
     def __call__(self, header: str, form: str, *parts: str) -> TaxComputationService: ...
 
 
 @pytest.fixture
 def take_home_service(tmp_path: Path) -> TakeHomeService:
-    """A builder of services over a temporary Quebec manifest.
+    """A builder of services over a temporary Quebec take-home manifest.
 
     The builder writes `header` and `form` to the temporary folder, copies each named part file
-    (for example "t1_taxable_income_line_21.yaml") from the Quebec manifest folder beside them,
+    (for example "solidarity_credit_amounts.yaml") from the package's manifest folder beside them,
     and points the Quebec namespace at that folder. The two texts sort ahead of the parts, because
-    the folder is composed in file-name order. Quebec is not yet in the registered engine, so every
-    other namespace is the one of the Quebec package list.
+    the folder is composed in file-name order. Quebec is not yet in the registered engine, so the
+    service is built over the Quebec package list of `support.py`.
     """
 
     def build(header: str, form: str, *parts: str) -> TaxComputationService:
