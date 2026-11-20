@@ -141,3 +141,6 @@ Part B ("enter $71,300", when none of the situations of Table 1 applied), claime
 SCHEDULE_U_LINE_14_3 = AmountKind.declare(CATALOG, "schedule_u_line_14_3", non_negative=True)
 """Schedule U line 14.3 "Subtract line 14.2 from line 14.1. If the result is negative, enter 0": the
 maximum pensionable earnings less the personal QPP exemption, not below 0."""
+
+SCHEDULE_U_LINE_14_4 = AmountKind.declare(CATALOG, "schedule_u_line_14_4")
+"""Schedule U line 14.4 "Amount from line 14 or line 14.3, whichever is less"."""
