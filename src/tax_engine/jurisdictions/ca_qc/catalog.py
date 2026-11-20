@@ -550,6 +550,12 @@ SCHEDULE_P_WORK_PREMIUM_BEFORE_REDUCTION_LINE_76 = AmountKind.declare(
 """Schedule P Part E, section 2, column 1, line 76, "Multiply line 72 by line 74 or line 75 (as
 applicable)": the work premium before the family-income reduction, rounded half-up to the cent."""
 
+SCHEDULE_P_WORK_PREMIUM_REDUCTION_THRESHOLD_LINE_80 = AmountKind.declare(
+    CATALOG, "schedule_p_work_premium_reduction_threshold_line_80", non_negative=True
+)
+"""Schedule P Part E, section 2, column 1 "Work premium", line 80: the printed 12,620, claimed
+whole."""
+
 SCHEDULE_P_NET_INCOME_LINE_52 = AmountKind.declare(
     CATALOG, "schedule_p_net_income_line_52", non_negative=True
 )

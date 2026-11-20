@@ -1,0 +1,15 @@
+# Schedule P (TP-1.D.P-V, 2025-12) Part E, section 2 "Individual without a spouse on December 31,
+# 2025", column 1 "Work premium", line 80: the printed figure 12,620 (printed with a minus sign). It is
+# a dataset figure, so step 1 claims it whole through core/credit_amount; line 82 subtracts it. The
+# form prints no label for the line, so the step is untitled. Line 78 ("Amount from line 54") is a
+# copy and has no step: line 82 reads line 54 directly.
+form:
+  name: ca-qc/schedule_p
+capabilities:
+  - name: core/credit_amount
+    reference: "80"
+    unit: ca/cad
+    params:
+      amount: ca-qc/work_premium_reduction_threshold
+    produces:
+      output: ca-qc/schedule_p_work_premium_reduction_threshold_line_80
