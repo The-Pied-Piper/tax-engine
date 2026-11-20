@@ -244,7 +244,8 @@ amount of Part B."""
 
 SCHEDULE_U_LINE_17_2 = AmountKind.declare(CATALOG, "schedule_u_line_17_2")
 """Schedule U line 17.2 "Multiply line 17.1 by 6.4%": line 17.1 (a copy of line 14.4) at the printed
-rate, rounded half-up to the cent. Line 14.4 can be negative, so the figure can be."""
+rate, rounded half-up to the cent. Line 14 is floored at 0, so line 14.4 and this figure are 0 or
+more."""
 
 SCHEDULE_U_LINE_17 = AmountKind.declare(CATALOG, "schedule_u_line_17", non_negative=True)
 """Schedule U line 17 "QPP contribution (line 98 of your return)": the TP-1 line 98 figure, read
