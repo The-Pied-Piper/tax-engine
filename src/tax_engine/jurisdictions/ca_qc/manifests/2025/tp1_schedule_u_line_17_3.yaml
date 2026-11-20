@@ -1,6 +1,6 @@
 # Schedule U (Revenu Quebec TP-1.D.U-V, 2025-12), Part B, line 17.3: "Subtract line 17.2 from line
 # 17. If the result is negative, enter 0." Line 17 is "QPP contribution (line 98 of your return)",
-# a copy of `ca-qc/tp1_qpp_contribution_line_98` with no step of its own. The step is
+# read by its own step (`ca-qc/schedule_u_line_17`). The step is
 # `core/subtract_not_below_zero`, rounded to the cent by `ca-qc/cent_rounding`. The form prints no
 # label for the line, so the step is untitled.
 form:
@@ -12,7 +12,7 @@ capabilities:
     params:
       rounding: ca-qc/cent_rounding
     consumes:
-      amount: ca-qc/tp1_qpp_contribution_line_98
+      amount: ca-qc/schedule_u_line_17
       less: ca-qc/schedule_u_line_17_2
     produces:
       output: ca-qc/schedule_u_line_17_3

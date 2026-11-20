@@ -1,0 +1,14 @@
+# Schedule U (Revenu Quebec TP-1.D.U-V, 2025-12), Part B, line 17: "QPP contribution (line 98 of your
+# return)", a copy of TP-1 line 98. TP-1 income is its own form, so line 98 arrives as that form's
+# export, a record list of one amount; the one step is `core/record_total` over it, as line 10 does.
+# The form prints no label for the line here, so the step is untitled.
+form:
+  name: ca-qc/tp1_schedule_u
+capabilities:
+  - name: core/record_total
+    reference: "17"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp1_income.tp1_qpp_contribution_line_98
+    produces:
+      output: ca-qc/schedule_u_line_17
