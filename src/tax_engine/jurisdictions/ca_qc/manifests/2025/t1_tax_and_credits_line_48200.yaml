@@ -1,8 +1,8 @@
 # 5005-R (2025) line 171 and line 48200. The form prints: "Line 171 and line 48200: Add lines 155, 156,
 # and 159 to 170. Total credits =" (page 8). Line 155 (the tax deducted less the tax transfer, both
 # left out of the take-home), lines 160 and 162 to 170 are optional inputs, a blank for a salary-only
-# filer and read as 0; lines 156, 159 and 161 are steps above. One step: core/sum, rounded half-up to
-# the cent through `ca-qc/cent_rounding`.
+# filer and read as 0; lines 156, 159 and 161 are steps above. Core/sum steps, each rounded half-up to
+# the cent through `ca-qc/cent_rounding`, as three steps (two subtotals and the printed line, below).
 # The sentence of a numbered line stays at 40 words or fewer (tests/jurisdictions/test_trace_english_
 # printed_names.py), so the parts are added in two unprinted subtotals, each titled in plain words
 # and with no reference, and the printed line adds the two.
