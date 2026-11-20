@@ -1,0 +1,14 @@
+# 5005-R (2025) line 32 input a salary-only caller does not give.
+# Line 32 and line 14700: "Line 32 and line 14700: Add lines 29 to 31 (see line 25000 in Step 4). ="
+# (page 3). Lines 29 to 31 (workers' compensation, social assistance, net federal supplements) are
+# blank for a salary-only filer, so the printed sum that collects them is one optional input read as
+# 0; the skipped lines have no step.
+form:
+  name: ca-qc/t1_taxable_income
+inputs:
+  - name: ca-qc/t1_line_32
+    reference: "14700"
+    unit: ca/cad
+    required: false
+    default: "0"
+    basis: "Line 32 and line 14700: Add lines 29 to 31"

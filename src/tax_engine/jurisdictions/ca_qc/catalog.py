@@ -27,3 +27,13 @@ floored: the form prints no floor and a loss is shown in brackets."""
 T1_LINE_28 = AmountKind.declare(CATALOG, "t1_line_28")
 """Line 21 plus line 27, 5005-R line 28 "Line 28: Line 21 plus line 27 =". Not floored: line 27 may
 be a loss. Produced by one core/sum (`t1_taxable_income_line_28.yaml`)."""
+
+T1_LINE_32 = AmountKind.declare(CATALOG, "t1_line_32")
+"""Add lines 29 to 31, 5005-R line 32 and line 14700 "Line 32 and line 14700: Add lines 29 to 31":
+the printed sum of the skipped block of workers' compensation, social assistance and net federal
+supplements, one optional input read as 0."""
+
+TOTAL_INCOME = AmountKind.declare(CATALOG, "total_income")
+"""Total income, 5005-R line 33 and line 15000 "Line 33 and line 15000: Line 28 plus line 32 =".
+Not floored, so a loss larger than the other income is shown in brackets as the form prints it.
+Produced by one core/sum (`t1_taxable_income_line_15000.yaml`); Step 3 starts from it."""
