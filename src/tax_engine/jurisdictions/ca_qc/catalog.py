@@ -1035,6 +1035,11 @@ MINIMUM_TAX_CARRYOVER_LINE_128 = AmountKind.declare(CATALOG, "minimum_tax_carryo
 does not give; the line that reads it takes a blank as 0
 (`t1_tax_and_credits_line_40427_inputs.yaml`)."""
 
+FEDERAL_CREDITS_AND_CARRYOVERS_LINE_129 = AmountKind.declare(CATALOG, "federal_credits_and_carryovers_line_129", non_negative=True)
+"""Credits and carryovers, 5005-R line 129 "Add lines 126 to 128. =": line 122 (line 126 copies it)
+plus the federal dividend tax credit (line 127) and the minimum tax carryover (line 128), each
+blank read as 0 from one core/sum (`t1_tax_and_credits_line_129.yaml`)."""
+
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
 Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line
