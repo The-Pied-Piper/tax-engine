@@ -1914,3 +1914,7 @@ TP1_ZERO_LINE_474_475 = AmountKind.declare(CATALOG, "tp1_zero_line_474_475", non
 """The "0" of the other side of the sign of line 470, for TP-1 lines 474 and 475: the `ca-
 qc/tp1_zero_line_474_475` dataset's amount. Not a line of the form. Produced by one
 core/credit_amount (`tp1_totals_zero_line_474_475.yaml`)."""
+
+TP1_LINE_475 = AmountKind.declare(CATALOG, "tp1_line_475", non_negative=True)
+"""TP-1 line 475 "Amount from line 470, if it is positive": the greater of line 470 and 0. Produced
+by one core/greater_of (`tp1_totals_line_475.yaml`)."""
