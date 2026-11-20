@@ -4,7 +4,7 @@
 # as 0, not blank. The name stays `ca/other_employment_income`: the shared Schedule 6 line 1 and the
 # Canada employment amount (line 31260) read that name.
 form:
-  name: ca-qc/t1_taxable_income
+  name: ca-qc/t1_employment_income
 inputs:
   - name: ca/other_employment_income
     title: "Other employment income"

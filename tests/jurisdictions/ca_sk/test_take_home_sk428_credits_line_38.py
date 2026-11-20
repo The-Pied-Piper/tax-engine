@@ -106,7 +106,7 @@ def _part_files() -> Iterator[Path]:
     yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
     yield from sorted(FEDERAL_FORMS.rglob("t2204*.yaml"))
     yield T1_LINE_10100_FORM
-    yield FEDERAL_FORMS / "t1_taxable_income" / "t1_taxable_income_line_10100.yaml"
+    yield FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml"
     yield SK_PARTS / "sk428_credits_line_9.yaml"
     yield SK_PARTS / "sk428_credits_line_20.yaml"
     yield SK_PARTS / "sk428_credits_line_22.yaml"

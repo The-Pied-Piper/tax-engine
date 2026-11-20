@@ -11,14 +11,14 @@ capabilities:
     title: "Employment income from line 10100"
     unit: ca/cad
     consumes:
-      records: ca/t1_taxable_income.employment_income_line_10100
+      records: ca/t1_employment_income.employment_income_line_10100
     produces:
       output: ca/canada_employment_amount_line_1
   - name: core/record_total
     title: "Other employment income from line 10400"
     unit: ca/cad
     consumes:
-      records: ca/t1_taxable_income.other_employment_income_line_10400
+      records: ca/t1_employment_income.other_employment_income_line_10400
     produces:
       output: ca/canada_employment_amount_line_2
   # "line 1 plus line 2", to the cent.

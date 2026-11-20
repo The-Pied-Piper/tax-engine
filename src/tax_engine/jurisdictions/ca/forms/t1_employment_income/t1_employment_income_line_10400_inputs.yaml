@@ -3,7 +3,7 @@
 # caller has no slips, tips or other employment income, so a request that leaves the line out is read
 # as 0, not blank.
 form:
-  name: ca/t1_taxable_income
+  name: ca/t1_employment_income
 inputs:
   - name: ca/other_employment_income
     title: "Other employment income"

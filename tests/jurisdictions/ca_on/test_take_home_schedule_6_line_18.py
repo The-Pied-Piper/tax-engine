@@ -33,9 +33,10 @@ D = Decimal
 T1_PARTS = (
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
     "t1_taxable_income_inputs.yaml",
-    "t1_taxable_income_line_10100.yaml",
-    "t1_taxable_income_line_10400.yaml",
-    "t1_taxable_income_line_10400_inputs.yaml",
+    "t1_employment_income.yaml",
+    "t1_employment_income_line_10100.yaml",
+    "t1_employment_income_line_10400.yaml",
+    "t1_employment_income_line_10400_inputs.yaml",
     "t1_taxable_income_line_15000.yaml",
     "t1_taxable_income_line_23300.yaml",
     "t1_taxable_income_line_23400.yaml",
@@ -46,7 +47,7 @@ T1_PARTS = (
     "t1_taxable_income.yaml",
 )
 LINE_1_PART = "schedule_6_line_1.yaml"
-LINE_10400_PART = "t1_taxable_income_line_10400_inputs.yaml"
+LINE_10400_PART = "t1_employment_income_line_10400_inputs.yaml"
 LINE_5_PART = "schedule_6_line_5.yaml"
 LINE_6_PART = "schedule_6_line_6.yaml"
 LINE_17_PART = "schedule_6_line_17.yaml"

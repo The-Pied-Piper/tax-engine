@@ -24,6 +24,8 @@ from tax_engine.jurisdictions.ca.catalog import (
     OTHER_EMPLOYMENT_INCOME,
     OTHER_EMPLOYMENT_INCOME_LINE_10400,
     TOTAL_INCOME,
+    TOTAL_INCOME_EMPLOYMENT_INCOME_LINE_10100,
+    TOTAL_INCOME_OTHER_EMPLOYMENT_INCOME_LINE_10400,
 )
 from tests.jurisdictions.ca.catalog_snapshot import (
     COUNTS,
@@ -74,6 +76,8 @@ def test_the_income_kinds_are_money() -> None:
         OTHER_EMPLOYMENT_INCOME,
         EMPLOYMENT_INCOME_LINE_10100,
         OTHER_EMPLOYMENT_INCOME_LINE_10400,
+        TOTAL_INCOME_EMPLOYMENT_INCOME_LINE_10100,
+        TOTAL_INCOME_OTHER_EMPLOYMENT_INCOME_LINE_10400,
         CREDITS_AGAINST_BASIC_FEDERAL_TAX,
     ):
         assert kind.value_type is Decimal, kind.identifier

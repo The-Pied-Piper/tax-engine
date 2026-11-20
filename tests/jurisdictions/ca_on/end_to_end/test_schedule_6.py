@@ -75,6 +75,7 @@ FORM = "{}\n"
 PARTS = (
     "salary.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
+    *(part.name for part in sorted(TAKE_HOME.rglob("t1_employment_income*.yaml"))),
     *(part.name for part in sorted(TAKE_HOME.rglob("t1_taxable_income*.yaml"))),
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_6*.yaml"))),
 )

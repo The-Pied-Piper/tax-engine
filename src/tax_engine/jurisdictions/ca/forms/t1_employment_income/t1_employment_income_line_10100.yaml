@@ -2,7 +2,7 @@
 # (5006-R page 3). The salary is the form's input (`ca/employment_income`); this step is the line the
 # T1 prints for it, so the advanced view lists line 10100 once, here. Line 15000 reads this step.
 form:
-  name: ca/t1_taxable_income
+  name: ca/t1_employment_income
 capabilities:
   - name: core/sum
     title: "Employment income"

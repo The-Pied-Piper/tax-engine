@@ -74,8 +74,9 @@ FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = ALBERTA_PARTS / "ab428_line_70.yaml"
 T1_PARTS = (
     "t1_taxable_income_inputs.yaml",
-    "t1_taxable_income_line_10100.yaml",
-    "t1_taxable_income_line_10400.yaml",
+    "t1_employment_income.yaml",
+    "t1_employment_income_line_10100.yaml",
+    "t1_employment_income_line_10400.yaml",
     "t1_taxable_income_line_15000.yaml",
     "t1_taxable_income_line_23300.yaml",
     "t1_taxable_income_line_23400.yaml",
@@ -84,7 +85,7 @@ T1_PARTS = (
     "t1_taxable_income_line_25700_inputs.yaml",
     "t1_taxable_income_line_26000.yaml",
     "t1_taxable_income.yaml",
-    "t1_taxable_income_line_10400_inputs.yaml",
+    "t1_employment_income_line_10400_inputs.yaml",
 )
 # The real Alberta parts after the federal ones, in composition order: lines 1 to 15 and 59 to 61
 # (the line 61 test's), then lines 16 to 58 and 62 to 65 (the line 65 test's), then lines 66 and

@@ -74,7 +74,11 @@ HEADER = HEADER_TEMPLATE + real_import("ca/schedule_8") + real_import("ca/schedu
 BARE_HEADER = HEADER_TEMPLATE + "  - ca/schedule_8\n  - ca/schedule_6\n"
 # The real Quebec T1 parts that give Schedule 6 line 7 its net income; the form declaration is the
 # first of them. Every other T1 input is blank for a salary-only filer.
-T1_PARTS = sorted(path.name for path in QUEBEC_PARTS.glob("t1_taxable_income*.yaml"))
+T1_PARTS = sorted(
+    path.name
+    for pattern in ("t1_employment_income*.yaml", "t1_taxable_income*.yaml")
+    for path in QUEBEC_PARTS.glob(pattern)
+)
 FORM_PART = "capabilities: []\n"
 
 AMOUNT_LINES: dict[str, AmountKind] = {

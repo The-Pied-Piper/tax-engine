@@ -3,7 +3,7 @@
 # Quebec T1 prints for it, and it is exported so the shared forms that read T1 line 10100 import it
 # from here. Line 21 reads this step.
 form:
-  name: ca-qc/t1_taxable_income
+  name: ca-qc/t1_employment_income
 capabilities:
   - name: core/sum
     title: "Employment income"

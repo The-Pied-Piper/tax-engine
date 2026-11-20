@@ -5,7 +5,7 @@ Form text (5000-S6 2025): "Line 1: Employment
 income and other employment income from line 10100 and line 10400 of the return", then "Column 1
 You". Line 1 is a calculation: the sum of T1 line 10100 (`ca/employment_income`) and T1 line 10400
 (`ca/other_employment_income`). Line 10400 is optional and reads as 0 when the caller gives none
-(the default is in `t1_taxable_income_line_10400_inputs.yaml`). Line 1 is therefore one core/sum
+(the default is in `t1_employment_income_line_10400_inputs.yaml`). Line 1 is therefore one core/sum
 over both parts, employment income first.
 
 The manifest parts are loaded from the package. The header and the form's export are made up here,
@@ -31,9 +31,10 @@ D = Decimal
 T1_PARTS = (
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
     "t1_taxable_income_inputs.yaml",
-    "t1_taxable_income_line_10100.yaml",
-    "t1_taxable_income_line_10400.yaml",
-    "t1_taxable_income_line_10400_inputs.yaml",
+    "t1_employment_income.yaml",
+    "t1_employment_income_line_10100.yaml",
+    "t1_employment_income_line_10400.yaml",
+    "t1_employment_income_line_10400_inputs.yaml",
     "t1_taxable_income_line_15000.yaml",
     "t1_taxable_income_line_23300.yaml",
     "t1_taxable_income_line_23400.yaml",
@@ -46,7 +47,7 @@ T1_PARTS = (
 PART = "schedule_6_line_1.yaml"
 # The T1 line 10400 inputs part, which declares `ca/other_employment_income` as optional with a
 # default of 0. Line 1 reads it, so the part is composed beside line 1.
-LINE_10400_PART = "t1_taxable_income_line_10400_inputs.yaml"
+LINE_10400_PART = "t1_employment_income_line_10400_inputs.yaml"
 
 HEADER = dedent("""\
     jurisdiction: CA-ON

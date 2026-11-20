@@ -239,6 +239,7 @@ def test_the_federal_forms_are_imported_in_the_order_the_manifest_lists_them() -
     names = [form.name for form in _manifest().forms]
 
     imported = [
+        "ca/t1_employment_income",
         "ca/t1_taxable_income",
         "ca/t1_tax_and_credits",
         "ca/schedule_6",
