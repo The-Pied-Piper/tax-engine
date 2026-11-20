@@ -1,0 +1,13 @@
+# 5005-R (2025) line 79 input a salary-only caller does not give.
+# Line 79 and line 30100: "Age amount (if you were born in 1960 or earlier) (use Federal Worksheet) (maximum $9,028)" (page 5). A salary-only filer has no such amount, so it is an
+# optional input left blank; the sum that adds it reads a blank as 0.
+form:
+  name: ca-qc/t1_tax_and_credits
+inputs:
+  - name: ca-qc/age_amount_line_79
+    title: "Age amount"
+    reference: "30100"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Age amount (if you were born in 1960 or earlier) (use Federal Worksheet) (maximum $9,028)"
