@@ -1,0 +1,15 @@
+# 5005-R line 2 (2025) input a salary-only caller does not give.
+# Line 2 and line 10400: "Line 2 and line 10400: Other employment income" (5005-R page 3). A salary-only
+# caller has no slips, tips or other employment income, so a request that leaves the line out is read
+# as 0, not blank. The name stays `ca/other_employment_income`: the shared Schedule 6 line 1 and the
+# Canada employment amount (line 31260) read that name.
+form:
+  name: ca-qc/t1_taxable_income
+inputs:
+  - name: ca/other_employment_income
+    title: "Other employment income"
+    reference: "10400"
+    unit: ca/cad
+    required: false
+    default: "0"
+    basis: 'Line 2 and line 10400: Other employment income'
