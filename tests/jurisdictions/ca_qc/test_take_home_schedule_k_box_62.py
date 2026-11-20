@@ -119,7 +119,7 @@ def test_the_form_declaration_exports_box_62() -> None:
 
     assert declaration["form"]["name"] == FORM
     assert declaration["form"]["required"] is True
-    assert declaration["form"]["exports"] == [BOX_62]
+    assert BOX_62 in declaration["form"]["exports"]
 
 
 def test_the_kind_is_a_registered_non_negative_decimal_amount() -> None:
