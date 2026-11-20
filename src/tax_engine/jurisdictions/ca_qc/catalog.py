@@ -135,3 +135,10 @@ TOTAL_INCOME = AmountKind.declare(CATALOG, "total_income")
 """Total income, 5005-R line 33 and line 15000 "Line 33 and line 15000: Line 28 plus line 32 =".
 Not floored, so a loss larger than the other income is shown in brackets as the form prints it.
 Produced by one core/sum (`t1_taxable_income_line_15000.yaml`); Step 3 starts from it."""
+
+T1_LINE_48 = AmountKind.declare(CATALOG, "t1_line_48", non_negative=True)
+"""Deduction for CPP or QPP enhanced contributions on employment income, 5005-R line 48 and line
+22215 "Deduction for CPP or QPP enhanced contributions on employment income (complete Schedule 8 or
+Form RC381, whichever applies) (maximum $1,074.00)": the figure Schedule 8 line 28 exports
+(`ca/schedule_8.schedule_8_cpp_enhanced_contributions_on_return`, a record list of one amount),
+totalled by one core/record_total (`t1_taxable_income_line_22215.yaml`)."""
