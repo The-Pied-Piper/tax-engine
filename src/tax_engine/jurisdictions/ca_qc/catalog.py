@@ -253,6 +253,10 @@ SCHEDULE_U_ADDITIONAL_MAXIMUM_PENSIONABLE_EARNINGS_LINE_18_8 = AmountKind.declar
 """Schedule U line 18.8 "Additional maximum pensionable earnings": the printed $81,200 of the instructions
 for Part B ("enter $81,200", when none of the situations of Table 1 applied), claimed whole."""
 
+SCHEDULE_U_LINE_19 = AmountKind.declare(CATALOG, "schedule_u_line_19", non_negative=True)
+"""Schedule U line 19 "Subtract line 18.9 from line 18.8. If the result is negative, enter 0": the
+additional maximum pensionable earnings less the maximum pensionable earnings, not below 0."""
+
 T1_LINE_21 = AmountKind.declare(CATALOG, "t1_line_21")
 """Add lines 1 to 20, 5005-R line 21 "Line 21: Add lines 1 to 20.": the employment income of line 1
 (`ca/employment_income`) and line 2 (`ca/other_employment_income`); lines 3 to 20 are not built (the
