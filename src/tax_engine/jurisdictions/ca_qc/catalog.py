@@ -353,3 +353,9 @@ TP1_SCHEDULE_F_LOWER_BOUND_LINE_77 = AmountKind.declare(
 """Schedule F line 77, the printed lower bound of the column that line 76 falls in (each column
 prints 18,130.00 under "If $63,060 or less" and 63,060.00 under "If more than $63,060"); blank
 when line 76 is $18,130 or less, because Part B is then not completed."""
+
+TP1_SCHEDULE_F_INCOME_OVER_LOWER_BOUND_LINE_78 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_income_over_lower_bound_line_78", non_negative=True
+)
+"""Schedule F line 78, "Subtract line 77 from line 76. If the result is negative, enter 0": the
+part of line 76 over the column's lower bound; blank when line 77 is blank."""
