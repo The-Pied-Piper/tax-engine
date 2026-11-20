@@ -41,6 +41,9 @@ import pytest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog.deductions import (
+    CPP_PART_3_LINE_2,
+)
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca.catalog.rc381_cpp_qpp import (
     T4_CPP_PENSIONABLE_EARNINGS_OUTSIDE_QUEBEC,
@@ -89,3 +92,13 @@ def test_line_1_matches_the_printed_form(tmp_path: Path, salary: str, expected: 
     sheet = schedule_8(tmp_path, salary)
 
     assert sheet.get(T4_CPP_PENSIONABLE_EARNINGS_OUTSIDE_QUEBEC).value == D(expected)
+
+
+@pytest.mark.parametrize(
+    ("salary", "expected"), [("20000", "20000.00"), ("70000", "70000.00"), ("200000", "81200.00")]
+)
+def test_line_2_matches_the_printed_form(tmp_path: Path, salary: str, expected: str) -> None:
+    # Line 2: the lesser of line D (81,200.00) and line 1.
+    sheet = schedule_8(tmp_path, salary)
+
+    assert sheet.get(CPP_PART_3_LINE_2).value == D(expected)
