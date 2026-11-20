@@ -659,3 +659,7 @@ SCHEDULE_B_LINE_12 = AmountKind.declare(CATALOG, "schedule_b_line_12", non_negat
 """Schedule B Part A line 12, "Amount from line 275 of your spouse's return (spouse on December 31,
 2025)": an optional input, a spouse line a salary-only caller does not give; line 14 reads it as 0
 when it is left out."""
+
+SCHEDULE_B_LINE_14 = AmountKind.declare(CATALOG, "schedule_b_line_14", non_negative=True)
+"""Schedule B Part A line 14, "Add lines 10 and 12. Family income", rounded half-up to the cent.
+Produced by one core/sum (`schedule_b_line_14.yaml`)."""
