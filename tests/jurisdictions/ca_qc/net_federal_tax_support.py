@@ -29,6 +29,8 @@ PART_C_PARTS: tuple[str, ...] = (
     "t1_tax_and_credits_line_42900.yaml",
     "t1_tax_and_credits_line_131_inputs.yaml",
     "t1_tax_and_credits_line_132.yaml",
+    "t1_tax_and_credits_line_40500_inputs.yaml",
+    "t1_tax_and_credits_line_134.yaml",
 )
 LINE_122 = "ca-qc/non_refundable_tax_credits_line_122"
 # The identifier each step part produces.
@@ -37,6 +39,7 @@ STEP_EXPORTS: dict[str, str] = {
     "t1_tax_and_credits_line_129.yaml": "ca-qc/federal_credits_and_carryovers_line_129",
     "t1_tax_and_credits_line_42900.yaml": "ca-qc/basic_federal_tax_line_130",
     "t1_tax_and_credits_line_132.yaml": "ca-qc/federal_tax_with_surtax_line_132",
+    "t1_tax_and_credits_line_134.yaml": "ca-qc/federal_tax_less_foreign_tax_credit_line_134",
 }
 
 
