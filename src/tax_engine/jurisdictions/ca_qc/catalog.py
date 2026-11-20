@@ -494,3 +494,9 @@ SCHEDULE_P_WORK_PREMIUM_EXEMPT_AMOUNT_LINE_70 = AmountKind.declare(
     CATALOG, "schedule_p_work_premium_exempt_amount_line_70", non_negative=True
 )
 """Schedule P Part E, section 2, column 1, line 70: the printed 2,400, claimed whole."""
+
+SCHEDULE_P_WORK_PREMIUM_INCOME_OVER_EXEMPT_LINE_72 = AmountKind.declare(
+    CATALOG, "schedule_p_work_premium_income_over_exempt_line_72", non_negative=True
+)
+"""Schedule P Part E, section 2, column 1, line 72, "Subtract line 70 from line 68. If the result
+is negative, enter 0", rounded half-up to the cent."""
