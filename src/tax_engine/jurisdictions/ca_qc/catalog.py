@@ -1659,3 +1659,24 @@ TP1_LINE_413 = AmountKind.declare(CATALOG, "tp1_line_413")
 non-refundable tax credits, rounded half-up to the cent. The form prints no floor, so the figure is
 signed (line 432 floors it). Produced by one core/subtract (`tp1_tax_line_413.yaml`) and exported by
 the form for lines 425 and 430."""
+
+TP1_LINE_425 = AmountKind.declare(CATALOG, "tp1_line_425", non_negative=True)
+"""TP-1 line 425 "Add lines 414 through 424": the printed sum of lines 414 to 424, one optional
+input a salary-only caller does not give; line 430 reads a blank as 0
+(`tp1_tax_line_425_input.yaml`)."""
+
+TP1_LINE_430 = AmountKind.declare(CATALOG, "tp1_line_430")
+"""TP-1 line 430 "Subtract line 425 from line 413": signed, as the form prints no floor here (line
+432 floors it). Rounded half-up to the cent. Produced by one core/subtract
+(`tp1_tax_line_430.yaml`)."""
+
+TP1_CREDITS_TRANSFERRED_BETWEEN_SPOUSES_LINE_431 = AmountKind.declare(
+    CATALOG, "tp1_credits_transferred_between_spouses_line_431", non_negative=True
+)
+"""TP-1 line 431 "Credits transferred from one spouse to the other": an optional input a single
+salary-only caller does not give; line 432 reads a blank as 0 (`tp1_tax_line_431_input.yaml`)."""
+
+TP1_LINE_432 = AmountKind.declare(CATALOG, "tp1_line_432", non_negative=True)
+"""TP-1 line 432 "Subtract line 431 from line 430": the income tax after credits, floored at 0 as
+the form prints, rounded half-up to the cent. Produced by one core/subtract_not_below_zero
+(`tp1_tax_line_432.yaml`) and exported by the form for line 450."""
