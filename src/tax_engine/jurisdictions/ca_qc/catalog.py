@@ -2191,3 +2191,47 @@ SOLIDARITY_CREDIT = AmountKind.declare(CATALOG, "solidarity_credit", non_negativ
 """Quebec return summary: the solidarity tax credit for July 2026 to June 2027, read from the
 solidarity form's export and shown as its own yearly amount next to the result, not added to the
 2025 refund or balance owing or the total payable. One core/record_total (`return.yaml`)."""
+
+CREDITS_LINES_87_TO_93_SUBTOTAL = AmountKind.declare(CATALOG, "credits_lines_87_to_93_subtotal")
+"""Unprinted subtotal of the first parts of 5005-R line 100, so that the sentence of the line stays
+short: lines 87 to 93 added up."""
+
+CREDITS_LINES_94_TO_99_SUBTOTAL = AmountKind.declare(CATALOG, "credits_lines_94_to_99_subtotal")
+"""Unprinted subtotal of the last parts of 5005-R line 100, so that the sentence of the line stays
+short: lines 94 to 99 added up."""
+
+TOTAL_CREDITS_LINES_155_TO_161_SUBTOTAL = AmountKind.declare(
+    CATALOG, "total_credits_lines_155_to_161_subtotal"
+)
+"""Unprinted subtotal of the first parts of 5005-R line 171, so that the sentence of the line stays
+short: lines 155 to 161 added up."""
+
+TOTAL_CREDITS_LINES_162_TO_170_SUBTOTAL = AmountKind.declare(
+    CATALOG, "total_credits_lines_162_to_170_subtotal"
+)
+"""Unprinted subtotal of the last parts of 5005-R line 171, so that the sentence of the line stays
+short: lines 162 to 170 added up."""
+
+TP1_CREDITS_LINES_377_1_TO_392_SUBTOTAL = AmountKind.declare(
+    CATALOG, "tp1_credits_lines_377_1_to_392_subtotal"
+)
+"""Unprinted subtotal of the first parts of TP-1 line 399, so that the sentence of the line stays
+short: lines 377.1 to 392 added up."""
+
+TP1_CREDITS_LINES_395_TO_398_1_SUBTOTAL = AmountKind.declare(
+    CATALOG, "tp1_credits_lines_395_to_398_1_subtotal"
+)
+"""Unprinted subtotal of the last parts of TP-1 line 399, so that the sentence of the line stays short:
+lines 395 to 398.1 added up."""
+
+TP1_TOTALS_LINES_451_2_TO_456_SUBTOTAL = AmountKind.declare(
+    CATALOG, "tp1_totals_lines_451_2_to_456_subtotal"
+)
+"""Unprinted subtotal of the first parts of TP-1 line 465, so that the sentence of the line stays
+short: lines 451.2 to 456 added up."""
+
+TP1_TOTALS_LINES_457_TO_463_SUBTOTAL = AmountKind.declare(
+    CATALOG, "tp1_totals_lines_457_to_463_subtotal"
+)
+"""Unprinted subtotal of the last parts of TP-1 line 465, so that the sentence of the line stays short:
+lines 457 to 463 added up."""
