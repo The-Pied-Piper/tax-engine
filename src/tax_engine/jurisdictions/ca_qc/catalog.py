@@ -65,3 +65,15 @@ TP1_QPIP_PREMIUM_LINE_97 = AmountKind.declare(
 )
 """QPIP premium, TP-1 line 97 "QPIP premium. RL-1 slip, box H": the figure given, else 0.494% up to
 $98,000, at most $484.12."""
+
+TP1_OTHER_INCOME_LINES_105_TO_164 = AmountKind.declare(
+    CATALOG, "tp1_other_income_lines_105_to_164", non_negative=True
+)
+"""The income of TP-1 lines 105 through 164, summed: the figure the caller gives for "Add lines 101
+and 105 through 164"; blank when the caller has none, and line 199 reads it as 0."""
+
+TP1_TOTAL_INCOME_LINE_199 = AmountKind.declare(
+    CATALOG, "tp1_total_income_line_199", non_negative=True
+)
+"""Total income, TP-1 line 199 "Add lines 101 and 105 through 164. Total income": line 101, the
+salary, plus the optional income of lines 105 through 164, rounded half-up to the cent."""
