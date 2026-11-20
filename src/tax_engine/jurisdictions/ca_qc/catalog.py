@@ -206,3 +206,81 @@ SCHEDULE_K_MONTHS_TOTAL_BOX_62 = AmountKind.declare(
     CATALOG, "schedule_k_months_total_box_62", non_negative=True
 )
 """Months checked, Add boxes 60 and 61, Schedule K box 62: boxes 60 and 61 added, in months."""
+
+PPIP_PREMIUMS_GIVEN = AmountKind.declare(CATALOG, "ppip_premiums_given", non_negative=True)
+"""PPIP premiums paid as given, 5005-R line 91 "Line 91 and line 31205: Provincial parental
+insurance plan (PPIP) premiums paid (box 55 of all T4 slips) (maximum $484.12)": the figure the
+caller gives, from the T4 slips; blank when the caller does not give it, and line 91 is then
+computed."""
+
+PPIP_PREMIUMS_PAID = AmountKind.declare(CATALOG, "ppip_premiums_paid", non_negative=True)
+"""PPIP premiums paid, 5005-R line 91 "Line 91 and line 31205: Provincial parental insurance plan
+(PPIP) premiums paid (box 55 of all T4 slips) (maximum $484.12)": the given figure
+(`ca-qc/ppip_premiums_given`) or, when none is given, 0.494% of the employment income to the
+$98,000 maximum insurable income (maximum $484.12). TP-1 line 97 (RL-1 box H) is the same figure."""
+
+SOLIDARITY_FAMILY_INCOME = AmountKind.declare(
+    CATALOG, "solidarity_family_income", non_negative=True
+)
+"""Solidarity tax credit, family income (TP-1 line 275, fiche 110201): the income the reduction is
+figured on, consumed here by name."""
+
+SOLIDARITY_INCOME_OVER_THRESHOLD = AmountKind.declare(
+    CATALOG, "solidarity_income_over_threshold", non_negative=True
+)
+"""Solidarity tax credit, family income over the reduction threshold (fiche 110201, Table C.9):
+family income less the printed threshold, not below 0."""
+
+SOLIDARITY_REDUCTION_AT_RATE = AmountKind.declare(
+    CATALOG, "solidarity_reduction_at_rate", non_negative=True
+)
+"""Solidarity tax credit, reduction at 6% (fiche 110201, Table C.9): 6% of the family income over
+the reduction threshold, rounded half-up to the cent."""
+
+SOLIDARITY_REDUCTION_AT_ONE_COMPONENT_RATE = AmountKind.declare(
+    CATALOG, "solidarity_reduction_at_one_component_rate", non_negative=True
+)
+"""Solidarity tax credit, reduction at 3% (fiche 110201, Table C.9): 3% of the family income over
+the reduction threshold, rounded half-up to the cent, for a person who receives only one of the
+three components."""
+
+SOLIDARITY_HOUSING_RECEIVED = CountKind.declare(
+    CATALOG, "solidarity_housing_received", non_negative=True
+)
+"""Solidarity tax credit, housing component received (fiche 110201): 1 when the housing component
+is received, 0 when it is not; consumed here by name."""
+
+SOLIDARITY_REDUCTION = AmountKind.declare(CATALOG, "solidarity_reduction", non_negative=True)
+"""Solidarity tax credit, reduction chosen (fiche 110201, Table C.9): the 3% reduction when the
+housing component is not received (one component only), else the 6% reduction."""
+
+SOLIDARITY_MAXIMUM_BEFORE_REDUCTION = AmountKind.declare(
+    CATALOG, "solidarity_maximum_before_reduction", non_negative=True
+)
+"""Solidarity tax credit, maximum before reduction (fiche 110201, Table C.9): the components
+received added together; consumed here by name."""
+
+SOLIDARITY_MAXIMUM_LESS_REDUCTION = AmountKind.declare(
+    CATALOG, "solidarity_maximum_less_reduction", non_negative=True
+)
+"""Solidarity tax credit, maximum less the reduction (fiche 110201, Table C.9): the maximum before
+reduction less the chosen reduction, not below 0."""
+
+SOLIDARITY_QST_COMPONENT_AMOUNT = AmountKind.declare(
+    CATALOG, "solidarity_qst_component_amount", non_negative=True
+)
+"""Solidarity tax credit, QST component amount (fiche 110201, Table C.9): the base amount plus the
+living-alone amount when it applies; consumed here by name."""
+
+SOLIDARITY_QST_COMPONENT_LESS_REDUCTION = AmountKind.declare(
+    CATALOG, "solidarity_qst_component_less_reduction", non_negative=True
+)
+"""Solidarity tax credit, QST component less the 3% reduction (fiche 110201, Table C.9): the floor
+of the credit, the QST component amount less the 3% reduction on the same excess, not below 0."""
+
+SOLIDARITY_CREDIT_AFTER_REDUCTION = AmountKind.declare(
+    CATALOG, "solidarity_credit_after_reduction", non_negative=True
+)
+"""Solidarity tax credit after the reduction (fiche 110201, Table C.9): the greater of the maximum
+less the reduction and the QST component less the 3% reduction, so the credit never falls below
+the QST-only credit."""

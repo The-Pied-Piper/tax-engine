@@ -1,0 +1,70 @@
+# Quebec solidarity tax credit, the reduction rule (fiche 110201, Table C.9, and the Revenu Quebec
+# page "Calculation of the Credit"): the maximum is reduced by 6% of each dollar of family income
+# above the reduction threshold, or by 3% when only one of the three components is received, and the
+# credit cannot be less than the QST component alone reduced the same way (owner ruling).
+# The figures are a listed check: the fiche is a web page. Family income, the maximum before
+# reduction, the QST component amount and the housing yes/no count are consumed by name; the
+# solidarity wiring produces them. Steps mirror Schedule 6 lines 18 to 28 (excess, rate, subtract not
+# below zero) and the NL428 line 20 greater/lesser-of construction.
+form:
+  name: ca-qc/solidarity_credit
+capabilities:
+  - name: core/subtract_not_below_zero
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/solidarity_family_income
+      less: ca-qc/solidarity_reduction_threshold
+    produces:
+      output: ca-qc/solidarity_income_over_threshold
+  - name: core/apply_rate
+    unit: ca/cad
+    params:
+      rate: ca-qc/solidarity_reduction_rate
+    consumes:
+      base: ca-qc/solidarity_income_over_threshold
+    produces:
+      output: ca-qc/solidarity_reduction_at_rate
+  - name: core/apply_rate
+    unit: ca/cad
+    params:
+      rate: ca-qc/solidarity_reduction_rate_one_component
+    consumes:
+      base: ca-qc/solidarity_income_over_threshold
+    produces:
+      output: ca-qc/solidarity_reduction_at_one_component_rate
+  - name: core/choose_by_count
+    unit: ca/cad
+    consumes:
+      count: ca-qc/solidarity_housing_received
+      when_none: ca-qc/solidarity_reduction_at_one_component_rate
+      when_any: ca-qc/solidarity_reduction_at_rate
+    produces:
+      output: ca-qc/solidarity_reduction
+  - name: core/subtract_not_below_zero
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/solidarity_maximum_before_reduction
+      less: ca-qc/solidarity_reduction
+    produces:
+      output: ca-qc/solidarity_maximum_less_reduction
+  - name: core/subtract_not_below_zero
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/solidarity_qst_component_amount
+      less: ca-qc/solidarity_reduction_at_one_component_rate
+    produces:
+      output: ca-qc/solidarity_qst_component_less_reduction
+  - name: core/greater_of
+    unit: ca/cad
+    consumes:
+      amounts:
+        - ca-qc/solidarity_maximum_less_reduction
+        - ca-qc/solidarity_qst_component_less_reduction
+    produces:
+      output: ca-qc/solidarity_credit_after_reduction
