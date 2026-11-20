@@ -1,0 +1,29 @@
+# 5005-R (2025) line 96 and line 31260, Canada employment amount: "Enter whichever is less: $1,471 or line
+# 1 plus line 2." (page 6). Line 1 is line 10100 (employment income, the salary) and line 2 is line
+# 10400 (other employment income, an optional input read as 0). As the federal line 31260 is built,
+# the form's two operations are two steps; the printed $1,471 is the shared dataset
+# `ca/canada_employment_amount`.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  # "line 1 plus line 2", to the cent.
+  - name: core/sum
+    title: "Employment income plus other employment income, before the limit"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts: [ca/employment_income, ca/other_employment_income]
+    produces:
+      output: ca-qc/canada_employment_amount_income
+  # "whichever is less: $1,471 or" that sum.
+  - name: core/capped_amount
+    title: "Canada employment amount"
+    reference: "31260"
+    unit: ca/cad
+    params:
+      cap: ca/canada_employment_amount
+    consumes:
+      base: ca-qc/canada_employment_amount_income
+    produces:
+      output: ca-qc/canada_employment_amount
