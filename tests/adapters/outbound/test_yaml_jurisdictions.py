@@ -2531,6 +2531,80 @@ def test_a_form_and_a_selection_may_carry_a_title(tmp_path: Path) -> None:
     assert found.capabilities[0].title == "Net rental income"
 
 
+def test_a_form_may_carry_a_reference_that_is_not_its_title(tmp_path: Path) -> None:
+    referenced = FORM_RENTAL.replace(
+        "  required: true\n", "  required: true\n  title: Rental schedule\n  reference: Rental\n"
+    )
+    write_parts(tmp_path, {"00-header.yaml": HEADER_PART, "01-rental.yaml": referenced})
+
+    (found,) = others(only_manifest(tmp_path))
+
+    assert found.title == "Rental schedule"
+    assert found.reference == "Rental"
+
+
+def test_a_form_without_a_reference_has_none(tmp_path: Path) -> None:
+    write_parts(tmp_path, {"00-header.yaml": HEADER_PART, "01-rental.yaml": FORM_RENTAL})
+
+    (found,) = others(only_manifest(tmp_path))
+
+    assert found.reference is None
+
+
+@pytest.mark.parametrize(
+    ("part", "message"),
+    [
+        pytest.param(
+            FORM_RENTAL.replace("  required: true\n", "  required: true\n  reference: ''\n"),
+            "must not be empty",
+            id="empty-form-reference",
+        ),
+        pytest.param(
+            FORM_RENTAL.replace("  required: true\n", "  required: true\n  reference: '  '\n"),
+            "must not be blank",
+            id="blank-form-reference",
+        ),
+        pytest.param(
+            FORM_RENTAL_NAME_ONLY.replace(
+                "  name: ex/rental\n", "  name: ex/rental\n  reference: X\n"
+            ),
+            "reference belongs to the part that declares exports",
+            id="form-reference-in-a-part-without-exports",
+        ),
+        pytest.param(
+            "reference: Top\n" + FORM_RENTAL,
+            "the manifest `reference` belongs to the default form",
+            id="manifest-reference-in-a-part-with-a-form",
+        ),
+        pytest.param(
+            "reference: '  '\ncapabilities: []\n",
+            "must not be blank",
+            id="blank-manifest-reference",
+        ),
+    ],
+)
+def test_a_bad_form_reference_is_rejected(tmp_path: Path, part: str, message: str) -> None:
+    parts = {"00-header.yaml": HEADER_PART, "01-bad.yaml": part}
+    if "exports" not in part:
+        parts["02-rental.yaml"] = FORM_RENTAL
+    write_parts(tmp_path, parts)
+
+    with pytest.raises(InvalidManifestError, match=message):
+        source(tmp_path).get_jurisdiction(EX_ON)
+
+
+def test_the_manifest_may_carry_a_reference_for_the_default_form(tmp_path: Path) -> None:
+    write_parts(
+        tmp_path,
+        {
+            "00-header.yaml": "title: Return summary\nreference: Summary\ncapabilities: []\n"
+            + HEADER_PART
+        },
+    )
+
+    assert returned(only_manifest(tmp_path)).reference == "Summary"
+
+
 def test_a_selection_may_carry_a_reference(tmp_path: Path) -> None:
     referenced = FORM_RENTAL.replace(
         "  - {name: ex/a, produces: {output: ex/net_income}}",

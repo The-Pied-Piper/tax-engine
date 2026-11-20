@@ -296,6 +296,7 @@ def test_form_fields_in_order() -> None:
         "basis",
         "fields",
         "title",
+        "reference",
         "supplies",
     ]
 
