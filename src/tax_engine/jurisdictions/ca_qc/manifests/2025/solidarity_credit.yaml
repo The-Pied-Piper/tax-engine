@@ -2,10 +2,11 @@
 # 2027: the amounts, the reduction threshold and the two reduction rates of Table C.9 of the Quebec
 # Ministry of Finance fiche 110201, held as datasets. This part names the form and its exports; line
 # parts carry capabilities. Exports: the printed amounts (`core/credit_amount` produces each as an
-# artifact so the reduction rule can read it).
+# artifact so the reduction rule can read it). The title is the heading printed on fiche 110201,
+# "Crédit d'impôt remboursable pour la solidarité".
 form:
   name: ca-qc/solidarity_credit
-  title: "Solidarity tax credit"
+  title: "Crédit d'impôt remboursable pour la solidarité"
   required: true
   exports:
     - ca-qc/solidarity_qst_base_amount

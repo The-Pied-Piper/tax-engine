@@ -41,7 +41,7 @@ def test_the_form_is_named_titled_and_required() -> None:
 
     assert list(form) == ["name", "title", "required", "exports"]
     assert form["name"] == "ca-qc/solidarity_credit"
-    assert form["title"] == "Solidarity tax credit"
+    assert form["title"] == "Crédit d'impôt remboursable pour la solidarité"
     assert form["required"] is True
 
 
