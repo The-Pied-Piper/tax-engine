@@ -44,6 +44,7 @@ def test_the_part_is_as_printed() -> None:
     assert part["capabilities"] == [
         {
             "name": "core/credit_amount",
+            "title": "No amount entered",
             "unit": "ca/cad",
             "params": {"amount": LINE},
             "produces": {"output": LINE},
