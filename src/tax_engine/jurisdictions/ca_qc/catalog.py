@@ -131,3 +131,9 @@ SCHEDULE_U_PERSONAL_QPP_EXEMPTION_LINE_13 = AmountKind.declare(
 SCHEDULE_U_LINE_14 = AmountKind.declare(CATALOG, "schedule_u_line_14")
 """Schedule U line 14 "Subtract line 13 from line 12": the pensionable salary (TP-1 line 98.1) less
 the personal QPP exemption. The line prints no floor, so the figure can be negative."""
+
+SCHEDULE_U_MAXIMUM_PENSIONABLE_EARNINGS_LINE_14_1 = AmountKind.declare(
+    CATALOG, "schedule_u_maximum_pensionable_earnings_line_14_1", non_negative=True
+)
+"""Schedule U line 14.1 "Maximum pensionable earnings": the printed $71,300 of the instructions for
+Part B ("enter $71,300", when none of the situations of Table 1 applied), claimed whole."""
