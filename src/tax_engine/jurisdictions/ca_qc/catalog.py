@@ -115,3 +115,9 @@ salary, plus the optional income of lines 105 through 164, rounded half-up to th
 SCHEDULE_U_LINE_11 = AmountKind.declare(CATALOG, "schedule_u_line_11", non_negative=True)
 """Schedule U line 11 "Multiply line 10 by 0.156250": line 10 (the TP-1 line 98 QPP contribution) at
 the printed rate, rounded half-up to the cent."""
+
+SCHEDULE_U_PENSIONABLE_SALARY_LINE_12 = AmountKind.declare(
+    CATALOG, "schedule_u_pensionable_salary_line_12", non_negative=True
+)
+"""Schedule U line 12 "Pensionable salary or wages (QPP) (line 98.1 of your return) (maximum
+$71,300)": the TP-1 line 98.1 figure, at most the printed $71,300."""
