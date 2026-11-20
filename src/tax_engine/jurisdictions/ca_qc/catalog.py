@@ -1204,6 +1204,55 @@ FEDERAL_TAX_ON_TAXABLE_INCOME_LINE_77 = AmountKind.declare(
 plus line 76, rounded half-up to the cent, which the form enters on line 123. Produced by one
 core/sum (`t1_tax_and_credits_line_77.yaml`)."""
 
+WORK_CHART_401_TAXABLE_INCOME_LINE_1 = AmountKind.declare(
+    CATALOG, "work_chart_401_taxable_income_line_1", non_negative=True
+)
+"""Work Chart 401 line 1 "Taxable income (line 299 of your return)": TP-1 line 299, read from the
+net income form's export. Produced by one core/record_total (`work_chart_401_line_1.yaml`); line 2
+is a copy of it and has no step."""
+
+WORK_CHART_401_LOWER_BOUND_LINE_3 = AmountKind.declare(
+    CATALOG, "work_chart_401_lower_bound_line_3", non_negative=True
+)
+"""Work Chart 401 line 3 (0.00, 53,255.00, 106,495.00 or 129,590.00): the printed lower bound of the
+column that line 1 falls in. Produced by one core/bracket_column_lower_bound
+(`work_chart_401_line_3.yaml`)."""
+
+WORK_CHART_401_INCOME_OVER_LOWER_BOUND_LINE_4 = AmountKind.declare(
+    CATALOG, "work_chart_401_income_over_lower_bound_line_4", non_negative=True
+)
+"""Work Chart 401 line 4 "Subtract line 3 from line 2": line 1 (line 2 is a copy of it) less the
+column's lower bound (line 3), rounded half-up to the cent. Produced by one
+core/subtract_not_below_zero (`work_chart_401_line_4.yaml`)."""
+
+WORK_CHART_401_COLUMN_RATE_LINE_5 = AmountKind.declare(
+    CATALOG, "work_chart_401_column_rate_line_5", non_negative=True
+)
+"""Work Chart 401 line 5 "x 5" (14%, 19%, 24% or 25.75%): the printed rate of the column that line
+1 falls in, a fraction (0.2575 for 25.75%). Produced by one core/bracket_column_rate
+(`work_chart_401_line_5.yaml`)."""
+
+WORK_CHART_401_TAX_ON_EXCESS_LINE_6 = AmountKind.declare(
+    CATALOG, "work_chart_401_tax_on_excess_line_6", non_negative=True
+)
+"""Work Chart 401 line 6 "Multiply line 4 by line 5": the tax on the part of the taxable income over
+the column's lower bound, rounded half-up to the cent. Produced by one core/multiply_by_rate
+(`work_chart_401_line_6.yaml`)."""
+
+WORK_CHART_401_TAX_AT_START_LINE_7 = AmountKind.declare(
+    CATALOG, "work_chart_401_tax_at_start_line_7", non_negative=True
+)
+"""Work Chart 401 line 7 "+ 7" (0.00, 7,455.70, 17,571.30 or 23,114.10): the printed amount of the
+column that line 1 falls in, taken as printed. Produced by one core/bracket_column_tax_at_start
+(`work_chart_401_line_7.yaml`)."""
+
+WORK_CHART_401_INCOME_TAX_LINE_8 = AmountKind.declare(
+    CATALOG, "work_chart_401_income_tax_line_8", non_negative=True
+)
+"""Work Chart 401 line 8 "Add lines 6 and 7. Income tax on taxable income": line 6 plus line 7,
+rounded half-up to the cent, which the chart carries to line 401 of the return. Produced by one
+core/sum (`work_chart_401_line_8.yaml`); the chart exports it."""
+
 SCHEDULE_K_NET_INCOME_LINE_36 = AmountKind.declare(
     CATALOG, "schedule_k_net_income_line_36", non_negative=True
 )

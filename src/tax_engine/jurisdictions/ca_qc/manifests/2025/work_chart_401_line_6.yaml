@@ -1,0 +1,15 @@
+# Work Chart 401 (TP-1.D.GR-V 2025-12), line 6: "Multiply line 4 by line 5." The tax on the part of the
+# taxable income over the column's lower bound, rounded half-up to the cent (`ca-qc/cent_rounding`).
+form:
+  name: ca-qc/work_chart_401
+capabilities:
+  - name: core/multiply_by_rate
+    reference: "6"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      base: ca-qc/work_chart_401_income_over_lower_bound_line_4
+      rate: ca-qc/work_chart_401_column_rate_line_5
+    produces:
+      output: ca-qc/work_chart_401_tax_on_excess_line_6
