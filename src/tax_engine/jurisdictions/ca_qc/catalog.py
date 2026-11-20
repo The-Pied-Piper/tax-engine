@@ -2223,7 +2223,7 @@ short: lines 377.1 to 392 added up."""
 TP1_CREDITS_LINES_395_TO_398_1_SUBTOTAL = AmountKind.declare(
     CATALOG, "tp1_credits_lines_395_to_398_1_subtotal"
 )
-"""Unprinted subtotal of the last parts of TP-1 line 399, so that the sentence of the line stays short:
+"""Unprinted subtotal of the last parts of TP-1 line 399, so that its sentence stays short:
 lines 395 to 398.1 added up."""
 
 TP1_TOTALS_LINES_451_2_TO_456_SUBTOTAL = AmountKind.declare(
@@ -2235,5 +2235,5 @@ short: lines 451.2 to 456 added up."""
 TP1_TOTALS_LINES_457_TO_463_SUBTOTAL = AmountKind.declare(
     CATALOG, "tp1_totals_lines_457_to_463_subtotal"
 )
-"""Unprinted subtotal of the last parts of TP-1 line 465, so that the sentence of the line stays short:
+"""Unprinted subtotal of the last parts of TP-1 line 465, so that its sentence stays short:
 lines 457 to 463 added up."""
