@@ -243,6 +243,10 @@ SCHEDULE_U_LINE_17_5 = AmountKind.declare(CATALOG, "schedule_u_line_17_5", non_n
 """Schedule U line 17.5 "Add lines 17.3 and 17.4": the excess over the base contribution plus the
 additional QPP contribution (TP-1 line 98.2), rounded half-up to the cent."""
 
+SCHEDULE_U_LINE_18_7 = AmountKind.declare(CATALOG, "schedule_u_line_18_7", non_negative=True)
+"""Schedule U line 18.7 "Subtract line 18.6 from line 18.5. If the result is negative, enter 0": the
+pensionable salary (TP-1 line 98.1) less the maximum pensionable earnings, not below 0."""
+
 T1_LINE_21 = AmountKind.declare(CATALOG, "t1_line_21")
 """Add lines 1 to 20, 5005-R line 21 "Line 21: Add lines 1 to 20.": the employment income of line 1
 (`ca/employment_income`) and line 2 (`ca/other_employment_income`); lines 3 to 20 are not built (the
