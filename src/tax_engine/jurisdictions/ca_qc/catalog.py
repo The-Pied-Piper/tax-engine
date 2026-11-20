@@ -626,6 +626,13 @@ SCHEDULE_P_SUPPLEMENT_LINE_60 = AmountKind.declare(
 amount for each month times the months, rounded half-up to the cent. Carried to line 88 on
 page 2."""
 
+SCHEDULE_P_TAX_CREDITS_LINE_90 = AmountKind.declare(
+    CATALOG, "schedule_p_tax_credits_line_90", non_negative=True
+)
+"""Schedule P Part F line 90, "Add lines 88 and 89" (the supplement of line 60 and the work premium
+of line 87), "Tax credits respecting the work premium", rounded half-up to the cent. Carried to
+line 456 of the TP-1."""
+
 T1_LINE_48 = AmountKind.declare(CATALOG, "t1_line_48", non_negative=True)
 """Deduction for CPP or QPP enhanced contributions on employment income, 5005-R line 48 and line
 22215 "Deduction for CPP or QPP enhanced contributions on employment income (complete Schedule 8 or
