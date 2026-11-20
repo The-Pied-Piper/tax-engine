@@ -1,4 +1,4 @@
-"""The 2026 `ca-qc/schedule_k_line_84_maximum` dataset, provisional.
+"""The 2026 `ca-qc/schedule_u_line_10_maximum` dataset, provisional.
 
 Pins the file as shipped: its figures, rounding, sources and tax year, and the two header
 comment lines (the provisional line and the derivation line) that every 2026 file opens with.
@@ -13,27 +13,32 @@ import yaml
 
 import tax_engine.jurisdictions.ca_qc as ca_qc_package
 
-FAMILY = "ca-qc/schedule_k_line_84_maximum"
+FAMILY = "ca-qc/schedule_u_line_10_maximum"
 PATH = (
-    Path(ca_qc_package.__file__).parent / "parameters" / "schedule_k_line_84_maximum" / "2026.yaml"
+    Path(ca_qc_package.__file__).parent / "parameters" / "schedule_u_line_10_maximum" / "2026.yaml"
 )
 PROVISIONAL_HEADER = (
-    "# Provisional: taken from the 2025 form text named in sources; to be "
-    "confirmed against the 2026 form text when Revenu Quebec publishes it."
+    "# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026"
+    " form text when Revenu Quebec publishes it."
 )
 DERIVATION_HEADER = (
-    "# Derivation: carried forward unchanged from the 2025 file; the 2026 form is"
-    " not yet published."
+    "# Derivation: figure as printed in T4127 (Jan 2026): QPP: rate 6.30% from 3,500 "
+    "to 74,600, maximum 4,479.30; no rounding applied here."
 )
 EXPECTED: dict[str, Any] = {
-    "family": "ca-qc/schedule_k_line_84_maximum",
+    "family": "ca-qc/schedule_u_line_10_maximum",
     "tax_year": 2026,
     "kind": "amount",
-    "title": "maximum premium",
+    "title": "maximum",
     "unit": "ca/cad",
-    "sources": ["Revenu Quebec TP-1.D.K-V (2025-12), Schedule K, Part C"],
+    "sources": [
+        "Revenu Quebec TP-1.D-V (2025-12), Schedule U (TP-1.D.U-V), Part B",
+        "Revenu Quebec, Maximum Pensionable Earnings and Quebec Pension Plan "
+        "Contribution Rate (web page, 2026 row; CRA T4127 (Jan 2026) Tables 8.3 "
+        "to 8.6, QPP rows)",
+    ],
     "rounding": {"increment": "0.01", "mode": "half_up"},
-    "amount": "766",
+    "amount": "4479.30",
 }
 
 
