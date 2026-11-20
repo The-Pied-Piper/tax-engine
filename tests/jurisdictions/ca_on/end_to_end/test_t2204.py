@@ -280,24 +280,31 @@ def test_a_negative_salary_is_refused(take_home_service: TakeHomeService) -> Non
 
 
 @pytest.mark.parametrize(
-    ("salary", "line_1", "line_1_plus_2"),
-    [("70000", "70000.00", "70000.00"), ("20000", "20000.00", "20000.00")],
+    ("salary", "line_1_plus_2"),
+    [("70000", "70000.00"), ("20000", "20000.00")],
 )
 def test_the_cent_figures_print_cents_at_70000_and_20000(
-    take_home_service: TakeHomeService, salary: str, line_1: str, line_1_plus_2: str
+    take_home_service: TakeHomeService, salary: str, line_1_plus_2: str
 ) -> None:
-    # Line 1 (times count), line 3's sum (core/sum) and the EI overpayment (times count, a count of
-    # 0 at salary only) each take the cent rule of their rounding dataset.
+    # Line 3's sum (core/sum) and the EI overpayment (times count, a count of 0 at salary only) each
+    # take the cent rule of their rounding dataset. Line 1 does not: the form prints no rounding
+    # for it, so it is the salary carried exactly (see the next test).
     sheet = salary_only(take_home_service, salary)
 
     for artifact, printed in (
-        (T2204_LINE_1, line_1),
         (T2204_LINE_1_PLUS_2, line_1_plus_2),
         (EI_OVERPAYMENT, "0.00"),
     ):
         value = sheet.get(artifact).value
         assert str(value) == printed
         assert value.as_tuple().exponent == -2
+
+
+@pytest.mark.parametrize("salary", ["70000", "20000"])
+def test_line_1_is_the_salary_carried_exactly_at_70000_and_20000(
+    take_home_service: TakeHomeService, salary: str
+) -> None:
+    assert salary_only(take_home_service, salary).get(T2204_LINE_1).value == D(salary)
 
 
 def test_70k_trace_labels_line_16_by_its_figure(take_home_service: TakeHomeService) -> None:

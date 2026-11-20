@@ -20,12 +20,12 @@ capabilities:
       records: ca/t1_taxable_income.other_employment_income_line_10400
     produces:
       output: ca/canada_employment_amount_line_2
-  # "line 1 plus line 2", to the cent.
+  # "line 1 plus line 2". The form prints no rounding, so the sum is carried exactly.
   - name: core/sum
     title: "Employment income plus other employment income, before the limit"
     unit: ca/cad
     params:
-      rounding: ca/cent_rounding
+      rounding: ca/exact_rounding
     consumes:
       parts: [ca/canada_employment_amount_line_1, ca/canada_employment_amount_line_2]
     produces:

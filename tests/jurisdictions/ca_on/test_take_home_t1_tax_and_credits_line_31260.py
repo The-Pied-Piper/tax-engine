@@ -10,9 +10,9 @@ cook who received $35,000 in employment income in
 line 31260 of your return."
 
 The line is two steps. The first is a `core/sum` of `ca/employment_income` and
-`ca/other_employment_income` into `ca/canada_employment_amount_income`, rounded to the cent. The
-second is a `core/capped_amount` over the 2025 dataset `ca/canada_employment_amount` ($1,471,
-half-up to the cent), which produces `ca/canada_employment_amount`. The line 10400 input is optional
+`ca/other_employment_income` into `ca/canada_employment_amount_income`, carried exactly (the form
+prints no rounding). The second is a `core/capped_amount` over the 2025 dataset
+`ca/canada_employment_amount` ($1,471, half-up to the cent), which produces `ca/canada_employment_amount`. The line 10400 input is optional
 and reads as 0 when the caller gives none, so a salary-only request is the salary.
 
 The test's form declaration is test-local: it exports `ca/canada_employment_amount` as its one
@@ -147,6 +147,18 @@ def test_other_employment_income_adds_to_the_salary_before_the_cap(
 
     assert sheet.get(bundled_kinds().kind(INCOME_SUM)).value == D(income)
     assert sheet.get(bundled_kinds().kind(CAP)).value == D(expected)
+
+
+def test_a_sub_cent_sum_is_carried_unrounded(take_home_service: TakeHomeService) -> None:
+    # The form prints no rounding rule for "line 1 plus line 2": 1000.004 plus 300.003 stays
+    # 1300.007 rather than rounding to 1300.01.
+    sheet = _sheet(
+        take_home_service,
+        _salary("1000.004"),
+        Artifact(OTHER_EMPLOYMENT_INCOME, D("300.003")),
+    )
+
+    assert sheet.get(bundled_kinds().kind(INCOME_SUM)).value == D("1300.007")
 
 
 @pytest.mark.parametrize("kind_identifier", [INCOME_SUM, CAP])
