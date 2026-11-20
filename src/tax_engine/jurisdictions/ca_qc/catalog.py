@@ -852,6 +852,18 @@ through line 105 plus the student loan interest, the federal tuition amount, the
 transferred and the amounts transferred from a spouse (lines 106 to 109), each blank read as 0,
 from one core/sum (`t1_tax_and_credits_line_110.yaml`); line 117 reads it."""
 
+NET_INCOME_LINE_112 = AmountKind.declare(CATALOG, "net_income_line_112", non_negative=True)
+"""Amount from line 23600, 5005-R line 112 "Line 112: Amount from line 23600 multiplied by 3% =":
+a copy of net income, read from the net income export by one core/record_total
+(`t1_tax_and_credits_line_112.yaml`); the 3% is applied to it by the next step."""
+
+MEDICAL_NET_INCOME_SHARE_LINE_112 = AmountKind.declare(
+    CATALOG, "medical_net_income_share_line_112", non_negative=True
+)
+"""Share of net income for medical expenses, 5005-R line 112 "Line 112: Amount from line 23600
+multiplied by 3% =": net income times the printed 3% (the dataset `ca/medical_net_income_rate`),
+from one core/apply_rate (`t1_tax_and_credits_line_112.yaml`); line 113 caps it."""
+
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
 Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line
