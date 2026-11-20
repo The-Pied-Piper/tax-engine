@@ -692,3 +692,11 @@ SCHEDULE_K_TOTAL_LINE_46 = AmountKind.declare(
 """Total, Schedule K line 46 "Add line 41 and, as applicable, line 42 or line 44": line 41 and the
 dependent child input, added by one core/sum (`tp1_schedule_k_line_46.yaml`), the input read as 0
 when left blank."""
+
+SCHEDULE_K_PREMIUM_INCOME_LINE_48 = AmountKind.declare(
+    CATALOG, "schedule_k_premium_income_line_48", non_negative=True
+)
+"""Income used to calculate the premium, Schedule K line 48 "Subtract line 46 from line 40. If the
+result is negative, enter 0. In this case, you do not have to pay a premium": one
+core/subtract_not_below_zero (`tp1_schedule_k_line_48.yaml`). The form exports it; Part C reads
+it."""
