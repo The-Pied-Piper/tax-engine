@@ -113,7 +113,7 @@ TP1_TOTAL_INCOME_LINE_199 = AmountKind.declare(
 salary, plus the optional income of lines 105 through 164, rounded half-up to the cent."""
 
 TP1_FOREST_PRODUCER_AVERAGING_LINE_276 = AmountKind.declare(
-    CATALOG, "tp1_forest_producer_averaging_line_276", non_negative=True
+    CATALOG, "tp1_forest_producer_averaging_line_276"
 )
 """The amount for income averaging for forest producers, included on TP-1 line 276, which Schedule F
 line 10 adds to total income; blank when the caller has none, and line 10 reads it as 0."""
@@ -123,9 +123,7 @@ TP1_SCHEDULE_F_TOTAL_INCOME_LINE_199 = AmountKind.declare(
 )
 """Total income of TP-1 line 199, as Schedule F line 10 reads it from the TP-1 income form."""
 
-TP1_SCHEDULE_F_INCOME_LINE_10 = AmountKind.declare(
-    CATALOG, "tp1_schedule_f_income_line_10", non_negative=True
-)
+TP1_SCHEDULE_F_INCOME_LINE_10 = AmountKind.declare(CATALOG, "tp1_schedule_f_income_line_10")
 """Schedule F line 10, "Total income (line 199 of your return) plus the amount for income averaging
 for forest producers (included on line 276 of your return)": line 199 plus line 276, rounded
 half-up to the cent."""
@@ -153,7 +151,7 @@ TP1_SCHEDULE_F_INCOME_LINE_18 = AmountKind.declare(CATALOG, "tp1_schedule_f_inco
 negative."""
 
 TP1_SCHEDULE_F_LINES_20_TO_33_TOTAL_LINE_34 = AmountKind.declare(
-    CATALOG, "tp1_schedule_f_lines_20_to_33_total_line_34", non_negative=True
+    CATALOG, "tp1_schedule_f_lines_20_to_33_total_line_34"
 )
 """Schedule F line 34, "Add lines 20, 22 and 25 through 33": the printed sum of the skipped lines,
 one optional input; blank when the caller has none, and line 36 reads it as 0."""
@@ -162,9 +160,7 @@ TP1_SCHEDULE_F_INCOME_LINE_36 = AmountKind.declare(CATALOG, "tp1_schedule_f_inco
 """Schedule F line 36, "Income": line 18 less line 34; no floor is printed, so it can be
 negative."""
 
-TP1_SCHEDULE_F_DEDUCTIONS_LINE_68 = AmountKind.declare(
-    CATALOG, "tp1_schedule_f_deductions_line_68", non_negative=True
-)
+TP1_SCHEDULE_F_DEDUCTIONS_LINE_68 = AmountKind.declare(CATALOG, "tp1_schedule_f_deductions_line_68")
 """Schedule F line 68, "Deductions": the printed sum of lines 41 through 62, which are skipped, as
 one optional input; blank when the caller has none, and line 70 reads it as 0."""
 
