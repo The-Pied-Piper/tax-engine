@@ -1,0 +1,17 @@
+# 5005-R (2025) line 87 and line 30800: "Base CPP or QPP contributions (complete Schedule 8 or Form RC381,
+# whichever applies): ... through employment income (maximum $3,661.20)" (page 6). A pure copy of
+# Schedule 8 line 25, so it is a core/record_total over the record list the shared Schedule 8
+# exports (the engine reads another form's export only as a record list), as the federal line
+# 30800 is (`ca/forms/t1_tax_and_credits/t1_tax_and_credits_line_96.yaml`). The Quebec dataset swap
+# on the import gives the maximum of 3,661.20.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/record_total
+    title: "Base CPP or QPP contributions through employment income"
+    reference: "30800"
+    unit: ca/cad
+    consumes:
+      records: ca/schedule_8.schedule_8_cpp_base_contributions_on_return
+    produces:
+      output: ca-qc/qpp_base_contributions_line_87
