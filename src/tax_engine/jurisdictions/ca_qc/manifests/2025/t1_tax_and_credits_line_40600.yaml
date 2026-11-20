@@ -1,0 +1,20 @@
+# 5005-R (2025) line 138. The form prints: "Line 138 and line 40600: Line 136 minus line 137 (if
+# negative, enter "0") Federal tax =" (page 7). Line 137 is an optional input, a blank for a
+# salary-only filer and read as 0. One step: core/subtract_not_below_zero, rounded half-up to the
+# cent through `ca-qc/cent_rounding`.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/subtract_not_below_zero
+    title: "Federal tax"
+    reference: "40600"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/federal_tax_with_itc_recapture_line_136
+      less: ca-qc/federal_logging_tax_credit_line_137
+    blank:
+      less: "0"
+    produces:
+      output: ca-qc/federal_tax_line_138
