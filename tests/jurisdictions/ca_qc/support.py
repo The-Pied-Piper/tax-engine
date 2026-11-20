@@ -6,6 +6,7 @@ here and take their kinds and capabilities from it. Each registry is built once 
 never register into one.
 """
 
+from decimal import Decimal
 from functools import cache
 from pathlib import Path
 
@@ -17,10 +18,14 @@ from tax_engine.adapters.outbound.parameter_parser import ParameterParserRegistr
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
-from tax_engine.domain.artifact import ArtifactRegistry
+from tax_engine.domain.artifact import Artifact, ArtifactRegistry
 from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.unit import UnitRegistry
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.refund import T2204_PREMIUMS_DEDUCTED_GIVEN
 
 
 @cache
@@ -84,3 +89,14 @@ def quebec_service(tmp_path: Path, manifest: str) -> TaxComputationService:
         YamlParameterSource(quebec_packages().roots(), quebec_parameter_parsers(), quebec_units()),
         quebec_capabilities(),
     )
+
+
+def t2204_worksheet(
+    service: TaxComputationService, salary: str, given: str | None = None
+) -> Worksheet:
+    """The Quebec T2204 worksheet for a salary; line 4 is left blank unless `given` is passed."""
+    starting = [Artifact(EMPLOYMENT_INCOME, Decimal(salary))]
+    if given is not None:
+        starting.append(Artifact(T2204_PREMIUMS_DEDUCTED_GIVEN, Decimal(given)))
+    (sheet,) = service.compute(JurisdictionCode("CA-QC"), 2025, *starting)["ca/t2204"]
+    return sheet

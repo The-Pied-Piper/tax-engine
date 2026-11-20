@@ -1,12 +1,13 @@
 """The 2025 Quebec EI premium tier (`ca-qc/ei_premium`), checked against the printed forms.
 
+CRA T2204 E (25), line 11: "Residents of Quebec: Amount from line 1 x 1.31% = (maximum $860.67)",
+and line 12: "Enter the amount from line 10 or line 11, whichever applies".
 CRA 5005-R, T1-2025 (page 6): "Line 89 and line 31200: through employment (maximum $860.67)".
 CRA 5005-S10, T1-2025, Schedule 10, Part C: "Line 18: ... (maximum $65,700)", "Line 19: EI rate on
 self-employment and other earnings 1.31%" and "Line 20: Line 18 multiplied by the percentage on
 line 19 (maximum $860.67)". So the tier is 1.31% of the earnings from 0 to the $65,700 maximum
 insurable earnings, with no exemption, and 1.31% of 65,700 is exactly the printed $860.67. Premiums
-are in dollars and cents, so the tier rounds half-up to the cent. The T2204 wording for Quebec is a
-listed check on the ticket (the form text is not in the repository).
+are in dollars and cents, so the tier rounds half-up to the cent.
 """
 
 from __future__ import annotations
@@ -56,6 +57,7 @@ def test_2025_maximum_is_the_maximum_insurable_earnings_at_the_rate() -> None:
 @pytest.mark.parametrize(
     "source",
     [
+        "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2204/t2204-25e.pdf",
         "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5005-r/5005-r-25e.txt",
         "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5005-s10/5005-s10-25e.txt",
     ],
