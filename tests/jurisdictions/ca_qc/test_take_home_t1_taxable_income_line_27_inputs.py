@@ -1,11 +1,12 @@
-"""5005-R (2025) line 27, net self-employment income: a Quebec manifest input a salary-only caller
-does not give.
+"""5005-R (2025) line 27, net self-employment income: a Quebec manifest input a salary-only
+caller does not give.
 
 Form text (CRA 5005-R page 3, https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5005-r/5005-r-25e.txt):
-"Line 27: Add lines 22 to 26. Net self-employment income =". Lines 22 to 26 are blank for a salary-
-only filer, so the printed sum is one optional input, read as 0 when left out, with no step.
+"Line 27: Add lines 22 to 26. Net self-employment income =". Lines 22 to 26 are blank for a
+salary-only filer, so the printed sum is one optional input, read as 0 when left out, with no step.
 
-The real part is loaded under a test-local header, as the Quebec header is another part's."""
+The real part is loaded under a test-local header, as the Quebec header is another part's.
+"""
 
 from __future__ import annotations
 

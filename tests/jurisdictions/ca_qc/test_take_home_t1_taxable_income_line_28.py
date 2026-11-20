@@ -2,12 +2,12 @@
 
 Form text (CRA 5005-R page 3, https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5005-r/5005-r-25e.txt):
 "Line 27: Add lines 22 to 26. Net self-employment income =" and "Line 28: Line 21 plus line 27 =".
-Lines 22 to 26 are blank for a salary-only filer, so line 27 is one optional input read as 0 and
-has no step; line 28 is one core/sum of line 21 and then line 27, rounded through `ca-
-qc/cent_rounding`.
+Lines 22 to 26 are blank for a salary-only filer, so line 27 is one optional input read as 0 and has
+no step; line 28 is one core/sum of line 21 and then line 27, rounded through `ca-qc/cent_rounding`.
 
 The part is the real one. The header, the form's export and the line 21 and line 27 figures (plain
-starting inputs here) are made up; the total income test runs the chain."""
+starting inputs here) are made up; the total income test runs the chain.
+"""
 
 from __future__ import annotations
 
