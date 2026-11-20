@@ -1524,3 +1524,9 @@ SCHEDULE_K_PREMIUM_REMAINING_LINE_89 = AmountKind.declare(
 """Schedule K line 89, "Subtract line 88 from line 87": the maximum premium of 755.00 less the
 premium of the months checked, rounded half-up to the cent. One core/subtract
 (`tp1_schedule_k_line_89.yaml`)."""
+
+SCHEDULE_K_PREMIUM_LINE_90 = AmountKind.declare(
+    CATALOG, "schedule_k_premium_line_90", non_negative=True
+)
+"""Schedule K line 90, "Enter the amount from line 86 or line 89, whichever is less": the lesser
+of the two lines. One core/lesser_of (`tp1_schedule_k_line_90.yaml`)."""

@@ -87,9 +87,8 @@ def header(parts: tuple[str, ...]) -> str:
         for value in (step.get("consumes") or {}).values():
             consumed.update(value if isinstance(value, list) else [value])
     inputs = "".join(f"  - name: {kind.identifier}\n    required: true\n" for kind in INPUTS)
-    outputs = "".join(
-        f"  - {kind.identifier}\n" for kind in INPUTS if kind.identifier not in consumed
-    )
+    left = [kind for kind in INPUTS if kind.identifier not in consumed] or [INPUTS[0]]
+    outputs = "".join(f"  - {kind.identifier}\n" for kind in left)
     return (
         dedent("""\
         jurisdiction: CA-QC
