@@ -149,3 +149,9 @@ SCHEDULE_P_RESEARCH_GRANTS_LINE_13 = AmountKind.declare(
 )
 """Schedule P line 13, "Net amount of research grants (see line 154, point 3(j), in the guide)", as
 the caller gives it; blank when the caller has none, and line 18 reads it as 0."""
+
+SCHEDULE_P_SCHEDULE_L_INCOME_LINE_14 = AmountKind.declare(
+    CATALOG, "schedule_p_schedule_l_income_line_14", non_negative=True
+)
+"""Schedule P line 14, "Total of lines 22 through 26.1 of Schedule L. Do not include losses.", as
+the caller gives it; blank when the caller has none, and line 18 reads it as 0."""
