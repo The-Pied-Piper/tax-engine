@@ -160,3 +160,23 @@ def test_tp1_line_450(salary: str, scenario: str, expected: str) -> None:
     sheet = _sheets(salary, scenario)["ca-qc/tp1_totals"]
 
     assert sheet.get(TP1_INCOME_TAX_AND_CONTRIBUTIONS_LINE_450).value == D(expected)
+
+
+LINE_456_FIGURES = {
+    ("20000", DEFAULT): "584.02",
+    ("70000", DEFAULT): "0.00",
+    ("200000", DEFAULT): "0.00",
+    ("20000", GROUP_PLAN): "584.02",
+    ("70000", GROUP_PLAN): "0.00",
+    ("200000", GROUP_PLAN): "0.00",
+    ("20000", ALONE_AND_TENANT): "584.02",
+    ("70000", ALONE_AND_TENANT): "0.00",
+    ("200000", ALONE_AND_TENANT): "0.00",
+}
+
+
+@pytest.mark.parametrize(("salary", "scenario", "expected"), _cases(LINE_456_FIGURES))
+def test_tp1_line_456(salary: str, scenario: str, expected: str) -> None:
+    sheet = _sheets(salary, scenario)["ca-qc/tp1_totals"]
+
+    assert sheet.get(TP1_WORK_PREMIUM_TAX_CREDITS_LINE_456).value == D(expected)
