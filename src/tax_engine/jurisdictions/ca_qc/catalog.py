@@ -137,3 +137,7 @@ SCHEDULE_U_MAXIMUM_PENSIONABLE_EARNINGS_LINE_14_1 = AmountKind.declare(
 )
 """Schedule U line 14.1 "Maximum pensionable earnings": the printed $71,300 of the instructions for
 Part B ("enter $71,300", when none of the situations of Table 1 applied), claimed whole."""
+
+SCHEDULE_U_LINE_14_3 = AmountKind.declare(CATALOG, "schedule_u_line_14_3", non_negative=True)
+"""Schedule U line 14.3 "Subtract line 14.2 from line 14.1. If the result is negative, enter 0": the
+maximum pensionable earnings less the personal QPP exemption, not below 0."""

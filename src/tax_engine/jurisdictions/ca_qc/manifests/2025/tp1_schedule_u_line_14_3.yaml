@@ -1,0 +1,18 @@
+# Schedule U (Revenu Quebec TP-1.D.U-V, 2025-12), Part B, line 14.3: "Subtract line 14.2 from line
+# 14.1. If the result is negative, enter 0." Line 14.2 is "Amount from line 13", a copy of `ca-
+# qc/schedule_u_personal_qpp_exemption_line_13` with no step of its own. The step is
+# `core/subtract_not_below_zero`, rounded to the cent by `ca-qc/cent_rounding`. The form prints no
+# label for the line, so the step is untitled.
+form:
+  name: ca-qc/tp1_schedule_u
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "14.3"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/schedule_u_maximum_pensionable_earnings_line_14_1
+      less: ca-qc/schedule_u_personal_qpp_exemption_line_13
+    produces:
+      output: ca-qc/schedule_u_line_14_3
