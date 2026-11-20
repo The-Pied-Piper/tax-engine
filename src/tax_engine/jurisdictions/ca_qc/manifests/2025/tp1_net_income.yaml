@@ -1,0 +1,12 @@
+# Revenu Quebec TP-1.D-V (2025-12), page 3, "Net income": lines 199 to 275. This part names the
+# form; each printed line's capability is a part of its own with the same `form.name`. Line 199 is
+# read from the TP-1 income form, line 201 from Work Chart 201 and line 248 from Schedule U, each as
+# the other form's export (a record list of one amount). Lines 205 to 207, 214 to 231, 234 to 247 and
+# 249 to 252 are one optional input (lines 205 to 252) and line 260 is an optional input, each read
+# as 0 when left out. Export: line 275, the net income that the schedules read.
+form:
+  name: ca-qc/tp1_net_income
+  required: true
+  exports:
+    - ca-qc/tp1_net_income_line_275
+capabilities: []

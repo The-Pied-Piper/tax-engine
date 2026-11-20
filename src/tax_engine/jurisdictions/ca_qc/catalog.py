@@ -581,3 +581,9 @@ the amount you would have entered if the instructions on line 23600 said "if neg
 brackets")". Net income before adjustments (line 55) less the social benefits repayment (line 56),
 signed. Produced by one core/subtract (`t1_taxable_income_line_23600_signed.yaml`) and supplied to
 the neutral name `ca/t1_taxable_income.net_income_signed` by the form declaration."""
+
+TP1_DEDUCTION_FOR_WORKERS_LINE_201 = AmountKind.declare(
+    CATALOG, "tp1_deduction_for_workers_line_201"
+)
+"""TP-1 line 201 "Deduction for workers": the result of Work Chart 201 line 9, carried to the line
+("Carry the result to line 201 of your return"). Signed, as the chart's line 9 is."""

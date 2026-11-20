@@ -1,0 +1,16 @@
+# TP-1 (2025) line 201, "Deduction for workers": the result of Work Chart 201 line 9 ("Carry the
+# result to line 201 of your return"), a copy. The chart is its own form, so its line 9 arrives as
+# that form's export, a record list of one amount; the one step is core/record_total over it, as
+# 5005-R line 48 reads Schedule 8. The figure is signed, as the chart's line 1 is: a negative line 9
+# is carried as printed.
+form:
+  name: ca-qc/tp1_net_income
+capabilities:
+  - name: core/record_total
+    title: "Deduction for workers"
+    reference: "201"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/work_chart_201.work_chart_201_deduction_for_workers_line_9
+    produces:
+      output: ca-qc/tp1_deduction_for_workers_line_201
