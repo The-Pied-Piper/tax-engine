@@ -1217,6 +1217,11 @@ REFUNDABLE_QUEBEC_ABATEMENT_LINE_156 = AmountKind.declare(
 (`t1_tax_and_credits_line_44000.yaml`); the total credits of line 171 add it, and the Quebec return
 summary reads it."""
 
+EI_OVERPAYMENT_LINE_157 = AmountKind.declare(CATALOG, "ei_overpayment_line_157", non_negative=True)
+"""Employment insurance (EI) overpayment, 5005-R line 157 and line 45000: the T2204 line 15 amount
+(0 when line 15 is not more than $1), read from the T2204 export by one core/record_total
+(`t1_tax_and_credits_line_45000.yaml`); line 159 reads it."""
+
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
 Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line
