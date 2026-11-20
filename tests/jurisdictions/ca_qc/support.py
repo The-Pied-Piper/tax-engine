@@ -141,9 +141,24 @@ TP1_PARTS = (
     "tp1_income_line_199_input.yaml",
     "tp1_income_line_199.yaml",
 )
+WORK_CHART_201_PARTS = (
+    "work_chart_201.yaml",
+    "work_chart_201_line_1_input_105.yaml",
+    "work_chart_201_line_1_input_107.yaml",
+    "work_chart_201_line_1_input_box_211.yaml",
+    "work_chart_201_line_1.yaml",
+    "work_chart_201_line_2_input.yaml",
+    "work_chart_201_line_3_input.yaml",
+    "work_chart_201_line_4_input.yaml",
+    "work_chart_201_line_5_input.yaml",
+    "work_chart_201_line_6.yaml",
+    "work_chart_201_line_7_input.yaml",
+    "work_chart_201_line_8.yaml",
+    "work_chart_201_line_9.yaml",
+)
 SCHEDULE_P_FIRST_PARTS = (
     *TP1_PARTS,
-    "schedule_p_line_10_inputs.yaml",
+    *WORK_CHART_201_PARTS,
     "schedule_p_line_10.yaml",
 )
 

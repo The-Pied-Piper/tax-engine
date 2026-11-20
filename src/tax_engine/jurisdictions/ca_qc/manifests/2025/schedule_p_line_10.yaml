@@ -8,6 +8,8 @@
 #    is read as 0.
 # 3. core/sum adds the two.
 # 4. core/subtract takes box 211 off (a blank is read as 0); the form prints no floor.
+# TP-1 line 105 and RL-1 box 211 are the optional inputs the Work Chart 201 line 1 parts already
+# declare (`ca-qc/tp1_line_105`, `ca-qc/rl1_slip_box_211`); they are read here, not declared again.
 # Every printed dollars-and-cents result is rounded half-up to the cent through ca-qc/cent_rounding.
 form:
   name: ca-qc/schedule_p
@@ -43,7 +45,7 @@ capabilities:
       rounding: ca-qc/cent_rounding
     consumes:
       amount: ca-qc/schedule_p_line_101_plus_105
-      less: ca-qc/rl1_box_211
+      less: ca-qc/rl1_slip_box_211
     blank:
       less: "0"
     produces:

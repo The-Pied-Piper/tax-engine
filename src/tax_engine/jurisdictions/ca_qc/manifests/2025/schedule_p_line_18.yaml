@@ -1,7 +1,8 @@
 # Schedule P (TP-1.D.P-V, 2025-12) Part A line 18: "Add lines 10 through 15 and, if applicable,
 # lines 30 through 35." Column "You": lines 10, 12, 13, 14 and 15 (the spouse
-# lines 30 to 35 are left out). Lines 12 to 15 are optional inputs (their own parts), each
-# blank read as 0. The sum is rounded half-up to the cent (`ca-qc/cent_rounding`).
+# lines 30 to 35 are left out). Line 12 is a copy of TP-1 line 107, the optional input the Work Chart 201 line 1 part declares
+# (`ca-qc/tp1_line_107`); lines 13 to 15 are optional inputs (their own parts). Each blank is read
+# as 0. The sum is rounded half-up to the cent (`ca-qc/cent_rounding`).
 form:
   name: ca-qc/schedule_p
 capabilities:

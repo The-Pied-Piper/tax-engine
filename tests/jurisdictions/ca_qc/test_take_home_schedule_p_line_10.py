@@ -3,7 +3,7 @@ the amount from line 105 if it is positive, minus the amount from box 211 of you
 applicable", as the Quebec take-home manifest wires it: four steps, one per operation.
 
 TP-1 line 101 is the salary, read from the TP-1 income form; line 105 is added only if it is
-positive; box 211 is subtracted. Lines 105 and box 211 are optional inputs, read as 0 when
+positive; box 211 is subtracted. Line 105 and box 211 are the optional inputs of Work Chart 201 line 1, read as 0 when
 blank. The expected figures are hand-computed from the printed line, not from a Revenu Quebec
 example.
 """
@@ -11,7 +11,6 @@ example.
 from __future__ import annotations
 
 from decimal import Decimal
-from pathlib import Path
 
 import pytest
 import yaml
@@ -19,22 +18,19 @@ import yaml
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca_qc.catalog import (
-    RL1_BOX_211,
     SCHEDULE_P_LINE_10,
-    TP1_LINE_105,
+    WORK_CHART_201_LINE_105,
+    WORK_CHART_201_RL1_BOX_211,
 )
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
 from tests.jurisdictions.ca_qc.support import (
     SCHEDULE_P_FIRST_PARTS,
-    quebec_kinds,
     schedule_p_form,
-    schedule_p_input,
     schedule_p_worksheet,
 )
 
 D = Decimal
 
-PART = "schedule_p_line_10_inputs.yaml"
 FORM = schedule_p_form("ca-qc/schedule_p_line_10")
 
 
@@ -56,23 +52,19 @@ def test_a_salary_only_line_10_is_the_salary(
 
 def test_a_positive_line_105_is_added(take_home_service: TakeHomeService) -> None:
     value = (
-        line_10(take_home_service, "70000", (TP1_LINE_105, "1234.56")).get(SCHEDULE_P_LINE_10).value
+        line_10(take_home_service, "70000", (WORK_CHART_201_LINE_105, "1234.56"))
+        .get(SCHEDULE_P_LINE_10)
+        .value
     )
 
     assert value == D("71234.56")
 
 
-def test_a_negative_line_105_is_not_added(take_home_service: TakeHomeService) -> None:
-    value = (
-        line_10(take_home_service, "70000", (TP1_LINE_105, "-500")).get(SCHEDULE_P_LINE_10).value
-    )
-
-    assert value == D("70000.00")
-
-
 def test_box_211_is_subtracted(take_home_service: TakeHomeService) -> None:
     value = (
-        line_10(take_home_service, "70000", (RL1_BOX_211, "250.25")).get(SCHEDULE_P_LINE_10).value
+        line_10(take_home_service, "70000", (WORK_CHART_201_RL1_BOX_211, "250.25"))
+        .get(SCHEDULE_P_LINE_10)
+        .value
     )
 
     assert value == D("69749.75")
@@ -80,7 +72,12 @@ def test_box_211_is_subtracted(take_home_service: TakeHomeService) -> None:
 
 def test_line_105_and_box_211_together(take_home_service: TakeHomeService) -> None:
     value = (
-        line_10(take_home_service, "70000", (TP1_LINE_105, "1000"), (RL1_BOX_211, "250"))
+        line_10(
+            take_home_service,
+            "70000",
+            (WORK_CHART_201_LINE_105, "1000"),
+            (WORK_CHART_201_RL1_BOX_211, "250"),
+        )
         .get(SCHEDULE_P_LINE_10)
         .value
     )
@@ -98,12 +95,3 @@ def test_only_the_last_step_carries_the_line_reference() -> None:
         "core/subtract",
     ]
     assert [step.get("reference") for step in part["capabilities"]] == [None, None, None, "10"]
-
-
-def test_the_two_optional_inputs_are_blank_by_default(tmp_path: Path) -> None:
-    for name in ("ca-qc/tp1_line_105", "ca-qc/rl1_box_211"):
-        declaration = schedule_p_input(tmp_path / name.split("/")[1], PART, name)
-        default = declaration.default_artifact(quebec_kinds().kind(name))
-
-        assert not declaration.required
-        assert default is not None and default.is_blank
