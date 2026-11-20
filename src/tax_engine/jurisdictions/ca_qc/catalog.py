@@ -1055,6 +1055,11 @@ FEDERAL_TAX_WITH_SURTAX_LINE_132 = AmountKind.declare(CATALOG, "federal_tax_with
 federal surtax on income earned outside Canada (line 131), a blank read as 0 from one core/sum
 (`t1_tax_and_credits_line_132.yaml`)."""
 
+FEDERAL_FOREIGN_TAX_CREDIT_LINE_133 = AmountKind.declare(CATALOG, "federal_foreign_tax_credit_line_133", non_negative=True)
+"""Federal foreign tax credit, 5005-R line 133 and line 40500: an optional input a salary-only
+caller does not give; the line that reads it takes a blank as 0
+(`t1_tax_and_credits_line_40500_inputs.yaml`)."""
+
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
 Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line
