@@ -1,0 +1,12 @@
+# Work Chart 201 (TP-1.D.GR-V 2025-12), line 1: the amount from box 211 of the RL-1 slip. An optional input a salary-only caller does
+# not give: a request that leaves it out is read as blank, and the line 1 part
+# (work_chart_201_line_1.yaml) reads the blank as 0.
+form:
+  name: ca-qc/work_chart_201
+inputs:
+  - name: ca-qc/rl1_slip_box_211
+    reference: "box 211"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Minus the amount from box 211 of your RL-1 slip.'

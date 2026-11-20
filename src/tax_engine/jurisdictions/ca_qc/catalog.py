@@ -8,7 +8,7 @@ Amounts are `Decimal`, non-negative unless the form prints no floor. Federal kin
 from __future__ import annotations
 
 from tax_engine.domain.artifact import ArtifactCatalog
-from tax_engine.domain.kinds import AmountKind
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca_qc import NAMESPACE
 
@@ -112,6 +112,137 @@ TP1_TOTAL_INCOME_LINE_199 = AmountKind.declare(
 """Total income, TP-1 line 199 "Add lines 101 and 105 through 164. Total income": line 101, the
 salary, plus the optional income of lines 105 through 164, rounded half-up to the cent."""
 
+WORK_CHART_201_LINE_105 = AmountKind.declare(CATALOG, "tp1_line_105", non_negative=True)
+"""TP-1 line 105, as Work Chart 201 line 1 reads it ("lines 101, 107 and, if positive, 105"): an
+optional input, blank when the caller has none and read as 0. A negative figure is refused:
+the owner decided on the ticket (19 Nov 2026) that the chart's "if positive" test on line 105 is
+moot, with no step for it."""
+
+WORK_CHART_201_LINE_107 = AmountKind.declare(CATALOG, "tp1_line_107")
+"""TP-1 line 107, as Work Chart 201 line 1 reads it: an optional input, blank when the caller has
+none and read as 0."""
+
+WORK_CHART_201_RL1_BOX_211 = AmountKind.declare(CATALOG, "rl1_slip_box_211")
+"""RL-1 slip box 211, taken off by Work Chart 201 line 1 ("minus the amount from box 211 of your
+RL-1 slip"): an optional input, blank when the caller has none and read as 0."""
+
+WORK_CHART_201_ELIGIBLE_WORK_INCOME_BEFORE_BOX_211 = AmountKind.declare(
+    CATALOG, "work_chart_201_eligible_work_income_before_box_211"
+)
+"""Work Chart 201 line 1, the sum before box 211 is taken off: lines 101, 107 and 105. Not a printed
+line; the first operation of line 1."""
+
+WORK_CHART_201_ELIGIBLE_WORK_INCOME_LINE_1 = AmountKind.declare(
+    CATALOG, "work_chart_201_eligible_work_income_line_1"
+)
+"""Work Chart 201 line 1 "Eligible work income": lines 101, 107 and, if positive, 105, minus the
+amount from box 211 of the RL-1 slip, rounded half-up to the cent. The form prints no floor, so it
+is signed."""
+
+WORK_CHART_201_WORK_INCENTIVE_AMOUNTS_LINE_2 = AmountKind.declare(
+    CATALOG, "work_chart_201_work_incentive_amounts_line_2"
+)
+"""Work Chart 201 line 2 "Amounts received under a work-incentive project": an optional input,
+blank when the caller has none and read as 0."""
+
+WORK_CHART_201_RESEARCH_GRANTS_LINE_3 = AmountKind.declare(
+    CATALOG, "work_chart_201_research_grants_line_3"
+)
+"""Work Chart 201 line 3 "Net amount of research grants": an optional input, blank when the caller
+has none and read as 0."""
+
+WORK_CHART_201_WEPP_PAYMENTS_LINE_4 = AmountKind.declare(
+    CATALOG, "work_chart_201_wepp_payments_line_4"
+)
+"""Work Chart 201 line 4 "Wage Earner Protection Program (WEPP) payments": an optional input, blank
+when the caller has none and read as 0."""
+
+WORK_CHART_201_NET_BUSINESS_INCOME_LINE_5 = AmountKind.declare(
+    CATALOG, "work_chart_201_net_business_income_line_5", non_negative=True
+)
+"""Work Chart 201 line 5 "Net business income (line 27 of Schedule L). If the result is negative,
+enter 0": an optional input, taken as the form takes it, so never negative; blank when the caller
+has none and read as 0."""
+
+WORK_CHART_201_TOTAL_LINE_6 = AmountKind.declare(CATALOG, "work_chart_201_total_line_6")
+"""Work Chart 201 line 6 "Add lines 1 through 5": the sum, rounded half-up to the cent. Signed, as
+line 1 is."""
+
+WORK_CHART_201_LINE_293_AMOUNT_LINE_7 = AmountKind.declare(
+    CATALOG, "work_chart_201_line_293_amount_line_7"
+)
+"""Work Chart 201 line 7 "Amount included in the income above and entitling you to a deduction on
+line 293": an optional input, blank when the caller has none and read as 0."""
+
+WORK_CHART_201_LINE_8 = AmountKind.declare(CATALOG, "work_chart_201_line_8")
+"""Work Chart 201 line 8 "Subtract line 7 from line 6": the difference, rounded half-up to the cent.
+The form prints no floor, so it is signed."""
+
+WORK_CHART_201_DEDUCTION_BEFORE_MAXIMUM = AmountKind.declare(
+    CATALOG, "work_chart_201_deduction_before_maximum"
+)
+"""Work Chart 201 line 9, the first operation: line 8 multiplied by 6%, unrounded. Not a printed
+line; the cap of line 9 rounds it once."""
+
+WORK_CHART_201_DEDUCTION_FOR_WORKERS_LINE_9 = AmountKind.declare(
+    CATALOG, "work_chart_201_deduction_for_workers_line_9"
+)
+"""Work Chart 201 line 9 "Deduction for workers" (maximum $1,420), the figure TP-1 line 201 reads:
+6% of line 8, at most the printed maximum, rounded half-up to the cent. Signed, as line 8 is."""
+
+SCHEDULE_U_LINE_11 = AmountKind.declare(CATALOG, "schedule_u_line_11", non_negative=True)
+"""Schedule U line 11 "Multiply line 10 by 0.156250": line 10 (the TP-1 line 98 QPP contribution) at
+the printed rate, rounded half-up to the cent."""
+
+SCHEDULE_U_PENSIONABLE_SALARY_LINE_12 = AmountKind.declare(
+    CATALOG, "schedule_u_pensionable_salary_line_12", non_negative=True
+)
+"""Schedule U line 12 "Pensionable salary or wages (QPP) (line 98.1 of your return) (maximum
+$71,300)": the TP-1 line 98.1 figure, at most the printed $71,300."""
+
+SCHEDULE_U_PERSONAL_QPP_EXEMPTION_LINE_13 = AmountKind.declare(
+    CATALOG, "schedule_u_personal_qpp_exemption_line_13", non_negative=True
+)
+"""Schedule U line 13 "Personal QPP exemption": the printed $3,500 of the instructions for Part B
+("enter $3,500", when none of the situations of Table 1 applied), claimed whole."""
+
+SCHEDULE_U_LINE_14 = AmountKind.declare(CATALOG, "schedule_u_line_14")
+"""Schedule U line 14 "Subtract line 13 from line 12": the pensionable salary (TP-1 line 98.1) less
+the personal QPP exemption. The line prints no floor, so the figure can be negative."""
+
+SCHEDULE_U_MAXIMUM_PENSIONABLE_EARNINGS_LINE_14_1 = AmountKind.declare(
+    CATALOG, "schedule_u_maximum_pensionable_earnings_line_14_1", non_negative=True
+)
+"""Schedule U line 14.1 "Maximum pensionable earnings": the printed $71,300 of the instructions for
+Part B ("enter $71,300", when none of the situations of Table 1 applied), claimed whole."""
+
+SCHEDULE_U_LINE_14_3 = AmountKind.declare(CATALOG, "schedule_u_line_14_3", non_negative=True)
+"""Schedule U line 14.3 "Subtract line 14.2 from line 14.1. If the result is negative, enter 0": the
+maximum pensionable earnings less the personal QPP exemption, not below 0."""
+
+SCHEDULE_U_LINE_14_4 = AmountKind.declare(CATALOG, "schedule_u_line_14_4")
+"""Schedule U line 14.4 "Amount from line 14 or line 14.3, whichever is less"."""
+
+SCHEDULE_U_LINE_15 = AmountKind.declare(CATALOG, "schedule_u_line_15")
+"""Schedule U line 15 "Multiply line 14.4 by 1%": line 14.4 at the printed rate, rounded half-up to
+the cent."""
+
+SCHEDULE_U_LINE_16 = AmountKind.declare(CATALOG, "schedule_u_line_16")
+"""Schedule U line 16 "Amount from line 11 or line 15, whichever is less": the QPP contribution
+amount of Part B."""
+
+SCHEDULE_U_LINE_17_2 = AmountKind.declare(CATALOG, "schedule_u_line_17_2")
+"""Schedule U line 17.2 "Multiply line 17.1 by 6.4%": line 17.1 (a copy of line 14.4) at the printed
+rate, rounded half-up to the cent. Line 14.4 can be negative, so the figure can be."""
+
+SCHEDULE_U_LINE_17_3 = AmountKind.declare(CATALOG, "schedule_u_line_17_3", non_negative=True)
+"""Schedule U line 17.3 "Subtract line 17.2 from line 17. If the result is negative, enter 0": the
+QPP contribution (TP-1 line 98) less line 17.2, not below 0."""
+
+SCHEDULE_U_LINE_17_5 = AmountKind.declare(CATALOG, "schedule_u_line_17_5", non_negative=True)
+"""Schedule U line 17.5 "Add lines 17.3 and 17.4": the excess over the base contribution plus the
+additional QPP contribution (TP-1 line 98.2), rounded half-up to the cent."""
+
 T1_LINE_21 = AmountKind.declare(CATALOG, "t1_line_21")
 """Add lines 1 to 20, 5005-R line 21 "Line 21: Add lines 1 to 20.": the employment income of line 1
 (`ca/employment_income`) and line 2 (`ca/other_employment_income`); lines 3 to 20 are not built (the
@@ -135,6 +266,230 @@ TOTAL_INCOME = AmountKind.declare(CATALOG, "total_income")
 """Total income, 5005-R line 33 and line 15000 "Line 33 and line 15000: Line 28 plus line 32 =".
 Not floored, so a loss larger than the other income is shown in brackets as the form prints it.
 Produced by one core/sum (`t1_taxable_income_line_15000.yaml`); Step 3 starts from it."""
+
+SCHEDULE_K_GROUP_PLAN_COVERED_LINE_50 = CountKind.declare(
+    CATALOG, "schedule_k_group_plan_covered_line_50", non_negative=True
+)
+"""Group drug plan answer, Schedule K line 50 "You were covered by basic prescription drug
+insurance provided by a group insurance plan (see line 447 in the guide) of which you, your spouse,
+your father or your mother was a member, and this plan covered the cost of medications": 1 for yes,
+0 for no, read as 0 when the caller gives no answer."""
+
+SCHEDULE_K_GROUP_PLAN_COVERED_CHECKED_LINE_50 = CountKind.declare(
+    CATALOG, "schedule_k_group_plan_covered_checked_line_50", non_negative=True
+)
+"""Group drug plan answer, checked, Schedule K line 50: the answer, refused above 1 so that the
+situation cannot be checked twice."""
+
+SCHEDULE_K_MONTHS_JANUARY_TO_JUNE_BOX_60 = AmountKind.declare(
+    CATALOG, "schedule_k_months_january_to_june_box_60", non_negative=True
+)
+"""Number of months checked from January to June, Schedule K box 60: 6 when line 50 is yes (the
+answer means covered all year), 0 when no, in months."""
+
+SCHEDULE_K_MONTHS_JULY_TO_DECEMBER_BOX_61 = AmountKind.declare(
+    CATALOG, "schedule_k_months_july_to_december_box_61", non_negative=True
+)
+"""Number of months checked from July to December, Schedule K box 61: 6 when line 50 is yes (the
+answer means covered all year), 0 when no, in months."""
+
+SCHEDULE_K_MONTHS_TOTAL_BOX_62 = AmountKind.declare(
+    CATALOG, "schedule_k_months_total_box_62", non_negative=True
+)
+"""Months checked, Add boxes 60 and 61, Schedule K box 62: boxes 60 and 61 added, in months."""
+
+PPIP_PREMIUMS_GIVEN = AmountKind.declare(CATALOG, "ppip_premiums_given", non_negative=True)
+"""PPIP premiums paid as given, 5005-R line 91 "Line 91 and line 31205: Provincial parental
+insurance plan (PPIP) premiums paid (box 55 of all T4 slips) (maximum $484.12)": the figure the
+caller gives, from the T4 slips; blank when the caller does not give it, and line 91 is then
+computed."""
+
+PPIP_PREMIUMS_PAID = AmountKind.declare(CATALOG, "ppip_premiums_paid", non_negative=True)
+"""PPIP premiums paid, 5005-R line 91 "Line 91 and line 31205: Provincial parental insurance plan
+(PPIP) premiums paid (box 55 of all T4 slips) (maximum $484.12)": the given figure
+(`ca-qc/ppip_premiums_given`) or, when none is given, 0.494% of the employment income to the
+$98,000 maximum insurable income (maximum $484.12). TP-1 line 97 (RL-1 box H) is the same figure."""
+
+SOLIDARITY_FAMILY_INCOME = AmountKind.declare(
+    CATALOG, "solidarity_family_income", non_negative=True
+)
+"""Solidarity tax credit, family income (TP-1 line 275, fiche 110201): the income the reduction is
+figured on, consumed here by name."""
+
+SOLIDARITY_INCOME_OVER_THRESHOLD = AmountKind.declare(
+    CATALOG, "solidarity_income_over_threshold", non_negative=True
+)
+"""Solidarity tax credit, family income over the reduction threshold (fiche 110201, Table C.9):
+family income less the printed threshold, not below 0."""
+
+SOLIDARITY_REDUCTION_AT_RATE = AmountKind.declare(
+    CATALOG, "solidarity_reduction_at_rate", non_negative=True
+)
+"""Solidarity tax credit, reduction at 6% (fiche 110201, Table C.9): 6% of the family income over
+the reduction threshold, rounded half-up to the cent."""
+
+SOLIDARITY_REDUCTION_AT_ONE_COMPONENT_RATE = AmountKind.declare(
+    CATALOG, "solidarity_reduction_at_one_component_rate", non_negative=True
+)
+"""Solidarity tax credit, reduction at 3% (fiche 110201, Table C.9): 3% of the family income over
+the reduction threshold, rounded half-up to the cent, for a person who receives only one of the
+three components."""
+
+SOLIDARITY_HOUSING_RECEIVED = CountKind.declare(
+    CATALOG, "solidarity_housing_received", non_negative=True
+)
+"""Solidarity tax credit, housing component received (fiche 110201): 1 when the housing component
+is received, 0 when it is not; consumed here by name."""
+
+SOLIDARITY_REDUCTION = AmountKind.declare(CATALOG, "solidarity_reduction", non_negative=True)
+"""Solidarity tax credit, reduction chosen (fiche 110201, Table C.9): the 3% reduction when the
+housing component is not received (one component only), else the 6% reduction."""
+
+SOLIDARITY_MAXIMUM_BEFORE_REDUCTION = AmountKind.declare(
+    CATALOG, "solidarity_maximum_before_reduction", non_negative=True
+)
+"""Solidarity tax credit, maximum before reduction (fiche 110201, Table C.9): the components
+received added together; consumed here by name."""
+
+SOLIDARITY_MAXIMUM_LESS_REDUCTION = AmountKind.declare(
+    CATALOG, "solidarity_maximum_less_reduction", non_negative=True
+)
+"""Solidarity tax credit, maximum less the reduction (fiche 110201, Table C.9): the maximum before
+reduction less the chosen reduction, not below 0."""
+
+SOLIDARITY_QST_COMPONENT_AMOUNT = AmountKind.declare(
+    CATALOG, "solidarity_qst_component_amount", non_negative=True
+)
+"""Solidarity tax credit, QST component amount (fiche 110201, Table C.9): the base amount plus the
+living-alone amount when it applies; consumed here by name."""
+
+SOLIDARITY_QST_COMPONENT_LESS_REDUCTION = AmountKind.declare(
+    CATALOG, "solidarity_qst_component_less_reduction", non_negative=True
+)
+"""Solidarity tax credit, QST component less the 3% reduction (fiche 110201, Table C.9): the floor
+of the credit, the QST component amount less the 3% reduction on the same excess, not below 0."""
+
+SOLIDARITY_CREDIT_AFTER_REDUCTION = AmountKind.declare(
+    CATALOG, "solidarity_credit_after_reduction", non_negative=True
+)
+"""Solidarity tax credit after the reduction (fiche 110201, Table C.9): the greater of the maximum
+less the reduction and the QST component less the 3% reduction, so the credit never falls below
+the QST-only credit."""
+
+TP1_FOREST_PRODUCER_AVERAGING_LINE_276 = AmountKind.declare(
+    CATALOG, "tp1_forest_producer_averaging_line_276", non_negative=True
+)
+"""The amount for income averaging for forest producers, included on TP-1 line 276, which Schedule F
+line 10 adds to total income; blank when the caller has none, and line 10 reads it as 0."""
+
+TP1_SCHEDULE_F_TOTAL_INCOME_LINE_199 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_total_income_line_199", non_negative=True
+)
+"""Total income of TP-1 line 199, as Schedule F line 10 reads it from the TP-1 income form."""
+
+TP1_SCHEDULE_F_INCOME_LINE_10 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_income_line_10", non_negative=True
+)
+"""Schedule F line 10, "Total income (line 199 of your return) plus the amount for income averaging
+for forest producers (included on line 276 of your return)": line 199 plus line 276, rounded
+half-up to the cent."""
+
+TP1_SCHEDULE_F_EMPLOYMENT_INCOME_LINE_12 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_employment_income_line_12", non_negative=True
+)
+"""Schedule F line 12, "Employment income (line 101)": TP-1 line 101, read from the TP-1 income
+form."""
+
+TP1_SCHEDULE_F_EMPLOYMENT_INCOME_CORRECTION_LINE_14 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_employment_income_correction_line_14"
+)
+"""Schedule F line 14, "Correction of employment income (line 105)", signed: a figure to subtract is
+negative. Blank when the caller has none, and line 16 reads it as 0."""
+
+TP1_SCHEDULE_F_EMPLOYMENT_INCOME_TOTAL_LINE_16 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_employment_income_total_line_16"
+)
+"""Schedule F line 16, "Add lines 12 and 14, or subtract line 14 from line 12, as applicable":
+line 12 plus the signed line 14, rounded half-up to the cent."""
+
+TP1_SCHEDULE_F_INCOME_LINE_18 = AmountKind.declare(CATALOG, "tp1_schedule_f_income_line_18")
+"""Schedule F line 18, "Subtract line 16 from line 10": no floor is printed, so it can be
+negative."""
+
+TP1_SCHEDULE_F_LINES_20_TO_33_TOTAL_LINE_34 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_lines_20_to_33_total_line_34", non_negative=True
+)
+"""Schedule F line 34, "Add lines 20, 22 and 25 through 33": the printed sum of the skipped lines,
+one optional input; blank when the caller has none, and line 36 reads it as 0."""
+
+TP1_SCHEDULE_F_INCOME_LINE_36 = AmountKind.declare(CATALOG, "tp1_schedule_f_income_line_36")
+"""Schedule F line 36, "Income": line 18 less line 34; no floor is printed, so it can be
+negative."""
+
+TP1_SCHEDULE_F_DEDUCTIONS_LINE_68 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_deductions_line_68", non_negative=True
+)
+"""Schedule F line 68, "Deductions": the printed sum of lines 41 through 62, which are skipped, as
+one optional input; blank when the caller has none, and line 70 reads it as 0."""
+
+TP1_SCHEDULE_F_INCOME_SUBJECT_LINE_70 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_income_subject_line_70"
+)
+"""Schedule F line 70, "Income subject to the contribution": line 36 less line 68; no floor is
+printed, so it can be negative. Part B tests it against $18,130."""
+
+SCHEDULE_P_TP1_LINE_101 = AmountKind.declare(CATALOG, "schedule_p_tp1_line_101")
+"""Schedule P (TP-1.D.P-V) line 10, first step: the amount from line 101 of the TP-1 return,
+"Employment income, RL-1 slip, box A", read from the TP-1 income form as a record list and
+totalled."""
+
+SCHEDULE_P_LINE_105_IF_POSITIVE = AmountKind.declare(
+    CATALOG, "schedule_p_line_105_if_positive", non_negative=True
+)
+"""Schedule P line 10, second step: the amount of TP-1 line 105 if it is positive, else 0, rounded
+half-up to the cent."""
+
+SCHEDULE_P_LINE_101_PLUS_105 = AmountKind.declare(CATALOG, "schedule_p_line_101_plus_105")
+"""Schedule P line 10, third step: the amount of TP-1 line 101 plus the amount of line 105 if it is
+positive, rounded half-up to the cent."""
+
+SCHEDULE_P_LINE_10 = AmountKind.declare(CATALOG, "schedule_p_line_10")
+"""Schedule P (TP-1.D.P-V) Part A line 10, "Amount from line 101 of your return, plus the amount
+from line 105 if it is positive, minus the amount from box 211 of your RL-1 slip, if applicable",
+rounded half-up to the cent."""
+
+SCHEDULE_P_RESEARCH_GRANTS_LINE_13 = AmountKind.declare(
+    CATALOG, "schedule_p_research_grants_line_13", non_negative=True
+)
+"""Schedule P line 13, "Net amount of research grants (see line 154, point 3(j), in the guide)", as
+the caller gives it; blank when the caller has none, and line 18 reads it as 0."""
+
+SCHEDULE_P_SCHEDULE_L_INCOME_LINE_14 = AmountKind.declare(
+    CATALOG, "schedule_p_schedule_l_income_line_14", non_negative=True
+)
+"""Schedule P line 14, "Total of lines 22 through 26.1 of Schedule L. Do not include losses.", as
+the caller gives it; blank when the caller has none, and line 18 reads it as 0."""
+
+SCHEDULE_P_WEPP_PAYMENTS_LINE_15 = AmountKind.declare(
+    CATALOG, "schedule_p_wepp_payments_line_15", non_negative=True
+)
+"""Schedule P line 15, "Wage Earner Protection Program (WEPP) payments (line 154, point 12)", as
+the caller gives it; blank when the caller has none, and line 18 reads it as 0."""
+
+SCHEDULE_P_LINE_18 = AmountKind.declare(CATALOG, "schedule_p_line_18")
+"""Schedule P Part A line 18, "Add lines 10 through 15", column "You", rounded half-up to the
+cent."""
+
+SCHEDULE_P_DEDUCTIBLE_INCOME_LINE_22 = AmountKind.declare(
+    CATALOG, "schedule_p_deductible_income_line_22", non_negative=True
+)
+"""Schedule P line 22, "Amount included in one of the above sources of income and entitling you to
+a deduction on line 293 of your return", as the caller gives it; blank when the caller has none, and
+line 29 reads it as 0."""
+
+SCHEDULE_P_WORK_INCOME_LINE_29 = AmountKind.declare(CATALOG, "schedule_p_work_income_line_29")
+"""Schedule P Part A line 29, "Subtract line 22 from line 18", "Work income", column "You", rounded
+half-up to the cent. The form prints no floor."""
 
 T1_LINE_48 = AmountKind.declare(CATALOG, "t1_line_48", non_negative=True)
 """Deduction for CPP or QPP enhanced contributions on employment income, 5005-R line 48 and line

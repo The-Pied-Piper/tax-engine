@@ -1,0 +1,22 @@
+# 5005-R line 91: "Line 91 and line 31205: Provincial parental insurance plan (PPIP) premiums paid
+# (box 55 of all T4 slips) (maximum $484.12)". The take-home caller has no T4, so a blank
+# `ca-qc/ppip_premiums_given` is computed: 0.494% of the employment income to the $98,000 maximum,
+# at most $484.12, half-up to the cent, from the `ca-qc/ppip_premium` dataset. A given figure is
+# produced unchanged. RL-1 box H (TP-1 line 97) is the same figure. Mirrors T2204 line 4
+# (`ca/forms/t2204/t2204_line_4.yaml`).
+form:
+  name: ca-qc/ppip_premium
+capabilities:
+  - name: ca/given_or_contribution_tier
+    title: "Provincial parental insurance plan (PPIP) premiums paid"
+    reference: "91"
+    unit: ca/cad
+    params:
+      tier: ca-qc/ppip_premium
+    consumes:
+      given: ca-qc/ppip_premiums_given
+      earnings: ca/employment_income
+    blank:
+      given: compute
+    produces:
+      output: ca-qc/ppip_premiums_paid

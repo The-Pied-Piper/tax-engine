@@ -1,0 +1,17 @@
+# Revenu Quebec TP-1.D.U-V (2025-12), Schedule U, Part B "Deduction for QPP contributions on
+# employment income": lines 10 to 17.5. This part names the form and its exports; each printed
+# line's capability is a part of its own with the same `form.name`. The form is one form, so its
+# lines read each other directly. Lines 10, 12, 17 and 17.4 are copies of TP-1 lines 98, 98.1, 98 and
+# 98.2, and lines 14.2 and 17.1 are copies of lines 13 and 14.4, so they have no step. The form
+# prints no title for the schedule here, so the form has none. Exports: the figures later Schedule U
+# lines read.
+form:
+  name: ca-qc/tp1_schedule_u
+  required: true
+  exports:
+    - ca-qc/schedule_u_line_11
+    - ca-qc/schedule_u_line_14
+    - ca-qc/schedule_u_line_14_4
+    - ca-qc/schedule_u_line_16
+    - ca-qc/schedule_u_line_17_5
+capabilities: []

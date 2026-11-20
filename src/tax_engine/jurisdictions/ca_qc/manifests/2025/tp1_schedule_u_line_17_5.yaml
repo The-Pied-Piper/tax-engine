@@ -1,0 +1,19 @@
+# Schedule U (Revenu Quebec TP-1.D.U-V, 2025-12), Part B, line 17.5: "Add lines 17.3 and 17.4."
+# Line 17.4 is "Additional contribution to the QPP (line 98.2 of your return)", a copy of `ca-
+# qc/tp1_additional_qpp_contribution_line_98_2` with no step of its own. The step is `core/sum`,
+# rounded to the cent by `ca-qc/cent_rounding`. The form prints no label for the line, so the step
+# is untitled.
+form:
+  name: ca-qc/tp1_schedule_u
+capabilities:
+  - name: core/sum
+    reference: "17.5"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/schedule_u_line_17_3
+        - ca-qc/tp1_additional_qpp_contribution_line_98_2
+    produces:
+      output: ca-qc/schedule_u_line_17_5
