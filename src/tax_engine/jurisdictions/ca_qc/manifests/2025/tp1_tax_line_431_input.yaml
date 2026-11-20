@@ -1,0 +1,12 @@
+# TP-1 (2025) line 431: "Credits transferred from one spouse to the other - 431" (page 4, Income
+# tax and contributions). A single salary-only filer has no transferred credits, so it is an
+# optional input left blank; line 432 reads a blank as 0.
+form:
+  name: ca-qc/tp1_tax
+inputs:
+  - name: ca-qc/tp1_credits_transferred_between_spouses_line_431
+    reference: "431"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Credits transferred from one spouse to the other"

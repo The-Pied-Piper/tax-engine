@@ -1605,3 +1605,9 @@ TP1_LINE_430 = AmountKind.declare(CATALOG, "tp1_line_430")
 """TP-1 line 430 "Subtract line 425 from line 413": signed, as the form prints no floor here (line
 432 floors it). Rounded half-up to the cent. Produced by one core/subtract
 (`tp1_tax_line_430.yaml`)."""
+
+TP1_CREDITS_TRANSFERRED_BETWEEN_SPOUSES_LINE_431 = AmountKind.declare(
+    CATALOG, "tp1_credits_transferred_between_spouses_line_431", non_negative=True
+)
+"""TP-1 line 431 "Credits transferred from one spouse to the other": an optional input a single
+salary-only caller does not give; line 432 reads a blank as 0 (`tp1_tax_line_431_input.yaml`)."""
