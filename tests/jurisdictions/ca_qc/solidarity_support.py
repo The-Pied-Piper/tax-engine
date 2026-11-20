@@ -83,6 +83,17 @@ def solidarity_form_part(identifier: str) -> str:
     )
 
 
+def amounts_form_part() -> str:
+    """The real form part with only the printed amounts exported, for the tests that compose the
+    amounts part alone (the credit after the reduction is produced by the reduction part)."""
+    form = yaml.safe_load((QUEBEC_PARTS / "solidarity_credit.yaml").read_text("utf-8"))["form"]
+    exports = [
+        name for name in form["exports"] if name != "ca-qc/solidarity_credit_after_reduction"
+    ]
+    lines = "".join(f"    - {name}\n" for name in exports)
+    return f"form:\n  name: {FORM}\n  required: true\n  exports:\n{lines}"
+
+
 def solidarity_figure(
     take_home_service: TakeHomeService,
     identifier: str,

@@ -19,6 +19,7 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_qc.catalog import SOLIDARITY_QST_BASE_AMOUNT
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
+from tests.jurisdictions.ca_qc.solidarity_support import amounts_form_part
 
 D = Decimal
 PART = "solidarity_credit_amounts.yaml"
@@ -34,7 +35,7 @@ HEADER = dedent("""\
     outputs:
       - ca/employment_income
     """)
-FORM_PART = (QUEBEC_PARTS / "solidarity_credit.yaml").read_text(encoding="utf-8")
+FORM_PART = amounts_form_part()
 
 
 def test_the_qst_base_amount_is_the_printed_363(take_home_service: TakeHomeService) -> None:
