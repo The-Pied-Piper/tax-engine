@@ -54,6 +54,8 @@ IDENTIFIER = "ca-nl/nl428_credits_total_line_69"
 FORM_NAME = "ca-nl/nl428"
 FEDERAL_PARTS = (
     "t1_taxable_income_inputs.yaml",
+    "t1_taxable_income_line_10100.yaml",
+    "t1_taxable_income_line_10400.yaml",
     "t1_taxable_income_line_15000.yaml",
     "t1_taxable_income_line_23300.yaml",
     "t1_taxable_income_line_23400.yaml",

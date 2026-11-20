@@ -73,6 +73,8 @@ PART = BC_PARTS / "bc428_line_14.yaml"
 LINE_1_PART = BC_PARTS / "bc428_line_1.yaml"
 T1_PARTS = (
     "t1_taxable_income_inputs.yaml",
+    "t1_taxable_income_line_10100.yaml",
+    "t1_taxable_income_line_10400.yaml",
     "t1_taxable_income_line_15000.yaml",
     "t1_taxable_income_line_23300.yaml",
     "t1_taxable_income_line_23400.yaml",

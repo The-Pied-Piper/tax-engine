@@ -82,6 +82,8 @@ PART = BC_PARTS / "bc428_line_79.yaml"
 LINE_PARTS = tuple(BC_PARTS / f"bc428_line_{n}.yaml" for n in ("74", "75", "76", "78", "73", "79"))
 T1_PARTS = (
     "t1_taxable_income_inputs.yaml",
+    "t1_taxable_income_line_10100.yaml",
+    "t1_taxable_income_line_10400.yaml",
     "t1_taxable_income_line_15000.yaml",
     "t1_taxable_income_line_23300.yaml",
     "t1_taxable_income_line_23400.yaml",

@@ -31,6 +31,19 @@ line using brackets").
 OTHER_EMPLOYMENT_INCOME = AmountKind.declare(CATALOG, "other_employment_income", non_negative=True)
 """Other employment income, T1 line 10400 "Other employment income": a starting amount."""
 
+EMPLOYMENT_INCOME_LINE_10100 = AmountKind.declare(
+    CATALOG, "employment_income_line_10100", non_negative=True
+)
+"""Employment income as T1 line 10100 prints it (`t1_taxable_income_line_10100.yaml`): the salary
+input (`ca/employment_income`) carried to line 15000, the one place the T1 lists it."""
+
+OTHER_EMPLOYMENT_INCOME_LINE_10400 = AmountKind.declare(
+    CATALOG, "other_employment_income_line_10400", non_negative=True
+)
+"""Other employment income as T1 line 10400 prints it (`t1_taxable_income_line_10400.yaml`): the
+optional input (`ca/other_employment_income`) carried to line 15000, the one place the T1 lists
+it."""
+
 CREDITS_AGAINST_BASIC_FEDERAL_TAX = AmountKind.declare(
     CATALOG, "credits_against_basic_federal_tax", non_negative=True
 )

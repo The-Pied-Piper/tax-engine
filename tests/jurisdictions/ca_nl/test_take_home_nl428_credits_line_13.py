@@ -71,6 +71,8 @@ LINE_11_PART = NL_PARTS / "nl428_credits_line_11.yaml"
 LINE_12_PART = NL_PARTS / "nl428_credits_line_12.yaml"
 T1_PARTS = (
     "t1_taxable_income_inputs.yaml",
+    "t1_taxable_income_line_10100.yaml",
+    "t1_taxable_income_line_10400.yaml",
     "t1_taxable_income_line_15000.yaml",
     "t1_taxable_income_line_23300.yaml",
     "t1_taxable_income_line_23400.yaml",

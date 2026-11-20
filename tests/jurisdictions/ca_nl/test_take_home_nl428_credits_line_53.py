@@ -65,6 +65,8 @@ KIND = "ca-nl/nl428_medical_expenses_over_limit_line_53"
 # The real federal parts the T1 taxable-income form needs, beside the salary and lines 49 to 52.
 T1_PARTS = (
     "t1_taxable_income_inputs.yaml",
+    "t1_taxable_income_line_10100.yaml",
+    "t1_taxable_income_line_10400.yaml",
     "t1_taxable_income_line_15000.yaml",
     "t1_taxable_income_line_23300.yaml",
     "t1_taxable_income_line_23400.yaml",

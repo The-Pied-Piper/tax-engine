@@ -57,6 +57,8 @@ LINE_34 = "ca-nl/nl428_adoption_expenses_line_34"
 LINE_24 = "ca-nl/nl428_infirm_dependants_amount_line_24"
 FEDERAL_PARTS = (
     "t1_taxable_income_inputs.yaml",
+    "t1_taxable_income_line_10100.yaml",
+    "t1_taxable_income_line_10400.yaml",
     "t1_taxable_income_line_15000.yaml",
     "t1_taxable_income_line_23300.yaml",
     "t1_taxable_income_line_23400.yaml",

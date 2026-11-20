@@ -59,6 +59,8 @@ LINE_70 = "ca-mb/mb479_credits_line_70"
 LINE_71 = "ca-mb/mb479_book_publishing_credit_line_71"
 T1_PARTS = (
     "t1_taxable_income_inputs.yaml",
+    "t1_taxable_income_line_10100.yaml",
+    "t1_taxable_income_line_10400.yaml",
     "t1_taxable_income_line_15000.yaml",
     "t1_taxable_income_line_23300.yaml",
     "t1_taxable_income_line_23400.yaml",

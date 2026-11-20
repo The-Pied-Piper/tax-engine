@@ -58,6 +58,8 @@ LINE_38 = "ca-nl/nl428_caregiver_amount_line_38"
 FORM_NAME = "ca-nl/nl428_credits"
 FEDERAL_PARTS = (
     "t1_taxable_income_inputs.yaml",
+    "t1_taxable_income_line_10100.yaml",
+    "t1_taxable_income_line_10400.yaml",
     "t1_taxable_income_line_15000.yaml",
     "t1_taxable_income_line_23300.yaml",
     "t1_taxable_income_line_23400.yaml",

@@ -61,6 +61,8 @@ LINE_73_INPUT = "ca-mb/mb479_cultural_industries_printing_credit_line_73"
 LINE_73 = "ca-mb/mb479_cultural_industries_printing_credit_checked_line_73"
 T1_PARTS = (
     "t1_taxable_income_inputs.yaml",
+    "t1_taxable_income_line_10100.yaml",
+    "t1_taxable_income_line_10400.yaml",
     "t1_taxable_income_line_15000.yaml",
     "t1_taxable_income_line_23300.yaml",
     "t1_taxable_income_line_23400.yaml",

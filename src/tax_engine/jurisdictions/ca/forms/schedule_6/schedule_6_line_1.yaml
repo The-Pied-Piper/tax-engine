@@ -2,12 +2,27 @@
 # The form prints: "Line 1: Employment income and other employment income from line 10100 and line
 # 10400 of the return" and "Column 1 You".
 #
-# Line 1 is a sum of T1 line 10100 (`ca/employment_income`, the salary input) and T1 line 10400
-# (`ca/other_employment_income`, the optional input). Line 10400 reads as 0 when the filer has none,
-# as in T1 line 15000. Line 1 is their sum in line order.
+# Line 1 is a sum of T1 line 10100 and T1 line 10400, in line order. The T1 form exports both lines
+# (`ca/employment_income_line_10100`, `ca/other_employment_income_line_10400`) and another form reads
+# an export only as a record list, so each is totalled by core/record_total first, as line 7 reads
+# line 23600.
 form:
   name: ca/schedule_6
 capabilities:
+  - name: core/record_total
+    title: "Amount from line 10100 of the return"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_taxable_income.employment_income_line_10100
+    produces:
+      output: ca/cwb_employment_income_line_10100
+  - name: core/record_total
+    title: "Amount from line 10400 of the return"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_taxable_income.other_employment_income_line_10400
+    produces:
+      output: ca/cwb_other_employment_income_line_10400
   - name: core/sum
     title: "Employment income and other employment income from line 10100 and line 10400 of the return"
     reference: "1"
@@ -15,6 +30,6 @@ capabilities:
     params:
       rounding: ca/cent_rounding
     consumes:
-      parts: [ca/employment_income, ca/other_employment_income]
+      parts: [ca/cwb_employment_income_line_10100, ca/cwb_other_employment_income_line_10400]
     produces:
       output: ca/cwb_employment_income

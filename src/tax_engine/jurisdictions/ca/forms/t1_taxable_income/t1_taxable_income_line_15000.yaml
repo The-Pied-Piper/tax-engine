@@ -15,6 +15,6 @@ capabilities:
     params:
       rounding: ca/cent_rounding
     consumes:
-      parts: [ca/employment_income, ca/other_employment_income]
+      parts: [ca/employment_income_line_10100, ca/other_employment_income_line_10400]
     produces:
       output: ca/total_income

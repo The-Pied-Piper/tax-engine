@@ -352,6 +352,18 @@ TAX_REDUCTION_BASIC = AmountKind.declare(CATALOG, "tax_reduction_basic", non_neg
 """Basic reduction, ON428 line 74 "Basic reduction 294.00": the amount claimed, the first part of
 the Ontario tax reduction amounts."""
 
+ON428_A_EMPLOYMENT_INCOME_LINE_1 = AmountKind.declare(
+    CATALOG, "on428_a_employment_income_line_1", non_negative=True
+)
+"""Schedule ON428-A line 1 "Amount from line 10100 of your return" (employment income), read as the
+T1 form's export."""
+
+ON428_A_OTHER_EMPLOYMENT_INCOME_LINE_2 = AmountKind.declare(
+    CATALOG, "on428_a_other_employment_income_line_2", non_negative=True
+)
+"""Schedule ON428-A line 2 "Amount from line 10400 of your return" (other employment income), read
+as the T1 form's export."""
+
 LIFT_EMPLOYMENT_INCOME = AmountKind.declare(CATALOG, "lift_employment_income", non_negative=True)
 """LIFT employment income, Schedule ON428-A line 3 "Line 1 plus line 2": line 1 "Amount from line
 10100 of your return" (employment income) plus line 2 "Amount from line 10400 of your return"

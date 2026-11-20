@@ -1,10 +1,25 @@
 # T1 (5006-R, 2025) line 31260, Canada employment amount (CRA 5006-R-25E, line 92 and line 31260):
 # "Enter whichever is less: $1,471 or line 1 plus line 2." Line 1 is line 10100 (employment income,
-# the salary) and line 2 is line 10400 (other employment income, an optional input that reads as 0
-# when the filer has none). The form's two operations are two steps.
+# the salary) and line 2 is line 10400 (other employment income, 0 when the filer has none). Both
+# lines belong to the T1 taxable income form and are read as its exports (a record list each, totalled
+# by core/record_total). The form's two operations are two more steps.
 form:
   name: ca/t1_tax_and_credits
 capabilities:
+  - name: core/record_total
+    title: "Employment income from line 10100"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_taxable_income.employment_income_line_10100
+    produces:
+      output: ca/canada_employment_amount_line_1
+  - name: core/record_total
+    title: "Other employment income from line 10400"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_taxable_income.other_employment_income_line_10400
+    produces:
+      output: ca/canada_employment_amount_line_2
   # "line 1 plus line 2", to the cent.
   - name: core/sum
     title: "Employment income plus other employment income, before the limit"
@@ -12,7 +27,7 @@ capabilities:
     params:
       rounding: ca/cent_rounding
     consumes:
-      parts: [ca/employment_income, ca/other_employment_income]
+      parts: [ca/canada_employment_amount_line_1, ca/canada_employment_amount_line_2]
     produces:
       output: ca/canada_employment_amount_income
   # "whichever is less: $1,471 or" that sum; the printed $1,471 is the dataset figure.
