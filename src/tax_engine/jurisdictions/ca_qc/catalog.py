@@ -1888,3 +1888,9 @@ TP1_LINE_463 = AmountKind.declare(CATALOG, "tp1_line_463", non_negative=True)
 """TP-1 line 463, one of the lines that line 465 adds ("Add lines 451.2 through 463"): the senior
 assistance tax credit. One optional input a salary-only caller does not give; line 465 reads a blank
 as 0 (`tp1_totals_line_465_inputs.yaml`)."""
+
+TP1_INCOME_TAX_PAID_AND_OTHER_CREDITS_LINE_465 = AmountKind.declare(
+    CATALOG, "tp1_income_tax_paid_and_other_credits_line_465", non_negative=True
+)
+"""TP-1 line 465 "Add lines 451.2 through 463. Income tax paid and other credits": rounded half-up
+to the cent. Produced by one core/sum (`tp1_totals_line_465.yaml`)."""
