@@ -20,12 +20,11 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     MINIMUM_TAX_CARRYOVER_LINE_128,
     NON_REFUNDABLE_TAX_CREDITS_LINE_122,
 )
+from tests.jurisdictions.ca_qc.basic_personal_amount_support import sheets
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
-from tests.jurisdictions.ca_qc.net_federal_tax_support import sheets
 from tests.kinds import non_negative
 
 D = Decimal
-LAST = "t1_tax_and_credits_line_42900.yaml"
 
 
 @pytest.mark.parametrize(
@@ -35,14 +34,14 @@ LAST = "t1_tax_and_credits_line_42900.yaml"
 def test_a_salary_only_line_130_is_the_printed_figure(
     take_home_service: TakeHomeService, salary: str, expected: str
 ) -> None:
-    sheet = sheets(take_home_service, salary, LAST)
+    _, sheet = sheets(take_home_service, salary)
 
     assert sheet.get(BASIC_FEDERAL_TAX_LINE_130).value == D(expected)
 
 
 @pytest.mark.parametrize("salary", ["20000", "70000", "200000"])
 def test_line_130_is_line_77_less_line_122(take_home_service: TakeHomeService, salary: str) -> None:
-    sheet = sheets(take_home_service, salary, LAST)
+    _, sheet = sheets(take_home_service, salary)
 
     assert (
         sheet.get(BASIC_FEDERAL_TAX_LINE_130).value
@@ -52,13 +51,13 @@ def test_line_130_is_line_77_less_line_122(take_home_service: TakeHomeService, s
 
 
 def test_a_negative_difference_is_entered_as_zero(take_home_service: TakeHomeService) -> None:
-    sheet = sheets(take_home_service, "70000", LAST, (MINIMUM_TAX_CARRYOVER_LINE_128, "100000"))
+    _, sheet = sheets(take_home_service, "70000", (MINIMUM_TAX_CARRYOVER_LINE_128, "100000"))
 
     assert sheet.get(BASIC_FEDERAL_TAX_LINE_130).value == D("0.00")
 
 
 def test_the_trace_prints_the_line(take_home_service: TakeHomeService) -> None:
-    sheet = sheets(take_home_service, "70000", LAST)
+    _, sheet = sheets(take_home_service, "70000")
 
     assert (
         "Line 40400 (CA$10771.18) less line 129 (CA$3247.63), not below 0,"

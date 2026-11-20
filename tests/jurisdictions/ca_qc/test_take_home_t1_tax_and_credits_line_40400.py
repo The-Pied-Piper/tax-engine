@@ -20,12 +20,11 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     FEDERAL_TAX_ON_SPLIT_INCOME_LINE_124,
     FEDERAL_TAX_WITH_SPLIT_INCOME_LINE_125,
 )
+from tests.jurisdictions.ca_qc.basic_personal_amount_support import sheets
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
-from tests.jurisdictions.ca_qc.net_federal_tax_support import sheets
 from tests.kinds import non_negative
 
 D = Decimal
-LAST = "t1_tax_and_credits_line_40400.yaml"
 
 
 @pytest.mark.parametrize(
@@ -35,7 +34,7 @@ LAST = "t1_tax_and_credits_line_40400.yaml"
 def test_a_salary_only_line_125_is_the_printed_figure(
     take_home_service: TakeHomeService, salary: str, expected: str
 ) -> None:
-    sheet = sheets(take_home_service, salary, LAST)
+    _, sheet = sheets(take_home_service, salary)
 
     assert sheet.get(FEDERAL_TAX_WITH_SPLIT_INCOME_LINE_125).value == D(expected)
 
@@ -44,13 +43,13 @@ def test_a_salary_only_line_125_is_the_printed_figure(
 def test_each_optional_line_is_taken(
     take_home_service: TakeHomeService, kind: AmountKind, expected: str
 ) -> None:
-    sheet = sheets(take_home_service, "70000", LAST, (kind, "100.10"))
+    _, sheet = sheets(take_home_service, "70000", (kind, "100.10"))
 
     assert sheet.get(FEDERAL_TAX_WITH_SPLIT_INCOME_LINE_125).value == D(expected)
 
 
 def test_the_trace_prints_the_line(take_home_service: TakeHomeService) -> None:
-    sheet = sheets(take_home_service, "70000", LAST)
+    _, sheet = sheets(take_home_service, "70000")
 
     assert (
         "Line 77 (CA$10771.18) plus line 40424 (CA$0.00)"

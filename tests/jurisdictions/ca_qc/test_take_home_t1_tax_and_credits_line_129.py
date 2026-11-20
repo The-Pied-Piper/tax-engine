@@ -21,12 +21,11 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     FEDERAL_DIVIDEND_TAX_CREDIT_LINE_127,
     MINIMUM_TAX_CARRYOVER_LINE_128,
 )
+from tests.jurisdictions.ca_qc.basic_personal_amount_support import sheets
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
-from tests.jurisdictions.ca_qc.net_federal_tax_support import sheets
 from tests.kinds import non_negative
 
 D = Decimal
-LAST = "t1_tax_and_credits_line_129.yaml"
 
 
 @pytest.mark.parametrize(
@@ -36,7 +35,7 @@ LAST = "t1_tax_and_credits_line_129.yaml"
 def test_a_salary_only_line_129_is_the_printed_figure(
     take_home_service: TakeHomeService, salary: str, expected: str
 ) -> None:
-    sheet = sheets(take_home_service, salary, LAST)
+    _, sheet = sheets(take_home_service, salary)
 
     assert sheet.get(FEDERAL_CREDITS_AND_CARRYOVERS_LINE_129).value == D(expected)
 
@@ -51,16 +50,15 @@ def test_a_salary_only_line_129_is_the_printed_figure(
 def test_each_optional_line_is_taken(
     take_home_service: TakeHomeService, kind: AmountKind, expected: str
 ) -> None:
-    sheet = sheets(take_home_service, "70000", LAST, (kind, "100.10"))
+    _, sheet = sheets(take_home_service, "70000", (kind, "100.10"))
 
     assert sheet.get(FEDERAL_CREDITS_AND_CARRYOVERS_LINE_129).value == D(expected)
 
 
 def test_lines_127_and_128_are_added_in_one_sum(take_home_service: TakeHomeService) -> None:
-    sheet = sheets(
+    _, sheet = sheets(
         take_home_service,
         "70000",
-        LAST,
         (FEDERAL_DIVIDEND_TAX_CREDIT_LINE_127, "100.10"),
         (MINIMUM_TAX_CARRYOVER_LINE_128, "100.10"),
     )
@@ -69,7 +67,7 @@ def test_lines_127_and_128_are_added_in_one_sum(take_home_service: TakeHomeServi
 
 
 def test_the_trace_prints_the_line(take_home_service: TakeHomeService) -> None:
-    sheet = sheets(take_home_service, "70000", LAST)
+    _, sheet = sheets(take_home_service, "70000")
 
     assert (
         "Line 35000 (CA$3247.63) plus line 40425 (CA$0.00) plus line 40427 (CA$0.00)"
