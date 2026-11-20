@@ -1,0 +1,13 @@
+# 5005-R (2025) line 169 input a salary-only caller does not give.
+# Line 169 and line 47556: "Return of fuel charge proceeds to farmers tax credit (complete Form T2043)" (page 8). A salary-only filer has no such amount, so it is an
+# optional input left blank; the sum that reads it takes a blank as 0.
+form:
+  name: ca-qc/t1_tax_and_credits
+inputs:
+  - name: ca-qc/fuel_charge_farmers_credit_line_169
+    title: "Return of fuel charge proceeds to farmers tax credit"
+    reference: "47556"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Return of fuel charge proceeds to farmers tax credit (complete Form T2043)"
