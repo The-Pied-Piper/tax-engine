@@ -14,14 +14,20 @@ from decimal import Decimal
 import pytest
 
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.amount_by_band import AMOUNT_BY_BAND, AmountByBand
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tax_engine.jurisdictions.core.capabilities.amount_by_band import AmountFromBand
 from tests.jurisdictions.ca_qc.support import quebec_packages, quebec_parameter_parsers
 
 D = Decimal
 # Quebec is not in `registrations.JURISDICTIONS` yet, so the source is built over its own packages.
 SOURCE = YamlParameterSource(quebec_packages().roots(), quebec_parameter_parsers())
 FAMILY = "ca-qc/tp1_schedule_f_maximum"
+# Made up for this test and not registered: the column's lower bound read, and the maximum.
+LOWER_BOUND = AmountKind("ex/lower_bound")
+MAXIMUM = AmountKind("ex/maximum")
 FORM = "Revenu Quebec TP-1.D.F-V (2025-12), Schedule F, Part B"
 
 
@@ -49,3 +55,25 @@ def test_2025_maximums_cite_the_schedule() -> None:
 @pytest.mark.parametrize(("lower_bound", "maximum"), [("18130.00", "150"), ("63060.00", "1000")])
 def test_each_columns_lower_bound_takes_its_own_maximum(lower_bound: str, maximum: str) -> None:
     assert _bands().band_for(D(lower_bound)).amount == D(maximum)
+
+
+def test_2025_maximums_are_the_amount_by_band_kind() -> None:
+    data = SOURCE.get(FAMILY, 2025, AMOUNT_BY_BAND)
+
+    assert data.kind is AMOUNT_BY_BAND
+    assert data.family == FAMILY
+    assert data.tax_year == 2025
+
+
+@pytest.mark.parametrize(
+    ("lower_bound", "maximum"), [("18130.00", "150.00"), ("63060.00", "1000.00")]
+)
+def test_the_capability_gives_each_column_its_printed_maximum(
+    lower_bound: str, maximum: str
+) -> None:
+    capability = AmountFromBand(SOURCE.get(FAMILY, 2025, AMOUNT_BY_BAND), LOWER_BOUND, MAXIMUM)
+
+    result = capability.compute((Artifact(LOWER_BOUND, D(lower_bound)),))
+
+    assert result.outputs == (Artifact(MAXIMUM, D(maximum)),)
+    assert str(result.outputs[0].value) == maximum
