@@ -1,0 +1,18 @@
+# Schedule F (2025) Part B, line 77: "Enter the amount from line 70 above in the appropriate column.
+# If $63,060 or less | If more than $63,060", then line 77 prints 18,130.00 in the first column and
+# 63,060.00 in the second. Line 76 is a copy of line 70 and has no step of its own: line 77 reads
+# line 70 directly. Line 77 is the printed lower bound of the column that line 76 falls in, and it
+# is blank for a line 76 of $18,130 or less, for which no contribution is due and Part B is not
+# completed; the blank is passed on, and line 82 reads it as 0.
+form:
+  name: ca-qc/tp1_schedule_f
+capabilities:
+  - name: core/bracket_column_lower_bound
+    reference: "77"
+    unit: ca/cad
+    params:
+      schedule: ca-qc/tp1_schedule_f_brackets
+    consumes:
+      base: ca-qc/tp1_schedule_f_income_subject_line_70
+    produces:
+      output: ca-qc/tp1_schedule_f_lower_bound_line_77

@@ -1,0 +1,26 @@
+# TP-1 (2025) line 256: "Subtract line 254 from line 199." (page 3). The printed "Amount from line
+# 199" is a copy, and total income is another form's export (`ca-qc/tp1_income.tp1_total_income_line_199`,
+# a record list of one amount), so the first step is core/record_total, as Schedule F line 10 reads
+# it. The second is core/subtract of line 254 from it, with no floor (the form prints none, so a
+# deduction above income gives a negative figure), rounded half-up to the cent through
+# `ca-qc/cent_rounding`. The record step is engine-internal and carries no reference: line 199 is
+# printed by the TP-1 income form.
+form:
+  name: ca-qc/tp1_net_income
+capabilities:
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp1_income.tp1_total_income_line_199
+    produces:
+      output: ca-qc/tp1_net_income_total_income_line_199
+  - name: core/subtract
+    reference: "256"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/tp1_net_income_total_income_line_199
+      less: ca-qc/tp1_total_deductions_line_254
+    produces:
+      output: ca-qc/tp1_income_less_deductions_line_256
