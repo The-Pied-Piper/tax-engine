@@ -1417,6 +1417,12 @@ it says to carry to line 401. Produced by one core/record_total over the chart's
 TP1_NON_REFUNDABLE_TAX_CREDITS_LINE_406 = AmountKind.declare(
     CATALOG, "tp1_non_refundable_tax_credits_line_406"
 )
-"""TP-1 line 406 "Non-refundable tax credits (line 399)": the credits form's line 399, a copy. Signed,
-as line 399 is. Produced by one core/record_total over the credits form's export
+"""TP-1 line 406 "Non-refundable tax credits (line 399)": the credits form's line 399, a copy.
+Signed, as line 399 is. Produced by one core/record_total over the credits form's export
 (`tp1_tax_line_406.yaml`)."""
+
+TP1_LINE_413 = AmountKind.declare(CATALOG, "tp1_line_413")
+"""TP-1 line 413 "Subtract line 406 from line 401": the income tax on taxable income less the
+non-refundable tax credits, rounded half-up to the cent. The form prints no floor, so the figure is
+signed (line 432 floors it). Produced by one core/subtract (`tp1_tax_line_413.yaml`) and exported by
+the form for lines 425 and 430."""

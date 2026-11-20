@@ -1,0 +1,19 @@
+# TP-1 (2025) line 413: "Subtract line 406 from line 401. If you must complete Part A of Schedule E,
+# enter the amount from line 413 of Schedule E instead. = 413" (page 4, Income tax and
+# contributions). One step, core/subtract; the form prints no floor, so a negative result is
+# carried as printed (line 432 floors it later, as the form says). Part A of Schedule E is not
+# completed by a salary-only filer. Rounded half-up to the cent through ca-qc/cent_rounding. The
+# form exports line 413 for lines 425 and 430.
+form:
+  name: ca-qc/tp1_tax
+capabilities:
+  - name: core/subtract
+    reference: "413"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/tp1_income_tax_on_taxable_income_line_401
+      less: ca-qc/tp1_non_refundable_tax_credits_line_406
+    produces:
+      output: ca-qc/tp1_line_413
