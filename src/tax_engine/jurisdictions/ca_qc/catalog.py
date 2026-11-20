@@ -1782,3 +1782,10 @@ TP1_HEALTH_SERVICES_FUND_LINE_446 = AmountKind.declare(
 )
 """TP-1 line 446 "Contribution to the health services fund": Schedule F line 82, a copy. Produced by
 one core/record_total over Schedule F's export (`tp1_totals_line_446.yaml`)."""
+
+TP1_DRUG_INSURANCE_PREMIUM_LINE_447 = AmountKind.declare(
+    CATALOG, "tp1_drug_insurance_premium_line_447", non_negative=True
+)
+"""TP-1 line 447 "Premium payable under the Quebec prescription drug insurance plan": Schedule K
+line 98, a copy. Produced by one core/record_total over Schedule K's export
+(`tp1_totals_line_447.yaml`)."""

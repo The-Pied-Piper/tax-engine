@@ -1,0 +1,18 @@
+# TP-1 (2025) line 447: "Premium payable under the Quebec prescription drug insurance plan. Complete
+# Schedule K or enter the number corresponding to your situation in box 449. + 447" (page 5). The
+# figure is Schedule K line 98 ("Carry the result to line 447 of your return"), which that form
+# exports; another form reads an export only as a record list
+# (`ca-qc/tp1_schedule_k.schedule_k_premium_payable_line_98`), so the one step is core/record_total
+# over those records (as line 406 reads the credits form). Line 98 follows the answer to Schedule K
+# line 50 (default: not covered by a group drug plan); box 449 is that answer and has no step here.
+form:
+  name: ca-qc/tp1_totals
+capabilities:
+  - name: core/record_total
+    title: "Premium payable under the Quebec prescription drug insurance plan"
+    reference: "447"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp1_schedule_k.schedule_k_premium_payable_line_98
+    produces:
+      output: ca-qc/tp1_drug_insurance_premium_line_447
