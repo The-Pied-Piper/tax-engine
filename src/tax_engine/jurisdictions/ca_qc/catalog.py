@@ -2109,10 +2109,68 @@ TP1_LINE_455 = AmountKind.declare(CATALOG, "tp1_line_455", non_negative=True)
 credit for childcare expenses. One optional input a salary-only caller does not give; line 465 reads
 a blank as 0 (`tp1_totals_line_465_inputs.yaml`)."""
 
+TP1_NET_BUSINESS_INCOME_SCHEDULE_L_LINE_27 = AmountKind.declare(
+    CATALOG, "tp1_net_business_income_schedule_l_line_27", non_negative=True
+)
+"""Net business income (Schedule L line 27), one of the three amounts TP-1 line 457 tests against
+$2,000. Schedule L is not computed, so it is an optional input a salary-only caller does not give;
+line 457 reads a blank as 0 (`tp1_totals_line_457_inputs.yaml`). Schedule R line 10 enters 0 for a
+negative amount, so the figure is given as 0 for a loss."""
+
+TP1_FAMILY_RESOURCE_EARNINGS_SCHEDULE_L_LINE_40 = AmountKind.declare(
+    CATALOG, "tp1_family_resource_earnings_schedule_l_line_40", non_negative=True
+)
+"""Insurable earnings of a person responsible for a family-type resource or an intermediate
+resource (Schedule L line 40), one of the three amounts TP-1 line 457 tests against $2,000. An
+optional input a salary-only caller does not give; line 457 reads a blank as 0
+(`tp1_totals_line_457_inputs.yaml`)."""
+
+TP1_EMPLOYMENT_INCOME_FOR_LINE_457 = AmountKind.declare(
+    CATALOG, "tp1_employment_income_for_line_457", non_negative=True
+)
+"""TP-1 line 457: the employment income subject to the QPIP, line 101 of the return, read as the
+export of the income form (`tp1_totals_line_457.yaml`). It prints no line of its own."""
+
+TP1_LINE_97_FOR_LINE_457 = AmountKind.declare(
+    CATALOG, "tp1_line_97_for_line_457", non_negative=True
+)
+"""TP-1 line 457: the QPIP premium of line 97, read as the export of the income form
+(`tp1_totals_line_457.yaml`). It prints no line of its own."""
+
+TP1_LINE_457_INCOME_TOTAL = AmountKind.declare(
+    CATALOG, "tp1_line_457_income_total", non_negative=True
+)
+"""TP-1 line 457: the total of the net business income, the employment income subject to the QPIP
+and the insurable earnings of a family-type resource that the guide tests against $2,000, unrounded
+(the form prints no line for it)."""
+
+TP1_LINE_457_UNDER_THRESHOLD_COUNT = CountKind.declare(
+    CATALOG, "tp1_line_457_under_threshold_count", non_negative=True
+)
+"""TP-1 line 457: 1 when the total of the three amounts is less than $2,000 (the whole of line 97
+is carried to line 457), else 0 (only the excess over the maximum premium is)."""
+
+TP1_LINE_457_MAXIMUM_PREMIUM = AmountKind.declare(
+    CATALOG, "tp1_line_457_maximum_premium", non_negative=True
+)
+"""TP-1 line 457, the maximum QPIP premium the guide prints ($484.12 for 2025), claimed whole."""
+
+TP1_LINE_97_WITHIN_MAXIMUM_FOR_LINE_457 = AmountKind.declare(
+    CATALOG, "tp1_line_97_within_maximum_for_line_457", non_negative=True
+)
+"""TP-1 line 457: line 97 or the maximum premium, whichever is less, unrounded (the form prints no
+line for it)."""
+
+TP1_LINE_457_EXCESS = AmountKind.declare(CATALOG, "tp1_line_457_excess", non_negative=True)
+"""TP-1 line 457: the excess of line 97 over the maximum premium, unrounded (the form prints no line
+for it)."""
+
 TP1_LINE_457 = AmountKind.declare(CATALOG, "tp1_line_457", non_negative=True)
-"""TP-1 line 457, one of the lines that line 465 adds ("Add lines 451.2 through 463"): the QPIP
-overpayment. One optional input a salary-only caller does not give; line 465 reads a blank as 0
-(`tp1_totals_line_465_inputs.yaml`)."""
+"""TP-1 line 457, "QPIP overpayment", one of the lines that line 465 adds ("Add lines 451.2 through
+463"): line 97 when the total of the net business income, the employment income subject to the QPIP
+and the earnings of a family-type resource is less than $2,000, else the excess of line 97 over the
+maximum premium (guide, line 457). Produced by `tp1_totals_line_457.yaml`, exported by the totals
+form, and read by the return summary."""
 
 TP1_LINE_458 = AmountKind.declare(CATALOG, "tp1_line_458", non_negative=True)
 """TP-1 line 458, one of the lines that line 465 adds ("Add lines 451.2 through 463"): the tax
@@ -2230,6 +2288,18 @@ TP1_INCOME_TAX_LESS_WORK_PREMIUM_RETURN = AmountKind.declare(
 """Quebec return summary: TP-1 line 450 less line 456, signed (no floor). For a salary-only filer
 only line 456 reduces line 450, because the credits that TP-1 line 468 collects are left out of the
 take-home. One core/subtract (`return.yaml`)."""
+
+TP1_QPIP_OVERPAYMENT_RETURN = AmountKind.declare(
+    CATALOG, "tp1_qpip_overpayment_return", non_negative=True
+)
+"""Quebec return summary: TP-1 line 457 "QPIP overpayment", read from the totals form's export. One
+core/record_total (`return.yaml`)."""
+
+TP1_INCOME_TAX_LESS_CREDITS_RETURN = AmountKind.declare(
+    CATALOG, "tp1_income_tax_less_credits_return"
+)
+"""Quebec return summary: TP-1 line 450 less lines 456 and 457, signed (no floor). One core/subtract
+(`return.yaml`)."""
 
 FEDERAL_TOTAL_PAYABLE_RETURN = AmountKind.declare(
     CATALOG, "federal_total_payable_return", non_negative=True
