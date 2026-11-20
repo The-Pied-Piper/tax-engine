@@ -868,3 +868,87 @@ TP1_SCHEDULE_F_CONTRIBUTION_LINE_82 = AmountKind.declare(
 )
 """Schedule F line 82, "Contribution to the health services fund", carried to TP-1 line 446: the
 lesser of lines 80 plus 81 and the column's maximum; 0.00 when Part B is not completed."""
+
+SCHEDULE_B_LINE_10 = AmountKind.declare(CATALOG, "schedule_b_line_10", non_negative=True)
+"""Schedule B (TP-1.D.B-V) Part A line 10, "Amount from line 275 of your return": the net income of
+the TP-1 net income form, read from its export. Produced by one core/record_total
+(`schedule_b_line_10.yaml`)."""
+
+SCHEDULE_B_LINE_12 = AmountKind.declare(CATALOG, "schedule_b_line_12", non_negative=True)
+"""Schedule B Part A line 12, "Amount from line 275 of your spouse's return (spouse on December 31,
+2025)": an optional input, a spouse line a salary-only caller does not give; line 14 reads it as 0
+when it is left out."""
+
+SCHEDULE_B_LINE_14 = AmountKind.declare(CATALOG, "schedule_b_line_14", non_negative=True)
+"""Schedule B Part A line 14, "Add lines 10 and 12. Family income", rounded half-up to the cent.
+Produced by one core/sum (`schedule_b_line_14.yaml`)."""
+
+SCHEDULE_B_THRESHOLD_LINE_16 = AmountKind.declare(
+    CATALOG, "schedule_b_threshold_line_16", non_negative=True
+)
+"""Schedule B Part A line 16, the printed 42,090.00 subtracted from the family income, claimed
+whole (`schedule_b_line_16.yaml`)."""
+
+SCHEDULE_B_LINE_18 = AmountKind.declare(CATALOG, "schedule_b_line_18", non_negative=True)
+"""Schedule B Part A line 18, "Subtract line 16 from line 15. If the result is negative, enter 0":
+the family income (line 15, a copy of line 14) less line 16, not below zero, rounded half-up to the
+cent. Produced by one core/subtract_not_below_zero (`schedule_b_line_18.yaml`)."""
+
+SCHEDULE_B_LIVED_ALONE_LINE_20 = CountKind.declare(
+    CATALOG, "schedule_b_lived_alone_line_20", non_negative=True
+)
+"""Lived alone answer, Schedule B line 20 "If, throughout 2025, you maintained and ordinarily lived
+in a dwelling in which you lived alone or only with ...": 1 for yes, 0 for no, read as 0 (not alone)
+when the caller gives no answer."""
+
+SCHEDULE_B_LIVED_ALONE_CHECKED_LINE_20 = CountKind.declare(
+    CATALOG, "schedule_b_lived_alone_checked_line_20", non_negative=True
+)
+"""Lived alone answer, checked, Schedule B line 20: the answer, refused above 1 so that the
+situation cannot be checked twice."""
+
+SCHEDULE_B_LIVING_ALONE_AMOUNT_LINE_20 = AmountKind.declare(
+    CATALOG, "schedule_b_living_alone_amount_line_20", non_negative=True
+)
+"""Schedule B line 20, the printed $2,128 for a person living alone, claimed whole."""
+
+SCHEDULE_B_LINE_18_GATE_COUNT_LINE_20 = CountKind.declare(
+    CATALOG, "schedule_b_line_18_gate_count_line_20", non_negative=True
+)
+"""Schedule B line 20's income gate: 0 when the amount on line 18 is more than $64,699 (not entitled
+to the amount, no spouse), else 1."""
+
+SCHEDULE_B_LIVING_ALONE_AMOUNT_IF_ALONE_LINE_20 = AmountKind.declare(
+    CATALOG, "schedule_b_living_alone_amount_if_alone_line_20", non_negative=True
+)
+"""Schedule B line 20, fourth step: the printed $2,128 when the answer is yes, 0 when it is no,
+rounded half-up to the cent."""
+
+SCHEDULE_B_LINE_20 = AmountKind.declare(CATALOG, "schedule_b_line_20", non_negative=True)
+"""Schedule B Part B line 20, the amount for a person living alone: $2,128 when the answer is yes
+and the income gate does not apply, else 0, rounded half-up to the cent."""
+
+SCHEDULE_B_LINE_30 = AmountKind.declare(CATALOG, "schedule_b_line_30", non_negative=True)
+"""Schedule B Part B line 30, "Add lines 20 through 28": line 20 alone, the only amount the
+take-home builds (lines 21, 22, 23, 27 and 28 are not built), rounded half-up to the cent. Produced
+by one core/sum (`schedule_b_line_30.yaml`)."""
+
+SCHEDULE_B_LINE_31 = AmountKind.declare(CATALOG, "schedule_b_line_31", non_negative=True)
+"""Schedule B Part B line 31, "Amount from line 18 x 18.75%": line 18 at the printed rate, rounded
+half-up to the cent. Produced by one core/apply_rate (`schedule_b_line_31.yaml`)."""
+
+SCHEDULE_B_LINE_32 = AmountKind.declare(CATALOG, "schedule_b_line_32", non_negative=True)
+"""Schedule B Part B line 32, "Subtract line 31 from line 30. If the result is negative, enter 0.
+Amount to which you or, if applicable, your spouse is entitled", rounded half-up to the cent.
+Produced by one core/subtract_not_below_zero (`schedule_b_line_32.yaml`)."""
+
+SCHEDULE_B_LINE_33 = AmountKind.declare(CATALOG, "schedule_b_line_33", non_negative=True)
+"""Schedule B Part B line 33, "Amount claimed on line 361 of your spouse's return (spouse on
+December 31, 2025)": an optional input, a spouse line a salary-only caller does not give; line 34
+reads it as 0 when it is left out."""
+
+SCHEDULE_B_LINE_34 = AmountKind.declare(CATALOG, "schedule_b_line_34")
+"""Schedule B Part B line 34, "Subtract line 33 from line 32. Carry the result to line 361 of your
+return. Age amount, amount for a person living alone and amount for retirement income", rounded
+half-up to the cent. The form prints no floor, so the figure is signed. Produced by one
+core/subtract (`schedule_b_line_34.yaml`) and exported by the form for TP-1 line 361."""

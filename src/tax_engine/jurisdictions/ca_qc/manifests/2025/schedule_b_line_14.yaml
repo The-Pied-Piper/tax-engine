@@ -1,0 +1,18 @@
+# Schedule B (TP-1.D.B-V, 2025-12) Part A line 14: "Add lines 10 and 12. Family income". One step,
+# core/sum. Line 12 is an optional input (a spouse line); a blank is read as 0. Line 15 is "Amount
+# from line 14", a copy, and has no step. Rounded half-up to the cent through ca-qc/cent_rounding.
+form:
+  name: ca-qc/schedule_b
+capabilities:
+  - name: core/sum
+    title: "Family income"
+    reference: "14"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts: [ca-qc/schedule_b_line_10, ca-qc/schedule_b_line_12]
+    blank:
+      ca-qc/schedule_b_line_12: "0"
+    produces:
+      output: ca-qc/schedule_b_line_14

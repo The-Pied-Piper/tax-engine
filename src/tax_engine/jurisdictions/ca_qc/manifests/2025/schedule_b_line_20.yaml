@@ -1,0 +1,58 @@
+# Schedule B (TP-1.D.B-V, 2025-12) Part B line 20: "If, throughout 2025, you maintained and
+# ordinarily lived in a dwelling in which you lived alone or only with ... enter $2,128", and Part A:
+# "You are not entitled to any of these amounts if ... you did not have a spouse on December 31,
+# 2025, and the amount on line 18 is more than $64,699." No capability says "0 if line 18 is more
+# than 64,699", so the line is five steps, as ON428 line 80 and NL428 line 40 are built:
+# 1. ca/yes_or_no_count checks the optional answer "lived alone" (a blank is read as 0, not alone)
+#    and refuses a count above 1.
+# 2. core/credit_amount produces the printed 2,128.00 from its dataset.
+# 3. ca/count_by_conditions reads the printed gate over line 18: 0 when line 18 is more than 64,699,
+#    else 1. The spouse gate (line 18 more than 90,027) is not built, as the take-home has no spouse.
+# 4. core/times_count of 2,128.00 by the checked answer: the amount when alone, 0.00 otherwise.
+# 5. core/times_count of that by the gate count: line 20.
+# Steps 1 and 3 to 4 are not lines of the form, so they have no reference. The form prints no label
+# for line 20, so its step is untitled.
+form:
+  name: ca-qc/schedule_b
+capabilities:
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca-qc/schedule_b_lived_alone_line_20
+    blank:
+      count: "0"
+    produces:
+      output: ca-qc/schedule_b_lived_alone_checked_line_20
+  - name: core/credit_amount
+    unit: ca/cad
+    params:
+      amount: ca-qc/schedule_b_living_alone_amount_line_20
+    produces:
+      output: ca-qc/schedule_b_living_alone_amount_line_20
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca-qc/schedule_b_line_20_conditions
+    consumes:
+      counts: []
+      amounts:
+        - ca-qc/schedule_b_line_18
+    produces:
+      output: ca-qc/schedule_b_line_18_gate_count_line_20
+  - name: core/times_count
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/schedule_b_living_alone_amount_line_20
+      count: ca-qc/schedule_b_lived_alone_checked_line_20
+    produces:
+      output: ca-qc/schedule_b_living_alone_amount_if_alone_line_20
+  - name: core/times_count
+    reference: "20"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/schedule_b_living_alone_amount_if_alone_line_20
+      count: ca-qc/schedule_b_line_18_gate_count_line_20
+    produces:
+      output: ca-qc/schedule_b_line_20
