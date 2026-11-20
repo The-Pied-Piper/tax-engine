@@ -1,12 +1,14 @@
-# Schedule K (2025) Part C, line 83: "Add lines 81 and 82 (maximum $766)." One step: core/sum of the
-# two lines, rounded half-up to the cent (`ca-qc/cent_rounding`). The printed maximum is applied by
-# line 84, which caps this figure at $766 (owner ruling, 19 Nov 2026: the maximum is one cap, not a
-# ranged dataset). The form prints no label for the line, so the step is untitled.
+# Schedule K (2025) Part C, line 83: "Add lines 81 and 82 (maximum $766)." Two steps, the last of
+# which is line 83: the sum of lines 81 and 82, rounded half-up to the cent (`ca-qc/cent_rounding`),
+# and the lesser of that sum and the printed maximum (`ca-qc/schedule_k_line_83_maximum`, 766.00),
+# as Schedule F line 82 does its cap in the line itself. Only the last step prints the line's
+# reference; the first is engine-internal. Above a line 48 of $14,669 the form enters $766 on line
+# 84, which is this line's capped figure. The form prints no label for the line, so the steps are
+# untitled.
 form:
   name: ca-qc/tp1_schedule_k
 capabilities:
   - name: core/sum
-    reference: "83"
     unit: ca/cad
     params:
       rounding: ca-qc/cent_rounding
@@ -14,5 +16,14 @@ capabilities:
       parts:
         - ca-qc/schedule_k_premium_on_excess_line_81
         - ca-qc/schedule_k_column_constant_line_82
+    produces:
+      output: ca-qc/schedule_k_column_premium_before_maximum
+  - name: core/capped_amount
+    reference: "83"
+    unit: ca/cad
+    params:
+      cap: ca-qc/schedule_k_line_83_maximum
+    consumes:
+      base: ca-qc/schedule_k_column_premium_before_maximum
     produces:
       output: ca-qc/schedule_k_column_premium_line_83

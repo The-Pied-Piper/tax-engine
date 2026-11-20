@@ -1,0 +1,13 @@
+# Revenu Quebec TP-1.D.K-V (2025-12), Schedule K, Part C, line 83 "Add lines 81 and 82 (maximum
+# $766)": the printed maximum of line 83, taken whole and never recomputed. It is the cap applied
+# inside line 83 (the form's "is more than $14,669, enter $766 on line 84" is the same figure);
+# half-up to the cent gives the scale of a dollars-and-cents box and changes nothing.
+family: ca-qc/schedule_k_line_83_maximum
+tax_year: 2025
+kind: amount
+title: "maximum premium"
+unit: ca/cad
+sources:
+  - Revenu Quebec TP-1.D.K-V (2025-12), Schedule K, Part C
+rounding: {increment: "0.01", mode: half_up}
+amount: "766"
