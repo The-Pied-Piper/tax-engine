@@ -16,7 +16,8 @@ credits form exports lines 1, 3, 4, 5, 6, 7 and 8, and `ca-sk/sk428` exports onl
 
 Figures: line 60 is line 58 (line 8 as the engine produces it) less line 59, re-derived here in
 `_derived` with Decimal (not a CRA example); line 62 is that plus line 61 (0 when blank):
-0.00 / 7,597.62 / 24,720.01 at salaries 0 / 70,000 / 200,000. The column edges belong to the line 8 and line 58 tests.
+0.00 / 7,597.62 / 24,720.01 at salaries 0 / 70,000 / 200,000. The column edges belong to the line 8
+and line 58 tests.
 """
 
 from __future__ import annotations

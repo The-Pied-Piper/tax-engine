@@ -13,8 +13,8 @@ made up here: the credits form exports lines 1, 3, 4, 5, 6, 7 and 8, and `ca-sk/
 line 58.
 
 Figures: line 58 is line 8 as the engine produces it, re-derived here in `_derived` with Decimal
-(not a CRA example): 0.00 / 7,597.62 / 24,720.01 at salaries 0 / 70,000 / 200,000. The column edges belong to the line 8
-test.
+(not a CRA example): 0.00 / 7,597.62 / 24,720.01 at salaries 0 / 70,000 / 200,000. The column edges
+belong to the line 8 test.
 """
 
 from __future__ import annotations
