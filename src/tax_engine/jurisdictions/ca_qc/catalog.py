@@ -2141,3 +2141,9 @@ TP1_INCOME_TAX_LESS_WORK_PREMIUM_RETURN = AmountKind.declare(
 """Quebec return summary: TP-1 line 450 less line 456, signed (no floor). For a salary-only filer
 only line 456 reduces line 450, because the credits that TP-1 line 468 collects are left out of the
 take-home. One core/subtract (`return.yaml`)."""
+
+FEDERAL_TOTAL_PAYABLE_RETURN = AmountKind.declare(
+    CATALOG, "federal_total_payable_return", non_negative=True
+)
+"""Quebec return summary: 5005-R line 43500 "Total payable", read from the form's export. One
+core/record_total (`return.yaml`)."""
