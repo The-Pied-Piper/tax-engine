@@ -22,7 +22,7 @@ from tax_engine.jurisdictions.ca.catalog.income import (
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
 
 D = Decimal
-PART = "t1_taxable_income_line_10100.yaml"
+PART = "t1_employment_income_line_10100.yaml"
 
 HEADER = dedent("""\
     jurisdiction: CA-ON
@@ -36,7 +36,7 @@ HEADER = dedent("""\
     """)
 FORM = dedent("""\
     form:
-      name: ca/t1_taxable_income
+      name: ca/t1_employment_income
       required: true
       exports:
         - ca/employment_income_line_10100
@@ -50,7 +50,7 @@ def line_10100(take_home_service: TakeHomeService, salary: str, other: str | Non
     worksheets = take_home_service(HEADER, FORM, PART).compute(
         JurisdictionCode("CA-ON"), 2025, *artifacts
     )
-    (sheet,) = worksheets["ca/t1_taxable_income"]
+    (sheet,) = worksheets["ca/t1_employment_income"]
     return sheet.get(EMPLOYMENT_INCOME_LINE_10100).value
 
 
@@ -70,6 +70,6 @@ def test_line_10100_is_listed_once_with_its_title_and_reference(
     worksheets = take_home_service(HEADER, FORM, PART).compute(
         JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, D("70000"))
     )
-    (sheet,) = worksheets["ca/t1_taxable_income"]
+    (sheet,) = worksheets["ca/t1_employment_income"]
     assert sheet.reference("employment_income_line_10100") == "10100"
     assert sheet.title("employment_income_line_10100") == "Employment income"

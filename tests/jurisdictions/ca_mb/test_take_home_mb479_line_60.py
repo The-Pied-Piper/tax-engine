@@ -58,8 +58,9 @@ LINE_59 = "ca-mb/mb479_primary_caregiver_credit_line_59"
 LINE_56 = "ca-mb/mb479_eia_mspd_number_line_56"
 T1_PARTS = (
     "t1_taxable_income_inputs.yaml",
-    "t1_taxable_income_line_10100.yaml",
-    "t1_taxable_income_line_10400.yaml",
+    "t1_employment_income.yaml",
+    "t1_employment_income_line_10100.yaml",
+    "t1_employment_income_line_10400.yaml",
     "t1_taxable_income_line_15000.yaml",
     "t1_taxable_income_line_23300.yaml",
     "t1_taxable_income_line_23400.yaml",
@@ -68,7 +69,7 @@ T1_PARTS = (
     "t1_taxable_income_line_25700_inputs.yaml",
     "t1_taxable_income_line_26000.yaml",
     "t1_taxable_income.yaml",
-    "t1_taxable_income_line_10400_inputs.yaml",
+    "t1_employment_income_line_10400_inputs.yaml",
 )
 MB479_PARTS = (
     "mb479_line_1.yaml",

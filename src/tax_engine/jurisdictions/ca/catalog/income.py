@@ -34,15 +34,26 @@ OTHER_EMPLOYMENT_INCOME = AmountKind.declare(CATALOG, "other_employment_income",
 EMPLOYMENT_INCOME_LINE_10100 = AmountKind.declare(
     CATALOG, "employment_income_line_10100", non_negative=True
 )
-"""Employment income as T1 line 10100 prints it (`t1_taxable_income_line_10100.yaml`): the salary
-input (`ca/employment_income`) carried to line 15000, the one place the T1 lists it."""
+"""Employment income as T1 line 10100 prints it (`t1_employment_income_line_10100.yaml`): the salary
+input (`ca/employment_income`), exported by the T1 employment income form."""
 
 OTHER_EMPLOYMENT_INCOME_LINE_10400 = AmountKind.declare(
     CATALOG, "other_employment_income_line_10400", non_negative=True
 )
-"""Other employment income as T1 line 10400 prints it (`t1_taxable_income_line_10400.yaml`): the
-optional input (`ca/other_employment_income`) carried to line 15000, the one place the T1 lists
-it."""
+"""Other employment income as T1 line 10400 prints it (`t1_employment_income_line_10400.yaml`): the
+optional input (`ca/other_employment_income`), exported by the T1 employment income form."""
+
+TOTAL_INCOME_EMPLOYMENT_INCOME_LINE_10100 = AmountKind.declare(
+    CATALOG, "total_income_employment_income_line_10100", non_negative=True
+)
+"""Total income, the part from T1 line 10100 (employment income): the T1 employment income form's
+export, read by line 15000 (`t1_taxable_income_line_15000.yaml`)."""
+
+TOTAL_INCOME_OTHER_EMPLOYMENT_INCOME_LINE_10400 = AmountKind.declare(
+    CATALOG, "total_income_other_employment_income_line_10400", non_negative=True
+)
+"""Total income, the part from T1 line 10400 (other employment income): the T1 employment income
+form's export, read by line 15000 (`t1_taxable_income_line_15000.yaml`)."""
 
 CREDITS_AGAINST_BASIC_FEDERAL_TAX = AmountKind.declare(
     CATALOG, "credits_against_basic_federal_tax", non_negative=True

@@ -3,11 +3,27 @@
 # ("Enter the amount from line 33 of the previous page.") is a copy of line 33, so it gets no step.
 #
 # Line 15000, total income, is the sum of line 10100 (employment income) and line 10400 (other
-# employment income) in form line order. The unnumbered subtotals on lines 21 and 28 fold into this
+# employment income) in form line order. Both lines belong to the T1 employment income form
+# (`ca/t1_employment_income`) and are read as its exports (a record list each, totalled by
+# core/record_total). The unnumbered subtotals on lines 21 and 28 fold into this
 # step and nothing else reads them. Line 10400 is an optional input that reads as 0 when the filer has none, so a salary-only filer's total is the salary.
 form:
   name: ca/t1_taxable_income
 capabilities:
+  - name: core/record_total
+    title: "Employment income from line 10100"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_employment_income.employment_income_line_10100
+    produces:
+      output: ca/total_income_employment_income_line_10100
+  - name: core/record_total
+    title: "Other employment income from line 10400"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_employment_income.other_employment_income_line_10400
+    produces:
+      output: ca/total_income_other_employment_income_line_10400
   - name: core/sum
     title: "Total income"
     reference: "15000"
@@ -15,6 +31,6 @@ capabilities:
     params:
       rounding: ca/cent_rounding
     consumes:
-      parts: [ca/employment_income_line_10100, ca/other_employment_income_line_10400]
+      parts: [ca/total_income_employment_income_line_10100, ca/total_income_other_employment_income_line_10400]
     produces:
       output: ca/total_income

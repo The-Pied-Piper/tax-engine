@@ -93,7 +93,7 @@ COUNT_LINES: dict[str, CountKind] = {
     "1": T2204_LINE_1_COUNT,
     "15": T2204_LINE_15_COUNT,
 }
-CENT_LINES = ("3", "4", "10")
+CENT_LINES = ("4", "10")
 
 
 def compose(
@@ -279,25 +279,31 @@ def test_a_negative_salary_is_refused(take_home_service: TakeHomeService) -> Non
         salary_only(take_home_service, "-1")
 
 
-@pytest.mark.parametrize(
-    ("salary", "line_1", "line_1_plus_2"),
-    [("70000", "70000.00", "70000.00"), ("20000", "20000.00", "20000.00")],
-)
-def test_the_cent_figures_print_cents_at_70000_and_20000(
-    take_home_service: TakeHomeService, salary: str, line_1: str, line_1_plus_2: str
+@pytest.mark.parametrize("salary", ["70000", "20000"])
+def test_the_ei_overpayment_prints_cents_at_70000_and_20000(
+    take_home_service: TakeHomeService, salary: str
 ) -> None:
-    # Line 1 (times count), line 3's sum (core/sum) and the EI overpayment (times count, a count of
-    # 0 at salary only) each take the cent rule of their rounding dataset.
-    sheet = salary_only(take_home_service, salary)
+    # The EI overpayment (times count, a count of 0 at salary only) takes the cent rule of its
+    # rounding dataset. Lines 1 and 3 do not: the form prints no rounding for them, so they carry
+    # the salary exactly (see the next tests).
+    value = salary_only(take_home_service, salary).get(EI_OVERPAYMENT).value
 
-    for artifact, printed in (
-        (T2204_LINE_1, line_1),
-        (T2204_LINE_1_PLUS_2, line_1_plus_2),
-        (EI_OVERPAYMENT, "0.00"),
-    ):
-        value = sheet.get(artifact).value
-        assert str(value) == printed
-        assert value.as_tuple().exponent == -2
+    assert str(value) == "0.00"
+    assert value.as_tuple().exponent == -2
+
+
+@pytest.mark.parametrize("salary", ["70000", "20000"])
+def test_line_1_plus_2_is_the_salary_carried_exactly(
+    take_home_service: TakeHomeService, salary: str
+) -> None:
+    assert salary_only(take_home_service, salary).get(T2204_LINE_1_PLUS_2).value == D(salary)
+
+
+@pytest.mark.parametrize("salary", ["70000", "20000"])
+def test_line_1_is_the_salary_carried_exactly_at_70000_and_20000(
+    take_home_service: TakeHomeService, salary: str
+) -> None:
+    assert salary_only(take_home_service, salary).get(T2204_LINE_1).value == D(salary)
 
 
 def test_70k_trace_labels_line_16_by_its_figure(take_home_service: TakeHomeService) -> None:

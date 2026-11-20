@@ -75,12 +75,17 @@ FORM = "{}\n"
 PARTS = (
     "salary.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
+    *(part.name for part in sorted(TAKE_HOME.rglob("t1_employment_income*.yaml"))),
     *(part.name for part in sorted(TAKE_HOME.rglob("t1_taxable_income*.yaml"))),
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_6*.yaml"))),
 )
 
 # Amount lines by form line. The printed rates (27% on line 19, 15% on line 26) are dataset figures
 # with no figure of their own: they are pinned through lines 20 and 27.
+# Line 1 is a sum the form prints no rounding rule for, so it is carried exactly (a whole-dollar
+# salary stays a whole-dollar figure).
+CARRIED_EXACT = {"1"}
+
 AMOUNT_LINES: dict[str, AmountKind] = {
     "1": CWB_EMPLOYMENT_INCOME,
     "5": WORKING_INCOME,
@@ -186,6 +191,8 @@ def test_every_amount_line_has_exactly_two_decimals(
     sheet = schedule_6(take_home_service, salary)
 
     for line, kind in AMOUNT_LINES.items():
+        if line in CARRIED_EXACT:
+            continue
         assert sheet.get(kind).value.as_tuple().exponent == -2, line
 
 

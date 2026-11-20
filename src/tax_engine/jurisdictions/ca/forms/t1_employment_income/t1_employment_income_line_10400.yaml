@@ -4,7 +4,7 @@
 # the same input (Schedule 6, ON428-A, line 31260) print their own lines, not line 10400. Line 15000
 # reads this step.
 form:
-  name: ca/t1_taxable_income
+  name: ca/t1_employment_income
 capabilities:
   - name: core/sum
     title: "Other employment income"

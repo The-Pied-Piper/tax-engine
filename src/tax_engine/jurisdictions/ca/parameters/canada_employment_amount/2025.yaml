@@ -4,8 +4,8 @@
 # (line 10400) is "Other employment income". It is a plain amount, not a credit:
 # the lesser is one part of the total of the credit amounts (line 33500), which
 # the credit rate is applied to once.
-# Line 92 is a dollars-and-cents box, so the lesser rounds half-up to the cent, the
-# project's choice, as the form states no rounding rule.
+# The form prints no rounding rule for the lesser (5006-r-25e.txt, line 92 and line 31260), so it
+# is carried as it is, not rounded to the cent (the project's rule: round only where the form says).
 # The title is the name the form prints for line 31260, "Canada employment amount";
 # the form prints no separate name for the dollar figure.
 family: ca/canada_employment_amount
@@ -16,5 +16,5 @@ unit: ca/cad
 sources:
   - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-r/5000-r-25e.txt
   - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-r/5000-r-25e.pdf
-rounding: {increment: "0.01", mode: half_up}
+rounding: none
 amount: "1471"

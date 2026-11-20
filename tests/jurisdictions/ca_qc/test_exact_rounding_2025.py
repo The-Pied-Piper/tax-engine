@@ -1,5 +1,6 @@
 """The 2025 `ca-qc/exact_rounding` dataset: the rule of a Quebec form line the engine only carries
-through, with no arithmetic of its own: T1 line 10100 (employment income) and line 10400 (other
+through, or sums its lines, with no rounding rule printed for it:
+T1 line 10100 (employment income) and line 10400 (other
 employment income). The form prints no rounding rule for them, so nothing is rounded
 (`rounding: none`); the cent rule of `ca-qc/cent_rounding` must not touch them."""
 
