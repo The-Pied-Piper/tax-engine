@@ -15,8 +15,8 @@ from decimal import Decimal
 
 import pytest
 
-from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.jurisdictions.ca.catalog.refund import T2204_PREMIUMS_DEDUCTED
+from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 from tests.jurisdictions.ca_qc.support import t2204_worksheet
 
 D = Decimal
@@ -27,14 +27,14 @@ D = Decimal
     [("20000", "262.00"), ("70000", "860.67"), ("200000", "860.67")],
 )
 def test_a_blank_line_4_is_the_quebec_ei_premium_on_the_salary(
-    take_home_service: TaxComputationService, salary: str, expected: str
+    take_home_service: TakeHomeService, salary: str, expected: str
 ) -> None:
     assert t2204_worksheet(take_home_service, salary).get(T2204_PREMIUMS_DEDUCTED).value == D(
         expected
     )
 
 
-def test_a_given_line_4_is_the_output_unchanged(take_home_service: TaxComputationService) -> None:
+def test_a_given_line_4_is_the_output_unchanged(take_home_service: TakeHomeService) -> None:
     # 70,000 would give 860.67; the figure typed from the T4 is line 4 as it is.
     assert (
         str(

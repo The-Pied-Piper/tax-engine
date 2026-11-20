@@ -15,8 +15,8 @@ from decimal import Decimal
 
 import pytest
 
-from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.jurisdictions.ca.catalog.refund import T2204_LINE_16
+from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 from tests.jurisdictions.ca_qc.support import t2204_worksheet
 
 D = Decimal
@@ -27,20 +27,20 @@ D = Decimal
     [("20000", "262.00"), ("70000", "860.67"), ("200000", "860.67")],
 )
 def test_line_16_is_the_quebec_premium_on_the_salary(
-    take_home_service: TaxComputationService, salary: str, expected: str
+    take_home_service: TakeHomeService, salary: str, expected: str
 ) -> None:
     assert t2204_worksheet(take_home_service, salary).get(T2204_LINE_16).value == D(expected)
 
 
 @pytest.mark.parametrize("salary", ["70000", "200000"])
 def test_line_16_above_the_limit_is_the_printed_maximum(
-    take_home_service: TaxComputationService, salary: str
+    take_home_service: TakeHomeService, salary: str
 ) -> None:
     assert str(t2204_worksheet(take_home_service, salary).get(T2204_LINE_16).value) == "860.67"
 
 
 def test_line_16_at_20000_is_1_31_percent_of_the_salary(
-    take_home_service: TaxComputationService,
+    take_home_service: TakeHomeService,
 ) -> None:
     assert t2204_worksheet(take_home_service, "20000").get(T2204_LINE_16).value == D("20000") * D(
         "0.0131"

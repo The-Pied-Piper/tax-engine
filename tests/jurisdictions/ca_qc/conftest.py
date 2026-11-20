@@ -1,50 +1,62 @@
-"""Fixtures for the Quebec tests."""
+"""Fixtures of the Quebec tests."""
 
 from __future__ import annotations
 
 from pathlib import Path
-from textwrap import dedent
-from typing import Any
+from typing import Protocol
 
 import pytest
-import yaml
 
 import tax_engine.jurisdictions.ca_qc
+from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
-from tests.jurisdictions.ca_qc.support import quebec_service
-
-MANIFEST = (
-    Path(tax_engine.jurisdictions.ca_qc.__file__).parent / "manifests" / "2025" / "manifest.yaml"
+from tax_engine.domain.registry import Namespace
+from tests.jurisdictions.ca_qc.support import (
+    quebec_capabilities,
+    quebec_kinds,
+    quebec_packages,
+    quebec_parameter_parsers,
+    quebec_units,
 )
-HEADER = dedent("""\
-    jurisdiction: CA-QC
-    version: 1
-    valid_from_tax_year: 2025
-    inputs:
-      - name: ca/employment_income
-        required: true
-    outputs:
-      - ca/employment_income
-    capabilities: []
-    imports:
-    """)
+
+QUEBEC_PARTS = Path(tax_engine.jurisdictions.ca_qc.__file__).parent / "manifests" / "2025"
 
 
-def _real_import(form: str) -> str:
-    """The real Quebec manifest's `imports` entry for `form`, as YAML text for a test manifest."""
-    header = yaml.safe_load(MANIFEST.read_text(encoding="utf-8"))
-    entries: list[Any] = header["imports"]
-    (entry,) = [e for e in entries if e == form or (isinstance(e, dict) and e["form"] == form)]
-    return yaml.safe_dump([entry])
+class TakeHomeService(Protocol):
+    """Builds the engine over a temporary Quebec manifest made of a test header, a form
+    declaration and real part files of the Quebec take-home folder."""
+
+    def __call__(self, header: str, form: str, *parts: str) -> TaxComputationService: ...
 
 
 @pytest.fixture
-def take_home_service(tmp_path: Path) -> TaxComputationService:
-    """The engine over a temporary Quebec 2025 manifest that takes the salary and imports the shared
-    T2204 exactly as the real Quebec manifest does, with its dataset swap.
+def take_home_service(tmp_path: Path) -> TakeHomeService:
+    """A builder of services over a temporary Quebec take-home manifest.
 
-    The real manifest declares no inputs or outputs yet, so the test header declares the salary;
-    the import entry is read from the real manifest, so a change to the swap there is tested here.
+    The builder writes `header` and `form` to the temporary folder, copies each named part file
+    (for example "solidarity_credit_amounts.yaml") from the package's manifest folder beside them,
+    and points the Quebec namespace at that folder. The two texts sort ahead of the parts, because
+    the folder is composed in file-name order. Quebec is not yet in the registered engine, so the
+    service is built over the Quebec package list of `support.py`.
     """
-    imports = "".join(f"  {line}\n" for line in _real_import("ca/t2204").splitlines())
-    return quebec_service(tmp_path, HEADER + imports)
+
+    def build(header: str, form: str, *parts: str) -> TaxComputationService:
+        folder = tmp_path / "manifests" / "2025"
+        folder.mkdir(parents=True)
+        (folder / "00_header.yaml").write_text(header, encoding="utf-8")
+        (folder / "01_form.yaml").write_text(form, encoding="utf-8")
+        for number, part in enumerate(parts, start=2):
+            (folder / f"{number:02d}_{part}").write_text(
+                (QUEBEC_PARTS / part).read_text(encoding="utf-8"), encoding="utf-8"
+            )
+        roots = {**quebec_packages().roots(), Namespace("ca-qc"): tmp_path}
+        return TaxComputationService(
+            YamlJurisdictionSource(roots, quebec_kinds(), quebec_units()),
+            YamlParameterSource(
+                quebec_packages().roots(), quebec_parameter_parsers(), quebec_units()
+            ),
+            quebec_capabilities(),
+        )
+
+    return build

@@ -12,12 +12,12 @@ from decimal import Decimal
 
 import pytest
 
-from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.jurisdictions.ca.catalog.refund import (
     T2204_LINE_10,
     T2204_LINE_16,
     T2204_PREMIUMS_DEDUCTED,
 )
+from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 from tests.jurisdictions.ca_qc.support import t2204_worksheet
 
 D = Decimal
@@ -28,7 +28,7 @@ D = Decimal
     [("20000", "262.00"), ("70000", "860.67"), ("200000", "860.67")],
 )
 def test_the_figure_line_89_copies_is_line_16_and_the_quebec_premium(
-    take_home_service: TaxComputationService, salary: str, line_89: str
+    take_home_service: TakeHomeService, salary: str, line_89: str
 ) -> None:
     sheet = t2204_worksheet(take_home_service, salary)
 

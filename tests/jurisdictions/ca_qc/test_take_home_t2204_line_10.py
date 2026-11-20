@@ -16,8 +16,8 @@ from decimal import Decimal
 
 import pytest
 
-from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.jurisdictions.ca.catalog.refund import T2204_LINE_10
+from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 from tests.jurisdictions.ca_qc.support import t2204_worksheet
 
 D = Decimal
@@ -37,12 +37,14 @@ D = Decimal
     ],
 )
 def test_line_10_is_1_31_percent_of_line_1_up_to_the_maximum(
-    take_home_service: TaxComputationService, salary: str, expected: str
+    take_home_service: TakeHomeService, salary: str, expected: str
 ) -> None:
     assert t2204_worksheet(take_home_service, salary).get(T2204_LINE_10).value == D(expected)
 
 
-def test_line_10_is_not_the_federal_premium(take_home_service: TaxComputationService) -> None:
+@pytest.mark.parametrize(("salary", "federal"), [("20000", "328.00"), ("70000", "1077.48")])
+def test_line_10_is_not_the_federal_premium(
+    take_home_service: TakeHomeService, salary: str, federal: str
+) -> None:
     # The federal tier (1.64%) would give 328.00 on 20,000 and 1,077.48 on 70,000.
-    assert t2204_worksheet(take_home_service, "20000").get(T2204_LINE_10).value != D("328.00")
-    assert t2204_worksheet(take_home_service, "70000").get(T2204_LINE_10).value != D("1077.48")
+    assert t2204_worksheet(take_home_service, salary).get(T2204_LINE_10).value != D(federal)

@@ -1,0 +1,12 @@
+# Quebec solidarity tax credit, living-alone amount, for the payment period July 2026 to June 2027
+# (the credit of the 2025 return): "montant pour personne vivant seule 172", Table C.9 of the Quebec
+# Ministry of Finance fiche 110201 (Dépenses fiscales 2025), a web page, so the figure is a listed
+# check until a printed source is found. Claimed whole. A dollars-and-cents figure, so it rounds
+# half-up to the cent, the project's choice, which changes nothing.
+family: ca-qc/solidarity_living_alone_amount
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.revenuquebec.ca/en/citizens/tax-credits/solidarity-tax-credit/calculation-of-the-credit/
+rounding: {increment: "0.01", mode: half_up}
+amount: "172"

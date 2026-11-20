@@ -6,22 +6,24 @@ here and take their kinds and capabilities from it. Each registry is built once 
 never register into one.
 """
 
+from collections.abc import Callable
 from decimal import Decimal
 from functools import cache
 from pathlib import Path
+from textwrap import dedent
+from typing import Any
+
+import yaml
 
 import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_qc
 import tax_engine.jurisdictions.core
 from tax_engine.adapters.outbound.jurisdiction_packages import JurisdictionPackages
 from tax_engine.adapters.outbound.parameter_parser import ParameterParserRegistry
-from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact, ArtifactRegistry
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.registry import Namespace
 from tax_engine.domain.unit import UnitRegistry
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
@@ -72,29 +74,40 @@ def quebec_parameter_parsers() -> ParameterParserRegistry:
     return registry
 
 
-def quebec_service(tmp_path: Path, manifest: str) -> TaxComputationService:
-    """The engine over the Quebec package list, with `manifest` as the Quebec 2025 manifest.
+MANIFEST = (
+    Path(tax_engine.jurisdictions.ca_qc.__file__).parent / "manifests" / "2025" / "manifest.yaml"
+)
+T2204_HEADER = dedent("""\
+    jurisdiction: CA-QC
+    version: 1
+    valid_from_tax_year: 2025
+    inputs:
+      - name: ca/employment_income
+        required: true
+    outputs:
+      - ca/employment_income
+    capabilities: []
+    imports:
+    """)
+T2204_FORM = "capabilities: []\n"
 
-    The manifest text is written to a temporary folder that stands in for the Quebec package's own
-    directory, so a test can declare inputs and outputs (the real manifest declares none yet) and
-    import forms with their dataset swaps; every other root, and the Quebec datasets, are the real
-    ones.
-    """
-    folder = tmp_path / "manifests" / "2025"
-    folder.mkdir(parents=True)
-    (folder / "manifest.yaml").write_text(manifest, encoding="utf-8")
-    roots = {**quebec_packages().roots(), Namespace("ca-qc"): tmp_path}
-    return TaxComputationService(
-        YamlJurisdictionSource(roots, quebec_kinds(), quebec_units()),
-        YamlParameterSource(quebec_packages().roots(), quebec_parameter_parsers(), quebec_units()),
-        quebec_capabilities(),
-    )
+
+def real_import(form: str) -> str:
+    """The real Quebec manifest's `imports` entry for `form`, as indented YAML for a test header."""
+    entries: list[Any] = yaml.safe_load(MANIFEST.read_text(encoding="utf-8"))["imports"]
+    (entry,) = [e for e in entries if e == form or (isinstance(e, dict) and e["form"] == form)]
+    return "".join(f"  {line}\n" for line in yaml.safe_dump([entry]).splitlines())
 
 
 def t2204_worksheet(
-    service: TaxComputationService, salary: str, given: str | None = None
+    take_home_service: Callable[[str, str], TaxComputationService],
+    salary: str,
+    given: str | None = None,
 ) -> Worksheet:
-    """The Quebec T2204 worksheet for a salary; line 4 is left blank unless `given` is passed."""
+    """The Quebec T2204 worksheet for a salary, over a temporary manifest that takes the salary and
+    imports the shared T2204 exactly as the real Quebec manifest does, with its dataset swap. Line
+    4 is left blank unless `given` is passed."""
+    service = take_home_service(T2204_HEADER + real_import("ca/t2204"), T2204_FORM)
     starting = [Artifact(EMPLOYMENT_INCOME, Decimal(salary))]
     if given is not None:
         starting.append(Artifact(T2204_PREMIUMS_DEDUCTED_GIVEN, Decimal(given)))
