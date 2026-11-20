@@ -483,3 +483,9 @@ SCHEDULE_P_WORK_PREMIUM_INCOME_CEILING_LINE_66 = AmountKind.declare(
 )
 """Schedule P Part E, section 2, column 1 "Work premium", line 66: the printed 12,620, claimed
 whole."""
+
+SCHEDULE_P_WORK_PREMIUM_INCOME_LINE_68 = AmountKind.declare(
+    CATALOG, "schedule_p_work_premium_income_line_68"
+)
+"""Schedule P Part E, section 2, column 1, line 68, "Amount from line 64 or line 66, whichever is
+less": the work income of line 29 up to 12,620."""
