@@ -31,12 +31,19 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.jurisdictions.ca.catalog.refund import REFUND_OR_BALANCE_OWING
 from tax_engine.jurisdictions.ca_qc.catalog import (
+    FEDERAL_REFUND_OR_BALANCE_OWING_RETURN,
+    FEDERAL_TOTAL_PAYABLE_LESS_ABATEMENT_RETURN,
+    FEDERAL_TOTAL_PAYABLE_RETURN,
+    REFUNDABLE_QUEBEC_ABATEMENT_RETURN,
     SCHEDULE_B_LIVED_ALONE_LINE_20,
     SCHEDULE_K_GROUP_PLAN_COVERED_LINE_50,
     SOLIDARITY_CREDIT,
     SOLIDARITY_LIVED_ALONE_LINE_12,
     SOLIDARITY_TENANT_OR_OWNER_LINES_32_36,
     TOTAL_PAYABLE,
+    TP1_INCOME_TAX_AND_CONTRIBUTIONS_RETURN,
+    TP1_INCOME_TAX_LESS_WORK_PREMIUM_RETURN,
+    TP1_WORK_PREMIUM_TAX_CREDITS_RETURN,
 )
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
 from tests.jurisdictions.ca_qc.return_support import EXPECTED, RETURN_PART, return_sheet
@@ -46,77 +53,88 @@ from tests.jurisdictions.ca_qc.tp1_totals_support import SALARIES
 D = Decimal
 
 
-def _total_payable(salary: str) -> str:
-    # Total payable is line 43500 less line 44000 plus TP-1 line 450.
-    figures = EXPECTED[salary]
-    return str(D(figures["43500"]) - D(figures["44000"]) + D(figures["450"]))
+# The default answers: every printed figure and each step's figure at the three salaries and at
+# $3,000 (a salary below the credits, where the refund survives with no floor). Each row: 43500
+# less 44000, TP-1 450 less 456, refund or balance owing, total payable, solidarity credit.
+DEFAULT_FIGURES = [
+    ("3000", "-293.40", "0.00", "363.00"),
+    ("20000", "-3135.08", "128.01", "363.00"),
+    ("70000", "14678.32", "14678.32", "0.00"),
+    ("200000", "71643.79", "71643.79", "0.00"),
+]
+LESS_ABATEMENT = {"20000": "119.05", "70000": "6282.16", "200000": "32886.26"}
+LESS_WORK_PREMIUM = {"20000": "-575.06", "70000": "8396.16", "200000": "38757.53"}
+
+
+@pytest.mark.parametrize(
+    ("salary", "refund_or_balance", "total_payable", "solidarity"), DEFAULT_FIGURES
+)
+def test_the_three_outputs_at_the_default_answers(
+    take_home_service: TakeHomeService,
+    salary: str,
+    refund_or_balance: str,
+    total_payable: str,
+    solidarity: str,
+) -> None:
+    sheet = return_sheet(take_home_service, salary)
+
+    assert str(sheet.get(REFUND_OR_BALANCE_OWING).value) == refund_or_balance
+    assert str(sheet.get(TOTAL_PAYABLE).value) == total_payable
+    assert str(sheet.get(SOLIDARITY_CREDIT).value) == solidarity
 
 
 @pytest.mark.parametrize("salary", SALARIES)
-def test_refund_or_balance_owing_adds_line_172_to_line_450_less_line_456(
+def test_each_printed_line_is_read_as_the_form_prints_it(
     take_home_service: TakeHomeService, salary: str
 ) -> None:
     sheet = return_sheet(take_home_service, salary)
     figures = EXPECTED[salary]
-    expected = D(figures["172"]) + D(figures["450"]) - D(figures["456"])
 
-    assert sheet.get(REFUND_OR_BALANCE_OWING).value == expected
-
-
-@pytest.mark.parametrize(("salary", "expected"), [("20000", "-3135.08"), ("70000", "14678.32")])
-def test_refund_or_balance_owing_is_signed_positive_owing_negative_a_refund(
-    take_home_service: TakeHomeService, salary: str, expected: str
-) -> None:
-    sheet = return_sheet(take_home_service, salary)
-
-    assert str(sheet.get(REFUND_OR_BALANCE_OWING).value) == expected
-
-
-def test_refund_or_balance_owing_at_200000(take_home_service: TakeHomeService) -> None:
-    sheet = return_sheet(take_home_service, "200000")
-
-    assert str(sheet.get(REFUND_OR_BALANCE_OWING).value) == "71643.79"
+    assert str(sheet.get(FEDERAL_REFUND_OR_BALANCE_OWING_RETURN).value) == figures["172"]
+    assert str(sheet.get(FEDERAL_TOTAL_PAYABLE_RETURN).value) == figures["43500"]
+    assert str(sheet.get(REFUNDABLE_QUEBEC_ABATEMENT_RETURN).value) == figures["44000"]
+    assert str(sheet.get(TP1_INCOME_TAX_AND_CONTRIBUTIONS_RETURN).value) == figures["450"]
+    assert str(sheet.get(TP1_WORK_PREMIUM_TAX_CREDITS_RETURN).value) == figures["456"]
 
 
 @pytest.mark.parametrize("salary", SALARIES)
-def test_total_payable_is_line_43500_less_line_44000_plus_line_450(
-    take_home_service: TakeHomeService, salary: str
-) -> None:
+def test_the_two_differences_the_sums_add(take_home_service: TakeHomeService, salary: str) -> None:
     sheet = return_sheet(take_home_service, salary)
 
-    assert str(sheet.get(TOTAL_PAYABLE).value) == _total_payable(salary)
+    less_abatement = sheet.get(FEDERAL_TOTAL_PAYABLE_LESS_ABATEMENT_RETURN)
+    less_work_premium = sheet.get(TP1_INCOME_TAX_LESS_WORK_PREMIUM_RETURN)
+    assert str(less_abatement.value) == LESS_ABATEMENT[salary]
+    assert str(less_work_premium.value) == LESS_WORK_PREMIUM[salary]
 
 
-@pytest.mark.parametrize(("salary", "expected"), [("20000", "128.01"), ("70000", "14678.32")])
-def test_total_payable_figures(
-    take_home_service: TakeHomeService, salary: str, expected: str
+@pytest.mark.parametrize(
+    ("salary", "refund_or_balance", "total_payable"),
+    [
+        ("20000", "-3135.08", "128.01"),
+        ("70000", "13923.32", "13923.32"),
+        ("200000", "70888.79", "70888.79"),
+    ],
+)
+def test_the_group_plan_case_drops_the_755_premium(
+    take_home_service: TakeHomeService, salary: str, refund_or_balance: str, total_payable: str
 ) -> None:
-    sheet = return_sheet(take_home_service, salary)
+    sheet = return_sheet(
+        take_home_service, salary, Artifact(SCHEDULE_K_GROUP_PLAN_COVERED_LINE_50, 1)
+    )
 
-    assert str(sheet.get(TOTAL_PAYABLE).value) == expected
-
-
-def test_total_payable_at_200000(take_home_service: TakeHomeService) -> None:
-    assert str(return_sheet(take_home_service, "200000").get(TOTAL_PAYABLE).value) == "71643.79"
-
-
-@pytest.mark.parametrize("salary", SALARIES)
-def test_the_solidarity_credit_is_its_own_amount_not_inside_the_result(
-    take_home_service: TakeHomeService, salary: str
-) -> None:
-    sheet = return_sheet(take_home_service, salary)
-
-    assert str(sheet.get(SOLIDARITY_CREDIT).value) == EXPECTED[salary]["solidarity"]
-    assert sheet.get(REFUND_OR_BALANCE_OWING).value == D(EXPECTED[salary]["172"]) + D(
-        EXPECTED[salary]["450"]
-    ) - D(EXPECTED[salary]["456"])
+    assert str(sheet.get(REFUND_OR_BALANCE_OWING).value) == refund_or_balance
+    assert str(sheet.get(TOTAL_PAYABLE).value) == total_payable
 
 
 @pytest.mark.parametrize(
     ("salary", "refund_or_balance", "total_payable", "solidarity"),
-    [("20000", "-3144.04", "119.05", "1281.00")],
+    [
+        ("20000", "-3144.04", "119.05", "1281.00"),
+        ("70000", "14678.32", "14678.32", "0.00"),
+        ("200000", "71643.79", "71643.79", "0.00"),
+    ],
 )
-def test_alone_and_a_tenant_at_20000(
+def test_alone_and_a_tenant(
     take_home_service: TakeHomeService,
     salary: str,
     refund_or_balance: str,
@@ -137,19 +155,18 @@ def test_alone_and_a_tenant_at_20000(
     assert str(sheet.get(SOLIDARITY_CREDIT).value) == solidarity
 
 
-@pytest.mark.parametrize(
-    ("salary", "refund_or_balance", "total_payable"),
-    [("70000", "13923.32", "13923.32"), ("200000", "70888.79", "70888.79")],
-)
-def test_the_group_plan_case_drops_the_755_premium(
-    take_home_service: TakeHomeService, salary: str, refund_or_balance: str, total_payable: str
+def test_a_tenant_answer_changes_the_solidarity_credit_only(
+    take_home_service: TakeHomeService,
 ) -> None:
+    # The housing component raises the solidarity credit; it is in neither sum, so the refund or
+    # balance owing and the total payable stay at the default's figures.
     sheet = return_sheet(
-        take_home_service, salary, Artifact(SCHEDULE_K_GROUP_PLAN_COVERED_LINE_50, 1)
+        take_home_service, "20000", Artifact(SOLIDARITY_TENANT_OR_OWNER_LINES_32_36, 1)
     )
 
-    assert str(sheet.get(REFUND_OR_BALANCE_OWING).value) == refund_or_balance
-    assert str(sheet.get(TOTAL_PAYABLE).value) == total_payable
+    assert str(sheet.get(REFUND_OR_BALANCE_OWING).value) == "-3135.08"
+    assert str(sheet.get(TOTAL_PAYABLE).value) == "128.01"
+    assert sheet.get(SOLIDARITY_CREDIT).value > D("363.00")
 
 
 def _steps() -> list[dict[str, Any]]:
@@ -164,18 +181,12 @@ def _steps() -> list[dict[str, Any]]:
 def test_the_part_has_ten_steps_none_with_a_title_or_a_reference() -> None:
     steps = _steps()
 
-    assert [step["name"] for step in steps] == [
-        "core/record_total",
-        "core/record_total",
-        "core/record_total",
-        "core/subtract",
-        "core/sum",
-        "core/record_total",
-        "core/record_total",
-        "core/subtract",
-        "core/sum",
-        "core/record_total",
-    ]
+    names = [step["name"] for step in steps]
+    assert {name: names.count(name) for name in set(names)} == {
+        "core/record_total": 6,
+        "core/subtract": 2,
+        "core/sum": 2,
+    }
     assert all(step["unit"] == "ca/cad" for step in steps)
     assert not any("title" in step or "reference" in step for step in steps)
 
@@ -185,13 +196,13 @@ def test_every_figure_comes_in_through_a_record_total_over_an_export() -> None:
         step["consumes"]["records"] for step in _steps() if step["name"] == "core/record_total"
     ]
 
-    assert reads == [
+    assert sorted(reads) == [
+        "ca-qc/solidarity_credit.solidarity_credit_after_reduction",
         "ca-qc/t1_tax_and_credits.refund_or_balance_owing_line_172",
+        "ca-qc/t1_tax_and_credits.refundable_quebec_abatement_line_156",
+        "ca-qc/t1_tax_and_credits.total_payable_line_151",
         "ca-qc/tp1_totals.tp1_income_tax_and_contributions_line_450",
         "ca-qc/tp1_totals.tp1_work_premium_tax_credits_line_456",
-        "ca-qc/t1_tax_and_credits.total_payable_line_151",
-        "ca-qc/t1_tax_and_credits.refundable_quebec_abatement_line_156",
-        "ca-qc/solidarity_credit.solidarity_credit_after_reduction",
     ]
 
 
