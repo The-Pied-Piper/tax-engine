@@ -477,3 +477,9 @@ line 29 reads it as 0."""
 SCHEDULE_P_WORK_INCOME_LINE_29 = AmountKind.declare(CATALOG, "schedule_p_work_income_line_29")
 """Schedule P Part A line 29, "Subtract line 22 from line 18", "Work income", column "You", rounded
 half-up to the cent. The form prints no floor."""
+
+SCHEDULE_P_WORK_PREMIUM_INCOME_CEILING_LINE_66 = AmountKind.declare(
+    CATALOG, "schedule_p_work_premium_income_ceiling_line_66", non_negative=True
+)
+"""Schedule P Part E, section 2, column 1 "Work premium", line 66: the printed 12,620, claimed
+whole."""
