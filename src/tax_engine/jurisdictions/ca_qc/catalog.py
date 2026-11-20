@@ -628,6 +628,34 @@ TP1_NET_INCOME_LINE_275 = AmountKind.declare(CATALOG, "tp1_net_income_line_275",
 """Net income, TP-1 line 275 "Add lines 256 and 260. If the result is negative, enter 0": line 256
 plus line 260, not below zero, rounded half-up to the cent."""
 
+TP1_ADJUSTMENT_OF_DEDUCTIONS_LINE_276 = AmountKind.declare(
+    CATALOG, "tp1_adjustment_of_deductions_line_276", non_negative=True
+)
+"""TP-1 line 276 "Adjustment of deductions. Specify": an input a salary-only caller does not give;
+line 279 reads it as 0 when it is left out."""
+
+TP1_BENEFIT_AND_DISABILITY_SAVINGS_INCOME_LINE_278 = AmountKind.declare(
+    CATALOG, "tp1_benefit_and_disability_savings_income_line_278", non_negative=True
+)
+"""TP-1 line 278 "Universal Child Care Benefit and income from a registered disability savings
+plan": an input a salary-only caller does not give; line 279 reads it as 0 when it is left out."""
+
+TP1_LINE_279 = AmountKind.declare(CATALOG, "tp1_line_279", non_negative=True)
+"""TP-1 line 279 "Add lines 275 through 278": net income plus lines 276 and 278, rounded half-up to
+the cent."""
+
+TP1_TOTAL_DEDUCTIONS_LINE_298 = AmountKind.declare(
+    CATALOG, "tp1_total_deductions_line_298", non_negative=True
+)
+"""TP-1 line 298 "Add lines 287 through 297. Total deductions": the printed sum of lines 287 to 297,
+one optional input a salary-only caller does not give; read as 0 (default "0")."""
+
+TP1_TAXABLE_INCOME_LINE_299 = AmountKind.declare(
+    CATALOG, "tp1_taxable_income_line_299", non_negative=True
+)
+"""Taxable income, TP-1 line 299 "Subtract line 298 from line 279. If the result is negative, enter
+0": line 279 less line 298, not below zero, rounded half-up to the cent."""
+
 BASIC_PERSONAL_AMOUNT_NET_INCOME_LINE_3 = AmountKind.declare(
     CATALOG, "basic_personal_amount_net_income_line_3", non_negative=True
 )
