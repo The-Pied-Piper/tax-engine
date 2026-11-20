@@ -1918,3 +1918,7 @@ core/credit_amount (`tp1_totals_zero_line_474_475.yaml`)."""
 TP1_LINE_475 = AmountKind.declare(CATALOG, "tp1_line_475", non_negative=True)
 """TP-1 line 475 "Amount from line 470, if it is positive": the greater of line 470 and 0. Produced
 by one core/greater_of (`tp1_totals_line_475.yaml`)."""
+
+TP1_LINE_474 = AmountKind.declare(CATALOG, "tp1_line_474", non_negative=True)
+"""TP-1 line 474 "Amount from line 470, if it is negative": the refund as a positive figure, 0 less
+line 470 not below 0. Produced by one core/subtract_not_below_zero (`tp1_totals_line_474.yaml`)."""
