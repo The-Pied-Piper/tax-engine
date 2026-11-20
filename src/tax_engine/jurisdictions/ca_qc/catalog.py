@@ -1078,6 +1078,12 @@ FEDERAL_LOGGING_TAX_CREDIT_LINE_137 = AmountKind.declare(CATALOG, "federal_loggi
 """Federal logging tax credit, 5005-R line 137: an optional input a salary-only caller does not
 give; the line that reads it takes a blank as 0 (`t1_tax_and_credits_line_137_inputs.yaml`)."""
 
+FEDERAL_TAX_LINE_138 = AmountKind.declare(CATALOG, "federal_tax_line_138", non_negative=True)
+"""Federal tax, 5005-R line 138 and line 40600 "Line 136 minus line 137 (if negative, enter "0")
+Federal tax =": line 136 less the federal logging tax credit (line 137), a blank read as 0, not
+below zero; line 143 and the Quebec abatement read it from one core/subtract_not_below_zero
+(`t1_tax_and_credits_line_40600.yaml`)."""
+
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
 Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line
