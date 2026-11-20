@@ -8,7 +8,7 @@
 # form and are not exported.
 form:
   name: ca-qc/t1_taxable_income
-  title: "T1 Income Tax and Benefit Return, Steps 2 to 4: Total income, net income and taxable income"
+  title: "T1 Income Tax and Benefit Return"
   required: true
   exports:
     - ca-qc/net_income
