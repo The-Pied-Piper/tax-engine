@@ -1,4 +1,4 @@
-"""The 2025 `ca-qc/work_chart_401_brackets` dataset, checked against Revenu Quebec Work Chart 401
+"""The 2025 `ca-qc/brackets_work_chart_401` dataset, taken from Revenu Quebec Work Chart 401
 (TP-1.D.GR-V, 2025-12), "Income tax on taxable income".
 
 Form text: the four columns A to D, chosen by "is $53,255 or less", "is more than $53,255 but not
@@ -25,7 +25,7 @@ from tests.jurisdictions.ca_qc.support import quebec_packages, quebec_parameter_
 D = Decimal
 # Quebec is not in `registrations.JURISDICTIONS` yet, so the source is built over its own packages.
 SOURCE = YamlParameterSource(quebec_packages().roots(), quebec_parameter_parsers())
-FAMILY = "ca-qc/work_chart_401_brackets"
+FAMILY = "ca-qc/brackets_work_chart_401"
 FORM = "Revenu Quebec TP-1.D.GR-V (2025-12), Work Chart 401"
 
 

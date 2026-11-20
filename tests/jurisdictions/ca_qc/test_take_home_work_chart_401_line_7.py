@@ -1,6 +1,6 @@
 """Revenu Quebec Work Chart 401 (TP-1.D.GR-V 2025-12) line 7, "+ 7": 0 00 (column A), 7,455 70 (B),
 17,571 30 (C) and 23,114 10 (D). Line 7 is one `core/bracket_column_tax_at_start` step over line 1
-with `ca-qc/work_chart_401_brackets`: the printed amount of the column the taxable income falls in,
+with `ca-qc/brackets_work_chart_401`: the printed amount of the column the taxable income falls in,
 taken as printed and not recomputed. A line 1 at a bound is in the lower column. The expected
 figures are read from the printed chart (not an official example).
 """

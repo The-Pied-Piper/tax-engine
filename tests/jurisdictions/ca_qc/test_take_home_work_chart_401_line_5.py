@@ -1,6 +1,6 @@
 """Revenu Quebec Work Chart 401 (TP-1.D.GR-V 2025-12) line 5, "x 5": 14% (A), 19% (B), 24% (C) and
 25.75% (D). Line 5 is one `core/bracket_column_rate` step over line 1 with
-`ca-qc/work_chart_401_brackets`: the printed rate of the column the taxable income falls in, as a
+`ca-qc/brackets_work_chart_401`: the printed rate of the column the taxable income falls in, as a
 fraction. A line 1 at a bound is in the lower column. The expected figures are read from the printed
 chart (not an official example).
 """

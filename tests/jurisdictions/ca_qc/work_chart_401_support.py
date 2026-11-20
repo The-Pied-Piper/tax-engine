@@ -33,9 +33,9 @@ from tests.jurisdictions.ca_qc.tp1_net_income_support import (
 
 D = Decimal
 
-# The net income form with its line 299 export, over the lines that produce it.
-NET_INCOME_PARTS = (
-    "tp1_net_income.yaml",
+# The net income lines that produce line 299; `tp1_net_income.yaml` declares the form and its
+# exports.
+NET_INCOME_LINE_PARTS = (
     "tp1_net_income_line_201.yaml",
     "tp1_net_income_line_248.yaml",
     "tp1_net_income_line_254_input.yaml",
@@ -63,9 +63,12 @@ def chart_sheet(
     exports: tuple[str, ...],
     parts: tuple[str, ...],
     *given: tuple[AmountKind, str],
+    form: str | None = None,
 ) -> Worksheet:
     """The Work Chart 401 worksheet for a salary, over the upstream parts, the net income parts and
-    the chart `parts`; every optional input is left out unless in `given`."""
+    the chart `parts`; every optional input is left out unless in `given`. `form` replaces the
+    test chart form (the end-to-end test declares the net income form and uses the real chart
+    part)."""
     starting = [
         Artifact(EMPLOYMENT_INCOME, D(salary)),
         Artifact(TP1_QPP_CONTRIBUTION_LINE_98, D(UPSTREAM_98[salary])),
@@ -74,8 +77,14 @@ def chart_sheet(
         Artifact(TP1_QPIP_PREMIUM_LINE_97, D("0")),
     ]
     starting.extend(Artifact(kind, D(value)) for kind, value in given)
+    declaration = ("tp1_net_income.yaml",) if form is None else ()
     service = take_home_service(
-        HEADER, chart_form(*exports), *UPSTREAM_PARTS, *NET_INCOME_PARTS, *parts
+        HEADER,
+        chart_form(*exports) if form is None else form,
+        *UPSTREAM_PARTS,
+        *declaration,
+        *NET_INCOME_LINE_PARTS,
+        *parts,
     )
     (sheet,) = service.compute(JurisdictionCode("CA-QC"), 2025, *starting)["ca-qc/work_chart_401"]
     return sheet

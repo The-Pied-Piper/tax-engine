@@ -15,14 +15,7 @@ from decimal import ROUND_HALF_UP, Decimal
 
 import pytest
 
-from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_qc.catalog import (
-    TP1_ADDITIONAL_QPP_CONTRIBUTION_LINE_98_2,
-    TP1_PENSIONABLE_SALARY_LINE_98_1,
-    TP1_QPIP_PREMIUM_LINE_97,
-    TP1_QPP_CONTRIBUTION_LINE_98,
     WORK_CHART_401_COLUMN_RATE_LINE_5,
     WORK_CHART_401_INCOME_OVER_LOWER_BOUND_LINE_4,
     WORK_CHART_401_INCOME_TAX_LINE_8,
@@ -32,15 +25,8 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     WORK_CHART_401_TAXABLE_INCOME_LINE_1,
 )
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
-from tests.jurisdictions.ca_qc.tp1_net_income_support import (
-    HEADER,
-    UPSTREAM_98,
-    UPSTREAM_98_1,
-    UPSTREAM_98_2,
-    UPSTREAM_PARTS,
-    form_part,
-)
-from tests.jurisdictions.ca_qc.work_chart_401_support import NET_INCOME_PARTS
+from tests.jurisdictions.ca_qc.tp1_net_income_support import form_part
+from tests.jurisdictions.ca_qc.work_chart_401_support import chart_sheet
 
 D = Decimal
 
@@ -77,16 +63,7 @@ CASES = {
 def test_the_chain_from_line_1_to_line_8(take_home_service: TakeHomeService, salary: str) -> None:
     line_1, column, line_8 = CASES[salary]
     lower, rate, amount = COLUMNS[column]
-    starting = (
-        Artifact(EMPLOYMENT_INCOME, D(salary)),
-        Artifact(TP1_QPP_CONTRIBUTION_LINE_98, D(UPSTREAM_98[salary])),
-        Artifact(TP1_ADDITIONAL_QPP_CONTRIBUTION_LINE_98_2, D(UPSTREAM_98_2[salary])),
-        Artifact(TP1_PENSIONABLE_SALARY_LINE_98_1, D(UPSTREAM_98_1[salary])),
-        Artifact(TP1_QPIP_PREMIUM_LINE_97, D("0")),
-    )
-    service = take_home_service(HEADER, FORM, *UPSTREAM_PARTS, *NET_INCOME_PARTS[1:], *PARTS)
-
-    (sheet,) = service.compute(JurisdictionCode("CA-QC"), 2025, *starting)["ca-qc/work_chart_401"]
+    sheet = chart_sheet(take_home_service, salary, (), PARTS, form=FORM)
 
     over = D(line_1) - lower
     on_excess = (over * rate).quantize(D("0.01"), rounding=ROUND_HALF_UP)

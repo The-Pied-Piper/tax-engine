@@ -11,7 +11,7 @@
 # and 8 half-up to the cent in its own parts (ca-qc/cent_rounding).
 # There is no upper end: column D is "more than $129,590". A line 1 at a bound is in the lower
 # column, as the instructions print ("or less", "but not more than").
-family: ca-qc/work_chart_401_brackets
+family: ca-qc/brackets_work_chart_401
 tax_year: 2025
 kind: brackets
 sources:

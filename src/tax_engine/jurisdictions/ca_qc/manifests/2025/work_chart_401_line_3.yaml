@@ -11,7 +11,7 @@ capabilities:
     reference: "3"
     unit: ca/cad
     params:
-      schedule: ca-qc/work_chart_401_brackets
+      schedule: ca-qc/brackets_work_chart_401
     consumes:
       base: ca-qc/work_chart_401_taxable_income_line_1
     produces:

@@ -3,7 +3,7 @@
 # (the taxable income, exported by `ca-qc/tp1_net_income`) and exports line 8, the income tax on
 # taxable income that TP-1 line 401 carries. Each line's capability is a part of its own with the same
 # `form.name`. Line 2 is a copy of line 1 placed in the column the instructions choose, so the four
-# columns' lines 3, 5 and 7 are one dataset (`ca-qc/work_chart_401_brackets`) read by the column
+# columns' lines 3, 5 and 7 are one dataset (`ca-qc/brackets_work_chart_401`) read by the column
 # steps.
 form:
   name: ca-qc/work_chart_401

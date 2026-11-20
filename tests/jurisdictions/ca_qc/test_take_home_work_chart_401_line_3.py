@@ -1,7 +1,7 @@
 """Revenu Quebec Work Chart 401 (TP-1.D.GR-V 2025-12) line 3, "- 3", as the Quebec take-home
 manifest part wires it: 0 00 (column A), 53,255 00 (B), 106,495 00 (C) and 129,590 00 (D). Line 2 is
 a copy of line 1 and has no step. Line 3 is one `core/bracket_column_lower_bound` step over line 1
-with `ca-qc/work_chart_401_brackets`: the printed lower bound of the column the taxable income falls
+with `ca-qc/brackets_work_chart_401`: the printed lower bound of the column the taxable income falls
 in, and a line 1 at a bound is in the lower column ("or less", "but not more than"). The expected
 figures are hand-computed from the printed chart (not an official example).
 """
