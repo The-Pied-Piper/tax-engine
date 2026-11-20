@@ -1,7 +1,8 @@
 """Shared helpers of the Schedule K Part C line tests for lines 85 to 98.
 
-Lines 85 to 98 read line 84 of Part C and boxes 60 to 62 of Part B. Most tests give those four
-figures straight to the form (the header takes them as inputs), so a test can pick the months
+Lines 85 to 98 read line 83 of Part C (line 84 is a copy of it) and boxes 60 to 62 of Part B.
+Most tests give those four figures straight to the form (the header takes them as inputs),
+so a test can pick the months
 without going through line 50. The salary tests run the real Part A, Part B and Part C chains from a
 salary, for the default answer to line 50 (not covered) and for the answer yes (covered). Every
 figure below is hand-computed from the printed lines, not an official example.
@@ -20,11 +21,11 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca_qc.catalog import (
+    SCHEDULE_K_COLUMN_PREMIUM_LINE_83,
     SCHEDULE_K_GROUP_PLAN_COVERED_LINE_50,
     SCHEDULE_K_MONTHS_JANUARY_TO_JUNE_BOX_60,
     SCHEDULE_K_MONTHS_JULY_TO_DECEMBER_BOX_61,
     SCHEDULE_K_MONTHS_TOTAL_BOX_62,
-    SCHEDULE_K_PREMIUM_LINE_84,
 )
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
 from tests.jurisdictions.ca_qc.schedule_k_part_c_support import PART_A, PART_C
@@ -55,7 +56,7 @@ PART_D = (
     "tp1_schedule_k_line_98.yaml",
 )
 INPUTS = (
-    SCHEDULE_K_PREMIUM_LINE_84,
+    SCHEDULE_K_COLUMN_PREMIUM_LINE_83,
     SCHEDULE_K_MONTHS_JANUARY_TO_JUNE_BOX_60,
     SCHEDULE_K_MONTHS_JULY_TO_DECEMBER_BOX_61,
     SCHEDULE_K_MONTHS_TOTAL_BOX_62,
@@ -197,7 +198,7 @@ def part_d(
     (sheet,) = take_home_service(header(parts), form_part(unconsumed(parts)), *parts).compute(
         JurisdictionCode("CA-QC"),
         2025,
-        Artifact(SCHEDULE_K_PREMIUM_LINE_84, D(line_84)),
+        Artifact(SCHEDULE_K_COLUMN_PREMIUM_LINE_83, D(line_84)),
         Artifact(SCHEDULE_K_MONTHS_JANUARY_TO_JUNE_BOX_60, D(box_60)),
         Artifact(SCHEDULE_K_MONTHS_JULY_TO_DECEMBER_BOX_61, D(box_61)),
         Artifact(SCHEDULE_K_MONTHS_TOTAL_BOX_62, D(box_60) + D(box_61)),
