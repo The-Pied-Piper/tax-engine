@@ -2147,3 +2147,9 @@ FEDERAL_TOTAL_PAYABLE_RETURN = AmountKind.declare(
 )
 """Quebec return summary: 5005-R line 43500 "Total payable", read from the form's export. One
 core/record_total (`return.yaml`)."""
+
+REFUNDABLE_QUEBEC_ABATEMENT_RETURN = AmountKind.declare(
+    CATALOG, "refundable_quebec_abatement_return", non_negative=True
+)
+"""Quebec return summary: 5005-R line 44000 "Refundable Quebec abatement", read from the form's
+export. One core/record_total (`return.yaml`)."""

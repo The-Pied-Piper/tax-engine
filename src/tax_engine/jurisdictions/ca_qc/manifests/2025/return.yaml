@@ -64,3 +64,9 @@ capabilities:
       records: ca-qc/t1_tax_and_credits.total_payable_line_151
     produces:
       output: ca-qc/federal_total_payable_return
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-qc/t1_tax_and_credits.refundable_quebec_abatement_line_156
+    produces:
+      output: ca-qc/refundable_quebec_abatement_return
