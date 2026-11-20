@@ -1157,6 +1157,10 @@ ADVANCED_CANADA_WORKERS_BENEFIT_LINE_144 = AmountKind.declare(
 salary-only caller does not give; the line that reads it takes a blank as 0
 (`t1_tax_and_credits_line_41500_inputs.yaml`)."""
 
+SPECIAL_TAXES_LINE_145 = AmountKind.declare(CATALOG, "special_taxes_line_145", non_negative=True)
+"""Special taxes, 5005-R line 145 and line 41800: an optional input a salary-only caller does not
+give; the line that reads it takes a blank as 0 (`t1_tax_and_credits_line_41800_inputs.yaml`)."""
+
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
 Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line
