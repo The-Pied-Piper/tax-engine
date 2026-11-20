@@ -1,0 +1,11 @@
+# Revenu Quebec TP-1.D.GR-V (2025-12), "WORK CHART - Deduction for workers" (201). Its own form, so
+# that the TP-1 income lines and the net income lines do not read each other in a loop: it reads
+# line 101 (the salary, exported by `ca-qc/tp1_income`) and exports line 9, the deduction for workers
+# that TP-1 line 201 reads. Each line's capability is a part of its own with the same `form.name`.
+form:
+  name: ca-qc/work_chart_201
+  title: "Work Chart - Deduction for workers"
+  required: true
+  exports:
+    - ca-qc/work_chart_201_deduction_for_workers_line_9
+capabilities: []

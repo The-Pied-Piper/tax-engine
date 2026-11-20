@@ -176,3 +176,15 @@ line 293": an optional input, blank when the caller has none and read as 0."""
 WORK_CHART_201_LINE_8 = AmountKind.declare(CATALOG, "work_chart_201_line_8")
 """Work Chart 201 line 8 "Subtract line 7 from line 6": the difference, rounded half-up to the cent.
 The form prints no floor, so it is signed."""
+
+WORK_CHART_201_DEDUCTION_BEFORE_MAXIMUM = AmountKind.declare(
+    CATALOG, "work_chart_201_deduction_before_maximum"
+)
+"""Work Chart 201 line 9, the first operation: line 8 multiplied by 6%, unrounded. Not a printed
+line; the cap of line 9 rounds it once."""
+
+WORK_CHART_201_DEDUCTION_FOR_WORKERS_LINE_9 = AmountKind.declare(
+    CATALOG, "work_chart_201_deduction_for_workers_line_9"
+)
+"""Work Chart 201 line 9 "Deduction for workers" (maximum $1,420), the figure TP-1 line 201 reads:
+6% of line 8, at most the printed maximum, rounded half-up to the cent. Signed, as line 8 is."""
