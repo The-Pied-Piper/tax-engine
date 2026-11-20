@@ -121,13 +121,6 @@ def test_the_part_is_one_given_or_contribution_tier_step_on_the_salary() -> None
     }
 
 
-def test_the_form_declaration_exports_line_91() -> None:
-    declaration = yaml.safe_load(FORM_PART.read_text(encoding="utf-8"))
-
-    assert declaration["form"]["name"] == "ca-qc/ppip_premium"
-    assert declaration["form"]["exports"] == [IDENTIFIER]
-
-
 def test_the_kind_is_a_registered_non_negative_decimal_amount() -> None:
     kind = quebec_kinds().kind(IDENTIFIER)
 

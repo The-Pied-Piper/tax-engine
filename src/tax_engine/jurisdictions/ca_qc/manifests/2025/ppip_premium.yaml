@@ -1,9 +1,9 @@
-# PPIP premium (2025), 5005-R line 91 and line 31205 (Schedule 10, Part B). This part names the form
-# and its export; line parts carry capabilities. The export, line 91 (`ca-qc/ppip_premiums_paid`),
-# is read by 5005-R line 91 and by TP-1 line 97, the same figure.
+# PPIP premium (2025), 5005-R line 91 and line 31205 (Schedule 10, Part B). The form has no printed
+# title of its own, so it carries none. This part names the form and its export; line parts carry
+# capabilities. The export, line 91 (`ca-qc/ppip_premiums_paid`), is read by 5005-R line 91 and by
+# TP-1 line 97, the same figure.
 form:
   name: ca-qc/ppip_premium
-  title: "PPIP premium"
   required: true
   exports:
     - ca-qc/ppip_premiums_paid
