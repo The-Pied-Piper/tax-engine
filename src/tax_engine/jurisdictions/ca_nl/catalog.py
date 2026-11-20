@@ -643,6 +643,20 @@ NL428_ELIGIBLE_DEPENDANT_AMOUNT_LINE_23 = AmountKind.declare(
 (if negative, enter "0") (maximum $9,043) =": line 21 less line 22, not below 0, at most the printed
 maximum."""
 
+NL428_ELIGIBLE_DEPENDANT_AMOUNT_BEFORE_CHECK_LINE_23 = AmountKind.declare(
+    CATALOG, "nl428_eligible_dependant_amount_before_check_line_23", non_negative=True
+)
+"""Amount for an eligible dependant before it is checked against line 20, NL428 line 23 "Line 23 and
+line 58160: Line 21 minus line 22 (if negative, enter "0") (maximum $9,043) =": line 21 less line
+22, not below 0, at most the printed maximum; blank where line 22 is."""
+
+NL428_ELIGIBLE_DEPENDANT_AMOUNT_MOST_LINE_23 = AmountKind.declare(
+    CATALOG, "nl428_eligible_dependant_amount_most_line_23", non_negative=True
+)
+"""The most NL428 line 23 may be: the printed maximum where line 20 is 0 or blank, and 0 where an
+amount is claimed on line 20. The spouse amount and the eligible dependant amount are not both
+allowed (NL Income Tax Act, 2000, s. 9(1)(b))."""
+
 NL428_TAXABLE_INCOME_LINE_1 = AmountKind.declare(
     CATALOG, "nl428_taxable_income_line_1", non_negative=True
 )
