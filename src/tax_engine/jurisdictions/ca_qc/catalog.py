@@ -1265,6 +1265,11 @@ PART_XII_2_TAX_CREDIT_LINE_165 = AmountKind.declare(
 does not give; the sum on line 171 takes a blank as 0
 (`t1_tax_and_credits_line_45600_inputs.yaml`)."""
 
+GST_HST_REBATE_LINE_166 = AmountKind.declare(CATALOG, "gst_hst_rebate_line_166", non_negative=True)
+"""Employee and partner GST/HST rebate, 5005-R line 166 and line 45700: an optional input a
+salary-only caller does not give; the sum on line 171 takes a blank as 0
+(`t1_tax_and_credits_line_45700_inputs.yaml`)."""
+
 CWB_LINE_161 = AmountKind.declare(CATALOG, "cwb_line_161", non_negative=True)
 """Canada workers benefit (CWB), 5005-R line 161 and line 45300 "(complete Schedule 6)": Schedule 6
 line 28, read from the Schedule 6 export by one core/record_total
