@@ -26,10 +26,8 @@ CARRIED_FORWARD = "carried forward unchanged from the 2025 file"
 CARRIED_FORWARD_FAMILIES = [
     "cent_rounding",
     "cwb_base_amount",
-    "cwb_maximum",
     "cwb_rate",
     "cwb_reduction_rate",
-    "cwb_reduction_threshold",
     "exact_rounding",
     "schedule_b_line_20_conditions",
     "schedule_b_line_31_rate",

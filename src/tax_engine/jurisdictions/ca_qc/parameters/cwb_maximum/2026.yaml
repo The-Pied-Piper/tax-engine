@@ -1,14 +1,20 @@
 # Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
-# Derivation: carried forward unchanged from the 2025 file; the 2026 form is not yet published.
+# Derivation: 2025 amount 3,812.06 x 1.02 (the federal 2026 factor) = 3,888.3012, rounded to the nearest dollar, halves up, to 3,888.
 # Quebec Schedule 6 (5005-S6, 2025 edition) line 21: Line 21: If you did not have an eligible spouse or an eligible dependant, enter $3,812.06. If you had an eligible spouse but did not have an eligible dependant, enter $5,943.38. ...
 # The filer takes the "If not" branch (no eligible spouse, no eligible dependant): the printed $3,812.06 for a filer with no eligible spouse and no eligible dependant, claimed whole, so line
 # 21 has no step of its own; line 22 takes the lesser of line 20 and it. It replaces `ca/cwb_maximum` in the Quebec manifest's import of
-# Schedule 6. A dollars-and-cents figure, so it rounds half-up to the cent, which changes nothing.
+# Schedule 6. The cent rounding of the file changes nothing on a whole-dollar figure.
 # The 2026 form is not yet published, so the figure is not yet confirmed against it.
+# Doubt: it is not confirmed that the federal 2% is the factor Quebec Schedule 6 uses. Quebec's own 2026 indexation rate is 2.05% (Quebec Finance,
+# Parameters of the Personal Income Tax System for 2026, Nov 2025), and the 2025 figure is tied to Quebec's work premium reduction threshold:
+# 37.3% x (12,620 - 2,400) = 3,812.06; that threshold is 12,808 in 2026 (Table 3), revalued by its own formula, not by 2.05%.
+# Readings of the 2026 figure: federal 2% (this file), Quebec 2.05% (3,890), or tied to 12,808 (3,882.18); they differ by up to about $7.
+# The 19 Nov nearest-dollar ruling rounds to the whole dollar although the form prints cents.
+# MUST BE REPLACED from the printed figure when CRA posts the 2026 Quebec Schedule 6.
 family: ca-qc/cwb_maximum
 tax_year: 2026
 kind: credit
 sources:
   - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5005-s6/5005-s6-25e.txt
 rounding: {increment: "0.01", mode: half_up}
-amount: "3812.06"
+amount: "3888"
