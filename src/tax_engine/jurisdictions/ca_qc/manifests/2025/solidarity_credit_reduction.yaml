@@ -60,3 +60,11 @@ capabilities:
       less: ca-qc/solidarity_reduction_at_one_component_rate
     produces:
       output: ca-qc/solidarity_qst_component_less_reduction
+  - name: core/greater_of
+    unit: ca/cad
+    consumes:
+      amounts:
+        - ca-qc/solidarity_maximum_less_reduction
+        - ca-qc/solidarity_qst_component_less_reduction
+    produces:
+      output: ca-qc/solidarity_credit_after_reduction

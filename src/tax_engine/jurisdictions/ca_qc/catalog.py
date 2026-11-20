@@ -106,3 +106,10 @@ SOLIDARITY_QST_COMPONENT_LESS_REDUCTION = AmountKind.declare(
 )
 """Solidarity tax credit, QST component less the 3% reduction (fiche 110201, Table C.9): the floor
 of the credit, the QST component amount less the 3% reduction on the same excess, not below 0."""
+
+SOLIDARITY_CREDIT_AFTER_REDUCTION = AmountKind.declare(
+    CATALOG, "solidarity_credit_after_reduction", non_negative=True
+)
+"""Solidarity tax credit after the reduction (fiche 110201, Table C.9): the greater of the maximum
+less the reduction and the QST component less the 3% reduction, so the credit never falls below
+the QST-only credit."""
