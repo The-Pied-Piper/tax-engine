@@ -7,8 +7,8 @@ form:
   name: ca-qc/tp1_schedule_u
 capabilities:
   - name: core/record_total
-    reference: "10"
     title: "QPP contribution"
+    reference: "10"
     unit: ca/cad
     consumes:
       records: ca-qc/tp1_income.tp1_qpp_contribution_line_98
