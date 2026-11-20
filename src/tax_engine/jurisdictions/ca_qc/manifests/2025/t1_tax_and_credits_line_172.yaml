@@ -1,0 +1,21 @@
+# 5005-R (2025) line 172. The form prints: "Line 172: Line 152 minus line 171 If the amount is negative,
+# enter it on line 48400 below. If the amount is positive, enter it on line 48500 below. Refund or
+# balance owing =" (page 8). Line 152 is "Enter the amount from line 151 of the previous page", a pure
+# copy, so line 151 is read directly. The form prints no floor: core/subtract gives a negative figure
+# (a refund) as is and a positive one (a balance owing) as is, rounded half-up to the cent through
+# `ca-qc/cent_rounding`, producing a signed kind. The 48400 / 48500 split only routes the sign and is
+# not built here (the return summary reads line 172).
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/subtract
+    title: "Refund or balance owing"
+    reference: "172"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/total_payable_line_151
+      less: ca-qc/total_credits_line_171
+    produces:
+      output: ca-qc/refund_or_balance_owing_line_172

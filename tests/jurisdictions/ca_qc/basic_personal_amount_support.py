@@ -93,9 +93,26 @@ CREDIT_PARTS = (
     *LINE_100_INPUT_PARTS,
     "t1_tax_and_credits_line_100.yaml",
     *LINES_101_TO_122_PARTS,
+    "t1_tax_and_credits_line_44000.yaml",
+    "t1_tax_and_credits_line_45000.yaml",
+    "t1_tax_and_credits_line_45100.yaml",
+    "t1_tax_and_credits_line_45300.yaml",
+    "t1_tax_and_credits_line_48200.yaml",
+    "t1_tax_and_credits_line_172.yaml",
+    "t1_tax_and_credits_line_43850_inputs.yaml",
+    "t1_tax_and_credits_line_45200_inputs.yaml",
+    "t1_tax_and_credits_line_45350_inputs.yaml",
+    "t1_tax_and_credits_line_45355_inputs.yaml",
+    "t1_tax_and_credits_line_45400_inputs.yaml",
+    "t1_tax_and_credits_line_45600_inputs.yaml",
+    "t1_tax_and_credits_line_45700_inputs.yaml",
+    "t1_tax_and_credits_line_46900_inputs.yaml",
+    "t1_tax_and_credits_line_47555_inputs.yaml",
+    "t1_tax_and_credits_line_47556_inputs.yaml",
+    "t1_tax_and_credits_line_47600_inputs.yaml",
 )
 # Part A of Step 5 as printed: lines 71 to 77, then Part C and Step 6 (lines 123 to
-# 150, in form line order).
+# 172, in form line order).
 PART_A_PARTS: tuple[str, ...] = (
     "t1_tax_and_credits_line_71.yaml",
     "t1_tax_and_credits_line_72.yaml",
@@ -159,7 +176,7 @@ HEADER = (
     imports:
     """)
     + real_import("ca/schedule_8")
-    + "  - ca/schedule_6\n"
+    + real_import("ca/schedule_6")
     + real_import("ca/t2204")
 )
 # The real tax and credits declaration is the form; the real T1 declaration is the first part.

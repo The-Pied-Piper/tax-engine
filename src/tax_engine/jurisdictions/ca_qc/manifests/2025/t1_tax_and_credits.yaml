@@ -12,8 +12,12 @@
 #     (`ca-qc/federal_tax_line_138`), which line 143 reads. Lines 123 and 126 are copies and have no
 #     step.
 #   - Step 6: the total payable of line 151 and line 43500 (`ca-qc/total_payable_line_151`), the
-#     federal figure the return summary reads. Line 147 is a copy and has no step. Later tickets of Step 5 to
-#     Step 9 add the exports the return summary reads.
+#     federal figure the return summary reads. Line 147 is a copy and has no step.
+#   - Step 6, page 2: the refundable Quebec abatement of line 156 (`ca-qc/refundable_quebec_abatement_line_156`),
+#     the Canada workers benefit of line 161 (`ca-qc/cwb_line_161`) and the refund or balance owing of
+#     line 172 (`ca-qc/refund_or_balance_owing_line_172`), which the return summary reads. Lines 152 and
+#     158 are copies and have no step. Later tickets of Step 5 to Step 9 add the exports the return
+#     summary reads.
 form:
   name: ca-qc/t1_tax_and_credits
   title: "T1 Income Tax and Benefit Return"
@@ -25,4 +29,7 @@ form:
     - ca-qc/basic_federal_tax_line_130
     - ca-qc/federal_tax_line_138
     - ca-qc/total_payable_line_151
+    - ca-qc/refundable_quebec_abatement_line_156
+    - ca-qc/cwb_line_161
+    - ca-qc/refund_or_balance_owing_line_172
 capabilities: []

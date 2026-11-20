@@ -1311,6 +1311,12 @@ TOTAL_CREDITS_LINE_171 = AmountKind.declare(CATALOG, "total_credits_line_171", n
 workers benefit (line 161) plus the optional lines 155, 160 and 162 to 170 (each blank read as 0),
 from one core/sum (`t1_tax_and_credits_line_48200.yaml`); line 172 reads it."""
 
+REFUND_OR_BALANCE_OWING_LINE_172 = AmountKind.declare(CATALOG, "refund_or_balance_owing_line_172")
+"""Refund or balance owing, 5005-R line 172 "Line 152 minus line 171 ... Refund or balance owing =":
+line 152 (a copy of line 151) less the total credits of line 171 from one core/subtract
+(`t1_tax_and_credits_line_172.yaml`). Signed, as the line prints no floor: negative is a refund
+(line 48400), positive a balance owing (line 48500); the Quebec return summary reads it."""
+
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
 Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line
