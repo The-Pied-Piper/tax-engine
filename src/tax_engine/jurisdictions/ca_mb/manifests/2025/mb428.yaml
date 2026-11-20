@@ -7,6 +7,7 @@
 form:
   name: ca-mb/mb428
   title: "Form MB428: Manitoba Tax"
+  reference: "Form MB428: Manitoba Tax"
   required: true
   exports:
     - ca-mb/mb428_tax_after_credits_line_65

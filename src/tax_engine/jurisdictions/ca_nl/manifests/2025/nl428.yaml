@@ -10,6 +10,7 @@
 form:
   name: ca-nl/nl428
   title: "Form NL428: Newfoundland and Labrador Tax"
+  reference: "Form NL428: Newfoundland and Labrador Tax"
   required: true
   exports:
     - ca-nl/nl428_tax_line_85
