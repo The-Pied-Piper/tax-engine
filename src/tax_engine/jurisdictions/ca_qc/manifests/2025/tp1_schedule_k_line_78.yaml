@@ -1,0 +1,18 @@
+# Schedule K (2025) Part C, line 78: "Amount from line 48 (see the instructions above)" in line 77,
+# then line 78 prints 0,000 00 in column A and 5,000 00 in column B (Revenu Quebec TP-1.D.K-V
+# (2025-12), table for an individual without a spouse). Line 77 is a copy of line 48 and has no step
+# of its own: line 78 reads line 48 directly. Line 78 is the printed lower bound of the column that
+# line 48 falls in (column A up to $5,000, column B above). The form prints no label for the line,
+# so the step is untitled.
+form:
+  name: ca-qc/tp1_schedule_k
+capabilities:
+  - name: core/bracket_column_lower_bound
+    reference: "78"
+    unit: ca/cad
+    params:
+      schedule: ca-qc/schedule_k_brackets
+    consumes:
+      base: ca-qc/schedule_k_premium_income_line_48
+    produces:
+      output: ca-qc/schedule_k_column_lower_bound_line_78

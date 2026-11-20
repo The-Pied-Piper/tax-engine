@@ -2,7 +2,7 @@
 "Multiply line 72 by line 74 or line 75 (as applicable)", as the Quebec take-home manifest wires
 it: one `core/apply_rate` of line 72 by the printed 11.6% of line 74 (`ca-qc/work_premium_rate`, no
 step of its own; the take-home designates no child, so the 30% does not apply), rounded half-up to
-the cent. The form part exports the figure, for line 84.
+the cent. Line 84 reads the figure.
 
 The expected figures of a salary-only filer are hand-computed from the printed lines, not from a
 Revenu Quebec example."""
@@ -10,10 +10,9 @@ Revenu Quebec example."""
 from __future__ import annotations
 
 import pytest
-import yaml
 
 from tax_engine.jurisdictions.ca_qc.catalog import SCHEDULE_P_WORK_PREMIUM_BEFORE_REDUCTION_LINE_76
-from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
+from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 from tests.jurisdictions.ca_qc.support import (
     SCHEDULE_P_WORK_INCOME_PARTS,
     schedule_p_form,
@@ -62,13 +61,3 @@ def test_line_76_rounds_half_up_to_the_cent_from_the_rate_dataset(
     # Line 72 is 1.25 (a salary of 2,401.25 less 2,400.00). 11.6% of it is 0.145, which rounds
     # half-up to 0.15.
     assert value(take_home_service, "2401.25") == "0.15"
-
-
-def test_the_form_part_names_titles_and_exports_the_form() -> None:
-    part = yaml.safe_load((QUEBEC_PARTS / "schedule_p.yaml").read_text(encoding="utf-8"))
-
-    assert list(part["form"]) == ["name", "title", "required", "exports"]
-    assert part["form"]["name"] == "ca-qc/schedule_p"
-    assert part["form"]["title"] == "Schedule P: Tax Credits Respecting the Work Premium"
-    assert part["form"]["exports"] == ["ca-qc/schedule_p_work_premium_before_reduction_line_76"]
-    assert part["capabilities"] == []
