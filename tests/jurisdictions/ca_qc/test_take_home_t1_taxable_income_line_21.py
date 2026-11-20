@@ -7,8 +7,7 @@ for a salary-only filer and not built. The step is core/sum over line 1 and then
 through `ca-qc/cent_rounding`.
 
 The part is loaded from the package, with the real line 2 input part. The header and the form's
-export are made up here.
-"""
+export are made up here."""
 
 from __future__ import annotations
 

@@ -142,3 +142,8 @@ T1_LINE_48 = AmountKind.declare(CATALOG, "t1_line_48", non_negative=True)
 Form RC381, whichever applies) (maximum $1,074.00)": the figure Schedule 8 line 28 exports
 (`ca/schedule_8.schedule_8_cpp_enhanced_contributions_on_return`, a record list of one amount),
 totalled by one core/record_total (`t1_taxable_income_line_22215.yaml`)."""
+
+T1_LINE_54 = AmountKind.declare(CATALOG, "t1_line_54", non_negative=True)
+"""Deductions from total income, 5005-R line 54 and line 23300 "Add lines 35 to 53.": line 48 alone,
+the only deduction a salary-only filer has (lines 35 to 47 and 49 to 53 are blank and not built).
+Produced by one core/sum (`t1_taxable_income_line_23300.yaml`)."""

@@ -2,14 +2,13 @@
 
 Form text (CRA 5005-R page 4, https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5005-r/5005-r-25e.txt):
 "Line 48 and line 22215: Deduction for CPP or QPP enhanced contributions on employment income
-(complete Schedule 8 or Form RC381, whichever applies) (maximum $1,074.00)". The figure is
-Schedule 8 line 28, which the shared form exports as a record list of one amount; the step is one
+(complete Schedule 8 or Form RC381, whichever applies) (maximum $1,074.00)". The figure is Schedule
+8 line 28, which the shared form exports as a record list of one amount; the step is one
 core/record_total over it.
 
 The real Schedule 8 is imported with the real Quebec dataset swap, so the figure comes from the
 salary alone through the real engine. The header and the form's export are made up here. The
-expected figures are hand-computed from the printed Schedule 8 lines (not a CRA example).
-"""
+expected figures are hand-computed from the printed Schedule 8 lines (not a CRA example)."""
 
 from __future__ import annotations
 
