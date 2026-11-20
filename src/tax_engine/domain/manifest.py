@@ -176,7 +176,9 @@ class Form:
 
     `instances` is the record-list kind the caller supplies (`None` for one instance and no
     `fields`); `exports` are readable by every form as `<name>.<local id>`; `supplies` maps neutral
-    identifiers to own exports. See docs/forms.md for the other keys.
+    identifiers to own exports. `title` is the form's printed name and `reference` what it is known
+    by beside other forms (a form split across manifests gives each part one), `None` for none; a
+    form without a `reference` is known by its title. See docs/forms.md for the other keys.
     """
 
     name: str
@@ -191,6 +193,7 @@ class Form:
     basis: str | None = None
     fields: tuple[InputDeclaration, ...] = ()
     title: str | None = None
+    reference: str | None = None
     # Not hashed: a read-only mapping is unhashable, and equal forms still hash alike.
     supplies: Mapping[str, str] = dataclasses.field(default_factory=dict, hash=False)
 
