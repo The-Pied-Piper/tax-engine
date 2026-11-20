@@ -1,7 +1,9 @@
 """The 2025 `ca-qc/schedule_b_threshold_line_16` dataset (Schedule B, Part A, line 16).
-Revenu Quebec TP-1.D.B-V (2025-12), Schedule B, Part A, line 16: the printed figure is 42,090. It is a printed figure, so the dataset holds it as printed (claimed
-whole), the `credit` kind. The line is a dollars-and-cents line, so the figure rounds half-up to
-the cent, the project's choice, as the form states no rounding rule.
+
+Revenu Quebec TP-1.D.B-V (2025-12), Schedule B, Part A, line 16: the printed figure is 42,090. It
+is a printed figure, so the dataset holds it as printed (claimed whole), the `credit` kind. The
+line is a dollars-and-cents line, so the figure rounds half-up to the cent, the project's choice,
+as the form states no rounding rule.
 """
 
 from __future__ import annotations

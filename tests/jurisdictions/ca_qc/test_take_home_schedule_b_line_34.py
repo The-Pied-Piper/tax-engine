@@ -83,9 +83,7 @@ def test_the_part_is_one_subtract_of_line_33_from_line_32_with_the_printed_title
     (step,) = part["capabilities"]
     assert step == {
         "name": "core/subtract",
-        "title": (
-            "Age amount, amount for a person living alone and amount for retirement income"
-        ),
+        "title": ("Age amount, amount for a person living alone and amount for retirement income"),
         "reference": "34",
         "unit": "ca/cad",
         "params": {"rounding": "ca-qc/cent_rounding"},

@@ -8,9 +8,9 @@ $2,128." Part A: "You are not entitled to any of these amounts if ... you did no
 December 31, 2025, and the amount on line 18 is more than $64,699."
 
 The answer "lived alone" is an optional input with the default 0 (not alone, owner ruling 19 Nov
-2026), checked by `ca/yes_or_no_count`. The expected figures are hand-computed from the printed lines
-(line 18 is 0.00 / 25,825.00 / 155,416.00 at a salary of 20,000 / 70,000 / 200,000), not a Revenu
-Quebec example.
+2026), checked by `ca/yes_or_no_count`. The expected figures are hand-computed from the printed
+lines (line 18 is 0.00 / 25,825.00 / 155,416.00 at a salary of 20,000 / 70,000 / 200,000), not a
+Revenu Quebec example.
 """
 
 from __future__ import annotations

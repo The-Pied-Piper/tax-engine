@@ -61,9 +61,11 @@ def schedule_b_sheet(
     exports: tuple[str, ...],
     parts: tuple[str, ...],
     *given: Artifact[Any],
+    form: str | None = None,
 ) -> Worksheet:
     """The Schedule B worksheet for a salary, over the real chain up to line 275 and the Schedule B
-    `parts` of a test; every optional input is left out unless in `given`."""
+    `parts` of a test; every optional input is left out unless in `given`. The form declaration is a
+    test-local one exporting `exports`, unless `form` is the real declaration."""
     starting: list[Artifact[Any]] = [
         Artifact(EMPLOYMENT_INCOME, D(salary)),
         Artifact(TP1_QPP_CONTRIBUTION_LINE_98, D(UPSTREAM_98[salary])),
@@ -73,10 +75,11 @@ def schedule_b_sheet(
         *given,
     ]
     service = take_home_service(
-        HEADER, schedule_b_form(*exports), *UPSTREAM_PARTS, *NET_INCOME_PARTS, *parts
+        HEADER, form or schedule_b_form(*exports), *UPSTREAM_PARTS, *NET_INCOME_PARTS, *parts
     )
     (sheet,) = service.compute(JurisdictionCode("CA-QC"), 2025, *starting)[FORM]
     return sheet
+
 
 # The Schedule B parts from line 10 to line 18 (the family income chain), and with line 20; a form
 # cannot hold an output nothing reads, so a test takes the parts up to the line it exports.

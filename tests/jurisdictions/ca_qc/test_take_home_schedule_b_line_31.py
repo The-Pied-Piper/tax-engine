@@ -1,6 +1,6 @@
 """Quebec Schedule B (TP-1.D.B-V, 2025-12) Part B line 31, "Amount from line 18 x 18.75%", as the
-Quebec take-home manifest wires it: one `core/apply_rate` over line 18 with the printed rate from the
-dataset `ca-qc/schedule_b_line_31_rate`, rounded half-up to the cent by the dataset's rounding rule.
+Quebec take-home manifest wires it: one `core/apply_rate` over line 18 with the printed rate from
+the dataset `ca-qc/schedule_b_line_31_rate`, rounded half-up to the cent by the dataset's rule.
 The expected figures are hand-computed from the printed lines (line 18 is 0.00 / 25,825.00 /
 155,416.00 at a salary of 20,000 / 70,000 / 200,000), not a Revenu Quebec example.
 """
