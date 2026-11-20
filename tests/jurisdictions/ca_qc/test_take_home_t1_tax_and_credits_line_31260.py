@@ -74,3 +74,12 @@ def test_the_trace_names_the_sum_and_the_limit(take_home_service: TakeHomeServic
 def test_the_kinds_are_non_negative() -> None:
     assert non_negative(CANADA_EMPLOYMENT_AMOUNT_INCOME) is True
     assert non_negative(CANADA_EMPLOYMENT_AMOUNT) is True
+
+
+def test_line_31260_sum_and_lesser_of_print_cents(take_home_service: TakeHomeService) -> None:
+    # The "line 1 plus line 2" sum and the lesser-of round to the cent, so a whole-dollar salary
+    # prints with two decimals on both.
+    _, sheet = sheets(take_home_service, "1000")
+
+    assert sheet.get(CANADA_EMPLOYMENT_AMOUNT_INCOME).value.as_tuple().exponent == -2
+    assert sheet.get(CANADA_EMPLOYMENT_AMOUNT).value.as_tuple().exponent == -2

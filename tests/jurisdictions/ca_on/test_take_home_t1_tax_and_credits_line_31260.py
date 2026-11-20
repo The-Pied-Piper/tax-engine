@@ -170,3 +170,15 @@ def test_line_31260_names_the_income_and_the_cap_in_the_trace(
         "(CA$70000.00) and the Canada employment amount (CA$1471.00) gives CA$1471.00 "
         "(rounded to the nearest cent)."
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
+
+
+def test_line_31260_sum_and_lesser_of_print_cents(take_home_service: TakeHomeService) -> None:
+    # The "line 1 plus line 2" sum and the lesser-of round to the cent, so a whole-dollar salary
+    # prints with two decimals on both.
+    sheet = _sheet(take_home_service, _salary("1000"))
+
+    assert sheet.get(bundled_kinds().kind(INCOME_SUM)).value.as_tuple().exponent == -2
+    assert (
+        sheet.get(bundled_kinds().kind("ca/canada_employment_amount")).value.as_tuple().exponent
+        == -2
+    )

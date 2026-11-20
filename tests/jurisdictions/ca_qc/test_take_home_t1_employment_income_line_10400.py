@@ -70,3 +70,9 @@ def test_line_10400_is_listed_once_with_its_title_and_reference(
     sheet = sheet_of(take_home_service)
     assert sheet.reference("other_employment_income_line_10400") == "10400"
     assert sheet.reference("other_employment_income") is None
+
+
+def test_line_10400_prints_cents(take_home_service: TakeHomeService) -> None:
+    # A line the person writes on the form rounds to the cent, so 1500 prints as 1500.00.
+    sheet = sheet_of(take_home_service, Artifact(OTHER_EMPLOYMENT_INCOME, D("1500")))
+    assert sheet.get(OTHER_EMPLOYMENT_INCOME_LINE_10400).value.as_tuple().exponent == -2
