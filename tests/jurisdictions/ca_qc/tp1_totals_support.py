@@ -16,22 +16,10 @@ from typing import Any
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
-from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tax_engine.jurisdictions.ca_qc.catalog import (
-    TP1_ADDITIONAL_QPP_CONTRIBUTION_LINE_98_2,
-    TP1_PENSIONABLE_SALARY_LINE_98_1,
-    TP1_QPIP_PREMIUM_LINE_97,
-    TP1_QPP_CONTRIBUTION_LINE_98,
-)
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
 from tests.jurisdictions.ca_qc.schedule_k_part_c_support import PART_A, PART_C
 from tests.jurisdictions.ca_qc.schedule_k_part_d_support import PART_B, PART_D
-from tests.jurisdictions.ca_qc.tp1_net_income_support import (
-    HEADER,
-    UPSTREAM_98,
-    UPSTREAM_98_1,
-    UPSTREAM_98_2,
-)
+from tests.jurisdictions.ca_qc.tp1_net_income_support import HEADER, slip_artifacts
 from tests.jurisdictions.ca_qc.tp1_tax_support import LINE_413_CHAIN
 
 D = Decimal
@@ -127,14 +115,7 @@ def totals_sheet(
 ) -> Worksheet:
     """The totals worksheet for a salary, over the real chain and the totals `parts` of a test;
     every optional input is left out unless in `given`. `form` is the form declaration."""
-    starting: list[Artifact[Any]] = [
-        Artifact(EMPLOYMENT_INCOME, D(salary)),
-        Artifact(TP1_QPP_CONTRIBUTION_LINE_98, D(UPSTREAM_98[salary])),
-        Artifact(TP1_ADDITIONAL_QPP_CONTRIBUTION_LINE_98_2, D(UPSTREAM_98_2[salary])),
-        Artifact(TP1_PENSIONABLE_SALARY_LINE_98_1, D(UPSTREAM_98_1[salary])),
-        Artifact(TP1_QPIP_PREMIUM_LINE_97, D("0")),
-        *given,
-    ]
+    starting = [*slip_artifacts(salary), *given]
     service = take_home_service(HEADER, form, *CHAIN_PARTS, *parts)
     (sheet,) = service.compute(JurisdictionCode("CA-QC"), 2025, *starting)[FORM]
     return sheet
