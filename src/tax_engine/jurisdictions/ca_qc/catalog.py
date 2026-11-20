@@ -161,3 +161,7 @@ SCHEDULE_P_WEPP_PAYMENTS_LINE_15 = AmountKind.declare(
 )
 """Schedule P line 15, "Wage Earner Protection Program (WEPP) payments (line 154, point 12)", as
 the caller gives it; blank when the caller has none, and line 18 reads it as 0."""
+
+SCHEDULE_P_LINE_18 = AmountKind.declare(CATALOG, "schedule_p_line_18")
+"""Schedule P Part A line 18, "Add lines 10 through 15", column "You", rounded half-up to the
+cent."""
