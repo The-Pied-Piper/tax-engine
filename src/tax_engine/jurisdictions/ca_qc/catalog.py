@@ -1469,3 +1469,9 @@ SCHEDULE_K_PREMIUM_FOR_MONTHS_LINE_85 = AmountKind.declare(
 """Schedule K line 85, "Amount from line 84 x Number of months entered in box 62 / 12": line 84
 times the months checked in the year over 12, formed as one exact fraction and rounded once,
 half-up to the cent. One core/apply_ratio (`tp1_schedule_k_line_85.yaml`)."""
+
+SCHEDULE_K_PREMIUM_AFTER_MONTHS_LINE_86 = AmountKind.declare(
+    CATALOG, "schedule_k_premium_after_months_line_86", non_negative=True
+)
+"""Schedule K line 86, "Subtract line 85 from line 84": the premium left after the months covered by
+a group plan, rounded half-up to the cent. One core/subtract (`tp1_schedule_k_line_86.yaml`)."""
