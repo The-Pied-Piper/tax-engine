@@ -568,6 +568,12 @@ SCHEDULE_P_FAMILY_INCOME_LINE_54 = AmountKind.declare(
 """Schedule P Part C line 54, "Add lines 52 and 53", "Family income": the net income of line 52 plus
 the spouse's of line 53 (blank, read as 0), rounded half-up to the cent."""
 
+SCHEDULE_P_WORK_PREMIUM_SUPPLEMENT_AMOUNT_LINE_56 = AmountKind.declare(
+    CATALOG, "schedule_p_work_premium_supplement_amount_line_56", non_negative=True
+)
+"""Schedule P Part D, line 56: the printed 200.00, the amount for each month of the supplement to
+the work premium, claimed whole."""
+
 T1_LINE_48 = AmountKind.declare(CATALOG, "t1_line_48", non_negative=True)
 """Deduction for CPP or QPP enhanced contributions on employment income, 5005-R line 48 and line
 22215 "Deduction for CPP or QPP enhanced contributions on employment income (complete Schedule 8 or
