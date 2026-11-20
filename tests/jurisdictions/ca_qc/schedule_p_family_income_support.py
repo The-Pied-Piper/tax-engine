@@ -10,10 +10,11 @@ the next.
 from __future__ import annotations
 
 from decimal import Decimal
+from typing import Any
 
-from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.artifact import Artifact, ArtifactKind
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.kinds import AmountKind
+
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_qc.catalog import (
@@ -56,7 +57,7 @@ def family_income_worksheet(
     form: str,
     parts: tuple[str, ...],
     salary: str,
-    *given: tuple[AmountKind, str],
+    *given: tuple[ArtifactKind[Any], str],
 ) -> Worksheet:
     """The Schedule P worksheet of a salary, over the real net income parts and the Schedule P
     `parts` of a test; `given` are the optional answers the test passes."""
@@ -67,7 +68,7 @@ def family_income_worksheet(
         Artifact(TP1_PENSIONABLE_SALARY_LINE_98_1, D(UPSTREAM_98_1[salary])),
         Artifact(TP1_QPIP_PREMIUM_LINE_97, D("0")),
     ]
-    starting.extend(Artifact(kind, D(value)) for kind, value in given)
+    starting.extend(Artifact(kind, kind.value_type(value)) for kind, value in given)
     service = take_home_service(HEADER, form, *NET_INCOME_PARTS, *parts)
     (sheet,) = service.compute(JurisdictionCode("CA-QC"), 2025, *starting)["ca-qc/schedule_p"]
     return sheet

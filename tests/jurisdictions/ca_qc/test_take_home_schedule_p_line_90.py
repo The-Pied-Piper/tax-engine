@@ -13,7 +13,9 @@ import pytest
 import yaml
 
 from tax_engine.jurisdictions.ca_qc.catalog import (
+    SCHEDULE_P_RL5_MONTHS_LINE_57,
     SCHEDULE_P_SUPPLEMENT_LINE_60,
+    SCHEDULE_P_SUPPLEMENT_MONTHS_LINE_58,
     SCHEDULE_P_TAX_CREDITS_LINE_90,
     SCHEDULE_P_WORK_PREMIUM_LINE_87,
 )
@@ -72,6 +74,25 @@ def test_line_90_is_line_88_plus_line_89(
     assert str(sheet.get(SCHEDULE_P_SUPPLEMENT_LINE_60).value) == line_88
     assert str(sheet.get(SCHEDULE_P_WORK_PREMIUM_LINE_87).value) == line_89
     assert str(sheet.get(SCHEDULE_P_TAX_CREDITS_LINE_90).value) == line_90
+
+
+def test_line_90_adds_the_supplement_of_line_60_to_the_work_premium(
+    take_home_service: TakeHomeService,
+) -> None:
+    """Hand-computed: 12 months of 200.00 is 2,400.00 on line 88; line 89 is 584.02 for a salary
+    of 20,000, so line 90 is 2,984.02."""
+    sheet = family_income_worksheet(
+        take_home_service,
+        FORM,
+        PARTS,
+        "20000",
+        (SCHEDULE_P_RL5_MONTHS_LINE_57, "12"),
+        (SCHEDULE_P_SUPPLEMENT_MONTHS_LINE_58, "12"),
+    )
+
+    assert str(sheet.get(SCHEDULE_P_SUPPLEMENT_LINE_60).value) == "2400.00"
+    assert str(sheet.get(SCHEDULE_P_WORK_PREMIUM_LINE_87).value) == "584.02"
+    assert str(sheet.get(SCHEDULE_P_TAX_CREDITS_LINE_90).value) == "2984.02"
 
 
 def test_the_form_part_names_titles_and_exports_line_90() -> None:
