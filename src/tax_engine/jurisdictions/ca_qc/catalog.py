@@ -1270,6 +1270,14 @@ GST_HST_REBATE_LINE_166 = AmountKind.declare(CATALOG, "gst_hst_rebate_line_166",
 salary-only caller does not give; the sum on line 171 takes a blank as 0
 (`t1_tax_and_credits_line_45700_inputs.yaml`)."""
 
+ELIGIBLE_EDUCATOR_CREDIT_LINE_167 = AmountKind.declare(
+    CATALOG, "eligible_educator_credit_line_167", non_negative=True
+)
+"""Eligible educator school supply tax credit, 5005-R line 167 and line 46900: an optional input a
+salary-only caller does not give (the credit of line 46800 at 25% is a block skipped for a
+salary-only filer); the sum on line 171 takes a blank as 0
+(`t1_tax_and_credits_line_46900_inputs.yaml`)."""
+
 CWB_LINE_161 = AmountKind.declare(CATALOG, "cwb_line_161", non_negative=True)
 """Canada workers benefit (CWB), 5005-R line 161 and line 45300 "(complete Schedule 6)": Schedule 6
 line 28, read from the Schedule 6 export by one core/record_total
