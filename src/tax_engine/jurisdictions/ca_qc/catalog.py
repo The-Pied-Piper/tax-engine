@@ -574,6 +574,12 @@ SCHEDULE_P_WORK_PREMIUM_SUPPLEMENT_AMOUNT_LINE_56 = AmountKind.declare(
 """Schedule P Part D, line 56: the printed 200.00, the amount for each month of the supplement to
 the work premium, claimed whole."""
 
+SCHEDULE_P_RL5_MONTHS_LINE_57 = CountKind.declare(
+    CATALOG, "schedule_p_rl5_months_line_57", non_negative=True
+)
+"""Schedule P Part D line 57, "Total number of months in box V of your RL-5 slip", as the caller
+gives it; blank when the caller has none, and line 59 reads it as 0."""
+
 T1_LINE_48 = AmountKind.declare(CATALOG, "t1_line_48", non_negative=True)
 """Deduction for CPP or QPP enhanced contributions on employment income, 5005-R line 48 and line
 22215 "Deduction for CPP or QPP enhanced contributions on employment income (complete Schedule 8 or
