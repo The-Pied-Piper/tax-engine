@@ -1600,3 +1600,8 @@ TP1_LINE_425 = AmountKind.declare(CATALOG, "tp1_line_425", non_negative=True)
 """TP-1 line 425 "Add lines 414 through 424": the printed sum of lines 414 to 424, one optional
 input a salary-only caller does not give; line 430 reads a blank as 0
 (`tp1_tax_line_425_input.yaml`)."""
+
+TP1_LINE_430 = AmountKind.declare(CATALOG, "tp1_line_430")
+"""TP-1 line 430 "Subtract line 425 from line 413": signed, as the form prints no floor here (line
+432 floors it). Rounded half-up to the cent. Produced by one core/subtract
+(`tp1_tax_line_430.yaml`)."""
