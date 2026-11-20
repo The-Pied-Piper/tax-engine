@@ -1043,3 +1043,10 @@ WORK_CHART_401_TAX_AT_START_LINE_7 = AmountKind.declare(
 """Work Chart 401 line 7 "+ 7" (0.00, 7,455.70, 17,571.30 or 23,114.10): the printed amount of the
 column that line 1 falls in, taken as printed. Produced by one core/bracket_column_tax_at_start
 (`work_chart_401_line_7.yaml`)."""
+
+WORK_CHART_401_INCOME_TAX_LINE_8 = AmountKind.declare(
+    CATALOG, "work_chart_401_income_tax_line_8", non_negative=True
+)
+"""Work Chart 401 line 8 "Add lines 6 and 7. Income tax on taxable income": line 6 plus line 7,
+rounded half-up to the cent, which the chart carries to line 401 of the return. Produced by one
+core/sum (`work_chart_401_line_8.yaml`); the chart exports it."""

@@ -1,0 +1,17 @@
+# Work Chart 401 (TP-1.D.GR-V 2025-12), line 8: "Add lines 6 and 7. Income tax on taxable income = 8
+# (Carry the result to line 401 of your return.)" The sum of line 6 and line 7, rounded half-up to the
+# cent (`ca-qc/cent_rounding`). The figure is exported for TP-1 line 401 (the chart's own form
+# exports it, as Work Chart 201 exports its line 9).
+form:
+  name: ca-qc/work_chart_401
+capabilities:
+  - name: core/sum
+    title: "Income tax on taxable income"
+    reference: "8"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts: [ca-qc/work_chart_401_tax_on_excess_line_6, ca-qc/work_chart_401_tax_at_start_line_7]
+    produces:
+      output: ca-qc/work_chart_401_income_tax_line_8
