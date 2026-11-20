@@ -346,3 +346,10 @@ TP1_SCHEDULE_F_INCOME_SUBJECT_LINE_70 = AmountKind.declare(
 )
 """Schedule F line 70, "Income subject to the contribution": line 36 less line 68; no floor is
 printed, so it can be negative. Part B tests it against $18,130."""
+
+TP1_SCHEDULE_F_LOWER_BOUND_LINE_77 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_lower_bound_line_77", non_negative=True
+)
+"""Schedule F line 77, the printed lower bound of the column that line 76 falls in (each column
+prints 18,130.00 under "If $63,060 or less" and 63,060.00 under "If more than $63,060"); blank
+when line 76 is $18,130 or less, because Part B is then not completed."""
