@@ -3,9 +3,9 @@ the amount from line 105 if it is positive, minus the amount from box 211 of you
 applicable", as the Quebec take-home manifest wires it: four steps, one per operation.
 
 TP-1 line 101 is the salary, read from the TP-1 income form; line 105 is added only if it is
-positive; box 211 is subtracted. Line 105 and box 211 are the optional inputs of Work Chart 201 line 1, read as 0 when
-blank. The expected figures are hand-computed from the printed line, not from a Revenu Quebec
-example.
+positive; box 211 is subtracted. Line 105 and box 211 are the optional inputs of Work Chart 201
+line 1, read as 0 when blank. The expected figures are hand-computed from the printed line, not
+from a Revenu Quebec example.
 """
 
 from __future__ import annotations
