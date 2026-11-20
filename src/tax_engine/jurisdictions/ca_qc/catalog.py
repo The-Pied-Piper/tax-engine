@@ -715,3 +715,8 @@ by one core/sum (`schedule_b_line_30.yaml`)."""
 SCHEDULE_B_LINE_31 = AmountKind.declare(CATALOG, "schedule_b_line_31", non_negative=True)
 """Schedule B Part B line 31, "Amount from line 18 x 18.75%": line 18 at the printed rate, rounded
 half-up to the cent. Produced by one core/apply_rate (`schedule_b_line_31.yaml`)."""
+
+SCHEDULE_B_LINE_32 = AmountKind.declare(CATALOG, "schedule_b_line_32", non_negative=True)
+"""Schedule B Part B line 32, "Subtract line 31 from line 30. If the result is negative, enter 0.
+Amount to which you or, if applicable, your spouse is entitled", rounded half-up to the cent.
+Produced by one core/subtract_not_below_zero (`schedule_b_line_32.yaml`)."""

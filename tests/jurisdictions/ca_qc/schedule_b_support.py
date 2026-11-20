@@ -92,3 +92,4 @@ LINE_20_PARTS = (
     "schedule_b_line_20_input.yaml",
     "schedule_b_line_20.yaml",
 )
+LINE_31_PARTS = (*LINE_20_PARTS, "schedule_b_line_30.yaml", "schedule_b_line_31.yaml")
