@@ -1,0 +1,13 @@
+# Schedule F (2025) line 14: "Correction of employment income (line 105)". An input a salary-only
+# caller does not give; line 16 reads it as 0 when it is left out. It carries its sign: line 16 reads
+# the printed "add lines 12 and 14, or subtract line 14 from line 12" as the signed sum.
+form:
+  name: ca-qc/tp1_schedule_f
+inputs:
+  - name: ca-qc/tp1_schedule_f_employment_income_correction_line_14
+    title: "Correction of employment income"
+    reference: "14"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Correction of employment income (line 105)'
