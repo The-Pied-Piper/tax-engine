@@ -54,8 +54,8 @@ D = Decimal
 
 
 # The default answers: every printed figure and each step's figure at the three salaries and at
-# $3,000 (a salary below the credits, where the refund survives with no floor). Each row: 43500
-# less 44000, TP-1 450 less 456, refund or balance owing, total payable, solidarity credit.
+# $3,000 (a salary below the credits, where the refund survives with no floor). Each row: salary,
+# refund or balance owing, total payable, solidarity credit.
 DEFAULT_FIGURES = [
     ("3000", "-293.40", "0.00", "363.00"),
     ("20000", "-3135.08", "128.01", "363.00"),
@@ -178,56 +178,102 @@ def _steps() -> list[dict[str, Any]]:
     return steps
 
 
-def test_the_part_has_ten_steps_none_with_a_title_or_a_reference() -> None:
-    steps = _steps()
-
-    names = [step["name"] for step in steps]
-    assert {name: names.count(name) for name in set(names)} == {
-        "core/record_total": 6,
-        "core/subtract": 2,
-        "core/sum": 2,
+def _read(records: str, output: str) -> dict[str, Any]:
+    return {
+        "name": "core/record_total",
+        "unit": "ca/cad",
+        "consumes": {"records": records},
+        "produces": {"output": output},
     }
-    assert all(step["unit"] == "ca/cad" for step in steps)
-    assert not any("title" in step or "reference" in step for step in steps)
 
 
-def test_every_figure_comes_in_through_a_record_total_over_an_export() -> None:
-    reads = [
-        step["consumes"]["records"] for step in _steps() if step["name"] == "core/record_total"
-    ]
+def _computed(name: str, consumes: dict[str, Any], output: str) -> dict[str, Any]:
+    return {
+        "name": name,
+        "unit": "ca/cad",
+        "params": {"rounding": "ca-qc/cent_rounding"},
+        "consumes": consumes,
+        "produces": {"output": output},
+    }
 
-    assert sorted(reads) == [
-        "ca-qc/solidarity_credit.solidarity_credit_after_reduction",
+
+# Each step of the part, exactly, by the figure it produces: one case per step. No step carries a
+# title or a reference, because the summary prints no line of its own.
+STEPS = {
+    "ca-qc/federal_refund_or_balance_owing_return": _read(
         "ca-qc/t1_tax_and_credits.refund_or_balance_owing_line_172",
-        "ca-qc/t1_tax_and_credits.refundable_quebec_abatement_line_156",
-        "ca-qc/t1_tax_and_credits.total_payable_line_151",
+        "ca-qc/federal_refund_or_balance_owing_return",
+    ),
+    "ca-qc/tp1_income_tax_and_contributions_return": _read(
         "ca-qc/tp1_totals.tp1_income_tax_and_contributions_line_450",
+        "ca-qc/tp1_income_tax_and_contributions_return",
+    ),
+    "ca-qc/tp1_work_premium_tax_credits_return": _read(
         "ca-qc/tp1_totals.tp1_work_premium_tax_credits_line_456",
-    ]
+        "ca-qc/tp1_work_premium_tax_credits_return",
+    ),
+    "ca-qc/tp1_income_tax_less_work_premium_return": _computed(
+        "core/subtract",
+        {
+            "amount": "ca-qc/tp1_income_tax_and_contributions_return",
+            "less": "ca-qc/tp1_work_premium_tax_credits_return",
+        },
+        "ca-qc/tp1_income_tax_less_work_premium_return",
+    ),
+    "ca/refund_or_balance_owing": _computed(
+        "core/sum",
+        {
+            "parts": [
+                "ca-qc/federal_refund_or_balance_owing_return",
+                "ca-qc/tp1_income_tax_less_work_premium_return",
+            ]
+        },
+        "ca/refund_or_balance_owing",
+    ),
+    "ca-qc/federal_total_payable_return": _read(
+        "ca-qc/t1_tax_and_credits.total_payable_line_151",
+        "ca-qc/federal_total_payable_return",
+    ),
+    "ca-qc/refundable_quebec_abatement_return": _read(
+        "ca-qc/t1_tax_and_credits.refundable_quebec_abatement_line_156",
+        "ca-qc/refundable_quebec_abatement_return",
+    ),
+    "ca-qc/federal_total_payable_less_abatement_return": _computed(
+        "core/subtract",
+        {
+            "amount": "ca-qc/federal_total_payable_return",
+            "less": "ca-qc/refundable_quebec_abatement_return",
+        },
+        "ca-qc/federal_total_payable_less_abatement_return",
+    ),
+    "ca-qc/total_payable": _computed(
+        "core/sum",
+        {
+            "parts": [
+                "ca-qc/federal_total_payable_less_abatement_return",
+                "ca-qc/tp1_income_tax_and_contributions_return",
+            ]
+        },
+        "ca-qc/total_payable",
+    ),
+    "ca-qc/solidarity_credit": _read(
+        "ca-qc/solidarity_credit.solidarity_credit_after_reduction", "ca-qc/solidarity_credit"
+    ),
+}
 
 
-def test_the_computing_steps_round_half_up_to_the_cent() -> None:
-    steps = [step for step in _steps() if step["name"] in ("core/subtract", "core/sum")]
-
-    assert len(steps) == 4
-    assert all(step["params"] == {"rounding": "ca-qc/cent_rounding"} for step in steps)
-
-
-def test_the_two_figures_are_added_with_no_floor() -> None:
+def test_the_part_is_the_ten_steps_and_nothing_else() -> None:
     steps = {step["produces"]["output"]: step for step in _steps()}
 
-    assert steps["ca/refund_or_balance_owing"]["consumes"] == {
-        "parts": [
-            "ca-qc/federal_refund_or_balance_owing_return",
-            "ca-qc/tp1_income_tax_less_work_premium_return",
-        ]
-    }
-    assert steps["ca-qc/total_payable"]["consumes"] == {
-        "parts": [
-            "ca-qc/federal_total_payable_less_abatement_return",
-            "ca-qc/tp1_income_tax_and_contributions_return",
-        ]
-    }
+    assert len(_steps()) == len(STEPS) == 10
+    assert set(steps) == set(STEPS)
+
+
+@pytest.mark.parametrize("output", list(STEPS))
+def test_each_step_is_exactly_as_built(output: str) -> None:
+    steps = {step["produces"]["output"]: step for step in _steps()}
+
+    assert steps[output] == STEPS[output]
 
 
 def test_the_solidarity_credit_is_in_neither_sum() -> None:
