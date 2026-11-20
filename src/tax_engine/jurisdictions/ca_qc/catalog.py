@@ -663,3 +663,9 @@ SCHEDULE_K_SPOUSE_NET_INCOME_LINE_37 = AmountKind.declare(
 """Spouse's net income, Schedule K line 37 "Amount from line 275 of your spouse's return (spouse on
 December 31, 2025)": an input, the spouse's TP-1 line 275. A single filer has no spouse, so the
 caller leaves it out and line 40 reads it as 0."""
+
+SCHEDULE_K_INCOME_LINE_40 = AmountKind.declare(
+    CATALOG, "schedule_k_income_line_40", non_negative=True
+)
+"""Income, Schedule K line 40 "Add lines 36 and 37": the net income of the return and of the spouse,
+added by one core/sum (`tp1_schedule_k_line_40.yaml`), line 37 read as 0 when left blank."""
