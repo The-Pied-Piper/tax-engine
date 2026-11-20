@@ -1008,3 +1008,10 @@ TP1_BASIC_PERSONAL_AMOUNT_LINE_350 = AmountKind.declare(
 """TP-1 line 350 "Basic personal amount": the printed figure 18,571.00, claimed whole. Produced by
 one core/credit_amount over the dataset of the same name (`tp1_credits_line_350.yaml`). It is its
 own kind: `ca-qc/basic_personal_amount` is the federal basic personal amount of 5005-R line 78."""
+
+
+TP1_INCOME_REPLACEMENT_ADJUSTMENT_LINE_358 = AmountKind.declare(
+    CATALOG, "tp1_income_replacement_adjustment_line_358", non_negative=True
+)
+"""TP-1 line 358 "Adjustment for income replacement indemnities": one optional input a salary-only
+caller does not give; line 359 reads a blank as 0 (`tp1_credits_line_358_input.yaml`)."""
