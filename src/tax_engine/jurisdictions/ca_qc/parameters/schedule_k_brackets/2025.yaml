@@ -8,7 +8,7 @@
 # This dataset has no rounding rule, as the form states none. The take-home build rounds lines 79,
 # 81 and 83 half-up to the cent in its own parts (ca-qc/cent_rounding).
 # Column B has no upper end: the form's "more than $14,669, enter $766 on line 84" is the printed
-# maximum of line 83, applied by `ca-qc/schedule_k_line_84_maximum`, not a third column.
+# maximum of line 83, applied by `ca-qc/schedule_k_line_83_maximum`, not a third column.
 family: ca-qc/schedule_k_brackets
 tax_year: 2025
 kind: brackets

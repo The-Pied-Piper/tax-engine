@@ -3,7 +3,7 @@ wires it. Printed as "Amount from line 83 of column A or B, as applicable", with
 $14,669, enter $766 on line 84".
 
 `core/capped_amount` takes the lesser of line 83 and the printed maximum `ca-
-qc/schedule_k_line_84_maximum` (766.00), so a line 48 above $14,669 gives $766. Line 48 is given
+qc/schedule_k_line_83_maximum` (766.00), so a line 48 above $14,669 gives $766. Line 48 is given
 straight to Part C, as line 77 receives it, on both sides of each printed column edge; the last
 tests run the real Part A chain from a salary. The expected figures are hand-computed from the
 printed lines, not an official example.
@@ -60,7 +60,7 @@ def test_the_part_is_one_step_as_printed() -> None:
         "name": "core/capped_amount",
         "reference": "84",
         "unit": "ca/cad",
-        "params": {"cap": "ca-qc/schedule_k_line_84_maximum"},
+        "params": {"cap": "ca-qc/schedule_k_line_83_maximum"},
         "consumes": {"base": "ca-qc/schedule_k_column_premium_line_83"},
         "produces": {"output": LINE},
     }
