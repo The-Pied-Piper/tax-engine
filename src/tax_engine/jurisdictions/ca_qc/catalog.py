@@ -720,3 +720,8 @@ SCHEDULE_B_LINE_32 = AmountKind.declare(CATALOG, "schedule_b_line_32", non_negat
 """Schedule B Part B line 32, "Subtract line 31 from line 30. If the result is negative, enter 0.
 Amount to which you or, if applicable, your spouse is entitled", rounded half-up to the cent.
 Produced by one core/subtract_not_below_zero (`schedule_b_line_32.yaml`)."""
+
+SCHEDULE_B_LINE_33 = AmountKind.declare(CATALOG, "schedule_b_line_33", non_negative=True)
+"""Schedule B Part B line 33, "Amount claimed on line 361 of your spouse's return (spouse on
+December 31, 2025)": an optional input, a spouse line a salary-only caller does not give; line 34
+reads it as 0 when it is left out."""

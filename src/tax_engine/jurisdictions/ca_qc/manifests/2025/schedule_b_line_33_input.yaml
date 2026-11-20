@@ -1,0 +1,14 @@
+# Schedule B (TP-1.D.B-V, 2025-12) Part B line 33: "Amount claimed on line 361 of your spouse's
+# return (spouse on December 31, 2025)". A spouse line, which the take-home leaves out (owner
+# ruling, 19 Nov 2026), kept as an optional input so line 34 stays a printed subtraction (owner
+# decision on the ticket, 19 Nov 2026). A salary-only caller leaves it out: a request that omits it
+# is read as blank, and the line 34 part reads the blank as 0.
+form:
+  name: ca-qc/schedule_b
+inputs:
+  - name: ca-qc/schedule_b_line_33
+    reference: "33"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Amount claimed on line 361 of your spouse's return (spouse on December 31, 2025)"
