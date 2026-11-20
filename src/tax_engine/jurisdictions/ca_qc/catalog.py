@@ -1517,3 +1517,10 @@ SCHEDULE_K_MONTHS_PREMIUM_LINE_88 = AmountKind.declare(
 """Schedule K line 88, "Add the results": the two rows (box 60 months times 62.00 and box 61
 months times 63.83) added, rounded half-up to the cent. One core/sum
 (`tp1_schedule_k_line_88.yaml`)."""
+
+SCHEDULE_K_PREMIUM_REMAINING_LINE_89 = AmountKind.declare(
+    CATALOG, "schedule_k_premium_remaining_line_89", non_negative=True
+)
+"""Schedule K line 89, "Subtract line 88 from line 87": the maximum premium of 755.00 less the
+premium of the months checked, rounded half-up to the cent. One core/subtract
+(`tp1_schedule_k_line_89.yaml`)."""
