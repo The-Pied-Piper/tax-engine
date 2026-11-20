@@ -7,12 +7,13 @@ from the year, as the other provinces' carried-forward datasets do.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 import pytest
 import yaml
 
 import tax_engine.jurisdictions.ca_qc as ca_qc_package
+from tax_engine.adapters.outbound.parameter_parser import ParameterParser
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tests.jurisdictions.ca_qc.support import (
     quebec_packages,
@@ -72,7 +73,7 @@ def _families() -> list[str]:
 
 def _kind(family: str, year: int) -> Any:
     declared = yaml.safe_load((_parameters_dir() / family / f"{year}.yaml").read_text())["kind"]
-    return quebec_parameter_parsers().get(declared).kind
+    return cast(ParameterParser[Any], quebec_parameter_parsers().get(declared)).kind
 
 
 def test_every_family_with_a_2025_file_has_a_2026_file() -> None:
