@@ -1059,3 +1059,10 @@ SCHEDULE_K_COLUMN_LOWER_BOUND_LINE_78 = AmountKind.declare(
 """Schedule K line 78, the printed lower bound of the column that line 77 (a copy of line 48) falls
 in: 0.00 under column A ($5,000 or less) and 5,000.00 under column B (more than $5,000). One
 core/bracket_column_lower_bound (`tp1_schedule_k_line_78.yaml`)."""
+
+SCHEDULE_K_INCOME_OVER_LOWER_BOUND_LINE_79 = AmountKind.declare(
+    CATALOG, "schedule_k_income_over_lower_bound_line_79", non_negative=True
+)
+"""Schedule K line 79, "Subtract line 78 from line 77": the part of line 48 over the column's lower
+bound, rounded half-up to the cent. One core/subtract_not_below_zero
+(`tp1_schedule_k_line_79.yaml`)."""
