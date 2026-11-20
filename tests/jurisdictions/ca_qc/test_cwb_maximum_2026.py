@@ -20,8 +20,8 @@ PROVISIONAL_HEADER = (
     "confirmed against the 2026 form text when CRA publishes it."
 )
 DERIVATION_HEADER = (
-    "# Derivation: carried forward unchanged from the 2025 file; the 2026 form is"
-    " not yet published."
+    "# Derivation: 2025 amount 3,812.06 x 1.02 (the federal 2026 factor)"
+    " = 3,888.3012, rounded to the nearest dollar, halves up, to 3,888."
 )
 EXPECTED: dict[str, Any] = {
     "family": "ca-qc/cwb_maximum",
@@ -29,7 +29,7 @@ EXPECTED: dict[str, Any] = {
     "kind": "credit",
     "sources": ["https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5005-s6/5005-s6-25e.txt"],
     "rounding": {"increment": "0.01", "mode": "half_up"},
-    "amount": "3812.06",
+    "amount": "3888",
 }
 
 
