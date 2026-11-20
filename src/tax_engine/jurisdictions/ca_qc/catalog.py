@@ -253,6 +253,10 @@ SCHEDULE_U_LINE_17_3 = AmountKind.declare(CATALOG, "schedule_u_line_17_3", non_n
 """Schedule U line 17.3 "Subtract line 17.2 from line 17. If the result is negative, enter 0": the
 QPP contribution (TP-1 line 98) less line 17.2, not below 0."""
 
+SCHEDULE_U_LINE_17_4 = AmountKind.declare(CATALOG, "schedule_u_line_17_4", non_negative=True)
+"""Schedule U line 17.4 "Additional contribution to the QPP (line 98.2 of your return)": the TP-1
+line 98.2 figure, read from the TP-1 income form."""
+
 SCHEDULE_U_LINE_17_5 = AmountKind.declare(CATALOG, "schedule_u_line_17_5", non_negative=True)
 """Schedule U line 17.5 "Add lines 17.3 and 17.4": the excess over the base contribution plus the
 additional QPP contribution (TP-1 line 98.2), rounded half-up to the cent."""
