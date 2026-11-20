@@ -424,3 +424,56 @@ TP1_SCHEDULE_F_INCOME_SUBJECT_LINE_70 = AmountKind.declare(
 )
 """Schedule F line 70, "Income subject to the contribution": line 36 less line 68; no floor is
 printed, so it can be negative. Part B tests it against $18,130."""
+
+SCHEDULE_P_TP1_LINE_101 = AmountKind.declare(CATALOG, "schedule_p_tp1_line_101")
+"""Schedule P (TP-1.D.P-V) line 10, first step: the amount from line 101 of the TP-1 return,
+"Employment income, RL-1 slip, box A", read from the TP-1 income form as a record list and
+totalled."""
+
+SCHEDULE_P_LINE_105_IF_POSITIVE = AmountKind.declare(
+    CATALOG, "schedule_p_line_105_if_positive", non_negative=True
+)
+"""Schedule P line 10, second step: the amount of TP-1 line 105 if it is positive, else 0, rounded
+half-up to the cent."""
+
+SCHEDULE_P_LINE_101_PLUS_105 = AmountKind.declare(CATALOG, "schedule_p_line_101_plus_105")
+"""Schedule P line 10, third step: the amount of TP-1 line 101 plus the amount of line 105 if it is
+positive, rounded half-up to the cent."""
+
+SCHEDULE_P_LINE_10 = AmountKind.declare(CATALOG, "schedule_p_line_10")
+"""Schedule P (TP-1.D.P-V) Part A line 10, "Amount from line 101 of your return, plus the amount
+from line 105 if it is positive, minus the amount from box 211 of your RL-1 slip, if applicable",
+rounded half-up to the cent."""
+
+SCHEDULE_P_RESEARCH_GRANTS_LINE_13 = AmountKind.declare(
+    CATALOG, "schedule_p_research_grants_line_13", non_negative=True
+)
+"""Schedule P line 13, "Net amount of research grants (see line 154, point 3(j), in the guide)", as
+the caller gives it; blank when the caller has none, and line 18 reads it as 0."""
+
+SCHEDULE_P_SCHEDULE_L_INCOME_LINE_14 = AmountKind.declare(
+    CATALOG, "schedule_p_schedule_l_income_line_14", non_negative=True
+)
+"""Schedule P line 14, "Total of lines 22 through 26.1 of Schedule L. Do not include losses.", as
+the caller gives it; blank when the caller has none, and line 18 reads it as 0."""
+
+SCHEDULE_P_WEPP_PAYMENTS_LINE_15 = AmountKind.declare(
+    CATALOG, "schedule_p_wepp_payments_line_15", non_negative=True
+)
+"""Schedule P line 15, "Wage Earner Protection Program (WEPP) payments (line 154, point 12)", as
+the caller gives it; blank when the caller has none, and line 18 reads it as 0."""
+
+SCHEDULE_P_LINE_18 = AmountKind.declare(CATALOG, "schedule_p_line_18")
+"""Schedule P Part A line 18, "Add lines 10 through 15", column "You", rounded half-up to the
+cent."""
+
+SCHEDULE_P_DEDUCTIBLE_INCOME_LINE_22 = AmountKind.declare(
+    CATALOG, "schedule_p_deductible_income_line_22", non_negative=True
+)
+"""Schedule P line 22, "Amount included in one of the above sources of income and entitling you to
+a deduction on line 293 of your return", as the caller gives it; blank when the caller has none, and
+line 29 reads it as 0."""
+
+SCHEDULE_P_WORK_INCOME_LINE_29 = AmountKind.declare(CATALOG, "schedule_p_work_income_line_29")
+"""Schedule P Part A line 29, "Subtract line 22 from line 18", "Work income", column "You", rounded
+half-up to the cent. The form prints no floor."""
