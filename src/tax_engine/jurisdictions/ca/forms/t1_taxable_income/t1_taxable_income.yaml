@@ -10,6 +10,7 @@
 form:
   name: ca/t1_taxable_income
   title: "T1 Income Tax and Benefit Return, Steps 2 to 4: Total income, net income and taxable income"
+  reference: "T1 return"
   required: true
   exports:
     - ca/net_income

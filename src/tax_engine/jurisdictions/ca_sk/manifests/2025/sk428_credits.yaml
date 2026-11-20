@@ -6,6 +6,7 @@
 form:
   name: ca-sk/sk428_credits
   title: "Form SK428: Saskatchewan Tax"
+  reference: "Form SK428: Saskatchewan Tax"
   required: true
   exports:
     - ca-sk/sk428_bracket_rate_line_5
