@@ -1537,3 +1537,11 @@ SCHEDULE_K_SPOUSE_PREMIUM_LINE_97 = AmountKind.declare(
 """Spouse's premium, Schedule K line 97 ("+ 97", the sum of lines 91 through 97 for the spouse's
 premium): an input. A single filer pays no spouse's premium, so the caller leaves it out and
 line 98 reads it as 0."""
+
+SCHEDULE_K_PREMIUM_PAYABLE_LINE_98 = AmountKind.declare(
+    CATALOG, "schedule_k_premium_payable_line_98", non_negative=True
+)
+"""Premium payable under the Quebec prescription drug insurance plan, Schedule K line 98, "Add
+lines 90 and 97": line 90 and the optional line 97 (read as 0 when left out) added, rounded
+half-up to the cent. One core/sum (`tp1_schedule_k_line_98.yaml`). The form exports it for
+TP-1 line 447."""
