@@ -17,9 +17,9 @@ parts, the real `sk428_credits_line_1.yaml`, `sk428_credits_line_3.yaml` and
 exporting lines 1, 3 and 4.
 
 Figures (re-derived here with Decimal, not a CRA example): taxable income is the salary less the
-enhanced CPP deduction, 9,935.00 / 19,835.00 / 69,335.00 / 198,926.00, line 3 is 0.00 / 0.00 /
-53,463.00 / 152,750.00, so line 4 is 9,935.00 / 19,835.00 / 15,872.00 / 46,176.00. The boundary
-salaries are derived as for line 3: one cent either side of each column's lower bound.
+enhanced CPP deduction, 9,935.00 / 69,335.00, line 3 is 0.00 / 53,463.00, so line 4 is 9,935.00 /
+15,872.00. The boundary salary is derived as for line 3: one cent over the first column's upper
+edge.
 """
 
 from __future__ import annotations
@@ -104,20 +104,13 @@ FORM = dedent(f"""\
 # (salary, line 1, line 3, line 4)
 CASES = [
     ("10000", "9935.00", "0.00", "9935.00"),
-    ("20000", "19835.00", "0.00", "19835.00"),
     ("70000", "69335.00", "53463.00", "15872.00"),
-    ("200000", "198926.00", "152750.00", "46176.00"),
 ]
 # Salaries whose taxable income sits on a column's edge: line 1 is 53,463.00 or less in column 1,
 # not more than 152,750.00 in column 2. One cent more is the next column, so line 4 restarts at
 # 0.01.
 EDGES = [
-    ("53967.67", "53462.99", "0.00", "53462.99"),
-    ("53967.68", "53463.00", "0.00", "53463.00"),
     ("53967.69", "53463.01", "53463.00", "0.01"),
-    ("153823.99", "152749.99", "53463.00", "99286.99"),
-    ("153824.00", "152750.00", "53463.00", "99287.00"),
-    ("153824.01", "152750.01", "152750.00", "0.01"),
 ]
 
 

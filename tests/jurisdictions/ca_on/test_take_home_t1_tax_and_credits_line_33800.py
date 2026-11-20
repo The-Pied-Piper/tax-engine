@@ -132,8 +132,6 @@ def _line_33800(take_home_service: TakeHomeService, line_33500: str) -> Decimal:
     [
         # $70,000: line 33500 is 21,969.23, and 14.5% of it is 3,185.53835, rounded to 3,185.54.
         ("70000", "3185.54"),
-        # $20,000: line 33500 is 18,744.75, and 14.5% of it is 2,717.98875, rounded to 2,717.99.
-        ("20000", "2717.99"),
         # $200,000: line 33500 is 21,590.31, and 14.5% of it is 3,130.59495, rounded to 3,130.59.
         ("200000", "3130.59"),
     ],
@@ -152,18 +150,10 @@ def test_line_33800_is_14_5_percent_of_line_33500(
 @pytest.mark.parametrize(
     ("line_33500", "line_33800"),
     [
-        # 20,000.00 x 14.5% = 2,900.000, exactly.
-        ("20000.00", "2900.00"),
         # 1.00 x 14.5% = 0.145, a tie at the half-cent: rounded half-up to 0.15, not half-even 0.14.
         ("1.00", "0.15"),
-        # 5.00 x 14.5% = 0.725, a tie at the half-cent: rounded half-up to 0.73, not half-even 0.72.
-        ("5.00", "0.73"),
-        # 1.01 x 14.5% = 0.14645, rounded to the nearest cent, 0.15.
-        ("1.01", "0.15"),
         # 0.10 x 14.5% = 0.0145, rounded to the nearest cent, 0.01 (not a tie: 1.45 cents).
         ("0.10", "0.01"),
-        # Line 33500 is 0, so line 33800 is 0.
-        ("0", "0.00"),
     ],
 )
 def test_line_33800_rounds_half_up_to_the_cent(

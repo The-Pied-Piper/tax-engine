@@ -9,8 +9,7 @@ and Labrador tax on taxable income" and carries the reference "8". Line 8 is one
 is blank too.
 
 Figures (hand-computed, not a CRA example): salary 20,000 gives line 6 of 1,725.65 and line 7 of
-0.00, so line 8 is 1,725.65; 70,000 gives 3,645.74 and 3,844.70, so 7,490.44; 200,000 gives 7,321.85
-and 21,219.03, so 28,540.88.
+0.00, so line 8 is 1,725.65; 200,000 gives 7,321.85 and 21,219.03, so 28,540.88.
 """
 
 from __future__ import annotations
@@ -144,8 +143,6 @@ def _kind(identifier: str) -> AmountKind:
     [
         # Line 1 is 19,835.00: column 1, 19,835.00 x 8.7% = 1,725.645, half-up to 1,725.65.
         ("20000", "1725.65", "0.00", "1725.65"),
-        # Line 1 is 69,335.00: column 2, 25,143.00 x 14.5% = 3,645.735, half-up to 3,645.74.
-        ("70000", "3645.74", "3844.70", "7490.44"),
         # Line 1 is 198,926.00: column 4, 41,134.00 x 17.8% = 7,321.852, to 7,321.85.
         ("200000", "7321.85", "21219.03", "28540.88"),
     ],

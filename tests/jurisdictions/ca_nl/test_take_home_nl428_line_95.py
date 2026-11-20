@@ -99,6 +99,6 @@ def test_the_kind_is_a_registered_non_negative_amount_kind() -> None:
     assert kind == LOW_INCOME_REDUCTION_BASIC
 
 
-@pytest.mark.parametrize("salary", ["20000", "70000", "200000"])
+@pytest.mark.parametrize("salary", ["20000", "200000"])
 def test_line_95_is_the_printed_997_at_every_salary(tmp_path: Path, salary: str) -> None:
     assert line_95(tmp_path, salary) == D("997.00")

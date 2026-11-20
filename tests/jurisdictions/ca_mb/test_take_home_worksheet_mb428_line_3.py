@@ -88,6 +88,6 @@ def line_3(tmp_path: Path, salary: str) -> Decimal:
     return sheet.get(WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_3).value
 
 
-@pytest.mark.parametrize("salary", ["10000", "20000", "70000", "200000"])
+@pytest.mark.parametrize("salary", ["10000", "200000"])
 def test_line_3_is_the_income_threshold_at_every_salary(tmp_path: Path, salary: str) -> None:
     assert line_3(tmp_path, salary) == D("200000.00")

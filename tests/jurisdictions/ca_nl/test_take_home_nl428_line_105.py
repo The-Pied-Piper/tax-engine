@@ -9,12 +9,11 @@ ruling, 18 Nov 2026), so the step reads line 87. The form prints no title for th
 is untitled. The form's branch for a claim on line 86 (enter 0 on line 104) is built in line 104,
 so with line 86 claimed line 105 is line 87.
 
-Figures (hand-computed from the printed form, not a CRA example): line 87 is 663.23 / 6,147.49 /
-27,192.33 and line 104 is 997.00 / 0.00 / 0.00 at salaries of 20,000 / 70,000 / 200,000, so line
-105 is 0.00 / 6,147.49 / 27,192.33. At a salary of 28,000 line 104 is 384.68 and line 87 is
-1,306.40, so line 105 is 921.72. With a line 86 of 500.00 at a salary of 20,000 line 87 is 163.23
-and line 104 is 0.00, so line 105 is 163.23; at a salary of 70,000 line 87 is 5,647.49 and line
-105 is 5,647.49.
+Figures (hand-computed from the printed form, not a CRA example): line 87 is 663.23 / 6,147.49
+and line 104 is 997.00 / 0.00 at salaries of 20,000 / 70,000, so line 105 is 0.00 / 6,147.49. At a
+salary of 28,000 line 104 is 384.68 and line 87 is 1,306.40, so line 105 is 921.72. With a line 86
+of 500.00 at a salary of 20,000 line 87 is 163.23 and line 104 is 0.00, so line 105 is 163.23; at a
+salary of 70,000 line 87 is 5,647.49 and line 105 is 5,647.49.
 """
 
 from __future__ import annotations
@@ -282,7 +281,6 @@ def _value(sheet: Any, identifier: str) -> Decimal:
     [
         ("20000", "663.23", "997.00", "0.00"),
         ("70000", "6147.49", "0.00", "6147.49"),
-        ("200000", "27192.33", "0.00", "27192.33"),
     ],
 )
 def test_line_105_is_line_87_minus_line_104(

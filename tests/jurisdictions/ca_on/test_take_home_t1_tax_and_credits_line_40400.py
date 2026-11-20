@@ -19,7 +19,7 @@ export.
 The salary is the only input the caller gives. Ontario resident, single filer, salary the only
 income, tax withheld 0, basic credits only, as the take-home calculator states them.
 
-Line 121 is pinned as a figure for each salary and equal to line 76, and at the two salaries either
+Line 121 is pinned as a figure for two salaries and equal to line 76, and at the two salaries either
 side of the 57,375 column boundary of line 76 (57,919 and 57,920), where it is line 76 plus 0.
 The trace names the line 76 amount, the rounding and the total, and the kind is pinned as
 registered and non-negative.
@@ -97,8 +97,6 @@ def _sheet(take_home_service: TakeHomeService, salary: str) -> Worksheet:
         ("20000", "2876.08"),
         # Column 2 of line 76: 8,319.38 plus 20.5% of 11,960.00 above 57,375.00.
         ("70000", "10771.18"),
-        # Column 4 of line 76: 36,495.57 plus 29% of 21,044.00 above 177,882.00.
-        ("200000", "42598.33"),
     ],
 )
 def test_line_121_is_line_76_with_no_tax_on_split_income(

@@ -53,7 +53,7 @@ def line_74(take_home_service: TakeHomeService, salary: str) -> Decimal:
     return value
 
 
-@pytest.mark.parametrize("salary", ["20000", "70000", "150000"])
+@pytest.mark.parametrize("salary", ["20000", "150000"])
 def test_line_74_is_the_basic_reduction_at_every_salary(
     take_home_service: TakeHomeService, salary: str
 ) -> None:

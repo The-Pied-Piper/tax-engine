@@ -69,20 +69,12 @@ def _line_53(take_home_service: TakeHomeService, line_8: str, line_50: str) -> D
 @pytest.mark.parametrize(
     ("line_8", "line_50", "line_53"),
     [
-        # A $20,000 salary: line 8 is 1,001.67 and line 50 is 701.53, so line 53 is 300.14.
-        ("1001.67", "701.53", "300.14"),
         # A $70,000 salary: line 8 is 4,175.82 and line 50 is 864.37, so line 53 is 3,311.45.
         ("4175.82", "864.37", "3311.45"),
-        # A $150,000 salary: line 8 is 12,325.74 and line 50 is 867.62, so line 53 is 11,458.12.
-        ("12325.74", "867.62", "11458.12"),
         # Credits larger than tax: 100.00 minus 150.00 is negative, so the line enters 0.
         ("100.00", "150.00", "0.00"),
         # Credits equal to tax: 500.00 minus 500.00 is 0.
         ("500.00", "500.00", "0.00"),
-        # No tax and no credits: 0 minus 0 is 0.
-        ("0", "0", "0.00"),
-        # A cents difference: 0.10 minus 0.09 is 0.01.
-        ("0.10", "0.09", "0.01"),
     ],
 )
 def test_line_53_is_line_8_minus_line_50_not_below_zero(

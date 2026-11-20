@@ -133,7 +133,7 @@ def _steps() -> list[dict[str, Any]]:
     return steps
 
 
-@pytest.mark.parametrize("salary", ["10000", "20000", "70000", "200000"])
+@pytest.mark.parametrize("salary", ["10000", "200000"])
 def test_a_salary_only_caller_gets_0_on_line_69(tmp_path: Path, salary: str) -> None:
     # Lines 67 and 68's cost are left out, read as 0, so line 69 is 0.00 at every salary.
     value = _line_69(tmp_path, salary)

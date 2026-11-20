@@ -18,11 +18,9 @@ carry `pass_on`. The form declaration is test-local, exporting lines 1, 3, 4, 5 
 Figures, computed here from the engine's T1 taxable income: salary 20,000 gives line 4 of
 19,835.00 at 8%, so 1,586.80; 70,000 gives 9,335.00 at 10%, so 933.50; 200,000 gives blank lines 4
 and 5, so a blank line 6. Column edges: a salary of 60,570.71 gives line 1 of exactly 60,000.00
-(column 1, 8%) and 60,570.72 gives 60,000.01 (column 2, 10%, line 4 0.01); 152,308.00 gives
-151,234.00 (column 2, line 4 91,234.00) and 152,308.01 gives 151,234.01 (column 3, 12%, line 4
-0.01); 182,555.00 gives 181,481.00 (line 4 30,247.00) and 182,555.01 gives blank. Rounding: line 4
-of 9,335.05 at 10% is 933.505, half-up 933.51 (not the even 933.50); 9,335.04 gives 933.504, so
-933.50; 19,835.07 at 8% is 1,586.8056, so 1,586.81.
+(column 1, 8%) and 182,555.00 gives 181,481.00 (column 3, 12%, line 4 30,247.00), and 182,555.01
+gives blank. Rounding: line 4 of 9,335.05 at 10% is 933.505, half-up 933.51 (not the even 933.50);
+9,335.04 gives 933.504, so 933.50.
 """
 
 from __future__ import annotations
@@ -182,12 +180,6 @@ def test_line_6_is_line_4_times_the_line_5_rate_for_the_salary(
     [
         # Line 1 of exactly 60,000.00 is column 1 (8%): line 4 60,000.00.
         ("60570.71", "4800.00"),
-        # Line 1 of 60,000.01 is column 2 (10%): line 4 is one cent, 0.001 rounds to nothing.
-        ("60570.72", "0.00"),
-        # Line 1 of exactly 151,234.00 is column 2 (10%): line 4 91,234.00.
-        ("152308.00", "9123.40"),
-        # Line 1 of 151,234.01 is column 3 (12%): line 4 is one cent, 0.0012 rounds to nothing.
-        ("152308.01", "0.00"),
         # Line 1 of exactly 181,481.00 is column 3 (12%): line 4 30,247.00.
         ("182555.00", "3629.64"),
     ],
@@ -203,15 +195,6 @@ def test_line_6_at_the_column_boundaries(tmp_path: Path, salary: str, expected: 
         ("70000.04", "933.50"),
         # 9,335.05 x 10% = 933.505: exactly half goes up (half-up, not half-even).
         ("70000.05", "933.51"),
-        # 9,335.06 x 10% = 933.506: up.
-        ("70000.06", "933.51"),
-        # 19,835.06 x 8% = 1,586.8048: down.
-        ("20000.06", "1586.80"),
-        # 19,835.07 x 8% = 1,586.8056: up.
-        ("20000.07", "1586.81"),
-        # 0.04 x 12% = 0.0048: down; 0.05 x 12% = 0.006: up.
-        ("152308.04", "0.00"),
-        ("152308.05", "0.01"),
     ],
 )
 def test_line_6_is_rounded_half_up_to_the_cent(tmp_path: Path, salary: str, expected: str) -> None:

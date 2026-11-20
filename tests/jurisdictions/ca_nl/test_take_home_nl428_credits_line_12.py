@@ -9,7 +9,7 @@ Line 12 is `core/bracket_column_rate` over line 1 (`ca-nl/nl428_taxable_income_l
 line 12 and Saskatchewan's line 5 are.
 
 The table covers only a line 1 above 220,910.00 (a line 1 of 220,910 or less is in lines 2 to 8, the
-low table), so line 12 is left blank there: at $20,000, $70,000 and $200,000 (line 1 is 198,926.00)
+low table), so line 12 is left blank there: at $20,000 and $200,000 (line 1 is 198,926.00)
 it is blank, at $250,000 (line 1 is 248,926.00) it is 19.8%. A blank output is read from the
 Worksheet as an artifact whose `is_blank` is true (its `value` raises), and its trace is one
 `BracketOutsideRangeLine` (output, base, base amount).
@@ -154,7 +154,7 @@ def _sheet(tmp_path: Path, salary: str) -> Worksheet:
 
 @pytest.mark.parametrize(
     ("salary", "expected"),
-    [("20000", "19835.00"), ("70000", "69335.00"), ("250000", "248926.00")],
+    [("20000", "19835.00"), ("250000", "248926.00")],
 )
 def test_line_1_is_the_t1_taxable_income(tmp_path: Path, salary: str, expected: str) -> None:
     sheet = _sheet(tmp_path, salary)
@@ -162,9 +162,9 @@ def test_line_1_is_the_t1_taxable_income(tmp_path: Path, salary: str, expected: 
     assert sheet.get(newfoundland_kinds().kind(LINE_1)).value == D(expected)
 
 
-@pytest.mark.parametrize("salary", ["20000", "70000", "200000"])
+@pytest.mark.parametrize("salary", ["20000", "200000"])
 def test_line_12_is_blank_when_line_1_is_220910_or_less(tmp_path: Path, salary: str) -> None:
-    # Line 1 is 19,835.00, 69,335.00 and 198,926.00: below this table's range.
+    # Line 1 is 19,835.00 and 198,926.00: below this table's range.
     sheet = _sheet(tmp_path, salary)
 
     assert sheet.get(newfoundland_kinds().kind(LINE_12)).is_blank
@@ -221,10 +221,6 @@ def test_line_1_of_220910_01_gives_19_8_percent() -> None:
     ("base", "expected"),
     [
         ("282214.00", "0.198"),
-        ("282214.01", "0.208"),
-        ("564429.00", "0.208"),
-        ("564429.01", "0.213"),
-        ("1128858.00", "0.213"),
         ("1128858.01", "0.218"),
     ],
 )

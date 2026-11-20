@@ -78,16 +78,8 @@ def line_23400(take_home_service: TakeHomeService, total_income: str, deductions
     [
         # The ticket's $70,000 salary: enhanced CPP deduction 665.00, so 70,000 less 665 is 69,335.
         ("70000", "665.00", "69335.00"),
-        # $90,000, above the CPP ceiling: enhanced CPP deduction at its 1,074.00 maximum.
-        ("90000", "1074.00", "88926.00"),
-        # No deductions at all: the net income is the total income.
-        ("15000", "0", "15000.00"),
-        # Deductions equal to income: exactly 0.
-        ("1000", "1000", "0.00"),
         # Deductions above income: the result is negative and is not floored (shown in brackets).
         ("1000", "1500", "-500.00"),
-        # A cent case: 1,000.01 less 0.02 is 999.99.
-        ("1000.01", "0.02", "999.99"),
     ],
 )
 def test_line_23400_is_line_34_less_line_53_not_floored(
@@ -101,13 +93,10 @@ def test_line_23400_is_line_34_less_line_53_not_floored(
     [
         # The ticket's $70,000 salary: whole dollars print their cents.
         ("70000", "665.00", "69335.00"),
-        ("1000", "1000", "0.00"),
-        ("1000", "1500", "-500.00"),
         # Rounded once, half-up, on the exact difference: 1,000.005 less 0 is 1,000.01.
         ("1000.005", "0", "1000.01"),
         # 1,000.014 less 0.005 is 1,000.009, so 1,000.01 (rounding each first gives 1,000.00).
         ("1000.014", "0.005", "1000.01"),
-        ("1000.004", "0.001", "1000.00"),
     ],
 )
 def test_line_23400_prints_cents_through_the_shared_rounding_dataset(

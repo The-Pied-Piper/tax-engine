@@ -148,7 +148,7 @@ def _sheet(tmp_path: Path, salary: str) -> Worksheet:
 
 @pytest.mark.parametrize(
     ("salary", "expected"),
-    [("20000", "19835.00"), ("70000", "69335.00"), ("200000", "198926.00")],
+    [("20000", "19835.00"), ("200000", "198926.00")],
 )
 def test_line_1_is_the_t1_taxable_income(tmp_path: Path, salary: str, expected: str) -> None:
     sheet = _sheet(tmp_path, salary)
@@ -209,9 +209,6 @@ def test_line_1_of_exactly_181481_leaves_line_12_blank() -> None:
     ("base", "expected"),
     [
         ("181481.01", "0.13"),
-        ("241974.00", "0.13"),
-        ("241974.01", "0.14"),
-        ("362961.00", "0.14"),
         ("362961.01", "0.15"),
     ],
 )

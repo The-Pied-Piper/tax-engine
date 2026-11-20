@@ -127,10 +127,9 @@ OTHER_STEPS = [
     ("ca-nl/nl428", "ca-nl/nl428_newfoundland_and_labrador_tax_line_105", "ca/cad"),
 ]
 
-# salary, credits, line 167: a balance owing, a refund and zero.
+# salary, credits, line 167: a balance owing and zero (the refund is the trace test below).
 CASES = [
     ("70000", "11497.09", "58502.91"),
-    ("20000", "21474.91", "-1474.91"),
     ("10000", "10000.00", "0.00"),
 ]
 

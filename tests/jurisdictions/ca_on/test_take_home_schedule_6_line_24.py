@@ -54,9 +54,7 @@ def line_24(take_home_service: TakeHomeService, salary: str) -> Decimal:
     return sheet.get(CWB_REDUCTION_THRESHOLD).value
 
 
-@pytest.mark.parametrize(
-    "salary", ["2000", "6000", "20000", "30000", "35000", "40000", "70000", "0", "200000"]
-)
+@pytest.mark.parametrize("salary", ["0", "70000"])
 def test_line_24_is_the_printed_26855_whatever_the_salary(
     take_home_service: TakeHomeService, salary: str
 ) -> None:

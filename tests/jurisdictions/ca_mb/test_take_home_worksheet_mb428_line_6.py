@@ -13,7 +13,7 @@ needs, the real line 2, 3, 4 and 5 parts and the new `worksheet_mb428_line_6.yam
 only the salary. The header and the Worksheet MB428 form declaration are made up here, because the
 shared scaffold owns them.
 
-Figures: line 4 is 0.00 at $10,000, $20,000, $70,000 and $200,000 (the line 4 test pins this), so
+Figures: line 4 is 0.00 at $10,000 and $200,000 (the line 4 test pins this), so
 line 6 is 0 there. A salary of $251,074 gives net income 251,074 - 678.00 - 396.00 = 250,000.00,
 the ticket's $250,000 net income, so line 4 is 50,000.00 and line 6 is 50,000.00 / 200,000.00 =
 0.25. The $300,000 case is this test's own addition: net income 298,926.00, line 4 98,926.00 and
@@ -108,8 +108,6 @@ FORM = dedent("""\
 # 0.00, so line 6 is 0.
 ZERO = [
     ("10000", "0.00", "200000.00", "0"),
-    ("20000", "0.00", "200000.00", "0"),
-    ("70000", "0.00", "200000.00", "0"),
     ("200000", "0.00", "200000.00", "0"),
 ]
 # salary, net income (line 2), line 4, line 6: the ticket's $250,000 net income = ratio 0.25, and

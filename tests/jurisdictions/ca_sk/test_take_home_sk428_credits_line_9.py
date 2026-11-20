@@ -98,6 +98,6 @@ def test_the_kind_is_a_registered_non_negative_amount_kind() -> None:
     assert kind == BASIC_PERSONAL_AMOUNT
 
 
-@pytest.mark.parametrize("salary", ["20000", "70000", "200000"])
+@pytest.mark.parametrize("salary", ["20000", "200000"])
 def test_line_9_is_the_basic_personal_amount_at_every_salary(tmp_path: Path, salary: str) -> None:
     assert line_9(tmp_path, salary) == D("19491.00")

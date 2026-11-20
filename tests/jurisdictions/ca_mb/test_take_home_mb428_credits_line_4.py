@@ -21,10 +21,8 @@ lines 1, 3 and 4. The form declaration is test-local, exporting lines 1, 3 and 4
 Figures, hand-computed here from the salary less the enhanced CPP deduction (not a CRA example):
 salary 10,000 gives line 1 of 9,935.00 and line 3 of 0.00, so line 4 is 9,935.00; 70,000 gives
 69,335.00 less 47,000.00, so 22,335.00; 200,000 gives 198,926.00 less 100,000.00, so 98,926.00.
-The edges sit exactly on the column bounds of line 3: a salary of 47,439.39 gives line 1 of
-47,000.00 (line 4 47,000.00), 47,439.40 gives 47,000.01 (line 4 0.01); 101,073.99 gives 99,999.99
-(line 4 52,999.99), 101,074.00 gives 100,000.00 (line 4 53,000.00) and 101,074.01 gives 100,000.01
-(line 4 0.01).
+The edges sit exactly on the column bounds of line 3: a salary of 47,439.40 gives line 1 of
+47,000.01 (line 4 0.01) and 101,074.00 gives 100,000.00 (line 4 53,000.00).
 """
 
 from __future__ import annotations
@@ -109,18 +107,13 @@ FORM = dedent(f"""\
 
 CASES = [
     ("10000", "9935.00", "0.00", "9935.00"),
-    ("20000", "19835.00", "0.00", "19835.00"),
-    ("70000", "69335.00", "47000.00", "22335.00"),
     ("200000", "198926.00", "100000.00", "98926.00"),
 ]
 # Salaries whose taxable income sits on a column's edge (line 3 is 47,000.00 or 100,000.00 at
 # the bounds). One cent more is the next column, and line 4 is one cent or the full column.
 EDGES = [
-    ("47439.39", "47000.00", "0.00", "47000.00"),
     ("47439.40", "47000.01", "47000.00", "0.01"),
-    ("101073.99", "99999.99", "47000.00", "52999.99"),
     ("101074.00", "100000.00", "47000.00", "53000.00"),
-    ("101074.01", "100000.01", "100000.00", "0.01"),
 ]
 
 

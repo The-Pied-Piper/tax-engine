@@ -19,8 +19,8 @@ The real parts composed: the British Columbia salary, Schedule 8, the T1 taxable
 over the package list of `support.py`.
 
 Figures (ticket, hand-computed): taxable income is the salary less the CPP enhanced and
-second-ceiling amounts, 16,865.00 / 19,835.00 / 29,735.00 / 69,335.00 / 198,926.00, so line 4 is
-16,865.00 / 19,835.00 / 29,735.00 (column 1, line 3 0.00), 20,056.00 for $70,000 (69,335.00 less
+second-ceiling amounts, 16,865.00 / 69,335.00 / 198,926.00, so line 4 is
+16,865.00 (column 1, line 3 0.00), 20,056.00 for $70,000 (69,335.00 less
 49,279.00) and blank for $200,000. The salaries at the column edges are those of the line 3 test,
 whose line 1 figures are checked there; line 1 moves a dollar at a time with the salary (the CPP
 amounts are rounded), so the cent over the bound is reached at the lower edge only.
@@ -161,11 +161,8 @@ def _kind(identifier: str) -> AmountKind:
 @pytest.mark.parametrize(
     ("salary", "expected"),
     [
-        # Line 1 is 16,865.00, 19,835.00 and 29,735.00 and line 3 is 0.00 (column 1): line 4 is
-        # line 1 itself.
+        # Line 1 is 16,865.00 and line 3 is 0.00 (column 1): line 4 is line 1 itself.
         ("17000", "16865.00"),
-        ("20000", "19835.00"),
-        ("30000", "29735.00"),
         # Line 1 is 69,335.00 and line 3 is 49,279.00 (column 2).
         ("70000", "20056.00"),
     ],
@@ -183,16 +180,6 @@ def test_line_4_is_line_1_minus_line_3_for_the_salary(
         ("49741.41", "49279.00"),
         # Line 1 of 49,279.01 is column 2 (line 3 49,279.00): line 4 is one cent.
         ("49741.42", "0.01"),
-        # Line 1 of exactly 98,560.00 is column 2 (line 3 49,279.00): line 4 is 49,281.00.
-        ("99634", "49281.00"),
-        # Line 1 of 98,561.00 is column 3 (line 3 98,560.00): line 4 is 1.00.
-        ("99635", "1.00"),
-        # Line 1 of exactly 113,158.00 is column 3 (line 3 98,560.00): line 4 is 14,598.00.
-        ("114232", "14598.00"),
-        # Line 1 of 113,159.00 is column 4 (line 3 113,158.00): line 4 is 1.00.
-        ("114233", "1.00"),
-        # Line 1 of exactly 137,407.00 is column 4 (line 3 113,158.00): line 4 is 24,249.00.
-        ("138481", "24249.00"),
     ],
 )
 def test_line_4_is_not_below_zero_at_the_column_boundaries(

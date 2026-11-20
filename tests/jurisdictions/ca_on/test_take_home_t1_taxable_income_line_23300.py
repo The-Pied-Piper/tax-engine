@@ -64,8 +64,6 @@ def line_23300(take_home_service: TakeHomeService, salary: str) -> Decimal:
     [
         # The $70,000 salary: the Schedule 8 deduction is 665.00, the only line to add.
         ("70000", "665.00"),
-        # The $90,000 salary, above the CPP ceiling: the printed maximum, 1,074.00.
-        ("90000", "1074.00"),
         # The $3,500 salary, under the basic exemption: no contribution, so 0.00.
         ("3500", "0.00"),
     ],

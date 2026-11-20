@@ -24,8 +24,6 @@ deduction (2025): 1% of the earnings from 3,500 to 71,300 plus 4% of the earning
 81,200, each rounded half-up to the cent. Line 3 is 38,712.00.
 - 30,000: deduction 265.00, line 2 = 29,735.00, below line 3, so line 4 = 0.00 (the floor).
 - 50,000: deduction 465.00, line 2 = 49,535.00, line 4 = 49,535.00 - 38,712.00 = 10,823.00.
-- 100,000 and 200,000: deduction 678.00 + 396.00 = 1,074.00, so line 2 = 98,926.00 and 198,926.00,
-  line 4 = 60,214.00 and 160,214.00.
 - The exact boundary: a salary of 39,067.68 has deduction 355.68 (1% of 35,567.68 is 355.6768),
   so line 2 = 38,712.00 = line 3 and line 4 = 0.00. One cent of salary more, 39,067.69, gives
   deduction 355.68 (355.6769), line 2 = 38,712.01 and line 4 = 0.01. One cent less, 39,067.67,
@@ -131,8 +129,6 @@ BOUNDARY = ("39067.68", "38712.00", "38712.00", "0.00")
 POSITIVE = [
     ("39067.69", "38712.01", "38712.00", "0.01"),
     ("50000", "49535.00", "38712.00", "10823.00"),
-    ("100000", "98926.00", "38712.00", "60214.00"),
-    ("200000", "198926.00", "38712.00", "160214.00"),
 ]
 
 

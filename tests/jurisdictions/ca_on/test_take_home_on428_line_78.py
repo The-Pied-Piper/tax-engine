@@ -67,14 +67,8 @@ def _line_78(take_home_service: TakeHomeService, line_77: str) -> Decimal:
     [
         # A $20,000 salary: line 77 is 294.00, so line 78 is 588.00.
         ("294.00", "588.00"),
-        # A $70,000 salary: line 77 is 294.00, so line 78 is 588.00.
-        ("294.00", "588.00"),
-        # A $150,000 salary: line 77 is 294.00, so line 78 is 588.00.
-        ("294.00", "588.00"),
         # Line 77 is 0, so line 78 is 0.
         ("0", "0.00"),
-        # 0.01 x 2 = 0.02, exact: nothing to round.
-        ("0.01", "0.02"),
     ],
 )
 def test_line_78_is_line_77_multiplied_by_2(

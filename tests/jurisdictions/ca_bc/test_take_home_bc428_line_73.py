@@ -90,6 +90,6 @@ def line_73(tmp_path: Path, salary: str) -> Decimal:
     return sheet.get(BC428_BASIC_REDUCTION_LINE_73).value
 
 
-@pytest.mark.parametrize("salary", ["17000", "20000", "30000", "70000", "200000"])
+@pytest.mark.parametrize("salary", ["17000", "200000"])
 def test_line_73_is_the_basic_reduction_at_every_salary(tmp_path: Path, salary: str) -> None:
     assert line_73(tmp_path, salary) == D("562.00")

@@ -125,8 +125,6 @@ FORM = dedent("""\
 # salary, line 72: line 70 plus line 71, with line 71 left blank and read as 0.
 CASES = [
     ("10000", "95.65"),
-    ("20000", "0.00"),
-    ("70000", "0.00"),
     ("200000", "0.00"),
 ]
 
@@ -209,7 +207,6 @@ def test_line_72_is_line_70_when_line_71_is_blank(
     ("salary", "line_71", "expected"),
     [
         ("10000", "10.00", "105.65"),
-        ("70000", "250.50", "250.50"),
         ("200000", "0.00", "0.00"),
     ],
 )

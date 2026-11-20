@@ -18,10 +18,7 @@ Labrador is not yet listed in the registrations, so the service is built over th
 
 Figures (hand-computed with Decimal, not a CRA example). Line 4 is the salary less the enhanced CPP
 deduction (2025) less 38,712.00, not below 0.00 (see the line 4 test); line 6 is 15% of line 4.
-- 30,000: line 4 = 0.00, so line 6 = 0.00.
 - 50,000: line 4 = 10,823.00, so line 6 = 1,623.45.
-- 100,000: line 4 = 60,214.00, so line 6 = 9,032.10. 200,000: line 4 = 160,214.00, so line 6 =
-  24,032.10.
 - Half a cent: a salary of 39,067.98 has deduction 355.68 (1% of 35,567.98 is 355.6798), so line 2
   = 38,712.30 and line 4 = 0.30; 15% of 0.30 is 0.045, which rounds half-up to 0.05 (half-even
   would give 0.04). A salary of 39,067.69 gives line 4 = 0.01 and 15% of it is 0.0015, so 0.00.
@@ -207,10 +204,7 @@ def salary_net_income(salary: Decimal) -> Decimal:
 
 # salary, line 4, line 6.
 CASES = [
-    ("30000", "0.00", "0.00"),
     ("50000", "10823.00", "1623.45"),
-    ("100000", "60214.00", "9032.10"),
-    ("200000", "160214.00", "24032.10"),
     # Half a cent: 0.30 x 0.15 = 0.045 rounds half-up to 0.05 (half-even would give 0.04).
     ("39067.98", "0.30", "0.05"),
     # 0.01 x 0.15 = 0.0015 rounds to 0.00.

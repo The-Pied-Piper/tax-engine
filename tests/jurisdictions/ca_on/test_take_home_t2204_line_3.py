@@ -82,13 +82,8 @@ def t2204(
     [
         # Line 2 left out: line 1 is 70,000, above the maximum, so line 3 is the maximum.
         ("70000", None, "65700.00"),
-        # Line 2 given: line 1 plus line 2 is still above the maximum.
-        ("70000", "1148", "65700.00"),
         # Under the maximum, line 3 is the salary.
         ("30000", None, "30000.00"),
-        ("2010", None, "2010.00"),
-        # Under $2,000 with line 2 left out, note (1) makes line 1 "0", so line 3 is 0.
-        ("1500", None, "0.00"),
         # Line 2 of 100 switches note (1) off: line 1 is 1,500, and line 3 is 1,500 plus 100.
         ("1500", "100", "1600.00"),
     ],

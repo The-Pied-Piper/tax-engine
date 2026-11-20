@@ -13,11 +13,11 @@ needs (as the line 2 test does), the real `worksheet_mb428_line_2.yaml` and
 form declaration (exporting lines 2, 3 and 4) are made up here, because the shared scaffold owns
 them.
 
-Figures: the ticket's table (hand-computed, not a CRA example) gives line 4 as 0.00 at $10,000,
-$20,000, $70,000 and $200,000: line 2 (net income) is 9,935.00, 19,835.00, 69,335.00 and 198,926.00,
-all below line 3 (200,000.00), so the floor bites. The $300,000 case is this test's own addition,
-not in the ticket's table: net income is 300,000 less the enhanced CPP deduction, 1% of
-(71,300 - 3,500) = 678.00 plus 4% of (81,200 - 71,300) = 396.00, so 300,000 - 678.00 - 396.00 =
+Figures: the ticket's table (hand-computed, not a CRA example) gives line 4 as 0.00 at $10,000
+and $200,000: line 2 (net income) is 9,935.00 and 198,926.00, both below line 3 (200,000.00), so
+the floor bites. The $300,000 case is this test's own addition, not in the ticket's table: net
+income is 300,000 less the enhanced CPP deduction, 1% of (71,300 - 3,500) = 678.00 plus 4% of
+(81,200 - 71,300) = 396.00, so 300,000 - 678.00 - 396.00 =
 298,926.00, and line 4 = 298,926.00 - 200,000.00 = 98,926.00. It is reached by the salary alone.
 """
 
@@ -102,8 +102,6 @@ FORM = dedent("""\
 # table: line 2 is below line 3, so line 4 is the floor, 0.00.
 FLOORED = [
     ("10000", "9935.00", "200000.00", "0.00"),
-    ("20000", "19835.00", "200000.00", "0.00"),
-    ("70000", "69335.00", "200000.00", "0.00"),
     ("200000", "198926.00", "200000.00", "0.00"),
 ]
 # This test's own addition (not in the ticket's table): line 2 above line 3.

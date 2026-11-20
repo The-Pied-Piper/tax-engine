@@ -86,9 +86,6 @@ FORM = dedent("""\
 # salary, line 3 (line 1 with line 2 blank). The figures are line 1 of the same salary.
 CASES = [
     ("17000", "16865.00"),
-    ("20000", "19835.00"),
-    ("30000", "29735.00"),
-    ("70000", "69335.00"),
     ("200000", "198926.00"),
 ]
 

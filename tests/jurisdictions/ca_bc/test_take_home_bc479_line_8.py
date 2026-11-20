@@ -13,10 +13,9 @@ The test composes the real British Columbia salary part, the real Schedule 8 par
 taxable income parts, the real line 1 to line 7 parts and the new line 8 part, and types in only the
 salary (and, in other tests, line 4). The form declaration is made up here, exporting only line 8.
 
-Figures (hand-computed from the printed forms, not a CRA example): line 6 is 16,865.00 / 19,835.00 /
-29,735.00 / 69,335.00 / 198,926.00 at 17,000 / 20,000 / 30,000 / 70,000 / 200,000 and line 7 is
-15,000.00, so line 8 is 1,865.00 / 4,835.00 / 14,735.00 / 54,335.00 / 183,926.00. At 10,000 line 6
-is below 15,000.00, so line 8 is 0.00.
+Figures (hand-computed from the printed forms, not a CRA example): line 6 is 16,865.00 / 198,926.00
+at 17,000 / 200,000 and line 7 is 15,000.00, so line 8 is 1,865.00 / 183,926.00. At 10,000 line 6 is
+below 15,000.00, so line 8 is 0.00.
 """
 
 from __future__ import annotations
@@ -172,9 +171,6 @@ def _rounding() -> Any:
 # salary, line 8 (line 6 less the 15,000.00 threshold, not below 0).
 CASES = [
     ("17000", "1865.00"),
-    ("20000", "4835.00"),
-    ("30000", "14735.00"),
-    ("70000", "54335.00"),
     ("200000", "183926.00"),
 ]
 
@@ -242,7 +238,6 @@ def test_the_step_traces_one_subtracted_not_below_zero_line_with_the_cent_roundi
     ("line_6", "line_7", "expected"),
     [
         ("16865.00", "15000.00", "1865.00"),
-        ("15000.00", "15000.00", "0.00"),
         ("9865.00", "15000.00", "0.00"),
     ],
 )

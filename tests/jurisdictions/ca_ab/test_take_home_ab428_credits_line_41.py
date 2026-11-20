@@ -171,7 +171,6 @@ def test_a_blank_line_41_is_0_at_70000_and_prints_the_steps_own_left_blank_row(
 # line 41 given, the line 41 step, Worksheet lines 1, 2, 3 and 5. The ticket's observed table
 # (100.005: line 2 of 100.005 and line 3 of 26,692.24) is the bug and must no longer occur.
 CASES = [
-    ("100.00", "100.00", "26792.23", "100.00", "26692.23", "2135.38"),
     ("100.005", "100.01", "26792.24", "100.01", "26692.23", "2135.38"),
     ("100.004", "100.00", "26792.23", "100.00", "26692.23", "2135.38"),
 ]

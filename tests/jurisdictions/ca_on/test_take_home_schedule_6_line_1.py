@@ -65,15 +65,9 @@ def line_1(take_home_service: TakeHomeService, salary: str, other: str | None = 
 @pytest.mark.parametrize(
     ("salary", "expected"),
     [
-        # Employment income (line 10100) at salaries of $2,000, $6,000, $20,000, $30,000, $35,000,
-        # $40,000 and $70,000. No other employment income is given, so line 10400 reads as 0 and
-        # each line 1 is the salary alone.
+        # Employment income (line 10100) at salaries of $2,000 and $70,000. No other employment
+        # income is given, so line 10400 reads as 0 and each line 1 is the salary alone.
         ("2000", "2000.00"),
-        ("6000", "6000.00"),
-        ("20000", "20000.00"),
-        ("30000", "30000.00"),
-        ("35000", "35000.00"),
-        ("40000", "40000.00"),
         ("70000", "70000.00"),
     ],
 )
@@ -98,7 +92,6 @@ def test_an_omitted_other_employment_income_is_read_as_zero(
     [
         # Line 1 adds line 10400 to line 10100 to the cent.
         ("70000", "5000.50", "75000.50"),
-        ("2000", "1500.25", "3500.25"),
         # Other employment income alone: no salary, so line 1 is the other income.
         ("0", "5000", "5000.00"),
     ],

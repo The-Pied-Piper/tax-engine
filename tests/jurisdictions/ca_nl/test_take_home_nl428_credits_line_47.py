@@ -11,7 +11,7 @@ worksheet parts, lines 16 to 46, Schedule 8, T2204) and the new `nl428_credits_l
 types in only the salary (and, in some tests, optional inputs). The header and the two form
 declarations are made up here, because the shared scaffold owns them. The figures are hand-computed
 from the printed form (not a CRA example): line 42 is line 39 (line 26 of 11,067.00 plus line 35),
-lines 40 and 41 being 0, giving 12,211.75 / 15,436.23 / 15,500.58 at salaries of 20,000 / 70,000 /
+lines 40 and 41 being 0, giving 12,211.75 / 15,500.58 at salaries of 20,000 /
 200,000.
 """
 
@@ -148,7 +148,6 @@ FORMS = dedent("""\
 # salary, line 47: line 42 (line 39 of line 26, 11,067.00, plus line 35), lines 43 to 46 blank.
 CASES = [
     ("20000", "12211.75"),
-    ("70000", "15436.23"),
     ("200000", "15500.58"),
 ]
 

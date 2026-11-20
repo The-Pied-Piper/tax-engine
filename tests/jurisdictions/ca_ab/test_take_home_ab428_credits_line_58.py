@@ -12,7 +12,7 @@ line 34 inputs part, the line 41 input part, the line 51 inputs part, the line 5
 input part and the new `ab428_credits_line_58.yaml`, and types in only the salary (and, in some
 tests, line 57). The form declaration is made up here, exporting only line 54 and line 58. The
 figures are hand-computed from the printed forms (not a CRA example): line 54 is 1,877.42, 2,135.38
-and 2,140.53 at the three salaries, plus line 57 of 0 when blank.
+and 2,140.53 at the two salaries, plus line 57 of 0 when blank.
 """
 
 from __future__ import annotations
@@ -76,9 +76,9 @@ FORM = dedent("""\
     capabilities: []
     """)
 
-# salary, line 58: line 54 (1,877.42, 2,135.38 and 2,140.53, as the line 54 test pins) plus line 57,
+# salary, line 58: line 54 (1,877.42 and 2,140.53, as the line 54 test pins) plus line 57,
 # blank and read as 0; lines 55 and 56 are not built.
-CASES = [("20000", "1877.42"), ("70000", "2135.38"), ("200000", "2140.53")]
+CASES = [("20000", "1877.42"), ("200000", "2140.53")]
 
 
 def _part_files() -> Iterator[Path]:

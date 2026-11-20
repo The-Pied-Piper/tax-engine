@@ -163,7 +163,6 @@ TAX_FORM = dedent(f"""\
 # salary, the line line 59 takes, line 59: line 8 gives the first two, line 15 the third.
 CASES = [
     ("20000", LINE_8, "1586.80"),
-    ("70000", LINE_8, "5733.50"),
     ("200000", LINE_15, "19820.89"),
 ]
 

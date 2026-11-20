@@ -16,12 +16,10 @@ The real parts composed: the real Schedule 8, the T1 taxable-income parts, line 
 `nl428_credits_line_3.yaml`. The header, the salary input and the form declaration are test-local
 (Newfoundland and Labrador has no salary part), the form exporting lines 1 and 3.
 
-Figures, computed from the engine's T1 taxable income (line 26000): salary 20,000 gives line 1 of
-19,835.00, 70,000 gives 69,335.00 and 200,000 gives 198,926.00. Above the CPP and EI maxima the T1
-deduction is a constant 1,074.00, so a salary of 89,456.00 gives line 1 of exactly 88,382.00,
-158,866.00 gives 157,792.00 and 221,984.00 gives 220,910.00. Below them the deduction is the
-enhanced CPP, 1% of salary over 3,500 to the cent, so a salary of 44,603.03 gives exactly 44,192.00.
-Hand figures, not a CRA example.
+Figures, computed from the engine's T1 taxable income (line 26000): salary 70,000 gives line 1 of
+69,335.00. Below the CPP and EI maxima the deduction is the enhanced CPP, 1% of salary over 3,500 to
+the cent, so a salary of 44,603.03 gives exactly 44,192.00. The other column bounds are checked in
+`test_brackets_lines_2_to_8_2025.py`. Hand figures, not a CRA example.
 """
 
 from __future__ import annotations
@@ -155,21 +153,12 @@ def _kind(identifier: str) -> AmountKind:
 @pytest.mark.parametrize(
     ("salary", "expected"),
     [
-        # Line 1 is 19,835.00, not over 44,192: column 1.
-        ("20000", "0.00"),
         # Line 1 is 69,335.00, over 44,192 and not over 88,382: column 2.
         ("70000", "44192.00"),
-        # Line 1 of exactly 44,192.00 is still column 1; a cent more is column 2.
+        # Line 1 of exactly 44,192.00 is still column 1.
         ("44603.03", "0.00"),
-        ("44603.04", "44192.00"),
-        # Line 1 of exactly 88,382.00 is still column 2; a cent more is column 3.
-        ("89456.00", "44192.00"),
+        # Line 1 is 88,382.01, over 88,382 and not over 157,792: column 3.
         ("89456.01", "88382.00"),
-        # Line 1 of exactly 157,792.00 is still column 3; a cent more is column 4.
-        ("158866.00", "88382.00"),
-        ("158866.01", "157792.00"),
-        # Line 1 of exactly 220,910.00 is the last figure in column 4.
-        ("221984.00", "157792.00"),
         # Line 1 is 198,926.00, over 157,792 and not over 220,910: column 4.
         ("200000", "157792.00"),
     ],

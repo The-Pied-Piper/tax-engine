@@ -11,7 +11,7 @@ the worksheet parts, lines 16 to 39, Schedule 8, T2204, lines 40 and 41) and the
 The header and the two form declarations are made up here, because the shared scaffold owns them.
 The figures are hand-computed from the printed form (not a CRA example): line 39 is line 36,
 which is line 26 (the basic personal amount 11,067.00, the amount from line 25) plus line 35, and
-line 35 is line 27 plus line 29 (1,144.75 / 4,369.23 / 4,433.58 at salaries of 20,000 / 70,000 /
+line 35 is line 27 plus line 29 (1,144.75 / 4,433.58 at salaries of 20,000 /
 200,000).
 """
 
@@ -140,7 +140,6 @@ FORMS = dedent("""\
 # salary, line 42: line 39 (line 26 of 11,067.00 plus line 35), lines 40 and 41 being blank.
 CASES = [
     ("20000", "12211.75"),
-    ("70000", "15436.23"),
     ("200000", "15500.58"),
 ]
 

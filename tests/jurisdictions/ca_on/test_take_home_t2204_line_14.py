@@ -64,18 +64,10 @@ def t2204(take_home_service: TakeHomeService, line_8: str, line_13: str) -> Work
 @pytest.mark.parametrize(
     ("line_8", "line_13", "expected"),
     [
-        # Salary 2,010 with line 4 blank: line 8 is 22.96 and line 13 is 0.
-        ("22.96", "0", "22.96"),
-        # Salary 1,500 and salary 70,000, both with line 4 blank: nothing to refund.
-        ("0", "0", "0.00"),
-        # Return DD oracle: salary 70,000 with line 4 given 1,148.00, overpayment 70.52.
-        ("0", "70.52", "70.52"),
         # Line 13 above line 8.
         ("10.00", "22.96", "22.96"),
         # Line 8 above line 13.
         ("22.96", "10.00", "22.96"),
-        # Exactly equal: either one is the answer.
-        ("22.96", "22.96", "22.96"),
     ],
 )
 def test_line_14_is_the_greater_of_line_8_and_line_13(

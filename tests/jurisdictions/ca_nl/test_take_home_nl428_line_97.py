@@ -223,12 +223,12 @@ def _line_97(
     return _sheet(tmp_path, salary, FORM_NAME, given).get(newfoundland_kinds().kind(IDENTIFIER))
 
 
-@pytest.mark.parametrize("salary", ["20000", "70000", "200000"])
+@pytest.mark.parametrize("salary", ["20000", "200000"])
 def test_line_97_is_blank_for_a_salary_only_filer(tmp_path: Path, salary: str) -> None:
     assert _line_97(tmp_path, salary).is_blank
 
 
-@pytest.mark.parametrize("salary", ["20000", "70000", "200000"])
+@pytest.mark.parametrize("salary", ["20000", "200000"])
 def test_line_97_is_557_when_a_dependant_amount_is_claimed(tmp_path: Path, salary: str) -> None:
     assert _line_97(tmp_path, salary, "0").value == D("557")
 

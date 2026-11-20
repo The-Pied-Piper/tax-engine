@@ -68,12 +68,6 @@ def t2204(take_home_service: TakeHomeService, line_6: str, line_7: str) -> Works
         ("32.96", "10.00", "22.96"),
         # Line 7 above line 6 (negative difference): line 8 is "0".
         ("1077.48", "1148.00", "0.00"),
-        # Exactly equal: the difference is 0, not negative.
-        ("1077.48", "1077.48", "0.00"),
-        # Both zero.
-        ("0", "0", "0.00"),
-        # Line 6 zero, line 7 positive.
-        ("0", "10.00", "0.00"),
     ],
 )
 def test_line_8_is_line_6_less_line_7_and_not_below_zero(

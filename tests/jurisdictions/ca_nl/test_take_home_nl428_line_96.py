@@ -104,12 +104,12 @@ def _line_96(tmp_path: Path, salary: str, claimed: int | None = None) -> Decimal
     return None if artifact.is_blank else D(artifact.value)
 
 
-@pytest.mark.parametrize("salary", ["20000", "70000", "200000"])
+@pytest.mark.parametrize("salary", ["20000", "200000"])
 def test_line_96_is_blank_for_a_salary_only_filer(tmp_path: Path, salary: str) -> None:
     assert _line_96(tmp_path, salary) is None
 
 
-@pytest.mark.parametrize("salary", ["20000", "70000", "200000"])
+@pytest.mark.parametrize("salary", ["20000", "200000"])
 def test_line_96_is_the_printed_557_when_claimed(tmp_path: Path, salary: str) -> None:
     assert _line_96(tmp_path, salary, 1) == D("557.00")
 

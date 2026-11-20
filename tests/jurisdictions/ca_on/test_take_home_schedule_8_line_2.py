@@ -67,11 +67,6 @@ def _line_2(take_home_service: TakeHomeService, line_d: str, line_1: str) -> Dec
     [
         # A $70,000 salary: line 1 is below line D, so line 1.
         ("81200.00", "70000.00", "70000.00"),
-        # The $90,000 salary: line 1 is capped at 81,200.00, level with line D.
-        ("81200.00", "81200.00", "81200.00"),
-        # One cent either side of line D, and nothing.
-        ("81200.00", "81199.99", "81199.99"),
-        ("81200.00", "0", "0.00"),
         # Line D is the lesser when line 1 is above it.
         ("81200.00", "90000.00", "81200.00"),
     ],

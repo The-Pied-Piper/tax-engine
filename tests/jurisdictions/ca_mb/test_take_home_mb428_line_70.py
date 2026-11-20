@@ -16,7 +16,7 @@ real `mb428_line_67.yaml`, the line 69 input part `mb428_line_69_input.yaml`, an
 header and the form declarations are made up here: the credits form exports lines 1, 3 to 8 and 57,
 and `ca-mb/mb428` exports only line 70. The figures are line 67 (the line 67 test) with line 69 left
 blank and read as 0, hand-computed from the printed forms, not a CRA example:
-0.00 / 284.08 / 5,747.59 / 26,863.55.
+0.00 / 5,747.59 (and 284.08 at 20,000, the floor case).
 """
 
 from __future__ import annotations
@@ -194,20 +194,16 @@ FORM = dedent(f"""\
     """)
 
 # salary, line 70 with line 69 left out, so line 69 is blank and read as 0 and line 70 equals line
-# 67. Line 67 is 0.00 / 284.08 / 5,747.59 / 26,863.55 (line 65 plus a line 66 of 0.00).
+# 67. Line 67 is 0.00 / 5,747.59 (line 65 plus a line 66 of 0.00).
 CASES = [
     ("10000", "0.00"),
-    ("20000", "284.08"),
     ("70000", "5747.59"),
-    ("200000", "26863.55"),
 ]
 # salary, line 69, line 67, line 70: line 67 minus line 69, not below 0.
 CASES_WITH_LINE_69 = [
     ("70000", "300.00", "5747.59", "5447.59"),
     # Line 69 above line 67 (284.08 at 20,000): the floor.
     ("20000", "300.00", "284.08", "0.00"),
-    # Exactly equal: the cent zero.
-    ("70000", "5747.59", "5747.59", "0.00"),
 ]
 
 

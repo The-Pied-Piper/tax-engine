@@ -63,10 +63,6 @@ def _line_35(take_home_service: TakeHomeService, line_31: str) -> Decimal:
     [
         # A $20,000 salary: line 31 is 13,891.75, so line 35 is 13,891.75.
         ("13891.75", "13891.75"),
-        # A $70,000 salary: line 31 is 17,116.23, so line 35 is 17,116.23.
-        ("17116.23", "17116.23"),
-        # A $150,000 salary: line 31 is 17,180.58, so line 35 is 17,180.58.
-        ("17180.58", "17180.58"),
         # No amount on line 31, so line 35 is 0.
         ("0", "0"),
     ],

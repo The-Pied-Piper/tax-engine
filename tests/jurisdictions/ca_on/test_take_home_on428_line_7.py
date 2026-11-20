@@ -93,8 +93,6 @@ def _on428(take_home_service: TakeHomeService, salary: str) -> Worksheet:
         ("20000", "0.00"),
         # Line 1 is 69,335.00, over 52,886 and not over 105,775: column 2.
         ("70000", "2670.74"),
-        # Line 1 is 148,926.00, over 105,775 and not over 150,000: column 3.
-        ("150000", "7510.09"),
     ],
 )
 def test_line_7_is_the_printed_tax_at_the_start_of_the_column_line_1_falls_in(

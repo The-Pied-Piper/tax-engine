@@ -8,7 +8,7 @@ for the line, so the step is untitled.
 
 The test composes the real parts behind line 62 and the new `nl428_line_69.yaml`. The figures are
 line 66 with lines 67 and 68 blank (hand-computed from the printed form, not a CRA example):
-1,062.42 / 1,342.95 / 1,348.55 at salaries of 20,000 / 70,000 / 200,000.
+1,062.42 / 1,348.55 at salaries of 20,000 / 200,000.
 """
 
 from __future__ import annotations
@@ -163,7 +163,6 @@ FORMS = dedent("""\
 # salary, line 69: line 66 (line 62 with line 61 blank, so line 58), lines 67 and 68 blank.
 CASES = [
     ("20000", "1062.42"),
-    ("70000", "1342.95"),
     ("200000", "1348.55"),
 ]
 

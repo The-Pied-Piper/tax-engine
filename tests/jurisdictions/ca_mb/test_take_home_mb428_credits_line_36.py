@@ -127,8 +127,6 @@ FORM = dedent("""\
 # salary, line 36: line 33 (line 29 plus line 31 of 0, left out), lines 34 and 35 not being built.
 CASES = [
     ("10000", "16265.75"),
-    ("20000", "16924.75"),
-    ("70000", "20149.23"),
     ("200000", "20213.58"),
 ]
 

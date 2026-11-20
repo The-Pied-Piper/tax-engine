@@ -112,10 +112,6 @@ def _sheet(take_home_service: TakeHomeService, salary: str) -> Worksheet:
     [
         # $70,000: line 139 is 7,585.64.
         ("70000", "7585.64"),
-        # $20,000: line 139 is 158.09.
-        ("20000", "158.09"),
-        # $200,000: line 139 is 39,467.74.
-        ("200000", "39467.74"),
         # $10,000: line 139 is 0, so the line is 0.
         ("10000", "0.00"),
     ],

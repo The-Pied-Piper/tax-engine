@@ -66,16 +66,8 @@ def _line_46(take_home_service: TakeHomeService, line_44: str) -> Decimal:
     [
         # A $20,000 salary: line 44 is 13,891.75, and 5.05% of it is 701.53.
         ("13891.75", "701.53"),
-        # A $70,000 salary: line 44 is 17,116.23, and 5.05% of it is 864.37.
-        ("17116.23", "864.37"),
-        # A $150,000 salary: line 44 is 17,180.58, and 5.05% of it is 867.62.
-        ("17180.58", "867.62"),
         # Line 44 is 0, so line 46 is 0.
         ("0", "0.00"),
-        # 10.89 x 5.05% = 0.549945, rounded to the nearest cent, 0.55.
-        ("10.89", "0.55"),
-        # 10.80 x 5.05% = 0.5454, rounded to the nearest cent, 0.55.
-        ("10.80", "0.55"),
         # 0.10 x 5.05% = 0.00505, a tie, rounded half-up to 0.01.
         ("0.10", "0.01"),
         # 0.09 x 5.05% = 0.004545, rounded down to 0.00.

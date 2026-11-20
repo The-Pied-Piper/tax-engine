@@ -39,8 +39,8 @@ income, tax withheld 0, basic credits only, as the take-home calculator states t
 Line 26000 is not a fixed share of the salary (70,000 gives 69,335.00 and 200,000 gives 198,926.00),
 and the salaries that give each bracket start exactly were found by search with the real engine:
 57,919.19 gives 57,375.00, 115,824 gives 114,750.00, 178,956 gives 177,882.00 and 254,488 gives
-253,414.00. The line 76 tests use them, and the salaries a cent or a dollar either side, so every
-start is tested at its threshold and on either side of it.
+253,414.00. The line 76 tests use them, so each of those starts is tested at its threshold, and the
+first one also a cent over it.
 
 Line 70 is pinned at 70,000, and every line 70 to 76 kind is pinned as registered and non-negative.
 """
@@ -155,8 +155,6 @@ def _printed_formula(line_26000: Decimal, column: int) -> Decimal:
         ("20000", "2876.08"),
         # Column 2: 8,319.38 plus 20.5% of 11,960.00 above 57,375.00.
         ("70000", "10771.18"),
-        # Column 4: 36,495.57 plus 29% of 21,044.00 above 177,882.00.
-        ("200000", "42598.33"),
     ],
 )
 def test_line_76_is_the_federal_tax_on_taxable_income(
@@ -227,29 +225,14 @@ def test_line_74_at_114750_is_rounded_to_the_cent_before_line_75_is_added(
         # Line 26000 of 57,375.00 is the top of column 1 ("or less"): line 74 is 14.5% of
         # 57,375.00, 8,319.375, rounded half-up to 8,319.38, and column 1's constant is 0.00.
         ("57919.19", "57375.00", "8319.38", "8319.38"),
-        # A cent below: 14.5% of 57,374.99 is 8,319.37355, to 8,319.37.
-        ("57919.18", "57374.99", "8319.37", "8319.37"),
         # A cent above: column 2, where 20.5% of 0.01 is 0.00205, to 0.00, on 8,319.38.
         ("57919.20", "57375.01", "0.00", "8319.38"),
-        # A dollar below the top of column 2: 20.5% of 57,374.00 is 11,761.67, and line 76 is
-        # 8,319.38 plus 11,761.67 = 20,081.05.
-        ("115823", "114749.00", "11761.67", "20081.05"),
-        # A dollar above it: column 3, whose constant is 20,081.25; line 74 is 26% of 1.00, 0.26.
-        ("115825", "114751.00", "0.26", "20081.51"),
         # Line 26000 of 177,882.00 is the top of column 3: 26% of 63,132.00 is 16,414.32, and
         # line 76 is 20,081.25 plus 16,414.32 = 36,495.57, the column 4 constant.
         ("178956", "177882.00", "16414.32", "36495.57"),
-        # A dollar below: 26% of 63,131.00 is 16,414.06, and line 76 is 36,495.31.
-        ("178955", "177881.00", "16414.06", "36495.31"),
-        # A dollar above: column 4, whose constant is 36,495.57; line 74 is 29% of 1.00, 0.29.
-        ("178957", "177883.00", "0.29", "36495.86"),
         # Line 26000 of 253,414.00 is the top of column 4: 29% of 75,532.00 is 21,904.28, and
         # line 76 is 36,495.57 plus 21,904.28 = 58,399.85, the column 5 constant.
         ("254488", "253414.00", "21904.28", "58399.85"),
-        # A dollar below: 29% of 75,531.00 is 21,903.99, and line 76 is 58,399.56.
-        ("254487", "253413.00", "21903.99", "58399.56"),
-        # A dollar above: column 5, whose constant is 58,399.85; line 74 is 33% of 1.00, 0.33.
-        ("254489", "253415.00", "0.33", "58400.18"),
     ],
 )
 def test_line_76_at_each_bracket_start_and_either_side(

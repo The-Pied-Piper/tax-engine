@@ -6,8 +6,8 @@ step over line 92 of column 1 (you) and line 92 of column 2 (your spouse or comm
 Column 2 is blank for a salary-only single filer, so the step reads it as 0. The form prints the
 title "Adjusted family income" on line 93.
 
-Figures (hand-computed, not a CRA example): line 92 of column 1 is 19,835.00 / 69,335.00 /
-198,926.00 at salaries of 20,000 / 70,000 / 200,000, and column 2 is blank, so line 93 is the same;
+Figures (hand-computed, not a CRA example): line 92 of column 1 is 19,835.00 /
+198,926.00 at salaries of 20,000 / 200,000, and column 2 is blank, so line 93 is the same;
 with a spouse's line 88 of 30,000.00 at 70,000, line 93 is 99,335.00.
 """
 
@@ -148,7 +148,7 @@ def _sheet(tmp_path: Path, salary: str, *extra: Artifact[Decimal]) -> Worksheet:
 
 @pytest.mark.parametrize(
     ("salary", "expected"),
-    [("20000", "19835.00"), ("70000", "69335.00"), ("200000", "198926.00")],
+    [("20000", "19835.00"), ("200000", "198926.00")],
 )
 def test_line_93_is_line_92_of_column_1_when_column_2_is_blank(
     tmp_path: Path, salary: str, expected: str

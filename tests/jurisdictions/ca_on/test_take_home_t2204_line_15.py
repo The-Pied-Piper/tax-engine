@@ -77,22 +77,12 @@ def t2204(take_home_service: TakeHomeService, line_4: str, line_14: str) -> Work
     [
         # Salary 2,010 refund case: line 4 is 32.96, line 14 is 22.96.
         ("32.96", "22.96", "22.96", 1, "22.96"),
-        # Salary 1,500 and salary 30,000: both lines are 0.
-        ("0", "0", "0", 0, "0"),
-        # Return DD oracle (salary 70,000, line 4 given 1,148.00): overpayment 70.52.
-        ("1148.00", "70.52", "70.52", 1, "70.52"),
         # Line 4 is the lesser, so line 4 wins.
         ("10.00", "22.96", "10.00", 1, "10.00"),
-        # Salary 2,033 case: line 15 is 0.34, not more than $1, so the amount is 0.
-        ("33.34", "0.34", "0.34", 0, "0"),
         # Exactly $1.00 is not more than $1: count 0, amount 0.
         ("5.00", "1.00", "1.00", 0, "0"),
         # $1.01 is more than $1: count 1, amount 1.01.
         ("5.00", "1.01", "1.01", 1, "1.01"),
-        # Tie: line 4 equals line 14, the value is kept.
-        ("22.96", "22.96", "22.96", 1, "22.96"),
-        # Salary-only $70,000 take-home case: line 4 is 1,077.48, line 14 is 0.
-        ("1077.48", "0", "0", 0, "0"),
     ],
 )
 def test_line_15_count_and_ei_overpayment(

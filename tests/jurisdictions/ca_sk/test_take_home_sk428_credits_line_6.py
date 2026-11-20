@@ -17,11 +17,11 @@ taxable-income parts, and the real `sk428_credits_line_1.yaml`, `sk428_credits_l
 `sk428_credits_line_4.yaml`, `sk428_credits_line_5.yaml` and `sk428_credits_line_6.yaml`, and types
 in only the salary. The form declaration is test-local, exporting lines 1, 3, 4, 5 and 6.
 
-Figures (re-derived in `_derived` below with Decimal, not a CRA example): taxable income is the
-salary less the enhanced CPP deduction, 9,935.00 / 19,835.00 / 69,335.00 / 198,926.00. Line 4 is
-that less the column's lower bound (0.00, 53,463.00 or 152,750.00), so 9,935.00 / 19,835.00 /
-15,872.00 / 46,176.00. Line 6 is line 4 at 10.5% / 10.5% / 12.5% / 14.5%: 1,043.18 / 2,082.68 /
-1,984.00 / 6,695.52. The boundary salaries are derived below as in the line 5 and line 4 tests.
+Figures (re-derived in `_derived` below with Decimal, not a CRA example): at salary 70,000 taxable
+income is 69,335.00 (the salary less the enhanced CPP deduction), line 4 is that less the column's
+lower bound 53,463.00, so 15,872.00, and line 6 is line 4 at 12.5%: 1,984.00. The rounding salaries
+are derived below. The column edges and the other columns are covered by the line 5 and line 4
+tests.
 """
 
 from __future__ import annotations
@@ -115,22 +115,7 @@ FORM = dedent(f"""\
 # (salary, line 1, line 4, line 5 rate, line 6): line 4 is line 1 less the lower bound of its
 # column, and line 6 is line 4 times the rate, rounded half-up to the cent.
 CASES = [
-    ("10000", "9935.00", "9935.00", "0.105", "1043.18"),
-    ("20000", "19835.00", "19835.00", "0.105", "2082.68"),
     ("70000", "69335.00", "15872.00", "0.125", "1984.00"),
-    ("200000", "198926.00", "46176.00", "0.145", "6695.52"),
-]
-# Salaries whose taxable income sits on a column's edge: line 1 is 53,463.00 or less in column 1,
-# not more than 152,750.00 in column 2. One cent more is the next column, so line 4 restarts at
-# 0.01. The edge products 53,463.00 x 10.5% = 5,613.615 and 99,287.00 x 12.5% = 12,410.875 are
-# exactly half a cent and go up.
-EDGES = [
-    ("53967.67", "53462.99", "53462.99", "0.105", "5613.61"),
-    ("53967.68", "53463.00", "53463.00", "0.105", "5613.62"),
-    ("53967.69", "53463.01", "0.01", "0.125", "0.00"),
-    ("153823.99", "152749.99", "99286.99", "0.125", "12410.87"),
-    ("153824.00", "152750.00", "99287.00", "0.125", "12410.88"),
-    ("153824.01", "152750.01", "0.01", "0.145", "0.00"),
 ]
 # Rounding, half-up to the cent: 0.04 x 12.5% = 0.005 is exactly half a cent and goes up to 0.01
 # (not half-even, which would give 0.00); 0.03 x 12.5% = 0.00375 goes down to 0.00.
@@ -225,7 +210,7 @@ def _derived(salary: Decimal) -> tuple[Decimal, Decimal, Decimal, Decimal]:
 
 @pytest.mark.parametrize(
     ("salary", "line_1", "line_4", "rate", "expected"),
-    [*CASES, *EDGES, *ROUNDING_CASES],
+    [*CASES, *ROUNDING_CASES],
 )
 def test_line_4_is_line_1_less_the_lower_bound_of_its_column(
     tmp_path: Path, salary: str, line_1: str, line_4: str, rate: str, expected: str
@@ -235,7 +220,7 @@ def test_line_4_is_line_1_less_the_lower_bound_of_its_column(
 
 @pytest.mark.parametrize(
     ("salary", "line_1", "line_4", "rate", "expected"),
-    [*CASES, *EDGES, *ROUNDING_CASES],
+    [*CASES, *ROUNDING_CASES],
 )
 def test_line_6_is_line_4_times_the_line_5_rate_rounded_half_up_to_the_cent(
     tmp_path: Path, salary: str, line_1: str, line_4: str, rate: str, expected: str

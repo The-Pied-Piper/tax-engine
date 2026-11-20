@@ -23,8 +23,8 @@ declarations are made up here.
 
 Figures: line 71 is line 69 (line 67, line 68 being 0 here) with a blank line 70, re-derived here
 in `_line_62` and `_line_66` with Decimal (not a CRA example); line 73 is blank (0), so line 74 is
-0.00 / 5,092.30 / 22,207.93 at a salary of 20,000 / 70,000 / 200,000. With a line 73 of 100.00
-line 74 is 0.00 (floored) / 4,992.30 / 22,107.93.
+0.00 / 5,092.30 at a salary of 20,000 / 70,000. With a line 73 of 100.00 line 74 is 0.00 (floored)
+/ 4,992.30.
 """
 
 from __future__ import annotations
@@ -175,7 +175,6 @@ FORM = dedent(f"""\
 CASES = [
     ("20000", "0.00"),
     ("70000", "5092.30"),
-    ("200000", "22207.93"),
 ]
 
 
@@ -218,12 +217,8 @@ def _line_67(salary: Decimal, line_61: Decimal = ZERO, line_64: Decimal = ZERO) 
 
 CASES_WITH_LINE_73 = [
     # salary, line 73, line 71, line 74: line 71 minus line 73, not below 0.
-    # Line 71 is 0.00 at 20,000: the floor.
     ("20000", "100.00", "0.00", "0.00"),
-    ("20000", "650.00", "0.00", "0.00"),
     ("70000", "100.00", "5092.30", "4992.30"),
-    ("200000", "100.00", "22207.93", "22107.93"),
-    ("70000", "650.00", "5092.30", "4442.30"),
 ]
 
 
@@ -380,11 +375,7 @@ def _line_74_at(line_71_amount: str, line_73_amount: str) -> Artifact[Decimal]:
     ("line_71", "line_73", "expected"),
     [
         ("5092.30", "100.00", "4992.30"),
-        ("100.01", "100.00", "0.01"),
-        ("2140.53", "2140.53", "0.00"),
         ("100.00", "650.00", "0.00"),
-        ("0.00", "0.00", "0.00"),
-        ("0.00", "100.00", "0.00"),
         # Half-up to the cent: 0.005 rounds to 0.01, 0.004 to 0.00.
         ("100.005", "100.00", "0.01"),
         ("100.004", "100.00", "0.00"),

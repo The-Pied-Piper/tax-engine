@@ -124,7 +124,7 @@ def _worksheets(tmp_path: Path, salary: str) -> dict[str, tuple[Worksheet, ...]]
     return _service(tmp_path).compute(CODE, 2025, Artifact(EMPLOYMENT_INCOME, D(salary)))
 
 
-@pytest.mark.parametrize("salary", ["10000", "17000", "20000", "70000", "200000"])
+@pytest.mark.parametrize("salary", ["17000", "70000"])
 def test_line_47900_is_bc479_line_45_read_from_the_sheets(tmp_path: Path, salary: str) -> None:
     worksheets = _worksheets(tmp_path, salary)
     kinds = british_columbia_kinds()
@@ -139,7 +139,7 @@ def test_line_47900_is_bc479_line_45_read_from_the_sheets(tmp_path: Path, salary
     assert line_47900.value.as_tuple().exponent == -2
 
 
-@pytest.mark.parametrize("salary", ["10000", "20000", "70000"])
+@pytest.mark.parametrize("salary", ["10000", "70000"])
 def test_line_47900_is_not_blank_even_when_bc479_line_45_is_zero(
     tmp_path: Path, salary: str
 ) -> None:

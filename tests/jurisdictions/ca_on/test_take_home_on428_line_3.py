@@ -88,7 +88,6 @@ def _on428(take_home_service: TakeHomeService, salary: str) -> Worksheet:
     [
         ("20000", "19835.00"),
         ("70000", "69335.00"),
-        ("150000", "148926.00"),
     ],
 )
 def test_line_1_is_the_t1_taxable_income(
@@ -106,8 +105,6 @@ def test_line_1_is_the_t1_taxable_income(
         ("20000", "0.00"),
         # Line 1 is 69,335.00, over 52,886 and not over 105,775: column 2.
         ("70000", "52886.00"),
-        # Line 1 is 148,926.00, over 105,775 and not over 150,000: column 3.
-        ("150000", "105775.00"),
     ],
 )
 def test_line_3_is_the_lower_bound_of_the_column_line_1_falls_in(

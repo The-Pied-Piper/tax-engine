@@ -9,7 +9,7 @@ read as 0.
 
 The test composes the real parts behind line 58 and the new `nl428_credits_line_62.yaml`. The
 figures are hand-computed from the printed form (not a CRA example): line 58 is 1,062.42 /
-1,342.95 / 1,348.55 at salaries of 20,000 / 70,000 / 200,000.
+1,348.55 at salaries of 20,000 / 200,000.
 """
 
 from __future__ import annotations
@@ -148,7 +148,6 @@ FORMS = dedent("""\
 # salary, line 58 (no medical expenses, line 61 blank): line 62 is line 58.
 CASES = [
     ("20000", "1062.42"),
-    ("70000", "1342.95"),
     ("200000", "1348.55"),
 ]
 

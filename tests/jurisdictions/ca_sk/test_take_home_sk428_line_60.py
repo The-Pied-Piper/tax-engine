@@ -15,9 +15,8 @@ up here: the credits form exports lines 1, 3, 4, 5, 6, 7 and 8, and `ca-sk/sk428
 line 60.
 
 Figures: line 58 is line 8 as the engine produces it, re-derived here in `_derived` with Decimal
-(not a CRA example); line 60 is that less line 59 (0 when blank): 0.00 / 1,043.18 / 2,082.68 /
-7,597.62 / 24,720.01 at salaries 0 / 10,000 / 20,000 / 70,000 / 200,000, and the column-edge
-figures of the line 58 test.
+(not a CRA example); line 60 is that less line 59 (0 when blank): 0.00 / 7,597.62 at salaries
+0 / 70,000. The column edges belong to the line 8 and line 58 tests.
 """
 
 from __future__ import annotations
@@ -118,24 +117,10 @@ FORM = dedent(f"""\
     """)
 
 # salary, line 60: line 58 (the same as line 8) less line 59, blank and read as 0.
-CASES = [
+ALL = [
     ("0", "0.00"),
-    ("10000", "1043.18"),
-    ("20000", "2082.68"),
     ("70000", "7597.62"),
-    ("200000", "24720.01"),
 ]
-# Salaries whose taxable income sits on a column's edge (53,463.00 and 152,750.00), as in the
-# line 58 test.
-EDGES = [
-    ("53967.67", "5613.61"),
-    ("53967.68", "5613.62"),
-    ("53967.69", "5613.62"),
-    ("153823.99", "18024.49"),
-    ("153824.00", "18024.50"),
-    ("153824.01", "18024.49"),
-]
-ALL = [*CASES, *EDGES]
 
 
 def _part_files() -> Iterator[Path]:

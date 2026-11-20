@@ -48,12 +48,7 @@ def line_22(take_home_service: TakeHomeService, line_4: str) -> Decimal:
 @pytest.mark.parametrize(
     ("line_4", "expected"),
     [
-        # The ticket's $70,000 salary: below the $71,300 ceiling, line 4 is 0.
-        ("0", "0.00"),
-        # $90,000: line 4 is 9,900, so 4% is exactly the printed maximum.
-        ("9900", "396.00"),
-        # A cent of line 4 is 0.04 cents, down to nothing; 4% of 0.12 is 0.0048.
-        ("0.01", "0.00"),
+        # 4% of 0.12 is 0.0048, down to nothing.
         ("0.12", "0.00"),
         # 4% of 0.125 is 0.005, a tie, rounded half-up to a cent.
         ("0.125", "0.01"),

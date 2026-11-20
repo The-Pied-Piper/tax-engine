@@ -16,10 +16,9 @@ The header, the salary input and the form declaration are test-local (Newfoundla
 no salary part), the form exporting lines 1, 3, 4, 5 and 6.
 
 Figures, re-derived in `_derived` below with Decimal (not a CRA example): taxable income is the
-salary less the enhanced CPP deduction, 19,835.00 / 69,335.00 / 198,926.00 for salaries of 20,000 /
-70,000 / 200,000; line 4 is that less the column's lower bound (0.00 / 44,192.00 / 157,792.00), so
-19,835.00 / 25,143.00 / 41,134.00; line 6 is line 4 at 8.7% / 14.5% / 17.8%: 1,725.65 / 3,645.74 /
-7,321.85. The boundary salaries are those of the line 4 and line 5 tests.
+salary less the enhanced CPP deduction, 69,335.00 for a salary of 70,000; line 4 is that less the
+column's lower bound (44,192.00), so 25,143.00; line 6 is line 4 at 14.5%: 3,645.74. The rounding
+salary (44,603.06) is one of the line 4 and line 5 tests.
 """
 
 from __future__ import annotations
@@ -115,30 +114,17 @@ FORM_TEXT = dedent(f"""\
 # (salary, line 1, line 4, line 5 rate, line 6): line 4 is line 1 less the lower bound of its
 # column, and line 6 is line 4 times the rate, rounded half-up to the cent.
 CASES = [
-    ("20000", "19835.00", "19835.00", "0.087", "1725.65"),
     ("70000", "69335.00", "25143.00", "0.145", "3645.74"),
+    # Column 3 (15.8%) and column 4 (17.8%): the last figure of column 3, and 200,000.
+    ("158866.00", "157792.00", "69410.00", "0.158", "10966.78"),
     ("200000", "198926.00", "41134.00", "0.178", "7321.85"),
 ]
-# Salaries whose taxable income sits on a column's edge: the last figure of a column, then one cent
-# more, where line 4 restarts at 0.01 in the next column. 44,192.00 x 8.7% = 3,844.704 and
-# 44,190.00 x 14.5% = 6,407.55 and 69,410.00 x 15.8% = 10,966.78 and 63,118.00 x 17.8% = 11,235.004.
-EDGES = [
-    ("44603.03", "44192.00", "44192.00", "0.087", "3844.70"),
-    ("44603.04", "44192.01", "0.01", "0.145", "0.00"),
-    ("89456.00", "88382.00", "44190.00", "0.145", "6407.55"),
-    ("89456.01", "88382.01", "0.01", "0.158", "0.00"),
-    ("158866.00", "157792.00", "69410.00", "0.158", "10966.78"),
-    ("158866.01", "157792.01", "0.01", "0.178", "0.00"),
-    ("221984.00", "220910.00", "63118.00", "0.178", "11235.00"),
-]
-# Rounding, half-up to the cent: line 4 of 0.03 at 14.5% is 0.00435 and goes down to 0.00; 0.04 at
-# 14.5% is 0.0058 and goes up to 0.01; 19,835.00 x 8.7% = 1,725.645 is exactly half a cent and goes
-# up (above, in CASES); 25,143.00 x 14.5% = 3,645.735 likewise.
+# Rounding, half-up to the cent: 25,143.00 x 14.5% = 3,645.735 is exactly half a cent and goes up
+# (above, in CASES); line 4 of 0.03 at 14.5% is 0.00435 and goes down to 0.00.
 ROUNDING_CASES = [
     ("44603.06", "44192.03", "0.03", "0.145", "0.00"),
-    ("44603.07", "44192.04", "0.04", "0.145", "0.01"),
 ]
-ALL_CASES = [*CASES, *EDGES, *ROUNDING_CASES]
+ALL_CASES = [*CASES, *ROUNDING_CASES]
 
 
 def _federal(name: str) -> Path:

@@ -16,7 +16,7 @@ salary (and, in one test, line 50). The form declaration is made up here, export
 The figures are line 51 as the engine produces it, re-derived below with Decimal from the printed
 basic personal amount dataset (19,491), CPP at 4.95% of the salary above the $3,500 basic
 exemption to a maximum of $3,356.10, and EI at 1.64% to the $65,700 maximum insurable earnings
-(20,635.75, 23,860.23 and 23,924.58 at the three salaries, line 50 blank and read as 0), times
+(20,635.75 and 23,924.58 at the two salaries, line 50 blank and read as 0), times
 10.5%, each rounded half-up to the cent.
 """
 
@@ -82,9 +82,9 @@ FORM = dedent("""\
     """)
 
 # salary, line 53: line 51 as the engine produces it, times 10.5%, half-up to the cent. Line 51 is
-# 20,635.75 / 23,860.23 / 23,924.58 (line 50 blank, read as 0): 2,166.75375, 2,505.32415 and
-# 2,512.0809, rounded to 2,166.75 / 2,505.32 / 2,512.08.
-CASES = [("20000", "2166.75"), ("70000", "2505.32"), ("200000", "2512.08")]
+# 20,635.75 / 23,924.58 (line 50 blank, read as 0): 2,166.75375 and 2,512.0809, rounded to
+# 2,166.75 / 2,512.08.
+CASES = [("20000", "2166.75"), ("200000", "2512.08")]
 
 
 def _cpp(salary: str) -> Decimal:

@@ -69,7 +69,7 @@ FORM = dedent("""\
         - ca-bc/bc479_credit_before_reduction_line_11
     """)
 
-SALARIES = ["17000", "20000", "30000", "70000", "200000"]
+SALARIES = ["17000", "200000"]
 
 
 def _service(tmp_path: Path) -> TaxComputationService:

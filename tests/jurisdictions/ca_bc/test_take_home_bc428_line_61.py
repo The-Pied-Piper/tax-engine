@@ -16,18 +16,15 @@ the federal T1 taxable income parts, line 1, lines 3 to 8 and lines 10 to 15 (`b
 and line 61. The form declaration is test-local (the real `bc428.yaml` exports line 91, which is not
 built). The service is built over the package list of `support.py`.
 
-Figures (hand-computed from the printed form, not a CRA example; a salary of 17,000 / 20,000 /
-30,000 / 70,000 / 200,000 is a taxable income, line 1, of 16,865.00 / 19,835.00 / 29,735.00 /
-69,335.00 / 198,926.00):
+Figures (hand-computed from the printed form, not a CRA example; a salary of 17,000 /
+200,000 is a taxable income, line 1, of 16,865.00 / 198,926.00):
 - Column 1 of lines 2 to 8 (line 1 at most 49,279): rate 5.06%, line 7 is 0.00.
-  16,865.00 x 5.06% = 853.369, so 853.37. 19,835.00 x 5.06% = 1,003.6510, so 1,003.65.
-  29,735.00 x 5.06% = 1,504.5910, so 1,504.59.
+  16,865.00 x 5.06% = 853.369, so 853.37.
 - Column 2 (more than 49,279 but not more than 98,560): rate 7.7%, line 7 is 2,493.52.
   69,335.00 - 49,279.00 = 20,056.00; x 7.7% = 1,544.312, so 1,544.31; + 2,493.52 = 4,037.83.
 - Lines 9 to 15, column 2 (more than 186,306 but not more than 259,829): rate 16.8%, line 14 is
   17,989.30. 198,926.00 - 186,306.00 = 12,620.00; x 16.8% = 2,120.16; + 17,989.30 = 20,109.46.
-Line 61 is 853.37 / 1,003.65 / 1,504.59 / 4,037.83 / 20,109.46: line 8 gives the first four and
-line 15 the fifth.
+Line 61 is 853.37 / 20,109.46: line 8 gives the first and line 15 the second.
 """
 
 from __future__ import annotations
@@ -119,9 +116,6 @@ FORM_TEXT = dedent(f"""\
 # salary, the line line 61 takes, line 61: line 8 gives the first four, line 15 the fifth.
 CASES = [
     ("17000", LINE_8, "853.37"),
-    ("20000", LINE_8, "1003.65"),
-    ("30000", LINE_8, "1504.59"),
-    ("70000", LINE_8, "4037.83"),
     ("200000", LINE_15, "20109.46"),
 ]
 

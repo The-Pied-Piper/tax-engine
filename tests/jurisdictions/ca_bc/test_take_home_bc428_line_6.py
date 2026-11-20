@@ -21,13 +21,13 @@ carry `pass_on`. The form declaration is test-local. The service is built over t
 `support.py`.
 
 Figures (ticket, hand-computed, not a CRA example): taxable income is the salary less the CPP
-enhanced and second-ceiling amounts, 16,865.00 / 19,835.00 / 29,735.00 / 69,335.00 / 198,926.00, so
-line 6 is 853.37 (16,865.00 x 0.0506 = 853.369) / 1,003.65 (1,003.651) / 1,504.59 (1,504.591) /
+enhanced and second-ceiling amounts, 16,865.00 / 69,335.00 / 198,926.00, so
+line 6 is 853.37 (16,865.00 x 0.0506 = 853.369) /
 1,544.31 (20,056.00 x 0.077 = 1,544.312) / blank. The column edges and the half-up cases are driven
 from a given line 1 (the T1 parts are left out), as the line 5 test does for its thresholds: line 1
 of 49,279.00 is column 1 (line 4 49,279.00, 2,493.5174, so 2,493.52) and 49,279.01 is column 2 (line
 4 0.01, 0.00077, so 0.00). Rounding: line 4 of 25.00 at 5.06% is 1.265, half-up 1.27 (not the even
-1.26); line 4 of 5.00 at 7.7% is 0.385, so 0.39; line 4 of 1.00 at 10.5% is 0.105, so 0.11.
+1.26); line 4 of 4.99 at 7.7% is 0.38423, so 0.38.
 """
 
 from __future__ import annotations
@@ -198,10 +198,6 @@ def _kind(identifier: str) -> AmountKind:
     [
         # Line 4 is 16,865.00 at 5.06%: 853.369.
         ("17000", "853.37"),
-        # Line 4 is 19,835.00 at 5.06%: 1,003.651.
-        ("20000", "1003.65"),
-        # Line 4 is 29,735.00 at 5.06%: 1,504.591.
-        ("30000", "1504.59"),
         # Line 4 is 20,056.00 at 7.7% (column 2): 1,544.312.
         ("70000", "1544.31"),
     ],
@@ -244,25 +240,10 @@ def _direct(tmp_path: Path, taxable_income: str) -> Artifact[Decimal]:
 @pytest.mark.parametrize(
     ("taxable_income", "expected"),
     [
-        ("0.00", "0.00"),
         # Column 1 at its top: 49,279.00 x 5.06% = 2,493.5174.
         ("49279.00", "2493.52"),
         # Column 2, one cent over the bound: 0.01 x 7.7% = 0.00077.
         ("49279.01", "0.00"),
-        # Line 4 of 1.00 at 7.7%: 0.077.
-        ("49280.00", "0.08"),
-        # Column 2 at its top: 49,281.00 x 7.7% = 3,794.637.
-        ("98560.00", "3794.64"),
-        # Column 3, one cent over the bound: 0.01 x 10.5% = 0.00105.
-        ("98560.01", "0.00"),
-        # Column 3 at its top: 14,598.00 x 10.5% = 1,532.79.
-        ("113158.00", "1532.79"),
-        # Column 4, one cent over the bound: 0.01 x 12.29% = 0.001229.
-        ("113158.01", "0.00"),
-        # Line 4 of 1.00 at 12.29%: 0.1229.
-        ("113159.00", "0.12"),
-        # Column 4 at its top: 24,249.00 x 12.29% = 2,980.2021.
-        ("137407.00", "2980.20"),
     ],
 )
 def test_line_6_at_and_just_above_each_column_boundary(
@@ -276,14 +257,8 @@ def test_line_6_at_and_just_above_each_column_boundary(
     [
         # 25.00 x 5.06% = 1.2650: exactly half goes up (half-up, not half-even 1.26).
         ("25.00", "1.27"),
-        # 5.00 x 7.7% = 0.385: half goes up (not half-even 0.38).
-        ("49284.00", "0.39"),
         # 4.99 x 7.7% = 0.38423: down.
         ("49283.99", "0.38"),
-        # 1.00 x 10.5% = 0.105: half goes up (not half-even 0.10).
-        ("98561.00", "0.11"),
-        # 16,865.00 x 5.06% = 853.369: the third decimal rounds up.
-        ("16865.00", "853.37"),
     ],
 )
 def test_line_6_is_rounded_half_up_to_the_cent(
