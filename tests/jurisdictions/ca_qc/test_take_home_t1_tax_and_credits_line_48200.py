@@ -69,6 +69,15 @@ def test_each_optional_line_is_added(take_home_service: TakeHomeService, kind: A
     assert sheet.get(TOTAL_CREDITS_LINE_171).value == D("1341.49")
 
 
+def test_a_negative_line_155_larger_than_the_other_credits_is_taken(
+    take_home_service: TakeHomeService,
+) -> None:
+    # The form prints no floor on line 171: 1,241.39 less 5,000.00 is -3,758.61.
+    _, sheet = sheets(take_home_service, "70000", (INCOME_TAX_DEDUCTED_NET_LINE_155, "-5000"))
+
+    assert sheet.get(TOTAL_CREDITS_LINE_171).value == D("-3758.61")
+
+
 def test_the_trace_prints_the_line(take_home_service: TakeHomeService) -> None:
     _, sheet = sheets(take_home_service, "20000")
 
