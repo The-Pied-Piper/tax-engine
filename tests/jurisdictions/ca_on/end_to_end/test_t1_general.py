@@ -163,10 +163,6 @@ T1_AT_70000: dict[str, tuple[AmountKind, str]] = {
 # Lines that are the form's printed bound or rate, not a computed dollar figure.
 PRINTED_AS_IS = {"71", "73"}
 
-# The 31260 sum "line 1 plus line 2": the form prints no rounding rule for it, so it is carried
-# exactly.
-CARRIED_EXACT = {"31260 income", "31260"}
-
 # The return's line 167 and the payroll figures the calculator reads, by salary, with sources:
 # (salary, line 167, federal tax after credits, Ontario tax line 90, CPP base + enhanced, EI, CWB).
 # $70,000: Return DD (fed 7,585.64 + ON428 line 90 3,911.45); CPP and EI from T4127 (121st ed.),
@@ -413,8 +409,8 @@ def test_every_dollar_line_is_printed_to_the_cent(take_home_service: TakeHomeSer
     assert {
         line: t1.get(kind).value.as_tuple().exponent
         for line, (kind, _) in T1_AT_70000.items()
-        if line not in PRINTED_AS_IS | CARRIED_EXACT
-    } == {line: -2 for line in T1_AT_70000 if line not in PRINTED_AS_IS | CARRIED_EXACT}
+        if line not in PRINTED_AS_IS
+    } == {line: -2 for line in T1_AT_70000 if line not in PRINTED_AS_IS}
 
 
 def test_line_42800_names_ontario_line_90_in_the_trace(take_home_service: TakeHomeService) -> None:

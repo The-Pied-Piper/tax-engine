@@ -9,7 +9,7 @@ capabilities:
     reference: "10100"
     unit: ca/cad
     params:
-      rounding: ca/exact_rounding
+      rounding: ca/cent_rounding
     consumes:
       parts: [ca/employment_income]
     produces:

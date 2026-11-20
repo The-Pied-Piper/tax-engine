@@ -84,11 +84,10 @@ def test_2025_line_3_maximum_is_65700() -> None:
     assert data.values == Amount(value=D("65700.00"))
 
 
-def test_2025_line_3_maximum_carries_no_rounding() -> None:
-    # The form prints no rounding rule for line 3.
+def test_2025_line_3_maximum_rounds_half_up_to_the_cent() -> None:
     data = SOURCE.get(MAXIMUM_FAMILY, 2025, AMOUNT)
 
-    assert data.rounding == NO_ROUNDING
+    assert data.rounding == CENT
 
 
 def test_2025_line_3_maximum_cites_the_form_it_is_printed_on() -> None:
