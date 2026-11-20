@@ -2,7 +2,8 @@
 # your return. Deduction for QPP contributions on employment income." Line 22.1 is "Amount from line
 # 16", a copy of `ca-qc/schedule_u_line_16` with no step of its own. The step is `core/sum`, rounded to
 # the cent by `ca-qc/cent_rounding`. The printed "Deduction for QPP contributions on employment
-# income" is its title. Line 22.1 can be negative (line 14 prints no floor), so the figure can be.
+# income" is its title. Line 14 is floored at zero (the owner's ruling, see
+# `tp1_schedule_u_line_14.yaml`), so line 22.1 and the figure are never negative.
 form:
   name: ca-qc/tp1_schedule_u
 capabilities:
