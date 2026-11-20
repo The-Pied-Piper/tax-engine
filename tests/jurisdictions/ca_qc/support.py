@@ -93,7 +93,19 @@ T2204_HEADER = dedent("""\
     capabilities: []
     imports:
     """)
-T2204_FORM = "capabilities: []\n"
+# The T2204 reads T1 line 10100 from the Quebec T1, so the test declares that form, exporting line
+# 10100 alone under the neutral name the shared form reads, and composes the real line 10100 part.
+T2204_FORM = dedent("""\
+    form:
+      name: ca-qc/t1_taxable_income
+      required: true
+      exports:
+        - ca-qc/employment_income_line_10100
+      supplies:
+        ca/t1_taxable_income.employment_income_line_10100: ca-qc/employment_income_line_10100
+    capabilities: []
+    """)
+T2204_T1_PART = "t1_taxable_income_line_10100.yaml"
 
 
 def real_import(form: str) -> str:
@@ -104,14 +116,14 @@ def real_import(form: str) -> str:
 
 
 def t2204_worksheet(
-    take_home_service: Callable[[str, str], TaxComputationService],
+    take_home_service: Callable[..., TaxComputationService],
     salary: str,
     given: str | None = None,
 ) -> Worksheet:
     """The Quebec T2204 worksheet for a salary, over a temporary manifest that takes the salary and
     imports the shared T2204 exactly as the real Quebec manifest does, with its dataset swap. Line
     4 is left blank unless `given` is passed."""
-    service = take_home_service(T2204_HEADER + real_import("ca/t2204"), T2204_FORM)
+    service = take_home_service(T2204_HEADER + real_import("ca/t2204"), T2204_FORM, T2204_T1_PART)
     starting = [Artifact(EMPLOYMENT_INCOME, Decimal(salary))]
     if given is not None:
         starting.append(Artifact(T2204_PREMIUMS_DEDUCTED_GIVEN, Decimal(given)))

@@ -1,0 +1,9 @@
+# Test-local declaration of the T1 taxable income form for a test that composes only the forms
+# reading T1 line 10100 (such as T2204 line 1): it exports line 10100 alone, and the real line 10100
+# part (`t1_taxable_income_line_10100.yaml`) supplies it.
+form:
+  name: ca/t1_taxable_income
+  required: true
+  exports:
+    - ca/employment_income_line_10100
+capabilities: []

@@ -22,6 +22,7 @@ from tax_engine.domain.worksheet import Worksheet
 from tax_engine.registrations import JURISDICTIONS, artifact_kinds, units
 from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService
 from tests.kinds import bundled_kinds
+from tests.manifest_support import T1_LINE_10100_PARTS
 
 D = Decimal
 CODE = JurisdictionCode("CA-ON")
@@ -32,6 +33,7 @@ OVERPAYMENT = "ca/ei_overpayment"
 LINE_16 = "ca/t2204_line_16"
 FORM = next(TAKE_HOME.rglob("t2204.yaml")).read_text(encoding="utf-8")
 PARTS = (
+    *T1_LINE_10100_PARTS,
     "t2204_inputs.yaml",
     "t2204_line_1.yaml",
     "t2204_line_3.yaml",

@@ -29,6 +29,7 @@ from tax_engine.jurisdictions.ca.catalog.refund import (
     T2204_SELF_EMPLOYMENT_EARNINGS,
 )
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
+from tests.manifest_support import T1_LINE_10100_PARTS
 
 D = Decimal
 
@@ -71,7 +72,7 @@ def t2204(
     ]
     if self_employment is not None:
         starting.append(Artifact(T2204_SELF_EMPLOYMENT_EARNINGS, D(self_employment)))
-    (sheet,) = take_home_service(HEADER, FORM, LINE_1_PART, PART).compute(
+    (sheet,) = take_home_service(HEADER, FORM, *T1_LINE_10100_PARTS, LINE_1_PART, PART).compute(
         JurisdictionCode("CA-ON"), 2025, *starting
     )["ca/t2204"]
     return sheet

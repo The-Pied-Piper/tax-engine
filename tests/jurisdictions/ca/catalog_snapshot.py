@@ -1680,6 +1680,7 @@ REGISTERED = frozenset(
         "ca/t2204_premiums_deducted",
         "ca/t2204_premiums_deducted_given",
         "ca/t2204_line_1_count",
+        "ca/t2204_employment_income_line_10100",
         "ca/t2204_line_1",
         "ca/t2204_line_1_plus_2",
         "ca/t2204_line_3",
