@@ -522,3 +522,10 @@ the amount you would have entered if the instructions on line 23600 said "if neg
 brackets")". Net income before adjustments (line 55) less the social benefits repayment (line 56),
 signed. Produced by one core/subtract (`t1_taxable_income_line_23600_signed.yaml`) and supplied to
 the neutral name `ca/t1_taxable_income.net_income_signed` by the form declaration."""
+
+TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
+"""Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
+Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line
+69, an optional input read as 0), not below zero. Produced by one core/subtract_not_below_zero
+(`t1_taxable_income_line_26000.yaml`); the federal bracket columns (line 71 onward) start from
+it."""
