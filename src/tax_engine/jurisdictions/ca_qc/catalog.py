@@ -1771,3 +1771,8 @@ TP1_LINE_432 = AmountKind.declare(CATALOG, "tp1_line_432", non_negative=True)
 """TP-1 line 432 "Subtract line 431 from line 430": the income tax after credits, floored at 0 as
 the form prints, rounded half-up to the cent. Produced by one core/subtract_not_below_zero
 (`tp1_tax_line_432.yaml`) and exported by the form for line 450."""
+
+TP1_TOTALS_LINE_432 = AmountKind.declare(CATALOG, "tp1_totals_line_432", non_negative=True)
+"""TP-1 page 5 "Amount from line 432": a copy of the tax form's line 432, the income tax after
+credits. Produced by one core/record_total over the tax form's export (`tp1_totals_line_432.yaml`).
+"""

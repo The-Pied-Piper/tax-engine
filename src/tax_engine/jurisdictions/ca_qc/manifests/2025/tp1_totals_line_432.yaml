@@ -1,0 +1,15 @@
+# TP-1 (2025) page 5, "Amount from line 432": the income tax after credits of page 4, carried to the
+# top of page 5. The figure is line 432 of the tax form, which that form exports; another form reads
+# an export only as a record list (`ca-qc/tp1_tax.tp1_line_432`), so the one step is
+# core/record_total over those records (as line 406 reads the credits form). Line 432 is always
+# computed, so there is no blank rule. The line prints no title of its own, so the step has none.
+form:
+  name: ca-qc/tp1_totals
+capabilities:
+  - name: core/record_total
+    reference: "432"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp1_tax.tp1_line_432
+    produces:
+      output: ca-qc/tp1_totals_line_432
