@@ -656,3 +656,10 @@ SCHEDULE_K_NET_INCOME_LINE_36 = AmountKind.declare(
 """Net income, Schedule K line 36 "Amount from line 275 of your return": a copy of TP-1 line 275.
 The amount arrives from the TP-1 net income form as a record list of one, so the one step is
 core/record_total (`tp1_schedule_k_line_36.yaml`)."""
+
+SCHEDULE_K_SPOUSE_NET_INCOME_LINE_37 = AmountKind.declare(
+    CATALOG, "schedule_k_spouse_net_income_line_37", non_negative=True
+)
+"""Spouse's net income, Schedule K line 37 "Amount from line 275 of your spouse's return (spouse on
+December 31, 2025)": an input, the spouse's TP-1 line 275. A single filer has no spouse, so the
+caller leaves it out and line 40 reads it as 0."""
