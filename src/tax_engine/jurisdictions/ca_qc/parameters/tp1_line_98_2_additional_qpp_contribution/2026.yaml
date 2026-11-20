@@ -1,7 +1,5 @@
-# Provisional (2026): QPP: second additional rate 4% from 74,600 to 85,000, maximum 416. Taken from
-# the published 2026 parameters (not a 2026 form); to be confirmed against the 2026 form text when
-# it is published. The comment below is the 2025 derivation, kept for the printed wording; the
-# figures of this file replace its 2025 figures.
+# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text when Revenu Quebec publishes it.
+# Derivation: figure as printed in T4127 (Jan 2026): QPP: second additional rate 4% from 74,600 to 85,000, maximum 416; no rounding applied here.
 # Revenu Quebec TP-1.D-V (2025-12), page 2, line 98.2: "Additional contribution to the QPP. RL-1,
 # box B.B". The form prints no rate or ceiling for the slip box. A salary-only caller has no RL-1
 # slip, so the figure is the employee's second additional QPP contribution from the Revenu Quebec
@@ -9,6 +7,7 @@
 # listed check): 4% of the earnings from the $71,300 maximum pensionable earnings to the $81,200
 # additional maximum pensionable earnings, at most $396.00 (4% of $9,900, exactly). Dollars and
 # cents, half-up to the cent.
+# The description above is of the 2025 form line; the figures of this file are 2026. The 2026 form is not yet published, so they are not yet confirmed against it.
 family: ca-qc/tp1_line_98_2_additional_qpp_contribution
 tax_year: 2026
 kind: contribution_tier

@@ -1,11 +1,11 @@
-# Provisional: no 2026 figure is published yet (the 2026 forms are not out), so the 2025 figure is
-# carried. To be replaced when Revenu Quebec and CRA publish the 2026 forms. The comment below is
-# the 2025 derivation.
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when Revenu Quebec publishes it.
+# Derivation: carried forward unchanged from the 2025 file; the 2026 form is not yet published.
 # Quebec solidarity tax credit reduction rate, for the payment period July 2026 to June 2027 (the
 # credit of the 2025 return): 6% of the family income above the reduction threshold, as printed in
 # the text of the Quebec Ministry of Finance fiche 110201 (Dépenses fiscales
 # 2025), a web page, so the figure is a listed check until a printed source is found. The
 # product is a dollars-and-cents line, so it rounds half-up to the cent, the project's choice.
+# The 2026 form is not yet published, so the figure is not yet confirmed against it.
 family: ca-qc/solidarity_reduction_rate
 tax_year: 2026
 kind: rate

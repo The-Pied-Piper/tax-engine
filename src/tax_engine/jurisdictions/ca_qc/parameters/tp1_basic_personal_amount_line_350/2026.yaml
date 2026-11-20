@@ -1,10 +1,9 @@
-# Provisional (2026): Basic personal amount 18,952 (Table 3). Taken from the published 2026
-# parameters (not a 2026 form); to be confirmed against the 2026 form text when it is published. The
-# comment below is the 2025 derivation, kept for the printed wording; the figures of this file
-# replace its 2025 figures.
+# Provisional: taken from Quebec Finance, Parameters of the Personal Income Tax System for 2026 (Nov 2025), Table 3; to be confirmed against the 2026 form text when Revenu Quebec publishes it.
+# Derivation: figure as printed in the Quebec Finance parameters for 2026: basic personal amount 18,952 (Table 3); no rounding applied here.
 # Revenu Quebec TP-1.D-V (2025-12), page 4, Non-refundable tax credits, line 350: "Basic personal
 # amount ... 350 18,571 00". The printed figure is 18,571.00, claimed whole; it is not income-tested.
 # Half-up to the cent changes nothing.
+# The description above is of the 2025 form line; the figures of this file are 2026. The 2026 form is not yet published, so they are not yet confirmed against it.
 family: ca-qc/tp1_basic_personal_amount_line_350
 tax_year: 2026
 kind: credit

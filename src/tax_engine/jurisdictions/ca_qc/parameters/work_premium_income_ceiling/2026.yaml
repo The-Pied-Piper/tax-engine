@@ -1,10 +1,9 @@
-# Provisional (2026): General work premium reduction threshold, one adult, 12,808 (Table 3). Taken
-# from the published 2026 parameters (not a 2026 form); to be confirmed against the 2026 form text
-# when it is published. The comment below is the 2025 derivation, kept for the printed wording; the
-# figures of this file replace its 2025 figures.
+# Provisional: taken from Quebec Finance, Parameters of the Personal Income Tax System for 2026 (Nov 2025), Table 3; to be confirmed against the 2026 form text when Revenu Quebec publishes it.
+# Derivation: figure as printed in the Quebec Finance parameters for 2026: general work premium reduction threshold, one adult, 12,808 (Table 3); no rounding applied here.
 # Revenu Quebec TP-1.D-V (2025-12), Schedule P (TP-1.D.P-V), Part E, section 2 "Individual without a
 # spouse on December 31, 2025", column 1 "Work premium", line 66: the printed figure is $12,620.
 # Taken as printed and claimed whole; half-up to the cent changes nothing.
+# The description above is of the 2025 form line; the figures of this file are 2026. The 2026 form is not yet published, so they are not yet confirmed against it.
 family: ca-qc/work_premium_income_ceiling
 tax_year: 2026
 kind: credit

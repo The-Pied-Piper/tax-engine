@@ -1,11 +1,11 @@
-# Provisional: no 2026 figure is published yet (the 2026 forms are not out), so the 2025 figure is
-# carried. To be replaced when Revenu Quebec and CRA publish the 2026 forms. The comment below is
-# the 2025 derivation.
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when Revenu Quebec publishes it.
+# Derivation: carried forward unchanged from the 2025 file; the 2026 form is not yet published.
 # Revenu Quebec TP-1.D.K-V (2025-12), Schedule K, Part C, line 83 "Add lines 81 and 82 (maximum
 # $766)" and the instruction above the table, "is more than $14,669, enter $766 on line 84": the
 # printed maximum premium before the months and the group plan reduce it. It is the cap of line 84.
 # Printed figure, taken whole and never recomputed; half-up to the cent gives the scale of a
 # dollars-and-cents box and changes nothing.
+# The 2026 form is not yet published, so the figure is not yet confirmed against it.
 family: ca-qc/schedule_k_line_84_maximum
 tax_year: 2026
 kind: amount
