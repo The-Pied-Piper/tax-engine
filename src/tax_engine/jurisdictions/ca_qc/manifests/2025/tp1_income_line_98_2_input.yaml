@@ -1,0 +1,13 @@
+# TP-1 (2025) line 98.2, 'Additional contribution to the QPP. RL-1, box B.B': an input a salary-only
+# caller does not give. A request that leaves it out is read as blank, and the line 98.2 part
+# (tp1_income_line_98_2.yaml) computes it from the salary.
+form:
+  name: ca-qc/tp1_income
+inputs:
+  - name: ca-qc/tp1_additional_qpp_contribution_given_line_98_2
+    title: "Additional contribution to the QPP"
+    reference: "98.2"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Additional contribution to the QPP. RL-1, box B.B'
