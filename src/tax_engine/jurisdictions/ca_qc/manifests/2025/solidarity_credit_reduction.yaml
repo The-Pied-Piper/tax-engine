@@ -42,3 +42,12 @@ capabilities:
       when_any: ca-qc/solidarity_reduction_at_rate
     produces:
       output: ca-qc/solidarity_reduction
+  - name: core/subtract_not_below_zero
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/solidarity_maximum_before_reduction
+      less: ca-qc/solidarity_reduction
+    produces:
+      output: ca-qc/solidarity_maximum_less_reduction

@@ -82,3 +82,15 @@ is received, 0 when it is not; consumed here by name."""
 SOLIDARITY_REDUCTION = AmountKind.declare(CATALOG, "solidarity_reduction", non_negative=True)
 """Solidarity tax credit, reduction chosen (fiche 110201, Table C.9): the 3% reduction when the
 housing component is not received (one component only), else the 6% reduction."""
+
+SOLIDARITY_MAXIMUM_BEFORE_REDUCTION = AmountKind.declare(
+    CATALOG, "solidarity_maximum_before_reduction", non_negative=True
+)
+"""Solidarity tax credit, maximum before reduction (fiche 110201, Table C.9): the components
+received added together; consumed here by name."""
+
+SOLIDARITY_MAXIMUM_LESS_REDUCTION = AmountKind.declare(
+    CATALOG, "solidarity_maximum_less_reduction", non_negative=True
+)
+"""Solidarity tax credit, maximum less the reduction (fiche 110201, Table C.9): the maximum before
+reduction less the chosen reduction, not below 0."""
