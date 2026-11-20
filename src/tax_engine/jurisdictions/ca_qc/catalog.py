@@ -1029,3 +1029,10 @@ WORK_CHART_401_COLUMN_RATE_LINE_5 = AmountKind.declare(
 """Work Chart 401 line 5 "x 5" (14%, 19%, 24% or 25.75%): the printed rate of the column that line
 1 falls in, a fraction (0.2575 for 25.75%). Produced by one core/bracket_column_rate
 (`work_chart_401_line_5.yaml`)."""
+
+WORK_CHART_401_TAX_ON_EXCESS_LINE_6 = AmountKind.declare(
+    CATALOG, "work_chart_401_tax_on_excess_line_6", non_negative=True
+)
+"""Work Chart 401 line 6 "Multiply line 4 by line 5": the tax on the part of the taxable income over
+the column's lower bound, rounded half-up to the cent. Produced by one core/multiply_by_rate
+(`work_chart_401_line_6.yaml`)."""
