@@ -863,6 +863,158 @@ and PPIP lines, the Canada employment amount and the optional lines 88, 90, 92 t
 99, each blank read as 0. Produced by one core/sum (`t1_tax_and_credits_line_100.yaml`); line
 102 reads it."""
 
+PENSION_INCOME_AMOUNT_LINE_101 = AmountKind.declare(
+    CATALOG, "pension_income_amount_line_101", non_negative=True
+)
+"""Pension income amount, 5005-R line 101 and line 31400: an optional input a salary-only caller
+does not give; the line that reads it takes a blank as 0
+(`t1_tax_and_credits_line_31400_inputs.yaml`)."""
+
+CREDITS_LINE_102 = AmountKind.declare(CATALOG, "credits_line_102", non_negative=True)
+"""Credits of lines 86, 100 and 101, 5005-R line 102 "Line 102: Add lines 86, 100, and 101. =":
+the credit amounts through line 84 plus the credits of lines 87 to 99 plus the pension income
+amount, each blank read as 0, from one core/sum (`t1_tax_and_credits_line_102.yaml`); line 105
+reads it."""
+
+DISABILITY_AMOUNT_SELF_LINE_103 = AmountKind.declare(
+    CATALOG, "disability_amount_self_line_103", non_negative=True
+)
+"""Disability amount for self, 5005-R line 103 and line 31600: an optional input a salary-only
+caller does not give; the line that reads it takes a blank as 0
+(`t1_tax_and_credits_line_31600_inputs.yaml`)."""
+
+DISABILITY_AMOUNT_TRANSFERRED_LINE_104 = AmountKind.declare(
+    CATALOG, "disability_amount_transferred_line_104", non_negative=True
+)
+"""Disability amount transferred from a dependant, 5005-R line 104 and line 31800: an optional
+input a salary-only caller does not give; the line that reads it takes a blank as 0
+(`t1_tax_and_credits_line_31800_inputs.yaml`)."""
+
+CREDITS_LINE_105 = AmountKind.declare(CATALOG, "credits_line_105", non_negative=True)
+"""Credits of lines 102 to 104, 5005-R line 105 "Line 105: Add lines 102 to 104. =": the credits
+through line 102 plus the disability amount for self (line 103) and the disability amount
+transferred from a dependant (line 104), each blank read as 0, from one core/sum
+(`t1_tax_and_credits_line_105.yaml`); line 110 reads it."""
+
+STUDENT_LOAN_INTEREST_LINE_106 = AmountKind.declare(
+    CATALOG, "student_loan_interest_line_106", non_negative=True
+)
+"""Interest paid on your student loans, 5005-R line 106 and line 31900: an optional input a
+salary-only caller does not give; the line that reads it takes a blank as 0
+(`t1_tax_and_credits_line_31900_inputs.yaml`)."""
+
+FEDERAL_TUITION_AMOUNT_LINE_107 = AmountKind.declare(
+    CATALOG, "federal_tuition_amount_line_107", non_negative=True
+)
+"""Your federal tuition amount, 5005-R line 107 and line 32300: an optional input a salary-only
+caller does not give; the line that reads it takes a blank as 0
+(`t1_tax_and_credits_line_32300_inputs.yaml`)."""
+
+TUITION_AMOUNT_TRANSFERRED_LINE_108 = AmountKind.declare(
+    CATALOG, "tuition_amount_transferred_line_108", non_negative=True
+)
+"""Tuition amount transferred from a child or grandchild, 5005-R line 108 and line 32400: an
+optional input a salary-only caller does not give; the line that reads it takes a blank as 0
+(`t1_tax_and_credits_line_32400_inputs.yaml`)."""
+
+AMOUNTS_TRANSFERRED_FROM_SPOUSE_LINE_109 = AmountKind.declare(
+    CATALOG, "amounts_transferred_from_spouse_line_109", non_negative=True
+)
+"""Amounts transferred from your spouse or common-law partner, 5005-R line 109 and line 32600: an
+optional input a salary-only caller does not give; the line that reads it takes a blank as 0
+(`t1_tax_and_credits_line_32600_inputs.yaml`)."""
+
+CREDITS_LINE_110 = AmountKind.declare(CATALOG, "credits_line_110", non_negative=True)
+"""Credits of lines 105 to 109, 5005-R line 110 "Line 110: Add lines 105 to 109. =": the credits
+through line 105 plus the student loan interest, the federal tuition amount, the tuition amount
+transferred and the amounts transferred from a spouse (lines 106 to 109), each blank read as 0,
+from one core/sum (`t1_tax_and_credits_line_110.yaml`); line 117 reads it."""
+
+NET_INCOME_LINE_112 = AmountKind.declare(CATALOG, "net_income_line_112", non_negative=True)
+"""Amount from line 23600, 5005-R line 112 "Line 112: Amount from line 23600 multiplied by 3% =":
+a copy of net income, read from the net income export by one core/record_total
+(`t1_tax_and_credits_line_112.yaml`); the 3% is applied to it by the next step."""
+
+MEDICAL_NET_INCOME_SHARE_LINE_112 = AmountKind.declare(
+    CATALOG, "medical_net_income_share_line_112", non_negative=True
+)
+"""Share of net income for medical expenses, 5005-R line 112 "Line 112: Amount from line 23600
+multiplied by 3% =": net income times the printed 3% (the dataset `ca/medical_net_income_rate`),
+from one core/apply_rate (`t1_tax_and_credits_line_112.yaml`); line 113 caps it."""
+
+MEDICAL_THRESHOLD_LINE_113 = AmountKind.declare(
+    CATALOG, "medical_threshold_line_113", non_negative=True
+)
+"""Medical expenses threshold, 5005-R line 113 "Line 113: Enter whichever is less: $2,834 or the
+amount from line 112.": the lesser of the printed $2,834 (the dataset
+`ca/medical_threshold_ceiling`) and line 112, from one core/capped_amount
+(`t1_tax_and_credits_line_113.yaml`); line 114 takes it off line 111."""
+
+MEDICAL_EXPENSES_LINE_111 = AmountKind.declare(
+    CATALOG, "medical_expenses_line_111", non_negative=True
+)
+"""Medical expenses for self, spouse or common-law partner and your dependent children under 18
+years of age, 5005-R line 111 and line 33099: an optional input a salary-only caller does not
+give; the line that reads it takes a blank as 0 (`t1_tax_and_credits_line_33099_inputs.yaml`)."""
+
+MEDICAL_EXPENSES_OVER_THRESHOLD_LINE_114 = AmountKind.declare(
+    CATALOG, "medical_expenses_over_threshold_line_114", non_negative=True
+)
+"""Medical expenses over the threshold, 5005-R line 114 "Line 114: Line 111 minus line 113 (if
+negative, enter "0") =": the medical expenses of line 111 (a blank read as 0) less the threshold
+of line 113, not below zero, from one core/subtract_not_below_zero
+(`t1_tax_and_credits_line_114.yaml`); line 116 adds line 115 to it."""
+
+MEDICAL_EXPENSES_OTHER_DEPENDANTS_LINE_115 = AmountKind.declare(
+    CATALOG, "medical_expenses_other_dependants_line_115", non_negative=True
+)
+"""Allowable amount of medical expenses for other dependants, 5005-R line 115 and line 33199: an
+optional input a salary-only caller does not give; the line that reads it takes a blank as 0
+(`t1_tax_and_credits_line_33199_inputs.yaml`)."""
+
+MEDICAL_EXPENSES_LINE_116 = AmountKind.declare(
+    CATALOG, "medical_expenses_line_116", non_negative=True
+)
+"""Medical expenses for the credit, 5005-R line 116 and line 33200 "Line 114 plus line 115 =":
+the medical expenses over the threshold plus the allowable medical expenses for other dependants
+(line 115, a blank read as 0), from one core/sum (`t1_tax_and_credits_line_33200.yaml`); line 117
+adds it to line 110."""
+
+CREDIT_AMOUNTS_LINE_117 = AmountKind.declare(CATALOG, "credit_amounts_line_117", non_negative=True)
+"""Total credit amounts, 5005-R line 117 and line 33500 "Line 110 plus line 116 =": the credits
+of lines 85 to 110 plus the medical expenses of line 116, from one core/sum
+(`t1_tax_and_credits_line_33500.yaml`); line 119 applies the federal credit rate to it."""
+
+CREDITS_AT_CREDIT_RATE_LINE_119 = AmountKind.declare(
+    CATALOG, "credits_at_credit_rate_line_119", non_negative=True
+)
+"""Federal non-refundable tax credits at the credit rate, 5005-R line 119 and line 33800 "Line
+117 multiplied by the percentage from line 118 =": line 117 times the printed 14.5% (the dataset
+`ca/credit_rate`), from one core/apply_rate (`t1_tax_and_credits_line_33800.yaml`); line 122 adds
+the donations and the top-up to it."""
+
+DONATIONS_AND_GIFTS_LINE_120 = AmountKind.declare(
+    CATALOG, "donations_and_gifts_line_120", non_negative=True
+)
+"""Donations and gifts, 5005-R line 120 and line 34900: an optional input a salary-only caller
+does not give; the line that reads it takes a blank as 0
+(`t1_tax_and_credits_line_34900_inputs.yaml`)."""
+
+TOP_UP_TAX_CREDIT_LINE_121 = AmountKind.declare(
+    CATALOG, "top_up_tax_credit_line_121", non_negative=True
+)
+"""Top-up tax credit, 5005-R line 121 and line 34990: an optional input a salary-only caller does
+not give; the line that reads it takes a blank as 0
+(`t1_tax_and_credits_line_34990_inputs.yaml`)."""
+
+NON_REFUNDABLE_TAX_CREDITS_LINE_122 = AmountKind.declare(
+    CATALOG, "non_refundable_tax_credits_line_122", non_negative=True
+)
+"""Total federal non-refundable tax credits, 5005-R line 122 and line 35000 "Add lines 119 to
+121.": the credits at the credit rate plus the donations and gifts (line 120) and the top-up tax
+credit (line 121), each blank read as 0, from one core/sum
+(`t1_tax_and_credits_line_35000.yaml`); Part C line 126 copies it."""
+
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
 Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line
@@ -1052,6 +1204,55 @@ FEDERAL_TAX_ON_TAXABLE_INCOME_LINE_77 = AmountKind.declare(
 plus line 76, rounded half-up to the cent, which the form enters on line 123. Produced by one
 core/sum (`t1_tax_and_credits_line_77.yaml`)."""
 
+WORK_CHART_401_TAXABLE_INCOME_LINE_1 = AmountKind.declare(
+    CATALOG, "work_chart_401_taxable_income_line_1", non_negative=True
+)
+"""Work Chart 401 line 1 "Taxable income (line 299 of your return)": TP-1 line 299, read from the
+net income form's export. Produced by one core/record_total (`work_chart_401_line_1.yaml`); line 2
+is a copy of it and has no step."""
+
+WORK_CHART_401_LOWER_BOUND_LINE_3 = AmountKind.declare(
+    CATALOG, "work_chart_401_lower_bound_line_3", non_negative=True
+)
+"""Work Chart 401 line 3 (0.00, 53,255.00, 106,495.00 or 129,590.00): the printed lower bound of the
+column that line 1 falls in. Produced by one core/bracket_column_lower_bound
+(`work_chart_401_line_3.yaml`)."""
+
+WORK_CHART_401_INCOME_OVER_LOWER_BOUND_LINE_4 = AmountKind.declare(
+    CATALOG, "work_chart_401_income_over_lower_bound_line_4", non_negative=True
+)
+"""Work Chart 401 line 4 "Subtract line 3 from line 2": line 1 (line 2 is a copy of it) less the
+column's lower bound (line 3), rounded half-up to the cent. Produced by one
+core/subtract_not_below_zero (`work_chart_401_line_4.yaml`)."""
+
+WORK_CHART_401_COLUMN_RATE_LINE_5 = AmountKind.declare(
+    CATALOG, "work_chart_401_column_rate_line_5", non_negative=True
+)
+"""Work Chart 401 line 5 "x 5" (14%, 19%, 24% or 25.75%): the printed rate of the column that line
+1 falls in, a fraction (0.2575 for 25.75%). Produced by one core/bracket_column_rate
+(`work_chart_401_line_5.yaml`)."""
+
+WORK_CHART_401_TAX_ON_EXCESS_LINE_6 = AmountKind.declare(
+    CATALOG, "work_chart_401_tax_on_excess_line_6", non_negative=True
+)
+"""Work Chart 401 line 6 "Multiply line 4 by line 5": the tax on the part of the taxable income over
+the column's lower bound, rounded half-up to the cent. Produced by one core/multiply_by_rate
+(`work_chart_401_line_6.yaml`)."""
+
+WORK_CHART_401_TAX_AT_START_LINE_7 = AmountKind.declare(
+    CATALOG, "work_chart_401_tax_at_start_line_7", non_negative=True
+)
+"""Work Chart 401 line 7 "+ 7" (0.00, 7,455.70, 17,571.30 or 23,114.10): the printed amount of the
+column that line 1 falls in, taken as printed. Produced by one core/bracket_column_tax_at_start
+(`work_chart_401_line_7.yaml`)."""
+
+WORK_CHART_401_INCOME_TAX_LINE_8 = AmountKind.declare(
+    CATALOG, "work_chart_401_income_tax_line_8", non_negative=True
+)
+"""Work Chart 401 line 8 "Add lines 6 and 7. Income tax on taxable income": line 6 plus line 7,
+rounded half-up to the cent, which the chart carries to line 401 of the return. Produced by one
+core/sum (`work_chart_401_line_8.yaml`); the chart exports it."""
+
 SCHEDULE_K_NET_INCOME_LINE_36 = AmountKind.declare(
     CATALOG, "schedule_k_net_income_line_36", non_negative=True
 )
@@ -1102,6 +1303,109 @@ SCHEDULE_K_PREMIUM_INCOME_LINE_48 = AmountKind.declare(
 result is negative, enter 0. In this case, you do not have to pay a premium": one
 core/subtract_not_below_zero (`tp1_schedule_k_line_48.yaml`). The form exports it; Part C reads
 it."""
+
+TP1_BASIC_PERSONAL_AMOUNT_LINE_350 = AmountKind.declare(
+    CATALOG, "tp1_basic_personal_amount_line_350", non_negative=True
+)
+"""TP-1 line 350 "Basic personal amount": the printed figure 18,571.00, claimed whole. Produced by
+one core/credit_amount over the dataset of the same name (`tp1_credits_line_350.yaml`). It is its
+own kind: `ca-qc/basic_personal_amount` is the federal basic personal amount of 5005-R line 78."""
+
+
+TP1_INCOME_REPLACEMENT_ADJUSTMENT_LINE_358 = AmountKind.declare(
+    CATALOG, "tp1_income_replacement_adjustment_line_358", non_negative=True
+)
+"""TP-1 line 358 "Adjustment for income replacement indemnities": one optional input a salary-only
+caller does not give; line 359 reads a blank as 0 (`tp1_credits_line_358_input.yaml`)."""
+
+
+TP1_LINE_359 = AmountKind.declare(CATALOG, "tp1_line_359")
+"""TP-1 line 359 "Subtract line 358 from line 350": the basic personal amount less the adjustment,
+rounded half-up to the cent. The form prints no floor, so the figure is signed. Produced by one
+core/subtract (`tp1_credits_line_359.yaml`)."""
+
+
+TP1_AGE_LIVING_ALONE_RETIREMENT_AMOUNT_LINE_361 = AmountKind.declare(
+    CATALOG, "tp1_age_living_alone_retirement_amount_line_361"
+)
+"""TP-1 line 361 "Age amount, amount for a person living alone and amount for retirement income.
+Complete Schedule B": the figure Schedule B carries from its line 34, which is signed. Produced by
+one core/record_total over the Schedule B export (`tp1_credits_line_361.yaml`)."""
+
+
+TP1_LINE_377 = AmountKind.declare(CATALOG, "tp1_line_377")
+"""TP-1 line 377 "Add lines 359 through 376": lines 359 and 361, rounded half-up to the cent (lines
+367 and 376 are not built). Signed, as its parts are. Produced by one core/sum
+(`tp1_credits_line_377.yaml`)."""
+
+
+TP1_LINE_377_1 = AmountKind.declare(CATALOG, "tp1_line_377_1")
+"""TP-1 line 377.1 "Multiply line 377 by 14%": line 377 at the printed 14%, rounded half-up to the
+cent. Signed, as line 377 is. Produced by one core/apply_rate (`tp1_credits_line_377_1.yaml`)."""
+
+
+TP1_LINE_388 = AmountKind.declare(CATALOG, "tp1_line_388", non_negative=True)
+"""TP-1 line 388 "Add lines 378 through 385": the printed sum of lines 378 to 385, one optional
+input a salary-only caller does not give; line 389 reads a blank as 0
+(`tp1_credits_line_388_input.yaml`)."""
+
+
+TP1_LINE_389 = AmountKind.declare(CATALOG, "tp1_line_389", non_negative=True)
+"""TP-1 line 389 "Multiply line 388 by 20%": line 388 at the printed 20%, rounded half-up to the
+cent. Produced by one core/apply_rate (`tp1_credits_line_389.yaml`)."""
+
+
+TP1_UNION_DUES_LINE_397_1 = AmountKind.declare(
+    CATALOG, "tp1_union_dues_line_397_1", non_negative=True
+)
+"""TP-1 line 397.1 "Union, professional or other dues": one optional input a salary-only caller does
+not give; line 397 reads a blank as 0 (`tp1_credits_line_397_1_input.yaml`)."""
+
+
+TP1_UNION_DUES_CREDIT_LINE_397 = AmountKind.declare(
+    CATALOG, "tp1_union_dues_credit_line_397", non_negative=True
+)
+"""TP-1 line 397 "Multiply line 397.1 by 10%. Tax credit for union, professional or other dues":
+line 397.1 at the printed 10%, rounded half-up to the cent. Produced by one core/apply_rate
+(`tp1_credits_line_397.yaml`)."""
+
+
+TP1_LINE_390 = AmountKind.declare(CATALOG, "tp1_line_390", non_negative=True)
+"""TP-1 line 390, one of the lines that line 399 adds ("Add lines 377.1, 389 through 392, 395
+through 397, 398 and 398.1"): one optional input a salary-only caller does not give; line 399 reads
+a blank as 0 (`tp1_credits_line_399_inputs.yaml`)."""
+
+TP1_LINE_391 = AmountKind.declare(CATALOG, "tp1_line_391", non_negative=True)
+"""TP-1 line 391, one of the lines that line 399 adds: an optional input, read as 0 when blank
+(`tp1_credits_line_399_inputs.yaml`)."""
+
+TP1_LINE_392 = AmountKind.declare(CATALOG, "tp1_line_392", non_negative=True)
+"""TP-1 line 392, one of the lines that line 399 adds: an optional input, read as 0 when blank
+(`tp1_credits_line_399_inputs.yaml`)."""
+
+TP1_LINE_395 = AmountKind.declare(CATALOG, "tp1_line_395", non_negative=True)
+"""TP-1 line 395, one of the lines that line 399 adds: an optional input, read as 0 when blank
+(`tp1_credits_line_399_inputs.yaml`)."""
+
+TP1_LINE_396 = AmountKind.declare(CATALOG, "tp1_line_396", non_negative=True)
+"""TP-1 line 396, one of the lines that line 399 adds: an optional input, read as 0 when blank
+(`tp1_credits_line_399_inputs.yaml`)."""
+
+TP1_LINE_398 = AmountKind.declare(CATALOG, "tp1_line_398", non_negative=True)
+"""TP-1 line 398, one of the lines that line 399 adds: an optional input, read as 0 when blank
+(`tp1_credits_line_399_inputs.yaml`)."""
+
+TP1_LINE_398_1 = AmountKind.declare(CATALOG, "tp1_line_398_1", non_negative=True)
+"""TP-1 line 398.1, one of the lines that line 399 adds: an optional input, read as 0 when blank
+(`tp1_credits_line_399_inputs.yaml`)."""
+
+TP1_NON_REFUNDABLE_TAX_CREDITS_LINE_399 = AmountKind.declare(
+    CATALOG, "tp1_non_refundable_tax_credits_line_399"
+)
+"""TP-1 line 399 "Add lines 377.1, 389 through 392, 395 through 397, 398 and 398.1. Non-refundable
+tax credits": the sum, rounded half-up to the cent; the optional lines read as 0 when blank. Signed,
+as line 377.1 is. Produced by one core/sum (`tp1_credits_line_399.yaml`) and exported by the form
+for TP-1 line 406."""
 
 SCHEDULE_K_COLUMN_LOWER_BOUND_LINE_78 = AmountKind.declare(
     CATALOG, "schedule_k_column_lower_bound_line_78", non_negative=True

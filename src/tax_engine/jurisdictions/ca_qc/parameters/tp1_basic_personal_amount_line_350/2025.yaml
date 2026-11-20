@@ -1,0 +1,10 @@
+# Revenu Quebec TP-1.D-V (2025-12), page 4, Non-refundable tax credits, line 350: "Basic personal
+# amount ... 350 18,571 00". The printed figure is 18,571.00, claimed whole; it is not income-tested.
+# Half-up to the cent changes nothing.
+family: ca-qc/tp1_basic_personal_amount_line_350
+tax_year: 2025
+kind: credit
+sources:
+  - Revenu Quebec TP-1.D-V (2025-12), page 4, Non-refundable tax credits
+rounding: {increment: "0.01", mode: half_up}
+amount: "18571"

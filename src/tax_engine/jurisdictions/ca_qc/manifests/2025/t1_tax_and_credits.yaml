@@ -4,8 +4,10 @@
 # does. Exports:
 #   - The credit amounts of line 85 (`ca-qc/credit_amounts_line_85`, lines 78 to 84) and of line 100
 #     (`ca-qc/credits_line_100`, lines 87 to 99), which the sums on line 102 add. Line 78 (the basic
-#     personal amount) is read inside the form and need not be exported. Later tickets of Step 5 to
-#     Step 9 add the exports the return summary reads.
+#     personal amount) is read inside the form and need not be exported.
+#   - The total federal non-refundable tax credits of line 122 (`ca-qc/non_refundable_tax_credits_line_122`),
+#     which Part C line 126 copies. Later tickets of Step 5 to Step 9 add the exports the return summary
+#     reads.
 form:
   name: ca-qc/t1_tax_and_credits
   title: "T1 Income Tax and Benefit Return"
@@ -13,4 +15,5 @@ form:
   exports:
     - ca-qc/credit_amounts_line_85
     - ca-qc/credits_line_100
+    - ca-qc/non_refundable_tax_credits_line_122
 capabilities: []

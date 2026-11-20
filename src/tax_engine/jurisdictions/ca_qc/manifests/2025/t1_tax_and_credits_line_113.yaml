@@ -1,0 +1,15 @@
+# 5005-R (2025) line 113. The form prints: "Line 113: Enter whichever is less: $2,834 or the amount from
+# line 112." (page 6). One step: core/capped_amount of line 112 at the printed $2,834, the shared
+# dataset `ca/medical_threshold_ceiling` (whose rule rounds the lesser half-up to the cent).
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/capped_amount
+    reference: "113"
+    unit: ca/cad
+    params:
+      cap: ca/medical_threshold_ceiling
+    consumes:
+      base: ca-qc/medical_net_income_share_line_112
+    produces:
+      output: ca-qc/medical_threshold_line_113

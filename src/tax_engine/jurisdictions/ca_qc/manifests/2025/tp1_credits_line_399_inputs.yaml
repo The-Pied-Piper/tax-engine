@@ -1,0 +1,49 @@
+# TP-1 (2025) lines 390, 391, 392, 395, 396, 398 and 398.1: the lines that line 399 adds besides lines
+# 377.1, 389 and 397 ("Add lines 377.1, 389 through 392, 395 through 397, 398 and 398.1. Non-refundable
+# tax credits = 399", page 4). The take-home gives none of them, so each is an optional input left
+# blank, read as 0 by line 399. They are declared here, with the step that consumes them.
+form:
+  name: ca-qc/tp1_credits
+inputs:
+  - name: ca-qc/tp1_line_390
+    reference: "390"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Add lines 377.1, 389 through 392, 395 through 397, 398 and 398.1."
+  - name: ca-qc/tp1_line_391
+    reference: "391"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Add lines 377.1, 389 through 392, 395 through 397, 398 and 398.1."
+  - name: ca-qc/tp1_line_392
+    reference: "392"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Add lines 377.1, 389 through 392, 395 through 397, 398 and 398.1."
+  - name: ca-qc/tp1_line_395
+    reference: "395"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Add lines 377.1, 389 through 392, 395 through 397, 398 and 398.1."
+  - name: ca-qc/tp1_line_396
+    reference: "396"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Add lines 377.1, 389 through 392, 395 through 397, 398 and 398.1."
+  - name: ca-qc/tp1_line_398
+    reference: "398"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Add lines 377.1, 389 through 392, 395 through 397, 398 and 398.1."
+  - name: ca-qc/tp1_line_398_1
+    reference: "398.1"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Add lines 377.1, 389 through 392, 395 through 397, 398 and 398.1."

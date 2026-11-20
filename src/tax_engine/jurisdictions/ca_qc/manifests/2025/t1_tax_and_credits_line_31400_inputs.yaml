@@ -1,0 +1,13 @@
+# 5005-R (2025) line 101 input a salary-only caller does not give.
+# Line 101 and line 31400: "Pension income amount (use Federal Worksheet) (maximum $2,000)" (page 6). A salary-only filer has no such amount, so it is an
+# optional input left blank; the sum or difference that reads it takes a blank as 0.
+form:
+  name: ca-qc/t1_tax_and_credits
+inputs:
+  - name: ca-qc/pension_income_amount_line_101
+    title: "Pension income amount"
+    reference: "31400"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Pension income amount (use Federal Worksheet) (maximum $2,000)"

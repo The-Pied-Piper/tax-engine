@@ -1,0 +1,28 @@
+# 5005-R (2025) line 110. The form prints: "Line 110: Add lines 105 to 109. =" (page 6). Line 105 is the
+# credits step before it; lines 106 (line 31900, student loan interest), 107 (line 32300, federal
+# tuition amount), 108 (line 32400, tuition amount transferred from a child or grandchild) and 109
+# (line 32600, amounts transferred from a spouse or common-law partner) are optional inputs, a blank
+# for a salary-only filer and read as 0. One step: core/sum in form line order, rounded half-up to the
+# cent through `ca-qc/cent_rounding`.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/sum
+    reference: "110"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/credits_line_105
+        - ca-qc/student_loan_interest_line_106
+        - ca-qc/federal_tuition_amount_line_107
+        - ca-qc/tuition_amount_transferred_line_108
+        - ca-qc/amounts_transferred_from_spouse_line_109
+    blank:
+      ca-qc/student_loan_interest_line_106: "0"
+      ca-qc/federal_tuition_amount_line_107: "0"
+      ca-qc/tuition_amount_transferred_line_108: "0"
+      ca-qc/amounts_transferred_from_spouse_line_109: "0"
+    produces:
+      output: ca-qc/credits_line_110

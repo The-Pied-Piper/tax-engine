@@ -1,0 +1,12 @@
+# TP-1 (2025) line 358: "Adjustment for income replacement indemnities - 358" (page 4, Non-refundable
+# tax credits). A salary-only filer has no such adjustment, so it is an optional input left blank;
+# line 359 reads a blank as 0.
+form:
+  name: ca-qc/tp1_credits
+inputs:
+  - name: ca-qc/tp1_income_replacement_adjustment_line_358
+    reference: "358"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Adjustment for income replacement indemnities"
