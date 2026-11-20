@@ -19,12 +19,10 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     TP1_LINE_105,
 )
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
-from tests.jurisdictions.ca_qc.schedule_p_support import schedule_p
+from tests.jurisdictions.ca_qc.support import SCHEDULE_P_FIRST_PARTS, schedule_p_worksheet
 
 PARTS = (
-    "salary.yaml",
-    "schedule_p_line_10_inputs.yaml",
-    "schedule_p_line_10.yaml",
+    *SCHEDULE_P_FIRST_PARTS,
     "schedule_p_line_12_inputs.yaml",
     "schedule_p_line_13_inputs.yaml",
     "schedule_p_line_14_inputs.yaml",
@@ -51,14 +49,16 @@ def test_a_salary_only_work_income_is_the_salary(
     take_home_service: TakeHomeService, salary: str
 ) -> None:
     value = (
-        schedule_p(take_home_service, FORM, PARTS, salary).get(SCHEDULE_P_WORK_INCOME_LINE_29).value
+        schedule_p_worksheet(take_home_service, FORM, PARTS, salary)
+        .get(SCHEDULE_P_WORK_INCOME_LINE_29)
+        .value
     )
 
     assert str(value) == f"{salary}.00"
 
 
 def test_line_22_is_subtracted_from_line_18(take_home_service: TakeHomeService) -> None:
-    sheet = schedule_p(
+    sheet = schedule_p_worksheet(
         take_home_service,
         FORM,
         PARTS,
@@ -71,7 +71,7 @@ def test_line_22_is_subtracted_from_line_18(take_home_service: TakeHomeService) 
 
 
 def test_the_work_income_is_not_floored(take_home_service: TakeHomeService) -> None:
-    sheet = schedule_p(
+    sheet = schedule_p_worksheet(
         take_home_service,
         FORM,
         PARTS,

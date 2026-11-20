@@ -17,10 +17,14 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     TP1_LINE_107,
 )
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
-from tests.jurisdictions.ca_qc.schedule_p_support import FIRST_PARTS, schedule_p, schedule_p_form
+from tests.jurisdictions.ca_qc.support import (
+    SCHEDULE_P_FIRST_PARTS,
+    schedule_p_form,
+    schedule_p_worksheet,
+)
 
 PARTS = (
-    *FIRST_PARTS,
+    *SCHEDULE_P_FIRST_PARTS,
     "schedule_p_line_12_inputs.yaml",
     "schedule_p_line_13_inputs.yaml",
     "schedule_p_line_14_inputs.yaml",
@@ -34,13 +38,15 @@ FORM = schedule_p_form("ca-qc/schedule_p_line_18")
 def test_a_salary_only_line_18_is_the_salary(
     take_home_service: TakeHomeService, salary: str
 ) -> None:
-    value = schedule_p(take_home_service, FORM, PARTS, salary).get(SCHEDULE_P_LINE_18).value
+    value = (
+        schedule_p_worksheet(take_home_service, FORM, PARTS, salary).get(SCHEDULE_P_LINE_18).value
+    )
 
     assert str(value) == f"{salary}.00"
 
 
 def test_lines_12_to_15_are_added_to_line_10(take_home_service: TakeHomeService) -> None:
-    sheet = schedule_p(
+    sheet = schedule_p_worksheet(
         take_home_service,
         FORM,
         PARTS,

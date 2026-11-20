@@ -27,9 +27,7 @@ class TakeHomeService(Protocol):
     """Builds the engine over a temporary Quebec manifest made of a test header, a form
     declaration and real part files of the Quebec take-home folder."""
 
-    def __call__(
-        self, header: str, form: str, *parts: str, texts: tuple[str, ...] = ()
-    ) -> TaxComputationService: ...
+    def __call__(self, header: str, form: str, *parts: str) -> TaxComputationService: ...
 
 
 @pytest.fixture
@@ -38,16 +36,12 @@ def take_home_service(tmp_path: Path) -> TakeHomeService:
 
     The builder writes `header` and `form` to the temporary folder, copies each named part file
     (for example "solidarity_credit_amounts.yaml") from the package's manifest folder beside them,
-    and points the Quebec namespace at that folder. Each of `texts` is a further part written as
-    given, for a form the test stands in for (for example a stub of the TP-1 income form). The two
-    texts sort ahead of the parts, because the folder is composed in file-name order. Quebec is not
-    yet in the registered engine, so the service is built over the Quebec package list of
-    `support.py`.
+    and points the Quebec namespace at that folder. The two texts sort ahead of the parts, because
+    the folder is composed in file-name order. Quebec is not yet in the registered engine, so the
+    service is built over the Quebec package list of `support.py`.
     """
 
-    def build(
-        header: str, form: str, *parts: str, texts: tuple[str, ...] = ()
-    ) -> TaxComputationService:
+    def build(header: str, form: str, *parts: str) -> TaxComputationService:
         folder = tmp_path / "manifests" / "2025"
         folder.mkdir(parents=True)
         (folder / "00_header.yaml").write_text(header, encoding="utf-8")
@@ -56,8 +50,6 @@ def take_home_service(tmp_path: Path) -> TakeHomeService:
             (folder / f"{number:02d}_{part}").write_text(
                 (QUEBEC_PARTS / part).read_text(encoding="utf-8"), encoding="utf-8"
             )
-        for number, text in enumerate(texts, start=len(parts) + 2):
-            (folder / f"{number:02d}_text.yaml").write_text(text, encoding="utf-8")
         roots = {**quebec_packages().roots(), Namespace("ca-qc"): tmp_path}
         return TaxComputationService(
             YamlJurisdictionSource(roots, quebec_kinds(), quebec_units()),

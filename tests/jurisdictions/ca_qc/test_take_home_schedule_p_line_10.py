@@ -11,6 +11,7 @@ example.
 from __future__ import annotations
 
 from decimal import Decimal
+from pathlib import Path
 
 import pytest
 import yaml
@@ -23,10 +24,17 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     TP1_LINE_105,
 )
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
-from tests.jurisdictions.ca_qc.schedule_p_support import FIRST_PARTS, schedule_p, schedule_p_form
+from tests.jurisdictions.ca_qc.support import (
+    SCHEDULE_P_FIRST_PARTS,
+    quebec_kinds,
+    schedule_p_form,
+    schedule_p_input,
+    schedule_p_worksheet,
+)
 
 D = Decimal
 
+PART = "schedule_p_line_10_inputs.yaml"
 FORM = schedule_p_form("ca-qc/schedule_p_line_10")
 
 
@@ -34,7 +42,7 @@ def line_10(
     take_home_service: TakeHomeService, salary: str, *given: tuple[AmountKind, str]
 ) -> Worksheet:
     """The Schedule P worksheet of a salary, with the optional answers a test gives."""
-    return schedule_p(take_home_service, FORM, FIRST_PARTS, salary, *given)
+    return schedule_p_worksheet(take_home_service, FORM, SCHEDULE_P_FIRST_PARTS, salary, *given)
 
 
 @pytest.mark.parametrize("salary", ["20000", "70000", "200000"])
@@ -92,12 +100,10 @@ def test_only_the_last_step_carries_the_line_reference() -> None:
     assert [step.get("reference") for step in part["capabilities"]] == [None, None, None, "10"]
 
 
-def test_the_two_optional_inputs_are_blank_by_default() -> None:
-    part = yaml.safe_load(
-        (QUEBEC_PARTS / "schedule_p_line_10_inputs.yaml").read_text(encoding="utf-8")
-    )
+def test_the_two_optional_inputs_are_blank_by_default(tmp_path: Path) -> None:
+    for name in ("ca-qc/tp1_line_105", "ca-qc/rl1_box_211"):
+        declaration = schedule_p_input(tmp_path / name.split("/")[1], PART, name)
+        default = declaration.default_artifact(quebec_kinds().kind(name))
 
-    assert [(i["name"], i["required"], i["default"]) for i in part["inputs"]] == [
-        ("ca-qc/tp1_line_105", False, None),
-        ("ca-qc/rl1_box_211", False, None),
-    ]
+        assert not declaration.required
+        assert default is not None and default.is_blank
