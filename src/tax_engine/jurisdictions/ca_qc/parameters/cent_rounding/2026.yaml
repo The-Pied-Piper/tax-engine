@@ -1,12 +1,12 @@
-# Provisional: no 2026 figure is published yet (the 2026 forms are not out), so the 2025 figure is
-# carried. To be replaced when Revenu Quebec and CRA publish the 2026 forms. The comment below is
-# the 2025 derivation.
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when Revenu Quebec publishes it.
+# Derivation: carried forward unchanged from the 2025 file; the 2026 form is not yet published.
 # Quebec cent rounding, 2025 tax year: the rule for every Quebec form line that is a
 # dollars-and-cents box and is read from a "(if negative, enter "0")" difference, from a sum, or
 # from a product of two lines, in both returns: CRA 5005-R and Revenu Quebec TP-1.D-V. Neither
 # form states a rounding rule, so half-up to the cent is the project's choice. A line that needs
 # a different rule gets a dataset of its own (for example `ca-qc/exact_rounding` for a printed
 # division kept as an exact fraction, added by the ticket that needs it).
+# The 2026 form is not yet published, so the figure is not yet confirmed against it.
 family: ca-qc/cent_rounding
 tax_year: 2026
 kind: rounding_only

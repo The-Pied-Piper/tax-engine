@@ -1,10 +1,10 @@
-# Provisional: no 2026 figure is published yet (the 2026 forms are not out), so the 2025 figure is
-# carried. To be replaced when Revenu Quebec and CRA publish the 2026 forms. The comment below is
-# the 2025 derivation.
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when Revenu Quebec publishes it.
+# Derivation: carried forward unchanged from the 2025 file; the 2026 form is not yet published.
 # Revenu Quebec TP-1.D-V (2025-12), page 4, Non-refundable tax credits, line 389: "Multiply line
 # 388 by 20%". The printed 20% is a rate of 0.20, taken as printed. The product is a
 # dollars-and-cents line, so it rounds half-up to the cent, the project's choice, as the form states
 # no rounding rule.
+# The 2026 form is not yet published, so the figure is not yet confirmed against it.
 family: ca-qc/tp1_line_389_rate
 tax_year: 2026
 kind: rate

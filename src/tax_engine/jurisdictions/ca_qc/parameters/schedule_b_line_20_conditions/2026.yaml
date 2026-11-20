@@ -1,6 +1,5 @@
-# Provisional: no 2026 figure is published yet (the 2026 forms are not out), so the 2025 figure is
-# carried. To be replaced when Revenu Quebec and CRA publish the 2026 forms. The comment below is
-# the 2025 derivation.
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when Revenu Quebec publishes it.
+# Derivation: carried forward unchanged from the 2025 file; the 2026 form is not yet published.
 # Condition of Schedule B line 20 (Revenu Quebec TP-1.D.B-V (2025-12), Schedule B, Part A): "You are
 # not entitled to any of these amounts if you did not have a spouse on December 31, 2025, and the
 # amount on line 18 is more than $64,699." This dataset copies that one condition in the form's
@@ -8,6 +7,7 @@
 # condition (a spouse on December 31, 2025, and an amount on line 18 more than $90,027) is not read
 # in the take-home, which has no spouse. The result is a count, not a dollars-and-cents box, so there
 # is no rounding.
+# The 2026 form is not yet published, so the figure is not yet confirmed against it.
 family: ca-qc/schedule_b_line_20_conditions
 tax_year: 2026
 kind: conditions

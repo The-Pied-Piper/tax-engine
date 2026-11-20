@@ -1,6 +1,5 @@
-# Provisional (2026): Quebec EI: rate 1.30%, maximum insurable earnings 68,900, maximum 895.70.
-# Taken from the published 2026 parameters (not a 2026 form); to be confirmed against the 2026 form
-# text when it is published. The comment below is the 2025 derivation, kept for the printed wording;
+# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: figure as printed in T4127 (Jan 2026): Quebec EI: rate 1.30%, maximum insurable earnings 68,900, maximum 895.70; no rounding applied here.
 # the figures of this file replace its 2025 figures.
 # EI premium on employment income for Quebec residents, 2025 tax year (the 2025 T1 return, form
 # 5005-R). Form T2204, "Required premiums: Residents of Quebec: Amount from line 1 x 1.31% =
@@ -13,6 +12,7 @@
 # Quebec manifest swaps this dataset in for it, so the step holds what the paper form prints on
 # line 11, and the same dataset gives a blank line 4. T2204 line 16 is 5005-R line 89. Premiums are in dollars and cents, and 1.31% of
 # 65,700 is exactly the printed $860.67, so the tier rounds half-up to the cent.
+# The description above is of the 2025 form line; the figures of this file are 2026. The 2026 form is not yet published, so they are not yet confirmed against it.
 family: ca-qc/ei_premium
 tax_year: 2026
 kind: contribution_tier

@@ -1,8 +1,5 @@
-# Provisional (2026): Brackets: first, second and third thresholds 54,345, 108,680 and 132,245
-# (Table 3); the rates are those of 2025 and the tax at each start is rebuilt from them. Taken from
-# the published 2026 parameters (not a 2026 form); to be confirmed against the 2026 form text when
-# it is published. The comment below is the 2025 derivation, kept for the printed wording; the
-# figures of this file replace its 2025 figures.
+# Provisional: taken from Quebec Finance, Parameters of the Personal Income Tax System for 2026 (Nov 2025), Table 3; to be confirmed against the 2026 form text when Revenu Quebec publishes it.
+# Derivation: figure as printed in the Quebec Finance parameters for 2026: brackets: first, second and third thresholds 54,345, 108,680 and 132,245 (Table 3); the rates are those of 2025 and the tax at each start is rebuilt from them; no rounding applied here.
 # Quebec 2025 brackets, Revenu Quebec TP-1.D.GR-V (2025-12), Work Chart 401 "Income tax on taxable
 # income", columns A to D. Column instructions: taxable income "is $53,255 or less" (column A), "is
 # more than $53,255 but not more than $106,495" (column B), "is more than $106,495 but not more
@@ -16,6 +13,7 @@
 # and 8 half-up to the cent in its own parts (ca-qc/cent_rounding).
 # There is no upper end: column D is "more than $129,590". A line 1 at a bound is in the lower
 # column, as the instructions print ("or less", "but not more than").
+# The description above is of the 2025 form line; the figures of this file are 2026. The 2026 form is not yet published, so they are not yet confirmed against it.
 family: ca-qc/brackets_work_chart_401
 tax_year: 2026
 kind: brackets

@@ -1,6 +1,5 @@
-# Provisional: no 2026 figure is published yet (the 2026 forms are not out), so the 2025 figure is
-# carried. To be replaced when Revenu Quebec and CRA publish the 2026 forms. The comment below is
-# the 2025 derivation.
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when Revenu Quebec publishes it.
+# Derivation: carried forward unchanged from the 2025 file; the 2026 form is not yet published.
 # Condition of the solidarity tax credit's basic housing amount, for the payment period July 2026
 # to June 2027 (the credit of the 2025 return): the basic housing amount is 746 for one owner or
 # tenant and 906 shared among them for more than one (Table C.9 of the Quebec Ministry of Finance
@@ -8,6 +7,7 @@
 # printed source is found). The condition is the number of owners or tenants (Schedule D line 33
 # or 36), the first count, more than 1. The count is 1 when it applies and 0 when it does not. The
 # result is a count, not a dollars-and-cents box, so there is no rounding.
+# The 2026 form is not yet published, so the figure is not yet confirmed against it.
 family: ca-qc/solidarity_occupants_conditions
 tax_year: 2026
 kind: conditions

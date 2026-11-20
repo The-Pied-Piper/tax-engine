@@ -1,6 +1,5 @@
-# Provisional (2026): Base QPP rate 5.30% on the contributory earnings 71,100, maximum 3,768.30
-# (T4127 Table 8.4). Taken from the published 2026 parameters (not a 2026 form); to be confirmed
-# against the 2026 form text when it is published. The comment below is the 2025 derivation, kept
+# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text when Revenu Quebec publishes it.
+# Derivation: figure as printed in T4127 (Jan 2026): base QPP rate 5.30% on the contributory earnings 71,100, maximum 3,768.30 (T4127 Table 8.4); no rounding applied here.
 # for the printed wording; the figures of this file replace its 2025 figures.
 # Required base QPP contributions, Schedule 8 Part 2 line 11 (T1-2025 Schedule 8, Quebec edition
 # 5005-S8): "amount from line 7 multiplied by 5.4% (maximum $3,661.20)". Line 7 is "Line 5 minus
@@ -13,6 +12,7 @@
 # 30800 of your return." Line 15 copies line 11, so the figure is in dollars and cents; the form
 # names no rounding mode, and half-up is the engine's convention.
 # The rate, the upper bound and the maximum are the dataset figures as printed.
+# The description above is of the 2025 form line; the figures of this file are 2026. The 2026 form is not yet published, so they are not yet confirmed against it.
 family: ca-qc/qpp_line_11_base_contribution
 tax_year: 2026
 kind: contribution_tier
