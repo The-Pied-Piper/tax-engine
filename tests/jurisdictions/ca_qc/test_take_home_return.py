@@ -44,6 +44,7 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     TOTAL_PAYABLE,
     TP1_INCOME_TAX_AND_CONTRIBUTIONS_RETURN,
     TP1_INCOME_TAX_LESS_WORK_PREMIUM_RETURN,
+    TP1_QPIP_OVERPAYMENT_RETURN,
     TP1_WORK_PREMIUM_TAX_CREDITS_RETURN,
 )
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
@@ -106,6 +107,31 @@ def test_the_two_differences_the_sums_add(take_home_service: TakeHomeService, sa
     less_work_premium = sheet.get(TP1_INCOME_TAX_LESS_WORK_PREMIUM_RETURN)
     assert str(less_abatement.value) == LESS_ABATEMENT[salary]
     assert str(less_work_premium.value) == LESS_WORK_PREMIUM[salary]
+
+
+@pytest.mark.parametrize(
+    ("salary", "overpayment"),
+    [("1000", "4.94"), ("1999", "9.88"), ("2000", "0")],
+)
+def test_the_qpip_overpayment_reduces_the_refund_or_balance_owing(
+    take_home_service: TakeHomeService, salary: str, overpayment: str
+) -> None:
+    # Line 457 refunds the premium below $2,000 of work income: $1,000 x 0.494% = $4.94. The
+    # refund or balance owing is line 172 plus line 450 less lines 456 and 457; the total payable
+    # (lines 43500, 44000 and 450) is not reduced by it.
+    sheet = return_sheet(take_home_service, salary)
+
+    assert sheet.get(TP1_QPIP_OVERPAYMENT_RETURN).value == D(overpayment)
+    assert sheet.get(REFUND_OR_BALANCE_OWING).value == (
+        sheet.get(FEDERAL_REFUND_OR_BALANCE_OWING_RETURN).value
+        + sheet.get(TP1_INCOME_TAX_AND_CONTRIBUTIONS_RETURN).value
+        - sheet.get(TP1_WORK_PREMIUM_TAX_CREDITS_RETURN).value
+        - D(overpayment)
+    )
+    assert sheet.get(TOTAL_PAYABLE).value == (
+        sheet.get(FEDERAL_TOTAL_PAYABLE_LESS_ABATEMENT_RETURN).value
+        + sheet.get(TP1_INCOME_TAX_AND_CONTRIBUTIONS_RETURN).value
+    )
 
 
 @pytest.mark.parametrize(
