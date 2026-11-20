@@ -365,3 +365,9 @@ TP1_SCHEDULE_F_COLUMN_RATE = AmountKind.declare(
 )
 """Schedule F, Part B, the row "x 1%" below line 78 (the form gives it no line number): the printed
 rate of the column that line 76 falls in; blank for a line 76 of $18,130 or less."""
+
+TP1_SCHEDULE_F_CONTRIBUTION_ON_EXCESS_LINE_80 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_contribution_on_excess_line_80", non_negative=True
+)
+"""Schedule F line 80, "Multiply line 78 by 1%": line 78 times the column's rate, rounded half-up to
+the cent; blank when line 78 or the rate is blank."""
