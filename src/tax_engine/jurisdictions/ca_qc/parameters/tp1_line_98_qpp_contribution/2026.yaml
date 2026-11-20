@@ -1,0 +1,22 @@
+# Provisional (2026): QPP: rate 6.30% from 3,500 to 74,600, maximum 4,479.30. Taken from the
+# published 2026 parameters (not a 2026 form); to be confirmed against the 2026 form text when it is
+# published. The comment below is the 2025 derivation, kept for the printed wording; the figures of
+# this file replace its 2025 figures.
+# Revenu Quebec TP-1.D-V (2025-12), page 2, line 98: "QPP contribution. RL-1 slip, box B.A". The
+# form prints no rate or ceiling for the slip box. A salary-only caller has no RL-1 slip, so the
+# figure is the employee's base QPP contribution from the Revenu Quebec page "Maximum Pensionable
+# Earnings and Quebec Pension Plan Contribution Rate" (a web page: a listed check): 6.40% of the
+# earnings from the $3,500 basic exemption to the $71,300 maximum pensionable earnings, at most
+# $4,339.20 (6.40% of $67,800, exactly). Dollars and cents, half-up to the cent.
+family: ca-qc/tp1_line_98_qpp_contribution
+tax_year: 2026
+kind: contribution_tier
+sources:
+  - Revenu Quebec TP-1.D-V (2025-12)
+  - Revenu Quebec, Maximum Pensionable Earnings and Quebec Pension Plan Contribution Rate (web page)
+  - Revenu Quebec, Maximum Pensionable Earnings and Quebec Pension Plan Contribution Rate (web page, 2026 row; CRA T4127 (Jan 2026) Tables 8.3 to 8.6, QPP rows)
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.063"
+lower: "3500"
+upper: "74600"
+maximum: "4479.30"

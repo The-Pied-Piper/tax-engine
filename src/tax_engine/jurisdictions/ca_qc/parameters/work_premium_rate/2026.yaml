@@ -1,0 +1,15 @@
+# Provisional: no 2026 figure is published yet (the 2026 forms are not out), so the 2025 figure is
+# carried. To be replaced when Revenu Quebec and CRA publish the 2026 forms. The comment below is
+# the 2025 derivation.
+# Revenu Quebec TP-1.D-V (2025-12), Schedule P (TP-1.D.P-V), Part E, section 2 "Individual without a
+# spouse on December 31, 2025", column 1 "Work premium", line 74: "If you designated a child on line 50,
+# enter 30%. Otherwise, enter 11.6%." The take-home designates no child (line 50 is a dependant line,
+# left out), so the printed 11.6% applies. Line 76 is a dollars-and-cents line, so the product
+# rounds half-up to the cent, the project's choice, as the form states no rounding rule.
+family: ca-qc/work_premium_rate
+tax_year: 2026
+kind: rate
+sources:
+  - Revenu Quebec TP-1.D-V (2025-12), Schedule P (TP-1.D.P-V), Part E
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.116"

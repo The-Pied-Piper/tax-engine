@@ -1,0 +1,15 @@
+# Provisional: no 2026 figure is published yet (the 2026 forms are not out), so the 2025 figure is
+# carried. To be replaced when Revenu Quebec and CRA publish the 2026 forms. The comment below is
+# the 2025 derivation.
+# Quebec solidarity tax credit, QST component, base amount, for the payment period July 2026 to June
+# 2027 (the credit of the 2025 return): "montant de base 363", Table C.9 of the Quebec Ministry of
+# Finance fiche 110201 (Dépenses fiscales 2025), a web page, so the figure is a listed check until a
+# printed source is found. Claimed whole. A dollars-and-cents figure, so it rounds half-up to the
+# cent, the project's choice, which changes nothing.
+family: ca-qc/solidarity_qst_base_amount
+tax_year: 2026
+kind: credit
+sources:
+  - https://www.revenuquebec.ca/en/citizens/tax-credits/solidarity-tax-credit/calculation-of-the-credit/
+rounding: {increment: "0.01", mode: half_up}
+amount: "363"

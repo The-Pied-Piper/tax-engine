@@ -1,0 +1,30 @@
+# Provisional (2026): Brackets: first, second and third thresholds 54,345, 108,680 and 132,245
+# (Table 3); the rates are those of 2025 and the tax at each start is rebuilt from them. Taken from
+# the published 2026 parameters (not a 2026 form); to be confirmed against the 2026 form text when
+# it is published. The comment below is the 2025 derivation, kept for the printed wording; the
+# figures of this file replace its 2025 figures.
+# Quebec 2025 brackets, Revenu Quebec TP-1.D.GR-V (2025-12), Work Chart 401 "Income tax on taxable
+# income", columns A to D. Column instructions: taxable income "is $53,255 or less" (column A), "is
+# more than $53,255 but not more than $106,495" (column B), "is more than $106,495 but not more
+# than $129,590" (column C), "is more than $129,590" (column D). In every column: line 3 the
+# column's lower bound (0.00, 53,255.00, 106,495.00, 129,590.00); line 5 the rate (14%, 19%, 24%,
+# 25.75%); line 7 the printed amount (0.00, 7,455.70, 17,571.30, 23,114.10). Lines 3, 5 and 7 are the
+# printed figures; lines 1, 2, 4, 6 and 8 are computed or copied.
+# Each bracket's `tax_at_start` is the line 7 amount of its column, taken as printed: the amounts
+# are not recomputed from the rates, and not rounded.
+# This dataset has no rounding rule, as the form states none. The take-home build rounds lines 4, 6
+# and 8 half-up to the cent in its own parts (ca-qc/cent_rounding).
+# There is no upper end: column D is "more than $129,590". A line 1 at a bound is in the lower
+# column, as the instructions print ("or less", "but not more than").
+family: ca-qc/brackets_work_chart_401
+tax_year: 2026
+kind: brackets
+sources:
+  - Revenu Quebec TP-1.D.GR-V (2025-12), Work Chart 401
+  - Quebec Ministere des Finances, Parameters of the Personal Income Tax System for 2026 (Nov 2025), Table 3 (cra-docs revenu-quebec-2025/AUTEN_IncomeTax2026.pdf)
+rounding: none
+brackets:
+  - {from: "0.00", rate: "0.14", tax_at_start: "0.00"}
+  - {from: "54345.00", rate: "0.19", tax_at_start: "7608.30"}
+  - {from: "108680.00", rate: "0.24", tax_at_start: "17931.95"}
+  - {from: "132245.00", rate: "0.2575", tax_at_start: "23587.55"}

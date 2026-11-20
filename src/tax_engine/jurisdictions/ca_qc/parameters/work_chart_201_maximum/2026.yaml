@@ -1,0 +1,18 @@
+# Provisional (2026): Maximum deduction for workers 1,450 (Table 3). Taken from the published 2026
+# parameters (not a 2026 form); to be confirmed against the 2026 form text when it is published. The
+# comment below is the 2025 derivation, kept for the printed wording; the figures of this file
+# replace its 2025 figures.
+# Quebec Work Chart 201 maximum, 2025 tax year (Revenu Quebec TP-1.D.GR-V 2025-12, Work Chart
+# "Deduction for workers"), line 9: "Carry the result to line 201 of your return (maximum $1,420)."
+# Line 9 is a dollars-and-cents box, so the capped amount rounds half-up to the cent, the project's
+# choice, as the form states no rounding rule.
+family: ca-qc/work_chart_201_maximum
+tax_year: 2026
+kind: amount
+title: "maximum"
+unit: ca/cad
+sources:
+  - Revenu Quebec TP-1.D.GR-V (2025-12)
+  - Quebec Ministere des Finances, Parameters of the Personal Income Tax System for 2026 (Nov 2025), Table 3 (cra-docs revenu-quebec-2025/AUTEN_IncomeTax2026.pdf)
+rounding: {increment: "0.01", mode: half_up}
+amount: "1450"

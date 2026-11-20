@@ -1,0 +1,13 @@
+# Provisional: no 2026 figure is published yet (the 2026 forms are not out), so the 2025 figure is
+# carried. To be replaced when Revenu Quebec and CRA publish the 2026 forms. The comment below is
+# the 2025 derivation.
+# Revenu Quebec TP-1.D-V (2025-12), Schedule P (TP-1.D.P-V), Part E, section 2 "Individual without a
+# spouse on December 31, 2025", column 1 "Work premium", line 70: the printed figure is $2,400 (printed
+# with a minus sign). Taken as printed and claimed whole; half-up to the cent changes nothing.
+family: ca-qc/work_premium_exempt_amount
+tax_year: 2026
+kind: credit
+sources:
+  - Revenu Quebec TP-1.D-V (2025-12), Schedule P (TP-1.D.P-V), Part E
+rounding: {increment: "0.01", mode: half_up}
+amount: "2400"

@@ -1,0 +1,12 @@
+# Provisional: no 2026 figure is published yet (the 2026 forms are not out), so the 2025 figure is
+# carried. To be replaced when Revenu Quebec and CRA publish the 2026 forms. The comment below is
+# the 2025 derivation.
+# Revenu Quebec TP-1.D-V (2025-12), Schedule U (TP-1.D.U-V), Part B, line 13. The printed figure is
+# $3,500, taken as printed. Claimed whole; half-up to the cent changes nothing.
+family: ca-qc/schedule_u_line_13_personal_qpp_exemption
+tax_year: 2026
+kind: credit
+sources:
+  - Revenu Quebec TP-1.D-V (2025-12), Schedule U (TP-1.D.U-V), Part B
+rounding: {increment: "0.01", mode: half_up}
+amount: "3500"
