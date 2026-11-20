@@ -1,0 +1,161 @@
+"""5005-R (2025) line 91, the PPIP premiums paid, from the salary alone, real parts.
+
+Form text (CRA 5005-R, 5005-r-25e.txt, page 6): "Line 91 and line 31205: Provincial parental
+insurance plan (PPIP) premiums paid (box 55 of all T4 slips) (maximum $484.12)". The take-home
+caller has no T4 slip, so the input `ca-qc/ppip_premiums_given` is optional: a request that gives it
+has that figure as line 91, unchanged; a request that leaves it out has line 91 computed by
+`ca/given_or_contribution_tier` from the employment income with the `ca-qc/ppip_premium` dataset
+(0.494% of the earnings to $98,000, at most $484.12), as T2204 line 4 is. RL-1 box H (TP-1 line 97)
+is the same figure. The figures are hand-computed from the printed forms, not a CRA example:
+20,000 x 0.494% = 98.80, 70,000 x 0.494% = 345.80, and 200,000 is above the $98,000 maximum, so the
+printed maximum 484.12.
+
+The test composes the real input part and the real line 91 part under a made-up header, which
+declares the salary, and the real form declaration. Quebec is not yet in
+`registrations.JURISDICTIONS`, so the service is built over the Quebec package list of `support.py`.
+"""
+
+from __future__ import annotations
+
+from decimal import Decimal
+from pathlib import Path
+from textwrap import dedent
+from typing import Any
+
+import pytest
+import yaml
+
+import tax_engine.jurisdictions.ca_qc
+from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.application.services.tax_computation import TaxComputationService
+from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import AmountKind
+from tax_engine.domain.registry import Namespace
+from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca_qc.catalog import PPIP_PREMIUMS_GIVEN, PPIP_PREMIUMS_PAID
+from tests.jurisdictions.ca_qc.support import (
+    quebec_capabilities,
+    quebec_kinds,
+    quebec_packages,
+    quebec_parameter_parsers,
+    quebec_units,
+)
+from tests.kinds import non_negative
+
+D = Decimal
+QC_PARTS = Path(tax_engine.jurisdictions.ca_qc.__file__).parent / "manifests" / "2025"
+FORM_PART = QC_PARTS / "ppip_premium.yaml"
+INPUTS_PART = QC_PARTS / "ppip_premium_inputs.yaml"
+LINE_PART = QC_PARTS / "ppip_premium_line_91.yaml"
+IDENTIFIER = "ca-qc/ppip_premiums_paid"
+
+HEADER = dedent("""\
+    jurisdiction: CA-QC
+    version: 1
+    valid_from_tax_year: 2025
+    inputs:
+      - name: ca/employment_income
+        required: true
+    outputs:
+      - ca/employment_income
+    capabilities: []
+    """)
+
+
+def _service(tmp_path: Path) -> TaxComputationService:
+    """The engine over a temporary Quebec manifest of a test header and the real PPIP parts, every
+    other namespace being the package list's own."""
+    folder = tmp_path / "manifests" / "2025"
+    folder.mkdir(parents=True)
+    (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
+    for number, found in enumerate((FORM_PART, INPUTS_PART, LINE_PART), start=1):
+        (folder / f"{number:02d}_{found.name}").write_text(
+            found.read_text(encoding="utf-8"), encoding="utf-8"
+        )
+    roots = {**quebec_packages().roots(), Namespace("ca-qc"): tmp_path}
+    return TaxComputationService(
+        YamlJurisdictionSource(roots, quebec_kinds(), quebec_units()),
+        YamlParameterSource(quebec_packages().roots(), quebec_parameter_parsers(), quebec_units()),
+        quebec_capabilities(),
+    )
+
+
+def _line_91(tmp_path: Path, salary: str, given: str | None = None) -> Decimal:
+    starting = [Artifact(EMPLOYMENT_INCOME, D(salary))]
+    if given is not None:
+        starting.append(Artifact(PPIP_PREMIUMS_GIVEN, D(given)))
+    worksheets = _service(tmp_path).compute(JurisdictionCode("CA-QC"), 2025, *starting)
+    (sheet,) = worksheets["ca-qc/ppip_premium"]
+    return sheet.get(PPIP_PREMIUMS_PAID).value
+
+
+def _step() -> dict[str, Any]:
+    part = yaml.safe_load(LINE_PART.read_text(encoding="utf-8"))
+    assert isinstance(part, dict)
+    assert list(part) == ["form", "capabilities"]
+    assert part["form"] == {"name": "ca-qc/ppip_premium"}
+    (step,) = part["capabilities"]
+    assert isinstance(step, dict)
+    return step
+
+
+@pytest.mark.parametrize(
+    ("salary", "expected"),
+    [
+        # 0.494% of 20,000 and of 70,000.
+        ("20000", "98.80"),
+        ("70000", "345.80"),
+        # Above the $98,000 maximum insurable income: earnings above it add nothing.
+        ("200000", "484.12"),
+        ("98000", "484.12"),
+    ],
+)
+def test_a_blank_line_91_is_the_ppip_premium_on_the_salary(
+    tmp_path: Path, salary: str, expected: str
+) -> None:
+    assert _line_91(tmp_path, salary) == D(expected)
+
+
+def test_a_blank_line_91_is_computed_to_the_cent(tmp_path: Path) -> None:
+    assert str(_line_91(tmp_path, "70000")) == "345.80"
+
+
+@pytest.mark.parametrize("given", ["400.00", "0"])
+def test_a_given_line_91_is_the_output_unchanged(tmp_path: Path, given: str) -> None:
+    assert str(_line_91(tmp_path, "70000", given)) == given
+
+
+def test_a_given_line_91_is_not_computed_from_the_salary(tmp_path: Path) -> None:
+    # 20,000 would give 98.80; the figure typed from the T4 is line 91 as it is.
+    assert str(_line_91(tmp_path, "20000", "400.00")) == "400.00"
+
+
+def test_the_part_is_one_given_or_contribution_tier_step_on_the_salary() -> None:
+    assert _step() == {
+        "name": "ca/given_or_contribution_tier",
+        "title": "Provincial parental insurance plan (PPIP) premiums paid",
+        "reference": "91",
+        "unit": "ca/cad",
+        "params": {"tier": "ca-qc/ppip_premium"},
+        "consumes": {"given": "ca-qc/ppip_premiums_given", "earnings": "ca/employment_income"},
+        "blank": {"given": "compute"},
+        "produces": {"output": IDENTIFIER},
+    }
+
+
+def test_the_form_declaration_exports_line_91() -> None:
+    declaration = yaml.safe_load(FORM_PART.read_text(encoding="utf-8"))
+
+    assert declaration["form"]["name"] == "ca-qc/ppip_premium"
+    assert declaration["form"]["exports"] == [IDENTIFIER]
+
+
+def test_the_kind_is_a_registered_non_negative_decimal_amount() -> None:
+    kind = quebec_kinds().kind(IDENTIFIER)
+
+    assert kind is PPIP_PREMIUMS_PAID
+    assert isinstance(kind, AmountKind)
+    assert kind.value_type is Decimal
+    assert non_negative(kind)

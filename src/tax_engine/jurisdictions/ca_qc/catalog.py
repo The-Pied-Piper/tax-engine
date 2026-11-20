@@ -19,3 +19,9 @@ PPIP_PREMIUMS_GIVEN = AmountKind.declare(CATALOG, "ppip_premiums_given", non_neg
 insurance plan (PPIP) premiums paid (box 55 of all T4 slips) (maximum $484.12)": the figure the
 caller gives, from the T4 slips; blank when the caller does not give it, and line 91 is then
 computed."""
+
+PPIP_PREMIUMS_PAID = AmountKind.declare(CATALOG, "ppip_premiums_paid", non_negative=True)
+"""PPIP premiums paid, 5005-R line 91 "Line 91 and line 31205: Provincial parental insurance plan
+(PPIP) premiums paid (box 55 of all T4 slips) (maximum $484.12)": the given figure
+(`ca-qc/ppip_premiums_given`) or, when none is given, 0.494% of the employment income to the
+$98,000 maximum insurable income (maximum $484.12). TP-1 line 97 (RL-1 box H) is the same figure."""
