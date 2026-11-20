@@ -30,6 +30,7 @@ imports:
     datasets:
       ca/cwb_base_amount: ca-qc/cwb_base_amount
       ca/cwb_rate: ca-qc/cwb_rate
+      ca/cwb_maximum: ca-qc/cwb_maximum
   # Quebec's EI rate is 1.31% (T2204 line 11, 5005-S10 line 19): the shared T2204 reads the Quebec dataset.
   - form: ca/t2204
     datasets:
