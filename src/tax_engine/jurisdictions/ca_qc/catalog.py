@@ -1036,3 +1036,10 @@ WORK_CHART_401_TAX_ON_EXCESS_LINE_6 = AmountKind.declare(
 """Work Chart 401 line 6 "Multiply line 4 by line 5": the tax on the part of the taxable income over
 the column's lower bound, rounded half-up to the cent. Produced by one core/multiply_by_rate
 (`work_chart_401_line_6.yaml`)."""
+
+WORK_CHART_401_TAX_AT_START_LINE_7 = AmountKind.declare(
+    CATALOG, "work_chart_401_tax_at_start_line_7", non_negative=True
+)
+"""Work Chart 401 line 7 "+ 7" (0.00, 7,455.70, 17,571.30 or 23,114.10): the printed amount of the
+column that line 1 falls in, taken as printed. Produced by one core/bracket_column_tax_at_start
+(`work_chart_401_line_7.yaml`)."""
