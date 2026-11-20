@@ -1,0 +1,11 @@
+# Quebec solidarity tax credit, the 2025 return's credit for the payment period July 2026 to June
+# 2027: the amounts, the reduction threshold and the two reduction rates of Table C.9 of the Quebec
+# Ministry of Finance fiche 110201, held as datasets. This part names the form and its exports; line
+# parts carry capabilities. Exports: the printed amounts (`core/credit_amount` produces each as an
+# artifact so the reduction rule can read it). The form has no printed title yet, so it declares none.
+form:
+  name: ca-qc/solidarity_credit
+  required: true
+  exports:
+    - ca-qc/solidarity_qst_base_amount
+capabilities: []

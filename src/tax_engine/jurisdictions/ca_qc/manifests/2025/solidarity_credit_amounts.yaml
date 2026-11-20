@@ -1,0 +1,11 @@
+# Solidarity tax credit (fiche 110201, Table C.9, July 2026 to June 2027): the printed amounts, each
+# a dataset figure claimed whole. core/credit_amount makes each one an artifact the reduction rule
+# reads; no figure is calculated here and no input is taken.
+form:
+  name: ca-qc/solidarity_credit
+capabilities:
+  - name: core/credit_amount
+    params:
+      amount: ca-qc/solidarity_qst_base_amount
+    produces:
+      output: ca-qc/solidarity_qst_base_amount
