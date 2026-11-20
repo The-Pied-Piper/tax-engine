@@ -1,0 +1,14 @@
+# 5005-R (2025) line 89 and line 31200: "Employment insurance premiums: ... through employment (maximum
+# $860.67)" (page 6). A pure copy of T2204 line 16, so it is a core/record_total over the record list the
+# shared T2204 exports. The Quebec dataset swap on the import gives the 1.31% rate and the maximum.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/record_total
+    title: "Employment insurance premiums through employment"
+    reference: "31200"
+    unit: ca/cad
+    consumes:
+      records: ca/t2204.t2204_line_16
+    produces:
+      output: ca-qc/ei_premiums_line_89

@@ -1,0 +1,13 @@
+# 5005-R (2025) line 99 input a salary-only caller does not give.
+# Line 99 and line 31300: "Adoption expenses" (page 6). A salary-only filer has no such amount, so it is an
+# optional input left blank; the sum that adds it reads a blank as 0.
+form:
+  name: ca-qc/t1_tax_and_credits
+inputs:
+  - name: ca-qc/adoption_expenses_line_99
+    title: "Adoption expenses"
+    reference: "31300"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Adoption expenses"

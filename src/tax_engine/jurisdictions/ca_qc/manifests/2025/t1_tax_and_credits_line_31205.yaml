@@ -1,0 +1,14 @@
+# 5005-R (2025) line 91 and line 31205: "Provincial parental insurance plan (PPIP) premiums paid (box 55
+# of all T4 slips) (maximum $484.12)" (page 6). A pure copy of the PPIP premium figure (5005-R line 91
+# of the `ca-qc/ppip_premium` form), so it is a core/record_total over the record list that form exports.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/record_total
+    title: "Provincial parental insurance plan (PPIP) premiums paid"
+    reference: "31205"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/ppip_premium.ppip_premiums_paid
+    produces:
+      output: ca-qc/ppip_premiums_line_91
