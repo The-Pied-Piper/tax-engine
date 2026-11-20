@@ -1237,6 +1237,12 @@ REFUNDABLE_MEDICAL_EXPENSE_SUPPLEMENT_LINE_160 = AmountKind.declare(
 salary-only caller does not give; the sum on line 171 takes a blank as 0
 (`t1_tax_and_credits_line_45200_inputs.yaml`)."""
 
+CWB_LINE_161 = AmountKind.declare(CATALOG, "cwb_line_161", non_negative=True)
+"""Canada workers benefit (CWB), 5005-R line 161 and line 45300 "(complete Schedule 6)": Schedule 6
+line 28, read from the Schedule 6 export by one core/record_total
+(`t1_tax_and_credits_line_45300.yaml`); the total credits of line 171 add it, and the Quebec return
+summary reads it."""
+
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
 Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line
