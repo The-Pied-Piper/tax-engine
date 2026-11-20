@@ -1,0 +1,18 @@
+# Schedule B (TP-1.D.B-V, 2025-12) Part B line 32: "Subtract line 31 from line 30. If the result is
+# negative, enter 0. Amount to which you or, if applicable, your spouse is entitled". One step,
+# core/subtract_not_below_zero, rounded half-up to the cent through ca-qc/cent_rounding. The title
+# is the printed label.
+form:
+  name: ca-qc/schedule_b
+capabilities:
+  - name: core/subtract_not_below_zero
+    title: "Amount to which you or, if applicable, your spouse is entitled"
+    reference: "32"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/schedule_b_line_30
+      less: ca-qc/schedule_b_line_31
+    produces:
+      output: ca-qc/schedule_b_line_32

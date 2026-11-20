@@ -1,0 +1,13 @@
+# 5005-R (2025) line 95 input a salary-only caller does not give.
+# Line 95 and line 31240: "Search and rescue volunteers' amount (SRVA)" (page 6). A salary-only filer has no such amount, so it is an
+# optional input left blank; the sum that adds it reads a blank as 0.
+form:
+  name: ca-qc/t1_tax_and_credits
+inputs:
+  - name: ca-qc/search_and_rescue_amount_line_95
+    title: "Search and rescue volunteers' amount (SRVA)"
+    reference: "31240"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Search and rescue volunteers' amount (SRVA)"

@@ -1,0 +1,13 @@
+# 5005-R (2025) line 80 input a salary-only caller does not give.
+# Line 80 and line 30300: "Spouse or common-law partner amount (complete Schedule 5)" (page 5). A salary-only filer has no such amount, so it is an
+# optional input left blank; the sum that adds it reads a blank as 0.
+form:
+  name: ca-qc/t1_tax_and_credits
+inputs:
+  - name: ca-qc/spouse_amount_line_80
+    title: "Spouse or common-law partner amount"
+    reference: "30300"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Spouse or common-law partner amount (complete Schedule 5)"

@@ -1,0 +1,13 @@
+# 5005-R (2025) line 94 input a salary-only caller does not give.
+# Line 94 and line 31220: "Volunteer firefighters' amount (VFA)" (page 6). A salary-only filer has no such amount, so it is an
+# optional input left blank; the sum that adds it reads a blank as 0.
+form:
+  name: ca-qc/t1_tax_and_credits
+inputs:
+  - name: ca-qc/volunteer_firefighters_amount_line_94
+    title: "Volunteer firefighters' amount (VFA)"
+    reference: "31220"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Volunteer firefighters' amount (VFA)"

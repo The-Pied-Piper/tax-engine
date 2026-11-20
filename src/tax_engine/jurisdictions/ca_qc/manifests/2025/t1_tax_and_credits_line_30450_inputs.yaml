@@ -1,0 +1,13 @@
+# 5005-R (2025) line 83 input a salary-only caller does not give.
+# Line 83 and line 30450: "Canada caregiver amount for other infirm dependants age 18 or older (complete Schedule 5)" (page 5). A salary-only filer has no such amount, so it is an
+# optional input left blank; the sum that adds it reads a blank as 0.
+form:
+  name: ca-qc/t1_tax_and_credits
+inputs:
+  - name: ca-qc/caregiver_amount_infirm_dependants_line_83
+    title: "Canada caregiver amount for other infirm dependants age 18 or older"
+    reference: "30450"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Canada caregiver amount for other infirm dependants age 18 or older (complete Schedule 5)"

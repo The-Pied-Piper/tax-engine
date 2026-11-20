@@ -1,0 +1,16 @@
+# 5005-R (2025) Step 5 Part A line 72, the printed lower bound of the column line 71 falls in (0.00,
+# 57,375.00, 114,750.00, 177,882.00 or 253,414.00). The columns are the shared `ca/brackets` dataset,
+# whose figures equal the printed ones; a base at a column limit falls in the lower column ("or
+# less", "not more than"), which is how core/bracket_column_lower_bound reads it.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/bracket_column_lower_bound
+    reference: "72"
+    unit: ca/cad
+    params:
+      schedule: ca/brackets
+    consumes:
+      base: ca-qc/federal_taxable_income_line_71
+    produces:
+      output: ca-qc/federal_bracket_lower_bound_line_72

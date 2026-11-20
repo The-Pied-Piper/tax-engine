@@ -1,0 +1,17 @@
+# Schedule B (TP-1.D.B-V, 2025-12) Part A line 18: "Subtract line 16 from line 15. If the result is
+# negative, enter 0." Line 15 is "Amount from line 14", a copy, so the step reads line 14 directly.
+# One step, core/subtract_not_below_zero, rounded half-up to the cent through ca-qc/cent_rounding.
+# The form prints no label for the line, so the step is untitled.
+form:
+  name: ca-qc/schedule_b
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "18"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/schedule_b_line_14
+      less: ca-qc/schedule_b_threshold_line_16
+    produces:
+      output: ca-qc/schedule_b_line_18
