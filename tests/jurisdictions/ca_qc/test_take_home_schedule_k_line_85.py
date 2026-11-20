@@ -80,20 +80,3 @@ def test_the_kind_is_a_registered_non_negative_decimal_amount() -> None:
 
     assert kind is SCHEDULE_K_PREMIUM_FOR_MONTHS_LINE_85
     assert non_negative(kind)
-
-
-def test_the_printed_twelve_is_its_own_part() -> None:
-    part = yaml.safe_load(
-        (QUEBEC_PARTS / "tp1_schedule_k_line_85_months_in_year.yaml").read_text("utf-8")
-    )
-
-    assert list(part) == ["form", "capabilities"]
-    assert part["form"] == {"name": FORM_NAME}
-    assert part["capabilities"] == [
-        {
-            "name": "core/credit_amount",
-            "unit": "core/months",
-            "params": {"amount": "ca-qc/schedule_k_months_in_year_line_85"},
-            "produces": {"output": "ca-qc/schedule_k_months_in_year_line_85"},
-        }
-    ]

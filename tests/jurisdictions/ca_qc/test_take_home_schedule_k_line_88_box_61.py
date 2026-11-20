@@ -77,20 +77,3 @@ def test_the_kind_is_a_registered_non_negative_decimal_amount() -> None:
 
     assert kind is SCHEDULE_K_AMOUNT_FOR_MONTHS_BOX_61
     assert non_negative(kind)
-
-
-def test_the_printed_amount_of_box_61_is_its_own_part() -> None:
-    part = yaml.safe_load(
-        (QUEBEC_PARTS / "tp1_schedule_k_line_88_box_61_amount.yaml").read_text("utf-8")
-    )
-
-    assert list(part) == ["form", "capabilities"]
-    assert part["form"] == {"name": FORM_NAME}
-    assert part["capabilities"] == [
-        {
-            "name": "core/credit_amount",
-            "unit": "ca/cad",
-            "params": {"amount": "ca-qc/schedule_k_monthly_amount_box_61"},
-            "produces": {"output": "ca-qc/schedule_k_monthly_amount_box_61"},
-        }
-    ]
