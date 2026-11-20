@@ -8,7 +8,13 @@ Amounts are `Decimal`, non-negative unless the form prints no floor. Federal kin
 from __future__ import annotations
 
 from tax_engine.domain.artifact import ArtifactCatalog
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca_qc import NAMESPACE
 
 CATALOG = ArtifactCatalog(Namespace(NAMESPACE))
+
+T1_LINE_21 = AmountKind.declare(CATALOG, "t1_line_21")
+"""Add lines 1 to 20, 5005-R line 21 "Line 21: Add lines 1 to 20.": the employment income of line 1
+(`ca/employment_income`) and line 2 (`ca/other_employment_income`); lines 3 to 20 are not built (the
+salary-only filer has none). Produced by one core/sum (`t1_taxable_income_line_21.yaml`)."""
