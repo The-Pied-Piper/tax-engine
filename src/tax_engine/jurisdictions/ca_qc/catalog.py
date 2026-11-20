@@ -148,3 +148,7 @@ SCHEDULE_U_LINE_14_4 = AmountKind.declare(CATALOG, "schedule_u_line_14_4")
 SCHEDULE_U_LINE_15 = AmountKind.declare(CATALOG, "schedule_u_line_15")
 """Schedule U line 15 "Multiply line 14.4 by 1%": line 14.4 at the printed rate, rounded half-up to
 the cent."""
+
+SCHEDULE_U_LINE_16 = AmountKind.declare(CATALOG, "schedule_u_line_16")
+"""Schedule U line 16 "Amount from line 11 or line 15, whichever is less": the QPP contribution
+amount of Part B."""
