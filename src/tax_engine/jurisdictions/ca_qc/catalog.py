@@ -1278,6 +1278,13 @@ salary-only caller does not give (the credit of line 46800 at 25% is a block ski
 salary-only filer); the sum on line 171 takes a blank as 0
 (`t1_tax_and_credits_line_46900_inputs.yaml`)."""
 
+JOURNALISM_LABOUR_CREDIT_LINE_168 = AmountKind.declare(
+    CATALOG, "journalism_labour_credit_line_168", non_negative=True
+)
+"""Canadian journalism labour tax credit, 5005-R line 168 and line 47555: an optional input a
+salary-only caller does not give; the sum on line 171 takes a blank as 0
+(`t1_tax_and_credits_line_47555_inputs.yaml`)."""
+
 CWB_LINE_161 = AmountKind.declare(CATALOG, "cwb_line_161", non_negative=True)
 """Canada workers benefit (CWB), 5005-R line 161 and line 45300 "(complete Schedule 6)": Schedule 6
 line 28, read from the Schedule 6 export by one core/record_total
