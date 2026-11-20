@@ -58,6 +58,31 @@ LINE_100_INPUT_PARTS = (
     "t1_tax_and_credits_line_31285_inputs.yaml",
     "t1_tax_and_credits_line_31300_inputs.yaml",
 )
+# The parts of lines 101 to 122, in form line order (5005-R Step 5 Part B, from the pension income
+# amount to the total federal non-refundable tax credits).
+LINES_101_TO_122_PARTS: tuple[str, ...] = (
+    "t1_tax_and_credits_line_31400_inputs.yaml",
+    "t1_tax_and_credits_line_102.yaml",
+    "t1_tax_and_credits_line_31600_inputs.yaml",
+    "t1_tax_and_credits_line_31800_inputs.yaml",
+    "t1_tax_and_credits_line_105.yaml",
+    "t1_tax_and_credits_line_31900_inputs.yaml",
+    "t1_tax_and_credits_line_32300_inputs.yaml",
+    "t1_tax_and_credits_line_32400_inputs.yaml",
+    "t1_tax_and_credits_line_32600_inputs.yaml",
+    "t1_tax_and_credits_line_110.yaml",
+    "t1_tax_and_credits_line_112.yaml",
+    "t1_tax_and_credits_line_113.yaml",
+    "t1_tax_and_credits_line_33099_inputs.yaml",
+    "t1_tax_and_credits_line_114.yaml",
+    "t1_tax_and_credits_line_33199_inputs.yaml",
+    "t1_tax_and_credits_line_33200.yaml",
+    "t1_tax_and_credits_line_33500.yaml",
+    "t1_tax_and_credits_line_33800.yaml",
+    "t1_tax_and_credits_line_34900_inputs.yaml",
+    "t1_tax_and_credits_line_34990_inputs.yaml",
+    "t1_tax_and_credits_line_35000.yaml",
+)
 CREDIT_PARTS = (
     *LINE_85_INPUT_PARTS,
     "t1_tax_and_credits_line_85.yaml",
@@ -67,6 +92,7 @@ CREDIT_PARTS = (
     "t1_tax_and_credits_line_31260.yaml",
     *LINE_100_INPUT_PARTS,
     "t1_tax_and_credits_line_100.yaml",
+    *LINES_101_TO_122_PARTS,
 )
 STEP_4_PARTS = (
     "t1_taxable_income_line_25700_inputs.yaml",

@@ -1,0 +1,25 @@
+# 5005-R (2025) line 122 and line 35000. The form prints: "Line 122 and line 35000: Add lines 119 to 121.
+# Total federal non-refundable tax credits =" (page 6). Line 119 is the step before it; line 120 (line
+# 34900, donations and gifts) and line 121 (line 34990, top-up tax credit) are optional inputs, a blank
+# for a salary-only filer and read as 0 (the top-up is an input, not a Federal Worksheet, owner ruling
+# of 19 Nov 2026). One step: core/sum in form line order, rounded half-up to the cent through
+# `ca-qc/cent_rounding`; Part C line 126 copies it.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/sum
+    title: "Total federal non-refundable tax credits"
+    reference: "35000"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/credits_at_credit_rate_line_119
+        - ca-qc/donations_and_gifts_line_120
+        - ca-qc/top_up_tax_credit_line_121
+    blank:
+      ca-qc/donations_and_gifts_line_120: "0"
+      ca-qc/top_up_tax_credit_line_121: "0"
+    produces:
+      output: ca-qc/non_refundable_tax_credits_line_122

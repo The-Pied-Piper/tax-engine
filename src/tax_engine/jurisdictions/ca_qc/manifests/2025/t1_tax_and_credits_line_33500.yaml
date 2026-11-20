@@ -1,0 +1,18 @@
+# 5005-R (2025) line 117 and line 33500. The form prints: "Line 117 and line 33500: Line 110 plus line 116
+# =" (page 6). Both are steps before it: line 110 is the credits through line 109 and line 116 is the
+# medical expenses (line 33200). One step: core/sum in form line order, rounded half-up to the cent
+# through `ca-qc/cent_rounding`, as the federal line 33500 is built.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/sum
+    reference: "33500"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/credits_line_110
+        - ca-qc/medical_expenses_line_116
+    produces:
+      output: ca-qc/credit_amounts_line_117
