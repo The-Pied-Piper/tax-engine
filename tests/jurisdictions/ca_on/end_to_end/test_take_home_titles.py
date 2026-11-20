@@ -22,6 +22,9 @@ def test_the_worksheets_carry_the_titles_the_manifest_gives() -> None:
     (summary,) = sheets["ca-on/return"]
 
     assert on428.form_title == "Form ON428: Ontario Tax"
+    assert on428.form_reference == "Form ON428: Ontario Tax"
+    assert schedule_8.form_reference == schedule_8.form_title
+    assert summary.form_reference == "Return summary"
     assert schedule_8.form_title == "Schedule 8: Canada Pension Plan Contributions and Overpayment"
     assert summary.form_title == "Return summary"
     assert on428.title("on428_surtax_total_line_68") == "Ontario surtax"

@@ -156,6 +156,12 @@ class FormComposition:
         return self._form.title
 
     @property
+    def reference(self) -> str | None:
+        """What the form is known by: the reference its manifest gives, else its title; `None` if
+        it has neither."""
+        return self._form.title if self._form.reference is None else self._form.reference
+
+    @property
     def figure_titles(self) -> Mapping[str, str]:
         """The readable title of each titled figure of the form, by the figure's label."""
         return MappingProxyType(self._figure_titles)
@@ -452,6 +458,7 @@ class FormSet:
             return form.composition.compute(
                 *starting,
                 form_title=form.title,
+                form_reference=form.reference,
                 figure_titles=form.figure_titles,
                 figure_references=form.figure_references,
                 figure_units=form.figure_units,
