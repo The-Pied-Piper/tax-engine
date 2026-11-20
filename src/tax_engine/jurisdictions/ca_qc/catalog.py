@@ -111,3 +111,28 @@ TP1_TOTAL_INCOME_LINE_199 = AmountKind.declare(
 )
 """Total income, TP-1 line 199 "Add lines 101 and 105 through 164. Total income": line 101, the
 salary, plus the optional income of lines 105 through 164, rounded half-up to the cent."""
+
+WORK_CHART_201_LINE_105 = AmountKind.declare(CATALOG, "tp1_line_105", non_negative=True)
+"""TP-1 line 105, as Work Chart 201 line 1 reads it ("lines 101, 107 and, if positive, 105"): an
+optional input, blank when the caller has none and read as 0. It is taken as non-negative, so the
+chart's "if positive" test on it never changes the figure."""
+
+WORK_CHART_201_LINE_107 = AmountKind.declare(CATALOG, "tp1_line_107", non_negative=True)
+"""TP-1 line 107, as Work Chart 201 line 1 reads it: an optional input, blank when the caller has
+none and read as 0."""
+
+WORK_CHART_201_RL1_BOX_211 = AmountKind.declare(CATALOG, "rl1_slip_box_211", non_negative=True)
+"""RL-1 slip box 211, taken off by Work Chart 201 line 1 ("minus the amount from box 211 of your
+RL-1 slip"): an optional input, blank when the caller has none and read as 0."""
+
+WORK_CHART_201_ELIGIBLE_WORK_INCOME_BEFORE_BOX_211 = AmountKind.declare(
+    CATALOG, "work_chart_201_eligible_work_income_before_box_211", non_negative=True
+)
+"""Work Chart 201 line 1, the sum before box 211 is taken off: lines 101, 107 and 105. Not a printed
+line; the first operation of line 1."""
+
+WORK_CHART_201_ELIGIBLE_WORK_INCOME_LINE_1 = AmountKind.declare(
+    CATALOG, "work_chart_201_eligible_work_income_line_1", non_negative=True
+)
+"""Work Chart 201 line 1 "Eligible work income": lines 101, 107 and, if positive, 105, minus the
+amount from box 211 of the RL-1 slip, not below zero, rounded half-up to the cent."""
