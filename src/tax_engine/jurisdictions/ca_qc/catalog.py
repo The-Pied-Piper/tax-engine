@@ -144,3 +144,7 @@ maximum pensionable earnings less the personal QPP exemption, not below 0."""
 
 SCHEDULE_U_LINE_14_4 = AmountKind.declare(CATALOG, "schedule_u_line_14_4")
 """Schedule U line 14.4 "Amount from line 14 or line 14.3, whichever is less"."""
+
+SCHEDULE_U_LINE_15 = AmountKind.declare(CATALOG, "schedule_u_line_15")
+"""Schedule U line 15 "Multiply line 14.4 by 1%": line 14.4 at the printed rate, rounded half-up to
+the cent."""
