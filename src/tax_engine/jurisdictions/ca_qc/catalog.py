@@ -1001,3 +1001,10 @@ FEDERAL_TAX_ON_TAXABLE_INCOME_LINE_77 = AmountKind.declare(
 """5005-R Step 5 Part A line 77 "Line 75 plus line 76 Federal tax on taxable income =": line 75
 plus line 76, rounded half-up to the cent, which the form enters on line 123. Produced by one
 core/sum (`t1_tax_and_credits_line_77.yaml`)."""
+
+TP1_BASIC_PERSONAL_AMOUNT_LINE_350 = AmountKind.declare(
+    CATALOG, "tp1_basic_personal_amount_line_350", non_negative=True
+)
+"""TP-1 line 350 "Basic personal amount": the printed figure 18,571.00, claimed whole. Produced by
+one core/credit_amount over the dataset of the same name (`tp1_credits_line_350.yaml`). It is its
+own kind: `ca-qc/basic_personal_amount` is the federal basic personal amount of 5005-R line 78."""
