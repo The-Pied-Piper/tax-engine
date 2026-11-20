@@ -617,3 +617,13 @@ TP1_INCOME_LESS_DEDUCTIONS_LINE_256 = AmountKind.declare(
 )
 """TP-1 line 256 "Subtract line 254 from line 199": total income less total deductions, rounded
 half-up to the cent. The form prints no floor, so the figure can be negative."""
+
+TP1_INVESTMENT_EXPENSES_ADJUSTMENT_LINE_260 = AmountKind.declare(
+    CATALOG, "tp1_investment_expenses_adjustment_line_260", non_negative=True
+)
+"""TP-1 line 260 "Adjustment of investment expenses. Complete Schedule N": an input a salary-only
+caller does not give; line 275 reads it as 0 when it is left out."""
+
+TP1_NET_INCOME_LINE_275 = AmountKind.declare(CATALOG, "tp1_net_income_line_275", non_negative=True)
+"""Net income, TP-1 line 275 "Add lines 256 and 260. If the result is negative, enter 0": line 256
+plus line 260, not below zero, rounded half-up to the cent."""

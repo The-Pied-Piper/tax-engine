@@ -1,0 +1,12 @@
+# TP-1 (2025) line 260: "Adjustment of investment expenses. Complete Schedule N." An input a
+# salary-only caller does not give (the owner's decision of 19 Nov 2026: its own optional input).
+# The line 275 part (tp1_net_income_line_275.yaml) reads the blank as 0.
+form:
+  name: ca-qc/tp1_net_income
+inputs:
+  - name: ca-qc/tp1_investment_expenses_adjustment_line_260
+    reference: "260"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Adjustment of investment expenses. Complete Schedule N.'
