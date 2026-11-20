@@ -491,6 +491,35 @@ SCHEDULE_P_WORK_INCOME_LINE_29 = AmountKind.declare(CATALOG, "schedule_p_work_in
 """Schedule P Part A line 29, "Subtract line 22 from line 18", "Work income", column "You", rounded
 half-up to the cent. The form prints no floor."""
 
+SCHEDULE_P_WORK_PREMIUM_INCOME_CEILING_LINE_66 = AmountKind.declare(
+    CATALOG, "schedule_p_work_premium_income_ceiling_line_66", non_negative=True
+)
+"""Schedule P Part E, section 2, column 1 "Work premium", line 66: the printed 12,620, claimed
+whole."""
+
+SCHEDULE_P_WORK_PREMIUM_INCOME_LINE_68 = AmountKind.declare(
+    CATALOG, "schedule_p_work_premium_income_line_68"
+)
+"""Schedule P Part E, section 2, column 1, line 68, "Amount from line 64 or line 66, whichever is
+less": the work income of line 29 up to 12,620."""
+
+SCHEDULE_P_WORK_PREMIUM_EXEMPT_AMOUNT_LINE_70 = AmountKind.declare(
+    CATALOG, "schedule_p_work_premium_exempt_amount_line_70", non_negative=True
+)
+"""Schedule P Part E, section 2, column 1, line 70: the printed 2,400, claimed whole."""
+
+SCHEDULE_P_WORK_PREMIUM_INCOME_OVER_EXEMPT_LINE_72 = AmountKind.declare(
+    CATALOG, "schedule_p_work_premium_income_over_exempt_line_72", non_negative=True
+)
+"""Schedule P Part E, section 2, column 1, line 72, "Subtract line 70 from line 68. If the result
+is negative, enter 0", rounded half-up to the cent."""
+
+SCHEDULE_P_WORK_PREMIUM_BEFORE_REDUCTION_LINE_76 = AmountKind.declare(
+    CATALOG, "schedule_p_work_premium_before_reduction_line_76", non_negative=True
+)
+"""Schedule P Part E, section 2, column 1, line 76, "Multiply line 72 by line 74 or line 75 (as
+applicable)": the work premium before the family-income reduction, rounded half-up to the cent."""
+
 T1_LINE_48 = AmountKind.declare(CATALOG, "t1_line_48", non_negative=True)
 """Deduction for CPP or QPP enhanced contributions on employment income, 5005-R line 48 and line
 22215 "Deduction for CPP or QPP enhanced contributions on employment income (complete Schedule 8 or

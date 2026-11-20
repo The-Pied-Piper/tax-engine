@@ -1,0 +1,19 @@
+# Schedule P (TP-1.D.P-V, 2025-12) Part E, section 2, column 1 "Work premium", line 76: "Multiply line 72
+# by line 74 or line 75 (as applicable)." Line 74 is the printed 11.6% ("If you designated a child on
+# line 50, enter 30%. Otherwise, enter 11.6%."), held in the rate dataset `ca-qc/work_premium_rate`, so
+# it has no step; the take-home designates no child, so line 75 does not apply. Line 72 is
+# `ca-qc/schedule_p_work_premium_income_over_exempt_line_72` (schedule_p_line_72.yaml). The product is
+# rounded half-up to the cent by the rate dataset. The form prints no label for the line, so the step
+# is untitled. The figure is exported for the work premium reduction (line 84).
+form:
+  name: ca-qc/schedule_p
+capabilities:
+  - name: core/apply_rate
+    reference: "76"
+    unit: ca/cad
+    params:
+      rate: ca-qc/work_premium_rate
+    consumes:
+      base: ca-qc/schedule_p_work_premium_income_over_exempt_line_72
+    produces:
+      output: ca-qc/schedule_p_work_premium_before_reduction_line_76

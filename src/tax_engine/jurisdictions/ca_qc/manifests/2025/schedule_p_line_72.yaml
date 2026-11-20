@@ -1,0 +1,18 @@
+# Schedule P (TP-1.D.P-V, 2025-12) Part E, section 2, column 1 "Work premium", line 72: "Subtract line
+# 70 from line 68. If the result is negative, enter 0." Line 68 is `ca-qc/schedule_p_work_premium_income_
+# line_68` (schedule_p_line_68.yaml) and line 70 is the printed 2,400 (schedule_p_line_70.yaml). The
+# step is core/subtract_not_below_zero, rounded to the cent by `ca-qc/cent_rounding`. The form prints
+# no label for the line, so the step is untitled.
+form:
+  name: ca-qc/schedule_p
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "72"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/schedule_p_work_premium_income_line_68
+      less: ca-qc/schedule_p_work_premium_exempt_amount_line_70
+    produces:
+      output: ca-qc/schedule_p_work_premium_income_over_exempt_line_72
