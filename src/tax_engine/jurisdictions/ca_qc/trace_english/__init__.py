@@ -6,4 +6,6 @@ this package imports them all.
 
 from __future__ import annotations
 
-__all__: list[str] = []
+from tax_engine.jurisdictions.ca_qc.trace_english import divide_by_count
+
+__all__ = ["divide_by_count"]
