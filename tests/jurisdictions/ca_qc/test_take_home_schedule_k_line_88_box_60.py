@@ -61,6 +61,7 @@ def test_the_part_is_as_printed() -> None:
     assert part["capabilities"] == [
         {
             "name": "core/multiply",
+            "title": "Premium for the months from January to June",
             "unit": "ca/cad",
             "params": {"rounding": "ca-qc/cent_rounding"},
             "consumes": {

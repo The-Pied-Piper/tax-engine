@@ -116,6 +116,7 @@ def test_the_line_part_is_one_yes_or_no_check() -> None:
     (step,) = part["capabilities"]
     assert step == {
         "name": "ca/yes_or_no_count",
+        "title": "Covered by a group drug plan, checked",
         "consumes": {"count": "ca-qc/schedule_k_group_plan_covered_line_50"},
         "blank": {"count": "pass_on"},
         "produces": {"output": CHECKED},

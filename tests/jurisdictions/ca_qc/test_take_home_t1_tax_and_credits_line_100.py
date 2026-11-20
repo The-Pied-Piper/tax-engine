@@ -84,11 +84,8 @@ def test_the_trace_adds_the_lines_in_form_order(take_home_service: TakeHomeServi
     _, sheet = sheets(take_home_service, "70000")
 
     assert (
-        "Line 30800 (CA$3591.00) plus line 31000 (CA$0.00) plus line 31200 (CA$860.67) plus line "
-        "31217 (CA$0.00) plus line 31205 (CA$345.80) plus line 31210 (CA$0.00) plus line 31215 "
-        "(CA$0.00) plus line 31220 (CA$0.00) plus line 31240 (CA$0.00) plus line 31260 "
-        "(CA$1471.00) plus line 31270 (CA$0.00) plus line 31285 (CA$0.00) plus line 31300 "
-        "(CA$0.00) gives CA$6268.47 (rounded to the nearest cent)."
+        '"Lines 87 to 93 added up" (CA$4797.47) plus "Lines 94 to 99 added up" (CA$1471.00) '
+        "gives CA$6268.47 (rounded to the nearest cent)."
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
 
 
