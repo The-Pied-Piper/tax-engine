@@ -3,7 +3,7 @@
 # deduction on this line (the owner's Employee QPIP ruling, 19 Nov 2026), so the figure is Schedule U
 # line 23 alone. Schedule U is its own form, so its line 23 arrives as that form's export, a record
 # list of one amount; the one step is core/record_total over it, as line 201 reads Work Chart 201.
-# Rounding is none: core/record_total never rounds. The figure is signed, as line 23 is.
+# Rounding is none: core/record_total never rounds. The figure is never negative, as line 23 is not.
 form:
   name: ca-qc/tp1_net_income
 capabilities:

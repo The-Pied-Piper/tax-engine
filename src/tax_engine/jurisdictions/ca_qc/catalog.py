@@ -298,10 +298,10 @@ cent."""
 SCHEDULE_U_LINE_22 = AmountKind.declare(CATALOG, "schedule_u_line_22", non_negative=True)
 """Schedule U line 22 "Amount from line 17.5 or line 21, whichever is less"."""
 
-SCHEDULE_U_LINE_23 = AmountKind.declare(CATALOG, "schedule_u_line_23")
+SCHEDULE_U_LINE_23 = AmountKind.declare(CATALOG, "schedule_u_line_23", non_negative=True)
 """Schedule U line 23 "Add lines 22 and 22.1", "Deduction for QPP contributions on employment
 income": the figure TP-1 line 248 takes, rounded half-up to the cent. Line 22.1 (a copy of line 16)
-can be negative."""
+is never negative, because line 14 is floored at zero."""
 
 T1_LINE_21 = AmountKind.declare(CATALOG, "t1_line_21")
 """Add lines 1 to 20, 5005-R line 21 "Line 21: Add lines 1 to 20.": the employment income of line 1
