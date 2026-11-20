@@ -165,7 +165,7 @@ PRINTED_AS_IS = {"71", "73"}
 
 # The 31260 sum "line 1 plus line 2": the form prints no rounding rule for it, so it is carried
 # exactly.
-CARRIED_EXACT = {"31260 income"}
+CARRIED_EXACT = {"31260 income", "31260"}
 
 # The return's line 167 and the payroll figures the calculator reads, by salary, with sources:
 # (salary, line 167, federal tax after credits, Ontario tax line 90, CPP base + enhanced, EI, CWB).

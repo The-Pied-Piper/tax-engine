@@ -75,7 +75,7 @@ def test_the_trace_names_the_sum_and_the_limit(take_home_service: TakeHomeServic
     assert (
         'Lesser of "Employment income plus other employment income, before the limit" '
         "(CA$70000.00) and the Canada employment amount (CA$1471.00) gives CA$1471.00 "
-        "(rounded to the nearest cent)."
+        "(not rounded)."
     ) in trace
 
 

@@ -180,5 +180,5 @@ def test_line_31260_names_the_income_and_the_cap_in_the_trace(
     assert (
         'Lesser of "Employment income plus other employment income, before the limit" '
         "(CA$70000.00) and the Canada employment amount (CA$1471.00) gives CA$1471.00 "
-        "(rounded to the nearest cent)."
+        "(not rounded)."
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)

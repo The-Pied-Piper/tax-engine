@@ -1,5 +1,6 @@
 # Quebec exact rounding, 2025 tax year: the rule for a Quebec form line the engine only carries
-# through, with no arithmetic of its own: T1 line 10100 (employment income) and line 10400 (other
+# through, or sums its lines, with no rounding rule printed for it:
+# T1 line 10100 (employment income) and line 10400 (other
 # employment income), which the T1 prints no rounding rule for (5005-r-25e.txt, "Line 1 and line
 # 10100", "Line 2 and line 10400"). The form prints no rounding rule for them, so the figure is
 # carried as it is (the project's rule: round only where the form says to). The cent rule of
