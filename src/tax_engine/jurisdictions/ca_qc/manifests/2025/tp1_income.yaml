@@ -11,4 +11,5 @@ form:
   required: true
   exports:
     - ca/employment_income
+    - ca-qc/tp1_pensionable_salary_line_98_1
 capabilities: []

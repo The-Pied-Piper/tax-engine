@@ -1,0 +1,23 @@
+# Revenu Quebec TP-1.D-V (2025-12), page 2, line 98.1, 'Pensionable salary or wages (QPP). RL-1
+# slip, box G'.
+# The line is an input of the form, copied from the RL-1 slip. A take-home caller gives only the
+# salary, so `ca-qc/tp1_pensionable_salary_given_line_98_1` is optional.
+# A request that gives it has that figure as line 98.1, unchanged. A request that leaves it out
+# has line 98.1 computed from line 101, the salary: the salary up to $81,200, half-up to the
+# cent, from the `ca-qc/tp1_line_98_1_pensionable_salary` dataset, as T2204 line 4 does.
+form:
+  name: ca-qc/tp1_income
+capabilities:
+  - name: ca/given_or_contribution_tier
+    title: "Pensionable salary or wages (QPP)"
+    reference: "98.1"
+    unit: ca/cad
+    params:
+      tier: ca-qc/tp1_line_98_1_pensionable_salary
+    consumes:
+      given: ca-qc/tp1_pensionable_salary_given_line_98_1
+      earnings: ca/employment_income
+    blank:
+      given: compute
+    produces:
+      output: ca-qc/tp1_pensionable_salary_line_98_1
