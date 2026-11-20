@@ -72,8 +72,9 @@ FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = BC_PARTS / "bc428_line_70.yaml"
 T1_PARTS = (
     "t1_taxable_income_inputs.yaml",
-    "t1_taxable_income_line_10100.yaml",
-    "t1_taxable_income_line_10400.yaml",
+    "t1_employment_income.yaml",
+    "t1_employment_income_line_10100.yaml",
+    "t1_employment_income_line_10400.yaml",
     "t1_taxable_income_line_15000.yaml",
     "t1_taxable_income_line_23300.yaml",
     "t1_taxable_income_line_23400.yaml",
@@ -82,7 +83,7 @@ T1_PARTS = (
     "t1_taxable_income_line_25700_inputs.yaml",
     "t1_taxable_income_line_26000.yaml",
     "t1_taxable_income.yaml",
-    "t1_taxable_income_line_10400_inputs.yaml",
+    "t1_employment_income_line_10400_inputs.yaml",
 )
 # The real British Columbia parts after the federal ones, in composition order: the line 68 test's
 # (lines 1 to 68), then the line 69 input and line 69, then line 70.

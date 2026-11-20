@@ -26,6 +26,13 @@ from tests.jurisdictions.ca_qc.support import real_import
 
 D = Decimal
 PART = "t1_taxable_income_line_22215.yaml"
+# The real Quebec T1 employment income parts: Schedule 8 line 1 reads line 10100 from that form.
+T1_EMPLOYMENT_INCOME_PARTS = (
+    "t1_employment_income.yaml",
+    "t1_employment_income_line_10100.yaml",
+    "t1_employment_income_line_10400.yaml",
+    "t1_employment_income_line_10400_inputs.yaml",
+)
 
 HEADER = dedent("""\
     jurisdiction: CA-QC
@@ -50,7 +57,7 @@ FORM = dedent("""\
 
 
 def line_48(take_home_service: TakeHomeService, salary: str) -> Decimal:
-    worksheets = take_home_service(HEADER, FORM, PART).compute(
+    worksheets = take_home_service(HEADER, FORM, *T1_EMPLOYMENT_INCOME_PARTS, PART).compute(
         JurisdictionCode("CA-QC"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
     )
     (sheet,) = worksheets["ca-qc/t1_taxable_income"]

@@ -1,0 +1,20 @@
+# 5005-R (2025), the T1 return for Quebec residents, line 1 (line 10100) and line 2 (line 10400). They are a
+# form of their own, as the federal T1 employment income form is: Schedule 8 line 1 reads line 10100 and
+# Schedule 8 feeds line 48 (line 22215) of the Quebec T1 taxable income form, so reading the lines from that
+# form would make the two forms need each other. This part names the form and its exports; each line's
+# capability goes in a part of its own with the same `form.name`.
+# Exports: a line is an input only for the form it belongs to, and every other form imports it from here.
+#   - Lines 10100 and 10400 (`ca-qc/employment_income_line_10100`, `ca-qc/other_employment_income_line_10400`)
+#     are read by line 21 of the Quebec T1 taxable income form and, through the neutral names below, by the
+#     shared Schedule 8 line 1, Schedule 6 line 1, T2204 line 1 and the Quebec line 31260.
+form:
+  name: ca-qc/t1_employment_income
+  title: "T1 Income Tax and Benefit Return"
+  required: true
+  exports:
+    - ca-qc/employment_income_line_10100
+    - ca-qc/other_employment_income_line_10400
+  supplies:
+    ca/t1_employment_income.employment_income_line_10100: ca-qc/employment_income_line_10100
+    ca/t1_employment_income.other_employment_income_line_10400: ca-qc/other_employment_income_line_10400
+capabilities: []

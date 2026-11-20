@@ -62,8 +62,9 @@ LINE_59 = "ca-mb/mb428_tax_on_split_income_line_59"
 IDENTIFIER = "ca-mb/mb428_tax_before_credits_line_60"
 T1_PARTS = (
     "t1_taxable_income_inputs.yaml",
-    "t1_taxable_income_line_10100.yaml",
-    "t1_taxable_income_line_10400.yaml",
+    "t1_employment_income.yaml",
+    "t1_employment_income_line_10100.yaml",
+    "t1_employment_income_line_10400.yaml",
     "t1_taxable_income_line_15000.yaml",
     "t1_taxable_income_line_23300.yaml",
     "t1_taxable_income_line_23400.yaml",
@@ -72,7 +73,7 @@ T1_PARTS = (
     "t1_taxable_income_line_25700_inputs.yaml",
     "t1_taxable_income_line_26000.yaml",
     "t1_taxable_income.yaml",
-    "t1_taxable_income_line_10400_inputs.yaml",
+    "t1_employment_income_line_10400_inputs.yaml",
 )
 
 HEADER = dedent("""\

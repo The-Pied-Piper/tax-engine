@@ -22,7 +22,7 @@ from tests.jurisdictions.ca_qc.support import quebec_kinds, quebec_packages, que
 D = Decimal
 KIND = "ca/other_employment_income"
 PRINTED_BASIS = "Line 2 and line 10400: Other employment income"
-PART = "t1_taxable_income_line_10400_inputs.yaml"
+PART = "t1_employment_income_line_10400_inputs.yaml"
 HEADER = """\
 jurisdiction: CA-QC
 version: 1
@@ -32,7 +32,7 @@ capabilities: []
 """
 FORM = """\
 form:
-  name: ca-qc/t1_taxable_income
+  name: ca-qc/t1_employment_income
   required: true
   exports:
     - ca/other_employment_income
