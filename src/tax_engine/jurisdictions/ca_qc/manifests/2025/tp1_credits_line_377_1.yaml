@@ -1,0 +1,15 @@
+# TP-1 (2025) line 377.1: "Multiply line 377 by 14%. x 14% = 377.1" (page 4, Non-refundable tax
+# credits; the line has no title). The printed 14% is the `ca-qc/tp1_line_377_1_rate` dataset, so the
+# line is one core/apply_rate, rounded half-up to the cent by the dataset's rule.
+form:
+  name: ca-qc/tp1_credits
+capabilities:
+  - name: core/apply_rate
+    reference: "377.1"
+    unit: ca/cad
+    params:
+      rate: ca-qc/tp1_line_377_1_rate
+    consumes:
+      base: ca-qc/tp1_line_377
+    produces:
+      output: ca-qc/tp1_line_377_1
