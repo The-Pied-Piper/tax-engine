@@ -177,3 +177,9 @@ TP1_SCHEDULE_F_DEDUCTIONS_LINE_68 = AmountKind.declare(
 """Schedule F line 68, "Deductions": the printed sum of lines 41 through 62, which are skipped, as
 one optional input; blank when the caller has none, and line 70 reads it as 0."""
 
+
+TP1_SCHEDULE_F_INCOME_SUBJECT_LINE_70 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_income_subject_line_70"
+)
+"""Schedule F line 70, "Income subject to the contribution": line 36 less line 68; no floor is
+printed, so it can be negative. Part B tests it against $18,130."""

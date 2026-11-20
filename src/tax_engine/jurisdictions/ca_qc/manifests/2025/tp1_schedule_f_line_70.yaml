@@ -1,0 +1,20 @@
+# Schedule F (2025) line 70: "Subtract line 68 from line 36. If the result is $18,130 or less, you do
+# not have to pay a contribution. If the result is more than $18,130, complete Part B. Income subject
+# to the contribution". Line 68 is read as 0 when blank. No floor is printed and the stop is not a
+# step: Part B (line 77) prints the $18,130 and tests this figure against it.
+form:
+  name: ca-qc/tp1_schedule_f
+capabilities:
+  - name: core/subtract
+    title: "Income subject to the contribution"
+    reference: "70"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/tp1_schedule_f_income_line_36
+      less: ca-qc/tp1_schedule_f_deductions_line_68
+    blank:
+      less: "0"
+    produces:
+      output: ca-qc/tp1_schedule_f_income_subject_line_70
