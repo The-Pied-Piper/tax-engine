@@ -1,9 +1,9 @@
-# Schedule U (Revenu Quebec TP-1.D.U-V, 2025-12), Part B, line 18.7: "Subtract line 18.6 from line 18.5. If the result is
-# negative, enter 0." Line 18.5 is "Pensionable salary or wages (QPP) (line 98.1 of your return)", read by
-# its own step (`ca-qc/schedule_u_line_18_5`), and line 18.6 is "Amount from
-# line 14.1", a copy of `ca-qc/schedule_u_maximum_pensionable_earnings_line_14_1`. The step is
-# `core/subtract_not_below_zero`, rounded to the cent by `ca-qc/cent_rounding`. The form prints no
-# label for the line, so the step is untitled.
+# Schedule U (Revenu Quebec TP-1.D.U-V, 2025-12), Part B, line 18.7: "Subtract line 18.6 from line
+# 18.5. If the result is negative, enter 0." Line 18.5 is "Pensionable salary or wages (QPP) (line
+# 98.1 of your return)", read by its own step (`ca-qc/schedule_u_line_18_5`), and line 18.6 is
+# "Amount from line 14.1", a copy of `ca-qc/schedule_u_maximum_pensionable_earnings_line_14_1`. The
+# step is `core/subtract_not_below_zero`, rounded to the cent by `ca-qc/cent_rounding`. The form
+# prints no label for the line, so the step is untitled.
 form:
   name: ca-qc/tp1_schedule_u
 capabilities:
