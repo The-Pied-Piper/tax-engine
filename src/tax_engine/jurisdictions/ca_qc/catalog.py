@@ -530,3 +530,10 @@ BASIC_PERSONAL_AMOUNT_NET_INCOME_LINE_3 = AmountKind.declare(
 floored net income, read from the T1 taxable income export (`ca-qc/net_income`, 5005-R line 57 and
 line 23600) into the taper of the basic personal amount. Produced by one core/record_total
 (`t1_tax_and_credits_line_30000_line_3.yaml`)."""
+
+BASIC_PERSONAL_AMOUNT = AmountKind.declare(CATALOG, "basic_personal_amount", non_negative=True)
+"""Basic personal amount, 5005-R line 78 and line 30000 "If the amount on line 23600 is $177,882 or
+less, enter $16,129. If the amount on line 23600 is $253,414 or more, enter $14,538. Otherwise, use
+the Federal Worksheet to calculate the amount to enter. (maximum $16,129)": Federal Worksheet
+5000-D1 lines 1 to 11, one ca/tapered_amount step over the dataset `ca/basic_personal_amount`
+(`t1_tax_and_credits_line_30000.yaml`); the credit sums read it."""
