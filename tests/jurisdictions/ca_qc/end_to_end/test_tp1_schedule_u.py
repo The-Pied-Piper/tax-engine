@@ -1,7 +1,7 @@
 """Revenu Quebec Schedule U (2025, TP-1.D.U-V) Part B, lines 10 to 23, as one chain.
 
-Lines 11 to 17.5 are built from the real parts. Lines 10, 12, 17 and 17.4 take the TP-1 figures of
-lines 98, 98.1 and 98.2, which are plain starting inputs here, as the TP-1 income steps give them
+Lines 11 to 23 are built from the real parts. Lines 10, 12, 17, 17.4 and 18.5 take the TP-1 figures
+of lines 98, 98.1 and 98.2, which are plain starting inputs here, as the TP-1 income steps give them
 for the salary. The expected figures are hand-computed from the printed lines (not an official
 example); the salary is $20,000, $70,000 and $200,000.
 """
@@ -160,7 +160,7 @@ CHAIN = {
 
 
 @pytest.mark.parametrize("salary", list(CHAIN))
-def test_lines_11_to_17_5_at_each_salary(take_home_service: TakeHomeService, salary: str) -> None:
+def test_lines_11_to_23_at_each_salary(take_home_service: TakeHomeService, salary: str) -> None:
     line_98, line_98_1, line_98_2, early, late = CHAIN[salary]
     (sheet,) = take_home_service(HEADER, FORM, *PARTS).compute(
         JurisdictionCode("CA-QC"),
