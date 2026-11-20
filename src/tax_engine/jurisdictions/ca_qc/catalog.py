@@ -1058,3 +1058,11 @@ TP1_UNION_DUES_LINE_397_1 = AmountKind.declare(
 )
 """TP-1 line 397.1 "Union, professional or other dues": one optional input a salary-only caller does
 not give; line 397 reads a blank as 0 (`tp1_credits_line_397_1_input.yaml`)."""
+
+
+TP1_UNION_DUES_CREDIT_LINE_397 = AmountKind.declare(
+    CATALOG, "tp1_union_dues_credit_line_397", non_negative=True
+)
+"""TP-1 line 397 "Multiply line 397.1 by 10%. Tax credit for union, professional or other dues":
+line 397.1 at the printed 10%, rounded half-up to the cent. Produced by one core/apply_rate
+(`tp1_credits_line_397.yaml`)."""
