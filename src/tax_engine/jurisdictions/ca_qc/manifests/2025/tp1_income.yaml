@@ -14,4 +14,5 @@ form:
     - ca-qc/tp1_pensionable_salary_line_98_1
     - ca-qc/tp1_qpp_contribution_line_98
     - ca-qc/tp1_additional_qpp_contribution_line_98_2
+    - ca-qc/tp1_qpip_premium_line_97
 capabilities: []

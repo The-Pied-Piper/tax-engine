@@ -52,3 +52,16 @@ TP1_ADDITIONAL_QPP_CONTRIBUTION_LINE_98_2 = AmountKind.declare(
 )
 """Additional contribution to the QPP, TP-1 line 98.2 "Additional contribution to the QPP. RL-1, box
 B.B": the figure given, else 4% from $71,300 to $81,200, at most $396.00."""
+
+TP1_QPIP_PREMIUM_GIVEN_LINE_97 = AmountKind.declare(
+    CATALOG, "tp1_qpip_premium_given_line_97", non_negative=True
+)
+"""QPIP premium as given, TP-1 line 97 "QPIP premium. RL-1 slip, box H": the figure the caller
+copies from the RL-1 slip; blank when the caller does not give it, and line 97 is then computed
+from the salary."""
+
+TP1_QPIP_PREMIUM_LINE_97 = AmountKind.declare(
+    CATALOG, "tp1_qpip_premium_line_97", non_negative=True
+)
+"""QPIP premium, TP-1 line 97 "QPIP premium. RL-1 slip, box H": the figure given, else 0.494% up to
+$98,000, at most $484.12."""
