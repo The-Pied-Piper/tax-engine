@@ -1085,3 +1085,10 @@ SCHEDULE_K_COLUMN_CONSTANT_LINE_82 = AmountKind.declare(
 """Schedule K line 82, "+ 82 | 000 00 | 392 00": the printed constant of the column that line 48 falls
 in (0.00 and 392.00), taken as printed. One core/bracket_column_tax_at_start
 (`tp1_schedule_k_line_82.yaml`)."""
+
+SCHEDULE_K_COLUMN_PREMIUM_LINE_83 = AmountKind.declare(
+    CATALOG, "schedule_k_column_premium_line_83", non_negative=True
+)
+"""Schedule K line 83, "Add lines 81 and 82 (maximum $766)": the two lines added, rounded half-up to
+the cent. One core/sum (`tp1_schedule_k_line_83.yaml`); line 84 applies the printed maximum, so
+this figure is above 766 for a line 48 over about $8,180."""
