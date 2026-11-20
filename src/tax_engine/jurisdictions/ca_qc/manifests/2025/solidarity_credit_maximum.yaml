@@ -1,0 +1,96 @@
+# Solidarity tax credit, the maximum before reduction (fiche 110201, Table C.9, July 2026 to June
+# 2027, and the Revenu Quebec page "Calculation of the Credit"): the QST component (the base amount
+# plus the living-alone amount, which belongs to the QST component by owner ruling) and the housing
+# component (the basic housing amount, 746 for one owner or tenant and 906 shared among more than
+# one, for a tenant, subtenant or owner), added. The figures are a listed check: the fiche is a web
+# page. The answers are read from `solidarity_credit_answers.yaml`; the printed amounts from
+# `solidarity_credit_amounts.yaml`. The checks mirror NL428 line 40 (`ca/yes_or_no_count`,
+# `core/times_count`, `core/choose_by_count`). Every dollars-and-cents result is rounded half-up to
+# the cent through ca-qc/cent_rounding; the division by the number of owners or tenants is kept as an
+# exact fraction and rounded once. The form prints no line for these figures, so no step has a
+# reference or a title.
+form:
+  name: ca-qc/solidarity_credit
+capabilities:
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca-qc/solidarity_lived_alone_line_12
+    blank:
+      count: "0"
+    produces:
+      output: ca-qc/solidarity_lived_alone_checked_line_12
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca-qc/solidarity_tenant_or_owner_lines_32_36
+    blank:
+      count: "0"
+    produces:
+      output: ca-qc/solidarity_housing_received
+  - name: core/times_count
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/solidarity_living_alone_amount
+      count: ca-qc/solidarity_lived_alone_checked_line_12
+    produces:
+      output: ca-qc/solidarity_living_alone_amount_claimed
+  - name: core/sum
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/solidarity_qst_base_amount
+        - ca-qc/solidarity_living_alone_amount_claimed
+    produces:
+      output: ca-qc/solidarity_qst_component_amount
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca-qc/solidarity_occupants_conditions
+    consumes:
+      counts:
+        - ca-qc/solidarity_occupants_lines_33_36
+      amounts: []
+    blank:
+      counts: "1"
+    produces:
+      output: ca-qc/solidarity_more_than_one_occupant
+  - name: ca-qc/divide_by_count
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/solidarity_housing_multiple_amount
+      count: ca-qc/solidarity_occupants_lines_33_36
+    blank:
+      count: "1"
+    produces:
+      output: ca-qc/solidarity_housing_multiple_amount_per_occupant
+  - name: core/choose_by_count
+    unit: ca/cad
+    consumes:
+      count: ca-qc/solidarity_more_than_one_occupant
+      when_none: ca-qc/solidarity_housing_single_amount
+      when_any: ca-qc/solidarity_housing_multiple_amount_per_occupant
+    produces:
+      output: ca-qc/solidarity_housing_basic_amount
+  - name: core/times_count
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/solidarity_housing_basic_amount
+      count: ca-qc/solidarity_housing_received
+    produces:
+      output: ca-qc/solidarity_housing_amount
+  - name: core/sum
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/solidarity_qst_component_amount
+        - ca-qc/solidarity_housing_amount
+    produces:
+      output: ca-qc/solidarity_maximum_before_reduction

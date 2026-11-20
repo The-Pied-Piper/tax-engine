@@ -698,3 +698,61 @@ TP1_SCHEDULE_F_CONTRIBUTION_LINE_82 = AmountKind.declare(
 )
 """Schedule F line 82, "Contribution to the health services fund", carried to TP-1 line 446: the
 lesser of lines 80 plus 81 and the column's maximum; 0.00 when Part B is not completed."""
+
+SOLIDARITY_LIVED_ALONE_LINE_12 = CountKind.declare(
+    CATALOG, "solidarity_lived_alone_line_12", non_negative=True
+)
+"""Solidarity tax credit answer, Schedule D line 12 "Did you live alone in a dwelling throughout
+2025? (You are considered to have lived alone if everyone you lived with was under 18.)": 1 for
+yes, 0 for no, read as 0 when the caller gives no answer."""
+
+SOLIDARITY_LIVED_ALONE_CHECKED_LINE_12 = CountKind.declare(
+    CATALOG, "solidarity_lived_alone_checked_line_12", non_negative=True
+)
+"""Solidarity tax credit answer, Schedule D line 12, checked: the answer, refused above 1 so that
+the situation cannot be checked twice."""
+
+SOLIDARITY_TENANT_OR_OWNER_LINES_32_36 = CountKind.declare(
+    CATALOG, "solidarity_tenant_or_owner_lines_32_36", non_negative=True
+)
+"""Solidarity tax credit answer, Schedule D lines 32 and 33 (tenant or subtenant on December 31,
+2025) or lines 35 and 36 (owner): 1 when the filer was a tenant, a subtenant or an owner, 0 when
+neither, read as 0 when the caller gives no answer."""
+
+SOLIDARITY_OCCUPANTS_LINES_33_36 = CountKind.declare(
+    CATALOG, "solidarity_occupants_lines_33_36", non_negative=True
+)
+"""Solidarity tax credit answer, Schedule D line 33 "Number from box B of the RL-31 slip issued in
+your name" or line 36 "Number of owners living in your dwelling": the number of owners or tenants,
+read as 1 when the caller gives no answer."""
+
+SOLIDARITY_LIVING_ALONE_AMOUNT_CLAIMED = AmountKind.declare(
+    CATALOG, "solidarity_living_alone_amount_claimed", non_negative=True
+)
+"""Solidarity tax credit, living-alone amount claimed (fiche 110201, Table C.9): the living-alone
+amount when the filer lived alone, 0 otherwise."""
+
+SOLIDARITY_MORE_THAN_ONE_OCCUPANT = CountKind.declare(
+    CATALOG, "solidarity_more_than_one_occupant", non_negative=True
+)
+"""Solidarity tax credit, more than one owner or tenant (fiche 110201, Table C.9): 1 when the number
+of owners or tenants is more than one, 0 otherwise."""
+
+SOLIDARITY_HOUSING_MULTIPLE_AMOUNT_PER_OCCUPANT = AmountKind.declare(
+    CATALOG, "solidarity_housing_multiple_amount_per_occupant", non_negative=True
+)
+"""Solidarity tax credit, housing amount for multiple owners or tenants shared among them (fiche
+110201, Table C.9): the basic housing amount for multiple owners or tenants divided by their
+number."""
+
+SOLIDARITY_HOUSING_BASIC_AMOUNT = AmountKind.declare(
+    CATALOG, "solidarity_housing_basic_amount", non_negative=True
+)
+"""Solidarity tax credit, basic housing amount (fiche 110201, Table C.9): the single amount for one
+owner or tenant, the shared multiple amount for more than one."""
+
+SOLIDARITY_HOUSING_AMOUNT = AmountKind.declare(
+    CATALOG, "solidarity_housing_amount", non_negative=True
+)
+"""Solidarity tax credit, housing component amount (fiche 110201, Table C.9): the basic housing
+amount when the filer is a tenant, a subtenant or an owner, 0 otherwise."""
