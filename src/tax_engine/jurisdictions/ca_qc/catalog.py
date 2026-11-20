@@ -157,6 +157,10 @@ SCHEDULE_U_LINE_17_2 = AmountKind.declare(CATALOG, "schedule_u_line_17_2")
 """Schedule U line 17.2 "Multiply line 17.1 by 6.4%": line 17.1 (a copy of line 14.4) at the printed
 rate, rounded half-up to the cent. Line 14.4 can be negative, so the figure can be."""
 
+SCHEDULE_U_LINE_17_3 = AmountKind.declare(CATALOG, "schedule_u_line_17_3", non_negative=True)
+"""Schedule U line 17.3 "Subtract line 17.2 from line 17. If the result is negative, enter 0": the
+QPP contribution (TP-1 line 98) less line 17.2, not below 0."""
+
 T1_LINE_21 = AmountKind.declare(CATALOG, "t1_line_21")
 """Add lines 1 to 20, 5005-R line 21 "Line 21: Add lines 1 to 20.": the employment income of line 1
 (`ca/employment_income`) and line 2 (`ca/other_employment_income`); lines 3 to 20 are not built (the
