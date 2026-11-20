@@ -1015,3 +1015,10 @@ WORK_CHART_401_LOWER_BOUND_LINE_3 = AmountKind.declare(
 """Work Chart 401 line 3 (0.00, 53,255.00, 106,495.00 or 129,590.00): the printed lower bound of the
 column that line 1 falls in. Produced by one core/bracket_column_lower_bound
 (`work_chart_401_line_3.yaml`)."""
+
+WORK_CHART_401_INCOME_OVER_LOWER_BOUND_LINE_4 = AmountKind.declare(
+    CATALOG, "work_chart_401_income_over_lower_bound_line_4", non_negative=True
+)
+"""Work Chart 401 line 4 "Subtract line 3 from line 2": line 1 (line 2 is a copy of it) less the
+column's lower bound (line 3), rounded half-up to the cent. Produced by one
+core/subtract_not_below_zero (`work_chart_401_line_4.yaml`)."""
