@@ -261,6 +261,10 @@ SCHEDULE_U_LINE_17_5 = AmountKind.declare(CATALOG, "schedule_u_line_17_5", non_n
 """Schedule U line 17.5 "Add lines 17.3 and 17.4": the excess over the base contribution plus the
 additional QPP contribution (TP-1 line 98.2), rounded half-up to the cent."""
 
+SCHEDULE_U_LINE_18_5 = AmountKind.declare(CATALOG, "schedule_u_line_18_5", non_negative=True)
+"""Schedule U line 18.5 "Pensionable salary or wages (QPP) (line 98.1 of your return)": the TP-1
+line 98.1 figure, read from the TP-1 income form."""
+
 SCHEDULE_U_LINE_18_7 = AmountKind.declare(CATALOG, "schedule_u_line_18_7", non_negative=True)
 """Schedule U line 18.7 "Subtract line 18.6 from line 18.5. If the result is negative, enter 0": the
 pensionable salary (TP-1 line 98.1) less the maximum pensionable earnings, not below 0."""
