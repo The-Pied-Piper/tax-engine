@@ -1,0 +1,12 @@
+# Revenu Quebec TP-1.D-V (2025-12), page 4, "Non-refundable tax credits": lines 350 to 399. This part
+# names the form; each printed line's capability is a part of its own with the same `form.name`.
+# Line 361 reads Schedule B (line 34) as that form's export. Lines 358, 388, 397.1 and the lines 390,
+# 391, 392, 395, 396, 398 and 398.1 are optional inputs, read as 0 when left out; lines 367 and 376
+# are not built. Export: line 399, the non-refundable tax credits that TP-1 line 406 reads.
+form:
+  name: ca-qc/tp1_credits
+  title: "Non-refundable tax credits"
+  required: true
+  exports:
+    - ca-qc/tp1_non_refundable_tax_credits_line_399
+capabilities: []

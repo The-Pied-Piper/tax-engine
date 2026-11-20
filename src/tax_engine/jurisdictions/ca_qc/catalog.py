@@ -1066,3 +1066,41 @@ TP1_UNION_DUES_CREDIT_LINE_397 = AmountKind.declare(
 """TP-1 line 397 "Multiply line 397.1 by 10%. Tax credit for union, professional or other dues":
 line 397.1 at the printed 10%, rounded half-up to the cent. Produced by one core/apply_rate
 (`tp1_credits_line_397.yaml`)."""
+
+
+TP1_LINE_390 = AmountKind.declare(CATALOG, "tp1_line_390", non_negative=True)
+"""TP-1 line 390, one of the lines that line 399 adds ("Add lines 377.1, 389 through 392, 395
+through 397, 398 and 398.1"): one optional input a salary-only caller does not give; line 399 reads
+a blank as 0 (`tp1_credits_line_399_inputs.yaml`)."""
+
+TP1_LINE_391 = AmountKind.declare(CATALOG, "tp1_line_391", non_negative=True)
+"""TP-1 line 391, one of the lines that line 399 adds: an optional input, read as 0 when blank
+(`tp1_credits_line_399_inputs.yaml`)."""
+
+TP1_LINE_392 = AmountKind.declare(CATALOG, "tp1_line_392", non_negative=True)
+"""TP-1 line 392, one of the lines that line 399 adds: an optional input, read as 0 when blank
+(`tp1_credits_line_399_inputs.yaml`)."""
+
+TP1_LINE_395 = AmountKind.declare(CATALOG, "tp1_line_395", non_negative=True)
+"""TP-1 line 395, one of the lines that line 399 adds: an optional input, read as 0 when blank
+(`tp1_credits_line_399_inputs.yaml`)."""
+
+TP1_LINE_396 = AmountKind.declare(CATALOG, "tp1_line_396", non_negative=True)
+"""TP-1 line 396, one of the lines that line 399 adds: an optional input, read as 0 when blank
+(`tp1_credits_line_399_inputs.yaml`)."""
+
+TP1_LINE_398 = AmountKind.declare(CATALOG, "tp1_line_398", non_negative=True)
+"""TP-1 line 398, one of the lines that line 399 adds: an optional input, read as 0 when blank
+(`tp1_credits_line_399_inputs.yaml`)."""
+
+TP1_LINE_398_1 = AmountKind.declare(CATALOG, "tp1_line_398_1", non_negative=True)
+"""TP-1 line 398.1, one of the lines that line 399 adds: an optional input, read as 0 when blank
+(`tp1_credits_line_399_inputs.yaml`)."""
+
+TP1_NON_REFUNDABLE_TAX_CREDITS_LINE_399 = AmountKind.declare(
+    CATALOG, "tp1_non_refundable_tax_credits_line_399"
+)
+"""TP-1 line 399 "Add lines 377.1, 389 through 392, 395 through 397, 398 and 398.1. Non-refundable
+tax credits": the sum, rounded half-up to the cent; the optional lines read as 0 when blank. Signed,
+as line 377.1 is. Produced by one core/sum (`tp1_credits_line_399.yaml`) and exported by the form
+for TP-1 line 406."""
