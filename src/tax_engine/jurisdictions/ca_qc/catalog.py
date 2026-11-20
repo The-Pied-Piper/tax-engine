@@ -1815,3 +1815,9 @@ TP1_LINE_445 = AmountKind.declare(CATALOG, "tp1_line_445", non_negative=True)
 """TP-1 line 445, one of the lines that line 450 adds ("Add lines 432 through 447"): the QPP
 contribution on income from self-employment. One optional input a salary-only caller does not give;
 line 450 reads a blank as 0 (`tp1_totals_line_450_inputs.yaml`)."""
+
+TP1_INCOME_TAX_AND_CONTRIBUTIONS_LINE_450 = AmountKind.declare(
+    CATALOG, "tp1_income_tax_and_contributions_line_450", non_negative=True
+)
+"""TP-1 line 450 "Add lines 432 through 447. Income tax and contributions": rounded half-up to the
+cent. Produced by one core/sum (`tp1_totals_line_450.yaml`)."""
