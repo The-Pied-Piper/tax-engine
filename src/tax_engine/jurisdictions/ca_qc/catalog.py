@@ -1182,6 +1182,11 @@ SOCIAL_BENEFITS_REPAYMENT_LINE_149 = AmountKind.declare(
 line 23500)": a copy of line 56, read from the T1 taxable-income export by one core/record_total
 (`t1_tax_and_credits_line_42200.yaml`)."""
 
+PROVINCIAL_TAX_LINE_150 = AmountKind.declare(CATALOG, "provincial_tax_line_150", non_negative=True)
+"""Provincial or territorial tax (from Form T2203, if applicable), 5005-R line 150 and line
+42800: an optional input a salary-only caller does not give; the line that reads it takes a
+blank as 0 (`t1_tax_and_credits_line_42800_inputs.yaml`)."""
+
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
 Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line
