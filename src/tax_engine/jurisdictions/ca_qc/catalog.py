@@ -111,3 +111,24 @@ TP1_TOTAL_INCOME_LINE_199 = AmountKind.declare(
 )
 """Total income, TP-1 line 199 "Add lines 101 and 105 through 164. Total income": line 101, the
 salary, plus the optional income of lines 105 through 164, rounded half-up to the cent."""
+
+TP1_FOREST_PRODUCER_AVERAGING_LINE_276 = AmountKind.declare(
+    CATALOG, "tp1_forest_producer_averaging_line_276", non_negative=True
+)
+"""The amount for income averaging for forest producers, included on TP-1 line 276, which Schedule F
+line 10 adds to total income; blank when the caller has none, and line 10 reads it as 0."""
+
+
+TP1_SCHEDULE_F_TOTAL_INCOME_LINE_199 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_total_income_line_199", non_negative=True
+)
+"""Total income of TP-1 line 199, as Schedule F line 10 reads it from the TP-1 income form."""
+
+
+TP1_SCHEDULE_F_INCOME_LINE_10 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_income_line_10", non_negative=True
+)
+"""Schedule F line 10, "Total income (line 199 of your return) plus the amount for income averaging
+for forest producers (included on line 276 of your return)": line 199 plus line 276, rounded
+half-up to the cent."""
+
