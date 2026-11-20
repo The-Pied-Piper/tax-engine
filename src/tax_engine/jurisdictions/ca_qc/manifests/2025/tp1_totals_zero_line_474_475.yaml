@@ -1,0 +1,13 @@
+# TP-1 (2025) lines 474 and 475, the "0" of the other side of the sign of line 470. One
+# core/credit_amount taking the figure from `ca-qc/tp1_zero_line_474_475` (a dataset figure, taken as
+# printed). It is not a line of the form, so it has no reference and no title; lines 474 and 475
+# read it.
+form:
+  name: ca-qc/tp1_totals
+capabilities:
+  - name: core/credit_amount
+    unit: ca/cad
+    params:
+      amount: ca-qc/tp1_zero_line_474_475
+    produces:
+      output: ca-qc/tp1_zero_line_474_475

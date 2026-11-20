@@ -1909,3 +1909,8 @@ TP1_LINE_470 = AmountKind.declare(CATALOG, "tp1_line_470")
 """TP-1 line 470 "Subtract line 468 from line 450": signed, as the form prints no floor (negative is
 a refund, positive a balance due). Rounded half-up to the cent. Produced by one core/subtract
 (`tp1_totals_line_470.yaml`)."""
+
+TP1_ZERO_LINE_474_475 = AmountKind.declare(CATALOG, "tp1_zero_line_474_475", non_negative=True)
+"""The "0" of the other side of the sign of line 470, for TP-1 lines 474 and 475: the `ca-
+qc/tp1_zero_line_474_475` dataset's amount. Not a line of the form. Produced by one
+core/credit_amount (`tp1_totals_zero_line_474_475.yaml`)."""
