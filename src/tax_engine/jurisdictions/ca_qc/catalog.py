@@ -1022,3 +1022,10 @@ WORK_CHART_401_INCOME_OVER_LOWER_BOUND_LINE_4 = AmountKind.declare(
 """Work Chart 401 line 4 "Subtract line 3 from line 2": line 1 (line 2 is a copy of it) less the
 column's lower bound (line 3), rounded half-up to the cent. Produced by one
 core/subtract_not_below_zero (`work_chart_401_line_4.yaml`)."""
+
+WORK_CHART_401_COLUMN_RATE_LINE_5 = AmountKind.declare(
+    CATALOG, "work_chart_401_column_rate_line_5", non_negative=True
+)
+"""Work Chart 401 line 5 "x 5" (14%, 19%, 24% or 25.75%): the printed rate of the column that line
+1 falls in, a fraction (0.2575 for 25.75%). Produced by one core/bracket_column_rate
+(`work_chart_401_line_5.yaml`)."""
