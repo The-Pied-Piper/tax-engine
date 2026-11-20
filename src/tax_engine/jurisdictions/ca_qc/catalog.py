@@ -550,6 +550,32 @@ SCHEDULE_P_WORK_PREMIUM_BEFORE_REDUCTION_LINE_76 = AmountKind.declare(
 """Schedule P Part E, section 2, column 1, line 76, "Multiply line 72 by line 74 or line 75 (as
 applicable)": the work premium before the family-income reduction, rounded half-up to the cent."""
 
+SCHEDULE_P_WORK_PREMIUM_REDUCTION_THRESHOLD_LINE_80 = AmountKind.declare(
+    CATALOG, "schedule_p_work_premium_reduction_threshold_line_80", non_negative=True
+)
+"""Schedule P Part E, section 2, column 1 "Work premium", line 80: the printed 12,620, claimed
+whole."""
+
+SCHEDULE_P_FAMILY_INCOME_OVER_THRESHOLD_LINE_82 = AmountKind.declare(
+    CATALOG, "schedule_p_family_income_over_threshold_line_82", non_negative=True
+)
+"""Schedule P Part E, section 2, column 1, line 82, "Subtract line 80 from line 78. If the result is
+negative, enter 0", rounded half-up to the cent."""
+
+SCHEDULE_P_WORK_PREMIUM_REDUCTION_LINE_83 = AmountKind.declare(
+    CATALOG, "schedule_p_work_premium_reduction_line_83", non_negative=True
+)
+"""Schedule P Part E, section 2, column 1, line 83, "Multiply line 82 by 10%": the reduction of the
+work premium by family income, rounded half-up to the cent."""
+
+SCHEDULE_P_WORK_PREMIUM_LINE_87 = AmountKind.declare(
+    CATALOG, "schedule_p_work_premium_line_87", non_negative=True
+)
+"""Schedule P Part E, section 2, column 1, line 84, "Subtract line 83 from line 76. If the result is
+negative, enter 0", the work premium after the reduction, rounded half-up to the cent. Line 87
+("Amount from line 84 in column 1 or column 2, whichever is greater") carries it to Part F: column 2
+is left out, so line 87 is this figure."""
+
 SCHEDULE_P_NET_INCOME_LINE_52 = AmountKind.declare(
     CATALOG, "schedule_p_net_income_line_52", non_negative=True
 )
@@ -1299,6 +1325,55 @@ FEDERAL_TAX_ON_TAXABLE_INCOME_LINE_77 = AmountKind.declare(
 plus line 76, rounded half-up to the cent, which the form enters on line 123. Produced by one
 core/sum (`t1_tax_and_credits_line_77.yaml`)."""
 
+WORK_CHART_401_TAXABLE_INCOME_LINE_1 = AmountKind.declare(
+    CATALOG, "work_chart_401_taxable_income_line_1", non_negative=True
+)
+"""Work Chart 401 line 1 "Taxable income (line 299 of your return)": TP-1 line 299, read from the
+net income form's export. Produced by one core/record_total (`work_chart_401_line_1.yaml`); line 2
+is a copy of it and has no step."""
+
+WORK_CHART_401_LOWER_BOUND_LINE_3 = AmountKind.declare(
+    CATALOG, "work_chart_401_lower_bound_line_3", non_negative=True
+)
+"""Work Chart 401 line 3 (0.00, 53,255.00, 106,495.00 or 129,590.00): the printed lower bound of the
+column that line 1 falls in. Produced by one core/bracket_column_lower_bound
+(`work_chart_401_line_3.yaml`)."""
+
+WORK_CHART_401_INCOME_OVER_LOWER_BOUND_LINE_4 = AmountKind.declare(
+    CATALOG, "work_chart_401_income_over_lower_bound_line_4", non_negative=True
+)
+"""Work Chart 401 line 4 "Subtract line 3 from line 2": line 1 (line 2 is a copy of it) less the
+column's lower bound (line 3), rounded half-up to the cent. Produced by one
+core/subtract_not_below_zero (`work_chart_401_line_4.yaml`)."""
+
+WORK_CHART_401_COLUMN_RATE_LINE_5 = AmountKind.declare(
+    CATALOG, "work_chart_401_column_rate_line_5", non_negative=True
+)
+"""Work Chart 401 line 5 "x 5" (14%, 19%, 24% or 25.75%): the printed rate of the column that line
+1 falls in, a fraction (0.2575 for 25.75%). Produced by one core/bracket_column_rate
+(`work_chart_401_line_5.yaml`)."""
+
+WORK_CHART_401_TAX_ON_EXCESS_LINE_6 = AmountKind.declare(
+    CATALOG, "work_chart_401_tax_on_excess_line_6", non_negative=True
+)
+"""Work Chart 401 line 6 "Multiply line 4 by line 5": the tax on the part of the taxable income over
+the column's lower bound, rounded half-up to the cent. Produced by one core/multiply_by_rate
+(`work_chart_401_line_6.yaml`)."""
+
+WORK_CHART_401_TAX_AT_START_LINE_7 = AmountKind.declare(
+    CATALOG, "work_chart_401_tax_at_start_line_7", non_negative=True
+)
+"""Work Chart 401 line 7 "+ 7" (0.00, 7,455.70, 17,571.30 or 23,114.10): the printed amount of the
+column that line 1 falls in, taken as printed. Produced by one core/bracket_column_tax_at_start
+(`work_chart_401_line_7.yaml`)."""
+
+WORK_CHART_401_INCOME_TAX_LINE_8 = AmountKind.declare(
+    CATALOG, "work_chart_401_income_tax_line_8", non_negative=True
+)
+"""Work Chart 401 line 8 "Add lines 6 and 7. Income tax on taxable income": line 6 plus line 7,
+rounded half-up to the cent, which the chart carries to line 401 of the return. Produced by one
+core/sum (`work_chart_401_line_8.yaml`); the chart exports it."""
+
 SCHEDULE_K_NET_INCOME_LINE_36 = AmountKind.declare(
     CATALOG, "schedule_k_net_income_line_36", non_negative=True
 )
@@ -1349,3 +1424,154 @@ SCHEDULE_K_PREMIUM_INCOME_LINE_48 = AmountKind.declare(
 result is negative, enter 0. In this case, you do not have to pay a premium": one
 core/subtract_not_below_zero (`tp1_schedule_k_line_48.yaml`). The form exports it; Part C reads
 it."""
+
+TP1_BASIC_PERSONAL_AMOUNT_LINE_350 = AmountKind.declare(
+    CATALOG, "tp1_basic_personal_amount_line_350", non_negative=True
+)
+"""TP-1 line 350 "Basic personal amount": the printed figure 18,571.00, claimed whole. Produced by
+one core/credit_amount over the dataset of the same name (`tp1_credits_line_350.yaml`). It is its
+own kind: `ca-qc/basic_personal_amount` is the federal basic personal amount of 5005-R line 78."""
+
+
+TP1_INCOME_REPLACEMENT_ADJUSTMENT_LINE_358 = AmountKind.declare(
+    CATALOG, "tp1_income_replacement_adjustment_line_358", non_negative=True
+)
+"""TP-1 line 358 "Adjustment for income replacement indemnities": one optional input a salary-only
+caller does not give; line 359 reads a blank as 0 (`tp1_credits_line_358_input.yaml`)."""
+
+
+TP1_LINE_359 = AmountKind.declare(CATALOG, "tp1_line_359")
+"""TP-1 line 359 "Subtract line 358 from line 350": the basic personal amount less the adjustment,
+rounded half-up to the cent. The form prints no floor, so the figure is signed. Produced by one
+core/subtract (`tp1_credits_line_359.yaml`)."""
+
+
+TP1_AGE_LIVING_ALONE_RETIREMENT_AMOUNT_LINE_361 = AmountKind.declare(
+    CATALOG, "tp1_age_living_alone_retirement_amount_line_361"
+)
+"""TP-1 line 361 "Age amount, amount for a person living alone and amount for retirement income.
+Complete Schedule B": the figure Schedule B carries from its line 34, which is signed. Produced by
+one core/record_total over the Schedule B export (`tp1_credits_line_361.yaml`)."""
+
+
+TP1_LINE_377 = AmountKind.declare(CATALOG, "tp1_line_377")
+"""TP-1 line 377 "Add lines 359 through 376": lines 359 and 361, rounded half-up to the cent (lines
+367 and 376 are not built). Signed, as its parts are. Produced by one core/sum
+(`tp1_credits_line_377.yaml`)."""
+
+
+TP1_LINE_377_1 = AmountKind.declare(CATALOG, "tp1_line_377_1")
+"""TP-1 line 377.1 "Multiply line 377 by 14%": line 377 at the printed 14%, rounded half-up to the
+cent. Signed, as line 377 is. Produced by one core/apply_rate (`tp1_credits_line_377_1.yaml`)."""
+
+
+TP1_LINE_388 = AmountKind.declare(CATALOG, "tp1_line_388", non_negative=True)
+"""TP-1 line 388 "Add lines 378 through 385": the printed sum of lines 378 to 385, one optional
+input a salary-only caller does not give; line 389 reads a blank as 0
+(`tp1_credits_line_388_input.yaml`)."""
+
+
+TP1_LINE_389 = AmountKind.declare(CATALOG, "tp1_line_389", non_negative=True)
+"""TP-1 line 389 "Multiply line 388 by 20%": line 388 at the printed 20%, rounded half-up to the
+cent. Produced by one core/apply_rate (`tp1_credits_line_389.yaml`)."""
+
+
+TP1_UNION_DUES_LINE_397_1 = AmountKind.declare(
+    CATALOG, "tp1_union_dues_line_397_1", non_negative=True
+)
+"""TP-1 line 397.1 "Union, professional or other dues": one optional input a salary-only caller does
+not give; line 397 reads a blank as 0 (`tp1_credits_line_397_1_input.yaml`)."""
+
+
+TP1_UNION_DUES_CREDIT_LINE_397 = AmountKind.declare(
+    CATALOG, "tp1_union_dues_credit_line_397", non_negative=True
+)
+"""TP-1 line 397 "Multiply line 397.1 by 10%. Tax credit for union, professional or other dues":
+line 397.1 at the printed 10%, rounded half-up to the cent. Produced by one core/apply_rate
+(`tp1_credits_line_397.yaml`)."""
+
+
+TP1_LINE_390 = AmountKind.declare(CATALOG, "tp1_line_390", non_negative=True)
+"""TP-1 line 390, one of the lines that line 399 adds ("Add lines 377.1, 389 through 392, 395
+through 397, 398 and 398.1"): one optional input a salary-only caller does not give; line 399 reads
+a blank as 0 (`tp1_credits_line_399_inputs.yaml`)."""
+
+TP1_LINE_391 = AmountKind.declare(CATALOG, "tp1_line_391", non_negative=True)
+"""TP-1 line 391, one of the lines that line 399 adds: an optional input, read as 0 when blank
+(`tp1_credits_line_399_inputs.yaml`)."""
+
+TP1_LINE_392 = AmountKind.declare(CATALOG, "tp1_line_392", non_negative=True)
+"""TP-1 line 392, one of the lines that line 399 adds: an optional input, read as 0 when blank
+(`tp1_credits_line_399_inputs.yaml`)."""
+
+TP1_LINE_395 = AmountKind.declare(CATALOG, "tp1_line_395", non_negative=True)
+"""TP-1 line 395, one of the lines that line 399 adds: an optional input, read as 0 when blank
+(`tp1_credits_line_399_inputs.yaml`)."""
+
+TP1_LINE_396 = AmountKind.declare(CATALOG, "tp1_line_396", non_negative=True)
+"""TP-1 line 396, one of the lines that line 399 adds: an optional input, read as 0 when blank
+(`tp1_credits_line_399_inputs.yaml`)."""
+
+TP1_LINE_398 = AmountKind.declare(CATALOG, "tp1_line_398", non_negative=True)
+"""TP-1 line 398, one of the lines that line 399 adds: an optional input, read as 0 when blank
+(`tp1_credits_line_399_inputs.yaml`)."""
+
+TP1_LINE_398_1 = AmountKind.declare(CATALOG, "tp1_line_398_1", non_negative=True)
+"""TP-1 line 398.1, one of the lines that line 399 adds: an optional input, read as 0 when blank
+(`tp1_credits_line_399_inputs.yaml`)."""
+
+TP1_NON_REFUNDABLE_TAX_CREDITS_LINE_399 = AmountKind.declare(
+    CATALOG, "tp1_non_refundable_tax_credits_line_399"
+)
+"""TP-1 line 399 "Add lines 377.1, 389 through 392, 395 through 397, 398 and 398.1. Non-refundable
+tax credits": the sum, rounded half-up to the cent; the optional lines read as 0 when blank. Signed,
+as line 377.1 is. Produced by one core/sum (`tp1_credits_line_399.yaml`) and exported by the form
+for TP-1 line 406."""
+
+SCHEDULE_K_COLUMN_LOWER_BOUND_LINE_78 = AmountKind.declare(
+    CATALOG, "schedule_k_column_lower_bound_line_78", non_negative=True
+)
+"""Schedule K line 78, the printed lower bound of the column that line 77 (a copy of line 48) falls
+in: 0.00 under column A ($5,000 or less) and 5,000.00 under column B (more than $5,000). One
+core/bracket_column_lower_bound (`tp1_schedule_k_line_78.yaml`)."""
+
+SCHEDULE_K_INCOME_OVER_LOWER_BOUND_LINE_79 = AmountKind.declare(
+    CATALOG, "schedule_k_income_over_lower_bound_line_79", non_negative=True
+)
+"""Schedule K line 79, "Subtract line 78 from line 77": the part of line 48 over the column's lower
+bound, rounded half-up to the cent. One core/subtract_not_below_zero
+(`tp1_schedule_k_line_79.yaml`)."""
+
+SCHEDULE_K_COLUMN_RATE_LINE_80 = AmountKind.declare(
+    CATALOG, "schedule_k_column_rate_line_80", non_negative=True
+)
+"""Schedule K line 80, the row "x 80 | 7.84% | 11.76%": the printed rate of the column that line 48
+falls in. One core/bracket_column_rate (`tp1_schedule_k_line_80.yaml`)."""
+
+SCHEDULE_K_PREMIUM_ON_EXCESS_LINE_81 = AmountKind.declare(
+    CATALOG, "schedule_k_premium_on_excess_line_81", non_negative=True
+)
+"""Schedule K line 81, "Multiply line 79 by line 80": line 79 times the column's rate, rounded
+half-up to the cent. One core/multiply_by_rate (`tp1_schedule_k_line_81.yaml`)."""
+
+SCHEDULE_K_COLUMN_CONSTANT_LINE_82 = AmountKind.declare(
+    CATALOG, "schedule_k_column_constant_line_82", non_negative=True
+)
+"""Schedule K line 82, "+ 82 | 000 00 | 392 00": the printed constant of the column that line 48
+falls in (0.00 and 392.00), taken as printed. One core/bracket_column_tax_at_start
+(`tp1_schedule_k_line_82.yaml`)."""
+
+SCHEDULE_K_COLUMN_PREMIUM_LINE_83 = AmountKind.declare(
+    CATALOG, "schedule_k_column_premium_line_83", non_negative=True
+)
+"""Schedule K line 83, "Add lines 81 and 82 (maximum $766)": the two lines added, rounded half-up to
+the cent. One core/sum (`tp1_schedule_k_line_83.yaml`); line 84 applies the printed maximum, so
+this figure is above 766 for a line 48 over about $8,180."""
+
+SCHEDULE_K_PREMIUM_LINE_84 = AmountKind.declare(
+    CATALOG, "schedule_k_premium_line_84", non_negative=True
+)
+"""Premium, Schedule K line 84 "Amount from line 83 of column A or B, as applicable", with the
+printed maximum of $766 ("is more than $14,669, enter $766 on line 84"): the lesser of line 83 and
+`ca-qc/schedule_k_line_84_maximum`. One core/capped_amount (`tp1_schedule_k_line_84.yaml`). The
+form exports it; the lines after it read it."""

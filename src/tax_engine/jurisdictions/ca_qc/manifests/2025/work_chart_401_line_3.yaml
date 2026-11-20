@@ -1,0 +1,18 @@
+# Work Chart 401 (TP-1.D.GR-V 2025-12), line 3: "- 3" prints 0.00 in column A, 53,255.00 in column B,
+# 106,495.00 in column C and 129,590.00 in column D, under the instructions "is $53,255 or less" (A),
+# "is more than $53,255 but not more than $106,495" (B), "is more than $106,495 but not more than
+# $129,590" (C) and "is more than $129,590" (D). Line 3 is the printed lower bound of the column
+# that line 1 falls in. Line 2 is a copy of line 1 and has no step of its own: line 3 reads line 1
+# directly. A line 1 at a bound is in the lower column, as the instructions print.
+form:
+  name: ca-qc/work_chart_401
+capabilities:
+  - name: core/bracket_column_lower_bound
+    reference: "3"
+    unit: ca/cad
+    params:
+      schedule: ca-qc/brackets_work_chart_401
+    consumes:
+      base: ca-qc/work_chart_401_taxable_income_line_1
+    produces:
+      output: ca-qc/work_chart_401_lower_bound_line_3

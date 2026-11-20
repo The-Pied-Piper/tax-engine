@@ -1,0 +1,16 @@
+# Work Chart 401 (TP-1.D.GR-V 2025-12), line 7: "+ 7" prints 0.00 in column A, 7,455.70 in column B,
+# 17,571.30 in column C and 23,114.10 in column D. Line 7 is the printed amount of the column that
+# line 1 falls in: the amount of that column, not a figure computed from the lower columns' rates
+# (the dataset takes it as printed). Line 2 is a copy of line 1 and has no step of its own.
+form:
+  name: ca-qc/work_chart_401
+capabilities:
+  - name: core/bracket_column_tax_at_start
+    reference: "7"
+    unit: ca/cad
+    params:
+      schedule: ca-qc/brackets_work_chart_401
+    consumes:
+      base: ca-qc/work_chart_401_taxable_income_line_1
+    produces:
+      output: ca-qc/work_chart_401_tax_at_start_line_7
