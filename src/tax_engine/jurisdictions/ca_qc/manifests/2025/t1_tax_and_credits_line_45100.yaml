@@ -1,0 +1,21 @@
+# 5005-R (2025) line 159 and line 45100. The form prints: "Line 159 and line 45100: Net EI overpayment
+# Line 157 minus line 158 (if negative, enter "0") =" (page 8). Line 158 is "Amount from line 31210",
+# a pure copy of line 92 (the PPIP premiums payable on employment income, 0 for a Quebec employee, a
+# blank for a salary-only filer read as 0), so line 92 is read directly and 158 is not a step. One
+# step: core/subtract_not_below_zero, rounded half-up to the cent through `ca-qc/cent_rounding`.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/subtract_not_below_zero
+    title: "Net EI overpayment"
+    reference: "45100"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/ei_overpayment_line_157
+      less: ca-qc/ppip_premiums_payable_line_92
+    blank:
+      less: "0"
+    produces:
+      output: ca-qc/net_ei_overpayment_line_159

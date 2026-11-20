@@ -1,0 +1,13 @@
+# 5005-R (2025) line 166 input a salary-only caller does not give.
+# Line 166 and line 45700: "Employee and partner GST/HST rebate (complete Form GST370)" (page 8). A salary-only filer has no such amount, so it is an
+# optional input left blank; the sum that reads it takes a blank as 0.
+form:
+  name: ca-qc/t1_tax_and_credits
+inputs:
+  - name: ca-qc/gst_hst_rebate_line_166
+    title: "Employee and partner GST/HST rebate"
+    reference: "45700"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Employee and partner GST/HST rebate (complete Form GST370)"

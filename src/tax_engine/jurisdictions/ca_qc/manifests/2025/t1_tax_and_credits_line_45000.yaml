@@ -1,0 +1,17 @@
+# 5005-R (2025) line 157 and line 45000. The form prints: "Line 157 and line 45000: Employment
+# insurance (EI) overpayment" (page 8). The amount is T2204 line 15: "If this amount is more than $1,
+# enter it on line 45000 of your return." The T2204 export (`ca/ei_overpayment`) is that amount, 0 when
+# line 15 is not more than $1. Another form's export is read only as a record list
+# (`ca/t2204.ei_overpayment`), so core/record_total totals the one amount into line 157, as the federal
+# line 45000 does.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/record_total
+    title: "Employment insurance (EI) overpayment"
+    reference: "45000"
+    unit: ca/cad
+    consumes:
+      records: ca/t2204.ei_overpayment
+    produces:
+      output: ca-qc/ei_overpayment_line_157

@@ -1,0 +1,17 @@
+# 5005-R (2025) line 161 and line 45300. The form prints: "Line 161 and line 45300: Canada workers
+# benefit (CWB) (complete Schedule 6)" (page 8). The amount is Schedule 6 line 28: "If you are not
+# completing Step 3, enter this amount on line 45300 of your return." The shared Schedule 6 (with the
+# Quebec dataset swaps of the manifest's import) exports it (`ca/schedule_6.cwb_benefit_line_28`).
+# Another form's export is read only as a record list, so core/record_total totals the one amount into
+# line 161, as the federal line 45300 does.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/record_total
+    title: "Canada workers benefit (CWB)"
+    reference: "45300"
+    unit: ca/cad
+    consumes:
+      records: ca/schedule_6.cwb_benefit_line_28
+    produces:
+      output: ca-qc/cwb_line_161

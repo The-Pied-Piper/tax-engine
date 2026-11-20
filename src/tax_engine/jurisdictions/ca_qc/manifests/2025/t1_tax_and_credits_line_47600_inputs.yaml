@@ -1,0 +1,13 @@
+# 5005-R (2025) line 170 input a salary-only caller does not give.
+# Line 170 and line 47600: "Tax paid by instalments" (page 8). A salary-only filer has no such amount, so it is an
+# optional input left blank; the sum that reads it takes a blank as 0.
+form:
+  name: ca-qc/t1_tax_and_credits
+inputs:
+  - name: ca-qc/tax_paid_by_instalments_line_170
+    title: "Tax paid by instalments"
+    reference: "47600"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Tax paid by instalments"

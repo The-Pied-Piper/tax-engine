@@ -1,0 +1,13 @@
+# 5005-R (2025) line 162 input a salary-only caller does not give.
+# Line 162 and line 45350: "Canada training credit (CTC) (complete Schedule 11)" (page 8). A salary-only filer has no such amount, so it is an
+# optional input left blank; the sum that reads it takes a blank as 0.
+form:
+  name: ca-qc/t1_tax_and_credits
+inputs:
+  - name: ca-qc/canada_training_credit_line_162
+    title: "Canada training credit (CTC)"
+    reference: "45350"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Canada training credit (CTC) (complete Schedule 11)"

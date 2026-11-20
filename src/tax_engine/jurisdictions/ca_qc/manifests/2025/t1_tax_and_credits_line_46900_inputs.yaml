@@ -1,0 +1,15 @@
+# 5005-R (2025) line 167 input a salary-only caller does not give.
+# Line 167 and line 46900: "Eligible educator school supply tax credit Supplies expenses (maximum $1,000) Line 46800 multiplied by 25% =" (page 8). A salary-only filer has no such amount, so it is an
+# optional input left blank; the sum that reads it takes a blank as 0.
+# The printed worksheet (supplies expenses on line 46800 at 25%) is a block of optional inputs skipped for a salary-only
+# filer (owner, 19 Nov 2026: lines 162 to 170 are optional inputs left blank), so line 46900 is taken as the one input.
+form:
+  name: ca-qc/t1_tax_and_credits
+inputs:
+  - name: ca-qc/eligible_educator_credit_line_167
+    title: "Eligible educator school supply tax credit"
+    reference: "46900"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Eligible educator school supply tax credit Supplies expenses (maximum $1,000) Line 46800 multiplied by 25% ="
