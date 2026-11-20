@@ -63,6 +63,8 @@ LINE_75_INPUT = "ca-mb/mb479_community_enterprise_development_tax_credit_line_75
 LINE_75 = "ca-mb/mb479_community_enterprise_development_tax_credit_checked_line_75"
 T1_PARTS = (
     "t1_taxable_income_inputs.yaml",
+    "t1_taxable_income_line_10100.yaml",
+    "t1_taxable_income_line_10400.yaml",
     "t1_taxable_income_line_15000.yaml",
     "t1_taxable_income_line_23300.yaml",
     "t1_taxable_income_line_23400.yaml",

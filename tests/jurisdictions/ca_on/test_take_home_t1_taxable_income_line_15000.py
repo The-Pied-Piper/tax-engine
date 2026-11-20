@@ -27,7 +27,11 @@ from tax_engine.jurisdictions.ca.catalog.income import (
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
 
 D = Decimal
-PART = "t1_taxable_income_line_15000.yaml"
+PARTS = (
+    "t1_taxable_income_line_10100.yaml",
+    "t1_taxable_income_line_10400.yaml",
+    "t1_taxable_income_line_15000.yaml",
+)
 
 HEADER = dedent("""\
     jurisdiction: CA-ON
@@ -51,7 +55,7 @@ FORM = dedent("""\
 
 
 def line_15000(take_home_service: TakeHomeService, salary: str, other: str) -> Decimal:
-    worksheets = take_home_service(HEADER, FORM, PART).compute(
+    worksheets = take_home_service(HEADER, FORM, *PARTS).compute(
         JurisdictionCode("CA-ON"),
         2025,
         Artifact(EMPLOYMENT_INCOME, D(salary)),

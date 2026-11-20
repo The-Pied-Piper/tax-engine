@@ -59,6 +59,8 @@ PART_90 = NL_PARTS / "nl428_line_90.yaml"
 NL_LINE_PARTS = (PART_88, NL_PARTS / "nl428_line_89_input.yaml", PART_90)
 T1_PARTS = (
     "t1_taxable_income_inputs.yaml",
+    "t1_taxable_income_line_10100.yaml",
+    "t1_taxable_income_line_10400.yaml",
     "t1_taxable_income_line_15000.yaml",
     "t1_taxable_income_line_23300.yaml",
     "t1_taxable_income_line_23400.yaml",

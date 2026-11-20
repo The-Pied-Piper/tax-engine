@@ -12,6 +12,8 @@ REGISTERED = frozenset(
         "ca/employment_income",
         "ca/total_income",
         "ca/other_employment_income",
+        "ca/employment_income_line_10100",
+        "ca/other_employment_income_line_10400",
         "ca/credits_against_basic_federal_tax",
         "ca/fuel_charge_gross_farming_expenses",
         "ca/fuel_charge_expenses_on",

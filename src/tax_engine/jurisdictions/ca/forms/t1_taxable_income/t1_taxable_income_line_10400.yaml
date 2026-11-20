@@ -1,0 +1,18 @@
+# T1 (5006-R, 2025) line 10400, other employment income: "Line 2 and line 10400: Other employment
+# income" (5006-R page 3). The optional input (`ca/other_employment_income`, 0 when the filer has
+# none) is read by this step, which is the one line the T1 prints for it. The other forms that read
+# the same input (Schedule 6, ON428-A, line 31260) print their own lines, not line 10400. Line 15000
+# reads this step.
+form:
+  name: ca/t1_taxable_income
+capabilities:
+  - name: core/sum
+    title: "Other employment income"
+    reference: "10400"
+    unit: ca/cad
+    params:
+      rounding: ca/cent_rounding
+    consumes:
+      parts: [ca/other_employment_income]
+    produces:
+      output: ca/other_employment_income_line_10400

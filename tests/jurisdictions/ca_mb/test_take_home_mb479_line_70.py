@@ -63,6 +63,8 @@ LINE_67 = "ca-mb/mb479_green_energy_purchaser_credit_line_67"
 COST_68 = "ca-mb/mb479_geothermal_heat_pump_cost_line_68"
 T1_PARTS = (
     "t1_taxable_income_inputs.yaml",
+    "t1_taxable_income_line_10100.yaml",
+    "t1_taxable_income_line_10400.yaml",
     "t1_taxable_income_line_15000.yaml",
     "t1_taxable_income_line_23300.yaml",
     "t1_taxable_income_line_23400.yaml",

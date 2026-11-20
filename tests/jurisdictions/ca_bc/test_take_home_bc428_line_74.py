@@ -53,6 +53,8 @@ IDENTIFIER = "ca-bc/bc428_net_income_line_74"
 # The real federal parts the T1 taxable-income form needs, beside the salary and line 74.
 FEDERAL_PARTS = (
     "t1_taxable_income_inputs.yaml",
+    "t1_taxable_income_line_10100.yaml",
+    "t1_taxable_income_line_10400.yaml",
     "t1_taxable_income_line_15000.yaml",
     "t1_taxable_income_line_23300.yaml",
     "t1_taxable_income_line_23400.yaml",
