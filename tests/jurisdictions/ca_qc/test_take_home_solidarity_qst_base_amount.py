@@ -63,5 +63,6 @@ def test_the_part_names_the_form_and_claims_the_dataset_whole() -> None:
         if step["produces"] == {"output": "ca-qc/solidarity_qst_base_amount"}
     ]
     assert step["name"] == "core/credit_amount"
+    assert step["unit"] == "ca/cad"
     assert step["params"] == {"amount": "ca-qc/solidarity_qst_base_amount"}
     assert step["produces"] == {"output": "ca-qc/solidarity_qst_base_amount"}

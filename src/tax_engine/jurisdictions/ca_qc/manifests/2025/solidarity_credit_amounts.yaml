@@ -5,26 +5,31 @@ form:
   name: ca-qc/solidarity_credit
 capabilities:
   - name: core/credit_amount
+    unit: ca/cad
     params:
       amount: ca-qc/solidarity_qst_base_amount
     produces:
       output: ca-qc/solidarity_qst_base_amount
   - name: core/credit_amount
+    unit: ca/cad
     params:
       amount: ca-qc/solidarity_living_alone_amount
     produces:
       output: ca-qc/solidarity_living_alone_amount
   - name: core/credit_amount
+    unit: ca/cad
     params:
       amount: ca-qc/solidarity_housing_single_amount
     produces:
       output: ca-qc/solidarity_housing_single_amount
   - name: core/credit_amount
+    unit: ca/cad
     params:
       amount: ca-qc/solidarity_housing_multiple_amount
     produces:
       output: ca-qc/solidarity_housing_multiple_amount
   - name: core/credit_amount
+    unit: ca/cad
     params:
       amount: ca-qc/solidarity_reduction_threshold
     produces:

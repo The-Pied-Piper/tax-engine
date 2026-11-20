@@ -1,7 +1,7 @@
 # Quebec solidarity tax credit reduction rate when only one of the three components is received,
 # for the payment period July 2026 to June 2027 (the credit of the 2025 return): 3%, as printed in
-# the text of the Quebec Ministry of Finance fiche 110201 (Dépenses fiscales 2025, art.
-# 1029.8.116.16), a web page, so the figure is a listed check until a printed source is found. The
+# the text of the Quebec Ministry of Finance fiche 110201 (Dépenses fiscales
+# 2025), a web page, so the figure is a listed check until a printed source is found. The
 # product is a dollars-and-cents line, so it rounds half-up to the cent, the project's choice.
 family: ca-qc/solidarity_reduction_rate_one_component
 tax_year: 2025

@@ -1,7 +1,6 @@
 """The 2025 `ca-qc/solidarity_reduction_rate` dataset, checked against fiche 110201.
 
-Quebec Ministry of Finance, Dépenses fiscales 2025, fiche 110201 (credit
-reduction text): the reduction rate is 6%.
+Quebec Ministry of Finance, Dépenses fiscales 2025, fiche 110201: the reduction rate is 6%.
 The fiche is a web page, so the figure is a listed check until a printed source is found. The
 printed 6% is a rate of 0.06. The reduction is a dollars-and-cents figure, so it rounds
 half-up to the cent, the project's choice, as the forms state no rounding rule.
