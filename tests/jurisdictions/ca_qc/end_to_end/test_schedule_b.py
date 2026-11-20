@@ -20,7 +20,6 @@ from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca_qc.catalog import (
     SCHEDULE_B_LINE_10,
     SCHEDULE_B_LINE_14,
-    SCHEDULE_B_LINE_16,
     SCHEDULE_B_LINE_18,
     SCHEDULE_B_LINE_20,
     SCHEDULE_B_LINE_30,
@@ -28,6 +27,7 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     SCHEDULE_B_LINE_32,
     SCHEDULE_B_LINE_34,
     SCHEDULE_B_LIVED_ALONE_LINE_20,
+    SCHEDULE_B_THRESHOLD_LINE_16,
 )
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
 from tests.jurisdictions.ca_qc.schedule_b_support import LINE_31_PARTS, schedule_b_sheet
@@ -74,7 +74,7 @@ def test_the_family_income_lines_from_line_10_to_line_31(
     kinds = (
         SCHEDULE_B_LINE_10,
         SCHEDULE_B_LINE_14,
-        SCHEDULE_B_LINE_16,
+        SCHEDULE_B_THRESHOLD_LINE_16,
         SCHEDULE_B_LINE_18,
         SCHEDULE_B_LINE_31,
     )

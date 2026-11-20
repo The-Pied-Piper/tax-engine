@@ -11,4 +11,4 @@ capabilities:
     params:
       amount: ca-qc/schedule_b_threshold_line_16
     produces:
-      output: ca-qc/schedule_b_line_16
+      output: ca-qc/schedule_b_threshold_line_16

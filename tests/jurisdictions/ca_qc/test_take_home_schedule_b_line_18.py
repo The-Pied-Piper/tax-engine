@@ -79,7 +79,7 @@ def test_the_part_is_one_subtract_not_below_zero_of_line_16_from_line_14() -> No
         "params": {"rounding": "ca-qc/cent_rounding"},
         "consumes": {
             "amount": "ca-qc/schedule_b_line_14",
-            "less": "ca-qc/schedule_b_line_16",
+            "less": "ca-qc/schedule_b_threshold_line_16",
         },
         "produces": {"output": IDENTIFIER},
     }

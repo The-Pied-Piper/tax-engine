@@ -12,6 +12,6 @@ capabilities:
       rounding: ca-qc/cent_rounding
     consumes:
       amount: ca-qc/schedule_b_line_14
-      less: ca-qc/schedule_b_line_16
+      less: ca-qc/schedule_b_threshold_line_16
     produces:
       output: ca-qc/schedule_b_line_18
