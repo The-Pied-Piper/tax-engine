@@ -32,6 +32,7 @@ imports:
       ca/cwb_rate: ca-qc/cwb_rate
       ca/cwb_maximum: ca-qc/cwb_maximum
       ca/cwb_reduction_threshold: ca-qc/cwb_reduction_threshold
+      ca/cwb_reduction_rate: ca-qc/cwb_reduction_rate
   # Quebec's EI rate is 1.31% (T2204 line 11, 5005-S10 line 19): the shared T2204 reads the Quebec dataset.
   - form: ca/t2204
     datasets:
