@@ -136,3 +136,33 @@ WORK_CHART_201_ELIGIBLE_WORK_INCOME_LINE_1 = AmountKind.declare(
 )
 """Work Chart 201 line 1 "Eligible work income": lines 101, 107 and, if positive, 105, minus the
 amount from box 211 of the RL-1 slip, not below zero, rounded half-up to the cent."""
+
+WORK_CHART_201_WORK_INCENTIVE_AMOUNTS_LINE_2 = AmountKind.declare(
+    CATALOG, "work_chart_201_work_incentive_amounts_line_2", non_negative=True
+)
+"""Work Chart 201 line 2 "Amounts received under a work-incentive project": an optional input,
+blank when the caller has none and read as 0."""
+
+WORK_CHART_201_RESEARCH_GRANTS_LINE_3 = AmountKind.declare(
+    CATALOG, "work_chart_201_research_grants_line_3", non_negative=True
+)
+"""Work Chart 201 line 3 "Net amount of research grants": an optional input, blank when the caller
+has none and read as 0."""
+
+WORK_CHART_201_WEPP_PAYMENTS_LINE_4 = AmountKind.declare(
+    CATALOG, "work_chart_201_wepp_payments_line_4", non_negative=True
+)
+"""Work Chart 201 line 4 "Wage Earner Protection Program (WEPP) payments": an optional input, blank
+when the caller has none and read as 0."""
+
+WORK_CHART_201_NET_BUSINESS_INCOME_LINE_5 = AmountKind.declare(
+    CATALOG, "work_chart_201_net_business_income_line_5", non_negative=True
+)
+"""Work Chart 201 line 5 "Net business income (line 27 of Schedule L). If the result is negative,
+enter 0": an optional input, taken as the form takes it, so never negative; blank when the caller
+has none and read as 0."""
+
+WORK_CHART_201_TOTAL_LINE_6 = AmountKind.declare(
+    CATALOG, "work_chart_201_total_line_6", non_negative=True
+)
+"""Work Chart 201 line 6 "Add lines 1 through 5": the sum, rounded half-up to the cent."""

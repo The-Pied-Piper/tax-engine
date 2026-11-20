@@ -1,0 +1,13 @@
+# Work Chart 201 (TP-1.D.GR-V 2025-12), line 5, "Net business income". An optional input a salary-only caller does
+# not give: a request that leaves it out is read as blank, and the line 6 part
+# (work_chart_201_line_6.yaml) reads the blank as 0.
+form:
+  name: ca-qc/work_chart_201
+inputs:
+  - name: ca-qc/work_chart_201_net_business_income_line_5
+    title: "Net business income"
+    reference: "5"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Net business income (line 27 of Schedule L). If the result is negative, enter 0.'
