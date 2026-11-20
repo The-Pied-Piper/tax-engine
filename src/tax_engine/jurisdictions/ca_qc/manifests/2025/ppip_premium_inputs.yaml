@@ -1,0 +1,14 @@
+# PPIP premium (2025) inputs a salary-only caller does not give.
+# 5005-R line 91: "Line 91 and line 31205: Provincial parental insurance plan (PPIP) premiums paid
+# (box 55 of all T4 slips) (maximum $484.12)". The take-home caller has no T4 slip, so a request that
+# leaves the figure out is read as blank, and the line 91 part computes it from the salary.
+form:
+  name: ca-qc/ppip_premium
+inputs:
+  - name: ca-qc/ppip_premiums_given
+    title: "Provincial parental insurance plan (PPIP) premiums paid"
+    reference: "Box 55"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Provincial parental insurance plan (PPIP) premiums paid (box 55 of all T4 slips)'
