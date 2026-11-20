@@ -1,0 +1,22 @@
+# Schedule P (TP-1.D.P-V, 2025-12) Part A line 29: "Subtract line 22 from line 18 and, if
+# applicable,
+# subtract line 42 from line 38. Work income". Column "You": line 22 off line 18; the spouse
+# column is left out. Line 22 is an optional input (its own part), a blank read as 0. The form
+# prints no floor, as Schedule 6 line 15 prints none, so core/subtract gives a negative figure as
+# is, rounded half-up to the cent (`ca-qc/cent_rounding`).
+form:
+  name: ca-qc/schedule_p
+capabilities:
+  - name: core/subtract
+    title: "Work income"
+    reference: "29"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/schedule_p_line_18
+      less: ca-qc/schedule_p_deductible_income_line_22
+    blank:
+      less: "0"
+    produces:
+      output: ca-qc/schedule_p_work_income_line_29

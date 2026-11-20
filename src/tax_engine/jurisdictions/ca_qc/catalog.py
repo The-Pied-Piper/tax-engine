@@ -112,6 +112,84 @@ TP1_TOTAL_INCOME_LINE_199 = AmountKind.declare(
 """Total income, TP-1 line 199 "Add lines 101 and 105 through 164. Total income": line 101, the
 salary, plus the optional income of lines 105 through 164, rounded half-up to the cent."""
 
+WORK_CHART_201_LINE_105 = AmountKind.declare(CATALOG, "tp1_line_105", non_negative=True)
+"""TP-1 line 105, as Work Chart 201 line 1 reads it ("lines 101, 107 and, if positive, 105"): an
+optional input, blank when the caller has none and read as 0. A negative figure is refused:
+the owner decided on the ticket (19 Nov 2026) that the chart's "if positive" test on line 105 is
+moot, with no step for it."""
+
+WORK_CHART_201_LINE_107 = AmountKind.declare(CATALOG, "tp1_line_107")
+"""TP-1 line 107, as Work Chart 201 line 1 reads it: an optional input, blank when the caller has
+none and read as 0."""
+
+WORK_CHART_201_RL1_BOX_211 = AmountKind.declare(CATALOG, "rl1_slip_box_211")
+"""RL-1 slip box 211, taken off by Work Chart 201 line 1 ("minus the amount from box 211 of your
+RL-1 slip"): an optional input, blank when the caller has none and read as 0."""
+
+WORK_CHART_201_ELIGIBLE_WORK_INCOME_BEFORE_BOX_211 = AmountKind.declare(
+    CATALOG, "work_chart_201_eligible_work_income_before_box_211"
+)
+"""Work Chart 201 line 1, the sum before box 211 is taken off: lines 101, 107 and 105. Not a printed
+line; the first operation of line 1."""
+
+WORK_CHART_201_ELIGIBLE_WORK_INCOME_LINE_1 = AmountKind.declare(
+    CATALOG, "work_chart_201_eligible_work_income_line_1"
+)
+"""Work Chart 201 line 1 "Eligible work income": lines 101, 107 and, if positive, 105, minus the
+amount from box 211 of the RL-1 slip, rounded half-up to the cent. The form prints no floor, so it
+is signed."""
+
+WORK_CHART_201_WORK_INCENTIVE_AMOUNTS_LINE_2 = AmountKind.declare(
+    CATALOG, "work_chart_201_work_incentive_amounts_line_2"
+)
+"""Work Chart 201 line 2 "Amounts received under a work-incentive project": an optional input,
+blank when the caller has none and read as 0."""
+
+WORK_CHART_201_RESEARCH_GRANTS_LINE_3 = AmountKind.declare(
+    CATALOG, "work_chart_201_research_grants_line_3"
+)
+"""Work Chart 201 line 3 "Net amount of research grants": an optional input, blank when the caller
+has none and read as 0."""
+
+WORK_CHART_201_WEPP_PAYMENTS_LINE_4 = AmountKind.declare(
+    CATALOG, "work_chart_201_wepp_payments_line_4"
+)
+"""Work Chart 201 line 4 "Wage Earner Protection Program (WEPP) payments": an optional input, blank
+when the caller has none and read as 0."""
+
+WORK_CHART_201_NET_BUSINESS_INCOME_LINE_5 = AmountKind.declare(
+    CATALOG, "work_chart_201_net_business_income_line_5", non_negative=True
+)
+"""Work Chart 201 line 5 "Net business income (line 27 of Schedule L). If the result is negative,
+enter 0": an optional input, taken as the form takes it, so never negative; blank when the caller
+has none and read as 0."""
+
+WORK_CHART_201_TOTAL_LINE_6 = AmountKind.declare(CATALOG, "work_chart_201_total_line_6")
+"""Work Chart 201 line 6 "Add lines 1 through 5": the sum, rounded half-up to the cent. Signed, as
+line 1 is."""
+
+WORK_CHART_201_LINE_293_AMOUNT_LINE_7 = AmountKind.declare(
+    CATALOG, "work_chart_201_line_293_amount_line_7"
+)
+"""Work Chart 201 line 7 "Amount included in the income above and entitling you to a deduction on
+line 293": an optional input, blank when the caller has none and read as 0."""
+
+WORK_CHART_201_LINE_8 = AmountKind.declare(CATALOG, "work_chart_201_line_8")
+"""Work Chart 201 line 8 "Subtract line 7 from line 6": the difference, rounded half-up to the cent.
+The form prints no floor, so it is signed."""
+
+WORK_CHART_201_DEDUCTION_BEFORE_MAXIMUM = AmountKind.declare(
+    CATALOG, "work_chart_201_deduction_before_maximum"
+)
+"""Work Chart 201 line 9, the first operation: line 8 multiplied by 6%, unrounded. Not a printed
+line; the cap of line 9 rounds it once."""
+
+WORK_CHART_201_DEDUCTION_FOR_WORKERS_LINE_9 = AmountKind.declare(
+    CATALOG, "work_chart_201_deduction_for_workers_line_9"
+)
+"""Work Chart 201 line 9 "Deduction for workers" (maximum $1,420), the figure TP-1 line 201 reads:
+6% of line 8, at most the printed maximum, rounded half-up to the cent. Signed, as line 8 is."""
+
 SCHEDULE_U_LINE_11 = AmountKind.declare(CATALOG, "schedule_u_line_11", non_negative=True)
 """Schedule U line 11 "Multiply line 10 by 0.156250": line 10 (the TP-1 line 98 QPP contribution) at
 the printed rate, rounded half-up to the cent."""
@@ -152,6 +230,49 @@ the cent."""
 SCHEDULE_U_LINE_16 = AmountKind.declare(CATALOG, "schedule_u_line_16")
 """Schedule U line 16 "Amount from line 11 or line 15, whichever is less": the QPP contribution
 amount of Part B."""
+
+SCHEDULE_U_LINE_17_2 = AmountKind.declare(CATALOG, "schedule_u_line_17_2")
+"""Schedule U line 17.2 "Multiply line 17.1 by 6.4%": line 17.1 (a copy of line 14.4) at the printed
+rate, rounded half-up to the cent. Line 14.4 can be negative, so the figure can be."""
+
+SCHEDULE_U_LINE_17_3 = AmountKind.declare(CATALOG, "schedule_u_line_17_3", non_negative=True)
+"""Schedule U line 17.3 "Subtract line 17.2 from line 17. If the result is negative, enter 0": the
+QPP contribution (TP-1 line 98) less line 17.2, not below 0."""
+
+SCHEDULE_U_LINE_17_5 = AmountKind.declare(CATALOG, "schedule_u_line_17_5", non_negative=True)
+"""Schedule U line 17.5 "Add lines 17.3 and 17.4": the excess over the base contribution plus the
+additional QPP contribution (TP-1 line 98.2), rounded half-up to the cent."""
+
+SCHEDULE_U_LINE_18_7 = AmountKind.declare(CATALOG, "schedule_u_line_18_7", non_negative=True)
+"""Schedule U line 18.7 "Subtract line 18.6 from line 18.5. If the result is negative, enter 0": the
+pensionable salary (TP-1 line 98.1) less the maximum pensionable earnings, not below 0."""
+
+SCHEDULE_U_ADDITIONAL_MAXIMUM_PENSIONABLE_EARNINGS_LINE_18_8 = AmountKind.declare(
+    CATALOG, "schedule_u_additional_maximum_pensionable_earnings_line_18_8", non_negative=True
+)
+"""Schedule U line 18.8 "Additional maximum pensionable earnings": the printed $81,200 of the
+instructions for Part B ("enter $81,200", when none of the situations of Table 1 applied), claimed
+whole."""
+
+SCHEDULE_U_LINE_19 = AmountKind.declare(CATALOG, "schedule_u_line_19", non_negative=True)
+"""Schedule U line 19 "Subtract line 18.9 from line 18.8. If the result is negative, enter 0": the
+additional maximum pensionable earnings less the maximum pensionable earnings, not below 0."""
+
+SCHEDULE_U_LINE_20 = AmountKind.declare(CATALOG, "schedule_u_line_20", non_negative=True)
+"""Schedule U line 20 "Amount from line 18.7 or line 19, whichever is less"."""
+
+SCHEDULE_U_LINE_21 = AmountKind.declare(CATALOG, "schedule_u_line_21", non_negative=True)
+"""Schedule U line 21 "Multiply line 20 by 4%": line 20 at the printed rate, rounded half-up to the
+cent."""
+
+SCHEDULE_U_LINE_22 = AmountKind.declare(CATALOG, "schedule_u_line_22", non_negative=True)
+"""Schedule U line 22 "Amount from line 17.5 or line 21, whichever is less"."""
+
+SCHEDULE_U_LINE_23 = AmountKind.declare(CATALOG, "schedule_u_line_23")
+"""Schedule U line 23 "Add lines 22 and 22.1", "Deduction for QPP contributions on employment
+income": the figure TP-1 line 248 takes, rounded half-up to the cent. Line 22.1 (a copy of line 16)
+can be negative."""
+
 T1_LINE_21 = AmountKind.declare(CATALOG, "t1_line_21")
 """Add lines 1 to 20, 5005-R line 21 "Line 21: Add lines 1 to 20.": the employment income of line 1
 (`ca/employment_income`) and line 2 (`ca/other_employment_income`); lines 3 to 20 are not built (the
@@ -346,6 +467,188 @@ TP1_SCHEDULE_F_INCOME_SUBJECT_LINE_70 = AmountKind.declare(
 )
 """Schedule F line 70, "Income subject to the contribution": line 36 less line 68; no floor is
 printed, so it can be negative. Part B tests it against $18,130."""
+
+SCHEDULE_P_TP1_LINE_101 = AmountKind.declare(CATALOG, "schedule_p_tp1_line_101")
+"""Schedule P (TP-1.D.P-V) line 10, first step: the amount from line 101 of the TP-1 return,
+"Employment income, RL-1 slip, box A", read from the TP-1 income form as a record list and
+totalled."""
+
+SCHEDULE_P_LINE_105_IF_POSITIVE = AmountKind.declare(
+    CATALOG, "schedule_p_line_105_if_positive", non_negative=True
+)
+"""Schedule P line 10, second step: the amount of TP-1 line 105 if it is positive, else 0, rounded
+half-up to the cent."""
+
+SCHEDULE_P_LINE_101_PLUS_105 = AmountKind.declare(CATALOG, "schedule_p_line_101_plus_105")
+"""Schedule P line 10, third step: the amount of TP-1 line 101 plus the amount of line 105 if it is
+positive, rounded half-up to the cent."""
+
+SCHEDULE_P_LINE_10 = AmountKind.declare(CATALOG, "schedule_p_line_10")
+"""Schedule P (TP-1.D.P-V) Part A line 10, "Amount from line 101 of your return, plus the amount
+from line 105 if it is positive, minus the amount from box 211 of your RL-1 slip, if applicable",
+rounded half-up to the cent."""
+
+SCHEDULE_P_RESEARCH_GRANTS_LINE_13 = AmountKind.declare(
+    CATALOG, "schedule_p_research_grants_line_13", non_negative=True
+)
+"""Schedule P line 13, "Net amount of research grants (see line 154, point 3(j), in the guide)", as
+the caller gives it; blank when the caller has none, and line 18 reads it as 0."""
+
+SCHEDULE_P_SCHEDULE_L_INCOME_LINE_14 = AmountKind.declare(
+    CATALOG, "schedule_p_schedule_l_income_line_14", non_negative=True
+)
+"""Schedule P line 14, "Total of lines 22 through 26.1 of Schedule L. Do not include losses.", as
+the caller gives it; blank when the caller has none, and line 18 reads it as 0."""
+
+SCHEDULE_P_WEPP_PAYMENTS_LINE_15 = AmountKind.declare(
+    CATALOG, "schedule_p_wepp_payments_line_15", non_negative=True
+)
+"""Schedule P line 15, "Wage Earner Protection Program (WEPP) payments (line 154, point 12)", as
+the caller gives it; blank when the caller has none, and line 18 reads it as 0."""
+
+SCHEDULE_P_LINE_18 = AmountKind.declare(CATALOG, "schedule_p_line_18")
+"""Schedule P Part A line 18, "Add lines 10 through 15", column "You", rounded half-up to the
+cent."""
+
+SCHEDULE_P_DEDUCTIBLE_INCOME_LINE_22 = AmountKind.declare(
+    CATALOG, "schedule_p_deductible_income_line_22", non_negative=True
+)
+"""Schedule P line 22, "Amount included in one of the above sources of income and entitling you to
+a deduction on line 293 of your return", as the caller gives it; blank when the caller has none, and
+line 29 reads it as 0."""
+
+SCHEDULE_P_WORK_INCOME_LINE_29 = AmountKind.declare(CATALOG, "schedule_p_work_income_line_29")
+"""Schedule P Part A line 29, "Subtract line 22 from line 18", "Work income", column "You", rounded
+half-up to the cent. The form prints no floor."""
+
+SCHEDULE_P_WORK_PREMIUM_INCOME_CEILING_LINE_66 = AmountKind.declare(
+    CATALOG, "schedule_p_work_premium_income_ceiling_line_66", non_negative=True
+)
+"""Schedule P Part E, section 2, column 1 "Work premium", line 66: the printed 12,620, claimed
+whole."""
+
+SCHEDULE_P_WORK_PREMIUM_INCOME_LINE_68 = AmountKind.declare(
+    CATALOG, "schedule_p_work_premium_income_line_68"
+)
+"""Schedule P Part E, section 2, column 1, line 68, "Amount from line 64 or line 66, whichever is
+less": the work income of line 29 up to 12,620."""
+
+SCHEDULE_P_WORK_PREMIUM_EXEMPT_AMOUNT_LINE_70 = AmountKind.declare(
+    CATALOG, "schedule_p_work_premium_exempt_amount_line_70", non_negative=True
+)
+"""Schedule P Part E, section 2, column 1, line 70: the printed 2,400, claimed whole."""
+
+SCHEDULE_P_WORK_PREMIUM_INCOME_OVER_EXEMPT_LINE_72 = AmountKind.declare(
+    CATALOG, "schedule_p_work_premium_income_over_exempt_line_72", non_negative=True
+)
+"""Schedule P Part E, section 2, column 1, line 72, "Subtract line 70 from line 68. If the result
+is negative, enter 0", rounded half-up to the cent."""
+
+SCHEDULE_P_WORK_PREMIUM_BEFORE_REDUCTION_LINE_76 = AmountKind.declare(
+    CATALOG, "schedule_p_work_premium_before_reduction_line_76", non_negative=True
+)
+"""Schedule P Part E, section 2, column 1, line 76, "Multiply line 72 by line 74 or line 75 (as
+applicable)": the work premium before the family-income reduction, rounded half-up to the cent."""
+
+T1_LINE_48 = AmountKind.declare(CATALOG, "t1_line_48", non_negative=True)
+"""Deduction for CPP or QPP enhanced contributions on employment income, 5005-R line 48 and line
+22215 "Deduction for CPP or QPP enhanced contributions on employment income (complete Schedule 8 or
+Form RC381, whichever applies) (maximum $1,074.00)": the figure Schedule 8 line 28 exports
+(`ca/schedule_8.schedule_8_cpp_enhanced_contributions_on_return`, a record list of one amount),
+totalled by one core/record_total (`t1_taxable_income_line_22215.yaml`)."""
+
+T1_LINE_54 = AmountKind.declare(CATALOG, "t1_line_54", non_negative=True)
+"""Deductions from total income, 5005-R line 54 and line 23300 "Add lines 35 to 53.": line 48 alone,
+the only deduction a salary-only filer has (lines 35 to 47 and 49 to 53 are blank and not built).
+Produced by one core/sum (`t1_taxable_income_line_23300.yaml`)."""
+
+T1_LINE_55 = AmountKind.declare(CATALOG, "t1_line_55")
+"""Net income before adjustments, 5005-R line 55 and line 23400 "Line 34 minus line 54 (if negative,
+show in brackets) Net income before adjustments =": total income (line 33, copied to line 34) less
+line 54, not floored, so a deduction above income is shown in brackets as the form prints it.
+Produced by one core/subtract (`t1_taxable_income_line_23400.yaml`)."""
+
+NET_INCOME = AmountKind.declare(CATALOG, "net_income", non_negative=True)
+"""Net income, 5005-R line 57 and line 23600 "Line 55 minus line 56 (if negative, enter "0") ...
+Net income =": net income before adjustments (line 55) less the social benefits repayment (line
+56), not below zero. Produced by one core/subtract_not_below_zero
+(`t1_taxable_income_line_23600.yaml`); Step 4 starts from it."""
+
+NET_INCOME_SIGNED = AmountKind.declare(CATALOG, "net_income_signed")
+"""Net income before its floor, 5005-R line 57 and line 23600 "Line 55 minus line 56 (if negative,
+enter "0")" as the shared Schedule 6 line 7 reads it: "Net income from line 23600 of the return (or
+the amount you would have entered if the instructions on line 23600 said "if negative, show in
+brackets")". Net income before adjustments (line 55) less the social benefits repayment (line 56),
+signed. Produced by one core/subtract (`t1_taxable_income_line_23600_signed.yaml`) and supplied to
+the neutral name `ca/t1_taxable_income.net_income_signed` by the form declaration."""
+
+TP1_DEDUCTION_FOR_WORKERS_LINE_201 = AmountKind.declare(
+    CATALOG, "tp1_deduction_for_workers_line_201"
+)
+"""TP-1 line 201 "Deduction for workers": the result of Work Chart 201 line 9, carried to the line
+("Carry the result to line 201 of your return"). Signed, as the chart's line 9 is."""
+
+TP1_QPP_DEDUCTION_LINE_248 = AmountKind.declare(CATALOG, "tp1_qpp_deduction_line_248")
+"""TP-1 line 248 "Deduction for QPP and CPP contributions and QPIP premiums": Schedule U line 23,
+the deduction for QPP contributions on employment income, carried to the line ("Carry the result to
+line 248 of your return"). Signed, as Schedule U line 23 is."""
+
+TP1_OTHER_DEDUCTIONS_LINES_205_TO_252 = AmountKind.declare(
+    CATALOG, "tp1_other_deductions_lines_205_to_252", non_negative=True
+)
+"""The deductions of TP-1 lines 205 through 207, 214 through 231 and 234 through 252 (line 248.1
+included), summed, line 248 apart: the figure the caller gives for "Add lines 201 through 207, 214
+through 231, and 234 through 252" besides lines 201 and 248; blank when the caller has none, and
+line 254 reads it as 0."""
+
+TP1_TOTAL_DEDUCTIONS_LINE_254 = AmountKind.declare(CATALOG, "tp1_total_deductions_line_254")
+"""Total deductions, TP-1 line 254 "Add lines 201 through 207, 214 through 231, and 234 through
+252": line 201, line 248 and the other deductions, rounded half-up to the cent. Signed, as lines 201
+and 248 are."""
+
+TP1_NET_INCOME_TOTAL_INCOME_LINE_199 = AmountKind.declare(
+    CATALOG, "tp1_net_income_total_income_line_199", non_negative=True
+)
+"""Total income of TP-1 line 199, as the net income lines read it ("Amount from line 199") from the
+TP-1 income form."""
+
+TP1_INCOME_LESS_DEDUCTIONS_LINE_256 = AmountKind.declare(
+    CATALOG, "tp1_income_less_deductions_line_256"
+)
+"""TP-1 line 256 "Subtract line 254 from line 199": total income less total deductions, rounded
+half-up to the cent. The form prints no floor, so the figure can be negative."""
+
+TP1_INVESTMENT_EXPENSES_ADJUSTMENT_LINE_260 = AmountKind.declare(
+    CATALOG, "tp1_investment_expenses_adjustment_line_260", non_negative=True
+)
+"""TP-1 line 260 "Adjustment of investment expenses. Complete Schedule N": an input a salary-only
+caller does not give; line 275 reads it as 0 when it is left out."""
+
+TP1_NET_INCOME_LINE_275 = AmountKind.declare(CATALOG, "tp1_net_income_line_275", non_negative=True)
+"""Net income, TP-1 line 275 "Add lines 256 and 260. If the result is negative, enter 0": line 256
+plus line 260, not below zero, rounded half-up to the cent."""
+
+BASIC_PERSONAL_AMOUNT_NET_INCOME_LINE_3 = AmountKind.declare(
+    CATALOG, "basic_personal_amount_net_income_line_3", non_negative=True
+)
+"""Federal Worksheet 5000-D1, line 30000 line 3 "Amount from line 23600 of your return": the
+floored net income, read from the T1 taxable income export (`ca-qc/net_income`, 5005-R line 57 and
+line 23600) into the taper of the basic personal amount. Produced by one core/record_total
+(`t1_tax_and_credits_line_30000_line_3.yaml`)."""
+
+BASIC_PERSONAL_AMOUNT = AmountKind.declare(CATALOG, "basic_personal_amount", non_negative=True)
+"""Basic personal amount, 5005-R line 78 and line 30000 "If the amount on line 23600 is $177,882 or
+less, enter $16,129. If the amount on line 23600 is $253,414 or more, enter $14,538. Otherwise, use
+the Federal Worksheet to calculate the amount to enter. (maximum $16,129)": Federal Worksheet
+5000-D1 lines 1 to 11, one ca/tapered_amount step over the dataset `ca/basic_personal_amount`
+(`t1_tax_and_credits_line_30000.yaml`); the credit sums read it."""
+
+TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
+"""Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
+Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line
+69, an optional input read as 0), not below zero. Produced by one core/subtract_not_below_zero
+(`t1_taxable_income_line_26000.yaml`); the federal bracket columns (line 71 onward) start from
+it."""
 
 TP1_SCHEDULE_F_LOWER_BOUND_LINE_77 = AmountKind.declare(
     CATALOG, "tp1_schedule_f_lower_bound_line_77", non_negative=True

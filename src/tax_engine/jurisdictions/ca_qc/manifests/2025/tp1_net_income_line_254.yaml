@@ -1,0 +1,22 @@
+# TP-1 (2025) line 254: "Add lines 201 through 207, 214 through 231, and 234 through 252. Total
+# deductions". Line 201 and line 248 are steps; lines 205 to 207, 214 to 231 and 234 to 252
+# (line 248.1 included, line 248 apart) are one optional input, read as 0 when the caller leaves it out. The sum is core/sum, rounded
+# half-up to the cent (`ca-qc/cent_rounding`), and is signed (the printed lines set no floor).
+form:
+  name: ca-qc/tp1_net_income
+capabilities:
+  - name: core/sum
+    title: "Total deductions"
+    reference: "254"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/tp1_deduction_for_workers_line_201
+        - ca-qc/tp1_qpp_deduction_line_248
+        - ca-qc/tp1_other_deductions_lines_205_to_252
+    blank:
+      ca-qc/tp1_other_deductions_lines_205_to_252: "0"
+    produces:
+      output: ca-qc/tp1_total_deductions_line_254

@@ -1,0 +1,25 @@
+# Work Chart 201 (TP-1.D.GR-V 2025-12), line 6: "Add lines 1 through 5." Line 1 is computed
+# (work_chart_201_line_1.yaml); lines 2 to 5 are optional inputs, read as 0 when blank. The sum is
+# rounded half-up to the cent (`ca-qc/cent_rounding`). The form prints no title for the line.
+form:
+  name: ca-qc/work_chart_201
+capabilities:
+  - name: core/sum
+    reference: "6"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/work_chart_201_eligible_work_income_line_1
+        - ca-qc/work_chart_201_work_incentive_amounts_line_2
+        - ca-qc/work_chart_201_research_grants_line_3
+        - ca-qc/work_chart_201_wepp_payments_line_4
+        - ca-qc/work_chart_201_net_business_income_line_5
+    blank:
+      ca-qc/work_chart_201_work_incentive_amounts_line_2: "0"
+      ca-qc/work_chart_201_research_grants_line_3: "0"
+      ca-qc/work_chart_201_wepp_payments_line_4: "0"
+      ca-qc/work_chart_201_net_business_income_line_5: "0"
+    produces:
+      output: ca-qc/work_chart_201_total_line_6
