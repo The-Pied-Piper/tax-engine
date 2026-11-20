@@ -190,7 +190,6 @@ WORK_CHART_201_DEDUCTION_FOR_WORKERS_LINE_9 = AmountKind.declare(
 """Work Chart 201 line 9 "Deduction for workers" (maximum $1,420), the figure TP-1 line 201 reads:
 6% of line 8, at most the printed maximum, rounded half-up to the cent. Signed, as line 8 is."""
 
-
 SCHEDULE_U_LINE_11 = AmountKind.declare(CATALOG, "schedule_u_line_11", non_negative=True)
 """Schedule U line 11 "Multiply line 10 by 0.156250": line 10 (the TP-1 line 98 QPP contribution) at
 the printed rate, rounded half-up to the cent."""
