@@ -1,0 +1,20 @@
+# 5005-R (2025) line 136. The form prints: "Line 136: Line 134 plus line 135 =" (page 7). Line 134
+# is not floored, so the sum may be negative. Line 135 is an optional input, a blank for a
+# salary-only filer and read as 0. One step: core/sum, rounded half-up to the cent through
+# `ca-qc/cent_rounding`.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/sum
+    reference: "136"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/federal_tax_less_foreign_tax_credit_line_134
+        - ca-qc/investment_tax_credit_recapture_line_135
+    blank:
+      ca-qc/investment_tax_credit_recapture_line_135: "0"
+    produces:
+      output: ca-qc/federal_tax_with_itc_recapture_line_136
