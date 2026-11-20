@@ -550,6 +550,56 @@ SCHEDULE_P_WORK_PREMIUM_BEFORE_REDUCTION_LINE_76 = AmountKind.declare(
 """Schedule P Part E, section 2, column 1, line 76, "Multiply line 72 by line 74 or line 75 (as
 applicable)": the work premium before the family-income reduction, rounded half-up to the cent."""
 
+SCHEDULE_P_NET_INCOME_LINE_52 = AmountKind.declare(
+    CATALOG, "schedule_p_net_income_line_52", non_negative=True
+)
+"""Schedule P Part C line 52, "Amount from line 275 of your return": the net income of TP-1 line
+275, read from the TP-1 net income form as a record list and totalled."""
+
+SCHEDULE_P_SPOUSE_NET_INCOME_LINE_53 = AmountKind.declare(
+    CATALOG, "schedule_p_spouse_net_income_line_53", non_negative=True
+)
+"""Schedule P Part C line 53, "Amount from line 275 of your spouse's return (spouse on December 31,
+2025)", as the caller gives it; blank when the caller has none, and line 54 reads it as 0."""
+
+SCHEDULE_P_FAMILY_INCOME_LINE_54 = AmountKind.declare(
+    CATALOG, "schedule_p_family_income_line_54", non_negative=True
+)
+"""Schedule P Part C line 54, "Add lines 52 and 53", "Family income": the net income of line 52 plus
+the spouse's of line 53 (blank, read as 0), rounded half-up to the cent."""
+
+SCHEDULE_P_WORK_PREMIUM_SUPPLEMENT_AMOUNT_LINE_56 = AmountKind.declare(
+    CATALOG, "schedule_p_work_premium_supplement_amount_line_56", non_negative=True
+)
+"""Schedule P Part D, line 56: the printed 200.00, the amount for each month of the supplement to
+the work premium, claimed whole."""
+
+SCHEDULE_P_RL5_MONTHS_LINE_57 = CountKind.declare(
+    CATALOG, "schedule_p_rl5_months_line_57", non_negative=True
+)
+"""Schedule P Part D line 57, "Total number of months in box V of your RL-5 slip", as the caller
+gives it; blank when the caller has none, and line 59 reads it as 0."""
+
+SCHEDULE_P_SUPPLEMENT_MONTHS_LINE_58 = CountKind.declare(
+    CATALOG, "schedule_p_supplement_months_line_58", non_negative=True
+)
+"""Schedule P Part D line 58, "Number of months in 2025 for which you meet the requirements for
+claiming the supplement to the work premium (see the guide)", as the caller gives it; blank when the
+caller has none, and line 59 reads it as 0."""
+
+SCHEDULE_P_LESSER_MONTHS_LINE_59 = CountKind.declare(
+    CATALOG, "schedule_p_lesser_months_line_59", non_negative=True
+)
+"""Schedule P Part D line 59, "Number from line 57 or line 58, whichever is less": the lesser of the
+months of line 57 and of line 58, each blank read as 0."""
+
+SCHEDULE_P_SUPPLEMENT_LINE_60 = AmountKind.declare(
+    CATALOG, "schedule_p_supplement_line_60", non_negative=True
+)
+"""Schedule P Part D line 60, "Multiply line 56 by line 59": the supplement to the work premium, the
+amount for each month times the months, rounded half-up to the cent. Carried to line 88 on
+page 2."""
+
 T1_LINE_48 = AmountKind.declare(CATALOG, "t1_line_48", non_negative=True)
 """Deduction for CPP or QPP enhanced contributions on employment income, 5005-R line 48 and line
 22215 "Deduction for CPP or QPP enhanced contributions on employment income (complete Schedule 8 or

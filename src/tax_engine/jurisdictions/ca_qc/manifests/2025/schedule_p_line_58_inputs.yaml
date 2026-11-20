@@ -1,0 +1,12 @@
+# Schedule P (TP-1.D.P-V, 2025-12) Part D line 58: "Number of months in 2025 for which you meet the
+# requirements for claiming the supplement to the work premium (see the guide)".
+# An input a salary-only caller does not give: the number of months, as the form takes it. A blank
+# is read as 0 by line 59, which takes the lesser of lines 57 and 58.
+form:
+  name: ca-qc/schedule_p
+inputs:
+  - name: ca-qc/schedule_p_supplement_months_line_58
+    reference: "58"
+    required: false
+    default: null
+    basis: "Number of months in 2025 for which you meet the requirements for claiming the supplement to the work premium (see the guide)"
