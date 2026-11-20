@@ -1611,3 +1611,8 @@ TP1_CREDITS_TRANSFERRED_BETWEEN_SPOUSES_LINE_431 = AmountKind.declare(
 )
 """TP-1 line 431 "Credits transferred from one spouse to the other": an optional input a single
 salary-only caller does not give; line 432 reads a blank as 0 (`tp1_tax_line_431_input.yaml`)."""
+
+TP1_LINE_432 = AmountKind.declare(CATALOG, "tp1_line_432", non_negative=True)
+"""TP-1 line 432 "Subtract line 431 from line 430": the income tax after credits, floored at 0 as
+the form prints, rounded half-up to the cent. Produced by one core/subtract_not_below_zero
+(`tp1_tax_line_432.yaml`) and exported by the form for line 450."""

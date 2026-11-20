@@ -1,0 +1,20 @@
+# TP-1 (2025) line 432: "Subtract line 431 from line 430 or enter the amount from line 18 in Part B
+# of Schedule E. If the result is negative, enter 0. Carry this amount to page 5. = 432" (page 4,
+# Income tax and contributions). One step, core/subtract_not_below_zero. Part B of Schedule E is not
+# completed by a salary-only filer. Line 431 is an optional input; a blank is read as 0. Rounded
+# half-up to the cent through ca-qc/cent_rounding. The form exports line 432 for line 450.
+form:
+  name: ca-qc/tp1_tax
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "432"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/tp1_line_430
+      less: ca-qc/tp1_credits_transferred_between_spouses_line_431
+    blank:
+      less: "0"
+    produces:
+      output: ca-qc/tp1_line_432
