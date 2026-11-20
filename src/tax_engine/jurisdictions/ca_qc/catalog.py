@@ -153,3 +153,8 @@ TP1_SCHEDULE_F_EMPLOYMENT_INCOME_TOTAL_LINE_16 = AmountKind.declare(
 """Schedule F line 16, "Add lines 12 and 14, or subtract line 14 from line 12, as applicable":
 line 12 plus the signed line 14, rounded half-up to the cent."""
 
+
+TP1_SCHEDULE_F_INCOME_LINE_18 = AmountKind.declare(CATALOG, "tp1_schedule_f_income_line_18")
+"""Schedule F line 18, "Subtract line 16 from line 10": no floor is printed, so it can be
+negative."""
+
