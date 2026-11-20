@@ -77,3 +77,14 @@ def schedule_b_sheet(
     )
     (sheet,) = service.compute(JurisdictionCode("CA-QC"), 2025, *starting)[FORM]
     return sheet
+
+# The Schedule B parts from line 10 to line 20, which every later line reads.
+FIRST_PARTS = (
+    "schedule_b_line_10.yaml",
+    "schedule_b_line_12_input.yaml",
+    "schedule_b_line_14.yaml",
+    "schedule_b_line_16.yaml",
+    "schedule_b_line_18.yaml",
+    "schedule_b_line_20_input.yaml",
+    "schedule_b_line_20.yaml",
+)

@@ -706,3 +706,8 @@ rounded half-up to the cent."""
 SCHEDULE_B_LINE_20 = AmountKind.declare(CATALOG, "schedule_b_line_20", non_negative=True)
 """Schedule B Part B line 20, the amount for a person living alone: $2,128 when the answer is yes
 and the income gate does not apply, else 0, rounded half-up to the cent."""
+
+SCHEDULE_B_LINE_30 = AmountKind.declare(CATALOG, "schedule_b_line_30", non_negative=True)
+"""Schedule B Part B line 30, "Add lines 20 through 28": line 20 alone, the only amount the
+take-home builds (lines 21, 22, 23, 27 and 28 are not built), rounded half-up to the cent. Produced
+by one core/sum (`schedule_b_line_30.yaml`)."""
