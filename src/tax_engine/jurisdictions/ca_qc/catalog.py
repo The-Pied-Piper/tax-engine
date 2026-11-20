@@ -1292,6 +1292,13 @@ FUEL_CHARGE_FARMERS_CREDIT_LINE_169 = AmountKind.declare(
 input a salary-only caller does not give; the sum on line 171 takes a blank as 0
 (`t1_tax_and_credits_line_47556_inputs.yaml`)."""
 
+TAX_PAID_BY_INSTALMENTS_LINE_170 = AmountKind.declare(
+    CATALOG, "tax_paid_by_instalments_line_170", non_negative=True
+)
+"""Tax paid by instalments, 5005-R line 170 and line 47600: an optional input a salary-only caller
+does not give; the sum on line 171 takes a blank as 0
+(`t1_tax_and_credits_line_47600_inputs.yaml`)."""
+
 CWB_LINE_161 = AmountKind.declare(CATALOG, "cwb_line_161", non_negative=True)
 """Canada workers benefit (CWB), 5005-R line 161 and line 45300 "(complete Schedule 6)": Schedule 6
 line 28, read from the Schedule 6 export by one core/record_total
