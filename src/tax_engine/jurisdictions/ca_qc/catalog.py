@@ -260,6 +260,9 @@ additional maximum pensionable earnings less the maximum pensionable earnings, n
 SCHEDULE_U_LINE_20 = AmountKind.declare(CATALOG, "schedule_u_line_20", non_negative=True)
 """Schedule U line 20 "Amount from line 18.7 or line 19, whichever is less"."""
 
+SCHEDULE_U_LINE_21 = AmountKind.declare(CATALOG, "schedule_u_line_21", non_negative=True)
+"""Schedule U line 21 "Multiply line 20 by 4%": line 20 at the printed rate, rounded half-up to the cent."""
+
 T1_LINE_21 = AmountKind.declare(CATALOG, "t1_line_21")
 """Add lines 1 to 20, 5005-R line 21 "Line 21: Add lines 1 to 20.": the employment income of line 1
 (`ca/employment_income`) and line 2 (`ca/other_employment_income`); lines 3 to 20 are not built (the
