@@ -1,0 +1,11 @@
+# Revenu Quebec TP-1.D-V (2025-12), page 4, "Income tax and contributions": lines 401 to 432 so far.
+# This part names the form; each printed line's capability is a part of its own with the same
+# `form.name`. Line 401 reads Work Chart 401 (line 8) and line 406 reads the credits form (line
+# 399), each as that form's export. Export: line 432, the figure that line 450 reads.
+form:
+  name: ca-qc/tp1_tax
+  title: "Income tax and contributions"
+  required: true
+  exports:
+    - ca-qc/tp1_line_432
+capabilities: []

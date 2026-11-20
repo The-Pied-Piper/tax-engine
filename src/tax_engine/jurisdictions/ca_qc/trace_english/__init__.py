@@ -6,6 +6,6 @@ this package imports them all.
 
 from __future__ import annotations
 
-from tax_engine.jurisdictions.ca_qc.trace_english import divide_by_count
+from tax_engine.jurisdictions.ca_qc.trace_english import divide_by_count, lesser_of_counts
 
-__all__ = ["divide_by_count"]
+__all__ = ["divide_by_count", "lesser_of_counts"]

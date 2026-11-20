@@ -2,6 +2,8 @@
 # exports; each line's capability goes in a part of its own with the same `form.name`. Exports:
 #   - Net income (`ca-qc/net_income`, line 57 and line 23600) starts Step 4.
 #   - Taxable income (`ca-qc/taxable_income`, line 70 and line 26000) ends Step 4.
+#   - The social benefits repayment (`ca/social_benefits_repayment`, line 56 and line 23500, an input),
+#     which Step 6 line 149 copies.
 #   - Line 23600 before its floor (`ca-qc/net_income_signed`, line 55 less line 56, not floored) is
 #     read by the shared Schedule 6 line 7, which reads it from the neutral name below, as the form's
 #     "if negative, show in brackets" wording asks.
@@ -15,6 +17,7 @@ form:
     - ca-qc/net_income
     - ca-qc/net_income_signed
     - ca-qc/taxable_income
+    - ca/social_benefits_repayment
   supplies:
     ca/t1_taxable_income.net_income_signed: ca-qc/net_income_signed
 capabilities: []

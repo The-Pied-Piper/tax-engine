@@ -1,0 +1,19 @@
+# 5005-R (2025) line 132. The form prints: "Line 132: Line 130 plus line 131 =" (page 7). Line 131
+# is an optional input, a blank for a salary-only filer and read as 0. One step: core/sum, rounded
+# half-up to the cent through `ca-qc/cent_rounding`.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/sum
+    reference: "132"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/basic_federal_tax_line_130
+        - ca-qc/federal_surtax_outside_canada_line_131
+    blank:
+      ca-qc/federal_surtax_outside_canada_line_131: "0"
+    produces:
+      output: ca-qc/federal_tax_with_surtax_line_132

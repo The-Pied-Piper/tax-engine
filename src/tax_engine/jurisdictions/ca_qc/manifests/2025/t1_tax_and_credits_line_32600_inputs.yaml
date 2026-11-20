@@ -1,0 +1,13 @@
+# 5005-R (2025) line 109 input a salary-only caller does not give.
+# Line 109 and line 32600: "Amounts transferred from your spouse or common-law partner (complete Schedule 2)" (page 6). A salary-only filer has no such amount, so it is an
+# optional input left blank; the sum or difference that reads it takes a blank as 0.
+form:
+  name: ca-qc/t1_tax_and_credits
+inputs:
+  - name: ca-qc/amounts_transferred_from_spouse_line_109
+    title: "Amounts transferred from your spouse or common-law partner"
+    reference: "32600"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Amounts transferred from your spouse or common-law partner (complete Schedule 2)"

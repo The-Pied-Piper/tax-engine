@@ -1,0 +1,20 @@
+# 5005-R (2025) line 125. The form prints: "Line 125 and line 40400: Line 123 plus line 124 =" (page
+# 7). Line 123 is "Enter the amount from line 77.", a pure copy of line 77, so line 77 is read
+# directly and is not a step. Line 124 is an optional input, a blank for a salary-only filer and
+# read as 0. One step: core/sum, rounded half-up to the cent through `ca-qc/cent_rounding`.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/sum
+    reference: "40400"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/federal_tax_on_taxable_income_line_77
+        - ca-qc/federal_tax_on_split_income_line_124
+    blank:
+      ca-qc/federal_tax_on_split_income_line_124: "0"
+    produces:
+      output: ca-qc/federal_tax_with_split_income_line_125

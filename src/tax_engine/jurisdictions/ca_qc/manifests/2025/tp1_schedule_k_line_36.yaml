@@ -1,0 +1,14 @@
+# Schedule K (2025) line 36: "Amount from line 275 of your return" (Revenu Quebec TP-1.D.K-V
+# (2025-12), Part A), a copy of TP-1 line 275. The amount arrives from the TP-1 net income form as a
+# record list of one, so the one step is `core/record_total` (as Schedule F line 12 reads TP-1 line
+# 101). The form prints no label for the line, so the step is untitled.
+form:
+  name: ca-qc/tp1_schedule_k
+capabilities:
+  - name: core/record_total
+    reference: "36"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp1_net_income.tp1_net_income_line_275
+    produces:
+      output: ca-qc/schedule_k_net_income_line_36

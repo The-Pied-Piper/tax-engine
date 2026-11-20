@@ -1,0 +1,26 @@
+# 5005-R (2025) line 112. The form prints: "Line 112: Amount from line 23600 multiplied by 3% =" (page
+# 6). Two operations, so two steps, as the federal medical line is built: the copy of net income (line
+# 23600) is a core/record_total over the record list `ca-qc/t1_taxable_income.net_income`, as the
+# Federal Worksheet 5000-D1 line 3 reads it, then a core/apply_rate at the printed 3% (the shared
+# dataset `ca/medical_net_income_rate`, whose rule rounds the product half-up to the cent).
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  # "Amount from line 23600", a copy of net income.
+  - name: core/record_total
+    title: "Amount from line 23600"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/t1_taxable_income.net_income
+    produces:
+      output: ca-qc/net_income_line_112
+  # "multiplied by 3%".
+  - name: core/apply_rate
+    reference: "112"
+    unit: ca/cad
+    params:
+      rate: ca/medical_net_income_rate
+    consumes:
+      base: ca-qc/net_income_line_112
+    produces:
+      output: ca-qc/medical_net_income_share_line_112

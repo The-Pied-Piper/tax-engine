@@ -1,0 +1,20 @@
+# TP-1 (2025) line 430: "Subtract line 425 from line 413. If the result is negative, see line 431 in
+# the guide. = 430" (page 4, Income tax and contributions; the line has no title). One step,
+# core/subtract; the form prints no floor, so a negative result is carried as printed (line 432
+# floors it, as the form says). Line 425 is an optional input; a blank is read as 0. Rounded
+# half-up to the cent through ca-qc/cent_rounding.
+form:
+  name: ca-qc/tp1_tax
+capabilities:
+  - name: core/subtract
+    reference: "430"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/tp1_line_413
+      less: ca-qc/tp1_line_425
+    blank:
+      less: "0"
+    produces:
+      output: ca-qc/tp1_line_430

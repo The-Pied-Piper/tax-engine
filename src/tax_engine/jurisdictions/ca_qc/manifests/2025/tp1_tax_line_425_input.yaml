@@ -1,0 +1,14 @@
+# TP-1 (2025) line 425: "Add lines 414 through 424. = 425" (page 4, Income tax and contributions).
+# Lines 414 to 424 (the political party credit from Work Chart 414, the dividend tax credit, the
+# labour-sponsored fund credit and the rest) are blank for a salary-only filer, so the printed sum
+# that collects them is one optional input read as 0 (the owner's "Optional lines" decision of 19
+# Nov 2026); the skipped lines have no step. A blank is read as 0 by line 430.
+form:
+  name: ca-qc/tp1_tax
+inputs:
+  - name: ca-qc/tp1_line_425
+    reference: "425"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Add lines 414 through 424."

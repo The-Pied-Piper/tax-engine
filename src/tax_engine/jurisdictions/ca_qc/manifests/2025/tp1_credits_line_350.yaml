@@ -1,0 +1,15 @@
+# TP-1 (2025) line 350: "Basic personal amount ... 350 18,571 00" (page 4, Non-refundable tax
+# credits). The printed figure is the `ca-qc/tp1_basic_personal_amount_line_350` dataset, claimed whole
+# through core/credit_amount, so it is the same at every salary. It is its own kind, not
+# `ca-qc/basic_personal_amount`, which is the federal basic personal amount of 5005-R line 78.
+form:
+  name: ca-qc/tp1_credits
+capabilities:
+  - name: core/credit_amount
+    title: "Basic personal amount"
+    reference: "350"
+    unit: ca/cad
+    params:
+      amount: ca-qc/tp1_basic_personal_amount_line_350
+    produces:
+      output: ca-qc/tp1_basic_personal_amount_line_350

@@ -1,0 +1,16 @@
+# Schedule K (2025) Part C, line 86: "Subtract line 85 from line 84." One step: core/subtract, rounded
+# half-up to the cent (`ca-qc/cent_rounding`). The form prints no label for the line, so the step is
+# untitled.
+form:
+  name: ca-qc/tp1_schedule_k
+capabilities:
+  - name: core/subtract
+    reference: "86"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/schedule_k_premium_line_84
+      less: ca-qc/schedule_k_premium_for_months_line_85
+    produces:
+      output: ca-qc/schedule_k_premium_after_months_line_86

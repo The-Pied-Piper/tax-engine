@@ -1,0 +1,19 @@
+# TP-1 (2025) line 377: "Add lines 359 through 376. = 377" (page 4, Non-refundable tax credits; the
+# line has no title). One step, core/sum, of the lines the take-home builds: 359 and 361. Lines 367
+# (Schedule A, dependants) and 376 (severe and prolonged impairment) are left out (owner decision on
+# the ticket, 19 Nov 2026), and 376 is added later as an optional input read as 0. Rounded half-up to
+# the cent through ca-qc/cent_rounding.
+form:
+  name: ca-qc/tp1_credits
+capabilities:
+  - name: core/sum
+    reference: "377"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/tp1_line_359
+        - ca-qc/tp1_age_living_alone_retirement_amount_line_361
+    produces:
+      output: ca-qc/tp1_line_377

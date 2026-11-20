@@ -1,0 +1,19 @@
+# 5005-R (2025) line 114. The form prints: "Line 114: Line 111 minus line 113 (if negative, enter "0") ="
+# (page 6). Line 111 (line 33099, medical expenses) is an optional input, a blank for a salary-only
+# filer and read as 0; line 113 is the step before it. One step: core/subtract_not_below_zero,
+# rounded half-up to the cent through `ca-qc/cent_rounding`.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "114"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/medical_expenses_line_111
+      less: ca-qc/medical_threshold_line_113
+    blank:
+      amount: "0"
+    produces:
+      output: ca-qc/medical_expenses_over_threshold_line_114

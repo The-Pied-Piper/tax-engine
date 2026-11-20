@@ -1,0 +1,16 @@
+# Work Chart 401 (TP-1.D.GR-V 2025-12), line 1: "Taxable income (line 299 of your return)", a copy of
+# TP-1 line 299. The net income form is its own form, so its line 299 arrives as that form's export,
+# a record list of one amount; the one step is core/record_total over it, as TP-1 line 201 reads
+# Work Chart 201. Line 2 is a copy of line 1 placed in the column the instructions choose, and has no
+# step of its own: lines 3, 4, 5 and 7 read line 1 directly.
+form:
+  name: ca-qc/work_chart_401
+capabilities:
+  - name: core/record_total
+    title: "Taxable income"
+    reference: "1"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp1_net_income.tp1_taxable_income_line_299
+    produces:
+      output: ca-qc/work_chart_401_taxable_income_line_1

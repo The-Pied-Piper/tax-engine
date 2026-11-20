@@ -1,0 +1,91 @@
+"""Revenu Quebec TP-1.D-V (2025-12), page 4, lines 401 to 432, as one chain.
+
+The chain runs the real form declaration and the real parts of lines 401, 406, 413, 430 and 432
+and of the forms they read: Work Chart 401 (line 8), the credits lines (line 399), Schedule B, the
+TP-1 net income lines and Schedule U (whose TP-1 slip figures are plain starting inputs, as in its
+own tests). The salary is $20,000, $70,000 and $200,000. The answer to "lived alone" is the default
+(not alone) unless given. Each expected figure is recomputed in the test from the printed lines:
+line 413 is line 401 less line 406, line 430 is line 413 less line 425 (blank, 0) and line 432 is
+line 430 less line 431 (blank, 0), not below 0. The expected figures are hand-computed from the
+printed forms (not an official example).
+"""
+
+from __future__ import annotations
+
+from decimal import Decimal
+from typing import Any
+
+import pytest
+import yaml
+
+from tax_engine.domain.artifact import Artifact
+from tax_engine.jurisdictions.ca_qc.catalog import (
+    SCHEDULE_B_LIVED_ALONE_LINE_20,
+    TP1_INCOME_TAX_ON_TAXABLE_INCOME_LINE_401,
+    TP1_LINE_413,
+    TP1_LINE_430,
+    TP1_LINE_432,
+    TP1_NON_REFUNDABLE_TAX_CREDITS_LINE_406,
+)
+from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
+from tests.jurisdictions.ca_qc.tp1_tax_support import LINE_413_CHAIN, tax_sheet
+
+D = Decimal
+FORM = (QUEBEC_PARTS / "tp1_tax.yaml").read_text(encoding="utf-8")
+PARTS = (
+    *LINE_413_CHAIN,
+    "tp1_tax_line_401.yaml",
+    "tp1_tax_line_406.yaml",
+    "tp1_tax_line_413.yaml",
+    "tp1_tax_line_425_input.yaml",
+    "tp1_tax_line_430.yaml",
+    "tp1_tax_line_431_input.yaml",
+    "tp1_tax_line_432.yaml",
+)
+# salary, lived alone: lines 401, 406 and 413 (also line 430) and line 432 as the printed
+# lines give them.
+EXPECTED = {
+    ("20000", 0): ("2608.90", "2599.94", "8.96", "8.96"),
+    ("70000", 0): ("10241.10", "2599.94", "7641.16", "7641.16"),
+    ("200000", 0): ("40602.47", "2599.94", "38002.53", "38002.53"),
+    ("20000", 1): ("2608.90", "2897.86", "-288.96", "0.00"),
+    # Schedule B line 34 is 0.00 at these salaries, so living alone changes nothing.
+    ("70000", 1): ("10241.10", "2599.94", "7641.16", "7641.16"),
+    ("200000", 1): ("40602.47", "2599.94", "38002.53", "38002.53"),
+}
+
+
+def _given(alone: int | None) -> list[Artifact[Any]]:
+    return [] if alone is None else [Artifact(SCHEDULE_B_LIVED_ALONE_LINE_20, alone)]
+
+
+@pytest.mark.parametrize(("salary", "alone"), list(EXPECTED))
+def test_the_chain_from_line_401_to_line_432(
+    take_home_service: TakeHomeService, salary: str, alone: int
+) -> None:
+    sheet = tax_sheet(take_home_service, salary, (), PARTS, *_given(alone), form=FORM)
+
+    line_401 = sheet.get(TP1_INCOME_TAX_ON_TAXABLE_INCOME_LINE_401).value
+    line_406 = sheet.get(TP1_NON_REFUNDABLE_TAX_CREDITS_LINE_406).value
+    assert (str(line_401), str(line_406)) == EXPECTED[(salary, alone)][:2]
+    assert sheet.get(TP1_LINE_413).value == line_401 - line_406
+    assert str(sheet.get(TP1_LINE_413).value) == EXPECTED[(salary, alone)][2]
+    assert sheet.get(TP1_LINE_430).value == sheet.get(TP1_LINE_413).value
+    assert str(sheet.get(TP1_LINE_432).value) == EXPECTED[(salary, alone)][3]
+
+
+@pytest.mark.parametrize("salary", ["20000", "70000", "200000"])
+def test_a_caller_who_gives_no_answer_gets_the_default_not_alone(
+    take_home_service: TakeHomeService, salary: str
+) -> None:
+    sheet = tax_sheet(take_home_service, salary, (), PARTS, form=FORM)
+
+    assert str(sheet.get(TP1_LINE_432).value) == EXPECTED[(salary, 0)][3]
+
+
+def test_the_real_form_declaration_exports_line_432() -> None:
+    declaration = yaml.safe_load(FORM)
+
+    assert declaration["form"]["name"] == "ca-qc/tp1_tax"
+    assert declaration["form"]["required"] is True
+    assert declaration["form"]["exports"] == ["ca-qc/tp1_line_432"]

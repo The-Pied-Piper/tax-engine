@@ -1,0 +1,25 @@
+# 5005-R (2025) line 151 and line 43500. The form prints: "Line 151 and line 43500: Add lines 147 to
+# 150. Total payable =" (page 7). Line 147 is "Amount from line 42000", a pure copy of line 146, so
+# line 146 is read directly. Lines 148 and 150 are optional inputs, a blank for a salary-only filer and
+# read as 0; line 149 is the social benefits repayment. One step: core/sum, rounded half-up to the cent
+# through `ca-qc/cent_rounding`.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/sum
+    title: "Total payable"
+    reference: "43500"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/net_federal_tax_line_146
+        - ca-qc/ei_premiums_self_employed_line_148
+        - ca-qc/social_benefits_repayment_line_149
+        - ca-qc/provincial_tax_line_150
+    blank:
+      ca-qc/ei_premiums_self_employed_line_148: "0"
+      ca-qc/provincial_tax_line_150: "0"
+    produces:
+      output: ca-qc/total_payable_line_151

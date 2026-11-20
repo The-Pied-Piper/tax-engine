@@ -1,0 +1,22 @@
+# TP-1 (2025) line 279: "Add lines 275 through 278." (page 3, "Taxable income"; the line has no
+# title). Line 275 is a step; lines 276 and 278 are optional inputs, read as 0 when the caller
+# leaves them out (line 277 is the printed specification of line 276 and carries no amount). The sum
+# is core/sum, rounded half-up to the cent (`ca-qc/cent_rounding`).
+form:
+  name: ca-qc/tp1_net_income
+capabilities:
+  - name: core/sum
+    reference: "279"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/tp1_net_income_line_275
+        - ca-qc/tp1_adjustment_of_deductions_line_276
+        - ca-qc/tp1_benefit_and_disability_savings_income_line_278
+    blank:
+      ca-qc/tp1_adjustment_of_deductions_line_276: "0"
+      ca-qc/tp1_benefit_and_disability_savings_income_line_278: "0"
+    produces:
+      output: ca-qc/tp1_line_279

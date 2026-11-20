@@ -1,0 +1,18 @@
+# Schedule P (TP-1.D.P-V, 2025-12) Part D line 59: "Number from line 57 or line 58, whichever is
+# less". No capability takes the lesser of two counts (`core/lesser_of` takes money), so the step is
+# `ca-qc/lesser_of_counts` over line 57 (the months in box V of the RL-5 slip) and line 58 (the months
+# the filer meets the requirements), both optional inputs a salary-only caller does not give, each
+# blank read as 0. The form prints no label for the line, so the step is untitled.
+form:
+  name: ca-qc/schedule_p
+capabilities:
+  - name: ca-qc/lesser_of_counts
+    reference: "59"
+    consumes:
+      counts:
+        - ca-qc/schedule_p_rl5_months_line_57
+        - ca-qc/schedule_p_supplement_months_line_58
+    blank:
+      counts: "0"
+    produces:
+      output: ca-qc/schedule_p_lesser_months_line_59

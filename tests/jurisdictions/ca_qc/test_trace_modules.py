@@ -23,6 +23,7 @@ RENDERERS = "tax_engine.jurisdictions.ca_qc.trace_english"
 
 HOMES: dict[str, tuple[str, ...]] = {
     "divide_by_count": ("DivideByCountLine",),
+    "lesser_of_counts": ("LesserOfCountsLine",),
 }
 
 PLACED = [(module, name) for module, names in HOMES.items() for name in names]
