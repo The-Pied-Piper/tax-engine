@@ -119,6 +119,7 @@ PART_C_PARTS: tuple[str, ...] = (
     "t1_tax_and_credits_line_136.yaml",
     "t1_tax_and_credits_line_137_inputs.yaml",
     "t1_tax_and_credits_line_40600.yaml",
+    "t1_tax_and_credits_line_41600_inputs.yaml",
 )
 STEP_4_PARTS = (
     "t1_taxable_income_line_25700_inputs.yaml",

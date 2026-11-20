@@ -1136,6 +1136,13 @@ Federal tax =": line 136 less the federal logging tax credit (line 137), a blank
 below zero; line 143 and the Quebec abatement read it from one core/subtract_not_below_zero
 (`t1_tax_and_credits_line_40600.yaml`)."""
 
+FEDERAL_CREDITS_LINE_142 = AmountKind.declare(
+    CATALOG, "federal_credits_line_142", non_negative=True
+)
+"""Federal political contribution, investment tax and labour-sponsored funds credits (the sum of
+lines 139 to 141), 5005-R line 142 and line 41600: an optional input a salary-only caller does not
+give; the line that reads it takes a blank as 0 (`t1_tax_and_credits_line_41600_inputs.yaml`)."""
+
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
 Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line
