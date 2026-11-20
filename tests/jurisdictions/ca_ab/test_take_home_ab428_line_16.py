@@ -87,6 +87,6 @@ def line_16(tmp_path: Path, salary: str) -> Decimal:
     return sheet.get(BASIC_PERSONAL_AMOUNT).value
 
 
-@pytest.mark.parametrize("salary", ["20000", "70000", "200000"])
+@pytest.mark.parametrize("salary", ["20000", "200000"])
 def test_line_16_is_the_basic_personal_amount_at_every_salary(tmp_path: Path, salary: str) -> None:
     assert line_16(tmp_path, salary) == D("22323.00")

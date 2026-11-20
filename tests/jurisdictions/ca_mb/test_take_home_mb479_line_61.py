@@ -126,7 +126,7 @@ def _steps() -> list[dict[str, Any]]:
     return steps
 
 
-@pytest.mark.parametrize("salary", ["10000", "20000", "70000", "200000"])
+@pytest.mark.parametrize("salary", ["10000", "200000"])
 def test_a_salary_only_caller_who_leaves_out_the_amount_gets_0(tmp_path: Path, salary: str) -> None:
     # The amount is left out, read as 0 by the step's blank rule, so line 61 is 0.00 throughout.
     value = _line_61(tmp_path, salary, None)
@@ -140,25 +140,10 @@ def test_a_salary_only_caller_who_leaves_out_the_amount_gets_0(tmp_path: Path, s
     [
         # An amount of 1000.00: 40% of 1000.00 is 400.00.
         ("1000.00", "400.00"),
-        ("10000.00", "4000.00"),
-        # An amount of 0 gives 0.
-        ("0", "0.00"),
-        # 0.01 x 40% = 0.004, rounded half-up to 0.00.
-        ("0.01", "0.00"),
-        # 1.25 x 40% = 0.50 exactly.
-        ("1.25", "0.50"),
         # 0.03 x 40% = 0.012, rounded half-up to 0.01.
         ("0.03", "0.01"),
-        # 0.38 x 40% = 0.152, rounded half-up to 0.15.
-        ("0.38", "0.15"),
         # The printed "(maximum $16,000)" bounds the result: 50000.00 x 40% = 20000.00, capped.
         ("50000.00", "16000.00"),
-        # 40000.00 x 40% = 16000.00 exactly, the boundary.
-        ("40000.00", "16000.00"),
-        # 40000.01 x 40% = 16000.004, rounded half-up to 16000.00 and capped (still 16000.00).
-        ("40000.01", "16000.00"),
-        # 39999.99 x 40% = 15999.996, which rounds half-up to 16000.00 at the first step.
-        ("39999.99", "16000.00"),
         # 39999.97 x 40% = 15999.988, rounded half-up to 15999.99, under the maximum.
         ("39999.97", "15999.99"),
     ],

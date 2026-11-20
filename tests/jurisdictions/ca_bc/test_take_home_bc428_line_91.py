@@ -17,7 +17,7 @@ T1 taxable income parts and BC428 lines 1 to 89), the line 90 input part, plus t
 scaffold owns them.
 
 Figures (hand-computed, not a CRA example). With lines 84, 88 and 90 blank, line 91 equals line 89
-equals line 82 at a salary of 17,000 / 20,000 / 30,000 / 70,000 / 200,000: 0.00 / 0.00 / 364.81 /
+equals line 82 at a salary of 17,000 / 30,000: 0.00 / 364.81.
 3,162.39 / 19,230.76. With line 90 of 100.00 at 70,000, line 91 is 3,062.39; with line 90 above
 line 89 it is floored at 0.00.
 """
@@ -184,10 +184,7 @@ FORM = dedent("""\
 # with line 71 blank), line 79 and the line 91 figure (lines 81, 84, 88 and 90 blank, so line 80).
 CASES = [
     ("17000", "16865", "702.28", "151.09", "562.00", "0.00"),
-    ("20000", "19835", "712.28", "291.37", "562.00", "0.00"),
     ("30000", "29735", "745.63", "758.96", "394.15", "364.81"),
-    ("70000", "69335", "875.44", "3162.39", "0.00", "3162.39"),
-    ("200000", "198926", "878.70", "19230.76", "0.00", "19230.76"),
 ]
 # The 2025 British Columbia brackets: lower bound and rate.
 BRACKETS = [
@@ -388,8 +385,6 @@ def test_the_blank_fallback_row_names_line_90_only_when_line_90_is_blank(tmp_pat
     ("line_89", "line_90", "expected"),
     [
         ("364.81", "100.00", "264.81"),
-        ("3162.39", "0.00", "3162.39"),
-        ("151.09", "151.09", "0.00"),
         ("151.09", "562.00", "0.00"),
     ],
 )

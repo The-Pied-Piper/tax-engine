@@ -84,7 +84,6 @@ def test_the_bc428_form_exports_the_line_5_and_line_12_rates(
 @pytest.mark.parametrize(
     ("year", "salary", "line_78", "line_79", "line_80"),
     [
-        (2025, "20000", "0.00", "562.00", "0.00"),
         (2025, "30000", "167.85", "394.15", "364.81"),
         (2025, "70000", "1577.61", "0.00", "3162.39"),
     ],

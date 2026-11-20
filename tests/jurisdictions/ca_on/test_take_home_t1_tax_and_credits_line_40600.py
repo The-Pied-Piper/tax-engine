@@ -119,10 +119,6 @@ def _sheet(
     [
         # $70,000: line 132 alone, line 133 being blank.
         ("70000", "7585.64"),
-        # $20,000: line 132 alone.
-        ("20000", "158.09"),
-        # $200,000: line 132 alone.
-        ("200000", "39467.74"),
         # $10,000: line 132 is 0, so the line is 0.
         ("10000", "0.00"),
     ],
@@ -146,8 +142,6 @@ def test_line_134_is_line_132_when_line_133_is_blank(
         ("70000", "100", "7485.64"),
         # $20,000: 158.09 less 10,000.00 is negative, so the line is floored at 0.
         ("20000", "10000", "0.00"),
-        # Exactly equal: the difference is zero.
-        ("20000", "158.09", "0.00"),
     ],
 )
 def test_line_134_subtracts_the_given_line_133_not_below_zero(

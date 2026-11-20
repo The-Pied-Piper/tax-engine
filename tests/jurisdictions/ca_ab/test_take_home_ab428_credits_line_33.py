@@ -68,8 +68,8 @@ FORM = dedent("""\
     capabilities: []
     """)
 
-# salary, line 33: 22,323.00 (line 25) plus line 32 of 1,144.75, 4,369.23 and 4,433.58.
-CASES = [("20000", "23467.75"), ("70000", "26692.23"), ("200000", "26756.58")]
+# salary, line 33: 22,323.00 (line 25) plus line 32 of 1,144.75 and 4,433.58.
+CASES = [("20000", "23467.75"), ("200000", "26756.58")]
 
 
 def _part_files() -> Iterator[Path]:

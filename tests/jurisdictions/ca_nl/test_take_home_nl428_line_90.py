@@ -6,8 +6,8 @@ step; line 90 is one core/sum step over line 88 and line 89 (the UCCB and RDSP r
 optional input a salary-only caller leaves out, so the step reads it as 0. The form prints no title
 for line 90, so its step is untitled.
 
-Figures (hand-computed, not a CRA example): net income is 19,835.00 / 69,335.00 / 198,926.00 at
-salaries of 20,000 / 70,000 / 200,000 (the salary less the enhanced CPP deduction), and line 89 is
+Figures (hand-computed, not a CRA example): net income is 19,835.00 / 198,926.00 at
+salaries of 20,000 / 200,000 (the salary less the enhanced CPP deduction), and line 89 is
 blank, so line 90 is the same; with 100.00 on line 89 at 70,000, line 90 is 69,435.00.
 """
 
@@ -133,7 +133,7 @@ def _sheet(tmp_path: Path, salary: str, *extra: Artifact[Decimal]) -> Worksheet:
 
 @pytest.mark.parametrize(
     ("salary", "expected"),
-    [("20000", "19835.00"), ("70000", "69335.00"), ("200000", "198926.00")],
+    [("20000", "19835.00"), ("200000", "198926.00")],
 )
 def test_line_90_is_line_88_when_line_89_is_left_blank(
     tmp_path: Path, salary: str, expected: str

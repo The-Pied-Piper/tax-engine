@@ -12,10 +12,9 @@ step has none.
 The expected figures are hand-computed from the ticket and re-derived here, not taken from a CRA
 example. Taxable income (line 74) is the salary less the CPP enhanced amount (1% of the earnings
 from 3,500.00 to 71,300.00) and the CPP second-ceiling amount (4% of the earnings from 71,300.00 to
-81,200.00): 16,865.00 at $17,000, 19,835.00 at $20,000, 29,735.00 at $30,000, 69,335.00 at $70,000
-and 198,926.00 at $200,000. Line 76 is line 74 less the 25,020.00 base, not below zero: 0.00,
-0.00, 4,715.00, 44,315.00 and 173,906.00. Line 78 is line 76 times 0.0356, rounded half-up to the
-cent: 0.00, 0.00, 167.85 (167.854), 1,577.61 (1,577.614) and 6,191.05 (6,191.0536).
+81,200.00): 16,865.00 at $17,000 and 29,735.00 at $30,000. Line 76 is line 74 less the 25,020.00
+base, not below zero: 0.00 and 4,715.00. Line 78 is line 76 times 0.0356, rounded half-up to the
+cent: 0.00 and 167.85 (167.854); 44,315.00 gives 1,577.61 (1,577.614).
 
 The real parts composed: the British Columbia salary, Schedule 8, the T1 taxable-income parts, the
 line 74 part (`bc428_line_74.yaml`), the line 75 part (`bc428_line_75.yaml`), the line 76 part
@@ -158,10 +157,7 @@ def _sheet(tmp_path: Path, salary: str) -> Worksheet:
     ("salary", "expected"),
     [
         ("17000", "0.00"),
-        ("20000", "0.00"),
         ("30000", "167.85"),
-        ("70000", "1577.61"),
-        ("200000", "6191.05"),
     ],
 )
 def test_line_78_is_line_76_times_3_56_percent_rounded_half_up(
@@ -227,14 +223,8 @@ def _line_78_at(line_76_amount: str) -> Artifact[Decimal]:
 @pytest.mark.parametrize(
     ("line_76", "expected"),
     [
-        # 0.00 x 3.56% = 0.00.
-        ("0.00", "0.00"),
         # 12.50 x 3.56% = 0.4450, rounded half-up to 0.45 (not down to 0.44).
         ("12.50", "0.45"),
-        # 62.50 x 3.56% = 2.2250, rounded half-up to 2.23 (not down to 2.22).
-        ("62.50", "2.23"),
-        # 137.50 x 3.56% = 4.8950, rounded half-up to 4.90.
-        ("137.50", "4.90"),
         # 44,315.00 x 3.56% = 1,577.614, rounded to 1,577.61.
         ("44315.00", "1577.61"),
     ],

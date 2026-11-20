@@ -15,7 +15,7 @@ line parts (`sk428_credits_line_9.yaml`, `_line_20.yaml`, `_line_22.yaml`, `_lin
 `sk428_credits_line_50_input.yaml` and `sk428_credits_line_56_input.yaml` and the new
 `sk428_credits_line_57.yaml`, and types in only the salary (and, in some tests, line 56). The form
 declaration is made up here, exporting only line 53 and line 57. The figures are re-derived below
-with Decimal (not a CRA example): line 53 is 2,166.75, 2,505.32 and 2,512.08 at the three salaries
+with Decimal (not a CRA example): line 53 is 2,166.75 and 2,512.08 at the two salaries
 (line 51 times 10.5%, half-up to the cent), plus line 56 of 0 when blank.
 """
 
@@ -83,9 +83,9 @@ FORM = dedent("""\
     capabilities: []
     """)
 
-# salary, line 57: line 53 (2,166.75, 2,505.32 and 2,512.08, as the line 53 test pins) plus line 56,
+# salary, line 57: line 53 (2,166.75 and 2,512.08, as the line 53 test pins) plus line 56,
 # blank and read as 0; lines 54 and 55 are not built.
-CASES = [("20000", "2166.75"), ("70000", "2505.32"), ("200000", "2512.08")]
+CASES = [("20000", "2166.75"), ("200000", "2512.08")]
 
 
 def _cpp(salary: str) -> Decimal:

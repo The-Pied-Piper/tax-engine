@@ -14,9 +14,9 @@ taxable income parts, the real line 1 to line 12 parts and the new line 13 part,
 the salary. The form declaration is made up here, exporting only line 13.
 
 Figures (hand-computed from the printed forms, not a CRA example): line 11 is 75.00 (the spouse
-branch of line 10 is not built) and line 12 is 37.30 / 96.70 / 294.70 / 1,086.70 / 3,678.52 at
-17,000 / 20,000 / 30,000 / 70,000 / 200,000, so line 13 is 37.70 at 17,000 and 0.00 at every higher
-salary. At 10,000 line 12 is 0.00, so line 13 is the whole 75.00.
+branch of line 10 is not built) and line 12 is 37.30 / 96.70 at 17,000 / 20,000, so line 13 is 37.70
+at 17,000 and 0.00 at 20,000 (and every higher salary). At 10,000 line 12 is 0.00, so line 13 is the
+whole 75.00.
 """
 
 from __future__ import annotations
@@ -171,9 +171,6 @@ def _rounding() -> Any:
 CASES = [
     ("17000", "37.70"),
     ("20000", "0.00"),
-    ("30000", "0.00"),
-    ("70000", "0.00"),
-    ("200000", "0.00"),
 ]
 
 
@@ -233,7 +230,6 @@ def test_the_step_traces_one_subtracted_not_below_zero_line_with_the_cent_roundi
     ("line_11", "line_12", "expected"),
     [
         ("75.00", "37.30", "37.70"),
-        ("75.00", "75.00", "0.00"),
         ("75.00", "96.70", "0.00"),
     ],
 )

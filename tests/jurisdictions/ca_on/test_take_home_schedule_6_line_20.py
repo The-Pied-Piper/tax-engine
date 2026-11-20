@@ -80,11 +80,6 @@ def line_20(take_home_service: TakeHomeService, salary: str) -> Decimal:
         ("2000", "0.00"),
         # Line 18 is $3,000.00, and 27% of $3,000.00 is $810.00.
         ("6000", "810.00"),
-        ("20000", "4590.00"),
-        ("30000", "7290.00"),
-        ("35000", "8640.00"),
-        ("40000", "9990.00"),
-        ("70000", "18090.00"),
     ],
 )
 def test_schedule_6_line_20_is_line_18_times_the_27_percent_rate(

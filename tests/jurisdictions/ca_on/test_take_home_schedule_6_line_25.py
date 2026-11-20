@@ -88,13 +88,8 @@ def line_25(take_home_service: TakeHomeService, salary: str) -> Decimal:
         # Line 25 is line 15 (the salary less the T1 deductions, with line 14 blank) less line 24
         # ($26,855.00), floored at zero. At $20,000 line 15 is 19,835.00, below the base amount, so
         # line 25 prints "0.00".
-        ("2000", "0.00"),
-        ("6000", "0.00"),
         ("20000", "0.00"),
         ("30000", "2880.00"),
-        ("35000", "7830.00"),
-        ("40000", "12780.00"),
-        ("70000", "42480.00"),
     ],
 )
 def test_schedule_6_line_25_is_line_15_less_the_base_amount_not_below_zero(

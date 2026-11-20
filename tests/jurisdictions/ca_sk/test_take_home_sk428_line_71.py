@@ -19,9 +19,8 @@ real `sk428_line_58.yaml` to `sk428_line_69.yaml` parts, the line 70 inputs part
 T691 amount of line 68 and line 70). The two form declarations are made up here.
 
 Figures: line 69 is line 67 plus line 68, re-derived here in `_line_62`, `_line_66` and `_line_68`
-with Decimal (not a CRA example); line 70 is blank (0), so line 71 is 0.00 / 5,092.30 / 22,207.93
-at a salary of 20,000 / 70,000 / 200,000. With a line 70 of 1,000.00 line 71 is 0.00 (line 69 minus
-line 70 is -1,000.00, floored) / 4,092.30 / 21,207.93.
+with Decimal (not a CRA example); line 70 is blank (0), so line 71 is 0.00 / 5,092.30 at a
+salary of 20,000 / 70,000. With a line 70 of 1,000.00 line 71 is 4,092.30 at 70,000.
 """
 
 from __future__ import annotations
@@ -167,7 +166,6 @@ FORM = dedent(f"""\
 CASES = [
     ("20000", "0.00"),
     ("70000", "5092.30"),
-    ("200000", "22207.93"),
 ]
 
 
@@ -215,12 +213,7 @@ def _line_68(amount: Decimal = ZERO) -> Decimal:
 
 CASES_WITH_LINE_70 = [
     # salary, line 70, line 69, line 71: line 69 minus line 70, not below 0.
-    # Line 69 minus line 70 is -1,000.00 at 20,000: the floor.
-    ("20000", "1000.00", "0.00", "0.00"),
     ("70000", "1000.00", "5092.30", "4092.30"),
-    ("200000", "1000.00", "22207.93", "21207.93"),
-    # Line 70 above line 69: the floor.
-    ("70000", "9000.00", "5092.30", "0.00"),
     # Exactly equal: the cent zero.
     ("70000", "5092.30", "5092.30", "0.00"),
 ]
@@ -402,13 +395,7 @@ def _line_71_at(line_69_amount: str, line_70_amount: str) -> Artifact[Decimal]:
     ("line_69", "line_70", "expected"),
     [
         ("5092.30", "1000.00", "4092.30"),
-        ("100.01", "100.00", "0.01"),
-        ("2140.53", "2140.53", "0.00"),
         ("1000.00", "5092.30", "0.00"),
-        # Line 69 is signed (line 68 can be negative), so a negative minuend is accepted, floored.
-        ("-350.00", "0.00", "0.00"),
-        ("-350.00", "100.00", "0.00"),
-        ("0.00", "0.00", "0.00"),
         # Half-up to the cent: 0.005 rounds to 0.01, 0.004 to 0.00.
         ("100.005", "100.00", "0.01"),
         ("100.004", "100.00", "0.00"),

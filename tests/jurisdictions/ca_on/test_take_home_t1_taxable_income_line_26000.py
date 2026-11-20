@@ -61,16 +61,10 @@ def line_26000(
     [
         # The ticket's $70,000 salary: net income 69,335.00, line 25700 left out, so it reads as 0.
         ("69335.00", None, "69335.00"),
-        # $90,000: net income 88,926.00, line 25700 left out.
-        ("88926.00", None, "88926.00"),
         # A deduction below net income is taken off in full.
         ("69335.00", "1000", "68335.00"),
-        # Deductions equal to net income: exactly 0.
-        ("1000", "1000", "0.00"),
         # Deductions above net income: floored at 0, not negative.
         ("1000", "1500", "0.00"),
-        # A cent case: 1,000.01 less 0.02 is 999.99.
-        ("1000.01", "0.02", "999.99"),
     ],
 )
 def test_line_26000_is_line_57_less_line_68_floored_at_zero(

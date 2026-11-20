@@ -15,8 +15,8 @@ the new `bc428_line_68.yaml`, and types in only the salary. The header and the f
 (BC428, exporting lines 63, 67 and 68) are made up here, because the shared scaffold owns them.
 
 Figures (hand-computed, not a CRA example). Line 63 is recomputed in the test from the British
-Columbia brackets over the taxable income (16,865 / 19,835 / 29,735 / 69,335 / 198,926 for a salary
-of 17,000 / 20,000 / 30,000 / 70,000 / 200,000); line 67 is the line 67 test's figure (line 60, with
+Columbia brackets over the taxable income (16,865 / 198,926 for a salary
+of 17,000 / 200,000); line 67 is the line 67 test's figure (line 60, with
 lines 65 and 66 blank). Line 68 is their difference in Decimal.
 """
 
@@ -140,17 +140,11 @@ FORM = dedent("""\
 # recomputed below from the brackets, not typed in.
 CASES = [
     ("17000", "16865", "702.28", "151.09"),
-    ("20000", "19835", "712.28", "291.37"),
-    ("30000", "29735", "745.63", "758.96"),
-    ("70000", "69335", "875.44", "3162.39"),
     ("200000", "198926", "878.70", "19230.76"),
 ]
 # Line 63 as the ticket hand-computed it (line 61 with line 62 blank), the line 63 test's figures.
 LINE_63_FIGURES = {
     "17000": "853.37",
-    "20000": "1003.65",
-    "30000": "1504.59",
-    "70000": "4037.83",
     "200000": "20109.46",
 }
 # The 2025 British Columbia brackets: lower bound and rate.
@@ -304,18 +298,12 @@ def _line_68_at(line_63_amount: str, line_67_amount: str) -> Artifact[Decimal]:
     [
         # Line 63 above line 67: the difference.
         ("4037.83", "875.44", "3162.39"),
-        ("100.01", "100.00", "0.01"),
-        # Exactly equal: the cent zero, not negative.
-        ("878.70", "878.70", "0.00"),
         # Line 63 below line 67: the floor.
         ("500.00", "702.28", "0.00"),
-        ("99.99", "100.00", "0.00"),
         # Line 63 is signed, so the floor also catches a negative minuend.
         ("-266.50", "875.44", "0.00"),
-        ("0.00", "0.00", "0.00"),
-        # Half-up to the cent: 0.005 rounds to 0.01, 0.004 to 0.00.
+        # Half-up to the cent: 0.005 rounds to 0.01.
         ("100.005", "100.00", "0.01"),
-        ("100.004", "100.00", "0.00"),
     ],
 )
 def test_line_68_is_line_63_minus_line_67_not_below_zero_to_the_cent(

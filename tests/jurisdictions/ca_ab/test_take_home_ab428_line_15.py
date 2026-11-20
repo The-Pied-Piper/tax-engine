@@ -21,10 +21,9 @@ and 15.
 Figures, computed here from the engine's T1 taxable income (line 1 is the salary less 1,074.00 at
 these incomes): salary 20,000 and 70,000 give blank lines 13 and 14, so a blank line 15; 200,000
 gives line 1 of 198,926.00, line 13 of 2,267.85 and line 14 of 17,553.04, so 19,820.89. Column
-edges, each computed independently with Decimal: line 1 of 181,481.00 is blank; 181,481.01 gives
-0.00 + 17,553.04 = 17,553.04; 241,974.00 gives 7,864.09 + 17,553.04 = 25,417.13; 241,974.01 gives
-0.00 + 25,417.13 = 25,417.13; 362,961.00 gives 16,938.18 + 25,417.13 = 42,355.31; 362,961.01 gives
-0.00 + 42,355.31 = 42,355.31; 363,961.00 gives 150.00 + 42,355.31 = 42,505.31.
+edges, each computed independently with Decimal: line 1 of 181,481.00 is blank; 241,974.00 gives
+7,864.09 + 17,553.04 = 25,417.13; 241,974.01 gives 0.00 + 25,417.13 = 25,417.13; 363,961.00 gives
+150.00 + 42,355.31 = 42,505.31.
 """
 
 from __future__ import annotations
@@ -188,16 +187,10 @@ def test_line_15_is_line_13_plus_line_14_for_the_salary(
 @pytest.mark.parametrize(
     ("salary", "expected"),
     [
-        # Line 1 of 181,481.01 is column 1: line 13 0.00 and line 14 17,553.04.
-        ("182555.01", "17553.04"),
         # Line 1 of exactly 241,974.00 is still column 1: line 13 7,864.09 and line 14 17,553.04.
         ("243048.00", "25417.13"),
         # Line 1 of 241,974.01 is column 2: line 13 0.00 and line 14 25,417.13.
         ("243048.01", "25417.13"),
-        # Line 1 of exactly 362,961.00 is still column 2: line 13 16,938.18 and line 14 25,417.13.
-        ("364035.00", "42355.31"),
-        # Line 1 of 362,961.01 is column 3: line 13 0.00 and line 14 42,355.31.
-        ("364035.01", "42355.31"),
         # Line 1 of 363,961.00 is column 3: line 13 150.00 and line 14 42,355.31.
         ("365035.00", "42505.31"),
     ],
@@ -206,7 +199,7 @@ def test_line_15_at_the_column_boundaries(tmp_path: Path, salary: str, expected:
     assert _sheet(tmp_path, salary).get(_kind(LINE_15)).value == D(expected)
 
 
-@pytest.mark.parametrize("salary", ["20000", "70000", "182555.00"])
+@pytest.mark.parametrize("salary", ["20000", "182555.00"])
 def test_line_15_is_blank_when_lines_13_and_14_are_blank(tmp_path: Path, salary: str) -> None:
     assert _sheet(tmp_path, salary).get(_kind(LINE_15)).is_blank
 

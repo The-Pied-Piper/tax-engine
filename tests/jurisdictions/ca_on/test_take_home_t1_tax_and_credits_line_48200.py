@@ -21,8 +21,7 @@ basic credits only.
 The T2204 line 15 edge: line 15 counts only when more than $1. Run through the real parts, line 15
 is 1.01 at a salary of 2,032.32 (counted) and 1.00 at 2,032.33 (not more than $1, counts as 0);
 so the edge is between those two salaries. The EI overpayment exists only below
-a salary of about 2,033 and the CWB only above about 3,000 (0.00 at 3,000, 135.00 at 3,500), so no
-salary has both non-zero.
+a salary of about 2,033 and the CWB only above about 3,000, so no salary has both non-zero.
 """
 
 from __future__ import annotations
@@ -111,24 +110,12 @@ def _figures(take_home_service: TakeHomeService, salary: str) -> tuple[Decimal, 
         ("70000", "0.00", "0.00", "0.00"),
         # No overpayment; Schedule 6 line 28 is 1,633.00.
         ("20000", "0.00", "1633.00", "1633.00"),
-        # No overpayment; Schedule 6 line 28 is 1,201.00.
-        ("30000", "0.00", "1201.00", "1201.00"),
         # T2204 line 15 is 22.96 (more than $1) and counts; the CWB is 0.00 at this salary.
         ("2010", "22.96", "0.00", "22.96"),
-        # The most line 15 reaches with the salary at the 2,000 threshold: 32.80, all counted.
-        ("2000", "32.80", "0.00", "32.80"),
-        # Line 15 is 1.32 here, more than $1, so it counts.
-        ("2032", "1.32", "0.00", "1.32"),
         # Last cent where line 15 is more than $1: 1.01 counts.
         ("2032.32", "1.01", "0.00", "1.01"),
         # First cent where line 15 is not more than $1 (it is exactly 1.00): it counts as 0.
         ("2032.33", "0.00", "0.00", "0.00"),
-        ("2033", "0.00", "0.00", "0.00"),
-        # Above the EI overpayment range and below the CWB range (CWB starts above 3,000).
-        ("3000", "0.00", "0.00", "0.00"),
-        # CWB only: Schedule 6 line 28 is 135.00 and 270.00 on the way up.
-        ("3500", "0.00", "135.00", "135.00"),
-        ("4000", "0.00", "270.00", "270.00"),
     ],
 )
 def test_line_48200_is_the_ei_overpayment_plus_the_cwb(

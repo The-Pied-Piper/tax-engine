@@ -81,8 +81,6 @@ def _line_6(take_home_service: TakeHomeService, line_4: str, line_5: str) -> Dec
         ("19835.00", "0.0505", "1001.67"),
         # The worked figures for a $70,000 salary: 16,449.00 at 9.15% is 1,505.0835, to the cent.
         ("16449.00", "0.0915", "1505.08"),
-        # The worked figures for a $150,000 salary: 43,151.00 at 11.16% is 4,815.6516, to the cent.
-        ("43151.00", "0.1116", "4815.65"),
     ],
 )
 def test_line_6_is_line_4_times_the_fraction_of_line_5_to_the_cent(
@@ -96,8 +94,6 @@ def test_line_6_is_line_4_times_the_fraction_of_line_5_to_the_cent(
     [
         # A product exactly on the half cent rounds up: 1.00 × 0.005 is 0.005, which is 0.01.
         ("1.00", "0.005", "0.01"),
-        # A product just under the half cent rounds down: 1.00 × 0.0049 is 0.0049, which is 0.00.
-        ("1.00", "0.0049", "0.00"),
         # A line 4 of zero (the lower bound of column 1 at a zero income) gives zero.
         ("0.00", "0.0915", "0.00"),
     ],

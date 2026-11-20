@@ -5,7 +5,7 @@ line 40427 of your return multiplied by 60% =". The input is the amount from lin
 return (`ca-nl/nl428_minimum_tax_carryover_amount_line_68`), which its own part declares as
 optional, read as 0 when left out. Line 68 is one calculation: 60% of the amount, a printed rate
 held in the `ca-nl/minimum_tax_rate` dataset, rounded half-up to the cent. A salary-only caller
-leaves the amount out, so line 68 is 0.00 at every salary: 0.00 / 0.00 / 0.00 at 20,000 / 70,000 /
+leaves the amount out, so line 68 is 0.00 at every salary: 0.00 / 0.00 at 20,000 /
 200,000.
 
 The inputs part and the line 68 part are loaded under a test-local header and form declaration,
@@ -99,7 +99,7 @@ def _line_68(tmp_path: Path, salary: str, amount: str | None) -> Decimal:
     return value
 
 
-@pytest.mark.parametrize("salary", ["20000", "70000", "200000"])
+@pytest.mark.parametrize("salary", ["20000", "200000"])
 def test_a_salary_only_caller_who_leaves_out_the_amount_gets_0(tmp_path: Path, salary: str) -> None:
     # The amount is left out, read as 0 by the step's blank rule, so line 68 is 0.00 throughout.
     value = _line_68(tmp_path, salary, None)

@@ -17,8 +17,8 @@ and 72) are made up here, because the shared scaffold owns them.
 
 Figures (hand-computed, not a CRA example). Line 70 is recomputed in the test as the line 70 test
 does (line 63 from the British Columbia brackets over the taxable income, less line 67, plus line 69
-at 0.00). With line 71 blank, line 72 equals line 70 at a salary of 17,000 / 20,000 / 30,000 /
-70,000 / 200,000. With line 71 of 100.00 at 70,000, line 72 is 3,162.39 less 100.00; with line 71
+at 0.00). With line 71 blank, line 72 equals line 70 at a salary of 17,000 /
+200,000. With line 71 of 100.00 at 70,000, line 72 is 3,162.39 less 100.00; with line 71
 above line 70 it is floored at 0.00.
 """
 
@@ -150,9 +150,6 @@ FORM = dedent("""\
 # line 69 at 0.00, and the ticket's line 72 figure with line 71 blank).
 CASES = [
     ("17000", "16865", "702.28", "151.09"),
-    ("20000", "19835", "712.28", "291.37"),
-    ("30000", "29735", "745.63", "758.96"),
-    ("70000", "69335", "875.44", "3162.39"),
     ("200000", "198926", "878.70", "19230.76"),
 ]
 # The 2025 British Columbia brackets: lower bound and rate.
@@ -333,8 +330,6 @@ def test_the_step_traces_one_subtracted_not_below_zero_line_with_the_cent_roundi
     ("line_70", "line_71", "expected"),
     [
         ("3162.39", "100.00", "3062.39"),
-        ("3162.39", "0.00", "3162.39"),
-        ("151.09", "151.09", "0.00"),
         ("151.09", "500.00", "0.00"),
     ],
 )

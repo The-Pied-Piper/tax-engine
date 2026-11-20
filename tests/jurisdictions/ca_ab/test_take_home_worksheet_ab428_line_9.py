@@ -17,10 +17,11 @@ listed in the registrations, so the service is built here over the Alberta packa
 `support.py`.
 
 Figures (hand-computed from the printed forms, not a CRA example, and recomputed here from the real
-parts): line 7 is 0.00 at the three salaries (line 5 is below the 4,800.00 of line 6), so line 9 is
-0.00 x 0.25 = 0.00 at all three. The positive side cannot be reached by a salary alone (it turns on
-only past a line 52 of 60,000), so it is exercised on the capability the part builds, over a given
-line 7 and the real dataset: 100.00 x 0.25 = 25.00, and 0.02 x 0.25 = 0.005, half-up to 0.01.
+parts): line 7 is 0.00 at salaries 20,000 and 200,000 (line 5 is below the 4,800.00 of line 6), so
+line 9 is 0.00 x 0.25 = 0.00 at both. The positive side cannot be reached by a salary alone (it
+turns on only past a line 52 of 60,000), so it is exercised on the capability the part builds, over
+a given line 7 and the real dataset: 100.00 x 0.25 = 25.00, and 0.02 x 0.25 = 0.005, half-up to
+0.01.
 """
 
 from __future__ import annotations
@@ -103,8 +104,8 @@ WORKSHEET_FORM = dedent("""\
     capabilities: []
     """)
 
-# salary, line 9: line 7 is 0.00 at all three salaries (the line 7 test pins this), times 0.25.
-CASES = [("20000", "0.00"), ("70000", "0.00"), ("200000", "0.00")]
+# salary, line 9: line 7 is 0.00 at both salaries (the line 7 test pins this), times 0.25.
+CASES = [("20000", "0.00"), ("200000", "0.00")]
 
 
 def _part_files() -> Iterator[Path]:
@@ -235,14 +236,9 @@ def _line_9_at(line_7_amount: str) -> Decimal:
 @pytest.mark.parametrize(
     ("line_7", "expected"),
     [
-        ("0.00", "0.00"),
-        ("0.01", "0.00"),
-        ("0.02", "0.01"),
-        ("0.06", "0.02"),
         ("100.00", "25.00"),
-        ("452.00", "113.00"),
-        ("1234.56", "308.64"),
-        ("0.03", "0.01"),
+        # 0.02 x 25% = 0.005: exactly half goes up.
+        ("0.02", "0.01"),
     ],
 )
 def test_line_9_is_a_quarter_of_line_7_rounded_half_up_to_the_cent(

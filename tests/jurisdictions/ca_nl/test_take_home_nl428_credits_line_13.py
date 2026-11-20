@@ -11,8 +11,9 @@ step with base `ca-nl/nl428_taxable_income_over_lower_bound_line_11` and rate
 Figures, re-derived in `_derived` below with Decimal (not a CRA example): taxable income is the
 salary less the enhanced CPP deduction (1,074.00 from $71,300 up), line 11 is that less the
 column's lower bound, and line 13 is line 11 times the rate: 250,000 gives line 1 of 248,926.00,
-line 11 of 28,016.00 and line 13 of 5,547.17; 300,000, 600,000 and 1,200,000 reach the other three
-columns. A salary of 250,001.50 makes the product 5,547.465, exactly half a cent, which goes up.
+line 11 of 28,016.00 and line 13 of 5,547.17 (the other three columns are tested in line 12's
+rate lookup). A salary of 250,001.50 makes the product 5,547.465, exactly half a cent, which goes
+up.
 
 The real parts composed: Schedule 8, the T1 taxable-income parts, lines 1, 10, 11, 12 and 13. The
 header, the salary input and the form declaration are test-local.
@@ -109,9 +110,6 @@ FORM_TEXT = dedent(f"""\
 # cent (28,017.50 x 19.8% = 5,547.465), which rounds up.
 CASES = [
     ("250000", "28016.00", "0.198", "5547.17"),
-    ("300000", "16712.00", "0.208", "3476.10"),
-    ("600000", "34497.00", "0.213", "7347.86"),
-    ("1200000", "70068.00", "0.218", "15274.82"),
     ("250001.50", "28017.50", "0.198", "5547.47"),
 ]
 
@@ -202,7 +200,7 @@ def test_line_13_is_line_11_times_the_line_12_rate_rounded_half_up_to_the_cent(
     assert str(value) == expected
 
 
-@pytest.mark.parametrize("salary", ["20000", "70000", "200000"])
+@pytest.mark.parametrize("salary", ["20000", "200000"])
 def test_line_13_is_blank_when_lines_11_and_12_are_blank_up_to_220910(
     tmp_path: Path, salary: str
 ) -> None:

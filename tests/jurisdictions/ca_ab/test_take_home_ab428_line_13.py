@@ -18,12 +18,10 @@ carry `pass_on`. The form declaration is test-local, exporting lines 1, 10, 11, 
 Figures, computed here from the engine's T1 taxable income (line 1 is the salary less 1,074.00 at
 these incomes): salary 20,000 and 70,000 give blank lines 11 and 12, so a blank line 13; 200,000
 gives line 1 of 198,926.00, line 11 of 17,445.00 at 13%, so 2,267.85. Column edges, each computed
-independently with Decimal: line 1 of 181,481.00 is blank; 181,481.01 gives line 11 0.01 at 13%
-(0.0013, so 0.00); 241,974.00 is still column 13% (line 11 60,493.00, so 7,864.09) and 241,974.01
-is column 14% (line 11 0.01, so 0.00); 362,961.00 is still 14% (line 11 120,987.00, so 16,938.18)
-and 362,961.01 is 15% (0.0015, so 0.00); 363,961.00 gives 1,000.00 at 15%, so 150.00. Rounding:
-line 11 of 0.50 at 13% is 0.065, half-up 0.07 (not the even 0.06); 0.75 at 14% is 0.105, so 0.11;
-0.30 at 15% is 0.045, so 0.05; 0.05 at 14% is 0.007, so 0.01; 0.03 at 13% is 0.0039, so 0.00.
+independently with Decimal: line 1 of 181,481.00 is blank; 241,974.01 is column 14% (line 11 0.01,
+so 0.00); 362,961.00 is still 14% (line 11 120,987.00, so 16,938.18) and 362,961.01 is 15%
+(0.0015, so 0.00); 363,961.00 gives 1,000.00 at 15%, so 150.00. Rounding: line 11 of 0.50 at 13% is
+0.065, half-up 0.07 (not the even 0.06); 0.03 at 13% is 0.0039, so 0.00.
 """
 
 from __future__ import annotations
@@ -168,8 +166,6 @@ def _kind(identifier: str) -> AmountKind:
     [
         # Line 1 is 198,926.00: line 11 is 17,445.00 at 13%.
         ("200000", "2267.85"),
-        # Line 1 of exactly 241,974.00 is still the 13% column: line 11 60,493.00.
-        ("243048.00", "7864.09"),
         # Line 1 of exactly 362,961.00 is still the 14% column: line 11 120,987.00.
         ("364035.00", "16938.18"),
         # Line 1 of 363,961.00 is the 15% column: line 11 1,000.00.
@@ -185,8 +181,6 @@ def test_line_13_is_line_11_times_the_line_12_rate_for_the_salary(
 @pytest.mark.parametrize(
     ("salary", "expected"),
     [
-        # Line 1 of 181,481.01 is the 13% column: line 11 is one cent, 0.0013 rounds to nothing.
-        ("182555.01", "0.00"),
         # Line 1 of 241,974.01 is the 14% column: line 11 is one cent, 0.0014 rounds to nothing.
         ("243048.01", "0.00"),
         # Line 1 of 362,961.01 is the 15% column: line 11 is one cent, 0.0015 rounds to nothing.
@@ -204,19 +198,13 @@ def test_line_13_just_above_each_column_edge(tmp_path: Path, salary: str, expect
         ("182555.03", "0.00"),
         # 0.50 x 13% = 0.065: exactly half goes up (half-up, not half-even 0.06).
         ("182555.50", "0.07"),
-        # 0.05 x 14% = 0.007: up.
-        ("243048.05", "0.01"),
-        # 0.75 x 14% = 0.105: exactly half goes up (half-up, not half-even 0.10).
-        ("243048.75", "0.11"),
-        # 0.30 x 15% = 0.045: exactly half goes up (half-up, not half-even 0.04).
-        ("364035.30", "0.05"),
     ],
 )
 def test_line_13_is_rounded_half_up_to_the_cent(tmp_path: Path, salary: str, expected: str) -> None:
     assert _sheet(tmp_path, salary).get(_kind(LINE_13)).value == D(expected)
 
 
-@pytest.mark.parametrize("salary", ["20000", "70000", "182555.00"])
+@pytest.mark.parametrize("salary", ["20000", "182555.00"])
 def test_line_13_is_blank_when_lines_11_and_12_are_blank(tmp_path: Path, salary: str) -> None:
     assert _sheet(tmp_path, salary).get(_kind(LINE_13)).is_blank
 

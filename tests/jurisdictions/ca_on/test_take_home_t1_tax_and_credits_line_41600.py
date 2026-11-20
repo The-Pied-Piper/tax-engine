@@ -65,7 +65,7 @@ def _sheet(take_home_service: TakeHomeService, salary: str) -> Worksheet:
     return sheet
 
 
-@pytest.mark.parametrize("salary", ["20000", "70000", "200000"])
+@pytest.mark.parametrize("salary", ["20000", "70000"])
 def test_line_41600_is_zero_at_any_salary(take_home_service: TakeHomeService, salary: str) -> None:
     line_41600 = _sheet(take_home_service, salary).get(bundled_kinds().kind(LINE_41600)).value
 

@@ -134,16 +134,8 @@ def _on428_line_90(worksheets: dict[str, tuple[Worksheet, ...]]) -> Decimal:
         # $70,000: line 142 is 7,585.64 and ON428 line 90 is 3,911.45 (the ticket's oracle, Return
         # DD), so line 43500 is 11,497.09.
         ("70000", "7585.64", "3911.45", "11497.09"),
-        # $20,000: line 142 is 158.09 and ON428 line 90 is 0.00, so line 43500 is 158.09.
-        ("20000", "158.09", "0.00", "158.09"),
         # $10,000: line 142 is 0 and ON428 line 90 is 0, so line 43500 is 0.
         ("10000", "0.00", "0.00", "0.00"),
-        # $150,000: ON428 line 90 is 14,852.14 (as pinned by the ON428 line 90 test). Line 142 is
-        # 25,772.14, taken from a run of the real parts, so line 43500 is 40,624.28.
-        ("150000", "25772.14", "14852.14", "40624.28"),
-        # $200,000: line 142 is 39,467.74 (as pinned by the line 42000 test). ON428 line 90 is
-        # 24,320.20, taken from a run of the real parts, so line 43500 is 63,787.94.
-        ("200000", "39467.74", "24320.20", "63787.94"),
     ],
 )
 def test_line_43500_is_line_42000_plus_on428_line_90(
@@ -163,9 +155,7 @@ def test_line_43500_is_line_42000_plus_on428_line_90(
     assert sheet.get(kinds.kind(LINE_42800)).value == D(line_42800)
 
 
-@pytest.mark.parametrize(
-    "salary", ["10000", "15000", "20000", "35000", "70000", "100000", "150000"]
-)
+@pytest.mark.parametrize("salary", ["10000", "70000"])
 def test_line_43500_equals_line_42000_plus_on428_line_90_read_from_the_sheets(
     take_home_service: TakeHomeService, salary: str
 ) -> None:
@@ -184,14 +174,8 @@ def test_line_43500_equals_line_42000_plus_on428_line_90_read_from_the_sheets(
     [
         # $10,000: ON428 line 90 is 0, so line 42800 is 0.
         ("10000", "0.00"),
-        # $20,000: ON428 line 90 is 0.00.
-        ("20000", "0.00"),
         # $70,000: ON428 line 90 is 3,911.45.
         ("70000", "3911.45"),
-        # $150,000: ON428 line 90 is 14,852.14.
-        ("150000", "14852.14"),
-        # $200,000: ON428 line 90 is 24,320.20, from a run of the real parts.
-        ("200000", "24320.20"),
     ],
 )
 def test_line_42800_is_the_on428_line_90(

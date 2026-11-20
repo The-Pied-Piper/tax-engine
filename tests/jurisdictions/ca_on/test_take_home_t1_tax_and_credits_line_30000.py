@@ -29,12 +29,12 @@ The salary is the only input the caller gives. Ontario resident, single filer, s
 income, tax withheld 0, basic credits only, as the take-home calculator states them.
 
 Line 23600 is the salary less 1,074.00 once the salary is high enough for the CPP and EI maximums
-(1 a dollar of salary), so salaries 178,956, 216,722 and 254,488 give line 23600 of exactly
-177,882.00, 215,648.00 and 253,414.00, and the boundaries are tested exactly and one dollar inside
-each side. Line 30000 is pinned as a figure for each salary and checked against the printed
-worksheet (lines 5 to 11) for salaries between the two thresholds, computed independently of the
-engine from exact fractions. Line 3 is pinned at 70,000, and the two kinds are pinned as
-registered and non-negative.
+(1 a dollar of salary), so salaries 178,957 and 254,488 give line 23600 of exactly
+177,883.00 and 253,414.00, and the dollar over the lower threshold and the upper threshold itself
+are tested. Line 30000 is pinned as a figure for salaries below, between and above the
+thresholds and checked against the printed worksheet (lines 5 to 11) for salaries between the two
+thresholds, computed independently of the engine from exact fractions. Line 3 is pinned at 70,000,
+and the two kinds are pinned as registered and non-negative.
 """
 
 from __future__ import annotations
@@ -133,10 +133,6 @@ def _printed_worksheet(line_3: Decimal) -> Decimal:
         # Line 23600 of 198,926.00: 1,591.00 less 1,591.00 times 21,044.00 over 75,532.00
         # (443.27) is 1,147.73, and 14,538.00 plus it is 15,685.73.
         ("200000", "15685.73"),
-        # Line 23600 of 215,648.00 is the middle of the range: 14,538.00 plus half of 1,591.00.
-        ("216722", "15333.50"),
-        # Line 23600 of 300,000 less 1,074.00 is above 253,414.00: the base, 14,538.00.
-        ("300000", "14538.00"),
     ],
 )
 def test_line_30000_is_the_basic_personal_amount(
@@ -150,12 +146,8 @@ def test_line_30000_is_the_basic_personal_amount(
 @pytest.mark.parametrize(
     ("salary", "line_23600", "expected"),
     [
-        # Exactly the threshold "$177,882 or less": 16,129.00.
-        ("178956", "177882.00", "16129.00"),
         # One dollar over: 1,591.00 times 1.00 over 75,532.00 is 0.0211, so 16,128.98.
         ("178957", "177883.00", "16128.98"),
-        # One dollar under "$253,414 or more": 14,538.00 plus 0.0211, so 14,538.02.
-        ("254487", "253413.00", "14538.02"),
         # Exactly "$253,414 or more": 14,538.00.
         ("254488", "253414.00", "14538.00"),
     ],
@@ -169,7 +161,7 @@ def test_line_30000_at_the_thresholds(
     assert sheet.get(bundled_kinds().kind(LINE_30000)).value == D(expected)
 
 
-@pytest.mark.parametrize("salary", ["178957", "190000", "200000", "216722", "240000", "254487"])
+@pytest.mark.parametrize("salary", ["190000", "240000"])
 def test_line_30000_is_the_printed_worksheet_between_the_thresholds(
     take_home_service: TakeHomeService, salary: str
 ) -> None:

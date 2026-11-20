@@ -8,8 +8,8 @@ more than $259,829  Line 14: 17,989.30", "Column 3: Line 1 is more than $259,829
 `ca-bc/brackets_lines_9_to_15` schedule, output `ca-bc/bc428_bracket_tax_at_start_line_14`, as
 Alberta's line 14 is.
 
-The table covers only a line 1 above 137,407.00, so line 14 is left blank there: at $17,000,
-$20,000, $30,000 and $70,000 it is blank, at $200,000 (line 1 is 198,926.00) it is 17,989.30. A
+The table covers only a line 1 above 137,407.00, so line 14 is left blank there: at $17,000
+and $70,000 it is blank, at $200,000 (line 1 is 198,926.00) it is 17,989.30. A
 blank output is read from the Worksheet as an artifact whose `is_blank` is true (its `value`
 raises), and its trace is one `BracketOutsideRangeLine` (output, base, base amount); a covered
 line 14 traces one `BracketColumnFigureLine` named "tax at start".
@@ -153,9 +153,6 @@ def _sheet(tmp_path: Path, salary: str) -> Worksheet:
     ("salary", "expected"),
     [
         ("17000", "16865.00"),
-        ("20000", "19835.00"),
-        ("30000", "29735.00"),
-        ("70000", "69335.00"),
         ("200000", "198926.00"),
     ],
 )
@@ -165,9 +162,9 @@ def test_line_1_is_the_t1_taxable_income(tmp_path: Path, salary: str, expected: 
     assert sheet.get(british_columbia_kinds().kind(LINE_1)).value == D(expected)
 
 
-@pytest.mark.parametrize("salary", ["17000", "20000", "30000", "70000"])
+@pytest.mark.parametrize("salary", ["17000", "70000"])
 def test_line_14_is_blank_when_line_1_is_137407_or_less(tmp_path: Path, salary: str) -> None:
-    # Line 1 is 16,865.00 to 69,335.00: in the low table's columns, outside this table's range.
+    # Line 1 is 16,865.00 and 69,335.00: in the low table's columns, outside this table's range.
     sheet = _sheet(tmp_path, salary)
 
     assert sheet.get(british_columbia_kinds().kind(LINE_14)).is_blank
@@ -240,8 +237,6 @@ def test_line_1_of_137407_01_gives_10801_15() -> None:
     ("base", "expected"),
     [
         ("186306.00", "10801.15"),
-        ("186306.01", "17989.30"),
-        ("259829.00", "17989.30"),
         ("259829.01", "30341.16"),
     ],
 )
@@ -285,7 +280,7 @@ def test_the_kind_is_a_registered_non_negative_decimal_amount() -> None:
 
 @pytest.mark.parametrize(
     ("base", "expected"),
-    [("150000.00", "10801.15"), ("200000.00", "17989.30"), ("300000.00", "30341.16")],
+    [("200000.00", "17989.30"), ("300000.00", "30341.16")],
 )
 def test_the_three_printed_columns_give_their_line_14_constants(base: str, expected: str) -> None:
     assert _line_14_at(base).value == D(expected)

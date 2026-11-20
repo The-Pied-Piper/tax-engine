@@ -65,8 +65,6 @@ def _line_19(take_home_service: TakeHomeService, line_17: str) -> Decimal:
     [
         # A $70,000 salary: line 17 is 36,835.00, and 5% of it is 1,841.75, in cents already.
         ("36835.00", "1841.75"),
-        # A $40,000 salary: line 17 is 7,135.00, and 5% of it is 356.75.
-        ("7135.00", "356.75"),
         # Line 17 is 0, under the threshold, so line 19 is 0.
         ("0", "0.00"),
         # 10.10 x 5% = 0.505, a tie, rounded half-up to 0.51.

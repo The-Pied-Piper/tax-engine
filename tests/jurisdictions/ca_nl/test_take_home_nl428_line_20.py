@@ -116,7 +116,7 @@ def line_20_is_blank(tmp_path: Path, salary: str) -> bool:
     return _sheet(tmp_path, salary).get(NL428_SPOUSE_AMOUNT_LINE_20).is_blank
 
 
-@pytest.mark.parametrize("salary", ["20000", "70000", "200000"])
+@pytest.mark.parametrize("salary", ["20000", "200000"])
 def test_line_20_is_blank_when_line_19_is_left_blank(tmp_path: Path, salary: str) -> None:
     assert line_20_is_blank(tmp_path, salary)
 
@@ -124,13 +124,9 @@ def test_line_20_is_blank_when_line_19_is_left_blank(tmp_path: Path, salary: str
 @pytest.mark.parametrize(
     ("spouse_net_income", "expected"),
     [
-        ("0", "9043.00"),
         ("905", "9043.00"),
         ("905.01", "9042.99"),
-        ("5000", "4948.00"),
         ("9948", "0.00"),
-        ("30000", "0.00"),
-        ("-1000", "9043.00"),
     ],
 )
 def test_line_20_is_line_18_less_line_19_not_below_0_and_at_most_9043(

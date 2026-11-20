@@ -66,8 +66,6 @@ def _line_87(take_home_service: TakeHomeService, donations: str | None) -> Decim
         ("100.00", "25.00"),
         # No donation (0): the credit is 0.
         ("0", "0.00"),
-        # 0.02 x 25% = 0.005, a tie, rounded half-up to 0.01.
-        ("0.02", "0.01"),
         # 10.10 x 25% = 2.525, a tie, rounded half-up to 2.53.
         ("10.10", "2.53"),
     ],

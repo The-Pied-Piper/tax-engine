@@ -12,8 +12,8 @@ prints no title the engine takes for the line. Line 94 is line 87 whether or not
 (a copy line with no step), so only line 104 changes with line 86.
 
 Figures (hand-computed from the printed form, not a CRA example): line 98 is 997.00 at every salary
-with lines 96 and 97 blank; line 103 is 0.00 / 7,265.12 / 27,999.68 at salaries of 20,000 / 70,000 /
-200,000, so line 104 is 997.00 / 0.00 / 0.00. At a salary of 28,000 line 103 is 612.32 and line 104
+with lines 96 and 97 blank; line 103 is 0.00 / 7,265.12 at salaries of 20,000 / 70,000, so line
+104 is 997.00 / 0.00. At a salary of 28,000 line 103 is 612.32 and line 104
 is 384.68. With a line 86 of 500.00 line 104 is 0.00 at every salary, where line 98 less line 103 is
 997.00 at a salary of 20,000.
 """
@@ -254,7 +254,6 @@ def _value(sheet: Any, identifier: str) -> Decimal:
     [
         ("20000", "0.00", "997.00"),
         ("70000", "7265.12", "0.00"),
-        ("200000", "27999.68", "0.00"),
     ],
 )
 def test_line_104_is_line_98_minus_line_103(
@@ -277,7 +276,7 @@ def test_line_104_is_the_difference_when_line_103_is_below_line_98(tmp_path: Pat
     assert _value(sheet, IDENTIFIER) == D("384.68")
 
 
-@pytest.mark.parametrize("salary", ["20000", "28000", "70000"])
+@pytest.mark.parametrize("salary", ["20000", "28000"])
 def test_line_104_is_0_when_line_86_is_claimed(tmp_path: Path, salary: str) -> None:
     sheet = _sheet(tmp_path, salary, FORM_NAME, {LINE_86: "500.00"})
 

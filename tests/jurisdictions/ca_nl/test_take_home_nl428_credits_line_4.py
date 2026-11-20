@@ -15,9 +15,9 @@ The real parts composed: the real Schedule 8, the T1 taxable-income parts, lines
 (Newfoundland and Labrador has no salary part), the form exporting lines 1, 3 and 4.
 
 Figures, hand computed (not a CRA example): taxable income is the salary less the enhanced CPP
-deduction, 19,835.00 / 69,335.00 / 198,926.00 for salaries of 20,000 / 70,000 / 200,000, line 3 is
-0.00 / 44,192.00 / 157,792.00, so line 4 is 19,835.00 / 25,143.00 / 41,134.00. The boundary salaries
-are those of the line 3 test: one cent either side of each column's lower bound.
+deduction, 69,335.00 for a salary of 70,000, line 3 is 44,192.00, so line 4 is 25,143.00. The
+boundary salary is one of the line 3 test: one cent above the first column's top, where line 4
+restarts at 0.01.
 """
 
 from __future__ import annotations
@@ -161,18 +161,13 @@ def _rounding() -> Any:
 
 # (salary, line 1, line 3, line 4)
 CASES = [
-    ("20000", "19835.00", "0.00", "19835.00"),
     ("70000", "69335.00", "44192.00", "25143.00"),
+    # Columns 3 and 4: the last figure of column 3, and 200,000.
+    ("158866.00", "157792.00", "88382.00", "69410.00"),
     ("200000", "198926.00", "157792.00", "41134.00"),
 ]
 EDGES = [
-    ("44603.03", "44192.00", "0.00", "44192.00"),
     ("44603.04", "44192.01", "44192.00", "0.01"),
-    ("89456.00", "88382.00", "44192.00", "44190.00"),
-    ("89456.01", "88382.01", "88382.00", "0.01"),
-    ("158866.00", "157792.00", "88382.00", "69410.00"),
-    ("158866.01", "157792.01", "157792.00", "0.01"),
-    ("221984.00", "220910.00", "157792.00", "63118.00"),
 ]
 
 

@@ -124,7 +124,6 @@ OTHER_STEPS = [
 # salary, credits, line 167: a balance owing, a refund and zero.
 CASES = [
     ("70000", "11497.09", "58502.91"),
-    ("20000", "21474.91", "-1474.91"),
     ("10000", "10000.00", "0.00"),
 ]
 

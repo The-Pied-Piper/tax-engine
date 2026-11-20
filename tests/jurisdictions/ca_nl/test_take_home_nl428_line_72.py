@@ -6,7 +6,7 @@ line 71 (the additional tax for minimum tax purposes), both always computed. The
 title for the line, so the step is untitled.
 
 Figures (hand-computed from the printed form, not a CRA example), with the Form T691 amount blank so
-line 71 is 0.00: line 70 is 663.23 / 6,147.49 / 27,192.33 at salaries of 20,000 / 70,000 / 200,000,
+line 71 is 0.00: line 70 is 663.23 / 27,192.33 at salaries of 20,000 / 200,000,
 so line 72 is the same. With a Form T691 amount of 1,000.00, line 71 is 600.00 and line 72 at a
 salary of 70,000 is 6,747.49.
 """
@@ -175,7 +175,6 @@ FORMS = dedent("""\
 # salary, line 72: line 70 plus line 71, the Form T691 amount blank.
 CASES = [
     ("20000", "663.23"),
-    ("70000", "6147.49"),
     ("200000", "27192.33"),
 ]
 

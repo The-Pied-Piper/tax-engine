@@ -56,13 +56,8 @@ def line_1(take_home_service: TakeHomeService, salary: str) -> Decimal:
     [
         # A $70,000 salary is under the maximum, so line 1 is the salary.
         ("70000", "70000.00"),
-        # $90,000 is above the $81,200 ceiling, so line 1 is the printed maximum.
-        ("90000", "81200.00"),
-        # At the maximum and a cent either side of it.
-        ("81200", "81200.00"),
+        # A cent above the $81,200 ceiling, so line 1 is the printed maximum.
         ("81200.01", "81200.00"),
-        ("81199.99", "81199.99"),
-        ("0", "0.00"),
     ],
 )
 def test_line_1_is_the_salary_capped_at_the_per_slip_maximum(

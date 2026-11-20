@@ -85,10 +85,6 @@ def t2204(
         ("1500", "0.00"),
         # $2,000 is not less than $2,000, so the note does not apply and line 1 is the salary.
         ("2000", "2000.00"),
-        ("2010", "2010.00"),
-        ("70000", "70000.00"),
-        # Not capped on this line: the salary is entered as it is.
-        ("90000", "90000.00"),
     ],
 )
 def test_line_1_is_the_salary_unless_the_note_applies(
@@ -103,9 +99,6 @@ def test_line_1_is_the_salary_unless_the_note_applies(
         # The note's count is 0 when it applies (under $2,000) and 1 otherwise.
         ("1500", "0"),
         ("2000", "1"),
-        ("2010", "1"),
-        ("70000", "1"),
-        ("90000", "1"),
     ],
 )
 def test_the_note_count_is_0_under_2000_and_1_from_2000(

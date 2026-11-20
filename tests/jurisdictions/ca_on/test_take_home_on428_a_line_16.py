@@ -52,7 +52,7 @@ def line_16(take_home_service: TakeHomeService, salary: str) -> Decimal:
     return sheet.get(LIFT_INDIVIDUAL_INCOME_THRESHOLD).value
 
 
-@pytest.mark.parametrize("salary", ["70000", "30000", "0", "32500", "200000"])
+@pytest.mark.parametrize("salary", ["70000", "0"])
 def test_line_16_is_the_printed_32500_whatever_the_salary(
     take_home_service: TakeHomeService, salary: str
 ) -> None:

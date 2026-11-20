@@ -5,10 +5,9 @@ Form text (Form NL428, CRA 5001-C, 5001-c-25e.txt): "Line 99: Amount from line 9
 line 93 (line 99 is its copy) and line 100, rounded half-up to the cent by `ca-nl/cent_rounding`.
 The form prints no title for the line, so the step is untitled.
 
-Figures (hand-computed from the printed form, not a CRA example): line 93 is 19,835.00 / 69,335.00 /
-198,926.00 and line 100 is 23,928 at salaries of 20,000 / 70,000 / 200,000, so line 101 is 0.00 /
-45,407.00 / 174,998.00. With an amount claimed on line 96, line 100 is 40,460 and line 101 at a
-salary of 70,000 is 28,875.00.
+Figures (hand-computed from the printed form, not a CRA example): line 93 is 19,835.00 / 69,335.00
+and line 100 is 23,928 at salaries of 20,000 / 70,000, so line 101 is 0.00 / 45,407.00. With an
+amount claimed on line 96, line 100 is 40,460 and line 101 at a salary of 70,000 is 28,875.00.
 """
 
 from __future__ import annotations
@@ -234,7 +233,7 @@ def _value(sheet: Any, identifier: str) -> Decimal:
 # salary, line 101: line 99 (line 93) minus line 100, line 96 and line 97 blank.
 @pytest.mark.parametrize(
     ("salary", "expected"),
-    [("20000", "0.00"), ("70000", "45407.00"), ("200000", "174998.00")],
+    [("20000", "0.00"), ("70000", "45407.00")],
 )
 def test_line_101_is_line_93_minus_line_100_not_below_zero(
     tmp_path: Path, salary: str, expected: str

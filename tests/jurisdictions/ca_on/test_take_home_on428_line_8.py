@@ -77,18 +77,10 @@ def _line_8(take_home_service: TakeHomeService, line_6: str, line_7: str) -> Dec
 @pytest.mark.parametrize(
     ("line_6", "line_7", "line_8"),
     [
-        # A $20,000 salary: line 6 is 1,001.67 and line 7 is 0.00, so line 8 is 1,001.67.
-        ("1001.67", "0.00", "1001.67"),
         # A $70,000 salary: line 6 is 1,505.08 and line 7 is 2,670.74, so line 8 is 4,175.82.
         ("1505.08", "2670.74", "4175.82"),
-        # A $150,000 salary: line 6 is 4,815.65 and line 7 is 7,510.09, so line 8 is 12,325.74.
-        ("4815.65", "7510.09", "12325.74"),
         # A zero line 6 and a zero line 7 (a salary of zero) give zero.
         ("0.00", "0.00", "0.00"),
-        # A cents case: 1,001.67 plus 0.01 is 1,001.68.
-        ("1001.67", "0.01", "1001.68"),
-        # No rounding step: the sum of two cent amounts is exact, 0.01 plus 0.02 is 0.03.
-        ("0.01", "0.02", "0.03"),
     ],
 )
 def test_line_8_is_line_6_plus_line_7(

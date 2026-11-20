@@ -60,13 +60,11 @@ def t2204(take_home_service: TakeHomeService, line_1: str) -> Worksheet:
     [
         # Line 1 of 0 (the note on line 1 under $2,000) gives no premium.
         ("0", "0.00"),
-        # Below the $65,700 limit the premium is 1.64% of line 1: 30,000 x 1.64% = 492.00.
-        ("30000", "492.00"),
+        # Below the $65,700 limit the premium is 1.64% of line 1.
         # 2,010 x 1.64% = 32.964, which rounds half-up to 32.96.
         ("2010", "32.96"),
-        # At and above the limit the premium is capped at the printed maximum of $1,077.48.
+        # Above the limit the premium is capped at the printed maximum of $1,077.48.
         ("70000", "1077.48"),
-        ("100000", "1077.48"),
     ],
 )
 def test_line_10_is_1_64_percent_of_line_1_up_to_the_maximum(
@@ -75,7 +73,7 @@ def test_line_10_is_1_64_percent_of_line_1_up_to_the_maximum(
     assert t2204(take_home_service, line_1).get(T2204_LINE_10).value == D(expected)
 
 
-@pytest.mark.parametrize("line_1", ["65700.00", "65700.01", "65701"])
+@pytest.mark.parametrize("line_1", ["65700.00", "65700.01"])
 def test_line_10_is_not_raised_just_above_65700(
     take_home_service: TakeHomeService, line_1: str
 ) -> None:

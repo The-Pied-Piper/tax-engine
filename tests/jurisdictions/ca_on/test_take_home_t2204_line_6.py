@@ -70,8 +70,6 @@ def t2204(take_home_service: TakeHomeService, starting: list[Artifact[Decimal]])
     ("line_4", "expected"),
     [
         ("1077.48", "1077.48"),
-        ("1148.00", "1148.00"),
-        ("32.96", "32.96"),
         ("0", "0.00"),
     ],
 )

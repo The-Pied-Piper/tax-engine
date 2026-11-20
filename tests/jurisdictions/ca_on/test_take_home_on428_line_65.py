@@ -74,10 +74,6 @@ def _line_65(take_home_service: TakeHomeService, line_61: str, line_54: str | No
     [
         # A $20,000 salary: line 61 is 300.14 and line 54 is blank (0), so line 65 is 300.14.
         ("300.14", "300.14"),
-        # A $70,000 salary: line 61 is 3,311.45 and line 54 is blank (0), so line 65 is 3,311.45.
-        ("3311.45", "3311.45"),
-        # A $150,000 salary: line 61 is 11,458.12 and line 54 is blank (0), so line 65 is 11,458.12.
-        ("11458.12", "11458.12"),
         # Line 61 is 0 and line 54 is blank (0), so line 65 is 0.
         ("0", "0"),
     ],

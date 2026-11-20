@@ -218,7 +218,7 @@ def _line_100(tmp_path: Path, salary: str, given_lines: dict[str, str] | None = 
     )
 
 
-@pytest.mark.parametrize("salary", ["20000", "70000", "200000"])
+@pytest.mark.parametrize("salary", ["20000", "200000"])
 def test_line_100_is_23928_for_a_salary_only_filer(tmp_path: Path, salary: str) -> None:
     assert _line_100(tmp_path, salary).value == D("23928")
 

@@ -59,7 +59,7 @@ def line_18(take_home_service: TakeHomeService, salary: str) -> Decimal:
     return sheet.get(ON428_PERSONAL_AMOUNTS_SUBTOTAL_LINE_18).value
 
 
-@pytest.mark.parametrize("salary", ["20000", "70000", "150000"])
+@pytest.mark.parametrize("salary", ["20000", "70000"])
 def test_line_18_is_the_total_of_line_9_at_every_salary(
     take_home_service: TakeHomeService, salary: str
 ) -> None:

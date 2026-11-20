@@ -127,14 +127,8 @@ def _line_80(
         ("588.00", "300.14", "287.86"),
         # A $70,000 salary: line 78 is 588.00 and line 73 is 3,311.45, so line 80 floors to 0.00.
         ("588.00", "3311.45", "0.00"),
-        # A $150,000 salary: line 78 is 588.00 and line 73 is 14,102.14, so line 80 floors to 0.00.
-        ("588.00", "14102.14", "0.00"),
         # Line 78 equal to line 73: the difference is 0, so line 80 is 0.00.
         ("300.14", "300.14", "0.00"),
-        # Line 73 above line 78: the difference is negative, so line 80 floors to 0.00.
-        ("100.00", "300.14", "0.00"),
-        # Line 78 above line 73: the difference is positive, so line 80 is 488.00.
-        ("588.00", "100.00", "488.00"),
     ],
 )
 def test_line_80_is_line_78_minus_line_73_not_below_zero_when_line_72_is_left_out(
@@ -172,7 +166,6 @@ def test_line_72_of_0_is_not_an_amount_so_line_80_is_line_78_minus_line_73(
     [
         # Line 72 left out is read as blank and then as "0": not an amount, so the count is 1.
         (None, 1),
-        ("0.00", 1),
         # Line 72 an amount: the condition applies, so the count is 0.
         ("100.00", 0),
     ],

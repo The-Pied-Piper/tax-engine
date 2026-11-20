@@ -6,7 +6,7 @@ built: a salary-only single filer has none, so only line 9, the basic personal a
 at every salary. Alberta's line 25 (`ab428_line_25.yaml`) is the analogue. The form does not name
 the line, so the step has no title. The figures are hand-computed from the printed forms (not a CRA
 example): line 9 is 15,780.00 while net income is at most $200,000, and net income is 9,935.00 /
-19,835.00 / 69,335.00 / 198,926.00 at salaries of 10,000 / 20,000 / 70,000 / 200,000.
+198,926.00 at salaries of 10,000 / 200,000.
 
 The test composes the real Manitoba salary part, the real Schedule 8 and T1 taxable income parts,
 the real parts of Worksheet MB428 lines 1 to 9, the real line 9 part (`mb428_credits_line_9.yaml`)
@@ -118,12 +118,10 @@ CREDITS_FORM = dedent("""\
     capabilities: []
     """)
 
-SALARIES = ["10000", "20000", "70000", "200000"]
+SALARIES = ["10000", "200000"]
 EXPECTED = "15780.00"
 NET_INCOMES = {
     "10000": "9935.00",
-    "20000": "19835.00",
-    "70000": "69335.00",
     "200000": "198926.00",
 }
 

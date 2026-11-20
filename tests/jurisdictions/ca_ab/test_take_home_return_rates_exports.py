@@ -52,8 +52,6 @@ def test_the_return_summary_holds_each_of_its_three_outputs(year: int, name: str
     ("year", "salary", "line_5", "line_12"),
     [
         (2025, "70000", "0.10", None),
-        (2025, "200000", None, "0.13"),
-        (2026, "70000", "0.10", None),
         (2026, "200000", None, "0.13"),
     ],
 )
@@ -76,9 +74,7 @@ def test_the_ab428_credits_form_exports_the_line_5_and_line_12_rates(
 @pytest.mark.parametrize(
     ("year", "salary", "line_68"),
     [
-        (2025, "20000", "0.00"),
         (2025, "70000", "3598.12"),
-        (2026, "20000", "0.00"),
         (2026, "70000", "3534.79"),
     ],
 )

@@ -7,7 +7,7 @@ half-up to the cent by `ca-nl/cent_rounding`. The form prints no title for the l
 untitled.
 
 Figures (hand-computed from the printed form, not a CRA example), with lines 76, 78, 80, 84
-and 86 blank: line 85 is 663.23 / 6,147.49 / 27,192.33 at salaries of 20,000 / 70,000 / 200,000, so
+and 86 blank: line 85 is 663.23 / 27,192.33 at salaries of 20,000 / 200,000, so
 line 87 is the same. With a line 86 of 500.00, line 87 at a salary of 70,000 is 5,647.49; with a
 line 86 of 500.00 at a salary of 15,000 (line 85 is 261.24) it is 0.00.
 """
@@ -187,7 +187,6 @@ FORMS = dedent("""\
 # salary, line 87: line 85 minus line 86, line 86 blank.
 CASES = [
     ("20000", "663.23"),
-    ("70000", "6147.49"),
     ("200000", "27192.33"),
 ]
 

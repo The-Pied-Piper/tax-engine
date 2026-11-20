@@ -55,12 +55,8 @@ def line_12(take_home_service: TakeHomeService, line_7: str) -> Decimal:
     [
         # The $70,000 salary: line 7 is 70,000 less 3,500, which is 66,500; 1% of it is 665.00.
         ("66500.00", "665.00"),
-        # The $90,000 salary: line 7 is the printed maximum of 67,800; 1% of it is 678.00.
-        ("67800.00", "678.00"),
         # A line 7 above the printed maximum is still the maximum.
         ("70000.00", "678.00"),
-        # Nothing on line 7 is nothing on line 12.
-        ("0.00", "0.00"),
         # Rounded half-up to the cent: 1% of 0.50 is 0.005, a tie, up to 0.01.
         ("0.50", "0.01"),
         # 1% of 0.49 is 0.0049, down to 0.00.

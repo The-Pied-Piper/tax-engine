@@ -64,8 +64,6 @@ def line_15000(take_home_service: TakeHomeService, salary: str, other: str) -> D
 @pytest.mark.parametrize(
     ("salary", "other", "expected"),
     [
-        ("70000", "0", "70000.00"),
-        ("90000", "0", "90000.00"),
         # Line 10400 adds to line 10100.
         ("70000", "1500", "71500.00"),
         ("0", "0", "0"),

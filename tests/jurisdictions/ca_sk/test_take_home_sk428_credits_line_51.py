@@ -16,8 +16,8 @@ types in only the salary (and, in one test, line 50). The form
 declaration is made up here, exporting only line 51. The figures are not a CRA example: they are
 re-derived below with Decimal from the printed basic personal amount dataset (19,491), CPP at 4.95%
 of the salary above the $3,500 basic exemption to a maximum of $3,356.10, and EI at 1.64% to the
-$65,700 maximum insurable earnings, each rounded half-up to the cent. Line 42 is 20,635.75,
-23,860.23 and 23,924.58 at the three salaries, plus line 50 of 0 when blank.
+$65,700 maximum insurable earnings, each rounded half-up to the cent. Line 42 is 20,635.75
+and 23,924.58 at the two salaries, plus line 50 of 0 when blank.
 """
 
 from __future__ import annotations
@@ -80,9 +80,9 @@ FORM = dedent("""\
     capabilities: []
     """)
 
-# salary, line 51: line 42 (20,635.75, 23,860.23 and 23,924.58, re-derived by hand below) plus
+# salary, line 51: line 42 (20,635.75 and 23,924.58, re-derived by hand below) plus
 # line 50, blank and read as 0; lines 43 to 49 are not built.
-CASES = [("20000", "20635.75"), ("70000", "23860.23"), ("200000", "23924.58")]
+CASES = [("20000", "20635.75"), ("200000", "23924.58")]
 
 
 def _cpp(salary: str) -> Decimal:

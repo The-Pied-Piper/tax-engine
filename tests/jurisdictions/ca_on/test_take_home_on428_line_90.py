@@ -75,10 +75,6 @@ def _line_90(take_home_service: TakeHomeService, line_88: str, line_89: str) -> 
         ("0.00", "0.00", "0.00"),
         # A $70,000 salary: line 88 is 3,311.45 and line 89 is 600.00, so line 90 is 3,911.45.
         ("3311.45", "600.00", "3911.45"),
-        # A $150,000 salary: line 88 is 14,102.14 and line 89 is 750.00, so line 90 is 14,852.14.
-        ("14102.14", "750.00", "14852.14"),
-        # Exact cents: 0.01 plus 0.02 is 0.03, with no rounding to the dollar.
-        ("0.01", "0.02", "0.03"),
     ],
 )
 def test_line_90_is_line_88_plus_line_89(

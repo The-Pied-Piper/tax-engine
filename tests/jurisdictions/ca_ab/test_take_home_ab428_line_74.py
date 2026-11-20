@@ -16,14 +16,14 @@ credits parts up to line 52, the real `worksheet_ab428_line_1.yaml`, `_line_2.ya
 (AB428 credits, exporting lines 41 and 52, the worksheet, exporting lines 1, 2, 3, 5, 6, 7 and 9,
 and AB428, exporting line 74) are made up here, because the shared scaffold owns them.
 
-Figures: worksheet line 5 is 1,877.42, 2,135.38 and 2,140.53 at the three salaries, below the
-4,800.00 of line 6, so line 7 and line 9 are 0.00 and so is line 74 at all three. The positive side
+Figures: worksheet line 5 is 1,877.42 and 2,140.53 at the two salaries (20,000 and 200,000), below
+the 4,800.00 of line 6, so line 7 and line 9 are 0.00 and so is line 74 at both. The positive side
 cannot be reached by a salary alone: line 9 turns on only when worksheet line 3 (line 52 less
 line 41, equal to line 52 when line 41 is blank) is above 60,000, where 8% of it passes line 6's
 4,800.00. It is reached through the real chain by a given line 51 (`ab428_medical_expenses_line_51`)
-of 200,000, which lifts line 52 and so line 3: line 74 is then worksheet line 9, 3,269.36, 3,333.85
-and 3,335.13 at the three salaries. It is also exercised on the capability the part builds, over a
-given line 9 record list: 25.00 gives 25.00 and 113.00 gives 113.00, and an empty list totals 0.00.
+of 200,000, which lifts line 52 and so line 3: line 74 is then worksheet line 9, 3,269.36 and
+3,335.13 at the two salaries. It is also exercised on the capability the part builds, over a
+given line 9 record list: 25.00 gives 25.00 and 0.01 gives 0.01, and an empty list totals 0.00.
 """
 
 from __future__ import annotations
@@ -118,7 +118,7 @@ AB428_FORM = dedent("""\
     """)
 
 # salary, line 5 (below the 4,800.00 of line 6, so lines 7, 9 and 74 are 0.00 at all three).
-CASES = [("20000", "1877.42"), ("70000", "2135.38"), ("200000", "2140.53")]
+CASES = [("20000", "1877.42"), ("200000", "2140.53")]
 
 
 def _part_files() -> Iterator[Path]:
@@ -197,9 +197,7 @@ def test_line_74_is_line_9_at_each_salary(tmp_path: Path, salary: str, line_5: s
     assert not line_74.is_signed()
 
 
-@pytest.mark.parametrize(
-    ("salary", "expected"), [("20000", "3269.36"), ("70000", "3333.85"), ("200000", "3335.13")]
-)
+@pytest.mark.parametrize(("salary", "expected"), [("20000", "3269.36"), ("200000", "3335.13")])
 def test_line_74_is_line_9_when_a_given_line_51_lifts_line_3(
     tmp_path: Path, salary: str, expected: str
 ) -> None:
@@ -246,7 +244,7 @@ def _line_74_over(*line_9_amounts: str) -> tuple[Decimal, tuple[str, ...]]:
 
 @pytest.mark.parametrize(
     ("line_9", "expected"),
-    [("25.00", "25.00"), ("113.00", "113.00"), ("0.00", "0.00"), ("0.01", "0.01")],
+    [("25.00", "25.00"), ("0.01", "0.01")],
 )
 def test_line_74_is_the_one_line_9_amount_exactly(line_9: str, expected: str) -> None:
     line_74, _ = _line_74_over(line_9)

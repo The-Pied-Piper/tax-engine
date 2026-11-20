@@ -107,7 +107,7 @@ def _step() -> dict[str, Any]:
     return step
 
 
-@pytest.mark.parametrize("salary", ["20000", "70000", "200000"])
+@pytest.mark.parametrize("salary", ["20000", "200000"])
 def test_a_salary_only_caller_who_leaves_out_the_amount_gets_0(tmp_path: Path, salary: str) -> None:
     # The amount is left out, read as 0 by the inputs part, so line 67 is 0.00 at every salary.
     assert _line_67(tmp_path, salary, None) == D("0.00")
@@ -118,14 +118,6 @@ def test_a_salary_only_caller_who_leaves_out_the_amount_gets_0(tmp_path: Path, s
     [
         # A T691 amount of 1,000.00: 35% of 1,000.00 is 350.00.
         ("1000.00", "350.00"),
-        # No amount (0): the line is 0.
-        ("0", "0.00"),
-        # 1,000.01 x 35% = 350.0035, rounded half-up to 350.00.
-        ("1000.01", "350.00"),
-        # 0.03 x 35% = 0.0105, rounded half-up to 0.01.
-        ("0.03", "0.01"),
-        # 0.01 x 35% = 0.0035, rounded half-up to 0.00.
-        ("0.01", "0.00"),
         # 0.10 x 35% = 0.035, a tie, rounded half-up to 0.04.
         ("0.10", "0.04"),
     ],

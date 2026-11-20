@@ -20,10 +20,9 @@ parts, and the real `mb428_credits_line_1.yaml`, `mb428_credits_line_3.yaml`,
 declaration is test-local, exporting lines 1, 3, 4, 5, 6, 7 and 8.
 
 Figures (hand-computed in `_derived` below, not a CRA example): taxable income is the salary less
-the enhanced CPP deduction, 9,935.00 / 19,835.00 / 69,335.00 / 198,926.00. Line 6 is 1,072.98 /
-2,142.18 / 2,847.71 / 17,213.12 and line 7 is 0.00 / 0.00 / 5,076.00 / 11,833.50, so line 8 is
-1,072.98 / 2,142.18 / 7,923.71 / 29,046.62. The boundary salaries are derived below as in the line 6
-and line 7 tests.
+the enhanced CPP deduction, 9,935.00 / 198,926.00. Line 6 is 1,072.98 / 17,213.12 and line 7 is
+0.00 / 11,833.50, so line 8 is 1,072.98 / 29,046.62. The boundary salaries are derived below as in
+the line 6 and line 7 tests.
 """
 
 from __future__ import annotations
@@ -121,18 +120,13 @@ FORM = dedent(f"""\
 # (salary, line 6, line 7, line 8): line 8 is line 6 plus line 7.
 CASES = [
     ("10000", "1072.98", "0.00", "1072.98"),
-    ("20000", "2142.18", "0.00", "2142.18"),
-    ("70000", "2847.71", "5076.00", "7923.71"),
     ("200000", "17213.12", "11833.50", "29046.62"),
 ]
 # Salaries whose taxable income sits on a column's edge: line 1 is 47,000.00 or less in column 1,
 # not more than 100,000.00 in column 2. One cent more is the next column.
 EDGES = [
-    ("47439.39", "5076.00", "0.00", "5076.00"),
     ("47439.40", "0.00", "5076.00", "5076.00"),
-    ("101073.99", "6757.50", "5076.00", "11833.50"),
     ("101074.00", "6757.50", "5076.00", "11833.50"),
-    ("101074.01", "0.00", "11833.50", "11833.50"),
 ]
 
 

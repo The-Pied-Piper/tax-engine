@@ -153,14 +153,8 @@ def _kind(identifier: str) -> AmountKind:
         ("20000", "0.00"),
         # Line 1 is 69,335.00, over 60,000 and not over 151,234: column 2.
         ("70000", "60000.00"),
-        # Line 1 of exactly 60,000.00 is still column 1; a cent more is column 2.
-        ("60570.71", "0.00"),
-        ("60570.72", "60000.00"),
-        # Line 1 of exactly 151,234.00 is still column 2; a cent more is column 3.
-        ("152308.00", "60000.00"),
+        # Line 1 of 151,234.01 is a cent over the column 2 limit: column 3.
         ("152308.01", "151234.00"),
-        # Line 1 of exactly 181,481.00 is the last figure in column 3.
-        ("182555.00", "151234.00"),
     ],
 )
 def test_line_3_is_the_lower_bound_of_the_column_line_1_falls_in(

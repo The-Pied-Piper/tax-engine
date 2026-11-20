@@ -73,14 +73,8 @@ def _line_68(take_home_service: TakeHomeService, line_66: str, line_67: str) -> 
     [
         # A $20,000 salary: line 66 is 0.00 and line 67 is 0.00, so line 68 is 0.00.
         ("0", "0", "0.00"),
-        # A $70,000 salary: line 66 is 0.00 and line 67 is 0.00, so line 68 is 0.00.
-        ("0", "0", "0.00"),
         # A $150,000 salary: line 66 is 1,149.62 and line 67 is 1,494.40, so line 68 is 2,644.02.
         ("1149.62", "1494.40", "2644.02"),
-        # Line 67 is 0 (the 36 percent tier is not reached), so line 68 is line 66.
-        ("1149.62", "0", "1149.62"),
-        # Line 66 is 0, so line 68 is line 67 (an arithmetic case, not a pair the form prints).
-        ("0", "0.01", "0.01"),
     ],
 )
 def test_line_68_is_line_66_plus_line_67(

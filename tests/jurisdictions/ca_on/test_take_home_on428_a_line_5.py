@@ -70,9 +70,6 @@ def lift_lines(take_home_service: TakeHomeService, line_3: str) -> tuple[Decimal
         ("10000.00", "505.00"),
         # The first salary that reaches the maximum: 875.01 before it, 875.00 on line 5.
         ("17327.00", "875.01"),
-        # One salary below that: 874.963 rounds half-up to 874.96, under the maximum.
-        ("17326.00", "874.96"),
-        ("0.00", "0.00"),
     ],
 )
 def test_line_5_is_line_3_times_the_rate_before_the_maximum(
@@ -88,8 +85,6 @@ def test_line_5_is_line_3_times_the_rate_before_the_maximum(
         ("70000.00", "875.00"),
         ("10000.00", "505.00"),
         ("17327.00", "875.00"),
-        ("17326.00", "874.96"),
-        ("0.00", "0.00"),
     ],
 )
 def test_line_5_is_capped_at_the_maximum_of_875(

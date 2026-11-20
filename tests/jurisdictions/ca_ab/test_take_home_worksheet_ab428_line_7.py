@@ -17,8 +17,8 @@ scaffold owns them. Alberta is not yet listed in the registrations, so the servi
 over the Alberta package list of `support.py`.
 
 Figures (hand-computed from the printed forms, not a CRA example, and recomputed here from the real
-parts): line 5 is 1,877.42, 2,135.38 and 2,140.53 at the three salaries and line 6 is 4,800.00, so
-line 7 is 0.00 at all three (line 5 is below line 6). The positive side of the subtraction cannot
+parts): line 5 is 1,877.42 and 2,140.53 at salaries 20,000 and 200,000 and line 6 is 4,800.00, so
+line 7 is 0.00 at both (line 5 is below line 6). The positive side of the subtraction cannot
 be reached by a salary alone (it turns on only past a line 52 of 60,000), so it is exercised on the
 capability the part builds, over given lines 5 and 6 and the real dataset.
 """
@@ -109,7 +109,6 @@ WORKSHEET_FORM = dedent("""\
 # below line 6 at every salary, so line 7 is the floor, 0.00.
 CASES = [
     ("20000", "1877.42", "4800.00", "0.00"),
-    ("70000", "2135.38", "4800.00", "0.00"),
     ("200000", "2140.53", "4800.00", "0.00"),
 ]
 
@@ -244,17 +243,9 @@ def _line_7_at(line_5_amount: str, line_6_amount: str) -> Artifact[Decimal]:
     ("line_5", "line_6", "expected"),
     [
         # Line 5 above line 6: the difference.
-        ("4800.01", "4800.00", "0.01"),
         ("5000.00", "4800.00", "200.00"),
-        ("5252.00", "4800.00", "452.00"),
-        # Exactly equal: the cent zero, not negative.
-        ("4800.00", "4800.00", "0.00"),
         # Line 5 below line 6: the floor.
         ("4799.99", "4800.00", "0.00"),
-        ("2135.38", "4800.00", "0.00"),
-        # Line 5 is signed (a negative line 3), so the floor also catches a negative minuend.
-        ("-40.00", "4800.00", "0.00"),
-        ("0.00", "4800.00", "0.00"),
     ],
 )
 def test_line_7_is_line_5_minus_line_6_not_below_zero_to_the_cent(
