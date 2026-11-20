@@ -1938,3 +1938,8 @@ give; line 479 reads a blank as 0 (`tp1_totals_line_477_input.yaml`)."""
 TP1_REFUND_LINE_478 = AmountKind.declare(CATALOG, "tp1_refund_line_478")
 """TP-1 line 478 "Subtract line 476 from line 474. Refund": rounded half-up to the cent, signed as
 given. Produced by one core/subtract (`tp1_totals_line_478.yaml`) and exported by the form."""
+
+TP1_BALANCE_DUE_LINE_479 = AmountKind.declare(CATALOG, "tp1_balance_due_line_479")
+"""TP-1 line 479 "Subtract line 477 from line 475. Balance due": rounded half-up to the cent, signed
+as given. The "not required to pay a balance of less than $2" note is a payment note and is not
+built. Produced by one core/subtract (`tp1_totals_line_479.yaml`) and exported by the form."""
