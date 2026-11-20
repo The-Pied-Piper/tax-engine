@@ -146,3 +146,10 @@ TP1_SCHEDULE_F_EMPLOYMENT_INCOME_CORRECTION_LINE_14 = AmountKind.declare(
 """Schedule F line 14, "Correction of employment income (line 105)", signed: a figure to subtract is
 negative. Blank when the caller has none, and line 16 reads it as 0."""
 
+
+TP1_SCHEDULE_F_EMPLOYMENT_INCOME_TOTAL_LINE_16 = AmountKind.declare(
+    CATALOG, "tp1_schedule_f_employment_income_total_line_16"
+)
+"""Schedule F line 16, "Add lines 12 and 14, or subtract line 14 from line 12, as applicable":
+line 12 plus the signed line 14, rounded half-up to the cent."""
+
