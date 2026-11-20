@@ -1,10 +1,50 @@
 # TP-1 (2025) line 399: "Add lines 377.1, 389 through 392, 395 through 397, 398 and 398.1.
-# Non-refundable tax credits = 399" (page 4). One step, core/sum, rounded half-up to the cent through
-# ca-qc/cent_rounding. Lines 377.1, 389 and 397 are steps; lines 390, 391, 392, 395, 396, 398 and
+# Non-refundable tax credits = 399" (page 4). Two subtotal steps and a core/sum of both, the printed line rounded half-up to the cent
+# through ca-qc/cent_rounding. The two subtotals are not printed on the form, so they carry their sum unrounded (`ca-qc/exact_rounding`; round only where the form says); the printed line rounds once. Lines 377.1, 389 and 397 are steps; lines 390, 391, 392, 395, 396, 398 and
 # 398.1 are optional inputs, read as 0 when left blank. The form exports line 399 for TP-1 line 406.
+# The sentence of a numbered line stays at 40 words or fewer (tests/jurisdictions/test_trace_english_
+# printed_names.py), so the parts are added in two unprinted subtotals, each titled in plain words
+# and with no reference, and the printed line adds the two.
 form:
   name: ca-qc/tp1_credits
 capabilities:
+  - name: core/sum
+    title: "Lines 377.1 and 389 to 392 added up"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/exact_rounding
+    consumes:
+      parts:
+        - ca-qc/tp1_line_377_1
+        - ca-qc/tp1_line_389
+        - ca-qc/tp1_line_390
+        - ca-qc/tp1_line_391
+        - ca-qc/tp1_line_392
+    blank:
+      ca-qc/tp1_line_390: "0"
+      ca-qc/tp1_line_391: "0"
+      ca-qc/tp1_line_392: "0"
+    produces:
+      output: ca-qc/tp1_credits_lines_377_1_to_392_subtotal
+  - name: core/sum
+    title: "Lines 395 to 398.1 added up"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/exact_rounding
+    consumes:
+      parts:
+        - ca-qc/tp1_line_395
+        - ca-qc/tp1_line_396
+        - ca-qc/tp1_union_dues_credit_line_397
+        - ca-qc/tp1_line_398
+        - ca-qc/tp1_line_398_1
+    blank:
+      ca-qc/tp1_line_395: "0"
+      ca-qc/tp1_line_396: "0"
+      ca-qc/tp1_line_398: "0"
+      ca-qc/tp1_line_398_1: "0"
+    produces:
+      output: ca-qc/tp1_credits_lines_395_to_398_1_subtotal
   - name: core/sum
     title: "Non-refundable tax credits"
     reference: "399"
@@ -13,23 +53,7 @@ capabilities:
       rounding: ca-qc/cent_rounding
     consumes:
       parts:
-        - ca-qc/tp1_line_377_1
-        - ca-qc/tp1_line_389
-        - ca-qc/tp1_line_390
-        - ca-qc/tp1_line_391
-        - ca-qc/tp1_line_392
-        - ca-qc/tp1_line_395
-        - ca-qc/tp1_line_396
-        - ca-qc/tp1_union_dues_credit_line_397
-        - ca-qc/tp1_line_398
-        - ca-qc/tp1_line_398_1
-    blank:
-      ca-qc/tp1_line_390: "0"
-      ca-qc/tp1_line_391: "0"
-      ca-qc/tp1_line_392: "0"
-      ca-qc/tp1_line_395: "0"
-      ca-qc/tp1_line_396: "0"
-      ca-qc/tp1_line_398: "0"
-      ca-qc/tp1_line_398_1: "0"
+        - ca-qc/tp1_credits_lines_377_1_to_392_subtotal
+        - ca-qc/tp1_credits_lines_395_to_398_1_subtotal
     produces:
       output: ca-qc/tp1_non_refundable_tax_credits_line_399

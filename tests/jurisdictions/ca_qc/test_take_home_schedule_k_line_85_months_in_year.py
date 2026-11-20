@@ -57,6 +57,7 @@ def test_the_part_is_as_printed() -> None:
     assert part["capabilities"] == [
         {
             "name": "core/credit_amount",
+            "title": "Months in the year",
             "unit": "core/months",
             "params": {"amount": "ca-qc/schedule_k_months_in_year_line_85"},
             "produces": {"output": LINE},

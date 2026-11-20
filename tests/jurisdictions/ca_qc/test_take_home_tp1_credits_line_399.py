@@ -72,6 +72,19 @@ def test_line_399_adds_lines_389_397_390_and_398_1(take_home_service: TakeHomeSe
     assert str(sheet.get(LINE_399).value) == "2864.69"
 
 
+def test_line_399_rounds_once_so_sub_cent_parts_in_different_subtotals_add_before_rounding(
+    take_home_service: TakeHomeService,
+) -> None:
+    given = (
+        Artifact(TP1_LINE_390, D("0.005")),
+        Artifact(TP1_LINE_398_1, D("0.005")),
+    )
+    sheet = chain_sheet(take_home_service, "70000", EXPORTS, LINE_399_PARTS, *given)
+
+    # 2,599.94 + 0.005 + 0.005 = 2,599.95: the unprinted subtotals do not round, the line does.
+    assert str(sheet.get(LINE_399).value) == "2599.95"
+
+
 def test_line_358_lowers_line_399(take_home_service: TakeHomeService) -> None:
     given = Artifact(TP1_INCOME_REPLACEMENT_ADJUSTMENT_LINE_358, D("1000"))
     sheet = chain_sheet(take_home_service, "70000", EXPORTS, LINE_399_PARTS, given)
@@ -86,14 +99,53 @@ def _part() -> dict[str, Any]:
     return part
 
 
-def test_the_part_is_one_sum_with_the_optional_lines_read_as_zero() -> None:
+def _subtotal(title: str, parts: list[str], optional: list[str], output: str) -> dict[str, object]:
+    return {
+        "name": "core/sum",
+        "title": title,
+        "unit": "ca/cad",
+        "params": {"rounding": "ca-qc/exact_rounding"},
+        "consumes": {"parts": parts},
+        "blank": {name: "0" for name in parts if name in optional},
+        "produces": {"output": f"ca-qc/{output}"},
+    }
+
+
+def test_the_part_is_two_subtotals_and_a_sum_with_the_optional_lines_read_as_zero() -> None:
     part = _part()
 
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": FORM}
-    (step,) = part["capabilities"]
+    first, last, step = part["capabilities"]
     optional = [f"ca-qc/tp1_line_{line}" for line in ("390", "391", "392", "395", "396", "398")]
     optional.append("ca-qc/tp1_line_398_1")
+    first_parts = [
+        "ca-qc/tp1_line_377_1",
+        "ca-qc/tp1_line_389",
+        "ca-qc/tp1_line_390",
+        "ca-qc/tp1_line_391",
+        "ca-qc/tp1_line_392",
+    ]
+    last_parts = [
+        "ca-qc/tp1_line_395",
+        "ca-qc/tp1_line_396",
+        "ca-qc/tp1_union_dues_credit_line_397",
+        "ca-qc/tp1_line_398",
+        "ca-qc/tp1_line_398_1",
+    ]
+    # Two unprinted subtotals keep the sentence of the numbered line short; the line adds them.
+    assert first == _subtotal(
+        "Lines 377.1 and 389 to 392 added up",
+        first_parts,
+        optional,
+        "tp1_credits_lines_377_1_to_392_subtotal",
+    )
+    assert last == _subtotal(
+        "Lines 395 to 398.1 added up",
+        last_parts,
+        optional,
+        "tp1_credits_lines_395_to_398_1_subtotal",
+    )
     assert step == {
         "name": "core/sum",
         "title": "Non-refundable tax credits",
@@ -102,19 +154,10 @@ def test_the_part_is_one_sum_with_the_optional_lines_read_as_zero() -> None:
         "params": {"rounding": "ca-qc/cent_rounding"},
         "consumes": {
             "parts": [
-                "ca-qc/tp1_line_377_1",
-                "ca-qc/tp1_line_389",
-                "ca-qc/tp1_line_390",
-                "ca-qc/tp1_line_391",
-                "ca-qc/tp1_line_392",
-                "ca-qc/tp1_line_395",
-                "ca-qc/tp1_line_396",
-                "ca-qc/tp1_union_dues_credit_line_397",
-                "ca-qc/tp1_line_398",
-                "ca-qc/tp1_line_398_1",
+                "ca-qc/tp1_credits_lines_377_1_to_392_subtotal",
+                "ca-qc/tp1_credits_lines_395_to_398_1_subtotal",
             ]
         },
-        "blank": {name: "0" for name in optional},
         "produces": {"output": IDENTIFIER},
     }
 

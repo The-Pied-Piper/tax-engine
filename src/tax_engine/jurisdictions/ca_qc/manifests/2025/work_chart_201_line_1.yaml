@@ -9,6 +9,7 @@ form:
   name: ca-qc/work_chart_201
 capabilities:
   - name: core/sum
+    title: "Work income before box 211"
     unit: ca/cad
     params:
       rounding: ca-qc/cent_rounding
