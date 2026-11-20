@@ -1,11 +1,13 @@
 # Quebec exact rounding, 2025 tax year: the rule for a Quebec form line the engine only carries
-# through, with no arithmetic of its own: T1 line 10100 (employment income) and line 10400 (other
+# through, or sums its lines, with no rounding rule printed for it:
+# T1 line 10100 (employment income) and line 10400 (other
 # employment income), which the T1 prints no rounding rule for (5005-r-25e.txt, "Line 1 and line
 # 10100", "Line 2 and line 10400"). The form prints no rounding rule for them, so the figure is
 # carried as it is (the project's rule: round only where the form says to). The cent rule of
-# `ca-qc/cent_rounding` does not apply to them. The unprinted subtotals of the long sums (5005-R
-# lines 100 and 171, TP-1 lines 399 and 465) use it too: the form prints no subtotal, so only the
-# printed line rounds.
+# `ca-qc/cent_rounding` does not apply to them. The same holds for line 31260 "line 1 plus
+# line 2" (5005-r-25e.txt, line 96): the form prints no rounding rule for the sum. The unprinted
+# subtotals of the long sums (5005-R lines 100 and 171, TP-1 lines 399 and 465) use it too: the
+# form prints no subtotal, so only the printed line rounds.
 family: ca-qc/exact_rounding
 tax_year: 2025
 kind: rounding_only
