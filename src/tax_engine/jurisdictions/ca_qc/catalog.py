@@ -1928,3 +1928,9 @@ TP1_REFUND_TRANSFERRED_TO_SPOUSE_LINE_476 = AmountKind.declare(
 )
 """TP-1 line 476 "Refund transferred to your spouse": an optional input a single filer does not
 give; line 478 reads a blank as 0 (`tp1_totals_line_476_input.yaml`)."""
+
+TP1_AMOUNT_TRANSFERRED_BY_SPOUSE_LINE_477 = AmountKind.declare(
+    CATALOG, "tp1_amount_transferred_by_spouse_line_477", non_negative=True
+)
+"""TP-1 line 477 "Amount transferred by your spouse": an optional input a single filer does not
+give; line 479 reads a blank as 0 (`tp1_totals_line_477_input.yaml`)."""
