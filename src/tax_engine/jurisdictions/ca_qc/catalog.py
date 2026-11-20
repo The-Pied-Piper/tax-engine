@@ -610,3 +610,10 @@ FEDERAL_TAXABLE_INCOME_LINE_71 = AmountKind.declare(
 """5005-R Step 5 Part A line 71 "Amount from line 26000": taxable income read from the T1 taxable
 income export (`ca-qc/taxable_income`, line 70 and line 26000) into Part A, Federal tax on
 taxable income. Produced by one core/record_total (`t1_tax_and_credits_line_71.yaml`)."""
+
+FEDERAL_BRACKET_LOWER_BOUND_LINE_72 = AmountKind.declare(
+    CATALOG, "federal_bracket_lower_bound_line_72", non_negative=True
+)
+"""5005-R Step 5 Part A line 72 (0.00, 57,375.00, 114,750.00, 177,882.00 or 253,414.00): the
+printed lower bound of the column that line 71 falls in. Produced by one
+core/bracket_column_lower_bound (`t1_tax_and_credits_line_72.yaml`)."""
