@@ -51,3 +51,12 @@ capabilities:
       less: ca-qc/solidarity_reduction
     produces:
       output: ca-qc/solidarity_maximum_less_reduction
+  - name: core/subtract_not_below_zero
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/solidarity_qst_component_amount
+      less: ca-qc/solidarity_reduction_at_one_component_rate
+    produces:
+      output: ca-qc/solidarity_qst_component_less_reduction

@@ -94,3 +94,15 @@ SOLIDARITY_MAXIMUM_LESS_REDUCTION = AmountKind.declare(
 )
 """Solidarity tax credit, maximum less the reduction (fiche 110201, Table C.9): the maximum before
 reduction less the chosen reduction, not below 0."""
+
+SOLIDARITY_QST_COMPONENT_AMOUNT = AmountKind.declare(
+    CATALOG, "solidarity_qst_component_amount", non_negative=True
+)
+"""Solidarity tax credit, QST component amount (fiche 110201, Table C.9): the base amount plus the
+living-alone amount when it applies; consumed here by name."""
+
+SOLIDARITY_QST_COMPONENT_LESS_REDUCTION = AmountKind.declare(
+    CATALOG, "solidarity_qst_component_less_reduction", non_negative=True
+)
+"""Solidarity tax credit, QST component less the 3% reduction (fiche 110201, Table C.9): the floor
+of the credit, the QST component amount less the 3% reduction on the same excess, not below 0."""
