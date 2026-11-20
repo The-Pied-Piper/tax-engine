@@ -139,3 +139,7 @@ SCHEDULE_P_LINE_10 = AmountKind.declare(CATALOG, "schedule_p_line_10")
 """Schedule P (TP-1.D.P-V) Part A line 10, "Amount from line 101 of your return, plus the amount
 from line 105 if it is positive, minus the amount from box 211 of your RL-1 slip, if applicable",
 rounded half-up to the cent."""
+
+TP1_LINE_107 = AmountKind.declare(CATALOG, "tp1_line_107")
+"""The amount of TP-1 line 107 as the caller gives it, which Schedule P line 12 copies ("Amount from
+line 107 of the return"); blank when the caller has none, and line 18 reads it as 0."""
