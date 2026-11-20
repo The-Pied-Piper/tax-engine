@@ -162,3 +162,20 @@ def test_line_25_matches_the_printed_form(
     sheet = schedule_6(take_home_service, salary)
 
     assert sheet.get(CWB_NET_INCOME_OVER_BASE_AMOUNT).value == D(expected)
+
+
+@pytest.mark.parametrize(
+    ("salary", "expected"),
+    [
+        # Line 25 x 20% (line 26): 5,664.95 x 0.20 = 1,132.99.
+        ("20000", "1132.99"),
+        ("70000", "11032.99"),
+        ("200000", "36951.19"),
+    ],
+)
+def test_line_27_matches_the_printed_form(
+    take_home_service: TakeHomeService, salary: str, expected: str
+) -> None:
+    sheet = schedule_6(take_home_service, salary)
+
+    assert sheet.get(CWB_REDUCTION_LINE_27).value == D(expected)
