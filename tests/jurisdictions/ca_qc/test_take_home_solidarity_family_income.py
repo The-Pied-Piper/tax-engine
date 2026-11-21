@@ -40,7 +40,7 @@ NET_INCOME_PARTS = (
     "tp1_net_income_line_275_spouse_input.yaml",
     "tp1_net_income_line_201.yaml",
     "tp1_net_income_line_248.yaml",
-    "tp1_net_income_line_254_input.yaml",
+    "tp1_net_income_line_254_inputs.yaml",
     "tp1_net_income_line_254.yaml",
     "tp1_net_income_line_256.yaml",
     "tp1_net_income_line_260_input.yaml",
@@ -48,7 +48,8 @@ NET_INCOME_PARTS = (
     "tp1_net_income_line_276_input.yaml",
     "tp1_net_income_line_278_input.yaml",
     "tp1_net_income_line_279.yaml",
-    "tp1_net_income_line_298_input.yaml",
+    "tp1_net_income_line_298_inputs.yaml",
+    "tp1_net_income_line_298.yaml",
     "tp1_net_income_line_299.yaml",
 )
 FORM_PART = f"form:\n  name: {FORM}\n  required: true\n  exports:\n    - {IDENTIFIER}\n"

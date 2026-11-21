@@ -11,7 +11,7 @@ from __future__ import annotations
 import pytest
 
 from tax_engine.jurisdictions.ca_qc.catalog import (
-    TP1_TOTAL_DEDUCTIONS_LINE_298,
+    TP1_LINE_297,
     WORK_CHART_401_LOWER_BOUND_LINE_3,
 )
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
@@ -50,7 +50,7 @@ def test_line_3_is_the_lower_bound_of_the_column(
 def test_a_line_1_at_a_bound_is_in_the_lower_column(
     take_home_service: TakeHomeService, salary: str, deductions: str, expected: str
 ) -> None:
-    given = (TP1_TOTAL_DEDUCTIONS_LINE_298, deductions)
+    given = (TP1_LINE_297, deductions)
     sheet = chart_sheet(take_home_service, salary, EXPORTS, PARTS, given)
 
     assert str(sheet.get(LINE).value) == expected

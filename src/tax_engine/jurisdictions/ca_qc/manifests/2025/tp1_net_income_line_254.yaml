@@ -1,7 +1,7 @@
 # TP-1 (2025) line 254: "Add lines 201 through 207, 214 through 231, and 234 through 252. Total
-# deductions". Line 201 and line 248 are steps; lines 205 to 207, 214 to 231 and 234 to 252
-# (line 248.1 included, line 248 apart) are one optional input, read as 0 when the caller leaves it out. The sum is core/sum, rounded
-# half-up to the cent (`ca-qc/cent_rounding`), and is signed (the printed lines set no floor).
+# deductions". One core/sum in form line order, rounded half-up to the cent (`ca-qc/cent_rounding`).
+# Lines 201 and 248 are steps; the other lines are optional inputs, read as 0 when blank
+# (`tp1_net_income_line_254_inputs.yaml`). The sum is signed (the printed lines set no floor).
 form:
   name: ca-qc/tp1_net_income
 capabilities:
@@ -14,9 +14,35 @@ capabilities:
     consumes:
       parts:
         - ca-qc/tp1_deduction_for_workers_line_201
+        - ca-qc/tp1_line_205
+        - ca-qc/tp1_line_207
+        - ca-qc/tp1_line_214
+        - ca-qc/tp1_line_215
+        - ca-qc/tp1_line_225
+        - ca-qc/tp1_line_228
+        - ca-qc/tp1_line_231
+        - ca-qc/tp1_line_234
+        - ca-qc/tp1_line_236
+        - ca-qc/tp1_line_241
+        - ca-qc/tp1_line_245
+        - ca-qc/tp1_line_246
         - ca-qc/tp1_qpp_deduction_line_248
-        - ca-qc/tp1_other_deductions_lines_205_to_252
+        - ca-qc/tp1_line_250
+        - ca-qc/tp1_line_252
     blank:
-      ca-qc/tp1_other_deductions_lines_205_to_252: "0"
+      ca-qc/tp1_line_205: "0"
+      ca-qc/tp1_line_207: "0"
+      ca-qc/tp1_line_214: "0"
+      ca-qc/tp1_line_215: "0"
+      ca-qc/tp1_line_225: "0"
+      ca-qc/tp1_line_228: "0"
+      ca-qc/tp1_line_231: "0"
+      ca-qc/tp1_line_234: "0"
+      ca-qc/tp1_line_236: "0"
+      ca-qc/tp1_line_241: "0"
+      ca-qc/tp1_line_245: "0"
+      ca-qc/tp1_line_246: "0"
+      ca-qc/tp1_line_250: "0"
+      ca-qc/tp1_line_252: "0"
     produces:
       output: ca-qc/tp1_total_deductions_line_254
