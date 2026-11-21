@@ -1,0 +1,19 @@
+# Form MB428 (CRA 5007-c) line 56: "Line 56 and line 58969: Line 54 plus line 55 =". It sums line 54
+# (`ca-mb/mb428_donations_credit_at_rate_line_54`) and line 55
+# (`ca-mb/mb428_donations_credit_at_rate_line_55`), each read from its own step and never blank (a
+# blank Schedule 9 amount gives 0.00 there). Line 57 reads it.
+form:
+  name: ca-mb/mb428_credits
+capabilities:
+  - name: core/sum
+    title: "Donations and gifts"
+    reference: "56"
+    unit: ca/cad
+    params:
+      rounding: ca-mb/cent_rounding
+    consumes:
+      parts:
+        - ca-mb/mb428_donations_credit_at_rate_line_54
+        - ca-mb/mb428_donations_credit_at_rate_line_55
+    produces:
+      output: ca-mb/mb428_donations_credit_line_56

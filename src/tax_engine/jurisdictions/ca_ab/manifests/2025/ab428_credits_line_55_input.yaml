@@ -1,0 +1,14 @@
+# AB428 (2025) line 55's input, the amount from the federal Schedule 9. Form AB428 (CRA 5009-c-25e):
+# "Line 55: Amount from line 13 of your federal Schedule 9 multiplied by 60% =". The line has two
+# boxes: the amount (box A, the input here) and the multiplied result (box B, the step in
+# ab428_credits_line_55.yaml). The engine does not compute Schedule 9, so the amount is taken as one
+# optional input, the way the form takes it. A request that leaves the line out is read as blank;
+# the step that multiplies it reads that blank as 0.
+inputs:
+  - name: ca-ab/ab428_donations_amount_line_55
+    title: "Amount from line 13 of your federal Schedule 9"
+    reference: "55 box A"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 55: Amount from line 13 of your federal Schedule 9"

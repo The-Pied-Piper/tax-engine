@@ -1,0 +1,20 @@
+# Form BC428 (CRA 5010-C) line 53: "Line 53 and line 58769: Line 51 plus line 52 = ^". Line 51 is the
+# medical expenses over the limit (bc428_line_51.yaml) and line 52 the allowable amount of medical
+# expenses for other dependants, an optional input (bc428_line_52_input.yaml) that a salary-only caller
+# leaves blank, read as 0. Line 53 adds them with core/sum, in line order, and line 54 reads it.
+form:
+  name: ca-bc/bc428
+capabilities:
+  - name: core/sum
+    reference: "53"
+    unit: ca/cad
+    params:
+      rounding: ca-bc/cent_rounding
+    consumes:
+      parts:
+        - ca-bc/bc428_medical_expenses_over_limit_line_51
+        - ca-bc/bc428_other_dependants_medical_expenses_line_52
+    blank:
+      ca-bc/bc428_other_dependants_medical_expenses_line_52: "0"
+    produces:
+      output: ca-bc/bc428_medical_expenses_line_53
