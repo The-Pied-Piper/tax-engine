@@ -11,6 +11,7 @@ form:
   name: ca-qc/tp1_schedule_k
 capabilities:
   - name: ca/count_by_conditions
+    title: "Had a dependent child"
     params:
       conditions: ca-qc/schedule_k_had_dependent_child_conditions
     consumes:
@@ -33,6 +34,7 @@ capabilities:
     produces:
       output: ca-qc/schedule_k_more_than_one_dependent_child_line_44
   - name: core/choose_by_count
+    title: "Amount for the dependent children"
     unit: ca/cad
     consumes:
       count: ca-qc/schedule_k_more_than_one_dependent_child_line_44
