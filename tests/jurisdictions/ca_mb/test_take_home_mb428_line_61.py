@@ -58,7 +58,16 @@ MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / 
 LINE_PART = MB_PARTS / "mb428_line_61.yaml"
 LINE_57_PART = MB_PARTS / "mb428_credits_line_57.yaml"
 LINE_53_PART = MB_PARTS / "mb428_credits_line_53.yaml"
-LINE_56_PART = MB_PARTS / "mb428_credits_line_56_input.yaml"
+LINE_56_PARTS = tuple(
+    MB_PARTS / name
+    for name in (
+        "mb428_credits_line_54_inputs.yaml",
+        "mb428_credits_line_54.yaml",
+        "mb428_credits_line_55_inputs.yaml",
+        "mb428_credits_line_55.yaml",
+        "mb428_credits_line_56.yaml",
+    )
+)
 FORM_NAME = "ca-mb/mb428"
 CREDITS_FORM_NAME = "ca-mb/mb428_credits"
 LINE_57 = "ca-mb/mb428_non_refundable_credits_line_57"
@@ -178,7 +187,7 @@ def _part_files() -> Iterator[Path]:
     for name in CREDIT_PARTS:
         yield MB_PARTS / name
     yield LINE_53_PART
-    yield LINE_56_PART
+    yield from LINE_56_PARTS
     yield LINE_57_PART
     yield LINE_PART
 

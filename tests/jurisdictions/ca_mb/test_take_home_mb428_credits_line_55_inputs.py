@@ -1,8 +1,10 @@
-"""MB428 (2025) line 56's input, as the Manitoba take-home manifest part declares it.
+"""MB428 (2025) line 55's input, as the Manitoba take-home manifest part declares it.
 
-Form MB428 (CRA 5007-C), line 56, as printed on the form. A salary-only caller has no donations and
-gifts, so a request that leaves the line out is read as blank, and the line 57 step reads that blank
-as 0.
+Form MB428 (CRA 5007-c-25e.txt), line 55, as printed on the form:
+"Line 55: Amount from line 14 of your federal Schedule 9".
+
+A salary-only caller has no such claim, so a request that leaves the line out is read as blank,
+and the step that reads it takes the blank as 0.
 
 The real part is loaded under a test-local header over the Manitoba package list of `support.py`.
 """
@@ -18,7 +20,7 @@ import yaml
 import tax_engine.jurisdictions.ca_mb
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.manifest import Manifest
-from tax_engine.jurisdictions.ca_mb.catalog import MB428_DONATIONS_CREDIT_LINE_56
+from tax_engine.jurisdictions.ca_mb.catalog import MB428_DONATIONS_AMOUNT_LINE_55
 from tests.jurisdictions.ca_mb.support import (
     manitoba_kinds,
     manitoba_packages,
@@ -26,10 +28,10 @@ from tests.jurisdictions.ca_mb.support import (
 )
 from tests.kinds import non_negative
 
-IDENTIFIER = MB428_DONATIONS_CREDIT_LINE_56.identifier
-PRINTED_BASIS = "Line 56 and line 58969: Line 54 plus line 55"
+IDENTIFIER = MB428_DONATIONS_AMOUNT_LINE_55.identifier
+PRINTED_BASIS = "Line 55: Amount from line 14 of your federal Schedule 9"
 PART = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / (
-    "manifests/2025/mb428_credits_line_56_input.yaml"
+    "manifests/2025/mb428_credits_line_55_inputs.yaml"
 )
 HEADER = """\
 jurisdiction: CA-MB
@@ -55,15 +57,15 @@ def _part() -> dict[str, Any]:
     return part
 
 
-def test_the_part_declares_only_the_donations_and_gifts_input() -> None:
+def test_the_part_declares_only_the_line_55_input() -> None:
     part = _part()
 
     assert list(part) == ["inputs"]
     assert part["inputs"] == [
         {
             "name": IDENTIFIER,
-            "title": "Donations and gifts",
-            "reference": "56",
+            "title": "Amount from line 14 of your federal Schedule 9",
+            "reference": "55 box A",
             "unit": "ca/cad",
             "required": False,
             "default": None,
@@ -81,15 +83,15 @@ def test_the_part_declares_only_the_donations_and_gifts_input() -> None:
     ]
 
 
-def test_the_donations_credit_line_56_is_a_non_negative_amount_kind() -> None:
+def test_the_line_55_input_is_a_non_negative_amount_kind() -> None:
     kind = manitoba_kinds().kind(IDENTIFIER)
 
-    assert IDENTIFIER == "ca-mb/mb428_donations_credit_line_56"
-    assert kind is MB428_DONATIONS_CREDIT_LINE_56
+    assert IDENTIFIER == "ca-mb/mb428_donations_amount_line_55"
+    assert kind is MB428_DONATIONS_AMOUNT_LINE_55
     assert non_negative(kind)
 
 
-def test_a_request_that_leaves_out_line_56_is_read_as_blank(tmp_path: Path) -> None:
+def test_a_request_that_leaves_out_line_55_is_read_as_blank(tmp_path: Path) -> None:
     declaration = _manifest(tmp_path).inputs[IDENTIFIER]
     default = declaration.default_artifact(manitoba_kinds().kind(IDENTIFIER))
 
