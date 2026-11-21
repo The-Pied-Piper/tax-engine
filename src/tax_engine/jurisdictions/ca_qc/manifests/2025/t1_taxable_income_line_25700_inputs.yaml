@@ -1,14 +1,69 @@
-# 5005-R (2025) line 69 and line 25700 input a salary-only caller does not give.
-# Line 69 and line 25700: "Add lines 59 to 68. =" (page 5). Lines 59 to 68 (line 24400 to line 25600,
-# the deductions from net income) are blank for a salary-only filer, so the printed sum that collects
-# them is one optional input read as 0; the skipped lines have no step. The name stays
-# `ca/deductions_from_net_income`, as the federal part names it.
+# 5005-R (2025) lines 59 to 68, the deductions that line 69 adds ("Line 69 and line 25700: Add lines
+# 59 to 68. =", page 5): lines 24400, 24900, 25000, 25100, 25200, 25300, 25395, 25400, 25500 and 25600.
+# Each is an optional input, left blank by a salary-only caller and read as 0 by line 69. Line 61
+# (25000) is taken as the form takes it (an entered amount); the engine does not choose between line
+# 14700 and the Federal Worksheet. Declared here, with the step that consumes them
+# (`t1_taxable_income_line_25700.yaml`).
 form:
   name: ca-qc/t1_taxable_income
 inputs:
-  - name: ca/deductions_from_net_income
-    reference: "25700"
+  - name: ca-qc/t1_line_24400
+    reference: "24400"
     unit: ca/cad
     required: false
-    default: "0"
-    basis: "Line 69 and line 25700: Add lines 59 to 68."
+    default: null
+    basis: "Line 59 and line 24400: Canadian Armed Forces personnel and police deduction (box 43 of all T4 slips)"
+  - name: ca-qc/t1_line_24900
+    reference: "24900"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 60 and line 24900: Security options deductions (boxes 39, 41, 91 and 92 of all T4 slips or see Form T1212)"
+  - name: ca-qc/t1_line_25000
+    reference: "25000"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 61 and line 25000: Other payments deduction (enter the amount from line 14700 if you did not enter an amount on line 14600; otherwise, use Federal Worksheet)"
+  - name: ca-qc/t1_line_25100
+    reference: "25100"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 62 and line 25100: Limited partnership losses of other years"
+  - name: ca-qc/t1_line_25200
+    reference: "25200"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 63 and line 25200: Non-capital losses of other years"
+  - name: ca-qc/t1_line_25300
+    reference: "25300"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 64 and line 25300: Net capital losses of other years"
+  - name: ca-qc/t1_line_25395
+    reference: "25395"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 65 and line 25395: Capital gains deduction for qualifying business transfers or qualifying cooperative conversions (complete Form T2048)"
+  - name: ca-qc/t1_line_25400
+    reference: "25400"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 66 and line 25400: Capital gains deduction (complete Form T657)"
+  - name: ca-qc/t1_line_25500
+    reference: "25500"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 67 and line 25500: Northern residents deductions (complete Form T2222)"
+  - name: ca-qc/t1_line_25600
+    reference: "25600"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 68 and line 25600: Additional deductions (specify):"

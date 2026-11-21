@@ -1,0 +1,14 @@
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: carried forward unchanged from the 2025 file; the 2026 form is not yet published.
+# CRA 5005-R (2025), Step 6, Line 167 and line 46900: "Eligible educator school supply tax credit Supplies expenses (maximum $1,000) Line 46800 multiplied by 25% =". The printed "(maximum $1,000)" cap of line 46800, taken as printed.
+# Half-up to the cent changes nothing.
+# The 2026 form is not yet published, so the figure is not yet confirmed against it.
+family: ca-qc/educator_supplies_maximum
+tax_year: 2026
+kind: amount
+title: "maximum"
+unit: ca/cad
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5005-r/5005-r-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "1000.00"

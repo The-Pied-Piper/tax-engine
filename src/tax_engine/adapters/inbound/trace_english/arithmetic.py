@@ -61,6 +61,34 @@ class RoundedTotalRenderer:
         )
 
 
+_MOST_TERMS_WRITTEN_OUT = 8
+"""A sum of more terms than this is worded as its first term plus the rest together."""
+
+
+def _sum_terms(line: SumLine | SumNotBelowZeroLine, names: EnglishNames) -> str:
+    """The terms of a sum in English, joined by "plus".
+
+    Up to `_MOST_TERMS_WRITTEN_OUT` terms are each written out. A longer sum is too long to read as
+    one sentence, so it is worded as its first term plus the others together: the line's own
+    total of those others and the first and last of them, e.g. "line 1 (EX$70,000.00) plus lines 5
+    to 64 (EX$1,234.56 in total)". Only the wording is shortened: the figures are the sum's own.
+    """
+    parts = line.parts
+    if len(parts) <= _MOST_TERMS_WRITTEN_OUT:
+        return " plus ".join(names.figure(kind, amount) for kind, amount in parts)
+    first_kind, first_amount = parts[0]
+    others = parts[1:]
+    first_other, last_other = names.of(others[0][0]), names.of(others[-1][0])
+    if first_other.startswith("line ") and last_other.startswith("line "):
+        named = f"lines {first_other.removeprefix('line ')} to {last_other.removeprefix('line ')}"
+    else:
+        named = f"the other {len(others)} figures"
+    return (
+        f"{names.figure(first_kind, first_amount)} plus {named} "
+        f"({names.shown(others[0][0].label, line.total_after_first)} in total)"
+    )
+
+
 @english_renderer
 class SumRenderer:
     """English text for SumLine."""
@@ -69,7 +97,7 @@ class SumRenderer:
 
     def render(self, line: SumLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        terms = " plus ".join(names.figure(kind, amount) for kind, amount in line.parts)
+        terms = _sum_terms(line, names)
         if not line.parts:
             return f"Nothing to add, so {names.shown(line.label, line.total)}"
         return (
@@ -86,7 +114,7 @@ class SumNotBelowZeroRenderer:
 
     def render(self, line: SumNotBelowZeroLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        terms = " plus ".join(names.figure(kind, amount) for kind, amount in line.parts)
+        terms = _sum_terms(line, names)
         if not line.parts:
             return f"Nothing to add, not below 0, so {names.shown(line.label, line.total)}"
         return (

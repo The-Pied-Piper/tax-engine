@@ -22,6 +22,7 @@ from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_qc.catalog import (
     TP1_FOREST_PRODUCER_AVERAGING_LINE_276,
+    TP1_LINE_164,
     TP1_SCHEDULE_F_CONTRIBUTION_LINE_82,
     TP1_SCHEDULE_F_INCOME_SUBJECT_LINE_70,
 )
@@ -102,7 +103,21 @@ SCHEDULE_F_PARTS = (
     "tp1_income_line_105_input.yaml",
     "tp1_income_line_107_input.yaml",
     "tp1_income_line_box_211_input.yaml",
-    "tp1_income_line_199_input.yaml",
+    "tp1_income_line_110_input.yaml",
+    "tp1_income_line_111_input.yaml",
+    "tp1_income_line_114_input.yaml",
+    "tp1_income_line_119_input.yaml",
+    "tp1_income_line_122_input.yaml",
+    "tp1_income_line_123_input.yaml",
+    "tp1_income_line_128_input.yaml",
+    "tp1_income_line_130_input.yaml",
+    "tp1_income_line_136_input.yaml",
+    "tp1_income_line_139_input.yaml",
+    "tp1_income_line_142_input.yaml",
+    "tp1_income_line_147_input.yaml",
+    "tp1_income_line_148_input.yaml",
+    "tp1_income_line_154_input.yaml",
+    "tp1_income_line_164_input.yaml",
     "tp1_income_line_199.yaml",
     "tp1_income_line_97_input.yaml",
     "tp1_income_line_97.yaml",
@@ -145,10 +160,16 @@ SALARY_FORM = dedent("""\
 
 
 def from_salary(
-    take_home_service: TakeHomeService, salary: str, forest_averaging: str | None = None
+    take_home_service: TakeHomeService,
+    salary: str,
+    forest_averaging: str | None = None,
+    business_income: str | None = None,
 ) -> Worksheet:
-    """The whole Schedule F worksheet for a salary, with the optional line 276 amount if given."""
+    """The whole Schedule F worksheet for a salary, with the optional line 276 and line 164 amounts
+    if given."""
     starting = [Artifact(EMPLOYMENT_INCOME, D(salary))]
+    if business_income is not None:
+        starting.append(Artifact(TP1_LINE_164, D(business_income)))
     if forest_averaging is not None:
         starting.append(Artifact(TP1_FOREST_PRODUCER_AVERAGING_LINE_276, D(forest_averaging)))
     (sheet,) = take_home_service(SALARY_HEADER, SALARY_FORM, *SCHEDULE_F_PARTS).compute(
@@ -174,3 +195,13 @@ def test_the_whole_schedule_carries_line_82_from_a_salary(
     sheet = from_salary(take_home_service, "70000", forest_averaging)
 
     assert str(sheet.get(TP1_SCHEDULE_F_CONTRIBUTION_LINE_82).value) == line_82
+
+
+def test_a_business_loss_above_the_salary_gives_a_line_82_of_zero(
+    take_home_service: TakeHomeService,
+) -> None:
+    """Line 199 is signed (a business loss is a minus): 20,000.00 - 50,000.00 = -30,000.00 is line
+    10, so line 18 is negative and the contribution is 0.00."""
+    sheet = from_salary(take_home_service, "20000", business_income="-50000")
+
+    assert str(sheet.get(TP1_SCHEDULE_F_CONTRIBUTION_LINE_82).value) == "0.00"
