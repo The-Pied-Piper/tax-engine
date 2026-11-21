@@ -1,0 +1,15 @@
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: carried forward unchanged from the 2025 file; the 2026 form is not yet published.
+# Ontario medical expenses dollar limit, 2026 tax year (Form ON428 line 40): "Enter whichever is less:
+# $2,885 or the amount on line 39." It is a plain cap, not a credit. Line 40 is a dollars-and-cents
+# line, so the amount rounds half-up to the cent, the project's choice, as the form states no
+# rounding rule.
+family: ca-on/medical_expense_dollar_limit
+tax_year: 2026
+kind: amount
+title: "medical expense dollar limit"
+unit: ca/cad
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/5006-c-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "2885"

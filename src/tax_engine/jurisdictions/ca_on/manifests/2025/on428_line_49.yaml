@@ -1,0 +1,19 @@
+# Form ON428 (Ontario Tax, 2025, 5006-c-25e) line 49 (ca-on/on428): "Line 49 and line 58969: Line 47
+# plus line 48 =". It sums line 47 (`ca-on/on428_donations_credit_at_rate_line_47`) and line 48
+# (`ca-on/on428_donations_credit_at_rate_line_48`), each read from its own step and never blank
+# (a blank Schedule 9 amount gives 0.00 there). Line 50 reads it.
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/sum
+    title: "Donations and gifts"
+    reference: "49"
+    unit: ca/cad
+    params:
+      rounding: ca-on/cent_rounding
+    consumes:
+      parts:
+        - ca-on/on428_donations_credit_at_rate_line_47
+        - ca-on/on428_donations_credit_at_rate_line_48
+    produces:
+      output: ca-on/on428_donations_credit_line_49
