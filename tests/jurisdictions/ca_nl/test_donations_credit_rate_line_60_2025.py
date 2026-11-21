@@ -2,8 +2,7 @@
 
 Form NL428 (CRA 5001-c-25e.txt): "Line 60: Amount from line 14 of your federal Schedule 9
 multiplied by 21.8% =". The printed percentage is a rate of 0.218. The figure is a
-dollars-and-cents figure, so it rounds half-up to the cent, the project's choice, as the form
-states no rounding rule.
+dollars-and-cents box, so it rounds half-up to the cent.
 """
 
 from __future__ import annotations

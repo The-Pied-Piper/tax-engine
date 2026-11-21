@@ -93,7 +93,7 @@ def _compute(tmp_path: Path, given: dict[str, str]) -> Decimal:
 
 @pytest.mark.parametrize(
     ("amount", "expected"),
-    [("1000", "218.00"), ("333.33", "72.67")],
+    [("1000", "218.00"), ("2.50", "0.55"), ("333.33", "72.67")],
 )
 def test_line_60_is_the_schedule_9_amount_at_the_printed_rate(
     tmp_path: Path, amount: str, expected: str

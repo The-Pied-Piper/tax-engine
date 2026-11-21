@@ -1,7 +1,7 @@
 # Newfoundland and Labrador donations and gifts credit rate, 2025 tax year (Form NL428 line 60):
 # "Amount from line 14 of your federal Schedule 9 multiplied by 21.8% =". Line 60 multiplies the
-# Schedule 9 amount by it. The product is a dollars-and-cents box, so it rounds half-up to the
-# cent, the project's choice, as the form states no rounding rule.
+# Schedule 9 amount by it. The product is a printed dollars-and-cents box, so it rounds half-up to
+# the cent.
 family: ca-nl/donations_credit_rate_line_60
 tax_year: 2025
 kind: rate

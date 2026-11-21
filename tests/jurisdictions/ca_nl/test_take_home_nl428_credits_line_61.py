@@ -110,7 +110,6 @@ def test_the_part_is_one_sum_step() -> None:
         "capabilities": [
             {
                 "name": "core/sum",
-                "title": "Donations and gifts",
                 "reference": "61",
                 "unit": "ca/cad",
                 "params": {"rounding": "ca-nl/cent_rounding"},
