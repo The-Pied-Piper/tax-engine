@@ -1074,6 +1074,18 @@ def test_the_manifests_inputs_gather_those_of_every_form() -> None:
     }
 
 
+def test_a_form_starts_from_the_inputs_it_holds_and_no_others() -> None:
+    found = with_forms(optional_form())
+    default, relief = found.forms
+    kinds = found.kinds
+
+    assert found.starting_kinds(relief) == frozenset()
+    assert found.starting_kinds(default) == {
+        kinds.kind("ex/taxable_base"),
+        kinds.kind("ex/relief_applies"),
+    }
+
+
 def test_an_input_two_forms_declare_is_refused_naming_both() -> None:
     again = with_inputs(optional_form(), ["ex/taxable_base"])
 

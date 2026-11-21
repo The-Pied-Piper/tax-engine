@@ -565,6 +565,15 @@ class Manifest:
                 f"form {form.name!r}: field {name!r} is not a field of {instances.identifier!r}"
             )
 
+    def starting_kinds(self, form: Form) -> frozenset[ArtifactKind[Any]]:
+        """The kinds `form`'s composition starts from: the inputs the form holds and nothing else,
+        every other figure being another form's export. The default form (the first) also starts
+        from the inputs its exports carry onto the return as entered, whichever form holds them."""
+        names = {declaration.name for declaration in form.inputs}
+        if form is self.forms[0]:
+            names |= self.inputs.keys() & set(form.exports)
+        return frozenset(self.kinds.kind(name) for name in names)
+
     def _gather_inputs(self) -> dict[str, InputDeclaration]:
         """Each form's inputs by name, refusing an input two forms declare."""
         gathered: dict[str, InputDeclaration] = {}

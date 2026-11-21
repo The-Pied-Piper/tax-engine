@@ -11,12 +11,12 @@ from typing import Any
 
 from tax_engine.application.ports.jurisdiction_source import JurisdictionSource
 from tax_engine.application.ports.parameter_source import ParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
+from tax_engine.domain.artifact import Artifact, ArtifactRegistry
 from tax_engine.domain.capability import Capability, CapabilityRegistry
 from tax_engine.domain.capability_builder import CapabilityBuilder
 from tax_engine.domain.form import FormComposition, FormSet
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.manifest import CapabilitySelection, Form, Manifest
+from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.worksheet import Worksheet
 
@@ -63,7 +63,7 @@ class TaxComputationService:
                         for selection in form.capabilities
                     ],
                     kinds=kinds,
-                    starting=self._starting(form, manifest),
+                    starting=manifest.starting_kinds(form),
                     defaults=manifest.defaults,
                     field_defaults=manifest.field_defaults[form.name],
                     declared=manifest.inputs.values(),
@@ -74,15 +74,6 @@ class TaxComputationService:
             inputs=inputs,
             defaults=manifest.defaults,
         )
-
-    @staticmethod
-    def _starting(form: Form, manifest: Manifest) -> frozenset[ArtifactKind[Any]]:
-        """The kinds `form` starts from: its own inputs, and for the default form (the first)
-        also the inputs its exports carry onto the return as entered."""
-        names = {declaration.name for declaration in form.inputs}
-        if form is manifest.forms[0]:
-            names |= manifest.inputs.keys() & set(form.exports)
-        return frozenset(manifest.kinds.kind(name) for name in names)
 
     def compute(
         self, code: JurisdictionCode, tax_year: int, *artifacts: Artifact[Any]
