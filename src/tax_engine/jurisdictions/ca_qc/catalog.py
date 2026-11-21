@@ -561,15 +561,15 @@ adds, an optional input (the line comes from a TP-1 line the take-home does not 
 
 TP1_SCHEDULE_F_LINE_23 = AmountKind.declare(CATALOG, "tp1_schedule_f_line_23", non_negative=True)
 """Schedule F line 23, "Dividends from taxable Canadian corporations, taxable amount (line
-128)": one of the two lines that line 25
-subtracts, an optional input (the line comes from a TP-1 line the take-home does not build), read as
-0 when blank (`tp1_schedule_f_line_34_inputs.yaml`)."""
+128)": one of the two lines that
+line 25 subtracts, an optional input (the line comes from a TP-1 line the take-home does not build),
+read as 0 when blank (`tp1_schedule_f_line_25_inputs.yaml`)."""
 
 TP1_SCHEDULE_F_LINE_24 = AmountKind.declare(CATALOG, "tp1_schedule_f_line_24", non_negative=True)
 """Schedule F line 24, "Dividends from taxable Canadian corporations, actual amount (total of
-lines 166 and 167)": one of the two lines that line 25
-subtracts, an optional input (the line comes from a TP-1 line the take-home does not build), read as
-0 when blank (`tp1_schedule_f_line_34_inputs.yaml`)."""
+lines 166 and 167)": one of the two lines that
+line 25 subtracts, an optional input (the line comes from a TP-1 line the take-home does not build),
+read as 0 when blank (`tp1_schedule_f_line_25_inputs.yaml`)."""
 
 TP1_SCHEDULE_F_LINE_25 = AmountKind.declare(CATALOG, "tp1_schedule_f_line_25")
 """Schedule F line 25, "Subtract line 24 from line 23": the taxable amount of dividends less their
