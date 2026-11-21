@@ -35,6 +35,7 @@ from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME, UCCB_R
 from tax_engine.jurisdictions.ca_nl.catalog import (
     NL428_FAMILY_INCOME_LINE_90,
 )
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_capabilities,
     newfoundland_kinds,
@@ -51,35 +52,11 @@ LINE_88 = "ca-nl/nl428_net_income_line_88"
 LINE_89 = "ca-nl/nl428_uccb_rdsp_repayments_line_89"
 LINE_90 = "ca-nl/nl428_family_income_line_90"
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 PART_88 = NL_PARTS / "nl428_line_88.yaml"
 PART_90 = NL_PARTS / "nl428_line_90.yaml"
 # The real parts, in composition order: line 88, the line 89 input, line 90.
 NL_LINE_PARTS = (PART_88, NL_PARTS / "nl428_line_89.yaml", PART_90)
-T1_PARTS = (
-    "t1_taxable_income_inputs.yaml",
-    "t1_employment_income.yaml",
-    "t1_employment_income_line_10100.yaml",
-    "t1_employment_income_line_10400.yaml",
-    "t1_taxable_income_line_15000.yaml",
-    "t1_taxable_income_line_23300.yaml",
-    "t1_taxable_income_line_23400.yaml",
-    "t1_taxable_income_line_23600.yaml",
-    "t1_taxable_income_line_23600_signed.yaml",
-    "t1_taxable_income_line_25700_inputs.yaml",
-    "t1_taxable_income_line_25700.yaml",
-    "t1_taxable_income_line_26000.yaml",
-    "t1_taxable_income.yaml",
-    "t1_employment_income_line_10400_inputs.yaml",
-    "t1_taxable_income_line_11700_inputs.yaml",
-    "t1_taxable_income_line_12500_inputs.yaml",
-    "t1_taxable_income_line_21300_inputs.yaml",
-    "t1_taxable_income_line_23200_inputs.yaml",
-    "t1_taxable_income_line_11700.yaml",
-    "t1_taxable_income_line_12500.yaml",
-    "t1_taxable_income_line_21300.yaml",
-    "t1_taxable_income_line_23200.yaml",
-)
+T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 
 HEADER = dedent("""\
     jurisdiction: CA-NL
@@ -105,7 +82,7 @@ TAX_FORM_TEXT = dedent(f"""\
 
 def _part_files() -> Iterator[tuple[str, str]]:
     """Each part's name and text, in composition order."""
-    for found in sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml")):
+    for found in form_parts("schedule_8"):
         yield found.name, found.read_text(encoding="utf-8")
     for name in T1_PARTS:
         found = next(FEDERAL_FORMS.rglob(name))

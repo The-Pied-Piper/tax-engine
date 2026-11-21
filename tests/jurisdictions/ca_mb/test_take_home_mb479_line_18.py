@@ -44,6 +44,7 @@ from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_mb.catalog import (
     MB479_FAMILY_INCOME_COLUMN_2_LINE_5,
 )
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_mb.support import (
     manitoba_capabilities,
     manitoba_kinds,
@@ -57,34 +58,10 @@ from tests.manifest_support import inputs_without_form
 D = Decimal
 CENT = D("0.01")
 MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = MB_PARTS / "mb479_line_18.yaml"
 FORM_NAME = "ca-mb/mb479"
 KIND = "ca-mb/mb479_reduction_line_18"
-T1_PARTS = (
-    "t1_taxable_income_inputs.yaml",
-    "t1_employment_income.yaml",
-    "t1_employment_income_line_10100.yaml",
-    "t1_employment_income_line_10400.yaml",
-    "t1_taxable_income_line_15000.yaml",
-    "t1_taxable_income_line_23300.yaml",
-    "t1_taxable_income_line_23400.yaml",
-    "t1_taxable_income_line_23600.yaml",
-    "t1_taxable_income_line_23600_signed.yaml",
-    "t1_taxable_income_line_25700_inputs.yaml",
-    "t1_taxable_income_line_25700.yaml",
-    "t1_taxable_income_line_26000.yaml",
-    "t1_taxable_income.yaml",
-    "t1_employment_income_line_10400_inputs.yaml",
-    "t1_taxable_income_line_11700_inputs.yaml",
-    "t1_taxable_income_line_12500_inputs.yaml",
-    "t1_taxable_income_line_21300_inputs.yaml",
-    "t1_taxable_income_line_23200_inputs.yaml",
-    "t1_taxable_income_line_11700.yaml",
-    "t1_taxable_income_line_12500.yaml",
-    "t1_taxable_income_line_21300.yaml",
-    "t1_taxable_income_line_23200.yaml",
-)
+T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 
 HEADER = dedent("""\
     jurisdiction: CA-MB
@@ -133,7 +110,7 @@ def docstring_of(identifier: str) -> str:
 
 def _part_files() -> Iterator[Path]:
     yield MB_PARTS / "salary.yaml"
-    yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
+    yield from form_parts("schedule_8")
     for name in T1_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
     yield MB_PARTS / "mb479_line_1.yaml"

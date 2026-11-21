@@ -28,7 +28,8 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService
+from tests.federal_forms import form_part_names
+from tests.jurisdictions.ca_on.conftest import TakeHomeService
 from tests.kinds import bundled_kinds
 
 D = Decimal
@@ -40,29 +41,8 @@ LINE_89 = "ca-on/on428_ontario_health_premium_line_89"
 # taxable-income lines and inputs, and the ON428 line 89 part.
 PARTS = (
     "salary.yaml",
-    *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
-    "t1_taxable_income_inputs.yaml",
-    "t1_employment_income.yaml",
-    "t1_employment_income_line_10100.yaml",
-    "t1_employment_income_line_10400.yaml",
-    "t1_taxable_income_line_15000.yaml",
-    "t1_taxable_income_line_23300.yaml",
-    "t1_taxable_income_line_23400.yaml",
-    "t1_taxable_income_line_23600.yaml",
-    "t1_taxable_income_line_23600_signed.yaml",
-    "t1_taxable_income_line_25700_inputs.yaml",
-    "t1_taxable_income_line_11700_inputs.yaml",
-    "t1_taxable_income_line_11700.yaml",
-    "t1_taxable_income_line_12500_inputs.yaml",
-    "t1_taxable_income_line_12500.yaml",
-    "t1_taxable_income_line_21300_inputs.yaml",
-    "t1_taxable_income_line_21300.yaml",
-    "t1_taxable_income_line_23200_inputs.yaml",
-    "t1_taxable_income_line_23200.yaml",
-    "t1_taxable_income_line_25700.yaml",
-    "t1_taxable_income_line_26000.yaml",
-    "t1_taxable_income.yaml",
-    "t1_employment_income_line_10400_inputs.yaml",
+    *form_part_names("schedule_8"),
+    *form_part_names("t1_taxable_income", "t1_employment_income"),
     "on428_line_89.yaml",
 )
 HEADER = dedent("""\

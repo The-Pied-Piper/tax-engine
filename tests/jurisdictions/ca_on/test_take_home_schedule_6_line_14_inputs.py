@@ -17,10 +17,10 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import tax_engine.jurisdictions.ca
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.manifest import Manifest
 from tax_engine.registrations import JURISDICTIONS, artifact_kinds, units
+from tests.federal_forms import FEDERAL_FORMS
 from tests.kinds import bundled_kinds, non_negative
 from tests.manifest_support import inputs_without_form
 
@@ -31,9 +31,7 @@ PRINTED_BASIS = (
     "(line 5) is equal to or more than your eligible spouse's working income, enter whichever is "
     "less from column 2: amount from line 5 or line 12. (maximum $16,386)"
 )
-PART = Path(tax_engine.jurisdictions.ca.__file__).parent / (
-    "forms/schedule_6/schedule_6_line_14_inputs.yaml"
-)
+PART = FEDERAL_FORMS / "schedule_6" / "schedule_6_line_14_inputs.yaml"
 HEADER = """\
 jurisdiction: CA-ON
 version: 1

@@ -49,6 +49,7 @@ from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca.catalog.rc381_cpp_qpp import (
     T4_CPP_PENSIONABLE_EARNINGS_OUTSIDE_QUEBEC,
 )
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_on.conftest import TAKE_HOME
 
 D = Decimal
@@ -86,8 +87,7 @@ def service(tmp_path: Path) -> TaxComputationService:
     (parts / "00_header.yaml").write_text(HEADER)
     for part in [
         TAKE_HOME / "salary.yaml",
-        *sorted(TAKE_HOME.rglob("schedule_8*.yaml")),
-        *sorted(TAKE_HOME.rglob("t1_employment_income*.yaml")),
+        *form_parts("schedule_8", "t1_employment_income"),
     ]:
         shutil.copy(part, parts / part.name)
     roots = dict(tax_engine.registrations.JURISDICTIONS.roots())

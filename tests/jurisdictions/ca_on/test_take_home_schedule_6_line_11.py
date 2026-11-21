@@ -8,19 +8,13 @@ total is 0.
 
 from __future__ import annotations
 
-from pathlib import Path
 from typing import Any
 
 import yaml
 
-import tax_engine.jurisdictions.ca
+from tests.federal_forms import FEDERAL_FORMS
 
-PART = (
-    Path(tax_engine.jurisdictions.ca.__file__).parent
-    / "forms"
-    / "schedule_6"
-    / "schedule_6_line_11.yaml"
-)
+PART = FEDERAL_FORMS / "schedule_6" / "schedule_6_line_11.yaml"
 EXPORTS = (
     "ca/t1_taxable_income.uccb_income_line_11700",
     "ca/t1_taxable_income.rdsp_income_line_12500",

@@ -50,7 +50,8 @@ from tax_engine.jurisdictions.ca.catalog.taxable_income import (
     DEDUCTIONS_FROM_NET_INCOME,
     TAXABLE_INCOME,
 )
-from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService
+from tests.federal_forms import form_part_names
+from tests.jurisdictions.ca_on.conftest import TakeHomeService
 
 D = Decimal
 HEADER = dedent("""\
@@ -68,14 +69,14 @@ FORM = "{}\n"
 # export line 23300 reads.
 PARTS_15000 = (
     "salary.yaml",
-    *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
-    *(part.name for part in sorted(TAKE_HOME.rglob("t1_employment_income*.yaml"))),
-    *(part.name for part in sorted(TAKE_HOME.rglob("t1_taxable_income*.yaml"))),
+    *form_part_names("schedule_8"),
+    *form_part_names("t1_employment_income"),
+    *form_part_names("t1_taxable_income"),
 )
 PARTS = (
     "salary.yaml",
-    *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
-    *(part.name for part in sorted(TAKE_HOME.rglob("t1_employment_income*.yaml"))),
+    *form_part_names("schedule_8"),
+    *form_part_names("t1_employment_income"),
 )
 
 

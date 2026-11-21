@@ -54,6 +54,7 @@ from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import (
     SubtractNotBelowZero,
 )
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_ab.support import (
     alberta_capabilities,
     alberta_kinds,
@@ -73,32 +74,8 @@ LINE_74 = "ca-ab/ab428_supplemental_tax_credit_line_74"
 LINE_75 = "ca-ab/ab428_alberta_tax_line_75"
 ROUNDING = "ca-ab/cent_rounding"
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = ALBERTA_PARTS / "ab428_line_75.yaml"
-T1_PARTS = (
-    "t1_taxable_income_inputs.yaml",
-    "t1_employment_income.yaml",
-    "t1_employment_income_line_10100.yaml",
-    "t1_employment_income_line_10400.yaml",
-    "t1_taxable_income_line_15000.yaml",
-    "t1_taxable_income_line_23300.yaml",
-    "t1_taxable_income_line_23400.yaml",
-    "t1_taxable_income_line_23600.yaml",
-    "t1_taxable_income_line_23600_signed.yaml",
-    "t1_taxable_income_line_25700_inputs.yaml",
-    "t1_taxable_income_line_11700_inputs.yaml",
-    "t1_taxable_income_line_11700.yaml",
-    "t1_taxable_income_line_12500_inputs.yaml",
-    "t1_taxable_income_line_12500.yaml",
-    "t1_taxable_income_line_21300_inputs.yaml",
-    "t1_taxable_income_line_21300.yaml",
-    "t1_taxable_income_line_23200_inputs.yaml",
-    "t1_taxable_income_line_23200.yaml",
-    "t1_taxable_income_line_25700.yaml",
-    "t1_taxable_income_line_26000.yaml",
-    "t1_taxable_income.yaml",
-    "t1_employment_income_line_10400_inputs.yaml",
-)
+T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 # The real Alberta parts after the federal ones, in composition order: lines 1 to 15 and 59 to 61,
 # then lines 16 to 58 and 62 to 65, then lines 66 and 67, then lines 68 to 70, then line 72, then
 # line 73, then the supplemental credit chain (worksheet lines 1 to 9, then line 74), then line 75.
@@ -240,8 +217,8 @@ def _federal(name: str) -> Path:
 
 def _part_files() -> Iterator[Path]:
     yield ALBERTA_PARTS / "salary.yaml"
-    yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
-    yield from sorted(FEDERAL_FORMS.rglob("t2204*.yaml"))
+    yield from form_parts("schedule_8")
+    yield from form_parts("t2204")
     for name in T1_PARTS:
         yield _federal(name)
     for name in ALBERTA_LINE_PARTS:

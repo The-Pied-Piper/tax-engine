@@ -9,19 +9,15 @@ declared in the Ontario manifest, so it is not listed here.
 
 from __future__ import annotations
 
-from pathlib import Path
-
 import pytest
 import yaml
 
-import tax_engine.jurisdictions.ca
 from tax_engine import registrations
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.manifest import Manifest
-
-FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
+from tests.federal_forms import FEDERAL_FORMS
 
 CAD = "ca/cad"
 
@@ -41,7 +37,7 @@ def declared() -> dict[str, str | None]:
     """The unit expected of each figure the ca form manifests declare, in or out."""
     kinds = registrations.artifact_kinds()
     found: dict[str, str | None] = {}
-    for path in sorted(FORMS.rglob("*.yaml")):
+    for path in sorted(FEDERAL_FORMS.rglob("*.yaml")):
         body = yaml.safe_load(path.read_text(encoding="utf-8"))
         names = [item["name"] for item in body.get("inputs") or []]
         for selection in body.get("capabilities") or []:

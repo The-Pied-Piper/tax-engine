@@ -48,6 +48,7 @@ from tax_engine.domain.trace import BracketOutsideRangeLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_bc.catalog import BC428_BRACKET_TAX_AT_START_LINE_7
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -64,33 +65,9 @@ FORM = "ca-bc/bc428"
 LINE_1 = "ca-bc/bc428_taxable_income_line_1"
 LINE_7 = "ca-bc/bc428_bracket_tax_at_start_line_7"
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_1_PART = BC_PARTS / "bc428_line_1.yaml"
 LINE_PART = BC_PARTS / "bc428_line_7.yaml"
-T1_PARTS = (
-    "t1_taxable_income_inputs.yaml",
-    "t1_employment_income.yaml",
-    "t1_employment_income_line_10100.yaml",
-    "t1_employment_income_line_10400.yaml",
-    "t1_taxable_income_line_15000.yaml",
-    "t1_taxable_income_line_23300.yaml",
-    "t1_taxable_income_line_23400.yaml",
-    "t1_taxable_income_line_23600.yaml",
-    "t1_taxable_income_line_23600_signed.yaml",
-    "t1_taxable_income_line_25700_inputs.yaml",
-    "t1_taxable_income_line_11700_inputs.yaml",
-    "t1_taxable_income_line_11700.yaml",
-    "t1_taxable_income_line_12500_inputs.yaml",
-    "t1_taxable_income_line_12500.yaml",
-    "t1_taxable_income_line_21300_inputs.yaml",
-    "t1_taxable_income_line_21300.yaml",
-    "t1_taxable_income_line_23200_inputs.yaml",
-    "t1_taxable_income_line_23200.yaml",
-    "t1_taxable_income_line_25700.yaml",
-    "t1_taxable_income_line_26000.yaml",
-    "t1_taxable_income.yaml",
-    "t1_employment_income_line_10400_inputs.yaml",
-)
+T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 
 HEADER = dedent("""\
     jurisdiction: CA-BC
@@ -119,7 +96,7 @@ def _federal(name: str) -> Path:
 def _part_files() -> Iterator[tuple[str, str]]:
     """Each part's name and text, in composition order."""
     yield "salary.yaml", (BC_PARTS / "salary.yaml").read_text(encoding="utf-8")
-    for found in sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml")):
+    for found in form_parts("schedule_8"):
         yield found.name, found.read_text(encoding="utf-8")
     for name in T1_PARTS:
         found = _federal(name)
