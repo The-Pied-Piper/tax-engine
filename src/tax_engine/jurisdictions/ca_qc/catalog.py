@@ -100,15 +100,73 @@ TP1_QPIP_PREMIUM_LINE_97 = AmountKind.declare(
 """QPIP premium, TP-1 line 97 "QPIP premium. RL-1 slip, box H": the figure given, else 0.494% up to
 $98,000, at most $484.12."""
 
-TP1_OTHER_INCOME_LINES_105_TO_164 = AmountKind.declare(
-    CATALOG, "tp1_other_income_lines_105_to_164", non_negative=True
-)
-"""The income of TP-1 lines 105 through 164, summed: the figure the caller gives for "Add lines 101
-and 105 through 164"; blank when the caller has none, and line 199 reads it as 0."""
+TP1_LINE_110 = AmountKind.declare(CATALOG, "tp1_line_110", non_negative=True)
+"""TP-1 line 110, "Parental insurance benefits, RL-6 slip, box A": an optional input of the TP-1
+income form that line 199 adds; blank when the caller has none, and line 199 reads it as 0."""
 
-TP1_TOTAL_INCOME_LINE_199 = AmountKind.declare(
-    CATALOG, "tp1_total_income_line_199", non_negative=True
-)
+TP1_LINE_111 = AmountKind.declare(CATALOG, "tp1_line_111", non_negative=True)
+"""TP-1 line 111, "Employment Insurance benefits, T4E slip": an optional input of the TP-1 income
+form that line 199 adds; blank when the caller has none, and line 199 reads it as 0."""
+
+TP1_LINE_114 = AmountKind.declare(CATALOG, "tp1_line_114", non_negative=True)
+"""TP-1 line 114, "Old Age Security pension, T4A(OAS) slip": an optional input of the TP-1 income
+form that line 199 adds; blank when the caller has none, and line 199 reads it as 0."""
+
+TP1_LINE_119 = AmountKind.declare(CATALOG, "tp1_line_119", non_negative=True)
+"""TP-1 line 119, "QPP or CPP benefits, RL-2 slip, box C": an optional input of the TP-1 income
+form that line 199 adds; blank when the caller has none, and line 199 reads it as 0."""
+
+TP1_LINE_122 = AmountKind.declare(CATALOG, "tp1_line_122", non_negative=True)
+"""TP-1 line 122, "Payments from a pension plan, an RRSP, a RRIF, a DPSP or a PRPP/VRSP, or
+annuities": an optional input of the TP-1 income form that line 199 adds; blank when the caller
+has none, and line 199 reads it as 0."""
+
+TP1_LINE_123 = AmountKind.declare(CATALOG, "tp1_line_123", non_negative=True)
+"""TP-1 line 123, "Retirement income transferred by your spouse": an optional input of the TP-1
+income form that line 199 adds; blank when the caller has none, and line 199 reads it as 0."""
+
+TP1_LINE_128 = AmountKind.declare(CATALOG, "tp1_line_128", non_negative=True)
+"""TP-1 line 128, "Dividends from taxable Canadian corporations, taxable amount of dividends": an
+optional input of the TP-1 income form that line 199 adds; blank when the caller has none, and
+line 199 reads it as 0."""
+
+TP1_LINE_130 = AmountKind.declare(CATALOG, "tp1_line_130", non_negative=True)
+"""TP-1 line 130, "Interest and other investment income": an optional input of the TP-1 income form
+that line 199 adds; blank when the caller has none, and line 199 reads it as 0."""
+
+TP1_LINE_136 = AmountKind.declare(CATALOG, "tp1_line_136")
+"""TP-1 line 136, "Rental income, net rental income": an optional input of the TP-1 income form
+that line 199 adds; blank when the caller has none, and line 199 reads it as 0. Signed: a loss
+is entered as a negative figure and is added."""
+
+TP1_LINE_139 = AmountKind.declare(CATALOG, "tp1_line_139", non_negative=True)
+"""TP-1 line 139, "Taxable capital gains": an optional input of the TP-1 income form that line 199
+adds; blank when the caller has none, and line 199 reads it as 0."""
+
+TP1_LINE_142 = AmountKind.declare(CATALOG, "tp1_line_142", non_negative=True)
+"""TP-1 line 142, "Support payments received (taxable amount)": an optional input of the TP-1
+income form that line 199 adds; blank when the caller has none, and line 199 reads it as 0."""
+
+TP1_LINE_147 = AmountKind.declare(CATALOG, "tp1_line_147", non_negative=True)
+"""TP-1 line 147, "Social assistance payments, RL-5 slip, box A, and similar financial assistance,
+RL-5 slip, box B": an optional input of the TP-1 income form that line 199 adds; blank when the
+caller has none, and line 199 reads it as 0."""
+
+TP1_LINE_148 = AmountKind.declare(CATALOG, "tp1_line_148", non_negative=True)
+"""TP-1 line 148, "Income replacement indemnities and net federal supplements": an optional input
+of the TP-1 income form that line 199 adds; blank when the caller has none, and line 199 reads
+it as 0."""
+
+TP1_LINE_154 = AmountKind.declare(CATALOG, "tp1_line_154", non_negative=True)
+"""TP-1 line 154, "Other income": an optional input of the TP-1 income form that line 199 adds;
+blank when the caller has none, and line 199 reads it as 0."""
+
+TP1_LINE_164 = AmountKind.declare(CATALOG, "tp1_line_164")
+"""TP-1 line 164, "Net business income. Complete Schedule L.": an optional input of the TP-1 income
+form that line 199 adds; blank when the caller has none, and line 199 reads it as 0. Signed: a
+loss is entered as a negative figure and is added."""
+
+TP1_TOTAL_INCOME_LINE_199 = AmountKind.declare(CATALOG, "tp1_total_income_line_199")
 """Total income, TP-1 line 199 "Add lines 101 and 105 through 164. Total income": line 101, the
 salary, plus the optional income of lines 105 through 164, rounded half-up to the cent."""
 
@@ -559,13 +617,11 @@ TP1_FOREST_PRODUCER_AVERAGING_LINE_276 = AmountKind.declare(
 line 10 adds to total income; blank when the caller has none, and line 10 reads it as 0."""
 
 TP1_SCHEDULE_F_TOTAL_INCOME_LINE_199 = AmountKind.declare(
-    CATALOG, "tp1_schedule_f_total_income_line_199", non_negative=True
+    CATALOG, "tp1_schedule_f_total_income_line_199"
 )
 """Total income of TP-1 line 199, as Schedule F line 10 reads it from the TP-1 income form."""
 
-TP1_SCHEDULE_F_INCOME_LINE_10 = AmountKind.declare(
-    CATALOG, "tp1_schedule_f_income_line_10", non_negative=True
-)
+TP1_SCHEDULE_F_INCOME_LINE_10 = AmountKind.declare(CATALOG, "tp1_schedule_f_income_line_10")
 """Schedule F line 10, "Total income (line 199 of your return) plus the amount for income averaging
 for forest producers (included on line 276 of your return)": line 199 plus line 276, rounded
 half-up to the cent."""
@@ -849,7 +905,7 @@ TP1_TOTAL_DEDUCTIONS_LINE_254 = AmountKind.declare(CATALOG, "tp1_total_deduction
 and 248 are."""
 
 TP1_NET_INCOME_TOTAL_INCOME_LINE_199 = AmountKind.declare(
-    CATALOG, "tp1_net_income_total_income_line_199", non_negative=True
+    CATALOG, "tp1_net_income_total_income_line_199"
 )
 """Total income of TP-1 line 199, as the net income lines read it ("Amount from line 199") from the
 TP-1 income form."""
@@ -1866,10 +1922,23 @@ TP1_LINE_377_1 = AmountKind.declare(CATALOG, "tp1_line_377_1")
 cent. Signed, as line 377 is. Produced by one core/apply_rate (`tp1_credits_line_377_1.yaml`)."""
 
 
+TP1_LINE_378 = AmountKind.declare(CATALOG, "tp1_line_378", non_negative=True)
+"""TP-1 line 378 "Expenses for medical services not available in your area": one of the lines that
+line 388 adds, an optional input (form TP-752.0.13.1-V is not built), read as 0 when blank
+(`tp1_credits_line_388_inputs.yaml`)."""
+
+TP1_LINE_381 = AmountKind.declare(CATALOG, "tp1_line_381", non_negative=True)
+"""TP-1 line 381 "Medical expenses": one of the lines that line 388 adds, an optional input
+(Schedule B Part C is not built), read as 0 when blank (`tp1_credits_line_388_inputs.yaml`)."""
+
+TP1_LINE_385 = AmountKind.declare(CATALOG, "tp1_line_385", non_negative=True)
+"""TP-1 line 385 "Interest paid on a student loan": one of the lines that line 388 adds, an
+optional input (Schedule M is not built), read as 0 when blank
+(`tp1_credits_line_388_inputs.yaml`)."""
+
 TP1_LINE_388 = AmountKind.declare(CATALOG, "tp1_line_388", non_negative=True)
-"""TP-1 line 388 "Add lines 378 through 385": the printed sum of lines 378 to 385, one optional
-input a salary-only caller does not give; line 389 reads a blank as 0
-(`tp1_credits_line_388_input.yaml`)."""
+"""TP-1 line 388 "Add lines 378 through 385": lines 378, 381 and 385 added, rounded half-up to the
+cent; blank lines read as 0. Produced by one core/sum (`tp1_credits_line_388.yaml`)."""
 
 
 TP1_LINE_389 = AmountKind.declare(CATALOG, "tp1_line_389", non_negative=True)
@@ -2099,10 +2168,28 @@ non-refundable tax credits, rounded half-up to the cent. The form prints no floo
 signed (line 432 floors it). Produced by one core/subtract (`tp1_tax_line_413.yaml`) and exported by
 the form for lines 425 and 430."""
 
+TP1_LINE_414 = AmountKind.declare(CATALOG, "tp1_line_414", non_negative=True)
+"""TP-1 line 414 "Tax credit for contributions to authorized Québec political parties": one of the
+lines that line 425 adds, an optional input (Work Chart 414 is not built), read as 0 when blank
+(`tp1_tax_line_425_inputs.yaml`)."""
+
+TP1_LINE_415 = AmountKind.declare(CATALOG, "tp1_line_415", non_negative=True)
+"""TP-1 line 415 "Dividend tax credit": one of the lines that line 425 adds, an optional input,
+read as 0 when blank (`tp1_tax_line_425_inputs.yaml`)."""
+
+TP1_LINE_422 = AmountKind.declare(CATALOG, "tp1_line_422", non_negative=True)
+"""TP-1 line 422 "Tax credit for the acquisition of Capital régional et coopératif Desjardins
+shares" (RL-26 slip, box B): one of the lines that line 425 adds, an optional input, read as 0 when
+blank (`tp1_tax_line_425_inputs.yaml`)."""
+
+TP1_LINE_424 = AmountKind.declare(CATALOG, "tp1_line_424", non_negative=True)
+"""TP-1 line 424 "Tax credit for a labour-sponsored fund": one of the lines that line 425 adds, an
+optional input, read as 0 when blank (`tp1_tax_line_425_inputs.yaml`)."""
+
 TP1_LINE_425 = AmountKind.declare(CATALOG, "tp1_line_425", non_negative=True)
-"""TP-1 line 425 "Add lines 414 through 424": the printed sum of lines 414 to 424, one optional
-input a salary-only caller does not give; line 430 reads a blank as 0
-(`tp1_tax_line_425_input.yaml`)."""
+"""TP-1 line 425 "Add lines 414 through 424": lines 414, 415, 422 and 424 added, rounded half-up
+to the cent; blank lines read as 0. Produced by one core/sum (`tp1_tax_line_425.yaml`)."""
+
 
 TP1_LINE_430 = AmountKind.declare(CATALOG, "tp1_line_430")
 """TP-1 line 430 "Subtract line 425 from line 413": signed, as the form prints no floor here (line

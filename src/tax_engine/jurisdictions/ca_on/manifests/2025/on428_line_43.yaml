@@ -1,0 +1,22 @@
+# Form ON428 (Ontario Tax, 2025, 5006-c-25e) line 43 (ca-on/on428): "Line 43 and line 58769: Line 41
+# plus line 42 =". Line 41 is the medical expenses over the limit (on428_line_41.yaml) and line 42 the
+# allowable amount of medical expenses for other dependants, an optional input
+# (on428_line_42_inputs.yaml) that a salary-only caller leaves blank, read as 0. Line 43 adds them
+# with core/sum, in line order, and line 44 reads it.
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/sum
+    title: "Medical expenses"
+    reference: "43"
+    unit: ca/cad
+    params:
+      rounding: ca-on/cent_rounding
+    consumes:
+      parts:
+        - ca-on/on428_medical_expenses_over_limit_line_41
+        - ca-on/on428_other_dependants_medical_expenses_line_42
+    blank:
+      ca-on/on428_other_dependants_medical_expenses_line_42: "0"
+    produces:
+      output: ca-on/on428_medical_expenses_line_43

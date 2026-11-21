@@ -77,12 +77,49 @@ ON428_CREDITS_WITH_TRANSFERS_LINE_35 = AmountKind.declare(
 """Total of the credits with the student loan, tuition and transfer amounts, ON428 line 35 "Add
 lines 31 to 34.": the sum of line 31 with lines 32 to 34."""
 
+ON428_MEDICAL_EXPENSES_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_medical_expenses_line_36", non_negative=True
+)
+"""Medical expenses, ON428 line 36 (line 58689) "See line 58689 at canada.ca/on-tax-info for maximum
+allowable amounts for attendant care, an adapted van, and moving expenses": the amount as the filer
+gives it, an optional input; a blank input is read as blank."""
+
+ON428_NET_INCOME_LINE_37 = AmountKind.declare(
+    CATALOG, "on428_net_income_line_37", non_negative=True
+)
+"""Net income, ON428 line 37 "Amount from line 23600 of your return": the T1 net income, read from
+the T1 taxable income form."""
+
+ON428_MEDICAL_EXPENSES_RATE_AMOUNT_LINE_39 = AmountKind.declare(
+    CATALOG, "on428_medical_expenses_rate_amount_line_39", non_negative=True
+)
+"""Medical expenses threshold, ON428 line 39 "Line 37 multiplied by the percentage from line 38 =":
+line 37 times the 3% of line 38."""
+
+ON428_MEDICAL_EXPENSES_LIMITED_AMOUNT_LINE_40 = AmountKind.declare(
+    CATALOG, "on428_medical_expenses_limited_amount_line_40", non_negative=True
+)
+"""Medical expenses threshold, limited, ON428 line 40 "Enter whichever is less: $2,885 or the amount
+on line 39.": the lesser of the printed ceiling and line 39."""
+
+ON428_MEDICAL_EXPENSES_OVER_LIMIT_LINE_41 = AmountKind.declare(
+    CATALOG, "on428_medical_expenses_over_limit_line_41", non_negative=True
+)
+"""Medical expenses over the limit, ON428 line 41 "Line 36 minus line 40 (if negative, enter "0")
+=": line 36 minus line 40, never below 0; a blank line 36 is read as 0."""
+
+ON428_OTHER_DEPENDANTS_MEDICAL_EXPENSES_LINE_42 = AmountKind.declare(
+    CATALOG, "on428_other_dependants_medical_expenses_line_42", non_negative=True
+)
+"""Allowable amount of medical expenses for other dependants, ON428 line 42 (line 58729) "(use
+Worksheet ON428)": the amount as the filer gives it, an optional input; a blank input is read as
+blank."""
+
 ON428_MEDICAL_EXPENSES_LINE_43 = AmountKind.declare(
     CATALOG, "on428_medical_expenses_line_43", non_negative=True
 )
-"""Medical expenses, ON428 line 43 and line 58769 "Line 41 plus line 42 =": line 41 "Line 36 minus
-line 40 (if negative, enter "0")" plus line 42 "Allowable amount of medical expenses for other
-dependants", a part of line 44."""
+"""Medical expenses, ON428 line 43 and line 58769 "Line 41 plus line 42 =": line 41 plus line 42
+(a blank line 42 is read as 0), a part of line 44."""
 
 ON428_TOTAL_CREDIT_AMOUNTS_LINE_44 = AmountKind.declare(
     CATALOG, "on428_total_credit_amounts_line_44", non_negative=True
@@ -108,11 +145,35 @@ ON428_SURTAX_36_PERCENT_TIER_LINE_67 = AmountKind.declare(
 """36% surtax tier, ON428 line 67 "(Line 65 minus $7,307) multiplied by 36% (if negative, enter
 "0") =": 36% of line 65 above $7,307, never below 0."""
 
+ON428_DONATIONS_AMOUNT_LINE_47 = AmountKind.declare(
+    CATALOG, "on428_donations_amount_line_47", non_negative=True
+)
+"""Donations amount, ON428 line 47 box A "Amount from line 13 of your federal Schedule 9": the
+amount as the filer gives it, an optional input; a blank input is read as blank."""
+
+ON428_DONATIONS_CREDIT_AT_RATE_LINE_47 = AmountKind.declare(
+    CATALOG, "on428_donations_credit_at_rate_line_47", non_negative=True
+)
+"""Donations credit at 5.05%, ON428 line 47 box B "Amount from line 13 of your federal Schedule 9
+multiplied by 5.05% =": the Schedule 9 amount times 5.05%; a blank amount is read as 0."""
+
+ON428_DONATIONS_AMOUNT_LINE_48 = AmountKind.declare(
+    CATALOG, "on428_donations_amount_line_48", non_negative=True
+)
+"""Donations amount, ON428 line 48 box A "Amount from line 14 of your federal Schedule 9": the
+amount as the filer gives it, an optional input; a blank input is read as blank."""
+
+ON428_DONATIONS_CREDIT_AT_RATE_LINE_48 = AmountKind.declare(
+    CATALOG, "on428_donations_credit_at_rate_line_48", non_negative=True
+)
+"""Donations credit at 11.16%, ON428 line 48 box B "Amount from line 14 of your federal Schedule 9
+multiplied by 11.16% =": the Schedule 9 amount times 11.16%; a blank amount is read as 0."""
+
 ON428_DONATIONS_CREDIT_LINE_49 = AmountKind.declare(
     CATALOG, "on428_donations_credit_line_49", non_negative=True
 )
-"""Donations and gifts credit, ON428 line 49 "Line 49 and line 58969: Line 47 plus line 48": a
-caller input, read as 0 when the filer has no donations or gifts."""
+"""Donations and gifts credit, ON428 line 49 "Line 49 and line 58969: Line 47 plus line 48 =": line
+47 plus line 48."""
 
 ON428_NON_REFUNDABLE_CREDITS_LINE_50 = AmountKind.declare(
     CATALOG, "on428_non_refundable_credits_line_50", non_negative=True

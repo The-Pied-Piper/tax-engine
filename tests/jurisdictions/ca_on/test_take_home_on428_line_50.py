@@ -2,13 +2,12 @@
 
 Form text (ON428, CRA 5006-c-25e.txt): "Line 50 and line 61500: Line 46
 plus line 49 Enter this amount on line 52. Ontario non-refundable tax credits =". Line 49 is
-"Line 49 and line 58969: Line 47 plus line 48" (donations), an optional input with blank fallback
-0, in its own part file (on428_line_49_inputs.yaml). Line 50 is one core/sum over line 46 then
-line 49.
+"Line 49 and line 58969: Line 47 plus line 48" (donations), a sum computed by its own part
+(on428_line_49.yaml). Line 50 is one core/sum over line 46 then line 49.
 
-Line 46 is `ca-on/on428_credit_amounts_at_credit_rate_line_46` (produced by another part), a plain
-starting input here. The header and the form's export are made up here, because the shared
-scaffold owns them.
+Lines 46 and 49 (`ca-on/on428_credit_amounts_at_credit_rate_line_46` and
+`ca-on/on428_donations_credit_line_49`, produced by other parts) are plain starting inputs here.
+The header and the form's export are made up here, because the shared scaffold owns them.
 """
 
 from __future__ import annotations
@@ -29,7 +28,6 @@ from tests.jurisdictions.ca_on.conftest import TakeHomeService
 
 D = Decimal
 PART = "on428_line_50.yaml"
-INPUTS_PART = "on428_line_49_inputs.yaml"
 
 HEADER = dedent("""\
     jurisdiction: CA-ON
@@ -37,6 +35,8 @@ HEADER = dedent("""\
     valid_from_tax_year: 2025
     inputs:
       - name: ca-on/on428_credit_amounts_at_credit_rate_line_46
+        required: true
+      - name: ca-on/on428_donations_credit_line_49
         required: true
     outputs:
       - ca-on/on428_credit_amounts_at_credit_rate_line_46
@@ -50,13 +50,12 @@ FORM = dedent("""\
     """)
 
 
-def line_50(
-    take_home_service: TakeHomeService, line_46: str, donations: str | None = None
-) -> Decimal:
-    artifacts = [Artifact(ON428_CREDIT_AMOUNTS_AT_CREDIT_RATE_LINE_46, D(line_46))]
-    if donations is not None:
-        artifacts.append(Artifact(ON428_DONATIONS_CREDIT_LINE_49, D(donations)))
-    worksheets = take_home_service(HEADER, FORM, PART, INPUTS_PART).compute(
+def line_50(take_home_service: TakeHomeService, line_46: str, line_49: str) -> Decimal:
+    artifacts = [
+        Artifact(ON428_CREDIT_AMOUNTS_AT_CREDIT_RATE_LINE_46, D(line_46)),
+        Artifact(ON428_DONATIONS_CREDIT_LINE_49, D(line_49)),
+    ]
+    worksheets = take_home_service(HEADER, FORM, PART).compute(
         JurisdictionCode("CA-ON"), 2025, *artifacts
     )
     (sheet,) = worksheets["ca-on/on428"]
@@ -71,10 +70,10 @@ def line_50(
         ("867.62", "867.62"),
     ],
 )
-def test_line_50_is_line_46_when_the_donations_credit_is_left_out(
+def test_line_50_is_line_46_when_line_49_is_zero(
     take_home_service: TakeHomeService, line_46: str, expected: str
 ) -> None:
-    assert line_50(take_home_service, line_46) == D(expected)
+    assert line_50(take_home_service, line_46, "0.00") == D(expected)
 
 
 def test_line_50_adds_the_donations_credit_to_line_46(take_home_service: TakeHomeService) -> None:

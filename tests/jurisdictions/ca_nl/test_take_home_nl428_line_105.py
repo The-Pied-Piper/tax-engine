@@ -37,6 +37,7 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import CountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_capabilities,
     newfoundland_kinds,
@@ -48,28 +49,13 @@ from tests.manifest_support import inputs_without_form
 
 D = Decimal
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = NL_PARTS / "nl428_line_105.yaml"
 LINE_87 = "ca-nl/nl428_tax_line_87"
 LINE_86 = "ca-nl/nl428_unused_low_income_reduction_from_spouse_line_86"
 LINE_104 = "ca-nl/nl428_line_104"
 IDENTIFIER = "ca-nl/nl428_newfoundland_and_labrador_tax_line_105"
 FORM_NAME = "ca-nl/nl428"
-FEDERAL_PARTS = (
-    "t1_taxable_income_inputs.yaml",
-    "t1_employment_income.yaml",
-    "t1_employment_income_line_10100.yaml",
-    "t1_employment_income_line_10400.yaml",
-    "t1_taxable_income_line_15000.yaml",
-    "t1_taxable_income_line_23300.yaml",
-    "t1_taxable_income_line_23400.yaml",
-    "t1_taxable_income_line_23600.yaml",
-    "t1_taxable_income_line_23600_signed.yaml",
-    "t1_taxable_income_line_25700_inputs.yaml",
-    "t1_taxable_income_line_26000.yaml",
-    "t1_taxable_income.yaml",
-    "t1_employment_income_line_10400_inputs.yaml",
-)
+FEDERAL_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 NL_PART_NAMES = (
     *(
         f"nl428_credits_line_{number}.yaml"
@@ -155,9 +141,9 @@ NL_PART_NAMES = (
     "nl428_line_97.yaml",
     "nl428_line_100.yaml",
     "nl428_line_88.yaml",
-    "nl428_line_89_input.yaml",
+    "nl428_line_89.yaml",
     "nl428_line_90.yaml",
-    "nl428_line_91_input.yaml",
+    "nl428_line_91.yaml",
     "nl428_line_92.yaml",
     "nl428_line_88_column_2_input.yaml",
     "nl428_line_89_column_2_input.yaml",
@@ -221,8 +207,8 @@ FORMS = dedent("""\
 
 
 def _part_files() -> Iterator[Path]:
-    yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
-    yield from sorted(FEDERAL_FORMS.rglob("t2204*.yaml"))
+    yield from form_parts("schedule_8")
+    yield from form_parts("t2204")
     for name in FEDERAL_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
     for name in NL_PART_NAMES:

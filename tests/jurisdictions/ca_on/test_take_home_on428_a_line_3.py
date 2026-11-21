@@ -24,26 +24,15 @@ from tax_engine.jurisdictions.ca.catalog.income import (
     OTHER_EMPLOYMENT_INCOME,
 )
 from tax_engine.jurisdictions.ca_on.catalog import LIFT_EMPLOYMENT_INCOME
-from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService
+from tests.federal_forms import form_part_names
+from tests.jurisdictions.ca_on.conftest import TakeHomeService
 
 D = Decimal
 # The real T1 taxable-income parts (with the Schedule 8 parts its line 23300 reads), composed beside
 # the form under test, which imports T1 lines 10100 and 10400 from the T1.
 T1_PARTS = (
-    *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
-    "t1_taxable_income_inputs.yaml",
-    "t1_employment_income.yaml",
-    "t1_employment_income_line_10100.yaml",
-    "t1_employment_income_line_10400.yaml",
-    "t1_employment_income_line_10400_inputs.yaml",
-    "t1_taxable_income_line_15000.yaml",
-    "t1_taxable_income_line_23300.yaml",
-    "t1_taxable_income_line_23400.yaml",
-    "t1_taxable_income_line_23600.yaml",
-    "t1_taxable_income_line_23600_signed.yaml",
-    "t1_taxable_income_line_25700_inputs.yaml",
-    "t1_taxable_income_line_26000.yaml",
-    "t1_taxable_income.yaml",
+    *form_part_names("schedule_8"),
+    *form_part_names("t1_taxable_income", "t1_employment_income"),
 )
 PART = "on428_a_line_3.yaml"
 

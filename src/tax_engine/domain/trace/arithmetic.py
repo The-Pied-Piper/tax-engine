@@ -97,6 +97,11 @@ class SumLine(TraceLine):
         return self.total
 
     @property
+    def total_after_first(self) -> Decimal:
+        """The exact sum of every part but the first."""
+        return sum((amount for _, amount in self.parts[1:]), Decimal(0))
+
+    @property
     def label(self) -> str | None:
         """The label of the figure this line is about."""
         return self.output.label
@@ -119,6 +124,11 @@ class SumNotBelowZeroLine(TraceLine):
     def amount(self) -> Decimal:
         """The floored total."""
         return self.total
+
+    @property
+    def total_after_first(self) -> Decimal:
+        """The exact sum of every part but the first."""
+        return sum((amount for _, amount in self.parts[1:]), Decimal(0))
 
     @property
     def label(self) -> str | None:

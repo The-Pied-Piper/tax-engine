@@ -34,11 +34,11 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
-from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME, UCCB_REPAYMENT
 from tax_engine.jurisdictions.ca_bc.catalog import (
     BC479_INCOME_WITH_REPAYMENTS_LINE_3,
-    BC479_UCCB_RDSP_REPAYMENTS_LINE_2,
 )
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -51,23 +51,8 @@ from tests.manifest_support import inputs_without_form
 
 D = Decimal
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = BC_PARTS / "bc479_line_3.yaml"
-T1_PARTS = (
-    "t1_taxable_income_inputs.yaml",
-    "t1_employment_income.yaml",
-    "t1_employment_income_line_10100.yaml",
-    "t1_employment_income_line_10400.yaml",
-    "t1_taxable_income_line_15000.yaml",
-    "t1_taxable_income_line_23300.yaml",
-    "t1_taxable_income_line_23400.yaml",
-    "t1_taxable_income_line_23600.yaml",
-    "t1_taxable_income_line_23600_signed.yaml",
-    "t1_taxable_income_line_25700_inputs.yaml",
-    "t1_taxable_income_line_26000.yaml",
-    "t1_taxable_income.yaml",
-    "t1_employment_income_line_10400_inputs.yaml",
-)
+T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 
 HEADER = dedent("""\
     jurisdiction: CA-BC
@@ -95,11 +80,11 @@ CASES = [
 
 def _part_files() -> Iterator[Path]:
     yield BC_PARTS / "salary.yaml"
-    yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
+    yield from form_parts("schedule_8")
     for name in T1_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
     yield BC_PARTS / "bc479_line_1.yaml"
-    yield BC_PARTS / "bc479_line_2_input.yaml"
+    yield BC_PARTS / "bc479_line_2.yaml"
     yield LINE_PART
 
 
@@ -145,7 +130,7 @@ def test_line_3_adds_line_2_when_it_is_given(tmp_path: Path) -> None:
     sheet = _sheet(
         tmp_path,
         "70000",
-        Artifact(BC479_UCCB_RDSP_REPAYMENTS_LINE_2, D("100.50")),
+        Artifact(UCCB_REPAYMENT, D("100.50")),
     )
 
     assert sheet.get(BC479_INCOME_WITH_REPAYMENTS_LINE_3).value == D("69435.50")
@@ -185,7 +170,6 @@ def test_the_part_names_the_form_and_has_one_sum_step_over_line_1_and_line_2() -
         "unit",
         "params",
         "consumes",
-        "blank",
         "produces",
     ]
     assert step == {
@@ -199,7 +183,6 @@ def test_the_part_names_the_form_and_has_one_sum_step_over_line_1_and_line_2() -
                 "ca-bc/bc479_uccb_rdsp_repayments_line_2",
             ]
         },
-        "blank": {"ca-bc/bc479_uccb_rdsp_repayments_line_2": "0"},
         "produces": {"output": BC479_INCOME_WITH_REPAYMENTS_LINE_3.identifier},
     }
 

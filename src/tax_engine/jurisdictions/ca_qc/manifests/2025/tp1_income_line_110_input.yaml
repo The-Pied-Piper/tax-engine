@@ -1,0 +1,12 @@
+# TP-1 (2025) line 110, "Parental insurance benefits, RL-6 slip, box A": an optional input a salary-only caller does not give. It is a
+# line of the TP-1 income form, so this form takes it once; the line 199 part
+# (tp1_income_line_199.yaml) adds it to the salary and reads a blank as 0.
+form:
+  name: ca-qc/tp1_income
+inputs:
+  - name: ca-qc/tp1_line_110
+    reference: "110"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Parental insurance benefits, RL-6 slip, box A'
