@@ -1,10 +1,9 @@
-# ON428 (2025) inputs of lines 47 and 48, the amounts from the federal Schedule 9. Form ON428 (CRA
-# 5006-c-25e): "Line 47: Amount from line 13 of your federal Schedule 9 multiplied by 5.05% =" and
-# "Line 48: Amount from line 14 of your federal Schedule 9 multiplied by 11.16% =". Each line has two
+# ON428 (2025) line 47's input, the amount from the federal Schedule 9. Form ON428 (CRA 5006-c-25e):
+# "Line 47: Amount from line 13 of your federal Schedule 9 multiplied by 5.05% =". The line has two
 # boxes: the amount (box A, the input here) and the multiplied result (box B, the step in
-# on428_line_47.yaml and on428_line_48.yaml). The engine does not compute Schedule 9, so each amount
-# is taken as one optional input, the way the form takes it. A request that leaves a line out is read
-# as blank; the step that multiplies it reads that blank as 0.
+# on428_line_47.yaml). The engine does not compute Schedule 9, so the amount is taken as one optional
+# input, the way the form takes it. A request that leaves the line out is read as blank; the step
+# that multiplies it reads that blank as 0.
 inputs:
   - name: ca-on/on428_donations_amount_line_47
     title: "Amount from line 13 of your federal Schedule 9"
@@ -13,10 +12,3 @@ inputs:
     required: false
     default: null
     basis: 'Line 47: Amount from line 13 of your federal Schedule 9'
-  - name: ca-on/on428_donations_amount_line_48
-    title: "Amount from line 14 of your federal Schedule 9"
-    reference: "48 box A"
-    unit: ca/cad
-    required: false
-    default: null
-    basis: 'Line 48: Amount from line 14 of your federal Schedule 9'
