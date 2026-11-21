@@ -1,0 +1,17 @@
+# Form BC479 (2025, CRA 5010-TC) line 43. Line 43: "Line 41 multiplied by the percentage from line
+# 42". Line 42 ("Applicable rate 2%") is a printed percentage, so it is the `ca-bc/renters_credit_rate`
+# dataset figure and has no step of its own. One core/apply_rate step: line 41 times that rate,
+# rounded half-up to the cent by the dataset's rule. The form prints no title for the line, so the step
+# has none.
+form:
+  name: ca-bc/bc479
+capabilities:
+  - name: core/apply_rate
+    reference: "43"
+    unit: ca/cad
+    params:
+      rate: ca-bc/renters_credit_rate
+    consumes:
+      base: ca-bc/bc479_renters_income_over_threshold_line_41
+    produces:
+      output: ca-bc/bc479_renters_reduction_line_43

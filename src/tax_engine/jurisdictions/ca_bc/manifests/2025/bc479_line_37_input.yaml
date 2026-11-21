@@ -1,0 +1,15 @@
+# Form BC479 (2025, CRA 5010-TC) line 37 (line 60575): "Number of months rent was paid for all rental
+# units (total of column C from the table above)". An input a salary-only caller does not give: the
+# months, as the form takes them (the total of column C of the rental table; Note 3 there says to leave
+# out months paid to a non-arm's length party, which the filer does when entering the total). A blank
+# is read as 0 months by line 44, which is the form's own gate for the renter's tax credit. The rental
+# table (addresses, rent paid, landlords) prints nothing the engine computes from, so it is not built.
+form:
+  name: ca-bc/bc479
+inputs:
+  - name: ca-bc/bc479_renters_months_line_37
+    title: "Number of months rent was paid for all rental units"
+    reference: "37"
+    required: false
+    default: null
+    basis: "Line 37 and line 60575: Number of months rent was paid for all rental units (total of column C from the table above)"
