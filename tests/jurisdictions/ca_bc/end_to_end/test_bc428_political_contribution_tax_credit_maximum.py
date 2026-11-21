@@ -105,7 +105,11 @@ def test_a_claim_of_400_reduces_line_85_by_400(year: int) -> None:
 def test_the_trace_has_one_at_most_line_and_one_credit_amount_line_for_the_maximum() -> None:
     sheet = _bc428(2025, "400.00")
 
-    at_most = [line for line in sheet.trace if isinstance(line, AtMostLine)]
+    at_most = [
+        line
+        for line in sheet.trace
+        if isinstance(line, AtMostLine) and line.output.identifier == LINE_84
+    ]
     maximum = [
         line
         for line in sheet.trace

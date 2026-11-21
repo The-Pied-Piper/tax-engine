@@ -61,7 +61,8 @@ LINE_45 = "ca-bc/bc479_british_columbia_credits_line_45"
 RENTER = bc_catalog.BC479_RENTERS_CREDIT_LINE_44
 MONTHS = bc_catalog.BC479_RENTERS_MONTHS_LINE_37
 VENTURE = bc_catalog.BC479_VENTURE_CAPITAL_CREDIT_LINE_25
-TRAINING = bc_catalog.BC479_TRAINING_CREDITS_LINE_34
+TRAINING = bc_catalog.BC479_TRAINING_CREDIT_INDIVIDUALS_LINE_31
+MINING = bc_catalog.BC479_MINING_EXPLORATION_CREDIT_LINE_26
 ROUNDING = "ca-bc/cent_rounding"
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
 LINE_PART = BC_PARTS / "bc479_line_45.yaml"
@@ -111,10 +112,18 @@ def _part_files() -> Iterator[Path]:
     yield BC_PARTS / "bc479_line_14_check.yaml"
     yield BC_PARTS / "bc479_line_14.yaml"
     yield BC_PARTS / "bc479_line_15.yaml"
-    yield BC_PARTS / "bc479_line_25_input.yaml"
+    yield BC_PARTS / "bc479_line_17_input.yaml"
+    yield BC_PARTS / "bc479_line_18_input.yaml"
+    yield BC_PARTS / "bc479_line_20.yaml"
+    yield BC_PARTS / "bc479_line_21_input.yaml"
+    yield BC_PARTS / "bc479_line_23_input.yaml"
+    yield BC_PARTS / "bc479_line_25.yaml"
     yield BC_PARTS / "bc479_line_26_input.yaml"
     yield BC_PARTS / "bc479_line_30_input.yaml"
-    yield BC_PARTS / "bc479_line_34_input.yaml"
+    yield BC_PARTS / "bc479_line_31_input.yaml"
+    yield BC_PARTS / "bc479_line_32_input.yaml"
+    yield BC_PARTS / "bc479_line_33_input.yaml"
+    yield BC_PARTS / "bc479_line_34.yaml"
     yield BC_PARTS / "bc479_line_35.yaml"
     yield BC_PARTS / "bc479_line_37_input.yaml"
     yield BC_PARTS / "bc479_line_38.yaml"
@@ -212,7 +221,7 @@ def test_line_44_is_never_blank_so_line_45_prints_no_left_blank_row_for_it(
 
     blanked = {each.kind for each in sheet.trace if isinstance(each, BlankFallbackLine)}
     assert RENTER not in blanked
-    assert VENTURE in blanked
+    assert MINING in blanked
 
 
 def test_the_step_traces_one_sum_line_over_line_35_and_line_44(tmp_path: Path) -> None:

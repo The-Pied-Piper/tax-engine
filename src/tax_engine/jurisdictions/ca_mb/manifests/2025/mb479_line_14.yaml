@@ -1,0 +1,19 @@
+# Form MB479 (2025, CRA 5007-TC) line 14: "Number of disability claims Line 60950 multiplied by
+# $113 =". One core/multiply: the number in box A (`ca-mb/mb479_disability_claims_number_line_14`,
+# optional input, 0 when left out by its own default) times the printed $113
+# (mb479_line_14_amount.yaml), rounded half-up to the cent through ca-mb/cent_rounding. The step
+# is box B, the line's output, which line 17 adds. The form names the boxes nothing; "box A" and
+# "box B" are the owner's naming.
+form:
+  name: ca-mb/mb479
+capabilities:
+  - name: core/multiply
+    reference: "14 box B"
+    unit: ca/cad
+    params:
+      rounding: ca-mb/cent_rounding
+    consumes:
+      multiplicand: ca-mb/mb479_disability_claims_number_line_14
+      multiplier: ca-mb/disability_credit_amount_line_14
+    produces:
+      output: ca-mb/mb479_disability_credit_line_14

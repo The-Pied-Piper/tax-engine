@@ -99,7 +99,11 @@ def test_the_maximum_is_10000_in_2026() -> None:
 def test_the_trace_has_one_at_most_line_and_one_credit_amount_line_for_the_maximum() -> None:
     sheet = _bc479(2025, "1000.00")
 
-    at_most = [line for line in sheet.trace if isinstance(line, AtMostLine)]
+    at_most = [
+        line
+        for line in sheet.trace
+        if isinstance(line, AtMostLine) and line.output.identifier == CHECKED
+    ]
     maximum = [
         line
         for line in sheet.trace
