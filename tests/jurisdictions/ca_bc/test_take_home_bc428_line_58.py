@@ -37,7 +37,7 @@ from tax_engine.jurisdictions.ca_bc.catalog import (
     BC428_DONATIONS_AND_GIFTS_LINE_57,
     BC428_SUBTOTAL_LINE_58,
 )
-from tests.federal_forms import FEDERAL_FORMS, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -46,9 +46,10 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_FORM, inputs_without_form
+from tests.manifest_support import inputs_without_form
 
 D = Decimal
+T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
 LINE_PART = BC_PARTS / "bc428_line_58.yaml"
 IDENTIFIER = "ca-bc/bc428_subtotal_line_58"
@@ -82,8 +83,8 @@ def _part_files() -> Iterator[Path]:
     yield BC_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
-    yield T1_LINE_10100_FORM
-    yield FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml"
+    for name in T1_PARTS:
+        yield next(FEDERAL_FORMS.rglob(name))
     yield BC_PARTS / "bc428_line_16.yaml"
     yield BC_PARTS / "bc428_line_25.yaml"
     yield BC_PARTS / "bc428_line_27.yaml"
@@ -95,7 +96,13 @@ def _part_files() -> Iterator[Path]:
     yield BC_PARTS / "bc428_line_37.yaml"
     yield BC_PARTS / "bc428_line_40.yaml"
     yield BC_PARTS / "bc428_line_45.yaml"
-    yield BC_PARTS / "bc428_line_53_inputs.yaml"
+    yield BC_PARTS / "bc428_line_46_input.yaml"
+    yield BC_PARTS / "bc428_line_47.yaml"
+    yield BC_PARTS / "bc428_line_49.yaml"
+    yield BC_PARTS / "bc428_line_50.yaml"
+    yield BC_PARTS / "bc428_line_51.yaml"
+    yield BC_PARTS / "bc428_line_52_input.yaml"
+    yield BC_PARTS / "bc428_line_53.yaml"
     yield BC_PARTS / "bc428_line_54.yaml"
     yield BC_PARTS / "bc428_line_56.yaml"
     yield BC_PARTS / "bc428_line_57_input.yaml"

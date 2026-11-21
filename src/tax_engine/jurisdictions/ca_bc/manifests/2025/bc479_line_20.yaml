@@ -1,0 +1,31 @@
+# Form BC479 (CRA 5010-TC) line 20: "Line 20: Add lines 17 and 18. (maximum $120,000) = ^". Two steps, one
+# line. The first, core/sum, adds lines 17 and 18 (optional inputs, each blank read as 0); it carries no
+# line number because it is not the line's final step. The second, core/at_most, is line 20: it passes
+# that sum on unchanged against the printed maximum
+# (bc479_venture_capital_credit_line_20_maximum.yaml). A sum above the maximum is refused, not capped.
+form:
+  name: ca-bc/bc479
+capabilities:
+  - name: core/sum
+    title: "Line 17 plus line 18"
+    unit: ca/cad
+    params:
+      rounding: ca-bc/cent_rounding
+    consumes:
+      parts:
+        - ca-bc/bc479_venture_capital_unused_credit_line_17
+        - ca-bc/bc479_venture_capital_credit_line_18
+    blank:
+      ca-bc/bc479_venture_capital_unused_credit_line_17: "0"
+      ca-bc/bc479_venture_capital_credit_line_18: "0"
+    produces:
+      output: ca-bc/bc479_venture_capital_credit_sum_line_20
+  - name: core/at_most
+    title: "Venture capital tax credit, lines 17 and 18"
+    reference: "20"
+    unit: ca/cad
+    consumes:
+      amount: ca-bc/bc479_venture_capital_credit_sum_line_20
+      bound: ca-bc/bc479_venture_capital_credit_line_20_maximum
+    produces:
+      output: ca-bc/bc479_venture_capital_credit_line_20

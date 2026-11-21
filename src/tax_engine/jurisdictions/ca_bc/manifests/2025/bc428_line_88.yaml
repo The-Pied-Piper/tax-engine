@@ -1,0 +1,32 @@
+# Form BC428 (CRA 5010-C) line 88: "Line 88: Line 86 plus line 87 (maximum $2,000) = ^". Two steps, one
+# line. The first, core/sum, adds line 86 and line 87 (optional inputs, each blank read as 0); it
+# carries no line number because it is not the line's final step. The second, core/at_most, is line 88:
+# it passes that sum on unchanged against the printed maximum
+# (bc428_esop_evcc_credits_maximum.yaml). A sum above the maximum is refused, not capped. Line 89
+# reads the result.
+form:
+  name: ca-bc/bc428
+capabilities:
+  - name: core/sum
+    title: "Line 86 plus line 87"
+    unit: ca/cad
+    params:
+      rounding: ca-bc/cent_rounding
+    consumes:
+      parts:
+        - ca-bc/bc428_esop_credit_line_86
+        - ca-bc/bc428_evcc_credit_line_87
+    blank:
+      ca-bc/bc428_esop_credit_line_86: "0"
+      ca-bc/bc428_evcc_credit_line_87: "0"
+    produces:
+      output: ca-bc/bc428_esop_evcc_credits_sum_line_88
+  - name: core/at_most
+    title: "Total ESOP and EVCC credits"
+    reference: "88"
+    unit: ca/cad
+    consumes:
+      amount: ca-bc/bc428_esop_evcc_credits_sum_line_88
+      bound: ca-bc/bc428_esop_evcc_credits_maximum
+    produces:
+      output: ca-bc/bc428_esop_evcc_credits_line_88

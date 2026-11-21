@@ -1,0 +1,11 @@
+# BC428 (2025) line 87's input. Form BC428 (CRA 5010-C): "Line 87 and line 60470: EVCC 30 certificate
+# number; Tax credit amount indicated on the certificate". The credit amount is taken as one optional
+# input. A request that leaves it out is read as blank; the line 88 step reads that blank as 0.
+inputs:
+  - name: ca-bc/bc428_evcc_credit_line_87
+    title: "EVCC tax credit amount indicated on the certificate"
+    reference: "87"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 87 and line 60470: Tax credit amount indicated on the certificate'

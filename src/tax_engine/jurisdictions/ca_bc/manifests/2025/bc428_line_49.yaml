@@ -1,0 +1,17 @@
+# Form BC428 (CRA 5010-C) lines 48 and 49: "Line 48: Applicable rate 3%" and "Line 49: Line 47 multiplied
+# by the percentage from line 48 = ^". Line 48 is a printed rate, held in the
+# `ca-bc/medical_expense_rate` dataset and with no step of its own. Line 49 applies it to line 47
+# (`ca-bc/bc428_net_income_line_47`), rounded half-up to the cent by the dataset's rule. The form
+# prints no label for the line, so the step has no title.
+form:
+  name: ca-bc/bc428
+capabilities:
+  - name: core/apply_rate
+    reference: "49"
+    unit: ca/cad
+    params:
+      rate: ca-bc/medical_expense_rate
+    consumes:
+      base: ca-bc/bc428_net_income_line_47
+    produces:
+      output: ca-bc/bc428_medical_expenses_rate_amount_line_49

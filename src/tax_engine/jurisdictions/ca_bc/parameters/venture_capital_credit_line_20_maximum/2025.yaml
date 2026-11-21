@@ -1,0 +1,10 @@
+# British Columbia venture capital tax credit maximum on line 20, 2025 tax year (Form BC479 line 20):
+# "Add lines 17 and 18. (maximum $120,000)". Rounds half-up to the cent, the project's choice, as the
+# form states no rounding rule.
+family: ca-bc/venture_capital_credit_line_20_maximum
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5010-tc/5010-tc-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "120000"

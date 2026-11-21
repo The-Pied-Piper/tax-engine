@@ -164,7 +164,8 @@ BC428_ESOP_EVCC_CREDITS_LINE_88 = AmountKind.declare(
     CATALOG, "bc428_esop_evcc_credits_line_88", non_negative=True
 )
 """British Columbia total ESOP and EVCC credits, BC428 line 88 "Line 88: Line 86 plus line 87
-(maximum $2,000)": a caller input that is read as blank when left out."""
+(maximum $2,000)": line 86 plus line 87, passed on unchanged when at most the printed maximum;
+above it the sum is refused, not capped."""
 
 BC428_MINING_FLOW_THROUGH_CREDIT_LINE_90 = AmountKind.declare(
     CATALOG, "bc428_mining_flow_through_credit_line_90", non_negative=True
@@ -201,8 +202,8 @@ copy of T2204 line 16, the EI premiums credit amount."""
 BC428_MEDICAL_EXPENSES_LINE_53 = AmountKind.declare(
     CATALOG, "bc428_medical_expenses_line_53", non_negative=True
 )
-"""Medical expenses, BC428 line 53 (line 58769) "Line 51 plus line 52 =": line 51 plus line 52, an
-optional input; a blank is read as 0 by the step that reads it."""
+"""Medical expenses, BC428 line 53 (line 58769) "Line 51 plus line 52 =": line 51 plus line 52 (a
+blank line 52 is read as 0), a part of line 54."""
 
 BC428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
     CATALOG, "bc428_bracket_lower_bound_line_3", non_negative=True
@@ -532,7 +533,144 @@ BC479_TRAINING_CREDITS_LINE_34 = AmountKind.declare(
     CATALOG, "bc479_training_credits_line_34", non_negative=True
 )
 """Training credits total, BC479 line 34 "Line 34: Add lines 31 to 33": the sum of lines 31 to 33
-(the T1014, T1014-1 and T1014-2 credits), a caller input that is read as blank when left out."""
+(the T1014, T1014-1 and shipbuilding credits); a blank line is read as 0."""
+
+BC428_MEDICAL_EXPENSES_LINE_46 = AmountKind.declare(
+    CATALOG, "bc428_medical_expenses_line_46", non_negative=True
+)
+"""Medical expenses, BC428 line 46 (line 58689) "Amount from line 33099 of your return": the amount
+as the filer gives it, an optional input; a blank input is read as blank."""
+
+BC428_NET_INCOME_LINE_47 = AmountKind.declare(
+    CATALOG, "bc428_net_income_line_47", non_negative=True
+)
+"""Net income, BC428 line 47 "Amount from line 23600 of your return": the T1 net income, read from
+the T1 taxable income form."""
+
+BC428_MEDICAL_EXPENSES_RATE_AMOUNT_LINE_49 = AmountKind.declare(
+    CATALOG, "bc428_medical_expenses_rate_amount_line_49", non_negative=True
+)
+"""Medical expenses threshold, BC428 line 49 "Line 47 multiplied by the percentage from line 48 =":
+line 47 times the 3% of line 48."""
+
+BC428_MEDICAL_EXPENSES_LIMITED_AMOUNT_LINE_50 = AmountKind.declare(
+    CATALOG, "bc428_medical_expenses_limited_amount_line_50", non_negative=True
+)
+"""Medical expenses threshold, limited, BC428 line 50 "Enter whichever is less: $2,689 or the amount
+from line 49.": the lesser of the printed ceiling and line 49."""
+
+BC428_MEDICAL_EXPENSES_OVER_LIMIT_LINE_51 = AmountKind.declare(
+    CATALOG, "bc428_medical_expenses_over_limit_line_51", non_negative=True
+)
+"""Medical expenses over the limit, BC428 line 51 "Line 46 minus line 50 (if negative, enter "0")
+=": line 46 minus line 50, never below 0; a blank line 46 is read as 0."""
+
+BC428_OTHER_DEPENDANTS_MEDICAL_EXPENSES_LINE_52 = AmountKind.declare(
+    CATALOG, "bc428_other_dependants_medical_expenses_line_52", non_negative=True
+)
+"""Allowable amount of medical expenses for other dependants, BC428 line 52 (line 58729) "(use
+Worksheet BC428)": the amount as the filer gives it, an optional input; a blank input is read as
+blank."""
+
+BC428_ESOP_CREDIT_LINE_86 = AmountKind.declare(
+    CATALOG, "bc428_esop_credit_line_86", non_negative=True
+)
+"""ESOP tax credit amount, BC428 line 86 (line 60450) "Tax credit amount indicated on the
+certificate": the amount as the filer gives it, an optional input; a blank input is read as
+blank."""
+
+BC428_EVCC_CREDIT_LINE_87 = AmountKind.declare(
+    CATALOG, "bc428_evcc_credit_line_87", non_negative=True
+)
+"""EVCC tax credit amount, BC428 line 87 (line 60470) "Tax credit amount indicated on the
+certificate": the amount as the filer gives it, an optional input; a blank input is read as
+blank."""
+
+BC428_ESOP_EVCC_CREDITS_SUM_LINE_88 = AmountKind.declare(
+    CATALOG, "bc428_esop_evcc_credits_sum_line_88", non_negative=True
+)
+"""Line 86 plus line 87, BC428 line 88 "Line 86 plus line 87 (maximum $2,000)": the sum before it is
+checked against the printed maximum; a blank line is read as 0."""
+
+BC428_ESOP_EVCC_CREDITS_MAXIMUM = AmountKind.declare(
+    CATALOG, "bc428_esop_evcc_credits_maximum", non_negative=True
+)
+"""British Columbia total ESOP and EVCC credits maximum, printed on BC428 line 88 "(maximum
+$2,000)": from the `ca-bc/esop_evcc_credits_maximum` dataset; the bound line 88 cannot pass."""
+
+BC479_VENTURE_CAPITAL_UNUSED_CREDIT_LINE_17 = AmountKind.declare(
+    CATALOG, "bc479_venture_capital_unused_credit_line_17", non_negative=True
+)
+"""Unused venture capital tax credit, BC479 line 17 "Enter your unused venture capital tax credit
+from your most recent notice of assessment or reassessment": the amount as the filer gives it,
+an optional input; a blank input is read as blank."""
+
+BC479_VENTURE_CAPITAL_CREDIT_LINE_18 = AmountKind.declare(
+    CATALOG, "bc479_venture_capital_credit_line_18", non_negative=True
+)
+"""Venture capital tax credit amount, BC479 line 18 (line 60489) "Tax credit amount": the amount as
+the filer gives it, an optional input; a blank input is read as blank."""
+
+BC479_VENTURE_CAPITAL_CREDIT_SUM_LINE_20 = AmountKind.declare(
+    CATALOG, "bc479_venture_capital_credit_sum_line_20", non_negative=True
+)
+"""Line 17 plus line 18, BC479 line 20 "Add lines 17 and 18. (maximum $120,000)": the sum before it
+is checked against the printed maximum; a blank line is read as 0."""
+
+BC479_VENTURE_CAPITAL_CREDIT_LINE_20_MAXIMUM = AmountKind.declare(
+    CATALOG, "bc479_venture_capital_credit_line_20_maximum", non_negative=True
+)
+"""Venture capital tax credit maximum on line 20, printed on BC479 line 20 "(maximum $120,000)":
+from the `ca-bc/venture_capital_credit_line_20_maximum` dataset; the bound line 20 cannot pass."""
+
+BC479_VENTURE_CAPITAL_CREDIT_LINE_20 = AmountKind.declare(
+    CATALOG, "bc479_venture_capital_credit_line_20", non_negative=True
+)
+"""Venture capital tax credit, BC479 line 20 "Add lines 17 and 18. (maximum $120,000)": line 17 plus
+line 18, passed on unchanged when at most the printed maximum; above it the sum is refused, not
+capped."""
+
+BC479_VENTURE_CAPITAL_CREDIT_LINE_21 = AmountKind.declare(
+    CATALOG, "bc479_venture_capital_credit_line_21", non_negative=True
+)
+"""Venture capital tax credit amount, BC479 line 21 (line 60490) "Tax credit amount": the amount as
+the filer gives it, an optional input; a blank input is read as blank."""
+
+BC479_VENTURE_CAPITAL_CREDIT_LINE_23 = AmountKind.declare(
+    CATALOG, "bc479_venture_capital_credit_line_23", non_negative=True
+)
+"""Venture capital tax credit amount, BC479 line 23 (line 60495) "Tax credit amount": the amount as
+the filer gives it, an optional input; a blank input is read as blank."""
+
+BC479_VENTURE_CAPITAL_CREDIT_SUM_LINE_25 = AmountKind.declare(
+    CATALOG, "bc479_venture_capital_credit_sum_line_25", non_negative=True
+)
+"""Line 20 plus lines 21 and 23, BC479 line 25 "Add lines 20, 21, and 23. (maximum $300,000)": the
+sum before it is checked against the printed maximum; a blank line is read as 0."""
+
+BC479_VENTURE_CAPITAL_CREDIT_LINE_25_MAXIMUM = AmountKind.declare(
+    CATALOG, "bc479_venture_capital_credit_line_25_maximum", non_negative=True
+)
+"""Venture capital tax credit maximum on line 25, printed on BC479 line 25 "(maximum $300,000)":
+from the `ca-bc/venture_capital_credit_line_25_maximum` dataset; the bound line 25 cannot pass."""
+
+BC479_TRAINING_CREDIT_INDIVIDUALS_LINE_31 = AmountKind.declare(
+    CATALOG, "bc479_training_credit_individuals_line_31", non_negative=True
+)
+"""Training tax credit (individuals), BC479 line 31 (line 60550) "(complete Form T1014)": the
+amount as the filer gives it, an optional input; a blank input is read as blank."""
+
+BC479_TRAINING_CREDIT_EMPLOYERS_LINE_32 = AmountKind.declare(
+    CATALOG, "bc479_training_credit_employers_line_32", non_negative=True
+)
+"""Training tax credit (employers), BC479 line 32 (line 60560) "(complete Form T1014-1)": the
+amount as the filer gives it, an optional input; a blank input is read as blank."""
+
+BC479_SHIPBUILDING_CREDIT_LINE_33 = AmountKind.declare(
+    CATALOG, "bc479_shipbuilding_credit_line_33", non_negative=True
+)
+"""Shipbuilding and ship repair industry tax credit, BC479 line 33 (line 60570): the amount as the
+filer gives it, an optional input; a blank input is read as blank."""
 
 BC479_RENTERS_CREDIT_LINE_44 = AmountKind.declare(
     CATALOG, "bc479_renters_credit_line_44", non_negative=True
@@ -565,8 +703,8 @@ BC479_VENTURE_CAPITAL_CREDIT_LINE_25 = AmountKind.declare(
     CATALOG, "bc479_venture_capital_credit_line_25", non_negative=True
 )
 """British Columbia venture capital tax credit, BC479 line 25 "Add lines 20, 21, and 23. (maximum
-$300,000)": the total of the venture capital tax credit lines, a caller input that is read as blank
-when left out; the $300,000 maximum is stated, not enforced."""
+$300,000)": the sum of those lines, passed on unchanged when at most the printed maximum; above
+it the sum is refused, not capped."""
 
 BC479_MINING_EXPLORATION_CREDIT_LINE_26 = AmountKind.declare(
     CATALOG, "bc479_mining_exploration_credit_line_26", non_negative=True

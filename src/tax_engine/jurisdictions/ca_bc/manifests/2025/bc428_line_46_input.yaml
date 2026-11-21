@@ -1,0 +1,12 @@
+# BC428 (2025) line 46's input. Form BC428 (CRA 5010-C): "Line 46 and line 58689: Amount from line 33099
+# of your return". The engine does not compute medical expenses, so the figure is taken as one optional
+# input, the way the form takes it. A request that leaves the line out is read as blank; the line 51
+# step reads that blank as 0.
+inputs:
+  - name: ca-bc/bc428_medical_expenses_line_46
+    title: "Amount from line 33099 of your return"
+    reference: "46"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 46 and line 58689: Amount from line 33099 of your return'
