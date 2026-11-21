@@ -84,6 +84,116 @@ ON428_MEDICAL_EXPENSES_LINE_36 = AmountKind.declare(
 allowable amounts for attendant care, an adapted van, and moving expenses": the amount as the filer
 gives it, an optional input; a blank input is read as blank."""
 
+ON428_ATTENDANT_CARE_EXPENSES_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_attendant_care_expenses_line_36", non_negative=True
+)
+"""Attendant care expenses, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum
+allowable amounts for attendant care, an adapted van, and moving expenses": how much of the
+medical claim is attendant care expenses (CRA 5006-PC, section "Line 58689"), an optional input;
+a blank input is read as 0 by the line 36 steps."""
+
+ON428_ADAPTED_VAN_EXPENSES_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_adapted_van_expenses_line_36", non_negative=True
+)
+"""Adapted van expenses, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum
+allowable amounts for attendant care, an adapted van, and moving expenses": how much of the
+medical claim is the cost of a van adapted for transporting a patient who requires the use of a
+wheelchair, an optional input; a blank input is read as 0 by the line 36 steps."""
+
+ON428_PATIENT_MOVE_EXPENSES_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_patient_move_expenses_line_36", non_negative=True
+)
+"""Patient move expenses, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum
+allowable amounts for attendant care, an adapted van, and moving expenses": how much of the
+medical claim is moving expenses for a patient's move to a more accessible dwelling, an optional
+input; a blank input is read as 0 by the line 36 steps."""
+
+ON428_YEAR_OF_DEATH_LINE_36 = CountKind.declare(
+    CATALOG, "on428_year_of_death_line_36", non_negative=True
+)
+"""Year of death, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum allowable
+amounts for attendant care, an adapted van, and moving expenses": 1 when the attendant care
+maximum is the one "in the year of death" ($35,253), 0 otherwise, an optional input; a blank
+input is read as 0."""
+
+ON428_YEAR_OF_DEATH_CHECKED_LINE_36 = CountKind.declare(
+    CATALOG, "on428_year_of_death_checked_line_36", non_negative=True
+)
+"""Year of death, checked, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum
+allowable amounts for attendant care, an adapted van, and moving expenses": the year of death
+answer with a blank read as 0, refused above 1."""
+
+ON428_ATTENDANT_CARE_AT_ORDINARY_MAXIMUM_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_attendant_care_at_ordinary_maximum_line_36", non_negative=True
+)
+"""Attendant care at the ordinary maximum, ON428, line 36 "See line 58689 at canada.ca/on-tax-
+info for maximum allowable amounts for attendant care, an adapted van, and moving expenses": the
+attendant care expenses limited to $17,627."""
+
+ON428_ATTENDANT_CARE_AT_DEATH_MAXIMUM_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_attendant_care_at_death_maximum_line_36", non_negative=True
+)
+"""Attendant care at the year of death maximum, ON428, line 36 "See line 58689 at canada.ca/on-
+tax-info for maximum allowable amounts for attendant care, an adapted van, and moving expenses":
+the attendant care expenses limited to $35,253."""
+
+ON428_ATTENDANT_CARE_ALLOWED_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_attendant_care_allowed_line_36", non_negative=True
+)
+"""Attendant care allowed, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum
+allowable amounts for attendant care, an adapted van, and moving expenses": the ordinary or the
+year of death figure, chosen by the checked year of death answer."""
+
+ON428_ADAPTED_VAN_ALLOWED_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_adapted_van_allowed_line_36", non_negative=True
+)
+"""Adapted van allowed, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum
+allowable amounts for attendant care, an adapted van, and moving expenses": the adapted van
+expenses limited to $8,813."""
+
+ON428_PATIENT_MOVE_ALLOWED_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_patient_move_allowed_line_36", non_negative=True
+)
+"""Patient move allowed, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum
+allowable amounts for attendant care, an adapted van, and moving expenses": the patient move
+expenses limited to $3,525."""
+
+ON428_ATTENDANT_CARE_EXCESS_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_attendant_care_excess_line_36", non_negative=True
+)
+"""Attendant care excess, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum
+allowable amounts for attendant care, an adapted van, and moving expenses": the attendant care
+expenses less the amount allowed, what the maximum takes off."""
+
+ON428_ADAPTED_VAN_EXCESS_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_adapted_van_excess_line_36", non_negative=True
+)
+"""Adapted van excess, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum
+allowable amounts for attendant care, an adapted van, and moving expenses": the adapted van
+expenses less the amount allowed, what the maximum takes off."""
+
+ON428_PATIENT_MOVE_EXCESS_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_patient_move_excess_line_36", non_negative=True
+)
+"""Patient move excess, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum
+allowable amounts for attendant care, an adapted van, and moving expenses": the patient move
+expenses less the amount allowed, what the maximum takes off."""
+
+ON428_MEDICAL_EXPENSES_EXCESS_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_medical_expenses_excess_line_36", non_negative=True
+)
+"""Medical expenses excess, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum
+allowable amounts for attendant care, an adapted van, and moving expenses": the sum of the three
+category excesses."""
+
+ON428_MEDICAL_EXPENSES_ALLOWED_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_medical_expenses_allowed_line_36", non_negative=True
+)
+"""Medical expenses allowed, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum
+allowable amounts for attendant care, an adapted van, and moving expenses": the medical claim
+less the three category excesses, the amount line 41 reads. A result below 0 is refused, not
+floored."""
+
 ON428_NET_INCOME_LINE_37 = AmountKind.declare(
     CATALOG, "on428_net_income_line_37", non_negative=True
 )

@@ -299,3 +299,7 @@ def test_trace_holds_no_text() -> None:
 
     for line in trace:
         assert not any(isinstance(getattr(line, f.name), str) for f in fields(line))
+
+
+def test_declares_that_the_base_may_be_blank() -> None:
+    assert CappedAmount.BLANK_ALLOWED == frozenset({"base"})

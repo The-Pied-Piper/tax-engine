@@ -1,0 +1,14 @@
+# Ontario medical expense attendant care maximum, 2025 tax year (CRA 5006-PC "Ontario tax information for 2025", section "Line 58689": "If the amount you claimed for medical expenses on your return includes an amount for attendant care
+# expenses that was limited to $10,000 ($20,000 in the year of death), the maximum Ontario claim for attendant care
+# expenses is $17,627 ($35,253 in the year of death)." This is the figure for a filer who did not die in the year; it is a plain cap, not a credit.
+# The figure is a dollars-and-cents figure, so it rounds half-up to the cent, the project's choice, as
+# the text states no rounding rule.
+family: ca-on/medical_expense_attendant_care_maximum
+tax_year: 2025
+kind: amount
+title: "medical expense attendant care maximum"
+unit: ca/cad
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/5006-pc/5006-pc-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "17627"
