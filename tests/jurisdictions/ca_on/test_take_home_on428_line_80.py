@@ -58,15 +58,6 @@ HEADER = f"""\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-inputs:
-  - name: {LINE_78}
-    required: true
-  - name: {LINE_73}
-    required: true
-  - name: {LINE_72}
-    required: false
-    default: null
-    basis: '{BASIS}'
 outputs:
   - {LINE_78}
   - {LINE_73}
@@ -79,6 +70,15 @@ form:
   required: true
   exports:
     - {LINE_80}
+inputs:
+  - name: {LINE_78}
+    required: true
+  - name: {LINE_73}
+    required: true
+  - name: {LINE_72}
+    required: false
+    default: null
+    basis: '{BASIS}'
 capabilities: []
 """
 # The steps test also exports the two intermediate kinds, so the test can read each step.
@@ -90,6 +90,15 @@ form:
     - {LINE_80}
     - {BEFORE_CONDITIONS}
     - {CONDITIONS_COUNT}
+inputs:
+  - name: {LINE_78}
+    required: true
+  - name: {LINE_73}
+    required: true
+  - name: {LINE_72}
+    required: false
+    default: null
+    basis: '{BASIS}'
 capabilities: []
 """
 

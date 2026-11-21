@@ -12,11 +12,11 @@ blank rule reads the checked amount as 0 and prints its own "left blank, taken a
 printed $10,000 maximum is checked before the step reads the amount (`bc479_line_14_check.yaml`):
 an amount above it is rejected with `InputAboveBoundError`, not multiplied.
 
-The test composes the real salary part, the real maximum and check parts, the real line 14 input
-part and the new `bc479_line_14.yaml`, and types in the salary and, in some tests, the expenses.
-The form declaration is made up here, exporting only line 14. The figures are hand-computed from
-the printed form (not a CRA example): the expenses times 0.10, rounded half-up to the cent.
-"""
+The test composes the T1 employment income form, the real maximum and check parts, the real line 14
+input part and the new `bc479_line_14.yaml`, and types in the salary and, in some tests, the
+expenses. The form declaration is made up here, exporting only line 14. The figures are
+hand-computed from the printed form (not a CRA example): the expenses times 0.10, rounded half-up to
+the cent."""
 
 from __future__ import annotations
 
@@ -52,6 +52,7 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_units,
 )
 from tests.kinds import non_negative
+from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
 D = Decimal
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
@@ -91,7 +92,9 @@ SALARIES = ["17000", "200000"]
 
 
 def _part_files() -> Iterator[Path]:
-    yield BC_PARTS / "salary.yaml"
+    yield T1_LINE_10100_FORM
+    yield T1_LINE_10100_INPUT
+    yield T1_LINE_10100_STEP
     yield MAXIMUM_PART
     yield BC_PARTS / "bc479_line_14_input.yaml"
     yield CHECK_PART

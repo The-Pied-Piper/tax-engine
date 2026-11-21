@@ -5,7 +5,7 @@ of your return". The line is a copy, so its one step is a core/record_total over
 export that gives T1 line 30800 (Schedule 8 line 25, the CPP base contributions on the return), as
 Alberta's line 27 is (`ab428_credits_line_27.yaml`).
 
-The test composes the real Manitoba salary part, the real Schedule 8 parts and the real line part
+The test composes the T1 employment income form, the real Schedule 8 parts and the real line part
 (`mb428_credits_line_19.yaml`), and types in only the salary. The form declaration is made up here,
 exporting the line read, because the real form part exports only the lines already built. The
 figures are hand-computed from the printed forms (not a CRA example): 4.95% of the salary above the
@@ -34,7 +34,7 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_mb.catalog import MB428_CPP_CONTRIBUTIONS_LINE_19
-from tests.federal_forms import FEDERAL_FORMS, form_parts
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_mb.support import (
     manitoba_capabilities,
     manitoba_kinds,
@@ -43,7 +43,6 @@ from tests.jurisdictions.ca_mb.support import (
     manitoba_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"
@@ -74,7 +73,6 @@ CASES = [
 
 
 def _part_files() -> Iterator[Path]:
-    yield MB_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     yield from form_parts("t1_employment_income")
     yield LINE_PART
@@ -87,9 +85,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
     for number, part in enumerate(_part_files(), start=2):
         (folder / f"{number:02d}_{part.name}").write_text(
-            inputs_without_form(part)
-            if part.name.endswith("_inputs.yaml") and part.is_relative_to(FEDERAL_FORMS)
-            else part.read_text(encoding="utf-8"),
+            part.read_text(encoding="utf-8"),
             encoding="utf-8",
         )
     roots = {**manitoba_packages().roots(), Namespace("ca-mb"): tmp_path}

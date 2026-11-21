@@ -40,7 +40,6 @@ LINE_89 = "ca-on/on428_ontario_health_premium_line_89"
 # The real parts composed beside the test's header: the salary, the real Schedule 8, the real T1
 # taxable-income lines and inputs, and the ON428 line 89 part.
 PARTS = (
-    "salary.yaml",
     *form_part_names("schedule_8"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),
     "on428_line_89.yaml",

@@ -5,6 +5,8 @@
 # result, not this box.
 # A salary-only caller has no minimum tax carryover, so a request that leaves box A out is read as
 # blank; the step that reads line 68 reads that blank as 0.
+form:
+  name: ca-nl/nl428
 inputs:
   - name: ca-nl/nl428_minimum_tax_carryover_amount_line_68
     reference: "68 box A"

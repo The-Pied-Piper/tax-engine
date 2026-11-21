@@ -54,7 +54,6 @@ LINE_13 = "ca-on/lift_adjusted_net_income"
 # The real parts composed beside the test's header: the salary, the real Schedule 8, the real T1
 # taxable-income lines and inputs, and ON428-A lines 13, 16 and 17.
 PARTS = (
-    "salary.yaml",
     *form_part_names("schedule_8"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),
     "on428_a_line_13.yaml",

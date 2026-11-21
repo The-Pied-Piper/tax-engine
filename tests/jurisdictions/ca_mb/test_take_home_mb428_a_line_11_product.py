@@ -6,7 +6,7 @@ figure and has no step of its own; the line is one core/apply_rate step over the
 first box, rounded half-up to the cent by the dataset's own rule, as Alberta line 54 is over
 line 52. The form names no label for the line, so the step has no title.
 
-The test composes the real Manitoba salary part, the real federal parts the T1 taxable income form
+The test composes the T1 employment income form, the real federal parts the T1 taxable income form
 needs (the same as the net income box's test), the real `mb428_a_line_11.yaml` and the new
 `mb428_a_line_11_product.yaml`, and types in only the salary. The Schedule MB428-A form declaration
 is made up here, exporting only the product. The service is built over the Manitoba package list of
@@ -48,7 +48,6 @@ from tests.jurisdictions.ca_mb.support import (
     manitoba_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"
@@ -78,7 +77,6 @@ FORM = dedent("""\
 
 
 def _part_files() -> Iterator[Path]:
-    yield MB_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     for name in FEDERAL_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
@@ -94,11 +92,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
     for number, found in enumerate(_part_files(), start=2):
-        text = (
-            inputs_without_form(found)
-            if found.name.endswith("_inputs.yaml") and found.is_relative_to(FEDERAL_FORMS)
-            else found.read_text(encoding="utf-8")
-        )
+        text = found.read_text(encoding="utf-8")
         (folder / f"{number:02d}_{found.name}").write_text(text, encoding="utf-8")
     roots = {**manitoba_packages().roots(), Namespace("ca-mb"): tmp_path}
     return TaxComputationService(

@@ -4,6 +4,8 @@
 # partner's own Form NL428, which is not built, so the line is one optional input, as the form
 # takes it. A salary-only single filer has no partner, so a request that leaves the line out is
 # read as blank; the step that reads line 86 reads that blank as 0.
+form:
+  name: ca-nl/nl428
 inputs:
   - name: ca-nl/nl428_unused_low_income_reduction_from_spouse_line_86
     title: "Unused low-income tax reduction from your spouse or common-law partner"

@@ -44,7 +44,6 @@ LINE_1 = "ca-on/on428_taxable_income_line_1"
 LINE_3 = "ca-on/on428_bracket_lower_bound_line_3"
 LINE_4 = "ca-on/on428_taxable_income_over_lower_bound_line_4"
 PARTS = (
-    "salary.yaml",
     *form_part_names("schedule_8"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),
     "on428_line_3.yaml",

@@ -48,7 +48,6 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 CENT = D("0.01")
@@ -63,9 +62,6 @@ HEADER = dedent("""\
     jurisdiction: CA-NL
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/employment_income
-        required: true
     outputs:
       - ca/employment_income
     capabilities: []
@@ -99,9 +95,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
     for number, part in enumerate(_part_files(), start=2):
         (folder / f"{number:02d}_{part.name}").write_text(
-            inputs_without_form(part)
-            if part.name.endswith("_inputs.yaml") and part.is_relative_to(FEDERAL_FORMS)
-            else part.read_text(encoding="utf-8"),
+            part.read_text(encoding="utf-8"),
             encoding="utf-8",
         )
     roots = {**newfoundland_packages().roots(), Namespace("ca-nl"): tmp_path}

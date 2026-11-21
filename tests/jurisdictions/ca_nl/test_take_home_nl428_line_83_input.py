@@ -53,11 +53,21 @@ outputs: [ca/total_income]
 capabilities: []
 """
 
+FORM = """\
+form:
+  name: ca-nl/nl428
+  required: true
+  exports:
+    - ca/total_income
+capabilities: []
+"""
+
 
 def _manifest(tmp_path: Path) -> Manifest:
     folder = tmp_path / "manifest"
     folder.mkdir()
     (folder / "header.yaml").write_text(HEADER)
+    (folder / "form.yaml").write_text(FORM)
     shutil.copy(PART, folder / PART.name)
     source = YamlJurisdictionSource(
         newfoundland_packages().roots(), newfoundland_kinds(), newfoundland_units()
@@ -93,7 +103,8 @@ def test_line_83_is_a_non_negative_amount_kind() -> None:
 def test_the_part_declares_the_input_with_its_unit_reference_and_title() -> None:
     part = _part()
 
-    assert list(part) == ["inputs"]
+    assert list(part) == ["form", "inputs"]
+    assert part["form"] == {"name": "ca-nl/nl428"}
     assert part["inputs"] == [
         {
             "name": IDENTIFIER,

@@ -49,7 +49,6 @@ LINE_139 = "ca/federal_tax_less_credits"
 # 33500, 33800, 35000, 40400, 125, 42900, 128, 130 and 132, lines 40600 and 41600 with the input of
 # line 40600, and the part under test.
 PARTS = (
-    "salary.yaml",
     *form_part_names("schedule_8"),
     *form_part_names("t2204"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),

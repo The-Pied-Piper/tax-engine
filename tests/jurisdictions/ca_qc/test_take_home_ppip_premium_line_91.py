@@ -10,9 +10,9 @@ is the same figure. The figures are hand-computed from the printed forms, not a 
 20,000 x 0.494% = 98.80, 70,000 x 0.494% = 345.80, and 200,000 is above the $98,000 maximum, so the
 printed maximum 484.12.
 
-The test composes the real input part and the real line 91 part under a made-up header, which
-declares the salary, and the real form declaration, on the shared Quebec `take_home_service`
-fixture.
+The test composes the real input part and the real line 91 part under a made-up header, the real
+Quebec T1 employment income parts that declare the salary, and the real form declaration, on the
+shared Quebec `take_home_service` fixture.
 """
 
 from __future__ import annotations
@@ -30,7 +30,7 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_qc.catalog import PPIP_PREMIUMS_GIVEN, PPIP_PREMIUMS_PAID
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
-from tests.jurisdictions.ca_qc.support import quebec_kinds
+from tests.jurisdictions.ca_qc.support import T1_SALARY_PARTS, quebec_kinds
 from tests.kinds import non_negative
 
 D = Decimal
@@ -43,9 +43,6 @@ HEADER = dedent("""\
     jurisdiction: CA-QC
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/employment_income
-        required: true
     outputs:
       - ca/employment_income
     capabilities: []
@@ -57,7 +54,11 @@ def _line_91(take_home_service: TakeHomeService, salary: str, given: str | None 
     if given is not None:
         starting.append(Artifact(PPIP_PREMIUMS_GIVEN, D(given)))
     service = take_home_service(
-        HEADER, FORM_PART.read_text(encoding="utf-8"), INPUTS_PART, LINE_PART.name
+        HEADER,
+        FORM_PART.read_text(encoding="utf-8"),
+        *T1_SALARY_PARTS,
+        INPUTS_PART,
+        LINE_PART.name,
     )
     (sheet,) = service.compute(JurisdictionCode("CA-QC"), 2025, *starting)["ca-qc/ppip_premium"]
     return sheet.get(PPIP_PREMIUMS_PAID).value
@@ -68,7 +69,14 @@ def _step() -> dict[str, Any]:
     assert isinstance(part, dict)
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": "ca-qc/ppip_premium"}
-    (step,) = part["capabilities"]
+    record_total, step = part["capabilities"]
+    assert record_total == {
+        "name": "core/record_total",
+        "title": "Employment income, T1 line 10100",
+        "unit": "ca/cad",
+        "consumes": {"records": "ca-qc/t1_employment_income.employment_income_line_10100"},
+        "produces": {"output": "ca-qc/ppip_premium_employment_income"},
+    }
     assert isinstance(step, dict)
     return step
 
@@ -108,14 +116,19 @@ def test_a_given_line_91_is_not_computed_from_the_salary(
     assert str(_line_91(take_home_service, "20000", "400.00")) == "400.00"
 
 
-def test_the_part_is_one_given_or_contribution_tier_step_on_the_salary() -> None:
+def test_the_part_is_a_record_total_of_line_10100_then_one_given_or_contribution_tier_step() -> (
+    None
+):
     assert _step() == {
         "name": "ca/given_or_contribution_tier",
         "title": "Provincial parental insurance plan (PPIP) premiums paid",
         "reference": "91",
         "unit": "ca/cad",
         "params": {"tier": "ca-qc/ppip_premium"},
-        "consumes": {"given": "ca-qc/ppip_premiums_given", "earnings": "ca/employment_income"},
+        "consumes": {
+            "given": "ca-qc/ppip_premiums_given",
+            "earnings": "ca-qc/ppip_premium_employment_income",
+        },
         "blank": {"given": "compute"},
         "produces": {"output": IDENTIFIER},
     }

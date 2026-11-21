@@ -3,6 +3,8 @@
 # The engine does not compute employment insurance premiums, so the figure is taken as one
 # optional input the way the form takes it, an amount from T1 line 31217. A request that leaves the
 # line out is read as blank. Line 35 (a later ticket) reads it.
+form:
+  name: ca-nl/nl428_credits
 inputs:
   - name: ca-nl/nl428_ei_premiums_line_30
     title: "Amount from line 31217 of your return"

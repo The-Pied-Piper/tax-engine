@@ -57,6 +57,12 @@ def _manifest(tmp_path: Path) -> Manifest:
     folder.mkdir()
     (folder / "header.yaml").write_text(HEADER)
     shutil.copy(PART, folder / PART.name)
+    declared = yaml.safe_load(PART.read_text(encoding="utf-8"))
+    exports = "".join(f"    - {each['name']}\n" for each in declared["inputs"])
+    (folder / "form.yaml").write_text(
+        f"form:\n  name: {declared['form']['name']}\n  required: true\n  exports:\n{exports}"
+        "capabilities: []\n"
+    )
     source = YamlJurisdictionSource(
         newfoundland_packages().roots(), newfoundland_kinds(), newfoundland_units()
     )
@@ -91,7 +97,8 @@ def test_the_dividend_tax_credit_line_67_is_a_non_negative_amount_kind() -> None
 def test_the_part_declares_the_input_with_its_unit_reference_and_title() -> None:
     part = _part()
 
-    assert list(part) == ["inputs"]
+    assert list(part) == ["form", "inputs"]
+    assert part["form"] == {"name": "ca-nl/nl428"}
     assert part["inputs"] == [
         {
             "name": IDENTIFIER,

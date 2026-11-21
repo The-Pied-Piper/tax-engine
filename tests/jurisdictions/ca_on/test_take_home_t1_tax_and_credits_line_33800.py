@@ -42,7 +42,6 @@ LINE_33800 = "ca/credit_amounts_at_credit_rate"
 # parts, the real T1 taxable-income lines and inputs, lines 30000, 84, 31260, 96, 98, 101, 106 and
 # 33500, and the part under test.
 PARTS = (
-    "salary.yaml",
     *form_part_names("schedule_8"),
     *form_part_names("t2204"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),
@@ -80,9 +79,6 @@ DIRECT_HEADER = f"""\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-inputs:
-  - name: {LINE_33500}
-    required: true
 outputs:
   - {LINE_33500}
 capabilities: []
@@ -94,6 +90,9 @@ form:
   required: true
   exports:
     - {LINE_33800}
+inputs:
+  - name: {LINE_33500}
+    required: true
 capabilities: []
 """
 

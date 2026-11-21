@@ -5,7 +5,7 @@ Form text (Form SK428, CRA 5008-c-25e.txt): "Line 20: Add lines 9, 10, 13, and 1
 amount (19,491.00), contributes, at every salary. The form prints no label for line 20, so the step
 has no title.
 
-The test composes the real Saskatchewan salary part, the real line 9 part
+The test composes the T1 employment income form, the real line 9 part
 (`sk428_credits_line_9.yaml`) and the real line part (`sk428_credits_line_20.yaml`), and types in
 only the salary. The header and the form's exports are made up here, because the shared scaffold
 owns them. The expected amount is re-derived from the printed `ca-sk/basic_personal_amount` dataset
@@ -22,6 +22,7 @@ from typing import Any
 import pytest
 import yaml
 
+import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_sk
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
@@ -41,6 +42,7 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_units,
 )
 from tests.kinds import non_negative
+from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
 D = Decimal
 SK_PARTS = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / "manifests" / "2025"
@@ -64,7 +66,14 @@ FORM = dedent("""\
         - ca-sk/sk428_credits_subtotal_line_20
     capabilities: []
     """)
-PART_NAMES = ["salary.yaml", "sk428_credits_line_9.yaml", "sk428_credits_line_20.yaml"]
+# The T1 employment income form owns the salary input: its declaration, its line 10100 step and
+# the input part, as the real parts have them.
+T1_PARTS = (
+    T1_LINE_10100_INPUT,
+    T1_LINE_10100_FORM,
+    T1_LINE_10100_STEP,
+)
+PARTS = [*T1_PARTS, SK_PARTS / "sk428_credits_line_9.yaml", LINE_PART]
 
 
 def _service(tmp_path: Path) -> TaxComputationService:
@@ -72,9 +81,9 @@ def _service(tmp_path: Path) -> TaxComputationService:
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
-    for number, name in enumerate(PART_NAMES, start=2):
-        (folder / f"{number:02d}_{name}").write_text(
-            (SK_PARTS / name).read_text(encoding="utf-8"), encoding="utf-8"
+    for number, part in enumerate(PARTS, start=2):
+        (folder / f"{number:02d}_{part.name}").write_text(
+            part.read_text(encoding="utf-8"), encoding="utf-8"
         )
     roots = {**saskatchewan_packages().roots(), Namespace("ca-sk"): tmp_path}
     return TaxComputationService(

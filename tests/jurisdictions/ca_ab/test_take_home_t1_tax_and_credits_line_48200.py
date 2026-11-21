@@ -36,7 +36,6 @@ FORM = "ca/t1_tax_and_credits"
 LINE_47900 = "ca/provincial_credits_line_47900"
 LINE_48200 = "ca/total_credits"
 PARTS = (
-    "salary.yaml",
     *form_part_names("schedule_8"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),
     *form_part_names("t2204"),

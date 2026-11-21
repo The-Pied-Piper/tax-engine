@@ -43,7 +43,6 @@ LINE_132 = "ca/federal_tax_with_itc_recapture"
 # 33500, 33800, 35000, 125, 40400, 42900 and 128, the line 130 inputs, line 130, and the part under
 # test.
 PARTS = (
-    "salary.yaml",
     *form_part_names("schedule_8"),
     *form_part_names("t2204"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),

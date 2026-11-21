@@ -3,6 +3,8 @@
 # (complete Form T1256-1) (maximum $120,000)" (Form MB428, CRA 5007-c).
 # Form T1256-1 is not built, so a request that leaves the line out is read as blank; line 77
 # (mb428_line_77.yaml) passes that blank on.
+form:
+  name: ca-mb/mb428
 inputs:
   - name: ca-mb/mb428_venture_capital_credit
     title: "Manitoba small business venture capital tax credit for individuals"

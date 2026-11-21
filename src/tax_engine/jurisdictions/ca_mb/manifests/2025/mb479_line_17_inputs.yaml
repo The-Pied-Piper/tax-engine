@@ -3,6 +3,8 @@
 # of line 7. Line 12 is the printed sum of lines 9 to 11, so the spouse lines are not built; lines
 # 14 to 16 are computed from their counts (mb479_line_14_inputs.yaml and its neighbours). A
 # salary-only caller claims none of them, so a request that leaves a line out is read as blank.
+form:
+  name: ca-mb/mb479
 inputs:
   - name: ca-mb/mb479_age_credit_line_8
     title: "Age credit for self (if you were born in 1960 or earlier)"

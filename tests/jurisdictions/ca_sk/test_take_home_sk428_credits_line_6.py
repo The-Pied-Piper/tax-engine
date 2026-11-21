@@ -59,7 +59,6 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 CENT = D("0.01")
@@ -115,7 +114,6 @@ ROUNDING_CASES = [
 
 
 def _part_files() -> Iterator[Path]:
-    yield SK_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     for name in T1_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
@@ -133,9 +131,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
     for number, part in enumerate(_part_files(), start=2):
         (folder / f"{number:02d}_{part.name}").write_text(
-            inputs_without_form(part)
-            if part.name.endswith("_inputs.yaml") and part.is_relative_to(FEDERAL_FORMS)
-            else part.read_text(encoding="utf-8"),
+            part.read_text(encoding="utf-8"),
             encoding="utf-8",
         )
     roots = {**saskatchewan_packages().roots(), Namespace("ca-sk"): tmp_path}

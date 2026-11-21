@@ -36,7 +36,6 @@ D = Decimal
 # 15 subtracts from, the optional line 14 input and the line 15 part; then the line 24 part and the
 # line 25 part under test.
 PARTS = (
-    "salary.yaml",
     *form_part_names("schedule_8"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),
     "schedule_6_line_7.yaml",

@@ -3,6 +3,8 @@
 # part, not taken from the caller. A salary-only caller has no such amount, so a request that leaves
 # the input out is read as 0, not blank.
 # Box A of line 64 (the owner's naming); the 35% result is in the next part.
+form:
+  name: ca-ab/ab428
 inputs:
   - name: ca-ab/ab428_minimum_tax_carryover_amount_line_64
     reference: "64 box A"

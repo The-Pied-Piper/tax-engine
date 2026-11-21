@@ -4,7 +4,7 @@ Form text (Form BC428, CRA 5010-C, read 2026-11-14): "Line 54 and line 58800: Li
 = ^". Line 53 (medical expenses) is computed from lines 46 to 52 and is 0.00 for a salary-only
 caller; line 54 is one core/sum over line 45 and line 53.
 
-The test composes the real British Columbia salary part, the real Schedule 8 and T2204 parts, the
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the
 real line 16, 25, 27, 29, 33, 35, 37, 40 and 45 parts, the line 36 and line 53 input parts and the
 new `bc428_line_54.yaml`, and types in only the salary (and, in one test, line 53). The form
 declaration is made up here, exporting only line 54. The figures are hand-computed from the printed
@@ -45,7 +45,6 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
@@ -79,7 +78,6 @@ CASES = [
 
 
 def _part_files() -> Iterator[Path]:
-    yield BC_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
     for name in T1_PARTS:
@@ -113,11 +111,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
     for number, found in enumerate(_part_files(), start=2):
-        text = (
-            inputs_without_form(found)
-            if found.name.endswith("_inputs.yaml") and found.is_relative_to(FEDERAL_FORMS)
-            else found.read_text(encoding="utf-8")
-        )
+        text = found.read_text(encoding="utf-8")
         (folder / f"{number:02d}_{found.name}").write_text(text, encoding="utf-8")
     roots = {**british_columbia_packages().roots(), Namespace("ca-bc"): tmp_path}
     return TaxComputationService(

@@ -41,7 +41,6 @@ LINE_106 = "ca/credit_amounts_line_106"
 # parts, the real T1 taxable-income lines and inputs, lines 30000, 84, 31260, 96 and 98, and the
 # part under test.
 PARTS = (
-    "salary.yaml",
     *form_part_names("schedule_8"),
     *form_part_names("t2204"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),

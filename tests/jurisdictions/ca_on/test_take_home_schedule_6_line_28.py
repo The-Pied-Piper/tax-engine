@@ -34,7 +34,6 @@ D = Decimal
 # The parts of test_take_home_schedule_6_line_27.py, with the line 1, 5, 6, 17, 18, 20, 21 and 22
 # parts that line 22 reads inserted in form order, then the line 28 part under test.
 PARTS = (
-    "salary.yaml",
     *form_part_names("schedule_8"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),
     "schedule_6_line_1.yaml",

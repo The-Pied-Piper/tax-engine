@@ -3,6 +3,8 @@
 # (complete Form T1237)" (Form SK428, CRA 5008-C).
 # Form T1237 is not built, so a request that leaves the line out is read as blank; the step that
 # reads line 59 (line 60) reads that blank as 0.
+form:
+  name: ca-sk/sk428
 inputs:
   - name: ca-sk/sk428_farm_capital_gains_credit_line_59
     title: "Saskatchewan farm and small business capital gains tax credit"

@@ -9,7 +9,6 @@ The real part is loaded under a test-local header, as the take-home header is an
 
 from __future__ import annotations
 
-import shutil
 from decimal import Decimal
 from pathlib import Path
 
@@ -18,6 +17,7 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.domain.manifest import Manifest
 from tax_engine.jurisdictions.ca_on.catalog import ON428_PENSION_INCOME_AMOUNT
 from tax_engine.registrations import JURISDICTIONS, artifact_kinds, units
+from tests.manifest_support import inputs_without_form
 
 D = Decimal
 PRINTED_BASIS = "Line 27 and line 58360: Pension income amount (maximum $1,762)"
@@ -37,7 +37,7 @@ def _manifest(tmp_path: Path) -> Manifest:
     folder = tmp_path / "manifest"
     folder.mkdir()
     (folder / "header.yaml").write_text(HEADER)
-    shutil.copy(PART, folder / PART.name)
+    (folder / PART.name).write_text(inputs_without_form(PART), encoding="utf-8")
     return YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds(), units()).load(folder)
 
 

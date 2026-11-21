@@ -35,9 +35,6 @@ HEADER = dedent("""\
     jurisdiction: CA-QC
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca-qc/tp1_schedule_f_income_subject_line_70
-        required: true
     outputs:
       - ca-qc/tp1_schedule_f_income_subject_line_70
     """)
@@ -47,6 +44,9 @@ FORM = dedent("""\
       required: true
       exports:
         - ca-qc/tp1_schedule_f_contribution_on_excess_line_80
+    inputs:
+      - name: ca-qc/tp1_schedule_f_income_subject_line_70
+        required: true
     """)
 
 

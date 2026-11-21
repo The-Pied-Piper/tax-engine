@@ -11,7 +11,7 @@ against its printed maximum). Line 77 is always a figure (0.00 for a caller with
 the step has no blank rule. The output `ca-sk/sk428_tax_line_78` is a non-negative kind on the form
 `ca-sk/sk428`. The $875 maximum of line 77 is tested with `sk428_line_77.yaml`, not here.
 
-The test composes the real Saskatchewan salary part, the real Schedule 8 and T2204 parts, the T1
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the T1
 taxable income parts, the real line parts of `ca-sk/sk428_credits` that lines 8 and 57 need, the
 real `sk428_line_58.yaml` to `sk428_line_74.yaml` parts (line 71 consumes line 70, so the line 70
 inputs part is composed; line 74 consumes the checked line 73, so the line 73 input part and the
@@ -63,7 +63,6 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 CENT = D("0.01")
@@ -233,7 +232,6 @@ def _derived(salary: Decimal, line_77: Decimal = ZERO) -> Decimal:
 
 
 def _part_files() -> Iterator[Path]:
-    yield SK_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
     for name in T1_PARTS:
@@ -255,9 +253,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "02_form.yaml").write_text(FORM, encoding="utf-8")
     for number, part in enumerate(_part_files(), start=3):
         (folder / f"{number:02d}_{part.name}").write_text(
-            inputs_without_form(part)
-            if part.name.endswith("_inputs.yaml") and part.is_relative_to(FEDERAL_FORMS)
-            else part.read_text(encoding="utf-8"),
+            part.read_text(encoding="utf-8"),
             encoding="utf-8",
         )
     roots = {**saskatchewan_packages().roots(), Namespace("ca-sk"): tmp_path}

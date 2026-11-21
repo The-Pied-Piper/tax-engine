@@ -6,11 +6,10 @@ credit amount. Another form's export arrives only as a record list of one amount
 core/record_total over that export, as Manitoba's line 21 and British Columbia's line 29 are.
 
 The test composes the real Schedule 8 and T2204 parts and the real `sk428_credits_line_24.yaml`, and
-types in only the salary. The Saskatchewan salary part is not yet on main, so the test
-writes it itself, as an inline YAML string (the same content as the Manitoba salary part). The
-SK428 form declaration is made up here, exporting only line 24, because the real header is owned by
-another change. Saskatchewan is not yet in `registrations.JURISDICTIONS`, so the service is built
-over the Saskatchewan package list of `support.py`.
+types in only the salary, which the real T1 employment income form declares (its input part is
+copied as is). The SK428 form declaration is made up here, exporting only line 24, because the
+real header is owned by another change. Saskatchewan is not yet in `registrations.JURISDICTIONS`,
+so the service is built over the Saskatchewan package list of `support.py`.
 """
 
 from __future__ import annotations
@@ -35,7 +34,7 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_sk.catalog import SK428_EI_PREMIUMS_LINE_24
-from tests.federal_forms import FEDERAL_FORMS, form_parts
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_sk.support import (
     saskatchewan_capabilities,
     saskatchewan_kinds,
@@ -44,7 +43,7 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_FORM, inputs_without_form
+from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
 D = Decimal
 SK_PARTS = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / "manifests" / "2025"
@@ -69,39 +68,24 @@ FORM = dedent("""\
     """)
 
 
-SALARY = dedent("""\
-    inputs:
-      - name: ca/employment_income
-        title: "Employment income"
-        reference: "10100"
-        unit: ca/cad
-        required: true
-    """)
-
-
 def _part_files() -> Iterator[Path]:
+    yield T1_LINE_10100_INPUT
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
     yield T1_LINE_10100_FORM
-    yield FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml"
+    yield T1_LINE_10100_STEP
     yield PART
 
 
 def _service(tmp_path: Path) -> TaxComputationService:
     """The engine over a temporary Saskatchewan manifest of a test header, a form declaration, the
-    salary part and the real part files, every other namespace being the Saskatchewan package
-    list's own."""
+    real part files, every other namespace being the Saskatchewan package list's own."""
     folder = tmp_path / "manifests" / "2025"
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
-    (folder / "02_salary.yaml").write_text(SALARY, encoding="utf-8")
-    for number, found in enumerate(_part_files(), start=3):
-        text = (
-            inputs_without_form(found)
-            if found.name.endswith("_inputs.yaml") and found.is_relative_to(FEDERAL_FORMS)
-            else found.read_text(encoding="utf-8")
-        )
+    for number, found in enumerate(_part_files(), start=2):
+        text = found.read_text(encoding="utf-8")
         (folder / f"{number:02d}_{found.name}").write_text(text, encoding="utf-8")
     roots = {**saskatchewan_packages().roots(), Namespace("ca-sk"): tmp_path}
     return TaxComputationService(

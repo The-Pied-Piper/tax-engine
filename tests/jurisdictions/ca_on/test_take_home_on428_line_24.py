@@ -6,11 +6,10 @@ Schedule 8 line 25, the CPP base contributions on the return, and line 21 (58300
 left out. Another form's export arrives only as a record list of one amount, which core/sum cannot
 read, so each of lines 19 and 21 is a core/record_total over that export and line 24 sums the two.
 
-The test composes the real salary part, the real Schedule 8 and T2204 parts and the three real
-ON428 line parts (`on428_line_19.yaml`, `on428_line_21.yaml`, `on428_line_24.yaml`), and types in
-only the salary. The ON428 form declaration is made up here, exporting the three lines read,
-because the real header is owned by another change.
-"""
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts and the three
+real ON428 line parts (`on428_line_19.yaml`, `on428_line_21.yaml`, `on428_line_24.yaml`), and types
+in only the salary. The ON428 form declaration is made up here, exporting the three lines read,
+because the real header is owned by another change."""
 
 from __future__ import annotations
 
@@ -30,11 +29,11 @@ from tax_engine.jurisdictions.ca_on.catalog import (
 )
 from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
-from tests.manifest_support import T1_LINE_10100_PARTS
+from tests.manifest_support import T1_LINE_10100_INPUT, T1_LINE_10100_PARTS
 
 D = Decimal
 PARTS = (
-    "salary.yaml",
+    T1_LINE_10100_INPUT.name,
     *form_part_names("schedule_8"),
     *form_part_names("t2204"),
     *T1_LINE_10100_PARTS,

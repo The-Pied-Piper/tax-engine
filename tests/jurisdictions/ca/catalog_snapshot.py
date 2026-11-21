@@ -30,6 +30,7 @@ REGISTERED = frozenset(
         "ca/cwb_other_employment_income_line_10400",
         "ca/canada_employment_amount_line_1",
         "ca/canada_employment_amount_line_2",
+        "ca/return_employment_income",
         "ca/credits_against_basic_federal_tax",
         "ca/fuel_charge_gross_farming_expenses",
         "ca/fuel_charge_expenses_on",

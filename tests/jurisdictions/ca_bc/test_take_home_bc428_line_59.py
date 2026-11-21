@@ -9,11 +9,10 @@ to the cent by the dataset's own rule. The gifts input is an optional input a sa
 leaves out, read as blank and then as 0 by the step's own blank rule, which prints its own "left
 blank, taken as 0" row.
 
-The test composes the real salary part, the line 59 input part and the new `bc428_line_59.yaml`,
-and types in the salary and, in some tests, the gifts. The form declaration is made up here,
-exporting only line 59. The figures are hand-computed from the printed form (not a CRA example):
-the gifts times 0.25, rounded half-up to the cent.
-"""
+The test composes the T1 employment income form, the line 59 input part and the new
+`bc428_line_59.yaml`, and types in the salary and, in some tests, the gifts. The form declaration is
+made up here, exporting only line 59. The figures are hand-computed from the printed form (not a CRA
+example): the gifts times 0.25, rounded half-up to the cent."""
 
 from __future__ import annotations
 
@@ -49,6 +48,7 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_units,
 )
 from tests.kinds import non_negative
+from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
 D = Decimal
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
@@ -82,7 +82,9 @@ CASES = [
 
 def _part_files() -> list[Path]:
     return [
-        BC_PARTS / "salary.yaml",
+        T1_LINE_10100_FORM,
+        T1_LINE_10100_INPUT,
+        T1_LINE_10100_STEP,
         BC_PARTS / "bc428_line_59_input.yaml",
         LINE_PART,
     ]

@@ -11,7 +11,7 @@ Line 5 is one `core/bracket_column_rate` step over line 1 with that schedule, ou
 `ca-mb/mb428_bracket_rate_line_5`, in the part `mb428_credits_line_5.yaml`. The rate is a Decimal
 held as printed, not rounded. Titled "Rate" as the form prints it.
 
-The test composes the real Manitoba salary part, the real Schedule 8 and T1 taxable income parts,
+The test composes the T1 employment income form, the real Schedule 8 and T1 taxable income parts,
 the real `mb428_credits_line_1.yaml` and the real `mb428_credits_line_5.yaml`, and types in only the
 salary. The form declaration is test-local, exporting lines 1 and 5.
 
@@ -55,7 +55,6 @@ from tests.jurisdictions.ca_mb.support import (
     manitoba_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"
@@ -100,7 +99,6 @@ PERCENT = {"0.108": "10.8", "0.1275": "12.75", "0.174": "17.4"}
 
 
 def _part_files() -> Iterator[Path]:
-    yield MB_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     for name in T1_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
@@ -115,9 +113,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
     for number, part in enumerate(_part_files(), start=2):
         (folder / f"{number:02d}_{part.name}").write_text(
-            inputs_without_form(part)
-            if part.name.endswith("_inputs.yaml") and part.is_relative_to(FEDERAL_FORMS)
-            else part.read_text(encoding="utf-8"),
+            part.read_text(encoding="utf-8"),
             encoding="utf-8",
         )
     roots = {**manitoba_packages().roots(), Namespace("ca-mb"): tmp_path}

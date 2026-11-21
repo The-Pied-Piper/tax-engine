@@ -68,13 +68,11 @@ FORM = "{}\n"
 # The form's lines compose together: every T1 part beside the salary and the real Schedule 8 whose
 # export line 23300 reads.
 PARTS_15000 = (
-    "salary.yaml",
     *form_part_names("schedule_8"),
     *form_part_names("t1_employment_income"),
     *form_part_names("t1_taxable_income"),
 )
 PARTS = (
-    "salary.yaml",
     *form_part_names("schedule_8"),
     *form_part_names("t1_employment_income"),
 )

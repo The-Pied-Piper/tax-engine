@@ -2,6 +2,8 @@
 # Amount from line 33099 of your return". The engine does not compute medical expenses, so the figure
 # is taken as one optional input, the way the form takes it. A request that leaves the line out is
 # read as blank; the line 48 step reads that blank as 0.
+form:
+  name: ca-sk/sk428_credits
 inputs:
   - name: ca-sk/sk428_medical_expenses_line_43
     title: "Amount from line 33099 of your return"

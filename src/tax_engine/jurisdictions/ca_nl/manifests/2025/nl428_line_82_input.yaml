@@ -4,6 +4,8 @@
 # optional input, the way the form takes it. A request that leaves the line out is read as blank; the
 # line 82 step passes that blank on and checks the guide's lifetime maximum
 # (nl428_line_82.yaml).
+form:
+  name: ca-nl/nl428
 inputs:
   - name: ca-nl/nl428_venture_capital_tax_credit_from_certificates_line_82
     title: "Venture capital tax credit from Certificate(s) NL VCTC"

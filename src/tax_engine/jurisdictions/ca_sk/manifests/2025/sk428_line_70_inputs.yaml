@@ -2,6 +2,8 @@
 # Line 70: "Line 70: Provincial foreign tax credit (complete Form T2036)". A salary-only caller has
 # no foreign income, so a request that leaves the line out is read as blank, and the line 71 part
 # reads that blank as 0.
+form:
+  name: ca-sk/sk428
 inputs:
   - name: ca-sk/sk428_provincial_foreign_tax_credit_line_70
     title: "Provincial foreign tax credit"

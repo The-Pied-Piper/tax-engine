@@ -51,6 +51,18 @@ def _manifest(tmp_path: Path) -> Manifest:
     folder.mkdir()
     (folder / "header.yaml").write_text(HEADER)
     shutil.copy(PART, folder / PART.name)
+    # The part gives its inputs to the form named in its header, so the manifest declares that form,
+    # here exporting the part's own inputs.
+    part = _part()
+    form = {
+        "form": {
+            "name": part["form"]["name"],
+            "required": True,
+            "exports": [declaration["name"] for declaration in part["inputs"]],
+        },
+        "capabilities": [],
+    }
+    (folder / "form.yaml").write_text(yaml.safe_dump(form), encoding="utf-8")
     source = YamlJurisdictionSource(manitoba_packages().roots(), manitoba_kinds(), manitoba_units())
     return source.load(folder)
 
@@ -64,7 +76,8 @@ def _part() -> dict[str, Any]:
 def test_the_part_declares_only_the_line_73_input() -> None:
     part = _part()
 
-    assert list(part) == ["inputs"]
+    assert list(part) == ["form", "inputs"]
+    assert list(part["form"]) == ["name"]
     assert part["inputs"] == [
         {
             "name": IDENTIFIER,

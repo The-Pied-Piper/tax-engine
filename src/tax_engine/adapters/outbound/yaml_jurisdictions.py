@@ -6,7 +6,7 @@ The manifest format is described in docs/manifest-format.md.
 from __future__ import annotations
 
 import dataclasses
-from collections.abc import Callable, Iterable, Mapping
+from collections.abc import Callable, Iterable, Mapping, Sequence
 from pathlib import Path
 from typing import Any, NamedTuple
 
@@ -77,13 +77,6 @@ class _ImportEntry(NamedTuple):
     datasets: Mapping[str, str]
 
 
-class _LoadedImports(NamedTuple):
-    """The forms a manifest imports and the input declarations their parts carry."""
-
-    forms: tuple[Form, ...]
-    inputs: tuple[InputDeclaration, ...]
-
-
 class _Declaration(NamedTuple):
     """What the one part of a form that declares its instances and exports declares."""
 
@@ -99,8 +92,14 @@ class _Declaration(NamedTuple):
     fields: tuple[InputDeclaration, ...]
     supplies: Mapping[str, str]
 
-    def form(self, name: str, selections: tuple[CapabilitySelection, ...]) -> Form:
-        """The form `name` with this declaration and `selections`, which checks the declaration."""
+    def form(
+        self,
+        name: str,
+        selections: tuple[CapabilitySelection, ...],
+        inputs: tuple[InputDeclaration, ...] = (),
+    ) -> Form:
+        """The form `name` with this declaration, `selections` and the `inputs` it owns, which
+        checks the declaration."""
         return Form(
             name=name,
             instances=self.instances,
@@ -114,6 +113,7 @@ class _Declaration(NamedTuple):
             basis=self.basis,
             title=self.title,
             fields=self.fields,
+            inputs=inputs,
             supplies=self.supplies,
         )
 
@@ -218,11 +218,17 @@ class YamlJurisdictionSource:
         declarations: dict[str, tuple[Path, _Declaration]] = {}
         identifier_owners: dict[str, dict[str, Path]] = {key: {} for key in _IDENTIFIER_LISTS}
         form_parts: dict[str, Path] = {}
+        form_inputs: dict[str, list[InputDeclaration]] = {}
         for part in parts:
             contents = self._part(part)
+            owner: str | None = None
             if "form" in contents:
-                name = self._join_form(part, contents, form_selections, declarations)
-                form_parts.setdefault(name, part)
+                owner = self._join_form(part, contents, form_selections, declarations)
+                form_parts.setdefault(owner, part)
+            if owner is not None and "inputs" in contents:
+                node = contents.pop("inputs")
+                self._claim_identifiers("inputs", node, part, identifier_owners["inputs"])
+                form_inputs.setdefault(owner, []).extend(self._declarations(node, self._input_kind))
             for key, node in contents.items():
                 if key in _SCALAR_KEYS:
                     if key in scalar_owners:
@@ -241,13 +247,15 @@ class YamlJurisdictionSource:
                 "an imported form's parts are in its own package"
             )
         self._check_suppliers(declarations)
+        if form_inputs or "imports" in lists:
+            lists.setdefault("inputs", [])  # the default form may have none beside the others
         if form_selections:
             lists.setdefault("capabilities", [])  # the default form may have none beside the others
         try:
             return self._manifest(
                 YamlNode.root({**merged, **lists}, "manifest"),
                 lambda default: tuple(
-                    self._form(name, selections, declarations, default)
+                    self._form(name, selections, declarations, default, form_inputs.get(name, []))
                     for name, selections in form_selections.items()
                 ),
                 lambda imports: self._imported(imports, import_owners, identifier_owners["inputs"]),
@@ -315,21 +323,17 @@ class YamlJurisdictionSource:
         imports: tuple[_ImportEntry, ...],
         owners: Mapping[str, Path],
         input_owners: dict[str, Path],
-    ) -> _LoadedImports:
+    ) -> tuple[Form, ...]:
         """The forms `imports` name, in order, each from the parts in its package's `forms/`
-        folder, with the inputs those parts declare.
+        folder, owning the inputs those parts declare.
 
         `owners` gives the part that lists each import, to name in an error. `input_owners` gives
         the part that declares each input of the manifest; the imported parts are added to it, so
         an input declared twice is refused as it is between two parts of a manifest.
         """
-        found = [
+        return tuple(
             self._imported_form(entry.name, owners.get(entry.name), input_owners, entry.datasets)
             for entry in imports
-        ]
-        return _LoadedImports(
-            forms=tuple(form for form, _ in found),
-            inputs=tuple(declaration for _, inputs in found for declaration in inputs),
         )
 
     def _imported_form(
@@ -338,8 +342,8 @@ class YamlJurisdictionSource:
         owner: Path | None,
         input_owners: dict[str, Path],
         datasets: Mapping[str, str],
-    ) -> tuple[Form, tuple[InputDeclaration, ...]]:
-        """The form `identifier` of the parts in `<package>/forms/<local id>/` and the inputs
+    ) -> Form:
+        """The form `identifier` of the parts in `<package>/forms/<local id>/`, owning the inputs
         they declare; each part names that form and carries `capabilities` and `inputs`.
 
         Each family of `datasets` replaces itself in the parameters the form's selections read.
@@ -376,8 +380,7 @@ class YamlJurisdictionSource:
         chosen = self._rebound(
             selections.get(identifier, []), datasets, f"{prefix}imports {identifier!r}"
         )
-        form = self._form(identifier, chosen, declarations, default)
-        return form, tuple(inputs)
+        return self._form(identifier, chosen, declarations, default, inputs)
 
     @staticmethod
     def _rebound(
@@ -420,8 +423,10 @@ class YamlJurisdictionSource:
         selections: list[CapabilitySelection],
         declarations: dict[str, tuple[Path, _Declaration]],
         default: str,
+        inputs: Sequence[InputDeclaration],
     ) -> Form:
-        """The form `name` of the selections of all its parts and its one declaration."""
+        """The form `name` of the selections of all its parts, its one declaration and the
+        `inputs` its parts declare."""
         if name not in declarations:
             raise InvalidManifestError(f"form {name!r}: no part declares its exports")
         part, declared = declarations[name]
@@ -429,7 +434,7 @@ class YamlJurisdictionSource:
             raise InvalidManifestError(
                 f"{part}: form {name!r}: the name is reserved for the parts without a `form:` key"
             )
-        return declared.form(name, tuple(selections))
+        return declared.form(name, tuple(selections), tuple(inputs))
 
     def _form_header(self, node: YamlNode) -> tuple[str, _Declaration | None]:
         """The name of a part's form and, if it declares them, its instances, exports and limits."""
@@ -596,29 +601,25 @@ class YamlJurisdictionSource:
         self,
         document: YamlNode,
         forms_beside: Callable[[str], tuple[Form, ...]] = lambda _: (),
-        imported: Callable[[tuple[_ImportEntry, ...]], _LoadedImports] = lambda _: _LoadedImports(
-            (), ()
-        ),
+        imported: Callable[[tuple[_ImportEntry, ...]], tuple[Form, ...]] = lambda _: (),
     ) -> Manifest:
         """The manifest of `document`, whose selections and `outputs` are the default form's.
 
         `forms_beside` gives the other forms, from the name the default form takes, and `imported`
-        the forms the `imports` name, which run between the two.
+        the forms the `imports` name, which run between the two. Each form owns the inputs its parts
+        declare; the inputs of the document itself are the default form's.
         """
         doc = document.require_mapping(_MANIFEST_KEYS, optional=_OPTIONAL_MANIFEST_KEYS)
         code = self._code(doc.field("jurisdiction"))
+        default = code.namespace.identifier(_DEFAULT_FORM)
         inputs = self._declarations(doc.field("inputs"), self._input_kind)
         outputs = self._identifiers(doc.field("outputs"))
         if not outputs:
             raise InvalidManifestError("outputs must name at least one artifact")
         Form.check_exports("outputs", sorted(outputs))
-        default = code.namespace.identifier(_DEFAULT_FORM)
         title = doc.optional_field("title")
         imports = doc.optional_field("imports")
-        found = _LoadedImports((), ()) if imports is None else imported(self._import_list(imports))
-        forms_imported = found.forms
-        declared_inputs = {declaration.name: declaration for declaration in inputs}
-        declared_inputs.update((declaration.name, declaration) for declaration in found.inputs)
+        forms_imported = () if imports is None else imported(self._import_list(imports))
         forms = (
             Form(
                 name=default,
@@ -628,6 +629,7 @@ class YamlJurisdictionSource:
                     self._selection(entry) for entry in doc.field("capabilities").items()
                 ),
                 required=True,
+                inputs=inputs,
                 title=None if title is None else self._title(title),
             ),
             *forms_imported,
@@ -637,22 +639,23 @@ class YamlJurisdictionSource:
             jurisdiction=code,
             version=doc.field("version").require_integer(),
             valid_from_tax_year=doc.field("valid_from_tax_year").require_integer(),
-            inputs=declared_inputs,
             artifacts=self._kinds,
-            units_by_name=self._units_named(declared_inputs, forms),
+            units_by_name=self._units_named(forms),
             forms=forms,
         )
         self._check_supplied(manifest, forms_imported)
         return manifest
 
-    def _units_named(
-        self, inputs: Mapping[str, InputDeclaration], forms: Iterable[Form]
-    ) -> dict[str, Unit]:
+    def _units_named(self, forms: Iterable[Form]) -> dict[str, Unit]:
         """Each unit the declarations name, looked up by its full identifier, keyed as written.
 
         An identifier no unit is registered under, a bare name included, is an InvalidManifestError.
         """
-        declared = [(f"input {name!r}", declaration.unit) for name, declaration in inputs.items()]
+        declared = [
+            (f"input {declaration.name!r}", declaration.unit)
+            for form in forms
+            for declaration in form.inputs
+        ]
         for form in forms:
             declared.extend(
                 (f"field {field.name!r} of form {form.name!r}", field.unit) for field in form.fields

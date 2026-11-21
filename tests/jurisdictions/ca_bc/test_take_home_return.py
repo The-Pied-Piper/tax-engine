@@ -9,7 +9,7 @@ over the T1 form's export `ca/t1_tax_and_credits.refund_or_balance_owing`, a cro
 key (the return is the default form) and no params. The steps after it read the figures of the two
 rates (`end_to_end/test_return_rates.py`); here they run over stand-ins.
 
-The test composes the real British Columbia salary part and the real `return.yaml` over
+The test composes the T1 employment income form and the real `return.yaml` over
 a temporary manifest. The header, the declaration of the T1 tax and credits form (exporting
 `ca/refund_or_balance_owing`) and the step producing that export are made up here, because the
 shared scaffold and the T1 form own them: the stand-in step takes a given `ca/total_credits` off
@@ -44,6 +44,7 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_parameter_parsers,
     british_columbia_units,
 )
+from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
 D = Decimal
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
@@ -83,6 +84,8 @@ BC428_FORM = dedent("""\
     capabilities: []
     """)
 CREDITS_INPUT = dedent("""\
+    form:
+      name: ca/t1_tax_and_credits
     inputs:
       - name: ca/total_credits
         title: "Total credits"
@@ -90,6 +93,20 @@ CREDITS_INPUT = dedent("""\
         unit: ca/cad
         required: true
     """)
+# The salary is the T1 employment income form's input, so a stand-in step of another form reads it
+# as that form's own copy of the T1 export (line 10100), taken by a record total at its start.
+SALARY_COPY = """\
+form:
+  name: {form}
+capabilities:
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/t1_employment_income.employment_income_line_10100
+    produces:
+      output: ca/employment_income_line_10100
+"""
+
 # The stand-in for the T1 line 167 step: the salary less the given credits, signed.
 T1_STEP = dedent("""\
     form:
@@ -100,7 +117,7 @@ T1_STEP = dedent("""\
         params:
           rounding: ca/cent_rounding
         consumes:
-          amount: ca/employment_income
+          amount: ca/employment_income_line_10100
           less: ca/total_credits
         produces:
           output: ca/refund_or_balance_owing
@@ -150,7 +167,7 @@ def _other_step(form: str, output: str, unit: str) -> str:
             params:
               table: ca-bc/marginal_rate_gate
             consumes:
-              base: ca/employment_income
+              base: ca/employment_income_line_10100
             produces:
               output: {output}
         """
@@ -161,7 +178,7 @@ def _other_step(form: str, output: str, unit: str) -> str:
             params:
               rounding: ca/cent_rounding
             consumes:
-              parts: [ca/employment_income]
+              parts: [ca/employment_income_line_10100]
             produces:
               output: {output}
         """
@@ -176,6 +193,9 @@ def _service(tmp_path: Path) -> TaxComputationService:
     texts = [
         ("00_header.yaml", HEADER),
         ("01_t1_form.yaml", T1_FORM),
+        ("01a_t1_employment_income_form.yaml", T1_LINE_10100_FORM.read_text(encoding="utf-8")),
+        ("01b_salary_copy_t1.yaml", SALARY_COPY.format(form="ca/t1_tax_and_credits")),
+        ("01c_salary_copy_bc428.yaml", SALARY_COPY.format(form="ca-bc/bc428")),
         ("02_credits_input.yaml", CREDITS_INPUT),
         ("03_t1_step.yaml", T1_STEP),
         ("03a_bc428_form.yaml", BC428_FORM),
@@ -183,7 +203,11 @@ def _service(tmp_path: Path) -> TaxComputationService:
             (f"03b_{number}.yaml", _other_step(form, out, unit))
             for number, (form, out, unit) in enumerate(OTHER_STEPS)
         ],
-        ("04_salary.yaml", (BC_PARTS / "salary.yaml").read_text(encoding="utf-8")),
+        ("04_t1_line_10100_input.yaml", T1_LINE_10100_INPUT.read_text(encoding="utf-8")),
+        (
+            "04a_t1_line_10100.yaml",
+            T1_LINE_10100_STEP.read_text(encoding="utf-8"),
+        ),
         ("05_return.yaml", RETURN_PART.read_text(encoding="utf-8")),
     ]
     for name, text in texts:

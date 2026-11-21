@@ -1,6 +1,8 @@
 # BC479 (2025) line 32's input. Form BC479 (CRA 5010-TC): "Line 32 and line 60560: Training tax credit (employers) (complete Form T1014-1)". The figure is taken as one optional
 # input, the way the form takes it. A request that leaves the line out is read as blank; the step that
 # reads it (a printed sum) reads that blank as 0.
+form:
+  name: ca-bc/bc479
 inputs:
   - name: ca-bc/bc479_training_credit_employers_line_32
     title: "Training tax credit (employers)"

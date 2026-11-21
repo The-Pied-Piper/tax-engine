@@ -28,6 +28,7 @@ from typing import Any
 import pytest
 import yaml
 
+import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_nl
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
@@ -63,6 +64,7 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_units,
 )
 from tests.kinds import non_negative
+from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
 D = Decimal
 PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
@@ -77,9 +79,6 @@ HEADER = dedent("""\
     jurisdiction: CA-NL
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/employment_income
-        required: true
     outputs:
       - ca/employment_income
     """)
@@ -101,6 +100,16 @@ def _service(tmp_path: Path) -> TaxComputationService:
     folder = tmp_path / "manifests" / "2025"
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
+    (folder / "00_t1_salary.yaml").write_text(
+        T1_LINE_10100_INPUT.read_text(encoding="utf-8"), encoding="utf-8"
+    )
+    (folder / "00_t1_form.yaml").write_text(
+        T1_LINE_10100_FORM.read_text(encoding="utf-8"), encoding="utf-8"
+    )
+    (folder / "00_t1_line_10100.yaml").write_text(
+        T1_LINE_10100_STEP.read_text(encoding="utf-8"),
+        encoding="utf-8",
+    )
     (folder / "01_form.yaml").write_text(FORM_PART, encoding="utf-8")
     (folder / "02_input.yaml").write_text(INPUT_PART.read_text(encoding="utf-8"), encoding="utf-8")
     (folder / "03_line_23.yaml").write_text(LINE_PART.read_text(encoding="utf-8"), encoding="utf-8")

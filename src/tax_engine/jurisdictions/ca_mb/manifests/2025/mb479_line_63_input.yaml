@@ -2,6 +2,8 @@
 # Line 63: "Line 63 and line 61310: Paid work experience tax credit" (Form MB479, CRA 5007-TC).
 # A salary-only single filer claims no paid work experience credit, so a request that leaves the
 # line out is read as blank. The step that reads it (a later one) applies the blank rule.
+form:
+  name: ca-mb/mb479
 inputs:
   - name: ca-mb/mb479_paid_work_experience_credit_line_63
     title: "Paid work experience tax credit"

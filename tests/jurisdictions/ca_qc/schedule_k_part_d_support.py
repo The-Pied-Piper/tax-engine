@@ -1,7 +1,7 @@
 """Shared helpers of the Schedule K Part C line tests for lines 85 to 98.
 
 Lines 85 to 98 read line 83 of Part C (line 84 is a copy of it) and boxes 60 to 62 of Part B.
-Most tests give those four figures straight to the form (the header takes them as inputs), so a test
+Most tests give those four figures straight to the form (the form takes them as inputs), so a test
 can pick the months without going through line 50. The salary tests run the real Part A, Part B and
 Part C chains from a salary, for the default answer to line 50 (not covered) and for the answer yes
 (covered). Every
@@ -86,13 +86,12 @@ def unconsumed(parts: tuple[str, ...]) -> tuple[str, ...]:
 
 
 def header(parts: tuple[str, ...]) -> str:
-    """A test header that takes line 83 and boxes 60 to 62; those no part reads are its outputs, or
-    line 83 when every one is read."""
+    """A test header whose outputs are the line 83 and boxes 60 to 62 no part reads, or line 83 when
+    every one is read."""
     consumed: set[str] = set()
     for step in _steps(parts):
         for value in (step.get("consumes") or {}).values():
             consumed.update(value if isinstance(value, list) else [value])
-    inputs = "".join(f"  - name: {kind.identifier}\n    required: true\n" for kind in INPUTS)
     left = [kind for kind in INPUTS if kind.identifier not in consumed] or [INPUTS[0]]
     outputs = "".join(f"  - {kind.identifier}\n" for kind in left)
     return (
@@ -100,12 +99,17 @@ def header(parts: tuple[str, ...]) -> str:
         jurisdiction: CA-QC
         version: 1
         valid_from_tax_year: 2025
-        inputs:
         """)
-        + inputs
         + "outputs:\n"
         + outputs
     )
+
+
+def form_declaration(parts: tuple[str, ...]) -> str:
+    """The test form of Schedule K: its exports and the line 83 and boxes 60 to 62 inputs, which
+    belong to the form that reads them."""
+    inputs = "".join(f"  - name: {kind.identifier}\n    required: true\n" for kind in INPUTS)
+    return form_part(unconsumed(parts)) + "inputs:\n" + inputs
 
 
 # Printed lines 85 to 98 for a line 83, box 60 and box 61 given straight to the form (box 62 is
@@ -195,7 +199,7 @@ def part_d(
 ) -> Worksheet:
     """The Schedule K worksheet of `parts` for a line 83 and boxes 60 and 61 given straight in."""
     line_84, box_60, box_61 = key
-    (sheet,) = take_home_service(header(parts), form_part(unconsumed(parts)), *parts).compute(
+    (sheet,) = take_home_service(header(parts), form_declaration(parts), *parts).compute(
         JurisdictionCode("CA-QC"),
         2025,
         Artifact(SCHEDULE_K_COLUMN_PREMIUM_LINE_83, D(line_84)),

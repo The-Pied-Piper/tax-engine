@@ -176,7 +176,8 @@ class Form:
 
     `instances` is the record-list kind the caller supplies (`None` for one instance and no
     `fields`); `exports` are readable by every form as `<name>.<local id>`; `supplies` maps neutral
-    identifiers to own exports. See docs/forms.md for the other keys.
+    identifiers to own exports. `inputs` are the starting artifacts the form owns: it alone reads
+    them, and every other form reads its export instead. See docs/forms.md for the other keys.
     """
 
     name: str
@@ -190,9 +191,15 @@ class Form:
     required_when: str | None = None
     basis: str | None = None
     fields: tuple[InputDeclaration, ...] = ()
+    inputs: tuple[InputDeclaration, ...] = ()
     title: str | None = None
     # Not hashed: a read-only mapping is unhashable, and equal forms still hash alike.
     supplies: Mapping[str, str] = dataclasses.field(default_factory=dict, hash=False)
+
+    def export_kind_name(self, export: ArtifactKind[Any]) -> str:
+        """The identifier of the kind `<form>.<export>` that holds a record of `export`."""
+        namespace, _, form_id = self.name.partition("/")
+        return f"{namespace}/{form_id}.{export.label}"
 
     def derived_kinds(self, kinds: ArtifactRegistry) -> tuple[RecordListKind, ...]:
         """The kind `<form>.<export>` of each of this form's exports a record can hold, then those
@@ -202,9 +209,8 @@ class Form:
         identifier in `supplies`. An export that is not an amount, a count or a record list has
         none, and supplying one is an InvalidManifestError.
         """
-        namespace, _, form_id = self.name.partition("/")
         own = tuple(
-            RecordListKind(f"{namespace}/{form_id}.{export.label}", fields=(export,))
+            RecordListKind(self.export_kind_name(export), fields=(export,))
             for export in (kinds.kind(identifier) for identifier in self.exports)
             if isinstance(export, RecordField)
         )
@@ -378,8 +384,10 @@ class Form:
 class Manifest:
     """One structural version of a jurisdiction's composition.
 
-    `forms` is a tuple of at least one form with distinct names; `inputs` declare the starting
-    artifacts once each, among them each form's instances kind. A manifest is checked against
+    `forms` is a tuple of at least one form with distinct names. Each form declares the starting
+    artifacts it owns; the first form, the default form, owns the manifest's own. `inputs` gathers
+    them all by name, among them each form's instances kind; an input two forms declare is
+    refused. A manifest is checked against
     `artifacts` (the application's kinds) when built, so one that exists is correct. `kinds` adds
     the `<form>.<export>` kinds and the neutral kinds the forms supply. An unresolvable default or
     `required_when` that is not a yes/no is an InvalidManifestError; an unknown identifier is an
@@ -391,10 +399,10 @@ class Manifest:
     jurisdiction: JurisdictionCode
     version: int
     valid_from_tax_year: int
-    inputs: Mapping[str, InputDeclaration]
     forms: tuple[Form, ...]
     artifacts: ArtifactRegistry = dataclasses.field(compare=False)
     units_by_name: Mapping[str, Unit] = dataclasses.field(default_factory=dict, compare=False)
+    inputs: Mapping[str, InputDeclaration] = dataclasses.field(init=False, compare=False)
     kinds: ArtifactRegistry = dataclasses.field(init=False, compare=False)
     defaults: tuple[Artifact[Any], ...] = dataclasses.field(init=False, compare=False)
     field_defaults: Mapping[str, tuple[Artifact[Any], ...]] = dataclasses.field(
@@ -402,7 +410,6 @@ class Manifest:
     )
 
     def __post_init__(self) -> None:
-        object.__setattr__(self, "inputs", MappingProxyType(dict(self.inputs)))
         object.__setattr__(self, "forms", tuple(self.forms))
         object.__setattr__(self, "units_by_name", MappingProxyType(dict(self.units_by_name)))
         if not self.forms:
@@ -411,11 +418,9 @@ class Manifest:
         for name in names:
             if names.count(name) > 1:
                 raise InvalidManifestError(f"form {name!r} is listed more than once")
+        object.__setattr__(self, "inputs", MappingProxyType(self._gather_inputs()))
         if not self.inputs:
             raise InvalidManifestError("inputs must name at least one artifact")
-        for name, declaration in self.inputs.items():
-            if declaration.name != name:
-                raise InvalidManifestError(f"input {name!r} is declared as {declaration.name!r}")
         self._check_predicates()
         derived = [kind for form in self.forms for kind in form.derived_kinds(self.artifacts)]
         derived += self._stand_ins(derived)
@@ -443,7 +448,6 @@ class Manifest:
                 self.jurisdiction,
                 self.version,
                 self.valid_from_tax_year,
-                frozenset(self.inputs.items()),
                 self.forms,
             )
         )
@@ -560,6 +564,22 @@ class Manifest:
             raise InvalidManifestError(
                 f"form {form.name!r}: field {name!r} is not a field of {instances.identifier!r}"
             )
+
+    def _gather_inputs(self) -> dict[str, InputDeclaration]:
+        """Each form's inputs by name, refusing an input two forms declare."""
+        gathered: dict[str, InputDeclaration] = {}
+        owners: dict[str, str] = {}
+        for form in self.forms:
+            for declaration in form.inputs:
+                name = declaration.name
+                if name in gathered:
+                    raise InvalidManifestError(
+                        f"input {name!r} is declared by form {owners[name]!r} and by form "
+                        f"{form.name!r}"
+                    )
+                gathered[name] = declaration
+                owners[name] = form.name
+        return gathered
 
     def _check_predicates(self) -> None:
         """Refuse a `required_when` that names nothing the manifest has or an optional input."""

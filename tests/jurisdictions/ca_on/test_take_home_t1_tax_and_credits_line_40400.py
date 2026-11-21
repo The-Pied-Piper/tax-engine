@@ -49,7 +49,6 @@ LINE_121 = "ca/federal_tax_with_split_income"
 # The real parts composed beside the test's header: the salary, the real Schedule 8, the real T1
 # taxable-income lines and inputs, line 76 and line 121.
 PARTS = (
-    "salary.yaml",
     *form_part_names("schedule_8"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),
     "t1_tax_and_credits_line_76.yaml",

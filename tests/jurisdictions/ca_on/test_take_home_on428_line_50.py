@@ -33,11 +33,6 @@ HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca-on/on428_credit_amounts_at_credit_rate_line_46
-        required: true
-      - name: ca-on/on428_donations_credit_line_49
-        required: true
     outputs:
       - ca-on/on428_credit_amounts_at_credit_rate_line_46
     """)
@@ -47,6 +42,11 @@ FORM = dedent("""\
       required: true
       exports:
         - ca-on/on428_non_refundable_credits_line_50
+    inputs:
+      - name: ca-on/on428_credit_amounts_at_credit_rate_line_46
+        required: true
+      - name: ca-on/on428_donations_credit_line_49
+        required: true
     """)
 
 

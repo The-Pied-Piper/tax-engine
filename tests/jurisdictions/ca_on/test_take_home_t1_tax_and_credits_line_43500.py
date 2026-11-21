@@ -50,7 +50,6 @@ ON428_LINE_90 = "ca-on/on428_ontario_tax_line_90"
 # line 40600, line 41700, line 42000, the real ON428 parts (the form, its lines and its inputs,
 # ON428-A included), and the part under test.
 PARTS = (
-    "salary.yaml",
     *form_part_names("schedule_8"),
     *form_part_names("t2204"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),

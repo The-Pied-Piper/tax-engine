@@ -97,7 +97,8 @@ def test_the_input_part_declares_only_the_optional_number_defaulting_to_0(line: 
     number, _, _ = LINES[line]
     part = _load(f"mb479_line_{line}_inputs.yaml")
 
-    assert list(part) == ["inputs"]
+    assert list(part) == ["form", "inputs"]
+    assert part["form"] == {"name": "ca-mb/mb479"}
     (declared,) = part["inputs"]
     assert declared["name"] == f"ca-mb/mb479_{number}_line_{line}"
     assert declared["reference"] == f"{line} box A"

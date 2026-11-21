@@ -6,7 +6,7 @@ over the T1 export that gives taxable income (`ca/t1_taxable_income.taxable_inco
 and Ontario's line 1 are. The form prints no label for the line, so the step has no title. Line 2
 in each column is a copy of line 1 and has no step.
 
-The test composes the real Saskatchewan salary part, the real Schedule 8 parts, the real T1 taxable
+The test composes the T1 employment income form, the real Schedule 8 parts, the real T1 taxable
 income parts and the real line part (`sk428_credits_line_1.yaml`), and types in only the salary.
 The form declaration is made up here, exporting the line read, because the real form part exports
 only the lines already built.
@@ -50,7 +50,6 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 CENT = D("0.01")
@@ -85,7 +84,6 @@ CASES = [
 
 
 def _part_files() -> Iterator[Path]:
-    yield SK_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     for name in T1_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
@@ -99,9 +97,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
     for number, part in enumerate(_part_files(), start=2):
         (folder / f"{number:02d}_{part.name}").write_text(
-            inputs_without_form(part)
-            if part.name.endswith("_inputs.yaml") and part.is_relative_to(FEDERAL_FORMS)
-            else part.read_text(encoding="utf-8"),
+            part.read_text(encoding="utf-8"),
             encoding="utf-8",
         )
     roots = {**saskatchewan_packages().roots(), Namespace("ca-sk"): tmp_path}

@@ -9,9 +9,8 @@ the cent. The output is `ca-mb/mb428_minimum_tax_carryover_credit_line_63`. The 
 titled with the heading the form prints above the line, "Manitoba minimum tax carryover". Because
 the input is blank for a salary-only caller, the step prints its own "left blank, taken as 0" row.
 
-The salary part, the inputs part and the line 63 part are loaded under a test-local header and form
-declaration, over the Manitoba package list of `support.py`.
-"""
+The T1 employment income form, the inputs part and the line 63 part are loaded under a test-local
+header and form declaration, over the Manitoba package list of `support.py`."""
 
 from __future__ import annotations
 
@@ -43,6 +42,7 @@ from tests.jurisdictions.ca_mb.support import (
     manitoba_units,
 )
 from tests.kinds import non_negative
+from tests.manifest_support import T1_LINE_10100_INPUT, inputs_without_form
 
 D = Decimal
 CODE = JurisdictionCode("CA-MB")
@@ -78,7 +78,12 @@ def _service(tmp_path: Path) -> TaxComputationService:
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
-    names = ["salary.yaml", "mb428_credits_line_63_input.yaml", PART.name]
+    # The salary input belongs to the T1 employment income form, which this manifest does not
+    # declare and no step here reads, so the salary joins the default form as the caller's own.
+    (folder / "01_salary_input.yaml").write_text(
+        inputs_without_form(T1_LINE_10100_INPUT), encoding="utf-8"
+    )
+    names = ["mb428_credits_line_63_input.yaml", PART.name]
     for number, name in enumerate(names, start=2):
         text = (MB_PARTS / name).read_text(encoding="utf-8")
         (folder / f"{number:02d}_{name}").write_text(text, encoding="utf-8")

@@ -1,29 +1,28 @@
 """The Quebec take-home manifest asks the caller for the gross salary only.
 
-The part `salary.yaml` declares the one input of T1 line 10100, employment income (owner ruling
-14 Nov 2026: each province has its own copy, as Ontario has `salary.yaml`). Both returns take the
-gross salary as their first income line (5005-R line 1 and TP-1 line 101). The Quebec manifest is
-not complete until the later line tickets land, so this test reads the part. The end-to-end ticket
-can move these checks onto the built manifest.
+The Quebec T1 employment income form's part `t1_employment_income_line_10100_inputs.yaml` declares
+the one input of T1 line 10100, employment income (the input belongs to that form; the other forms
+read its export). Both returns take the gross salary as their first income line (5005-R line 1 and
+TP-1 line 101). The Quebec manifest is not complete until the later line tickets land, so this test
+reads the part. The end-to-end ticket can move these checks onto the built manifest.
 """
 
 from __future__ import annotations
 
-from pathlib import Path
 from typing import Any
 
 import yaml
 
-import tax_engine.jurisdictions.ca_qc
+from tests.manifest_support import QC_T1_LINE_10100_INPUT
 
-FOLDER = Path(tax_engine.jurisdictions.ca_qc.__file__).parent / "manifests" / "2025"
-PART = FOLDER / "salary.yaml"
+PART = QC_T1_LINE_10100_INPUT
 
 
 def _inputs() -> list[dict[str, Any]]:
     part = yaml.safe_load(PART.read_text(encoding="utf-8"))
     assert isinstance(part, dict)
-    assert list(part) == ["inputs"]
+    assert list(part) == ["form", "inputs"]
+    assert part["form"] == {"name": "ca-qc/t1_employment_income"}
     return list(part["inputs"])
 
 

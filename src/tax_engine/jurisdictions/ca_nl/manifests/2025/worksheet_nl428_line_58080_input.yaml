@@ -3,6 +3,8 @@
 # The return asks for the filer's year of birth. A salary-only caller born later leaves it out, and
 # a request that leaves it out is read as blank. The existing federal count
 # `ca/born_in_1960_or_earlier` is used: it is a shared fact, so no new kind is declared.
+form:
+  name: ca-nl/nl428_credits
 inputs:
   - name: ca/born_in_1960_or_earlier
     title: "Age amount (if you were born in 1960 or earlier)"

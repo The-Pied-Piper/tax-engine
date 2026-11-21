@@ -4,11 +4,12 @@
 # own `ca/refund_or_balance_owing`.
 #
 # The return's second output is the average income tax rate, which no form prints (so its step has
-# no title or reference): T1 line 43500 "Total payable" (for the take-home filer, line 143 plus
-# line 147's Saskatchewan tax: the federal and the Saskatchewan income tax) divided by the salary,
-# T1 line 10100 (`ca/employment_income`). T1 exports line 43500, so a core/record_total step reads
-# it into the return's own `ca/total_payable`, then core/divide divides it by the salary, rounding
-# once with `ca-sk/rate_rounding` (half-up to 0.0001); a salary of 0 gives 0.
+# no title or reference): T1 line 43500 "Total payable" (for the take-home filer, line 143 plus line
+# 147's Saskatchewan tax: the federal and the Saskatchewan income tax) divided by the salary, T1
+# line 10100 (`ca/return_employment_income`, read from the T1 line 10100 export). T1 exports line
+# 43500, so a core/record_total step reads it into the return's own `ca/total_payable`, then
+# core/divide divides it by the salary, rounding once with `ca-sk/rate_rounding` (half-up to
+# 0.0001); a salary of 0 gives 0.
 #
 # The third output is the marginal rate, the income tax rate on a further dollar of salary, built
 # as the Alberta, Ontario and British Columbia returns build it, without a tax reduction. The
@@ -67,13 +68,19 @@ capabilities:
       records: ca/t1_tax_and_credits.total_payable
     produces:
       output: ca/total_payable
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/t1_employment_income.employment_income_line_10100
+    produces:
+      output: ca/return_employment_income
   - name: core/divide
     unit: core/percent
     params:
       rounding: ca-sk/rate_rounding
     consumes:
       dividend: ca/total_payable
-      divisor: ca/employment_income
+      divisor: ca/return_employment_income
     produces:
       output: ca-sk/average_income_tax_rate
   - name: core/record_total

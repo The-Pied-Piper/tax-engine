@@ -30,9 +30,6 @@ HEADER = dedent("""\
     jurisdiction: CA-QC
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca-qc/net_income
-        required: true
     outputs:
       - ca-qc/net_income
     capabilities: []
@@ -43,6 +40,9 @@ FORM = dedent("""\
       required: true
       exports:
         - ca-qc/taxable_income
+    inputs:
+      - name: ca-qc/net_income
+        required: true
     capabilities: []
     """)
 

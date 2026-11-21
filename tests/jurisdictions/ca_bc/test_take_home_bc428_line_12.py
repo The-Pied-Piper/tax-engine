@@ -55,7 +55,6 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 CODE = JurisdictionCode("CA-BC")
@@ -90,12 +89,17 @@ DIRECT_HEADER = dedent(f"""\
     jurisdiction: CA-BC
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: {LINE_1}
-        required: true
     outputs:
       - {LINE_1}
     capabilities: []
+    """)
+# The input line 1 is the caller's, owned by the BC428 form that reads it.
+DIRECT_INPUT = dedent(f"""\
+    form:
+      name: {FORM}
+    inputs:
+      - name: {LINE_1}
+        required: true
     """)
 DIRECT_FORM = dedent(f"""\
     form:
@@ -113,16 +117,13 @@ def _federal(name: str) -> Path:
 
 def _part_files() -> Iterator[tuple[str, str]]:
     """Each part's name and text, in composition order."""
-    yield "salary.yaml", (BC_PARTS / "salary.yaml").read_text(encoding="utf-8")
     for found in form_parts("schedule_8"):
         yield found.name, found.read_text(encoding="utf-8")
     for name in T1_PARTS:
         found = _federal(name)
         yield (
             name,
-            inputs_without_form(found)
-            if name.endswith("_inputs.yaml")
-            else found.read_text("utf-8"),
+            found.read_text("utf-8"),
         )
     yield "bc428_line_1.yaml", (BC_PARTS / "bc428_line_1.yaml").read_text(encoding="utf-8")
     yield LINE_PART.name, LINE_PART.read_text(encoding="utf-8")
@@ -175,6 +176,7 @@ def _direct(tmp_path: Path, taxable_income: str) -> Artifact[Decimal]:
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(DIRECT_HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(DIRECT_FORM, encoding="utf-8")
+    (folder / "01_input.yaml").write_text(DIRECT_INPUT, encoding="utf-8")
     (folder / "02_bc428_line_12.yaml").write_text(
         LINE_PART.read_text(encoding="utf-8"), encoding="utf-8"
     )

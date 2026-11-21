@@ -1,10 +1,10 @@
 """Schedule 8 (5000-S8, 2025) from the salary alone: the form's real parts composed end to end.
 
 Every line part has its own test with its neighbours typed in. This module composes the whole form:
-it copies every `schedule_8*.yaml` part, plus `salary.yaml`, from the package into a temporary
-manifest folder beside a test-only header, and types in only what the take-home caller types in,
-the gross salary (`ca/employment_income`). The real header is not used because its output, T1 line
-167, is not built yet. This is not a worked return: no return file, no slips, one form.
+it copies every `schedule_8*.yaml` part, plus the line 10100 input part, from the package into a
+temporary manifest folder beside a test-only header, and types in only what the take-home caller
+types in, the gross salary (`ca/employment_income`). The real header is not used because its output,
+T1 line 167, is not built yet. This is not a worked return: no return file, no slips, one form.
 
 Form text: CRA 5000-S8 (2025), Part 3 lines 1 to 28 and the "Monthly proration for 2025" table.
 The expected figures are the ones the full-form audit produced from this same composition, plus
@@ -50,7 +50,6 @@ from tax_engine.jurisdictions.ca.catalog.rc381_cpp_qpp import (
     T4_CPP_PENSIONABLE_EARNINGS_OUTSIDE_QUEBEC,
 )
 from tests.federal_forms import form_parts
-from tests.jurisdictions.ca_on.conftest import TAKE_HOME
 
 D = Decimal
 HEADER = dedent("""\
@@ -86,7 +85,6 @@ def service(tmp_path: Path) -> TaxComputationService:
     parts.mkdir(parents=True)
     (parts / "00_header.yaml").write_text(HEADER)
     for part in [
-        TAKE_HOME / "salary.yaml",
         *form_parts("schedule_8", "t1_employment_income"),
     ]:
         shutil.copy(part, parts / part.name)

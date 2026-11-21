@@ -3,6 +3,8 @@
 # The form prints no label for the line, so the input carries no title. A salary-only caller has no
 # minimum tax carryover, so a request that leaves box A out is read as blank; the step that reads
 # line 65 reads that blank as 0.
+form:
+  name: ca-sk/sk428
 inputs:
   - name: ca-sk/sk428_minimum_tax_carryover_amount_line_65
     reference: "65 box A"

@@ -39,9 +39,6 @@ HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca-on/on428_credits_subtotal_line_25
-        required: true
     outputs:
       - ca-on/on428_credits_subtotal_line_25
     """)
@@ -51,6 +48,9 @@ FORM = dedent("""\
       required: true
       exports:
         - ca-on/on428_credits_with_pension_line_28
+    inputs:
+      - name: ca-on/on428_credits_subtotal_line_25
+        required: true
     """)
 
 

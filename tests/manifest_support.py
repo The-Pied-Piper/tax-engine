@@ -6,8 +6,10 @@ import re
 from collections.abc import Iterable
 from pathlib import Path
 
+import tax_engine.jurisdictions.ca_qc
 from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import InputDeclaration
+from tests.federal_forms import FEDERAL_FORMS
 
 
 def required_fields(kind: RecordListKind) -> tuple[InputDeclaration, ...]:
@@ -15,9 +17,9 @@ def required_fields(kind: RecordListKind) -> tuple[InputDeclaration, ...]:
     return tuple(InputDeclaration(name=field.identifier, required=True) for field in kind.fields)
 
 
-def required_inputs(names: Iterable[str]) -> dict[str, InputDeclaration]:
-    """A required declaration for each of `names`, by identifier."""
-    return {name: InputDeclaration(name=name, required=True) for name in sorted(names)}
+def required_inputs(names: Iterable[str]) -> tuple[InputDeclaration, ...]:
+    """A required declaration for each of `names`, by identifier, for the `inputs` of a form."""
+    return tuple(InputDeclaration(name=name, required=True) for name in sorted(names))
 
 
 def inputs_without_form(part: Path) -> str:
@@ -37,3 +39,19 @@ T1_LINE_10100_FORM = (
 
 # The same two parts by file name, for the Ontario take-home builder, which finds each by name.
 T1_LINE_10100_PARTS = (T1_LINE_10100_FORM.name, "t1_employment_income_line_10100.yaml")
+
+
+# The T1 employment income form's part that declares the salary (line 10100) input, federal and
+# Quebec's own. The salary belongs to that form, so a test manifest that copies a step reading it
+# copies this part with its `form:` header.
+T1_LINE_10100_INPUT = (
+    FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100_inputs.yaml"
+)
+# The part that computes line 10100 itself (the step), beside the input part above.
+T1_LINE_10100_STEP = T1_LINE_10100_INPUT.with_name("t1_employment_income_line_10100.yaml")
+QC_T1_LINE_10100_INPUT = (
+    Path(tax_engine.jurisdictions.ca_qc.__file__).parent
+    / "manifests"
+    / "2025"
+    / "t1_employment_income_line_10100_inputs.yaml"
+)

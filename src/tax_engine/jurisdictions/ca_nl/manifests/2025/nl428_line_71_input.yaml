@@ -2,6 +2,8 @@
 # Line 71: "Amount from line 14 of Part 7 of Form T691 multiplied by 60%" (Form NL428, CRA 5001-C). Form
 # T691 is not built and a salary-only caller has no Form T691 amount, so a request that leaves the
 # line out is read as blank; the step that reads line 71 reads that blank as 0.
+form:
+  name: ca-nl/nl428
 inputs:
   - name: ca-nl/nl428_t691_amount_line_71
     title: "Amount from line 14 of Part 7 of Form T691"

@@ -29,11 +29,6 @@ HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/cpp_part_3_line_2
-        required: true
-      - name: ca/cpp_part_3_line_4
-        required: true
     outputs:
       - ca/cpp_part_3_line_2
     """)
@@ -43,6 +38,11 @@ FORM = dedent("""\
       required: true
       exports:
         - ca/cpp_part_3_line_5
+    inputs:
+      - name: ca/cpp_part_3_line_2
+        required: true
+      - name: ca/cpp_part_3_line_4
+        required: true
     """)
 
 

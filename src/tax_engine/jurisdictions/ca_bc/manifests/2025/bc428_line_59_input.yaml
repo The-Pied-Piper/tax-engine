@@ -2,6 +2,8 @@
 # Line 59: "Line 59 and line 58980: Amount of qualifying gifts also claimed on line 57 multiplied by
 # 25%" (5010-c). A caller with no such gifts has nothing to enter, so a request that leaves the
 # line out is read as blank; the step that reads line 59 reads that blank as 0.
+form:
+  name: ca-bc/bc428
 inputs:
   - name: ca-bc/bc428_qualifying_gifts_line_59
     title: "Amount of qualifying gifts also claimed on line 57"

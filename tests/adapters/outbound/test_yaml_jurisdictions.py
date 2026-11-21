@@ -145,12 +145,12 @@ def test_parses_manifest_into_domain_objects(tmp_path: Path) -> None:
                 jurisdiction=EX_ON,
                 version=1,
                 valid_from_tax_year=2025,
-                inputs=required_inputs(frozenset({"ex/gross_income", "ex/taxable_base"})),
                 forms=(
                     Form(
                         required=True,
                         name="ex-on/return",
                         instances=None,
+                        inputs=required_inputs(frozenset({"ex/gross_income", "ex/taxable_base"})),
                         exports=("ex-on/levy", "ex/savings_deduction"),
                         capabilities=(
                             CapabilitySelection(
@@ -770,12 +770,12 @@ def test_a_folder_is_one_manifest_merged_from_its_parts(tmp_path: Path) -> None:
         jurisdiction=EX_ON,
         version=1,
         valid_from_tax_year=2025,
-        inputs=required_inputs(frozenset({"ex/x"})),
         forms=(
             Form(
                 required=True,
                 name="ex-on/return",
                 instances=None,
+                inputs=required_inputs(frozenset({"ex/x"})),
                 exports=("ex/y",),
                 capabilities=(
                     CapabilitySelection(
@@ -2106,6 +2106,8 @@ def test_an_input_declares_whether_it_is_required_and_optional_ones_a_default_an
         "ex/rows": InputDeclaration("ex/rows", False, finished("ex/rows", ()), "Line 3"),
         "ex/box": InputDeclaration("ex/box", False, finished("ex/box", None), "Line 4"),
     }
+    # the parts name no form, so the inputs belong to the default form
+    assert manifest.forms[0].inputs == tuple(manifest.inputs.values())
 
 
 def test_an_input_may_give_the_title_and_reference_the_form_prints(tmp_path: Path) -> None:

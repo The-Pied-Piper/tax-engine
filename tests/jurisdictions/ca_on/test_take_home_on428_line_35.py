@@ -28,9 +28,6 @@ HEADER = f"""\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-inputs:
-  - name: {LINE_31}
-    required: true
 outputs:
   - {LINE_31}
 capabilities: []
@@ -42,6 +39,9 @@ form:
   required: true
   exports:
     - {LINE_35}
+inputs:
+  - name: {LINE_31}
+    required: true
 capabilities: []
 """
 

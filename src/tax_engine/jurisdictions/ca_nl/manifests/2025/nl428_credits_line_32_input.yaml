@@ -3,6 +3,8 @@
 # The engine does not compute the claim, so the figure is taken as one optional input the way the
 # form takes it, a dollar amount entered on the line. A request that leaves the line out is read as
 # blank. A later line reads it.
+form:
+  name: ca-nl/nl428_credits
 inputs:
   - name: ca-nl/nl428_search_and_rescue_volunteers_amount_line_32
     title: "Search and rescue volunteers' amount"

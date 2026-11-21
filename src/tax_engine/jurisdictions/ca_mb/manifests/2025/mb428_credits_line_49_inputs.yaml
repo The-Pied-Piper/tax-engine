@@ -2,6 +2,8 @@
 # medical expenses for other dependants (use Worksheet MB428)". The engine does not compute the
 # worksheet, so the line is taken as one optional input, the way the form takes it.
 # A request that leaves the line out is read as blank; the line 50 step reads that blank as 0.
+form:
+  name: ca-mb/mb428_credits
 inputs:
   - name: ca-mb/mb428_other_dependants_medical_expenses_line_49
     title: "Allowable amount of medical expenses for other dependants (use Worksheet MB428)"

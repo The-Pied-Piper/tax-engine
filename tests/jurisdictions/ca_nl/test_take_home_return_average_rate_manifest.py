@@ -46,8 +46,16 @@ def test_the_return_part_reads_total_payable_and_divides_it_by_the_salary() -> N
     assert divide["params"] == {"rounding": "ca-nl/rate_rounding"}
     assert divide["consumes"] == {
         "dividend": "ca/total_payable",
-        "divisor": "ca/employment_income",
+        "divisor": "ca/return_employment_income",
     }
+
+
+def test_the_divisor_is_the_total_of_the_t1_line_10100_export() -> None:
+    salary = _producing("ca/return_employment_income")
+
+    assert salary["name"] == "core/record_total"
+    assert salary["unit"] == "ca/cad"
+    assert salary["consumes"] == {"records": "ca/t1_employment_income.employment_income_line_10100"}
 
 
 def test_the_two_steps_carry_no_title_and_no_reference() -> None:

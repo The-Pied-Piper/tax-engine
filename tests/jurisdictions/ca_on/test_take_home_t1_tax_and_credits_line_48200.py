@@ -49,7 +49,6 @@ LINE_45300 = "ca/cwb_line_45300"
 LINE_47900 = "ca/provincial_credits_line_47900"
 LINE_48200 = "ca/total_credits"
 PARTS = (
-    "salary.yaml",
     *form_part_names("schedule_8"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),
     *form_part_names("t2204"),

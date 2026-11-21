@@ -4,6 +4,8 @@
 # only to compute a claim a salary-only caller leaves empty, so that block is skipped and the line
 # is taken as one optional input. A request that leaves the line out is read as blank; line 51 reads
 # that blank as 0.
+form:
+  name: ca-ab/ab428_credits
 inputs:
   - name: ca-ab/ab428_allowable_medical_expenses_for_other_dependants_line_50
     title: "Allowable amount of medical expenses for other dependants (use Worksheet AB428)"

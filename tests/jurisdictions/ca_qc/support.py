@@ -31,7 +31,7 @@ from tax_engine.domain.unit import UnitRegistry
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca.catalog.refund import T2204_PREMIUMS_DEDUCTED_GIVEN
-from tests.manifest_support import inputs_without_form
+from tests.manifest_support import T1_LINE_10100_INPUT, T1_LINE_10100_STEP, inputs_without_form
 
 
 @cache
@@ -85,9 +85,7 @@ T2204_HEADER = dedent("""\
     jurisdiction: CA-QC
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/employment_income
-        required: true
+    inputs: []
     outputs:
       - ca/employment_income
     capabilities: []
@@ -106,7 +104,10 @@ T2204_FORM = dedent("""\
         ca/t1_employment_income.employment_income_line_10100: ca-qc/employment_income_line_10100
     capabilities: []
     """)
-T2204_T1_PART = "t1_employment_income_line_10100.yaml"
+T2204_T1_PARTS = (
+    T1_LINE_10100_INPUT.name,
+    T1_LINE_10100_STEP.name,
+)
 
 
 def real_import(form: str) -> str:
@@ -124,7 +125,7 @@ def t2204_worksheet(
     """The Quebec T2204 worksheet for a salary, over a temporary manifest that takes the salary and
     imports the shared T2204 exactly as the real Quebec manifest does, with its dataset swap. Line
     4 is left blank unless `given` is passed."""
-    service = take_home_service(T2204_HEADER + real_import("ca/t2204"), T2204_FORM, T2204_T1_PART)
+    service = take_home_service(T2204_HEADER + real_import("ca/t2204"), T2204_FORM, *T2204_T1_PARTS)
     starting = [Artifact(EMPLOYMENT_INCOME, Decimal(salary))]
     if given is not None:
         starting.append(Artifact(T2204_PREMIUMS_DEDUCTED_GIVEN, Decimal(given)))
@@ -139,8 +140,19 @@ SCHEDULE_P_HEADER = dedent("""\
     outputs:
       - ca/employment_income
     """)
+# The salary: the Quebec T1 employment income form that owns the input (its declaration, the input
+# and lines 10100 and 10400, which the form declaration exports), for a test that reads no line of
+# any other form.
+T1_SALARY_PARTS = (
+    "t1_employment_income.yaml",
+    T1_LINE_10100_INPUT.name,
+    T1_LINE_10100_STEP.name,
+    "t1_employment_income_line_10400_inputs.yaml",
+    "t1_employment_income_line_10400.yaml",
+)
 TP1_PARTS = (
-    "salary.yaml",
+    *T1_SALARY_PARTS,
+    "tp1_income_line_101.yaml",
     "tp1_income.yaml",
     "tp1_income_line_105_input.yaml",
     "tp1_income_line_107_input.yaml",

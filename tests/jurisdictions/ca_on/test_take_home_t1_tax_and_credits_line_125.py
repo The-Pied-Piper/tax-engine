@@ -42,7 +42,6 @@ LINE_125 = "ca/credits_against_basic_federal_tax"
 # parts, the real T1 taxable-income lines and inputs, lines 30000, 84, 31260, 96, 98, 101, 106,
 # 33500, 33800 and 35000, and the part under test.
 PARTS = (
-    "salary.yaml",
     *form_part_names("schedule_8"),
     *form_part_names("t2204"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),

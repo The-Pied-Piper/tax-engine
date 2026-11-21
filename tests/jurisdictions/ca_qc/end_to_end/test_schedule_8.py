@@ -66,12 +66,6 @@ HEADER_TEMPLATE = dedent("""\
     outputs:
       - ca/employment_income
     capabilities: []
-    inputs:
-      - name: ca/employment_income
-        title: "Employment income"
-        reference: "10100"
-        unit: ca/cad
-        required: true
     imports:
       - {schedule_8}
     """)

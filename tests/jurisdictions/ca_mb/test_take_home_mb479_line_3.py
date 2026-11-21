@@ -6,7 +6,7 @@ only; column 2 (the spouse) is not built for a single filer. Line 3 is one core/
 salary-only filer: the blank line 2 is read as 0 and the step prints its own "left blank, taken as
 0" row. The result is signed, because line 1 is.
 
-The test composes the real Manitoba salary part, the real Schedule 8 parts, the real T1 taxable
+The test composes the T1 employment income form, the real Schedule 8 parts, the real T1 taxable
 income parts, the real line 1 part, the line 2 input part and the line 3 part, and types in only the
 salary (and, in some tests, line 2 or the social benefits repayment). The MB479 form declaration is
 made up here, exporting only line 3.
@@ -50,7 +50,6 @@ from tests.jurisdictions.ca_mb.support import (
     manitoba_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 CENT = D("0.01")
@@ -105,7 +104,6 @@ def docstring_of(identifier: str) -> str:
 
 
 def _part_files() -> Iterator[Path]:
-    yield MB_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     for name in T1_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
@@ -121,9 +119,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
     for number, part in enumerate(_part_files(), start=2):
         (folder / f"{number:02d}_{part.name}").write_text(
-            inputs_without_form(part)
-            if part.name.endswith("_inputs.yaml") and part.is_relative_to(FEDERAL_FORMS)
-            else part.read_text(encoding="utf-8"),
+            part.read_text(encoding="utf-8"),
             encoding="utf-8",
         )
     roots = {**manitoba_packages().roots(), Namespace("ca-mb"): tmp_path}

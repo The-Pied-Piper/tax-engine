@@ -3,6 +3,8 @@
 # 5001-C). A salary-only caller has no eligible dependant net income to enter, so a request that
 # leaves the line out is read as blank. The figure is signed: a dependant's net income can be a
 # loss, and the form prints no floor. Line 23 (a later ticket) reads it.
+form:
+  name: ca-nl/nl428_credits
 inputs:
   - name: ca-nl/nl428_eligible_dependant_net_income_line_22
     title: "Your eligible dependant's net income from line 23600 of their return"

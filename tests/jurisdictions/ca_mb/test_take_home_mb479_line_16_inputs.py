@@ -44,11 +44,21 @@ outputs: [ca/total_income]
 capabilities: []
 """
 
+FORM = """\
+form:
+  name: ca-mb/mb479
+  required: true
+  exports:
+    - ca/total_income
+capabilities: []
+"""
+
 
 def _manifest(tmp_path: Path) -> Manifest:
     folder = tmp_path / "manifest"
     folder.mkdir()
     (folder / "header.yaml").write_text(HEADER)
+    (folder / "form.yaml").write_text(FORM)
     shutil.copy(PART, folder / PART.name)
     source = YamlJurisdictionSource(manitoba_packages().roots(), manitoba_kinds(), manitoba_units())
     return source.load(folder)
@@ -63,7 +73,8 @@ def _part() -> dict[str, Any]:
 def test_the_part_declares_only_the_line_16_input() -> None:
     part = _part()
 
-    assert list(part) == ["inputs"]
+    assert list(part) == ["form", "inputs"]
+    assert part["form"] == {"name": "ca-mb/mb479"}
     assert part["inputs"] == [
         {
             "name": IDENTIFIER,

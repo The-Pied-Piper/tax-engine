@@ -27,12 +27,18 @@ HEADER = f"""\
 jurisdiction: CA-BC
 version: 1
 valid_from_tax_year: 2025
-inputs:
-  - name: {LINE_45}
-    required: true
+inputs: []
 outputs:
   - {LINE_45}
 capabilities: []
+"""
+# The inputs belong to the form that exports them, so they are declared in a part of that form.
+OWNED_INPUTS = f"""\
+form:
+  name: ca-bc/bc479
+inputs:
+  - name: {LINE_45}
+    required: true
 """
 
 
@@ -40,6 +46,7 @@ def test_the_form_is_declared_with_its_export_and_its_supply(tmp_path: Path) -> 
     folder = tmp_path / "manifests" / "2025"
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
+    (folder / "00_inputs.yaml").write_text(OWNED_INPUTS, encoding="utf-8")
     (folder / "01_bc479.yaml").write_text(PART.read_text(encoding="utf-8"), encoding="utf-8")
     source = YamlJurisdictionSource(
         british_columbia_packages().roots(),

@@ -8,7 +8,7 @@ net income before its floor (`ca/t1_taxable_income.net_income_signed`), as Sched
 it (`schedule_6_line_7.yaml`). The result is signed, because the form shows a negative net income
 in brackets.
 
-The test composes the real British Columbia salary part, the real Schedule 8 parts, the real T1
+The test composes the T1 employment income form, the real Schedule 8 parts, the real T1
 taxable income parts and the real line part (`bc479_line_1.yaml`), and types in only the salary
 (and, for the negative case, line 23500). The form declaration is made up here, exporting the line
 read, because the real form part is owned by another change. The figures are hand-computed from the
@@ -46,7 +46,6 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
@@ -78,7 +77,6 @@ CASES = [
 
 
 def _part_files() -> Iterator[Path]:
-    yield BC_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     for name in T1_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
@@ -92,9 +90,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
     for number, part in enumerate(_part_files(), start=2):
         (folder / f"{number:02d}_{part.name}").write_text(
-            inputs_without_form(part)
-            if part.name.endswith("_inputs.yaml") and part.is_relative_to(FEDERAL_FORMS)
-            else part.read_text(encoding="utf-8"),
+            part.read_text(encoding="utf-8"),
             encoding="utf-8",
         )
     roots = {**british_columbia_packages().roots(), Namespace("ca-bc"): tmp_path}

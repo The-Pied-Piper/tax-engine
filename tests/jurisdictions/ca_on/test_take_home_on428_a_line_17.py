@@ -35,11 +35,6 @@ HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca-on/lift_adjusted_net_income
-        required: true
-      - name: ca-on/lift_individual_income_threshold
-        required: true
     outputs:
       - ca-on/lift_adjusted_net_income
     """)
@@ -49,6 +44,11 @@ FORM = dedent("""\
       required: true
       exports:
         - ca-on/lift_single_excess_over_threshold
+    inputs:
+      - name: ca-on/lift_adjusted_net_income
+        required: true
+      - name: ca-on/lift_individual_income_threshold
+        required: true
     """)
 
 

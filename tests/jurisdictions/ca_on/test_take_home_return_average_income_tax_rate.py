@@ -5,14 +5,16 @@ deductions (CPP and EI are not income tax). Income tax is T1 line 43500 "Total p
 federal plus Ontario income tax, `ca/total_payable`), the salary is `ca/employment_income`. The form
 prints no such figure, so the step has no title and no reference.
 
-The return summary (`ca-on/return`) holds three steps for it. T1 exports `ca/total_payable`, and
-another form's export is read only as a record, so the return reads it with `core/record_total`
-from `ca/t1_tax_and_credits.total_payable` into the return's own `ca/total_payable` (the way it
-reads `ca/refund_or_balance_owing`; the read step produces the kind T1 produced, on the return's
-own sheet, so no new kind is declared for it). Then `core/divide` takes `ca/total_payable` ÷
-`ca/employment_income`, rounded once by the `ca-on/rate_rounding` dataset (half-up to 0.0001), and
-produces `ca-on/average_income_tax_rate` (unit `core/percent`, non-negative), which is added to the
-manifest `outputs`. A salary of 0 gives a rate of 0, not an error.
+The return summary (`ca-on/return`) holds four steps for it (the first, `core/record_total`, reads
+the T1 employment income form's line 10100 export into `ca/return_employment_income`, the divisor).
+T1 exports `ca/total_payable`, and another form's export is read only as a record, so the return
+reads it with `core/record_total` from `ca/t1_tax_and_credits.total_payable` into the return's own
+`ca/total_payable` (the way it reads `ca/refund_or_balance_owing`; the read step produces the kind
+T1 produced, on the return's own sheet, so no new kind is declared for it). Then `core/divide` takes
+`ca/total_payable` ÷ `ca/return_employment_income`, rounded once by the `ca-on/rate_rounding`
+dataset (half-up to 0.0001), and produces `ca-on/average_income_tax_rate` (unit `core/percent`,
+non-negative), which is added to the manifest `outputs`. A salary of 0 gives a rate of 0, not an
+error.
 
 Worked figures (salary only, Ontario resident, single, basic credits, 2025):
 $70,000: 11,497.09 / 70,000 = 0.164244..., half-up to 0.1642 (16.42%);
@@ -131,7 +133,7 @@ def test_the_trace_records_one_quotient_line_with_the_rate_rounding(
     ]
     assert line.dividend == bundled_kinds().kind(TOTAL_PAYABLE)
     assert line.dividend_amount == D("11497.09")
-    assert line.divisor == EMPLOYMENT_INCOME
+    assert line.divisor == bundled_kinds().kind("ca/return_employment_income")
     assert line.divisor_amount == D("70000")
     assert line.result == D("0.1642")
     assert line.label == AVERAGE_INCOME_TAX_RATE.label

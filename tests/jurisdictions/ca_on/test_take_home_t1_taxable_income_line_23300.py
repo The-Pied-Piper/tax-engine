@@ -28,7 +28,6 @@ from tests.jurisdictions.ca_on.conftest import TakeHomeService
 D = Decimal
 ONTARIO = JurisdictionCode("CA-ON")
 PARTS = (
-    "salary.yaml",
     *form_part_names("schedule_8"),
     *form_part_names("t1_employment_income"),
     "t1_taxable_income_line_23300.yaml",

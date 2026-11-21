@@ -62,9 +62,6 @@ HEADER = dedent(f"""\
     jurisdiction: CA-AB
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: {LINE_1}
-        required: true
     outputs:
       - {LINE_1}
     capabilities: []
@@ -75,6 +72,9 @@ FORM = dedent(f"""\
       required: true
       exports:
         - {LINE_5}
+    inputs:
+      - name: {LINE_1}
+        required: true
     capabilities: []
     """)
 

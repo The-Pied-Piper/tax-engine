@@ -7,7 +7,7 @@ line 49, the optional allowable amount of medical expenses for other dependants
 (`sk428_credits_line_49_input.yaml`), in line order. A request that leaves line 49 blank has it read
 as 0. The form prints no label for the line, so the step has no title.
 
-The test composes the real Saskatchewan salary part, the real Schedule 8 and T1 taxable income
+The test composes the T1 employment income form, the real Schedule 8 and T1 taxable income
 parts and the real lines 43, 44, 46, 47, 48, 49 and 50 parts, and types in the salary and, where a
 case gives them, lines 43 and 49. The header and the form declaration are made up here, the form
 exporting line 50.
@@ -40,7 +40,7 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tests.federal_forms import FEDERAL_FORMS, form_parts
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_sk.support import (
     saskatchewan_capabilities,
     saskatchewan_kinds,
@@ -49,7 +49,6 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 CENT = D("0.01")
@@ -79,7 +78,6 @@ FORM = dedent("""\
 
 
 def _part_files() -> Iterator[Path]:
-    yield SK_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     yield from form_parts("t1_taxable_income", "t1_employment_income")
     yield SK_PARTS / "sk428_credits_line_43_input.yaml"
@@ -100,9 +98,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
     for number, part in enumerate(_part_files(), start=2):
         (folder / f"{number:02d}_{part.name}").write_text(
-            inputs_without_form(part)
-            if part.name.endswith("_inputs.yaml") and part.is_relative_to(FEDERAL_FORMS)
-            else part.read_text(encoding="utf-8"),
+            part.read_text(encoding="utf-8"),
             encoding="utf-8",
         )
     roots = {**saskatchewan_packages().roots(), Namespace("ca-sk"): tmp_path}

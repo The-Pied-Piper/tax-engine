@@ -6,7 +6,7 @@ non-refundable tax credits" for the line, so the step carries that title and the
 Line 56, "Line 56 and line 58969: Line 54 plus line 55", is computed from lines 54 and 55 (0.00
 for a salary-only filer). Line 57 is one core/sum over line 53 and line 56.
 
-The test composes the real Manitoba salary part, the real Schedule 8, T2204 and T1 taxable income
+The test composes the T1 employment income form, the real Schedule 8, T2204 and T1 taxable income
 parts, the real parts of Worksheet MB428 lines 1 to 9, the real parts of Schedule MB428-A lines 1
 to 12, the real parts of MB428 lines 9, 18, 19, 21, 28, 29, 33, 36, 41, 42 and 51, the line 31,
 line 50 input parts, the real parts of lines 54 to 56, the real `mb428_credits_line_53.yaml`, and
@@ -48,7 +48,6 @@ from tests.jurisdictions.ca_mb.support import (
     manitoba_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"
@@ -164,7 +163,6 @@ CASES = [
 
 
 def _part_files() -> Iterator[Path]:
-    yield MB_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
     for name in T1_PARTS:
@@ -191,9 +189,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "03_credits_form.yaml").write_text(FORM, encoding="utf-8")
     for number, part in enumerate(_part_files(), start=4):
         (folder / f"{number:02d}_{part.name}").write_text(
-            inputs_without_form(part)
-            if part.name.endswith("_inputs.yaml") and part.is_relative_to(FEDERAL_FORMS)
-            else part.read_text(encoding="utf-8"),
+            part.read_text(encoding="utf-8"),
             encoding="utf-8",
         )
     roots = {**manitoba_packages().roots(), Namespace("ca-mb"): tmp_path}

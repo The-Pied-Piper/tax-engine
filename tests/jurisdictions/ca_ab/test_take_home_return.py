@@ -8,7 +8,7 @@ read only as a record list), producing the return's own `ca/refund_or_balance_ow
 a balance owing, negative a refund. The step has no `form` key (the return is the default form) and
 no params.
 
-The test composes the real Alberta salary part and the real `return.yaml`. The header, the
+The test composes the T1 employment income form and the real `return.yaml`. The header, the
 declaration of the T1 tax and credits form (exporting `ca/refund_or_balance_owing`) and the step
 producing that export are made up here, because the shared scaffold and the T1 form own them: the
 stand-in step takes a given `ca/total_credits` off the salary, so the figure is positive at a
@@ -43,6 +43,7 @@ from tests.jurisdictions.ca_ab.support import (
     alberta_parameter_parsers,
     alberta_units,
 )
+from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
 D = Decimal
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
@@ -87,6 +88,8 @@ AB428_FORM = dedent("""\
     capabilities: []
     """)
 CREDITS_INPUT = dedent("""\
+    form:
+      name: ca/t1_tax_and_credits
     inputs:
       - name: ca/total_credits
         title: "Total credits"
@@ -94,7 +97,9 @@ CREDITS_INPUT = dedent("""\
         unit: ca/cad
         required: true
     """)
-# The stand-in for the T1 line 167 step: the salary less the given credits, signed.
+# The stand-in for the T1 line 167 step: the salary less the given credits, signed. The salary is
+# read through the stand-in for `ca/total_payable` (the salary itself, below), as only the T1
+# employment income form reads the salary input.
 T1_STEP = dedent("""\
     form:
       name: ca/t1_tax_and_credits
@@ -104,7 +109,7 @@ T1_STEP = dedent("""\
         params:
           rounding: ca/cent_rounding
         consumes:
-          amount: ca/employment_income
+          amount: ca/total_payable
           less: ca/total_credits
         produces:
           output: ca/refund_or_balance_owing
@@ -151,24 +156,27 @@ def _other_step(form: str, output: str) -> str:
                   output: {output}
             """
     elif "rate" in output:
+        base = (
+            "ca/total_payable"
+            if form == "ca/t1_tax_and_credits"
+            else "ca-ab/ab428_tax_on_taxable_income_line_8"
+        )
         step = f"""\
               - name: core/amount_by_band_rate
                 unit: core/percent
                 params:
                   table: ca-ab/marginal_rate_gate
                 consumes:
-                  base: ca/employment_income
+                  base: {base}
                 produces:
                   output: {output}
             """
     else:
         step = f"""\
-              - name: core/sum
+              - name: core/record_total
                 unit: ca/cad
-                params:
-                  rounding: ca/cent_rounding
                 consumes:
-                  parts: [ca/employment_income]
+                  records: ca/t1_employment_income.employment_income_line_10100
                 produces:
                   output: {output}
             """
@@ -183,6 +191,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     texts = [
         ("00_header.yaml", HEADER),
         ("01_t1_form.yaml", T1_FORM),
+        ("01a_t1_employment_income_form.yaml", T1_LINE_10100_FORM.read_text(encoding="utf-8")),
         ("02_credits_input.yaml", CREDITS_INPUT),
         ("03_t1_step.yaml", T1_STEP),
         ("03a_ab428_credits_form.yaml", AB428_CREDITS_FORM),
@@ -191,7 +200,11 @@ def _service(tmp_path: Path) -> TaxComputationService:
             (f"03c_{number}.yaml", _other_step(form, out))
             for number, (form, out) in enumerate(OTHER_STEPS)
         ],
-        ("04_salary.yaml", (ALBERTA_PARTS / "salary.yaml").read_text(encoding="utf-8")),
+        ("04_salary.yaml", T1_LINE_10100_INPUT.read_text(encoding="utf-8")),
+        (
+            "04a_line_10100.yaml",
+            T1_LINE_10100_STEP.read_text(encoding="utf-8"),
+        ),
         ("05_return.yaml", RETURN_PART.read_text(encoding="utf-8")),
     ]
     for name, text in texts:

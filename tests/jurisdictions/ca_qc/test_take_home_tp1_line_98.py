@@ -28,11 +28,12 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     TP1_QPP_CONTRIBUTION_LINE_98,
 )
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
+from tests.jurisdictions.ca_qc.tp1_net_income_support import SALARY_PARTS
 
 D = Decimal
 
 PARTS = (
-    "salary.yaml",
+    *SALARY_PARTS,
     "tp1_income_line_98_input.yaml",
     "tp1_income_line_98.yaml",
 )
