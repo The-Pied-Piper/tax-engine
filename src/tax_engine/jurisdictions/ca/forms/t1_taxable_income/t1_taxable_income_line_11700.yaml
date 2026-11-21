@@ -1,0 +1,20 @@
+# T1 (5006-R, 2025) line 11700: "Line 7 and line 11700: Universal child care benefit (UCCB) (see the RC62 slip)" (5006-R page 3). The optional input
+# (`ca/uccb_income`, blank when the filer has none) is read by this step, which is the one line the T1
+# prints for it, and the blank reads as 0. The form exports the line (`ca/uccb_income_line_11700`) for the forms
+# that print it again as part of a total (Schedule 6 line 11, BC479 line 4, MB479 line 4, NL428 line 91). It is not added
+# into line 15000 here: the take-home T1 builds employment income only.
+form:
+  name: ca/t1_taxable_income
+capabilities:
+  - name: core/sum
+    title: "Universal child care benefit (UCCB)"
+    reference: "11700"
+    unit: ca/cad
+    params:
+      rounding: ca/cent_rounding
+    consumes:
+      parts: [ca/uccb_income]
+    blank:
+      ca/uccb_income: "0"
+    produces:
+      output: ca/uccb_income_line_11700

@@ -41,7 +41,7 @@ PARTS = (
     *form_part_names("t1_taxable_income", "t1_employment_income"),
     "schedule_6_line_7.yaml",
     "schedule_6_line_10.yaml",
-    "schedule_6_line_11_inputs.yaml",
+    "schedule_6_line_11.yaml",
     "schedule_6_line_12.yaml",
     "schedule_6_line_13.yaml",
     "schedule_6_line_14_inputs.yaml",

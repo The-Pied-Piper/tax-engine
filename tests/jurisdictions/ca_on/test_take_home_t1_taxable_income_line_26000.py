@@ -27,6 +27,14 @@ from tests.jurisdictions.ca_on.conftest import TakeHomeService
 ONTARIO = JurisdictionCode("CA-ON")
 PARTS = (
     "t1_taxable_income_line_25700_inputs.yaml",
+    "t1_taxable_income_line_11700_inputs.yaml",
+    "t1_taxable_income_line_11700.yaml",
+    "t1_taxable_income_line_12500_inputs.yaml",
+    "t1_taxable_income_line_12500.yaml",
+    "t1_taxable_income_line_21300_inputs.yaml",
+    "t1_taxable_income_line_21300.yaml",
+    "t1_taxable_income_line_23200_inputs.yaml",
+    "t1_taxable_income_line_23200.yaml",
     "t1_taxable_income_line_25700.yaml",
     "t1_taxable_income_line_26000.yaml",
 )
@@ -46,6 +54,10 @@ form:
   required: true
   exports:
     - ca/taxable_income
+    - ca/uccb_income_line_11700
+    - ca/rdsp_income_line_12500
+    - ca/uccb_repayment_line_21300
+    - ca/rdsp_income_repayment_line_23200
 """
 
 

@@ -58,9 +58,9 @@ LINE_53 = "ca-mb/mb479_homeowner_renter_senior_credits_line_53"
 T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 MB479_PARTS = (
     "mb479_line_1.yaml",
-    "mb479_line_2_input.yaml",
+    "mb479_line_2.yaml",
     "mb479_line_3.yaml",
-    "mb479_line_4_input.yaml",
+    "mb479_line_4.yaml",
     "mb479_line_5.yaml",
     "mb479_line_5_column_2_input.yaml",
     "mb479_line_6.yaml",

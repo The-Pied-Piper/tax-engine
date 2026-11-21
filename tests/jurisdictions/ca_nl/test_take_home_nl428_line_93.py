@@ -61,9 +61,9 @@ PART_93 = NL_PARTS / "nl428_line_93.yaml"
 # The real parts, in composition order: lines 88 to 92 of column 1, then of column 2, then line 93.
 NL_LINE_PARTS = (
     NL_PARTS / "nl428_line_88.yaml",
-    NL_PARTS / "nl428_line_89_input.yaml",
+    NL_PARTS / "nl428_line_89.yaml",
     NL_PARTS / "nl428_line_90.yaml",
-    NL_PARTS / "nl428_line_91_input.yaml",
+    NL_PARTS / "nl428_line_91.yaml",
     NL_PARTS / "nl428_line_92.yaml",
     NL_PARTS / "nl428_line_88_column_2_input.yaml",
     NL_PARTS / "nl428_line_89_column_2_input.yaml",

@@ -97,9 +97,9 @@ def _part_files() -> Iterator[Path]:
     for name in T1_PARTS:
         yield _federal(name)
     yield BC_PARTS / "bc479_line_1.yaml"
-    yield BC_PARTS / "bc479_line_2_input.yaml"
+    yield BC_PARTS / "bc479_line_2.yaml"
     yield BC_PARTS / "bc479_line_3.yaml"
-    yield BC_PARTS / "bc479_line_4_input.yaml"
+    yield BC_PARTS / "bc479_line_4.yaml"
     yield BC_PARTS / "bc479_line_5.yaml"
     yield BC_PARTS / "bc479_line_6.yaml"
     yield BC_PARTS / "bc479_line_7.yaml"
