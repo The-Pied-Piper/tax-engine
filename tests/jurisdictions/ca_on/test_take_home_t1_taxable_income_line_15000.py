@@ -37,6 +37,7 @@ PARTS = (
     T1_LINE_10100_STEP.name,
     T1_LINE_10100_INPUT.name,
     "t1_employment_income_line_10400.yaml",
+    "t1_employment_income_line_10400_inputs.yaml",
     "t1_taxable_income_line_11700_inputs.yaml",
     "t1_taxable_income_line_11700.yaml",
     "t1_taxable_income_line_12500_inputs.yaml",
