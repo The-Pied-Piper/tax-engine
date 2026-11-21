@@ -65,7 +65,8 @@ def test_the_part_declares_only_this_optional_input() -> None:
             "unit": "ca/cad",
             "required": False,
             "default": None,
-            "basis": "Line 52 and line 58729: Allowable amount of medical expenses for other dependants "
+            "basis": "Line 52 and line 58729: Allowable amount of medical expenses for "
+            "other dependants "
             "(use Worksheet BC428)",
         }
     ]

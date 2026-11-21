@@ -65,7 +65,8 @@ def test_the_part_declares_only_this_optional_input() -> None:
             "unit": "ca/cad",
             "required": False,
             "default": None,
-            "basis": "Line 17: Enter your unused venture capital tax credit from your most recent notice "
+            "basis": "Line 17: Enter your unused venture capital tax credit from your most "
+            "recent notice "
             "of assessment or reassessment",
         }
     ]

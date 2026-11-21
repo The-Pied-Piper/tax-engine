@@ -7,7 +7,7 @@ $2,689 or the amount from line 49.", "Line 51: Line 46 minus line 50 (if negativ
 Worksheet BC428)", "Line 53 and line 58769: Line 51 plus line 52 =". At a 70,000 salary the
 net income of line 47 is 69,335.00 (the T1 line 23600, the same figure
 `test_take_home_on428_line_37.py` reads), so line 49 is 3% of it, 2,080.05. The 2,689.00
-ceiling binds from a net income of 89,633.34. Hand figures, not a CRA example. A salary-only
+ceiling binds from a net income of 89,633.33. Hand figures, not a CRA example. A salary-only
 caller gives neither line 46 nor line 52, and line 53 is 0.00.
 """
 

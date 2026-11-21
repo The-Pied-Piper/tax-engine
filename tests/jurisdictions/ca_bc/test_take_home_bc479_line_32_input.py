@@ -65,7 +65,8 @@ def test_the_part_declares_only_this_optional_input() -> None:
             "unit": "ca/cad",
             "required": False,
             "default": None,
-            "basis": "Line 32 and line 60560: Training tax credit (employers) (complete Form T1014-1)",
+            "basis": "Line 32 and line 60560: Training tax credit (employers) "
+            "(complete Form T1014-1)",
         }
     ]
 
