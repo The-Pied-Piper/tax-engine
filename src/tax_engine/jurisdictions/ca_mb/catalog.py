@@ -572,12 +572,30 @@ MB479_AGE_CREDIT_LINE_8 = AmountKind.declare(CATALOG, "mb479_age_credit_line_8",
 """Age credit for self, MB479 line 8 "Age credit for self (if you were born in 1960 or earlier)
 Claim $113": the credit of the first box, a caller input that is read as blank when left out."""
 
+MB479_BASIC_CREDIT_SPOUSE_LINE_9 = AmountKind.declare(
+    CATALOG, "mb479_basic_credit_spouse_line_9", non_negative=True
+)
+"""Basic credit for spouse or common-law partner, MB479 line 9 "Line 9: Basic credit for spouse or
+common-law partner Claim $195": a caller input that is read as blank when left out."""
+
+MB479_AGE_CREDIT_SPOUSE_LINE_10 = AmountKind.declare(
+    CATALOG, "mb479_age_credit_spouse_line_10", non_negative=True
+)
+"""Age credit for spouse or common-law partner, MB479 line 10 "Line 10: Age credit for spouse or
+common-law partner (if they were born in 1960 or earlier) Claim $113": a caller input that is read
+as blank when left out."""
+
+MB479_DISABILITY_CREDIT_SPOUSE_LINE_11 = AmountKind.declare(
+    CATALOG, "mb479_disability_credit_spouse_line_11", non_negative=True
+)
+"""Disability credit for spouse or common-law partner, MB479 line 11 "Line 11: Disability credit for
+spouse or common-law partner Claim $113": a caller input that is read as blank when left out."""
+
 MB479_SPOUSE_CREDITS_LINE_12 = AmountKind.declare(
     CATALOG, "mb479_spouse_credits_line_12", non_negative=True
 )
 """Spouse or common-law partner credits, MB479 line 12 "Line 12 and line 60900: Add lines 9 to 11.":
-the printed sum of lines 9 to 11, taken as one figure because those lines are not modelled, a caller
-input that is read as blank when left out."""
+the sum of lines 9, 10 and 11, rounded half-up to the cent."""
 
 MB479_ELIGIBLE_DEPENDANT_CREDIT_LINE_13 = AmountKind.declare(
     CATALOG, "mb479_eligible_dependant_credit_line_13", non_negative=True
