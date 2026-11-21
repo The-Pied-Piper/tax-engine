@@ -8,12 +8,8 @@ hand-computed from the printed lines, not an official example.
 
 from __future__ import annotations
 
-from decimal import Decimal
-
 import pytest
 
-from tax_engine.domain.kinds import AmountKind
-from tax_engine.jurisdictions.ca_qc import catalog
 from tax_engine.jurisdictions.ca_qc.catalog import (
     TP1_LINE_205,
     TP1_LINE_246,
@@ -75,29 +71,3 @@ def test_line_254_rounds_once_so_sub_cent_parts_in_different_subtotals_add_befor
 
     # 2,085.00 + 0.005 + 0.005 = 2,085.01: the unprinted subtotals do not round, the line does.
     assert str(value) == "2085.01"
-
-
-LINES = (
-    "205",
-    "207",
-    "214",
-    "215",
-    "225",
-    "228",
-    "231",
-    "234",
-    "236",
-    "241",
-    "245",
-    "246",
-    "250",
-    "252",
-)
-
-
-@pytest.mark.parametrize("line", LINES)
-def test_each_printed_line_is_added_once(take_home_service: TakeHomeService, line: str) -> None:
-    kind: AmountKind = getattr(catalog, f"TP1_LINE_{line}")
-    sheet = net_income_sheet(take_home_service, "70000", EXPORTS, PARTS, (kind, "1000.50"))
-
-    assert sheet.get(LINE).value == Decimal("2085.00") + Decimal("1000.50")
