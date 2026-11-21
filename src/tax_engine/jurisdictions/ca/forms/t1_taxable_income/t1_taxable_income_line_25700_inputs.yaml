@@ -11,58 +11,58 @@ inputs:
     unit: ca/cad
     required: false
     default: null
-    basis: "Line 58 and line 24400: Canadian Armed Forces personnel and police deduction."
+    basis: "Line 58 and line 24400: Canadian Armed Forces personnel and police deduction (box 43 of all T4 slips)"
   - name: ca/t1_line_24900
     reference: "24900"
     unit: ca/cad
     required: false
     default: null
-    basis: "Line 59 and line 24900: Security options deductions."
+    basis: "Line 59 and line 24900: Security options deductions (boxes 39, 41, 91 and 92 of all T4 slips or see Form T1212)"
   - name: ca/t1_line_25000
     reference: "25000"
     unit: ca/cad
     required: false
     default: null
-    basis: "Line 60 and line 25000: Other payments deduction."
+    basis: "Line 60 and line 25000: Other payments deduction (enter the amount from line 14700 if you did not enter an amount on line 14600; otherwise, use Federal Worksheet)"
   - name: ca/t1_line_25100
     reference: "25100"
     unit: ca/cad
     required: false
     default: null
-    basis: "Line 61 and line 25100: Limited partnership losses of other years."
+    basis: "Line 61 and line 25100: Limited partnership losses of other years"
   - name: ca/t1_line_25200
     reference: "25200"
     unit: ca/cad
     required: false
     default: null
-    basis: "Line 62 and line 25200: Non-capital losses of other years."
+    basis: "Line 62 and line 25200: Non-capital losses of other years"
   - name: ca/t1_line_25300
     reference: "25300"
     unit: ca/cad
     required: false
     default: null
-    basis: "Line 63 and line 25300: Net capital losses of other years."
+    basis: "Line 63 and line 25300: Net capital losses of other years"
   - name: ca/t1_line_25395
     reference: "25395"
     unit: ca/cad
     required: false
     default: null
-    basis: "Line 64 and line 25395: Capital gains deduction for qualifying business transfers or qualifying cooperative conversions."
+    basis: "Line 64 and line 25395: Capital gains deduction for qualifying business transfers or qualifying cooperative conversions (complete Form T2048)"
   - name: ca/t1_line_25400
     reference: "25400"
     unit: ca/cad
     required: false
     default: null
-    basis: "Line 65 and line 25400: Capital gains deduction."
+    basis: "Line 65 and line 25400: Capital gains deduction (complete Form T657)"
   - name: ca/t1_line_25500
     reference: "25500"
     unit: ca/cad
     required: false
     default: null
-    basis: "Line 66 and line 25500: Northern residents deductions."
+    basis: "Line 66 and line 25500: Northern residents deductions (complete Form T2222)"
   - name: ca/t1_line_25600
     reference: "25600"
     unit: ca/cad
     required: false
     default: null
-    basis: "Line 67 and line 25600: Additional deductions."
+    basis: "Line 67 and line 25600: Additional deductions (specify):"

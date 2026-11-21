@@ -22,20 +22,30 @@ from tests.kinds import non_negative
 
 PART = "t1_taxable_income_line_25700_inputs.yaml"
 LINES = {
-    "24400": ("58", "Canadian Armed Forces personnel and police deduction"),
-    "24900": ("59", "Security options deductions"),
-    "25000": ("60", "Other payments deduction"),
+    "24400": (
+        "58",
+        "Canadian Armed Forces personnel and police deduction (box 43 of all T4 slips)",
+    ),
+    "24900": (
+        "59",
+        "Security options deductions (boxes 39, 41, 91 and 92 of all T4 slips or see Form T1212)",
+    ),
+    "25000": (
+        "60",
+        "Other payments deduction (enter the amount from line 14700 if you did not enter an amount "
+        "on line 14600; otherwise, use Federal Worksheet)",
+    ),
     "25100": ("61", "Limited partnership losses of other years"),
     "25200": ("62", "Non-capital losses of other years"),
     "25300": ("63", "Net capital losses of other years"),
     "25395": (
         "64",
         "Capital gains deduction for qualifying business transfers or qualifying cooperative "
-        "conversions",
+        "conversions (complete Form T2048)",
     ),
-    "25400": ("65", "Capital gains deduction"),
-    "25500": ("66", "Northern residents deductions"),
-    "25600": ("67", "Additional deductions"),
+    "25400": ("65", "Capital gains deduction (complete Form T657)"),
+    "25500": ("66", "Northern residents deductions (complete Form T2222)"),
+    "25600": ("67", "Additional deductions (specify):"),
 }
 NAMES = {line: f"ca/t1_line_{line}" for line in LINES}
 HEADER = f"""\
@@ -78,6 +88,6 @@ def test_a_request_that_leaves_out_the_line_is_read_as_blank(
 
     assert not declaration.required
     assert declaration.reference == line
-    assert declaration.basis == f"Line {form_line} and line {line}: {label}."
+    assert declaration.basis == f"Line {form_line} and line {line}: {label}"
     assert default is not None and default.is_blank
     assert non_negative(kinds.kind(NAMES[line]))
