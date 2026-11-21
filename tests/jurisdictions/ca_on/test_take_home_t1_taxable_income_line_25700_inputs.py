@@ -1,41 +1,65 @@
-"""The Ontario take-home manifest's T1 taxable income input a salary-only caller does not give: line
-25700, the deductions from net income.
+"""The Ontario take-home manifest's T1 taxable income inputs a salary-only caller does not give:
+lines 24400 to 25600, the ten lines that line 68 and line 25700 add.
 
-T1 line 25700: "Line 68 and line 25700: Add lines 58 to 67." A salary-only caller has none of lines
-58 to 67, so a request that leaves the line out is read as 0, and the line 26000 part takes that 0
-off net income.
+T1 lines 58 to 67 (5006-R page 5): line 24400, 24900, 25000, 25100, 25200, 25300, 25395, 25400,
+25500 and 25600. A salary-only caller has none of them, so each is an optional input left blank,
+and the line 25700 part reads a blank as 0.
 
 The real part is loaded under a test-local header, as the take-home header is another part's.
 """
 
 from __future__ import annotations
 
-from decimal import Decimal
 from pathlib import Path
+
+import pytest
 
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.manifest import Manifest
 from tax_engine.registrations import JURISDICTIONS, artifact_kinds, units
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
+from tests.kinds import non_negative
 
-LINE_25700 = "ca/deductions_from_net_income"
-PRINTED_BASIS = "Line 68 and line 25700: Add lines 58 to 67."
 PART = "t1_taxable_income_line_25700_inputs.yaml"
-HEADER = """\
+LINES = {
+    "24400": (
+        "58",
+        "Canadian Armed Forces personnel and police deduction (box 43 of all T4 slips)",
+    ),
+    "24900": (
+        "59",
+        "Security options deductions (boxes 39, 41, 91 and 92 of all T4 slips or see Form T1212)",
+    ),
+    "25000": (
+        "60",
+        "Other payments deduction (enter the amount from line 14700 if you did not enter an amount "
+        "on line 14600; otherwise, use Federal Worksheet)",
+    ),
+    "25100": ("61", "Limited partnership losses of other years"),
+    "25200": ("62", "Non-capital losses of other years"),
+    "25300": ("63", "Net capital losses of other years"),
+    "25395": (
+        "64",
+        "Capital gains deduction for qualifying business transfers or qualifying cooperative "
+        "conversions (complete Form T2048)",
+    ),
+    "25400": ("65", "Capital gains deduction (complete Form T657)"),
+    "25500": ("66", "Northern residents deductions (complete Form T2222)"),
+    "25600": ("67", "Additional deductions (specify):"),
+}
+NAMES = {line: f"ca/t1_line_{line}" for line in LINES}
+HEADER = f"""\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/deductions_from_net_income]
+outputs: [{", ".join(NAMES.values())}]
 capabilities: []
 """
-FORM = """\
-form:
-  name: ca/t1_taxable_income
-  required: true
-  exports:
-    - ca/deductions_from_net_income
-capabilities: []
-"""
+FORM = (
+    "form:\n  name: ca/t1_taxable_income\n  required: true\n  exports:\n"
+    + "".join(f"    - {name}\n" for name in NAMES.values())
+    + "capabilities: []\n"
+)
 
 
 def _manifest(take_home_service: TakeHomeService, tmp_path: Path) -> Manifest:
@@ -45,12 +69,25 @@ def _manifest(take_home_service: TakeHomeService, tmp_path: Path) -> Manifest:
     return YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds(), units()).load(folder)
 
 
-def test_a_request_that_leaves_out_line_25700_is_read_as_zero(
+def test_the_part_declares_exactly_the_ten_lines(
     take_home_service: TakeHomeService, tmp_path: Path
 ) -> None:
+    inputs = _manifest(take_home_service, tmp_path).inputs
+
+    assert {name for name in inputs if name.startswith("ca/t1_line_")} == set(NAMES.values())
+
+
+@pytest.mark.parametrize("line", LINES)
+def test_a_request_that_leaves_out_the_line_is_read_as_blank(
+    take_home_service: TakeHomeService, tmp_path: Path, line: str
+) -> None:
     kinds = artifact_kinds()
-    declaration = _manifest(take_home_service, tmp_path).inputs[LINE_25700]
-    default = declaration.default_artifact(kinds.kind(LINE_25700))
+    declaration = _manifest(take_home_service, tmp_path).inputs[NAMES[line]]
+    default = declaration.default_artifact(kinds.kind(NAMES[line]))
+    form_line, label = LINES[line]
+
     assert not declaration.required
-    assert declaration.basis == PRINTED_BASIS
-    assert default is not None and default.value == Decimal(0)
+    assert declaration.reference == line
+    assert declaration.basis == f"Line {form_line} and line {line}: {label}"
+    assert default is not None and default.is_blank
+    assert non_negative(kinds.kind(NAMES[line]))
