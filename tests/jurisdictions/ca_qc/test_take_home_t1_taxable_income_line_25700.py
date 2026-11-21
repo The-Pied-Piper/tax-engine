@@ -2,8 +2,7 @@
 
 Form text (CRA 5005-R page 5, https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5005-r/5005-r-25e.txt):
 "Line 69 and line 25700: Add lines 59 to 68. =".
-Three core/sum steps: two unprinted subtotals (lines 59 to 63 and 64 to 68), then the printed line,
-which rounds once.
+One core/sum of the printed lines in form order, rounded once.
 
 The parts are the real ones (the line inputs and the step). The header and the form's export are
 test-local.

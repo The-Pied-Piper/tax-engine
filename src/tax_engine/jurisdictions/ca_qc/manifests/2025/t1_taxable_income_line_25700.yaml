@@ -1,55 +1,11 @@
-# 5005-R (2025) line 69. The form prints: "Line 69 and line 25700: Add lines 59 to 68. =" (page 5). Core/sum
-# steps in form line order, as three steps (two subtotals and the printed line); the optional lines read as
-# 0 when blank (`t1_taxable_income_line_25700_inputs.yaml`). The printed line is rounded half-up to the
-# cent through `ca-qc/cent_rounding`. The two subtotals are not printed on the form, so they carry their
-# sum unrounded (`ca-qc/exact_rounding`; round only where the form says) and the printed line rounds once.
-# The sentence of a numbered line stays at 40 words or fewer (tests/jurisdictions/test_trace_english_
-# printed_names.py), so the ten lines are added in two unprinted subtotals, each titled in plain words
-# and with no reference, and the printed line adds the two. The output keeps the name
+# 5005-R (2025) line 69. The form prints: "Line 69 and line 25700: Add lines 59 to 68. =" (page 5). One
+# core/sum in form line order, rounded half-up to the cent through `ca-qc/cent_rounding`; the optional
+# lines read as 0 when blank (`t1_taxable_income_line_25700_inputs.yaml`). Ten terms stay one step: the
+# English trace groups a long sum (owner, 21 Nov 2026). The output keeps the name
 # `ca/deductions_from_net_income`, which line 70 reads.
 form:
   name: ca-qc/t1_taxable_income
 capabilities:
-  - name: core/sum
-    title: "Lines 59 to 63 added up"
-    unit: ca/cad
-    params:
-      rounding: ca-qc/exact_rounding
-    consumes:
-      parts:
-        - ca-qc/t1_line_24400
-        - ca-qc/t1_line_24900
-        - ca-qc/t1_line_25000
-        - ca-qc/t1_line_25100
-        - ca-qc/t1_line_25200
-    blank:
-      ca-qc/t1_line_24400: "0"
-      ca-qc/t1_line_24900: "0"
-      ca-qc/t1_line_25000: "0"
-      ca-qc/t1_line_25100: "0"
-      ca-qc/t1_line_25200: "0"
-    produces:
-      output: ca-qc/deductions_lines_59_to_63_subtotal
-  - name: core/sum
-    title: "Lines 64 to 68 added up"
-    unit: ca/cad
-    params:
-      rounding: ca-qc/exact_rounding
-    consumes:
-      parts:
-        - ca-qc/t1_line_25300
-        - ca-qc/t1_line_25395
-        - ca-qc/t1_line_25400
-        - ca-qc/t1_line_25500
-        - ca-qc/t1_line_25600
-    blank:
-      ca-qc/t1_line_25300: "0"
-      ca-qc/t1_line_25395: "0"
-      ca-qc/t1_line_25400: "0"
-      ca-qc/t1_line_25500: "0"
-      ca-qc/t1_line_25600: "0"
-    produces:
-      output: ca-qc/deductions_lines_64_to_68_subtotal
   - name: core/sum
     reference: "25700"
     unit: ca/cad
@@ -57,7 +13,26 @@ capabilities:
       rounding: ca-qc/cent_rounding
     consumes:
       parts:
-        - ca-qc/deductions_lines_59_to_63_subtotal
-        - ca-qc/deductions_lines_64_to_68_subtotal
+        - ca-qc/t1_line_24400
+        - ca-qc/t1_line_24900
+        - ca-qc/t1_line_25000
+        - ca-qc/t1_line_25100
+        - ca-qc/t1_line_25200
+        - ca-qc/t1_line_25300
+        - ca-qc/t1_line_25395
+        - ca-qc/t1_line_25400
+        - ca-qc/t1_line_25500
+        - ca-qc/t1_line_25600
+    blank:
+      ca-qc/t1_line_24400: "0"
+      ca-qc/t1_line_24900: "0"
+      ca-qc/t1_line_25000: "0"
+      ca-qc/t1_line_25100: "0"
+      ca-qc/t1_line_25200: "0"
+      ca-qc/t1_line_25300: "0"
+      ca-qc/t1_line_25395: "0"
+      ca-qc/t1_line_25400: "0"
+      ca-qc/t1_line_25500: "0"
+      ca-qc/t1_line_25600: "0"
     produces:
       output: ca/deductions_from_net_income

@@ -413,18 +413,6 @@ T1_LINE_25600 = AmountKind.declare(CATALOG, "t1_line_25600", non_negative=True)
 """5005-R line 68 and line 25600, additional deductions: an optional input, read as 0 when blank
 (`t1_taxable_income_line_25700_inputs.yaml`)."""
 
-DEDUCTIONS_LINES_59_TO_63_SUBTOTAL = AmountKind.declare(
-    CATALOG, "deductions_lines_59_to_63_subtotal", non_negative=True
-)
-"""Lines 59 to 63 added up, an unprinted subtotal that keeps the sentence of line 69 short
-(`t1_taxable_income_line_25700.yaml`)."""
-
-DEDUCTIONS_LINES_64_TO_68_SUBTOTAL = AmountKind.declare(
-    CATALOG, "deductions_lines_64_to_68_subtotal", non_negative=True
-)
-"""Lines 64 to 68 added up, an unprinted subtotal that keeps the sentence of line 69 short
-(`t1_taxable_income_line_25700.yaml`)."""
-
 EMPLOYMENT_INCOME_LINE_10100 = AmountKind.declare(
     CATALOG, "employment_income_line_10100", non_negative=True
 )
