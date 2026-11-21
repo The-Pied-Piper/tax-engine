@@ -1,0 +1,93 @@
+# Schedule F (2025) lines 41, 42, 43, 43.1, 44, 45, 46, 54, 56, 58, 60 and 62: the lines that line 68
+# adds ("Add lines 41 through 62."; Revenu Quebec TP-1.D.F-V (2025-12), Part A). Each comes from a
+# line of the TP-1 return, a schedule or a slip that the take-home does not build, so each stays an
+# input, as the form takes it, optional and left blank by a salary-only caller. They are declared
+# here, with the step that consumes them (line 68, `tp1_schedule_f_line_68.yaml`), which reads a
+# blank as 0.
+form:
+  name: ca-qc/tp1_schedule_f
+inputs:
+  - name: ca-qc/tp1_schedule_f_line_41
+    title: "Amounts you repaid in 2025 because you received an overpayment (line 246)"
+    reference: "41"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Amounts you repaid in 2025 because you received an overpayment (line 246)"
+  - name: ca-qc/tp1_schedule_f_line_42
+    title: "Deduction for a repayment of wage loss replacement benefits (line 207, point 12)"
+    reference: "42"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Deduction for a repayment of wage loss replacement benefits (line 207, point 12)"
+  - name: ca-qc/tp1_schedule_f_line_43
+    title: "Amount from line 26 of Schedule R"
+    reference: "43"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Amount from line 26 of Schedule R"
+  - name: ca-qc/tp1_schedule_f_line_43_1
+    title: "Total of lines 101, 103 and 115 of Schedule U or, if you completed form LE-35-V, total of lines 112, 113 and 116 of that form"
+    reference: "43.1"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Total of lines 101, 103 and 115 of Schedule U or, if you completed form LE-35-V, total of lines 112, 113 and 116 of that form"
+  - name: ca-qc/tp1_schedule_f_line_44
+    title: "Employment Insurance benefits to be repaid in your federal income tax return (line 250, point 3)"
+    reference: "44"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Employment Insurance benefits to be repaid in your federal income tax return (line 250, point 3)"
+  - name: ca-qc/tp1_schedule_f_line_45
+    title: "Deductions claimed on line 250 (points 4, 5, 6, 11, 13, 14 and 15)"
+    reference: "45"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Deductions claimed on line 250 (points 4, 5, 6, 11, 13, 14 and 15)"
+  - name: ca-qc/tp1_schedule_f_line_46
+    title: "Deduction for retirement income transferred to your spouse on December 31 (line 245)"
+    reference: "46"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Deduction for retirement income transferred to your spouse on December 31 (line 245)"
+  - name: ca-qc/tp1_schedule_f_line_54
+    title: "Support payments made (deductible amount) (line 225)"
+    reference: "54"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Support payments made (deductible amount) (line 225)"
+  - name: ca-qc/tp1_schedule_f_line_56
+    title: "Carrying charges and interest expenses (line 231)"
+    reference: "56"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Carrying charges and interest expenses (line 231)"
+  - name: ca-qc/tp1_schedule_f_line_58
+    title: "Business investment loss (line 234)"
+    reference: "58"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Business investment loss (line 234)"
+  - name: ca-qc/tp1_schedule_f_line_60
+    title: "Deduction claimed on line 293, unless it was for the amount on line 16, 20, 25 or 28 above"
+    reference: "60"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Deduction claimed on line 293, unless it was for the amount on line 16, 20, 25 or 28 above"
+  - name: ca-qc/tp1_schedule_f_line_62
+    title: "Deductions claimed on line 297, except those claimed for the amount on line 12 or 26 above"
+    reference: "62"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Deductions claimed on line 297, except those claimed for the amount on line 12 or 26 above"
