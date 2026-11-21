@@ -10,8 +10,8 @@ from __future__ import annotations
 import pytest
 
 from tax_engine.jurisdictions.ca_qc.catalog import (
+    TP1_LINE_297,
     TP1_TAXABLE_INCOME_LINE_299,
-    TP1_TOTAL_DEDUCTIONS_LINE_298,
 )
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 from tests.jurisdictions.ca_qc.tp1_net_income_support import net_income_sheet
@@ -21,7 +21,7 @@ EXPORTS = ("ca-qc/tp1_taxable_income_line_299",)
 PARTS = (
     "tp1_net_income_line_201.yaml",
     "tp1_net_income_line_248.yaml",
-    "tp1_net_income_line_254_input.yaml",
+    "tp1_net_income_line_254_inputs.yaml",
     "tp1_net_income_line_254.yaml",
     "tp1_net_income_line_256.yaml",
     "tp1_net_income_line_260_input.yaml",
@@ -29,7 +29,8 @@ PARTS = (
     "tp1_net_income_line_276_input.yaml",
     "tp1_net_income_line_278_input.yaml",
     "tp1_net_income_line_279.yaml",
-    "tp1_net_income_line_298_input.yaml",
+    "tp1_net_income_line_298_inputs.yaml",
+    "tp1_net_income_line_298.yaml",
     "tp1_net_income_line_299.yaml",
 )
 
@@ -47,14 +48,14 @@ def test_line_299_with_line_298_blank_is_line_279(
 
 
 def test_line_298_is_subtracted(take_home_service: TakeHomeService) -> None:
-    given = (TP1_TOTAL_DEDUCTIONS_LINE_298, "1000")
+    given = (TP1_LINE_297, "1000")
     value = net_income_sheet(take_home_service, "70000", EXPORTS, PARTS, given).get(LINE).value
 
     assert str(value) == "66915.00"
 
 
 def test_a_negative_result_is_entered_as_zero(take_home_service: TakeHomeService) -> None:
-    given = (TP1_TOTAL_DEDUCTIONS_LINE_298, "30000")
+    given = (TP1_LINE_297, "30000")
     value = net_income_sheet(take_home_service, "20000", EXPORTS, PARTS, given).get(LINE).value
 
     assert str(value) == "0.00"

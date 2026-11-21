@@ -1,7 +1,7 @@
 # TP-1 (2025) line 299: "Subtract line 298 from line 279. If the result is negative, enter 0.
 # Taxable income". One step: core/subtract_not_below_zero, so a deduction above line 279 gives 0, as
-# the form says, rounded half-up to the cent (`ca-qc/cent_rounding`). Line 298 is the optional input
-# (default "0"). The figure is exported for Work Chart 401.
+# the form says, rounded half-up to the cent (`ca-qc/cent_rounding`). Line 298 is a step
+# (`tp1_net_income_line_298.yaml`). The figure is exported for Work Chart 401.
 form:
   name: ca-qc/tp1_net_income
 capabilities:
