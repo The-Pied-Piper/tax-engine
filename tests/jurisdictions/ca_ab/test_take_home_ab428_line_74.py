@@ -141,11 +141,13 @@ def _part_files() -> Iterator[Path]:
     yield ALBERTA_PARTS / "ab428_credits_line_41.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_43.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_44_input.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_44.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_45.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_47.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_48.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_49.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_50_input.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_50.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_51.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_52.yaml"
     for number in (1, 2, 3, 5, 6, 7, 9):

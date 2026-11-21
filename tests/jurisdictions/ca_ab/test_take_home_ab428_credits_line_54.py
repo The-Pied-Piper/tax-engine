@@ -1,18 +1,18 @@
 """AB428 (2025) line 54, line 52 multiplied by the line 53 rate of 8%, from the salary alone.
 
-Form text (Form AB428, CRA 5009-c-25e.txt): "Line 53: Alberta non-refundable tax credit rate 8%" and
-"Line 54 and line 58840: Line 52 multiplied by the percentage from line 53 = ^". Line 53 is a
+Form text (Form AB428, CRA 5009-c-25e.txt): "Line 53: Alberta non-refundable tax credit rate 8%"
+and "Line 54 and line 58840: Line 52 multiplied by the percentage from line 53 = ^". Line 53 is a
 printed rate, so it is the `ca-ab/credit_rate` dataset figure and has no step of its own; line 54
-is one core/apply_rate step over line 52, rounded half-up to the cent by the dataset's own rule, as
-Ontario line 46 is over line 45. Line 54 prints no name, so the step has no title.
+is one core/apply_rate step over line 52, rounded half-up to the cent by the dataset's own rule,
+as Ontario line 46 is over line 45. Line 54 prints no name, so the step has no title.
 
-The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts, the real line
-16, line 25, line 27, line 29, line 32, line 33, line 36, line 39, line 43 and line 52 parts, the
-line 34 inputs part, the line 41 input part, the medical expenses parts (lines 44 to 51) and the new
-`ab428_credits_line_54.yaml`, and types in only the salary (and, in one test, line 50). The form
-declaration is made up here, exporting only line 54. The figures are hand-computed from the
-printed forms (not a CRA example): line 52 is 23,467.75, 26,692.23 and 26,756.58 at the two
-salaries, times 0.08, half-up to the cent.
+The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts, the real
+line 16, line 25, line 27, line 29, line 32, line 33, line 36, line 39, line 43 and line 52
+parts, the line 34 inputs part, the line 41 input part, the medical expenses parts (lines 44 to
+51) and the new `ab428_credits_line_54.yaml`, and types in only the salary (and, in one test,
+line 50). The form declaration is made up here, exporting only line 54. The figures are
+hand-computed from the printed forms (not a CRA example): line 52 is 23,467.75, 26,692.23 and
+26,756.58 at the two salaries, times 0.08, half-up to the cent.
 """
 
 from __future__ import annotations
@@ -99,11 +99,13 @@ def _part_files() -> Iterator[Path]:
     yield ALBERTA_PARTS / "ab428_credits_line_41.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_43.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_44_input.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_44.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_45.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_47.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_48.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_49.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_50_input.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_50.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_51.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_52.yaml"
     yield LINE_PART

@@ -1,0 +1,18 @@
+# AB428 (2025) line 44, rounded to the cent. Form AB428 (CRA 5009-c): "Line 44 and line 58689: Amount from line 33099 of your return". The line is an optional input
+# (`ca-ab/ab428_medical_expenses_line_44`), blank for a salary-only filer. One core/sum step over the input alone, as line 41 is
+# (ab428_credits_line_41.yaml), reads the blank as 0 and rounds to the cent, because a line written on
+# the form is a whole-cent figure: `ca-ab/ab428_medical_expenses_rounded_line_44`.
+form:
+  name: ca-ab/ab428_credits
+capabilities:
+  - name: core/sum
+    reference: "44"
+    unit: ca/cad
+    params:
+      rounding: ca-ab/cent_rounding
+    consumes:
+      parts: [ca-ab/ab428_medical_expenses_line_44]
+    blank:
+      ca-ab/ab428_medical_expenses_line_44: "0"
+    produces:
+      output: ca-ab/ab428_medical_expenses_rounded_line_44

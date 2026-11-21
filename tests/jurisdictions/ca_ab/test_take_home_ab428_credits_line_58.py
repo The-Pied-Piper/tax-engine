@@ -1,19 +1,19 @@
 """AB428 (2025) line 58, line 54 plus line 57, from the salary alone, real parts.
 
-Form text (Form AB428, CRA 5009-c): "Line 58 and line 61500: Line 54 plus line 57 Enter this amount
-on line 62. Alberta non-refundable tax credits =". Line 57, "Line 57 and line 58969: Line 55 plus
-line 56", is the donations credit, computed by lines 55 and 56 (0.00 for a salary-only filer).
-Line 58 is one core/sum over line 54 and line 57, as Ontario line 50 is; line 57 is never blank, so
-the step has no blank rule.
+Form text (Form AB428, CRA 5009-c): "Line 58 and line 61500: Line 54 plus line 57 Enter this
+amount on line 62. Alberta non-refundable tax credits =". Line 57, "Line 57 and line 58969: Line
+55 plus line 56", is the donations credit, computed by lines 55 and 56 (0.00 for a salary-only
+filer). Line 58 is one core/sum over line 54 and line 57, as Ontario line 50 is; line 57 is never
+blank, so the step has no blank rule.
 
-The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts, the real line
-16, line 25, line 27, line 29, line 32, line 33, line 36, line 39, line 43 and line 52 parts, the
-line 34 inputs part, the line 41 input part, the medical expenses parts (lines 44 to 51), the line
-54 part, the donations parts (lines 55 to 57) and the new `ab428_credits_line_58.yaml`, and types
-in only the salary (and, in some tests, line 55). The form declaration is made up here, exporting
-only line 54 and line 58. The figures are hand-computed from the printed forms (not a CRA example):
-line 54 is 1,877.42, 2,135.38 and 2,140.53 at the two salaries, plus line 57 of 0.00 with no
-donations.
+The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts, the real
+line 16, line 25, line 27, line 29, line 32, line 33, line 36, line 39, line 43 and line 52
+parts, the line 34 inputs part, the line 41 input part, the medical expenses parts (lines 44 to
+51), the line 54 part, the donations parts (lines 55 to 57) and the new
+`ab428_credits_line_58.yaml`, and types in only the salary (and, in some tests, line 55). The
+form declaration is made up here, exporting only line 54 and line 58. The figures are
+hand-computed from the printed forms (not a CRA example): line 54 is 1,877.42, 2,135.38 and
+2,140.53 at the two salaries, plus line 57 of 0.00 with no donations.
 """
 
 from __future__ import annotations
@@ -102,17 +102,21 @@ def _part_files() -> Iterator[Path]:
     yield ALBERTA_PARTS / "ab428_credits_line_41.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_43.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_44_input.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_44.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_45.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_47.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_48.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_49.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_50_input.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_50.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_51.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_52.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_54.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_55_input.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_55_box_a.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_55.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_56_input.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_56_box_a.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_56.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_57.yaml"
     yield LINE_PART

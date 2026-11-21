@@ -86,6 +86,12 @@ AB428_MEDICAL_EXPENSES_LINE_44 = AmountKind.declare(
 """Medical expenses, AB428 line 44 (line 58689) "Amount from line 33099 of your return": the amount
 as the filer gives it, an optional input; a blank input is read as blank."""
 
+AB428_MEDICAL_EXPENSES_ROUNDED_LINE_44 = AmountKind.declare(
+    CATALOG, "ab428_medical_expenses_rounded_line_44", non_negative=True
+)
+"""Medical expenses, AB428 line 44 (line 58689) "Amount from line 33099 of your return": the input
+rounded to the cent and read as 0 when blank, read by line 49."""
+
 AB428_NET_INCOME_LINE_45 = AmountKind.declare(
     CATALOG, "ab428_net_income_line_45", non_negative=True
 )
@@ -117,6 +123,14 @@ AB428_ALLOWABLE_MEDICAL_EXPENSES_FOR_OTHER_DEPENDANTS_LINE_50 = AmountKind.decla
 amount of medical expenses for other dependants (use Worksheet AB428)": the amount as the filer
 gives it, an optional input; a blank input is read as blank."""
 
+AB428_ALLOWABLE_MEDICAL_EXPENSES_FOR_OTHER_DEPENDANTS_ROUNDED_LINE_50 = AmountKind.declare(
+    CATALOG,
+    "ab428_allowable_medical_expenses_for_other_dependants_rounded_line_50",
+    non_negative=True,
+)
+"""Allowable amount of medical expenses for other dependants, AB428 line 50 (line 58729): the
+input rounded to the cent and read as 0 when blank, read by line 51."""
+
 AB428_MEDICAL_EXPENSES_LINE_51 = AmountKind.declare(
     CATALOG, "ab428_medical_expenses_line_51", non_negative=True
 )
@@ -142,6 +156,12 @@ AB428_DONATIONS_AMOUNT_LINE_55 = AmountKind.declare(
 60%": the Schedule 9 amount as the filer gives it, an optional input; a blank input is read as 0 by
 the line 55 step."""
 
+AB428_DONATIONS_AMOUNT_ROUNDED_LINE_55 = AmountKind.declare(
+    CATALOG, "ab428_donations_amount_rounded_line_55", non_negative=True
+)
+"""Donations and gifts, AB428 line 55: the Schedule 9 line 13 input rounded to the cent and read
+as 0 when blank, read by the line 55 multiplication."""
+
 AB428_DONATIONS_CREDIT_AT_FIRST_RATE_LINE_55 = AmountKind.declare(
     CATALOG, "ab428_donations_credit_at_first_rate_line_55", non_negative=True
 )
@@ -154,6 +174,12 @@ AB428_DONATIONS_AMOUNT_LINE_56 = AmountKind.declare(
 """Donations and gifts, AB428 line 56 "Amount from line 14 of your federal Schedule 9 multiplied by
 21%": the Schedule 9 amount as the filer gives it, an optional input; a blank input is read as 0 by
 the line 56 step."""
+
+AB428_DONATIONS_AMOUNT_ROUNDED_LINE_56 = AmountKind.declare(
+    CATALOG, "ab428_donations_amount_rounded_line_56", non_negative=True
+)
+"""Donations and gifts, AB428 line 56: the Schedule 9 line 14 input rounded to the cent and read
+as 0 when blank, read by the line 56 multiplication."""
 
 AB428_DONATIONS_CREDIT_AT_SECOND_RATE_LINE_56 = AmountKind.declare(
     CATALOG, "ab428_donations_credit_at_second_rate_line_56", non_negative=True

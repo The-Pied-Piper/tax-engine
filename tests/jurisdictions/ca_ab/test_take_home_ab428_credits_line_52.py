@@ -1,15 +1,15 @@
 """AB428 (2025) line 52, line 43 plus line 51, from the salary alone, real parts.
 
 Form text (Form AB428, CRA 5009-c): "Line 52 and line 58800: Line 43 plus line 51 = ^". Line 51,
-"Line 51 and line 58769: Line 49 plus line 50", is computed by the medical expenses block (lines 44
-to 50), which is 0.00 for a salary-only filer. Line 52 is one core/sum over line 43 and line 51, as
-Ontario line 44 is; line 51 is never blank, so the step has no blank rule.
+"Line 51 and line 58769: Line 49 plus line 50", is computed by the medical expenses block (lines
+44 to 50), which is 0.00 for a salary-only filer. Line 52 is one core/sum over line 43 and line
+51, as Ontario line 44 is; line 51 is never blank, so the step has no blank rule.
 
-The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts, the real line
-16, line 25, line 27, line 29, line 32, line 33, line 36, line 39 and line 43 parts, the line 34
-inputs part, the line 41 input part, the medical expenses parts (lines 44 to 51) and the
-new `ab428_credits_line_52.yaml`, and types in only the salary (and, in one test, line 50). The form
-declaration is made up here, exporting only line 52. The figures are hand-computed from the
+The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts, the real
+line 16, line 25, line 27, line 29, line 32, line 33, line 36, line 39 and line 43 parts, the
+line 34 inputs part, the line 41 input part, the medical expenses parts (lines 44 to 51) and the
+new `ab428_credits_line_52.yaml`, and types in only the salary (and, in one test, line 50). The
+form declaration is made up here, exporting only line 52. The figures are hand-computed from the
 printed forms (not a CRA example): line 43 is 23,467.75, 26,692.23 and 26,756.58 at the two
 salaries, plus line 51 of 0.00 with no medical claim.
 """
@@ -98,11 +98,13 @@ def _part_files() -> Iterator[Path]:
     yield ALBERTA_PARTS / "ab428_credits_line_41.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_43.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_44_input.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_44.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_45.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_47.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_48.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_49.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_50_input.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_50.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_51.yaml"
     yield LINE_PART
 

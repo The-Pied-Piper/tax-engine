@@ -2,7 +2,7 @@
 # federal Schedule 9 multiplied by 60% =". The 60% is a printed rate, held in the
 # `ca-ab/donations_credit_rate_line_55` dataset, so the step is one calculation: 60% of the Schedule 9
 # amount, rounded half-up to the cent. The amount is an optional input
-# (ab428_credits_line_55_input.yaml), read as 0 when left out. The line has two boxes: the amount
+# (ab428_credits_line_55_input.yaml), read as 0 when left out and rounded to the cent by ab428_credits_line_55_box_a.yaml. The line has two boxes: the amount
 # (box A, the input) and the multiplied result (box B, this step). The form does not name them;
 # "box A" and "box B" are the owner's naming, as on ON428 line 47.
 form:
@@ -14,8 +14,6 @@ capabilities:
     params:
       rate: ca-ab/donations_credit_rate_line_55
     consumes:
-      base: ca-ab/ab428_donations_amount_line_55
-    blank:
-      base: "0"
+      base: ca-ab/ab428_donations_amount_rounded_line_55
     produces:
       output: ca-ab/ab428_donations_credit_at_first_rate_line_55

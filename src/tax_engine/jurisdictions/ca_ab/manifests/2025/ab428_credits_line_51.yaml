@@ -15,8 +15,6 @@ capabilities:
     consumes:
       parts:
         - ca-ab/ab428_medical_expenses_over_limit_line_49
-        - ca-ab/ab428_allowable_medical_expenses_for_other_dependants_line_50
-    blank:
-      ca-ab/ab428_allowable_medical_expenses_for_other_dependants_line_50: "0"
+        - ca-ab/ab428_allowable_medical_expenses_for_other_dependants_rounded_line_50
     produces:
       output: ca-ab/ab428_medical_expenses_line_51
