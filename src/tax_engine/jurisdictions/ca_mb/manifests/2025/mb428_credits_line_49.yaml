@@ -1,0 +1,15 @@
+# Form MB428 (CRA 5007-c) line 49 and line 58729: "Allowable amount of medical expenses for other
+# dependants (use Worksheet MB428)". Worksheet MB428 line 4 of the section "Line 58729" says to enter its
+# amount on line 58729 of Form MB428, so the one step is core/record_total over the worksheet's line 4
+# export (same as mb428_credits_line_9.yaml). A salary-only caller lists no dependant, so it is 0.00.
+form:
+  name: ca-mb/mb428_credits
+capabilities:
+  - name: core/record_total
+    title: "Allowable amount of medical expenses for other dependants (use Worksheet MB428)"
+    reference: "49"
+    unit: ca/cad
+    consumes:
+      records: ca-mb/worksheet_mb428_other_dependants_total.worksheet_mb428_other_dependants_medical_expenses_line_4
+    produces:
+      output: ca-mb/mb428_other_dependants_medical_expenses_line_49
