@@ -1,28 +1,26 @@
 """SK428 (2025) line 78, line 74 minus line 77 (not below 0), from the salary alone, real parts.
 
 Form text (Form SK428, CRA 5008-c-25e): "Line 77 and line 63557: Line 75 plus line 76 (maximum
-$875)" and "Line 78: Line 74 minus line 77 (if negative, enter "0") =". The form prints no title
+$875) =" and "Line 78: Line 74 minus line 77 (if negative, enter "0") =". The form prints no title
 for line 78, so the step is untitled.
 
 Line 78 is one core/subtract_not_below_zero step (`sk428_line_78.yaml`), rounded through
 `ca-sk/cent_rounding`, with `amount` line 74 (`ca-sk/sk428_tax_line_74`, non-negative) and `less`
-line 77 (`ca-sk/sk428_labour_sponsored_credit_checked_line_77`, the optional input checked against
-its printed maximum). A salary-only caller has no labour-sponsored venture capital credit, so
-line 77 is left blank, and the step has a blank rule reading it as 0 and prints its own "left
-blank, taken as 0" row, as line 74 does for its line 73. The output `ca-sk/sk428_tax_line_78` is a
-non-negative kind on the form `ca-sk/sk428`. The $875 maximum of line 77 is tested with
-`sk428_line_77.yaml`, not here.
+line 77 (`ca-sk/sk428_labour_sponsored_credit_checked_line_77`, the sum of lines 75 and 76 checked
+against its printed maximum). Line 77 is always a figure (0.00 for a caller without the credit), so
+the step has no blank rule. The output `ca-sk/sk428_tax_line_78` is a non-negative kind on the form
+`ca-sk/sk428`. The $875 maximum of line 77 is tested with `sk428_line_77.yaml`, not here.
 
 The test composes the real Saskatchewan salary part, the real Schedule 8 and T2204 parts, the T1
 taxable income parts, the real line parts of `ca-sk/sk428_credits` that lines 8 and 57 need, the
 real `sk428_line_58.yaml` to `sk428_line_74.yaml` parts (line 71 consumes line 70, so the line 70
 inputs part is composed; line 74 consumes the checked line 73, so the line 73 input part and the
-line 73 part are composed), the line 77 input part, `sk428_line_77.yaml` and the new
-`sk428_line_78.yaml`, and types in only the salary and, in some tests, line 77. The two form
+line 73 part are composed), the line 75 and 76 input parts, `sk428_line_77.yaml` and the new
+`sk428_line_78.yaml`, and types in only the salary and, in some tests, lines 75 and 76. The two form
 declarations are made up here.
 
 Figures: line 74 is line 71 (line 67, line 68 being 0 here) with a blank line 73, re-derived here
-in `_line_62` and `_line_66` with Decimal (not a CRA example); line 77 is blank (0), so line 78 is
+in `_line_62` and `_line_66` with Decimal (not a CRA example); line 77 is 0.00, so line 78 is
 0.00 / 5,092.30 at a salary of 20,000 / 70,000. With a line 77 of 100.00 line 78 is 0.00 (floored)
 / 4,992.30.
 """
@@ -85,10 +83,20 @@ CREDITS_PARTS = (
     "sk428_credits_line_35.yaml",
     "sk428_credits_line_38.yaml",
     "sk428_credits_line_42.yaml",
-    "sk428_credits_line_50_input.yaml",
+    "sk428_credits_line_43_input.yaml",
+    "sk428_credits_line_44.yaml",
+    "sk428_credits_line_46.yaml",
+    "sk428_credits_line_47.yaml",
+    "sk428_credits_line_48.yaml",
+    "sk428_credits_line_49_input.yaml",
+    "sk428_credits_line_50.yaml",
     "sk428_credits_line_51.yaml",
     "sk428_credits_line_53.yaml",
-    "sk428_credits_line_56_input.yaml",
+    "sk428_credits_line_54_input.yaml",
+    "sk428_credits_line_55_input.yaml",
+    "sk428_credits_line_54.yaml",
+    "sk428_credits_line_55.yaml",
+    "sk428_credits_line_56.yaml",
     "sk428_credits_line_57.yaml",
 )
 SK_LINE_PARTS = (
@@ -111,7 +119,8 @@ SK_LINE_PARTS = (
     "sk428_line_73_input.yaml",
     "sk428_line_73.yaml",
     "sk428_line_74.yaml",
-    "sk428_line_77_input.yaml",
+    "sk428_line_75_input.yaml",
+    "sk428_line_76_input.yaml",
     "sk428_line_77.yaml",
 )
 T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
@@ -126,7 +135,8 @@ LINE_71 = "ca-sk/sk428_tax_line_71"
 LINE_73 = "ca-sk/sk428_political_contributions_credit_line_73"
 LINE_74 = "ca-sk/sk428_tax_line_74"
 LINE_77 = "ca-sk/sk428_labour_sponsored_credit_checked_line_77"
-CREDIT_77 = "ca-sk/sk428_labour_sponsored_credit_line_77"
+LINE_75 = "ca-sk/sk428_venture_capital_credit_saskatchewan_line_75"
+LINE_76 = "ca-sk/sk428_venture_capital_credit_federal_line_76"
 IDENTIFIER = "ca-sk/sk428_tax_line_78"
 ROUNDING = "ca-sk/cent_rounding"
 BASIC_PERSONAL_AMOUNT = D("19491")
@@ -165,7 +175,7 @@ FORM = dedent(f"""\
     capabilities: []
     """)
 
-# salary, line 78 with line 77 left blank (read as 0).
+# salary, line 78 with lines 75 and 76 left out (line 77 is 0.00).
 CASES = [
     ("20000", "0.00"),
     ("70000", "5092.30"),
@@ -269,11 +279,13 @@ def _amount_kind(identifier: str) -> AmountKind:
 def _sheet(
     tmp_path: Path,
     salary: str,
-    line_77: str | None = None,
+    line_75: str | None = None,
+    line_76: str | None = None,
 ) -> Worksheet:
     given = [Artifact(EMPLOYMENT_INCOME, D(salary))]
-    if line_77 is not None:
-        given.append(Artifact(_amount_kind(CREDIT_77), D(line_77)))
+    for name, value in ((LINE_75, line_75), (LINE_76, line_76)):
+        if value is not None:
+            given.append(Artifact(_amount_kind(name), D(value)))
     worksheets = _service(tmp_path).compute(JurisdictionCode("CA-SK"), 2025, *given)
     (sheet,) = worksheets[FORM_NAME]
     return sheet
@@ -297,13 +309,13 @@ def test_the_expected_figures_are_line_74_less_a_blank_line_77_derived_independe
 
 
 @pytest.mark.parametrize(("salary", "expected"), CASES)
-def test_line_78_is_line_74_when_line_77_is_left_blank(
+def test_line_78_is_line_74_when_lines_75_and_76_are_left_out(
     tmp_path: Path, salary: str, expected: str
 ) -> None:
     sheet = _sheet(tmp_path, salary)
 
-    # Line 74 is recomputed from the real parts, and line 77 is blank, read as 0.
-    assert sheet.get(_amount_kind(LINE_77)).is_blank
+    # Line 74 is recomputed from the real parts, and line 77 is 0.00 (lines 75 and 76 read as 0).
+    assert _line(sheet, LINE_77) == ZERO
     line_78 = _line(sheet, IDENTIFIER)
     assert line_78 == D(expected)
     assert line_78 == _line(sheet, LINE_74)
@@ -316,7 +328,11 @@ def test_line_78_is_line_74_when_line_77_is_left_blank(
 def test_line_78_is_line_74_minus_line_77_not_below_zero_when_line_77_is_given(
     tmp_path: Path, salary: str, line_77: str, line_74: str, expected: str
 ) -> None:
-    sheet = _sheet(tmp_path, salary, line_77)
+    # Line 77 is typed through lines 75 and 76: 40.00 plus 60.00.
+    assert D("40.00") + D("60.00") == D(line_77)
+    sheet = _sheet(tmp_path, salary, "40.00", "60.00")
+
+    assert _line(sheet, LINE_77) == D(line_77)
 
     assert _line(sheet, LINE_74) == D(line_74)
     line_78 = _line(sheet, IDENTIFIER)
@@ -327,21 +343,23 @@ def test_line_78_is_line_74_minus_line_77_not_below_zero_when_line_77_is_given(
     assert not line_78.is_signed()
 
 
-def _line_78_through(service: TaxComputationService, line_77: str) -> Decimal:
+def _line_78_through(service: TaxComputationService, line_75: str, line_76: str) -> Decimal:
     given = [
         Artifact(EMPLOYMENT_INCOME, D("70000")),
-        Artifact(_amount_kind(CREDIT_77), D(line_77)),
+        Artifact(_amount_kind(LINE_75), D(line_75)),
+        Artifact(_amount_kind(LINE_76), D(line_76)),
     ]
     (sheet,) = service.compute(JurisdictionCode("CA-SK"), 2025, *given)[FORM_NAME]
     return _line(sheet, IDENTIFIER)
 
 
-def test_a_line_77_above_the_maximum_is_rejected_through_line_78(tmp_path: Path) -> None:
+def test_lines_75_and_76_above_the_maximum_are_rejected_through_line_78(tmp_path: Path) -> None:
     service = _service(tmp_path)
 
-    assert _line_78_through(service, "875") == D("4217.30")
+    assert _line_78_through(service, "400.00", "300.00") == D("4392.30")
+    assert _line_78_through(service, "875.00", "0.00") == D("4217.30")
     with pytest.raises(InputAboveBoundError):
-        _line_78_through(service, "875.01")
+        _line_78_through(service, "500.00", "375.01")
 
 
 def test_the_step_traces_one_subtracted_not_below_zero_line_with_the_cent_rounding(
@@ -408,20 +426,19 @@ def _part() -> dict[str, Any]:
     return part
 
 
-def test_the_part_names_the_form_and_has_one_untitled_step_with_a_blank_rule_on_line_77() -> None:
+def test_the_part_names_the_form_and_has_one_untitled_step_with_no_blank_rule() -> None:
     part = _part()
 
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": FORM_NAME}
     (step,) = part["capabilities"]
-    assert list(step) == ["name", "reference", "unit", "params", "consumes", "blank", "produces"]
+    assert list(step) == ["name", "reference", "unit", "params", "consumes", "produces"]
     assert step == {
         "name": "core/subtract_not_below_zero",
         "reference": "78",
         "unit": "ca/cad",
         "params": {"rounding": ROUNDING},
         "consumes": {"amount": LINE_74, "less": LINE_77},
-        "blank": {"less": "0"},
         "produces": {"output": IDENTIFIER},
     }
     assert "title" not in step

@@ -1,0 +1,23 @@
+# Form BC479 (CRA 5010-TC) line 34: "Line 34: Add lines 31 to 33. = ^". One core/sum step over the three
+# optional inputs, lines 31 to 33 (the T1014, T1014-1 and shipbuilding credits), each blank read as 0,
+# rounded half-up to the cent. The form prints no maximum. Line 35 reads it.
+form:
+  name: ca-bc/bc479
+capabilities:
+  - name: core/sum
+    title: "British Columbia training tax credit"
+    reference: "34"
+    unit: ca/cad
+    params:
+      rounding: ca-bc/cent_rounding
+    consumes:
+      parts:
+        - ca-bc/bc479_training_credit_individuals_line_31
+        - ca-bc/bc479_training_credit_employers_line_32
+        - ca-bc/bc479_shipbuilding_credit_line_33
+    blank:
+      ca-bc/bc479_training_credit_individuals_line_31: "0"
+      ca-bc/bc479_training_credit_employers_line_32: "0"
+      ca-bc/bc479_shipbuilding_credit_line_33: "0"
+    produces:
+      output: ca-bc/bc479_training_credits_line_34

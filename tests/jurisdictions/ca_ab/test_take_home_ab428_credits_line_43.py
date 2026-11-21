@@ -1,18 +1,19 @@
 """AB428 (2025) line 43, add lines 39 to 42, from the salary alone, real parts.
 
 Form text (Form AB428, CRA 5009-c-25e.txt, read 2026-11-12): "Line 43: Add lines 39 to 42. = ^".
-Lines 40 and 42 are not built; line 41, "Your unused tuition and education amounts (attach Schedule
-AB(S11))", is an optional input, blank for a salary-only filer. Line 43 is one core/sum over line 39
-and the rounded line 41 (`ca-ab/ab428_unused_tuition_rounded_line_41`, the line 41 step's output,
-#831), as Ontario line 44 is; the rounded line 41 is never blank, so line 43 has no blank rule.
+Lines 40 and 42 are not built; line 41, "Your unused tuition and education amounts (attach
+Schedule AB(S11))", is an optional input, blank for a salary-only filer. Line 43 is one core/sum
+over line 39 and the rounded line 41 (`ca-ab/ab428_unused_tuition_rounded_line_41`, the line 41
+step's output, #831), as Ontario line 44 is; the rounded line 41 is never blank, so line 43 has
+no blank rule.
 
-The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts, the real line
-16, line 25, line 27, line 29, line 32, line 33, line 36 and line 39 parts, the line 34 inputs
-part, the line 41 input part, the line 41 step part and the new `ab428_credits_line_43.yaml`, and
-types in only the salary (and, in one test, line 41). The form declaration is made up here,
-exporting only line 43.
-The figures are hand-computed from the printed forms (not a CRA example): line 39 is 23,467.75,
-26,692.23 and 26,756.58 at the two salaries, plus line 41 of 0 when blank.
+The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts, the real
+line 16, line 25, line 27, line 29, line 32, line 33, line 36 and line 39 parts, the line 34
+inputs part, the line 41 input part, the line 41 step part and the new
+`ab428_credits_line_43.yaml`, and types in only the salary (and, in one test, line 41). The form
+declaration is made up here, exporting only line 43. The figures are hand-computed from the
+printed forms (not a CRA example): line 39 is 23,467.75, 26,692.23 and 26,756.58 at the two
+salaries, plus line 41 of 0 when blank.
 """
 
 from __future__ import annotations
@@ -50,7 +51,7 @@ from tests.jurisdictions.ca_ab.support import (
     alberta_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_FORM, inputs_without_form
+from tests.manifest_support import inputs_without_form
 
 D = Decimal
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
@@ -83,8 +84,7 @@ def _part_files() -> Iterator[Path]:
     yield ALBERTA_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
-    yield T1_LINE_10100_FORM
-    yield FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml"
+    yield from form_parts("t1_employment_income", "t1_taxable_income")
     yield ALBERTA_PARTS / "ab428_line_16.yaml"
     yield ALBERTA_PARTS / "ab428_line_25.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_27.yaml"

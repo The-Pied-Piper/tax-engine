@@ -2,9 +2,8 @@
 # enter "0") = ^". One core/subtract_not_below_zero step: the Saskatchewan tax after the political
 # contribution tax credit (line 74, `ca-sk/sk428_tax_line_74`) less the labour-sponsored venture
 # capital credit (line 77 as checked against its printed maximum by the line 77 step,
-# `ca-sk/sk428_labour_sponsored_credit_checked_line_77`), not below 0. Line 77 is an optional input
-# that a caller without that credit leaves out; the line 77 step passes that blank on, and the blank
-# rule reads it as 0. The form prints no title for the line, so the step has none. Line 78 is the
+# `ca-sk/sk428_labour_sponsored_credit_checked_line_77`), not below 0. Line 77 is always a figure (a
+# caller without that credit has 0.00), so nothing is blank. The form prints no title for the line, so the step has none. Line 78 is the
 # output `ca-sk/sk428_tax_line_78`.
 form:
   name: ca-sk/sk428
@@ -17,7 +16,5 @@ capabilities:
     consumes:
       amount: ca-sk/sk428_tax_line_74
       less: ca-sk/sk428_labour_sponsored_credit_checked_line_77
-    blank:
-      less: "0"
     produces:
       output: ca-sk/sk428_tax_line_78
