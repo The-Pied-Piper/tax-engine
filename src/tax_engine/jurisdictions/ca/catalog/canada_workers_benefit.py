@@ -26,6 +26,18 @@ CWB_OTHER_EMPLOYMENT_INCOME_LINE_10400 = AmountKind.declare(
 """Schedule 6 line 1, the part from T1 line 10400 (other employment income): the T1's line, read as
 the form's export."""
 
+CWB_UCCB_INCOME_LINE_11700 = AmountKind.declare(
+    CATALOG, "cwb_uccb_income_line_11700", non_negative=True
+)
+"""Schedule 6 line 11, the part from T1 line 11700 (UCCB): the T1's line, read as the form's
+export."""
+
+CWB_RDSP_INCOME_LINE_12500 = AmountKind.declare(
+    CATALOG, "cwb_rdsp_income_line_12500", non_negative=True
+)
+"""Schedule 6 line 11, the part from T1 line 12500 (RDSP income): the T1's line, read as the form's
+export."""
+
 WORKING_INCOME = AmountKind.declare(CATALOG, "working_income", non_negative=True)
 """Working income, Schedule 6 line 5 "Add lines 1 to 4. Enter the result, even if it is "0".
 Working income". The take-home sum has line 1 only: line 1 "Employment income and other employment
@@ -149,15 +161,3 @@ CWB_MAXIMUM = AmountKind.declare(CATALOG, "cwb_maximum", non_negative=True)
 """Schedule 6 line 21 "If you had an eligible spouse or an eligible dependant, enter $2,813. If not,
 enter $1,633.": the $1,633 maximum benefit for a filer with no eligible spouse or dependant, claimed
 whole, a dataset figure."""
-
-CWB_UCCB_INCOME_LINE_11700 = AmountKind.declare(
-    CATALOG, "cwb_uccb_income_line_11700", non_negative=True
-)
-"""Schedule 6 line 11, the part from T1 line 11700 (UCCB): the T1's line, read as the form's
-export."""
-
-CWB_RDSP_INCOME_LINE_12500 = AmountKind.declare(
-    CATALOG, "cwb_rdsp_income_line_12500", non_negative=True
-)
-"""Schedule 6 line 11, the part from T1 line 12500 (RDSP income): the T1's line, read as the form's
-export."""
