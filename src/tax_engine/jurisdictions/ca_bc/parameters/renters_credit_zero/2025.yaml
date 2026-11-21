@@ -1,0 +1,9 @@
+# BC479 line 44: the "0" of the renter's tax credit, 2025
+# The form's own "Enter "0" on line 44" when no rent was paid (line 37 is 0 months). A dollars-and-cents box, so "0" to the cent, rounded half-up as the form states no rounding rule.
+family: ca-bc/renters_credit_zero
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5010-tc/5010-tc-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "0"
