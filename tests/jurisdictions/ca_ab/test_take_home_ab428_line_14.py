@@ -53,7 +53,7 @@ from tax_engine.jurisdictions.ca_ab.catalog import AB428_BRACKET_TAX_AT_START_LI
 from tax_engine.jurisdictions.core.capabilities.bracket_column_figure import (
     BracketColumnTaxAtStart,
 )
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_ab.support import (
     alberta_capabilities,
     alberta_kinds,
@@ -71,7 +71,6 @@ LINE_1 = "ca-ab/ab428_taxable_income_line_1"
 LINE_14 = "ca-ab/ab428_bracket_tax_at_start_line_14"
 SCHEDULE = "ca-ab/brackets_lines_9_to_15"
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 PART = ALBERTA_PARTS / "ab428_line_14.yaml"
 LINE_1_PART = ALBERTA_PARTS / "ab428_credits_line_1.yaml"
 T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")

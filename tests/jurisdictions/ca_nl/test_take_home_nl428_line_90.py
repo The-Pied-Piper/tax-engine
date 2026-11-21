@@ -36,7 +36,7 @@ from tax_engine.jurisdictions.ca_nl.catalog import (
     NL428_FAMILY_INCOME_LINE_90,
     NL428_UCCB_RDSP_REPAYMENTS_LINE_89,
 )
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_capabilities,
     newfoundland_kinds,
@@ -53,7 +53,6 @@ LINE_88 = "ca-nl/nl428_net_income_line_88"
 LINE_89 = "ca-nl/nl428_uccb_rdsp_repayments_line_89"
 LINE_90 = "ca-nl/nl428_family_income_line_90"
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 PART_88 = NL_PARTS / "nl428_line_88.yaml"
 PART_90 = NL_PARTS / "nl428_line_90.yaml"
 # The real parts, in composition order: line 88, the line 89 input, line 90.

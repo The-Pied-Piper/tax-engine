@@ -50,7 +50,7 @@ from tax_engine.domain.trace import BlankPassedOnLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_bc.catalog import BC428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_4
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -68,7 +68,6 @@ LINE_1 = "ca-bc/bc428_taxable_income_line_1"
 LINE_3 = "ca-bc/bc428_bracket_lower_bound_line_3"
 LINE_4 = "ca-bc/bc428_taxable_income_over_lower_bound_line_4"
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_1_PART = BC_PARTS / "bc428_line_1.yaml"
 LINE_3_PART = BC_PARTS / "bc428_line_3.yaml"
 LINE_4_PART = BC_PARTS / "bc428_line_4.yaml"

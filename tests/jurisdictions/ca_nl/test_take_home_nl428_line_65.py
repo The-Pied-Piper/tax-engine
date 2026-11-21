@@ -36,7 +36,7 @@ from tax_engine.jurisdictions.ca_nl.catalog import (
     NL428_TAX_BEFORE_CREDITS_LINE_65,
     NL428_TAX_ON_SPLIT_INCOME_LINE_64,
 )
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_capabilities,
     newfoundland_kinds,
@@ -56,7 +56,6 @@ LINE_63 = "ca-nl/nl428_newfoundland_and_labrador_tax_on_taxable_income_line_63"
 LINE_64 = "ca-nl/nl428_tax_on_split_income_line_64"
 LINE_65 = "ca-nl/nl428_tax_before_credits_line_65"
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 PART = NL_PARTS / "nl428_line_65.yaml"
 # The real parts, in composition order: lines 1 and 3 to 8, lines 10 to 15, lines 63 and 64, 65.
 NL_LINE_PARTS = (

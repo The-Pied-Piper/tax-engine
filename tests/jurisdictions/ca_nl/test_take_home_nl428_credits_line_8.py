@@ -34,7 +34,7 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_capabilities,
     newfoundland_kinds,
@@ -53,7 +53,6 @@ LINE_7 = "ca-nl/nl428_bracket_tax_at_start_line_7"
 LINE_8 = "ca-nl/nl428_tax_on_taxable_income_line_8"
 TITLE = "Newfoundland and Labrador tax on taxable income"
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = NL_PARTS / "nl428_credits_line_8.yaml"
 NL_LINE_PARTS = tuple(
     NL_PARTS / f"nl428_credits_line_{number}.yaml" for number in (1, 3, 4, 5, 6, 7)

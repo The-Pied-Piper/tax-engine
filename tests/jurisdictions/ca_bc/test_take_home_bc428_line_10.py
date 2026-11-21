@@ -50,7 +50,7 @@ from tax_engine.jurisdictions.ca_bc.catalog import BC428_BRACKET_LOWER_BOUND_LIN
 from tax_engine.jurisdictions.core.capabilities.bracket_column_figure import (
     BracketColumnLowerBound,
 )
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -68,7 +68,6 @@ LINE_1 = "ca-bc/bc428_taxable_income_line_1"
 LINE_10 = "ca-bc/bc428_bracket_lower_bound_line_10"
 SCHEDULE = "ca-bc/brackets_lines_9_to_15"
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 PART = BC_PARTS / "bc428_line_10.yaml"
 LINE_1_PART = BC_PARTS / "bc428_line_1.yaml"
 T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")

@@ -37,7 +37,7 @@ from tax_engine.jurisdictions.ca_bc.catalog import (
     BC428_TAX_ON_SPLIT_INCOME_LINE_62,
     BC428_TAX_WITH_SPLIT_INCOME_LINE_63,
 )
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -50,7 +50,6 @@ from tests.manifest_support import inputs_without_form
 
 D = Decimal
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = BC_PARTS / "bc428_line_63.yaml"
 LINE_61_PART = BC_PARTS / "bc428_line_61.yaml"
 LINE_62_PART = BC_PARTS / "bc428_line_62_input.yaml"

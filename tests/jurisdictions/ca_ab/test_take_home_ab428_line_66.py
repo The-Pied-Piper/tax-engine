@@ -54,7 +54,7 @@ from tax_engine.jurisdictions.ca_ab.catalog import (
 from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import (
     SubtractNotBelowZero,
 )
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_ab.support import (
     alberta_capabilities,
     alberta_kinds,
@@ -73,7 +73,6 @@ LINE_65 = "ca-ab/ab428_credits_subtotal_line_65"
 LINE_66 = "ca-ab/ab428_tax_after_credits_line_66"
 ROUNDING = "ca-ab/cent_rounding"
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = ALBERTA_PARTS / "ab428_line_66.yaml"
 T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 # The real Alberta parts after the federal ones, in composition order: lines 1 to 15 and 59 to 61

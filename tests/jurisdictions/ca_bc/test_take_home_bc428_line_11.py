@@ -50,7 +50,7 @@ from tax_engine.jurisdictions.ca_bc.catalog import BC428_TAXABLE_INCOME_OVER_LOW
 from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import (
     SubtractNotBelowZero,
 )
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -69,7 +69,6 @@ LINE_10 = "ca-bc/bc428_bracket_lower_bound_line_10"
 LINE_11 = "ca-bc/bc428_taxable_income_over_lower_bound_line_11"
 ROUNDING = "ca-bc/cent_rounding"
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 PART = BC_PARTS / "bc428_line_11.yaml"
 LINE_1_PART = BC_PARTS / "bc428_line_1.yaml"
 LINE_10_PART = BC_PARTS / "bc428_line_10.yaml"

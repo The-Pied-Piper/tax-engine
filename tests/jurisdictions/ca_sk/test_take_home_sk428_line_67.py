@@ -45,7 +45,7 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.domain.trace import SubtractedLine, SubtractedNotBelowZeroLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_sk.support import (
     saskatchewan_capabilities,
     saskatchewan_kinds,
@@ -60,7 +60,6 @@ D = Decimal
 CENT = D("0.01")
 ZERO = D(0)
 SK_PARTS = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = SK_PARTS / "sk428_line_67.yaml"
 TOP_CREDITS_PARTS = tuple(f"sk428_credits_line_{n}.yaml" for n in (1, 3, 4, 5, 6, 7, 8))
 CREDITS_PARTS = (

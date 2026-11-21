@@ -47,7 +47,7 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.domain.trace import BlankPassedOnLine, SumLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -69,7 +69,6 @@ LINE_70 = "ca-bc/bc428_tax_with_minimum_tax_line_70"
 AMOUNT = "ca-bc/bc428_additional_minimum_tax_amount_line_69"
 ROUNDING = "ca-bc/cent_rounding"
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = BC_PARTS / "bc428_line_70.yaml"
 T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 # The real British Columbia parts after the federal ones, in composition order: the line 68 test's

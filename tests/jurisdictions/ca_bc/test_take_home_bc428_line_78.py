@@ -49,7 +49,7 @@ from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_bc.catalog import BC428_REDUCTION_CLAWBACK_LINE_78
 from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -69,7 +69,6 @@ LINE_76 = "ca-bc/bc428_net_income_over_base_line_76"
 LINE_78 = "ca-bc/bc428_reduction_clawback_line_78"
 RATE_FAMILY = "ca-bc/tax_reduction_rate"
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 PART = BC_PARTS / "bc428_line_78.yaml"
 LINE_74_PART = BC_PARTS / "bc428_line_74.yaml"
 LINE_75_PART = BC_PARTS / "bc428_line_75.yaml"

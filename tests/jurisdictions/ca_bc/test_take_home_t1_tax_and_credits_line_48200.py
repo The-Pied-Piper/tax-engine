@@ -35,7 +35,7 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.domain.trace import BlankFallbackLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -55,7 +55,6 @@ LINE_45300 = "ca/cwb_line_45300"
 LINE_47900 = "ca/provincial_credits_line_47900"
 LINE_48200 = "ca/total_credits"
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 HEADER = dedent("""\
     jurisdiction: CA-BC

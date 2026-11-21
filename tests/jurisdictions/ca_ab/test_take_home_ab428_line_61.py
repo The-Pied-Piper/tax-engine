@@ -50,7 +50,7 @@ from tax_engine.jurisdictions.ca_ab.catalog import (
     AB428_TAX_LINE_61,
     AB428_TAX_ON_SPLIT_INCOME_LINE_60,
 )
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_ab.support import (
     alberta_capabilities,
     alberta_kinds,
@@ -82,7 +82,6 @@ LINE_59 = "ca-ab/ab428_alberta_tax_on_taxable_income_line_59"
 LINE_60 = "ca-ab/ab428_tax_on_split_income_line_60"
 LINE_61 = "ca-ab/ab428_tax_line_61"
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 PART = ALBERTA_PARTS / "ab428_line_61.yaml"
 # The real Alberta parts, in composition order: line 1, lines 3 to 8, lines 10 to 15, line 59, the
 # line 60 input and line 61.

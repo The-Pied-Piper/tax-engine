@@ -44,7 +44,7 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_sk.catalog import SK428_MEDICAL_EXPENSES_LINE_50
-from tests.federal_forms import form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_parts
 from tests.jurisdictions.ca_sk.support import (
     saskatchewan_capabilities,
     saskatchewan_kinds,
@@ -57,7 +57,6 @@ from tests.manifest_support import T1_LINE_10100_FORM, inputs_without_form
 
 D = Decimal
 SK_PARTS = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = SK_PARTS / "sk428_credits_line_53.yaml"
 IDENTIFIER = "ca-sk/sk428_credits_at_rate_line_53"
 LINE_51 = "ca-sk/sk428_credits_total_line_51"

@@ -41,7 +41,7 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.domain.trace import SumLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -61,7 +61,6 @@ LINE_15 = "ca-bc/bc479_page_1_total_line_15"
 EXPENSES = bc_catalog.BC479_HOME_RENOVATION_EXPENSES_LINE_14
 ROUNDING = "ca-bc/cent_rounding"
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = BC_PARTS / "bc479_line_15.yaml"
 T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 

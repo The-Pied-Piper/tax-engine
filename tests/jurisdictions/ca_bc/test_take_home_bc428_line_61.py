@@ -55,7 +55,7 @@ from tax_engine.jurisdictions.ca_bc.catalog import (
     BC428_BRITISH_COLUMBIA_TAX_ON_TAXABLE_INCOME_LINE_61,
 )
 from tax_engine.jurisdictions.ca_bc.trace import TaxOnTaxableIncomeLine
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -75,7 +75,6 @@ LINE_15 = "ca-bc/bc428_tax_on_taxable_income_line_15"
 LINE_61 = "ca-bc/bc428_british_columbia_tax_on_taxable_income_line_61"
 TITLE = "British Columbia tax on taxable income from line 8 or 15"
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 PART = BC_PARTS / "bc428_line_61.yaml"
 # The real British Columbia parts, in composition order: line 1, lines 3 to 8, lines 10 to 15,
 # line 61.

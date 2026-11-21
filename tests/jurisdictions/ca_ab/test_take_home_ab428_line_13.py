@@ -48,7 +48,7 @@ from tax_engine.domain.trace import BlankPassedOnLine, MultipliedByRateLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_ab.catalog import AB428_TAX_ON_EXCESS_LINE_13
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_ab.support import (
     alberta_capabilities,
     alberta_kinds,
@@ -68,7 +68,6 @@ LINE_11 = "ca-ab/ab428_taxable_income_over_lower_bound_line_11"
 LINE_12 = "ca-ab/ab428_bracket_rate_line_12"
 LINE_13 = "ca-ab/ab428_tax_on_excess_line_13"
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_1_PART = ALBERTA_PARTS / "ab428_credits_line_1.yaml"
 LINE_10_PART = ALBERTA_PARTS / "ab428_line_10.yaml"
 LINE_11_PART = ALBERTA_PARTS / "ab428_line_11.yaml"

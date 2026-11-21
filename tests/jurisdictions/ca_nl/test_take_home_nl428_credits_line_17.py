@@ -43,7 +43,7 @@ from tax_engine.jurisdictions.ca.catalog.personal_amounts import (
     BORN_IN_1960_OR_EARLIER,
     BORN_IN_1960_OR_EARLIER_CHECKED,
 )
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_capabilities,
     newfoundland_kinds,
@@ -56,7 +56,6 @@ from tests.manifest_support import inputs_without_form
 
 D = Decimal
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = NL_PARTS / "nl428_credits_line_17.yaml"
 IDENTIFIER = "ca-nl/nl428_age_amount_line_17"
 WORKSHEET_AMOUNT = "ca-nl/nl428_age_amount_worksheet_line_17"

@@ -51,7 +51,7 @@ from tax_engine.jurisdictions.ca_mb.catalog import (
     MB479_FAMILY_INCOME_COLUMN_2_LINE_5,
     MB479_UCCB_RDSP_INCOME_LINE_4,
 )
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_mb.support import (
     manitoba_capabilities,
     manitoba_kinds,
@@ -65,7 +65,6 @@ from tests.manifest_support import inputs_without_form
 D = Decimal
 CENT = D("0.01")
 MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = MB_PARTS / "mb479_line_6.yaml"
 FORM_NAME = "ca-mb/mb479"
 COLUMN_1_LINE_5 = "ca-mb/mb479_family_income_column_1_line_5"

@@ -52,7 +52,7 @@ from tax_engine.jurisdictions.ca_nl.catalog import NL428_BRACKET_RATE_LINE_12
 from tax_engine.jurisdictions.core.capabilities.bracket_column_figure import (
     BracketColumnRate,
 )
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_capabilities,
     newfoundland_kinds,
@@ -70,7 +70,6 @@ LINE_1 = "ca-nl/nl428_taxable_income_line_1"
 LINE_12 = "ca-nl/nl428_bracket_rate_line_12"
 SCHEDULE = "ca-nl/brackets_lines_9_to_15"
 NEWFOUNDLAND_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 PART = NEWFOUNDLAND_PARTS / "nl428_credits_line_12.yaml"
 LINE_1_PART = NEWFOUNDLAND_PARTS / "nl428_credits_line_1.yaml"
 T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")

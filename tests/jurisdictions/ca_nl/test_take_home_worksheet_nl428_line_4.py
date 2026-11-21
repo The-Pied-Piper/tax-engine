@@ -58,7 +58,7 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.domain.trace import BlankPassedOnLine, SubtractedNotBelowZeroLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_capabilities,
     newfoundland_kinds,
@@ -72,7 +72,6 @@ from tests.manifest_support import inputs_without_form
 D = Decimal
 CENT = D("0.01")
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 PART = NL_PARTS / "worksheet_nl428_line_4.yaml"
 LINE_2 = "ca-nl/worksheet_nl428_age_amount_net_income_line_2"
 LINE_3 = "ca-nl/worksheet_nl428_age_amount_income_threshold_line_3"

@@ -46,7 +46,7 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.domain.trace import SumLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_mb.support import (
     manitoba_capabilities,
     manitoba_kinds,
@@ -59,7 +59,6 @@ from tests.manifest_support import inputs_without_form
 
 D = Decimal
 MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = MB_PARTS / "mb428_line_67.yaml"
 LINE_66_INPUT_PART = MB_PARTS / "mb428_line_66_input.yaml"
 LINE_66_PART = MB_PARTS / "mb428_line_66.yaml"

@@ -58,7 +58,7 @@ from tax_engine.domain.trace import (
 )
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_capabilities,
     newfoundland_kinds,
@@ -72,7 +72,6 @@ from tests.manifest_support import inputs_without_form
 D = Decimal
 CENT = D("0.01")
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 PART_4 = NL_PARTS / "worksheet_nl428_line_4.yaml"
 PART_6 = NL_PARTS / "worksheet_nl428_line_6.yaml"
 PART = NL_PARTS / "worksheet_nl428_line_7.yaml"

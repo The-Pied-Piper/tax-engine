@@ -33,7 +33,7 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_bc.catalog import BC428_EI_PREMIUMS_LINE_29
-from tests.federal_forms import form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -46,7 +46,6 @@ from tests.manifest_support import T1_LINE_10100_FORM, inputs_without_form
 
 D = Decimal
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 PART = BC_PARTS / "bc428_line_29.yaml"
 IDENTIFIER = "ca-bc/bc428_ei_premiums_line_29"
 

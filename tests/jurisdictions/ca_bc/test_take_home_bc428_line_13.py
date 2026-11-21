@@ -56,7 +56,7 @@ from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_bc.catalog import BC428_BRACKET_TAX_LINE_13
 from tax_engine.jurisdictions.core.capabilities.multiply_by_rate import MultiplyByRate
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -77,7 +77,6 @@ LINE_12 = "ca-bc/bc428_bracket_rate_line_12"
 LINE_13 = "ca-bc/bc428_bracket_tax_line_13"
 ROUNDING = "ca-bc/cent_rounding"
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 PART = BC_PARTS / "bc428_line_13.yaml"
 LINE_PARTS = tuple(
     BC_PARTS / f"bc428_line_{number}.yaml" for number in ("1", "10", "11", "12", "13")

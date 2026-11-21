@@ -59,7 +59,7 @@ from tax_engine.jurisdictions.ca_bc.catalog import (
     BC428_TAX_ON_TAXABLE_INCOME_LINE_8,
     BC428_TAXABLE_INCOME_LINE_1,
 )
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -81,7 +81,6 @@ LINE_6 = "ca-bc/bc428_bracket_tax_line_6"
 LINE_7 = "ca-bc/bc428_bracket_tax_at_start_line_7"
 LINE_8 = "ca-bc/bc428_tax_on_taxable_income_line_8"
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_1_PART = BC_PARTS / "bc428_line_1.yaml"
 LINE_3_PART = BC_PARTS / "bc428_line_3.yaml"
 LINE_4_PART = BC_PARTS / "bc428_line_4.yaml"

@@ -48,7 +48,7 @@ from tax_engine.domain.trace import BracketColumnFigureLine, BracketOutsideRange
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_nl.catalog import NL428_BRACKET_RATE_LINE_5
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_capabilities,
     newfoundland_kinds,
@@ -65,7 +65,6 @@ FORM = "ca-nl/nl428_credits"
 LINE_1 = "ca-nl/nl428_taxable_income_line_1"
 LINE_5 = "ca-nl/nl428_bracket_rate_line_5"
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = NL_PARTS / "nl428_credits_line_5.yaml"
 T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 

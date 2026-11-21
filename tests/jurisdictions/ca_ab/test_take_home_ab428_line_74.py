@@ -59,7 +59,7 @@ from tax_engine.jurisdictions.ca_ab.catalog import (
     WORKSHEET_AB428_SUPPLEMENTAL_CREDIT_LINE_9,
 )
 from tax_engine.jurisdictions.core.capabilities.record_total import RecordTotal
-from tests.federal_forms import form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_parts
 from tests.jurisdictions.ca_ab.support import (
     alberta_capabilities,
     alberta_kinds,
@@ -72,7 +72,6 @@ from tests.manifest_support import T1_LINE_10100_FORM, inputs_without_form
 
 D = Decimal
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = ALBERTA_PARTS / "ab428_line_74.yaml"
 KIND = "ca-ab/ab428_supplemental_tax_credit_line_74"
 LINE_9_FIELD = "ca-ab/worksheet_ab428_supplemental_credit_line_9"

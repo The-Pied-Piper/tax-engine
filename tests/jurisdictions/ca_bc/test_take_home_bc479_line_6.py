@@ -46,7 +46,7 @@ from tax_engine.jurisdictions.ca_bc.catalog import (
     BC479_ADJUSTED_FAMILY_NET_INCOME_LINE_6,
     BC479_UCCB_RDSP_INCOME_LINE_4,
 )
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -64,7 +64,6 @@ LINE_5 = "ca-bc/bc479_adjusted_net_income_line_5"
 LINE_6 = "ca-bc/bc479_adjusted_family_net_income_line_6"
 ROUNDING = "ca-bc/cent_rounding"
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = BC_PARTS / "bc479_line_6.yaml"
 T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 

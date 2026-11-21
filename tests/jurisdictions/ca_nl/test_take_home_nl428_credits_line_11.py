@@ -50,7 +50,7 @@ from tax_engine.jurisdictions.ca_nl.catalog import NL428_TAXABLE_INCOME_OVER_LOW
 from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import (
     SubtractNotBelowZero,
 )
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_capabilities,
     newfoundland_kinds,
@@ -69,7 +69,6 @@ LINE_10 = "ca-nl/nl428_bracket_lower_bound_line_10"
 LINE_11 = "ca-nl/nl428_taxable_income_over_lower_bound_line_11"
 ROUNDING = "ca-nl/cent_rounding"
 NEWFOUNDLAND_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 PART = NEWFOUNDLAND_PARTS / "nl428_credits_line_11.yaml"
 LINE_1_PART = NEWFOUNDLAND_PARTS / "nl428_credits_line_1.yaml"
 LINE_10_PART = NEWFOUNDLAND_PARTS / "nl428_credits_line_10.yaml"

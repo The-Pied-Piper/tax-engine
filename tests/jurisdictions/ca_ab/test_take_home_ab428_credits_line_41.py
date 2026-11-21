@@ -46,7 +46,7 @@ from tax_engine.jurisdictions.ca_ab.catalog import (
     WORKSHEET_AB428_LINE_3,
     WORKSHEET_AB428_LINE_5,
 )
-from tests.federal_forms import form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_parts
 from tests.jurisdictions.ca_ab.support import (
     alberta_capabilities,
     alberta_kinds,
@@ -59,7 +59,6 @@ from tests.manifest_support import T1_LINE_10100_FORM, inputs_without_form
 
 D = Decimal
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = ALBERTA_PARTS / "ab428_credits_line_41.yaml"
 IDENTIFIER = "ca-ab/ab428_unused_tuition_rounded_line_41"
 

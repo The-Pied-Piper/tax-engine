@@ -58,7 +58,7 @@ from tax_engine.jurisdictions.ca_ab.catalog import (
     AB428_ALBERTA_TAX_ON_TAXABLE_INCOME_LINE_59,
 )
 from tax_engine.jurisdictions.ca_ab.trace import TaxOnTaxableIncomeLine
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_ab.support import (
     alberta_capabilities,
     alberta_kinds,
@@ -89,7 +89,6 @@ LINE_15 = "ca-ab/ab428_tax_on_taxable_income_line_15"
 LINE_59 = "ca-ab/ab428_alberta_tax_on_taxable_income_line_59"
 TITLE = "Alberta tax on taxable income from line 8 or line 15"
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 PART = ALBERTA_PARTS / "ab428_line_59.yaml"
 # The real Alberta parts, in composition order: line 1, lines 3 to 8, lines 10 to 15, line 59.
 ALBERTA_LINE_PARTS = (

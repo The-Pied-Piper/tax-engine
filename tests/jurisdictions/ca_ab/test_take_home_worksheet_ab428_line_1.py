@@ -41,7 +41,7 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_ab.catalog import WORKSHEET_AB428_LINE_1
-from tests.federal_forms import form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_parts
 from tests.jurisdictions.ca_ab.support import (
     alberta_capabilities,
     alberta_kinds,
@@ -54,7 +54,6 @@ from tests.manifest_support import T1_LINE_10100_FORM, inputs_without_form
 
 D = Decimal
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = ALBERTA_PARTS / "worksheet_ab428_line_1.yaml"
 KIND = "ca-ab/worksheet_ab428_line_1"
 

@@ -39,7 +39,7 @@ from tax_engine.jurisdictions.ca_bc.catalog import (
     BC479_INCOME_WITH_REPAYMENTS_LINE_3,
     BC479_UCCB_RDSP_REPAYMENTS_LINE_2,
 )
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -52,7 +52,6 @@ from tests.manifest_support import inputs_without_form
 
 D = Decimal
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = BC_PARTS / "bc479_line_3.yaml"
 T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 

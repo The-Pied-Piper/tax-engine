@@ -48,7 +48,7 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.domain.trace import BlankPassedOnLine, SumLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_ab.support import (
     alberta_capabilities,
     alberta_kinds,
@@ -68,7 +68,6 @@ LINE_68 = "ca-ab/ab428_tax_line_68"
 AMOUNT = "ca-ab/ab428_minimum_tax_t691_amount_line_67"
 ROUNDING = "ca-ab/cent_rounding"
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = ALBERTA_PARTS / "ab428_line_68.yaml"
 T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 # The real Alberta parts after the federal ones, in composition order: lines 1 to 15 and 59 to 61

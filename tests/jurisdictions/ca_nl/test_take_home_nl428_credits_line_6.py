@@ -47,7 +47,7 @@ from tax_engine.domain.trace import MultipliedByRateLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_nl.catalog import NL428_TAX_ON_EXCESS_LINE_6
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_capabilities,
     newfoundland_kinds,
@@ -69,7 +69,6 @@ LINE_4 = "ca-nl/nl428_taxable_income_over_lower_bound_line_4"
 LINE_5 = "ca-nl/nl428_bracket_rate_line_5"
 LINE_6 = "ca-nl/nl428_tax_on_excess_line_6"
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_1_PART = NL_PARTS / "nl428_credits_line_1.yaml"
 LINE_3_PART = NL_PARTS / "nl428_credits_line_3.yaml"
 LINE_4_PART = NL_PARTS / "nl428_credits_line_4.yaml"

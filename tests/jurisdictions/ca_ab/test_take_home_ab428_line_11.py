@@ -49,7 +49,7 @@ from tax_engine.jurisdictions.ca_ab.catalog import AB428_TAXABLE_INCOME_OVER_LOW
 from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import (
     SubtractNotBelowZero,
 )
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_ab.support import (
     alberta_capabilities,
     alberta_kinds,
@@ -68,7 +68,6 @@ LINE_10 = "ca-ab/ab428_bracket_lower_bound_line_10"
 LINE_11 = "ca-ab/ab428_taxable_income_over_lower_bound_line_11"
 ROUNDING = "ca-ab/cent_rounding"
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 PART = ALBERTA_PARTS / "ab428_line_11.yaml"
 LINE_1_PART = ALBERTA_PARTS / "ab428_credits_line_1.yaml"
 LINE_10_PART = ALBERTA_PARTS / "ab428_line_10.yaml"

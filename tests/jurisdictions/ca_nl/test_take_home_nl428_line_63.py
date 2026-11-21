@@ -39,7 +39,7 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_nl.trace import TaxOnTaxableIncomeLine
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_capabilities,
     newfoundland_kinds,
@@ -58,7 +58,6 @@ LINE_15 = "ca-nl/nl428_tax_on_taxable_income_line_15"
 LINE_63 = "ca-nl/nl428_newfoundland_and_labrador_tax_on_taxable_income_line_63"
 TITLE = "Newfoundland and Labrador tax on taxable income from line 8 or 15"
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 PART = NL_PARTS / "nl428_line_63.yaml"
 # The real parts, in composition order: lines 1 and 3 to 8, lines 10 to 15, line 63.
 NL_LINE_PARTS = (

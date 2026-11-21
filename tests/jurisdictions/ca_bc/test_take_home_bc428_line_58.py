@@ -37,7 +37,7 @@ from tax_engine.jurisdictions.ca_bc.catalog import (
     BC428_DONATIONS_AND_GIFTS_LINE_57,
     BC428_SUBTOTAL_LINE_58,
 )
-from tests.federal_forms import form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -50,7 +50,6 @@ from tests.manifest_support import T1_LINE_10100_FORM, inputs_without_form
 
 D = Decimal
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = BC_PARTS / "bc428_line_58.yaml"
 IDENTIFIER = "ca-bc/bc428_subtotal_line_58"
 

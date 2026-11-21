@@ -41,7 +41,7 @@ from tax_engine.jurisdictions.ca_bc.catalog import BC428_NET_INCOME_OVER_BASE_LI
 from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import (
     SubtractNotBelowZero,
 )
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -60,7 +60,6 @@ LINE_75 = "ca-bc/bc428_base_amount_line_75"
 LINE_76 = "ca-bc/bc428_net_income_over_base_line_76"
 ROUNDING = "ca-bc/cent_rounding"
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 PART = BC_PARTS / "bc428_line_76.yaml"
 LINE_74_PART = BC_PARTS / "bc428_line_74.yaml"
 LINE_75_PART = BC_PARTS / "bc428_line_75.yaml"

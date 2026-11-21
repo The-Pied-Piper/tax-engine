@@ -50,7 +50,7 @@ from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import (
     SubtractNotBelowZero,
 )
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -73,7 +73,6 @@ LINE_71 = "ca-bc/bc428_provincial_foreign_tax_credit_line_71"
 LINE_72 = "ca-bc/bc428_tax_after_foreign_credit_line_72"
 ROUNDING = "ca-bc/cent_rounding"
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = BC_PARTS / "bc428_line_72.yaml"
 T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 # The real British Columbia parts after the federal ones, in composition order: the line 70 test's

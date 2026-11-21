@@ -52,7 +52,7 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.domain.trace import BlankPassedOnLine, ProductLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_mb.support import (
     manitoba_capabilities,
     manitoba_kinds,
@@ -66,7 +66,6 @@ from tests.manifest_support import inputs_without_form
 D = Decimal
 CENT = D("0.01")
 MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 PART = MB_PARTS / "worksheet_mb428_line_8.yaml"
 LINE_6 = "ca-mb/worksheet_mb428_line_6"
 KIND = "ca-mb/worksheet_mb428_line_8"

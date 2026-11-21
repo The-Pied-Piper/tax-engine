@@ -51,7 +51,7 @@ from tax_engine.jurisdictions.ca_bc.catalog import (
 from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import (
     SubtractNotBelowZero,
 )
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -70,7 +70,6 @@ LINE_4 = "ca-bc/bc479_uccb_rdsp_income_line_4"
 LINE_5 = "ca-bc/bc479_adjusted_net_income_line_5"
 ROUNDING = "ca-bc/cent_rounding"
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = BC_PARTS / "bc479_line_5.yaml"
 T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 

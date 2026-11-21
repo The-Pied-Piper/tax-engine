@@ -46,7 +46,7 @@ from tax_engine.domain.trace import BracketOutsideRangeLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_ab.catalog import AB428_BRACKET_TAX_AT_START_LINE_7
-from tests.federal_forms import form_part_names, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_ab.support import (
     alberta_capabilities,
     alberta_kinds,
@@ -63,7 +63,6 @@ FORM = "ca-ab/ab428_credits"
 LINE_1 = "ca-ab/ab428_taxable_income_line_1"
 LINE_7 = "ca-ab/ab428_bracket_tax_at_start_line_7"
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = ALBERTA_PARTS / "ab428_line_7.yaml"
 T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 
