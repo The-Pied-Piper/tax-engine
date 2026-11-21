@@ -2,36 +2,49 @@
 
 A part with a `form:` key gives its `inputs` to that form, a part without one (or a whole-file
 manifest) gives them to the default form, and the parts of an imported form give theirs to the
-imported form. Only the owner's steps may read an input; every other form reads the owner's export
-instead, and a step that reads another form's input fails when the manifest loads. Names are made
-up: `ex/federal` is imported by `ex-on`, whose own forms are the default `ex-on/return` and
-`ex-on/levy`.
+imported form. A form's composition starts from its own inputs only, so every other form reads the
+owner's export instead, and a step that reads another form's input fails when the forms are
+composed, naming the form and the input. Names are made up: `ex/federal` is imported by `ex-on`,
+whose own forms are the default `ex-on/return` and `ex-on/levy`.
 """
 
 from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
-
-from tax_engine.domain.errors import InvalidManifestError
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.application.services.tax_computation import TaxComputationService
+from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.manifest import Manifest
+from tax_engine.jurisdictions.core.capabilities.record_total import RecordTotal
+from tax_engine.registrations import parameter_parsers
 from tests.adapters.outbound.test_yaml_imports import (
     EX_ON,
     FEDERAL,
     FEDERAL_INPUTS,
     FEDERAL_STANDALONE,
+    Half,
     header,
     manifest_of,
+    package_roots,
     province_form,
     source,
     write_federal,
     write_province,
 )
 from tests.adapters.outbound.test_yaml_jurisdictions import write
+from tests.application.services.test_every_resolvable_year import composition_failures
 
 LEVY_INPUT = "ex-on/levy"
 RETURN = "ex-on/return"
+
+
+def composing(directory: Path) -> TaxComputationService:
+    capabilities = CapabilityRegistry()
+    capabilities.register("core/record_total", RecordTotal)
+    capabilities.register("ex/half", Half)
+    parameters = YamlParameterSource(package_roots(directory), parameter_parsers())
+    return TaxComputationService(source(directory), parameters, capabilities)
 
 
 def owner_of(manifest: Manifest, name: str) -> str:
@@ -72,22 +85,18 @@ def test_an_input_an_imported_form_declares_belongs_to_the_imported_form(tmp_pat
     assert owner_of(manifest_of(tmp_path), "ex/other_income") == "ex/federal"
 
 
-def test_a_step_reading_an_input_another_form_owns_fails_at_load(tmp_path: Path) -> None:
+def test_a_step_reading_an_input_another_form_owns_does_not_compose(tmp_path: Path) -> None:
     write_federal(tmp_path, {"00-federal.yaml": FEDERAL, "01-inputs.yaml": FEDERAL_INPUTS})
     reads_federal_input = province_form("ex-on").replace(
         "source: ex/income", "source: ex/other_income"
     )
     write_province(tmp_path, form=reads_federal_input)
 
-    with pytest.raises(InvalidManifestError) as caught:
-        source(tmp_path).get_jurisdiction(EX_ON)
+    failures = composition_failures(composing(tmp_path), EX_ON, [2025])
 
-    message = str(caught.value)
-    assert "form 'ex-on/levy'" in message
-    assert "step 'ex/half'" in message
-    assert "input 'ex/other_income'" in message
-    assert "belongs to form 'ex/federal'" in message
-    assert "read the export of 'ex/federal' instead" in message
+    assert len(failures) == 1
+    assert "form 'ex-on/levy'" in failures[0]
+    assert "other_income" in failures[0]
 
 
 def test_a_step_reading_its_own_input_and_another_forms_export_loads(tmp_path: Path) -> None:

@@ -201,52 +201,6 @@ class Form:
         namespace, _, form_id = self.name.partition("/")
         return f"{namespace}/{form_id}.{export.label}"
 
-    def check_inputs_owned(
-        self,
-        owners: Mapping[str, str],
-        carries: Mapping[str, str],
-        *,
-        carries_inputs: bool,
-    ) -> None:
-        """Refuse this form taking an input another form owns: read by a step, directly or
-        through the default form's carry of it (`carries`, by kind name), or exported unless this
-        is the default form (`carries_inputs`), whose exports carry inputs as entered.
-
-        `owners` gives the name of the form that owns each input. The owner reads the input:
-        another form reads the owner's export instead.
-        """
-        for selection in self.capabilities:
-            for named in selection.consumes.values():
-                for identifier in (named,) if isinstance(named, str) else named:
-                    self._check_read_owned(owners, carries, selection.name, identifier)
-        if not carries_inputs:
-            for identifier in self.exports:
-                self._check_owned(owners, identifier, "exports")
-
-    def _check_read_owned(
-        self,
-        owners: Mapping[str, str],
-        carries: Mapping[str, str],
-        step: str,
-        read: str,
-    ) -> None:
-        """Refuse step `step` reading the input `read`, or the carry of it, if another form owns
-        it."""
-        self._check_owned(owners, read, f"step {step!r} reads")
-        if read in carries:
-            action = f"step {step!r} reads {read!r}, the carry of"
-            self._check_owned(owners, carries[read], action)
-
-    def _check_owned(self, owners: Mapping[str, str], identifier: str, action: str) -> None:
-        """Refuse this form taking the input `identifier` if another form owns it."""
-        owner = owners.get(identifier)
-        if owner is None or owner == self.name:
-            return
-        raise InvalidManifestError(
-            f"form {self.name!r}: {action} input {identifier!r}, which belongs to form "
-            f"{owner!r}; read the export of {owner!r} instead"
-        )
-
     def derived_kinds(self, kinds: ArtifactRegistry) -> tuple[RecordListKind, ...]:
         """The kind `<form>.<export>` of each of this form's exports a record can hold, then those
         it supplies.
@@ -468,7 +422,6 @@ class Manifest:
         if not self.inputs:
             raise InvalidManifestError("inputs must name at least one artifact")
         self._check_predicates()
-        self._check_input_owners()
         derived = [kind for form in self.forms for kind in form.derived_kinds(self.artifacts)]
         derived += self._stand_ins(derived)
         self._check_derived(derived)
@@ -627,29 +580,6 @@ class Manifest:
                 gathered[name] = declaration
                 owners[name] = form.name
         return gathered
-
-    def _check_input_owners(self) -> None:
-        """Have each form refuse what it takes from another form's input.
-
-        The first form is the default form, whose exports are the manifest's `outputs`: they
-        carry an input onto the return as entered, whichever form owns it, so they are not
-        checked. Another form may not read that carry either.
-        """
-        owners = {declaration.name: form.name for form in self.forms for declaration in form.inputs}
-        carries = self._default_carries()
-        for form in self.forms:
-            form.check_inputs_owned(owners, carries, carries_inputs=form is self.forms[0])
-
-    def _default_carries(self) -> dict[str, str]:
-        """The kind `<default form>.<export>` of each of the default form's exports, by name, to
-        the export it carries."""
-        default = self.forms[0]
-        carries: dict[str, str] = {}
-        for export in default.exports:
-            field = self.artifacts.kind(export)
-            if isinstance(field, RecordField):
-                carries[default.export_kind_name(field)] = export
-        return carries
 
     def _check_predicates(self) -> None:
         """Refuse a `required_when` that names nothing the manifest has or an optional input."""

@@ -191,12 +191,12 @@ A required input takes neither `default` nor `basis`. By convention an entry wri
 
 An input is held by one form: the form of the part that declares it, the default form for an input
 in a whole-file manifest or in a part without `form:`. The manifest's `inputs` gather them all, and
-an input two forms declare is an `InvalidManifestError`. Only the form that holds an input may read
-it: name it in a step's `consumes`, or list it in its `exports`. Every other form that needs the
-figure reads the holder's export, as it reads any other form's figure. A step or export that takes
-another form's input is an `InvalidManifestError` when the manifest loads, naming the form, the
-input and the form that holds it. The one exception is the default form's `outputs`, which carry an
-input onto the return as entered, whichever form holds it.
+an input two forms declare is an `InvalidManifestError`. A form's composition starts from the inputs
+it holds and from nothing else, so a step that reads another form's input finds no producer for it
+and fails when the forms are composed, naming the form and the input. Every other form that needs
+the figure reads the holder's export, as it reads any other form's figure. The default form's
+`outputs` are the exception: they carry an input onto the return as entered, whichever form holds
+it.
 Fields of a form's `instances` already belong to their form and are not in the manifest's `inputs`.
 
 ## Capability selections

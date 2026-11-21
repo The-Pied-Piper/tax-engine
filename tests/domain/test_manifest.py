@@ -1063,41 +1063,15 @@ def test_an_optional_slot_without_a_blank_rule_is_listed_by_the_form() -> None:
 
 # --- input ownership ----------------------------------------------------------------------------
 #
-# An input belongs to the form that declares it; only that form's steps may read it. Another form
-# reads the owner's export instead.
+# An input belongs to the form that declares it, and the manifest's `inputs` gather them. Another
+# form reads the owner's export instead (its composition starts from its own inputs only).
 
 
-def test_a_step_reading_an_input_another_form_owns_is_refused_naming_all_four() -> None:
-    with pytest.raises(InvalidManifestError) as caught:
-        with_forms(optional_form(), owner="ex/relief")
-
-    message = str(caught.value)
-    assert "form 'ex-on/return'" in message
-    assert "step 'ex/progressive_tax'" in message
-    assert "input 'ex/taxable_base'" in message
-    assert "belongs to form 'ex/relief'" in message
-    assert "read the export of 'ex/relief' instead" in message
-
-
-def test_a_step_reading_an_input_its_own_form_owns_passes() -> None:
+def test_the_manifests_inputs_gather_those_of_every_form() -> None:
     assert with_forms(optional_form()).inputs.keys() == {
         "ex/taxable_base",
         "ex/relief_applies",
     }
-
-
-def test_a_step_reading_a_list_slot_input_another_form_owns_is_refused() -> None:
-    reading = CapabilitySelection(
-        name="ex/total_up",
-        params={},
-        consumes={"parts": ("ex/relief_applies", "ex/taxable_base")},
-        produces={"total": "ex/total"},
-    )
-
-    with pytest.raises(
-        InvalidManifestError, match="form 'ex/relief'.*input 'ex/relief_applies'.*'ex-on/return'"
-    ):
-        with_forms(optional_form(capabilities=(reading,)))
 
 
 def test_an_input_two_forms_declare_is_refused_naming_both() -> None:
@@ -1108,38 +1082,3 @@ def test_an_input_two_forms_declare_is_refused_naming_both() -> None:
         match="input 'ex/taxable_base' is declared by form 'ex-on/return' and by form 'ex/relief'",
     ):
         with_forms(again)
-
-
-def test_a_form_exporting_an_input_another_form_owns_is_refused() -> None:
-    sharing = optional_form(exports=("ex/taxable_base",))
-
-    with pytest.raises(
-        InvalidManifestError,
-        match="form 'ex/relief': exports input 'ex/taxable_base', which belongs to form 'ex-on",
-    ):
-        with_forms(sharing)
-
-
-def test_the_default_form_carries_an_input_onto_the_return_as_entered_whoever_owns_it() -> None:
-    relief = with_inputs(optional_form(), ["ex/relief_applies"])
-    found = with_forms(relief, inputs=required_inputs(["ex/taxable_base"]))
-    carrying = dataclasses.replace(found.forms[0], exports=("ex/relief_applies",))
-
-    assert dataclasses.replace(found, forms=(carrying, *found.forms[1:])).forms[0] == carrying
-
-
-def test_a_step_reading_the_default_forms_carry_of_another_forms_input_is_refused() -> None:
-    inputs = required_inputs(["ex/taxable_base", "ex/relief_applies", "ex/levy"])
-    reading = CapabilitySelection(
-        name="ex/total_up",
-        params={},
-        consumes={"parts": "ex-on/return.levy"},
-        produces={"total": "ex/total"},
-    )
-
-    with pytest.raises(
-        InvalidManifestError,
-        match="form 'ex/relief': step 'ex/total_up' reads 'ex-on/return.levy', the carry of "
-        "input 'ex/levy', which belongs to form 'ex-on/return'",
-    ):
-        with_forms(optional_form(capabilities=(reading,)), inputs=inputs)
