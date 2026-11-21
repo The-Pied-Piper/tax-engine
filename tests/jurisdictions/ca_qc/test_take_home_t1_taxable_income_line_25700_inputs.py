@@ -1,45 +1,66 @@
-"""5005-R (2025) line 69 (line 25700), deductions from net income: a Quebec manifest input a
-salary-only caller does not give.
+"""5005-R (2025) lines 59 to 68 (lines 24400 to 25600): optional inputs
+a salary-only caller does not give;
+each is read as 0 by the sum that adds it, so the default is blank.
 
-Form text (CRA 5005-R page 5, https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5005-r/5005-r-25e.txt):
-"Line 69 and line 25700: Add lines 59 to 68. =". Lines 59 to 68 are blank for a salary-only filer,
-so the printed sum is one optional input, read as 0 when left out, with no step.
-
-The real part is loaded under a test-local header, as the Quebec header is another part's."""
+Form text (CRA 5005-R page 5, https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5005-r/5005-r-25e.txt).
+The real part is loaded under a test-local header, as the Quebec header is another part's.
+"""
 
 from __future__ import annotations
 
-from decimal import Decimal
 from pathlib import Path
+
+import pytest
 
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.manifest import Manifest
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 from tests.jurisdictions.ca_qc.support import quebec_kinds, quebec_packages, quebec_units
+from tests.kinds import non_negative
 
-D = Decimal
-KIND = "ca/deductions_from_net_income"
-PRINTED_BASIS = "Line 69 and line 25700: Add lines 59 to 68."
 PART = "t1_taxable_income_line_25700_inputs.yaml"
-HEADER = """\
+BASIS = {
+    "24400": (
+        "Line 59 and line 24400: Canadian Armed Forces personnel and police deduction "
+        "(box 43 of all T4 slips)"
+    ),
+    "24900": (
+        "Line 60 and line 24900: Security options deductions (boxes 39, 41, 91 and 92 of "
+        "all T4 slips or see Form T1212)"
+    ),
+    "25000": (
+        "Line 61 and line 25000: Other payments deduction (enter the amount from line "
+        "14700 if you did not enter an amount on line 14600; otherwise, use Federal "
+        "Worksheet)"
+    ),
+    "25100": "Line 62 and line 25100: Limited partnership losses of other years",
+    "25200": "Line 63 and line 25200: Non-capital losses of other years",
+    "25300": "Line 64 and line 25300: Net capital losses of other years",
+    "25395": (
+        "Line 65 and line 25395: Capital gains deduction for qualifying business "
+        "transfers or qualifying cooperative conversions (complete Form T2048)"
+    ),
+    "25400": "Line 66 and line 25400: Capital gains deduction (complete Form T657)",
+    "25500": "Line 67 and line 25500: Northern residents deductions (complete Form T2222)",
+    "25600": "Line 68 and line 25600: Additional deductions (specify):",
+}
+LINES = tuple(BASIS)
+NAMES = {line: f"ca-qc/t1_line_{line}" for line in LINES}
+HEADER = f"""\
 jurisdiction: CA-QC
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/deductions_from_net_income]
+outputs: [{", ".join(NAMES.values())}]
 capabilities: []
 """
-FORM = """\
-form:
-  name: ca-qc/t1_taxable_income
-  required: true
-  exports:
-    - ca/deductions_from_net_income
-capabilities: []
-"""
+FORM = (
+    "form:\n  name: ca-qc/t1_taxable_income\n  required: true\n  exports:\n"
+    + "".join(f"    - {name}\n" for name in NAMES.values())
+    + "capabilities: []\n"
+)
 
 
 def _manifest(take_home_service: TakeHomeService, tmp_path: Path) -> Manifest:
-    """The temporary take-home folder the shared builder writes, loaded as a manifest."""
     take_home_service(HEADER, FORM, PART)
     folder = tmp_path / "manifests" / "2025"
     return YamlJurisdictionSource(quebec_packages().roots(), quebec_kinds(), quebec_units()).load(
@@ -47,13 +68,27 @@ def _manifest(take_home_service: TakeHomeService, tmp_path: Path) -> Manifest:
     )
 
 
-def test_a_request_that_leaves_out_the_deductions_from_net_income_is_read_as_zero(
+def test_the_part_declares_exactly_these_lines(
     take_home_service: TakeHomeService, tmp_path: Path
 ) -> None:
-    declaration = _manifest(take_home_service, tmp_path).inputs[KIND]
-    default = declaration.default_artifact(quebec_kinds().kind(KIND))
+    inputs = _manifest(take_home_service, tmp_path).inputs
+
+    assert {name for name in inputs if name.startswith("ca-qc/t1_line_")} == set(NAMES.values())
+
+
+@pytest.mark.parametrize("line", LINES)
+def test_a_request_that_leaves_out_the_line_is_read_as_blank(
+    take_home_service: TakeHomeService, tmp_path: Path, line: str
+) -> None:
+    declaration = _manifest(take_home_service, tmp_path).inputs[NAMES[line]]
+    default = declaration.default_artifact(quebec_kinds().kind(NAMES[line]))
+
     assert not declaration.required
-    assert declaration.basis == PRINTED_BASIS
-    assert declaration.reference == "25700"
-    assert default is not None and not default.is_blank
-    assert default.value == D("0")
+    assert declaration.basis == BASIS[line]
+    assert declaration.reference == line
+    assert default is not None and default.is_blank
+
+
+@pytest.mark.parametrize("line", LINES)
+def test_the_input_kind_is_registered_with_its_sign(line: str) -> None:
+    assert non_negative(quebec_kinds().kind(NAMES[line])) is True

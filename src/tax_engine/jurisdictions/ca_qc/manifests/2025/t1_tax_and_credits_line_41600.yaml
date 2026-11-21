@@ -1,0 +1,22 @@
+# 5005-R (2025) line 142. The form prints: "Line 142 and line 41600: Add lines 139 to 141. =" (page 7).
+# One core/sum in form line order, rounded half-up to the cent through `ca-qc/cent_rounding`; the
+# optional lines read as 0 when blank (`t1_tax_and_credits_line_41600_inputs.yaml`).
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/sum
+    reference: "41600"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/t1_line_41000
+        - ca-qc/t1_line_41200
+        - ca-qc/t1_line_41400
+    blank:
+      ca-qc/t1_line_41000: "0"
+      ca-qc/t1_line_41200: "0"
+      ca-qc/t1_line_41400: "0"
+    produces:
+      output: ca-qc/federal_credits_line_142

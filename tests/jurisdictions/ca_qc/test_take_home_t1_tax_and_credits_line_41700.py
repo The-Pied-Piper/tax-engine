@@ -2,7 +2,7 @@
 
 Form text (CRA 5005-R page 7, https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5005-r/5005-r-25e.txt):
 "Line 143 and line 41700: Line 138 minus line 142 (if negative, enter "0") ="
-Line 142 (the sum of lines 139 to 141) is one optional input, a blank for a salary-only filer and
+Line 142 (the sum of lines 139 to 141) is a step; the tests give line 139 (41000); a blank is
 read as 0. The figures at 20,000, 70,000 and 200,000 are hand-computed from the printed forms, not
 a CRA example. One core/subtract_not_below_zero, rounded half-up to the cent.
 """
@@ -15,8 +15,8 @@ import pytest
 
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.jurisdictions.ca_qc.catalog import (
-    FEDERAL_CREDITS_LINE_142,
     FEDERAL_TAX_LESS_CREDITS_LINE_143,
+    T1_LINE_41000,
 )
 from tests.jurisdictions.ca_qc.basic_personal_amount_support import sheets
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
@@ -38,13 +38,13 @@ def test_a_salary_only_line_143_is_the_printed_figure(
 
 
 def test_line_142_is_taken(take_home_service: TakeHomeService) -> None:
-    _, sheet = sheets(take_home_service, "70000", (FEDERAL_CREDITS_LINE_142, "100.10"))
+    _, sheet = sheets(take_home_service, "70000", (T1_LINE_41000, "100.10"))
 
     assert sheet.get(FEDERAL_TAX_LESS_CREDITS_LINE_143).value == D("7423.45")
 
 
 def test_a_negative_difference_is_entered_as_zero(take_home_service: TakeHomeService) -> None:
-    _, sheet = sheets(take_home_service, "70000", (FEDERAL_CREDITS_LINE_142, "10000"))
+    _, sheet = sheets(take_home_service, "70000", (T1_LINE_41000, "10000"))
 
     assert sheet.get(FEDERAL_TAX_LESS_CREDITS_LINE_143).value == D("0.00")
 
