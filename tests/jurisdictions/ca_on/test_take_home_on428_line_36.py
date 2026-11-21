@@ -13,8 +13,8 @@ The claim is the filer's medical claim; three optional inputs say how much of it
 the van and the move, and a 0/1 count says the year of death. Each category above its maximum is
 reduced to it (a cap, not a refusal); line 36 is the claim less what the categories lose. Only the
 final step carries the reference "36" and step 10 (the sum) a title alone; the others are
-unprinted and have no title. A result below 0 (a category larger than the claim) is refused, never floored. The hand figures are asserted (not a
-CRA example).
+unprinted and have no title. A result below 0 (a category larger than the claim) is refused,
+never floored. The hand figures are asserted (not a CRA example).
 
 The real input part and the new `on428_line_36.yaml` are loaded under a test-local header and form.
 """
