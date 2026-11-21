@@ -1,46 +1,46 @@
-"""5005-R (2025) line 32 and line 14700: a Quebec manifest input a salary-only caller does not give.
+"""5005-R (2025) lines 29 to 31 (14400 to 14600): optional inputs
+a salary-only caller does not give; each is read as 0 by the sum that adds it, so the
+default is blank.
 
-Form text (CRA 5005-R page 3, https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5005-r/5005-r-25e.txt):
-"Line 32 and line 14700: Add lines 29 to 31 (see line 25000 in Step 4). =". Lines 29 to 31 are blank
-for a salary-only filer, so the printed sum is one optional input, read as 0 when left out, with
-no step.
-
+Form text (CRA 5005-R page 3, https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5005-r/5005-r-25e.txt).
 The real part is loaded under a test-local header, as the Quebec header is another part's.
 """
 
 from __future__ import annotations
 
-from decimal import Decimal
 from pathlib import Path
+
+import pytest
 
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.manifest import Manifest
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 from tests.jurisdictions.ca_qc.support import quebec_kinds, quebec_packages, quebec_units
+from tests.kinds import non_negative
 
-D = Decimal
-KIND = "ca-qc/t1_line_32"
-PRINTED_BASIS = "Line 32 and line 14700: Add lines 29 to 31"
 PART = "t1_taxable_income_line_32_inputs.yaml"
-HEADER = """\
+BASIS = {
+    "14400": "Line 29 and line 14400: Workers' compensation benefits (box 10 of the T5007 slip)",
+    "14500": "Line 30 and line 14500: Social assistance payments",
+    "14600": "Line 31 and line 14600: Net federal supplements paid (box 21 of the T4A(OAS) slip)",
+}
+LINES = ("14400", "14500", "14600")
+NAMES = {line: f"ca-qc/t1_line_{line}" for line in LINES}
+HEADER = f"""\
 jurisdiction: CA-QC
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca-qc/t1_line_32]
+outputs: [{", ".join(NAMES.values())}]
 capabilities: []
 """
-FORM = """\
-form:
-  name: ca-qc/t1_taxable_income
-  required: true
-  exports:
-    - ca-qc/t1_line_32
-capabilities: []
-"""
+FORM = (
+    "form:\n  name: ca-qc/t1_taxable_income\n  required: true\n  exports:\n"
+    + "".join(f"    - {name}\n" for name in NAMES.values())
+    + "capabilities: []\n"
+)
 
 
 def _manifest(take_home_service: TakeHomeService, tmp_path: Path) -> Manifest:
-    """The temporary take-home folder the shared builder writes, loaded as a manifest."""
     take_home_service(HEADER, FORM, PART)
     folder = tmp_path / "manifests" / "2025"
     return YamlJurisdictionSource(quebec_packages().roots(), quebec_kinds(), quebec_units()).load(
@@ -48,13 +48,27 @@ def _manifest(take_home_service: TakeHomeService, tmp_path: Path) -> Manifest:
     )
 
 
-def test_a_request_that_leaves_out_t1_line_32_is_read_as_zero(
+def test_the_part_declares_exactly_these_lines(
     take_home_service: TakeHomeService, tmp_path: Path
 ) -> None:
-    declaration = _manifest(take_home_service, tmp_path).inputs[KIND]
-    default = declaration.default_artifact(quebec_kinds().kind(KIND))
+    inputs = _manifest(take_home_service, tmp_path).inputs
+
+    assert {name for name in inputs if name.startswith("ca-qc/t1_line_")} == set(NAMES.values())
+
+
+@pytest.mark.parametrize("line", LINES)
+def test_a_request_that_leaves_out_the_line_is_read_as_blank(
+    take_home_service: TakeHomeService, tmp_path: Path, line: str
+) -> None:
+    declaration = _manifest(take_home_service, tmp_path).inputs[NAMES[line]]
+    default = declaration.default_artifact(quebec_kinds().kind(NAMES[line]))
+
     assert not declaration.required
-    assert declaration.basis == PRINTED_BASIS
-    assert declaration.reference == "14700"
-    assert default is not None and not default.is_blank
-    assert default.value == D("0")
+    assert declaration.basis == BASIS[line]
+    assert declaration.reference == line
+    assert default is not None and default.is_blank
+
+
+@pytest.mark.parametrize("line", LINES)
+def test_the_input_kind_is_registered_with_its_sign(line: str) -> None:
+    assert non_negative(quebec_kinds().kind(NAMES[line])) is True
