@@ -4,6 +4,9 @@
 # does not name them; "box A" and "box B" are the owner's naming, as on ON428 line 47. A
 # salary-only caller has none, so a request that leaves the line out is read as 0 (the input's own
 # default), and the step multiplies it.
+# The heading above the line, "Disability credit for self or for a dependant other than your spouse or common-law partner",
+# says whom the count is of. The filer gives the count; the heading is part of the printed basis
+# shown with the box.
 inputs:
   - name: ca-mb/mb479_disability_claims_number_line_14
     title: "Number of disability claims"
@@ -11,4 +14,4 @@ inputs:
     unit: ca/cad
     required: false
     default: "0"
-    basis: 'Line 14: Number of disability claims'
+    basis: 'Disability credit for self or for a dependant other than your spouse or common-law partner. Line 14: Number of disability claims'

@@ -30,7 +30,7 @@ from tests.jurisdictions.ca_mb.support import (
 from tests.kinds import non_negative
 
 IDENTIFIER = MB479_DISABILITY_CLAIMS_NUMBER_LINE_14.identifier
-PRINTED_BASIS = "Line 14: Number of disability claims"
+PRINTED_BASIS = "Disability credit for self or for a dependant other than your spouse or common-law partner. Line 14: Number of disability claims"
 PART = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / (
     "manifests/2025/mb479_line_14_inputs.yaml"
 )

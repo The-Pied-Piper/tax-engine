@@ -30,7 +30,9 @@ from tests.jurisdictions.ca_mb.support import (
 from tests.kinds import non_negative
 
 IDENTIFIER = MB479_DEPENDENT_CHILDREN_NUMBER_LINE_16.identifier
-PRINTED_BASIS = "Line 16: Number of dependent children"
+PRINTED_BASIS = (
+    "Credit for dependent children born in 2007 or later. Line 16: Number of dependent children"
+)
 PART = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / (
     "manifests/2025/mb479_line_16_inputs.yaml"
 )

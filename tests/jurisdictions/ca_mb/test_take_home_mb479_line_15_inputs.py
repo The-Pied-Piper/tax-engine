@@ -30,7 +30,9 @@ from tests.jurisdictions.ca_mb.support import (
 from tests.kinds import non_negative
 
 IDENTIFIER = MB479_DISABLED_DEPENDANTS_NUMBER_LINE_15.identifier
-PRINTED_BASIS = "Line 15: Number of disabled dependants"
+PRINTED_BASIS = (
+    "Credit for disabled dependants born in 2007 or earlier. Line 15: Number of disabled dependants"
+)
 PART = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / (
     "manifests/2025/mb479_line_15_inputs.yaml"
 )
