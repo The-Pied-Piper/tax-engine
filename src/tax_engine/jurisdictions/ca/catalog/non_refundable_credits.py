@@ -38,6 +38,21 @@ Schedule 8 or Form RC381, whichever applies)": Schedule 8 Part 4 line 15, entere
 Part 4 completed (1 or 0), a part of the total of the credit amounts on the T1 (ON428 line 20,
 line 58280, copies it)."""
 
+SELF_EMPLOYMENT_CPP_QPP_CONTRIBUTIONS = AmountKind.declare(
+    CATALOG, "self_employment_cpp_qpp_contributions", non_negative=True
+)
+"""Base CPP or QPP contributions on self-employment income and other earnings, T1 line 87 and line
+31000 (`t1_lines_copied_by_provinces_line_31000_inputs.yaml`): the optional input, blank when the
+filer has none. The T1 owns it; NL428 line 28 imports line 31000."""
+
+SELF_EMPLOYMENT_CPP_QPP_CONTRIBUTIONS_LINE_31000 = AmountKind.declare(
+    CATALOG, "self_employment_cpp_qpp_contributions_line_31000", non_negative=True
+)
+"""Self-employment CPP or QPP contributions as T1 line 31000 prints it
+(`t1_lines_copied_by_provinces_line_31000.yaml`): the optional input
+(`ca/self_employment_cpp_qpp_contributions`), read as 0 when blank, exported by the T1 lines copied
+by provinces form."""
+
 EI_PREMIUMS = AmountKind.declare(CATALOG, "ei_premiums", non_negative=True)
 """EI premiums, T1 line 31200 "through employment (boxes 18 and 55 of all T4 slips) (maximum
 $1,077.48)": Form T2204 line 16, a part of the total of the
@@ -1185,4 +1200,13 @@ line 33500."""
 STUDENT_LOAN_INTEREST = AmountKind.declare(CATALOG, "student_loan_interest", non_negative=True)
 """Interest paid on student loans, T1 line 102 (line 31900) "Interest paid on your student loans (go
 to canada.ca/taxes-students)": the eligible amount of interest the filer paid, a part of the total
-of the credit amounts on line 33500."""
+of the credit amounts on line 33500. The optional input
+(`t1_lines_copied_by_provinces_line_31900_inputs.yaml`), blank when the filer has none. The T1 owns
+it; NL428 line 43 imports line 31900."""
+
+STUDENT_LOAN_INTEREST_LINE_31900 = AmountKind.declare(
+    CATALOG, "student_loan_interest_line_31900", non_negative=True
+)
+"""Student loan interest as T1 line 31900 prints it
+(`t1_lines_copied_by_provinces_line_31900.yaml`): the optional input (`ca/student_loan_interest`),
+read as 0 when blank, exported by the T1 lines copied by provinces form."""

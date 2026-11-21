@@ -55,12 +55,15 @@ LINE_PART = NL_PARTS / "nl428_credits_line_47.yaml"
 IDENTIFIER = "ca-nl/nl428_credits_subtotal_line_47"
 LINE_42 = "ca-nl/nl428_credits_subtotal_line_42"
 LINE_43 = "ca-nl/nl428_student_loan_interest_line_43"
+T1_LINE_31900 = "ca/student_loan_interest"
 LINE_44 = "ca-nl/nl428_tuition_and_education_amounts_line_44"
 LINE_45 = "ca-nl/nl428_tuition_and_education_amounts_transferred_from_a_child_or_grandchild_line_45"
 LINE_46 = "ca-nl/nl428_amounts_transferred_from_your_spouse_or_common_law_partner_line_46"
 LINE_40 = "ca-nl/nl428_disability_amount_self_line_40"
 FORM_NAME = "ca-nl/nl428_credits"
-FEDERAL_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+FEDERAL_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 NL_PART_NAMES = (
     "worksheet_nl428_line_4.yaml",
     "worksheet_nl428_line_6.yaml",
@@ -79,7 +82,7 @@ NL_PART_NAMES = (
     "nl428_credits_line_24_input.yaml",
     "nl428_credits_line_25.yaml",
     "nl428_credits_line_27.yaml",
-    "nl428_credits_line_28_input.yaml",
+    "nl428_credits_line_28.yaml",
     "nl428_credits_line_29.yaml",
     "nl428_credits_line_30_input.yaml",
     "nl428_credits_line_31_input.yaml",
@@ -96,7 +99,7 @@ NL_PART_NAMES = (
     "nl428_credits_line_40.yaml",
     "nl428_credits_line_41_input.yaml",
     "nl428_credits_line_42.yaml",
-    "nl428_credits_line_43_input.yaml",
+    "nl428_credits_line_43.yaml",
     "nl428_credits_line_44_input.yaml",
     "nl428_credits_line_45_input.yaml",
     "nl428_credits_line_46_input.yaml",
@@ -212,7 +215,7 @@ def test_line_47_is_line_42_when_lines_43_to_46_are_blank(
 @pytest.mark.parametrize(
     ("line", "amount", "expected"),
     [
-        (LINE_43, "100.10", "12311.85"),
+        (T1_LINE_31900, "100.10", "12311.85"),
         (LINE_44, "2000.20", "14211.95"),
         (LINE_45, "300.30", "12512.05"),
         (LINE_46, "4000.40", "16212.15"),
@@ -232,7 +235,7 @@ def test_line_47_adds_line_42_to_lines_43_to_46(tmp_path: Path) -> None:
     sheet = _sheet(
         tmp_path,
         "20000",
-        {LINE_43: "100.10", LINE_44: "2000.20", LINE_45: "300.30", LINE_46: "4000.40"},
+        {T1_LINE_31900: "100.10", LINE_44: "2000.20", LINE_45: "300.30", LINE_46: "4000.40"},
     )
 
     assert _value(sheet, IDENTIFIER) == D("18612.75")
@@ -240,7 +243,7 @@ def test_line_47_adds_line_42_to_lines_43_to_46(tmp_path: Path) -> None:
 
 def test_line_47_carries_the_disability_amount_on_line_42(tmp_path: Path) -> None:
     # 12,211.75 plus 7,467.00 on line 40 reach line 42; line 47 adds 100.10 to that.
-    sheet = _sheet(tmp_path, "20000", {LINE_43: "100.10"}, claim=1)
+    sheet = _sheet(tmp_path, "20000", {T1_LINE_31900: "100.10"}, claim=1)
 
     assert _value(sheet, LINE_40) == D("7467.00")
     assert _value(sheet, LINE_42) == D("19678.75")
@@ -266,7 +269,7 @@ def test_the_part_names_the_form_and_has_one_sum_step_over_lines_42_to_46() -> N
         "unit": "ca/cad",
         "params": {"rounding": "ca-nl/cent_rounding"},
         "consumes": {"parts": [LINE_42, LINE_43, LINE_44, LINE_45, LINE_46]},
-        "blank": {LINE_43: "0", LINE_44: "0", LINE_45: "0", LINE_46: "0"},
+        "blank": {LINE_44: "0", LINE_45: "0", LINE_46: "0"},
         "produces": {"output": IDENTIFIER},
     }
 

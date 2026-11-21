@@ -143,8 +143,8 @@ NL428_QPP_CONTRIBUTIONS_LINE_28 = AmountKind.declare(
     CATALOG, "nl428_qpp_contributions_line_28", non_negative=True
 )
 """Quebec Pension Plan contributions, NL428 line 28 "Line 28 and line 58280: Amount from line 31000
-of your return": the amount as the filer gives it, an optional input; a blank input is read as
-blank."""
+of your return": a record total of the T1's export
+(`ca/self_employment_cpp_qpp_contributions_line_31000`), 0 for a salary-only caller."""
 
 NL428_EI_PREMIUMS_LINE_29 = AmountKind.declare(
     CATALOG, "nl428_ei_premiums_line_29", non_negative=True
@@ -248,8 +248,8 @@ NL428_STUDENT_LOAN_INTEREST_LINE_43 = AmountKind.declare(
     CATALOG, "nl428_student_loan_interest_line_43", non_negative=True
 )
 """Interest paid on your student loans, NL428 line 43 "Line 43 and line 58520: Interest paid on your
-student loans (amount from line 31900 of your return)": the amount as the filer gives it, an
-optional input; a blank input is read as blank."""
+student loans (amount from line 31900 of your return)": a record total of the T1's export
+(`ca/student_loan_interest_line_31900`), 0 for a salary-only caller."""
 
 NL428_TUITION_AND_EDUCATION_AMOUNTS_LINE_44 = AmountKind.declare(
     CATALOG, "nl428_tuition_and_education_amounts_line_44", non_negative=True
@@ -289,8 +289,8 @@ from a spouse or common-law partner), lines 43 to 46 being read as 0 when blank.
 NL428_MEDICAL_EXPENSES_LINE_48 = AmountKind.declare(
     CATALOG, "nl428_medical_expenses_line_48", non_negative=True
 )
-"""Medical expenses, NL428 line 48 (line 58689) "Amount from line 33099 of your return": the amount
-as the filer gives it, an optional input; a blank input is read as blank."""
+"""Medical expenses, NL428 line 48 (line 58689) "Amount from line 33099 of your return": a record
+total of the T1's export (`ca/medical_expenses_line_33099`), 0 for a salary-only caller."""
 
 NL428_ALLOWABLE_MEDICAL_EXPENSES_FOR_OTHER_DEPENDANTS_LINE_54 = AmountKind.declare(
     CATALOG, "nl428_allowable_medical_expenses_for_other_dependants_line_54", non_negative=True
@@ -344,8 +344,8 @@ NL428_MINIMUM_TAX_CARRYOVER_AMOUNT_LINE_68 = AmountKind.declare(
     CATALOG, "nl428_minimum_tax_carryover_amount_line_68", non_negative=True
 )
 """Newfoundland and Labrador minimum tax carryover, NL428 line 68 (line 61540) "Amount from line
-40427 of your return": the amount from line 40427 of the T1 return, an optional input, box A of the
-line, as the filer gives it; a blank input is read as blank."""
+40427 of your return": the amount from line 40427 of the T1 return, box A of the line, a record
+total of the T1's export (`ca/minimum_tax_carryover_line_40427`), 0 for a salary-only caller."""
 
 NL428_MINIMUM_TAX_CARRYOVER_LINE_68 = AmountKind.declare(
     CATALOG, "nl428_minimum_tax_carryover_line_68", non_negative=True

@@ -79,7 +79,9 @@ LINE_12_PART = ALBERTA_PARTS / "ab428_line_12.yaml"
 LINE_13_PART = ALBERTA_PARTS / "ab428_line_13.yaml"
 LINE_14_PART = ALBERTA_PARTS / "ab428_line_14.yaml"
 LINE_15_PART = ALBERTA_PARTS / "ab428_line_15.yaml"
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 
 HEADER = dedent("""\
     jurisdiction: CA-AB

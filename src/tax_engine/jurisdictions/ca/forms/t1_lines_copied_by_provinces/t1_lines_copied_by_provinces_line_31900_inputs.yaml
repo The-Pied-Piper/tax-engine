@@ -1,0 +1,15 @@
+# T1 (5006-R, 2025) line 31900 input a salary-only caller does not give. "Line 102 and line 31900:
+# Interest paid on your student loans (go to canada.ca/taxes-students)" (5006-R page 6). A salary-
+# only caller has none, so a request that leaves the line out is read as blank, and this step
+# reads that blank as 0. This form owns the input: NL428 line 43 import line 31900 from this
+# form's export and never ask for it themselves.
+form:
+  name: ca/t1_lines_copied_by_provinces
+inputs:
+  - name: ca/student_loan_interest
+    title: "Interest paid on your student loans"
+    reference: "31900"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 102 and line 31900: Interest paid on your student loans (go to canada.ca/taxes-students)'

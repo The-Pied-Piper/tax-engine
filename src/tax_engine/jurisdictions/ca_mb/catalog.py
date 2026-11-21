@@ -106,8 +106,9 @@ MB428_MINIMUM_TAX_CARRYOVER_LINE_63 = AmountKind.declare(
     CATALOG, "mb428_minimum_tax_carryover_line_63", non_negative=True
 )
 """Minimum tax carryover amount, MB428 line 63 (line 40427) "Line 63 and line 61540: Amount from
-line 40427 of your return": a caller input, read as blank when left out; the carryover credit step
-reads it."""
+line 40427 of your return": a record total of the T1's export
+(`ca/minimum_tax_carryover_line_40427`), 0 for a salary-only caller; the carryover credit step reads
+it."""
 
 MB428_MINIMUM_TAX_CARRYOVER_CREDIT_LINE_63 = AmountKind.declare(
     CATALOG, "mb428_minimum_tax_carryover_credit_line_63", non_negative=True

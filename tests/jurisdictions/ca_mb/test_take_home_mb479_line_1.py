@@ -58,7 +58,9 @@ MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / 
 LINE_PART = MB_PARTS / "mb479_line_1.yaml"
 FORM_NAME = "ca-mb/mb479"
 KIND = "ca-mb/mb479_net_income_line_1"
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 
 HEADER = dedent("""\
     jurisdiction: CA-MB

@@ -1,0 +1,15 @@
+# T1 (5006-R, 2025) line 33099 input a salary-only caller does not give. "Line 107 and line 33099:
+# Medical expenses for self, spouse or common-law partner and your dependent children under 18
+# years of age" (5006-R page 6). A salary-only caller has none, so a request that leaves the line
+# out is read as blank, and this step reads that blank as 0. This form owns the input: NL428 line
+# 48 import line 33099 from this form's export and never ask for it themselves.
+form:
+  name: ca/t1_lines_copied_by_provinces
+inputs:
+  - name: ca/medical_expenses
+    title: "Medical expenses for self, spouse or common-law partner and your dependent children under 18 years of age"
+    reference: "33099"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 107 and line 33099: Medical expenses for self, spouse or common-law partner and your dependent children under 18 years of age'

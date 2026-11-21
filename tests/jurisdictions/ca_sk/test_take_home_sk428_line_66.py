@@ -81,7 +81,6 @@ CREDITS_PARTS = (
 SK_LINE_PARTS = (
     "sk428_line_63.yaml",
     "sk428_line_64_input.yaml",
-    "sk428_line_65_inputs.yaml",
     "sk428_line_65.yaml",
 )
 FORM_NAME = "ca-sk/sk428"
@@ -89,7 +88,7 @@ CREDITS_FORM_NAME = "ca-sk/sk428_credits"
 LINE_57 = "ca-sk/sk428_non_refundable_credits_line_57"
 LINE_63 = "ca-sk/sk428_credits_from_line_57_line_63"
 LINE_64 = "ca-sk/sk428_dividend_tax_credit_line_64"
-LINE_65_AMOUNT = "ca-sk/sk428_minimum_tax_carryover_amount_line_65"
+LINE_65_AMOUNT = "ca/minimum_tax_carryover"
 LINE_65 = "ca-sk/sk428_minimum_tax_carryover_line_65"
 IDENTIFIER = "ca-sk/sk428_credits_subtotal_line_66"
 ROUNDING = "ca-sk/cent_rounding"
@@ -150,6 +149,7 @@ def _part_files() -> Iterator[Path]:
     yield SK_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
+    yield from form_parts("t1_lines_copied_by_provinces")
     yield T1_LINE_10100_FORM
     yield FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml"
     for name in CREDITS_PARTS:

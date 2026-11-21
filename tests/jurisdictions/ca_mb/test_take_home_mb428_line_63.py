@@ -35,6 +35,7 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca_mb.catalog import MB428_MINIMUM_TAX_CARRYOVER_CREDIT_LINE_63
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_mb.support import (
     manitoba_capabilities,
     manitoba_kinds,
@@ -43,8 +44,10 @@ from tests.jurisdictions.ca_mb.support import (
     manitoba_units,
 )
 from tests.kinds import non_negative
+from tests.manifest_support import inputs_without_form
 
 D = Decimal
+MINIMUM_TAX_CARRYOVER = "ca/minimum_tax_carryover"
 CODE = JurisdictionCode("CA-MB")
 FORM_NAME = "ca-mb/mb428"
 AMOUNT = "ca-mb/mb428_minimum_tax_carryover_line_63"
@@ -78,10 +81,17 @@ def _service(tmp_path: Path) -> TaxComputationService:
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
-    names = ["salary.yaml", "mb428_credits_line_63_input.yaml", PART.name]
+    names = ["salary.yaml", PART.name]
     for number, name in enumerate(names, start=2):
         text = (MB_PARTS / name).read_text(encoding="utf-8")
         (folder / f"{number:02d}_{name}").write_text(text, encoding="utf-8")
+    for number, found in enumerate(form_parts("t1_lines_copied_by_provinces"), start=20):
+        text = (
+            inputs_without_form(found)
+            if found.name.endswith("_inputs.yaml")
+            else found.read_text(encoding="utf-8")
+        )
+        (folder / f"{number:02d}_{found.name}").write_text(text, encoding="utf-8")
     roots = {**manitoba_packages().roots(), Namespace("ca-mb"): tmp_path}
     return TaxComputationService(
         YamlJurisdictionSource(roots, manitoba_kinds(), manitoba_units()),
@@ -96,7 +106,7 @@ def _sheet(tmp_path: Path, salary: str, amount: str | None) -> Worksheet:
     kinds = manitoba_kinds()
     given = [Artifact(kinds.kind(SALARY), D(salary))]
     if amount is not None:
-        given.append(Artifact(kinds.kind(AMOUNT), D(amount)))
+        given.append(Artifact(kinds.kind(MINIMUM_TAX_CARRYOVER), D(amount)))
     (sheet,) = _service(tmp_path).compute(CODE, 2025, *given)[FORM_NAME]
     return sheet
 
@@ -112,7 +122,7 @@ def _step() -> dict[str, Any]:
     assert isinstance(part, dict)
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": FORM_NAME}
-    (step,) = part["capabilities"]
+    *_, step = part["capabilities"]
     assert isinstance(step, dict)
     return step
 
@@ -144,15 +154,6 @@ def test_line_63_is_50_percent_of_the_amount_rounded_half_up(
     assert str(value) == expected
 
 
-def test_a_blank_amount_prints_the_steps_own_left_blank_row(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "70000", None)
-
-    rows = EnglishTraceRenderer().render_all(sheet.trace)
-
-    blank_rows = [row for row in rows if "left blank, taken as 0" in row.lower()]
-    assert len(blank_rows) == 1
-
-
 def test_a_given_amount_prints_no_left_blank_row(tmp_path: Path) -> None:
     sheet = _sheet(tmp_path, "70000", "1000.00")
 
@@ -170,7 +171,6 @@ def test_the_part_is_one_apply_rate_step_over_the_line_63_amount() -> None:
         "unit": "ca/cad",
         "params": {"rate": "ca-mb/minimum_tax_rate"},
         "consumes": {"base": AMOUNT},
-        "blank": {"base": "0"},
         "produces": {"output": LINE_63},
     }
 
@@ -183,7 +183,6 @@ def test_the_step_keys_are_in_the_order_of_the_neighbouring_parts() -> None:
         "unit",
         "params",
         "consumes",
-        "blank",
         "produces",
     ]
 
@@ -202,3 +201,19 @@ def test_the_kind_is_a_registered_non_negative_decimal_amount() -> None:
     assert non_negative(kind)
     with pytest.raises(NegativeArtifactError):
         Artifact(kind, D("-0.01"))
+
+
+def test_the_amount_is_a_record_total_of_the_t1_line_40427_export_with_no_input_of_its_own() -> (
+    None
+):
+    part = yaml.safe_load(PART.read_text(encoding="utf-8"))
+
+    assert "inputs" not in part
+    assert part["capabilities"][0] == {
+        "name": "core/record_total",
+        "title": "Amount from line 40427 of your return",
+        "reference": "63 box A",
+        "unit": "ca/cad",
+        "consumes": {"records": "ca/t1_lines_copied_by_provinces.minimum_tax_carryover_line_40427"},
+        "produces": {"output": AMOUNT},
+    }

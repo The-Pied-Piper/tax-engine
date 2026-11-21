@@ -33,11 +33,17 @@ EXCEPTIONS: dict[str, str | None] = {
 }
 
 
+# Federal forms the Ontario manifest does not import: only the provinces that copy their lines do.
+NOT_IMPORTED_BY_ONTARIO = {"t1_lines_copied_by_provinces"}
+
+
 def declared() -> dict[str, str | None]:
     """The unit expected of each figure the ca form manifests declare, in or out."""
     kinds = registrations.artifact_kinds()
     found: dict[str, str | None] = {}
     for path in sorted(FEDERAL_FORMS.rglob("*.yaml")):
+        if path.parent.name in NOT_IMPORTED_BY_ONTARIO:
+            continue
         body = yaml.safe_load(path.read_text(encoding="utf-8"))
         names = [item["name"] for item in body.get("inputs") or []]
         for selection in body.get("capabilities") or []:

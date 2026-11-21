@@ -69,7 +69,9 @@ SCHEDULE_PARTS = (
     "mb428_a_line_12.yaml",
 )
 # The real federal parts the T1 taxable-income form needs, beside the salary and the schedule.
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 
 HEADER = dedent("""\
     jurisdiction: CA-MB
