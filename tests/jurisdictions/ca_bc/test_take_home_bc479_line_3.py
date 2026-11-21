@@ -133,7 +133,9 @@ def test_line_3_adds_line_2_when_it_is_given(tmp_path: Path) -> None:
         Artifact(UCCB_REPAYMENT, D("100.50")),
     )
 
-    assert sheet.get(BC479_INCOME_WITH_REPAYMENTS_LINE_3).value == D("69435.50")
+    # The 100.50 is deducted in the net income (T1 line 23300) and line 2 adds it back: line 3 is
+    # the 69,335.00 of the salary alone.
+    assert sheet.get(BC479_INCOME_WITH_REPAYMENTS_LINE_3).value == D("69335.00")
 
 
 def test_line_3_stays_negative_when_line_1_is_negative(tmp_path: Path) -> None:
