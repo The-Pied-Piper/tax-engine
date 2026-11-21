@@ -3,61 +3,13 @@
 # printed income line from 105 to 164 is an optional input of this form (tp1_income_line_<n>_input.yaml),
 # read as 0 when the caller has none, so a salary-only filer's total income is the salary. The form
 # prints lines 106, 149 and 153 as text boxes that say what lines 107, 148 and 154 are, and 165 to
-# 169 as sub-boxes of lines 107, 128, 136 and 154; none of those is added. Seventeen lines are too
-# many for one readable sentence, so three unnumbered subtotals (lines 105 to 119, 122 to 139, 142 to
-# 164, in form order) come first and line 199 adds them to line 101. Lines 136 and 164 are signed
-# (a loss is a minus), so the subtotals and line 199 are signed too: the form prints no floor.
-# Line 199 is rounded half-up to the cent (`ca-qc/cent_rounding`).
+# 169 as sub-boxes of lines 107, 128, 136 and 154; none of those is added. Lines 136 and 164 are
+# signed (a loss is a minus), so line 199 is signed too: the form prints no floor. One step for the
+# one printed line; its English sentence words the long sum as line 101 plus lines 105 to 164 in
+# total. The sum is rounded half-up to the cent (`ca-qc/cent_rounding`).
 form:
   name: ca-qc/tp1_income
 capabilities:
-  - name: core/sum
-    title: "Lines 105 to 119"
-    unit: ca/cad
-    params:
-      rounding: ca-qc/cent_rounding
-    consumes:
-      parts: [ca-qc/tp1_line_105, ca-qc/tp1_line_107, ca-qc/tp1_line_110, ca-qc/tp1_line_111, ca-qc/tp1_line_114, ca-qc/tp1_line_119]
-    blank:
-      ca-qc/tp1_line_105: "0"
-      ca-qc/tp1_line_107: "0"
-      ca-qc/tp1_line_110: "0"
-      ca-qc/tp1_line_111: "0"
-      ca-qc/tp1_line_114: "0"
-      ca-qc/tp1_line_119: "0"
-    produces:
-      output: ca-qc/tp1_income_lines_105_to_119
-  - name: core/sum
-    title: "Lines 122 to 139"
-    unit: ca/cad
-    params:
-      rounding: ca-qc/cent_rounding
-    consumes:
-      parts: [ca-qc/tp1_line_122, ca-qc/tp1_line_123, ca-qc/tp1_line_128, ca-qc/tp1_line_130, ca-qc/tp1_line_136, ca-qc/tp1_line_139]
-    blank:
-      ca-qc/tp1_line_122: "0"
-      ca-qc/tp1_line_123: "0"
-      ca-qc/tp1_line_128: "0"
-      ca-qc/tp1_line_130: "0"
-      ca-qc/tp1_line_136: "0"
-      ca-qc/tp1_line_139: "0"
-    produces:
-      output: ca-qc/tp1_income_lines_122_to_139
-  - name: core/sum
-    title: "Lines 142 to 164"
-    unit: ca/cad
-    params:
-      rounding: ca-qc/cent_rounding
-    consumes:
-      parts: [ca-qc/tp1_line_142, ca-qc/tp1_line_147, ca-qc/tp1_line_148, ca-qc/tp1_line_154, ca-qc/tp1_line_164]
-    blank:
-      ca-qc/tp1_line_142: "0"
-      ca-qc/tp1_line_147: "0"
-      ca-qc/tp1_line_148: "0"
-      ca-qc/tp1_line_154: "0"
-      ca-qc/tp1_line_164: "0"
-    produces:
-      output: ca-qc/tp1_income_lines_142_to_164
   - name: core/sum
     title: "Total income"
     reference: "199"
@@ -67,8 +19,40 @@ capabilities:
     consumes:
       parts:
         - ca/employment_income
-        - ca-qc/tp1_income_lines_105_to_119
-        - ca-qc/tp1_income_lines_122_to_139
-        - ca-qc/tp1_income_lines_142_to_164
+        - ca-qc/tp1_line_105
+        - ca-qc/tp1_line_107
+        - ca-qc/tp1_line_110
+        - ca-qc/tp1_line_111
+        - ca-qc/tp1_line_114
+        - ca-qc/tp1_line_119
+        - ca-qc/tp1_line_122
+        - ca-qc/tp1_line_123
+        - ca-qc/tp1_line_128
+        - ca-qc/tp1_line_130
+        - ca-qc/tp1_line_136
+        - ca-qc/tp1_line_139
+        - ca-qc/tp1_line_142
+        - ca-qc/tp1_line_147
+        - ca-qc/tp1_line_148
+        - ca-qc/tp1_line_154
+        - ca-qc/tp1_line_164
+    blank:
+      ca-qc/tp1_line_105: "0"
+      ca-qc/tp1_line_107: "0"
+      ca-qc/tp1_line_110: "0"
+      ca-qc/tp1_line_111: "0"
+      ca-qc/tp1_line_114: "0"
+      ca-qc/tp1_line_119: "0"
+      ca-qc/tp1_line_122: "0"
+      ca-qc/tp1_line_123: "0"
+      ca-qc/tp1_line_128: "0"
+      ca-qc/tp1_line_130: "0"
+      ca-qc/tp1_line_136: "0"
+      ca-qc/tp1_line_139: "0"
+      ca-qc/tp1_line_142: "0"
+      ca-qc/tp1_line_147: "0"
+      ca-qc/tp1_line_148: "0"
+      ca-qc/tp1_line_154: "0"
+      ca-qc/tp1_line_164: "0"
     produces:
       output: ca-qc/tp1_total_income_line_199

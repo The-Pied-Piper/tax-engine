@@ -166,15 +166,6 @@ TP1_LINE_164 = AmountKind.declare(CATALOG, "tp1_line_164")
 form that line 199 adds; blank when the caller has none, and line 199 reads it as 0. Signed: a
 loss is entered as a negative figure and is added."""
 
-TP1_INCOME_LINES_105_to_119 = AmountKind.declare(CATALOG, "tp1_income_lines_105_to_119")
-"""Unnumbered subtotal of TP-1 lines 105 to 119 (signed), read by line 199."""
-
-TP1_INCOME_LINES_122_to_139 = AmountKind.declare(CATALOG, "tp1_income_lines_122_to_139")
-"""Unnumbered subtotal of TP-1 lines 122 to 139 (signed), read by line 199."""
-
-TP1_INCOME_LINES_142_to_164 = AmountKind.declare(CATALOG, "tp1_income_lines_142_to_164")
-"""Unnumbered subtotal of TP-1 lines 142 to 164 (signed), read by line 199."""
-
 TP1_TOTAL_INCOME_LINE_199 = AmountKind.declare(CATALOG, "tp1_total_income_line_199")
 """Total income, TP-1 line 199 "Add lines 101 and 105 through 164. Total income": line 101, the
 salary, plus the optional income of lines 105 through 164, rounded half-up to the cent."""

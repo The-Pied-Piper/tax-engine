@@ -14,6 +14,7 @@ from textwrap import dedent
 
 import pytest
 
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
@@ -123,3 +124,22 @@ def test_the_sum_is_rounded_half_up_to_the_cent(take_home_service: TakeHomeServi
     value = tp1(take_home_service, "70000", **{"154": "0.005"}).get(TP1_TOTAL_INCOME_LINE_199).value
 
     assert str(value) == "70000.01"
+
+
+def test_the_sentence_words_the_long_sum_as_the_salary_plus_lines_105_to_164(
+    take_home_service: TakeHomeService,
+) -> None:
+    sheet = tp1(take_home_service, "70000", **{"107": "1000", "136": "-200.50", "164": "5000"})
+    (line,) = (
+        line
+        for line in sheet.trace
+        if getattr(line, "label", None) == TP1_TOTAL_INCOME_LINE_199.label
+        and type(line).__name__ == "SumLine"
+    )
+
+    sentence = EnglishTraceRenderer().render(line, sheet)
+
+    assert sentence.startswith(
+        "Line 10100 (CA$70000.00) plus lines 105 to 164 (CA$5799.50 in total)"
+    )
+    assert len(sentence.split()) <= 40
