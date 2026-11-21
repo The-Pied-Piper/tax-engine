@@ -14,7 +14,7 @@ from pathlib import Path
 
 import pytest
 
-from tests.jurisdictions.ca_mb.part_support import MB_PARTS, compute_line
+from tests.jurisdictions.ca_mb.mb428_medical_support import MB_PARTS, compute_line
 
 D = Decimal
 INPUT = "ca-mb/mb479_dependent_children_number_line_16"

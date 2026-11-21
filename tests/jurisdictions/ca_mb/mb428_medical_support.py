@@ -1,4 +1,4 @@
-"""Support for the per-line tests of Manitoba (2025) part files that read other lines as inputs.
+"""Support for the per-line tests of the MB428 (2025) medical expense parts, lines 43 to 50.
 
 Each test loads one real part file from the Manitoba manifest folder beside a header and a form
 declaration made up here, gives the part's upstream lines as inputs, and reads the line it computes
