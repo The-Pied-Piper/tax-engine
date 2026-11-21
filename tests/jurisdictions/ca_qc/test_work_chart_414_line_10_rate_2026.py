@@ -43,4 +43,5 @@ def test_the_2026_file_holds_the_pinned_figures() -> None:
 def test_the_2026_file_is_provisional_and_states_its_derivation() -> None:
     lines = PATH.read_text().splitlines()
 
-    assert lines[-2:] == [PROVISIONAL_HEADER, DERIVATION_HEADER]
+    assert lines[0] == PROVISIONAL_HEADER
+    assert lines[1] == DERIVATION_HEADER
