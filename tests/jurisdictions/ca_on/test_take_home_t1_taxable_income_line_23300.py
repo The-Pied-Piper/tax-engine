@@ -1,13 +1,11 @@
 """T1 (2025) line 23300, total deductions from total income, from the real part files.
 
-T1 line 23300: "Line 53 and line 23300: Add lines 35 to 52." (5006-R, page 4). A salary-only filer
-has one deduction, line 22215, the CPP enhanced contributions deduction that Schedule 8 line 28
-exports. Another form's export reaches this form only as the record list of one amount
-`ca/schedule_8.schedule_8_cpp_enhanced_contributions_on_return`, so a `core/record_total` takes it
-first (`ca/t1_line_22215`). The printed sum then adds, in form line order, line 40 (line 21300, the
-UCCB repayment), line 48 (line 22215) and line 52 (line 23200, the RDSP income repayment), and the
-output is `ca/deductions_from_total_income`. The two repayments are the form's own steps, each read
-as 0 when the caller gives none.
+T1 line 23300: "Line 53 and line 23300: Add lines 35 to 52." (5006-R, page 4). The take-home filer
+can have three of its lines, added in form line order: line 40 (line 21300, the UCCB repayment),
+line 48 (line 22215, the CPP enhanced contributions deduction that Schedule 8 line 28 exports, its
+own part `ca/t1_line_22215`) and line 52 (line 23200, the RDSP income repayment). The two
+repayments are the form's own steps, each read as 0 when the caller gives none. The output is
+`ca/deductions_from_total_income`.
 
 The real Schedule 8 parts are composed beside the salary and the line 23300 part, so the figure
 comes from the salary alone through the real engine. The T1 form declaration is test-local: it
@@ -42,6 +40,7 @@ PARTS = (
     "t1_taxable_income_line_21300.yaml",
     "t1_taxable_income_line_23200_inputs.yaml",
     "t1_taxable_income_line_23200.yaml",
+    "t1_taxable_income_line_22215.yaml",
     "t1_taxable_income_line_23300.yaml",
 )
 HEADER = """\

@@ -1,0 +1,15 @@
+# T1 (5006-R, 2025) line 22215: "Line 48 and line 22215: Deduction for CPP or QPP enhanced contributions on
+# employment income" (5006-R page 4). The figure is Schedule 8 line 28, which the shared form exports as
+# a record list of one amount (`ca/schedule_8.schedule_8_cpp_enhanced_contributions_on_return`), so the
+# step is one core/record_total over it. Line 23300 adds it in form line order.
+form:
+  name: ca/t1_taxable_income
+capabilities:
+  - name: core/record_total
+    title: "Deduction for CPP or QPP enhanced contributions on employment income"
+    reference: "22215"
+    unit: ca/cad
+    consumes:
+      records: ca/schedule_8.schedule_8_cpp_enhanced_contributions_on_return
+    produces:
+      output: ca/t1_line_22215

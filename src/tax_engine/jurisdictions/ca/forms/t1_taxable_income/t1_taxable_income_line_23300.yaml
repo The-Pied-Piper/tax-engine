@@ -1,19 +1,11 @@
 # T1 (2025) line 23300: "Line 53 and line 23300: Add lines 35 to 52." (5006-R page 4). The line is a
 # sum, a calculation. The take-home filer can have three of its lines, added in form line order: line 40
-# (line 21300, the UCCB repayment) and line 52 (line 23200, the RDSP income repayment included there) are steps of this
-# same form, each read as 0 when blank, and line 48 (line 22215) is Schedule 8's export, which this form
-# reads as the other form's export (`ca/schedule_8.<export>`, a record list of one amount), so core/record_total
-# takes it first. A salary-only filer has line 22215 alone.
+# (line 21300, the UCCB repayment), line 48 (line 22215, `ca/t1_line_22215`) and line 52 (line 23200, the RDSP
+# income repayment included there) are steps of this same form; lines 21300 and 23200 read as 0 when blank.
+# A salary-only filer has line 22215 alone.
 form:
   name: ca/t1_taxable_income
 capabilities:
-  - name: core/record_total
-    title: "Deduction for CPP or QPP enhanced contributions on employment income"
-    unit: ca/cad
-    consumes:
-      records: ca/schedule_8.schedule_8_cpp_enhanced_contributions_on_return
-    produces:
-      output: ca/t1_line_22215
   - name: core/sum
     reference: "23300"
     unit: ca/cad
