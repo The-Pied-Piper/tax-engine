@@ -1,6 +1,8 @@
-"""Shared helpers for the end-to-end tests of the BC428 and BC479 printed sums (#1843): the bundled
-engine over the real British Columbia manifest, with the salary and, where stated, optional inputs
-typed in."""
+"""Figures of the real British Columbia worksheets for the end-to-end tests of the printed sums.
+
+The bundled engine runs over the real manifest, with the salary and, where stated, optional inputs
+typed in.
+"""
 
 from __future__ import annotations
 

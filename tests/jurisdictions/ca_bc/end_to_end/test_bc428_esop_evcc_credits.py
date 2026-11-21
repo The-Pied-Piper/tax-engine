@@ -11,7 +11,8 @@ from __future__ import annotations
 import pytest
 
 from tax_engine.domain.errors import InputAboveBoundError
-from tests.jurisdictions.ca_bc.end_to_end._lump_sum import D, figure, sheet
+from tax_engine.domain.trace import AtMostLine, CreditAmountLine
+from tests.jurisdictions.ca_bc.end_to_end.figures import D, figure, sheet
 
 YEARS = [2025, 2026]
 LINE_88 = "bc428_esop_evcc_credits_line_88"
@@ -55,3 +56,27 @@ def test_a_sum_exactly_at_the_maximum_passes(year: int) -> None:
 def test_a_sum_one_cent_above_the_maximum_is_refused(year: int) -> None:
     with pytest.raises(InputAboveBoundError):
         sheet("bc428", year, bc428_esop_credit_line_86="1500", bc428_evcc_credit_line_87="500.01")
+
+
+def test_the_trace_has_one_at_most_line_and_one_credit_amount_line_for_the_maximum() -> None:
+    worksheet = sheet(
+        "bc428", 2025, bc428_esop_credit_line_86="300.25", bc428_evcc_credit_line_87="450.50"
+    )
+
+    at_most = [
+        line
+        for line in worksheet.trace
+        if isinstance(line, AtMostLine)
+        and line.output.identifier == "ca-bc/bc428_esop_evcc_credits_line_88"
+    ]
+    maximum = [
+        line
+        for line in worksheet.trace
+        if isinstance(line, CreditAmountLine)
+        and line.output.identifier == "ca-bc/bc428_esop_evcc_credits_maximum"
+    ]
+    (checked,) = at_most
+    (maximum_line,) = maximum
+    assert checked.amount_value == D("750.75")
+    assert checked.bound_value == D("2000.00")
+    assert maximum_line.value == D("2000.00")

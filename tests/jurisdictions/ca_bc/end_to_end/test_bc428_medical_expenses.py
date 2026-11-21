@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import pytest
 
-from tests.jurisdictions.ca_bc.end_to_end._lump_sum import D, figure, sheet
+from tests.jurisdictions.ca_bc.end_to_end.figures import D, figure, sheet
 
 YEARS = [2025, 2026]
 FORM = "bc428"

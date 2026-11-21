@@ -12,7 +12,8 @@ from __future__ import annotations
 import pytest
 
 from tax_engine.domain.errors import InputAboveBoundError
-from tests.jurisdictions.ca_bc.end_to_end._lump_sum import D, figure, sheet
+from tax_engine.domain.trace import AtMostLine, CreditAmountLine
+from tests.jurisdictions.ca_bc.end_to_end.figures import D, figure, sheet
 
 YEARS = [2025, 2026]
 LINE_15 = "bc479_page_1_total_line_15"
@@ -83,3 +84,25 @@ def test_line_35_reads_line_25(year: int) -> None:
     worksheet = sheet("bc479", year, **{L21: "500"})
 
     assert figure(worksheet, LINE_35) == figure(worksheet, LINE_15) + D("500.00")
+
+
+def test_the_trace_has_one_at_most_line_and_one_credit_amount_line_for_the_maximum() -> None:
+    worksheet = sheet("bc479", 2025, **{L17: "1000", L18: "2000", L21: "3000.50", L23: "400"})
+
+    at_most = [
+        line
+        for line in worksheet.trace
+        if isinstance(line, AtMostLine)
+        and line.output.identifier == "ca-bc/bc479_venture_capital_credit_line_25"
+    ]
+    maximum = [
+        line
+        for line in worksheet.trace
+        if isinstance(line, CreditAmountLine)
+        and line.output.identifier == "ca-bc/bc479_venture_capital_credit_line_25_maximum"
+    ]
+    (checked,) = at_most
+    (maximum_line,) = maximum
+    assert checked.amount_value == D("6400.50")
+    assert checked.bound_value == D("300000.00")
+    assert maximum_line.value == D("300000.00")
