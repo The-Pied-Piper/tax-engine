@@ -16,32 +16,17 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
+from tests.jurisdictions.ca_qc.tp1_net_income_support import TP1_INCOME_PARTS
 
 D = Decimal
 FORM = "ca-qc/tp1_schedule_f"
 # The end of a chain: a form cannot hold a produced line that nothing reads or exports.
 LINE_36 = "ca-qc/tp1_schedule_f_income_line_36"
 LINE_70 = "ca-qc/tp1_schedule_f_income_subject_line_70"
-LINE_34_INPUTS = ("20", "22", "23", "24", "26", "28", "29", "30", "31", "33")
-INCOME_PARTS = (
-    "salary.yaml",
-    "tp1_income.yaml",
-    "tp1_income_line_105_input.yaml",
-    "tp1_income_line_107_input.yaml",
-    "tp1_income_line_box_211_input.yaml",
-    "tp1_income_line_199_input.yaml",
-    "tp1_income_line_199.yaml",
-    "tp1_income_line_97_input.yaml",
-    "tp1_income_line_97.yaml",
-    "tp1_income_line_98_input.yaml",
-    "tp1_income_line_98.yaml",
-    "tp1_income_line_98_1_input.yaml",
-    "tp1_income_line_98_1.yaml",
-    "tp1_income_line_98_2_input.yaml",
-    "tp1_income_line_98_2.yaml",
-)
+LINE_25_INPUTS = ("23", "24")
+LINE_34_INPUTS = ("20", "22", "26", "28", "29", "30", "31", "33")
 LINE_36_PARTS = (
-    *INCOME_PARTS,
+    *TP1_INCOME_PARTS,
     "tp1_schedule_f_line_10_input.yaml",
     "tp1_schedule_f_line_10.yaml",
     "tp1_schedule_f_line_12.yaml",
@@ -49,6 +34,7 @@ LINE_36_PARTS = (
     "tp1_schedule_f_line_16.yaml",
     "tp1_schedule_f_line_18.yaml",
     "tp1_schedule_f_line_34_inputs.yaml",
+    "tp1_schedule_f_line_25_inputs.yaml",
     "tp1_schedule_f_line_25.yaml",
     "tp1_schedule_f_line_34.yaml",
     "tp1_schedule_f_line_36.yaml",
