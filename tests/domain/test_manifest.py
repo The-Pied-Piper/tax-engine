@@ -1134,3 +1134,20 @@ def test_the_default_form_carries_an_input_onto_the_return_as_entered_whoever_ow
     found = with_forms(optional_form(), inputs=inputs)
 
     assert dataclasses.replace(found, forms=(carrying, *found.forms[1:])).forms[0] == carrying
+
+
+def test_a_step_reading_the_default_forms_carry_of_another_forms_input_is_refused() -> None:
+    inputs = owned_by("ex-on/return") | required_inputs(["ex/levy"], owner="ex-on/return")
+    reading = CapabilitySelection(
+        name="ex/total_up",
+        params={},
+        consumes={"parts": "ex-on/return.ex/levy"},
+        produces={"total": "ex/total"},
+    )
+
+    with pytest.raises(
+        InvalidManifestError,
+        match="form 'ex/relief': step 'ex/total_up' reads, through the carry of 'ex-on/return', "
+        "input 'ex/levy', which belongs to form 'ex-on/return'",
+    ):
+        with_forms(optional_form(capabilities=(reading,)), inputs=inputs)

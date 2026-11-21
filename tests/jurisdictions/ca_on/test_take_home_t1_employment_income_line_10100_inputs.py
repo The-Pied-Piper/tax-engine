@@ -3,7 +3,7 @@
 The part `t1_employment_income_line_10100_inputs.yaml` declares the one input of T1 line 10100,
 employment income, and gives it to the form `ca/t1_employment_income`; every other form reads it
 as that form's export. The provinces other than Quebec import the federal forms, so this one
-part serves them all; Quebec's own part is tested in `ca_qc/test_salary.py`.
+part serves them all; Quebec's own part is tested in the `ca_qc` test of the same name.
 """
 
 from __future__ import annotations

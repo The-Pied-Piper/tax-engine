@@ -587,9 +587,20 @@ class Manifest:
                 for named in selection.consumes.values():
                     for identifier in (named,) if isinstance(named, str) else named:
                         self._check_owned_by(form, identifier, f"step {selection.name!r} reads")
+                        self._check_carry_read(form, selection.name, identifier)
             if form is not self.forms[0]:
                 for identifier in form.exports:
                     self._check_owned_by(form, identifier, "exports")
+
+    def _check_carry_read(self, form: Form, step: str, identifier: str) -> None:
+        """Refuse a step reading the default form's carry of another form's input: the carry is
+        the return's output, not the owner's export."""
+        default = self.forms[0]
+        for export in default.exports:
+            if identifier == f"{default.name}.{export}":
+                self._check_owned_by(
+                    form, export, f"step {step!r} reads, through the carry of {default.name!r},"
+                )
 
     def _check_owned_by(self, form: Form, identifier: str, action: str) -> None:
         """Refuse `form` taking the input `identifier` if another form owns it."""

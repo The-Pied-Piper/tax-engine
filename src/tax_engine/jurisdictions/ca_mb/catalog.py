@@ -772,8 +772,8 @@ cent."""
 AVERAGE_INCOME_TAX_RATE = AmountKind.declare(CATALOG, "average_income_tax_rate", non_negative=True)
 """Average income tax rate, the Manitoba return summary's own figure (no form prints it): T1 line
 43500 "Total payable" (for the take-home filer, line 143 plus line 147: the federal and the Manitoba
-income tax) divided by the salary (`ca/employment_income`), as a fraction, so 0.1598 is 15.98%. CPP
-and EI are not income tax and are not in it. It is 0 when the salary is 0."""
+income tax) divided by the salary (`ca/return_employment_income`), as a fraction, so 0.1598 is
+15.98%. CPP and EI are not income tax and are not in it. It is 0 when the salary is 0."""
 
 MANITOBA_BRACKET_RATE_RETURN = AmountKind.declare(
     CATALOG, "manitoba_bracket_rate_return", non_negative=True
