@@ -1,12 +1,13 @@
 # Form MB479 (2025, CRA 5007-TC) line 15, the printed $62: "Number of disabled dependants
-# multiplied by $62 =". One core/credit_amount: the amount for each unit, from
-# `ca-mb/disabled_dependants_credit_amount_line_15` (a printed figure is a dataset figure, taken
-# as printed). It is not a line of the form, so it has no reference and no title; the line 15
-# product reads it.
+# multiplied by $62 =". One core/credit_amount: the amount for each unit, from `ca-
+# mb/disabled_dependants_credit_amount_line_15` (a printed figure is a dataset figure, taken as
+# printed). It is not a line of the form, so it has no reference. Its title is plain words, not
+# printed wording, because the sentence of the line 15 product names it.
 form:
   name: ca-mb/mb479
 capabilities:
   - name: core/credit_amount
+    title: "Amount for each disabled dependant"
     unit: ca/cad
     params:
       amount: ca-mb/disabled_dependants_credit_amount_line_15

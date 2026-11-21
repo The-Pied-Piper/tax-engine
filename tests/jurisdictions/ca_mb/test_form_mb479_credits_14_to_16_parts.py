@@ -67,6 +67,13 @@ def test_the_product_is_one_multiply_step_on_the_form(line: str) -> None:
     }
 
 
+AMOUNT_TITLES = {
+    "14": "Amount for each disability claim",
+    "15": "Amount for each disabled dependant",
+    "16": "Amount for each dependent child",
+}
+
+
 @pytest.mark.parametrize("line", LINES)
 def test_the_printed_amount_is_one_credit_amount_step(line: str) -> None:
     _, amount, _ = LINES[line]
@@ -76,6 +83,7 @@ def test_the_printed_amount_is_one_credit_amount_step(line: str) -> None:
         "capabilities": [
             {
                 "name": "core/credit_amount",
+                "title": AMOUNT_TITLES[line],
                 "unit": "ca/cad",
                 "params": {"amount": f"ca-mb/{amount}"},
                 "produces": {"output": f"ca-mb/{amount}"},
