@@ -199,6 +199,11 @@ class Form:
     # Not hashed: a read-only mapping is unhashable, and equal forms still hash alike.
     supplies: Mapping[str, str] = dataclasses.field(default_factory=dict, hash=False)
 
+    def export_kind_name(self, export: ArtifactKind[Any]) -> str:
+        """The identifier of the kind `<form>.<export>` that holds a record of `export`."""
+        namespace, _, form_id = self.name.partition("/")
+        return f"{namespace}/{form_id}.{export.label}"
+
     def derived_kinds(self, kinds: ArtifactRegistry) -> tuple[RecordListKind, ...]:
         """The kind `<form>.<export>` of each of this form's exports a record can hold, then those
         it supplies.
@@ -207,9 +212,8 @@ class Form:
         identifier in `supplies`. An export that is not an amount, a count or a record list has
         none, and supplying one is an InvalidManifestError.
         """
-        namespace, _, form_id = self.name.partition("/")
         own = tuple(
-            RecordListKind(f"{namespace}/{form_id}.{export.label}", fields=(export,))
+            RecordListKind(self.export_kind_name(export), fields=(export,))
             for export in (kinds.kind(identifier) for identifier in self.exports)
             if isinstance(export, RecordField)
         )

@@ -1,11 +1,8 @@
 # T1 (5006-R, 2025) line 10100 input: the one figure a take-home caller gives, the gross salary,
-# which
-# is the employment income of line 10100 (5006-R page 3: "Line 1 and line 10100: Employment
-# income").
-# Every other input a form declares is optional with its blank rule in that form's part. The salary
-# is an input of the T1 employment income form only: every other form reads line 10100 as that
-# form's
-# export (`ca/t1_employment_income.employment_income_line_10100`).
+# which is the employment income of line 10100 (5006-R page 3: "Line 1 and line 10100: Employment
+# income"). Every other input a form declares is optional with its blank rule in that form's part.
+# The salary is an input of the T1 employment income form only: every other form reads line 10100 as
+# that form's export (`ca/t1_employment_income.employment_income_line_10100`).
 form:
   name: ca/t1_employment_income
 inputs:
