@@ -1,0 +1,14 @@
+# MB479 (2025) line 16's input, the number of dependent children. Form MB479 (CRA 5007-TC):
+# "Number of dependent children Line 60999 multiplied by $26 =". The line has two boxes: the
+# number (box A, the input here) and the multiplied result (box B, the step in
+# mb479_line_16.yaml). The form does not name them; "box A" and "box B" are the owner's naming, as
+# on ON428 line 47. A salary-only caller has none, so a request that leaves the line out is read
+# as 0 (the input's own default), and the step multiplies it.
+inputs:
+  - name: ca-mb/mb479_dependent_children_number_line_16
+    title: "Number of dependent children"
+    reference: "16 box A"
+    unit: ca/cad
+    required: false
+    default: "0"
+    basis: 'Line 16: Number of dependent children'

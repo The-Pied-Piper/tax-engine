@@ -1,0 +1,19 @@
+# Form MB479 (2025, CRA 5007-TC) line 15: "Number of disabled dependants Line 60970 multiplied by
+# $62 =". One core/multiply: the number in box A
+# (`ca-mb/mb479_disabled_dependants_number_line_15`, optional input, 0 when left out by its own
+# default) times the printed $62 (mb479_line_15_amount.yaml), rounded half-up to the cent through
+# ca-mb/cent_rounding. The step is box B, the line's output, which line 17 adds. The form names
+# the boxes nothing; "box A" and "box B" are the owner's naming.
+form:
+  name: ca-mb/mb479
+capabilities:
+  - name: core/multiply
+    reference: "15 box B"
+    unit: ca/cad
+    params:
+      rounding: ca-mb/cent_rounding
+    consumes:
+      multiplicand: ca-mb/mb479_disabled_dependants_number_line_15
+      multiplier: ca-mb/disabled_dependants_credit_amount_line_15
+    produces:
+      output: ca-mb/mb479_disabled_dependants_credit_line_15

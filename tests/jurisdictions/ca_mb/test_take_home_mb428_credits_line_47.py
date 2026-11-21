@@ -14,7 +14,7 @@ from pathlib import Path
 
 import pytest
 
-from tests.jurisdictions.ca_mb.mb428_medical_support import compute_line
+from tests.jurisdictions.ca_mb.part_support import compute_line
 
 D = Decimal
 INPUTS = ("ca-mb/mb428_medical_expenses_rate_amount_line_46",)

@@ -15,7 +15,7 @@ from pathlib import Path
 import pytest
 
 from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
-from tests.jurisdictions.ca_mb.mb428_medical_support import MB_PARTS, compute_line
+from tests.jurisdictions.ca_mb.part_support import MB_PARTS, compute_line
 
 D = Decimal
 OUTPUT = "ca-mb/mb428_net_income_line_44"

@@ -1,0 +1,14 @@
+# Form MB479 (2025, CRA 5007-TC) line 16, the printed $26: "Number of dependent children
+# multiplied by $26 =". One core/credit_amount: the amount for each unit, from
+# `ca-mb/dependent_children_credit_amount_line_16` (a printed figure is a dataset figure, taken as
+# printed). It is not a line of the form, so it has no reference and no title; the line 16 product
+# reads it.
+form:
+  name: ca-mb/mb479
+capabilities:
+  - name: core/credit_amount
+    unit: ca/cad
+    params:
+      amount: ca-mb/dependent_children_credit_amount_line_16
+    produces:
+      output: ca-mb/dependent_children_credit_amount_line_16

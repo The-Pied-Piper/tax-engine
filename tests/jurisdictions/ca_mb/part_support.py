@@ -1,4 +1,4 @@
-"""Support for the per-line tests of the MB428 (2025) medical expense parts, lines 43 to 50.
+"""Support for the per-line tests of Manitoba (2025) part files that read other lines as inputs.
 
 Each test loads one real part file from the Manitoba manifest folder beside a header and a form
 declaration made up here, gives the part's upstream lines as inputs, and reads the line it computes
@@ -41,6 +41,7 @@ def compute_line(
     extra_parts: Sequence[Path] = (),
     part_inputs: dict[str, str] | None = None,
     outputs: tuple[str, ...] = (),
+    form_name: str = FORM_NAME,
 ) -> Decimal:
     """The value of `output` from the real part `part`, given `inputs` (kind identifier to
     amount) as the header's own inputs, after any `extra_parts` composed beside it. `part_inputs`
@@ -56,7 +57,7 @@ def compute_line(
     )
     form = dedent(f"""\
         form:
-          name: {FORM_NAME}
+          name: {form_name}
           required: true
           exports:
             - {output}
@@ -83,7 +84,7 @@ def compute_line(
         Artifact(kinds.kind(name), D(value))
         for name, value in {**inputs, **(part_inputs or {})}.items()
     ]
-    (sheet,) = service.compute(JurisdictionCode("CA-MB"), 2025, *given)[FORM_NAME]
+    (sheet,) = service.compute(JurisdictionCode("CA-MB"), 2025, *given)[form_name]
     value = sheet.get(kinds.kind(output)).value
     assert isinstance(value, Decimal)
     return value
