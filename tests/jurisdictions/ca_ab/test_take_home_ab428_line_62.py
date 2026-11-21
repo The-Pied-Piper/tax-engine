@@ -40,6 +40,7 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_ab.catalog import AB428_CREDITS_FROM_LINE_58_LINE_62
+from tests.federal_forms import FEDERAL_FORMS, form_parts
 from tests.jurisdictions.ca_ab.support import (
     alberta_capabilities,
     alberta_kinds,
@@ -52,7 +53,6 @@ from tests.manifest_support import T1_LINE_10100_FORM, inputs_without_form
 
 D = Decimal
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = ALBERTA_PARTS / "ab428_line_62.yaml"
 KIND = "ca-ab/ab428_credits_from_line_58_line_62"
 
@@ -87,8 +87,8 @@ CASES = [("20000", "1877.42"), ("200000", "2140.53")]
 
 def _part_files() -> Iterator[Path]:
     yield ALBERTA_PARTS / "salary.yaml"
-    yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
-    yield from sorted(FEDERAL_FORMS.rglob("t2204*.yaml"))
+    yield from form_parts("schedule_8")
+    yield from form_parts("t2204")
     yield T1_LINE_10100_FORM
     yield FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml"
     yield ALBERTA_PARTS / "ab428_line_16.yaml"

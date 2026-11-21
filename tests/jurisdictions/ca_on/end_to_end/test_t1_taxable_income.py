@@ -50,7 +50,8 @@ from tax_engine.jurisdictions.ca.catalog.taxable_income import (
     DEDUCTIONS_FROM_NET_INCOME,
     TAXABLE_INCOME,
 )
-from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService
+from tests.federal_forms import form_part_names
+from tests.jurisdictions.ca_on.conftest import TakeHomeService
 
 D = Decimal
 HEADER = dedent("""\
@@ -68,14 +69,14 @@ FORM = "{}\n"
 # export line 23300 reads.
 PARTS_15000 = (
     "salary.yaml",
-    *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
-    *(part.name for part in sorted(TAKE_HOME.rglob("t1_employment_income*.yaml"))),
-    *(part.name for part in sorted(TAKE_HOME.rglob("t1_taxable_income*.yaml"))),
+    *form_part_names("schedule_8"),
+    *form_part_names("t1_employment_income"),
+    *form_part_names("t1_taxable_income"),
 )
 PARTS = (
     "salary.yaml",
-    *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
-    *(part.name for part in sorted(TAKE_HOME.rglob("t1_employment_income*.yaml"))),
+    *form_part_names("schedule_8"),
+    *form_part_names("t1_employment_income"),
 )
 
 
@@ -239,11 +240,18 @@ def test_the_form_exports_the_return_lines_and_the_worksheet_holds_them_at_70000
     service = take_home_service(HEADER, FORM, *PARTS_15000)
     code = JurisdictionCode("CA-ON")
     (form,) = (f for f in service.compose(code, 2025).forms if f.name == "ca/t1_taxable_income")
-    assert form.exports == (
+    assert form.exports[:3] == (
         NET_INCOME,
         NET_INCOME_SIGNED,
         TAXABLE_INCOME,
     )
+    # The four UCCB and RDSP lines follow; other forms import them instead of re-taking them.
+    assert [kind.identifier for kind in form.exports[3:]] == [
+        "ca/uccb_income_line_11700",
+        "ca/rdsp_income_line_12500",
+        "ca/uccb_repayment_line_21300",
+        "ca/rdsp_income_repayment_line_23200",
+    ]
 
     worksheets = service.compute(code, 2025, Artifact(EMPLOYMENT_INCOME, D("70000")))
     (sheet,) = worksheets["ca/t1_taxable_income"]
@@ -252,6 +260,10 @@ def test_the_form_exports_the_return_lines_and_the_worksheet_holds_them_at_70000
         D("69335.00"),
         D("69335.00"),
         D("69335.00"),
+        D("0.00"),
+        D("0.00"),
+        D("0.00"),
+        D("0.00"),
     ]
 
 

@@ -11,6 +11,7 @@ import pytest
 
 from tax_engine.jurisdictions.ca_qc.catalog import (
     TP1_INCOME_LESS_DEDUCTIONS_LINE_256,
+    TP1_LINE_164,
     TP1_LINE_250,
 )
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
@@ -48,3 +49,14 @@ def test_a_deduction_above_income_gives_a_negative_figure(
     value = net_income_sheet(take_home_service, "20000", EXPORTS, PARTS, given).get(LINE).value
 
     assert str(value) == "-11365.00"
+
+
+def test_a_business_loss_above_the_salary_gives_a_negative_figure(
+    take_home_service: TakeHomeService,
+) -> None:
+    """TP-1 line 199 is signed (a business loss is a minus): a $20,000 salary and a business loss of
+    50,000.00 give line 199 of -30,000.00, so line 256 is -30,000.00 - 1,365.00 = -31,365.00."""
+    given = (TP1_LINE_164, "-50000")
+    value = net_income_sheet(take_home_service, "20000", EXPORTS, PARTS, given).get(LINE).value
+
+    assert str(value) == "-31365.00"

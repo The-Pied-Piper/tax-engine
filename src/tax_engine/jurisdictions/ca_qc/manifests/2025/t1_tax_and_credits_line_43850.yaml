@@ -1,0 +1,20 @@
+# 5005-R (2025) line 155. The form prints: "Line 155 and line 43850: Line 153 minus line 154 =" (page 8).
+# One core/subtract, rounded half-up to the cent through `ca-qc/cent_rounding`; a blank line 153 or 154
+# is read as 0 (`t1_tax_and_credits_line_43850_inputs.yaml`). Not floored: the form prints no floor, so
+# the difference is signed.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/subtract
+    reference: "43850"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/t1_line_43700
+      less: ca-qc/t1_line_43800
+    blank:
+      amount: "0"
+      less: "0"
+    produces:
+      output: ca-qc/income_tax_deducted_net_line_155

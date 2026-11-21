@@ -33,7 +33,8 @@ EXPORTS = (IDENTIFIER,)
 PART = "tp1_tax_line_432.yaml"
 PARTS = (
     *LINE_430_CHAIN,
-    "tp1_tax_line_425_input.yaml",
+    "tp1_tax_line_425_inputs.yaml",
+    "tp1_tax_line_425.yaml",
     "tp1_tax_line_430.yaml",
     "tp1_tax_line_431_input.yaml",
     PART,

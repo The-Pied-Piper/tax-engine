@@ -1,7 +1,7 @@
 # 5005-R (2025) line 70 and line 26000. The form prints: "Line 70 and line 26000: Line 58 minus line 69
 # (if negative, enter "0") Taxable income =" (page 5). Line 58 is a copy of line 57 ("Enter the amount
 # from line 57 of the previous page"), so the step reads net income (`ca-qc/net_income`) directly, and
-# line 69 is the optional input (t1_taxable_income_line_25700_inputs.yaml, default "0"). One step:
+# line 69 is a step (t1_taxable_income_line_25700.yaml). One step:
 # core/subtract_not_below_zero, so a deduction above net income gives "0", as the form says, rounded
 # through `ca-qc/cent_rounding`.
 form:

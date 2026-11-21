@@ -28,14 +28,15 @@ from tax_engine.jurisdictions.ca_on.catalog import (
     ON428_CPP_EI_CREDIT_AMOUNTS_LINE_24,
     ON428_EI_CREDIT_AMOUNT_LINE_21,
 )
-from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService
+from tests.federal_forms import form_part_names
+from tests.jurisdictions.ca_on.conftest import TakeHomeService
 from tests.manifest_support import T1_LINE_10100_PARTS
 
 D = Decimal
 PARTS = (
     "salary.yaml",
-    *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
-    *(part.name for part in sorted(TAKE_HOME.rglob("t2204*.yaml"))),
+    *form_part_names("schedule_8"),
+    *form_part_names("t2204"),
     *T1_LINE_10100_PARTS,
     "on428_line_19.yaml",
     "on428_line_21.yaml",
