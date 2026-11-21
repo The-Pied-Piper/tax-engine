@@ -2,10 +2,9 @@
 
 The Quebec T1 employment income form's part `t1_employment_income_line_10100_inputs.yaml` declares
 the one input of T1 line 10100, employment income (the input belongs to that form; the other forms
-read its export). Both returns take the
-gross salary as their first income line (5005-R line 1 and TP-1 line 101). The Quebec manifest is
-not complete until the later line tickets land, so this test reads the part. The end-to-end ticket
-can move these checks onto the built manifest.
+read its export). Both returns take the gross salary as their first income line (5005-R line 1 and
+TP-1 line 101). The Quebec manifest is not complete until the later line tickets land, so this test
+reads the part. The end-to-end ticket can move these checks onto the built manifest.
 """
 
 from __future__ import annotations
