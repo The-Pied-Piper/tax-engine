@@ -55,7 +55,11 @@ capabilities:
       rounding: ca-qc/cent_rounding
     consumes:
       parts:
-        [ca-qc/work_chart_201_tp1_line_101, ca-qc/work_chart_201_tp1_line_107, ca-qc/work_chart_201_tp1_line_105]
+        [
+          ca-qc/work_chart_201_tp1_line_101,
+          ca-qc/work_chart_201_tp1_line_107,
+          ca-qc/work_chart_201_tp1_line_105,
+        ]
     produces:
       output: ca-qc/work_chart_201_eligible_work_income_before_box_211
   - name: core/subtract
