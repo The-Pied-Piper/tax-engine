@@ -70,6 +70,14 @@ FEDERAL_PARTS = (
     "t1_taxable_income_line_26000.yaml",
     "t1_taxable_income.yaml",
     "t1_employment_income_line_10400_inputs.yaml",
+    "t1_taxable_income_line_11700_inputs.yaml",
+    "t1_taxable_income_line_12500_inputs.yaml",
+    "t1_taxable_income_line_21300_inputs.yaml",
+    "t1_taxable_income_line_23200_inputs.yaml",
+    "t1_taxable_income_line_11700.yaml",
+    "t1_taxable_income_line_12500.yaml",
+    "t1_taxable_income_line_21300.yaml",
+    "t1_taxable_income_line_23200.yaml",
 )
 NL_PART_NAMES = (
     *(
@@ -156,9 +164,9 @@ NL_PART_NAMES = (
     "nl428_line_97.yaml",
     "nl428_line_100.yaml",
     "nl428_line_88.yaml",
-    "nl428_line_89_input.yaml",
+    "nl428_line_89.yaml",
     "nl428_line_90.yaml",
-    "nl428_line_91_input.yaml",
+    "nl428_line_91.yaml",
     "nl428_line_92.yaml",
     "nl428_line_88_column_2_input.yaml",
     "nl428_line_89_column_2_input.yaml",

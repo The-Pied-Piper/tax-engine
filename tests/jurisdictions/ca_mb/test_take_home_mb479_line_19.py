@@ -78,6 +78,14 @@ T1_PARTS = (
     "t1_taxable_income_line_26000.yaml",
     "t1_taxable_income.yaml",
     "t1_employment_income_line_10400_inputs.yaml",
+    "t1_taxable_income_line_11700_inputs.yaml",
+    "t1_taxable_income_line_12500_inputs.yaml",
+    "t1_taxable_income_line_21300_inputs.yaml",
+    "t1_taxable_income_line_23200_inputs.yaml",
+    "t1_taxable_income_line_11700.yaml",
+    "t1_taxable_income_line_12500.yaml",
+    "t1_taxable_income_line_21300.yaml",
+    "t1_taxable_income_line_23200.yaml",
 )
 
 HEADER = dedent("""\
@@ -132,9 +140,9 @@ def _part_files() -> Iterator[Path]:
     for name in T1_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
     yield MB_PARTS / "mb479_line_1.yaml"
-    yield MB_PARTS / "mb479_line_2_input.yaml"
+    yield MB_PARTS / "mb479_line_2.yaml"
     yield MB_PARTS / "mb479_line_3.yaml"
-    yield MB_PARTS / "mb479_line_4_input.yaml"
+    yield MB_PARTS / "mb479_line_4.yaml"
     yield MB_PARTS / "mb479_line_5.yaml"
     yield MB_PARTS / "mb479_line_5_column_2_input.yaml"
     yield MB_PARTS / "mb479_line_6.yaml"

@@ -52,13 +52,21 @@ PARTS = (
     "t1_taxable_income_line_23600.yaml",
     "t1_taxable_income_line_23600_signed.yaml",
     "t1_taxable_income_line_25700_inputs.yaml",
+    "t1_taxable_income_line_11700_inputs.yaml",
+    "t1_taxable_income_line_11700.yaml",
+    "t1_taxable_income_line_12500_inputs.yaml",
+    "t1_taxable_income_line_12500.yaml",
+    "t1_taxable_income_line_21300_inputs.yaml",
+    "t1_taxable_income_line_21300.yaml",
+    "t1_taxable_income_line_23200_inputs.yaml",
+    "t1_taxable_income_line_23200.yaml",
     "t1_taxable_income_line_25700.yaml",
     "t1_taxable_income_line_26000.yaml",
     "t1_taxable_income.yaml",
     "t1_employment_income_line_10400_inputs.yaml",
     "schedule_6_line_7.yaml",
     "schedule_6_line_10.yaml",
-    "schedule_6_line_11_inputs.yaml",
+    "schedule_6_line_11.yaml",
     "schedule_6_line_12.yaml",
     "schedule_6_line_13.yaml",
 )
@@ -86,7 +94,7 @@ def _schedule_6(
     kinds = bundled_kinds()
     starting = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if uccb is not None:
-        starting.append(Artifact(kinds.kind(LINE_11), D(uccb)))
+        starting.append(Artifact(kinds.kind("ca/uccb_income"), D(uccb)))
     worksheets = take_home_service(HEADER, SCHEDULE_6, *PARTS).compute(ONTARIO, 2025, *starting)
     (sheet,) = worksheets[FORM]
     return sheet

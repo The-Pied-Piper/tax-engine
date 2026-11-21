@@ -9,6 +9,9 @@
 #     "if negative, show in brackets" wording asks.
 #   - Lines 10100 and 10400 are not here: they are the `ca-qc/t1_employment_income` form's, which line 21 and
 #     the shared forms that read them import.
+#   - Lines 11700, 12500, 21300 and 23200 (UCCB income, RDSP income, UCCB repayment, RDSP income repayment)
+#     are the same lines as the federal T1's, with the same inputs. The shared Schedule 6 line 11 reads them
+#     through the neutral names below. They are not added into line 33 here.
 # Lines 33 (line 15000), 48 (line 22215), 54 (line 23300) and 55 (line 23400) are read inside the
 # form and are not exported.
 form:
@@ -20,6 +23,14 @@ form:
     - ca-qc/net_income_signed
     - ca-qc/taxable_income
     - ca/social_benefits_repayment
+    - ca/uccb_income_line_11700
+    - ca/rdsp_income_line_12500
+    - ca/uccb_repayment_line_21300
+    - ca/rdsp_income_repayment_line_23200
   supplies:
     ca/t1_taxable_income.net_income_signed: ca-qc/net_income_signed
+    ca/t1_taxable_income.uccb_income_line_11700: ca/uccb_income_line_11700
+    ca/t1_taxable_income.rdsp_income_line_12500: ca/rdsp_income_line_12500
+    ca/t1_taxable_income.uccb_repayment_line_21300: ca/uccb_repayment_line_21300
+    ca/t1_taxable_income.rdsp_income_repayment_line_23200: ca/rdsp_income_repayment_line_23200
 capabilities: []

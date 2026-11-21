@@ -41,10 +41,9 @@ from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.trace import SumLine
 from tax_engine.domain.worksheet import Worksheet
-from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME, UCCB_INCOME
 from tax_engine.jurisdictions.ca_bc.catalog import (
     BC479_ADJUSTED_FAMILY_NET_INCOME_LINE_6,
-    BC479_UCCB_RDSP_INCOME_LINE_4,
 )
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
@@ -80,6 +79,14 @@ T1_PARTS = (
     "t1_taxable_income_line_26000.yaml",
     "t1_taxable_income.yaml",
     "t1_employment_income_line_10400_inputs.yaml",
+    "t1_taxable_income_line_11700_inputs.yaml",
+    "t1_taxable_income_line_12500_inputs.yaml",
+    "t1_taxable_income_line_21300_inputs.yaml",
+    "t1_taxable_income_line_23200_inputs.yaml",
+    "t1_taxable_income_line_11700.yaml",
+    "t1_taxable_income_line_12500.yaml",
+    "t1_taxable_income_line_21300.yaml",
+    "t1_taxable_income_line_23200.yaml",
 )
 
 HEADER = dedent("""\
@@ -110,9 +117,9 @@ def _part_files() -> Iterator[Path]:
     for name in T1_PARTS:
         yield _federal(name)
     yield BC_PARTS / "bc479_line_1.yaml"
-    yield BC_PARTS / "bc479_line_2_input.yaml"
+    yield BC_PARTS / "bc479_line_2.yaml"
     yield BC_PARTS / "bc479_line_3.yaml"
-    yield BC_PARTS / "bc479_line_4_input.yaml"
+    yield BC_PARTS / "bc479_line_4.yaml"
     yield BC_PARTS / "bc479_line_5.yaml"
     yield LINE_PART
 
@@ -176,7 +183,7 @@ def test_line_6_is_line_5_for_a_single_filer(tmp_path: Path, salary: str, expect
 
 
 def test_line_6_follows_line_5_when_line_4_is_given(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "17000", Artifact(BC479_UCCB_RDSP_INCOME_LINE_4, D("1000.00")))
+    sheet = _sheet(tmp_path, "17000", Artifact(UCCB_INCOME, D("1000.00")))
 
     line_6 = sheet.get(BC479_ADJUSTED_FAMILY_NET_INCOME_LINE_6).value
     assert line_6 == D("15865.00")
@@ -185,7 +192,7 @@ def test_line_6_follows_line_5_when_line_4_is_given(tmp_path: Path) -> None:
 
 def test_line_6_is_0_when_line_4_is_above_line_3(tmp_path: Path) -> None:
     # Line 3 is 16,865.00 at 17,000 and line 4 is 20,000.00: line 5 is floored, so line 6 is 0.00.
-    sheet = _sheet(tmp_path, "17000", Artifact(BC479_UCCB_RDSP_INCOME_LINE_4, D("20000.00")))
+    sheet = _sheet(tmp_path, "17000", Artifact(UCCB_INCOME, D("20000.00")))
 
     line_6 = sheet.get(BC479_ADJUSTED_FAMILY_NET_INCOME_LINE_6).value
     assert line_6 == D("0.00")
@@ -194,7 +201,7 @@ def test_line_6_is_0_when_line_4_is_above_line_3(tmp_path: Path) -> None:
 
 
 def test_the_step_traces_one_sum_line_over_line_5_with_the_cent_rounding(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "17000", Artifact(BC479_UCCB_RDSP_INCOME_LINE_4, D("1000.00")))
+    sheet = _sheet(tmp_path, "17000", Artifact(UCCB_INCOME, D("1000.00")))
     kinds = british_columbia_kinds()
 
     (line,) = [t for t in sheet.trace if isinstance(t, SumLine) and t.output is kinds.kind(LINE_6)]

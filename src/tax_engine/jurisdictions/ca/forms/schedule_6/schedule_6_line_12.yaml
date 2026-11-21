@@ -1,9 +1,9 @@
 # Schedule 6 (5000-S6, 2025, CRA 5000-S6-25E) line 12: "Line 12: Line 10 minus line 11 (if negative,
 # enter "0")", column 1 "You".
 #
-# Line 10 is read from its source part (`ca/cwb_net_income_total_line_10`), and line 11 is read
-# directly as an optional input (`ca/uccb_and_rdsp_income`) that a salary-only caller leaves out,
-# read as blank and then as 0 by the blank rule of core/subtract_not_below_zero. The result is
+# Line 10 is read from its source part (`ca/cwb_net_income_total_line_10`), and line 11 is the total of
+# the two T1 income lines (`ca/uccb_and_rdsp_income`, the form's own line 11 step), so it is never
+# blank. The result is
 # floored at zero, as the form prints.
 form:
   name: ca/schedule_6
@@ -16,7 +16,5 @@ capabilities:
     consumes:
       amount: ca/cwb_net_income_total_line_10
       less: ca/uccb_and_rdsp_income
-    blank:
-      less: "0"
     produces:
       output: ca/cwb_net_income_less_uccb_rdsp_line_12

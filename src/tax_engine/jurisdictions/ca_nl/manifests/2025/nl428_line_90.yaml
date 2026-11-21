@@ -1,7 +1,7 @@
 # Form NL428 (Newfoundland and Labrador Tax, CRA 5001-C) line 90, column 1 (you): "Line 90: Line 88
 # plus line 89". One core/sum step over line 88 (the net income, `ca-nl/nl428_net_income_line_88`)
 # and line 89 (the UCCB and RDSP repayments, `ca-nl/nl428_uccb_rdsp_repayments_line_89`). Line 89 is
-# an optional input that a salary-only caller leaves out, so the blank rule below reads it as 0.
+# the total of the two T1 repayment lines (the form's own line 89 step), so it is never blank.
 # Line 88 can be negative, so the result is signed. The form prints no title for the line, so the
 # step has none.
 form:
@@ -14,7 +14,5 @@ capabilities:
       rounding: ca-nl/cent_rounding
     consumes:
       parts: [ca-nl/nl428_net_income_line_88, ca-nl/nl428_uccb_rdsp_repayments_line_89]
-    blank:
-      ca-nl/nl428_uccb_rdsp_repayments_line_89: "0"
     produces:
       output: ca-nl/nl428_family_income_line_90

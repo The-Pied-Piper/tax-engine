@@ -34,10 +34,9 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
-from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME, UCCB_REPAYMENT
 from tax_engine.jurisdictions.ca_bc.catalog import (
     BC479_INCOME_WITH_REPAYMENTS_LINE_3,
-    BC479_UCCB_RDSP_REPAYMENTS_LINE_2,
 )
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
@@ -68,6 +67,14 @@ T1_PARTS = (
     "t1_taxable_income_line_26000.yaml",
     "t1_taxable_income.yaml",
     "t1_employment_income_line_10400_inputs.yaml",
+    "t1_taxable_income_line_11700_inputs.yaml",
+    "t1_taxable_income_line_12500_inputs.yaml",
+    "t1_taxable_income_line_21300_inputs.yaml",
+    "t1_taxable_income_line_23200_inputs.yaml",
+    "t1_taxable_income_line_11700.yaml",
+    "t1_taxable_income_line_12500.yaml",
+    "t1_taxable_income_line_21300.yaml",
+    "t1_taxable_income_line_23200.yaml",
 )
 
 HEADER = dedent("""\
@@ -100,7 +107,7 @@ def _part_files() -> Iterator[Path]:
     for name in T1_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
     yield BC_PARTS / "bc479_line_1.yaml"
-    yield BC_PARTS / "bc479_line_2_input.yaml"
+    yield BC_PARTS / "bc479_line_2.yaml"
     yield LINE_PART
 
 
@@ -146,7 +153,7 @@ def test_line_3_adds_line_2_when_it_is_given(tmp_path: Path) -> None:
     sheet = _sheet(
         tmp_path,
         "70000",
-        Artifact(BC479_UCCB_RDSP_REPAYMENTS_LINE_2, D("100.50")),
+        Artifact(UCCB_REPAYMENT, D("100.50")),
     )
 
     assert sheet.get(BC479_INCOME_WITH_REPAYMENTS_LINE_3).value == D("69435.50")
@@ -186,7 +193,6 @@ def test_the_part_names_the_form_and_has_one_sum_step_over_line_1_and_line_2() -
         "unit",
         "params",
         "consumes",
-        "blank",
         "produces",
     ]
     assert step == {
@@ -200,7 +206,6 @@ def test_the_part_names_the_form_and_has_one_sum_step_over_line_1_and_line_2() -
                 "ca-bc/bc479_uccb_rdsp_repayments_line_2",
             ]
         },
-        "blank": {"ca-bc/bc479_uccb_rdsp_repayments_line_2": "0"},
         "produces": {"output": BC479_INCOME_WITH_REPAYMENTS_LINE_3.identifier},
     }
 
