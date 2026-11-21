@@ -5,8 +5,8 @@ limited to $10,000 ($20,000 in the year of death), the maximum Ontario claim for
 expenses is $17,627 ($35,253 in the year of death)"
 
 The figure is the federal limit the text names ("limited to $10,000 ($20,000 in the year of
-death)"). It is a dollars-and-cents figure, so it rounds half-up to the cent, the project's choice,
-as the text states no rounding rule.
+death)"). It feeds an unprinted working step, so the dataset carries no rounding (exact), the
+project's rule that only a printed line rounds.
 
 Provisional: the 2026 CRA Ontario tax information is not published, so the 2025 printed figure is
 carried forward.
@@ -19,7 +19,7 @@ from decimal import Decimal
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
-from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.domain.registry import Namespace
 
 D = Decimal
@@ -34,7 +34,7 @@ def test_2026_medical_expense_federal_attendant_care_death_maximum_is_20000() ->
     data = SOURCE.get("ca-on/medical_expense_federal_attendant_care_death_maximum", 2026, AMOUNT)
 
     assert data.values == Amount(D("20000"))
-    assert data.rounding == RoundTo(D("0.01"), RoundingMode.HALF_UP)
+    assert data.rounding == NO_ROUNDING
 
 
 def test_2026_medical_expense_federal_attendant_care_death_maximum_is_a_provisional_file() -> None:

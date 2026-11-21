@@ -123,6 +123,27 @@ ON428_YEAR_OF_DEATH_CHECKED_LINE_36 = CountKind.declare(
 allowable amounts for attendant care, an adapted van, and moving expenses": the year of death
 answer with a blank read as 0, refused above 1."""
 
+ON428_ATTENDANT_CARE_PAID_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_attendant_care_paid_line_36", non_negative=True
+)
+"""Attendant care paid, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum
+allowable amounts for attendant care, an adapted van, and moving expenses": the attendant care
+expenses paid, a blank input read as 0."""
+
+ON428_ADAPTED_VAN_READ_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_adapted_van_read_line_36", non_negative=True
+)
+"""Adapted van, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum allowable
+amounts for attendant care, an adapted van, and moving expenses": the adapted van expenses, a
+blank input read as 0."""
+
+ON428_PATIENT_MOVE_READ_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_patient_move_read_line_36", non_negative=True
+)
+"""Patient move, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum allowable
+amounts for attendant care, an adapted van, and moving expenses": the patient move expenses, a
+blank input read as 0."""
+
 ON428_ATTENDANT_CARE_AT_ORDINARY_MAXIMUM_LINE_36 = AmountKind.declare(
     CATALOG, "on428_attendant_care_at_ordinary_maximum_line_36", non_negative=True
 )

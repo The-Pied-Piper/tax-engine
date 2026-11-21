@@ -14,7 +14,9 @@ The claim is the filer's medical claim. Attendant care takes the amount paid, a 
 federal claim was limited and a 0/1 year of death. The increase is the paid amount at the Ontario
 maximum less the paid amount at the federal limit, times the limited answer, so an answer of 0
 changes nothing and a limited claim rises to the Ontario maximum. The van and the move are capped at
-their maximums and the excess is taken off. Line 36 is the claim plus the increase less that excess.
+their maximums and the excess is taken off. Only line 36 rounds, to the cent; the unprinted working
+steps are exact (`ca-on/exact_rounding`). A blank input is read as 0 by a single-part `core/sum`
+step of its own before its cap. Line 36 is the claim plus the increase less that excess.
 Only the final step carries the reference "36". A result below 0 is refused, never floored. The hand
 figures are asserted (not a CRA example).
 
@@ -93,6 +95,8 @@ def _line_36(take_home_service: TakeHomeService, **given: str) -> Decimal:
         ({"claim": "20000", "van": "8000"}, "20000.00"),
         ({"claim": "9000", "move": "4000"}, "8525.00"),
         ({"claim": "9000", "move": "3000"}, "9000.00"),
+        # Exact until line 36: a rounded excess (1187.01) would give 18812.99.
+        ({"claim": "20000.004", "van": "10000.006"}, "18813.00"),
         (
             {"claim": "60000", "att": "20000", "limited": "1", "van": "10000", "move": "4000"},
             "65965.00",
@@ -136,6 +140,7 @@ def test_the_part_has_the_steps_in_order_and_only_the_last_is_line_36() -> None:
     steps = _steps()
 
     assert [step["name"] for step in steps] == [
+        "core/sum",  # attendant care paid, a blank read as 0
         "core/capped_amount",  # Ontario attendant care cap, ordinary
         "core/capped_amount",  # Ontario cap, year of death
         "ca/yes_or_no_count",  # year of death check, shared
@@ -146,19 +151,27 @@ def test_the_part_has_the_steps_in_order_and_only_the_last_is_line_36() -> None:
         "core/subtract",  # Ontario allowed less federal included
         "ca/yes_or_no_count",  # limited answer check
         "core/times_count",  # increase times the limited answer
+        "core/sum",  # van, a blank read as 0
         "core/capped_amount",  # van cap
         "core/subtract",  # van excess
+        "core/sum",  # move, a blank read as 0
         "core/capped_amount",  # move cap
         "core/subtract",  # move excess
         "core/sum",  # van and move excess
         "core/sum",  # claim plus increase
         "core/subtract",  # line 36
     ]
-    assert [step.get("reference") for step in steps] == [None] * 16 + ["36"]
+    assert [step.get("reference") for step in steps] == [None] * 19 + ["36"]
     assert {i: step["title"] for i, step in enumerate(steps[:-1]) if "title" in step} == {
-        14: "Amount over the maximums for attendant care, an adapted van, and moving expenses",
-        15: "Medical expenses plus the attendant care increase",
+        17: "Amount over the maximums for attendant care, an adapted van, and moving expenses",
+        18: "Medical expenses plus the attendant care increase",
     }
+    for index in (0, 11, 14):
+        assert steps[index]["blank"] == {"parts": "0"}
+        assert len(steps[index]["consumes"]["parts"]) == 1
+    rounded = [s for s in steps if s["name"] in ("core/sum", "core/subtract", "core/times_count")]
+    assert [s["params"] for s in rounded[:-1]] == [{"rounding": "ca-on/exact_rounding"}] * 9
+    assert steps[-1]["params"] == {"rounding": "ca-on/cent_rounding"}
     final = {key: value for key, value in steps[-1].items() if key not in ("title", "blank")}
     assert final == {
         "name": "core/subtract",

@@ -17,12 +17,7 @@ from typing import Any, assert_type, cast
 import pytest
 
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.blank import BLANK, PASS_ON
-from tax_engine.domain.errors import (
-    BlankNotAllowedError,
-    InvalidCapabilityError,
-    MissingArtifactError,
-)
+from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.datasets import ParameterDataset
@@ -35,7 +30,6 @@ from tax_engine.domain.parameters.rounding import (
     RoundTo,
 )
 from tax_engine.domain.trace import CappedAmountLine
-from tax_engine.domain.trace.blank import BlankPassedOnLine
 from tax_engine.jurisdictions.core.capabilities.capped_amount import CappedAmount
 from tests.capabilities import bundled_capabilities
 
@@ -305,44 +299,3 @@ def test_trace_holds_no_text() -> None:
 
     for line in trace:
         assert not any(isinstance(getattr(line, f.name), str) for f in fields(line))
-
-
-# --- a blank base -------------------------------------------------------------------------------
-
-
-def blank_base_inputs() -> tuple[Artifact[Any], ...]:
-    return (Artifact(GROSS, BLANK),)
-
-
-def test_declares_that_the_base_may_be_blank() -> None:
-    assert CappedAmount.BLANK_ALLOWED == frozenset({"base"})
-
-
-def test_without_rules_a_blank_base_is_refused_naming_the_slot() -> None:
-    with pytest.raises(BlankNotAllowedError, match="'base'"):
-        capability().run(blank_base_inputs())
-
-
-def test_pass_on_blanks_the_output_for_a_blank_base() -> None:
-    passing = capability().with_blank_rules({"base": PASS_ON})
-
-    result = passing.run(blank_base_inputs())
-
-    assert result.outputs == (Artifact(CAPPED, BLANK),)
-    assert result.trace == (BlankPassedOnLine(CAPPED, (GROSS,)),)
-
-
-def test_a_blank_base_read_as_a_figure_is_capped_like_any_other() -> None:
-    carried = capability().with_blank_rules({"base": D(0)})
-
-    (output,) = carried.run(blank_base_inputs()).outputs
-
-    assert output == Artifact(CAPPED, D(0))
-
-
-def test_a_filled_base_is_unchanged_when_a_blank_rule_is_declared() -> None:
-    carried = capability().with_blank_rules({"base": D(0)})
-
-    (output,) = carried.run((Artifact(GROSS, D("1500")),)).outputs
-
-    assert output == Artifact(CAPPED, D("1000"))

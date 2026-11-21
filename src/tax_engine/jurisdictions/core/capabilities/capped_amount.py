@@ -25,7 +25,6 @@ class CappedAmount(Capability):
     PARAMETERS: ClassVar[Mapping[str, ParameterKind[Amount]]] = {"cap": AMOUNT}
     CONSUMES: ClassVar[Mapping[str, type]] = {"base": Decimal}
     PRODUCES: ClassVar[Mapping[str, type]] = {"output": Decimal}
-    BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"base"})
 
     def __init__(self, cap: ParameterDataset[Amount], base: Money, output: Money) -> None:
         """Wire the capability: its cap dataset, the kind it caps, the kind it produces."""
