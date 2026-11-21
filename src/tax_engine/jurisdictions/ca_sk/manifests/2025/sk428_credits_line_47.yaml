@@ -1,0 +1,18 @@
+# SK428 (2025) line 47 (Form SK428, CRA 5008-c-25e): "Line 47: Enter whichever is less: $2,681 or
+# the amount on line 46." The $2,681 is the printed ceiling, the `ca-sk/medical_expense_dollar_limit`
+# dataset, and has no step of its own. Line 47 is the lesser of that ceiling and line 46
+# (`ca-sk/sk428_medical_expenses_rate_amount_line_46`), one core/capped_amount step, rounded
+# half-up to the cent by the dataset's rule. The form names no label for the line, so the step has
+# no title. Line 46 is always a figure, so nothing is blank.
+form:
+  name: ca-sk/sk428_credits
+capabilities:
+  - name: core/capped_amount
+    reference: "47"
+    unit: ca/cad
+    params:
+      cap: ca-sk/medical_expense_dollar_limit
+    consumes:
+      base: ca-sk/sk428_medical_expenses_rate_amount_line_46
+    produces:
+      output: ca-sk/sk428_medical_expenses_limited_amount_line_47
