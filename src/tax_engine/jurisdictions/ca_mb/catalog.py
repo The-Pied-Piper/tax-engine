@@ -101,11 +101,35 @@ MB428_MEDICAL_EXPENSES_LINE_50 = AmountKind.declare(
 """Medical expenses, MB428 line 50 (line 58769) "Line 48 plus line 49 =": line 48 plus line 49
 (a blank line 49 is read as 0), read by line 51."""
 
+MB428_DONATIONS_AMOUNT_LINE_54 = AmountKind.declare(
+    CATALOG, "mb428_donations_amount_line_54", non_negative=True
+)
+"""Donations amount, MB428 line 54 box A "Amount from line 13 of your federal Schedule 9": the
+amount as the filer gives it, an optional input; a blank input is read as blank."""
+
+MB428_DONATIONS_CREDIT_AT_RATE_LINE_54 = AmountKind.declare(
+    CATALOG, "mb428_donations_credit_at_rate_line_54", non_negative=True
+)
+"""Donations credit at 10.8%, MB428 line 54 box B "Amount from line 13 of your federal Schedule 9
+multiplied by 10.8% =": the Schedule 9 amount times 10.8%; a blank amount is read as 0."""
+
+MB428_DONATIONS_AMOUNT_LINE_55 = AmountKind.declare(
+    CATALOG, "mb428_donations_amount_line_55", non_negative=True
+)
+"""Donations amount, MB428 line 55 box A "Amount from line 14 of your federal Schedule 9": the
+amount as the filer gives it, an optional input; a blank input is read as blank."""
+
+MB428_DONATIONS_CREDIT_AT_RATE_LINE_55 = AmountKind.declare(
+    CATALOG, "mb428_donations_credit_at_rate_line_55", non_negative=True
+)
+"""Donations credit at 17.4%, MB428 line 55 box B "Amount from line 14 of your federal Schedule 9
+multiplied by 17.4% =": the Schedule 9 amount times 17.4%; a blank amount is read as 0."""
+
 MB428_DONATIONS_CREDIT_LINE_56 = AmountKind.declare(
     CATALOG, "mb428_donations_credit_line_56", non_negative=True
 )
 """Donations and gifts credit, MB428 line 56 (line 58969) "Line 56 and line 58969: Line 54 plus line
-55 =": a caller input, read as blank when left out; line 57 reads it."""
+55 =": line 54 plus line 55, read by line 57."""
 
 MB428_NON_REFUNDABLE_CREDITS_LINE_57 = AmountKind.declare(
     CATALOG, "mb428_non_refundable_credits_line_57", non_negative=True
