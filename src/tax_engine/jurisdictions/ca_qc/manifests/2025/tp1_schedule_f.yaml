@@ -1,7 +1,8 @@
 # Revenu Quebec Schedule F (TP-1.D.F-V, 2025-12), Part A, "Contribution to the Health Services Fund":
 # lines 10 to 70. This part names the form; each line's capability is a part of its own with the same
-# `form.name`. Lines 20 to 33 and 41 to 62 are skipped (the optional lines ruling): their printed
-# sums, lines 34 and 68, are one optional input each, read as 0.
+# `form.name`. Lines 20 to 33 are optional inputs (line 25 is a step) that line 34 adds; lines 41 to 62
+# are skipped (the optional lines ruling): their printed sum, line 68, is one optional input, read as
+# 0.
 # Part B: lines 76 to 82, in their own parts. Exports: line 70, the income subject to the
 # contribution, which Part B reads, and line 82, the contribution, which TP-1 line 446 carries.
 form:

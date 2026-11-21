@@ -1,8 +1,8 @@
 """Revenu Quebec Schedule F (TP-1.D.F-V, 2025-12), Part A, line 36, as the Quebec take-home
 manifest wires it. Printed as "Income".
 
-Line 34, the printed sum of the skipped lines 20 to 33, is one optional input, read as 0 when left
-out; line 36 is `core/subtract` of line 34 from line 18, rounded half-up to the cent.
+Line 34 is a step over the printed lines 20 to 33 (optional inputs, read as 0 when left out); line
+36 is `core/subtract` of line 34 from line 18, rounded half-up to the cent.
 """
 
 from __future__ import annotations
@@ -20,7 +20,8 @@ from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_qc.catalog import (
     TP1_FOREST_PRODUCER_AVERAGING_LINE_276,
     TP1_SCHEDULE_F_INCOME_LINE_36,
-    TP1_SCHEDULE_F_LINES_20_TO_33_TOTAL_LINE_34,
+    TP1_SCHEDULE_F_LINE_20,
+    TP1_SCHEDULE_F_LINE_22,
 )
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 
@@ -48,7 +49,9 @@ PARTS = (
     "tp1_schedule_f_line_14_input.yaml",
     "tp1_schedule_f_line_16.yaml",
     "tp1_schedule_f_line_18.yaml",
-    "tp1_schedule_f_line_34_input.yaml",
+    "tp1_schedule_f_line_34_inputs.yaml",
+    "tp1_schedule_f_line_25.yaml",
+    "tp1_schedule_f_line_34.yaml",
     "tp1_schedule_f_line_36.yaml",
 )
 
@@ -90,7 +93,8 @@ def test_a_salary_only_line_36_is_zero(take_home_service: TakeHomeService, salar
 def test_line_34_is_taken_off_line_18(take_home_service: TakeHomeService) -> None:
     given = (
         (TP1_FOREST_PRODUCER_AVERAGING_LINE_276, "1000"),
-        (TP1_SCHEDULE_F_LINES_20_TO_33_TOTAL_LINE_34, "250.50"),
+        (TP1_SCHEDULE_F_LINE_20, "100.25"),
+        (TP1_SCHEDULE_F_LINE_22, "150.25"),
     )
     value = schedule_f(take_home_service, "70000", *given).get(TP1_SCHEDULE_F_INCOME_LINE_36).value
 

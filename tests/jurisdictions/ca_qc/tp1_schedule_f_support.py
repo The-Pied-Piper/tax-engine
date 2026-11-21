@@ -1,0 +1,80 @@
+"""Shared helpers of the Schedule F line 25 and 34 tests (TP-1.D.F-V, 2025-12, Part A).
+
+The tests run the real parts of the Schedule F chain up to line 36 on a salary: line 10 reads
+line 199 of the TP-1 income form, so the income parts come with it. The optional inputs are left
+out unless a test gives them.
+"""
+
+from __future__ import annotations
+
+from decimal import Decimal
+from textwrap import dedent
+
+from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import AmountKind
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tests.jurisdictions.ca_qc.conftest import TakeHomeService
+
+D = Decimal
+FORM = "ca-qc/tp1_schedule_f"
+# The end of the chain: a form cannot hold a produced line that nothing reads or exports.
+LINE_36 = "ca-qc/tp1_schedule_f_income_line_36"
+LINE_34_INPUTS = ("20", "22", "23", "24", "26", "28", "29", "30", "31", "33")
+INCOME_PARTS = (
+    "salary.yaml",
+    "tp1_income.yaml",
+    "tp1_income_line_105_input.yaml",
+    "tp1_income_line_107_input.yaml",
+    "tp1_income_line_box_211_input.yaml",
+    "tp1_income_line_199_input.yaml",
+    "tp1_income_line_199.yaml",
+    "tp1_income_line_97_input.yaml",
+    "tp1_income_line_97.yaml",
+    "tp1_income_line_98_input.yaml",
+    "tp1_income_line_98.yaml",
+    "tp1_income_line_98_1_input.yaml",
+    "tp1_income_line_98_1.yaml",
+    "tp1_income_line_98_2_input.yaml",
+    "tp1_income_line_98_2.yaml",
+)
+LINE_36_PARTS = (
+    *INCOME_PARTS,
+    "tp1_schedule_f_line_10_input.yaml",
+    "tp1_schedule_f_line_10.yaml",
+    "tp1_schedule_f_line_12.yaml",
+    "tp1_schedule_f_line_14_input.yaml",
+    "tp1_schedule_f_line_16.yaml",
+    "tp1_schedule_f_line_18.yaml",
+    "tp1_schedule_f_line_34_inputs.yaml",
+    "tp1_schedule_f_line_25.yaml",
+    "tp1_schedule_f_line_34.yaml",
+    "tp1_schedule_f_line_36.yaml",
+)
+HEADER = dedent("""\
+    jurisdiction: CA-QC
+    version: 1
+    valid_from_tax_year: 2025
+    outputs:
+      - ca/employment_income
+    """)
+
+
+def schedule_f(
+    take_home_service: TakeHomeService,
+    salary: str,
+    export: str,
+    *given: tuple[AmountKind, str],
+    parts: tuple[str, ...] = LINE_36_PARTS,
+) -> Worksheet:
+    """The Schedule F worksheet for a salary, exporting `export`; inputs left out unless given."""
+    exports = dict.fromkeys((export, LINE_36))
+    form = f"form:\n  name: {FORM}\n  required: true\n  exports:\n"
+    form += "".join(f"    - {name}\n" for name in exports)
+    starting = [Artifact(EMPLOYMENT_INCOME, D(salary))]
+    starting.extend(Artifact(kind, D(value)) for kind, value in given)
+    (sheet,) = take_home_service(HEADER, form, *parts).compute(
+        JurisdictionCode("CA-QC"), 2025, *starting
+    )[FORM]
+    return sheet

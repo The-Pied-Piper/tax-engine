@@ -549,11 +549,70 @@ TP1_SCHEDULE_F_INCOME_LINE_18 = AmountKind.declare(CATALOG, "tp1_schedule_f_inco
 """Schedule F line 18, "Subtract line 16 from line 10": no floor is printed, so it can be
 negative."""
 
+TP1_SCHEDULE_F_LINE_20 = AmountKind.declare(CATALOG, "tp1_schedule_f_line_20", non_negative=True)
+"""Schedule F line 20, "Amounts allocated under a profit-sharing plan (line 107, point 3)": one
+of the lines that line 34 adds, an optional input (the line comes from a TP-1 line the take-home
+does not build), read as 0 when blank (`tp1_schedule_f_line_34_inputs.yaml`)."""
+
+TP1_SCHEDULE_F_LINE_22 = AmountKind.declare(CATALOG, "tp1_schedule_f_line_22", non_negative=True)
+"""Schedule F line 22, "Old Age Security pension (line 114)": one of the lines that line 34
+adds, an optional input (the line comes from a TP-1 line the take-home does not build), read as
+0 when blank (`tp1_schedule_f_line_34_inputs.yaml`)."""
+
+TP1_SCHEDULE_F_LINE_23 = AmountKind.declare(CATALOG, "tp1_schedule_f_line_23", non_negative=True)
+"""Schedule F line 23, "Dividends from taxable Canadian corporations, taxable amount (line
+128)": one of the two lines that line 25
+subtracts, an optional input (the line comes from a TP-1 line the take-home does not build), read as
+0 when blank (`tp1_schedule_f_line_34_inputs.yaml`)."""
+
+TP1_SCHEDULE_F_LINE_24 = AmountKind.declare(CATALOG, "tp1_schedule_f_line_24", non_negative=True)
+"""Schedule F line 24, "Dividends from taxable Canadian corporations, actual amount (total of
+lines 166 and 167)": one of the two lines that line 25
+subtracts, an optional input (the line comes from a TP-1 line the take-home does not build), read as
+0 when blank (`tp1_schedule_f_line_34_inputs.yaml`)."""
+
+TP1_SCHEDULE_F_LINE_25 = AmountKind.declare(CATALOG, "tp1_schedule_f_line_25")
+"""Schedule F line 25, "Subtract line 24 from line 23": the taxable amount of dividends less their
+actual amount, rounded half-up to the cent. No floor is printed, so it is signed. Produced by one
+core/subtract (`tp1_schedule_f_line_25.yaml`)."""
+
+TP1_SCHEDULE_F_LINE_26 = AmountKind.declare(CATALOG, "tp1_schedule_f_line_26", non_negative=True)
+"""Schedule F line 26, "Support payments received (taxable amount), other than a repayment (line
+142)": one of the lines that line 34 adds, an optional input (the line comes from a TP-1 line
+the take-home does not build), read as 0 when blank (`tp1_schedule_f_line_34_inputs.yaml`)."""
+
+TP1_SCHEDULE_F_LINE_28 = AmountKind.declare(CATALOG, "tp1_schedule_f_line_28", non_negative=True)
+"""Schedule F line 28, "Social assistance payments and similar financial assistance (line 147)":
+one of the lines that line 34 adds, an optional input (the line comes from a TP-1 line the take-
+home does not build), read as 0 when blank (`tp1_schedule_f_line_34_inputs.yaml`)."""
+
+TP1_SCHEDULE_F_LINE_29 = AmountKind.declare(CATALOG, "tp1_schedule_f_line_29", non_negative=True)
+"""Schedule F line 29, "Income replacement indemnities and net federal supplements (line 148)":
+one of the lines that line 34 adds, an optional input (the line comes from a TP-1 line the take-
+home does not build), read as 0 when blank (`tp1_schedule_f_line_34_inputs.yaml`)."""
+
+TP1_SCHEDULE_F_LINE_30 = AmountKind.declare(CATALOG, "tp1_schedule_f_line_30", non_negative=True)
+"""Schedule F line 30, "Scholarships, bursaries or similar financial assistance (line 154, point
+1)": one of the lines that line 34 adds, an optional input (the line comes from a TP-1 line the
+take-home does not build), read as 0 when blank (`tp1_schedule_f_line_34_inputs.yaml`)."""
+
+TP1_SCHEDULE_F_LINE_31 = AmountKind.declare(CATALOG, "tp1_schedule_f_line_31", non_negative=True)
+"""Schedule F line 31, "Amount reported on line 122 as recovery of a deduction for contributions
+to a spousal RRSP": one of the lines that line 34 adds, an optional input (the line comes from a
+TP-1 line the take-home does not build), read as 0 when blank
+(`tp1_schedule_f_line_34_inputs.yaml`)."""
+
+TP1_SCHEDULE_F_LINE_33 = AmountKind.declare(CATALOG, "tp1_schedule_f_line_33", non_negative=True)
+"""Schedule F line 33, "Income reported on line 154 (points 2, 5 and 12)": one of the lines that
+line 34 adds, an optional input (the line comes from a TP-1 line the take-home does not build),
+read as 0 when blank (`tp1_schedule_f_line_34_inputs.yaml`)."""
+
 TP1_SCHEDULE_F_LINES_20_TO_33_TOTAL_LINE_34 = AmountKind.declare(
-    CATALOG, "tp1_schedule_f_lines_20_to_33_total_line_34", non_negative=True
+    CATALOG, "tp1_schedule_f_lines_20_to_33_total_line_34"
 )
-"""Schedule F line 34, "Add lines 20, 22 and 25 through 33": the printed sum of the skipped lines,
-one optional input; blank when the caller has none, and line 36 reads it as 0."""
+"""Schedule F line 34, "Add lines 20, 22 and 25 through 33": lines 20, 22, 25, 26, 28, 29, 30, 31
+and 33 added, rounded half-up to the cent; blank lines read as 0. Signed, as line 25 is. Produced by
+one core/sum (`tp1_schedule_f_line_34.yaml`)."""
 
 TP1_SCHEDULE_F_INCOME_LINE_36 = AmountKind.declare(CATALOG, "tp1_schedule_f_income_line_36")
 """Schedule F line 36, "Income": line 18 less line 34; no floor is printed, so it can be

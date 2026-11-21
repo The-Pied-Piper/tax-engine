@@ -1,0 +1,80 @@
+# Schedule F (2025) lines 20, 22, 23, 24, 26, 28, 29, 30, 31 and 33: the lines that line 34 adds
+# ("Add lines 20, 22 and 25 through 33."; Revenu Quebec TP-1.D.F-V (2025-12), Part A). Each comes
+# from a line of the TP-1 return (or its guide) that the take-home does not build, so each stays an
+# input, as the form takes it, optional and left blank by a salary-only caller. Lines 23 and 24 are
+# the two figures that line 25 subtracts. They are declared here, with the steps that consume them
+# (line 25, `tp1_schedule_f_line_25.yaml`, and line 34, `tp1_schedule_f_line_34.yaml`), which read a
+# blank as 0.
+form:
+  name: ca-qc/tp1_schedule_f
+inputs:
+  - name: ca-qc/tp1_schedule_f_line_20
+    title: "Amounts allocated under a profit-sharing plan (line 107, point 3)"
+    reference: "20"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Amounts allocated under a profit-sharing plan (line 107, point 3)"
+  - name: ca-qc/tp1_schedule_f_line_22
+    title: "Old Age Security pension (line 114)"
+    reference: "22"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Old Age Security pension (line 114)"
+  - name: ca-qc/tp1_schedule_f_line_23
+    title: "Dividends from taxable Canadian corporations, taxable amount (line 128)"
+    reference: "23"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Dividends from taxable Canadian corporations, taxable amount (line 128)"
+  - name: ca-qc/tp1_schedule_f_line_24
+    title: "Dividends from taxable Canadian corporations, actual amount (total of lines 166 and 167)"
+    reference: "24"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Dividends from taxable Canadian corporations, actual amount (total of lines 166 and 167)"
+  - name: ca-qc/tp1_schedule_f_line_26
+    title: "Support payments received (taxable amount), other than a repayment (line 142)"
+    reference: "26"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Support payments received (taxable amount), other than a repayment (line 142)"
+  - name: ca-qc/tp1_schedule_f_line_28
+    title: "Social assistance payments and similar financial assistance (line 147)"
+    reference: "28"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Social assistance payments and similar financial assistance (line 147)"
+  - name: ca-qc/tp1_schedule_f_line_29
+    title: "Income replacement indemnities and net federal supplements (line 148)"
+    reference: "29"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Income replacement indemnities and net federal supplements (line 148)"
+  - name: ca-qc/tp1_schedule_f_line_30
+    title: "Scholarships, bursaries or similar financial assistance (line 154, point 1)"
+    reference: "30"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Scholarships, bursaries or similar financial assistance (line 154, point 1)"
+  - name: ca-qc/tp1_schedule_f_line_31
+    title: "Amount reported on line 122 as recovery of a deduction for contributions to a spousal RRSP"
+    reference: "31"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Amount reported on line 122 as recovery of a deduction for contributions to a spousal RRSP"
+  - name: ca-qc/tp1_schedule_f_line_33
+    title: "Income reported on line 154 (points 2, 5 and 12)"
+    reference: "33"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Income reported on line 154 (points 2, 5 and 12)"
