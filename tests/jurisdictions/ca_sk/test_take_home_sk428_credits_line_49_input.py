@@ -43,7 +43,7 @@ outputs: [ca/total_income]
 capabilities: []
 """
 # The form that owns the input, declared here as the real parts of the form declare it.
-FORM_NAME = "ca-sk/sk428"
+FORM_NAME = "ca-sk/sk428_credits"
 FORM = f"""\
 form:
   name: {FORM_NAME}

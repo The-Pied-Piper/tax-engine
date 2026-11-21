@@ -53,7 +53,6 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_INPUT
 
 D = Decimal
 SK_PARTS = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / "manifests" / "2025"
@@ -122,7 +121,6 @@ def _expected(salary: str, line_54: str = "0", line_55: str = "0") -> Decimal:
 
 
 def _part_files() -> Iterator[Path]:
-    yield T1_LINE_10100_INPUT
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
     yield from form_parts("t1_taxable_income", "t1_employment_income")

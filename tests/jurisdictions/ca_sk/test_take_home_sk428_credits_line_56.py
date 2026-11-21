@@ -40,12 +40,10 @@ INPUTS = (
     "ca-sk/sk428_donations_credit_at_rate_line_55",
 )
 
-HEADER = (
-    "jurisdiction: CA-SK\nversion: 1\nvalid_from_tax_year: 2025\ninputs:\n"
-    + "".join(f"  - name: {name}\n    required: true\n" for name in INPUTS)
-    + "outputs:\n"
-    + "".join(f"  - {name}\n" for name in INPUTS)
+HEADER = "jurisdiction: CA-SK\nversion: 1\nvalid_from_tax_year: 2025\noutputs:\n" + "".join(
+    f"  - {name}\n" for name in INPUTS
 )
+# The inputs are the form's own: its step reads them, so no other form may hold them.
 FORM = dedent("""\
     form:
       name: ca-sk/sk428_credits
@@ -53,7 +51,8 @@ FORM = dedent("""\
       exports:
         - ca-sk/sk428_donations_credit_line_56
     capabilities: []
-    """)
+    inputs:
+    """) + "".join(f"  - name: {name}\n    required: true\n" for name in INPUTS)
 
 
 def _service(tmp_path: Path) -> TaxComputationService:
