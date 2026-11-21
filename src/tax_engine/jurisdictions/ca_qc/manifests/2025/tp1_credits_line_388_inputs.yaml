@@ -1,0 +1,29 @@
+# TP-1 (2025) lines 378, 381 and 385: the lines that line 388 adds ("Add lines 378 through 385. = 388",
+# page 4, Non-refundable tax credits). Line 378 (form TP-752.0.13.1-V), line 381 (Schedule B, Part C,
+# line 40) and line 385 (Schedule M) come from forms the take-home does not build, so each stays an
+# input, as the form takes it, optional and left blank by a salary-only filer; line 388 reads a blank
+# as 0. They are declared here, with the step that consumes them.
+form:
+  name: ca-qc/tp1_credits
+inputs:
+  - name: ca-qc/tp1_line_378
+    title: "Expenses for medical services not available in your area"
+    reference: "378"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Expenses for medical services not available in your area"
+  - name: ca-qc/tp1_line_381
+    title: "Medical expenses"
+    reference: "381"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Medical expenses"
+  - name: ca-qc/tp1_line_385
+    title: "Interest paid on a student loan"
+    reference: "385"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Interest paid on a student loan"

@@ -1,0 +1,24 @@
+# TP-1 (2025) line 425: "Add lines 414 through 424. = 425" (page 4, Income tax and contributions; the
+# line has no title). One core/sum over the printed lines 414, 415, 422 and 424, rounded half-up to
+# the cent through ca-qc/cent_rounding. The four are optional inputs; a blank is read as 0.
+form:
+  name: ca-qc/tp1_tax
+capabilities:
+  - name: core/sum
+    reference: "425"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/tp1_line_414
+        - ca-qc/tp1_line_415
+        - ca-qc/tp1_line_422
+        - ca-qc/tp1_line_424
+    blank:
+      ca-qc/tp1_line_414: "0"
+      ca-qc/tp1_line_415: "0"
+      ca-qc/tp1_line_422: "0"
+      ca-qc/tp1_line_424: "0"
+    produces:
+      output: ca-qc/tp1_line_425
