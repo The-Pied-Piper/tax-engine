@@ -44,13 +44,11 @@ from tests.jurisdictions.ca_mb.support import (
     manitoba_parameter_parsers,
     manitoba_units,
 )
-from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT
+from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
 D = Decimal
 MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"
 RETURN_PART = MB_PARTS / "return.yaml"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
-T1_LINE_10100_STEP = next(FEDERAL_FORMS.rglob("t1_employment_income_line_10100.yaml"))
 
 HEADER = dedent("""\
     jurisdiction: CA-MB

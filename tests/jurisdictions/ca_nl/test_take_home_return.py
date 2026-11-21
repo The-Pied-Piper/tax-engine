@@ -47,12 +47,11 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_parameter_parsers,
     newfoundland_units,
 )
-from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT
+from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
 D = Decimal
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
 RETURN_PART = NL_PARTS / "return.yaml"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 
 HEADER = dedent("""\
     jurisdiction: CA-NL
@@ -217,9 +216,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
         ("04a_t1_form.yaml", T1_LINE_10100_FORM.read_text(encoding="utf-8")),
         (
             "04b_t1_line_10100.yaml",
-            (
-                FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml"
-            ).read_text(encoding="utf-8"),
+            (T1_LINE_10100_STEP).read_text(encoding="utf-8"),
         ),
         ("05_return.yaml", RETURN_PART.read_text(encoding="utf-8")),
     ]

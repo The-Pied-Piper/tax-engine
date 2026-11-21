@@ -53,6 +53,8 @@ T1_LINE_10100_INPUT = (
     / "t1_employment_income"
     / "t1_employment_income_line_10100_inputs.yaml"
 )
+# The part that computes line 10100 itself (the step), beside the input part above.
+T1_LINE_10100_STEP = T1_LINE_10100_INPUT.with_name("t1_employment_income_line_10100.yaml")
 QC_T1_LINE_10100_INPUT = (
     _JURISDICTIONS / "ca_qc" / "manifests" / "2025" / "t1_employment_income_line_10100_inputs.yaml"
 )

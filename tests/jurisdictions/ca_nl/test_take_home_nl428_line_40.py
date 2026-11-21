@@ -62,9 +62,8 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT
+from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 D = Decimal
 PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
 LINE_PART = PARTS / "nl428_credits_line_40.yaml"
@@ -118,9 +117,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
         T1_LINE_10100_FORM.read_text(encoding="utf-8"), encoding="utf-8"
     )
     (folder / "00_t1_line_10100.yaml").write_text(
-        (FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml").read_text(
-            encoding="utf-8"
-        ),
+        T1_LINE_10100_STEP.read_text(encoding="utf-8"),
         encoding="utf-8",
     )
     (folder / "01_form.yaml").write_text(FORM_PART, encoding="utf-8")

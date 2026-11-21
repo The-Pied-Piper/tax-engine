@@ -43,7 +43,7 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT
+from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
 D = Decimal
 CODE = JurisdictionCode("CA-BC")
@@ -81,7 +81,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     parts = [
         T1_LINE_10100_FORM,
         T1_LINE_10100_INPUT,
-        T1_LINE_10100_INPUT.with_name("t1_employment_income_line_10100.yaml"),
+        T1_LINE_10100_STEP,
         BC_PARTS / "bc428_line_69_input.yaml",
         PART,
     ]

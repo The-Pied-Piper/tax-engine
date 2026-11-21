@@ -44,12 +44,11 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_parameter_parsers,
     saskatchewan_units,
 )
-from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT
+from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
 D = Decimal
 SK_PARTS = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / "manifests" / "2025"
 RETURN_PART = SK_PARTS / "return.yaml"
-LINE_10100_PART = T1_LINE_10100_INPUT.parent / "t1_employment_income_line_10100.yaml"
 
 HEADER = dedent("""\
     jurisdiction: CA-SK
@@ -202,7 +201,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
         ],
         ("04_salary.yaml", T1_LINE_10100_INPUT.read_text(encoding="utf-8")),
         ("04a_t1_employment_income_form.yaml", T1_LINE_10100_FORM.read_text(encoding="utf-8")),
-        ("04b_line_10100.yaml", LINE_10100_PART.read_text(encoding="utf-8")),
+        ("04b_line_10100.yaml", T1_LINE_10100_STEP.read_text(encoding="utf-8")),
         ("05_return.yaml", RETURN_PART.read_text(encoding="utf-8")),
     ]
     for name, text in texts:

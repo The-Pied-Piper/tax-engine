@@ -45,6 +45,7 @@ from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME, RETURN
 from tax_engine.jurisdictions.ca.catalog.net_tax import TOTAL_PAYABLE
 from tax_engine.jurisdictions.ca.catalog.refund import TOTAL_CREDITS
 from tax_engine.jurisdictions.ca_nl.catalog import AVERAGE_INCOME_TAX_RATE
+from tests.federal_forms import FEDERAL_FORMS
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_capabilities,
     newfoundland_kinds,
@@ -58,7 +59,6 @@ from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT, T1_L
 D = Decimal
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
 RETURN_PART = NL_PARTS / "return.yaml"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 
 HEADER = dedent("""\
     jurisdiction: CA-NL

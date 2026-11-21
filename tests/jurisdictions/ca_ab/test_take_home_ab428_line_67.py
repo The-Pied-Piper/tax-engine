@@ -39,7 +39,7 @@ from tests.jurisdictions.ca_ab.support import (
     alberta_parameter_parsers,
     alberta_units,
 )
-from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT
+from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
 D = Decimal
 CODE = JurisdictionCode("CA-AB")
@@ -77,7 +77,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     parts = [
         T1_LINE_10100_FORM,
         T1_LINE_10100_INPUT,
-        T1_LINE_10100_INPUT.with_name("t1_employment_income_line_10100.yaml"),
+        T1_LINE_10100_STEP,
         ALBERTA_PARTS / "ab428_line_67_inputs.yaml",
         PART,
     ]

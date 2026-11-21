@@ -43,7 +43,7 @@ from tests.jurisdictions.ca_ab.support import (
     alberta_parameter_parsers,
     alberta_units,
 )
-from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT
+from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
 D = Decimal
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
@@ -203,9 +203,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
         ("04_salary.yaml", T1_LINE_10100_INPUT.read_text(encoding="utf-8")),
         (
             "04a_line_10100.yaml",
-            T1_LINE_10100_INPUT.with_name("t1_employment_income_line_10100.yaml").read_text(
-                encoding="utf-8"
-            ),
+            T1_LINE_10100_STEP.read_text(encoding="utf-8"),
         ),
         ("05_return.yaml", RETURN_PART.read_text(encoding="utf-8")),
     ]

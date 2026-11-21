@@ -42,10 +42,9 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT
+from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
 D = Decimal
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 SK_PARTS = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / "manifests" / "2025"
 LINE_PART = SK_PARTS / "sk428_credits_line_20.yaml"
 KIND = "ca-sk/sk428_credits_subtotal_line_20"
@@ -72,7 +71,7 @@ FORM = dedent("""\
 T1_PARTS = (
     T1_LINE_10100_INPUT,
     T1_LINE_10100_FORM,
-    FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml",
+    T1_LINE_10100_STEP,
 )
 PARTS = [*T1_PARTS, SK_PARTS / "sk428_credits_line_9.yaml", LINE_PART]
 

@@ -44,7 +44,7 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_parameter_parsers,
     british_columbia_units,
 )
-from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT
+from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
 D = Decimal
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
@@ -206,9 +206,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
         ("04_t1_line_10100_input.yaml", T1_LINE_10100_INPUT.read_text(encoding="utf-8")),
         (
             "04a_t1_line_10100.yaml",
-            T1_LINE_10100_INPUT.with_name("t1_employment_income_line_10100.yaml").read_text(
-                encoding="utf-8"
-            ),
+            T1_LINE_10100_STEP.read_text(encoding="utf-8"),
         ),
         ("05_return.yaml", RETURN_PART.read_text(encoding="utf-8")),
     ]

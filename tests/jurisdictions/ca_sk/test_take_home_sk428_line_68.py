@@ -41,7 +41,7 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_parameter_parsers,
     saskatchewan_units,
 )
-from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT
+from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
 D = Decimal
 CODE = JurisdictionCode("CA-SK")
@@ -49,14 +49,13 @@ FORM_NAME = "ca-sk/sk428"
 AMOUNT = "ca-sk/sk428_minimum_tax_t691_amount_line_68"
 LINE_68 = "ca-sk/sk428_minimum_tax_additional_line_68"
 SALARY = "ca/employment_income"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 SK_PARTS = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / "manifests" / "2025"
 # The T1 employment income form owns the salary input: its declaration, its line 10100 step and
 # the input part, as the real parts have them.
 T1_PARTS = (
     T1_LINE_10100_INPUT,
     T1_LINE_10100_FORM,
-    FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml",
+    T1_LINE_10100_STEP,
 )
 PART = SK_PARTS / "sk428_line_68.yaml"
 

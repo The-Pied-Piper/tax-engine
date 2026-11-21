@@ -37,9 +37,8 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_parameter_parsers,
     newfoundland_units,
 )
-from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT
+from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 D = Decimal
 CODE = JurisdictionCode("CA-NL")
 FORM_NAME = "ca-nl/nl428"
@@ -77,9 +76,7 @@ def _sheet(tmp_path: Path, salary: str, amount: str | None) -> Any:
         T1_LINE_10100_FORM.read_text(encoding="utf-8"), encoding="utf-8"
     )
     (folder / "00_t1_line_10100.yaml").write_text(
-        (FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml").read_text(
-            encoding="utf-8"
-        ),
+        T1_LINE_10100_STEP.read_text(encoding="utf-8"),
         encoding="utf-8",
     )
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")

@@ -1,5 +1,5 @@
 # Ontario 2025 take-home manifest: the return's identity and its exports. The caller gives the
-# gross salary and nothing else (salary.yaml). Ontario's own forms are in parts beside this one, so a
+# gross salary and nothing else (the T1 employment income form's line 10100 input). Ontario's own forms are in parts beside this one, so a
 # line ticket adds only its own part file; the federal forms are imported by name below, their parts
 # in the `ca` package (`ca/forms/<name>/`).
 #
