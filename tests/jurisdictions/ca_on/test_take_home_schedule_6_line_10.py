@@ -1,11 +1,11 @@
 """Schedule 6 (5000-S6, 2025) line 10 "Add lines 7 to 9." (column 1, You), from the salary alone.
 
 Line 10 is "Add lines 7 to 9." (Schedule 6, CRA 5000-S6-25E, confirmed, column 1 "You"). The
-take-home filer has only
-line 7 of the three lines (lines 8 and 9 are left out), so line 10 is a `core/sum` over the one
-part `ca/cwb_net_income_line_7`, the line 7 amount of this form, and its output is the registered
-kind `ca/cwb_net_income_total_line_10`. The form text of line 10 has no floor at zero, so the
-result is a signed amount.
+take-home filer has no line 8 (net exempt income on a reserve, left out), so line 10 is a
+`core/sum` over line 7 (`ca/cwb_net_income_line_7`) and line 9
+(`ca/cwb_uccb_and_rdsp_repayment_line_9`, the UCCB and RDSP repayments), in line order, and its
+output is the registered kind `ca/cwb_net_income_total_line_10`. The form text of line 10 has no
+floor at zero, so the result is a signed amount.
 
 Line 7 is composed beside line 10 as its part, and it is computed from the real T1 lines the same
 way as in test_take_home_schedule_6_line_7.py: the salary is the only input the caller gives, and
@@ -26,7 +26,11 @@ import pytest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
-from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.income import (
+    EMPLOYMENT_INCOME,
+    RDSP_INCOME_REPAYMENT,
+    UCCB_REPAYMENT,
+)
 from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
 from tests.kinds import bundled_kinds, non_negative
@@ -42,6 +46,7 @@ PARTS = (
     *form_part_names("schedule_8"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),
     "schedule_6_line_7.yaml",
+    "schedule_6_line_9.yaml",
     "schedule_6_line_10.yaml",
 )
 HEADER = dedent("""\
@@ -62,9 +67,22 @@ SCHEDULE_6 = dedent(f"""\
     """)
 
 
-def _schedule_6(take_home_service: TakeHomeService, salary: str) -> Worksheet:
+def _schedule_6(
+    take_home_service: TakeHomeService,
+    salary: str,
+    uccb_repayment: str | None = None,
+    rdsp_repayment: str | None = None,
+) -> Worksheet:
+    given = [
+        Artifact(kind, D(amount))
+        for kind, amount in (
+            (UCCB_REPAYMENT, uccb_repayment),
+            (RDSP_INCOME_REPAYMENT, rdsp_repayment),
+        )
+        if amount is not None
+    ]
     worksheets = take_home_service(HEADER, SCHEDULE_6, *PARTS).compute(
-        ONTARIO, 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
+        ONTARIO, 2025, Artifact(EMPLOYMENT_INCOME, D(salary)), *given
     )
     (sheet,) = worksheets[FORM]
     return sheet
@@ -85,6 +103,16 @@ def test_line_10_is_the_sum_of_line_7(
     value = sheet.get(bundled_kinds().kind(LINE_10)).value
     assert value == D(expected)
     assert value.as_tuple().exponent == -2
+
+
+def test_line_10_adds_the_uccb_and_rdsp_repayments_back_to_line_7(
+    take_home_service: TakeHomeService,
+) -> None:
+    # The repayments are deducted in the T1 net income (line 7), so line 10 adds them back:
+    # 70,000 - 665.00 - 40.10 - 9.90 + 50.00 = 69,335.00.
+    sheet = _schedule_6(take_home_service, "70000", "40.10", "9.90")
+
+    assert sheet.get(bundled_kinds().kind(LINE_10)).value == D("69335.00")
 
 
 def test_the_line_10_kind_is_registered_and_signed() -> None:

@@ -153,16 +153,24 @@ def test_line_6_is_line_5_for_a_single_filer(tmp_path: Path, salary: str, expect
 
 
 def test_line_6_follows_line_5_when_line_4_is_given(tmp_path: Path) -> None:
+    # The UCCB is in the net income, so line 3 is 17,865.00; line 4 takes the 1,000.00 off again.
     sheet = _sheet(tmp_path, "17000", Artifact(UCCB_INCOME, D("1000.00")))
 
     line_6 = sheet.get(BC479_ADJUSTED_FAMILY_NET_INCOME_LINE_6).value
-    assert line_6 == D("15865.00")
-    assert str(line_6) == "15865.00"
+    assert line_6 == D("16865.00")
+    assert str(line_6) == "16865.00"
 
 
 def test_line_6_is_0_when_line_4_is_above_line_3(tmp_path: Path) -> None:
-    # Line 3 is 16,865.00 at 17,000 and line 4 is 20,000.00: line 5 is floored, so line 6 is 0.00.
-    sheet = _sheet(tmp_path, "17000", Artifact(UCCB_INCOME, D("20000.00")))
+    # The UCCB of 20,000.00 is in the net income, which a social benefits repayment of 40,000.00
+    # takes to -3,135.00 at 17,000: line 4 is above line 3, line 5 is floored, so line 6 is 0.00.
+    kinds = british_columbia_kinds()
+    sheet = _sheet(
+        tmp_path,
+        "17000",
+        Artifact(UCCB_INCOME, D("20000.00")),
+        Artifact(kinds.kind("ca/social_benefits_repayment"), D("40000")),
+    )
 
     line_6 = sheet.get(BC479_ADJUSTED_FAMILY_NET_INCOME_LINE_6).value
     assert line_6 == D("0.00")
@@ -177,9 +185,9 @@ def test_the_step_traces_one_sum_line_over_line_5_with_the_cent_rounding(tmp_pat
     (line,) = [t for t in sheet.trace if isinstance(t, SumLine) and t.output is kinds.kind(LINE_6)]
     assert line == SumLine(
         output=kinds.kind(LINE_6),
-        parts=((kinds.kind(LINE_5), D("15865.00")),),
+        parts=((kinds.kind(LINE_5), D("16865.00")),),
         rounding=_rounding().rounding,
-        total=D("15865.00"),
+        total=D("16865.00"),
     )
 
 

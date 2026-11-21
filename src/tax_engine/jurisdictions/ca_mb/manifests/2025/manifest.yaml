@@ -4,9 +4,11 @@
 # parts beside this one, so a line ticket adds only its own part file; the federal forms are
 # imported by name below, their parts in the `ca` package (`ca/forms/<name>/`).
 #
-# Manitoba builds five forms, split so that no form reads another in a loop: `ca-mb/mb428_credits`
+# Manitoba builds seven forms, split so that no form reads another in a loop: `ca-mb/mb428_credits`
 # (MB428 lines 1 to 57), `ca-mb/worksheet_mb428` (the basic personal amount section of Worksheet
-# MB428), `ca-mb/mb428` (MB428 lines 58 to 82), which supplies `ca/provincial_tax.amount` for T1
+# MB428), `ca-mb/worksheet_mb428_other_dependants` (its section "Line 58729", lines 1 to 3, one
+# instance for each dependant) and `ca-mb/worksheet_mb428_other_dependants_total` (that section's
+# line 4), `ca-mb/mb428` (MB428 lines 58 to 82), which supplies `ca/provincial_tax.amount` for T1
 # line 42800, `ca-mb/mb428_a` (Schedule MB428-A) and `ca-mb/mb479` (MB479), which supplies
 # `ca/provincial_credits.amount` for T1 line 47900.
 #

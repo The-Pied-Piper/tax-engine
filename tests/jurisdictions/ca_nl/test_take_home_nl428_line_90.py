@@ -128,8 +128,9 @@ def test_line_90_is_line_88_when_line_89_is_left_blank(
 def test_line_90_adds_line_89_when_it_is_given(tmp_path: Path) -> None:
     sheet = _sheet(tmp_path, "70000", Artifact(UCCB_REPAYMENT, D("100.00")))
 
-    # 69,335.00 plus 100.00.
-    assert sheet.get(NL428_FAMILY_INCOME_LINE_90).value == D("69435.00")
+    # The 100.00 repayment is deducted in line 88 (the net income, 69,235.00) and line 89 adds it
+    # back, so line 90 is the 69,335.00 of the salary alone.
+    assert sheet.get(NL428_FAMILY_INCOME_LINE_90).value == D("69335.00")
 
 
 def test_line_88_is_one_record_total_over_the_signed_net_income() -> None:

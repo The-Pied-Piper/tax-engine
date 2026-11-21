@@ -164,14 +164,24 @@ def test_line_5_is_line_3_when_line_4_is_blank(tmp_path: Path, salary: str, expe
 
 
 def test_line_5_takes_line_4_off_line_3_when_line_4_is_given(tmp_path: Path) -> None:
+    # The UCCB is in the net income (T1 line 15000), so line 3 is 17,865.00 and line 4 takes the
+    # 1,000.00 off again: line 5 is the 16,865.00 of the salary alone.
     sheet = _sheet(tmp_path, "17000", Artifact(UCCB_INCOME, D("1000.00")))
 
-    assert sheet.get(BC479_ADJUSTED_NET_INCOME_LINE_5).value == D("15865.00")
+    assert sheet.get(BC479_ADJUSTED_NET_INCOME_LINE_5).value == D("16865.00")
 
 
 def test_line_5_is_0_when_line_4_is_above_line_3(tmp_path: Path) -> None:
-    # Line 3 is 16,865.00 at 17,000 and line 4 is 20,000.00: the floor.
-    sheet = _sheet(tmp_path, "17000", Artifact(UCCB_INCOME, D("20000.00")))
+    # The UCCB of 20,000.00 is in the net income, which a social benefits repayment of 40,000.00
+    # takes below it: line 3 is 17,000 + 20,000 - 135.00 - 40,000 = -3,135.00 and line 4 is
+    # 20,000.00, so line 5 is the floor.
+    kinds = british_columbia_kinds()
+    sheet = _sheet(
+        tmp_path,
+        "17000",
+        Artifact(UCCB_INCOME, D("20000.00")),
+        Artifact(kinds.kind("ca/social_benefits_repayment"), D("40000")),
+    )
 
     line_5 = sheet.get(BC479_ADJUSTED_NET_INCOME_LINE_5).value
     assert line_5 == D("0.00")
@@ -180,7 +190,14 @@ def test_line_5_is_0_when_line_4_is_above_line_3(tmp_path: Path) -> None:
 
 
 def test_line_5_is_0_when_line_4_equals_line_3(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "17000", Artifact(UCCB_INCOME, D("16865.00")))
+    # Line 3 is 17,000 + 1,000 - 135.00 - 16,865 = 1,000.00, the same as line 4.
+    kinds = british_columbia_kinds()
+    sheet = _sheet(
+        tmp_path,
+        "17000",
+        Artifact(UCCB_INCOME, D("1000.00")),
+        Artifact(kinds.kind("ca/social_benefits_repayment"), D("16865")),
+    )
 
     assert sheet.get(BC479_ADJUSTED_NET_INCOME_LINE_5).value == D("0.00")
 
@@ -213,11 +230,11 @@ def test_the_step_traces_one_subtracted_not_below_zero_line_with_the_cent_roundi
     assert line == SubtractedNotBelowZeroLine(
         output=kinds.kind(LINE_5),
         minuend=kinds.kind(LINE_3),
-        minuend_amount=D("16865.00"),
+        minuend_amount=D("17865.00"),
         subtrahend=kinds.kind(LINE_4),
         subtrahend_amount=D("1000.00"),
         rounding=_rounding().rounding,
-        result=D("15865.00"),
+        result=D("16865.00"),
     )
 
 

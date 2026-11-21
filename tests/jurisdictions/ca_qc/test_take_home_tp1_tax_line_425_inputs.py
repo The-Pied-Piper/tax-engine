@@ -1,5 +1,6 @@
-"""TP-1 (2025) lines 414, 415, 422 and 424: the lines that line 425 adds ("Add lines 414 through
-424."). Each is an optional input a salary-only caller does not give; line 425 reads a blank as 0.
+"""TP-1 (2025) lines 415, 422 and 424: the inputs of the lines that line 425 adds ("Add lines 414
+through 424."; line 414 is computed from Work Chart 414, not an input). Each is an optional input a
+salary-only caller does not give; line 425 reads a blank as 0.
 
 The real part is loaded under a test-local header and form declaration over the Quebec package list
 of `support.py`."""
@@ -18,10 +19,9 @@ from tests.kinds import non_negative
 from tests.manifest_support import input_named, inputs_of
 
 PART = "tp1_tax_line_425_inputs.yaml"
-LINES = ("414", "415", "422", "424")
+LINES = ("415", "422", "424")
 NAMES = {line: f"ca-qc/tp1_line_{line}" for line in LINES}
 BASES = {
-    "414": "Tax credit for contributions to authorized Québec political parties",
     "415": "Dividend tax credit",
     "422": "Tax credit for the acquisition of Capital régional et coopératif Desjardins shares",
     "424": "Tax credit for a labour-sponsored fund",

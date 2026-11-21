@@ -40,6 +40,7 @@ PARTS = (
     "schedule_6_line_5.yaml",
     "schedule_6_line_6.yaml",
     "schedule_6_line_7.yaml",
+    "schedule_6_line_9.yaml",
     "schedule_6_line_10.yaml",
     "schedule_6_line_11.yaml",
     "schedule_6_line_12.yaml",

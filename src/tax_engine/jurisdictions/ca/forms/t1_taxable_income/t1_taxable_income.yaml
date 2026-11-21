@@ -11,8 +11,8 @@
 #     income repayment included on line 23200) are inputs of this form, each read as 0 when blank. Schedule 6
 #     line 11, BC479 lines 2 and 4, MB479 lines 2 and 4 and NL428 lines 89 and 91 print them again as totals and
 #     read them from here (`ca/uccb_income_line_11700`, `ca/rdsp_income_line_12500`, `ca/uccb_repayment_line_21300`,
-#     `ca/rdsp_income_repayment_line_23200`), never asking for them a second time. They are not added into line
-#     15000 or line 23300: the take-home T1 builds employment income only.
+#     `ca/rdsp_income_repayment_line_23200`), never asking for them a second time. Lines 11700 and 12500 are added into line
+#     15000, lines 21300 and 23200 into line 23300, as the form says.
 #   - Line 26000 (taxable income, `ca/taxable_income`) is read by T1 line 70 and the provincial tax form.
 # Lines 15000 and 23300 are read inside the form by line 23400 and are not exported.
 form:

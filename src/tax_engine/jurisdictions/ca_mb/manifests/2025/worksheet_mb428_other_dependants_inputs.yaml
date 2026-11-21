@@ -1,0 +1,13 @@
+# Worksheet MB428 (CRA 5007-D) 2025, section "Line 58729": "Complete one column for each dependant."
+# The list of dependants is the input of the column form `ca-mb/worksheet_mb428_other_dependants`,
+# which runs once for each record (lines 1 and 2). A salary-only caller lists none, so it defaults to
+# an empty list and line 4 and MB428 line 49 are 0.00.
+form:
+  name: ca-mb/worksheet_mb428_other_dependants
+inputs:
+  - name: ca-mb/worksheet_mb428_other_dependants
+    title: "Allowable amount of medical expenses for other dependants"
+    unit: ca/cad
+    required: false
+    default: []
+    basis: 'Complete one column for each dependant.'

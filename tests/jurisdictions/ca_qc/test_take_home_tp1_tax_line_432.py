@@ -24,7 +24,7 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
 )
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
 from tests.jurisdictions.ca_qc.support import quebec_kinds
-from tests.jurisdictions.ca_qc.tp1_tax_support import LINE_430_CHAIN, tax_sheet
+from tests.jurisdictions.ca_qc.tp1_tax_support import LINE_414_PARTS, LINE_430_CHAIN, tax_sheet
 
 D = Decimal
 FORM = "ca-qc/tp1_tax"
@@ -33,6 +33,7 @@ EXPORTS = (IDENTIFIER,)
 PART = "tp1_tax_line_432.yaml"
 PARTS = (
     *LINE_430_CHAIN,
+    *LINE_414_PARTS,
     "tp1_tax_line_425_inputs.yaml",
     "tp1_tax_line_425.yaml",
     "tp1_tax_line_430.yaml",

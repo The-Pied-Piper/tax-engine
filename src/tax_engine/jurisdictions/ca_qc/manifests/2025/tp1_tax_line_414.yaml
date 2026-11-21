@@ -1,0 +1,17 @@
+# TP-1 (2025) line 414: "Tax credit for contributions to authorized Québec political parties" (page 4,
+# Income tax and contributions). The figure is Work Chart 414 line 14 ("Carry the result to line 414
+# of your return"), which the chart's own form exports; another form reads an export only as a record
+# list (`ca-qc/work_chart_414.work_chart_414_credit_line_14`), so the one step is core/record_total
+# over those records (as line 401 reads Work Chart 401). The chart's line 14 is always computed, so
+# there is no blank rule.
+form:
+  name: ca-qc/tp1_tax
+capabilities:
+  - name: core/record_total
+    title: "Tax credit for contributions to authorized Québec political parties"
+    reference: "414"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/work_chart_414.work_chart_414_credit_line_14
+    produces:
+      output: ca-qc/tp1_line_414

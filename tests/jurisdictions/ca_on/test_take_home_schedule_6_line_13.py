@@ -44,6 +44,7 @@ PARTS = (
     *form_part_names("schedule_8"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),
     "schedule_6_line_7.yaml",
+    "schedule_6_line_9.yaml",
     "schedule_6_line_10.yaml",
     "schedule_6_line_11.yaml",
     "schedule_6_line_12.yaml",
@@ -101,10 +102,11 @@ def test_schedule_6_line_13_is_line_12_column_1_alone(
 @pytest.mark.parametrize(
     ("salary", "uccb", "expected"),
     [
-        # Line 12 for a 20000 salary is line 10 (19835.00) less line 11, not below zero; line 13 is
-        # that line 12 alone.
-        ("20000", "1000.00", "18835.00"),
-        ("20000", "25000.00", "0.00"),
+        # The UCCB is in the net income, so line 10 rises by it and line 11 takes it out again: line
+        # 12 is the 19835.00 of a 20000 salary alone, and line 13 is that line 12 alone.
+        ("20000", "1000.00", "19835.00"),
+        ("20000", "25000.00", "19835.00"),
+        ("0", "1000.00", "0.00"),
     ],
 )
 def test_schedule_6_line_13_follows_line_12_when_line_11_is_given(

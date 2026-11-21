@@ -188,11 +188,14 @@ def test_line_6_adds_column_2_when_it_is_given(tmp_path: Path) -> None:
 
 def test_line_6_adds_column_2_to_the_floored_column_1(tmp_path: Path) -> None:
     # Line 4 exceeds line 3, so line 5 of column 1 is floored at 0.00. Line 6 adds column 2 to that
-    # floored line 5, not to line 3: 0.00 + 500.00, where line 3 would have given 10,435.00.
+    # floored line 5, not to line 3: 0.00 + 500.00, where line 3 (-10,065.00 after a social benefits
+    # repayment of 30,000 on the 10,000 salary and 10,000 UCCB) would have given -9,565.00.
+    kinds = manitoba_kinds()
     sheet = _sheet(
         tmp_path,
         Artifact(EMPLOYMENT_INCOME, D("10000")),
         Artifact(UCCB_INCOME, D("10000")),
+        Artifact(kinds.kind("ca/social_benefits_repayment"), D("30000")),
         Artifact(MB479_FAMILY_INCOME_COLUMN_2_LINE_5, D("500")),
     )
 

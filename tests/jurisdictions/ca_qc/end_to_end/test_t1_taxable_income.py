@@ -35,6 +35,10 @@ PARTS = (
     "t1_taxable_income_line_32_inputs.yaml",
     "t1_taxable_income_line_32.yaml",
     "t1_taxable_income_line_15000.yaml",
+    "t1_taxable_income_line_11700_inputs.yaml",
+    "t1_taxable_income_line_11700.yaml",
+    "t1_taxable_income_line_12500_inputs.yaml",
+    "t1_taxable_income_line_12500.yaml",
 )
 
 HEADER = dedent("""\

@@ -1,8 +1,7 @@
 # Form MB428 (CRA 5007-c) line 50: "Line 50 and line 58769: Line 48 plus line 49 =". Line 48 is the
 # medical expenses over the limit (mb428_credits_line_48.yaml) and line 49 the allowable amount of
-# medical expenses for other dependants, an optional input (mb428_credits_line_49_inputs.yaml) that a
-# salary-only caller leaves blank, read as 0. Line 50 adds them with core/sum, in line order, and
-# line 51 reads it.
+# medical expenses for other dependants (mb428_credits_line_49.yaml), 0.00 for a salary-only caller.
+# Line 50 adds them with core/sum, in line order, and line 51 reads it.
 form:
   name: ca-mb/mb428_credits
 capabilities:
@@ -16,7 +15,5 @@ capabilities:
       parts:
         - ca-mb/mb428_medical_expenses_over_limit_line_48
         - ca-mb/mb428_other_dependants_medical_expenses_line_49
-    blank:
-      ca-mb/mb428_other_dependants_medical_expenses_line_49: "0"
     produces:
       output: ca-mb/mb428_medical_expenses_line_50

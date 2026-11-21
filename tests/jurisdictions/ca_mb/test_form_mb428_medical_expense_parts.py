@@ -2,7 +2,9 @@
 
 Form text (Form MB428, CRA 5007-c-25e.txt), lines 43 to 50: see
 `end_to_end/test_mb428_medical_expenses.py` for the full text and the figures through the engine.
-Each calculated line is one step, one line = one capability; lines 43 and 49 are optional inputs.
+Each calculated line is one step, one line = one capability; line 43 is an optional input and
+line 49 is the total of Worksheet MB428 line 4
+(see `test_take_home_mb428_credits_line_49.py`).
 """
 
 from __future__ import annotations
@@ -69,13 +71,11 @@ STEPS = {
                 "ca-mb/mb428_other_dependants_medical_expenses_line_49",
             ]
         },
-        "blank": {"ca-mb/mb428_other_dependants_medical_expenses_line_49": "0"},
         "produces": {"output": "ca-mb/mb428_medical_expenses_line_50"},
     },
 }
 INPUTS = {
     "mb428_credits_line_43_inputs.yaml": "ca-mb/mb428_medical_expenses_line_43",
-    "mb428_credits_line_49_inputs.yaml": "ca-mb/mb428_other_dependants_medical_expenses_line_49",
 }
 
 

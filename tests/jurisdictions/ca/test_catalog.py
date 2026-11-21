@@ -222,6 +222,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     SPOUSE_RDSP_INCOME_REPAYMENT,
     SPOUSE_UCCB_REPAYMENT,
     SPOUSE_UNIVERSAL_CHILD_CARE_BENEFIT,
+    T1_LINE_22215,
     TAX_PAID_BY_INSTALMENTS,
     TAXABLE_INCOME,
     TOTAL_INCOME,
@@ -309,6 +310,7 @@ def test_the_net_income_before_adjustments_is_signed(registry: ArtifactRegistry)
     assert non_negative(registry.kind("ca/net_income_before_adjustments")) is False
     assert non_negative(NET_INCOME) is True
     assert non_negative(DEDUCTIONS_FROM_TOTAL_INCOME) is True
+    assert non_negative(T1_LINE_22215) is True
 
 
 def test_the_schedule_15_lines_that_print_no_floor_are_signed(registry: ArtifactRegistry) -> None:

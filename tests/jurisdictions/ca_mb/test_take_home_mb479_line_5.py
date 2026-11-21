@@ -173,19 +173,24 @@ def test_line_5_subtracts_line_4_when_it_is_given(tmp_path: Path) -> None:
         Artifact(UCCB_INCOME, D("500")),
     )
 
-    assert sheet.get(manitoba_kinds().kind(KIND)).value == _net_income(D("70000")) - D("500")
-    assert sheet.get(manitoba_kinds().kind(KIND)).value == D("68835.00")
+    # The UCCB is in the net income (T1 line 15000) and line 4 takes it off again, so line 5 is the
+    # net income of the salary alone.
+    assert sheet.get(manitoba_kinds().kind(KIND)).value == _net_income(D("70000"))
+    assert sheet.get(manitoba_kinds().kind(KIND)).value == D("69335.00")
 
 
 def test_line_5_is_the_floor_when_line_4_exceeds_line_3(tmp_path: Path) -> None:
+    # The UCCB of 10,000 is in the net income, which a social benefits repayment of 30,000 takes to
+    # 10,000 + 10,000 - 65.00 - 30,000 = -10,065.00, below line 4.
+    kinds = manitoba_kinds()
     sheet = _sheet(
         tmp_path,
         Artifact(EMPLOYMENT_INCOME, D("10000")),
         Artifact(UCCB_INCOME, D("10000")),
+        Artifact(kinds.kind("ca/social_benefits_repayment"), D("30000")),
     )
 
     line_5 = sheet.get(manitoba_kinds().kind(KIND)).value
-    assert D("10000") > _net_income(D("10000"))
     assert line_5 == D("0.00")
     # The floor is the cent zero of the rounding dataset: printed 0.00, never -0.00.
     assert str(line_5) == "0.00"
@@ -193,10 +198,13 @@ def test_line_5_is_the_floor_when_line_4_exceeds_line_3(tmp_path: Path) -> None:
 
 
 def test_line_5_is_the_floor_when_line_4_equals_line_3(tmp_path: Path) -> None:
+    # Line 3 is 10,000 + 9,935.00 - 65.00 - 9,935.00 = 9,935.00, the same as line 4.
+    kinds = manitoba_kinds()
     sheet = _sheet(
         tmp_path,
         Artifact(EMPLOYMENT_INCOME, D("10000")),
         Artifact(UCCB_INCOME, D("9935.00")),
+        Artifact(kinds.kind("ca/social_benefits_repayment"), D("9935")),
     )
 
     assert sheet.get(manitoba_kinds().kind(KIND)).value == D("0.00")
