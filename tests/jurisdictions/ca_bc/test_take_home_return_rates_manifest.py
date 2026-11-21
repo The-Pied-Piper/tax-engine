@@ -79,8 +79,7 @@ def test_the_steps_produce_these_kinds_in_this_order() -> None:
 def test_every_step_after_line_167_has_no_title_and_no_reference() -> None:
     assert len(_steps()) == len(OUTPUTS)
     for step in _steps()[1:]:
-        if step["produces"] != {"output": SALARY_RECORD}:
-            assert "title" not in step
+        assert "title" not in step
         assert "reference" not in step
 
 
@@ -88,7 +87,7 @@ def test_the_salary_is_read_as_the_t1_employment_income_export_not_as_an_input()
     step = _producing(SALARY_RECORD)
 
     assert step["name"] == "core/record_total"
-    assert step["title"] == "Employment income, T1 line 10100"
+    assert "title" not in step
     assert step["unit"] == "ca/cad"
     assert step["consumes"] == {"records": "ca/t1_employment_income.employment_income_line_10100"}
 

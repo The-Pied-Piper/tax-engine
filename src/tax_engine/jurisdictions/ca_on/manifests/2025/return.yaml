@@ -5,7 +5,7 @@
 # The return's second output is the average income tax rate, which no form prints (so its step has
 # no title or reference): T1 line 43500 "Total payable" (for the take-home filer, line 143 plus
 # line 147: the federal and the Ontario income tax) divided by the salary, T1 line 10100
-# (`ca/employment_income`). T1 exports line 43500, so a core/record_total step reads it into the
+# (`ca/return_employment_income`, read from the T1 line 10100 export). T1 exports line 43500, so a core/record_total step reads it into the
 # return's own `ca/total_payable`, then core/divide divides it by the salary, rounding once with
 # `ca-on/rate_rounding` (half-up to 0.0001); a salary of 0 gives 0.
 #
@@ -73,7 +73,6 @@ capabilities:
     produces:
       output: ca/total_payable
   - name: core/record_total
-    title: "Employment income, T1 line 10100"
     unit: ca/cad
     consumes:
       records: ca/t1_employment_income.employment_income_line_10100

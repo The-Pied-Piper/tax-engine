@@ -130,8 +130,9 @@ class InputDeclaration:
     `title` and `reference` are the figure's printed title and line label (`None` for none); `unit`
     names its unit, as a manifest writes it. `owner` is the name of the form the input belongs
     to: the form whose part declares it, the default form for one declared at the top of a
-    manifest. Only that form's steps may read it; every other form reads the owner's export. The
-    loader always sets it; an input declared by hand without one is not checked.
+    manifest. Only that form may read or export it; every other form reads the owner's export. It
+    is required of an entry of a manifest's `inputs`, which refuses one whose owner is not a form
+    of the manifest; a field of a form's `instances` belongs to its form and has none.
     """
 
     name: str
@@ -421,7 +422,6 @@ class Manifest:
             if declaration.name != name:
                 raise InvalidManifestError(f"input {name!r} is declared as {declaration.name!r}")
         self._check_predicates()
-        self._check_input_owners()
         derived = [kind for form in self.forms for kind in form.derived_kinds(self.artifacts)]
         derived += self._stand_ins(derived)
         self._check_derived(derived)
@@ -440,6 +440,7 @@ class Manifest:
             "field_defaults",
             MappingProxyType({form.name: self._field_defaults(form, kinds) for form in self.forms}),
         )
+        self._check_input_owners()
 
     def __hash__(self) -> int:
         """Hash by value, like the frozen dataclass it is; the read-only mapping is unhashable."""
@@ -567,22 +568,38 @@ class Manifest:
             )
 
     def _check_input_owners(self) -> None:
-        """Refuse a step that reads an input another form owns: it reads the owner's export.
+        """Refuse an input with no owner among the forms, a step that reads an input another form
+        owns, and an export that is another form's input.
 
-        Only an input with an owner is checked; the loader gives every input one.
+        The owner reads the input: another form reads the owner's export instead. An export that
+        is an input is read as entered, so it counts as a read like a step's. The first form is the
+        default form, whose exports are the manifest's `outputs`: they carry an input onto the
+        return as entered, whichever form owns it, and are not checked.
         """
+        names = {form.name for form in self.forms}
+        for name, declaration in self.inputs.items():
+            if declaration.owner not in names:
+                raise InvalidManifestError(
+                    f"input {name!r}: owner {declaration.owner!r} is not a form of the manifest"
+                )
         for form in self.forms:
             for selection in form.capabilities:
                 for named in selection.consumes.values():
                     for identifier in (named,) if isinstance(named, str) else named:
-                        declaration = self.inputs.get(identifier)
-                        if declaration is None or declaration.owner in (None, form.name):
-                            continue
-                        raise InvalidManifestError(
-                            f"form {form.name!r}: step {selection.name!r} reads input "
-                            f"{identifier!r}, which belongs to form {declaration.owner!r}; "
-                            f"read the export of {declaration.owner!r} instead"
-                        )
+                        self._check_owned_by(form, identifier, f"step {selection.name!r} reads")
+            if form is not self.forms[0]:
+                for identifier in form.exports:
+                    self._check_owned_by(form, identifier, "exports")
+
+    def _check_owned_by(self, form: Form, identifier: str, action: str) -> None:
+        """Refuse `form` taking the input `identifier` if another form owns it."""
+        declaration = self.inputs.get(identifier)
+        if declaration is None or declaration.owner == form.name:
+            return
+        raise InvalidManifestError(
+            f"form {form.name!r}: {action} input {identifier!r}, which belongs to form "
+            f"{declaration.owner!r}; read the export of {declaration.owner!r} instead"
+        )
 
     def _check_predicates(self) -> None:
         """Refuse a `required_when` that names nothing the manifest has or an optional input."""

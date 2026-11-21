@@ -85,9 +85,7 @@ def test_the_steps_produce_these_kinds_in_this_order() -> None:
 def test_every_step_after_line_167_has_no_title_and_no_reference() -> None:
     assert len(_steps()) == len(OUTPUTS)
     for step in _steps()[1:]:
-        # The salary total the average rate divides by carries a title and no reference.
-        if step["produces"] != {"output": "ca/return_employment_income"}:
-            assert "title" not in step
+        assert "title" not in step
         assert "reference" not in step
 
 
