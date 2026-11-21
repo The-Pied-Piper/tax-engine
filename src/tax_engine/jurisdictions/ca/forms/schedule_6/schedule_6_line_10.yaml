@@ -1,7 +1,8 @@
 # Schedule 6 (5000-S6, 2025, CRA 5000-S6-25E) line 10. Line 10: "Add lines 7 to 9.", column 1 "You"
 #
-# Line 10 is a sum of lines 7, 8 and 9. The take-home filer has none of lines 8 and 9 (lines 8 and 9
-# are left out), so the sum has one part: line 7 (`ca/cwb_net_income_line_7`). The result is signed,
+# Line 10 is a sum of lines 7, 8 and 9. The take-home filer has no line 8 (net exempt income on a reserve, left
+# out), so the sum has two parts in line order: line 7 (`ca/cwb_net_income_line_7`) and line 9
+# (`ca/cwb_uccb_and_rdsp_repayment_line_9`, the UCCB and RDSP repayments added back). The result is signed,
 # because the form prints no floor at zero on line 10.
 form:
   name: ca/schedule_6
@@ -12,6 +13,6 @@ capabilities:
     params:
       rounding: ca/cent_rounding
     consumes:
-      parts: [ca/cwb_net_income_line_7]
+      parts: [ca/cwb_net_income_line_7, ca/cwb_uccb_and_rdsp_repayment_line_9]
     produces:
       output: ca/cwb_net_income_total_line_10

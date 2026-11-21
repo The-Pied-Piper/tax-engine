@@ -1,7 +1,8 @@
 # 5005-R (2025) line 54 and line 23300. The form prints: "Line 54 and line 23300: Add lines 35 to 53. ="
-# (page 4). A salary-only filer has one deduction, line 48 (line 22215); lines 35 to 47 and 49 to 53
-# are blank and not built. One step: core/sum over line 48 alone, as the federal line 84 and line 98
-# steps are built even with one part.
+# (page 4). A take-home filer can have three of its lines, added in form line order: line 40 (line 21300,
+# the UCCB repayment), line 48 (line 22215, `ca-qc/t1_line_48`) and line 53 (line 23200, the RDSP income repayment included there).
+# Lines 40 and 53 are steps of this form, each read as 0 when blank; the others are blank and not built.
+# One step: core/sum, as the federal line 84 and line 98 steps are built even with one part.
 form:
   name: ca-qc/t1_taxable_income
 capabilities:
@@ -11,6 +12,9 @@ capabilities:
     params:
       rounding: ca-qc/cent_rounding
     consumes:
-      parts: [ca-qc/t1_line_48]
+      parts:
+        - ca/uccb_repayment_line_21300
+        - ca-qc/t1_line_48
+        - ca/rdsp_income_repayment_line_23200
     produces:
       output: ca-qc/t1_line_54

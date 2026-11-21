@@ -186,8 +186,15 @@ def test_line_8_is_0_when_line_6_is_below_line_7(tmp_path: Path) -> None:
 
 
 def test_line_8_is_0_when_line_6_equals_line_7(tmp_path: Path) -> None:
-    # Line 6 is 16,865.00 at 17,000; line 4 of 1,865.00 makes line 6 exactly 15,000.00.
-    sheet = _sheet(tmp_path, "17000", _line_4("1865.00"))
+    # Line 6 is 16,865.00 at 17,000; the UCCB of 1,865.00 is in the net income and line 4 takes it
+    # off again, so a social benefits repayment of 1,865.00 makes line 6 exactly 15,000.00.
+    kinds = british_columbia_kinds()
+    sheet = _sheet(
+        tmp_path,
+        "17000",
+        _line_4("1865.00"),
+        Artifact(kinds.kind("ca/social_benefits_repayment"), D("1865")),
+    )
 
     assert sheet.get(_kind(LINE_6)).value == D("15000.00")
     assert sheet.get(_kind(LINE_8)).value == D("0.00")
@@ -196,8 +203,9 @@ def test_line_8_is_0_when_line_6_equals_line_7(tmp_path: Path) -> None:
 def test_line_8_follows_line_6_when_line_4_is_given(tmp_path: Path) -> None:
     line_8 = _sheet(tmp_path, "17000", _line_4("1000.00")).get(_kind(LINE_8)).value
 
-    assert line_8 == D("865.00")
-    assert str(line_8) == "865.00"
+    # The UCCB is in the net income and line 4 takes it off again: line 8 is that of the salary.
+    assert line_8 == D("1865.00")
+    assert str(line_8) == "1865.00"
 
 
 def test_the_step_traces_one_subtracted_not_below_zero_line_with_the_cent_rounding(

@@ -170,8 +170,10 @@ def test_line_3_adds_line_2_when_it_is_given(tmp_path: Path) -> None:
         Artifact(UCCB_REPAYMENT, D("500")),
     )
 
-    assert sheet.get(manitoba_kinds().kind(KIND)).value == _net_income(D("70000")) + D("500")
-    assert sheet.get(manitoba_kinds().kind(KIND)).value == D("69835.00")
+    # The 500 repayment is deducted in the net income (T1 line 23300) and line 2 adds it back, so
+    # line 3 is the net income of the salary alone.
+    assert sheet.get(manitoba_kinds().kind(KIND)).value == _net_income(D("70000"))
+    assert sheet.get(manitoba_kinds().kind(KIND)).value == D("69335.00")
 
 
 def test_line_3_stays_negative_when_line_1_is_negative(tmp_path: Path) -> None:
@@ -184,7 +186,8 @@ def test_line_3_stays_negative_when_line_1_is_negative(tmp_path: Path) -> None:
     given = _sheet(tmp_path / "given", salary, repayment, Artifact(UCCB_REPAYMENT, D("500")))
 
     assert blank.get(kinds.kind(KIND)).value == D("-5665.00")
-    assert given.get(kinds.kind(KIND)).value == D("-5165.00")
+    # The repayment is deducted in line 1 and added back by line 2, so line 3 stays -5,665.00.
+    assert given.get(kinds.kind(KIND)).value == D("-5665.00")
 
 
 def _part() -> dict[str, Any]:

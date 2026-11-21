@@ -38,6 +38,25 @@ CWB_RDSP_INCOME_LINE_12500 = AmountKind.declare(
 """Schedule 6 line 11, the part from T1 line 12500 (RDSP income): the T1's line, read as the form's
 export."""
 
+CWB_UCCB_REPAYMENT_LINE_21300 = AmountKind.declare(
+    CATALOG, "cwb_uccb_repayment_line_21300", non_negative=True
+)
+"""Schedule 6 line 9, the part from T1 line 21300 (UCCB repayment): the T1's line, read as the
+form's export."""
+
+CWB_RDSP_INCOME_REPAYMENT_LINE_23200 = AmountKind.declare(
+    CATALOG, "cwb_rdsp_income_repayment_line_23200", non_negative=True
+)
+"""Schedule 6 line 9, the part from T1 line 23200 (RDSP income repayment): the T1's line, read as
+the form's export."""
+
+CWB_UCCB_AND_RDSP_REPAYMENT_LINE_9 = AmountKind.declare(
+    CATALOG, "cwb_uccb_and_rdsp_repayment_line_9", non_negative=True
+)
+"""Schedule 6 line 9 "Total of universal child care benefit (UCCB) repayment (line 21300 of the
+return) and registered disability savings plan (RDSP) income repayment (included on line 23200 of
+the return)": the sum of the two T1 line exports (`schedule_6_line_9.yaml`), added into line 10."""
+
 WORKING_INCOME = AmountKind.declare(CATALOG, "working_income", non_negative=True)
 """Working income, Schedule 6 line 5 "Add lines 1 to 4. Enter the result, even if it is "0".
 Working income". The take-home sum has line 1 only: line 1 "Employment income and other employment

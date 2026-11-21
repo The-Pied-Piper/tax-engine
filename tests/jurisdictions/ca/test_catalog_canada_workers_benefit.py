@@ -15,7 +15,10 @@ from tax_engine.jurisdictions.ca.catalog import (
     CWB_NET_INCOME_LINE_7,
     CWB_NET_INCOME_TOTAL_LINE_10,
     CWB_OTHER_EMPLOYMENT_INCOME_LINE_10400,
+    CWB_RDSP_INCOME_REPAYMENT_LINE_23200,
     CWB_REDUCTION_THRESHOLD,
+    CWB_UCCB_AND_RDSP_REPAYMENT_LINE_9,
+    CWB_UCCB_REPAYMENT_LINE_21300,
     WORKING_INCOME,
 )
 from tests.kinds import non_negative
@@ -37,6 +40,9 @@ def test_the_canada_workers_benefit_kinds_are_money() -> None:
         WORKING_INCOME,
         CWB_NET_INCOME_LINE_7,
         CWB_NET_INCOME_TOTAL_LINE_10,
+        CWB_UCCB_REPAYMENT_LINE_21300,
+        CWB_RDSP_INCOME_REPAYMENT_LINE_23200,
+        CWB_UCCB_AND_RDSP_REPAYMENT_LINE_9,
         CWB_NET_INCOME_LESS_UCCB_RDSP_LINE_12,
         ADJUSTED_FAMILY_NET_INCOME,
         CWB_REDUCTION_THRESHOLD,
@@ -69,6 +75,19 @@ def test_the_schedule_6_line_10_net_income_total_is_signed(registry: ArtifactReg
     # is signed.
     assert non_negative(CWB_NET_INCOME_TOTAL_LINE_10) is False
     assert non_negative(registry.kind("ca/cwb_net_income_total_line_10")) is False
+
+
+def test_the_schedule_6_line_9_repayment_kinds_are_non_negative(registry: ArtifactRegistry) -> None:
+    # Schedule 6 line 9 "Total of universal child care benefit (UCCB) repayment ... and registered
+    # disability savings plan (RDSP) income repayment ...": a sum of repayments, which the form
+    # prints no negative figure for.
+    for kind in (
+        CWB_UCCB_REPAYMENT_LINE_21300,
+        CWB_RDSP_INCOME_REPAYMENT_LINE_23200,
+        CWB_UCCB_AND_RDSP_REPAYMENT_LINE_9,
+    ):
+        assert non_negative(kind) is True, kind.identifier
+        assert registry.get(kind.identifier) is kind
 
 
 def test_the_base_amount_of_schedule_6_line_17_is_a_non_negative_money_kind(
