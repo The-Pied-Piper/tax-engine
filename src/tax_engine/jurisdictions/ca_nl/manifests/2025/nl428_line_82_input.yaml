@@ -2,7 +2,7 @@
 # line 61820: Venture capital tax credit from Certificate(s) NL VCTC". The credit comes from the
 # certificates the filer holds, which the engine does not compute, so the figure is taken as one
 # optional input, the way the form takes it. A request that leaves the line out is read as blank; the
-# line 82 step reads that blank as 0 and checks the guide's lifetime maximum
+# line 82 step passes that blank on and checks the guide's lifetime maximum
 # (nl428_line_82.yaml).
 inputs:
   - name: ca-nl/nl428_venture_capital_tax_credit_from_certificates_line_82

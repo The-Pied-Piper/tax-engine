@@ -25,6 +25,8 @@ from tax_engine.domain.errors import InputAboveBoundError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
+from tax_engine.domain.trace import AtMostLine
+from tax_engine.domain.worksheet import Worksheet
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_capabilities,
     newfoundland_kinds,
@@ -85,10 +87,14 @@ def _kind(identifier: str) -> AmountKind:
     return kind
 
 
-def _compute(tmp_path: Path, given: dict[str, str]) -> Decimal:
+def _sheet(tmp_path: Path, given: dict[str, str]) -> Worksheet:
     artifacts = [Artifact(_kind(name), D(value)) for name, value in given.items()]
     (sheet,) = _service(tmp_path).compute(JurisdictionCode("CA-NL"), 2025, *artifacts)[FORM_NAME]
-    value = sheet.get(_kind(OUTPUT)).value
+    return sheet
+
+
+def _compute(tmp_path: Path, given: dict[str, str]) -> Decimal:
+    value = _sheet(tmp_path, given).get(_kind(OUTPUT)).value
     assert isinstance(value, Decimal)
     return value
 
@@ -103,8 +109,9 @@ def test_line_82_is_the_amount_up_to_the_lifetime_maximum(
     assert _compute(tmp_path, {LINE_82: amount}) == D(expected)
 
 
-def test_line_82_is_0_when_the_amount_is_left_blank(tmp_path: Path) -> None:
-    assert _compute(tmp_path, {}) == D("0.00")
+def test_line_82_is_blank_when_the_amount_is_left_blank(tmp_path: Path) -> None:
+    # A blank amount passes on as blank; the line 84 sum reads it as 0.
+    assert _sheet(tmp_path, {}).get(_kind(OUTPUT)).is_blank
 
 
 @pytest.mark.parametrize("amount", ["75000.01", "100000.00"])
@@ -113,6 +120,34 @@ def test_an_amount_above_the_lifetime_maximum_is_refused_not_capped(
 ) -> None:
     with pytest.raises(InputAboveBoundError):
         _compute(tmp_path, {LINE_82: amount})
+
+
+def test_the_sheet_prints_the_reference_of_line_82_and_the_plain_title_of_the_maximum(
+    tmp_path: Path,
+) -> None:
+    sheet = _sheet(tmp_path, {LINE_82: "1500.00"})
+    kinds = newfoundland_kinds()
+
+    assert sheet.title(kinds.kind(OUTPUT).label) is None
+    assert sheet.reference(kinds.kind(OUTPUT).label) == "82"
+    assert (
+        sheet.title(kinds.kind(MAXIMUM).label)
+        == "Most you can claim for venture capital tax credits over your lifetime"
+    )
+    assert sheet.reference(kinds.kind(MAXIMUM).label) is None
+
+
+def test_the_trace_has_one_at_most_line_against_the_maximum(tmp_path: Path) -> None:
+    sheet = _sheet(tmp_path, {LINE_82: "1500.00"})
+    kinds = newfoundland_kinds()
+
+    (line,) = [
+        t for t in sheet.trace if isinstance(t, AtMostLine) and t.output is kinds.kind(OUTPUT)
+    ]
+    assert line.amount_kind is kinds.kind(LINE_82)
+    assert line.amount_value == D("1500.00")
+    assert line.bound is kinds.kind(MAXIMUM)
+    assert line.bound_value == D("75000.00")
 
 
 def test_the_part_is_a_maximum_step_and_a_check_step() -> None:
@@ -133,7 +168,7 @@ def test_the_part_is_a_maximum_step_and_a_check_step() -> None:
                 "reference": "82",
                 "unit": "ca/cad",
                 "consumes": {"amount": LINE_82, "bound": MAXIMUM},
-                "blank": {"amount": "0"},
+                "blank": {"amount": "pass_on"},
                 "produces": {"output": OUTPUT},
             },
         ],

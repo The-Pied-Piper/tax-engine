@@ -132,7 +132,7 @@ def test_the_part_is_one_sum_step() -> None:
                 "unit": "ca/cad",
                 "params": {"rounding": "ca-nl/cent_rounding"},
                 "consumes": {"parts": [CHECKED_LINE_82, LINE_83]},
-                "blank": {LINE_83: "0"},
+                "blank": {CHECKED_LINE_82: "0", LINE_83: "0"},
                 "produces": {"output": OUTPUT},
             }
         ],

@@ -489,8 +489,8 @@ NL428_VENTURE_CAPITAL_TAX_CREDIT_CHECKED_LINE_82 = AmountKind.declare(
     CATALOG, "nl428_venture_capital_tax_credit_checked_line_82", non_negative=True
 )
 """Venture capital tax credit, NL428 line 82 "Venture capital tax credit from Certificate(s) NL
-VCTC": the amount as the filer gives it (a blank input is read as 0), passed on unchanged when it
-is at most the lifetime maximum; above the maximum it is refused, not capped."""
+VCTC": the amount as the filer gives it (a blank input passes on as blank), passed on unchanged when
+it is at most the lifetime maximum; above the maximum it is refused, not capped."""
 
 NL428_UNUSED_VENTURE_CAPITAL_TAX_CREDIT_LINE_83 = AmountKind.declare(
     CATALOG, "nl428_unused_venture_capital_tax_credit_line_83", non_negative=True
