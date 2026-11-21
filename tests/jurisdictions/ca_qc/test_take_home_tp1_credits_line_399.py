@@ -20,7 +20,7 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.jurisdictions.ca_qc.catalog import (
     SCHEDULE_B_LIVED_ALONE_LINE_20,
     TP1_INCOME_REPLACEMENT_ADJUSTMENT_LINE_358,
-    TP1_LINE_388,
+    TP1_LINE_381,
     TP1_LINE_390,
     TP1_LINE_398_1,
     TP1_NON_REFUNDABLE_TAX_CREDITS_LINE_399,
@@ -61,7 +61,7 @@ def test_line_399_for_a_person_living_alone(
 
 def test_line_399_adds_lines_389_397_390_and_398_1(take_home_service: TakeHomeService) -> None:
     given = (
-        Artifact(TP1_LINE_388, D("1000")),
+        Artifact(TP1_LINE_381, D("1000")),
         Artifact(TP1_UNION_DUES_LINE_397_1, D("500")),
         Artifact(TP1_LINE_390, D("10.25")),
         Artifact(TP1_LINE_398_1, D("4.50")),
