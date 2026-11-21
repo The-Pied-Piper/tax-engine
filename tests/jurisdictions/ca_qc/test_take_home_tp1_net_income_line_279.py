@@ -22,7 +22,7 @@ EXPORTS = ("ca-qc/tp1_line_279",)
 PARTS = (
     "tp1_net_income_line_201.yaml",
     "tp1_net_income_line_248.yaml",
-    "tp1_net_income_line_254_input.yaml",
+    "tp1_net_income_line_254_inputs.yaml",
     "tp1_net_income_line_254.yaml",
     "tp1_net_income_line_256.yaml",
     "tp1_net_income_line_260_input.yaml",
