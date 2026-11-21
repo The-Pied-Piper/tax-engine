@@ -1147,7 +1147,7 @@ def test_a_step_reading_the_default_forms_carry_of_another_forms_input_is_refuse
 
     with pytest.raises(
         InvalidManifestError,
-        match="form 'ex/relief': step 'ex/total_up' reads, through the carry of 'ex-on/return', "
+        match="form 'ex/relief': step 'ex/total_up' reads 'ex-on/return.levy', the carry of "
         "input 'ex/levy', which belongs to form 'ex-on/return'",
     ):
         with_forms(optional_form(capabilities=(reading,)), inputs=inputs)

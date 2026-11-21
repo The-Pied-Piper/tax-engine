@@ -204,6 +204,53 @@ class Form:
         namespace, _, form_id = self.name.partition("/")
         return f"{namespace}/{form_id}.{export.label}"
 
+    def check_inputs_owned(
+        self,
+        inputs: Mapping[str, InputDeclaration],
+        carries: Mapping[str, str],
+        *,
+        carries_inputs: bool,
+    ) -> None:
+        """Refuse this form taking an input another form owns: read by a step, directly or
+        through the default form's carry of it (`carries`, by kind name), or exported unless this
+        is the default form (`carries_inputs`), whose exports carry inputs as entered.
+
+        The owner reads the input: another form reads the owner's export instead.
+        """
+        for selection in self.capabilities:
+            for named in selection.consumes.values():
+                for identifier in (named,) if isinstance(named, str) else named:
+                    self._check_read_owned(inputs, carries, selection.name, identifier)
+        if not carries_inputs:
+            for identifier in self.exports:
+                self._check_owned(inputs, identifier, "exports")
+
+    def _check_read_owned(
+        self,
+        inputs: Mapping[str, InputDeclaration],
+        carries: Mapping[str, str],
+        step: str,
+        read: str,
+    ) -> None:
+        """Refuse step `step` reading the input `read`, or the carry of it, if another form owns
+        it."""
+        self._check_owned(inputs, read, f"step {step!r} reads")
+        if read in carries:
+            action = f"step {step!r} reads {read!r}, the carry of"
+            self._check_owned(inputs, carries[read], action)
+
+    def _check_owned(
+        self, inputs: Mapping[str, InputDeclaration], identifier: str, action: str
+    ) -> None:
+        """Refuse this form taking the input `identifier` if another form owns it."""
+        declaration = inputs.get(identifier)
+        if declaration is None or declaration.owner == self.name:
+            return
+        raise InvalidManifestError(
+            f"form {self.name!r}: {action} input {identifier!r}, which belongs to form "
+            f"{declaration.owner!r}; read the export of {declaration.owner!r} instead"
+        )
+
     def derived_kinds(self, kinds: ArtifactRegistry) -> tuple[RecordListKind, ...]:
         """The kind `<form>.<export>` of each of this form's exports a record can hold, then those
         it supplies.
@@ -572,51 +619,37 @@ class Manifest:
             )
 
     def _check_input_owners(self) -> None:
-        """Refuse an input with no owner among the forms, a step that reads an input another form
-        owns, and an export that is another form's input.
+        """Refuse an input with no owner among the forms, then have each form refuse what it takes
+        from another form's input.
 
-        The owner reads the input: another form reads the owner's export instead. An export that
-        is an input is read as entered, so it counts as a read like a step's. The first form is the
-        default form, whose exports are the manifest's `outputs`: they carry an input onto the
-        return as entered, whichever form owns it, and are not checked. Another form may not read
-        that carry (`<default form>.<export>`) of an input it does not own.
+        The first form is the default form, whose exports are the manifest's `outputs`: they
+        carry an input onto the return as entered, whichever form owns it, so they are not
+        checked. Another form may not read that carry either.
         """
+        self._check_owners_are_forms()
+        carries = self._default_carries()
+        for form in self.forms:
+            form.check_inputs_owned(self.inputs, carries, carries_inputs=form is self.forms[0])
+
+    def _check_owners_are_forms(self) -> None:
+        """Refuse an input whose owner is not a form of the manifest."""
         names = {form.name for form in self.forms}
         for name, declaration in self.inputs.items():
             if declaration.owner not in names:
                 raise InvalidManifestError(
                     f"input {name!r}: owner {declaration.owner!r} is not a form of the manifest"
                 )
-        for form in self.forms:
-            for selection in form.capabilities:
-                for named in selection.consumes.values():
-                    for identifier in (named,) if isinstance(named, str) else named:
-                        self._check_owned_by(form, identifier, f"step {selection.name!r} reads")
-                        self._check_carry_read(form, selection.name, identifier)
-            if form is not self.forms[0]:
-                for identifier in form.exports:
-                    self._check_owned_by(form, identifier, "exports")
 
-    def _check_carry_read(self, form: Form, step: str, identifier: str) -> None:
-        """Refuse a step reading the default form's carry of another form's input: the carry is
-        the return's output, not the owner's export."""
+    def _default_carries(self) -> dict[str, str]:
+        """The kind `<default form>.<export>` of each of the default form's exports, by name, to
+        the export it carries."""
         default = self.forms[0]
+        carries: dict[str, str] = {}
         for export in default.exports:
             field = self.artifacts.kind(export)
-            if isinstance(field, RecordField) and identifier == default.export_kind_name(field):
-                self._check_owned_by(
-                    form, export, f"step {step!r} reads, through the carry of {default.name!r},"
-                )
-
-    def _check_owned_by(self, form: Form, identifier: str, action: str) -> None:
-        """Refuse `form` taking the input `identifier` if another form owns it."""
-        declaration = self.inputs.get(identifier)
-        if declaration is None or declaration.owner == form.name:
-            return
-        raise InvalidManifestError(
-            f"form {form.name!r}: {action} input {identifier!r}, which belongs to form "
-            f"{declaration.owner!r}; read the export of {declaration.owner!r} instead"
-        )
+            if isinstance(field, RecordField):
+                carries[default.export_kind_name(field)] = export
+        return carries
 
     def _check_predicates(self) -> None:
         """Refuse a `required_when` that names nothing the manifest has or an optional input."""
