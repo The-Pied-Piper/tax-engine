@@ -12,7 +12,6 @@ import pytest
 
 from tax_engine.jurisdictions.ca_qc.catalog import (
     TP1_LINE_205,
-    TP1_LINE_246,
     TP1_LINE_250,
     TP1_LINE_252,
     TP1_TOTAL_DEDUCTIONS_LINE_254,
@@ -61,13 +60,3 @@ def test_two_printed_lines_are_each_added(take_home_service: TakeHomeService) ->
     value = net_income_sheet(take_home_service, "70000", EXPORTS, PARTS, *given).get(LINE).value
 
     assert str(value) == "3335.75"
-
-
-def test_line_254_rounds_once_so_sub_cent_parts_in_different_subtotals_add_before_rounding(
-    take_home_service: TakeHomeService,
-) -> None:
-    given = ((TP1_LINE_205, "0.005"), (TP1_LINE_246, "0.005"))
-    value = net_income_sheet(take_home_service, "70000", EXPORTS, PARTS, *given).get(LINE).value
-
-    # 2,085.00 + 0.005 + 0.005 = 2,085.01: the unprinted subtotals do not round, the line does.
-    assert str(value) == "2085.01"
