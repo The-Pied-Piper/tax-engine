@@ -68,7 +68,9 @@ ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifest
 LINE_1_PART = ALBERTA_PARTS / "ab428_credits_line_1.yaml"
 LINE_3_PART = ALBERTA_PARTS / "ab428_line_3.yaml"
 LINE_4_PART = ALBERTA_PARTS / "ab428_line_4.yaml"
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 
 HEADER = dedent("""\
     jurisdiction: CA-AB

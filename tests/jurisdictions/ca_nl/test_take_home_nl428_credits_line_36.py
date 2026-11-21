@@ -55,7 +55,9 @@ LINE_25 = "ca-nl/nl428_credits_subtotal_line_25"
 LINE_35 = "ca-nl/nl428_cpp_ei_and_other_line_35"
 LINE_34 = "ca-nl/nl428_adoption_expenses_line_34"
 LINE_24 = "ca-nl/nl428_infirm_dependants_amount_line_24"
-FEDERAL_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+FEDERAL_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 NL_PART_NAMES = (
     "worksheet_nl428_line_4.yaml",
     "worksheet_nl428_line_6.yaml",
@@ -70,7 +72,7 @@ NL_PART_NAMES = (
     "nl428_credits_line_24_input.yaml",
     "nl428_credits_line_25.yaml",
     "nl428_credits_line_27.yaml",
-    "nl428_credits_line_28_input.yaml",
+    "nl428_credits_line_28.yaml",
     "nl428_credits_line_29.yaml",
     "nl428_credits_line_30_input.yaml",
     "nl428_credits_line_31_input.yaml",

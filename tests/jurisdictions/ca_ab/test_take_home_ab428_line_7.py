@@ -64,7 +64,9 @@ LINE_1 = "ca-ab/ab428_taxable_income_line_1"
 LINE_7 = "ca-ab/ab428_bracket_tax_at_start_line_7"
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
 LINE_PART = ALBERTA_PARTS / "ab428_line_7.yaml"
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 
 HEADER = dedent("""\
     jurisdiction: CA-AB

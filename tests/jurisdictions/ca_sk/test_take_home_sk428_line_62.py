@@ -75,7 +75,9 @@ LINE_60 = "ca-sk/sk428_tax_line_60"
 LINE_61 = "ca-sk/sk428_tax_on_split_income_line_61"
 IDENTIFIER = "ca-sk/sk428_tax_line_62"
 ROUNDING = "ca-sk/cent_rounding"
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 
 HEADER = dedent("""\
     jurisdiction: CA-SK

@@ -69,7 +69,9 @@ AMOUNT = "ca-ab/ab428_minimum_tax_t691_amount_line_67"
 ROUNDING = "ca-ab/cent_rounding"
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
 LINE_PART = ALBERTA_PARTS / "ab428_line_68.yaml"
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 # The real Alberta parts after the federal ones, in composition order: lines 1 to 15 and 59 to 61
 # (the line 61 test's), then lines 16 to 58 and 62 to 65 (the line 65 test's), then lines 66 and
 # 67, then line 68.
@@ -111,7 +113,6 @@ ALBERTA_LINE_PARTS = (
     "ab428_credits_line_58.yaml",
     "ab428_line_62.yaml",
     "ab428_line_63_inputs.yaml",
-    "ab428_line_64_inputs.yaml",
     "ab428_line_64.yaml",
     "ab428_line_65.yaml",
     "ab428_line_66.yaml",

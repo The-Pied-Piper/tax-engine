@@ -77,7 +77,9 @@ LINE_4 = "ca-sk/sk428_taxable_income_over_lower_bound_line_4"
 LINE_5 = "ca-sk/sk428_bracket_rate_line_5"
 LINE_6 = "ca-sk/sk428_tax_on_excess_line_6"
 # The real federal parts the T1 taxable-income form needs, beside the salary and line 1.
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 
 HEADER = dedent("""\
     jurisdiction: CA-SK

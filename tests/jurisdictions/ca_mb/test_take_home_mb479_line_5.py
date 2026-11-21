@@ -64,7 +64,9 @@ FORM_NAME = "ca-mb/mb479"
 LINE_3 = "ca-mb/mb479_family_income_before_benefits_line_3"
 LINE_4 = "ca-mb/mb479_uccb_rdsp_income_line_4"
 KIND = "ca-mb/mb479_family_income_column_1_line_5"
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 
 HEADER = dedent("""\
     jurisdiction: CA-MB

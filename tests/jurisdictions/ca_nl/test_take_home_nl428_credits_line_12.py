@@ -72,7 +72,9 @@ SCHEDULE = "ca-nl/brackets_lines_9_to_15"
 NEWFOUNDLAND_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
 PART = NEWFOUNDLAND_PARTS / "nl428_credits_line_12.yaml"
 LINE_1_PART = NEWFOUNDLAND_PARTS / "nl428_credits_line_1.yaml"
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 
 HEADER = dedent("""\
     jurisdiction: CA-NL

@@ -80,7 +80,9 @@ LINE_5 = "ca-mb/mb428_bracket_rate_line_5"
 LINE_6 = "ca-mb/mb428_tax_on_excess_line_6"
 LINE_7 = "ca-mb/mb428_bracket_tax_at_start_line_7"
 LINE_8 = "ca-mb/mb428_tax_on_taxable_income_line_8"
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 
 HEADER = dedent("""\
     jurisdiction: CA-MB

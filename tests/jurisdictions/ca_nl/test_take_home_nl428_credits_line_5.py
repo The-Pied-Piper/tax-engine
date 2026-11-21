@@ -66,7 +66,9 @@ LINE_1 = "ca-nl/nl428_taxable_income_line_1"
 LINE_5 = "ca-nl/nl428_bracket_rate_line_5"
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
 LINE_PART = NL_PARTS / "nl428_credits_line_5.yaml"
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 
 HEADER = dedent("""\
     jurisdiction: CA-NL

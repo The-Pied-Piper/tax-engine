@@ -1,0 +1,21 @@
+# T1 (5006-R, 2025) line 31900: "Line 102 and line 31900: Interest paid on your student loans (go
+# to canada.ca/taxes-students)" (5006-R page 6). The optional input (`ca/student_loan_interest`,
+# blank when the filer has none) is read by this step, which is the one line the T1 prints for it,
+# and the blank reads as 0. The form exports the line (`ca/student_loan_interest_line_31900`) for
+# the forms that print it again (NL428 line 43). It is not added into the federal sums here: the
+# take-home T1 leaves those lines out.
+form:
+  name: ca/t1_lines_copied_by_provinces
+capabilities:
+  - name: core/sum
+    title: "Interest paid on your student loans"
+    reference: "31900"
+    unit: ca/cad
+    params:
+      rounding: ca/cent_rounding
+    consumes:
+      parts: [ca/student_loan_interest]
+    blank:
+      ca/student_loan_interest: "0"
+    produces:
+      output: ca/student_loan_interest_line_31900

@@ -61,7 +61,9 @@ LINE_69 = "ca-mb/mb479_green_energy_credits_line_69"
 LINE_65 = "ca-mb/mb479_odour_control_credit_line_65"
 LINE_67 = "ca-mb/mb479_green_energy_purchaser_credit_line_67"
 COST_68 = "ca-mb/mb479_geothermal_heat_pump_cost_line_68"
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 MB479_PARTS = (
     "mb479_line_1.yaml",
     "mb479_line_2.yaml",

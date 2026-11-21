@@ -57,7 +57,9 @@ LINE_PART = NL_PARTS / "nl428_credits_line_8.yaml"
 NL_LINE_PARTS = tuple(
     NL_PARTS / f"nl428_credits_line_{number}.yaml" for number in (1, 3, 4, 5, 6, 7)
 )
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 
 HEADER = dedent("""\
     jurisdiction: CA-NL

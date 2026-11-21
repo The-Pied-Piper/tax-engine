@@ -85,7 +85,9 @@ LINE_PARTS = tuple(
     BC_PARTS / f"bc428_line_{number}.yaml" for number in ("1", "10", "11", "12", "13", "14", "15")
 )
 LINE_15_PART = BC_PARTS / "bc428_line_15.yaml"
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 
 HEADER = dedent("""\
     jurisdiction: CA-BC

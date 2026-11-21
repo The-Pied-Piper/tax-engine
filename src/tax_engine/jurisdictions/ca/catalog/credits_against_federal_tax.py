@@ -443,3 +443,16 @@ ITC_APPRENTICESHIP_WAGES_TOTAL = AmountKind.declare(
 credit (Total of amounts in column 3 plus applicable amount from box 40* of your T3 slip)": the
 total of the column 3 amounts, before the 10% and before the box 40 amount, which are not part of
 this figure."""
+
+MINIMUM_TAX_CARRYOVER = AmountKind.declare(CATALOG, "minimum_tax_carryover", non_negative=True)
+"""Minimum tax carryover, T1 line 124 and line 40427 "Minimum tax carryover (complete Form T691)":
+the optional input (`t1_lines_copied_by_provinces_line_40427_inputs.yaml`), blank when the filer has
+none. The T1 owns it; AB428 line 64, BC428 line 66, MB428 line 63, NL428 line 68 and SK428 line 65
+import line 40427."""
+
+MINIMUM_TAX_CARRYOVER_LINE_40427 = AmountKind.declare(
+    CATALOG, "minimum_tax_carryover_line_40427", non_negative=True
+)
+"""Minimum tax carryover as T1 line 40427 prints it
+(`t1_lines_copied_by_provinces_line_40427.yaml`): the optional input (`ca/minimum_tax_carryover`),
+read as 0 when blank, exported by the T1 lines copied by provinces form."""

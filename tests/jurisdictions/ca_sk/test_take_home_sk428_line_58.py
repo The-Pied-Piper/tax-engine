@@ -63,7 +63,9 @@ CREDITS_FORM_NAME = "ca-sk/sk428_credits"
 LINE_8 = "ca-sk/sk428_tax_on_taxable_income_line_8"
 IDENTIFIER = "ca-sk/sk428_tax_on_taxable_income_line_58"
 TITLE = "Saskatchewan tax on taxable income from line 8"
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 
 HEADER = dedent("""\
     jurisdiction: CA-SK
