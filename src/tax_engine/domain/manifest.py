@@ -422,6 +422,7 @@ class Manifest:
             if declaration.name != name:
                 raise InvalidManifestError(f"input {name!r} is declared as {declaration.name!r}")
         self._check_predicates()
+        self._check_input_owners()
         derived = [kind for form in self.forms for kind in form.derived_kinds(self.artifacts)]
         derived += self._stand_ins(derived)
         self._check_derived(derived)
@@ -440,7 +441,6 @@ class Manifest:
             "field_defaults",
             MappingProxyType({form.name: self._field_defaults(form, kinds) for form in self.forms}),
         )
-        self._check_input_owners()
 
     def __hash__(self) -> int:
         """Hash by value, like the frozen dataclass it is; the read-only mapping is unhashable."""

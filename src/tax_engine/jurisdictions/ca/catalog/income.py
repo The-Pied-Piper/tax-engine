@@ -37,17 +37,18 @@ EMPLOYMENT_INCOME_LINE_10100 = AmountKind.declare(
 """Employment income as T1 line 10100 prints it (`t1_employment_income_line_10100.yaml`): the salary
 input (`ca/employment_income`), exported by the T1 employment income form."""
 
-RETURN_EMPLOYMENT_INCOME = AmountKind.declare(
-    CATALOG, "return_employment_income", non_negative=True
-)
-"""The default form's own copy of T1 line 10100, read from the T1 employment income form's export
-(core/record_total), which a province's average income tax rate divides by."""
-
 OTHER_EMPLOYMENT_INCOME_LINE_10400 = AmountKind.declare(
     CATALOG, "other_employment_income_line_10400", non_negative=True
 )
 """Other employment income as T1 line 10400 prints it (`t1_employment_income_line_10400.yaml`): the
 optional input (`ca/other_employment_income`), exported by the T1 employment income form."""
+
+RETURN_EMPLOYMENT_INCOME = AmountKind.declare(
+    CATALOG, "return_employment_income", non_negative=True
+)
+"""The default form's own copy of T1 line 10100 (`return.yaml`): a `core/record_total` of the T1
+employment income form's export `employment_income_line_10100`, which a province's average income
+tax rate divides by."""
 
 TOTAL_INCOME_EMPLOYMENT_INCOME_LINE_10100 = AmountKind.declare(
     CATALOG, "total_income_employment_income_line_10100", non_negative=True

@@ -1,5 +1,7 @@
-# 5005-R (2025) line 1 input: the one figure a Quebec take-home caller gives, the gross salary, which
-# is the employment income of line 10100 ("Line 1 and line 10100: Employment income (box 14 of all T4
+# 5005-R (2025) line 1 input: the one figure a Quebec take-home caller gives, the gross salary,
+# which
+# is the employment income of line 10100 ("Line 1 and line 10100: Employment income (box 14 of all
+# T4
 # slips)"). Every other input a form declares is optional with its blank rule in that form's part.
 # The salary is an input of the Quebec T1 employment income form only: TP-1 line 101 and the other
 # forms read line 10100 as that form's export.

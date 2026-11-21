@@ -475,6 +475,10 @@ def test_manifest_fields_put_forms_before_the_artifacts_it_is_built_with() -> No
     assert names[names.index("forms") + 1] == "artifacts"
 
 
+def owned_by(owner: str) -> dict[str, InputDeclaration]:
+    return required_inputs(["ex/taxable_base", "ex/relief_applies"], owner=owner)
+
+
 def test_a_manifest_holds_its_forms_as_a_tuple_in_order() -> None:
     other = form(
         name="ex/business", instances="ex/businesses", exports=("ex/profit",), capabilities=()
@@ -1062,10 +1066,6 @@ def test_an_optional_slot_without_a_blank_rule_is_listed_by_the_form() -> None:
 #
 # An input belongs to the form that declares it; only that form's steps may read it. Another form
 # reads the owner's export instead.
-
-
-def owned_by(owner: str) -> dict[str, InputDeclaration]:
-    return required_inputs(["ex/taxable_base", "ex/relief_applies"], owner=owner)
 
 
 def test_a_step_reading_an_input_another_form_owns_is_refused_naming_all_four() -> None:

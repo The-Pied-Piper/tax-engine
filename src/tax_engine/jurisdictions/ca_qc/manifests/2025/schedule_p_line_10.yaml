@@ -3,7 +3,8 @@
 # applicable". Six steps, the first three reads of the TP-1 income form's exports and the last three one per
 # operation, the last carrying the line reference:
 # 1. TP-1 line 101 is the salary on the TP-1 income form, which exports it; another form reads an
-#    export only as a record list (`ca-qc/tp1_income.tp1_employment_income_line_101`), so core/record_total
+# export only as a record list (`ca-qc/tp1_income.tp1_employment_income_line_101`), so
+# core/record_total
 #    totals it, as ON428 line 1 reads the T1 taxable income.
 # 2. "line 105 if it is positive" is core/sum_not_below_zero over line 105 alone; a blank line 105
 #    is read as 0.

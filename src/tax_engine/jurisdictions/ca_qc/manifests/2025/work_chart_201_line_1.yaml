@@ -1,7 +1,8 @@
 # Work Chart 201 (TP-1.D.GR-V 2025-12), line 1: "Eligible work income (lines 101, 107 and, if
 # positive, 105, minus the amount from box 211 of your RL-1 slip)". Two steps for the one printed
 # line, as NL428 line 98 has a sum before its capped step. Line 101 is the salary
-# (TP-1 line 101, the TP-1 income form's export); lines 107 and 105 and box 211 are optional inputs of the TP-1 income
+# (TP-1 line 101, the TP-1 income form's export); lines 107 and 105 and box 211 are optional inputs
+# of the TP-1 income
 # form, which takes and exports them, so each is read as that form's export (a record list of one,
 # totalled by core/record_total, a blank read as 0), ahead of the two steps.
 # Line 105 is "if positive": the owner decided on the ticket (19 Nov 2026) that the test is moot,
