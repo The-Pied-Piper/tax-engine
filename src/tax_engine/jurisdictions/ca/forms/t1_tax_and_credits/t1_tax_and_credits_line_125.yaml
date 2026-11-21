@@ -1,14 +1,23 @@
 # T1 General 2025 (form 5006-R), Step 5 line 125 "Add lines 122 to 124."
 # (CRA 5006-R-25E). Line 122 is "Amount from line 35000"
 # (`ca/non_refundable_tax_credits`), a pure copy that gets no step of its own. Line 123 (line 40425,
-# the federal dividend tax credit) and line 124 (line 40427, the minimum tax carryover) are 0 for
-# the take-home filer and are left out: there are no dividends and no minimum tax paid in an earlier
-# year. The sum is built even with its one part present: core/sum adds line 122 and rounds the total
-# once, half-up to the cent, through the shared `ca/cent_rounding` dataset, producing
-# `ca/credits_against_basic_federal_tax`.
+# the federal dividend tax credit, which uses a Federal Worksheet) is not built and is left out.
+# Line 124 (line 40427, the minimum tax carryover) is a pure copy of line 40427, which the T1 lines
+# copied by provinces form owns as an optional input and exports as a record list, so it is a
+# core/record_total over that list (0 when the filer gives none). core/sum adds lines 122 and 124 and
+# rounds the total once, half-up to the cent, through the shared `ca/cent_rounding` dataset,
+# producing `ca/credits_against_basic_federal_tax`.
 form:
   name: ca/t1_tax_and_credits
 capabilities:
+  - name: core/record_total
+    title: "Minimum tax carryover"
+    reference: "40427"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_lines_copied_by_provinces.minimum_tax_carryover_line_40427
+    produces:
+      output: ca/minimum_tax_carryover_line_124
   - name: core/sum
     reference: "125"
     unit: ca/cad
@@ -17,5 +26,6 @@ capabilities:
     consumes:
       parts:
         - ca/non_refundable_tax_credits
+        - ca/minimum_tax_carryover_line_124
     produces:
       output: ca/credits_against_basic_federal_tax
