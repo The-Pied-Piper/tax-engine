@@ -1,0 +1,49 @@
+# Form BC479 (2025, CRA 5010-TC) line 44 (line 60576). Form text: "Line 37 and line 60575: Number of
+# months rent was paid for all rental units"; "If you qualify, and your adjusted family net income, on
+# line 6 of page 1, is less than $64,764, enter $400 on line 60576. If the adjusted family net income
+# is between $64,764 and $84,764, complete lines 38 to 43 below and enter the result on line 44. If
+# your adjusted family net income is more than $84,764, you cannot claim this credit. Enter "0" on
+# line 44."; "Line 44 and line 60576: Line 38 minus line 43 (if negative, enter "0")".
+#
+# Step 1 is the printed subtraction, core/subtract_not_below_zero: line 38 less line 43, not below 0.
+# Below $64,764 line 41 is 0, so it gives the printed $400; at and above $84,764 it gives 0; between,
+# the form's own arithmetic, so the three printed cases need no step of their own. It is not the
+# line's final step, so it has no reference, and its title is plain words, as the sentence of line 44
+# names this figure.
+# Step 2 is the form's own gate on line 37: a filer who paid no rent for any month does not qualify,
+# so line 44 is the printed "0" (the `ca-bc/renters_credit_zero` dataset, through core/credit_amount)
+# and the amount of step 1 is not claimed. core/choose_by_count chooses by the months of line 37, a
+# blank read as 0 months. The guide's other eligibility rules (one claim for a couple, no months paid
+# to a non-arm's length party) are answered by the filer in the months entered on line 37. A
+# salary-only caller gives no months, so line 44 is 0.00 at every salary.
+form:
+  name: ca-bc/bc479
+capabilities:
+  - name: core/subtract_not_below_zero
+    title: "Renter's tax credit before the months check"
+    unit: ca/cad
+    params:
+      rounding: ca-bc/cent_rounding
+    consumes:
+      amount: ca-bc/bc479_renters_maximum_line_38
+      less: ca-bc/bc479_renters_reduction_line_43
+    produces:
+      output: ca-bc/bc479_renters_credit_before_months_check
+  - name: core/credit_amount
+    unit: ca/cad
+    params:
+      amount: ca-bc/renters_credit_zero
+    produces:
+      output: ca-bc/bc479_renters_zero
+  - name: core/choose_by_count
+    title: "British Columbia renter's tax credit"
+    reference: "44"
+    unit: ca/cad
+    consumes:
+      count: ca-bc/bc479_renters_months_line_37
+      when_none: ca-bc/bc479_renters_zero
+      when_any: ca-bc/bc479_renters_credit_before_months_check
+    blank:
+      count: "0"
+    produces:
+      output: ca-bc/bc479_renters_credit_line_44

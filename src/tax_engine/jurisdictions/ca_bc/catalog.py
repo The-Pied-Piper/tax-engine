@@ -8,7 +8,7 @@ Amounts are `Decimal`, non-negative unless the form prints no floor. Federal kin
 from __future__ import annotations
 
 from tax_engine.domain.artifact import ArtifactCatalog
-from tax_engine.domain.kinds import AmountKind
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca_bc import NAMESPACE
 
@@ -534,12 +534,50 @@ BC479_TRAINING_CREDITS_LINE_34 = AmountKind.declare(
 """Training credits total, BC479 line 34 "Line 34: Add lines 31 to 33": the sum of lines 31 to 33
 (the T1014, T1014-1 and T1014-2 credits), a caller input that is read as blank when left out."""
 
+BC479_RENTERS_MONTHS_LINE_37 = CountKind.declare(
+    CATALOG, "bc479_renters_months_line_37", non_negative=True
+)
+"""Months rent was paid, BC479 line 37 (line 60575) "Number of months rent was paid for all rental
+units (total of column C from the table above)", as the caller gives it; blank when the caller paid
+no rent, and the line 44 gate reads it as 0 months."""
+
+BC479_RENTERS_MAXIMUM_LINE_38 = AmountKind.declare(
+    CATALOG, "bc479_renters_maximum_line_38", non_negative=True
+)
+"""Renter's tax credit maximum amount, BC479 line 38 "Renter's tax credit maximum amount 400.00",
+the printed figure."""
+
+BC479_RENTERS_THRESHOLD_LINE_40 = AmountKind.declare(
+    CATALOG, "bc479_renters_threshold_line_40", non_negative=True
+)
+"""Income threshold, BC479 line 40 "Income threshold 64,764.00", the printed figure."""
+
+BC479_RENTERS_INCOME_OVER_THRESHOLD_LINE_41 = AmountKind.declare(
+    CATALOG, "bc479_renters_income_over_threshold_line_41", non_negative=True
+)
+"""BC479 line 41 "Line 39 minus line 40 (if negative, enter "0")": the adjusted family net income
+(line 39 is the carry of line 6) less the threshold, not below 0."""
+
+BC479_RENTERS_REDUCTION_LINE_43 = AmountKind.declare(
+    CATALOG, "bc479_renters_reduction_line_43", non_negative=True
+)
+"""BC479 line 43 "Line 41 multiplied by the percentage from line 42": line 41 times the printed
+2%."""
+
+BC479_RENTERS_CREDIT_BEFORE_MONTHS_CHECK = AmountKind.declare(
+    CATALOG, "bc479_renters_credit_before_months_check", non_negative=True
+)
+"""BC479 line 44 "Line 38 minus line 43 (if negative, enter "0")", before the form's gate on line 37
+(no rent paid) is applied."""
+
+BC479_RENTERS_ZERO = AmountKind.declare(CATALOG, "bc479_renters_zero", non_negative=True)
+"""The printed "0" of the renter's tax credit, the form's own figure when no rent was paid."""
+
 BC479_RENTERS_CREDIT_LINE_44 = AmountKind.declare(
     CATALOG, "bc479_renters_credit_line_44", non_negative=True
 )
-"""British Columbia renter's tax credit, BC479 line 44 (line 60576) "Line 38 minus line 43 (if
-negative, enter "0")": a caller input, read as blank when left out; the rent table and lines 37 to
-43 are not built."""
+"""British Columbia renter's tax credit, BC479 line 44 (line 60576): "0" when line 37 is 0 months
+(blank read as 0), else "Line 38 minus line 43 (if negative, enter "0")"."""
 
 BC479_CREDIT_BEFORE_REDUCTION_LINE_11 = AmountKind.declare(
     CATALOG, "bc479_credit_before_reduction_line_11", non_negative=True
