@@ -19,7 +19,8 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.jurisdictions.ca_qc.catalog import (
     SCHEDULE_B_LIVED_ALONE_LINE_20,
     TP1_LINE_413,
-    TP1_LINE_425,
+    TP1_LINE_414,
+    TP1_LINE_415,
     TP1_LINE_430,
 )
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
@@ -31,7 +32,7 @@ FORM = "ca-qc/tp1_tax"
 IDENTIFIER = "ca-qc/tp1_line_430"
 EXPORTS = (IDENTIFIER,)
 PART = "tp1_tax_line_430.yaml"
-PARTS = (*LINE_430_CHAIN, "tp1_tax_line_425_input.yaml", PART)
+PARTS = (*LINE_430_CHAIN, "tp1_tax_line_425_inputs.yaml", "tp1_tax_line_425.yaml", PART)
 
 
 @pytest.mark.parametrize(
@@ -59,8 +60,8 @@ def test_line_430_for_a_person_living_alone_is_not_floored(
 
 
 def test_line_425_is_subtracted(take_home_service: TakeHomeService) -> None:
-    given = Artifact(TP1_LINE_425, D("1000.50"))
-    sheet = tax_sheet(take_home_service, "70000", EXPORTS, PARTS, given)
+    given = (Artifact(TP1_LINE_414, D("600.25")), Artifact(TP1_LINE_415, D("400.25")))
+    sheet = tax_sheet(take_home_service, "70000", EXPORTS, PARTS, *given)
 
     assert sheet.get(TP1_LINE_430).value == sheet.get(TP1_LINE_413).value - D("1000.50")
     assert str(sheet.get(TP1_LINE_430).value) == "6640.66"

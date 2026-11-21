@@ -1,0 +1,36 @@
+# TP-1 (2025) lines 414, 415, 422 and 424: the lines that line 425 adds ("Add lines 414 through 424.
+# = 425", page 4, Income tax and contributions). Line 414 (Work Chart 414), line 415 (dividend tax
+# credit), line 422 (RL-26 slip, box B) and line 424 come from forms and slips the take-home does not
+# build, so each stays an input, as the form takes it, optional and left blank by a salary-only
+# filer; line 425 reads a blank as 0. They are declared here, with the step that consumes them.
+form:
+  name: ca-qc/tp1_tax
+inputs:
+  - name: ca-qc/tp1_line_414
+    title: "Tax credit for contributions to authorized Québec political parties"
+    reference: "414"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Tax credit for contributions to authorized Québec political parties"
+  - name: ca-qc/tp1_line_415
+    title: "Dividend tax credit"
+    reference: "415"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Dividend tax credit"
+  - name: ca-qc/tp1_line_422
+    title: "Tax credit for the acquisition of Capital régional et coopératif Desjardins shares"
+    reference: "422"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Tax credit for the acquisition of Capital régional et coopératif Desjardins shares"
+  - name: ca-qc/tp1_line_424
+    title: "Tax credit for a labour-sponsored fund"
+    reference: "424"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Tax credit for a labour-sponsored fund"
