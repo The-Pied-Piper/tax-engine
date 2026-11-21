@@ -1,0 +1,17 @@
+# AB428 (2025) line 47 (Form AB428, CRA 5009-c): "Line 46: Applicable rate 3%" and "Line 47: Line 45
+# multiplied by the percentage from line 46 =". Line 46 is the printed 3%, the
+# `ca-ab/medical_expense_rate` dataset, and has no step of its own. Line 47 applies that rate to
+# line 45 (`ca-ab/ab428_net_income_line_45`), rounded half-up to the cent by the dataset's rule. The
+# form names no label for the line, so the step has no title.
+form:
+  name: ca-ab/ab428_credits
+capabilities:
+  - name: core/apply_rate
+    reference: "47"
+    unit: ca/cad
+    params:
+      rate: ca-ab/medical_expense_rate
+    consumes:
+      base: ca-ab/ab428_net_income_line_45
+    produces:
+      output: ca-ab/ab428_medical_expenses_rate_amount_line_47
