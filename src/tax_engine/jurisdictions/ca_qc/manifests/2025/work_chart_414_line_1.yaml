@@ -1,0 +1,16 @@
+# Work Chart 414 (TP-1.D.GR-V 2025-12), line 1: "Contributions to authorized Québec municipal
+# political parties (maximum $200)". The contributions up to the printed maximum
+# (`ca-qc/work_chart_414_line_1_maximum`), as Schedule K line 83 caps its sum; the cap rounds half-up
+# to the cent.
+form:
+  name: ca-qc/work_chart_414
+capabilities:
+  - name: core/capped_amount
+    reference: "1"
+    unit: ca/cad
+    params:
+      cap: ca-qc/work_chart_414_line_1_maximum
+    consumes:
+      base: ca-qc/work_chart_414_contributions_input_line_1
+    produces:
+      output: ca-qc/work_chart_414_contributions_line_1

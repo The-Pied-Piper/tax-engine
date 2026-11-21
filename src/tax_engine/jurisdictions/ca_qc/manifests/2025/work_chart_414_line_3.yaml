@@ -1,0 +1,15 @@
+# Work Chart 414 (TP-1.D.GR-V 2025-12), line 3: "Subtract line 2 from line 1." Rounded half-up to the
+# cent (`ca-qc/cent_rounding`). Line 2 never exceeds line 1, so no floor is needed.
+form:
+  name: ca-qc/work_chart_414
+capabilities:
+  - name: core/subtract
+    reference: "3"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/work_chart_414_contributions_line_1
+      less: ca-qc/work_chart_414_lesser_line_2
+    produces:
+      output: ca-qc/work_chart_414_remainder_line_3
