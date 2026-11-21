@@ -16,7 +16,7 @@ import pytest
 import yaml
 
 from tax_engine.jurisdictions.ca_qc.catalog import (
-    SCHEDULE_K_DEPENDENT_CHILD_AMOUNT_LINE_42_OR_44,
+    SCHEDULE_K_DEPENDENT_CHILDREN_LINE_44,
     SCHEDULE_K_PREMIUM_INCOME_LINE_48,
     TP1_SPOUSE_NET_INCOME_LINE_275,
 )
@@ -32,7 +32,9 @@ PARTS = (
     "tp1_schedule_k_line_37.yaml",
     "tp1_schedule_k_line_40.yaml",
     "tp1_schedule_k_line_41.yaml",
-    "tp1_schedule_k_line_42_or_44_input.yaml",
+    "tp1_schedule_k_line_44_input.yaml",
+    "tp1_schedule_k_line_44_amounts.yaml",
+    "tp1_schedule_k_line_44.yaml",
     "tp1_schedule_k_line_46.yaml",
     "tp1_schedule_k_line_48.yaml",
 )
@@ -57,11 +59,14 @@ def test_the_spouse_amount_raises_line_48(take_home_service: TakeHomeService) ->
     assert str(sheet.get(SCHEDULE_K_PREMIUM_INCOME_LINE_48).value) == "49025.50"
 
 
-def test_the_dependent_child_amount_lowers_line_48(take_home_service: TakeHomeService) -> None:
-    given = (SCHEDULE_K_DEPENDENT_CHILD_AMOUNT_LINE_42_OR_44, "6000")
+@pytest.mark.parametrize(("children", "expected"), [("1", "35675.00"), ("2", "31455.00")])
+def test_a_dependent_child_lowers_line_48(
+    take_home_service: TakeHomeService, children: str, expected: str
+) -> None:
+    given = (SCHEDULE_K_DEPENDENT_CHILDREN_LINE_44, children)
     sheet = schedule_k_sheet(take_home_service, "70000", LINE_48, PARTS, given)
 
-    assert str(sheet.get(SCHEDULE_K_PREMIUM_INCOME_LINE_48).value) == "42025.00"
+    assert str(sheet.get(SCHEDULE_K_PREMIUM_INCOME_LINE_48).value) == expected
 
 
 def test_a_negative_result_is_entered_as_zero(take_home_service: TakeHomeService) -> None:

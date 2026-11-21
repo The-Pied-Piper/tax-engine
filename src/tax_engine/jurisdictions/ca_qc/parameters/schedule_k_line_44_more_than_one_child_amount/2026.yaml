@@ -1,0 +1,15 @@
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when Revenu Quebec publishes it.
+# Derivation: carried forward unchanged from the 2025 file; the 2026 form is not yet published.
+# Revenu Quebec TP-1.D.K-V (2025-12), Schedule K, Part A, line 44: "If you did not have a spouse on
+# December 31, 2025, but you had a dependent child (see line 447 in the guide for the definition),
+# enter $12,350. If you had more than one dependent child, enter $16,570." The take-home is a single
+# filer with no spouse, so line 44 is the line that applies; the figure for you had more than one dependent child is
+# the printed $16,570, taken as printed and claimed whole. Half-up to the cent changes nothing.
+# The 2026 form is not yet published, so the figure is not yet confirmed against it.
+family: ca-qc/schedule_k_line_44_more_than_one_child_amount
+tax_year: 2026
+kind: credit
+sources:
+  - Revenu Quebec TP-1.D.K-V (2025-12), Schedule K, Part A
+rounding: {increment: "0.01", mode: half_up}
+amount: "16570"

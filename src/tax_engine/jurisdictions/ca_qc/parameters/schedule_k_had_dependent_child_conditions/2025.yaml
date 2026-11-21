@@ -1,0 +1,18 @@
+# Condition of Schedule K line 44 (Revenu Quebec TP-1.D.K-V (2025-12), Part A): "If you did not have
+# a spouse on December 31, 2025, but you had a dependent child (see line 447 in the guide for the
+# definition), enter $12,350. If you had more than one dependent child, enter $16,570." The condition
+# is that you had a dependent child: the number of dependent children (the first count) is more than 0. The
+# count is 1 when it applies and 0 when it does not. The result is a count, not a dollars-and-cents
+# box, so there is no rounding.
+family: ca-qc/schedule_k_had_dependent_child_conditions
+tax_year: 2025
+kind: conditions
+sources:
+  - Revenu Quebec TP-1.D.K-V (2025-12), Schedule K, Part A
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: At least one dependent child
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "0"}
