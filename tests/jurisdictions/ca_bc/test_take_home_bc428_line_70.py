@@ -47,6 +47,7 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.domain.trace import BlankPassedOnLine, SumLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -68,23 +69,8 @@ LINE_70 = "ca-bc/bc428_tax_with_minimum_tax_line_70"
 AMOUNT = "ca-bc/bc428_additional_minimum_tax_amount_line_69"
 ROUNDING = "ca-bc/cent_rounding"
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = BC_PARTS / "bc428_line_70.yaml"
-T1_PARTS = (
-    "t1_taxable_income_inputs.yaml",
-    "t1_employment_income.yaml",
-    "t1_employment_income_line_10100.yaml",
-    "t1_employment_income_line_10400.yaml",
-    "t1_taxable_income_line_15000.yaml",
-    "t1_taxable_income_line_23300.yaml",
-    "t1_taxable_income_line_23400.yaml",
-    "t1_taxable_income_line_23600.yaml",
-    "t1_taxable_income_line_23600_signed.yaml",
-    "t1_taxable_income_line_25700_inputs.yaml",
-    "t1_taxable_income_line_26000.yaml",
-    "t1_taxable_income.yaml",
-    "t1_employment_income_line_10400_inputs.yaml",
-)
+T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 # The real British Columbia parts after the federal ones, in composition order: the line 68 test's
 # (lines 1 to 68), then the line 69 input and line 69, then line 70.
 BC_LINE_PARTS = (
@@ -183,8 +169,8 @@ def _federal(name: str) -> Path:
 
 def _part_files() -> Iterator[Path]:
     yield BC_PARTS / "salary.yaml"
-    yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
-    yield from sorted(FEDERAL_FORMS.rglob("t2204*.yaml"))
+    yield from form_parts("schedule_8")
+    yield from form_parts("t2204")
     for name in T1_PARTS:
         yield _federal(name)
     for name in BC_LINE_PARTS:

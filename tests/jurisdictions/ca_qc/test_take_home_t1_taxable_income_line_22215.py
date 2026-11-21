@@ -21,18 +21,14 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_qc.catalog import T1_LINE_48
+from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 from tests.jurisdictions.ca_qc.support import real_import
 
 D = Decimal
 PART = "t1_taxable_income_line_22215.yaml"
 # The real Quebec T1 employment income parts: Schedule 8 line 1 reads line 10100 from that form.
-T1_EMPLOYMENT_INCOME_PARTS = (
-    "t1_employment_income.yaml",
-    "t1_employment_income_line_10100.yaml",
-    "t1_employment_income_line_10400.yaml",
-    "t1_employment_income_line_10400_inputs.yaml",
-)
+T1_EMPLOYMENT_INCOME_PARTS = form_part_names("t1_employment_income")
 
 HEADER = dedent("""\
     jurisdiction: CA-QC

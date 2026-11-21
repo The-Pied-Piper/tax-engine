@@ -1,0 +1,13 @@
+# ON428 (2025) line 36's input. Form ON428 (CRA 5006-c-25e): "Line 36 and line 58689: See line 58689 at
+# canada.ca/on-tax-info for maximum allowable amounts for attendant care, an adapted van, and moving
+# expenses." The engine does not compute medical expenses, so the figure is taken as one optional
+# input, the way the form takes it. A request that leaves the line out is read as blank; the line
+# 41 step reads that blank as 0.
+inputs:
+  - name: ca-on/on428_medical_expenses_line_36
+    title: "Maximum allowable amounts for attendant care, an adapted van, and moving expenses"
+    reference: "36"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 36 and line 58689: See line 58689 at canada.ca/on-tax-info for maximum allowable amounts for attendant care, an adapted van, and moving expenses'

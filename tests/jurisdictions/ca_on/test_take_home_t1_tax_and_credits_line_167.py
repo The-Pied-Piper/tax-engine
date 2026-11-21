@@ -34,6 +34,7 @@ from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.registrations import JURISDICTIONS, parameter_parsers, units
 from tests.capabilities import bundled_capabilities
+from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService, header_without_imports
 from tests.kinds import bundled_kinds, non_negative
 
@@ -57,21 +58,9 @@ REAL_FORM = next(TAKE_HOME.rglob("t1_tax_and_credits.yaml")).read_text(encoding=
 # of line 43500, line 48200 and the part under test.
 PARTS = (
     "salary.yaml",
-    *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
-    *(part.name for part in sorted(TAKE_HOME.rglob("t2204*.yaml"))),
-    "t1_taxable_income_inputs.yaml",
-    "t1_employment_income.yaml",
-    "t1_employment_income_line_10100.yaml",
-    "t1_employment_income_line_10400.yaml",
-    "t1_taxable_income_line_15000.yaml",
-    "t1_taxable_income_line_23300.yaml",
-    "t1_taxable_income_line_23400.yaml",
-    "t1_taxable_income_line_23600.yaml",
-    "t1_taxable_income_line_23600_signed.yaml",
-    "t1_taxable_income_line_25700_inputs.yaml",
-    "t1_taxable_income_line_26000.yaml",
-    "t1_taxable_income.yaml",
-    "t1_employment_income_line_10400_inputs.yaml",
+    *form_part_names("schedule_8"),
+    *form_part_names("t2204"),
+    *form_part_names("t1_taxable_income", "t1_employment_income"),
     "t1_tax_and_credits_line_30000.yaml",
     "t1_tax_and_credits_line_76.yaml",
     "t1_tax_and_credits_line_31260.yaml",
@@ -96,7 +85,7 @@ PARTS = (
     "t1_tax_and_credits_line_41700.yaml",
     "t1_tax_and_credits_line_42000.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("on428*.yaml"))),
-    *(part.name for part in sorted(TAKE_HOME.rglob("schedule_6*.yaml"))),
+    *form_part_names("schedule_6"),
     "t1_tax_and_credits_line_43500.yaml",
     "t1_tax_and_credits_line_47900.yaml",
     "t1_tax_and_credits_line_48200.yaml",

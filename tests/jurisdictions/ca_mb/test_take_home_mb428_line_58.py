@@ -39,6 +39,7 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.domain.trace import RecordTotalLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_mb.support import (
     manitoba_capabilities,
     manitoba_kinds,
@@ -51,7 +52,6 @@ from tests.manifest_support import inputs_without_form
 
 D = Decimal
 MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = MB_PARTS / "mb428_line_58.yaml"
 CREDITS_PARTS = tuple(f"mb428_credits_line_{n}.yaml" for n in (1, 3, 4, 5, 6, 7, 8))
 FORM_NAME = "ca-mb/mb428"
@@ -59,21 +59,7 @@ CREDITS_FORM_NAME = "ca-mb/mb428_credits"
 LINE_8 = "ca-mb/mb428_tax_on_taxable_income_line_8"
 IDENTIFIER = "ca-mb/mb428_manitoba_tax_on_taxable_income_line_58"
 TITLE = "Manitoba tax on taxable income from line 8"
-T1_PARTS = (
-    "t1_taxable_income_inputs.yaml",
-    "t1_employment_income.yaml",
-    "t1_employment_income_line_10100.yaml",
-    "t1_employment_income_line_10400.yaml",
-    "t1_taxable_income_line_15000.yaml",
-    "t1_taxable_income_line_23300.yaml",
-    "t1_taxable_income_line_23400.yaml",
-    "t1_taxable_income_line_23600.yaml",
-    "t1_taxable_income_line_23600_signed.yaml",
-    "t1_taxable_income_line_25700_inputs.yaml",
-    "t1_taxable_income_line_26000.yaml",
-    "t1_taxable_income.yaml",
-    "t1_employment_income_line_10400_inputs.yaml",
-)
+T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 
 HEADER = dedent("""\
     jurisdiction: CA-MB
@@ -117,7 +103,7 @@ CASES = [
 
 def _part_files() -> Iterator[Path]:
     yield MB_PARTS / "salary.yaml"
-    yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
+    yield from form_parts("schedule_8")
     for name in T1_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
     for name in CREDITS_PARTS:

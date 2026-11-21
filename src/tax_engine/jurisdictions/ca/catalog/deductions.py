@@ -101,7 +101,8 @@ of."""
 UCCB_AND_RDSP_INCOME = AmountKind.declare(CATALOG, "uccb_and_rdsp_income", non_negative=True)
 """UCCB and RDSP income, Federal Worksheet "Line 25000 - Other payments deduction" line 4 "Line 2
 plus line 3 =": the amount from line 11700 of the return (line 2) and the amount from line 12500
-(line 3)."""
+(line 3). Also Schedule 6 line 11 "Total of UCCB (line 11700 of the return) and RDSP income
+(line 12500 of the return)": the sum of the two T1 line exports (`schedule_6_line_11.yaml`)."""
 
 CPP_PART_3_LINE_2 = AmountKind.declare(CATALOG, "cpp_part_3_line_2", non_negative=True)
 """Part 3 line 2 "Line 2: Enter whichever is less: amount from line D of Part 2 or line 1.": the

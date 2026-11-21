@@ -1,0 +1,17 @@
+# Form ON428 (Ontario Tax, 2025, 5006-c-25e) lines 38 and 39 (ca-on/on428): "Line 38: Applicable rate
+# 3%" and "Line 39: Line 37 multiplied by the percentage from line 38 =". Line 38 is a printed rate,
+# held in the `ca-on/medical_expense_rate` dataset and with no step of its own. Line 39 applies it
+# to line 37 (`ca-on/on428_net_income_line_37`), rounded half-up to the cent by the dataset's rule.
+# The form prints no label for the line, so the step has no title.
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/apply_rate
+    reference: "39"
+    unit: ca/cad
+    params:
+      rate: ca-on/medical_expense_rate
+    consumes:
+      base: ca-on/on428_net_income_line_37
+    produces:
+      output: ca-on/on428_medical_expenses_rate_amount_line_39

@@ -1,0 +1,22 @@
+# TP-1 (2025) line 388: "Add lines 378 through 385. = 388" (page 4, Non-refundable tax credits; the
+# line has no title). One core/sum over the printed lines 378, 381 and 385, rounded half-up to the cent
+# through ca-qc/cent_rounding. The three are optional inputs; a blank is read as 0.
+form:
+  name: ca-qc/tp1_credits
+capabilities:
+  - name: core/sum
+    reference: "388"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/tp1_line_378
+        - ca-qc/tp1_line_381
+        - ca-qc/tp1_line_385
+    blank:
+      ca-qc/tp1_line_378: "0"
+      ca-qc/tp1_line_381: "0"
+      ca-qc/tp1_line_385: "0"
+    produces:
+      output: ca-qc/tp1_line_388

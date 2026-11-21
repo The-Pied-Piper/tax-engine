@@ -1,0 +1,14 @@
+# T1 (5006-R, 2025) line 12500 input a salary-only caller does not give.
+# "Line 12 and line 12500: Registered disability savings plan (RDSP) income (box 131 of the T4A slip)" (5006-R page 3). A salary-only caller has none, so a request that leaves the line out is
+# read as blank, and the line 12500 step reads that blank as 0. This form owns the input: Schedule 6,
+# BC479, MB479 and NL428 import line 12500 from this form's export and never ask for it themselves.
+form:
+  name: ca-qc/t1_taxable_income
+inputs:
+  - name: ca/rdsp_income
+    title: "Registered disability savings plan (RDSP) income"
+    reference: "12500"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 12 and line 12500: Registered disability savings plan (RDSP) income (box 131 of the T4A slip)'

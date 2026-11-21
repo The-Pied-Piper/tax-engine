@@ -1,5 +1,5 @@
-# 5005-R (2025) line 28. The form prints: "Line 28: Line 21 plus line 27 =" (page 3). Line 27 is the
-# optional input read as 0 (`ca-qc/net_self_employment_income`). One step: core/sum in form line order.
+# 5005-R (2025) line 28. The form prints: "Line 28: Line 21 plus line 27 =" (page 3). Line 27 is a
+# step (`ca-qc/net_self_employment_income`). One step: core/sum in form line order.
 form:
   name: ca-qc/t1_taxable_income
 capabilities:
