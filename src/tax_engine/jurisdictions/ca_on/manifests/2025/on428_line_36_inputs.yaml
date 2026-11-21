@@ -1,11 +1,13 @@
 # ON428 (2025) line 36's inputs. Form ON428 (CRA 5006-c-25e): "Line 36 and line 58689: See line 58689 at
 # canada.ca/on-tax-info for maximum allowable amounts for attendant care, an adapted van, and moving
 # expenses." The engine does not compute medical expenses, so the figure is taken as one optional
-# input, the way the form takes it. CRA 5006-PC (section "Line 58689") sets a maximum Ontario claim
-# for attendant care expenses, for the cost of an adapted van and for moving expenses, so three
-# optional inputs say how much of the claim is each, and a 0/1 count says the year of death, which
-# has its own attendant care maximum. A request that leaves an input out is read as blank; the line
-# 36 steps (on428_line_36.yaml) read that blank as 0.
+# input, the way the form takes it. CRA 5006-PC (section "Line 58689") gives the Ontario attendant
+# care maximum only "if the amount you claimed for medical expenses on your return includes an
+# amount for attendant care expenses that was limited to $10,000 ($20,000 in the year of death)",
+# so four optional inputs follow: the attendant care expenses paid, a 0/1 answer that the federal
+# claim was limited, and a 0/1 year of death, which has its own figures. The van and the move each
+# take one optional amount, as the text prints a maximum for each. A request that leaves an input
+# out is read as blank; the line 36 steps (on428_line_36.yaml) read that blank as 0.
 form:
   name: ca-on/on428
 inputs:
@@ -20,7 +22,11 @@ inputs:
     unit: ca/cad
     required: false
     default: null
-    basis: 'the maximum Ontario claim for attendant care expenses is $17,627 ($35,253 in the year of death)'
+    basis: 'If the amount you claimed for medical expenses on your return includes an amount for attendant care expenses that was limited to $10,000 ($20,000 in the year of death), the maximum Ontario claim for attendant care expenses is $17,627 ($35,253 in the year of death)'
+  - name: ca-on/on428_attendant_care_federal_limit_applied_line_36
+    required: false
+    default: null
+    basis: 'If the amount you claimed for medical expenses on your return includes an amount for attendant care expenses that was limited to $10,000 ($20,000 in the year of death), the maximum Ontario claim for attendant care expenses is $17,627 ($35,253 in the year of death)'
   - name: ca-on/on428_adapted_van_expenses_line_36
     unit: ca/cad
     required: false

@@ -2,8 +2,8 @@
 # (if negative, enter "0") =". Line 36 is the final step of on428_line_36.yaml (the claim after the
 # printed maximums) and line 40 the lesser of the printed ceiling and line 39
 # (on428_line_40.yaml). Line 41 is one core/subtract_not_below_zero step, rounded half-up to the cent.
-# A request that leaves the claim blank has no medical expenses; the blank is read as 0 on the final
-# line 36 step, so line 36 and line 41 are 0.00. The form prints no label for the line, so the step
+# A request that leaves the claim blank has no medical expenses; the blank is read as 0 on the line 36 step
+# that adds the increase, so line 36 and line 41 are 0.00. The form prints no label for the line, so the step
 # has no title.
 form:
   name: ca-on/on428

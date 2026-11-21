@@ -1,20 +1,27 @@
-# ON428 (2025) line 36 after the printed maximums. Form ON428 (CRA 5006-c-25e): "Line 36 and line
-# 58689: See line 58689 at canada.ca/on-tax-info for maximum allowable amounts for attendant care, an
-# adapted van, and moving expenses." CRA 5006-PC (section "Line 58689"): "the maximum Ontario claim
-# for attendant care expenses is $17,627 ($35,253 in the year of death)", "The maximum Ontario claim
-# for the cost of a van adapted for transporting a patient who requires the use of a wheelchair is
-# $8,813" and "The maximum Ontario claim for moving expenses for a patient's move to a more
-# accessible dwelling is $3,525".
+# ON428 (2025) line 36 after the printed attendant care, van and moving rules. Form ON428 (CRA
+# 5006-c-25e): "Line 36 and line 58689: See line 58689 at canada.ca/on-tax-info for maximum
+# allowable amounts for attendant care, an adapted van, and moving expenses." CRA 5006-PC (section
+# "Line 58689"): "If the amount you claimed for medical expenses on your return includes an amount
+# for attendant care expenses that was limited to $10,000 ($20,000 in the year of death), the
+# maximum Ontario claim for attendant care expenses is $17,627 ($35,253 in the year of death)", "The
+# maximum Ontario claim for the cost of a van adapted for transporting a patient who requires the
+# use of a wheelchair is $8,813" and "The maximum Ontario claim for moving expenses for a patient's
+# move to a more accessible dwelling is $3,525".
 #
-# The filer's claim is the input of on428_line_36_inputs.yaml, and three optional inputs say how much
-# of it is attendant care, the van and the move; a blank is read as 0 before the cap. Steps 1 and 2
-# cap the attendant care at each printed maximum, step 3 checks the year of death answer (a blank
-# read as 0, refused above 1) and step 4 chooses the figure. Steps 5 and 6 cap the van and the move.
-# Steps 7 to 9 take each category less its allowed figure, the excess the maximum removes, step 10
-# adds the three, and step 11 takes the claim less that sum. A result below 0 (a category larger than
-# the claim) is refused, never floored. Only step 11 is the line, so only it has the reference "36";
-# step 10 has a title alone, because the sentence of line 36 names it; the others are not lines of
-# the form. Line 41 reads step 11.
+# The filer's claim is the input of on428_line_36_inputs.yaml; so are the attendant care expenses
+# paid, a 0/1 answer that the federal claim was limited, a 0/1 year of death, the van and the move.
+# A blank category is read as 0 before it is capped. Steps 1 and 2 cap the attendant care paid at the
+# Ontario figures, step 3 checks the year of death answer (a blank read as 0, refused above 1) and
+# step 4 chooses the Ontario allowed figure. Steps 5 to 7 do the same at the federal limits $10,000
+# and $20,000, the attendant care included in the federal claim. Step 8 takes the Ontario figure
+# less the federal one, step 9 checks the limited answer (a blank read as 0, refused above 1) and
+# step 10 multiplies, so the increase is 0 unless the federal claim was limited, and a limited claim
+# rises to the Ontario maximum. Steps 11 to 14 cap the van and the move and take what each is over
+# its maximum, and step 15 adds the two. Step 16 is the claim plus the increase, a blank claim read
+# as 0, and step 17 takes that less the excess. A result below 0 (a van or move larger than the
+# claim) is refused, never floored. Only step 17 is the line, so only it has the reference "36";
+# steps 15 and 16 have titles because the sentence of line 36 names them, the others are not lines
+# of the form. Line 41 reads step 17.
 form:
   name: ca-on/on428
 capabilities:
@@ -56,6 +63,59 @@ capabilities:
   - name: core/capped_amount
     unit: ca/cad
     params:
+      cap: ca-on/medical_expense_federal_attendant_care_maximum
+    consumes:
+      base: ca-on/on428_attendant_care_expenses_line_36
+    blank:
+      base: "0"
+    produces:
+      output: ca-on/on428_attendant_care_at_federal_ordinary_limit_line_36
+  - name: core/capped_amount
+    unit: ca/cad
+    params:
+      cap: ca-on/medical_expense_federal_attendant_care_death_maximum
+    consumes:
+      base: ca-on/on428_attendant_care_expenses_line_36
+    blank:
+      base: "0"
+    produces:
+      output: ca-on/on428_attendant_care_at_federal_death_limit_line_36
+  - name: core/choose_by_count
+    unit: ca/cad
+    consumes:
+      count: ca-on/on428_year_of_death_checked_line_36
+      when_none: ca-on/on428_attendant_care_at_federal_ordinary_limit_line_36
+      when_any: ca-on/on428_attendant_care_at_federal_death_limit_line_36
+    produces:
+      output: ca-on/on428_attendant_care_federal_included_line_36
+  - name: core/subtract
+    unit: ca/cad
+    params:
+      rounding: ca-on/cent_rounding
+    consumes:
+      amount: ca-on/on428_attendant_care_allowed_line_36
+      less: ca-on/on428_attendant_care_federal_included_line_36
+    produces:
+      output: ca-on/on428_attendant_care_above_federal_line_36
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca-on/on428_attendant_care_federal_limit_applied_line_36
+    blank:
+      count: "0"
+    produces:
+      output: ca-on/on428_attendant_care_federal_limit_applied_checked_line_36
+  - name: core/times_count
+    unit: ca/cad
+    params:
+      rounding: ca-on/cent_rounding
+    consumes:
+      amount: ca-on/on428_attendant_care_above_federal_line_36
+      count: ca-on/on428_attendant_care_federal_limit_applied_checked_line_36
+    produces:
+      output: ca-on/on428_attendant_care_increase_line_36
+  - name: core/capped_amount
+    unit: ca/cad
+    params:
       cap: ca-on/medical_expense_adapted_van_maximum
     consumes:
       base: ca-on/on428_adapted_van_expenses_line_36
@@ -63,27 +123,6 @@ capabilities:
       base: "0"
     produces:
       output: ca-on/on428_adapted_van_allowed_line_36
-  - name: core/capped_amount
-    unit: ca/cad
-    params:
-      cap: ca-on/medical_expense_patient_move_maximum
-    consumes:
-      base: ca-on/on428_patient_move_expenses_line_36
-    blank:
-      base: "0"
-    produces:
-      output: ca-on/on428_patient_move_allowed_line_36
-  - name: core/subtract
-    unit: ca/cad
-    params:
-      rounding: ca-on/cent_rounding
-    consumes:
-      amount: ca-on/on428_attendant_care_expenses_line_36
-      less: ca-on/on428_attendant_care_allowed_line_36
-    blank:
-      amount: "0"
-    produces:
-      output: ca-on/on428_attendant_care_excess_line_36
   - name: core/subtract
     unit: ca/cad
     params:
@@ -95,6 +134,16 @@ capabilities:
       amount: "0"
     produces:
       output: ca-on/on428_adapted_van_excess_line_36
+  - name: core/capped_amount
+    unit: ca/cad
+    params:
+      cap: ca-on/medical_expense_patient_move_maximum
+    consumes:
+      base: ca-on/on428_patient_move_expenses_line_36
+    blank:
+      base: "0"
+    produces:
+      output: ca-on/on428_patient_move_allowed_line_36
   - name: core/subtract
     unit: ca/cad
     params:
@@ -113,11 +162,23 @@ capabilities:
       rounding: ca-on/cent_rounding
     consumes:
       parts:
-        - ca-on/on428_attendant_care_excess_line_36
         - ca-on/on428_adapted_van_excess_line_36
         - ca-on/on428_patient_move_excess_line_36
     produces:
       output: ca-on/on428_medical_expenses_excess_line_36
+  - name: core/sum
+    title: "Medical expenses plus the attendant care increase"
+    unit: ca/cad
+    params:
+      rounding: ca-on/cent_rounding
+    consumes:
+      parts:
+        - ca-on/on428_medical_expenses_line_36
+        - ca-on/on428_attendant_care_increase_line_36
+    blank:
+      ca-on/on428_medical_expenses_line_36: "0"
+    produces:
+      output: ca-on/on428_medical_expenses_plus_increase_line_36
   - name: core/subtract
     title: "Maximum allowable amounts for attendant care, an adapted van, and moving expenses"
     reference: "36"
@@ -125,9 +186,7 @@ capabilities:
     params:
       rounding: ca-on/cent_rounding
     consumes:
-      amount: ca-on/on428_medical_expenses_line_36
+      amount: ca-on/on428_medical_expenses_plus_increase_line_36
       less: ca-on/on428_medical_expenses_excess_line_36
-    blank:
-      amount: "0"
     produces:
       output: ca-on/on428_medical_expenses_allowed_line_36
