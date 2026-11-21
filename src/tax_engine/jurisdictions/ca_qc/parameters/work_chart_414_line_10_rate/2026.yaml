@@ -1,0 +1,10 @@
+# Revenu Quebec TP-1.D.GR-V (2025-12), Work Chart 414, line 2 "x 85% = 10": the printed 85%, applied by line 10 to the line before it as a fraction.
+family: ca-qc/work_chart_414_line_10_rate
+tax_year: 2026
+kind: rate
+sources:
+  - Revenu Quebec TP-1.D.GR-V (2025-12), Work Chart 414
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.85"
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when Revenu Quebec publishes it.
+# Derivation: carried forward unchanged from the 2025 file; the 2026 form is not yet published.

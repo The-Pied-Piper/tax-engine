@@ -1,0 +1,28 @@
+# Work Chart 414 (TP-1.D.GR-V 2025-12), line 14: "Add lines 10 and 11. Carry the result to line 414 of
+# your return (maximum $155)." Two steps, as Schedule K line 83: the sum of lines 10 and 11, rounded
+# half-up to the cent (`ca-qc/cent_rounding`), then the lesser of that sum and the printed maximum
+# (`ca-qc/work_chart_414_line_14_maximum`, 155.00). Only the last step prints the line's reference;
+# the first is engine-internal. The chart exports the last step for TP-1 line 414.
+form:
+  name: ca-qc/work_chart_414
+capabilities:
+  - name: core/sum
+    title: "Lines 10 and 11 added up"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/work_chart_414_line_10
+        - ca-qc/work_chart_414_line_11
+    produces:
+      output: ca-qc/work_chart_414_credit_before_maximum
+  - name: core/capped_amount
+    reference: "14"
+    unit: ca/cad
+    params:
+      cap: ca-qc/work_chart_414_line_14_maximum
+    consumes:
+      base: ca-qc/work_chart_414_credit_before_maximum
+    produces:
+      output: ca-qc/work_chart_414_credit_line_14

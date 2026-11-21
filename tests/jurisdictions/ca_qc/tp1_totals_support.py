@@ -20,7 +20,7 @@ from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
 from tests.jurisdictions.ca_qc.schedule_k_part_c_support import PART_A, PART_C
 from tests.jurisdictions.ca_qc.schedule_k_part_d_support import PART_B, PART_D
 from tests.jurisdictions.ca_qc.tp1_net_income_support import HEADER, slip_artifacts
-from tests.jurisdictions.ca_qc.tp1_tax_support import LINE_413_CHAIN
+from tests.jurisdictions.ca_qc.tp1_tax_support import LINE_413_CHAIN, LINE_414_PARTS
 
 D = Decimal
 FORM = "ca-qc/tp1_totals"
@@ -31,6 +31,7 @@ TAX_PARTS = (
     "tp1_tax_line_401.yaml",
     "tp1_tax_line_406.yaml",
     "tp1_tax_line_413.yaml",
+    *LINE_414_PARTS,
     "tp1_tax_line_425_inputs.yaml",
     "tp1_tax_line_425.yaml",
     "tp1_tax_line_430.yaml",

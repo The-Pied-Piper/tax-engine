@@ -1,0 +1,10 @@
+# Revenu Quebec TP-1.D.GR-V (2025-12), Work Chart 414, line 1 "Contributions to authorized Québec municipal political parties (maximum $200)": the printed maximum of line 1, applied by line 1, taken whole and never recomputed.
+family: ca-qc/work_chart_414_line_1_maximum
+tax_year: 2025
+kind: amount
+title: "maximum contributions"
+unit: ca/cad
+sources:
+  - Revenu Quebec TP-1.D.GR-V (2025-12), Work Chart 414
+rounding: {increment: "0.01", mode: half_up}
+amount: "200"

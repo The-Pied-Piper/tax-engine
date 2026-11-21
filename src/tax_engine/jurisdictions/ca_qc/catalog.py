@@ -2429,10 +2429,62 @@ non-refundable tax credits, rounded half-up to the cent. The form prints no floo
 signed (line 432 floors it). Produced by one core/subtract (`tp1_tax_line_413.yaml`) and exported by
 the form for lines 425 and 430."""
 
+WORK_CHART_414_CONTRIBUTIONS_INPUT_LINE_1 = AmountKind.declare(
+    CATALOG, "work_chart_414_contributions_input_line_1", non_negative=True
+)
+"""Work Chart 414 line 1 "Contributions to authorized Québec municipal political parties (maximum
+$200)", as the caller gives it: the chart's only input, optional, read as 0 when the caller gives
+none (`work_chart_414_line_1_input.yaml`)."""
+
+WORK_CHART_414_CONTRIBUTIONS_LINE_1 = AmountKind.declare(
+    CATALOG, "work_chart_414_contributions_line_1", non_negative=True
+)
+"""Work Chart 414 line 1 "Contributions to authorized Québec municipal political parties (maximum
+$200)": the contributions up to the printed maximum `ca-qc/work_chart_414_line_1_maximum` (200.00).
+One core/capped_amount (`work_chart_414_line_1.yaml`)."""
+
+WORK_CHART_414_LESSER_LINE_2 = AmountKind.declare(
+    CATALOG, "work_chart_414_lesser_line_2", non_negative=True
+)
+"""Work Chart 414 line 2 "Enter the amount from line 1 or $50, whichever is less": line 1 up to the
+printed `ca-qc/work_chart_414_line_2_limit` (50.00). One core/capped_amount
+(`work_chart_414_line_2.yaml`)."""
+
+WORK_CHART_414_LINE_10 = AmountKind.declare(CATALOG, "work_chart_414_line_10", non_negative=True)
+"""Work Chart 414 line 10, line 2 "x 85% = 10": line 2 times the printed 85%
+(`ca-qc/work_chart_414_line_10_rate`), rounded half-up to the cent by the dataset. One
+core/apply_rate (`work_chart_414_line_10.yaml`)."""
+
+WORK_CHART_414_REMAINDER_LINE_3 = AmountKind.declare(
+    CATALOG, "work_chart_414_remainder_line_3", non_negative=True
+)
+"""Work Chart 414 line 3 "Subtract line 2 from line 1": line 1 less line 2, rounded half-up to the
+cent. Line 2 never exceeds line 1, so the result is never negative. One core/subtract
+(`work_chart_414_line_3.yaml`)."""
+
+WORK_CHART_414_LINE_11 = AmountKind.declare(CATALOG, "work_chart_414_line_11", non_negative=True)
+"""Work Chart 414 line 11, line 3 "x 75% = 11": line 3 times the printed 75%
+(`ca-qc/work_chart_414_line_11_rate`), rounded half-up to the cent by the dataset. One
+core/apply_rate (`work_chart_414_line_11.yaml`)."""
+
+WORK_CHART_414_CREDIT_BEFORE_MAXIMUM = AmountKind.declare(
+    CATALOG, "work_chart_414_credit_before_maximum", non_negative=True
+)
+"""Work Chart 414 line 14, the sum before the maximum: lines 10 and 11 added, rounded half-up to the
+cent. Not a printed line; the first of the two steps of line 14 (`work_chart_414_line_14.yaml`)."""
+
+WORK_CHART_414_CREDIT_LINE_14 = AmountKind.declare(
+    CATALOG, "work_chart_414_credit_line_14", non_negative=True
+)
+"""Work Chart 414 line 14 "Add lines 10 and 11. Carry the result to line 414 of your return (maximum
+$155)": the lines added, up to the printed `ca-qc/work_chart_414_line_14_maximum` (155.00). One
+core/capped_amount, the last step of `work_chart_414_line_14.yaml`; the chart exports it."""
+
 TP1_LINE_414 = AmountKind.declare(CATALOG, "tp1_line_414", non_negative=True)
-"""TP-1 line 414 "Tax credit for contributions to authorized Québec political parties": one of the
-lines that line 425 adds, an optional input (Work Chart 414 is not built), read as 0 when blank
-(`tp1_tax_line_425_inputs.yaml`)."""
+"""TP-1 line 414 "Tax credit for contributions to authorized Québec political parties": Work Chart
+414 line 14, which the chart's own form exports. Another form reads an export as a record list, so
+the one step is core/record_total (`tp1_tax_line_414.yaml`); the chart is always computed (0.00 with
+no contributions)."""
 
 TP1_LINE_415 = AmountKind.declare(CATALOG, "tp1_line_415", non_negative=True)
 """TP-1 line 415 "Dividend tax credit": one of the lines that line 425 adds, an optional input,
@@ -2449,7 +2501,7 @@ optional input, read as 0 when blank (`tp1_tax_line_425_inputs.yaml`)."""
 
 TP1_LINE_425 = AmountKind.declare(CATALOG, "tp1_line_425", non_negative=True)
 """TP-1 line 425 "Add lines 414 through 424": lines 414, 415, 422 and 424 added, rounded half-up
-to the cent; blank lines read as 0. Produced by one core/sum (`tp1_tax_line_425.yaml`)."""
+to the cent; blank input lines read as 0. Produced by one core/sum (`tp1_tax_line_425.yaml`)."""
 
 
 TP1_LINE_430 = AmountKind.declare(CATALOG, "tp1_line_430")
