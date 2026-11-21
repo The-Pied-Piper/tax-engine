@@ -10,11 +10,14 @@ are hand-added from the printed lines, not a CRA example.
 from __future__ import annotations
 
 from decimal import Decimal
+from typing import Any
 
 import pytest
+import yaml
 
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.jurisdictions.ca.catalog.taxable_income import (
     DEDUCTIONS_FROM_NET_INCOME,
     T1_LINE_24400,
@@ -23,7 +26,7 @@ from tax_engine.jurisdictions.ca.catalog.taxable_income import (
     T1_LINE_25500,
     T1_LINE_25600,
 )
-from tests.jurisdictions.ca_on.conftest import TakeHomeService
+from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService
 
 D = Decimal
 ONTARIO = JurisdictionCode("CA-ON")
@@ -75,3 +78,62 @@ def test_the_printed_line_is_rounded_half_up_to_the_cent(
     given = Artifact(T1_LINE_25500, D(amount))
 
     assert line_25700(take_home_service, given) == D(expected)
+
+
+def test_the_printed_line_rounds_once_so_sub_cent_parts_in_different_subtotals_add_first(
+    take_home_service: TakeHomeService,
+) -> None:
+    given = (Artifact(T1_LINE_24400, D("0.005")), Artifact(T1_LINE_25500, D("0.005")))
+
+    assert line_25700(take_home_service, *given) == D("0.01")
+
+
+FIRST = [f"ca/t1_line_{line}" for line in ("24400", "24900", "25000", "25100", "25200")]
+LAST = [f"ca/t1_line_{line}" for line in ("25300", "25395", "25400", "25500", "25600")]
+
+
+def _subtotal(title: str, parts: list[str], output: str) -> dict[str, object]:
+    return {
+        "name": "core/sum",
+        "title": title,
+        "unit": "ca/cad",
+        "params": {"rounding": "ca/exact_rounding"},
+        "consumes": {"parts": parts},
+        "blank": {name: "0" for name in parts},
+        "produces": {"output": f"ca/{output}"},
+    }
+
+
+def test_the_part_is_two_subtotals_and_a_sum_with_the_lines_read_as_zero() -> None:
+    path = next(TAKE_HOME.rglob("t1_taxable_income_line_25700.yaml"))
+    part: dict[str, Any] = yaml.safe_load(path.read_text(encoding="utf-8"))
+
+    assert list(part) == ["form", "capabilities"]
+    assert part["form"] == {"name": "ca/t1_taxable_income"}
+    first, last, step = part["capabilities"]
+    # Two unprinted subtotals keep the sentence of the numbered line short; the line adds them.
+    assert first == _subtotal(
+        "Lines 24400 to 25200 added up", FIRST, "t1_lines_24400_to_25200_subtotal"
+    )
+    assert last == _subtotal(
+        "Lines 25300 to 25600 added up", LAST, "t1_lines_25300_to_25600_subtotal"
+    )
+    assert step == {
+        "name": "core/sum",
+        "title": "Deductions from net income",
+        "reference": "25700",
+        "unit": "ca/cad",
+        "params": {"rounding": "ca/cent_rounding"},
+        "consumes": {
+            "parts": [
+                "ca/t1_lines_24400_to_25200_subtotal",
+                "ca/t1_lines_25300_to_25600_subtotal",
+            ]
+        },
+        "produces": {"output": "ca/deductions_from_net_income"},
+    }
+
+
+def test_the_output_kind_is_a_registered_non_negative_amount() -> None:
+    assert isinstance(DEDUCTIONS_FROM_NET_INCOME, AmountKind)
+    assert DEDUCTIONS_FROM_NET_INCOME.non_negative
