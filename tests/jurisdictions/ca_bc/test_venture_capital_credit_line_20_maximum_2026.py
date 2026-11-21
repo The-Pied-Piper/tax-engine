@@ -9,7 +9,7 @@ from __future__ import annotations
 from decimal import Decimal
 
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.parameters.credit import CREDIT, Credit
+from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 from tax_engine.domain.registry import Namespace
 from tests.jurisdictions.ca_bc.support import (
@@ -28,9 +28,9 @@ SOURCE = YamlParameterSource(
 
 
 def test_2026_figure_is_120000() -> None:
-    data = SOURCE.get(FAMILY, 2026, CREDIT)
+    data = SOURCE.get(FAMILY, 2026, AMOUNT)
 
-    assert data.values == Credit(amount=D("120000"))
+    assert data.values == Amount(D("120000"))
     assert data.rounding == RoundTo(D("0.01"), RoundingMode.HALF_UP)
     assert data.tax_year == 2026
 
@@ -50,4 +50,4 @@ def test_the_2026_file_is_provisional_and_states_its_derivation() -> None:
 
 
 def test_2026_is_carried_forward_unchanged_from_2025() -> None:
-    assert SOURCE.get(FAMILY, 2026, CREDIT).values == SOURCE.get(FAMILY, 2025, CREDIT).values
+    assert SOURCE.get(FAMILY, 2026, AMOUNT).values == SOURCE.get(FAMILY, 2025, AMOUNT).values

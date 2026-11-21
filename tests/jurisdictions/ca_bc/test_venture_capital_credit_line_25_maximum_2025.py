@@ -8,7 +8,7 @@ from __future__ import annotations
 from decimal import Decimal
 
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.parameters.credit import CREDIT, Credit
+from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_packages,
@@ -26,8 +26,8 @@ SOURCE = YamlParameterSource(
 
 
 def test_2025_figure_is_300000() -> None:
-    data = SOURCE.get(FAMILY, 2025, CREDIT)
+    data = SOURCE.get(FAMILY, 2025, AMOUNT)
 
-    assert data.values == Credit(amount=D("300000"))
+    assert data.values == Amount(D("300000"))
     assert data.rounding == RoundTo(D("0.01"), RoundingMode.HALF_UP)
     assert data.tax_year == 2025

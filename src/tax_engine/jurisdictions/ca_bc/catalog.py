@@ -177,21 +177,14 @@ blank."""
 BC428_ESOP_EVCC_CREDITS_SUM_LINE_88 = AmountKind.declare(
     CATALOG, "bc428_esop_evcc_credits_sum_line_88", non_negative=True
 )
-"""Line 86 plus line 87, BC428 line 88 "Line 86 plus line 87 (maximum $2,000)": the sum before it is
-checked against the printed maximum; a blank line is read as 0."""
-
-BC428_ESOP_EVCC_CREDITS_MAXIMUM = AmountKind.declare(
-    CATALOG, "bc428_esop_evcc_credits_maximum", non_negative=True
-)
-"""British Columbia total ESOP and EVCC credits maximum, printed on BC428 line 88 "(maximum
-$2,000)": from the `ca-bc/esop_evcc_credits_maximum` dataset; the bound line 88 cannot pass."""
+"""Line 86 plus line 87, BC428 line 88 "Line 86 plus line 87 (maximum $2,000)": the sum before the
+printed maximum is applied; a blank line is read as 0."""
 
 BC428_ESOP_EVCC_CREDITS_LINE_88 = AmountKind.declare(
     CATALOG, "bc428_esop_evcc_credits_line_88", non_negative=True
 )
 """British Columbia total ESOP and EVCC credits, BC428 line 88 "Line 88: Line 86 plus line 87
-(maximum $2,000)": line 86 plus line 87, passed on unchanged when at most the printed maximum;
-above it the sum is refused, not capped."""
+(maximum $2,000)": line 86 plus line 87, the lesser of the sum and the printed maximum."""
 
 BC428_MINING_FLOW_THROUGH_CREDIT_LINE_90 = AmountKind.declare(
     CATALOG, "bc428_mining_flow_through_credit_line_90", non_negative=True
@@ -659,21 +652,14 @@ the filer gives it, an optional input; a blank input is read as blank."""
 BC479_VENTURE_CAPITAL_CREDIT_SUM_LINE_20 = AmountKind.declare(
     CATALOG, "bc479_venture_capital_credit_sum_line_20", non_negative=True
 )
-"""Line 17 plus line 18, BC479 line 20 "Add lines 17 and 18. (maximum $120,000)": the sum before it
-is checked against the printed maximum; a blank line is read as 0."""
-
-BC479_VENTURE_CAPITAL_CREDIT_LINE_20_MAXIMUM = AmountKind.declare(
-    CATALOG, "bc479_venture_capital_credit_line_20_maximum", non_negative=True
-)
-"""Venture capital tax credit maximum on line 20, printed on BC479 line 20 "(maximum $120,000)":
-from the `ca-bc/venture_capital_credit_line_20_maximum` dataset; the bound line 20 cannot pass."""
+"""Line 17 plus line 18, BC479 line 20 "Add lines 17 and 18. (maximum $120,000)": the sum before
+the printed maximum is applied; a blank line is read as 0."""
 
 BC479_VENTURE_CAPITAL_CREDIT_LINE_20 = AmountKind.declare(
     CATALOG, "bc479_venture_capital_credit_line_20", non_negative=True
 )
 """Venture capital tax credit, BC479 line 20 "Add lines 17 and 18. (maximum $120,000)": line 17 plus
-line 18, passed on unchanged when at most the printed maximum; above it the sum is refused, not
-capped."""
+line 18, the lesser of the sum and the printed maximum."""
 
 BC479_VENTURE_CAPITAL_CREDIT_LINE_21 = AmountKind.declare(
     CATALOG, "bc479_venture_capital_credit_line_21", non_negative=True
@@ -691,20 +677,13 @@ BC479_VENTURE_CAPITAL_CREDIT_SUM_LINE_25 = AmountKind.declare(
     CATALOG, "bc479_venture_capital_credit_sum_line_25", non_negative=True
 )
 """Line 20 plus lines 21 and 23, BC479 line 25 "Add lines 20, 21, and 23. (maximum $300,000)": the
-sum before it is checked against the printed maximum; a blank line is read as 0."""
-
-BC479_VENTURE_CAPITAL_CREDIT_LINE_25_MAXIMUM = AmountKind.declare(
-    CATALOG, "bc479_venture_capital_credit_line_25_maximum", non_negative=True
-)
-"""Venture capital tax credit maximum on line 25, printed on BC479 line 25 "(maximum $300,000)":
-from the `ca-bc/venture_capital_credit_line_25_maximum` dataset; the bound line 25 cannot pass."""
+sum before the printed maximum is applied; a blank line is read as 0."""
 
 BC479_VENTURE_CAPITAL_CREDIT_LINE_25 = AmountKind.declare(
     CATALOG, "bc479_venture_capital_credit_line_25", non_negative=True
 )
 """British Columbia venture capital tax credit, BC479 line 25 "Add lines 20, 21, and 23. (maximum
-$300,000)": the sum of those lines, passed on unchanged when at most the printed maximum; above
-it the sum is refused, not capped."""
+$300,000)": the sum of those lines, the lesser of the sum and the printed maximum."""
 
 BC479_MINING_EXPLORATION_CREDIT_LINE_26 = AmountKind.declare(
     CATALOG, "bc479_mining_exploration_credit_line_26", non_negative=True

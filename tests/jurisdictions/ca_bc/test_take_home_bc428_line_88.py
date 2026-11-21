@@ -45,14 +45,12 @@ def test_the_part_names_the_form_and_has_these_steps() -> None:
             "produces": {"output": "ca-bc/bc428_esop_evcc_credits_sum_line_88"},
         },
         {
-            "name": "core/at_most",
+            "name": "core/capped_amount",
             "title": "Total ESOP and EVCC credits",
             "reference": "88",
             "unit": "ca/cad",
-            "consumes": {
-                "amount": "ca-bc/bc428_esop_evcc_credits_sum_line_88",
-                "bound": "ca-bc/bc428_esop_evcc_credits_maximum",
-            },
+            "params": {"cap": "ca-bc/esop_evcc_credits_maximum"},
+            "consumes": {"base": "ca-bc/bc428_esop_evcc_credits_sum_line_88"},
             "produces": {"output": "ca-bc/bc428_esop_evcc_credits_line_88"},
         },
     ]

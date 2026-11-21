@@ -51,14 +51,12 @@ def test_the_part_names_the_form_and_has_these_steps() -> None:
             "produces": {"output": "ca-bc/bc479_venture_capital_credit_sum_line_20"},
         },
         {
-            "name": "core/at_most",
+            "name": "core/capped_amount",
             "title": "Venture capital tax credit, lines 17 and 18",
             "reference": "20",
             "unit": "ca/cad",
-            "consumes": {
-                "amount": "ca-bc/bc479_venture_capital_credit_sum_line_20",
-                "bound": "ca-bc/bc479_venture_capital_credit_line_20_maximum",
-            },
+            "params": {"cap": "ca-bc/venture_capital_credit_line_20_maximum"},
+            "consumes": {"base": "ca-bc/bc479_venture_capital_credit_sum_line_20"},
             "produces": {"output": "ca-bc/bc479_venture_capital_credit_line_20"},
         },
     ]

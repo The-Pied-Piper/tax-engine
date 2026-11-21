@@ -1,8 +1,10 @@
-# Form BC479 (CRA 5010-TC) line 25: "Line 25: Add lines 20, 21, and 23. (maximum $300,000) = ^". Two
-# steps, one line. The first, core/sum, adds line 20 (never blank) and lines 21 and 23 (optional inputs,
-# each blank read as 0); it carries no line number because it is not the line's final step. The second,
-# core/at_most, is line 25: it passes that sum on unchanged against the printed maximum
-# (bc479_venture_capital_credit_line_25_maximum.yaml). A sum above the maximum is refused, not capped.
+# Form BC479 (CRA 5010-TC) line 25: "Line 25: Add lines 20, 21, and 23. (maximum $300,000) = ^".
+# Two steps, one line. The first, core/sum, adds line 20 (never blank) and lines 21 and 23
+# (optional inputs, each blank read as 0); it carries no line number because it is not the line's
+# final step. The second, core/capped_amount, is line 25: it takes the lesser of that sum and the
+# printed maximum (the `ca-bc/venture_capital_credit_line_25_maximum` dataset, with no step of its
+# own). A sum above the maximum is capped, because the form prints "(maximum $300,000)" on a
+# computed line.
 form:
   name: ca-bc/bc479
 capabilities:
@@ -21,12 +23,13 @@ capabilities:
       ca-bc/bc479_venture_capital_credit_line_23: "0"
     produces:
       output: ca-bc/bc479_venture_capital_credit_sum_line_25
-  - name: core/at_most
+  - name: core/capped_amount
     title: "British Columbia venture capital tax credit"
     reference: "25"
     unit: ca/cad
+    params:
+      cap: ca-bc/venture_capital_credit_line_25_maximum
     consumes:
-      amount: ca-bc/bc479_venture_capital_credit_sum_line_25
-      bound: ca-bc/bc479_venture_capital_credit_line_25_maximum
+      base: ca-bc/bc479_venture_capital_credit_sum_line_25
     produces:
       output: ca-bc/bc479_venture_capital_credit_line_25

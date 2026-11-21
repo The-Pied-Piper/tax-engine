@@ -136,7 +136,6 @@ BC_LINE_PARTS = (
     "bc428_line_85.yaml",
     "bc428_line_86_input.yaml",
     "bc428_line_87_input.yaml",
-    "bc428_esop_evcc_credits_maximum.yaml",
     "bc428_line_88.yaml",
     LINE_PART.name,
 )

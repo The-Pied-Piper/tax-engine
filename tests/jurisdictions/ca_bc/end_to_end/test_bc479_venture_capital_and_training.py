@@ -1,18 +1,18 @@
 """BC479 lines 17 to 25 (venture capital) and 31 to 34 (training and shipbuilding), end to end
 (#1843).
 
-Form text (Form BC479, CRA 5010-TC-25e.txt, confirmed): "Line 20: Add lines 17 and 18. (maximum
-$120,000) =", "Line 25: Add lines 20, 21, and 23. (maximum $300,000) =", "Line 34: Add lines 31 to
-33. =", "Line 35: Add lines 16, 25, 26, 30 and 34. =". A sum above its printed maximum is refused,
-not capped. A salary-only caller gives none of the inputs, and every line is 0.00.
+Form text (Form BC479, CRA 5010-TC-25e.txt, confirmed): "Line 20: Add lines 17 and 18.
+(maximum $120,000) =", "Line 25: Add lines 20, 21, and 23. (maximum $300,000) =", "Line 34:
+Add lines 31 to 33. =", "Line 35: Add lines 16, 25, 26, 30 and 34. =". A sum above its printed
+maximum is capped at it. A salary-only caller gives none of the inputs, and every line is
+0.00.
 """
 
 from __future__ import annotations
 
 import pytest
 
-from tax_engine.domain.errors import InputAboveBoundError
-from tax_engine.domain.trace import AtMostLine, CreditAmountLine
+from tax_engine.domain.trace import CappedAmountLine
 from tests.jurisdictions.ca_bc.end_to_end.figures import D, figure, sheet
 
 YEARS = [2025, 2026]
@@ -51,18 +51,16 @@ def test_line_25_adds_lines_20_21_and_23(year: int) -> None:
 
 
 @pytest.mark.parametrize("year", YEARS)
-def test_line_20_at_its_maximum_passes_and_above_it_is_refused(year: int) -> None:
-    assert figure(sheet("bc479", year, **{L17: "100000", L18: "20000"}), LINE_20) == D("120000.00")
-    with pytest.raises(InputAboveBoundError):
-        sheet("bc479", year, **{L17: "100000", L18: "20000.01"})
-
-
-@pytest.mark.parametrize("year", YEARS)
-def test_line_25_at_its_maximum_passes_and_above_it_is_refused(year: int) -> None:
-    given = {L17: "100000", L18: "20000", L21: "150000", L23: "30000"}
-    assert figure(sheet("bc479", year, **given), LINE_25) == D("300000.00")
-    with pytest.raises(InputAboveBoundError):
-        sheet("bc479", year, **{**given, L23: "30000.01"})
+def test_line_20_and_line_25_are_capped_at_their_maximums(year: int) -> None:
+    at_max = sheet("bc479", year, **{L17: "100000", L18: "20000"})
+    assert figure(at_max, LINE_20) == D("120000.00")
+    over = sheet("bc479", year, **{L17: "100000", L18: "20000.01", L21: "150000", L23: "30000"})
+    assert figure(over, LINE_20) == D("120000.00")
+    assert figure(over, LINE_25) == D("300000.00")
+    under = sheet("bc479", year, **{L17: "1000", L21: "150000", L23: "149000"})
+    assert figure(under, LINE_25) == D("300000.00")
+    just_under = sheet("bc479", year, **{L21: "150000", L23: "149999.99"})
+    assert figure(just_under, LINE_25) == D("299999.99")
 
 
 @pytest.mark.parametrize("year", YEARS)
@@ -86,23 +84,15 @@ def test_line_35_reads_line_25(year: int) -> None:
     assert figure(worksheet, LINE_35) == figure(worksheet, LINE_15) + D("500.00")
 
 
-def test_the_trace_has_one_at_most_line_and_one_credit_amount_line_for_the_maximum() -> None:
-    worksheet = sheet("bc479", 2025, **{L17: "1000", L18: "2000", L21: "3000.50", L23: "400"})
+def test_the_trace_has_one_capped_amount_line_for_each_capped_line() -> None:
+    worksheet = sheet("bc479", 2025, **{L17: "100000", L18: "20000.01", L21: "250000"})
 
-    at_most = [
-        line
+    capped = {
+        line.output.identifier: line
         for line in worksheet.trace
-        if isinstance(line, AtMostLine)
-        and line.output.identifier == "ca-bc/bc479_venture_capital_credit_line_25"
-    ]
-    maximum = [
-        line
-        for line in worksheet.trace
-        if isinstance(line, CreditAmountLine)
-        and line.output.identifier == "ca-bc/bc479_venture_capital_credit_line_25_maximum"
-    ]
-    (checked,) = at_most
-    (maximum_line,) = maximum
-    assert checked.amount_value == D("6400.50")
-    assert checked.bound_value == D("300000.00")
-    assert maximum_line.value == D("300000.00")
+        if isinstance(line, CappedAmountLine)
+    }
+    line_20 = capped["ca-bc/bc479_venture_capital_credit_line_20"]
+    line_25 = capped["ca-bc/bc479_venture_capital_credit_line_25"]
+    assert (line_20.base_amount, line_20.result) == (D("120000.01"), D("120000.00"))
+    assert (line_25.base_amount, line_25.result) == (D("370000.00"), D("300000.00"))
