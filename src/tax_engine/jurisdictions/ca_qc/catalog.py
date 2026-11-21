@@ -324,19 +324,52 @@ T1_LINE_21 = AmountKind.declare(CATALOG, "t1_line_21")
 (`ca/employment_income`) and line 2 (`ca/other_employment_income`); lines 3 to 20 are not built (the
 salary-only filer has none). Produced by one core/sum (`t1_taxable_income_line_21.yaml`)."""
 
+T1_LINE_13500 = AmountKind.declare(CATALOG, "t1_line_13500")
+"""5005-R line 22, line 13500 "Net" (business income): an optional input, read as 0 when blank;
+signed, as a loss is allowed (`t1_taxable_income_line_27_inputs.yaml`)."""
+
+T1_LINE_13700 = AmountKind.declare(CATALOG, "t1_line_13700")
+"""5005-R line 23, line 13700 "Net" (professional income): an optional input, read as 0 when blank;
+signed, as a loss is allowed (`t1_taxable_income_line_27_inputs.yaml`)."""
+
+T1_LINE_13900 = AmountKind.declare(CATALOG, "t1_line_13900")
+"""5005-R line 24, line 13900 "Net" (commission income): an optional input, read as 0 when blank;
+signed, as a loss is allowed (`t1_taxable_income_line_27_inputs.yaml`)."""
+
+T1_LINE_14100 = AmountKind.declare(CATALOG, "t1_line_14100")
+"""5005-R line 25, line 14100 "Net" (farming income): an optional input, read as 0 when blank;
+signed, as a loss is allowed (`t1_taxable_income_line_27_inputs.yaml`)."""
+
+T1_LINE_14300 = AmountKind.declare(CATALOG, "t1_line_14300")
+"""5005-R line 26, line 14300 "Net" (fishing income): an optional input, read as 0 when blank;
+signed, as a loss is allowed (`t1_taxable_income_line_27_inputs.yaml`)."""
+
 NET_SELF_EMPLOYMENT_INCOME = AmountKind.declare(CATALOG, "net_self_employment_income")
 """Net self-employment income, 5005-R line 27 "Line 27: Add lines 22 to 26. Net self-employment
-income =": the printed sum of the skipped block of lines 22 to 26, one optional input read as 0. Not
-floored: the form prints no floor and a loss is shown in brackets."""
+income =": the printed sum of the net lines 13500, 13700, 13900, 14100 and 14300 (lines 22 to 26),
+one core/sum (`t1_taxable_income_line_27.yaml`). Not floored: the form prints no floor and a loss
+is shown in brackets."""
 
 T1_LINE_28 = AmountKind.declare(CATALOG, "t1_line_28")
 """Line 21 plus line 27, 5005-R line 28 "Line 28: Line 21 plus line 27 =". Not floored: line 27 may
 be a loss. Produced by one core/sum (`t1_taxable_income_line_28.yaml`)."""
 
+T1_LINE_14400 = AmountKind.declare(CATALOG, "t1_line_14400")
+"""5005-R line 29 and line 14400, workers' compensation benefits: an optional input, read as 0 when
+blank (`t1_taxable_income_line_32_inputs.yaml`)."""
+
+T1_LINE_14500 = AmountKind.declare(CATALOG, "t1_line_14500")
+"""5005-R line 30 and line 14500, social assistance payments: an optional input, read as 0 when
+blank (`t1_taxable_income_line_32_inputs.yaml`)."""
+
+T1_LINE_14600 = AmountKind.declare(CATALOG, "t1_line_14600")
+"""5005-R line 31 and line 14600, net federal supplements paid: an optional input, read as 0 when
+blank (`t1_taxable_income_line_32_inputs.yaml`)."""
+
 T1_LINE_32 = AmountKind.declare(CATALOG, "t1_line_32")
 """Add lines 29 to 31, 5005-R line 32 and line 14700 "Line 32 and line 14700: Add lines 29 to 31":
-the printed sum of the skipped block of workers' compensation, social assistance and net federal
-supplements, one optional input read as 0."""
+the printed sum of lines 14400, 14500 and 14600 (lines 29 to 31), one core/sum
+(`t1_taxable_income_line_32.yaml`)."""
 
 EMPLOYMENT_INCOME_LINE_10100 = AmountKind.declare(
     CATALOG, "employment_income_line_10100", non_negative=True
