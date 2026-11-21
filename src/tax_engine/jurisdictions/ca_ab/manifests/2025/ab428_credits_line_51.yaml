@@ -1,0 +1,20 @@
+# Form AB428 (CRA 5009-c) line 51: "Line 51 and line 58769: Line 49 plus line 50 =". Line 49 is the
+# medical expenses over the limit (ab428_credits_line_49.yaml) and line 50 the allowable amount of
+# medical expenses for other dependants, an optional input (ab428_credits_line_50_input.yaml) that a
+# salary-only filer leaves blank, read as 0. Step 1 adds them with core/sum. The form names the
+# block "Medical expenses:", which is the step's title.
+form:
+  name: ca-ab/ab428_credits
+capabilities:
+  - name: core/sum
+    title: "Medical expenses"
+    reference: "51"
+    unit: ca/cad
+    params:
+      rounding: ca-ab/cent_rounding
+    consumes:
+      parts:
+        - ca-ab/ab428_medical_expenses_over_limit_line_49
+        - ca-ab/ab428_allowable_medical_expenses_for_other_dependants_rounded_line_50
+    produces:
+      output: ca-ab/ab428_medical_expenses_line_51

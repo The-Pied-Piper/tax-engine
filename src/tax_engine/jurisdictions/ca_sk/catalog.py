@@ -38,17 +38,78 @@ SK428_PENSION_INCOME_AMOUNT = AmountKind.declare(
 $1,000)": the amount the filer claims, a caller input that is read as 0 when it is left out;
 the line 33 step checks it against the printed maximum."""
 
+SK428_MEDICAL_EXPENSES_LINE_43 = AmountKind.declare(
+    CATALOG, "sk428_medical_expenses_line_43", non_negative=True
+)
+"""Medical expenses, SK428 line 43 (line 58689) "Amount from line 33099 of your return": the
+amount as the filer gives it, an optional input; a blank input is read as blank."""
+
+SK428_NET_INCOME_LINE_44 = AmountKind.declare(
+    CATALOG, "sk428_net_income_line_44", non_negative=True
+)
+"""Net income, SK428 line 44 "Amount from line 23600 of your return": the T1 net income, read from
+the T1 taxable income form."""
+
+SK428_MEDICAL_EXPENSES_RATE_AMOUNT_LINE_46 = AmountKind.declare(
+    CATALOG, "sk428_medical_expenses_rate_amount_line_46", non_negative=True
+)
+"""Medical expenses threshold, SK428 line 46 "Line 44 multiplied by the percentage from line 45 =":
+line 44 times the 3% of line 45."""
+
+SK428_MEDICAL_EXPENSES_LIMITED_AMOUNT_LINE_47 = AmountKind.declare(
+    CATALOG, "sk428_medical_expenses_limited_amount_line_47", non_negative=True
+)
+"""Medical expenses threshold, limited, SK428 line 47 "Enter whichever is less: $2,681 or the amount
+on line 46.": the lesser of the printed ceiling and line 46."""
+
+SK428_MEDICAL_EXPENSES_OVER_LIMIT_LINE_48 = AmountKind.declare(
+    CATALOG, "sk428_medical_expenses_over_limit_line_48", non_negative=True
+)
+"""Medical expenses over the limit, SK428 line 48 "Line 43 minus line 47 (if negative, enter "0")
+=": line 43 minus line 47, never below 0; a blank line 43 is read as 0."""
+
+SK428_OTHER_DEPENDANTS_MEDICAL_EXPENSES_LINE_49 = AmountKind.declare(
+    CATALOG, "sk428_other_dependants_medical_expenses_line_49", non_negative=True
+)
+"""Allowable amount of medical expenses for other dependants, SK428 line 49 (line 58729) "from line
+33199 of your return": the amount as the filer gives it, an optional input; a blank input is read as
+blank."""
+
 SK428_MEDICAL_EXPENSES_LINE_50 = AmountKind.declare(
     CATALOG, "sk428_medical_expenses_line_50", non_negative=True
 )
-"""Medical expenses, SK428 line 50 (line 58769) "Line 48 plus line 49 =": line 48 plus line 49, an
-optional input; a blank is read as 0 by the line 51 step."""
+"""Medical expenses, SK428 line 50 (line 58769) "Line 48 plus line 49 =": line 48 plus line 49 (a
+blank line 49 is read as 0)."""
+
+SK428_DONATIONS_AMOUNT_LINE_54 = AmountKind.declare(
+    CATALOG, "sk428_donations_amount_line_54", non_negative=True
+)
+"""Donations amount, SK428 line 54 box A "Amount from line 13 of your federal Schedule 9": the
+amount as the filer gives it, an optional input; a blank input is read as blank."""
+
+SK428_DONATIONS_CREDIT_AT_RATE_LINE_54 = AmountKind.declare(
+    CATALOG, "sk428_donations_credit_at_rate_line_54", non_negative=True
+)
+"""Donations credit at 10.5%, SK428 line 54 box B "Amount from line 13 of your federal Schedule 9
+multiplied by 10.5% =": the Schedule 9 amount times 10.5%; a blank amount is read as 0."""
+
+SK428_DONATIONS_AMOUNT_LINE_55 = AmountKind.declare(
+    CATALOG, "sk428_donations_amount_line_55", non_negative=True
+)
+"""Donations amount, SK428 line 55 box A "Amount from line 14 of your federal Schedule 9": the
+amount as the filer gives it, an optional input; a blank input is read as blank."""
+
+SK428_DONATIONS_CREDIT_AT_RATE_LINE_55 = AmountKind.declare(
+    CATALOG, "sk428_donations_credit_at_rate_line_55", non_negative=True
+)
+"""Donations credit at 14.5%, SK428 line 55 box B "Amount from line 14 of your federal Schedule 9
+multiplied by 14.5% =": the Schedule 9 amount times 14.5%; a blank amount is read as 0."""
 
 SK428_DONATIONS_CREDIT_LINE_56 = AmountKind.declare(
     CATALOG, "sk428_donations_credit_line_56", non_negative=True
 )
-"""Donations and gifts credit, SK428 line 56 (58969) "Line 56 and 58969: Line 54 plus line
-55 =": a caller input, read as blank when left out; line 57 reads it."""
+"""Donations and gifts credit, SK428 line 56 (58969) "Line 56 and 58969: Line 54 plus line 55 =":
+line 54 plus line 55; line 57 reads it."""
 
 SK428_NON_REFUNDABLE_CREDITS_LINE_57 = AmountKind.declare(
     CATALOG, "sk428_non_refundable_credits_line_57", non_negative=True
@@ -135,12 +196,28 @@ contribution tax credit (use Worksheet SK428) (maximum $650)": the credit from t
 optional input that a salary-only caller leaves out; the line 73 step checks it against the printed
 maximum."""
 
+SK428_VENTURE_CAPITAL_CREDIT_SASKATCHEWAN_LINE_75 = AmountKind.declare(
+    CATALOG, "sk428_venture_capital_credit_saskatchewan_line_75", non_negative=True
+)
+"""Venture capital tax credit, Saskatchewan corporations, SK428 line 75 "For investments in venture
+capital corporations registered in Saskatchewan: Enter your tax credit from T2C Slip (Sask.).
+(maximum $875)": the amount as the filer gives it, an optional input; a blank input is read as
+blank."""
+
+SK428_VENTURE_CAPITAL_CREDIT_FEDERAL_LINE_76 = AmountKind.declare(
+    CATALOG, "sk428_venture_capital_credit_federal_line_76", non_negative=True
+)
+"""Venture capital tax credit, federally registered corporations, SK428 line 76 "For investments in
+venture capital corporations registered federally: Enter your tax credit from T2C Slip (Sask.).
+(maximum $875)": the amount as the filer gives it, an optional input; a blank input is read as
+blank."""
+
 SK428_LABOUR_SPONSORED_CREDIT_LINE_77 = AmountKind.declare(
     CATALOG, "sk428_labour_sponsored_credit_line_77", non_negative=True
 )
-"""Labour-sponsored venture capital tax credit, SK428 line 77 (line 63557) "Line 77 and line
-63557: Line 75 plus line 76 (maximum $875)": a caller input, read as blank when left out; the
-line 77 step checks it against the printed maximum."""
+"""Labour-sponsored venture capital tax credit before the maximum check, SK428 line 77 (line 63557)
+"Line 77 and line 63557: Line 75 plus line 76 (maximum $875)": line 75 plus line 76 (a blank line is
+read as 0); the line 77 step checks it against the printed maximum."""
 
 SK428_MINERAL_EXPLORATION_CREDIT_LINE_79 = AmountKind.declare(
     CATALOG, "sk428_mineral_exploration_credit_line_79", non_negative=True
@@ -249,8 +326,7 @@ SK428_CREDITS_TOTAL_LINE_51 = AmountKind.declare(
     CATALOG, "sk428_credits_total_line_51", non_negative=True
 )
 """Saskatchewan credits total, SK428 line 51 (line 58800) "Line 42 plus line 50 =": the credits
-subtotal of line 42 plus the medical expense amount of line 50, read as 0 when blank, lines 43 to
-49 (the medical expense working) not being built."""
+subtotal of line 42 plus the medical expense amount of line 50."""
 
 SK428_TAX_LINE_60 = AmountKind.declare(CATALOG, "sk428_tax_line_60")
 """Saskatchewan tax after line 59, SK428 line 60 "Line 60: Line 58 minus line 59 =": line 58 less
@@ -320,8 +396,8 @@ refused, not capped."""
 
 SK428_TAX_LINE_78 = AmountKind.declare(CATALOG, "sk428_tax_line_78", non_negative=True)
 """Saskatchewan tax after the labour-sponsored venture capital credit, SK428 line 78 "Line 78: Line
-74 minus line 77 (if negative, enter "0") = ^": line 74 less the credit of line 77 (blank read as
-0), never below zero."""
+74 minus line 77 (if negative, enter "0") = ^": line 74 less the credit of line 77, never below
+zero."""
 
 SK428_LABOUR_SPONSORED_CREDIT_MAXIMUM = AmountKind.declare(
     CATALOG, "sk428_labour_sponsored_credit_maximum", non_negative=True
@@ -334,8 +410,8 @@ SK428_LABOUR_SPONSORED_CREDIT_CHECKED_LINE_77 = AmountKind.declare(
     CATALOG, "sk428_labour_sponsored_credit_checked_line_77", non_negative=True
 )
 """Labour-sponsored venture capital tax credit, SK428 line 77 "Line 77 and line 63557: Line 75 plus
-line 76 (maximum $875)": the entered amount, passed on unchanged when it is at most the printed
-maximum, blank when left out; above the maximum it is refused, not capped."""
+line 76 (maximum $875)": line 75 plus line 76, passed on unchanged when it is at most the printed
+maximum; above the maximum it is refused, not capped."""
 
 SK428_TAX_LINE_80 = AmountKind.declare(CATALOG, "sk428_tax_line_80", non_negative=True)
 """Saskatchewan tax after the mineral exploration tax credit, SK428 line 80 "Line 80: Line 78
