@@ -1,0 +1,21 @@
+# AB428 (2025) line 49 (Form AB428, CRA 5009-c): "Line 49: Line 44 minus line 48 (if negative, enter
+# "0") =". Line 44 is the optional medical expenses input (ab428_credits_line_44_input.yaml) and
+# line 48 is the lesser of the printed ceiling and line 47 (ab428_credits_line_48.yaml). Line 49 is
+# one core/subtract_not_below_zero step, rounded half-up to the cent by the dataset's rule. A request
+# that leaves line 44 blank has no medical expenses, so a blank line 44 is read as 0 and line 49 is
+# 0.00. The form names no label for the line, so the step has no title.
+form:
+  name: ca-ab/ab428_credits
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "49"
+    unit: ca/cad
+    params:
+      rounding: ca-ab/cent_rounding
+    consumes:
+      amount: ca-ab/ab428_medical_expenses_line_44
+      less: ca-ab/ab428_medical_expenses_limited_amount_line_48
+    blank:
+      amount: "0"
+    produces:
+      output: ca-ab/ab428_medical_expenses_over_limit_line_49

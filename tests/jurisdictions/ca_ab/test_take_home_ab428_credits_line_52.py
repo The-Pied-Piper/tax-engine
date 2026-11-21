@@ -1,18 +1,17 @@
 """AB428 (2025) line 52, line 43 plus line 51, from the salary alone, real parts.
 
-Form text (Form AB428, CRA 5009-c): "Line 52 and line 58800: Line 43 plus line 51 = ^". Lines 44
-to 50, the medical expense working, are not built; line 51, "Line 51 and line 58769: Line 49 plus
-line 50", is an optional input, blank for a salary-only filer. Line 52 is one core/sum over line 43
-and the line 51 input, as Ontario line 44 is; the blank line 51 is read as 0 and the step prints
-its own "Left blank, taken as 0" row.
+Form text (Form AB428, CRA 5009-c): "Line 52 and line 58800: Line 43 plus line 51 = ^". Line 51,
+"Line 51 and line 58769: Line 49 plus line 50", is computed by the medical expenses block (lines 44
+to 50), which is 0.00 for a salary-only filer. Line 52 is one core/sum over line 43 and line 51, as
+Ontario line 44 is; line 51 is never blank, so the step has no blank rule.
 
 The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts, the real line
 16, line 25, line 27, line 29, line 32, line 33, line 36, line 39 and line 43 parts, the line 34
-inputs part, the line 41 input part, the line 51 inputs part and the new
-`ab428_credits_line_52.yaml`, and types in only the salary (and, in one test, line 51). The form
+inputs part, the line 41 input part, the medical expenses parts (lines 44 to 51) and the
+new `ab428_credits_line_52.yaml`, and types in only the salary (and, in one test, line 50). The form
 declaration is made up here, exporting only line 52. The figures are hand-computed from the
 printed forms (not a CRA example): line 43 is 23,467.75, 26,692.23 and 26,756.58 at the two
-salaries, plus line 51 of 0 when blank.
+salaries, plus line 51 of 0.00 with no medical claim.
 """
 
 from __future__ import annotations
@@ -38,8 +37,8 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_ab.catalog import (
+    AB428_ALLOWABLE_MEDICAL_EXPENSES_FOR_OTHER_DEPENDANTS_LINE_50,
     AB428_CREDITS_TOTAL_LINE_52,
-    AB428_MEDICAL_EXPENSES_LINE_51,
 )
 from tests.federal_forms import FEDERAL_FORMS, form_parts
 from tests.jurisdictions.ca_ab.support import (
@@ -50,7 +49,7 @@ from tests.jurisdictions.ca_ab.support import (
     alberta_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_FORM, inputs_without_form
+from tests.manifest_support import inputs_without_form
 
 D = Decimal
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
@@ -83,8 +82,7 @@ def _part_files() -> Iterator[Path]:
     yield ALBERTA_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
-    yield T1_LINE_10100_FORM
-    yield FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml"
+    yield from form_parts("t1_employment_income", "t1_taxable_income")
     yield ALBERTA_PARTS / "ab428_line_16.yaml"
     yield ALBERTA_PARTS / "ab428_line_25.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_27.yaml"
@@ -99,7 +97,13 @@ def _part_files() -> Iterator[Path]:
     yield ALBERTA_PARTS / "ab428_line_41_input.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_41.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_43.yaml"
-    yield ALBERTA_PARTS / "ab428_line_51_inputs.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_44_input.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_45.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_47.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_48.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_49.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_50_input.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_51.yaml"
     yield LINE_PART
 
 
@@ -135,14 +139,18 @@ def _sheet(tmp_path: Path, salary: str, *extra: Artifact[Decimal]) -> Worksheet:
 
 
 @pytest.mark.parametrize(("salary", "expected"), CASES)
-def test_line_52_is_line_43_when_line_51_is_blank(
+def test_line_52_is_line_43_for_a_salary_only_caller(
     tmp_path: Path, salary: str, expected: str
 ) -> None:
     assert _sheet(tmp_path, salary).get(AB428_CREDITS_TOTAL_LINE_52).value == D(expected)
 
 
-def test_line_52_adds_line_51_when_it_is_given(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "70000", Artifact(AB428_MEDICAL_EXPENSES_LINE_51, D("1500.00")))
+def test_line_52_adds_line_51_when_line_50_is_given(tmp_path: Path) -> None:
+    sheet = _sheet(
+        tmp_path,
+        "70000",
+        Artifact(AB428_ALLOWABLE_MEDICAL_EXPENSES_FOR_OTHER_DEPENDANTS_LINE_50, D("1500.00")),
+    )
 
     assert sheet.get(AB428_CREDITS_TOTAL_LINE_52).value == D("28192.23")
 
@@ -165,7 +173,6 @@ def test_the_part_names_the_form_and_has_one_sum_step_like_ontario_line_44() -> 
         "unit",
         "params",
         "consumes",
-        "blank",
         "produces",
     ]
     assert step == {
@@ -179,7 +186,6 @@ def test_the_part_names_the_form_and_has_one_sum_step_like_ontario_line_44() -> 
                 "ca-ab/ab428_medical_expenses_line_51",
             ]
         },
-        "blank": {"ca-ab/ab428_medical_expenses_line_51": "0"},
         "produces": {"output": IDENTIFIER},
     }
 

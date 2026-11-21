@@ -8,12 +8,12 @@ input: its one step is a core/record_total over the line 58 export of `ca-ab/ab4
 always computed, so the step has no blank rule.
 
 The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts, the real AB428
-credits parts up to line 58 (line 16, 25, 27, 29, 32, 33, 34 inputs, 36, 39, 41 input, 43, 51
-inputs, 52, 54, 57 inputs and 58) and the new `ab428_line_62.yaml`, and types in only the salary.
-The header and the two form declarations (AB428 credits, exporting line 58, and AB428, exporting
-line 62) are made up here, because the shared scaffold owns them. The figures are the line 58
-figures of the line 58 test (line 54 plus a blank line 57 read as 0): 1,877.42, 2,135.38 and
-2,140.53 at the three salaries.
+credits parts up to line 58 (line 16, 25, 27, 29, 32, 33, 34 inputs, 36, 39, 41 input, 43, the
+medical expenses parts 44 to 51, 52, 54, the donations parts 55 to 57 and 58) and the new
+`ab428_line_62.yaml`, and types in only the salary. The header and the two form declarations (AB428
+credits, exporting line 58, and AB428, exporting line 62) are made up here, because the shared
+scaffold owns them. The figures are the line 58 figures of the line 58 test (line 54 plus a blank
+line 57 read as 0): 1,877.42, 2,135.38 and 2,140.53 at the three salaries.
 """
 
 from __future__ import annotations
@@ -49,7 +49,7 @@ from tests.jurisdictions.ca_ab.support import (
     alberta_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_FORM, inputs_without_form
+from tests.manifest_support import inputs_without_form
 
 D = Decimal
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
@@ -89,8 +89,7 @@ def _part_files() -> Iterator[Path]:
     yield ALBERTA_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
-    yield T1_LINE_10100_FORM
-    yield FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml"
+    yield from form_parts("t1_employment_income", "t1_taxable_income")
     yield ALBERTA_PARTS / "ab428_line_16.yaml"
     yield ALBERTA_PARTS / "ab428_line_25.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_27.yaml"
@@ -105,10 +104,20 @@ def _part_files() -> Iterator[Path]:
     yield ALBERTA_PARTS / "ab428_line_41_input.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_41.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_43.yaml"
-    yield ALBERTA_PARTS / "ab428_line_51_inputs.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_44_input.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_45.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_47.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_48.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_49.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_50_input.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_51.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_52.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_54.yaml"
-    yield ALBERTA_PARTS / "ab428_line_57_inputs.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_55_input.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_55.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_56_input.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_56.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_57.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_58.yaml"
     yield LINE_PART
 

@@ -6,18 +6,18 @@ signed `core/subtract` of line 2 from line 1, rounded by `ca-ab/cent_rounding`, 
 signed (not non-negative). The form prints no title text for the line, so the step is untitled,
 and neither consumed line is ever blank, so the step has no blank rule.
 
-The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts, the real
-AB428 credits parts up to line 52 (line 16, 25, 27, 29, 32, 33, 34 inputs, 36, 39, 41 input, 43,
-51 inputs and 52), the real `worksheet_ab428_line_1.yaml` and `worksheet_ab428_line_2.yaml` parts
-and the new `worksheet_ab428_line_3.yaml`, and types in only the salary (and, in two tests, line
-41). The header and the two form declarations (AB428 credits, exporting lines 41 and 52, and the
-worksheet, exporting lines 1, 2 and 3) are made up here, because the shared scaffold owns them.
-Alberta is not yet listed in the registrations, so the service is built here over the Alberta
-package list of `support.py`. The figures are hand-computed from the printed forms (not a CRA
-example): line 1 is 23,467.75 and 26,756.58 at salaries 20,000 and 200,000 and line 2 is 0.00
-(line 41 blank), so line 3 equals line 1. Line 41 is added into line 43, hence into line 52 and
-line 1, so a given line 41 raises line 1 and line 2 together and line 3 does not move; a negative
-line 3 cannot arise from the real parts and is tested through the capability.
+The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts, the real AB428
+credits parts up to line 52 (line 16, 25, 27, 29, 32, 33, 34 inputs, 36, 39, 41 input, 43, the
+medical expenses parts 44 to 51 and 52), the real `worksheet_ab428_line_1.yaml` and
+`worksheet_ab428_line_2.yaml` parts and the new `worksheet_ab428_line_3.yaml`, and types in only
+the salary (and, in two tests, line 41). The header and the two form declarations (AB428 credits,
+exporting lines 41 and 52, and the worksheet, exporting lines 1, 2 and 3) are made up here, because
+the shared scaffold owns them. Alberta is not yet listed in the registrations, so the service is
+built here over the Alberta package list of `support.py`. The figures are hand-computed from the
+printed forms (not a CRA example): line 1 is 23,467.75 and 26,756.58 at salaries 20,000 and 200,000
+and line 2 is 0.00 (line 41 blank), so line 3 equals line 1. Line 41 is added into line 43, hence
+into line 52 and line 1, so a given line 41 raises line 1 and line 2 together and line 3 does not
+move; a negative line 3 cannot arise from the real parts and is tested through the capability.
 """
 
 from __future__ import annotations
@@ -61,7 +61,7 @@ from tests.jurisdictions.ca_ab.support import (
     alberta_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_FORM, inputs_without_form
+from tests.manifest_support import inputs_without_form
 
 D = Decimal
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
@@ -107,8 +107,7 @@ def _part_files() -> Iterator[Path]:
     yield ALBERTA_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
-    yield T1_LINE_10100_FORM
-    yield FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml"
+    yield from form_parts("t1_employment_income", "t1_taxable_income")
     yield ALBERTA_PARTS / "ab428_line_16.yaml"
     yield ALBERTA_PARTS / "ab428_line_25.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_27.yaml"
@@ -123,7 +122,13 @@ def _part_files() -> Iterator[Path]:
     yield ALBERTA_PARTS / "ab428_line_41_input.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_41.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_43.yaml"
-    yield ALBERTA_PARTS / "ab428_line_51_inputs.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_44_input.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_45.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_47.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_48.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_49.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_50_input.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_51.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_52.yaml"
     yield ALBERTA_PARTS / "worksheet_ab428_line_1.yaml"
     yield ALBERTA_PARTS / "worksheet_ab428_line_2.yaml"

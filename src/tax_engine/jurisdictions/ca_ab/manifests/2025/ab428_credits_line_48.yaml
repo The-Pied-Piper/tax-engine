@@ -1,0 +1,18 @@
+# AB428 (2025) line 48 (Form AB428, CRA 5009-c): "Line 48: Enter whichever is less: $2,884 or the
+# amount from line 47." The $2,884 is the printed ceiling, the `ca-ab/medical_expense_dollar_limit`
+# dataset, and has no step of its own. Line 48 is the lesser of that ceiling and line 47
+# (`ca-ab/ab428_medical_expenses_rate_amount_line_47`), one core/capped_amount step, rounded
+# half-up to the cent by the dataset's rule. The form names no label for the line, so the step has
+# no title. Line 47 is always a figure, so nothing is blank.
+form:
+  name: ca-ab/ab428_credits
+capabilities:
+  - name: core/capped_amount
+    reference: "48"
+    unit: ca/cad
+    params:
+      cap: ca-ab/medical_expense_dollar_limit
+    consumes:
+      base: ca-ab/ab428_medical_expenses_rate_amount_line_47
+    produces:
+      output: ca-ab/ab428_medical_expenses_limited_amount_line_48
