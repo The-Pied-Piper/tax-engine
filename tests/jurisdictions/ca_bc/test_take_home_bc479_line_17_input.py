@@ -1,12 +1,8 @@
-"""BC428 (2025) line 88's input, as the British Columbia take-home manifest part declares it.
+"""BC479 (2025) line 17's input, as the British Columbia take-home manifest part declares it.
 
-Form text (Form BC428, CRA 5010-C): "Line 88: Line 86 plus line 87 (maximum $2,000)". Lines 86 and
-87 (the ESOP and EVCC certificate numbers and amounts) are not built, and the $2,000 maximum is not
-enforced. A salary-only caller has no ESOP or EVCC credits, so a request that leaves the line out
-is read as blank, and the step that consumes it (line 89) reads that blank as 0.
-
-The real part is loaded under a test-local header over the British Columbia package list of
-`support.py`.
+Form text: 'Line 17: Enter your unused venture capital tax credit from your most recent notice
+of assessment or reassessment' (5010-TC). The line is an optional input, so a request that
+leaves it out is read as blank, and the printed sum that reads it reads that blank as 0.
 """
 
 from __future__ import annotations
@@ -20,7 +16,6 @@ import yaml
 import tax_engine.jurisdictions.ca_bc
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.manifest import Manifest
-from tax_engine.jurisdictions.ca_bc.catalog import BC428_ESOP_EVCC_CREDITS_LINE_88
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_kinds,
     british_columbia_packages,
@@ -28,10 +23,9 @@ from tests.jurisdictions.ca_bc.support import (
 )
 from tests.kinds import non_negative
 
-IDENTIFIER = BC428_ESOP_EVCC_CREDITS_LINE_88.identifier
-PRINTED_BASIS = "Line 88: Line 86 plus line 87 (maximum $2,000)"
-PART = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / (
-    "manifests/2025/bc428_line_88_input.yaml"
+IDENTIFIER = "ca-bc/bc479_venture_capital_unused_credit_line_17"
+PART = (
+    Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests/2025/bc479_line_17_input.yaml"
 )
 HEADER = """\
 jurisdiction: CA-BC
@@ -42,7 +36,7 @@ capabilities: []
 """
 
 
-FORM_NAME = "ca-bc/bc428"
+FORM_NAME = "ca-bc/bc479"
 
 
 def _owner_form() -> str:
@@ -71,45 +65,35 @@ def _part() -> dict[str, Any]:
     return part
 
 
-def test_the_part_declares_only_the_esop_evcc_credits_input() -> None:
+def test_the_part_declares_only_this_optional_input() -> None:
     part = _part()
 
     assert list(part) == ["form", "inputs"]
     assert part["form"] == {"name": FORM_NAME}
     assert part["inputs"] == [
         {
-            "name": IDENTIFIER,
-            "title": "Total ESOP and EVCC credits",
-            "reference": "88",
+            "name": "ca-bc/bc479_venture_capital_unused_credit_line_17",
+            "title": "Unused venture capital tax credit",
+            "reference": "17",
             "unit": "ca/cad",
             "required": False,
             "default": None,
-            "basis": PRINTED_BASIS,
+            "basis": "Line 17: Enter your unused venture capital tax credit from your most "
+            "recent notice "
+            "of assessment or reassessment",
         }
     ]
-    assert list(part["inputs"][0]) == [
-        "name",
-        "title",
-        "reference",
-        "unit",
-        "required",
-        "default",
-        "basis",
-    ]
 
 
-def test_the_esop_evcc_credits_line_88_is_a_non_negative_amount_kind() -> None:
+def test_the_input_is_a_registered_non_negative_amount_kind() -> None:
     kind = british_columbia_kinds().kind(IDENTIFIER)
 
-    assert IDENTIFIER == "ca-bc/bc428_esop_evcc_credits_line_88"
-    assert kind is BC428_ESOP_EVCC_CREDITS_LINE_88
     assert non_negative(kind)
 
 
-def test_a_request_that_leaves_out_line_88_is_read_as_blank(tmp_path: Path) -> None:
+def test_a_request_that_leaves_out_the_line_is_read_as_blank(tmp_path: Path) -> None:
     declaration = _manifest(tmp_path).inputs[IDENTIFIER]
     default = declaration.default_artifact(british_columbia_kinds().kind(IDENTIFIER))
 
     assert not declaration.required
-    assert declaration.basis == PRINTED_BASIS
     assert default is not None and default.is_blank

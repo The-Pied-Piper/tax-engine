@@ -39,9 +39,9 @@ from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_bc.catalog import (
     BC428_AT_RATE_LINE_56,
-    BC428_MEDICAL_EXPENSES_LINE_53,
+    BC428_OTHER_DEPENDANTS_MEDICAL_EXPENSES_LINE_52,
 )
-from tests.federal_forms import FEDERAL_FORMS, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -50,9 +50,9 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT
 
 D = Decimal
+T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
 LINE_54_PART = BC_PARTS / "bc428_line_54.yaml"
 LINE_PART = BC_PARTS / "bc428_line_56.yaml"
@@ -85,11 +85,10 @@ CASES = [
 
 
 def _part_files() -> Iterator[Path]:
-    yield T1_LINE_10100_INPUT
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
-    yield T1_LINE_10100_FORM
-    yield FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml"
+    for name in T1_PARTS:
+        yield next(FEDERAL_FORMS.rglob(name))
     yield BC_PARTS / "bc428_line_16.yaml"
     yield BC_PARTS / "bc428_line_25.yaml"
     yield BC_PARTS / "bc428_line_27.yaml"
@@ -101,7 +100,13 @@ def _part_files() -> Iterator[Path]:
     yield BC_PARTS / "bc428_line_37.yaml"
     yield BC_PARTS / "bc428_line_40.yaml"
     yield BC_PARTS / "bc428_line_45.yaml"
-    yield BC_PARTS / "bc428_line_53_inputs.yaml"
+    yield BC_PARTS / "bc428_line_46_input.yaml"
+    yield BC_PARTS / "bc428_line_47.yaml"
+    yield BC_PARTS / "bc428_line_49.yaml"
+    yield BC_PARTS / "bc428_line_50.yaml"
+    yield BC_PARTS / "bc428_line_51.yaml"
+    yield BC_PARTS / "bc428_line_52_input.yaml"
+    yield BC_PARTS / "bc428_line_53.yaml"
     yield LINE_54_PART
     yield LINE_PART
 
@@ -141,7 +146,9 @@ def test_line_56_is_line_54_times_5_06_percent(tmp_path: Path, salary: str, expe
 
 
 def test_line_56_follows_line_53_when_it_is_given(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "70000", Artifact(BC428_MEDICAL_EXPENSES_LINE_53, D("1500.00")))
+    sheet = _sheet(
+        tmp_path, "70000", Artifact(BC428_OTHER_DEPENDANTS_MEDICAL_EXPENSES_LINE_52, D("1500.00"))
+    )
 
     # Line 54 is 18,801.23; times 0.0506 is 951.342238, rounded half-up to 951.34.
     assert sheet.get(BC428_AT_RATE_LINE_56).value == D("951.34")

@@ -1,15 +1,14 @@
 """BC428 (2025) line 54, line 45 plus line 53, from the salary alone, real parts.
 
 Form text (Form BC428, CRA 5010-C, read 2026-11-14): "Line 54 and line 58800: Line 45 plus line 53
-= ^". Line 53 (medical expenses) is an optional input a salary-only caller leaves out, read as blank
-and then as 0 by the step's own blank rule, as Alberta line 52 reads its line 51; line 54 is one
-core/sum over line 45 and line 53.
+= ^". Line 53 (medical expenses) is computed from lines 46 to 52 and is 0.00 for a salary-only
+caller; line 54 is one core/sum over line 45 and line 53.
 
 The test composes the real British Columbia salary part, the real Schedule 8 and T2204 parts, the
 real line 16, 25, 27, 29, 33, 35, 37, 40 and 45 parts, the line 36 and line 53 input parts and the
 new `bc428_line_54.yaml`, and types in only the salary (and, in one test, line 53). The form
 declaration is made up here, exporting only line 54. The figures are hand-computed from the printed
-forms (not a CRA example): with line 53 blank, line 54 is line 45, which is line 40.
+forms (not a CRA example): with line 53 at 0.00, line 54 is line 45, which is line 40.
 """
 
 from __future__ import annotations
@@ -34,10 +33,10 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_bc.catalog import (
-    BC428_MEDICAL_EXPENSES_LINE_53,
+    BC428_OTHER_DEPENDANTS_MEDICAL_EXPENSES_LINE_52,
     BC428_TOTAL_LINE_54,
 )
-from tests.federal_forms import FEDERAL_FORMS, form_parts
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -46,9 +45,9 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT
 
 D = Decimal
+T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
 LINE_PART = BC_PARTS / "bc428_line_54.yaml"
 IDENTIFIER = "ca-bc/bc428_total_line_54"
@@ -70,8 +69,8 @@ FORM = dedent("""\
     capabilities: []
     """)
 
-# salary, line 54 (line 45, which is line 40, plus a blank line 53). At $200,000 lines 27 and 29 are
-# at their maximums.
+# salary, line 54 (line 45, which is line 40, plus a line 53 of 0.00). At $200,000 lines 27 and 29
+# are at their maximums.
 CASES = [
     ("17000", "13879.05"),
     ("200000", "17365.58"),
@@ -79,11 +78,10 @@ CASES = [
 
 
 def _part_files() -> Iterator[Path]:
-    yield T1_LINE_10100_INPUT
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
-    yield T1_LINE_10100_FORM
-    yield FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml"
+    for name in T1_PARTS:
+        yield next(FEDERAL_FORMS.rglob(name))
     yield BC_PARTS / "bc428_line_16.yaml"
     yield BC_PARTS / "bc428_line_25.yaml"
     yield BC_PARTS / "bc428_line_27.yaml"
@@ -95,7 +93,13 @@ def _part_files() -> Iterator[Path]:
     yield BC_PARTS / "bc428_line_37.yaml"
     yield BC_PARTS / "bc428_line_40.yaml"
     yield BC_PARTS / "bc428_line_45.yaml"
-    yield BC_PARTS / "bc428_line_53_inputs.yaml"
+    yield BC_PARTS / "bc428_line_46_input.yaml"
+    yield BC_PARTS / "bc428_line_47.yaml"
+    yield BC_PARTS / "bc428_line_49.yaml"
+    yield BC_PARTS / "bc428_line_50.yaml"
+    yield BC_PARTS / "bc428_line_51.yaml"
+    yield BC_PARTS / "bc428_line_52_input.yaml"
+    yield BC_PARTS / "bc428_line_53.yaml"
     yield LINE_PART
 
 
@@ -129,14 +133,16 @@ def _sheet(tmp_path: Path, salary: str, *extra: Artifact[Decimal]) -> Worksheet:
 
 
 @pytest.mark.parametrize(("salary", "expected"), CASES)
-def test_line_54_is_line_45_when_line_53_is_blank(
+def test_line_54_is_line_45_when_line_53_is_zero(
     tmp_path: Path, salary: str, expected: str
 ) -> None:
     assert _sheet(tmp_path, salary).get(BC428_TOTAL_LINE_54).value == D(expected)
 
 
-def test_line_54_adds_line_53_when_it_is_given(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "70000", Artifact(BC428_MEDICAL_EXPENSES_LINE_53, D("1500.00")))
+def test_line_54_adds_line_53_when_line_52_is_given(tmp_path: Path) -> None:
+    sheet = _sheet(
+        tmp_path, "70000", Artifact(BC428_OTHER_DEPENDANTS_MEDICAL_EXPENSES_LINE_52, D("1500.00"))
+    )
 
     assert sheet.get(BC428_TOTAL_LINE_54).value == D("18801.23")
 
@@ -162,7 +168,6 @@ def test_the_part_names_the_form_and_has_one_sum_step_over_line_45_and_line_53()
         "unit",
         "params",
         "consumes",
-        "blank",
         "produces",
     ]
     assert step == {
@@ -173,7 +178,6 @@ def test_the_part_names_the_form_and_has_one_sum_step_over_line_45_and_line_53()
         "consumes": {
             "parts": ["ca-bc/bc428_subtotal_line_45", "ca-bc/bc428_medical_expenses_line_53"]
         },
-        "blank": {"ca-bc/bc428_medical_expenses_line_53": "0"},
         "produces": {"output": IDENTIFIER},
     }
 
