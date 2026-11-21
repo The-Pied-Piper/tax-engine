@@ -4,12 +4,9 @@ per line class, each registered with `@english_renderer`.
 
 from __future__ import annotations
 
-from decimal import Decimal
-
 from tax_engine.adapters.inbound.trace_english.figures import EnglishFigures
 from tax_engine.adapters.inbound.trace_english.names import EnglishNames
 from tax_engine.adapters.inbound.trace_english.registry import english_renderer
-from tax_engine.domain.artifact import Money
 from tax_engine.domain.trace.arithmetic import (
     AmountOrDividedByRateLine,
     AmountWhenMoreLine,
@@ -68,18 +65,19 @@ MOST_TERMS_WRITTEN_OUT = 8
 """A sum of more terms than this is worded as its first term plus the rest together."""
 
 
-def sum_terms(parts: tuple[tuple[Money, Decimal], ...], names: EnglishNames) -> str:
+def sum_terms(line: SumLine | SumNotBelowZeroLine, names: EnglishNames) -> str:
     """The terms of a sum in English, joined by "plus".
 
     Up to `MOST_TERMS_WRITTEN_OUT` terms are each written out. A longer sum is too long to read as
-    one sentence, so it is worded as its first term plus the others together: the real total of
-    those others and the first and last of them, e.g. "line 101 (CA$70,000.00) plus lines 105 to
-    164 (CA$1,234.56 in total)". Only the wording is shortened: the figures are the sum's own.
+    one sentence, so it is worded as its first term plus the others together: the line's own
+    total of those others and the first and last of them, e.g. "line 1 (EX$70,000.00) plus lines 5
+    to 64 (EX$1,234.56 in total)". Only the wording is shortened: the figures are the sum's own.
     """
+    parts = line.parts
     if len(parts) <= MOST_TERMS_WRITTEN_OUT:
         return " plus ".join(names.figure(kind, amount) for kind, amount in parts)
-    (first_kind, first_amount), *others = parts
-    together = sum((amount for _, amount in others), Decimal(0))
+    first_kind, first_amount = parts[0]
+    others = parts[1:]
     first_other, last_other = names.of(others[0][0]), names.of(others[-1][0])
     if first_other.startswith("line ") and last_other.startswith("line "):
         named = f"lines {first_other.removeprefix('line ')} to {last_other.removeprefix('line ')}"
@@ -87,7 +85,7 @@ def sum_terms(parts: tuple[tuple[Money, Decimal], ...], names: EnglishNames) -> 
         named = f"the other {len(others)} figures"
     return (
         f"{names.figure(first_kind, first_amount)} plus {named} "
-        f"({names.shown(others[0][0].label, together)} in total)"
+        f"({names.shown(others[0][0].label, line.total_after_first)} in total)"
     )
 
 
@@ -99,7 +97,7 @@ class SumRenderer:
 
     def render(self, line: SumLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        terms = sum_terms(line.parts, names)
+        terms = sum_terms(line, names)
         if not line.parts:
             return f"Nothing to add, so {names.shown(line.label, line.total)}"
         return (
@@ -116,7 +114,7 @@ class SumNotBelowZeroRenderer:
 
     def render(self, line: SumNotBelowZeroLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        terms = sum_terms(line.parts, names)
+        terms = sum_terms(line, names)
         if not line.parts:
             return f"Nothing to add, not below 0, so {names.shown(line.label, line.total)}"
         return (

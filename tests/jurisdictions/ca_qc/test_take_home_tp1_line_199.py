@@ -19,8 +19,26 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tax_engine.jurisdictions.ca_qc import catalog
-from tax_engine.jurisdictions.ca_qc.catalog import TP1_TOTAL_INCOME_LINE_199
+from tax_engine.jurisdictions.ca_qc.catalog import (
+    TP1_LINE_105,
+    TP1_LINE_107,
+    TP1_LINE_110,
+    TP1_LINE_111,
+    TP1_LINE_114,
+    TP1_LINE_119,
+    TP1_LINE_122,
+    TP1_LINE_123,
+    TP1_LINE_128,
+    TP1_LINE_130,
+    TP1_LINE_136,
+    TP1_LINE_139,
+    TP1_LINE_142,
+    TP1_LINE_147,
+    TP1_LINE_148,
+    TP1_LINE_154,
+    TP1_LINE_164,
+    TP1_TOTAL_INCOME_LINE_199,
+)
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 
 D = Decimal
@@ -68,12 +86,32 @@ LINES = (
     "136", "139", "142", "147", "148", "154", "164",
 )  # fmt: skip
 
+KINDS = {
+    "105": TP1_LINE_105,
+    "107": TP1_LINE_107,
+    "110": TP1_LINE_110,
+    "111": TP1_LINE_111,
+    "114": TP1_LINE_114,
+    "119": TP1_LINE_119,
+    "122": TP1_LINE_122,
+    "123": TP1_LINE_123,
+    "128": TP1_LINE_128,
+    "130": TP1_LINE_130,
+    "136": TP1_LINE_136,
+    "139": TP1_LINE_139,
+    "142": TP1_LINE_142,
+    "147": TP1_LINE_147,
+    "148": TP1_LINE_148,
+    "154": TP1_LINE_154,
+    "164": TP1_LINE_164,
+}
+
 
 def tp1(take_home_service: TakeHomeService, salary: str, **lines: str) -> Worksheet:
     """The TP-1 income worksheet for a salary; a line from 105 to 164 is left out unless given."""
     starting = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     for line, amount in lines.items():
-        starting.append(Artifact(getattr(catalog, f"TP1_LINE_{line}"), D(amount)))
+        starting.append(Artifact(KINDS[line], D(amount)))
     (sheet,) = take_home_service(HEADER, FORM, *PARTS).compute(
         JurisdictionCode("CA-QC"), 2025, *starting
     )["ca-qc/tp1_income"]
@@ -130,16 +168,10 @@ def test_the_sentence_words_the_long_sum_as_the_salary_plus_lines_105_to_164(
     take_home_service: TakeHomeService,
 ) -> None:
     sheet = tp1(take_home_service, "70000", **{"107": "1000", "136": "-200.50", "164": "5000"})
-    (line,) = (
-        line
-        for line in sheet.trace
-        if getattr(line, "label", None) == TP1_TOTAL_INCOME_LINE_199.label
-        and type(line).__name__ == "SumLine"
-    )
 
-    sentence = EnglishTraceRenderer().render(line, sheet)
+    sentences = EnglishTraceRenderer().render_all(sheet.trace, sheet)
 
-    assert sentence.startswith(
-        "Line 10100 (CA$70000.00) plus lines 105 to 164 (CA$5799.50 in total)"
-    )
-    assert len(sentence.split()) <= 40
+    assert (
+        "Line 10100 (CA$70000.00) plus lines 105 to 164 (CA$5799.50 in total) gives CA$75799.50 "
+        "(rounded to the nearest cent)."
+    ) in sentences
