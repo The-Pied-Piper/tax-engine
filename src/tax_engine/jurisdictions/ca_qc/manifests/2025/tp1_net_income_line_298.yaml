@@ -1,0 +1,33 @@
+# TP-1 (2025) line 298: "Add lines 287 through 297. Total deductions". One core/sum in form line
+# order, rounded half-up to the cent (`ca-qc/cent_rounding`); the lines are optional inputs, read as
+# 0 when blank (`tp1_net_income_line_298_inputs.yaml`). Line 299 reads the figure.
+form:
+  name: ca-qc/tp1_net_income
+capabilities:
+  - name: core/sum
+    title: "Total deductions"
+    reference: "298"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/tp1_line_287
+        - ca-qc/tp1_line_289
+        - ca-qc/tp1_line_290
+        - ca-qc/tp1_line_291
+        - ca-qc/tp1_line_292
+        - ca-qc/tp1_line_293
+        - ca-qc/tp1_line_295
+        - ca-qc/tp1_line_297
+    blank:
+      ca-qc/tp1_line_287: "0"
+      ca-qc/tp1_line_289: "0"
+      ca-qc/tp1_line_290: "0"
+      ca-qc/tp1_line_291: "0"
+      ca-qc/tp1_line_292: "0"
+      ca-qc/tp1_line_293: "0"
+      ca-qc/tp1_line_295: "0"
+      ca-qc/tp1_line_297: "0"
+    produces:
+      output: ca-qc/tp1_total_deductions_line_298

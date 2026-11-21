@@ -9,7 +9,7 @@ from __future__ import annotations
 import pytest
 
 from tax_engine.jurisdictions.ca_qc.catalog import (
-    TP1_TOTAL_DEDUCTIONS_LINE_298,
+    TP1_LINE_297,
     WORK_CHART_401_TAX_ON_EXCESS_LINE_6,
 )
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
@@ -54,7 +54,7 @@ def test_line_6_at_each_salary(
 def test_line_6_at_the_edges(
     take_home_service: TakeHomeService, salary: str, deductions: str, expected: str
 ) -> None:
-    given = (TP1_TOTAL_DEDUCTIONS_LINE_298, deductions)
+    given = (TP1_LINE_297, deductions)
     sheet = chart_sheet(take_home_service, salary, EXPORTS, PARTS, given)
 
     assert str(sheet.get(LINE).value) == expected

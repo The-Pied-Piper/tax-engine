@@ -10,7 +10,7 @@ import pytest
 import yaml
 
 from tax_engine.jurisdictions.ca_qc.catalog import (
-    TP1_TOTAL_DEDUCTIONS_LINE_298,
+    TP1_LINE_297,
     WORK_CHART_401_INCOME_TAX_LINE_8,
 )
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
@@ -63,7 +63,7 @@ def test_line_8_is_line_6_plus_line_7(
 def test_line_8_at_the_edges(
     take_home_service: TakeHomeService, salary: str, deductions: str, expected: str
 ) -> None:
-    given = (TP1_TOTAL_DEDUCTIONS_LINE_298, deductions)
+    given = (TP1_LINE_297, deductions)
     sheet = chart_sheet(take_home_service, salary, EXPORTS, PARTS, given)
 
     assert str(sheet.get(LINE).value) == expected
