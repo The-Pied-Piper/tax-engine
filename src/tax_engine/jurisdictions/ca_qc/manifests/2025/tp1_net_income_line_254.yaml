@@ -1,16 +1,19 @@
 # TP-1 (2025) line 254: "Add lines 201 through 207, 214 through 231, and 234 through 252. Total
-# deductions". One core/sum in form line order, rounded half-up to the cent (`ca-qc/cent_rounding`).
-# Lines 201 and 248 are steps; the other lines are optional inputs, read as 0 when blank
-# (`tp1_net_income_line_254_inputs.yaml`). The sum is signed (the printed lines set no floor).
+# deductions". Lines 201 and 248 are steps; the other lines are optional inputs, read as 0 when blank
+# (`tp1_net_income_line_254_inputs.yaml`). The sum is signed (the printed lines set no floor). The
+# sentence of a numbered line stays at 40 words or fewer (tests/jurisdictions/test_trace_english_
+# printed_names.py), so the lines are added in two unprinted subtotals that follow the form's own
+# ranges (lines 201 through 231, and lines 234 through 252), carried unrounded
+# (`ca-qc/exact_rounding`; round only where the form says), and the printed line adds the two and
+# rounds half-up to the cent (`ca-qc/cent_rounding`), as TP-1 line 399 does.
 form:
   name: ca-qc/tp1_net_income
 capabilities:
   - name: core/sum
-    title: "Total deductions"
-    reference: "254"
+    title: "Lines 201 to 231 added up"
     unit: ca/cad
     params:
-      rounding: ca-qc/cent_rounding
+      rounding: ca-qc/exact_rounding
     consumes:
       parts:
         - ca-qc/tp1_deduction_for_workers_line_201
@@ -21,6 +24,23 @@ capabilities:
         - ca-qc/tp1_line_225
         - ca-qc/tp1_line_228
         - ca-qc/tp1_line_231
+    blank:
+      ca-qc/tp1_line_205: "0"
+      ca-qc/tp1_line_207: "0"
+      ca-qc/tp1_line_214: "0"
+      ca-qc/tp1_line_215: "0"
+      ca-qc/tp1_line_225: "0"
+      ca-qc/tp1_line_228: "0"
+      ca-qc/tp1_line_231: "0"
+    produces:
+      output: ca-qc/tp1_deductions_lines_201_to_231_subtotal
+  - name: core/sum
+    title: "Lines 234 to 252 added up"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/exact_rounding
+    consumes:
+      parts:
         - ca-qc/tp1_line_234
         - ca-qc/tp1_line_236
         - ca-qc/tp1_line_241
@@ -30,13 +50,6 @@ capabilities:
         - ca-qc/tp1_line_250
         - ca-qc/tp1_line_252
     blank:
-      ca-qc/tp1_line_205: "0"
-      ca-qc/tp1_line_207: "0"
-      ca-qc/tp1_line_214: "0"
-      ca-qc/tp1_line_215: "0"
-      ca-qc/tp1_line_225: "0"
-      ca-qc/tp1_line_228: "0"
-      ca-qc/tp1_line_231: "0"
       ca-qc/tp1_line_234: "0"
       ca-qc/tp1_line_236: "0"
       ca-qc/tp1_line_241: "0"
@@ -44,5 +57,17 @@ capabilities:
       ca-qc/tp1_line_246: "0"
       ca-qc/tp1_line_250: "0"
       ca-qc/tp1_line_252: "0"
+    produces:
+      output: ca-qc/tp1_deductions_lines_234_to_252_subtotal
+  - name: core/sum
+    title: "Total deductions"
+    reference: "254"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/tp1_deductions_lines_201_to_231_subtotal
+        - ca-qc/tp1_deductions_lines_234_to_252_subtotal
     produces:
       output: ca-qc/tp1_total_deductions_line_254

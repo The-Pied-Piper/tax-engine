@@ -862,6 +862,18 @@ TP1_LINE_252 = AmountKind.declare(CATALOG, "tp1_line_252")
 and 234 through 252"): an optional input, read as 0 when blank
 (`tp1_net_income_line_254_inputs.yaml`)."""
 
+TP1_DEDUCTIONS_LINES_201_TO_231_SUBTOTAL = AmountKind.declare(
+    CATALOG, "tp1_deductions_lines_201_to_231_subtotal"
+)
+"""Lines 201 through 231 of TP-1 line 254 added up, not a printed line: carried unrounded, signed,
+and added with the subtotal of lines 234 through 252 by line 254."""
+
+TP1_DEDUCTIONS_LINES_234_TO_252_SUBTOTAL = AmountKind.declare(
+    CATALOG, "tp1_deductions_lines_234_to_252_subtotal"
+)
+"""Lines 234 through 252 of TP-1 line 254 added up, not a printed line: carried unrounded, signed,
+and added with the subtotal of lines 201 through 231 by line 254."""
+
 TP1_TOTAL_DEDUCTIONS_LINE_254 = AmountKind.declare(CATALOG, "tp1_total_deductions_line_254")
 """Total deductions, TP-1 line 254 "Add lines 201 through 207, 214 through 231, and 234 through
 252": the printed sum of line 201, line 248 and the optional lines, rounded half-up to the cent.
