@@ -1,14 +1,39 @@
-# 5005-R (2025) line 27 input a salary-only caller does not give.
-# Line 27: "Line 27: Add lines 22 to 26. Net self-employment income =" (page 3). Lines 22 to 26 (business
-# to fishing income) are blank for a salary-only filer, so the printed sum that collects them is one
-# optional input read as 0; the skipped lines have no step.
+# 5005-R (2025) lines 22 to 26, the net boxes that line 27 adds ("Line 27: Add lines 22 to 26. Net
+# self-employment income =", page 3): line 13500 (business), 13700 (professional), 13900
+# (commission), 14100 (farming) and 14300 (fishing). Each is an optional input, left blank by a
+# salary-only caller and read as 0 by line 27. The form's gross boxes (13499, 13699, 13899, 14099 and
+# 14299) are not part of any sum on this form, so they are not taken. Declared here, with the step that
+# consumes them (`t1_taxable_income_line_27.yaml`).
 form:
   name: ca-qc/t1_taxable_income
 inputs:
-  - name: ca-qc/net_self_employment_income
-    title: "Net self-employment income"
-    reference: "27"
+  - name: ca-qc/t1_line_13500
+    reference: "13500"
     unit: ca/cad
     required: false
-    default: "0"
-    basis: "Line 27: Add lines 22 to 26. Net self-employment income"
+    default: null
+    basis: "Line 22: Business income: Line 13500: Net"
+  - name: ca-qc/t1_line_13700
+    reference: "13700"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 23: Professional income Line 13700: Net"
+  - name: ca-qc/t1_line_13900
+    reference: "13900"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 24: Commission income: Line 13900: Net"
+  - name: ca-qc/t1_line_14100
+    reference: "14100"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 25: Farming income Line 14100: Net"
+  - name: ca-qc/t1_line_14300
+    reference: "14300"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 26: Fishing income Line 14300: Net"

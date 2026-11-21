@@ -1,0 +1,26 @@
+# 5005-R (2025) line 27. The form prints: "Line 27: Add lines 22 to 26. Net self-employment income =" (page 3). One core/sum in form line order,
+# rounded half-up to the cent through `ca-qc/cent_rounding`; the optional lines read as 0 when
+# blank (`t1_taxable_income_line_27_inputs.yaml`).
+form:
+  name: ca-qc/t1_taxable_income
+capabilities:
+  - name: core/sum
+    reference: "27"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/t1_line_13500
+        - ca-qc/t1_line_13700
+        - ca-qc/t1_line_13900
+        - ca-qc/t1_line_14100
+        - ca-qc/t1_line_14300
+    blank:
+      ca-qc/t1_line_13500: "0"
+      ca-qc/t1_line_13700: "0"
+      ca-qc/t1_line_13900: "0"
+      ca-qc/t1_line_14100: "0"
+      ca-qc/t1_line_14300: "0"
+    produces:
+      output: ca-qc/net_self_employment_income
