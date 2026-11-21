@@ -1,0 +1,19 @@
+# Worksheet MB428 (CRA 5007-D) 2025, section "Line 58729", line 4: "Line 4: Add the amounts from line 3
+# for columns 1, 2, and 3 (and others, if any). Enter this amount on line 58729 of your Form MB428."
+# One core/record_total step over the column form's line 3, one record for each dependant; with no
+# dependant it is 0. The form is the total of the columns, split from the column form (which runs once
+# for each dependant) and sharing the title of Worksheet MB428. Form MB428 line 49 reads the export.
+form:
+  name: ca-mb/worksheet_mb428_other_dependants_total
+  title: "Worksheet MB428"
+  required: true
+  exports:
+    - ca-mb/worksheet_mb428_other_dependants_medical_expenses_line_4
+capabilities:
+  - name: core/record_total
+    reference: "4"
+    unit: ca/cad
+    consumes:
+      records: ca-mb/worksheet_mb428_other_dependants.worksheet_mb428_other_dependants_medical_expenses_line_3
+    produces:
+      output: ca-mb/worksheet_mb428_other_dependants_medical_expenses_line_4

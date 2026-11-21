@@ -2,7 +2,8 @@
 
 Form text (Form MB428, CRA 5007-c-25e.txt), lines 43 to 50: see
 `end_to_end/test_mb428_medical_expenses.py` for the full text and the figures through the engine.
-Each calculated line is one step, one line = one capability; lines 43 and 49 are optional inputs.
+Each calculated line is one step, one line = one capability; line 43 is an optional input and
+line 49 is the total of Worksheet MB428 line 4.
 """
 
 from __future__ import annotations
@@ -57,6 +58,17 @@ STEPS = {
         "blank": {"amount": "0"},
         "produces": {"output": "ca-mb/mb428_medical_expenses_over_limit_line_48"},
     },
+    "mb428_credits_line_49.yaml": {
+        "name": "core/record_total",
+        "title": "Allowable amount of medical expenses for other dependants (use Worksheet MB428)",
+        "reference": "49",
+        "unit": "ca/cad",
+        "consumes": {
+            "records": "ca-mb/worksheet_mb428_other_dependants_total."
+            "worksheet_mb428_other_dependants_medical_expenses_line_4"
+        },
+        "produces": {"output": "ca-mb/mb428_other_dependants_medical_expenses_line_49"},
+    },
     "mb428_credits_line_50.yaml": {
         "name": "core/sum",
         "title": "Medical expenses",
@@ -69,13 +81,11 @@ STEPS = {
                 "ca-mb/mb428_other_dependants_medical_expenses_line_49",
             ]
         },
-        "blank": {"ca-mb/mb428_other_dependants_medical_expenses_line_49": "0"},
         "produces": {"output": "ca-mb/mb428_medical_expenses_line_50"},
     },
 }
 INPUTS = {
     "mb428_credits_line_43_inputs.yaml": "ca-mb/mb428_medical_expenses_line_43",
-    "mb428_credits_line_49_inputs.yaml": "ca-mb/mb428_other_dependants_medical_expenses_line_49",
 }
 
 
@@ -143,3 +153,75 @@ def test_each_line_is_a_registered_non_negative_decimal_amount_kind(
     assert isinstance(kind, AmountKind)
     assert kind.value_type.__name__ == "Decimal"
     assert non_negative(kind)
+
+
+LINE_1 = "ca-mb/worksheet_mb428_other_dependants_medical_expenses_line_1"
+LINE_2 = "ca-mb/worksheet_mb428_other_dependants_medical_expenses_line_2"
+LINE_3 = "ca-mb/worksheet_mb428_other_dependants_medical_expenses_line_3"
+LINE_4 = "ca-mb/worksheet_mb428_other_dependants_medical_expenses_line_4"
+COLUMNS = "ca-mb/worksheet_mb428_other_dependants"
+TOTAL_FORM = "ca-mb/worksheet_mb428_other_dependants_total"
+
+
+def test_the_column_form_is_split_from_worksheet_mb428_and_shares_its_title() -> None:
+    part = _load("worksheet_mb428_other_dependants.yaml")
+
+    assert list(part) == ["form", "inputs", "capabilities"]
+    assert part["form"]["name"] == COLUMNS
+    assert part["form"]["title"] == "Worksheet MB428"
+    assert part["form"]["instances"] == COLUMNS
+    assert part["form"]["min_instances"] == 0
+    assert part["form"]["exports"] == [LINE_3]
+    assert [field["name"] for field in part["form"]["fields"]] == [LINE_1, LINE_2]
+    assert part["capabilities"] == []
+
+
+def test_the_column_form_takes_line_1_and_leaves_line_2_optional() -> None:
+    line_1, line_2 = _load("worksheet_mb428_other_dependants.yaml")["form"]["fields"]
+
+    assert line_1["required"] is True
+    assert line_2["required"] is False
+    assert line_2["default"] is None
+
+
+def test_line_3_is_one_step_that_reads_a_blank_line_2_as_zero() -> None:
+    assert _load("worksheet_mb428_other_dependants_line_3.yaml") == {
+        "form": {"name": COLUMNS},
+        "capabilities": [
+            {
+                "name": "core/subtract_not_below_zero",
+                "reference": "3",
+                "unit": "ca/cad",
+                "params": {"rounding": "ca-mb/cent_rounding"},
+                "consumes": {"amount": LINE_1, "less": LINE_2},
+                "blank": {"less": "0"},
+                "produces": {"output": LINE_3},
+            }
+        ],
+    }
+
+
+def test_line_4_is_the_total_of_the_columns_on_a_form_of_its_own() -> None:
+    part = _load("worksheet_mb428_other_dependants_total.yaml")
+
+    assert part["form"] == {
+        "name": TOTAL_FORM,
+        "title": "Worksheet MB428",
+        "required": True,
+        "exports": [LINE_4],
+    }
+    assert part["capabilities"] == [
+        {
+            "name": "core/record_total",
+            "reference": "4",
+            "unit": "ca/cad",
+            "consumes": {
+                "records": f"{COLUMNS}.worksheet_mb428_other_dependants_medical_expenses_line_3"
+            },
+            "produces": {"output": LINE_4},
+        }
+    ]
+
+
+def test_the_old_line_49_input_part_is_gone() -> None:
+    assert not (MB_PARTS / "mb428_credits_line_49_inputs.yaml").exists()

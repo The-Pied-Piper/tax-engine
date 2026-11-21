@@ -1,0 +1,38 @@
+# Worksheet MB428 (CRA 5007-D) 2025, section "Line 58729 - Allowable amount of medical expenses for
+# other dependants": "Complete one column for each dependant." This part names the column form, which
+# runs once for each dependant the caller lists, and its export, line 3. Line 1 and line 2 are the
+# fields of each record: the form takes them as the printed lines do ("Medical expenses for other
+# dependant"; "Enter the amount from line 47 of the dependant's Form MB428"), line 2 being another
+# person's return. A salary-only caller lists no dependant (`min_instances: 0`). Line 4, the total over
+# the columns, is in `worksheet_mb428_other_dependants_total.yaml`, because a form that runs once for
+# each dependant cannot add its own columns. The form shares the title of Worksheet MB428 with the
+# other forms split from it.
+form:
+  name: ca-mb/worksheet_mb428_other_dependants
+  title: "Worksheet MB428"
+  required: true
+  instances: ca-mb/worksheet_mb428_other_dependants
+  min_instances: 0
+  exports:
+    - ca-mb/worksheet_mb428_other_dependants_medical_expenses_line_3
+  fields:
+    - name: ca-mb/worksheet_mb428_other_dependants_medical_expenses_line_1
+      title: "Medical expenses for other dependant"
+      reference: "1"
+      unit: ca/cad
+      required: true
+    - name: ca-mb/worksheet_mb428_other_dependants_medical_expenses_line_2
+      title: "Amount from line 47 of the dependant's Form MB428"
+      reference: "2"
+      unit: ca/cad
+      required: false
+      default: null
+      basis: "Line 2: Enter the amount from line 47 of the dependant's Form MB428."
+inputs:
+  - name: ca-mb/worksheet_mb428_other_dependants
+    title: "Allowable amount of medical expenses for other dependants"
+    unit: ca/cad
+    required: false
+    default: []
+    basis: 'Complete one column for each dependant.'
+capabilities: []
