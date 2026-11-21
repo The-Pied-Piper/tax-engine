@@ -29,12 +29,11 @@ LINE_60 = "ca-on/on428_minimum_tax_carryover_line_60"
 LINE_61 = "ca-on/on428_tax_after_minimum_tax_carryover_line_61"
 PART = "on428_line_61.yaml"
 
-HEADER = f"""\
+HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-outputs:
-  - {LINE_55}
+outputs: []
 capabilities: []
 """
 

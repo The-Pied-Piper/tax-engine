@@ -31,7 +31,6 @@ from tax_engine.domain.errors import InputAboveBoundError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
-from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_mb.catalog import MB428_VENTURE_CAPITAL_CREDIT
 from tests.jurisdictions.ca_mb.support import (
     manitoba_capabilities,
@@ -55,11 +54,8 @@ HEADER = dedent("""\
     jurisdiction: CA-MB
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/employment_income
-        required: true
-    outputs:
-      - ca/employment_income
+    outputs: []
+    capabilities: []
     """)
 FORM = dedent("""\
     form:
@@ -89,7 +85,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
 
 
 def _line_77(tmp_path: Path, credit: str | None = None) -> Artifact[Any]:
-    given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, D("70000"))]
+    given: list[Artifact[Any]] = []
     if credit is not None:
         given.append(Artifact(MB428_VENTURE_CAPITAL_CREDIT, D(credit)))
     worksheets = _service(tmp_path).compute(JurisdictionCode("CA-MB"), 2025, *given)

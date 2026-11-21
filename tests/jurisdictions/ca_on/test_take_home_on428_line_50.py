@@ -33,8 +33,7 @@ HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca-on/on428_credit_amounts_at_credit_rate_line_46
+    outputs: []
     """)
 FORM = dedent("""\
     form:

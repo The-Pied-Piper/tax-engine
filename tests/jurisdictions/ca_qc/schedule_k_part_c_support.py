@@ -43,8 +43,7 @@ HEADER = dedent("""\
     jurisdiction: CA-QC
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca-qc/schedule_k_premium_income_line_48
+    outputs: []
     """)
 # Line 48 is an input of the Schedule K form (the form that reads it), declared beside its exports.
 LINE_48_INPUT = dedent("""\

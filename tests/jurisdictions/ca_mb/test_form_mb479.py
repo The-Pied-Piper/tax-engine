@@ -22,13 +22,12 @@ from tests.jurisdictions.ca_mb.support import (
 PART = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025" / "mb479.yaml"
 LINE_81 = "ca-mb/mb479_manitoba_credits_line_81"
 
-HEADER = f"""\
+HEADER = """\
 jurisdiction: CA-MB
 version: 1
 valid_from_tax_year: 2025
 inputs: []
-outputs:
-  - {LINE_81}
+outputs: []
 capabilities: []
 """
 # The inputs belong to the form that exports them, so they are declared in a part of that form.

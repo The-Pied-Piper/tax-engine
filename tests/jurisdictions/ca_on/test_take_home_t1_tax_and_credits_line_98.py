@@ -57,8 +57,7 @@ HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 # The T1 tax and credits declaration, test-local: its one export is line 98, the line under test.

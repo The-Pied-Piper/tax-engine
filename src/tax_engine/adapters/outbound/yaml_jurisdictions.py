@@ -38,9 +38,9 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.domain.unit import Unit, UnitRegistry
 
 _MANIFEST_KEYS = frozenset(
-    {"jurisdiction", "version", "valid_from_tax_year", "inputs", "outputs", "capabilities"}
+    {"jurisdiction", "version", "valid_from_tax_year", "outputs", "capabilities"}
 )
-_OPTIONAL_MANIFEST_KEYS = frozenset({"title", "imports"})
+_OPTIONAL_MANIFEST_KEYS = frozenset({"title", "imports", "inputs"})
 _PART_KEYS = _MANIFEST_KEYS | _OPTIONAL_MANIFEST_KEYS | {"form"}
 _FORM_KEYS = frozenset({"name"})
 _OPTIONAL_FORM_KEYS = frozenset(
@@ -200,9 +200,12 @@ class YamlJurisdictionSource:
     @staticmethod
     def _input_owners(document: YamlNode, path: Path) -> dict[str, Path]:
         """The inputs a whole-file manifest declares, each owned by the file."""
-        return {
-            item.field("name").require_string(): path for item in document.field("inputs").items()
-        }
+        node = document.optional_field("inputs")
+        return (
+            {}
+            if node is None
+            else {item.field("name").require_string(): path for item in node.items()}
+        )
 
     @staticmethod
     def _parts(folder: Path) -> list[Path]:
@@ -247,8 +250,6 @@ class YamlJurisdictionSource:
                 "an imported form's parts are in its own package"
             )
         self._check_suppliers(declarations)
-        if form_inputs or "imports" in lists:
-            lists.setdefault("inputs", [])  # the default form may have none beside the others
         if form_selections:
             lists.setdefault("capabilities", [])  # the default form may have none beside the others
         try:
@@ -612,10 +613,9 @@ class YamlJurisdictionSource:
         doc = document.require_mapping(_MANIFEST_KEYS, optional=_OPTIONAL_MANIFEST_KEYS)
         code = self._code(doc.field("jurisdiction"))
         default = code.namespace.identifier(_DEFAULT_FORM)
-        inputs = self._declarations(doc.field("inputs"), self._input_kind)
+        declared = doc.optional_field("inputs")
+        inputs = () if declared is None else self._declarations(declared, self._input_kind)
         outputs = self._identifiers(doc.field("outputs"))
-        if not outputs:
-            raise InvalidManifestError("outputs must name at least one artifact")
         Form.check_exports("outputs", sorted(outputs))
         title = doc.optional_field("title")
         imports = doc.optional_field("imports")

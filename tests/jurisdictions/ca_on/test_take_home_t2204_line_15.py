@@ -40,9 +40,7 @@ HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/t2204_premiums_deducted
-      - ca/t2204_line_14
+    outputs: []
     """)
 FORM = dedent("""\
     form:

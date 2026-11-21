@@ -17,7 +17,6 @@ import yaml
 
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
 from tests.jurisdictions.ca_qc.support import quebec_kinds
 
@@ -46,13 +45,9 @@ def _consumed() -> set[str]:
 
 
 def solidarity_header() -> str:
-    """A test header: the salary, required. The chain's inputs belong to the form that reads them,
-    so the form part declares them."""
-    return (
-        "jurisdiction: CA-QC\nversion: 1\nvalid_from_tax_year: 2025\ninputs:\n"
-        "  - name: ca/employment_income\n    required: true\n"
-        "outputs:\n  - ca/employment_income\n"
-    )
+    """A test header: the default form exports nothing, and the chain's inputs belong to the form
+    that reads them, so the form part declares them."""
+    return "jurisdiction: CA-QC\nversion: 1\nvalid_from_tax_year: 2025\noutputs: []\n"
 
 
 def solidarity_form_part(identifier: str) -> str:
@@ -120,8 +115,7 @@ def solidarity_figure(
         "ca-qc/solidarity_qst_component_amount": Decimal(qst),
         "ca-qc/solidarity_housing_received": housing,
     }
-    given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, Decimal("70000"))]
-    given += [
+    given: list[Artifact[Any]] = [
         Artifact(quebec_kinds().kind(name), values[name]) for name in INPUTS if name in _consumed()
     ]
     (sheet,) = service.compute(JurisdictionCode("CA-QC"), 2025, *given)[FORM]

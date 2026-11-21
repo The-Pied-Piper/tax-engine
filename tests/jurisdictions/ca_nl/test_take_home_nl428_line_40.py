@@ -82,8 +82,8 @@ HEADER = dedent("""\
     jurisdiction: CA-NL
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
+    capabilities: []
     """)
 WORKSHEET_FORM_PART = dedent("""\
     form:

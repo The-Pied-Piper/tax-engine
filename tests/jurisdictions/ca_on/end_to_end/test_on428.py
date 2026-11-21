@@ -94,8 +94,7 @@ HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 # The real ON428 declaration (`on428.yaml`) carries the form and its exports, so the fixture's own

@@ -30,6 +30,7 @@ from tests.jurisdictions.ca_mb.support import (
     manitoba_units,
 )
 from tests.kinds import non_negative
+from tests.manifest_support import input_named
 
 PART = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / (
     "manifests/2025/mb479_line_17_inputs.yaml"
@@ -38,7 +39,7 @@ HEADER = """\
 jurisdiction: CA-MB
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
 capabilities: []
 """
 # (kind, identifier, reference, printed title), in the order of the form.
@@ -129,7 +130,7 @@ def test_each_credit_is_a_non_negative_amount_kind(
 def test_a_request_that_leaves_out_a_credit_is_read_as_blank(
     tmp_path: Path, constant: Any, identifier: str, reference: str, title: str
 ) -> None:
-    declaration = _manifest(tmp_path).inputs[identifier]
+    declaration = input_named(_manifest(tmp_path), identifier)
     default = declaration.default_artifact(manitoba_kinds().kind(identifier))
 
     assert not declaration.required

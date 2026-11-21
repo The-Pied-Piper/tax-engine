@@ -49,7 +49,7 @@ DEATH = "ca-on/on428_year_of_death_line_36"
 LIMITED = "ca-on/on428_attendant_care_federal_limit_applied_line_36"
 OUTPUT = "ca-on/on428_medical_expenses_allowed_line_36"
 
-HEADER = f"jurisdiction: CA-ON\nversion: 1\nvalid_from_tax_year: 2025\noutputs: [{CLAIM}]\n"
+HEADER = "jurisdiction: CA-ON\nversion: 1\nvalid_from_tax_year: 2025\noutputs: []\n"
 FORM = f"""\
 form:
   name: ca-on/on428

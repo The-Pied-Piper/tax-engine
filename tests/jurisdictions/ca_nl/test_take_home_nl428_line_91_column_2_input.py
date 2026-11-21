@@ -29,6 +29,7 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_units,
 )
 from tests.kinds import non_negative
+from tests.manifest_support import input_named
 
 KIND = NL428_SPOUSE_UCCB_RDSP_INCOME_LINE_91
 IDENTIFIER = KIND.identifier
@@ -44,7 +45,7 @@ HEADER = """\
 jurisdiction: CA-NL
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
 capabilities: []
 """
 
@@ -91,7 +92,7 @@ def test_the_part_declares_only_the_spouse_uccb_rdsp_income_input() -> None:
 
 
 def test_a_request_that_leaves_out_line_91_is_read_as_blank(tmp_path: Path) -> None:
-    declaration = _manifest(tmp_path).inputs[IDENTIFIER]
+    declaration = input_named(_manifest(tmp_path), IDENTIFIER)
     default = declaration.default_artifact(newfoundland_kinds().kind(IDENTIFIER))
 
     assert not declaration.required

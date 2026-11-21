@@ -35,12 +35,11 @@ LINE_1 = "ca-on/on428_taxable_income_line_1"
 LINE_5 = "ca-on/on428_bracket_column_rate_line_5"
 PART = "on428_line_5.yaml"
 
-HEADER = f"""\
+HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-outputs:
-  - {LINE_1}
+outputs: []
 capabilities: []
 """
 

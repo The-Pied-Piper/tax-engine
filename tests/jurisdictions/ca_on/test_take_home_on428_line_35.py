@@ -24,12 +24,11 @@ LINE_31 = "ca-on/on428_credits_with_disability_line_31"
 LINE_35 = "ca-on/on428_credits_with_transfers_line_35"
 PART = "on428_line_35.yaml"
 
-HEADER = f"""\
+HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-outputs:
-  - {LINE_31}
+outputs: []
 capabilities: []
 """
 

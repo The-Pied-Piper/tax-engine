@@ -27,12 +27,11 @@ LINE_44 = "ca-on/on428_total_credit_amounts_line_44"
 LINE_46 = "ca-on/on428_credit_amounts_at_credit_rate_line_46"
 PART = "on428_line_46.yaml"
 
-HEADER = f"""\
+HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-outputs:
-  - {LINE_44}
+outputs: []
 capabilities: []
 """
 

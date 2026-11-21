@@ -24,6 +24,7 @@ from tests.jurisdictions.ca_mb.support import (
     manitoba_units,
 )
 from tests.kinds import non_negative
+from tests.manifest_support import input_named
 
 IDENTIFIER = MB428_TAX_ON_SPLIT_INCOME_LINE_59.identifier
 PRINTED_BASIS = "Line 59 and line 61510: Manitoba tax on split income (complete Form T1206)"
@@ -34,7 +35,7 @@ HEADER = """\
 jurisdiction: CA-MB
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
 capabilities: []
 """
 
@@ -102,7 +103,7 @@ def test_the_tax_on_split_income_line_59_is_a_non_negative_amount_kind() -> None
 
 
 def test_a_request_that_leaves_out_line_59_is_read_as_blank(tmp_path: Path) -> None:
-    declaration = _manifest(tmp_path).inputs[IDENTIFIER]
+    declaration = input_named(_manifest(tmp_path), IDENTIFIER)
     default = declaration.default_artifact(manitoba_kinds().kind(IDENTIFIER))
 
     assert not declaration.required

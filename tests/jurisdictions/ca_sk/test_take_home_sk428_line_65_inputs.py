@@ -31,6 +31,7 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_units,
 )
 from tests.kinds import non_negative
+from tests.manifest_support import input_named
 
 IDENTIFIER = SK428_MINIMUM_TAX_CARRYOVER_AMOUNT_LINE_65.identifier
 PRINTED_BASIS = "Line 65: Amount from line 40427 of your return Line 61540"
@@ -41,7 +42,7 @@ HEADER = """\
 jurisdiction: CA-SK
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
 capabilities: []
 """
 # The form that owns the input, declared here as the real parts of the form declare it.
@@ -108,7 +109,7 @@ def test_the_minimum_tax_carryover_line_65_is_a_non_negative_amount_kind() -> No
 
 
 def test_a_request_that_leaves_out_line_65_is_read_as_blank(tmp_path: Path) -> None:
-    declaration = _manifest(tmp_path).inputs[IDENTIFIER]
+    declaration = input_named(_manifest(tmp_path), IDENTIFIER)
     default = declaration.default_artifact(saskatchewan_kinds().kind(IDENTIFIER))
 
     assert not declaration.required

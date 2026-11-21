@@ -21,6 +21,7 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.domain.manifest import Manifest
 from tax_engine.jurisdictions.ca_ab.catalog import AB428_TAX_ON_SPLIT_INCOME_LINE_60
 from tests.jurisdictions.ca_ab.support import alberta_kinds, alberta_packages, alberta_units
+from tests.manifest_support import input_named
 
 IDENTIFIER = "ca-ab/ab428_tax_on_split_income_line_60"
 PRINTED_BASIS = "Line 60 and line 61510: Alberta tax on split income (complete Form T1206)"
@@ -31,7 +32,7 @@ HEADER = """\
 jurisdiction: CA-AB
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
 capabilities: []
 """
 
@@ -88,7 +89,7 @@ def test_the_part_declares_the_one_input_as_printed() -> None:
 
 
 def test_a_request_that_leaves_out_line_60_is_read_as_blank(tmp_path: Path) -> None:
-    declaration = _manifest(tmp_path).inputs[IDENTIFIER]
+    declaration = input_named(_manifest(tmp_path), IDENTIFIER)
     default = declaration.default_artifact(alberta_kinds().kind(IDENTIFIER))
 
     assert not declaration.required

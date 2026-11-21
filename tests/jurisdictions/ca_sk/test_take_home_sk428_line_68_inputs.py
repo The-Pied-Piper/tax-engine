@@ -28,6 +28,7 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_packages,
     saskatchewan_units,
 )
+from tests.manifest_support import input_named
 
 D = Decimal
 IDENTIFIER = "ca-sk/sk428_minimum_tax_t691_amount_line_68"
@@ -39,7 +40,7 @@ HEADER = """\
 jurisdiction: CA-SK
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
 capabilities: []
 """
 # The form that owns the input, declared here as the real parts of the form declare it.
@@ -99,7 +100,7 @@ def test_the_part_declares_the_one_input_as_printed() -> None:
 
 
 def test_a_request_that_leaves_out_line_68_is_read_as_zero(tmp_path: Path) -> None:
-    declaration = _manifest(tmp_path).inputs[IDENTIFIER]
+    declaration = input_named(_manifest(tmp_path), IDENTIFIER)
     default = declaration.default_artifact(saskatchewan_kinds().kind(IDENTIFIER))
 
     assert not declaration.required

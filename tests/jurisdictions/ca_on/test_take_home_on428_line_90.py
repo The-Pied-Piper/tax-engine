@@ -31,13 +31,11 @@ LINE_89 = "ca-on/on428_ontario_health_premium_line_89"
 LINE_90 = "ca-on/on428_ontario_tax_line_90"
 PART = "on428_line_90.yaml"
 
-HEADER = f"""\
+HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-outputs:
-  - {LINE_88}
-  - {LINE_89}
+outputs: []
 capabilities: []
 """
 

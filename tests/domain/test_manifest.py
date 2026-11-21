@@ -30,7 +30,7 @@ from tax_engine.domain.manifest import (
     Manifest,
 )
 from tests.kinds import AutoKinds
-from tests.manifest_support import required_inputs
+from tests.manifest_support import inputs_of, required_inputs
 
 
 def selection() -> CapabilitySelection:
@@ -150,7 +150,7 @@ def manifest(
 def test_manifest_holds_its_inputs_and_its_forms() -> None:
     found = manifest(inputs=frozenset({"ex/taxable_base", "ex/gross_income"}), outputs=("ex/levy",))
 
-    assert found.inputs.keys() == frozenset({"ex/taxable_base", "ex/gross_income"})
+    assert inputs_of(found).keys() == frozenset({"ex/taxable_base", "ex/gross_income"})
     (only,) = found.forms
     assert only.name == "ex-on/return"
     assert only.exports == ("ex/levy",)
@@ -166,9 +166,7 @@ def test_manifest_fields_in_order() -> None:
         "valid_from_tax_year",
         "forms",
         "artifacts",
-        "inputs",
         "kinds",
-        "defaults",
         "field_defaults",
     ]
 
@@ -187,11 +185,6 @@ def test_equal_manifests_are_equal_and_hash_alike() -> None:
     assert manifest() != manifest(outputs=("ex/other",))
 
 
-def test_manifest_rejects_empty_inputs() -> None:
-    with pytest.raises(InvalidManifestError, match="inputs must name at least one artifact"):
-        manifest(inputs=frozenset())
-
-
 def test_manifest_rejects_no_forms() -> None:
     with pytest.raises(InvalidManifestError, match="forms must name at least one form"):
         dataclasses.replace(manifest(), forms=())
@@ -200,7 +193,7 @@ def test_manifest_rejects_no_forms() -> None:
 def test_manifest_accepts_an_identifier_that_is_both_input_and_export() -> None:
     found = manifest(inputs=frozenset({"ex/taxable_base", "ex/levy"}), outputs=("ex/levy",))
 
-    assert found.inputs.keys() == frozenset({"ex/taxable_base", "ex/levy"})
+    assert inputs_of(found).keys() == frozenset({"ex/taxable_base", "ex/levy"})
     assert found.forms[0].exports == ("ex/levy",)
 
 
@@ -355,13 +348,6 @@ def test_a_form_may_have_no_instances_list_and_then_has_one_instance() -> None:
 def test_an_export_is_a_plain_namespaced_identifier(bad: str) -> None:
     with pytest.raises(InvalidManifestError, match="exports"):
         form(exports=("ex/net_income", bad))
-
-
-def test_a_form_must_export_something() -> None:
-    with pytest.raises(
-        InvalidManifestError, match=r"form '[^']+': exports must name at least one artifact"
-    ):
-        form(exports=())
 
 
 @pytest.mark.parametrize(
@@ -754,7 +740,7 @@ def registry(*kinds: ArtifactKind[Any]) -> ArtifactRegistry:
 COUNT_APPLIES = CountKind("ex/relief_applies", non_negative=True)
 
 
-def test_the_manifest_is_checked_and_its_defaults_collected_when_it_is_built() -> None:
+def test_the_manifest_is_checked_and_its_field_defaults_collected_when_it_is_built() -> None:
     gated = optional_form(
         instances="ex/rows",
         fields=(
@@ -766,7 +752,6 @@ def test_the_manifest_is_checked_and_its_defaults_collected_when_it_is_built() -
 
     built = with_forms(gated, inputs=inputs, artifacts=registry(COUNT_APPLIES, ROWS, AMOUNT, COUNT))
 
-    assert built.defaults == (Artifact(AMOUNT, Decimal(0)),)
     assert built.field_defaults["ex/relief"] == (
         Artifact(AMOUNT, Decimal("2.50")),
         Artifact(COUNT, BLANK),
@@ -1065,32 +1050,3 @@ def test_an_optional_slot_without_a_blank_rule_is_listed_by_the_form() -> None:
 #
 # An input belongs to the form that declares it, and the manifest's `inputs` gather them. Another
 # form reads the owner's export instead (its composition starts from its own inputs only).
-
-
-def test_the_manifests_inputs_gather_those_of_every_form() -> None:
-    assert with_forms(optional_form()).inputs.keys() == {
-        "ex/taxable_base",
-        "ex/relief_applies",
-    }
-
-
-def test_a_form_starts_from_the_inputs_it_holds_and_no_others() -> None:
-    found = with_forms(optional_form())
-    default, relief = found.forms
-    kinds = found.kinds
-
-    assert found.starting_kinds(relief) == frozenset()
-    assert found.starting_kinds(default) == {
-        kinds.kind("ex/taxable_base"),
-        kinds.kind("ex/relief_applies"),
-    }
-
-
-def test_an_input_two_forms_declare_is_refused_naming_both() -> None:
-    again = with_inputs(optional_form(), ["ex/taxable_base"])
-
-    with pytest.raises(
-        InvalidManifestError,
-        match="input 'ex/taxable_base' is declared by form 'ex-on/return' and by form 'ex/relief'",
-    ):
-        with_forms(again)

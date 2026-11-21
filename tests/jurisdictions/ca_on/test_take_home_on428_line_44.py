@@ -28,12 +28,11 @@ LINE_43 = "ca-on/on428_medical_expenses_line_43"
 LINE_44 = "ca-on/on428_total_credit_amounts_line_44"
 PART = "on428_line_44.yaml"
 
-HEADER = f"""\
+HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-outputs:
-  - {LINE_35}
+outputs: []
 capabilities: []
 """
 

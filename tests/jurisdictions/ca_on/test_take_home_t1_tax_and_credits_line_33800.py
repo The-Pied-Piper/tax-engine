@@ -59,8 +59,7 @@ HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 # The T1 tax and credits declaration, test-local: its one export is line 33800, the line under test.
@@ -75,12 +74,11 @@ T1_TAX_AND_CREDITS = dedent(f"""\
 # The direct case: line 33800 fed by line 33500 alone, the input declared in a header of its own,
 # and the take-home folder's `t1_tax_and_credits_line_33800.yaml` loaded beside it.
 PART = "t1_tax_and_credits_line_33800.yaml"
-DIRECT_HEADER = f"""\
+DIRECT_HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-outputs:
-  - {LINE_33500}
+outputs: []
 capabilities: []
 """
 

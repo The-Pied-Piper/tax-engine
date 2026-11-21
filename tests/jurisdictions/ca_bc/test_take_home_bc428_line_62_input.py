@@ -26,6 +26,7 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_packages,
     british_columbia_units,
 )
+from tests.manifest_support import input_named
 
 IDENTIFIER = "ca-bc/bc428_tax_on_split_income_line_62"
 PRINTED_BASIS = "Line 62 and line 61510: British Columbia tax on split income (complete Form T1206)"
@@ -36,7 +37,7 @@ HEADER = """\
 jurisdiction: CA-BC
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
 capabilities: []
 """
 
@@ -97,7 +98,7 @@ def test_the_part_declares_the_one_input_as_printed() -> None:
 
 
 def test_a_request_that_leaves_out_line_62_is_read_as_blank(tmp_path: Path) -> None:
-    declaration = _manifest(tmp_path).inputs[IDENTIFIER]
+    declaration = input_named(_manifest(tmp_path), IDENTIFIER)
     default = declaration.default_artifact(british_columbia_kinds().kind(IDENTIFIER))
 
     assert not declaration.required

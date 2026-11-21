@@ -49,8 +49,7 @@ def compute_line(
     kinds = manitoba_kinds()
     header = (
         "jurisdiction: CA-MB\nversion: 1\nvalid_from_tax_year: 2025\n"
-        + "outputs:\n"
-        + "".join(f"  - {name}\n" for name in (*inputs, *(part_inputs or {}), *outputs))
+        + "outputs: []\n"
         + "capabilities: []\n"
     )
     # The inputs are the form's own: the form's steps read them, so no other form may hold them.

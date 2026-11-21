@@ -36,7 +36,6 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
-from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_ab.catalog import (
     AB428_UNUSED_TUITION_LINE_41,
     WORKSHEET_AB428_LINE_2,
@@ -61,11 +60,8 @@ HEADER = dedent("""\
     jurisdiction: CA-AB
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/employment_income
-        required: true
-    outputs:
-      - ca/employment_income
+    outputs: []
+    capabilities: []
     """)
 CREDITS_FORM = dedent("""\
     form:
@@ -112,9 +108,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
 
 
 def _sheet(tmp_path: Path, salary: str, *extra: Artifact[Decimal]) -> Worksheet:
-    worksheets = _service(tmp_path).compute(
-        JurisdictionCode("CA-AB"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary)), *extra
-    )
+    worksheets = _service(tmp_path).compute(JurisdictionCode("CA-AB"), 2025, *extra)
     (sheet,) = worksheets["ca-ab/worksheet_ab428"]
     return sheet
 

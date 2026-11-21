@@ -52,12 +52,11 @@ SALARY = "ca/employment_income"
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
 PART = BC_PARTS / "bc428_line_69.yaml"
 
-HEADER = dedent(f"""\
+HEADER = dedent("""\
     jurisdiction: CA-BC
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - {SALARY}
+    outputs: []
     capabilities: []
     """)
 FORM = dedent(f"""\

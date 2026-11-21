@@ -48,8 +48,7 @@ HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 # The ON428 declaration, test-local: its exports are lines 1 and 89, the two lines of this part.

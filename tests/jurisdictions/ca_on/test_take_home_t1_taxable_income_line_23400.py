@@ -34,9 +34,7 @@ HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-outputs:
-  - ca/total_income
-  - ca/deductions_from_total_income
+outputs: []
 """
 FORM = """\
 form:

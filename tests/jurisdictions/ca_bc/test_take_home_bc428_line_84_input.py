@@ -32,6 +32,7 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_units,
 )
 from tests.kinds import non_negative
+from tests.manifest_support import input_named
 
 IDENTIFIER = BC428_POLITICAL_CONTRIBUTION_TAX_CREDIT_LINE_84.identifier
 PRINTED_BASIS = (
@@ -45,7 +46,7 @@ HEADER = """\
 jurisdiction: CA-BC
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
 capabilities: []
 """
 
@@ -127,7 +128,7 @@ def test_the_line_84_and_maximum_kinds_are_non_negative_amount_kinds() -> None:
 
 
 def test_a_request_that_leaves_out_line_84_is_read_as_blank(tmp_path: Path) -> None:
-    declaration = _manifest(tmp_path).inputs[IDENTIFIER]
+    declaration = input_named(_manifest(tmp_path), IDENTIFIER)
     default = declaration.default_artifact(british_columbia_kinds().kind(IDENTIFIER))
 
     assert not declaration.required

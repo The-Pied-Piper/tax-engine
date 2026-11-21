@@ -31,7 +31,12 @@ from tax_engine.domain.unit import UnitRegistry
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca.catalog.refund import T2204_PREMIUMS_DEDUCTED_GIVEN
-from tests.manifest_support import T1_LINE_10100_INPUT, T1_LINE_10100_STEP, inputs_without_form
+from tests.manifest_support import (
+    T1_LINE_10100_INPUT,
+    T1_LINE_10100_STEP,
+    input_named,
+    inputs_without_form,
+)
 
 
 @cache
@@ -86,8 +91,7 @@ T2204_HEADER = dedent("""\
     version: 1
     valid_from_tax_year: 2025
     inputs: []
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     imports:
     """)
@@ -137,8 +141,8 @@ SCHEDULE_P_HEADER = dedent("""\
     jurisdiction: CA-QC
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
+    capabilities: []
     """)
 # The salary: the Quebec T1 employment income form that owns the input (its declaration, the input
 # and lines 10100 and 10400, which the form declaration exports), for a test that reads no line of
@@ -240,7 +244,8 @@ def schedule_p_input(tmp_path: Path, part: str, name: str) -> InputDeclaration:
     part joined to the default form are the caller's own)."""
     folder = tmp_path / "manifest"
     folder.mkdir(parents=True)
-    (folder / "header.yaml").write_text(SCHEDULE_P_HEADER + "capabilities: []\n", encoding="utf-8")
+    (folder / "header.yaml").write_text(SCHEDULE_P_HEADER, encoding="utf-8")
     (folder / part).write_text(inputs_without_form(MANIFEST.parent / part), encoding="utf-8")
     roots = {**quebec_packages().roots(), Namespace("ca-qc"): tmp_path}
-    return YamlJurisdictionSource(roots, quebec_kinds(), quebec_units()).load(folder).inputs[name]
+    source = YamlJurisdictionSource(roots, quebec_kinds(), quebec_units())
+    return input_named(source.load(folder), name)

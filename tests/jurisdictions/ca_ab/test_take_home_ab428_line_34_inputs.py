@@ -23,6 +23,7 @@ from tax_engine.domain.manifest import Manifest
 from tax_engine.jurisdictions.ca_ab.catalog import AB428_PENSION_INCOME_AMOUNT
 from tests.jurisdictions.ca_ab.support import alberta_kinds, alberta_packages, alberta_units
 from tests.kinds import non_negative
+from tests.manifest_support import input_named
 
 D = Decimal
 IDENTIFIER = AB428_PENSION_INCOME_AMOUNT.identifier
@@ -34,7 +35,7 @@ HEADER = """\
 jurisdiction: CA-AB
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
 capabilities: []
 """
 
@@ -102,7 +103,7 @@ def test_the_pension_income_amount_is_a_non_negative_amount_kind() -> None:
 def test_a_request_that_leaves_out_the_pension_income_amount_is_read_as_zero(
     tmp_path: Path,
 ) -> None:
-    declaration = _manifest(tmp_path).inputs[IDENTIFIER]
+    declaration = input_named(_manifest(tmp_path), IDENTIFIER)
     default = declaration.default_artifact(alberta_kinds().kind(IDENTIFIER))
 
     assert not declaration.required

@@ -75,8 +75,7 @@ HEADER = dedent("""\
     jurisdiction: CA-AB
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 # The AB428 declaration, test-local: lines 1 and 12 are composed, so it exports those.

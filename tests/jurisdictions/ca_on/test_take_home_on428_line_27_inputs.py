@@ -17,7 +17,7 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.domain.manifest import Manifest
 from tax_engine.jurisdictions.ca_on.catalog import ON428_PENSION_INCOME_AMOUNT
 from tax_engine.registrations import JURISDICTIONS, artifact_kinds, units
-from tests.manifest_support import inputs_without_form
+from tests.manifest_support import input_named, inputs_without_form
 
 D = Decimal
 PRINTED_BASIS = "Line 27 and line 58360: Pension income amount (maximum $1,762)"
@@ -28,7 +28,7 @@ HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
 capabilities: []
 """
 
@@ -45,7 +45,7 @@ def test_a_request_that_leaves_out_the_pension_income_amount_is_read_as_zero(
     tmp_path: Path,
 ) -> None:
     kinds = artifact_kinds()
-    declaration = _manifest(tmp_path).inputs[ON428_PENSION_INCOME_AMOUNT.identifier]
+    declaration = input_named(_manifest(tmp_path), ON428_PENSION_INCOME_AMOUNT.identifier)
     default = declaration.default_artifact(kinds.kind(ON428_PENSION_INCOME_AMOUNT.identifier))
     assert not declaration.required
     assert declaration.basis == PRINTED_BASIS

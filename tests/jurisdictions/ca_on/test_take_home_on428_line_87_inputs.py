@@ -19,7 +19,7 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.domain.manifest import Manifest
 from tax_engine.jurisdictions.ca_on.catalog import ON428_QUALIFYING_FOOD_DONATIONS_LINE_87
 from tax_engine.registrations import JURISDICTIONS, artifact_kinds, units
-from tests.manifest_support import inputs_without_form
+from tests.manifest_support import input_named, inputs_without_form
 
 D = Decimal
 PRINTED_BASIS = (
@@ -33,7 +33,7 @@ HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
 capabilities: []
 """
 
@@ -49,7 +49,7 @@ def _manifest(tmp_path: Path) -> Manifest:
 def test_a_request_that_leaves_out_line_87_is_read_as_zero(tmp_path: Path) -> None:
     kinds = artifact_kinds()
     identifier = ON428_QUALIFYING_FOOD_DONATIONS_LINE_87.identifier
-    declaration = _manifest(tmp_path).inputs[identifier]
+    declaration = input_named(_manifest(tmp_path), identifier)
     default = declaration.default_artifact(kinds.kind(identifier))
     assert not declaration.required
     assert declaration.basis == PRINTED_BASIS

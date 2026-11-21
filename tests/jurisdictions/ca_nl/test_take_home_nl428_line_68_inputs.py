@@ -33,6 +33,7 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_units,
 )
 from tests.kinds import non_negative
+from tests.manifest_support import input_named
 
 KIND = NL428_MINIMUM_TAX_CARRYOVER_AMOUNT_LINE_68
 IDENTIFIER = KIND.identifier
@@ -44,7 +45,7 @@ HEADER = """\
 jurisdiction: CA-NL
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
 capabilities: []
 """
 
@@ -98,7 +99,7 @@ def test_the_minimum_tax_carryover_line_68_is_a_non_negative_amount_kind() -> No
 
 
 def test_a_request_that_leaves_out_line_68_is_read_as_blank(tmp_path: Path) -> None:
-    declaration = _manifest(tmp_path).inputs[IDENTIFIER]
+    declaration = input_named(_manifest(tmp_path), IDENTIFIER)
     default = declaration.default_artifact(newfoundland_kinds().kind(IDENTIFIER))
 
     assert not declaration.required

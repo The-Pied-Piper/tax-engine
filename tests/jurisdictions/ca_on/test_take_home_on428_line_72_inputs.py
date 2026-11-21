@@ -18,7 +18,7 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.domain.manifest import Manifest
 from tax_engine.jurisdictions.ca_on.catalog import ON428_ADDITIONAL_TAX_FOR_MINIMUM_TAX_LINE_72
 from tax_engine.registrations import JURISDICTIONS, artifact_kinds, units
-from tests.manifest_support import inputs_without_form
+from tests.manifest_support import input_named, inputs_without_form
 
 PRINTED_BASIS = (
     "Line 72: If you entered an amount on line 11 of Part 5 of Form T691, use Worksheet ON428 to "
@@ -31,7 +31,7 @@ HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
 capabilities: []
 """
 
@@ -47,7 +47,7 @@ def _manifest(tmp_path: Path) -> Manifest:
 def test_a_request_that_leaves_out_line_72_is_read_as_blank(tmp_path: Path) -> None:
     kinds = artifact_kinds()
     identifier = ON428_ADDITIONAL_TAX_FOR_MINIMUM_TAX_LINE_72.identifier
-    declaration = _manifest(tmp_path).inputs[identifier]
+    declaration = input_named(_manifest(tmp_path), identifier)
     default = declaration.default_artifact(kinds.kind(identifier))
     assert not declaration.required
     assert declaration.basis == PRINTED_BASIS

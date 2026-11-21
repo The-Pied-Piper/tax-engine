@@ -8,8 +8,20 @@ from pathlib import Path
 
 import tax_engine.jurisdictions.ca_qc
 from tax_engine.domain.kinds import RecordListKind
-from tax_engine.domain.manifest import InputDeclaration
+from tax_engine.domain.manifest import InputDeclaration, Manifest
 from tests.federal_forms import FEDERAL_FORMS
+
+
+def input_named(manifest: Manifest, name: str) -> InputDeclaration:
+    """The declaration of the input `name`, found on the one form of `manifest` that holds it."""
+    (found,) = (d for form in manifest.forms for d in form.inputs if d.name == name)
+    return found
+
+
+def inputs_of(manifest: Manifest) -> dict[str, InputDeclaration]:
+    """Every input of `manifest` by name: each form's own, side by side, for a test that asks what
+    the manifest declares as a whole."""
+    return {d.name: d for form in manifest.forms for d in form.inputs}
 
 
 def required_fields(kind: RecordListKind) -> tuple[InputDeclaration, ...]:

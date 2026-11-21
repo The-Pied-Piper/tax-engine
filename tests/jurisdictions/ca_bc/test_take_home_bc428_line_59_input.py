@@ -25,6 +25,7 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_units,
 )
 from tests.kinds import non_negative
+from tests.manifest_support import input_named
 
 IDENTIFIER = BC428_QUALIFYING_GIFTS_LINE_59.identifier
 PRINTED_BASIS = "Line 59 and line 58980: Amount of qualifying gifts also claimed on line 57"
@@ -35,7 +36,7 @@ HEADER = """\
 jurisdiction: CA-BC
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
 capabilities: []
 """
 
@@ -105,7 +106,7 @@ def test_the_qualifying_gifts_line_59_is_a_non_negative_amount_kind() -> None:
 
 
 def test_a_request_that_leaves_out_line_59_is_read_as_blank(tmp_path: Path) -> None:
-    declaration = _manifest(tmp_path).inputs[IDENTIFIER]
+    declaration = input_named(_manifest(tmp_path), IDENTIFIER)
     default = declaration.default_artifact(british_columbia_kinds().kind(IDENTIFIER))
 
     assert not declaration.required

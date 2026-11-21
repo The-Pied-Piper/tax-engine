@@ -25,12 +25,11 @@ LINE_1 = "ca/t4_cpp_pensionable_earnings_outside_quebec"
 LINE_2 = "ca/cpp_part_3_line_2"
 PART = "schedule_8_line_2.yaml"
 
-HEADER = f"""\
+HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-outputs:
-  - {LINE_1}
+outputs: []
 capabilities: []
 """
 

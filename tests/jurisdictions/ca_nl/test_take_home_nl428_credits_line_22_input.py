@@ -31,6 +31,7 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_units,
 )
 from tests.kinds import non_negative
+from tests.manifest_support import input_named
 
 IDENTIFIER = NL428_ELIGIBLE_DEPENDANT_NET_INCOME_LINE_22.identifier
 PRINTED_BASIS = "Line 22: Your eligible dependant's net income from line 23600 of their return"
@@ -41,7 +42,7 @@ HEADER = """\
 jurisdiction: CA-NL
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
 capabilities: []
 """
 
@@ -107,7 +108,7 @@ def test_the_net_income_is_a_signed_amount_kind() -> None:
 
 
 def test_a_request_that_leaves_out_the_net_income_is_read_as_blank(tmp_path: Path) -> None:
-    declaration = _manifest(tmp_path).inputs[IDENTIFIER]
+    declaration = input_named(_manifest(tmp_path), IDENTIFIER)
     default = declaration.default_artifact(newfoundland_kinds().kind(IDENTIFIER))
 
     assert not declaration.required

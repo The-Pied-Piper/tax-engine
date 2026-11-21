@@ -32,6 +32,7 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_packages,
     newfoundland_units,
 )
+from tests.manifest_support import input_named
 
 PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
 # The under-18 answer is the NL428 credits form's input; the care expenses (line 3) are the
@@ -44,7 +45,7 @@ HEADER = """\
 jurisdiction: CA-NL
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
 capabilities: []
 """
 UNDER_18_TITLE = (
@@ -88,7 +89,7 @@ def test_a_request_that_leaves_out_the_input_is_read_as_blank(
     tmp_path: Path, identifier: str, title: str, basis: str, reference: str
 ) -> None:
     kinds = newfoundland_kinds()
-    declaration = _manifest(tmp_path).inputs[identifier]
+    declaration = input_named(_manifest(tmp_path), identifier)
     default = declaration.default_artifact(kinds.kind(identifier))
     assert not declaration.required
     assert declaration.basis == basis

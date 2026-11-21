@@ -28,12 +28,11 @@ LINE_10 = "ca/t2204_line_10"
 LINE_16 = "ca/t2204_line_16"
 PART = "t2204_line_16.yaml"
 
-HEADER = f"""\
+HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-outputs:
-  - {LINE_7}
+outputs: []
 capabilities: []
 """
 
@@ -97,12 +96,11 @@ COMPOSED_PARTS = (
 )
 SALARY = "ca/employment_income"
 LINE_4_GIVEN = "ca/t2204_premiums_deducted_given"
-COMPOSED_HEADER = f"""\
+COMPOSED_HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-outputs:
-  - {SALARY}
+outputs: []
 capabilities: []
 """
 COMPOSED_FORM = f"""\

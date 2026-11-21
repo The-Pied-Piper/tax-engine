@@ -123,7 +123,7 @@ def test_a_form_without_supplies_derives_no_neutral_kind() -> None:
 
 
 def test_the_supplier_runs_first_and_the_reader_computes_its_figure() -> None:
-    forms = FormSet([federal(), levy(), the_return()], inputs=frozenset({INCOME, RELIEF}))
+    forms = FormSet([federal(), levy(), the_return()])
 
     (sheet,) = forms.compute(*given())["ex/federal"]
 
@@ -139,7 +139,7 @@ def test_the_supplied_kinds_field_is_the_kind_of_the_supplied_export() -> None:
         supplies={NEUTRAL_ID: "ex-ab/tax"},
     )
     neutral = RecordListKind(NEUTRAL_ID, fields=(OTHER_TAX,))
-    forms = FormSet([federal(neutral), other, the_return()], inputs=frozenset({INCOME, RELIEF}))
+    forms = FormSet([federal(neutral), other, the_return()])
 
     (sheet,) = forms.compute(*given())["ex/federal"]
 
@@ -148,10 +148,7 @@ def test_the_supplied_kinds_field_is_the_kind_of_the_supplied_export() -> None:
 
 def test_without_a_supplier_the_reader_is_refused_naming_the_form() -> None:
     with pytest.raises(InvalidCompositionError, match="ex/federal.*no form exports"):
-        FormSet(
-            [federal(), levy(supplies={}), the_return()],
-            inputs=frozenset({INCOME, RELIEF}),
-        )
+        FormSet([federal(), levy(supplies={}), the_return()])
 
 
 # --- optional slots ---------------------------------------------------------------------------
@@ -199,10 +196,7 @@ def sheet(forms: FormSet) -> Worksheet:
 
 def build(federal: FormComposition, *, supplied: bool) -> FormSet:
     suppliers = [levy()] if supplied else []
-    return FormSet(
-        [federal, *suppliers, the_return()],
-        inputs=frozenset({INCOME, RELIEF}),
-    )
+    return FormSet([federal, *suppliers, the_return()])
 
 
 def test_a_selection_is_required_throughout_by_default() -> None:

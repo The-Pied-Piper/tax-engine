@@ -86,8 +86,7 @@ HEADER = dedent("""\
     jurisdiction: CA-SK
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 # The SK428 declaration, test-local: lines 6, 7 and 8 are composed, so it exports those.

@@ -14,7 +14,7 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.domain.manifest import Manifest
 from tax_engine.registrations import JURISDICTIONS, artifact_kinds, units
 from tests.federal_forms import FEDERAL_FORMS
-from tests.manifest_support import inputs_without_form
+from tests.manifest_support import input_named, inputs_without_form
 
 LINE_A = "ca/cpp_months"
 PRINTED_BASIS = 'Enter "12" on line A below unless any of the following conditions apply:'
@@ -23,7 +23,7 @@ HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/cpp_months]
+outputs: []
 capabilities: []
 """
 
@@ -38,7 +38,7 @@ def _manifest(tmp_path: Path) -> Manifest:
 
 def test_a_request_that_leaves_out_the_months_is_read_as_twelve(tmp_path: Path) -> None:
     kinds = artifact_kinds()
-    declaration = _manifest(tmp_path).inputs[LINE_A]
+    declaration = input_named(_manifest(tmp_path), LINE_A)
     default = declaration.default_artifact(kinds.kind(LINE_A))
     assert not declaration.required
     assert declaration.basis == PRINTED_BASIS

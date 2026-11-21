@@ -22,6 +22,7 @@ from tax_engine.domain.manifest import CapabilitySelection, InputDeclaration, Ma
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.unit import UnitCatalog, UnitRegistry
 from tests.kinds import AutoKinds
+from tests.manifest_support import input_named
 
 EX_ON = JurisdictionCode("EX-ON")
 
@@ -105,9 +106,9 @@ def test_an_input_may_name_a_unit(tmp_path: Path) -> None:
         """,
     )
 
-    assert manifest.inputs["ex/rent"] == InputDeclaration("ex/rent", True, unit="ex/crowns")
-    assert manifest.inputs["ex/term"].unit == "core/moons"
-    assert manifest.inputs["ex/plain"].unit is None
+    assert input_named(manifest, "ex/rent") == InputDeclaration("ex/rent", True, unit="ex/crowns")
+    assert input_named(manifest, "ex/term").unit == "core/moons"
+    assert input_named(manifest, "ex/plain").unit is None
 
 
 def test_a_selection_may_name_the_unit_of_the_figure_it_produces(tmp_path: Path) -> None:
@@ -145,7 +146,7 @@ def test_a_unit_keeps_its_identifier_as_the_manifest_wrote_it(tmp_path: Path) ->
         """,
     )
 
-    declared = manifest.inputs["ex/rent"]
+    declared = input_named(manifest, "ex/rent")
     assert (declared.reference, declared.unit) == ("4", "ex-on/ducats")
 
 
@@ -160,7 +161,7 @@ def test_a_unit_of_any_namespace_may_be_named(tmp_path: Path, identifier: str) -
         """,
     )
 
-    assert manifest.inputs["ex/rent"].unit == identifier
+    assert input_named(manifest, "ex/rent").unit == identifier
     assert manifest.units_by_name[identifier] == units().unit(identifier)
 
 

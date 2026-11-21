@@ -24,9 +24,8 @@ INPUTS = ("ca-on/on428_donations_amount_line_48",)
 OUTPUT = "ca-on/on428_donations_credit_at_rate_line_48"
 PART = "on428_line_48.yaml"
 
-HEADER = "jurisdiction: CA-ON\nversion: 1\nvalid_from_tax_year: 2025\noutputs:\n" + "".join(
-    f"  - {name}\n" for name in INPUTS
-)
+HEADER = "jurisdiction: CA-ON\nversion: 1\nvalid_from_tax_year: 2025\noutputs: []\n"
+
 
 FORM = (
     f"""\

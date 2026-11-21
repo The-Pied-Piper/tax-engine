@@ -58,12 +58,11 @@ LINE_PART = (
 LINE_1 = "ca-ab/ab428_taxable_income_line_1"
 LINE_5 = "ca-ab/ab428_bracket_rate_line_5"
 
-HEADER = dedent(f"""\
+HEADER = dedent("""\
     jurisdiction: CA-AB
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - {LINE_1}
+    outputs: []
     capabilities: []
     """)
 FORM = dedent(f"""\

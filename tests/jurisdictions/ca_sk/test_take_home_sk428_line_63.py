@@ -95,8 +95,7 @@ HEADER = dedent("""\
     jurisdiction: CA-SK
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 # The credits form declaration, test-local: only line 57 is exported.

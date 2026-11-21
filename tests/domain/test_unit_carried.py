@@ -204,7 +204,7 @@ def test_the_form_hands_its_units_to_each_worksheet_it_computes() -> None:
         declared=(InputDeclaration("ex/income", True, unit="ex/crowns"),),
         units=UNITS,
     )
-    forms = FormSet([form], inputs=frozenset({INCOME, RELIEF}))
+    forms = FormSet([form])
 
     (sheet,) = forms.compute(Artifact(INCOME, D("1000")), Artifact(RELIEF, D("400")))["ex-on/levy"]
 
@@ -242,7 +242,7 @@ def test_a_form_without_a_unit_for_a_figure_strips_the_unit_of_the_artifact_pass
         ),
         units=UNITS,
     )
-    forms = FormSet([form], inputs=frozenset({INCOME, RELIEF}))
+    forms = FormSet([form])
 
     (sheet,) = forms.compute(
         Artifact(INCOME, D("1000"), unit=CROWNS), Artifact(RELIEF, D("400"), unit=MOONS)
@@ -313,7 +313,7 @@ def test_forms_reading_a_field_in_one_unit_agree() -> None:
     first = reader("ex/first", FEE_TOTAL, "ex/crowns")
     second = reader("ex/second", OTHER_TOTAL, "ex/crowns")
 
-    FormSet([first, second], inputs=frozenset({AUDITS}))
+    FormSet([first, second])
 
 
 def test_two_consumers_disagreeing_on_the_unit_of_a_field_are_refused() -> None:
@@ -323,7 +323,7 @@ def test_two_consumers_disagreeing_on_the_unit_of_a_field_are_refused() -> None:
     with pytest.raises(
         InvalidCompositionError, match=r"'fee'.*'ex/crowns'.*'ex/first'.*'ex/moons'.*'ex/second'"
     ):
-        FormSet([first, second], inputs=frozenset({AUDITS}))
+        FormSet([first, second])
 
 
 def test_a_consumer_with_a_unit_and_one_without_disagree() -> None:
@@ -331,7 +331,7 @@ def test_a_consumer_with_a_unit_and_one_without_disagree() -> None:
     second = reader("ex/second", OTHER_TOTAL, None)
 
     with pytest.raises(InvalidCompositionError, match=r"'fee'.*unit"):
-        FormSet([first, second], inputs=frozenset({AUDITS}))
+        FormSet([first, second])
 
 
 def test_a_producer_and_a_consumer_disagreeing_on_the_unit_are_refused() -> None:
@@ -357,7 +357,4 @@ def test_a_producer_and_a_consumer_disagreeing_on_the_unit_are_refused() -> None
         InvalidCompositionError,
         match=r"'fee'.*produced in 'ex/moons' by 'ex/producer'.*'ex/crowns'.*'ex/consumer'",
     ):
-        FormSet(
-            [producer, consumer],
-            inputs=frozenset({AUDITS, INCOME, RELIEF}),
-        )
+        FormSet([producer, consumer])

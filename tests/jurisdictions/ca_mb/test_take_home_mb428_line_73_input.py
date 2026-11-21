@@ -27,6 +27,7 @@ from tests.jurisdictions.ca_mb.support import (
     manitoba_units,
 )
 from tests.kinds import non_negative
+from tests.manifest_support import input_named
 
 IDENTIFIER = MB428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_73.identifier
 PRINTED_BASIS = "Line 73: Provincial foreign tax credit (complete Form T2036)"
@@ -37,7 +38,7 @@ HEADER = """\
 jurisdiction: CA-MB
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
 capabilities: []
 """
 
@@ -105,7 +106,7 @@ def test_the_provincial_foreign_tax_credit_line_73_is_a_non_negative_amount_kind
 
 
 def test_a_request_that_leaves_out_line_73_is_read_as_blank(tmp_path: Path) -> None:
-    declaration = _manifest(tmp_path).inputs[IDENTIFIER]
+    declaration = input_named(_manifest(tmp_path), IDENTIFIER)
     default = declaration.default_artifact(manitoba_kinds().kind(IDENTIFIER))
 
     assert not declaration.required

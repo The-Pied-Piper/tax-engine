@@ -29,12 +29,11 @@ LINE_87 = "ca-on/on428_farmers_food_donation_credit_line_87"
 LINE_88 = "ca-on/on428_tax_after_farmers_food_donation_credit_line_88"
 PART = "on428_line_88.yaml"
 
-HEADER = f"""\
+HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-outputs:
-  - {LINE_86}
+outputs: []
 capabilities: []
 """
 

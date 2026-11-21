@@ -42,23 +42,20 @@ from tests.jurisdictions.ca_mb.support import (
     manitoba_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_INPUT, inputs_without_form
 
 D = Decimal
 CODE = JurisdictionCode("CA-MB")
 FORM_NAME = "ca-mb/mb428"
 AMOUNT = "ca-mb/mb428_minimum_tax_carryover_line_63"
 LINE_63 = "ca-mb/mb428_minimum_tax_carryover_credit_line_63"
-SALARY = "ca/employment_income"
 MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"
 PART = MB_PARTS / "mb428_line_63.yaml"
 
-HEADER = dedent(f"""\
+HEADER = dedent("""\
     jurisdiction: CA-MB
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - {SALARY}
+    outputs: []
     capabilities: []
     """)
 FORM = dedent(f"""\
@@ -78,11 +75,6 @@ def _service(tmp_path: Path) -> TaxComputationService:
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
-    # The salary input belongs to the T1 employment income form, which this manifest does not
-    # declare and no step here reads, so the salary joins the default form as the caller's own.
-    (folder / "01_salary_input.yaml").write_text(
-        inputs_without_form(T1_LINE_10100_INPUT), encoding="utf-8"
-    )
     names = ["mb428_credits_line_63_input.yaml", PART.name]
     for number, name in enumerate(names, start=2):
         text = (MB_PARTS / name).read_text(encoding="utf-8")
@@ -99,7 +91,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
 
 def _sheet(tmp_path: Path, salary: str, amount: str | None) -> Worksheet:
     kinds = manitoba_kinds()
-    given = [Artifact(kinds.kind(SALARY), D(salary))]
+    given: list[Artifact[Any]] = []
     if amount is not None:
         given.append(Artifact(kinds.kind(AMOUNT), D(amount)))
     (sheet,) = _service(tmp_path).compute(CODE, 2025, *given)[FORM_NAME]

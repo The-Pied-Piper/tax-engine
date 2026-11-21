@@ -27,8 +27,7 @@ HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/cpp_months
+    outputs: []
     """)
 FORM = dedent("""\
     form:

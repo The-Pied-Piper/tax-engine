@@ -40,8 +40,7 @@ INPUTS = (
 )
 
 HEADER = (
-    "jurisdiction: CA-NL\nversion: 1\nvalid_from_tax_year: 2025\noutputs:\n"
-    + "".join(f"  - {name}\n" for name in INPUTS)
+    "jurisdiction: CA-NL\nversion: 1\nvalid_from_tax_year: 2025\noutputs: []\n"
     + "capabilities: []\n"
 )
 FORM = (

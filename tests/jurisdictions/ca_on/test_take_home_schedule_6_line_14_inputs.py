@@ -22,7 +22,7 @@ from tax_engine.domain.manifest import Manifest
 from tax_engine.registrations import JURISDICTIONS, artifact_kinds, units
 from tests.federal_forms import FEDERAL_FORMS
 from tests.kinds import bundled_kinds, non_negative
-from tests.manifest_support import inputs_without_form
+from tests.manifest_support import input_named, inputs_without_form
 
 LINE_14 = "ca/cwb_secondary_earner_exemption"
 PRINTED_BASIS = (
@@ -36,7 +36,7 @@ HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
 capabilities: []
 """
 
@@ -51,7 +51,7 @@ def _manifest(tmp_path: Path) -> Manifest:
 
 def test_a_request_that_leaves_out_line_14_is_read_as_blank(tmp_path: Path) -> None:
     kinds = artifact_kinds()
-    declaration = _manifest(tmp_path).inputs[LINE_14]
+    declaration = input_named(_manifest(tmp_path), LINE_14)
     default = declaration.default_artifact(kinds.kind(LINE_14))
     assert not declaration.required
     assert declaration.basis == PRINTED_BASIS

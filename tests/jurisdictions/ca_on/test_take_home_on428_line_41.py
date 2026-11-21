@@ -29,9 +29,8 @@ INPUTS = (
 OUTPUT = "ca-on/on428_medical_expenses_over_limit_line_41"
 PART = "on428_line_41.yaml"
 
-HEADER = "jurisdiction: CA-ON\nversion: 1\nvalid_from_tax_year: 2025\noutputs:\n" + "".join(
-    f"  - {name}\n" for name in INPUTS
-)
+HEADER = "jurisdiction: CA-ON\nversion: 1\nvalid_from_tax_year: 2025\noutputs: []\n"
+
 
 FORM = (
     f"""\

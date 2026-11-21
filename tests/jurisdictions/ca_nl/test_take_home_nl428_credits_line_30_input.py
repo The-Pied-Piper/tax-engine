@@ -31,6 +31,7 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_units,
 )
 from tests.kinds import non_negative
+from tests.manifest_support import input_named
 
 IDENTIFIER = NL428_EI_PREMIUMS_LINE_30.identifier
 PRINTED_BASIS = "Line 30 and line 58305: Amount from line 31217 of your return"
@@ -41,7 +42,7 @@ HEADER = """\
 jurisdiction: CA-NL
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
 capabilities: []
 """
 
@@ -71,7 +72,7 @@ def _part() -> dict[str, Any]:
 
 def test_a_request_that_leaves_out_line_30_is_read_as_blank(tmp_path: Path) -> None:
     kinds = newfoundland_kinds()
-    declaration = _manifest(tmp_path).inputs[IDENTIFIER]
+    declaration = input_named(_manifest(tmp_path), IDENTIFIER)
     default = declaration.default_artifact(kinds.kind(IDENTIFIER))
     assert not declaration.required
     assert declaration.basis == PRINTED_BASIS

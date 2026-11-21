@@ -23,7 +23,7 @@ from tax_engine.jurisdictions.ca.catalog.income import (
     EMPLOYMENT_INCOME,
     OTHER_EMPLOYMENT_INCOME,
 )
-from tax_engine.jurisdictions.ca_qc.catalog import T1_LINE_21, T1_LINE_32
+from tax_engine.jurisdictions.ca_qc.catalog import T1_LINE_21
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 from tests.manifest_support import T1_LINE_10100_INPUT
 
@@ -37,11 +37,7 @@ HEADER = dedent("""\
     jurisdiction: CA-QC
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca-qc/t1_line_32
-        required: true
-    outputs:
-      - ca-qc/t1_line_32
+    outputs: []
     capabilities: []
     """)
 FORM = dedent("""\
@@ -69,7 +65,6 @@ def line_21(take_home_service: TakeHomeService, salary: str, *other: str) -> Dec
         JurisdictionCode("CA-QC"),
         2025,
         Artifact(EMPLOYMENT_INCOME, D(salary)),
-        Artifact(T1_LINE_32, D(0)),
         *given,
     )
     (sheet,) = worksheets["ca-qc/t1_taxable_income"]

@@ -18,6 +18,7 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.manifest import Manifest
 from tests.federal_forms import FEDERAL_FORMS
+from tests.manifest_support import inputs_of
 
 CAD = "ca/cad"
 
@@ -54,7 +55,7 @@ def declared() -> dict[str, str | None]:
 
 def units_in(manifest: Manifest) -> dict[str, str | None]:
     """The unit each figure of the ca forms and the return's inputs declares, as written."""
-    units = {name: declaration.unit for name, declaration in manifest.inputs.items()}
+    units = {name: declaration.unit for name, declaration in inputs_of(manifest).items()}
     for form in manifest.forms:
         if form.name.startswith("ca/"):
             for selection in form.capabilities:

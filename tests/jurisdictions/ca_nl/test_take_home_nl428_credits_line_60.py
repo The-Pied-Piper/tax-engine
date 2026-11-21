@@ -43,8 +43,7 @@ HEADER = dedent("""\
     jurisdiction: CA-NL
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca-nl/nl428_donations_amount_line_60
+    outputs: []
     capabilities: []
     """)
 FORM = dedent("""\

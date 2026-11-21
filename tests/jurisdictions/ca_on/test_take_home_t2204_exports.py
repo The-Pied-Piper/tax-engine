@@ -48,12 +48,11 @@ PARTS = (
     "t2204_line_15.yaml",
     "t2204_line_16.yaml",
 )
-HEADER = f"""\
+HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-outputs:
-  - {SALARY}
+outputs: []
 capabilities: []
 """
 

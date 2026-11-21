@@ -44,12 +44,11 @@ TAXABLE_INCOME = "ca-on/return_taxable_income"
 SLOPE = "ca-on/return_health_premium_slope"
 ROWS = "ca-on/health_premium_rows"
 
-HEADER = f"""\
+HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-outputs:
-  - {TAXABLE_INCOME}
+outputs: []
 capabilities: []
 """
 

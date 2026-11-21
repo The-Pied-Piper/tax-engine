@@ -37,13 +37,11 @@ LINE_7 = "ca-on/on428_tax_at_column_start_line_7"
 LINE_8 = "ca-on/on428_tax_on_taxable_income_line_8"
 PART = "on428_line_8.yaml"
 
-HEADER = f"""\
+HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-outputs:
-  - {LINE_6}
-  - {LINE_7}
+outputs: []
 capabilities: []
 """
 

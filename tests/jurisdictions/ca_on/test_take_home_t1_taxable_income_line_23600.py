@@ -29,12 +29,11 @@ LINE_23400 = "ca/net_income_before_adjustments"
 LINE_23500 = "ca/social_benefits_repayment"
 LINE_23600 = "ca/net_income"
 PARTS = ("t1_taxable_income_inputs.yaml", "t1_taxable_income_line_23600.yaml")
-HEADER = f"""\
+HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-outputs:
-  - {LINE_23400}
+outputs: []
 capabilities: []
 """
 FORM_TEXT = f"""\

@@ -27,6 +27,7 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_units,
 )
 from tests.kinds import non_negative
+from tests.manifest_support import input_named
 
 IDENTIFIER = BC479_MINING_EXPLORATION_CREDIT_LINE_26.identifier
 PRINTED_TITLE = "British Columbia mining exploration tax credit"
@@ -38,7 +39,7 @@ HEADER = """\
 jurisdiction: CA-BC
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
 capabilities: []
 """
 
@@ -108,7 +109,7 @@ def test_the_mining_exploration_credit_line_26_is_a_non_negative_amount_kind() -
 
 
 def test_a_request_that_leaves_out_line_26_is_read_as_blank(tmp_path: Path) -> None:
-    declaration = _manifest(tmp_path).inputs[IDENTIFIER]
+    declaration = input_named(_manifest(tmp_path), IDENTIFIER)
     default = declaration.default_artifact(british_columbia_kinds().kind(IDENTIFIER))
 
     assert not declaration.required

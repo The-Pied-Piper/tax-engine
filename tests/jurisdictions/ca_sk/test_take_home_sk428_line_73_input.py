@@ -26,6 +26,7 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_units,
 )
 from tests.kinds import non_negative
+from tests.manifest_support import input_named
 
 IDENTIFIER = "ca-sk/sk428_political_contributions_credit_line_73"
 PRINTED_BASIS = (
@@ -38,7 +39,7 @@ HEADER = """\
 jurisdiction: CA-SK
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
 capabilities: []
 """
 # The form that owns the input, declared here as the real parts of the form declare it.
@@ -101,7 +102,7 @@ def test_the_part_declares_the_one_input_as_printed() -> None:
 
 
 def test_a_request_that_leaves_out_line_73_is_read_as_blank(tmp_path: Path) -> None:
-    declaration = _manifest(tmp_path).inputs[IDENTIFIER]
+    declaration = input_named(_manifest(tmp_path), IDENTIFIER)
     default = declaration.default_artifact(saskatchewan_kinds().kind(IDENTIFIER))
 
     assert not declaration.required

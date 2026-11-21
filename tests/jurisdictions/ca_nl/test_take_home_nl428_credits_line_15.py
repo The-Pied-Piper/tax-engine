@@ -63,8 +63,7 @@ HEADER = dedent("""\
     jurisdiction: CA-NL
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 # The NL428 declaration, test-local: lines 13, 14 and 15 are read or exported here.

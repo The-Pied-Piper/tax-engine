@@ -58,12 +58,11 @@ T1_PARTS = (
 )
 PART = SK_PARTS / "sk428_line_68.yaml"
 
-HEADER = dedent(f"""\
+HEADER = dedent("""\
     jurisdiction: CA-SK
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - {SALARY}
+    outputs: []
     capabilities: []
     """)
 FORM = dedent(f"""\

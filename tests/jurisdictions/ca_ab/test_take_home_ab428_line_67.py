@@ -49,12 +49,11 @@ SALARY = "ca/employment_income"
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
 PART = ALBERTA_PARTS / "ab428_line_67.yaml"
 
-HEADER = dedent(f"""\
+HEADER = dedent("""\
     jurisdiction: CA-AB
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - {SALARY}
+    outputs: []
     capabilities: []
     """)
 FORM = dedent(f"""\

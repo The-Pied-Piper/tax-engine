@@ -34,7 +34,6 @@ from tax_engine.domain.errors import InputAboveBoundError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.manifest import Manifest
 from tax_engine.domain.registry import Namespace
-from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_nl.catalog import (
     NL428_POLITICAL_CONTRIBUTION_TAX_CREDIT_CLAIMED_LINE_76,
 )
@@ -45,7 +44,9 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_parameter_parsers,
     newfoundland_units,
 )
-from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT, T1_LINE_10100_STEP
+from tests.manifest_support import (
+    input_named,
+)
 
 D = Decimal
 PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
@@ -64,15 +65,15 @@ INPUT_HEADER = """\
 jurisdiction: CA-NL
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
 capabilities: []
 """
 HEADER = dedent("""\
     jurisdiction: CA-NL
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
+    capabilities: []
     """)
 FORM_PART = dedent(f"""\
     form:
@@ -105,16 +106,6 @@ def _service(tmp_path: Path) -> TaxComputationService:
     folder = tmp_path / "manifests" / "2025"
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
-    (folder / "00_t1_salary.yaml").write_text(
-        T1_LINE_10100_INPUT.read_text(encoding="utf-8"), encoding="utf-8"
-    )
-    (folder / "00_t1_form.yaml").write_text(
-        T1_LINE_10100_FORM.read_text(encoding="utf-8"), encoding="utf-8"
-    )
-    (folder / "00_t1_line_10100.yaml").write_text(
-        T1_LINE_10100_STEP.read_text(encoding="utf-8"),
-        encoding="utf-8",
-    )
     (folder / "01_form.yaml").write_text(FORM_PART, encoding="utf-8")
     (folder / "02_input.yaml").write_text(INPUT_PART.read_text(encoding="utf-8"), encoding="utf-8")
     (folder / "03_line_76.yaml").write_text(LINE_PART.read_text(encoding="utf-8"), encoding="utf-8")
@@ -131,7 +122,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
 
 
 def _line_76(tmp_path: Path, credit: str | None = None) -> Artifact[Any]:
-    given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, D("70000"))]
+    given: list[Artifact[Any]] = []
     if credit is not None:
         given.append(Artifact(NL428_POLITICAL_CONTRIBUTION_TAX_CREDIT_CLAIMED_LINE_76, D(credit)))
     worksheets = _service(tmp_path).compute(JurisdictionCode("CA-NL"), 2025, *given)
@@ -203,7 +194,7 @@ def test_an_amount_above_the_maximum_is_rejected_not_capped(tmp_path: Path) -> N
 
 
 def test_a_request_that_leaves_out_line_76_is_read_as_blank(tmp_path: Path) -> None:
-    declaration = _input_manifest(tmp_path).inputs[CLAIMED]
+    declaration = input_named(_input_manifest(tmp_path), CLAIMED)
     default = declaration.default_artifact(newfoundland_kinds().kind(CLAIMED))
 
     assert not declaration.required

@@ -25,13 +25,12 @@ PART = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / "manifests" / "202
 LINE_67 = "ca-sk/sk428_tax_after_credits_line_67"
 LINE_82 = "ca-sk/sk428_saskatchewan_tax_line_82"
 
-HEADER = f"""\
+HEADER = """\
 jurisdiction: CA-SK
 version: 1
 valid_from_tax_year: 2025
 inputs: []
-outputs:
-  - {LINE_82}
+outputs: []
 capabilities: []
 """
 # The inputs belong to the form that exports them, so they are declared in a part of that form.

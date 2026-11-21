@@ -66,8 +66,7 @@ HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 # The real Schedule 6 declaration (`schedule_6.yaml`) carries the form and its export, so the

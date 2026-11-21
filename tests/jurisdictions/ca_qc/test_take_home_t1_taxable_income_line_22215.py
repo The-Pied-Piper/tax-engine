@@ -20,7 +20,7 @@ import pytest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tax_engine.jurisdictions.ca_qc.catalog import T1_LINE_32, T1_LINE_48
+from tax_engine.jurisdictions.ca_qc.catalog import T1_LINE_48
 from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 from tests.jurisdictions.ca_qc.support import real_import
@@ -34,11 +34,7 @@ HEADER = dedent("""\
     jurisdiction: CA-QC
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca-qc/t1_line_32
-        required: true
-    outputs:
-      - ca-qc/t1_line_32
+    outputs: []
     capabilities: []
     imports:
     """) + real_import("ca/schedule_8")
@@ -57,7 +53,6 @@ def line_48(take_home_service: TakeHomeService, salary: str) -> Decimal:
         JurisdictionCode("CA-QC"),
         2025,
         Artifact(EMPLOYMENT_INCOME, D(salary)),
-        Artifact(T1_LINE_32, D(0)),
     )
     (sheet,) = worksheets["ca-qc/t1_taxable_income"]
     return sheet.get(T1_LINE_48).value

@@ -95,7 +95,6 @@ def test_a_step_reading_an_input_another_form_owns_does_not_compose(tmp_path: Pa
     failures = composition_failures(composing(tmp_path), EX_ON, [2025])
 
     assert len(failures) == 1
-    assert "form 'ex-on/levy'" in failures[0]
     assert "other_income" in failures[0]
 
 

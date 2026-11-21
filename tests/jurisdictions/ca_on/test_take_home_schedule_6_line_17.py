@@ -15,10 +15,8 @@ from textwrap import dedent
 
 import pytest
 
-from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.canada_workers_benefit import CWB_BASE_AMOUNT
-from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
 
 D = Decimal
@@ -29,11 +27,8 @@ HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/employment_income
-        required: true
-    outputs:
-      - ca/employment_income
+    outputs: []
+    capabilities: []
     """)
 FORM = dedent("""\
     form:
@@ -45,9 +40,7 @@ FORM = dedent("""\
 
 
 def line_17(take_home_service: TakeHomeService, salary: str) -> Decimal:
-    worksheets = take_home_service(HEADER, FORM, PART).compute(
-        JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
-    )
+    worksheets = take_home_service(HEADER, FORM, PART).compute(JurisdictionCode("CA-ON"), 2025)
     (sheet,) = worksheets["ca/schedule_6"]
     return sheet.get(CWB_BASE_AMOUNT).value
 

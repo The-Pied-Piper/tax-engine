@@ -31,13 +31,12 @@ LINE_79 = "ca-bc/bc428_british_columbia_tax_reduction_line_79"
 LINE_80 = "ca-bc/bc428_tax_after_reduction_line_80"
 LINE_91 = "ca-bc/bc428_british_columbia_tax_line_91"
 
-HEADER = f"""\
+HEADER = """\
 jurisdiction: CA-BC
 version: 1
 valid_from_tax_year: 2025
 inputs: []
-outputs:
-  - {LINE_91}
+outputs: []
 capabilities: []
 """
 # The inputs belong to the form that exports them, so they are declared in a part of that form.

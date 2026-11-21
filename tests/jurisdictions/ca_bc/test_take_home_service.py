@@ -27,12 +27,11 @@ from tests.kinds import bundled_kinds
 D = Decimal
 LINE_1 = "ca-bc/bc428_taxable_income_line_1"
 LINE_5 = "ca-bc/bc428_bracket_rate_line_5"
-HEADER = dedent(f"""\
+HEADER = dedent("""\
     jurisdiction: CA-BC
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - {LINE_1}
+    outputs: []
     capabilities: []
     """)
 FORM = dedent(f"""\

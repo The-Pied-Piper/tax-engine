@@ -90,8 +90,7 @@ HEADER = dedent("""\
     jurisdiction: CA-BC
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 # The BC428 declaration, test-local: lines 1 and 10 to 15 are composed, so it exports those.
@@ -110,12 +109,11 @@ FORM_TEXT = dedent(f"""\
     capabilities: []
     """)
 
-DIRECT_HEADER = dedent(f"""\
+DIRECT_HEADER = dedent("""\
     jurisdiction: CA-BC
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - {LINE_1}
+    outputs: []
     capabilities: []
     """)
 # The input line 1 is the caller's, owned by the BC428 form that reads it.

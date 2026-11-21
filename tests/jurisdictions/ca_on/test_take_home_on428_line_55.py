@@ -30,12 +30,11 @@ LINE_54 = "ca-on/on428_tax_on_split_income_line_54"
 LINE_55 = "ca-on/on428_tax_with_split_income_line_55"
 PART = "on428_line_55.yaml"
 
-HEADER = f"""\
+HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-outputs:
-  - {LINE_53}
+outputs: []
 capabilities: []
 """
 

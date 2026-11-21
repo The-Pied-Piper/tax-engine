@@ -26,6 +26,7 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_units,
 )
 from tests.kinds import non_negative
+from tests.manifest_support import input_named
 
 IDENTIFIER = SK428_MEDICAL_EXPENSES_LINE_43.identifier
 PRINTED_BASIS = "Line 43 and line 58689: Amount from line 33099 of your return"
@@ -36,7 +37,7 @@ HEADER = """\
 jurisdiction: CA-SK
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
 capabilities: []
 """
 # The form that owns the input, declared here as the real parts of the form declare it.
@@ -95,7 +96,7 @@ def test_line_43_is_a_non_negative_amount_kind() -> None:
 
 
 def test_a_request_that_leaves_out_line_43_is_read_as_blank(tmp_path: Path) -> None:
-    declaration = _manifest(tmp_path).inputs[IDENTIFIER]
+    declaration = input_named(_manifest(tmp_path), IDENTIFIER)
     default = declaration.default_artifact(saskatchewan_kinds().kind(IDENTIFIER))
 
     assert not declaration.required

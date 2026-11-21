@@ -28,6 +28,7 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_units,
 )
 from tests.kinds import non_negative
+from tests.manifest_support import input_named
 
 D = Decimal
 IDENTIFIER = "ca-bc/bc428_additional_minimum_tax_amount_line_69"
@@ -39,7 +40,7 @@ HEADER = """\
 jurisdiction: CA-BC
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
 capabilities: []
 """
 
@@ -103,7 +104,7 @@ def test_the_part_declares_the_one_input_as_printed() -> None:
 
 
 def test_a_request_that_leaves_out_line_69_is_read_as_zero(tmp_path: Path) -> None:
-    declaration = _manifest(tmp_path).inputs[IDENTIFIER]
+    declaration = input_named(_manifest(tmp_path), IDENTIFIER)
     default = declaration.default_artifact(british_columbia_kinds().kind(IDENTIFIER))
 
     assert not declaration.required

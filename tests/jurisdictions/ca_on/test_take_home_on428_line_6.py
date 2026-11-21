@@ -37,13 +37,11 @@ LINE_5 = "ca-on/on428_bracket_column_rate_line_5"
 LINE_6 = "ca-on/on428_excess_times_column_rate_line_6"
 PART = "on428_line_6.yaml"
 
-HEADER = f"""\
+HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-outputs:
-  - {LINE_4}
-  - {LINE_5}
+outputs: []
 capabilities: []
 """
 

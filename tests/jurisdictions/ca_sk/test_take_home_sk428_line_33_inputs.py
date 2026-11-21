@@ -27,6 +27,7 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_units,
 )
 from tests.kinds import non_negative
+from tests.manifest_support import input_named
 
 D = Decimal
 IDENTIFIER = SK428_PENSION_INCOME_AMOUNT.identifier
@@ -38,7 +39,7 @@ HEADER = """\
 jurisdiction: CA-SK
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
 capabilities: []
 """
 # The form that owns the input, declared here as the real parts of the form declare it.
@@ -109,7 +110,7 @@ def test_the_pension_income_amount_is_a_non_negative_amount_kind() -> None:
 def test_a_request_that_leaves_out_the_pension_income_amount_is_read_as_zero(
     tmp_path: Path,
 ) -> None:
-    declaration = _manifest(tmp_path).inputs[IDENTIFIER]
+    declaration = input_named(_manifest(tmp_path), IDENTIFIER)
     default = declaration.default_artifact(saskatchewan_kinds().kind(IDENTIFIER))
 
     assert not declaration.required

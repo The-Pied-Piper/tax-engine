@@ -60,13 +60,13 @@ capabilities:
 | `jurisdiction` | yes | The jurisdiction code, such as `EX-ON`. |
 | `version` | yes | Integer. |
 | `valid_from_tax_year` | yes | Integer. |
-| `inputs` | yes | Non-empty list of input declarations (below). |
-| `outputs` | yes | Non-empty list of artifact identifiers, none repeated: the exports of the default form. |
+| `inputs` | no | List of input declarations (below): the default form's own. |
+| `outputs` | yes | List of artifact identifiers, none repeated: the exports of the default form (`[]` when it exports nothing). |
 | `capabilities` | yes | List of capability selections (below). |
 | `title` | no | Printed name of the default form. |
 | `imports` | no | List of forms to import, each a form identifier `<namespace>/<snake_case>` or a form with dataset rebinds (see Imported forms). |
 
-An identifier that is in both `inputs` and `outputs` is an input carried onto the return as entered.
+An identifier that is in both `inputs` and `outputs` is an input the default form returns as entered.
 
 ## Forms
 
@@ -99,9 +99,8 @@ The `form:` block has these keys:
 A form may span several parts that carry the same `form.name`, in part order. Exactly one of them
 declares `exports`, together with every other key of the block except `name`; a second part that
 declares `exports`, or any of the other keys without `exports`, is rejected. A part with a `form:`
-key takes no `outputs` or `imports`: exports are declared in the block. It may carry `inputs`, which
-join the manifest's inputs like any part's, so a form carries the optional inputs it needs, and
-which belong to that form (see Input ownership).
+key takes no `outputs` or `imports`: exports are declared in the block. It may carry `inputs`,
+which are that form's own (see Input ownership).
 
 The limits apply to the count of instances; a form without `instances` has a default list of one
 instance. Which fields the instances kind has, that defaults suit their kinds, and that
@@ -128,9 +127,8 @@ and no identifier is listed twice.
 - They load with the manifest's own parts and take its jurisdiction, version and tax year, so each
   carries `form`, `capabilities` and `inputs`. Its `form.name` is the imported
   identifier, and exactly one part declares `exports`, as for any form.
-- The `inputs` of an imported form's parts join the importing manifest's inputs, such as an
-  optional input a salary-only caller leaves blank. An input declared there and also by the
-  manifest, or by another imported form, is rejected, naming it and the part that listed it first.
+- The `inputs` of an imported form's parts are that form's own inputs, such as an optional input a
+  salary-only caller leaves blank.
 - A part of the manifest that names an imported form, an import with no package or no parts, and an
   imported part with any other key are rejected, naming the part.
 - An entry may instead be a mapping, to read other dataset families than the form's own:
@@ -189,15 +187,12 @@ A required input takes neither `default` nor `basis`. By convention an entry wri
 
 ## Input ownership
 
-An input is held by one form: the form of the part that declares it, the default form for an input
-in a whole-file manifest or in a part without `form:`. The manifest's `inputs` gather them all, and
-an input two forms declare is an `InvalidManifestError`. A form's composition starts from the inputs
-it holds and from nothing else, so a step that reads another form's input finds no producer for it
-and fails when the forms are composed, naming the form and the input. Every other form that needs
-the figure reads the holder's export, as it reads any other form's figure. The default form's
-`outputs` are the exception: they carry an input onto the return as entered, whichever form holds
-it.
-Fields of a form's `instances` already belong to their form and are not in the manifest's `inputs`.
+An input is held by one form: the form of the part that declares it, or the default form for an
+input in a whole-file manifest or in a part without `form:`. A form's composition has the inputs
+it holds and nothing else, so a step that reads another form's input finds no producer for it and
+fails when the forms are composed, naming the form and the figure. Every other form that needs the
+figure reads the holder's export, as it reads any other form's figure.
+Fields of a form's `instances` belong to their form and are not listed as inputs.
 
 ## Capability selections
 

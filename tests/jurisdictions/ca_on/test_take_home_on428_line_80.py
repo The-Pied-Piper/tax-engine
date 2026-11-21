@@ -54,13 +54,11 @@ BASIS = (
     "Line 72: If you entered an amount on line 11 of Part 5 of Form T691, use Worksheet ON428 to "
     "calculate your additional tax for minimum tax purposes"
 )
-HEADER = f"""\
+HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-outputs:
-  - {LINE_78}
-  - {LINE_73}
+outputs: []
 capabilities: []
 """
 
