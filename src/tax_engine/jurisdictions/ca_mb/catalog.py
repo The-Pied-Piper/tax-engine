@@ -7,7 +7,7 @@ Amounts are `Decimal`, non-negative unless the form prints no floor. Federal kin
 from __future__ import annotations
 
 from tax_engine.domain.artifact import ArtifactCatalog
-from tax_engine.domain.kinds import AmountKind
+from tax_engine.domain.kinds import AmountKind, RecordListKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca_mb import NAMESPACE
 
@@ -92,8 +92,45 @@ MB428_OTHER_DEPENDANTS_MEDICAL_EXPENSES_LINE_49 = AmountKind.declare(
     CATALOG, "mb428_other_dependants_medical_expenses_line_49", non_negative=True
 )
 """Allowable amount of medical expenses for other dependants, MB428 line 49 (line 58729) "(use
-Worksheet MB428)": the amount as the filer gives it, an optional input; a blank input is read as
-blank."""
+Worksheet MB428)": the total of Worksheet MB428 line 4 of the section "Line 58729", which says to
+enter it on line 58729 of Form MB428; 0 when the filer lists no other dependant."""
+
+WORKSHEET_MB428_OTHER_DEPENDANTS_LINE_1 = AmountKind.declare(
+    CATALOG, "worksheet_mb428_other_dependants_medical_expenses_line_1", non_negative=True
+)
+"""Medical expenses for other dependant, Worksheet MB428 (CRA 5007-D) section "Line 58729", line 1
+"Medical expenses for other dependant": the amount the filer enters for each dependant, a field of
+each record of `ca-mb/worksheet_mb428_other_dependants`."""
+
+WORKSHEET_MB428_OTHER_DEPENDANTS_LINE_2 = AmountKind.declare(
+    CATALOG, "worksheet_mb428_other_dependants_medical_expenses_line_2", non_negative=True
+)
+"""Amount from line 47 of the dependant's Form MB428, Worksheet MB428 section "Line 58729", line 2
+"Enter the amount from line 47 of the dependant's Form MB428.": the amount the filer enters for
+each dependant (another person's return), blank when left out; a field of each record of
+`ca-mb/worksheet_mb428_other_dependants`."""
+
+WORKSHEET_MB428_OTHER_DEPENDANTS_LINE_3 = AmountKind.declare(
+    CATALOG, "worksheet_mb428_other_dependants_medical_expenses_line_3", non_negative=True
+)
+"""Line 1 minus line 2 for one dependant, Worksheet MB428 section "Line 58729", line 3 "Line 1 minus
+line 2 (if negative, enter "0")": never below 0, the export of the column form."""
+
+WORKSHEET_MB428_OTHER_DEPENDANTS = RecordListKind.declare(
+    CATALOG,
+    "worksheet_mb428_other_dependants",
+    fields=(WORKSHEET_MB428_OTHER_DEPENDANTS_LINE_1, WORKSHEET_MB428_OTHER_DEPENDANTS_LINE_2),
+)
+"""Dependants of Worksheet MB428 section "Line 58729", lines 1 and 2: a starting list with one
+record for each dependant ("Complete one column for each dependant"), holding line 1 and line 2.
+The column form `ca-mb/worksheet_mb428_other_dependants` runs once for each record."""
+
+WORKSHEET_MB428_OTHER_DEPENDANTS_LINE_4 = AmountKind.declare(
+    CATALOG, "worksheet_mb428_other_dependants_medical_expenses_line_4", non_negative=True
+)
+"""Total of the dependants' line 3, Worksheet MB428 section "Line 58729", line 4 "Add the amounts
+from line 3 for columns 1, 2, and 3 (and others, if any). Enter this amount on line 58729 of your
+Form MB428.": the total of the column form's line 3 over its records, 0 with no dependant."""
 
 MB428_MEDICAL_EXPENSES_LINE_50 = AmountKind.declare(
     CATALOG, "mb428_medical_expenses_line_50", non_negative=True

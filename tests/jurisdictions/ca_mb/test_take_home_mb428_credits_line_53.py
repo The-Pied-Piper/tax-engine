@@ -33,8 +33,10 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.blank import BLANK
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
@@ -73,7 +75,11 @@ CREDIT_PARTS = (
     "mb428_credits_line_46.yaml",
     "mb428_credits_line_47.yaml",
     "mb428_credits_line_48.yaml",
-    "mb428_credits_line_49_inputs.yaml",
+    "worksheet_mb428_other_dependants.yaml",
+    "worksheet_mb428_other_dependants_inputs.yaml",
+    "worksheet_mb428_other_dependants_line_3.yaml",
+    "worksheet_mb428_other_dependants_total.yaml",
+    "mb428_credits_line_49.yaml",
     "mb428_credits_line_50.yaml",
     "mb428_credits_line_51.yaml",
 )
@@ -190,6 +196,20 @@ def _service(tmp_path: Path) -> TaxComputationService:
     )
 
 
+def _one_dependant(line_1: str) -> Artifact[Any]:
+    """The list of one dependant whose Worksheet MB428 line 1 is `line_1`, line 2 left blank."""
+    columns = RecordList(
+        mb_catalog.WORKSHEET_MB428_OTHER_DEPENDANTS.fields,
+        [
+            {
+                mb_catalog.WORKSHEET_MB428_OTHER_DEPENDANTS_LINE_1: D(line_1),
+                mb_catalog.WORKSHEET_MB428_OTHER_DEPENDANTS_LINE_2: BLANK,
+            }
+        ],
+    )
+    return Artifact(mb_catalog.WORKSHEET_MB428_OTHER_DEPENDANTS, columns)
+
+
 def _sheet(tmp_path: Path, salary: str, *extra: Artifact[Decimal]) -> Worksheet:
     given = [Artifact(EMPLOYMENT_INCOME, D(salary)), *extra]
     worksheets = _service(tmp_path).compute(JurisdictionCode("CA-MB"), 2025, *given)
@@ -212,7 +232,7 @@ def test_line_53_follows_line_51_when_line_49_is_given(tmp_path: Path) -> None:
     sheet = _sheet(
         tmp_path,
         "70000",
-        Artifact(mb_catalog.MB428_OTHER_DEPENDANTS_MEDICAL_EXPENSES_LINE_49, D("1000.00")),
+        _one_dependant("1000.00"),
     )
 
     # Line 51 at a 70,000 salary is 21,149.23 with line 50 of 1,000.00; times 0.108 is 2,284.11684,
