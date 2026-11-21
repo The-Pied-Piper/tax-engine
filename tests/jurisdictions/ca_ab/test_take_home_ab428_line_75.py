@@ -67,7 +67,7 @@ from tests.kinds import non_negative
 D = Decimal
 CODE = JurisdictionCode("CA-AB")
 TAX = "ca-ab/ab428"
-LINE_51 = "ca-ab/ab428_medical_expenses_line_51"
+LINE_51 = "ca-ab/ab428_allowable_medical_expenses_for_other_dependants_line_50"
 LINE_73 = "ca-ab/ab428_tax_line_73"
 LINE_74 = "ca-ab/ab428_supplemental_tax_credit_line_74"
 LINE_75 = "ca-ab/ab428_alberta_tax_line_75"
@@ -109,10 +109,24 @@ ALBERTA_LINE_PARTS = (
     "ab428_line_41_input.yaml",
     "ab428_credits_line_41.yaml",
     "ab428_credits_line_43.yaml",
-    "ab428_line_51_inputs.yaml",
+    "ab428_credits_line_44_input.yaml",
+    "ab428_credits_line_44.yaml",
+    "ab428_credits_line_45.yaml",
+    "ab428_credits_line_47.yaml",
+    "ab428_credits_line_48.yaml",
+    "ab428_credits_line_49.yaml",
+    "ab428_credits_line_50_input.yaml",
+    "ab428_credits_line_50.yaml",
+    "ab428_credits_line_51.yaml",
     "ab428_credits_line_52.yaml",
     "ab428_credits_line_54.yaml",
-    "ab428_line_57_inputs.yaml",
+    "ab428_credits_line_55_input.yaml",
+    "ab428_credits_line_55_box_a.yaml",
+    "ab428_credits_line_55.yaml",
+    "ab428_credits_line_56_input.yaml",
+    "ab428_credits_line_56_box_a.yaml",
+    "ab428_credits_line_56.yaml",
+    "ab428_credits_line_57.yaml",
     "ab428_credits_line_58.yaml",
     "ab428_line_62.yaml",
     "ab428_line_63_inputs.yaml",

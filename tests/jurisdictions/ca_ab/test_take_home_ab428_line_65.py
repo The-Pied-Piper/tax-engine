@@ -48,7 +48,7 @@ from tax_engine.jurisdictions.ca_ab.catalog import (
     AB428_MINIMUM_TAX_CARRYOVER_AMOUNT_LINE_64,
     AB428_MINIMUM_TAX_CARRYOVER_LINE_64,
 )
-from tests.federal_forms import FEDERAL_FORMS, form_parts
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_ab.support import (
     alberta_capabilities,
     alberta_kinds,
@@ -57,7 +57,6 @@ from tests.jurisdictions.ca_ab.support import (
     alberta_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT
 
 D = Decimal
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
@@ -94,11 +93,9 @@ CASES = [("20000", "1877.42"), ("200000", "2140.53")]
 
 
 def _part_files() -> Iterator[Path]:
-    yield T1_LINE_10100_INPUT
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
-    yield T1_LINE_10100_FORM
-    yield FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml"
+    yield from form_parts("t1_employment_income", "t1_taxable_income")
     yield ALBERTA_PARTS / "ab428_line_16.yaml"
     yield ALBERTA_PARTS / "ab428_line_25.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_27.yaml"
@@ -113,10 +110,24 @@ def _part_files() -> Iterator[Path]:
     yield ALBERTA_PARTS / "ab428_line_41_input.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_41.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_43.yaml"
-    yield ALBERTA_PARTS / "ab428_line_51_inputs.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_44_input.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_44.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_45.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_47.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_48.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_49.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_50_input.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_50.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_51.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_52.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_54.yaml"
-    yield ALBERTA_PARTS / "ab428_line_57_inputs.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_55_input.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_55_box_a.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_55.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_56_input.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_56_box_a.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_56.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_57.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_58.yaml"
     yield ALBERTA_PARTS / "ab428_line_62.yaml"
     yield ALBERTA_PARTS / "ab428_line_63_inputs.yaml"

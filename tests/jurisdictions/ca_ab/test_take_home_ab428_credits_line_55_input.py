@@ -1,11 +1,9 @@
-"""AB428 (2025) line 51's input, as the Alberta take-home manifest part declares it.
+"""AB428 (2025) line 55 box A's input, as the Alberta take-home manifest part declares it.
 
-Form text (Form AB428, CRA 5009-c-25e.txt): "Line 51 and line 58769: Line 49
-plus line 50 =". The line sits under the printed heading "Medical expenses:", which is its title. A
-salary-only caller has no medical expenses, so a request that leaves the line out is read as blank.
-
-The real part is loaded under a test-local header, as the take-home header is another part's. The
-Alberta registries of `support.py` are used, as Alberta is not yet in the registrations.
+Form text (Form AB428, CRA 5009-c-25e.txt): "Line 55: Amount from line 13 of your federal
+Schedule 9". A salary-only caller has none, so a request that leaves the line out is read as
+blank. The real part is loaded under a test-local header, as the take-home header is another
+part's.
 """
 
 from __future__ import annotations
@@ -18,13 +16,13 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.domain.manifest import Manifest
 from tests.jurisdictions.ca_ab.support import alberta_kinds, alberta_packages, alberta_units
 
-IDENTIFIER = "ca-ab/ab428_medical_expenses_line_51"
-PRINTED_BASIS = "Line 51 and line 58769: Line 49 plus line 50"
+IDENTIFIER = "ca-ab/ab428_donations_amount_line_55"
+PRINTED_BASIS = "Line 55: Amount from line 13 of your federal Schedule 9"
 PART = (
     Path(tax_engine.jurisdictions.ca_ab.__file__).parent
     / "manifests"
     / "2025"
-    / "ab428_line_51_inputs.yaml"
+    / "ab428_credits_line_55_input.yaml"
 )
 HEADER = """\
 jurisdiction: CA-AB
@@ -54,12 +52,20 @@ def _manifest(tmp_path: Path) -> Manifest:
     return source.load(folder)
 
 
-def test_a_request_that_leaves_out_line_51_is_read_as_blank(tmp_path: Path) -> None:
-    declaration = _manifest(tmp_path).inputs[IDENTIFIER]
-    default = declaration.default_artifact(alberta_kinds().kind(IDENTIFIER))
+def test_the_part_declares_the_one_optional_input_as_printed(tmp_path: Path) -> None:
+    manifest = _manifest(tmp_path)
+
+    assert list(manifest.inputs) == [IDENTIFIER]
+    declaration = manifest.inputs[IDENTIFIER]
     assert not declaration.required
     assert declaration.basis == PRINTED_BASIS
-    assert declaration.title == "Medical expenses"
-    assert declaration.reference == "51"
+    assert declaration.title == "Amount from line 13 of your federal Schedule 9"
+    assert declaration.reference == "55 box A"
     assert declaration.unit == "ca/cad"
+
+
+def test_a_request_that_leaves_the_line_out_is_read_as_blank(tmp_path: Path) -> None:
+    declaration = _manifest(tmp_path).inputs[IDENTIFIER]
+    default = declaration.default_artifact(alberta_kinds().kind(IDENTIFIER))
+
     assert default is not None and default.is_blank

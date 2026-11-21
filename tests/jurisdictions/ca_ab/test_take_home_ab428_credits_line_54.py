@@ -1,18 +1,18 @@
 """AB428 (2025) line 54, line 52 multiplied by the line 53 rate of 8%, from the salary alone.
 
-Form text (Form AB428, CRA 5009-c-25e.txt): "Line 53: Alberta non-refundable tax credit rate 8%" and
-"Line 54 and line 58840: Line 52 multiplied by the percentage from line 53 = ^". Line 53 is a
+Form text (Form AB428, CRA 5009-c-25e.txt): "Line 53: Alberta non-refundable tax credit rate 8%"
+and "Line 54 and line 58840: Line 52 multiplied by the percentage from line 53 = ^". Line 53 is a
 printed rate, so it is the `ca-ab/credit_rate` dataset figure and has no step of its own; line 54
-is one core/apply_rate step over line 52, rounded half-up to the cent by the dataset's own rule, as
-Ontario line 46 is over line 45. Line 54 prints no name, so the step has no title.
+is one core/apply_rate step over line 52, rounded half-up to the cent by the dataset's own rule,
+as Ontario line 46 is over line 45. Line 54 prints no name, so the step has no title.
 
-The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts, the real line
-16, line 25, line 27, line 29, line 32, line 33, line 36, line 39, line 43 and line 52 parts, the
-line 34 inputs part, the line 41 input part, the line 51 inputs part and the new
-`ab428_credits_line_54.yaml`, and types in only the salary (and, in one test, line 51). The form
-declaration is made up here, exporting only line 54. The figures are hand-computed from the
-printed forms (not a CRA example): line 52 is 23,467.75, 26,692.23 and 26,756.58 at the two
-salaries, times 0.08, half-up to the cent.
+The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts, the real
+line 16, line 25, line 27, line 29, line 32, line 33, line 36, line 39, line 43 and line 52
+parts, the line 34 inputs part, the line 41 input part, the medical expenses parts (lines 44 to
+51) and the new `ab428_credits_line_54.yaml`, and types in only the salary (and, in one test,
+line 50). The form declaration is made up here, exporting only line 54. The figures are
+hand-computed from the printed forms (not a CRA example): line 52 is 23,467.75, 26,692.23 and
+26,756.58 at the two salaries, times 0.08, half-up to the cent.
 """
 
 from __future__ import annotations
@@ -38,10 +38,10 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_ab.catalog import (
+    AB428_ALLOWABLE_MEDICAL_EXPENSES_FOR_OTHER_DEPENDANTS_LINE_50,
     AB428_CREDITS_AT_RATE_LINE_54,
-    AB428_MEDICAL_EXPENSES_LINE_51,
 )
-from tests.federal_forms import FEDERAL_FORMS, form_parts
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_ab.support import (
     alberta_capabilities,
     alberta_kinds,
@@ -50,7 +50,6 @@ from tests.jurisdictions.ca_ab.support import (
     alberta_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT
 
 D = Decimal
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
@@ -80,11 +79,9 @@ CASES = [("20000", "1877.42"), ("200000", "2140.53")]
 
 
 def _part_files() -> Iterator[Path]:
-    yield T1_LINE_10100_INPUT
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
-    yield T1_LINE_10100_FORM
-    yield FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml"
+    yield from form_parts("t1_employment_income", "t1_taxable_income")
     yield ALBERTA_PARTS / "ab428_line_16.yaml"
     yield ALBERTA_PARTS / "ab428_line_25.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_27.yaml"
@@ -99,7 +96,15 @@ def _part_files() -> Iterator[Path]:
     yield ALBERTA_PARTS / "ab428_line_41_input.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_41.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_43.yaml"
-    yield ALBERTA_PARTS / "ab428_line_51_inputs.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_44_input.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_44.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_45.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_47.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_48.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_49.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_50_input.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_50.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_51.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_52.yaml"
     yield LINE_PART
 
@@ -136,8 +141,12 @@ def test_line_54_is_line_52_times_8_percent(tmp_path: Path, salary: str, expecte
     assert _sheet(tmp_path, salary).get(AB428_CREDITS_AT_RATE_LINE_54).value == D(expected)
 
 
-def test_line_54_follows_line_51_when_it_is_given(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "70000", Artifact(AB428_MEDICAL_EXPENSES_LINE_51, D("1500.00")))
+def test_line_54_follows_line_51_when_line_50_is_given(tmp_path: Path) -> None:
+    sheet = _sheet(
+        tmp_path,
+        "70000",
+        Artifact(AB428_ALLOWABLE_MEDICAL_EXPENSES_FOR_OTHER_DEPENDANTS_LINE_50, D("1500.00")),
+    )
 
     # Line 52 is 28,192.23; times 0.08 is 2,255.3784, rounded half-up to 2,255.38.
     assert sheet.get(AB428_CREDITS_AT_RATE_LINE_54).value == D("2255.38")
