@@ -45,7 +45,8 @@ from tests.manifest_support import inputs_without_form
 D = Decimal
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
 LINE_PART = NL_PARTS / "nl428_line_66.yaml"
-LINE_61 = "ca-nl/nl428_donations_and_gifts_credit_line_61"
+AMOUNT_59 = "ca-nl/nl428_donations_amount_line_59"
+AMOUNT_60 = "ca-nl/nl428_donations_amount_line_60"
 LINE_62 = "ca-nl/nl428_non_refundable_credits_line_62"
 IDENTIFIER = "ca-nl/nl428_non_refundable_credits_line_66"
 FORM_NAME = "ca-nl/nl428"
@@ -99,7 +100,11 @@ NL_PART_NAMES = (
     "nl428_credits_line_55.yaml",
     "nl428_credits_line_56.yaml",
     "nl428_credits_line_58.yaml",
-    "nl428_credits_line_61_input.yaml",
+    "nl428_credits_line_59_input.yaml",
+    "nl428_credits_line_59.yaml",
+    "nl428_credits_line_60_input.yaml",
+    "nl428_credits_line_60.yaml",
+    "nl428_credits_line_61.yaml",
     "nl428_credits_line_62.yaml",
     "nl428_line_66.yaml",
 )
@@ -216,10 +221,10 @@ def test_line_66_is_line_62_read_across_the_forms(
 
 
 def test_line_66_follows_line_61_through_line_62(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "70000", FORM_NAME, {LINE_61: "250.25"})
+    sheet = _sheet(tmp_path, "70000", FORM_NAME, {AMOUNT_59: "1000", AMOUNT_60: "1000"})
 
-    # 1,342.95 plus 250.25.
-    assert _value(sheet, IDENTIFIER) == D("1593.20")
+    # 1,342.95 plus 87.00 and 218.00 (8.7% and 21.8% of 1,000 each).
+    assert _value(sheet, IDENTIFIER) == D("1647.95")
 
 
 def _part() -> dict[str, Any]:
