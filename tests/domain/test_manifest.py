@@ -664,6 +664,11 @@ def test_fields_belong_to_a_form_with_instances_and_are_declared_once() -> None:
         optional_form(instances="ex/rows", fields=(optional("ex/amount"), optional("ex/amount")))
 
 
+def test_a_form_declares_each_input_once() -> None:
+    with pytest.raises(InvalidManifestError, match="input 'ex/amount' is declared twice"):
+        optional_form(inputs=(optional("ex/amount"), optional("ex/amount")))
+
+
 def with_forms(
     *forms: Form,
     inputs: tuple[InputDeclaration, ...] | None = None,
@@ -1039,9 +1044,3 @@ def test_an_optional_slot_without_a_blank_rule_is_listed_by_the_form() -> None:
     )
 
     assert reading_form(capabilities=(ruled,)).unruled_optional == (("more", "ex/more.total"),)
-
-
-# --- input ownership ----------------------------------------------------------------------------
-#
-# An input belongs to the form that declares it, and the manifest's `inputs` gather them. Another
-# form reads the owner's export instead (its composition starts from its own inputs only).

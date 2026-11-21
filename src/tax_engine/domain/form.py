@@ -132,12 +132,12 @@ class FormComposition:
         self._unruled_optional = tuple(
             (slot, kinds.kind(identifier)) for slot, identifier in form.unruled_optional
         )
-        self._field_defaults = {
-            kind: found
-            for d in form.fields
-            if d.name in by_name and (found := d.default_artifact(by_name[d.name])) is not None
-            for kind in [by_name[d.name]]
-        }
+        self._field_defaults: dict[ArtifactKind[Any], Artifact[Any]] = {}
+        for d in form.fields:
+            if d.name in by_name:
+                found = d.default_artifact(by_name[d.name])
+                if found is not None:
+                    self._field_defaults[by_name[d.name]] = found
         self._blank_inputs = (
             self._blank_kinds(self._defaults, self._field_defaults.values()) & self._inputs
         )

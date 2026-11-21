@@ -9,9 +9,11 @@ group of capabilities with the artifacts it exports, never a capability itself. 
 `FormComposition` wires one form as an inner `Composition` whose outputs are the form's exports and
 whose inputs are derived. The inputs are:
 
-- the starting artifacts the form reads, which are the inputs the form owns: an input belongs to
-  the form whose part declares it, and every other form reads that form's export instead;
+- the inputs the form holds: an input belongs to the form whose part declares it, and every other
+  form reads that form's export instead;
 - the fields of its `instances` kind (a record-list kind, one record per instance), if it has one;
+  the `instances` kind itself is one of the form's own inputs, the caller's list of records, read
+  by the form set rather than by a step;
 - its imports, the kinds it reads that other forms export.
 
 A form without an `instances` list has exactly one implicit instance.

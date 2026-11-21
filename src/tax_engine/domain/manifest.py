@@ -249,6 +249,7 @@ class Form:
         object.__setattr__(self, "supplies", MappingProxyType(dict(self.supplies)))
         object.__setattr__(self, "capabilities", tuple(self.capabilities))
         object.__setattr__(self, "fields", tuple(self.fields))
+        object.__setattr__(self, "inputs", tuple(self.inputs))
         self.check_identifier("name", self.name)
         if self.instances is not None:
             self.check_identifier("instances", self.instances)
@@ -308,10 +309,13 @@ class Form:
             raise InvalidManifestError(
                 f"form {self.name!r}: fields belong to a form with instances"
             )
-        names = [declared.name for declared in self.fields]
-        for name in names:
-            if names.count(name) > 1:
-                raise InvalidManifestError(f"form {self.name!r}: field {name!r} is declared twice")
+        for kind, declarations in (("field", self.fields), ("input", self.inputs)):
+            names = [declared.name for declared in declarations]
+            for name in names:
+                if names.count(name) > 1:
+                    raise InvalidManifestError(
+                        f"form {self.name!r}: {kind} {name!r} is declared twice"
+                    )
 
     @staticmethod
     def check_limits(
