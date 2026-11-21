@@ -1,0 +1,14 @@
+# Work Chart 414 (TP-1.D.GR-V 2025-12), line 10: line 2 "x 85% = 10". Line 2 times the printed 85%
+# (`ca-qc/work_chart_414_line_10_rate`), rounded half-up to the cent by the dataset.
+form:
+  name: ca-qc/work_chart_414
+capabilities:
+  - name: core/apply_rate
+    reference: "10"
+    unit: ca/cad
+    params:
+      rate: ca-qc/work_chart_414_line_10_rate
+    consumes:
+      base: ca-qc/work_chart_414_lesser_line_2
+    produces:
+      output: ca-qc/work_chart_414_line_10

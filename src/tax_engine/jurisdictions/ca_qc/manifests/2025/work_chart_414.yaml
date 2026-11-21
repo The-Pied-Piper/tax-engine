@@ -1,0 +1,12 @@
+# Revenu Quebec TP-1.D.GR-V (2025-12), "Tax credit for contributions to authorized Québec political
+# parties" (Work Chart 414). Its own form, so that the tax lines do not read it in a loop: it has no
+# upstream form (line 1 is its own optional input) and exports line 14, the credit that TP-1 line 414
+# carries. Each line's capability is a part of its own with the same `form.name`; the printed
+# constants (the maximums $200, $50 and $155 and the rates 85% and 75%) are datasets.
+form:
+  name: ca-qc/work_chart_414
+  title: "Tax credit for contributions to authorized Québec political parties"
+  required: true
+  exports:
+    - ca-qc/work_chart_414_credit_line_14
+capabilities: []

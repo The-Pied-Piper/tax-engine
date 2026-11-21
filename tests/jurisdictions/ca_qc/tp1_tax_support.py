@@ -39,6 +39,19 @@ CHART_PARTS = (
     "work_chart_401_line_7.yaml",
     "work_chart_401_line_8.yaml",
 )
+# The real Work Chart 414 declaration (it exports line 14) and its parts, then TP-1 line 414 that
+# reads it. The chart has no upstream form: its line 1 is its own optional input.
+CHART_414_PARTS = (
+    "work_chart_414.yaml",
+    "work_chart_414_line_1_input.yaml",
+    "work_chart_414_line_1.yaml",
+    "work_chart_414_line_2.yaml",
+    "work_chart_414_line_10.yaml",
+    "work_chart_414_line_3.yaml",
+    "work_chart_414_line_11.yaml",
+    "work_chart_414_line_14.yaml",
+)
+LINE_414_PARTS = (*CHART_414_PARTS, "tp1_tax_line_414.yaml")
 # Every part line 401 needs besides its own, and every part line 406 needs besides its own (the
 # real credits declaration exports line 399); a form cannot hold an output nothing reads, so a
 # test takes the chain of the lines it reads.

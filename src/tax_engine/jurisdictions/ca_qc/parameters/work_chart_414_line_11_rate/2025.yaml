@@ -1,0 +1,8 @@
+# Revenu Quebec TP-1.D.GR-V (2025-12), Work Chart 414, line 3 "x 75% = 11": the printed 75%, applied by line 11 to the line before it as a fraction.
+family: ca-qc/work_chart_414_line_11_rate
+tax_year: 2025
+kind: rate
+sources:
+  - Revenu Quebec TP-1.D.GR-V (2025-12), Work Chart 414
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.75"

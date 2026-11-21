@@ -1,0 +1,14 @@
+# Work Chart 414 (TP-1.D.GR-V 2025-12), line 2: "Enter the amount from line 1 or $50, whichever is
+# less." Line 1 up to the printed $50 (`ca-qc/work_chart_414_line_2_limit`), half-up to the cent.
+form:
+  name: ca-qc/work_chart_414
+capabilities:
+  - name: core/capped_amount
+    reference: "2"
+    unit: ca/cad
+    params:
+      cap: ca-qc/work_chart_414_line_2_limit
+    consumes:
+      base: ca-qc/work_chart_414_contributions_line_1
+    produces:
+      output: ca-qc/work_chart_414_lesser_line_2
