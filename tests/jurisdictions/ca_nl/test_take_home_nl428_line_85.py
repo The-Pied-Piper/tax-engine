@@ -43,7 +43,7 @@ from tests.manifest_support import inputs_without_form
 D = Decimal
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
 LINE_81 = "ca-nl/nl428_tax_line_81"
-LINE_84 = "ca-nl/nl428_venture_capital_tax_credit_line_84"
+LINE_82 = "ca-nl/nl428_venture_capital_tax_credit_from_certificates_line_82"
 IDENTIFIER = "ca-nl/nl428_tax_line_85"
 FORM_NAME = "ca-nl/nl428"
 FEDERAL_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
@@ -103,7 +103,11 @@ NL_PART_NAMES = (
     "nl428_credits_line_55.yaml",
     "nl428_credits_line_56.yaml",
     "nl428_credits_line_58.yaml",
-    "nl428_credits_line_61_input.yaml",
+    "nl428_credits_line_59_input.yaml",
+    "nl428_credits_line_59.yaml",
+    "nl428_credits_line_60_input.yaml",
+    "nl428_credits_line_60.yaml",
+    "nl428_credits_line_61.yaml",
     "nl428_credits_line_62.yaml",
     "nl428_line_66.yaml",
     "nl428_line_67_input.yaml",
@@ -123,7 +127,9 @@ NL_PART_NAMES = (
     "nl428_line_79.yaml",
     "nl428_line_80_input.yaml",
     "nl428_line_81.yaml",
-    "nl428_line_84_input.yaml",
+    "nl428_line_82_input.yaml",
+    "nl428_line_83_input.yaml",
+    "nl428_line_84.yaml",
     "nl428_line_85.yaml",
 )
 
@@ -243,14 +249,14 @@ def test_line_85_is_line_81_when_line_84_is_blank(
 
 
 def test_line_85_is_line_81_minus_line_84(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "70000", FORM_NAME, {LINE_84: "500.00"})
+    sheet = _sheet(tmp_path, "70000", FORM_NAME, {LINE_82: "500.00"})
 
     assert _value(sheet, LINE_81) == D("6147.49")
     assert _value(sheet, IDENTIFIER) == D("5647.49")
 
 
 def test_line_85_is_not_below_zero(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "15000", FORM_NAME, {LINE_84: "500.00"})
+    sheet = _sheet(tmp_path, "15000", FORM_NAME, {LINE_82: "500.00"})
 
     assert _value(sheet, LINE_81) == D("261.24")
     assert _value(sheet, IDENTIFIER) == D("0.00")

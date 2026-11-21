@@ -1,0 +1,22 @@
+# Form NL428 (CRA 5001-C) line 84: "Line 84: Line 82 plus line 83 =". Line 82 is the venture capital
+# tax credit from Certificate(s) NL VCTC (nl428_line_82_input.yaml) and line 83 the unused credit
+# from the most recent notice of assessment or reassessment (nl428_line_83_input.yaml), both optional
+# inputs that a salary-only filer leaves blank, read as 0. One core/sum step. The form names no label
+# for the line, so the step has no title. Line 85 reads it.
+form:
+  name: ca-nl/nl428
+capabilities:
+  - name: core/sum
+    reference: "84"
+    unit: ca/cad
+    params:
+      rounding: ca-nl/cent_rounding
+    consumes:
+      parts:
+        - ca-nl/nl428_venture_capital_tax_credit_from_certificates_line_82
+        - ca-nl/nl428_unused_venture_capital_tax_credit_line_83
+    blank:
+      ca-nl/nl428_venture_capital_tax_credit_from_certificates_line_82: "0"
+      ca-nl/nl428_unused_venture_capital_tax_credit_line_83: "0"
+    produces:
+      output: ca-nl/nl428_venture_capital_tax_credit_line_84

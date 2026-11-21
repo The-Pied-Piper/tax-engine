@@ -299,12 +299,35 @@ NL428_ALLOWABLE_MEDICAL_EXPENSES_FOR_OTHER_DEPENDANTS_LINE_54 = AmountKind.decla
 58729: Allowable amount of medical expenses for other dependants (use Worksheet NL428)": the amount
 as the filer gives it, an optional input; a blank input is read as blank."""
 
+NL428_DONATIONS_AMOUNT_LINE_59 = AmountKind.declare(
+    CATALOG, "nl428_donations_amount_line_59", non_negative=True
+)
+"""Donations amount, NL428 line 59 box A "Amount from line 13 of your federal Schedule 9": the
+amount as the filer gives it, an optional input; a blank input is read as blank."""
+
+NL428_DONATIONS_CREDIT_AT_RATE_LINE_59 = AmountKind.declare(
+    CATALOG, "nl428_donations_credit_at_rate_line_59", non_negative=True
+)
+"""Donations credit at 8.7%, NL428 line 59 box B "Amount from line 13 of your federal Schedule 9
+multiplied by 8.7% =": the Schedule 9 amount times 8.7%; a blank amount is read as 0."""
+
+NL428_DONATIONS_AMOUNT_LINE_60 = AmountKind.declare(
+    CATALOG, "nl428_donations_amount_line_60", non_negative=True
+)
+"""Donations amount, NL428 line 60 box A "Amount from line 14 of your federal Schedule 9": the
+amount as the filer gives it, an optional input; a blank input is read as blank."""
+
+NL428_DONATIONS_CREDIT_AT_RATE_LINE_60 = AmountKind.declare(
+    CATALOG, "nl428_donations_credit_at_rate_line_60", non_negative=True
+)
+"""Donations credit at 21.8%, NL428 line 60 box B "Amount from line 14 of your federal Schedule 9
+multiplied by 21.8% =": the Schedule 9 amount times 21.8%; a blank amount is read as 0."""
+
 NL428_DONATIONS_AND_GIFTS_CREDIT_LINE_61 = AmountKind.declare(
     CATALOG, "nl428_donations_and_gifts_credit_line_61", non_negative=True
 )
-"""Donations and gifts credit, NL428 line 61 "Line 61 and line 58969: Line 59 plus line 60 =": the
-amount as the filer gives it, an optional input; lines 59 and 60 are not built, and a blank input
-is read as blank."""
+"""Donations and gifts credit, NL428 line 61 (line 58969) "Line 61 and line 58969: Line 59 plus
+line 60 =": line 59 plus line 60; line 62 reads it."""
 
 NL428_NON_REFUNDABLE_CREDITS_LINE_62 = AmountKind.declare(
     CATALOG, "nl428_non_refundable_credits_line_62", non_negative=True
@@ -448,13 +471,25 @@ NL428_TAX_LINE_87 = AmountKind.declare(CATALOG, "nl428_tax_line_87", non_negativ
 "Line 87: Line 85 minus line 86 (if negative, enter "0") =": line 85 less the amount of line 86
 (blank read as 0), floored at 0 as the form prints, rounded half-up to the cent."""
 
+NL428_VENTURE_CAPITAL_TAX_CREDIT_FROM_CERTIFICATES_LINE_82 = AmountKind.declare(
+    CATALOG, "nl428_venture_capital_tax_credit_from_certificates_line_82", non_negative=True
+)
+"""Venture capital tax credit from certificates, NL428 line 82 (line 61820) "Venture capital tax
+credit from Certificate(s) NL VCTC": the amount as the filer gives it, an optional input; a blank
+input is read as blank."""
+
+NL428_UNUSED_VENTURE_CAPITAL_TAX_CREDIT_LINE_83 = AmountKind.declare(
+    CATALOG, "nl428_unused_venture_capital_tax_credit_line_83", non_negative=True
+)
+"""Unused venture capital tax credit, NL428 line 83 "Unused Newfoundland and Labrador venture
+capital tax credit from your most recent notice of assessment or reassessment": the amount as the
+filer gives it, an optional input; a blank input is read as blank."""
+
 NL428_VENTURE_CAPITAL_TAX_CREDIT_LINE_84 = AmountKind.declare(
     CATALOG, "nl428_venture_capital_tax_credit_line_84", non_negative=True
 )
-"""Venture capital tax credit, NL428 line 84 "Line 84: Line 82 plus line 83": the venture capital
-tax credit from Certificate(s) NL VCTC (line 82) plus the unused credit from the most recent notice
-of assessment or reassessment (line 83), taken as one optional input that a salary-only caller
-leaves out; a blank input is read as blank."""
+"""Venture capital tax credit, NL428 line 84 "Line 84: Line 82 plus line 83 =": line 82 plus line
+83 (a blank line is read as 0); line 85 reads it."""
 
 NL428_UNUSED_LOW_INCOME_REDUCTION_FROM_SPOUSE_LINE_86 = AmountKind.declare(
     CATALOG, "nl428_unused_low_income_reduction_from_spouse_line_86", non_negative=True
