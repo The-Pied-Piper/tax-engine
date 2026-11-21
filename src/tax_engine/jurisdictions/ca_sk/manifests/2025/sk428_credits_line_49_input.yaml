@@ -1,0 +1,15 @@
+# SK428 (2025) line 49's input, the medical expenses for other dependants. Form SK428 (CRA 5008-c-25e):
+# "Line 49 and line 58729: Allowable amount of medical expenses for other dependants from line 33199
+# of your return". The engine does not compute medical expenses, so the figure is taken as one
+# optional input, the way the form takes it. A request that leaves the line out is read as blank; the
+# line 50 step reads that blank as 0.
+form:
+  name: ca-sk/sk428_credits
+inputs:
+  - name: ca-sk/sk428_other_dependants_medical_expenses_line_49
+    title: "Allowable amount of medical expenses for other dependants from line 33199 of your return"
+    reference: "49"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 49 and line 58729: Allowable amount of medical expenses for other dependants from line 33199 of your return'

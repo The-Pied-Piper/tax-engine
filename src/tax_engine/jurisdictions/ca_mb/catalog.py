@@ -58,11 +58,48 @@ MB428_PENSION_INCOME_AMOUNT_LINE_31 = AmountKind.declare(
 $1,000)": the entered amount, passed on unchanged when it is at most the printed maximum, blank when
 left out; above the maximum it is refused, not capped."""
 
+MB428_MEDICAL_EXPENSES_LINE_43 = AmountKind.declare(
+    CATALOG, "mb428_medical_expenses_line_43", non_negative=True
+)
+"""Medical expenses, MB428 line 43 (line 58689) "Amount from line 33099 of your return": the amount
+as the filer gives it, an optional input; a blank input is read as blank."""
+
+MB428_NET_INCOME_LINE_44 = AmountKind.declare(
+    CATALOG, "mb428_net_income_line_44", non_negative=True
+)
+"""Net income, MB428 line 44 "Amount from line 23600 of your return": the T1 net income, read from
+the T1 taxable income form."""
+
+MB428_MEDICAL_EXPENSES_RATE_AMOUNT_LINE_46 = AmountKind.declare(
+    CATALOG, "mb428_medical_expenses_rate_amount_line_46", non_negative=True
+)
+"""Medical expenses threshold, MB428 line 46 "Line 44 multiplied by the percentage from line 45 =":
+line 44 times the 3% of line 45."""
+
+MB428_MEDICAL_EXPENSES_LIMITED_AMOUNT_LINE_47 = AmountKind.declare(
+    CATALOG, "mb428_medical_expenses_limited_amount_line_47", non_negative=True
+)
+"""Medical expenses threshold, limited, MB428 line 47 "Enter whichever is less: $1,728 or the amount
+from line 46.": the lesser of the printed ceiling and line 46."""
+
+MB428_MEDICAL_EXPENSES_OVER_LIMIT_LINE_48 = AmountKind.declare(
+    CATALOG, "mb428_medical_expenses_over_limit_line_48", non_negative=True
+)
+"""Medical expenses over the limit, MB428 line 48 "Line 43 minus line 47 (if negative, enter "0")
+=": line 43 minus line 47, never below 0; a blank line 43 is read as 0."""
+
+MB428_OTHER_DEPENDANTS_MEDICAL_EXPENSES_LINE_49 = AmountKind.declare(
+    CATALOG, "mb428_other_dependants_medical_expenses_line_49", non_negative=True
+)
+"""Allowable amount of medical expenses for other dependants, MB428 line 49 (line 58729) "(use
+Worksheet MB428)": the amount as the filer gives it, an optional input; a blank input is read as
+blank."""
+
 MB428_MEDICAL_EXPENSES_LINE_50 = AmountKind.declare(
     CATALOG, "mb428_medical_expenses_line_50", non_negative=True
 )
-"""Medical expenses, MB428 line 50 (line 58769) "Line 48 plus line 49 =": line 48 plus line 49, an
-optional input; a blank is read as 0 by the line 51 step."""
+"""Medical expenses, MB428 line 50 (line 58769) "Line 48 plus line 49 =": line 48 plus line 49
+(a blank line 49 is read as 0), read by line 51."""
 
 MB428_DONATIONS_CREDIT_LINE_56 = AmountKind.declare(
     CATALOG, "mb428_donations_credit_line_56", non_negative=True

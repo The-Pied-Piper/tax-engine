@@ -67,7 +67,13 @@ CREDIT_PARTS = (
     "mb428_credits_line_36.yaml",
     "mb428_credits_line_41.yaml",
     "mb428_credits_line_42.yaml",
-    "mb428_credits_line_50_input.yaml",
+    "mb428_credits_line_43_inputs.yaml",
+    "mb428_credits_line_44.yaml",
+    "mb428_credits_line_46.yaml",
+    "mb428_credits_line_47.yaml",
+    "mb428_credits_line_48.yaml",
+    "mb428_credits_line_49_inputs.yaml",
+    "mb428_credits_line_50.yaml",
     "mb428_credits_line_51.yaml",
 )
 SCHEDULE_PARTS = (
@@ -198,9 +204,11 @@ def test_line_53_is_line_51_times_10_point_8_percent(
     assert _line(_sheet(tmp_path, salary), IDENTIFIER) == D(expected)
 
 
-def test_line_53_follows_line_51_when_line_50_is_given(tmp_path: Path) -> None:
+def test_line_53_follows_line_51_when_line_49_is_given(tmp_path: Path) -> None:
     sheet = _sheet(
-        tmp_path, "70000", Artifact(mb_catalog.MB428_MEDICAL_EXPENSES_LINE_50, D("1000.00"))
+        tmp_path,
+        "70000",
+        Artifact(mb_catalog.MB428_OTHER_DEPENDANTS_MEDICAL_EXPENSES_LINE_49, D("1000.00")),
     )
 
     # Line 51 at a 70,000 salary is 21,149.23 with line 50 of 1,000.00; times 0.108 is 2,284.11684,

@@ -1,8 +1,8 @@
 # Form SK428 (CRA 5008-c) line 51: "Line 51 and line 58800: Line 42 plus line 50 = ^". It sums the
 # credits subtotal (line 42, `ca-sk/sk428_credits_subtotal_line_42`) and the medical expense amount
-# (line 50, `ca-sk/sk428_medical_expenses_line_50`). Lines 43 to 49, the medical expense working,
-# are not built: line 50 is an optional input that a salary-only caller leaves out, read as blank
-# and then as 0 by the blank rule below. The form prints no label for line 51.
+# (line 50, `ca-sk/sk428_medical_expenses_line_50`, sk428_credits_line_50.yaml). Line 50 is always a
+# figure (a salary-only caller has no medical expenses, so it is 0.00), so nothing is blank. The
+# form prints no label for line 51.
 form:
   name: ca-sk/sk428_credits
 capabilities:
@@ -13,7 +13,5 @@ capabilities:
       rounding: ca-sk/cent_rounding
     consumes:
       parts: [ca-sk/sk428_credits_subtotal_line_42, ca-sk/sk428_medical_expenses_line_50]
-    blank:
-      ca-sk/sk428_medical_expenses_line_50: "0"
     produces:
       output: ca-sk/sk428_credits_total_line_51

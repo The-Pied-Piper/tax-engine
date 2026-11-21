@@ -1,27 +1,44 @@
 # SK428 (2025) line 77, the labour-sponsored venture capital tax credit. Form SK428 (CRA 5008-c):
-# "Line 77 and line 63557: Line 75 plus line 76 (maximum $875) =". Lines 75 and 76 are not built, so
-# line 77 is an entry line in two steps. The first, core/credit_amount, supplies the printed maximum
-# from the `ca-sk/labour_sponsored_credit_maximum` dataset; it is not a line of the form, so it has
-# no title and no reference. The second, core/at_most, is line 77: the entered amount
-# (sk428_line_77_input.yaml) passed on unchanged. The form prints no label, so the step has no
-# title. An entry above the printed maximum is refused, not capped. A blank entry passes on as
-# blank; line 78 reads it as 0.
+# "Line 77 and line 63557: Line 75 plus line 76 (maximum $875) =". Three steps, the last of which is
+# line 77. The first, core/credit_amount, supplies the printed maximum from the
+# `ca-sk/labour_sponsored_credit_maximum` dataset; it is not a line of the form, so it has no
+# reference, and its title is plain words, not printed wording, because the sentence of line 77
+# names it (as SK428 line 33 does). The second, core/sum, adds line 75 (sk428_line_75_input.yaml) and line 76
+# (sk428_line_76_input.yaml), each an optional input a salary-only caller leaves out and read as 0;
+# it is engine-internal, so it has a plain-words title and no reference, as Schedule K line 83's
+# sum does. The third, core/at_most, is line 77: that sum checked against the printed maximum and
+# passed on unchanged. A sum above the printed maximum is refused, not capped. The form prints no
+# label, so the step has no title. Lines 75 and 76 print the same maximum, which the line 77 check
+# also enforces, as neither line can be negative.
 form:
   name: ca-sk/sk428
 capabilities:
   - name: core/credit_amount
+    title: "Most you can claim for labour-sponsored venture capital credits"
     unit: ca/cad
     params:
       amount: ca-sk/labour_sponsored_credit_maximum
     produces:
       output: ca-sk/sk428_labour_sponsored_credit_maximum
+  - name: core/sum
+    title: "Lines 75 and 76 added up"
+    unit: ca/cad
+    params:
+      rounding: ca-sk/cent_rounding
+    consumes:
+      parts:
+        - ca-sk/sk428_venture_capital_credit_saskatchewan_line_75
+        - ca-sk/sk428_venture_capital_credit_federal_line_76
+    blank:
+      ca-sk/sk428_venture_capital_credit_saskatchewan_line_75: "0"
+      ca-sk/sk428_venture_capital_credit_federal_line_76: "0"
+    produces:
+      output: ca-sk/sk428_labour_sponsored_credit_line_77
   - name: core/at_most
     reference: "77"
     unit: ca/cad
     consumes:
       amount: ca-sk/sk428_labour_sponsored_credit_line_77
       bound: ca-sk/sk428_labour_sponsored_credit_maximum
-    blank:
-      amount: pass_on
     produces:
       output: ca-sk/sk428_labour_sponsored_credit_checked_line_77

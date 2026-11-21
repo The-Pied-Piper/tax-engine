@@ -1,9 +1,8 @@
-"""SK428 (2025) line 77's input, as the Saskatchewan take-home manifest part declares it.
+"""SK428 (2025) line 75's input, as the Saskatchewan take-home manifest part declares it.
 
-Form SK428 (CRA 5008-C), line 77, as printed on the form. A salary-only caller has no
-labour-sponsored venture capital tax credit (lines 75 and 76 are not built), so a request that
-leaves the line out is read as blank; the step that checks line 77 against its printed maximum
-passes that blank on, and the step that reads the checked line reads it as 0.
+Form SK428 Saskatchewan Tax 2025 (CRA 5008-C), line 75, printed as the line text in
+`PRINTED_BASIS`. A request that leaves the line out is read as blank, and
+the line 77 sum reads that blank as 0.
 
 The real part is loaded under a test-local header over the Saskatchewan package list of
 `support.py`.
@@ -20,9 +19,7 @@ import yaml
 import tax_engine.jurisdictions.ca_sk
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.manifest import Manifest
-from tax_engine.jurisdictions.ca_sk.catalog import (
-    SK428_LABOUR_SPONSORED_CREDIT_LINE_77,
-)
+from tax_engine.jurisdictions.ca_sk.catalog import SK428_VENTURE_CAPITAL_CREDIT_SASKATCHEWAN_LINE_75
 from tests.jurisdictions.ca_sk.support import (
     saskatchewan_kinds,
     saskatchewan_packages,
@@ -30,10 +27,13 @@ from tests.jurisdictions.ca_sk.support import (
 )
 from tests.kinds import non_negative
 
-IDENTIFIER = SK428_LABOUR_SPONSORED_CREDIT_LINE_77.identifier
-PRINTED_BASIS = "Line 77 and line 63557: Line 75 plus line 76 (maximum $875)"
+IDENTIFIER = SK428_VENTURE_CAPITAL_CREDIT_SASKATCHEWAN_LINE_75.identifier
+PRINTED_BASIS = (
+    "Line 75: For investments in venture capital corporations registered in Saskatchewan: "
+    "Enter your tax credit from T2C Slip (Sask.). (maximum $875)"
+)
 PART = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / (
-    "manifests/2025/sk428_line_77_input.yaml"
+    "manifests/2025/sk428_line_75_input.yaml"
 )
 HEADER = """\
 jurisdiction: CA-SK
@@ -42,23 +42,12 @@ valid_from_tax_year: 2025
 outputs: [ca/total_income]
 capabilities: []
 """
-# The form that owns the input, declared here as the real parts of the form declare it.
-FORM_NAME = "ca-sk/sk428"
-FORM = f"""\
-form:
-  name: {FORM_NAME}
-  required: true
-  exports:
-    - {IDENTIFIER}
-capabilities: []
-"""
 
 
 def _manifest(tmp_path: Path) -> Manifest:
     folder = tmp_path / "manifest"
     folder.mkdir()
     (folder / "header.yaml").write_text(HEADER)
-    (folder / "form.yaml").write_text(FORM)
     shutil.copy(PART, folder / PART.name)
     source = YamlJurisdictionSource(
         saskatchewan_packages().roots(), saskatchewan_kinds(), saskatchewan_units()
@@ -72,42 +61,34 @@ def _part() -> dict[str, Any]:
     return part
 
 
-def test_the_part_declares_only_the_labour_sponsored_credit_input() -> None:
+def test_the_part_declares_only_the_line_75_input() -> None:
     part = _part()
 
-    assert list(part) == ["form", "inputs"]
-    assert part["form"] == {"name": FORM_NAME}
+    assert list(part) == ["inputs"]
     assert part["inputs"] == [
         {
             "name": IDENTIFIER,
-            "title": "Labour-sponsored venture capital tax credit",
-            "reference": "77",
+            "title": (
+                "For investments in venture capital corporations registered in Saskatchewan: "
+                "Enter your tax credit from T2C Slip (Sask.)"
+            ),
+            "reference": "75",
             "unit": "ca/cad",
             "required": False,
             "default": None,
             "basis": PRINTED_BASIS,
         }
     ]
-    assert list(part["inputs"][0]) == [
-        "name",
-        "title",
-        "reference",
-        "unit",
-        "required",
-        "default",
-        "basis",
-    ]
 
 
-def test_the_labour_sponsored_credit_line_77_is_a_non_negative_amount_kind() -> None:
+def test_line_75_is_a_non_negative_amount_kind() -> None:
     kind = saskatchewan_kinds().kind(IDENTIFIER)
 
-    assert IDENTIFIER == "ca-sk/sk428_labour_sponsored_credit_line_77"
-    assert kind is SK428_LABOUR_SPONSORED_CREDIT_LINE_77
+    assert kind is SK428_VENTURE_CAPITAL_CREDIT_SASKATCHEWAN_LINE_75
     assert non_negative(kind)
 
 
-def test_a_request_that_leaves_out_line_77_is_read_as_blank(tmp_path: Path) -> None:
+def test_a_request_that_leaves_out_line_75_is_read_as_blank(tmp_path: Path) -> None:
     declaration = _manifest(tmp_path).inputs[IDENTIFIER]
     default = declaration.default_artifact(saskatchewan_kinds().kind(IDENTIFIER))
 

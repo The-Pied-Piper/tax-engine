@@ -1,9 +1,8 @@
-"""SK428 (2025) line 50's input, as the Saskatchewan take-home manifest part declares it.
+"""SK428 (2025) line 49's input, as the Saskatchewan take-home manifest part declares it.
 
-Form SK428 (CRA 5008-c), line 50, as printed on the form: "Line 50 and line 58769: Line 48 plus
-line 49 =". The form does not name the line, so the input carries no title. A salary-only caller
-has no medical expenses, so a request that leaves the line out is read as blank, and the line 51
-step reads that blank as 0.
+Form SK428 Saskatchewan Tax 2025 (CRA 5008-C), line 49, printed as the line text in
+`PRINTED_BASIS`. A request that leaves the line out is read as blank, and
+the line 50 step reads that blank as 0.
 
 The real part is loaded under a test-local header over the Saskatchewan package list of
 `support.py`.
@@ -20,7 +19,7 @@ import yaml
 import tax_engine.jurisdictions.ca_sk
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.manifest import Manifest
-from tax_engine.jurisdictions.ca_sk.catalog import SK428_MEDICAL_EXPENSES_LINE_50
+from tax_engine.jurisdictions.ca_sk.catalog import SK428_OTHER_DEPENDANTS_MEDICAL_EXPENSES_LINE_49
 from tests.jurisdictions.ca_sk.support import (
     saskatchewan_kinds,
     saskatchewan_packages,
@@ -28,10 +27,13 @@ from tests.jurisdictions.ca_sk.support import (
 )
 from tests.kinds import non_negative
 
-IDENTIFIER = SK428_MEDICAL_EXPENSES_LINE_50.identifier
-PRINTED_BASIS = "Line 50 and line 58769: Line 48 plus line 49"
+IDENTIFIER = SK428_OTHER_DEPENDANTS_MEDICAL_EXPENSES_LINE_49.identifier
+PRINTED_BASIS = (
+    "Line 49 and line 58729: Allowable amount of medical expenses for other dependants from "
+    "line 33199 of your return"
+)
 PART = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / (
-    "manifests/2025/sk428_credits_line_50_input.yaml"
+    "manifests/2025/sk428_credits_line_49_input.yaml"
 )
 HEADER = """\
 jurisdiction: CA-SK
@@ -41,7 +43,7 @@ outputs: [ca/total_income]
 capabilities: []
 """
 # The form that owns the input, declared here as the real parts of the form declare it.
-FORM_NAME = "ca-sk/sk428_credits"
+FORM_NAME = "ca-sk/sk428"
 FORM = f"""\
 form:
   name: {FORM_NAME}
@@ -70,7 +72,7 @@ def _part() -> dict[str, Any]:
     return part
 
 
-def test_the_part_declares_only_the_line_50_input() -> None:
+def test_the_part_declares_only_the_line_49_input() -> None:
     part = _part()
 
     assert list(part) == ["form", "inputs"]
@@ -78,33 +80,27 @@ def test_the_part_declares_only_the_line_50_input() -> None:
     assert part["inputs"] == [
         {
             "name": IDENTIFIER,
-            "reference": "50",
+            "title": (
+                "Allowable amount of medical expenses for other dependants from line 33199 of "
+                "your return"
+            ),
+            "reference": "49",
             "unit": "ca/cad",
             "required": False,
             "default": None,
             "basis": PRINTED_BASIS,
         }
     ]
-    assert "title" not in part["inputs"][0]
-    assert list(part["inputs"][0]) == [
-        "name",
-        "reference",
-        "unit",
-        "required",
-        "default",
-        "basis",
-    ]
 
 
-def test_the_medical_expenses_line_50_is_a_non_negative_amount_kind() -> None:
+def test_line_49_is_a_non_negative_amount_kind() -> None:
     kind = saskatchewan_kinds().kind(IDENTIFIER)
 
-    assert IDENTIFIER == "ca-sk/sk428_medical_expenses_line_50"
-    assert kind is SK428_MEDICAL_EXPENSES_LINE_50
+    assert kind is SK428_OTHER_DEPENDANTS_MEDICAL_EXPENSES_LINE_49
     assert non_negative(kind)
 
 
-def test_a_request_that_leaves_out_line_50_is_read_as_blank(tmp_path: Path) -> None:
+def test_a_request_that_leaves_out_line_49_is_read_as_blank(tmp_path: Path) -> None:
     declaration = _manifest(tmp_path).inputs[IDENTIFIER]
     default = declaration.default_artifact(saskatchewan_kinds().kind(IDENTIFIER))
 

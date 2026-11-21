@@ -1,4 +1,4 @@
-"""SK428 (2025) line 53, line 51 multiplied by the line 52 rate of 10.5%, from the salary alone.
+"""SK428 (2025) line 53, line 51 multiplied by the line 52 rate of 10.5%, real parts.
 
 Form text (Form SK428, CRA 5008-c): "Line 52: Saskatchewan non-refundable tax credit rate 10.5%"
 and "Line 53 and line 58840: Line 51 multiplied by the percentage from line 52 = ^". Line 52 is a
@@ -11,13 +11,14 @@ The test composes the real Saskatchewan salary part, the real Schedule 8 and T22
 line parts (`sk428_credits_line_9.yaml`, `_line_20.yaml`, `_line_22.yaml`, `_line_24.yaml`,
 `_line_31.yaml`, `_line_32.yaml`, `_line_33.yaml`, `_line_35.yaml`, `_line_38.yaml`,
 `_line_42.yaml`, `_line_51.yaml`), the real `sk428_line_33_inputs.yaml`, the real
-`sk428_credits_line_50_input.yaml` and the new `sk428_credits_line_53.yaml`, and types in only the
-salary (and, in one test, line 50). The form declaration is made up here, exporting only line 53.
-The figures are line 51 as the engine produces it, re-derived below with Decimal from the printed
-basic personal amount dataset (19,491), CPP at 4.95% of the salary above the $3,500 basic
-exemption to a maximum of $3,356.10, and EI at 1.64% to the $65,700 maximum insurable earnings
-(20,635.75 and 23,924.58 at the two salaries, line 50 blank and read as 0), times
-10.5%, each rounded half-up to the cent.
+`sk428_credits_line_43_input.yaml`, `_line_44.yaml`, `_line_46.yaml`, `_line_47.yaml`,
+`_line_48.yaml`, `_line_49_input.yaml`, `_line_50.yaml` and the new `sk428_credits_line_53.yaml`,
+and types in the salary and, where a case gives them, lines 43 and 49. The form declaration is
+made up here, exporting only line 53. The figures are line 51 as the engine produces it, re-
+derived below with Decimal from the printed basic personal amount dataset (19,491), CPP at 4.95%
+of the salary above the $3,500 basic exemption to a maximum of $3,356.10, and EI at 1.64% to the
+$65,700 maximum insurable earnings (20,635.75 and 23,924.58 at the two salaries, line 50 of 0.00
+with no medical expenses), times 10.5%, each rounded half-up to the cent.
 """
 
 from __future__ import annotations
@@ -43,8 +44,11 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tax_engine.jurisdictions.ca_sk.catalog import SK428_MEDICAL_EXPENSES_LINE_50
-from tests.federal_forms import FEDERAL_FORMS, form_parts
+from tax_engine.jurisdictions.ca_sk.catalog import (
+    SK428_MEDICAL_EXPENSES_LINE_43,
+    SK428_OTHER_DEPENDANTS_MEDICAL_EXPENSES_LINE_49,
+)
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_sk.support import (
     saskatchewan_capabilities,
     saskatchewan_kinds,
@@ -53,7 +57,7 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT
+from tests.manifest_support import T1_LINE_10100_INPUT
 
 D = Decimal
 SK_PARTS = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / "manifests" / "2025"
@@ -82,7 +86,7 @@ FORM = dedent("""\
     """)
 
 # salary, line 53: line 51 as the engine produces it, times 10.5%, half-up to the cent. Line 51 is
-# 20,635.75 / 23,924.58 (line 50 blank, read as 0): 2,166.75375 and 2,512.0809, rounded to
+# 20,635.75 / 23,924.58 (line 50 of 0.00): 2,166.75375 and 2,512.0809, rounded to
 # 2,166.75 / 2,512.08.
 CASES = [("20000", "2166.75"), ("200000", "2512.08")]
 
@@ -96,6 +100,18 @@ def _cpp(salary: str) -> Decimal:
 def _ei(salary: str) -> Decimal:
     """Line 24 by hand: 1.64% of the salary to the $65,700 maximum, at most $1,077.48."""
     return min(D(salary), D("65700")) * D("0.0164")
+
+
+def _line_50(salary: str, line_43: str, line_49: str) -> Decimal:
+    """Line 50 by hand: line 48 (line 43 less line 47, not below 0) plus line 49, where line 47 is
+    the lesser of $2,681 and 3% of the net income (the salary less the enhanced CPP deduction)."""
+    salary_amount = D(salary)
+    enhanced = max(min(salary_amount, D("71300")) - D("3500"), D(0)) * D("0.01")
+    second = max(min(salary_amount, D("81200")) - D("71300"), D(0)) * D("0.04")
+    net_income = salary_amount - enhanced.quantize(D("0.01"), ROUND_HALF_UP)
+    net_income -= second.quantize(D("0.01"), ROUND_HALF_UP)
+    line_47 = min(D("2681"), (net_income * D("0.03")).quantize(D("0.01"), ROUND_HALF_UP))
+    return max(D(line_43) - line_47, D(0)) + D(line_49)
 
 
 def _line_51(salary: str, medical: str = "0") -> Decimal:
@@ -114,8 +130,7 @@ def _part_files() -> Iterator[Path]:
     yield T1_LINE_10100_INPUT
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
-    yield T1_LINE_10100_FORM
-    yield FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml"
+    yield from form_parts("t1_taxable_income", "t1_employment_income")
     yield SK_PARTS / "sk428_credits_line_9.yaml"
     yield SK_PARTS / "sk428_credits_line_20.yaml"
     yield SK_PARTS / "sk428_credits_line_22.yaml"
@@ -127,7 +142,13 @@ def _part_files() -> Iterator[Path]:
     yield SK_PARTS / "sk428_credits_line_35.yaml"
     yield SK_PARTS / "sk428_credits_line_38.yaml"
     yield SK_PARTS / "sk428_credits_line_42.yaml"
-    yield SK_PARTS / "sk428_credits_line_50_input.yaml"
+    yield SK_PARTS / "sk428_credits_line_43_input.yaml"
+    yield SK_PARTS / "sk428_credits_line_44.yaml"
+    yield SK_PARTS / "sk428_credits_line_46.yaml"
+    yield SK_PARTS / "sk428_credits_line_47.yaml"
+    yield SK_PARTS / "sk428_credits_line_48.yaml"
+    yield SK_PARTS / "sk428_credits_line_49_input.yaml"
+    yield SK_PARTS / "sk428_credits_line_50.yaml"
     yield SK_PARTS / "sk428_credits_line_51.yaml"
     yield LINE_PART
 
@@ -156,8 +177,14 @@ def _service(tmp_path: Path) -> TaxComputationService:
     )
 
 
-def _sheet(tmp_path: Path, salary: str, *extra: Artifact[Decimal]) -> Worksheet:
-    given = [Artifact(EMPLOYMENT_INCOME, D(salary)), *extra]
+def _sheet(
+    tmp_path: Path, salary: str, line_43: str | None = None, line_49: str | None = None
+) -> Worksheet:
+    given = [Artifact(EMPLOYMENT_INCOME, D(salary))]
+    if line_43 is not None:
+        given.append(Artifact(SK428_MEDICAL_EXPENSES_LINE_43, D(line_43)))
+    if line_49 is not None:
+        given.append(Artifact(SK428_OTHER_DEPENDANTS_MEDICAL_EXPENSES_LINE_49, D(line_49)))
     worksheets = _service(tmp_path).compute(JurisdictionCode("CA-SK"), 2025, *given)
     (sheet,) = worksheets[FORM_NAME]
     return sheet
@@ -175,14 +202,16 @@ def test_line_53_is_line_51_times_10_point_5_percent(
     assert _line(_sheet(tmp_path, salary), IDENTIFIER) == D(expected)
 
 
-def test_line_53_follows_line_51_when_line_50_is_given(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "70000", Artifact(SK428_MEDICAL_EXPENSES_LINE_50, D("1500.00")))
+def test_line_53_follows_line_51_with_medical_inputs(tmp_path: Path) -> None:
+    sheet = _sheet(tmp_path, "70000", "5000.00", "100.00")
 
-    # Line 51 at a 70,000 salary is 25,360.23 with line 50 of 1,500.00; times 0.105 is
-    # 2,662.82415, rounded half-up to 2,662.82.
-    assert _line_51("70000", "1500.00") == D("25360.23")
-    assert _expected("70000", "1500.00") == D("2662.82")
-    assert _line(sheet, IDENTIFIER) == D("2662.82")
+    # Line 50 at a 70,000 salary with line 43 of 5,000.00 and line 49 of 100.00 is 3,019.95
+    # (line 47 is 2,080.05, line 48 is 2,919.95); line 51 is 23,860.23 + 3,019.95 = 26,880.18;
+    # times 0.105 is 2,822.4189, rounded half-up to 2,822.42.
+    assert _line_50("70000", "5000.00", "100.00") == D("3019.95")
+    assert _line_51("70000", "3019.95") == D("26880.18")
+    assert _expected("70000", "3019.95") == D("2822.42")
+    assert _line(sheet, IDENTIFIER) == D("2822.42")
 
 
 def _part() -> dict[str, Any]:
