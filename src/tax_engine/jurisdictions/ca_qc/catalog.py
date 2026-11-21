@@ -1858,20 +1858,63 @@ enter $19,890": the printed $19,890 of a filer without a spouse, a dataset figur
 (`ca-qc/schedule_k_line_41_amount`) claimed whole by one core/credit_amount
 (`tp1_schedule_k_line_41.yaml`)."""
 
-SCHEDULE_K_DEPENDENT_CHILD_AMOUNT_LINE_42_OR_44 = AmountKind.declare(
-    CATALOG, "schedule_k_dependent_child_amount_line_42_or_44", non_negative=True
+SCHEDULE_K_DEPENDENT_CHILDREN_LINE_44 = CountKind.declare(
+    CATALOG, "schedule_k_dependent_children_line_44", non_negative=True
 )
-"""Dependent child amount, Schedule K line 42 or line 44, the "as applicable" lines that line 46
-adds to line 41: an input, the amount of whichever of the two lines applies. The take-home has no
-dependent child, so the caller leaves it out and line 46 reads it as 0 (owner ruling, 19 Nov
-2026)."""
+"""Dependent children answer, Schedule K line 44 "If you did not have a spouse on December 31, 2025,
+but you had a dependent child (see line 447 in the guide for the definition), enter $12,350. If you
+had more than one dependent child, enter $16,570": the number of dependent children, read as 0 when
+the caller gives no answer. The take-home is a single filer (line 41 prints the figure of a filer
+without a spouse, owner ruling, 19 Nov 2026), so line 42, which is for a filer with a spouse, has
+no step."""
+
+SCHEDULE_K_HAD_DEPENDENT_CHILD_LINE_44 = CountKind.declare(
+    CATALOG, "schedule_k_had_dependent_child_line_44", non_negative=True
+)
+"""Schedule K line 44, "you had a dependent child": 1 when the number of dependent children is more
+than 0, 0 otherwise (`ca-qc/schedule_k_had_dependent_child_conditions`)."""
+
+SCHEDULE_K_MORE_THAN_ONE_DEPENDENT_CHILD_LINE_44 = CountKind.declare(
+    CATALOG, "schedule_k_more_than_one_dependent_child_line_44", non_negative=True
+)
+"""Schedule K line 44, "you had more than one dependent child": 1 when the number of dependent
+children is more than 1, 0 otherwise
+(`ca-qc/schedule_k_more_than_one_dependent_child_conditions`)."""
+
+SCHEDULE_K_LINE_44_ONE_CHILD_AMOUNT = AmountKind.declare(
+    CATALOG, "schedule_k_line_44_one_child_amount", non_negative=True
+)
+"""Schedule K line 44, the printed $12,350 for a dependent child, a dataset figure
+(`ca-qc/schedule_k_line_44_one_child_amount`) claimed whole by one core/credit_amount
+(`tp1_schedule_k_line_44_amounts.yaml`)."""
+
+SCHEDULE_K_LINE_44_MORE_THAN_ONE_CHILD_AMOUNT = AmountKind.declare(
+    CATALOG, "schedule_k_line_44_more_than_one_child_amount", non_negative=True
+)
+"""Schedule K line 44, the printed $16,570 for more than one dependent child, a dataset figure
+(`ca-qc/schedule_k_line_44_more_than_one_child_amount`) claimed whole by one core/credit_amount
+(`tp1_schedule_k_line_44_amounts.yaml`)."""
+
+SCHEDULE_K_LINE_44_AMOUNT_FOR_THE_CHILDREN = AmountKind.declare(
+    CATALOG, "schedule_k_line_44_amount_for_the_children", non_negative=True
+)
+"""Schedule K line 44, the printed amount that applies to a filer with at least one dependent
+child: $16,570 for more than one, $12,350 for one. Chosen by one core/choose_by_count
+(`tp1_schedule_k_line_44.yaml`)."""
+
+SCHEDULE_K_AMOUNT_LINE_44 = AmountKind.declare(
+    CATALOG, "schedule_k_amount_line_44", non_negative=True
+)
+"""Amount, Schedule K line 44, the dependent child amount of a filer without a spouse: the amount
+for the children when the filer had a dependent child, 0 when not. Produced by one core/times_count
+(`tp1_schedule_k_line_44.yaml`); line 46 adds it."""
 
 SCHEDULE_K_TOTAL_LINE_46 = AmountKind.declare(
     CATALOG, "schedule_k_total_line_46", non_negative=True
 )
-"""Total, Schedule K line 46 "Add line 41 and, as applicable, line 42 or line 44": line 41 and the
-dependent child input, added by one core/sum (`tp1_schedule_k_line_46.yaml`), the input read as 0
-when left blank."""
+"""Total, Schedule K line 46 "Add line 41 and, as applicable, line 42 or line 44": line 41 and line
+44 (line 42 is for a filer with a spouse and has no step), added by one core/sum
+(`tp1_schedule_k_line_46.yaml`)."""
 
 SCHEDULE_K_PREMIUM_INCOME_LINE_48 = AmountKind.declare(
     CATALOG, "schedule_k_premium_income_line_48", non_negative=True

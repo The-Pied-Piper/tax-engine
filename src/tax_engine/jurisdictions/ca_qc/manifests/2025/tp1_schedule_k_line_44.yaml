@@ -1,0 +1,52 @@
+# Schedule K (2025) line 44: "If you did not have a spouse on December 31, 2025, but you had a
+# dependent child (see line 447 in the guide for the definition), enter $12,350. If you had more than
+# one dependent child, enter $16,570." (Revenu Quebec TP-1.D.K-V (2025-12), Part A). The two
+# questions the line asks are read from the number of dependent children by two
+# ca/count_by_conditions (had a dependent child: more than 0; more than one: more than 1), as the
+# solidarity credit reads its occupants. core/choose_by_count picks $16,570 for more than one and
+# $12,350 otherwise; core/times_count makes it 0 when the filer had no dependent child. The count is
+# read as 0 when blank. The printed amounts come from `tp1_schedule_k_line_44_amounts.yaml`. Line 42,
+# for a filer with a spouse, has no step (see `tp1_schedule_k_line_44_input.yaml`).
+form:
+  name: ca-qc/tp1_schedule_k
+capabilities:
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca-qc/schedule_k_had_dependent_child_conditions
+    consumes:
+      counts:
+        - ca-qc/schedule_k_dependent_children_line_44
+      amounts: []
+    blank:
+      counts: "0"
+    produces:
+      output: ca-qc/schedule_k_had_dependent_child_line_44
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca-qc/schedule_k_more_than_one_dependent_child_conditions
+    consumes:
+      counts:
+        - ca-qc/schedule_k_dependent_children_line_44
+      amounts: []
+    blank:
+      counts: "0"
+    produces:
+      output: ca-qc/schedule_k_more_than_one_dependent_child_line_44
+  - name: core/choose_by_count
+    unit: ca/cad
+    consumes:
+      count: ca-qc/schedule_k_more_than_one_dependent_child_line_44
+      when_none: ca-qc/schedule_k_line_44_one_child_amount
+      when_any: ca-qc/schedule_k_line_44_more_than_one_child_amount
+    produces:
+      output: ca-qc/schedule_k_line_44_amount_for_the_children
+  - name: core/times_count
+    reference: "44"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/schedule_k_line_44_amount_for_the_children
+      count: ca-qc/schedule_k_had_dependent_child_line_44
+    produces:
+      output: ca-qc/schedule_k_amount_line_44

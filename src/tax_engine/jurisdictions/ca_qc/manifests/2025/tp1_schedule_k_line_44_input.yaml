@@ -1,0 +1,15 @@
+# Schedule K (2025) line 44: "If you did not have a spouse on December 31, 2025, but you had a
+# dependent child (see line 447 in the guide for the definition), enter $12,350. If you had more than
+# one dependent child, enter $16,570." (Revenu Quebec TP-1.D.K-V (2025-12), Part A). The form asks
+# whether the filer had a dependent child and whether more than one, so the input is the number of
+# dependent children, a count; line 44 (`tp1_schedule_k_line_44.yaml`) reads a blank as 0. Line 42, for
+# a filer with a spouse, has no step: line 41 prints the figure of a filer without a spouse (owner
+# ruling, 19 Nov 2026, spouse lines left out of the take-home).
+form:
+  name: ca-qc/tp1_schedule_k
+inputs:
+  - name: ca-qc/schedule_k_dependent_children_line_44
+    reference: "44"
+    required: false
+    default: null
+    basis: "If you did not have a spouse on December 31, 2025, but you had a dependent child (see line 447 in the guide for the definition), enter $12,350. If you had more than one dependent child, enter $16,570."
