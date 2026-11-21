@@ -43,6 +43,7 @@ from tax_engine.jurisdictions.ca.catalog.personal_amounts import (
     BORN_IN_1960_OR_EARLIER,
     BORN_IN_1960_OR_EARLIER_CHECKED,
 )
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_capabilities,
     newfoundland_kinds,
@@ -51,30 +52,14 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_INPUT
 
 D = Decimal
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = NL_PARTS / "nl428_credits_line_17.yaml"
 IDENTIFIER = "ca-nl/nl428_age_amount_line_17"
 WORKSHEET_AMOUNT = "ca-nl/nl428_age_amount_worksheet_line_17"
 FORM_NAME = "ca-nl/nl428_credits"
-FEDERAL_PARTS = (
-    "t1_taxable_income_inputs.yaml",
-    "t1_employment_income.yaml",
-    "t1_employment_income_line_10100.yaml",
-    "t1_employment_income_line_10400.yaml",
-    "t1_taxable_income_line_15000.yaml",
-    "t1_taxable_income_line_23300.yaml",
-    "t1_taxable_income_line_23400.yaml",
-    "t1_taxable_income_line_23600.yaml",
-    "t1_taxable_income_line_23600_signed.yaml",
-    "t1_taxable_income_line_25700_inputs.yaml",
-    "t1_taxable_income_line_26000.yaml",
-    "t1_taxable_income.yaml",
-    "t1_employment_income_line_10400_inputs.yaml",
-)
+FEDERAL_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 NL_PART_NAMES = (
     "worksheet_nl428_line_4.yaml",
     "worksheet_nl428_line_6.yaml",
@@ -113,7 +98,7 @@ WORKSHEET_LINE_7 = [("20000", "7064.00"), ("200000", "0.00")]
 
 
 def _part_files() -> Iterator[Path]:
-    yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
+    yield from form_parts("schedule_8")
     for name in FEDERAL_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
     for name in NL_PART_NAMES:
@@ -126,9 +111,6 @@ def _service(tmp_path: Path) -> TaxComputationService:
     folder = tmp_path / "manifests" / "2025"
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
-    (folder / "00_t1_salary.yaml").write_text(
-        T1_LINE_10100_INPUT.read_text(encoding="utf-8"), encoding="utf-8"
-    )
     forms = FORMS.split("---\n")
     for number, text in enumerate(forms, start=1):
         (folder / f"01_form_{number}.yaml").write_text(text, encoding="utf-8")

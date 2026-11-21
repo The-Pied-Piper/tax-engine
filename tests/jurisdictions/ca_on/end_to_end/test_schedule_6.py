@@ -58,7 +58,8 @@ from tax_engine.jurisdictions.ca.catalog.canada_workers_benefit import (
     WORKING_INCOME,
 )
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService
+from tests.federal_forms import form_part_names
+from tests.jurisdictions.ca_on.conftest import TakeHomeService
 
 D = Decimal
 HEADER = dedent("""\
@@ -73,10 +74,10 @@ HEADER = dedent("""\
 # fixture's own form text is an empty mapping.
 FORM = "{}\n"
 PARTS = (
-    *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
-    *(part.name for part in sorted(TAKE_HOME.rglob("t1_employment_income*.yaml"))),
-    *(part.name for part in sorted(TAKE_HOME.rglob("t1_taxable_income*.yaml"))),
-    *(part.name for part in sorted(TAKE_HOME.rglob("schedule_6*.yaml"))),
+    *form_part_names("schedule_8"),
+    *form_part_names("t1_employment_income"),
+    *form_part_names("t1_taxable_income"),
+    *form_part_names("schedule_6"),
 )
 
 # Amount lines by form line. The printed rates (27% on line 19, 15% on line 26) are dataset figures

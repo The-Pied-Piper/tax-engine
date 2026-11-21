@@ -31,6 +31,7 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import CountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_capabilities,
     newfoundland_kinds,
@@ -38,11 +39,9 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_parameter_parsers,
     newfoundland_units,
 )
-from tests.manifest_support import T1_LINE_10100_INPUT
 
 D = Decimal
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = NL_PARTS / "nl428_line_101.yaml"
 LINE_22 = "ca-nl/nl428_eligible_dependant_net_income_line_22"
 LINE_93 = "ca-nl/nl428_adjusted_family_income_line_93"
@@ -50,21 +49,7 @@ LINE_100 = "ca-nl/nl428_low_income_threshold_line_100"
 IDENTIFIER = "ca-nl/nl428_line_101"
 LINE_96 = "ca-nl/nl428_reduction_for_spouse_or_common_law_partner_claimed_line_96"
 FORM_NAME = "ca-nl/nl428"
-FEDERAL_PARTS = (
-    "t1_taxable_income_inputs.yaml",
-    "t1_employment_income.yaml",
-    "t1_employment_income_line_10100.yaml",
-    "t1_employment_income_line_10400.yaml",
-    "t1_taxable_income_line_15000.yaml",
-    "t1_taxable_income_line_23300.yaml",
-    "t1_taxable_income_line_23400.yaml",
-    "t1_taxable_income_line_23600.yaml",
-    "t1_taxable_income_line_23600_signed.yaml",
-    "t1_taxable_income_line_25700_inputs.yaml",
-    "t1_taxable_income_line_26000.yaml",
-    "t1_taxable_income.yaml",
-    "t1_employment_income_line_10400_inputs.yaml",
-)
+FEDERAL_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 NL_PART_NAMES = (
     "worksheet_nl428_line_4.yaml",
     "worksheet_nl428_line_6.yaml",
@@ -122,9 +107,9 @@ NL_PART_NAMES = (
     "nl428_line_97.yaml",
     "nl428_line_100.yaml",
     "nl428_line_88.yaml",
-    "nl428_line_89_input.yaml",
+    "nl428_line_89.yaml",
     "nl428_line_90.yaml",
-    "nl428_line_91_input.yaml",
+    "nl428_line_91.yaml",
     "nl428_line_92.yaml",
     "nl428_line_88_column_2_input.yaml",
     "nl428_line_89_column_2_input.yaml",
@@ -172,8 +157,8 @@ FORMS = dedent("""\
 
 
 def _part_files() -> Iterator[Path]:
-    yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
-    yield from sorted(FEDERAL_FORMS.rglob("t2204*.yaml"))
+    yield from form_parts("schedule_8")
+    yield from form_parts("t2204")
     for name in FEDERAL_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
     for name in NL_PART_NAMES:
@@ -186,9 +171,6 @@ def _service(tmp_path: Path) -> TaxComputationService:
     folder = tmp_path / "manifests" / "2025"
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
-    (folder / "00_t1_salary.yaml").write_text(
-        T1_LINE_10100_INPUT.read_text(encoding="utf-8"), encoding="utf-8"
-    )
     forms = FORMS.split("---\n")
     for number, text in enumerate(forms, start=1):
         (folder / f"01_form_{number}.yaml").write_text(text, encoding="utf-8")

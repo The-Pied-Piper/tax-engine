@@ -21,6 +21,7 @@ from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_qc.catalog import (
     TP1_FOREST_PRODUCER_AVERAGING_LINE_276,
+    TP1_LINE_164,
     TP1_SCHEDULE_F_INCOME_LINE_10,
 )
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
@@ -34,7 +35,21 @@ PARTS = (
     "tp1_income_line_105_input.yaml",
     "tp1_income_line_107_input.yaml",
     "tp1_income_line_box_211_input.yaml",
-    "tp1_income_line_199_input.yaml",
+    "tp1_income_line_110_input.yaml",
+    "tp1_income_line_111_input.yaml",
+    "tp1_income_line_114_input.yaml",
+    "tp1_income_line_119_input.yaml",
+    "tp1_income_line_122_input.yaml",
+    "tp1_income_line_123_input.yaml",
+    "tp1_income_line_128_input.yaml",
+    "tp1_income_line_130_input.yaml",
+    "tp1_income_line_136_input.yaml",
+    "tp1_income_line_139_input.yaml",
+    "tp1_income_line_142_input.yaml",
+    "tp1_income_line_147_input.yaml",
+    "tp1_income_line_148_input.yaml",
+    "tp1_income_line_154_input.yaml",
+    "tp1_income_line_164_input.yaml",
     "tp1_income_line_199.yaml",
     "tp1_income_line_97_input.yaml",
     "tp1_income_line_97.yaml",
@@ -100,3 +115,14 @@ def test_the_sum_is_rounded_half_up_to_the_cent(take_home_service: TakeHomeServi
     value = schedule_f(take_home_service, "70000", given).get(TP1_SCHEDULE_F_INCOME_LINE_10).value
 
     assert str(value) == "70000.01"
+
+
+def test_a_business_loss_above_the_salary_gives_a_negative_line_10(
+    take_home_service: TakeHomeService,
+) -> None:
+    """TP-1 line 199 is signed (a business loss is a minus), so line 10 carries it as printed:
+    20,000.00 - 50,000.00 = -30,000.00."""
+    given = (TP1_LINE_164, "-50000")
+    value = schedule_f(take_home_service, "20000", given).get(TP1_SCHEDULE_F_INCOME_LINE_10).value
+
+    assert str(value) == "-30000.00"

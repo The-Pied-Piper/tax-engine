@@ -43,8 +43,10 @@ PARTS = (
     "t1_employment_income_line_10400.yaml",
     "t1_taxable_income_line_21.yaml",
     "t1_taxable_income_line_27_inputs.yaml",
+    "t1_taxable_income_line_27.yaml",
     "t1_taxable_income_line_28.yaml",
     "t1_taxable_income_line_32_inputs.yaml",
+    "t1_taxable_income_line_32.yaml",
     "t1_taxable_income_line_15000.yaml",
     "t1_taxable_income_line_22215.yaml",
     "t1_taxable_income_line_23300.yaml",
@@ -54,6 +56,14 @@ PARTS = (
     "t1_taxable_income_line_23600_signed.yaml",
     # Step 4 parts: the form declaration now exports taxable income, which needs its producer.
     "t1_taxable_income_line_25700_inputs.yaml",
+    "t1_taxable_income_line_11700_inputs.yaml",
+    "t1_taxable_income_line_11700.yaml",
+    "t1_taxable_income_line_12500_inputs.yaml",
+    "t1_taxable_income_line_12500.yaml",
+    "t1_taxable_income_line_21300_inputs.yaml",
+    "t1_taxable_income_line_21300.yaml",
+    "t1_taxable_income_line_23200_inputs.yaml",
+    "t1_taxable_income_line_23200.yaml",
     "t1_taxable_income_line_26000.yaml",
 )
 HEADER = (

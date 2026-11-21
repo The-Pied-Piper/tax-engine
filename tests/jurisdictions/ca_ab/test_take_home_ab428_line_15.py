@@ -50,6 +50,7 @@ from tax_engine.domain.trace import BlankPassedOnLine, SumLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_ab.catalog import AB428_TAX_ON_TAXABLE_INCOME_LINE_15
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_ab.support import (
     alberta_capabilities,
     alberta_kinds,
@@ -58,7 +59,6 @@ from tests.jurisdictions.ca_ab.support import (
     alberta_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_INPUT
 
 D = Decimal
 CODE = JurisdictionCode("CA-AB")
@@ -71,7 +71,6 @@ LINE_13 = "ca-ab/ab428_tax_on_excess_line_13"
 LINE_14 = "ca-ab/ab428_bracket_tax_at_start_line_14"
 LINE_15 = "ca-ab/ab428_tax_on_taxable_income_line_15"
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_1_PART = ALBERTA_PARTS / "ab428_credits_line_1.yaml"
 LINE_10_PART = ALBERTA_PARTS / "ab428_line_10.yaml"
 LINE_11_PART = ALBERTA_PARTS / "ab428_line_11.yaml"
@@ -79,21 +78,7 @@ LINE_12_PART = ALBERTA_PARTS / "ab428_line_12.yaml"
 LINE_13_PART = ALBERTA_PARTS / "ab428_line_13.yaml"
 LINE_14_PART = ALBERTA_PARTS / "ab428_line_14.yaml"
 LINE_15_PART = ALBERTA_PARTS / "ab428_line_15.yaml"
-T1_PARTS = (
-    "t1_taxable_income_inputs.yaml",
-    "t1_employment_income.yaml",
-    "t1_employment_income_line_10100.yaml",
-    "t1_employment_income_line_10400.yaml",
-    "t1_taxable_income_line_15000.yaml",
-    "t1_taxable_income_line_23300.yaml",
-    "t1_taxable_income_line_23400.yaml",
-    "t1_taxable_income_line_23600.yaml",
-    "t1_taxable_income_line_23600_signed.yaml",
-    "t1_taxable_income_line_25700_inputs.yaml",
-    "t1_taxable_income_line_26000.yaml",
-    "t1_taxable_income.yaml",
-    "t1_employment_income_line_10400_inputs.yaml",
-)
+T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 
 HEADER = dedent("""\
     jurisdiction: CA-AB
@@ -125,8 +110,7 @@ def _federal(name: str) -> Path:
 
 def _part_files() -> Iterator[tuple[str, str]]:
     """Each part's name and text, in composition order."""
-    yield "salary.yaml", (T1_LINE_10100_INPUT).read_text(encoding="utf-8")
-    for found in sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml")):
+    for found in form_parts("schedule_8"):
         yield found.name, found.read_text(encoding="utf-8")
     for name in T1_PARTS:
         found = _federal(name)

@@ -55,6 +55,7 @@ from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca.catalog.rc381_cpp_qpp import (
     T4_CPP_PENSIONABLE_EARNINGS_OUTSIDE_QUEBEC,
 )
+from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 
 D = Decimal
@@ -77,13 +78,7 @@ HEADER = HEADER_TEMPLATE.replace("{schedule_8}", SWAPPED)
 # The composed folder needs a form declaration beside the header; Schedule 8 is the imported form.
 FORM_PART = "capabilities: []\n"
 # The real Quebec T1 employment income parts: Schedule 8 line 1 reads line 10100 from that form.
-T1_EMPLOYMENT_INCOME_PARTS = (
-    "t1_employment_income.yaml",
-    "t1_employment_income_line_10100_inputs.yaml",
-    "t1_employment_income_line_10100.yaml",
-    "t1_employment_income_line_10400.yaml",
-    "t1_employment_income_line_10400_inputs.yaml",
-)
+T1_EMPLOYMENT_INCOME_PARTS = form_part_names("t1_employment_income")
 BARE_HEADER = HEADER_TEMPLATE.replace("{schedule_8}", "ca/schedule_8")
 
 

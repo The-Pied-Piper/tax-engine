@@ -47,6 +47,7 @@ from tax_engine.domain.trace import MultipliedByRateLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_nl.catalog import NL428_TAX_ON_EXCESS_LINE_6
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_capabilities,
     newfoundland_kinds,
@@ -55,7 +56,6 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_INPUT
 
 D = Decimal
 CENT = D("0.01")
@@ -68,27 +68,12 @@ LINE_4 = "ca-nl/nl428_taxable_income_over_lower_bound_line_4"
 LINE_5 = "ca-nl/nl428_bracket_rate_line_5"
 LINE_6 = "ca-nl/nl428_tax_on_excess_line_6"
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_1_PART = NL_PARTS / "nl428_credits_line_1.yaml"
 LINE_3_PART = NL_PARTS / "nl428_credits_line_3.yaml"
 LINE_4_PART = NL_PARTS / "nl428_credits_line_4.yaml"
 LINE_5_PART = NL_PARTS / "nl428_credits_line_5.yaml"
 LINE_PART = NL_PARTS / "nl428_credits_line_6.yaml"
-T1_PARTS = (
-    "t1_taxable_income_inputs.yaml",
-    "t1_employment_income.yaml",
-    "t1_employment_income_line_10100.yaml",
-    "t1_employment_income_line_10400.yaml",
-    "t1_taxable_income_line_15000.yaml",
-    "t1_taxable_income_line_23300.yaml",
-    "t1_taxable_income_line_23400.yaml",
-    "t1_taxable_income_line_23600.yaml",
-    "t1_taxable_income_line_23600_signed.yaml",
-    "t1_taxable_income_line_25700_inputs.yaml",
-    "t1_taxable_income_line_26000.yaml",
-    "t1_taxable_income.yaml",
-    "t1_employment_income_line_10400_inputs.yaml",
-)
+T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 
 HEADER = dedent("""\
     jurisdiction: CA-NL
@@ -133,7 +118,7 @@ def _federal(name: str) -> Path:
 
 def _part_files() -> Iterator[tuple[str, str]]:
     """Each part's name and text, in composition order."""
-    for found in sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml")):
+    for found in form_parts("schedule_8"):
         yield found.name, found.read_text(encoding="utf-8")
     for name in T1_PARTS:
         found = _federal(name)
@@ -152,9 +137,6 @@ def _service(tmp_path: Path) -> TaxComputationService:
     folder = tmp_path / "manifests" / "2025"
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
-    (folder / "00_t1_salary.yaml").write_text(
-        T1_LINE_10100_INPUT.read_text(encoding="utf-8"), encoding="utf-8"
-    )
     (folder / "01_form.yaml").write_text(FORM_TEXT, encoding="utf-8")
     for number, (name, text) in enumerate(_part_files(), start=2):
         (folder / f"{number:02d}_{name}").write_text(text, encoding="utf-8")

@@ -48,6 +48,7 @@ from tax_engine.jurisdictions.ca_bc.catalog import (
     BC428_NON_REFUNDABLE_CREDITS_LINE_60,
     BC428_TOTAL_LINE_67,
 )
+from tests.federal_forms import FEDERAL_FORMS, form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -60,7 +61,6 @@ from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT
 
 D = Decimal
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = BC_PARTS / "bc428_line_67.yaml"
 LINE_60 = "ca-bc/bc428_non_refundable_credits_line_60"
 LINE_65 = "ca-bc/bc428_dividend_tax_credit_line_65"
@@ -93,8 +93,8 @@ CASES = [
 
 def _part_files() -> Iterator[Path]:
     yield T1_LINE_10100_INPUT
-    yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
-    yield from sorted(FEDERAL_FORMS.rglob("t2204*.yaml"))
+    yield from form_parts("schedule_8")
+    yield from form_parts("t2204")
     yield T1_LINE_10100_FORM
     yield FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml"
     yield BC_PARTS / "bc428_line_16.yaml"

@@ -44,6 +44,7 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.domain.trace import SumLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tests.federal_forms import FEDERAL_FORMS, form_parts
 from tests.jurisdictions.ca_sk.support import (
     saskatchewan_capabilities,
     saskatchewan_kinds,
@@ -58,7 +59,6 @@ D = Decimal
 CENT = D("0.01")
 ZERO = D(0)
 SK_PARTS = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = SK_PARTS / "sk428_line_66.yaml"
 CREDITS_PARTS = (
     "sk428_credits_line_9.yaml",
@@ -148,8 +148,8 @@ def _derived(salary: Decimal, line_64: Decimal = ZERO, line_65_amount: Decimal =
 
 def _part_files() -> Iterator[Path]:
     yield T1_LINE_10100_INPUT
-    yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
-    yield from sorted(FEDERAL_FORMS.rglob("t2204*.yaml"))
+    yield from form_parts("schedule_8")
+    yield from form_parts("t2204")
     yield T1_LINE_10100_FORM
     yield FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml"
     for name in CREDITS_PARTS:

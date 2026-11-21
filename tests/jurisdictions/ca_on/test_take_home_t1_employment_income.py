@@ -19,6 +19,7 @@ from tax_engine.jurisdictions.ca.catalog.income import (
     OTHER_EMPLOYMENT_INCOME,
     OTHER_EMPLOYMENT_INCOME_LINE_10400,
 )
+from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
 
 D = Decimal
@@ -30,13 +31,7 @@ HEADER = dedent("""\
       - ca/employment_income
     capabilities: []
     """)
-PARTS = (
-    "t1_employment_income.yaml",
-    "t1_employment_income_line_10100.yaml",
-    "t1_employment_income_line_10100_inputs.yaml",
-    "t1_employment_income_line_10400.yaml",
-    "t1_employment_income_line_10400_inputs.yaml",
-)
+PARTS = form_part_names("t1_employment_income")
 
 
 def test_the_form_exports_lines_10100_and_10400_and_holds_them_at_70000(

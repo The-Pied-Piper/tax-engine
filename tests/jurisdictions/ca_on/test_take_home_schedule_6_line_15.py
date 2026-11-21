@@ -29,7 +29,8 @@ from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 from tax_engine.domain.trace import SubtractedLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService
+from tests.federal_forms import form_part_names
+from tests.jurisdictions.ca_on.conftest import TakeHomeService
 from tests.kinds import bundled_kinds, non_negative
 
 D = Decimal
@@ -43,24 +44,11 @@ LINE_14 = "ca/cwb_secondary_earner_exemption"
 # part, the line 10 part, the optional line 11 input, the line 12 part, the line 13 part this line
 # subtracts from, the optional line 14 input and the line 15 part itself.
 PARTS = (
-    "t1_employment_income_line_10100_inputs.yaml",
-    *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
-    "t1_taxable_income_inputs.yaml",
-    "t1_employment_income.yaml",
-    "t1_employment_income_line_10100.yaml",
-    "t1_employment_income_line_10400.yaml",
-    "t1_taxable_income_line_15000.yaml",
-    "t1_taxable_income_line_23300.yaml",
-    "t1_taxable_income_line_23400.yaml",
-    "t1_taxable_income_line_23600.yaml",
-    "t1_taxable_income_line_23600_signed.yaml",
-    "t1_taxable_income_line_25700_inputs.yaml",
-    "t1_taxable_income_line_26000.yaml",
-    "t1_taxable_income.yaml",
-    "t1_employment_income_line_10400_inputs.yaml",
+    *form_part_names("schedule_8"),
+    *form_part_names("t1_taxable_income", "t1_employment_income"),
     "schedule_6_line_7.yaml",
     "schedule_6_line_10.yaml",
-    "schedule_6_line_11_inputs.yaml",
+    "schedule_6_line_11.yaml",
     "schedule_6_line_12.yaml",
     "schedule_6_line_13.yaml",
     "schedule_6_line_14_inputs.yaml",

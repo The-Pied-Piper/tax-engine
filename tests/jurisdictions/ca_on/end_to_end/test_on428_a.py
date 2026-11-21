@@ -48,6 +48,7 @@ from tax_engine.jurisdictions.ca_on.catalog import (
     LIFT_REDUCTION,
     LIFT_SINGLE_EXCESS_OVER_THRESHOLD,
 )
+from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService
 
 D = Decimal
@@ -63,9 +64,9 @@ HEADER = dedent("""\
 # own form text is an empty mapping.
 FORM = "{}\n"
 PARTS = (
-    *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
-    *(part.name for part in sorted(TAKE_HOME.rglob("t1_employment_income*.yaml"))),
-    *(part.name for part in sorted(TAKE_HOME.rglob("t1_taxable_income*.yaml"))),
+    *form_part_names("schedule_8"),
+    *form_part_names("t1_employment_income"),
+    *form_part_names("t1_taxable_income"),
     *(part.name for part in sorted(TAKE_HOME.rglob("on428_a*.yaml"))),
 )
 

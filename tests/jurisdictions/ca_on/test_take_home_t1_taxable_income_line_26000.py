@@ -4,9 +4,9 @@ Line 26000 is "Line 69 and line 26000: Line 57 minus line 68 (if negative, enter
 Taxable income" (5006-R page 5). The part file is composed here under a test-local header and
 form declaration (the real ones belong to the manifest's other parts), with net income (line 57,
 through line 23600) given as a starting amount because its own part file is not part of this
-one. Deductions from net income (line 68, through line 25700) are an optional input, declared in
-the form's inputs part that is composed with it: left out, they read as 0. The result is floored at
-zero: a deduction above net income gives 0, not a negative figure.
+one. Deductions from net income (line 68, through line 25700) are the sum of the optional lines 58
+to 67, composed with it: given here through line 25400 (line 65), and left out, they read as 0. The
+result is floored at zero: a deduction above net income gives 0, not a negative figure.
 """
 
 from __future__ import annotations
@@ -19,13 +19,25 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.deductions import NET_INCOME
 from tax_engine.jurisdictions.ca.catalog.taxable_income import (
-    DEDUCTIONS_FROM_NET_INCOME,
+    T1_LINE_25400,
     TAXABLE_INCOME,
 )
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
 
 ONTARIO = JurisdictionCode("CA-ON")
-PARTS = ("t1_taxable_income_line_25700_inputs.yaml", "t1_taxable_income_line_26000.yaml")
+PARTS = (
+    "t1_taxable_income_line_25700_inputs.yaml",
+    "t1_taxable_income_line_11700_inputs.yaml",
+    "t1_taxable_income_line_11700.yaml",
+    "t1_taxable_income_line_12500_inputs.yaml",
+    "t1_taxable_income_line_12500.yaml",
+    "t1_taxable_income_line_21300_inputs.yaml",
+    "t1_taxable_income_line_21300.yaml",
+    "t1_taxable_income_line_23200_inputs.yaml",
+    "t1_taxable_income_line_23200.yaml",
+    "t1_taxable_income_line_25700.yaml",
+    "t1_taxable_income_line_26000.yaml",
+)
 HEADER = """\
 jurisdiction: CA-ON
 version: 1
@@ -39,6 +51,10 @@ form:
   required: true
   exports:
     - ca/taxable_income
+    - ca/uccb_income_line_11700
+    - ca/rdsp_income_line_12500
+    - ca/uccb_repayment_line_21300
+    - ca/rdsp_income_repayment_line_23200
 inputs:
   - name: ca/net_income
     required: true
@@ -51,7 +67,7 @@ def line_26000(
     service = take_home_service(HEADER, FORM, *PARTS)
     artifacts = [Artifact(NET_INCOME, Decimal(net_income))]
     if deductions is not None:
-        artifacts.append(Artifact(DEDUCTIONS_FROM_NET_INCOME, Decimal(deductions)))
+        artifacts.append(Artifact(T1_LINE_25400, Decimal(deductions)))
     (worksheet,) = service.compute(ONTARIO, 2025, *artifacts)["ca/t1_taxable_income"]
     return worksheet.get(TAXABLE_INCOME).value
 

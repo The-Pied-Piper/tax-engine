@@ -1,0 +1,33 @@
+# Form NL428 (CRA 5001-C) line 91. Line 91: "Total of the UCCB income (line 11700 of the return) and the RDSP income (line 12500 of the return)", column 1 (you)
+# Both parts are T1 lines, so this form does not ask for them: the T1 taxable income form owns the
+# inputs and exports lines 11700 and 12500 (`ca/t1_taxable_income`). Another form reads an export only as a
+# record list, so each part is totalled by core/record_total first (as line 7 reads line 23600 on
+# Schedule 6), and the printed total adds the two in line order. A salary-only caller has neither,
+# so the total is 0.
+form:
+  name: ca-nl/nl428
+capabilities:
+  - name: core/record_total
+    title: "Amount from line 11700 of the return (UCCB income)"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_taxable_income.uccb_income_line_11700
+    produces:
+      output: ca-nl/nl428_uccb_income_line_11700
+  - name: core/record_total
+    title: "Amount from line 12500 of the return (RDSP income)"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_taxable_income.rdsp_income_line_12500
+    produces:
+      output: ca-nl/nl428_rdsp_income_line_12500
+  - name: core/sum
+    title: "Total of the UCCB income (line 11700 of the return) and the RDSP income (line 12500 of the return)"
+    reference: "91"
+    unit: ca/cad
+    params:
+      rounding: ca-nl/cent_rounding
+    consumes:
+      parts: [ca-nl/nl428_uccb_income_line_11700, ca-nl/nl428_rdsp_income_line_12500]
+    produces:
+      output: ca-nl/nl428_uccb_rdsp_income_line_91

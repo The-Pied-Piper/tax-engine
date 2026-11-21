@@ -1,0 +1,14 @@
+# T1 (5006-R, 2025) line 21300 input a salary-only caller does not give.
+# "Line 40 and line 21300: Universal child care benefit (UCCB) repayment (box 12 of all RC62 slips)" (5006-R page 3). A salary-only caller has none, so a request that leaves the line out is
+# read as blank, and the line 21300 step reads that blank as 0. This form owns the input: Schedule 6,
+# BC479, MB479 and NL428 import line 21300 from this form's export and never ask for it themselves.
+form:
+  name: ca/t1_taxable_income
+inputs:
+  - name: ca/uccb_repayment
+    title: "Universal child care benefit (UCCB) repayment"
+    reference: "21300"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 40 and line 21300: Universal child care benefit (UCCB) repayment (box 12 of all RC62 slips)'

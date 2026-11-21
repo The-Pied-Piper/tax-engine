@@ -43,14 +43,14 @@ from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.trace import SubtractedNotBelowZeroLine
 from tax_engine.domain.worksheet import Worksheet
-from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME, UCCB_INCOME
 from tax_engine.jurisdictions.ca_bc.catalog import (
     BC479_ADJUSTED_NET_INCOME_LINE_5,
-    BC479_UCCB_RDSP_INCOME_LINE_4,
 )
 from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import (
     SubtractNotBelowZero,
 )
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -59,7 +59,6 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_INPUT
 
 D = Decimal
 CODE = JurisdictionCode("CA-BC")
@@ -69,23 +68,8 @@ LINE_4 = "ca-bc/bc479_uccb_rdsp_income_line_4"
 LINE_5 = "ca-bc/bc479_adjusted_net_income_line_5"
 ROUNDING = "ca-bc/cent_rounding"
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = BC_PARTS / "bc479_line_5.yaml"
-T1_PARTS = (
-    "t1_taxable_income_inputs.yaml",
-    "t1_employment_income.yaml",
-    "t1_employment_income_line_10100.yaml",
-    "t1_employment_income_line_10400.yaml",
-    "t1_taxable_income_line_15000.yaml",
-    "t1_taxable_income_line_23300.yaml",
-    "t1_taxable_income_line_23400.yaml",
-    "t1_taxable_income_line_23600.yaml",
-    "t1_taxable_income_line_23600_signed.yaml",
-    "t1_taxable_income_line_25700_inputs.yaml",
-    "t1_taxable_income_line_26000.yaml",
-    "t1_taxable_income.yaml",
-    "t1_employment_income_line_10400_inputs.yaml",
-)
+T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 
 HEADER = dedent("""\
     jurisdiction: CA-BC
@@ -110,14 +94,13 @@ def _federal(name: str) -> Path:
 
 
 def _part_files() -> Iterator[Path]:
-    yield T1_LINE_10100_INPUT
-    yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
+    yield from form_parts("schedule_8")
     for name in T1_PARTS:
         yield _federal(name)
     yield BC_PARTS / "bc479_line_1.yaml"
-    yield BC_PARTS / "bc479_line_2_input.yaml"
+    yield BC_PARTS / "bc479_line_2.yaml"
     yield BC_PARTS / "bc479_line_3.yaml"
-    yield BC_PARTS / "bc479_line_4_input.yaml"
+    yield BC_PARTS / "bc479_line_4.yaml"
     yield LINE_PART
 
 
@@ -182,14 +165,14 @@ def test_line_5_is_line_3_when_line_4_is_blank(tmp_path: Path, salary: str, expe
 
 
 def test_line_5_takes_line_4_off_line_3_when_line_4_is_given(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "17000", Artifact(BC479_UCCB_RDSP_INCOME_LINE_4, D("1000.00")))
+    sheet = _sheet(tmp_path, "17000", Artifact(UCCB_INCOME, D("1000.00")))
 
     assert sheet.get(BC479_ADJUSTED_NET_INCOME_LINE_5).value == D("15865.00")
 
 
 def test_line_5_is_0_when_line_4_is_above_line_3(tmp_path: Path) -> None:
     # Line 3 is 16,865.00 at 17,000 and line 4 is 20,000.00: the floor.
-    sheet = _sheet(tmp_path, "17000", Artifact(BC479_UCCB_RDSP_INCOME_LINE_4, D("20000.00")))
+    sheet = _sheet(tmp_path, "17000", Artifact(UCCB_INCOME, D("20000.00")))
 
     line_5 = sheet.get(BC479_ADJUSTED_NET_INCOME_LINE_5).value
     assert line_5 == D("0.00")
@@ -198,7 +181,7 @@ def test_line_5_is_0_when_line_4_is_above_line_3(tmp_path: Path) -> None:
 
 
 def test_line_5_is_0_when_line_4_equals_line_3(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "17000", Artifact(BC479_UCCB_RDSP_INCOME_LINE_4, D("16865.00")))
+    sheet = _sheet(tmp_path, "17000", Artifact(UCCB_INCOME, D("16865.00")))
 
     assert sheet.get(BC479_ADJUSTED_NET_INCOME_LINE_5).value == D("0.00")
 
@@ -220,7 +203,7 @@ def test_line_5_is_0_when_line_3_is_negative(tmp_path: Path) -> None:
 def test_the_step_traces_one_subtracted_not_below_zero_line_with_the_cent_rounding(
     tmp_path: Path,
 ) -> None:
-    sheet = _sheet(tmp_path, "17000", Artifact(BC479_UCCB_RDSP_INCOME_LINE_4, D("1000.00")))
+    sheet = _sheet(tmp_path, "17000", Artifact(UCCB_INCOME, D("1000.00")))
     kinds = british_columbia_kinds()
 
     (line,) = [
@@ -285,14 +268,13 @@ def test_the_part_names_the_form_and_has_one_untitled_subtract_step() -> None:
     assert part["form"] == {"name": FORM}
     (step,) = part["capabilities"]
     assert isinstance(step, dict)
-    assert list(step) == ["name", "reference", "unit", "params", "consumes", "blank", "produces"]
+    assert list(step) == ["name", "reference", "unit", "params", "consumes", "produces"]
     assert step == {
         "name": "core/subtract_not_below_zero",
         "reference": "5",
         "unit": "ca/cad",
         "params": {"rounding": ROUNDING},
         "consumes": {"amount": LINE_3, "less": LINE_4},
-        "blank": {"less": "0"},
         "produces": {"output": LINE_5},
     }
     assert "title" not in step

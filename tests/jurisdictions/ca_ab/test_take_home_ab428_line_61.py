@@ -50,6 +50,7 @@ from tax_engine.jurisdictions.ca_ab.catalog import (
     AB428_TAX_LINE_61,
     AB428_TAX_ON_SPLIT_INCOME_LINE_60,
 )
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_ab.support import (
     alberta_capabilities,
     alberta_kinds,
@@ -58,7 +59,6 @@ from tests.jurisdictions.ca_ab.support import (
     alberta_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_INPUT
 
 D = Decimal
 CODE = JurisdictionCode("CA-AB")
@@ -81,7 +81,6 @@ LINE_59 = "ca-ab/ab428_alberta_tax_on_taxable_income_line_59"
 LINE_60 = "ca-ab/ab428_tax_on_split_income_line_60"
 LINE_61 = "ca-ab/ab428_tax_line_61"
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 PART = ALBERTA_PARTS / "ab428_line_61.yaml"
 # The real Alberta parts, in composition order: line 1, lines 3 to 8, lines 10 to 15, line 59, the
 # line 60 input and line 61.
@@ -103,21 +102,7 @@ ALBERTA_LINE_PARTS = (
     "ab428_line_60_inputs.yaml",
     PART.name,
 )
-T1_PARTS = (
-    "t1_taxable_income_inputs.yaml",
-    "t1_employment_income.yaml",
-    "t1_employment_income_line_10100.yaml",
-    "t1_employment_income_line_10400.yaml",
-    "t1_taxable_income_line_15000.yaml",
-    "t1_taxable_income_line_23300.yaml",
-    "t1_taxable_income_line_23400.yaml",
-    "t1_taxable_income_line_23600.yaml",
-    "t1_taxable_income_line_23600_signed.yaml",
-    "t1_taxable_income_line_25700_inputs.yaml",
-    "t1_taxable_income_line_26000.yaml",
-    "t1_taxable_income.yaml",
-    "t1_employment_income_line_10400_inputs.yaml",
-)
+T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 
 HEADER = dedent("""\
     jurisdiction: CA-AB
@@ -171,8 +156,7 @@ def _federal(name: str) -> Path:
 
 def _part_files() -> Iterator[tuple[str, str]]:
     """Each part's name and text, in composition order."""
-    yield "salary.yaml", (T1_LINE_10100_INPUT).read_text(encoding="utf-8")
-    for found in sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml")):
+    for found in form_parts("schedule_8"):
         yield found.name, found.read_text(encoding="utf-8")
     for name in T1_PARTS:
         found = _federal(name)

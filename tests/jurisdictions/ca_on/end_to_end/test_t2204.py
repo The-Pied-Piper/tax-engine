@@ -53,7 +53,8 @@ from tax_engine.jurisdictions.ca.catalog.refund import (
     T2204_PREMIUMS_DEDUCTED,
     T2204_PREMIUMS_DEDUCTED_GIVEN,
 )
-from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService
+from tests.federal_forms import form_part_names
+from tests.jurisdictions.ca_on.conftest import TakeHomeService
 from tests.manifest_support import T1_LINE_10100_PARTS
 
 D = Decimal
@@ -71,7 +72,7 @@ FORM = "{}\n"
 PARTS = (
     "t1_employment_income_line_10100_inputs.yaml",
     *T1_LINE_10100_PARTS,
-    *(part.name for part in sorted(TAKE_HOME.rglob("t2204*.yaml"))),
+    *form_part_names("t2204"),
 )
 
 # Amount lines by form line; the line 1 count (note (1)) and line 15 count (more than $1) are

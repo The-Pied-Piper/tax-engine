@@ -1,0 +1,60 @@
+# T1 (2025) line 68 and line 25700: "Add lines 58 to 67." The ten printed lines, 24400 to 25600 (the optional
+# inputs of t1_taxable_income_line_25700_inputs.yaml), are each read as 0 when left blank. The sentence of a
+# numbered line stays at 40 words or fewer (tests/jurisdictions/test_trace_english_printed_names.py), so the
+# parts are added in two unprinted subtotals (no reference, unrounded: `ca/exact_rounding`, round only where
+# the form says), and the printed line adds the two, rounded half-up to the cent. Line 26000 takes it off net income.
+form:
+  name: ca/t1_taxable_income
+capabilities:
+  - name: core/sum
+    title: "Lines 24400 to 25200 added up"
+    unit: ca/cad
+    params:
+      rounding: ca/exact_rounding
+    consumes:
+      parts:
+        - ca/t1_line_24400
+        - ca/t1_line_24900
+        - ca/t1_line_25000
+        - ca/t1_line_25100
+        - ca/t1_line_25200
+    blank:
+      ca/t1_line_24400: "0"
+      ca/t1_line_24900: "0"
+      ca/t1_line_25000: "0"
+      ca/t1_line_25100: "0"
+      ca/t1_line_25200: "0"
+    produces:
+      output: ca/t1_lines_24400_to_25200_subtotal
+  - name: core/sum
+    title: "Lines 25300 to 25600 added up"
+    unit: ca/cad
+    params:
+      rounding: ca/exact_rounding
+    consumes:
+      parts:
+        - ca/t1_line_25300
+        - ca/t1_line_25395
+        - ca/t1_line_25400
+        - ca/t1_line_25500
+        - ca/t1_line_25600
+    blank:
+      ca/t1_line_25300: "0"
+      ca/t1_line_25395: "0"
+      ca/t1_line_25400: "0"
+      ca/t1_line_25500: "0"
+      ca/t1_line_25600: "0"
+    produces:
+      output: ca/t1_lines_25300_to_25600_subtotal
+  - name: core/sum
+    title: "Deductions from net income"
+    reference: "25700"
+    unit: ca/cad
+    params:
+      rounding: ca/cent_rounding
+    consumes:
+      parts:
+        - ca/t1_lines_24400_to_25200_subtotal
+        - ca/t1_lines_25300_to_25600_subtotal
+    produces:
+      output: ca/deductions_from_net_income

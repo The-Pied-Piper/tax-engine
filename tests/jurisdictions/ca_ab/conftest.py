@@ -17,10 +17,10 @@ from tax_engine.application.services.tax_computation import TaxComputationServic
 from tax_engine.domain.registry import Namespace
 from tax_engine.registrations import JURISDICTIONS, parameter_parsers, units
 from tests.capabilities import bundled_capabilities
+from tests.federal_forms import FEDERAL_FORMS
 from tests.kinds import bundled_kinds
 
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 
 
 class TakeHomeFolders:

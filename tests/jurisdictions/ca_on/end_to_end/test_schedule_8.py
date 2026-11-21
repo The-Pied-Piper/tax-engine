@@ -49,8 +49,7 @@ from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca.catalog.rc381_cpp_qpp import (
     T4_CPP_PENSIONABLE_EARNINGS_OUTSIDE_QUEBEC,
 )
-from tests.jurisdictions.ca_on.conftest import TAKE_HOME
-from tests.manifest_support import T1_LINE_10100_INPUT
+from tests.federal_forms import form_parts
 
 D = Decimal
 HEADER = dedent("""\
@@ -86,9 +85,7 @@ def service(tmp_path: Path) -> TaxComputationService:
     parts.mkdir(parents=True)
     (parts / "00_header.yaml").write_text(HEADER)
     for part in [
-        T1_LINE_10100_INPUT,
-        *sorted(TAKE_HOME.rglob("schedule_8*.yaml")),
-        *sorted(TAKE_HOME.rglob("t1_employment_income*.yaml")),
+        *form_parts("schedule_8", "t1_employment_income"),
     ]:
         shutil.copy(part, parts / part.name)
     roots = dict(tax_engine.registrations.JURISDICTIONS.roots())

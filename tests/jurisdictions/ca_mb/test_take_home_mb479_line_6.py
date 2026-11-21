@@ -46,11 +46,11 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
-from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME, UCCB_INCOME
 from tax_engine.jurisdictions.ca_mb.catalog import (
     MB479_FAMILY_INCOME_COLUMN_2_LINE_5,
-    MB479_UCCB_RDSP_INCOME_LINE_4,
 )
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_mb.support import (
     manitoba_capabilities,
     manitoba_kinds,
@@ -59,32 +59,16 @@ from tests.jurisdictions.ca_mb.support import (
     manitoba_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_INPUT
 
 D = Decimal
 CENT = D("0.01")
 MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = MB_PARTS / "mb479_line_6.yaml"
 FORM_NAME = "ca-mb/mb479"
 COLUMN_1_LINE_5 = "ca-mb/mb479_family_income_column_1_line_5"
 COLUMN_2_LINE_5 = "ca-mb/mb479_family_income_column_2_line_5"
 KIND = "ca-mb/mb479_family_income_line_6"
-T1_PARTS = (
-    "t1_taxable_income_inputs.yaml",
-    "t1_employment_income.yaml",
-    "t1_employment_income_line_10100.yaml",
-    "t1_employment_income_line_10400.yaml",
-    "t1_taxable_income_line_15000.yaml",
-    "t1_taxable_income_line_23300.yaml",
-    "t1_taxable_income_line_23400.yaml",
-    "t1_taxable_income_line_23600.yaml",
-    "t1_taxable_income_line_23600_signed.yaml",
-    "t1_taxable_income_line_25700_inputs.yaml",
-    "t1_taxable_income_line_26000.yaml",
-    "t1_taxable_income.yaml",
-    "t1_employment_income_line_10400_inputs.yaml",
-)
+T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 
 HEADER = dedent("""\
     jurisdiction: CA-MB
@@ -131,14 +115,13 @@ def docstring_of(identifier: str) -> str:
 
 
 def _part_files() -> Iterator[Path]:
-    yield T1_LINE_10100_INPUT
-    yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
+    yield from form_parts("schedule_8")
     for name in T1_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
     yield MB_PARTS / "mb479_line_1.yaml"
-    yield MB_PARTS / "mb479_line_2_input.yaml"
+    yield MB_PARTS / "mb479_line_2.yaml"
     yield MB_PARTS / "mb479_line_3.yaml"
-    yield MB_PARTS / "mb479_line_4_input.yaml"
+    yield MB_PARTS / "mb479_line_4.yaml"
     yield MB_PARTS / "mb479_line_5.yaml"
     yield MB_PARTS / "mb479_line_5_column_2_input.yaml"
     yield LINE_PART
@@ -210,7 +193,7 @@ def test_line_6_adds_column_2_to_the_floored_column_1(tmp_path: Path) -> None:
     sheet = _sheet(
         tmp_path,
         Artifact(EMPLOYMENT_INCOME, D("10000")),
-        Artifact(MB479_UCCB_RDSP_INCOME_LINE_4, D("10000")),
+        Artifact(UCCB_INCOME, D("10000")),
         Artifact(MB479_FAMILY_INCOME_COLUMN_2_LINE_5, D("500")),
     )
 
@@ -223,8 +206,9 @@ def test_a_blank_column_2_prints_the_steps_own_left_blank_row(tmp_path: Path) ->
     rows = EnglishTraceRenderer().render_all(sheet.trace)
 
     blank_rows = [row for row in rows if "left blank, taken as 0" in row.lower()]
-    # line 3's blank line 2, line 5's blank line 4, then this step's own blank column 2
-    assert len(blank_rows) == 3
+    # Only this step's own blank column 2: lines 2 and 4 are sums of the T1 lines, so their blank
+    # reads are printed on the T1 UCCB and RDSP form, not here.
+    assert len(blank_rows) == 1
 
 
 def test_a_given_column_2_prints_no_left_blank_row_for_it(tmp_path: Path) -> None:
@@ -237,8 +221,8 @@ def test_a_given_column_2_prints_no_left_blank_row_for_it(tmp_path: Path) -> Non
     rows = EnglishTraceRenderer().render_all(sheet.trace)
 
     blank_rows = [row for row in rows if "left blank, taken as 0" in row.lower()]
-    # line 3's blank line 2 and line 5's blank line 4; column 2 is given, so it prints no row
-    assert len(blank_rows) == 2
+    # Column 2 is given, so it prints no row, and lines 2 and 4 are never blank on this sheet.
+    assert not blank_rows
 
 
 def _part() -> dict[str, Any]:

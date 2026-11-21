@@ -26,6 +26,7 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService
 from tests.kinds import bundled_kinds
 
@@ -35,9 +36,9 @@ LINE_83 = "ca-on/on428_tax_after_foreign_tax_credit_line_83"
 LINE_85 = "ca-on/on428_lift_credit_line_85"
 LINE_86 = "ca-on/on428_tax_after_lift_credit_line_86"
 PARTS = (
-    *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
-    *(part.name for part in sorted(TAKE_HOME.rglob("t1_employment_income*.yaml"))),
-    *(part.name for part in sorted(TAKE_HOME.rglob("t1_taxable_income*.yaml"))),
+    *form_part_names("schedule_8"),
+    *form_part_names("t1_employment_income"),
+    *form_part_names("t1_taxable_income"),
     *(part.name for part in sorted(TAKE_HOME.rglob("on428_a*.yaml"))),
     "on428_line_85.yaml",
     "on428_line_86.yaml",

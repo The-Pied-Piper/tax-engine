@@ -44,8 +44,8 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
-from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tax_engine.jurisdictions.ca_mb.catalog import MB479_UCCB_RDSP_INCOME_LINE_4
+from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME, UCCB_INCOME
+from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_mb.support import (
     manitoba_capabilities,
     manitoba_kinds,
@@ -54,32 +54,16 @@ from tests.jurisdictions.ca_mb.support import (
     manitoba_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_INPUT
 
 D = Decimal
 CENT = D("0.01")
 MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"
-FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = MB_PARTS / "mb479_line_5.yaml"
 FORM_NAME = "ca-mb/mb479"
 LINE_3 = "ca-mb/mb479_family_income_before_benefits_line_3"
 LINE_4 = "ca-mb/mb479_uccb_rdsp_income_line_4"
 KIND = "ca-mb/mb479_family_income_column_1_line_5"
-T1_PARTS = (
-    "t1_taxable_income_inputs.yaml",
-    "t1_employment_income.yaml",
-    "t1_employment_income_line_10100.yaml",
-    "t1_employment_income_line_10400.yaml",
-    "t1_taxable_income_line_15000.yaml",
-    "t1_taxable_income_line_23300.yaml",
-    "t1_taxable_income_line_23400.yaml",
-    "t1_taxable_income_line_23600.yaml",
-    "t1_taxable_income_line_23600_signed.yaml",
-    "t1_taxable_income_line_25700_inputs.yaml",
-    "t1_taxable_income_line_26000.yaml",
-    "t1_taxable_income.yaml",
-    "t1_employment_income_line_10400_inputs.yaml",
-)
+T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 
 HEADER = dedent("""\
     jurisdiction: CA-MB
@@ -126,14 +110,13 @@ def docstring_of(identifier: str) -> str:
 
 
 def _part_files() -> Iterator[Path]:
-    yield T1_LINE_10100_INPUT
-    yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
+    yield from form_parts("schedule_8")
     for name in T1_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
     yield MB_PARTS / "mb479_line_1.yaml"
-    yield MB_PARTS / "mb479_line_2_input.yaml"
+    yield MB_PARTS / "mb479_line_2.yaml"
     yield MB_PARTS / "mb479_line_3.yaml"
-    yield MB_PARTS / "mb479_line_4_input.yaml"
+    yield MB_PARTS / "mb479_line_4.yaml"
     yield LINE_PART
 
 
@@ -188,7 +171,7 @@ def test_line_5_subtracts_line_4_when_it_is_given(tmp_path: Path) -> None:
     sheet = _sheet(
         tmp_path,
         Artifact(EMPLOYMENT_INCOME, D("70000")),
-        Artifact(MB479_UCCB_RDSP_INCOME_LINE_4, D("500")),
+        Artifact(UCCB_INCOME, D("500")),
     )
 
     assert sheet.get(manitoba_kinds().kind(KIND)).value == _net_income(D("70000")) - D("500")
@@ -199,7 +182,7 @@ def test_line_5_is_the_floor_when_line_4_exceeds_line_3(tmp_path: Path) -> None:
     sheet = _sheet(
         tmp_path,
         Artifact(EMPLOYMENT_INCOME, D("10000")),
-        Artifact(MB479_UCCB_RDSP_INCOME_LINE_4, D("10000")),
+        Artifact(UCCB_INCOME, D("10000")),
     )
 
     line_5 = sheet.get(manitoba_kinds().kind(KIND)).value
@@ -214,7 +197,7 @@ def test_line_5_is_the_floor_when_line_4_equals_line_3(tmp_path: Path) -> None:
     sheet = _sheet(
         tmp_path,
         Artifact(EMPLOYMENT_INCOME, D("10000")),
-        Artifact(MB479_UCCB_RDSP_INCOME_LINE_4, D("9935.00")),
+        Artifact(UCCB_INCOME, D("9935.00")),
     )
 
     assert sheet.get(manitoba_kinds().kind(KIND)).value == D("0.00")
@@ -224,14 +207,14 @@ def test_a_given_line_4_prints_no_left_blank_row_for_it(tmp_path: Path) -> None:
     sheet = _sheet(
         tmp_path,
         Artifact(EMPLOYMENT_INCOME, D("70000")),
-        Artifact(MB479_UCCB_RDSP_INCOME_LINE_4, D("500")),
+        Artifact(UCCB_INCOME, D("500")),
     )
 
     rows = EnglishTraceRenderer().render_all(sheet.trace)
 
     assert any("not below 0" in row for row in rows)
     blank_rows = [row for row in rows if "left blank, taken as 0" in row.lower()]
-    assert len(blank_rows) == 1  # only line 3's blank line 2; line 4 is given
+    assert not blank_rows  # lines 2 and 4 are sums of the T1 lines, never blank on this sheet
 
 
 def _part() -> dict[str, Any]:
@@ -246,7 +229,7 @@ def test_the_part_names_the_form_and_has_one_untitled_subtract_not_below_zero_st
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": FORM_NAME}
     (step,) = part["capabilities"]
-    assert list(step) == ["name", "reference", "unit", "params", "consumes", "blank", "produces"]
+    assert list(step) == ["name", "reference", "unit", "params", "consumes", "produces"]
     assert "title" not in step
     assert step == {
         "name": "core/subtract_not_below_zero",
@@ -254,7 +237,6 @@ def test_the_part_names_the_form_and_has_one_untitled_subtract_not_below_zero_st
         "unit": "ca/cad",
         "params": {"rounding": "ca-mb/cent_rounding"},
         "consumes": {"amount": LINE_3, "less": LINE_4},
-        "blank": {"less": "0"},
         "produces": {"output": KIND},
     }
 

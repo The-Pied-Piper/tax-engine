@@ -60,7 +60,8 @@ LINE_359_PARTS = (
 )
 LINE_377_PARTS = (*LINE_359_PARTS, "tp1_credits_line_361.yaml", "tp1_credits_line_377.yaml")
 LINE_377_1_PARTS = (*LINE_377_PARTS, "tp1_credits_line_377_1.yaml")
-LINE_389_PARTS = ("tp1_credits_line_388_input.yaml", "tp1_credits_line_389.yaml")
+LINE_388_PARTS = ("tp1_credits_line_388_inputs.yaml", "tp1_credits_line_388.yaml")
+LINE_389_PARTS = (*LINE_388_PARTS, "tp1_credits_line_389.yaml")
 LINE_397_PARTS = ("tp1_credits_line_397_1_input.yaml", "tp1_credits_line_397.yaml")
 LINE_399_PARTS = (
     *LINE_377_1_PARTS,
