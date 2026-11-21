@@ -1,0 +1,13 @@
+# MB428 (2025) line 49's input. Form MB428 (CRA 5007-c): "Line 49 and line 58729: Allowable amount of
+# medical expenses for other dependants (use Worksheet MB428)". The worksheet exists only to compute
+# a claim a salary-only caller leaves empty, so the line is taken as one optional input, the way the
+# form takes it. A request that leaves the line out is read as blank; the line 50 step reads that
+# blank as 0.
+inputs:
+  - name: ca-mb/mb428_other_dependants_medical_expenses_line_49
+    title: "Allowable amount of medical expenses for other dependants (use Worksheet MB428)"
+    reference: "49"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 49 and line 58729: Allowable amount of medical expenses for other dependants (use Worksheet MB428)'

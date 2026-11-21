@@ -77,7 +77,13 @@ CREDIT_PARTS = (
     "mb428_credits_line_36.yaml",
     "mb428_credits_line_41.yaml",
     "mb428_credits_line_42.yaml",
-    "mb428_credits_line_50_input.yaml",
+    "mb428_credits_line_43_inputs.yaml",
+    "mb428_credits_line_44.yaml",
+    "mb428_credits_line_46.yaml",
+    "mb428_credits_line_47.yaml",
+    "mb428_credits_line_48.yaml",
+    "mb428_credits_line_49_inputs.yaml",
+    "mb428_credits_line_50.yaml",
     "mb428_credits_line_51.yaml",
 )
 SCHEDULE_PARTS = (
