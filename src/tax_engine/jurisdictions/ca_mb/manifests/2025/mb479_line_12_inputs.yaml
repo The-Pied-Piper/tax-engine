@@ -1,0 +1,30 @@
+# MB479 (2025) lines 9, 10 and 11's inputs, the credits for the spouse or common-law partner that
+# line 12 adds (Form MB479, CRA 5007-TC: "Line 9: Basic credit for spouse or common-law partner
+# Claim $195", "Line 10: Age credit for spouse or common-law partner (if they were born in 1960 or
+# earlier) Claim $113", "Line 11: Disability credit for spouse or common-law partner Claim $113").
+# Each is the credit claimed, as lines 8 and 13 are. A salary-only caller claims none of them, so a
+# request that leaves a line out is read as blank, and the step of line 12 reads each blank as 0.
+form:
+  name: ca-mb/mb479
+inputs:
+  - name: ca-mb/mb479_basic_credit_spouse_line_9
+    title: "Basic credit for spouse or common-law partner"
+    reference: "9"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 9: Basic credit for spouse or common-law partner'
+  - name: ca-mb/mb479_age_credit_spouse_line_10
+    title: "Age credit for spouse or common-law partner (if they were born in 1960 or earlier)"
+    reference: "10"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 10: Age credit for spouse or common-law partner (if they were born in 1960 or earlier)'
+  - name: ca-mb/mb479_disability_credit_spouse_line_11
+    title: "Disability credit for spouse or common-law partner"
+    reference: "11"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 11: Disability credit for spouse or common-law partner'

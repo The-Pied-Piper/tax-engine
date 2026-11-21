@@ -1,8 +1,8 @@
 # Form MB479 (2025, CRA 5007-TC) line 17. Line 17 and line 61050: "Add lines 7, 8, and 12 to 16.
-# Total credits". It sums the basic credit (line 7, `ca-mb/mb479_basic_credit_line_7`) and the
-# optional credit inputs of lines 8, 12 and 13, which a salary-only caller leaves out, each read as
-# blank and then as 0 by the blank rule below, and the product boxes of lines 14 to 16, which are
-# always figures (0.00 for a salary-only caller).
+# Total credits". It sums the basic credit (line 7, `ca-mb/mb479_basic_credit_line_7`), the optional
+# credit inputs of lines 8 and 13, which a salary-only caller leaves out, each read as blank and
+# then as 0 by the blank rule below, line 12 (the sum of lines 9 to 11) and the product boxes of
+# lines 14 to 16, which are always figures (0.00 for a salary-only caller).
 form:
   name: ca-mb/mb479
 capabilities:
@@ -23,7 +23,6 @@ capabilities:
         - ca-mb/mb479_dependent_children_credit_line_16
     blank:
       ca-mb/mb479_age_credit_line_8: "0"
-      ca-mb/mb479_spouse_credits_line_12: "0"
       ca-mb/mb479_eligible_dependant_credit_line_13: "0"
     produces:
       output: ca-mb/mb479_total_credits_line_17
