@@ -1,8 +1,8 @@
-# MB479 (2025) line 17's inputs, which a salary-only caller does not give.
-# Lines 8 and 12 to 16 (Form MB479, CRA 5007-TC): the personal tax credit lines that line 17 adds to
-# the basic credit of line 7. Line 12 is the printed sum of lines 9 to 11 and lines 14 to 16 are the
-# product boxes, so the spouse lines and the counts above the boxes are not built. A salary-only
-# caller claims none of them, so a request that leaves a line out is read as blank.
+# MB479 (2025) line 17's inputs, which a salary-only caller does not give. Lines 8 and 12 to 16
+# (Form MB479, CRA 5007-TC): the personal tax credit lines that line 17 adds to the basic credit
+# of line 7. Line 12 is the printed sum of lines 9 to 11, so the spouse lines are not built; lines
+# 14 to 16 are computed from their counts (mb479_line_14_inputs.yaml and its neighbours). A
+# salary-only caller claims none of them, so a request that leaves a line out is read as blank.
 form:
   name: ca-mb/mb479
 inputs:
@@ -27,24 +27,3 @@ inputs:
     required: false
     default: null
     basis: 'Line 13: Credit for an eligible dependant claimed on line 58160 of your Form MB428'
-  - name: ca-mb/mb479_disability_credit_line_14
-    title: "Number of disability claims multiplied by $113"
-    reference: "14"
-    unit: ca/cad
-    required: false
-    default: null
-    basis: 'Line 14: Number of disability claims multiplied by $113'
-  - name: ca-mb/mb479_disabled_dependants_credit_line_15
-    title: "Number of disabled dependants multiplied by $62"
-    reference: "15"
-    unit: ca/cad
-    required: false
-    default: null
-    basis: 'Line 15: Number of disabled dependants multiplied by $62'
-  - name: ca-mb/mb479_dependent_children_credit_line_16
-    title: "Number of dependent children multiplied by $26"
-    reference: "16"
-    unit: ca/cad
-    required: false
-    default: null
-    basis: 'Line 16: Number of dependent children multiplied by $26'

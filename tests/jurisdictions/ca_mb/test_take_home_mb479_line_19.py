@@ -123,6 +123,9 @@ def _part_files() -> Iterator[Path]:
     yield MB_PARTS / "mb479_line_6.yaml"
     yield MB_PARTS / "mb479_line_7.yaml"
     yield MB_PARTS / "mb479_line_17_inputs.yaml"
+    for n in ("14", "15", "16"):
+        for suffix in ("_inputs", "_amount", ""):
+            yield MB_PARTS / f"mb479_line_{n}{suffix}.yaml"
     yield MB_PARTS / "mb479_line_17.yaml"
     yield MB_PARTS / "mb479_line_18.yaml"
     yield LINE_PART

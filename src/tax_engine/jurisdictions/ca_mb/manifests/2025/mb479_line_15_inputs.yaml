@@ -1,0 +1,19 @@
+# MB479 (2025) line 15's input, the number of disabled dependants. Form MB479 (CRA 5007-TC):
+# "Number of disabled dependants Line 60970 multiplied by $62 =". The line has two boxes: the
+# number (box A, the input here) and the multiplied result (box B, the step in
+# mb479_line_15.yaml). The form does not name them; "box A" and "box B" are the owner's naming, as
+# on ON428 line 47. A salary-only caller has none, so a request that leaves the line out is read
+# as 0 (the input's own default), and the step multiplies it.
+# The heading above the line, "Credit for disabled dependants born in 2007 or earlier",
+# says whom the count is of. The filer gives the count; the heading is part of the printed basis
+# shown with the box.
+form:
+  name: ca-mb/mb479
+inputs:
+  - name: ca-mb/mb479_disabled_dependants_number_line_15
+    title: "Number of disabled dependants"
+    reference: "15 box A"
+    unit: ca/cad
+    required: false
+    default: "0"
+    basis: 'Credit for disabled dependants born in 2007 or earlier. Line 15: Number of disabled dependants'

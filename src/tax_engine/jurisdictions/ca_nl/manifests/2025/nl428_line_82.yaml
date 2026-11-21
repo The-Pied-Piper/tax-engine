@@ -1,0 +1,30 @@
+# NL428 (2025) line 82, the venture capital tax credit. Form NL428 (CRA 5001-C): "Line 82 and line
+# 61820: Venture capital tax credit from Certificate(s) NL VCTC". The guide (5001-PC, line 82) adds:
+# "The lifetime maximum you can claim is $75,000." Two steps. The first, core/credit_amount, supplies
+# that maximum from the `ca-nl/venture_capital_credit_lifetime_maximum` dataset; it is not a line of
+# the form, so it has no reference, and its title is plain words. The second, core/at_most, is line
+# 82: the optional input (nl428_line_82_input.yaml) checked against the maximum and passed on
+# unchanged, a blank input passing on as blank. An amount above the maximum is refused, not capped. One
+# return's claim can never exceed the lifetime limit; earlier years' claims are not visible to the
+# engine, so the limit is checked against this return's amount only. The form prints no label for
+# the checked line, so the step has no title. Line 84 reads it.
+form:
+  name: ca-nl/nl428
+capabilities:
+  - name: core/credit_amount
+    title: "Most you can claim for venture capital tax credits over your lifetime"
+    unit: ca/cad
+    params:
+      amount: ca-nl/venture_capital_credit_lifetime_maximum
+    produces:
+      output: ca-nl/nl428_venture_capital_tax_credit_lifetime_maximum
+  - name: core/at_most
+    reference: "82"
+    unit: ca/cad
+    consumes:
+      amount: ca-nl/nl428_venture_capital_tax_credit_from_certificates_line_82
+      bound: ca-nl/nl428_venture_capital_tax_credit_lifetime_maximum
+    blank:
+      amount: pass_on
+    produces:
+      output: ca-nl/nl428_venture_capital_tax_credit_checked_line_82
