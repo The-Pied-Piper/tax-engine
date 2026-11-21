@@ -55,6 +55,7 @@ from tax_engine.jurisdictions.ca_bc.catalog import (
     BC428_BRITISH_COLUMBIA_TAX_ON_TAXABLE_INCOME_LINE_61,
 )
 from tax_engine.jurisdictions.ca_bc.trace import TaxOnTaxableIncomeLine
+from tests.federal_forms import form_part_names, form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -83,22 +84,7 @@ LINE_PARTS = (
     *(BC_PARTS / f"bc428_line_{number}.yaml" for number in (10, 11, 12, 13, 14, 15)),
     PART,
 )
-T1_PARTS = (
-    "t1_taxable_income_inputs.yaml",
-    "t1_employment_income.yaml",
-    "t1_employment_income_line_10100.yaml",
-    "t1_employment_income_line_10400.yaml",
-    "t1_taxable_income_line_15000.yaml",
-    "t1_taxable_income_line_23300.yaml",
-    "t1_taxable_income_line_23400.yaml",
-    "t1_taxable_income_line_23600.yaml",
-    "t1_taxable_income_line_23600_signed.yaml",
-    "t1_taxable_income_line_25700_inputs.yaml",
-    "t1_taxable_income_line_25700.yaml",
-    "t1_taxable_income_line_26000.yaml",
-    "t1_taxable_income.yaml",
-    "t1_employment_income_line_10400_inputs.yaml",
-)
+T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 
 HEADER = dedent("""\
     jurisdiction: CA-BC
@@ -131,7 +117,7 @@ def _federal(name: str) -> Path:
 def _part_files() -> Iterator[tuple[str, str]]:
     """Each part's name and text, in composition order."""
     yield "salary.yaml", (BC_PARTS / "salary.yaml").read_text(encoding="utf-8")
-    for found in sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml")):
+    for found in form_parts("schedule_8"):
         yield found.name, found.read_text(encoding="utf-8")
     for name in T1_PARTS:
         found = _federal(name)

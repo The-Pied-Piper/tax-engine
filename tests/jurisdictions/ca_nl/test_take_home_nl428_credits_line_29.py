@@ -34,6 +34,7 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_nl.catalog import NL428_EI_PREMIUMS_LINE_29
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_capabilities,
     newfoundland_kinds,
@@ -72,8 +73,8 @@ FORM = dedent("""\
 
 
 def _part_files() -> Iterator[Path]:
-    yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
-    yield from sorted(FEDERAL_FORMS.rglob("t2204*.yaml"))
+    yield from form_parts("schedule_8")
+    yield from form_parts("t2204")
     yield T1_LINE_10100_FORM
     yield FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml"
     yield PART

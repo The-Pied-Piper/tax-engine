@@ -55,6 +55,7 @@ from tax_engine.jurisdictions.ca_nl.catalog import NL428_BRACKET_TAX_AT_START_LI
 from tax_engine.jurisdictions.core.capabilities.bracket_column_figure import (
     BracketColumnTaxAtStart,
 )
+from tests.federal_forms import form_part_names, form_parts
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_capabilities,
     newfoundland_kinds,
@@ -75,22 +76,7 @@ NEWFOUNDLAND_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "man
 FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 PART = NEWFOUNDLAND_PARTS / "nl428_credits_line_14.yaml"
 LINE_1_PART = NEWFOUNDLAND_PARTS / "nl428_credits_line_1.yaml"
-T1_PARTS = (
-    "t1_taxable_income_inputs.yaml",
-    "t1_employment_income.yaml",
-    "t1_employment_income_line_10100.yaml",
-    "t1_employment_income_line_10400.yaml",
-    "t1_taxable_income_line_15000.yaml",
-    "t1_taxable_income_line_23300.yaml",
-    "t1_taxable_income_line_23400.yaml",
-    "t1_taxable_income_line_23600.yaml",
-    "t1_taxable_income_line_23600_signed.yaml",
-    "t1_taxable_income_line_25700_inputs.yaml",
-    "t1_taxable_income_line_25700.yaml",
-    "t1_taxable_income_line_26000.yaml",
-    "t1_taxable_income.yaml",
-    "t1_employment_income_line_10400_inputs.yaml",
-)
+T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 
 HEADER = dedent("""\
     jurisdiction: CA-NL
@@ -120,7 +106,7 @@ def _federal(name: str) -> Path:
 
 def _part_files() -> Iterator[tuple[str, str]]:
     """Each part's name and text, in composition order."""
-    for found in sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml")):
+    for found in form_parts("schedule_8"):
         yield found.name, found.read_text(encoding="utf-8")
     for name in T1_PARTS:
         found = _federal(name)

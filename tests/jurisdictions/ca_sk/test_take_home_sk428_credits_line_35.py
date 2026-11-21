@@ -42,6 +42,7 @@ from tax_engine.jurisdictions.ca_sk.catalog import (
     SK428_CREDITS_SUBTOTAL_LINE_35,
     SK428_PENSION_INCOME_AMOUNT,
 )
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_sk.support import (
     saskatchewan_capabilities,
     saskatchewan_kinds,
@@ -103,8 +104,8 @@ def _expected(salary: str, pension: str = "0") -> Decimal:
 
 def _part_files() -> Iterator[Path]:
     yield SK_PARTS / "salary.yaml"
-    yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
-    yield from sorted(FEDERAL_FORMS.rglob("t2204*.yaml"))
+    yield from form_parts("schedule_8")
+    yield from form_parts("t2204")
     yield T1_LINE_10100_FORM
     yield FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml"
     yield SK_PARTS / "sk428_credits_line_9.yaml"

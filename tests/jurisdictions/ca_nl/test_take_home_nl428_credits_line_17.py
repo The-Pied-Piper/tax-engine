@@ -43,6 +43,7 @@ from tax_engine.jurisdictions.ca.catalog.personal_amounts import (
     BORN_IN_1960_OR_EARLIER,
     BORN_IN_1960_OR_EARLIER_CHECKED,
 )
+from tests.federal_forms import form_part_names, form_parts
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_capabilities,
     newfoundland_kinds,
@@ -60,22 +61,7 @@ LINE_PART = NL_PARTS / "nl428_credits_line_17.yaml"
 IDENTIFIER = "ca-nl/nl428_age_amount_line_17"
 WORKSHEET_AMOUNT = "ca-nl/nl428_age_amount_worksheet_line_17"
 FORM_NAME = "ca-nl/nl428_credits"
-FEDERAL_PARTS = (
-    "t1_taxable_income_inputs.yaml",
-    "t1_employment_income.yaml",
-    "t1_employment_income_line_10100.yaml",
-    "t1_employment_income_line_10400.yaml",
-    "t1_taxable_income_line_15000.yaml",
-    "t1_taxable_income_line_23300.yaml",
-    "t1_taxable_income_line_23400.yaml",
-    "t1_taxable_income_line_23600.yaml",
-    "t1_taxable_income_line_23600_signed.yaml",
-    "t1_taxable_income_line_25700_inputs.yaml",
-    "t1_taxable_income_line_25700.yaml",
-    "t1_taxable_income_line_26000.yaml",
-    "t1_taxable_income.yaml",
-    "t1_employment_income_line_10400_inputs.yaml",
-)
+FEDERAL_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 NL_PART_NAMES = (
     "worksheet_nl428_line_4.yaml",
     "worksheet_nl428_line_6.yaml",
@@ -120,7 +106,7 @@ WORKSHEET_LINE_7 = [("20000", "7064.00"), ("200000", "0.00")]
 
 
 def _part_files() -> Iterator[Path]:
-    yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
+    yield from form_parts("schedule_8")
     for name in FEDERAL_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
     for name in NL_PART_NAMES:

@@ -34,6 +34,7 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_mb.catalog import MB428_CPP_CONTRIBUTIONS_LINE_19
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_mb.support import (
     manitoba_capabilities,
     manitoba_kinds,
@@ -75,8 +76,8 @@ CASES = [
 
 def _part_files() -> Iterator[Path]:
     yield MB_PARTS / "salary.yaml"
-    yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
-    yield from sorted(FEDERAL_FORMS.rglob("t1_employment_income*.yaml"))
+    yield from form_parts("schedule_8")
+    yield from form_parts("t1_employment_income")
     yield LINE_PART
 
 

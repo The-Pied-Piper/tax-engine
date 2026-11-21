@@ -31,6 +31,7 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tests.federal_forms import form_part_names, form_parts
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_capabilities,
     newfoundland_kinds,
@@ -49,22 +50,7 @@ LINE_61 = "ca-nl/nl428_donations_and_gifts_credit_line_61"
 LINE_62 = "ca-nl/nl428_non_refundable_credits_line_62"
 IDENTIFIER = "ca-nl/nl428_non_refundable_credits_line_66"
 FORM_NAME = "ca-nl/nl428"
-FEDERAL_PARTS = (
-    "t1_taxable_income_inputs.yaml",
-    "t1_employment_income.yaml",
-    "t1_employment_income_line_10100.yaml",
-    "t1_employment_income_line_10400.yaml",
-    "t1_taxable_income_line_15000.yaml",
-    "t1_taxable_income_line_23300.yaml",
-    "t1_taxable_income_line_23400.yaml",
-    "t1_taxable_income_line_23600.yaml",
-    "t1_taxable_income_line_23600_signed.yaml",
-    "t1_taxable_income_line_25700_inputs.yaml",
-    "t1_taxable_income_line_25700.yaml",
-    "t1_taxable_income_line_26000.yaml",
-    "t1_taxable_income.yaml",
-    "t1_employment_income_line_10400_inputs.yaml",
-)
+FEDERAL_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 NL_PART_NAMES = (
     "worksheet_nl428_line_4.yaml",
     "worksheet_nl428_line_6.yaml",
@@ -165,8 +151,8 @@ CASES = [
 
 
 def _part_files() -> Iterator[Path]:
-    yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
-    yield from sorted(FEDERAL_FORMS.rglob("t2204*.yaml"))
+    yield from form_parts("schedule_8")
+    yield from form_parts("t2204")
     for name in FEDERAL_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
     for name in NL_PART_NAMES:

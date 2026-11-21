@@ -86,6 +86,7 @@ from tax_engine.jurisdictions.ca_on.catalog import (
     ON428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_4,
     ON428_TOTAL_CREDIT_AMOUNTS_LINE_44,
 )
+from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService
 
 D = Decimal
@@ -106,10 +107,10 @@ ON428_A = sorted(TAKE_HOME.glob("on428_a*.yaml"))
 ON428 = [part for part in sorted(TAKE_HOME.glob("on428*.yaml")) if part not in ON428_A]
 PARTS = (
     "salary.yaml",
-    *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
-    *(part.name for part in sorted(TAKE_HOME.rglob("t2204*.yaml"))),
-    *(part.name for part in sorted(TAKE_HOME.rglob("t1_employment_income*.yaml"))),
-    *(part.name for part in sorted(TAKE_HOME.rglob("t1_taxable_income*.yaml"))),
+    *form_part_names("schedule_8"),
+    *form_part_names("t2204"),
+    *form_part_names("t1_employment_income"),
+    *form_part_names("t1_taxable_income"),
     *(part.name for part in ON428_A),
     *(part.name for part in ON428),
 )

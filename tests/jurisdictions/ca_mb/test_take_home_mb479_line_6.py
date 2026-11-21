@@ -51,6 +51,7 @@ from tax_engine.jurisdictions.ca_mb.catalog import (
     MB479_FAMILY_INCOME_COLUMN_2_LINE_5,
     MB479_UCCB_RDSP_INCOME_LINE_4,
 )
+from tests.federal_forms import form_part_names, form_parts
 from tests.jurisdictions.ca_mb.support import (
     manitoba_capabilities,
     manitoba_kinds,
@@ -70,22 +71,7 @@ FORM_NAME = "ca-mb/mb479"
 COLUMN_1_LINE_5 = "ca-mb/mb479_family_income_column_1_line_5"
 COLUMN_2_LINE_5 = "ca-mb/mb479_family_income_column_2_line_5"
 KIND = "ca-mb/mb479_family_income_line_6"
-T1_PARTS = (
-    "t1_taxable_income_inputs.yaml",
-    "t1_employment_income.yaml",
-    "t1_employment_income_line_10100.yaml",
-    "t1_employment_income_line_10400.yaml",
-    "t1_taxable_income_line_15000.yaml",
-    "t1_taxable_income_line_23300.yaml",
-    "t1_taxable_income_line_23400.yaml",
-    "t1_taxable_income_line_23600.yaml",
-    "t1_taxable_income_line_23600_signed.yaml",
-    "t1_taxable_income_line_25700_inputs.yaml",
-    "t1_taxable_income_line_25700.yaml",
-    "t1_taxable_income_line_26000.yaml",
-    "t1_taxable_income.yaml",
-    "t1_employment_income_line_10400_inputs.yaml",
-)
+T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 
 HEADER = dedent("""\
     jurisdiction: CA-MB
@@ -133,7 +119,7 @@ def docstring_of(identifier: str) -> str:
 
 def _part_files() -> Iterator[Path]:
     yield MB_PARTS / "salary.yaml"
-    yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
+    yield from form_parts("schedule_8")
     for name in T1_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
     yield MB_PARTS / "mb479_line_1.yaml"

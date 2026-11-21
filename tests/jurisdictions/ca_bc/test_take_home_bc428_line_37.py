@@ -39,6 +39,7 @@ from tax_engine.jurisdictions.ca_bc.catalog import (
     BC428_PENSION_INCOME_AMOUNT,
     BC428_SUBTOTAL_LINE_37,
 )
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -81,8 +82,8 @@ CASES = [
 
 def _part_files() -> Iterator[Path]:
     yield BC_PARTS / "salary.yaml"
-    yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
-    yield from sorted(FEDERAL_FORMS.rglob("t2204*.yaml"))
+    yield from form_parts("schedule_8")
+    yield from form_parts("t2204")
     yield T1_LINE_10100_FORM
     yield FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml"
     yield BC_PARTS / "bc428_line_16.yaml"

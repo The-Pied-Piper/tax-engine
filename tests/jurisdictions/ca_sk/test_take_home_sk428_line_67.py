@@ -45,6 +45,7 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.domain.trace import SubtractedLine, SubtractedNotBelowZeroLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tests.federal_forms import form_part_names, form_parts
 from tests.jurisdictions.ca_sk.support import (
     saskatchewan_capabilities,
     saskatchewan_kinds,
@@ -92,22 +93,7 @@ SK_LINE_PARTS = (
     "sk428_line_65.yaml",
     "sk428_line_66.yaml",
 )
-T1_PARTS = (
-    "t1_taxable_income_inputs.yaml",
-    "t1_employment_income.yaml",
-    "t1_employment_income_line_10100.yaml",
-    "t1_employment_income_line_10400.yaml",
-    "t1_taxable_income_line_15000.yaml",
-    "t1_taxable_income_line_23300.yaml",
-    "t1_taxable_income_line_23400.yaml",
-    "t1_taxable_income_line_23600.yaml",
-    "t1_taxable_income_line_23600_signed.yaml",
-    "t1_taxable_income_line_25700_inputs.yaml",
-    "t1_taxable_income_line_25700.yaml",
-    "t1_taxable_income_line_26000.yaml",
-    "t1_taxable_income.yaml",
-    "t1_employment_income_line_10400_inputs.yaml",
-)
+T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
 FORM_NAME = "ca-sk/sk428"
 CREDITS_FORM_NAME = "ca-sk/sk428_credits"
 LINE_62 = "ca-sk/sk428_tax_line_62"
@@ -198,8 +184,8 @@ def _derived(salary: Decimal, line_61: Decimal = ZERO, line_64: Decimal = ZERO) 
 
 def _part_files() -> Iterator[Path]:
     yield SK_PARTS / "salary.yaml"
-    yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
-    yield from sorted(FEDERAL_FORMS.rglob("t2204*.yaml"))
+    yield from form_parts("schedule_8")
+    yield from form_parts("t2204")
     for name in T1_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
     for name in (*TOP_CREDITS_PARTS, *CREDITS_PARTS):
