@@ -1,8 +1,9 @@
 # British Columbia 2025 take-home manifest: the return's identity and its exports (the refund or balance
 # owing, the average income tax rate and the marginal tax rate). The caller gives
-# the gross salary and nothing else (the T1 employment income form's line 10100 input). British Columbia's own forms are in parts
-# beside this one, so a line ticket adds only its own part file; the federal forms are imported by
-# name below, their parts in the `ca` package (`ca/forms/<name>/`).
+# the gross salary and nothing else (the T1 employment income form's line 10100 input). British
+# Columbia's own forms are in parts beside this one, so a line ticket adds only its own part file;
+# the federal forms are imported by name below, their parts in the `ca` package
+# (`ca/forms/<name>/`).
 #
 # British Columbia builds two forms: `ca-bc/bc428` (all of BC428, lines 1 to 91, one form), which
 # supplies `ca/provincial_tax.amount` for T1 line 42800, and `ca-bc/bc479` (BC479), which supplies

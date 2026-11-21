@@ -1,7 +1,7 @@
 # Ontario 2025 take-home manifest: the return's identity and its exports. The caller gives the
-# gross salary and nothing else (the T1 employment income form's line 10100 input). Ontario's own forms are in parts beside this one, so a
-# line ticket adds only its own part file; the federal forms are imported by name below, their parts
-# in the `ca` package (`ca/forms/<name>/`).
+# gross salary and nothing else (the T1 employment income form's line 10100 input). Ontario's own
+# forms are in parts beside this one, so a line ticket adds only its own part file; the federal
+# forms are imported by name below, their parts in the `ca` package (`ca/forms/<name>/`).
 #
 # The default form's exports are T1 line 167, refund or balance owing (positive is owing, negative
 # is a refund), the average income tax rate (`ca-on/average_income_tax_rate`, total payable over
