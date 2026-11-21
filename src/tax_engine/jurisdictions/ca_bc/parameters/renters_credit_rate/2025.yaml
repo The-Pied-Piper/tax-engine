@@ -1,6 +1,6 @@
 # BC479 line 42: renter's tax credit applicable rate, 2025
 # Line 42: "Applicable rate 2%"; line 43 applies it to line 41.
-# A dollars-and-cents figure, so it rounds half-up to the cent, the project's choice, as the form states no rounding rule.
+# Line 43 applies it to line 41. The product is a dollars-and-cents box, so it rounds half-up to the cent, the project's choice, as the form states no rounding rule.
 family: ca-bc/renters_credit_rate
 tax_year: 2025
 kind: rate

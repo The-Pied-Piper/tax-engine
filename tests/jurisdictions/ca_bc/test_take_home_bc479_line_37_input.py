@@ -163,6 +163,8 @@ def _step(part_name: str, index: int = 0) -> dict[str, Any]:
 def test_line_37_part_declares_one_optional_count_input() -> None:
     part = yaml.safe_load((BC_PARTS / "bc479_line_37_input.yaml").read_text(encoding="utf-8"))
 
+    assert list(part) == ["form", "inputs"]
+    assert part["form"] == {"name": FORM}
     (declaration,) = part["inputs"]
     assert declaration["name"] == MONTHS.identifier
     assert declaration["reference"] == "37"
