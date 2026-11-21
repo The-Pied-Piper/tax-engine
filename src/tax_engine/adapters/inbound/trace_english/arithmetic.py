@@ -61,20 +61,20 @@ class RoundedTotalRenderer:
         )
 
 
-MOST_TERMS_WRITTEN_OUT = 8
+_MOST_TERMS_WRITTEN_OUT = 8
 """A sum of more terms than this is worded as its first term plus the rest together."""
 
 
-def sum_terms(line: SumLine | SumNotBelowZeroLine, names: EnglishNames) -> str:
+def _sum_terms(line: SumLine | SumNotBelowZeroLine, names: EnglishNames) -> str:
     """The terms of a sum in English, joined by "plus".
 
-    Up to `MOST_TERMS_WRITTEN_OUT` terms are each written out. A longer sum is too long to read as
+    Up to `_MOST_TERMS_WRITTEN_OUT` terms are each written out. A longer sum is too long to read as
     one sentence, so it is worded as its first term plus the others together: the line's own
     total of those others and the first and last of them, e.g. "line 1 (EX$70,000.00) plus lines 5
     to 64 (EX$1,234.56 in total)". Only the wording is shortened: the figures are the sum's own.
     """
     parts = line.parts
-    if len(parts) <= MOST_TERMS_WRITTEN_OUT:
+    if len(parts) <= _MOST_TERMS_WRITTEN_OUT:
         return " plus ".join(names.figure(kind, amount) for kind, amount in parts)
     first_kind, first_amount = parts[0]
     others = parts[1:]
@@ -97,7 +97,7 @@ class SumRenderer:
 
     def render(self, line: SumLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        terms = sum_terms(line, names)
+        terms = _sum_terms(line, names)
         if not line.parts:
             return f"Nothing to add, so {names.shown(line.label, line.total)}"
         return (
@@ -114,7 +114,7 @@ class SumNotBelowZeroRenderer:
 
     def render(self, line: SumNotBelowZeroLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        terms = sum_terms(line, names)
+        terms = _sum_terms(line, names)
         if not line.parts:
             return f"Nothing to add, not below 0, so {names.shown(line.label, line.total)}"
         return (

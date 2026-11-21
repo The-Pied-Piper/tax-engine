@@ -574,13 +574,11 @@ TP1_FOREST_PRODUCER_AVERAGING_LINE_276 = AmountKind.declare(
 line 10 adds to total income; blank when the caller has none, and line 10 reads it as 0."""
 
 TP1_SCHEDULE_F_TOTAL_INCOME_LINE_199 = AmountKind.declare(
-    CATALOG, "tp1_schedule_f_total_income_line_199", non_negative=True
+    CATALOG, "tp1_schedule_f_total_income_line_199"
 )
 """Total income of TP-1 line 199, as Schedule F line 10 reads it from the TP-1 income form."""
 
-TP1_SCHEDULE_F_INCOME_LINE_10 = AmountKind.declare(
-    CATALOG, "tp1_schedule_f_income_line_10", non_negative=True
-)
+TP1_SCHEDULE_F_INCOME_LINE_10 = AmountKind.declare(CATALOG, "tp1_schedule_f_income_line_10")
 """Schedule F line 10, "Total income (line 199 of your return) plus the amount for income averaging
 for forest producers (included on line 276 of your return)": line 199 plus line 276, rounded
 half-up to the cent."""
@@ -864,7 +862,7 @@ TP1_TOTAL_DEDUCTIONS_LINE_254 = AmountKind.declare(CATALOG, "tp1_total_deduction
 and 248 are."""
 
 TP1_NET_INCOME_TOTAL_INCOME_LINE_199 = AmountKind.declare(
-    CATALOG, "tp1_net_income_total_income_line_199", non_negative=True
+    CATALOG, "tp1_net_income_total_income_line_199"
 )
 """Total income of TP-1 line 199, as the net income lines read it ("Amount from line 199") from the
 TP-1 income form."""
