@@ -1,0 +1,19 @@
+# Worksheet MB428 (CRA 5007-D) 2025, section "Line 58729", line 3: "Line 3: Line 1 minus line 2 (if
+# negative, enter "0")", for one dependant's column. One calculation: line 1 minus line 2, not below
+# zero, rounded half-up to the cent. A dependant whose line 2 is left blank has it read as 0. The form
+# prints no title for the line, so the step is untitled.
+form:
+  name: ca-mb/worksheet_mb428_other_dependants
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "3"
+    unit: ca/cad
+    params:
+      rounding: ca-mb/cent_rounding
+    consumes:
+      amount: ca-mb/worksheet_mb428_other_dependants_medical_expenses_line_1
+      less: ca-mb/worksheet_mb428_other_dependants_medical_expenses_line_2
+    blank:
+      less: "0"
+    produces:
+      output: ca-mb/worksheet_mb428_other_dependants_medical_expenses_line_3
