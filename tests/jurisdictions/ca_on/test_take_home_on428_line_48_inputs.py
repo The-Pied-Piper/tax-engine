@@ -1,8 +1,8 @@
-"""ON428 (2025) line 49's input, as the Ontario take-home manifest part declares it.
+"""ON428 (2025) line 48's input, as the Ontario take-home manifest part declares it.
 
-Form text (ON428, CRA 5006-c-25e.txt): "Line 49 and line 58969: Line 47
-plus line 48". A salary-only caller has no donations credit, so a request
-that leaves the line out is read as 0, not blank.
+Form text (ON428, CRA 5006-c-25e.txt): "Line 48: Amount from line 14 of your federal Schedule 9".
+A request that leaves the line out is read as blank, and the step that reads it reads that blank
+as 0.
 
 The real part is loaded under a test-local header, as the take-home header is another part's.
 """
@@ -10,19 +10,17 @@ The real part is loaded under a test-local header, as the take-home header is an
 from __future__ import annotations
 
 import shutil
-from decimal import Decimal
 from pathlib import Path
 
 import tax_engine.jurisdictions.ca_on
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.manifest import Manifest
-from tax_engine.jurisdictions.ca_on.catalog import ON428_DONATIONS_CREDIT_LINE_49
+from tax_engine.jurisdictions.ca_on.catalog import ON428_DONATIONS_AMOUNT_LINE_48
 from tax_engine.registrations import JURISDICTIONS, artifact_kinds, units
 
-D = Decimal
-PRINTED_BASIS = "Line 49 and line 58969: Line 47 plus line 48"
+PRINTED_BASIS = "Line 48: Amount from line 14 of your federal Schedule 9"
 PART = Path(tax_engine.jurisdictions.ca_on.__file__).parent / (
-    "manifests/2025/on428_line_49_inputs.yaml"
+    "manifests/2025/on428_line_48_inputs.yaml"
 )
 HEADER = """\
 jurisdiction: CA-ON
@@ -41,13 +39,11 @@ def _manifest(tmp_path: Path) -> Manifest:
     return YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds(), units()).load(folder)
 
 
-def test_a_request_that_leaves_out_the_donations_credit_is_read_as_zero(
-    tmp_path: Path,
-) -> None:
+def test_a_request_that_leaves_out_line_48_is_read_as_blank(tmp_path: Path) -> None:
     kinds = artifact_kinds()
-    declaration = _manifest(tmp_path).inputs[ON428_DONATIONS_CREDIT_LINE_49.identifier]
-    default = declaration.default_artifact(kinds.kind(ON428_DONATIONS_CREDIT_LINE_49.identifier))
+    identifier = ON428_DONATIONS_AMOUNT_LINE_48.identifier
+    declaration = _manifest(tmp_path).inputs[identifier]
+    default = declaration.default_artifact(kinds.kind(identifier))
     assert not declaration.required
     assert declaration.basis == PRINTED_BASIS
-    assert default is not None and not default.is_blank
-    assert default.value == D("0")
+    assert default is not None and default.is_blank

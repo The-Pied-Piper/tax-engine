@@ -18,10 +18,63 @@ NET_CAPITAL_LOSS_NUMERATOR_ONE_2000 = AmountKind.declare(
 DEDUCTIONS_FROM_NET_INCOME = AmountKind.declare(
     CATALOG, "deductions_from_net_income", non_negative=True
 )
-"""Deductions from net income, T1 line 68 and line 25700 "Add lines 58 to 67.": in the take-home, an
-optional input (`t1_taxable_income_line_25700_inputs.yaml`, default "0"). None of lines 24400 to
-25600 applies to a salary-only filer, and line 26000 takes it off net income.
+"""Deductions from net income, T1 line 68 and line 25700 "Add lines 58 to 67.": the sum of the ten
+printed lines 24400 to 25600 (`t1_taxable_income_line_25700.yaml`), each an optional input of
+`t1_taxable_income_line_25700_inputs.yaml` read as 0 when blank. Line 26000 takes it off net income.
 """
+
+T1_LINES_24400_TO_25200_SUBTOTAL = AmountKind.declare(
+    CATALOG, "t1_lines_24400_to_25200_subtotal", non_negative=True
+)
+"""Unprinted subtotal of the first parts of T1 line 68 and line 25700, so that the sentence of the
+line stays short: lines 58 to 62 (24400 to 25200) added up."""
+
+T1_LINES_25300_TO_25600_SUBTOTAL = AmountKind.declare(
+    CATALOG, "t1_lines_25300_to_25600_subtotal", non_negative=True
+)
+"""Unprinted subtotal of the last parts of T1 line 68 and line 25700, so that the sentence of the
+line stays short: lines 63 to 67 (25300 to 25600) added up."""
+
+T1_LINE_24400 = AmountKind.declare(CATALOG, "t1_line_24400", non_negative=True)
+"""Canadian Armed Forces personnel and police deduction, T1 line 58 and line 24400: an optional
+input, taken as the form takes it; a blank is read as 0 by the line 25700 step."""
+
+T1_LINE_24900 = AmountKind.declare(CATALOG, "t1_line_24900", non_negative=True)
+"""Security options deductions, T1 line 59 and line 24900: an optional input, taken as the
+form takes it; a blank is read as 0 by the line 25700 step."""
+
+T1_LINE_25000 = AmountKind.declare(CATALOG, "t1_line_25000", non_negative=True)
+"""Other payments deduction, T1 line 60 and line 25000: an optional input, taken as the
+form takes it; a blank is read as 0 by the line 25700 step."""
+
+T1_LINE_25100 = AmountKind.declare(CATALOG, "t1_line_25100", non_negative=True)
+"""Limited partnership losses of other years, T1 line 61 and line 25100: an optional input, taken as
+the form takes it; a blank is read as 0 by the line 25700 step."""
+
+T1_LINE_25200 = AmountKind.declare(CATALOG, "t1_line_25200", non_negative=True)
+"""Non-capital losses of other years, T1 line 62 and line 25200: an optional input, taken as the
+form takes it; a blank is read as 0 by the line 25700 step."""
+
+T1_LINE_25300 = AmountKind.declare(CATALOG, "t1_line_25300", non_negative=True)
+"""Net capital losses of other years, T1 line 63 and line 25300: an optional input, taken as the
+form takes it; a blank is read as 0 by the line 25700 step."""
+
+T1_LINE_25395 = AmountKind.declare(CATALOG, "t1_line_25395", non_negative=True)
+"""Capital gains deduction for qualifying business transfers or qualifying cooperative conversions,
+T1 line 64 and line 25395: an optional input, taken as the form takes it; a blank is read as 0 by
+the line 25700 step."""
+
+T1_LINE_25400 = AmountKind.declare(CATALOG, "t1_line_25400", non_negative=True)
+"""Capital gains deduction, T1 line 65 and line 25400: an optional input, taken as the form takes
+it; a blank is read as 0 by the line 25700 step."""
+
+T1_LINE_25500 = AmountKind.declare(CATALOG, "t1_line_25500", non_negative=True)
+"""Northern residents deductions, T1 line 66 and line 25500: an optional input, taken as the
+form takes it; a blank is read as 0 by the line 25700 step."""
+
+T1_LINE_25600 = AmountKind.declare(CATALOG, "t1_line_25600", non_negative=True)
+"""Additional deductions, T1 line 67 and line 25600: an optional input, taken as the form takes
+it; a blank is read as 0 by the line 25700 step."""
 
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, T1 line 69 "Line 57 minus line 68 (if negative, enter "0") Taxable income"

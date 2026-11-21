@@ -1,0 +1,14 @@
+# Form ON428 (Ontario Tax, 2025, 5006-c-25e) line 37 (ca-on/on428): "Line 37: Amount from line 23600
+# of your return". It is the T1 net income (line 23600, floored), which reaches this form only as a
+# record list (`ca/t1_taxable_income.net_income`), so its step is a core/record_total over it, as
+# line 1 is. The form prints no label for the line, so the step has no title.
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/record_total
+    reference: "37"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_taxable_income.net_income
+    produces:
+      output: ca-on/on428_net_income_line_37

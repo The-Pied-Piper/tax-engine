@@ -1,0 +1,18 @@
+# Form ON428 (Ontario Tax, 2025, 5006-c-25e) line 40 (ca-on/on428): "Line 40: Enter whichever is
+# less: $2,885 or the amount on line 39." The $2,885 is the printed ceiling, the
+# `ca-on/medical_expense_dollar_limit` dataset, and has no step of its own. Line 40 is the lesser of
+# that ceiling and line 39 (`ca-on/on428_medical_expenses_rate_amount_line_39`), one
+# core/capped_amount step, rounded half-up to the cent by the dataset's rule. The form prints no
+# label for the line, so the step has no title. Line 39 is always a figure, so nothing is blank.
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/capped_amount
+    reference: "40"
+    unit: ca/cad
+    params:
+      cap: ca-on/medical_expense_dollar_limit
+    consumes:
+      base: ca-on/on428_medical_expenses_rate_amount_line_39
+    produces:
+      output: ca-on/on428_medical_expenses_limited_amount_line_40
