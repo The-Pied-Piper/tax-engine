@@ -1,0 +1,15 @@
+# Form MB479 (2025, CRA 5007-TC) line 14, the printed $113: "Number of disability claims
+# multiplied by $113 =". One core/credit_amount: the amount for each unit, from `ca-
+# mb/disability_credit_amount_line_14` (a printed figure is a dataset figure, taken as printed).
+# It is not a line of the form, so it has no reference. Its title is plain words, not printed
+# wording, because the sentence of the line 14 product names it.
+form:
+  name: ca-mb/mb479
+capabilities:
+  - name: core/credit_amount
+    title: "Amount for each disability claim"
+    unit: ca/cad
+    params:
+      amount: ca-mb/disability_credit_amount_line_14
+    produces:
+      output: ca-mb/disability_credit_amount_line_14
