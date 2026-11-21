@@ -601,13 +601,9 @@ class Manifest:
         """Refuse a step reading the default form's carry of another form's input: the carry is
         the return's output, not the owner's export."""
         default = self.forms[0]
-        namespace, _, form_id = default.name.partition("/")
         for export in default.exports:
             field = self.artifacts.kind(export)
-            if (
-                isinstance(field, RecordField)
-                and identifier == f"{namespace}/{form_id}.{field.label}"
-            ):
+            if isinstance(field, RecordField) and identifier == default.export_kind_name(field):
                 self._check_owned_by(
                     form, export, f"step {step!r} reads, through the carry of {default.name!r},"
                 )
