@@ -393,8 +393,8 @@ BC479_UCCB_RDSP_REPAYMENTS_LINE_2 = AmountKind.declare(
 )
 """UCCB and RDSP repayments, BC479 line 2 "Total of the universal child care benefit (UCCB)
 repayment (line 21300 of the return) and the registered disability savings plan (RDSP) income
-repayment (included on line 23200 of the return)": the total of the two repayments, a caller input
-that is read as blank when left out, column 1 (you) only."""
+repayment (included on line 23200 of the return)": the total of the two repayments, the sum of
+the two T1 lines (read from the T1 form's exports), column 1 (you) only."""
 
 BC479_INCOME_WITH_REPAYMENTS_LINE_3 = AmountKind.declare(
     CATALOG, "bc479_income_with_repayments_line_3", non_negative=False
@@ -659,3 +659,27 @@ MARGINAL_TAX_RATE = AmountKind.declare(CATALOG, "marginal_tax_rate", non_negativ
 """Marginal tax rate: the income tax rate on a further dollar of salary, the sum of the federal
 marginal rate and the British Columbia marginal rate (British Columbia has no surtax or health
 premium), on the return summary. Not printed on the form."""
+
+BC479_UCCB_REPAYMENT_LINE_21300 = AmountKind.declare(
+    CATALOG, "bc479_uccb_repayment_line_21300", non_negative=True
+)
+"""BC479 line 2, the part from T1 line 21300 (UCCB repayment): the T1's line, read as the form's
+export."""
+
+BC479_RDSP_INCOME_REPAYMENT_LINE_23200 = AmountKind.declare(
+    CATALOG, "bc479_rdsp_income_repayment_line_23200", non_negative=True
+)
+"""BC479 line 2, the RDSP income repayment included on T1 line 23200: the T1's line, read as the
+form's export."""
+
+BC479_UCCB_INCOME_LINE_11700 = AmountKind.declare(
+    CATALOG, "bc479_uccb_income_line_11700", non_negative=True
+)
+"""BC479 line 4, the part from T1 line 11700 (UCCB income): the T1's line, read as the form's
+export."""
+
+BC479_RDSP_INCOME_LINE_12500 = AmountKind.declare(
+    CATALOG, "bc479_rdsp_income_line_12500", non_negative=True
+)
+"""BC479 line 4, the part from T1 line 12500 (RDSP income): the T1's line, read as the form's
+export."""

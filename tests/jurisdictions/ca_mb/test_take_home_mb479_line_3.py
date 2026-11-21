@@ -40,8 +40,7 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
-from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tax_engine.jurisdictions.ca_mb.catalog import MB479_UCCB_RDSP_REPAYMENTS_LINE_2
+from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME, UCCB_REPAYMENT
 from tests.jurisdictions.ca_mb.support import (
     manitoba_capabilities,
     manitoba_kinds,
@@ -73,6 +72,15 @@ T1_PARTS = (
     "t1_taxable_income_line_26000.yaml",
     "t1_taxable_income.yaml",
     "t1_employment_income_line_10400_inputs.yaml",
+    "t1_uccb_rdsp.yaml",
+    "t1_uccb_rdsp_line_11700_inputs.yaml",
+    "t1_uccb_rdsp_line_12500_inputs.yaml",
+    "t1_uccb_rdsp_line_21300_inputs.yaml",
+    "t1_uccb_rdsp_line_23200_inputs.yaml",
+    "t1_uccb_rdsp_line_11700.yaml",
+    "t1_uccb_rdsp_line_12500.yaml",
+    "t1_uccb_rdsp_line_21300.yaml",
+    "t1_uccb_rdsp_line_23200.yaml",
 )
 
 HEADER = dedent("""\
@@ -125,7 +133,7 @@ def _part_files() -> Iterator[Path]:
     for name in T1_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
     yield MB_PARTS / "mb479_line_1.yaml"
-    yield MB_PARTS / "mb479_line_2_input.yaml"
+    yield MB_PARTS / "mb479_line_2.yaml"
     yield LINE_PART
 
 
@@ -182,7 +190,7 @@ def test_line_3_adds_line_2_when_it_is_given(tmp_path: Path) -> None:
     sheet = _sheet(
         tmp_path,
         Artifact(EMPLOYMENT_INCOME, D("70000")),
-        Artifact(MB479_UCCB_RDSP_REPAYMENTS_LINE_2, D("500")),
+        Artifact(UCCB_REPAYMENT, D("500")),
     )
 
     assert sheet.get(manitoba_kinds().kind(KIND)).value == _net_income(D("70000")) + D("500")
@@ -196,9 +204,7 @@ def test_line_3_stays_negative_when_line_1_is_negative(tmp_path: Path) -> None:
     salary = Artifact(EMPLOYMENT_INCOME, D("70000"))
 
     blank = _sheet(tmp_path / "blank", salary, repayment)
-    given = _sheet(
-        tmp_path / "given", salary, repayment, Artifact(MB479_UCCB_RDSP_REPAYMENTS_LINE_2, D("500"))
-    )
+    given = _sheet(tmp_path / "given", salary, repayment, Artifact(UCCB_REPAYMENT, D("500")))
 
     assert blank.get(kinds.kind(KIND)).value == D("-5665.00")
     assert given.get(kinds.kind(KIND)).value == D("-5165.00")
@@ -216,7 +222,7 @@ def test_the_part_names_the_form_and_has_one_untitled_sum_step() -> None:
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": FORM_NAME}
     (step,) = part["capabilities"]
-    assert list(step) == ["name", "reference", "unit", "params", "consumes", "blank", "produces"]
+    assert list(step) == ["name", "reference", "unit", "params", "consumes", "produces"]
     assert "title" not in step
     assert step == {
         "name": "core/sum",
@@ -229,7 +235,6 @@ def test_the_part_names_the_form_and_has_one_untitled_sum_step() -> None:
                 "ca-mb/mb479_uccb_rdsp_repayments_line_2",
             ]
         },
-        "blank": {"ca-mb/mb479_uccb_rdsp_repayments_line_2": "0"},
         "produces": {"output": KIND},
     }
 

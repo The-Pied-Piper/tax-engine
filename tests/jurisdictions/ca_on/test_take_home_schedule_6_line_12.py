@@ -4,7 +4,7 @@ Form text (5000-S6-25E): line 11 is "Total of
 UCCB (line 11700 of the return) and RDSP income (line 12500 of the return)" and line 12 is "Line 10
 minus line 11 (if negative, enter "0")". Line 12 is a `core/subtract_not_below_zero` of line 10
 (`ca/cwb_net_income_total_line_10`) less line 11, with a blank line 11 read as 0. Line 11 is an
-optional input (`ca/uccb_and_rdsp_income`, part schedule_6_line_11_inputs.yaml) the take-home filer
+optional input (`ca/uccb_and_rdsp_income`, part schedule_6_line_11.yaml) the take-home filer
 usually does not have. The output is the registered, non-negative kind
 `ca/cwb_net_income_less_uccb_rdsp_line_12`.
 
@@ -52,9 +52,18 @@ PARTS = (
     "t1_taxable_income_line_26000.yaml",
     "t1_taxable_income.yaml",
     "t1_employment_income_line_10400_inputs.yaml",
+    "t1_uccb_rdsp.yaml",
+    "t1_uccb_rdsp_line_11700_inputs.yaml",
+    "t1_uccb_rdsp_line_12500_inputs.yaml",
+    "t1_uccb_rdsp_line_21300_inputs.yaml",
+    "t1_uccb_rdsp_line_23200_inputs.yaml",
+    "t1_uccb_rdsp_line_11700.yaml",
+    "t1_uccb_rdsp_line_12500.yaml",
+    "t1_uccb_rdsp_line_21300.yaml",
+    "t1_uccb_rdsp_line_23200.yaml",
     "schedule_6_line_7.yaml",
     "schedule_6_line_10.yaml",
-    "schedule_6_line_11_inputs.yaml",
+    "schedule_6_line_11.yaml",
     "schedule_6_line_12.yaml",
 )
 HEADER = dedent("""\
@@ -81,7 +90,7 @@ def _schedule_6(
     kinds = bundled_kinds()
     starting = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if uccb is not None:
-        starting.append(Artifact(kinds.kind(LINE_11), D(uccb)))
+        starting.append(Artifact(kinds.kind("ca/uccb_income"), D(uccb)))
     worksheets = take_home_service(HEADER, SCHEDULE_6, *PARTS).compute(ONTARIO, 2025, *starting)
     (sheet,) = worksheets[FORM]
     return sheet

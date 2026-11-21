@@ -99,6 +99,7 @@ def _part_files() -> Iterator[Path]:
         yield _federal(name)
     yield from sorted(FEDERAL_FORMS.rglob("t2204*.yaml"))
     yield from sorted(FEDERAL_FORMS.rglob("schedule_6*.yaml"))
+    yield from sorted(FEDERAL_FORMS.rglob("t1_uccb_rdsp*.yaml"))
     yield from sorted(BC_PARTS.glob("bc479*.yaml"))
     yield _federal("t1_tax_and_credits_line_47900.yaml")
     yield _federal("t1_tax_and_credits_line_48200.yaml")

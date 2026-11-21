@@ -70,6 +70,7 @@ HEADER = (
     """)
     + real_import("ca/schedule_8")
     + "  - ca/schedule_6\n"
+    + "  - ca/t1_uccb_rdsp\n"
 )
 # The real form declaration: its exports and its `supplies`.
 FORM = (QUEBEC_PARTS / "t1_taxable_income.yaml").read_text(encoding="utf-8")

@@ -65,6 +65,7 @@ PARTS = (
     "t1_employment_income_line_10400_inputs.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("t2204*.yaml"))),
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_6*.yaml"))),
+    *(part.name for part in sorted(TAKE_HOME.rglob("t1_uccb_rdsp*.yaml"))),
     "t1_tax_and_credits_line_47900.yaml",
     "t1_tax_and_credits_line_48200.yaml",
 )

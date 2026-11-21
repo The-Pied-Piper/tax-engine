@@ -61,9 +61,9 @@ PART_93 = NL_PARTS / "nl428_line_93.yaml"
 # The real parts, in composition order: lines 88 to 92 of column 1, then of column 2, then line 93.
 NL_LINE_PARTS = (
     NL_PARTS / "nl428_line_88.yaml",
-    NL_PARTS / "nl428_line_89_input.yaml",
+    NL_PARTS / "nl428_line_89.yaml",
     NL_PARTS / "nl428_line_90.yaml",
-    NL_PARTS / "nl428_line_91_input.yaml",
+    NL_PARTS / "nl428_line_91.yaml",
     NL_PARTS / "nl428_line_92.yaml",
     NL_PARTS / "nl428_line_88_column_2_input.yaml",
     NL_PARTS / "nl428_line_89_column_2_input.yaml",
@@ -86,6 +86,15 @@ T1_PARTS = (
     "t1_taxable_income_line_26000.yaml",
     "t1_taxable_income.yaml",
     "t1_employment_income_line_10400_inputs.yaml",
+    "t1_uccb_rdsp.yaml",
+    "t1_uccb_rdsp_line_11700_inputs.yaml",
+    "t1_uccb_rdsp_line_12500_inputs.yaml",
+    "t1_uccb_rdsp_line_21300_inputs.yaml",
+    "t1_uccb_rdsp_line_23200_inputs.yaml",
+    "t1_uccb_rdsp_line_11700.yaml",
+    "t1_uccb_rdsp_line_12500.yaml",
+    "t1_uccb_rdsp_line_21300.yaml",
+    "t1_uccb_rdsp_line_23200.yaml",
 )
 
 HEADER = dedent("""\

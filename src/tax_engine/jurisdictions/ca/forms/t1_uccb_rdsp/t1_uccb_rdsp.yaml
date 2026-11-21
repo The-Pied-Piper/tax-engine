@@ -1,0 +1,23 @@
+# T1 General 2025 (form 5006-R), the UCCB and RDSP lines 11700, 12500, 21300 and line 23200's RDSP
+# income repayment. Several forms print these lines again as a total (Schedule 6 line 11, BC479 lines
+# 2 and 4, MB479 lines 2 and 4, NL428 lines 89 and 91), so the four lines are a form of their own, which
+# every one of them imports: a line is an input only for the form it belongs to, and the T1 owns these
+# four. They are not added into line 15000 or line 23300 of the taxable income form: the take-home T1
+# builds employment income only.
+# This part names the form and its exports; each line's capability goes in a part of its own with the
+# same `form.name`.
+# Exports (each a record list of one amount, read by core/record_total):
+#   - `ca/uccb_income_line_11700`, `ca/rdsp_income_line_12500`: read by Schedule 6 line 11, BC479 line 4,
+#     MB479 line 4 and NL428 line 91 (column 1).
+#   - `ca/uccb_repayment_line_21300`, `ca/rdsp_income_repayment_line_23200`: read by BC479 line 2, MB479
+#     line 2 and NL428 line 89 (column 1).
+form:
+  name: ca/t1_uccb_rdsp
+  title: "T1 Income Tax and Benefit Return"
+  required: true
+  exports:
+    - ca/uccb_income_line_11700
+    - ca/rdsp_income_line_12500
+    - ca/uccb_repayment_line_21300
+    - ca/rdsp_income_repayment_line_23200
+capabilities: []

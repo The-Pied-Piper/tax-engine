@@ -469,15 +469,15 @@ NL428_UCCB_RDSP_REPAYMENTS_LINE_89 = AmountKind.declare(
 )
 """UCCB and RDSP repayments, NL428 line 89 "Line 89: Total of the universal child care benefit
 (UCCB) repayment (line 21300 of the return) and the registered disability savings plan (RDSP) income
-repayment (included on line 23200 of the return)": the total of the two repayments as the filer
-gives it, an optional input; a blank input is read as blank, column 1 (you) only."""
+repayment (included on line 23200 of the return)": the sum of the two T1 lines (read from the T1
+form's exports), column 1 (you) only."""
 
 NL428_UCCB_RDSP_INCOME_LINE_91 = AmountKind.declare(
     CATALOG, "nl428_uccb_rdsp_income_line_91", non_negative=True
 )
 """UCCB and RDSP income, NL428 line 91 "Line 91: Total of the UCCB income (line 11700 of the return)
-and the RDSP income (line 12500 of the return)": the total of the two incomes as the filer gives it,
-an optional input; a blank input is read as blank, column 1 (you) only."""
+and the RDSP income (line 12500 of the return)": the sum of the two T1 lines (read from the T1
+form's exports), column 1 (you) only."""
 
 LOW_INCOME_REDUCTION_BASIC = AmountKind.declare(
     CATALOG, "low_income_reduction_basic", non_negative=True
@@ -1003,3 +1003,27 @@ MARGINAL_TAX_RATE = AmountKind.declare(CATALOG, "marginal_tax_rate", non_negativ
 """Marginal tax rate: the income tax rate on a further dollar of salary, the sum of the federal
 marginal rate and the Newfoundland and Labrador marginal rate (Newfoundland and Labrador has no
 surtax or health premium), on the return summary. Not printed on the form."""
+
+NL428_UCCB_REPAYMENT_LINE_21300 = AmountKind.declare(
+    CATALOG, "nl428_uccb_repayment_line_21300", non_negative=True
+)
+"""NL428 line 89, the part from T1 line 21300 (UCCB repayment): the T1's line, read as the form's
+export."""
+
+NL428_RDSP_INCOME_REPAYMENT_LINE_23200 = AmountKind.declare(
+    CATALOG, "nl428_rdsp_income_repayment_line_23200", non_negative=True
+)
+"""NL428 line 89, the RDSP income repayment included on T1 line 23200: the T1's line, read as the
+form's export."""
+
+NL428_UCCB_INCOME_LINE_11700 = AmountKind.declare(
+    CATALOG, "nl428_uccb_income_line_11700", non_negative=True
+)
+"""NL428 line 91, the part from T1 line 11700 (UCCB income): the T1's line, read as the form's
+export."""
+
+NL428_RDSP_INCOME_LINE_12500 = AmountKind.declare(
+    CATALOG, "nl428_rdsp_income_line_12500", non_negative=True
+)
+"""NL428 line 91, the part from T1 line 12500 (RDSP income): the T1's line, read as the form's
+export."""

@@ -81,6 +81,15 @@ T1_PARTS = (
     "t1_taxable_income_line_26000.yaml",
     "t1_taxable_income.yaml",
     "t1_employment_income_line_10400_inputs.yaml",
+    "t1_uccb_rdsp.yaml",
+    "t1_uccb_rdsp_line_11700_inputs.yaml",
+    "t1_uccb_rdsp_line_12500_inputs.yaml",
+    "t1_uccb_rdsp_line_21300_inputs.yaml",
+    "t1_uccb_rdsp_line_23200_inputs.yaml",
+    "t1_uccb_rdsp_line_11700.yaml",
+    "t1_uccb_rdsp_line_12500.yaml",
+    "t1_uccb_rdsp_line_21300.yaml",
+    "t1_uccb_rdsp_line_23200.yaml",
 )
 
 HEADER = dedent("""\
@@ -111,9 +120,9 @@ def _part_files() -> Iterator[Path]:
     for name in T1_PARTS:
         yield _federal(name)
     yield BC_PARTS / "bc479_line_1.yaml"
-    yield BC_PARTS / "bc479_line_2_input.yaml"
+    yield BC_PARTS / "bc479_line_2.yaml"
     yield BC_PARTS / "bc479_line_3.yaml"
-    yield BC_PARTS / "bc479_line_4_input.yaml"
+    yield BC_PARTS / "bc479_line_4.yaml"
     yield BC_PARTS / "bc479_line_5.yaml"
     yield BC_PARTS / "bc479_line_6.yaml"
     yield BC_PARTS / "bc479_line_7.yaml"

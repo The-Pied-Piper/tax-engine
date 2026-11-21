@@ -95,3 +95,49 @@ list of capital cost allowance classes."""
 # Form T2121 (Statement of Fishing Activities), Parts 3 to 7 and Area A (T1 lines 14299 and 14300).
 # Each kind is one line of the form; the caller's amounts are starting amounts, the rest are
 # computed by the T2121 steps of the manifest part `03d_t2121.yaml`.
+
+UCCB_INCOME = AmountKind.declare(CATALOG, "uccb_income", non_negative=True)
+"""Universal child care benefit (UCCB), T1 line 7 and line 11700 "Universal child care benefit
+(UCCB)
+(see the RC62 slip)": the optional input (`t1_taxable_income_line_11700_inputs.yaml`), blank when
+the filer has none. The T1 owns it; every other form that prints it imports line 11700."""
+
+UCCB_INCOME_LINE_11700 = AmountKind.declare(CATALOG, "uccb_income_line_11700", non_negative=True)
+"""UCCB income as T1 line 11700 prints it (`t1_taxable_income_line_11700.yaml`): the optional input
+(`ca/uccb_income`), read as 0 when blank, exported by the T1 taxable income form."""
+
+RDSP_INCOME = AmountKind.declare(CATALOG, "rdsp_income", non_negative=True)
+"""Registered disability savings plan (RDSP) income, T1 line 12 and line 12500 "Registered
+disability
+savings plan (RDSP) income (box 131 of the T4A slip)": the optional input
+(`t1_taxable_income_line_12500_inputs.yaml`), blank when the filer has none. The T1 owns it; every
+other form that prints it imports line 12500."""
+
+RDSP_INCOME_LINE_12500 = AmountKind.declare(CATALOG, "rdsp_income_line_12500", non_negative=True)
+"""RDSP income as T1 line 12500 prints it (`t1_taxable_income_line_12500.yaml`): the optional input
+(`ca/rdsp_income`), read as 0 when blank, exported by the T1 taxable income form."""
+
+UCCB_REPAYMENT = AmountKind.declare(CATALOG, "uccb_repayment", non_negative=True)
+"""Universal child care benefit (UCCB) repayment, T1 line 40 and line 21300 "Universal child care
+benefit (UCCB) repayment (box 12 of all RC62 slips)": the optional input
+(`t1_taxable_income_line_21300_inputs.yaml`), blank when the filer has none. The T1 owns it; every
+other form that prints it imports line 21300."""
+
+UCCB_REPAYMENT_LINE_21300 = AmountKind.declare(
+    CATALOG, "uccb_repayment_line_21300", non_negative=True
+)
+"""UCCB repayment as T1 line 21300 prints it (`t1_taxable_income_line_21300.yaml`): the optional
+input (`ca/uccb_repayment`), read as 0 when blank, exported by the T1 taxable income form."""
+
+RDSP_INCOME_REPAYMENT = AmountKind.declare(CATALOG, "rdsp_income_repayment", non_negative=True)
+"""Registered disability savings plan (RDSP) income repayment, included on T1 line 52 and line 23200
+"Other deductions (specify)": the optional input (`t1_taxable_income_line_23200_inputs.yaml`), the
+part of line 23200 that is the RDSP income repayment, blank when the filer has none. The T1 owns
+it; every other form that prints it imports it from line 23200."""
+
+RDSP_INCOME_REPAYMENT_LINE_23200 = AmountKind.declare(
+    CATALOG, "rdsp_income_repayment_line_23200", non_negative=True
+)
+"""RDSP income repayment included on T1 line 23200 (`t1_taxable_income_line_23200.yaml`): the
+optional input (`ca/rdsp_income_repayment`), read as 0 when blank, exported by the T1 taxable
+income form."""

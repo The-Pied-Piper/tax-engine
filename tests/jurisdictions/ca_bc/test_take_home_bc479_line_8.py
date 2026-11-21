@@ -42,8 +42,7 @@ from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.trace import SubtractedNotBelowZeroLine
 from tax_engine.domain.worksheet import Worksheet
-from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tax_engine.jurisdictions.ca_bc.catalog import BC479_UCCB_RDSP_INCOME_LINE_4
+from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME, UCCB_INCOME
 from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import (
     SubtractNotBelowZero,
 )
@@ -81,6 +80,15 @@ T1_PARTS = (
     "t1_taxable_income_line_26000.yaml",
     "t1_taxable_income.yaml",
     "t1_employment_income_line_10400_inputs.yaml",
+    "t1_uccb_rdsp.yaml",
+    "t1_uccb_rdsp_line_11700_inputs.yaml",
+    "t1_uccb_rdsp_line_12500_inputs.yaml",
+    "t1_uccb_rdsp_line_21300_inputs.yaml",
+    "t1_uccb_rdsp_line_23200_inputs.yaml",
+    "t1_uccb_rdsp_line_11700.yaml",
+    "t1_uccb_rdsp_line_12500.yaml",
+    "t1_uccb_rdsp_line_21300.yaml",
+    "t1_uccb_rdsp_line_23200.yaml",
 )
 
 HEADER = dedent("""\
@@ -111,9 +119,9 @@ def _part_files() -> Iterator[Path]:
     for name in T1_PARTS:
         yield _federal(name)
     yield BC_PARTS / "bc479_line_1.yaml"
-    yield BC_PARTS / "bc479_line_2_input.yaml"
+    yield BC_PARTS / "bc479_line_2.yaml"
     yield BC_PARTS / "bc479_line_3.yaml"
-    yield BC_PARTS / "bc479_line_4_input.yaml"
+    yield BC_PARTS / "bc479_line_4.yaml"
     yield BC_PARTS / "bc479_line_5.yaml"
     yield BC_PARTS / "bc479_line_6.yaml"
     yield BC_PARTS / "bc479_line_7.yaml"
@@ -160,7 +168,7 @@ def _kind(identifier: str) -> AmountKind:
 
 
 def _line_4(amount: str) -> Artifact[Decimal]:
-    return Artifact(BC479_UCCB_RDSP_INCOME_LINE_4, D(amount))
+    return Artifact(UCCB_INCOME, D(amount))
 
 
 def _rounding() -> Any:

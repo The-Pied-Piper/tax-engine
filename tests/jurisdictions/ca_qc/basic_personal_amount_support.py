@@ -180,6 +180,7 @@ HEADER = (
     """)
     + real_import("ca/schedule_8")
     + real_import("ca/schedule_6")
+    + real_import("ca/t1_uccb_rdsp")
     + real_import("ca/t2204")
 )
 # The real tax and credits declaration is the form; the real T1 declaration is the first part.

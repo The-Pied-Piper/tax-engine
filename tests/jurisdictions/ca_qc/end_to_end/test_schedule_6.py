@@ -70,8 +70,13 @@ HEADER_TEMPLATE = dedent("""\
     imports:
     """)
 # The real Quebec manifest's imports of Schedules 8 and 6, with their dataset swaps.
-HEADER = HEADER_TEMPLATE + real_import("ca/schedule_8") + real_import("ca/schedule_6")
-BARE_HEADER = HEADER_TEMPLATE + "  - ca/schedule_8\n  - ca/schedule_6\n"
+HEADER = (
+    HEADER_TEMPLATE
+    + real_import("ca/schedule_8")
+    + real_import("ca/schedule_6")
+    + real_import("ca/t1_uccb_rdsp")
+)
+BARE_HEADER = HEADER_TEMPLATE + "  - ca/schedule_8\n  - ca/schedule_6\n  - ca/t1_uccb_rdsp\n"
 # The real Quebec T1 parts that give Schedule 6 line 7 its net income; the form declaration is the
 # first of them. Every other T1 input is blank for a salary-only filer.
 T1_PARTS = sorted(

@@ -1,0 +1,20 @@
+# T1 (5006-R, 2025) line 23200: "Line 52 and line 23200: Other deductions (specify)" (5006-R page 3). The optional input
+# (`ca/rdsp_income_repayment`, blank when the filer has none) is read by this step, which is the one line the T1
+# prints for it, and the blank reads as 0. The form exports the line (`ca/rdsp_income_repayment_line_23200`) for the forms
+# that print it again as part of a total (Schedule 6 line 11, BC479, MB479, NL428). It is not added
+# into line 15000 here: the take-home T1 builds employment income only.
+form:
+  name: ca/t1_uccb_rdsp
+capabilities:
+  - name: core/sum
+    title: "Registered disability savings plan (RDSP) income repayment (included on line 23200)"
+    reference: "23200"
+    unit: ca/cad
+    params:
+      rounding: ca/cent_rounding
+    consumes:
+      parts: [ca/rdsp_income_repayment]
+    blank:
+      ca/rdsp_income_repayment: "0"
+    produces:
+      output: ca/rdsp_income_repayment_line_23200

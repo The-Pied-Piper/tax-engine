@@ -30,10 +30,9 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
-from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME, UCCB_INCOME
 from tax_engine.jurisdictions.ca_nl.catalog import (
     NL428_FAMILY_INCOME_LESS_UCCB_RDSP_LINE_92,
-    NL428_UCCB_RDSP_INCOME_LINE_91,
 )
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_capabilities,
@@ -58,9 +57,9 @@ PART_92 = NL_PARTS / "nl428_line_92.yaml"
 # The real parts, in composition order: lines 88, 89 (input), 90, 91 (input) and 92.
 NL_LINE_PARTS = (
     NL_PARTS / "nl428_line_88.yaml",
-    NL_PARTS / "nl428_line_89_input.yaml",
+    NL_PARTS / "nl428_line_89.yaml",
     NL_PARTS / "nl428_line_90.yaml",
-    NL_PARTS / "nl428_line_91_input.yaml",
+    NL_PARTS / "nl428_line_91.yaml",
     PART_92,
 )
 T1_PARTS = (
@@ -77,6 +76,15 @@ T1_PARTS = (
     "t1_taxable_income_line_26000.yaml",
     "t1_taxable_income.yaml",
     "t1_employment_income_line_10400_inputs.yaml",
+    "t1_uccb_rdsp.yaml",
+    "t1_uccb_rdsp_line_11700_inputs.yaml",
+    "t1_uccb_rdsp_line_12500_inputs.yaml",
+    "t1_uccb_rdsp_line_21300_inputs.yaml",
+    "t1_uccb_rdsp_line_23200_inputs.yaml",
+    "t1_uccb_rdsp_line_11700.yaml",
+    "t1_uccb_rdsp_line_12500.yaml",
+    "t1_uccb_rdsp_line_21300.yaml",
+    "t1_uccb_rdsp_line_23200.yaml",
 )
 
 HEADER = dedent("""\
@@ -154,14 +162,14 @@ def test_line_92_is_line_90_when_line_91_is_left_blank(
 
 
 def test_line_92_takes_line_91_from_line_90_when_it_is_given(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "70000", Artifact(NL428_UCCB_RDSP_INCOME_LINE_91, D("100.00")))
+    sheet = _sheet(tmp_path, "70000", Artifact(UCCB_INCOME, D("100.00")))
 
     # 69,335.00 less 100.00.
     assert sheet.get(NL428_FAMILY_INCOME_LESS_UCCB_RDSP_LINE_92).value == D("69235.00")
 
 
 def test_line_92_is_zero_when_line_91_is_more_than_line_90(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "70000", Artifact(NL428_UCCB_RDSP_INCOME_LINE_91, D("80000.00")))
+    sheet = _sheet(tmp_path, "70000", Artifact(UCCB_INCOME, D("80000.00")))
 
     assert sheet.get(NL428_FAMILY_INCOME_LESS_UCCB_RDSP_LINE_92).value == D("0.00")
 
@@ -178,7 +186,6 @@ def test_line_92_is_one_untitled_subtract_not_below_zero_step_over_lines_90_and_
                 "unit": "ca/cad",
                 "params": {"rounding": "ca-nl/cent_rounding"},
                 "consumes": {"amount": LINE_90, "less": LINE_91},
-                "blank": {"less": "0"},
                 "produces": {"output": LINE_92},
             }
         ],
