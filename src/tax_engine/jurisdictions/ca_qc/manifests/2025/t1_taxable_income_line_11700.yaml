@@ -11,7 +11,7 @@ capabilities:
     reference: "11700"
     unit: ca/cad
     params:
-      rounding: ca/cent_rounding
+      rounding: ca-qc/cent_rounding
     consumes:
       parts: [ca/uccb_income]
     blank:

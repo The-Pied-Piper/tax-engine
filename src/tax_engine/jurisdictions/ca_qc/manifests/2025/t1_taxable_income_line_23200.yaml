@@ -11,7 +11,7 @@ capabilities:
     reference: "23200"
     unit: ca/cad
     params:
-      rounding: ca/cent_rounding
+      rounding: ca-qc/cent_rounding
     consumes:
       parts: [ca/rdsp_income_repayment]
     blank:

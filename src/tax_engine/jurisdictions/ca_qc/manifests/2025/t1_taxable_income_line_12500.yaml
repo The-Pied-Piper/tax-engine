@@ -11,7 +11,7 @@ capabilities:
     reference: "12500"
     unit: ca/cad
     params:
-      rounding: ca/cent_rounding
+      rounding: ca-qc/cent_rounding
     consumes:
       parts: [ca/rdsp_income]
     blank:
