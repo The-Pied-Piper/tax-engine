@@ -20,23 +20,14 @@ import tax_engine.jurisdictions.ca_qc
 import tax_engine.jurisdictions.core
 from tax_engine.adapters.outbound.jurisdiction_packages import JurisdictionPackages
 from tax_engine.adapters.outbound.parameter_parser import ParameterParserRegistry
-from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.manifest import InputDeclaration
-from tax_engine.domain.registry import Namespace
 from tax_engine.domain.unit import UnitRegistry
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca.catalog.refund import T2204_PREMIUMS_DEDUCTED_GIVEN
-from tests.manifest_support import (
-    T1_LINE_10100_INPUT,
-    T1_LINE_10100_STEP,
-    input_named,
-    inputs_without_form,
-)
 
 
 @cache
@@ -109,8 +100,8 @@ T2204_FORM = dedent("""\
     capabilities: []
     """)
 T2204_T1_PARTS = (
-    T1_LINE_10100_INPUT.name,
-    T1_LINE_10100_STEP.name,
+    "t1_employment_income_line_10100_inputs.yaml",
+    "t1_employment_income_line_10100.yaml",
 )
 
 
@@ -149,8 +140,8 @@ SCHEDULE_P_HEADER = dedent("""\
 # any other form.
 T1_SALARY_PARTS = (
     "t1_employment_income.yaml",
-    T1_LINE_10100_INPUT.name,
-    T1_LINE_10100_STEP.name,
+    "t1_employment_income_line_10100_inputs.yaml",
+    "t1_employment_income_line_10100.yaml",
     "t1_employment_income_line_10400_inputs.yaml",
     "t1_employment_income_line_10400.yaml",
 )
@@ -236,16 +227,3 @@ def schedule_p_worksheet(
         JurisdictionCode("CA-QC"), 2025, *starting
     )["ca-qc/schedule_p"]
     return sheet
-
-
-def schedule_p_input(tmp_path: Path, part: str, name: str) -> InputDeclaration:
-    """The declaration of input `name` in the Schedule P inputs `part`, loaded through the Quebec
-    manifest source under a test header (the part's `form:` header is left out, as the inputs of a
-    part joined to the default form are the caller's own)."""
-    folder = tmp_path / "manifest"
-    folder.mkdir(parents=True)
-    (folder / "header.yaml").write_text(SCHEDULE_P_HEADER, encoding="utf-8")
-    (folder / part).write_text(inputs_without_form(MANIFEST.parent / part), encoding="utf-8")
-    roots = {**quebec_packages().roots(), Namespace("ca-qc"): tmp_path}
-    source = YamlJurisdictionSource(roots, quebec_kinds(), quebec_units())
-    return input_named(source.load(folder), name)

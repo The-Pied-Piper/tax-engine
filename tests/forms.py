@@ -76,7 +76,18 @@ def composition(
         exclusive_group=exclusive_group,
         title=title,
         selections=selections,
-        fields=fields,
+        fields=(
+            *fields,
+            *(
+                InputDeclaration(
+                    name=artifact.kind.identifier,
+                    required=False,
+                    default=artifact,
+                    basis="made up",
+                )
+                for artifact in field_defaults
+            ),
+        ),
         **({} if supplies is None else {"supplies": supplies}),
     )
     given = frozenset(starting) | (frozenset() if instances is None else {instances})
@@ -84,9 +95,7 @@ def composition(
         if kind.identifier not in kinds.identifiers():
             kinds.register(kind.identifier, kind)
     form = dataclasses.replace(form, inputs=_inputs(given, defaults, declared))
-    return FormComposition(
-        form, capabilities, kinds=kinds, field_defaults=field_defaults, units=units
-    )
+    return FormComposition(form, capabilities, kinds=kinds, units=units)
 
 
 def _inputs(

@@ -45,6 +45,7 @@ from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME, RETURN
 from tax_engine.jurisdictions.ca.catalog.net_tax import TOTAL_PAYABLE
 from tax_engine.jurisdictions.ca.catalog.refund import TOTAL_CREDITS
 from tax_engine.jurisdictions.ca_nl.catalog import AVERAGE_INCOME_TAX_RATE
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_capabilities,
     newfoundland_kinds,
@@ -53,7 +54,6 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
 D = Decimal
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
@@ -153,11 +153,9 @@ def _service(tmp_path: Path) -> TaxComputationService:
         ("01_t1_form.yaml", T1_FORM),
         ("02_credits_input.yaml", CREDITS_INPUT),
         ("03_t1_steps.yaml", T1_STEPS),
-        ("04_salary.yaml", T1_LINE_10100_INPUT.read_text(encoding="utf-8")),
-        ("04a_t1_form.yaml", T1_LINE_10100_FORM.read_text(encoding="utf-8")),
-        (
-            "04b_t1_line_10100.yaml",
-            T1_LINE_10100_STEP.read_text(encoding="utf-8"),
+        *(
+            (f"04_{part.name}", part.read_text(encoding="utf-8"))
+            for part in form_parts("t1_employment_income")
         ),
         ("05_return.yaml", _average_part()),
     ]

@@ -35,6 +35,7 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca_sk.catalog import SK428_MINIMUM_TAX_CARRYOVER_LINE_65
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_sk.support import (
     saskatchewan_capabilities,
     saskatchewan_kinds,
@@ -43,7 +44,6 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
 D = Decimal
 CODE = JurisdictionCode("CA-SK")
@@ -54,11 +54,7 @@ SALARY = "ca/employment_income"
 SK_PARTS = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / "manifests" / "2025"
 # The T1 employment income form owns the salary input: its declaration, its line 10100 step and
 # the input part, as the real parts have them.
-T1_PARTS = (
-    T1_LINE_10100_INPUT,
-    T1_LINE_10100_FORM,
-    T1_LINE_10100_STEP,
-)
+T1_PARTS = (*form_parts("t1_employment_income"),)
 PART = SK_PARTS / "sk428_line_65.yaml"
 
 HEADER = dedent("""\

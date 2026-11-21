@@ -50,7 +50,6 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
 D = Decimal
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
@@ -104,8 +103,7 @@ CASES = [
 def _part_files() -> Iterator[Path]:
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
-    yield T1_LINE_10100_FORM
-    yield T1_LINE_10100_STEP
+    yield from form_parts("t1_employment_income")
     for name in CREDIT_PARTS:
         yield NL_PARTS / name
     yield LINE_PART
@@ -117,9 +115,6 @@ def _service(tmp_path: Path) -> TaxComputationService:
     folder = tmp_path / "manifests" / "2025"
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
-    (folder / "00_t1_salary.yaml").write_text(
-        T1_LINE_10100_INPUT.read_text(encoding="utf-8"), encoding="utf-8"
-    )
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
     for number, found in enumerate(_part_files(), start=2):
         text = found.read_text(encoding="utf-8")

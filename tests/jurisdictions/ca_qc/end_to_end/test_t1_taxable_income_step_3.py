@@ -31,16 +31,15 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     T1_LINE_55,
     TOTAL_INCOME,
 )
+from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
 from tests.jurisdictions.ca_qc.support import real_import
-from tests.manifest_support import T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
 D = Decimal
 PARTS = (
     "t1_employment_income_line_10400_inputs.yaml",
     "t1_employment_income.yaml",
-    T1_LINE_10100_INPUT.name,
-    T1_LINE_10100_STEP.name,
+    *form_part_names("t1_employment_income"),
     "t1_employment_income_line_10400.yaml",
     "t1_taxable_income_line_21.yaml",
     "t1_taxable_income_line_27_inputs.yaml",

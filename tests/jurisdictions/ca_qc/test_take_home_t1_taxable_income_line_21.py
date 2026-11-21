@@ -27,8 +27,8 @@ from tax_engine.jurisdictions.ca.catalog.income import (
     UCCB_INCOME,
 )
 from tax_engine.jurisdictions.ca_qc.catalog import T1_LINE_21
+from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
-from tests.manifest_support import T1_LINE_10100_INPUT
 
 D = Decimal
 PART = "t1_taxable_income_line_21.yaml"
@@ -76,7 +76,7 @@ def line_21(
         HEADER,
         FORM,
         "t1_employment_income.yaml",
-        T1_LINE_10100_INPUT.name,
+        *form_part_names("t1_employment_income"),
         INPUTS,
         LINE_10100_PART,
         LINE_10400_PART,

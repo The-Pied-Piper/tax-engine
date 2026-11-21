@@ -29,8 +29,8 @@ from tax_engine.jurisdictions.ca.catalog.refund import (
     T2204_PREMIUMS_DEDUCTED,
     T2204_PREMIUMS_DEDUCTED_GIVEN,
 )
+from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
-from tests.manifest_support import T1_LINE_10100_INPUT, T1_LINE_10100_PARTS
 
 D = Decimal
 
@@ -77,8 +77,7 @@ def t2204(take_home_service: TakeHomeService, salary: str, given: str | None = N
     (sheet,) = take_home_service(
         HEADER,
         FORM,
-        *T1_LINE_10100_PARTS,
-        T1_LINE_10100_INPUT.name,
+        *form_part_names("t1_employment_income"),
         LINE_1_PART,
         LINE_4_PART,
     ).compute(JurisdictionCode("CA-ON"), 2025, *starting)["ca/t2204"]

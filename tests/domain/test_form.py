@@ -2082,17 +2082,6 @@ def test_a_blank_field_where_the_default_is_a_value_is_read_as_the_default() -> 
     assert forms.compute(blank_costs)["ex/shop"][0].get(PROFIT).value == D(70)
 
 
-def test_a_default_for_something_that_is_not_a_field_is_refused() -> None:
-    with pytest.raises(InvalidCompositionError, match="default for 'fee', which is not a field"):
-        composition(
-            "ex/shop",
-            [Subtract(EXACT_TOTAL, SALES, COSTS, PROFIT)],
-            instances=SHOPS,
-            exports=[PROFIT],
-            field_defaults=[Artifact(FEE, D(1))],
-        )
-
-
 def test_a_blank_instances_list_with_an_empty_list_default_is_read_as_no_instances() -> None:
     empty = Artifact(SHOPS, RecordList(SHOPS.fields, ()))
     forms = FormSet([shop(default=empty), audit()])

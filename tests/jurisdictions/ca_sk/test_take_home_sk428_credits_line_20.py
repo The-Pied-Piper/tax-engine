@@ -34,6 +34,7 @@ from tax_engine.domain.parameters.credit import CREDIT
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_sk.catalog import SK428_CREDITS_SUBTOTAL_LINE_20
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_sk.support import (
     saskatchewan_capabilities,
     saskatchewan_kinds,
@@ -42,7 +43,6 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
 D = Decimal
 SK_PARTS = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / "manifests" / "2025"
@@ -67,11 +67,7 @@ FORM = dedent("""\
     """)
 # The T1 employment income form owns the salary input: its declaration, its line 10100 step and
 # the input part, as the real parts have them.
-T1_PARTS = (
-    T1_LINE_10100_INPUT,
-    T1_LINE_10100_FORM,
-    T1_LINE_10100_STEP,
-)
+T1_PARTS = (*form_parts("t1_employment_income"),)
 PARTS = [*T1_PARTS, SK_PARTS / "sk428_credits_line_9.yaml", LINE_PART]
 
 

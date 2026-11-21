@@ -32,6 +32,7 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca_ab.catalog import AB428_ADDITIONAL_MINIMUM_TAX_LINE_67
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_ab.support import (
     alberta_capabilities,
     alberta_kinds,
@@ -39,7 +40,6 @@ from tests.jurisdictions.ca_ab.support import (
     alberta_parameter_parsers,
     alberta_units,
 )
-from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
 D = Decimal
 CODE = JurisdictionCode("CA-AB")
@@ -74,9 +74,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
     parts = [
-        T1_LINE_10100_FORM,
-        T1_LINE_10100_INPUT,
-        T1_LINE_10100_STEP,
+        *form_parts("t1_employment_income"),
         ALBERTA_PARTS / "ab428_line_67_inputs.yaml",
         PART,
     ]

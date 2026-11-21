@@ -29,14 +29,12 @@ from tax_engine.jurisdictions.ca_on.catalog import (
 )
 from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
-from tests.manifest_support import T1_LINE_10100_INPUT, T1_LINE_10100_PARTS
 
 D = Decimal
 PARTS = (
-    T1_LINE_10100_INPUT.name,
+    *form_part_names("t1_employment_income"),
     *form_part_names("schedule_8"),
     *form_part_names("t2204"),
-    *T1_LINE_10100_PARTS,
     "on428_line_19.yaml",
     "on428_line_21.yaml",
     "on428_line_24.yaml",

@@ -44,6 +44,7 @@ from tax_engine.domain.trace import BlankFallbackLine, RateAppliedLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_bc.catalog import BC479_HOME_RENOVATION_EXPENSES_LINE_14
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -52,7 +53,6 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
 D = Decimal
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
@@ -91,9 +91,7 @@ SALARIES = ["17000", "200000"]
 
 
 def _part_files() -> Iterator[Path]:
-    yield T1_LINE_10100_FORM
-    yield T1_LINE_10100_INPUT
-    yield T1_LINE_10100_STEP
+    yield from form_parts("t1_employment_income")
     yield MAXIMUM_PART
     yield BC_PARTS / "bc479_line_14_input.yaml"
     yield CHECK_PART

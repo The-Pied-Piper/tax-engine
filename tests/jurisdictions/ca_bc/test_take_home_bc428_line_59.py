@@ -40,6 +40,7 @@ from tax_engine.jurisdictions.ca_bc.catalog import (
     BC428_FARMERS_FOOD_DONATION_CREDIT_LINE_59,
     BC428_QUALIFYING_GIFTS_LINE_59,
 )
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -48,7 +49,6 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
 D = Decimal
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
@@ -81,9 +81,7 @@ CASES = [
 
 def _part_files() -> list[Path]:
     return [
-        T1_LINE_10100_FORM,
-        T1_LINE_10100_INPUT,
-        T1_LINE_10100_STEP,
+        *form_parts("t1_employment_income"),
         BC_PARTS / "bc428_line_59_input.yaml",
         LINE_PART,
     ]

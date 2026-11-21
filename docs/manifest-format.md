@@ -128,7 +128,8 @@ and no identifier is listed twice.
   carries `form`, `capabilities` and `inputs`. Its `form.name` is the imported
   identifier, and exactly one part declares `exports`, as for any form.
 - The `inputs` of an imported form's parts are that form's own inputs, such as an optional input a
-  salary-only caller leaves blank.
+  salary-only caller leaves blank. An input declared there and also by the manifest, or by another imported
+  form, is rejected, naming it and the part that listed it first.
 - A part of the manifest that names an imported form, an import with no package or no parts, and an
   imported part with any other key are rejected, naming the part.
 - An entry may instead be a mapping, to read other dataset families than the form's own:

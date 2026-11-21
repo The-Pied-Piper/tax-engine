@@ -29,9 +29,9 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
 from tests.kinds import bundled_kinds, non_negative
-from tests.manifest_support import T1_LINE_10100_INPUT, T1_LINE_10100_PARTS
 
 D = Decimal
 ONTARIO = JurisdictionCode("CA-ON")
@@ -40,8 +40,7 @@ LINE_41600 = "ca/credits_against_federal_tax"
 # The salary gives the output header its input, with the T1 employment income form that owns it;
 # line 41600 reads nothing.
 PARTS = (
-    *T1_LINE_10100_PARTS,
-    T1_LINE_10100_INPUT.name,
+    *form_part_names("t1_employment_income"),
     "t1_tax_and_credits_line_41600.yaml",
 )
 HEADER = dedent("""\

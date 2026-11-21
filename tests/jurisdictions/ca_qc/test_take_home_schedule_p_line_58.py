@@ -5,10 +5,9 @@ line has no step. A blank is read as 0 by line 59, which takes the lesser of lin
 
 from __future__ import annotations
 
-from pathlib import Path
-
-from tests.jurisdictions.ca_qc.support import quebec_kinds, schedule_p_input
+from tests.jurisdictions.ca_qc.support import quebec_kinds
 from tests.kinds import non_negative
+from tests.manifest_support import input_named, real_manifest
 
 PART = "schedule_p_line_58_inputs.yaml"
 NAME = "ca-qc/schedule_p_supplement_months_line_58"
@@ -18,8 +17,8 @@ PRINTED_BASIS = (
 )
 
 
-def test_a_request_that_leaves_out_line_58_is_read_as_blank(tmp_path: Path) -> None:
-    declaration = schedule_p_input(tmp_path, PART, NAME)
+def test_a_request_that_leaves_out_line_58_is_read_as_blank() -> None:
+    declaration = input_named(real_manifest("CA-QC"), NAME)
     default = declaration.default_artifact(quebec_kinds().kind(NAME))
 
     assert not declaration.required

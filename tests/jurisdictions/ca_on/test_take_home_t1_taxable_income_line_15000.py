@@ -28,16 +28,12 @@ from tax_engine.jurisdictions.ca.catalog.income import (
     TOTAL_INCOME,
     UCCB_INCOME,
 )
+from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
-from tests.manifest_support import T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
 D = Decimal
 PARTS = (
-    "t1_employment_income.yaml",
-    T1_LINE_10100_STEP.name,
-    T1_LINE_10100_INPUT.name,
-    "t1_employment_income_line_10400.yaml",
-    "t1_employment_income_line_10400_inputs.yaml",
+    *form_part_names("t1_employment_income"),
     "t1_taxable_income_line_11700_inputs.yaml",
     "t1_taxable_income_line_11700.yaml",
     "t1_taxable_income_line_12500_inputs.yaml",

@@ -48,14 +48,13 @@ class FormComposition:
         capabilities: Iterable[Capability],
         *,
         kinds: ArtifactRegistry,
-        field_defaults: Iterable[Artifact[Any]] = (),
         units: Mapping[str, Unit] | None = None,
     ) -> None:
         """Wire `capabilities` as `form`, whose names `kinds` resolves to artifact kinds.
 
         The form's own `inputs` are what the caller gives it: each is read as its declared default
         when left out, and an input or field whose default is blank may arrive blank (any other
-        blank is refused). `field_defaults` are the same for an `instances` field left blank. The
+        blank is refused). The same holds for the `fields` of its `instances`. The
         `title` and `reference` of an input and of a field print beside the figure. `units` holds
         the units the manifest names, by identifier: every one an input, a field or a selection
         uses.
@@ -133,16 +132,15 @@ class FormComposition:
         self._unruled_optional = tuple(
             (slot, kinds.kind(identifier)) for slot, identifier in form.unruled_optional
         )
-        self._field_defaults = {artifact.kind: artifact for artifact in field_defaults}
+        self._field_defaults = {
+            kind: found
+            for d in form.fields
+            if d.name in by_name and (found := d.default_artifact(by_name[d.name])) is not None
+            for kind in [by_name[d.name]]
+        }
         self._blank_inputs = (
             self._blank_kinds(self._defaults, self._field_defaults.values()) & self._inputs
         )
-        stray = self._field_defaults.keys() - fields
-        if stray:
-            kind = min(stray, key=Composition.sort_key)
-            raise InvalidCompositionError(
-                f"form {name!r}: default for {kind.label!r}, which is not a field of its instances"
-            )
         try:
             self._composition = Composition(
                 wired,

@@ -19,8 +19,8 @@ from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca.catalog.rc381_cpp_qpp import (
     T4_CPP_PENSIONABLE_EARNINGS_OUTSIDE_QUEBEC,
 )
+from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
-from tests.manifest_support import T1_LINE_10100_PARTS
 
 D = Decimal
 PART = "schedule_8_line_1.yaml"
@@ -43,7 +43,7 @@ FORM = dedent("""\
 
 def line_1(take_home_service: TakeHomeService, salary: str) -> Decimal:
     worksheets = take_home_service(
-        HEADER, FORM, *T1_LINE_10100_PARTS, "t1_employment_income_line_10100_inputs.yaml", PART
+        HEADER, FORM, *form_part_names("t1_employment_income"), PART
     ).compute(JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary)))
     (sheet,) = worksheets["ca/schedule_8"]
     return sheet.get(T4_CPP_PENSIONABLE_EARNINGS_OUTSIDE_QUEBEC).value

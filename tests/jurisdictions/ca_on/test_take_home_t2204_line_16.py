@@ -16,9 +16,9 @@ import pytest
 
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
 from tests.kinds import bundled_kinds
-from tests.manifest_support import T1_LINE_10100_INPUT, T1_LINE_10100_PARTS
 
 D = Decimal
 CODE = JurisdictionCode("CA-ON")
@@ -85,8 +85,7 @@ def test_line_16_is_the_least_of_lines_7_4_and_10(
 
 
 COMPOSED_PARTS = (
-    *T1_LINE_10100_PARTS,
-    T1_LINE_10100_INPUT.name,
+    *form_part_names("t1_employment_income"),
     "t2204_line_1.yaml",
     "t2204_line_3.yaml",
     "t2204_line_4.yaml",

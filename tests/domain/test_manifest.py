@@ -167,7 +167,6 @@ def test_manifest_fields_in_order() -> None:
         "forms",
         "artifacts",
         "kinds",
-        "field_defaults",
     ]
 
 
@@ -740,7 +739,7 @@ def registry(*kinds: ArtifactKind[Any]) -> ArtifactRegistry:
 COUNT_APPLIES = CountKind("ex/relief_applies", non_negative=True)
 
 
-def test_the_manifest_is_checked_and_its_field_defaults_collected_when_it_is_built() -> None:
+def test_the_manifest_is_checked_when_it_is_built() -> None:
     gated = optional_form(
         instances="ex/rows",
         fields=(
@@ -752,11 +751,7 @@ def test_the_manifest_is_checked_and_its_field_defaults_collected_when_it_is_bui
 
     built = with_forms(gated, inputs=inputs, artifacts=registry(COUNT_APPLIES, ROWS, AMOUNT, COUNT))
 
-    assert built.field_defaults["ex/relief"] == (
-        Artifact(AMOUNT, Decimal("2.50")),
-        Artifact(COUNT, BLANK),
-    )
-    assert built.field_defaults["ex-on/return"] == ()
+    assert built.forms[1] is gated
 
 
 def test_the_kinds_are_the_artifacts_and_those_the_forms_derive() -> None:

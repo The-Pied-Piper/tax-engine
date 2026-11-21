@@ -62,7 +62,6 @@ class TaxComputationService:
                         for selection in form.capabilities
                     ],
                     kinds=kinds,
-                    field_defaults=manifest.field_defaults[form.name],
                     units=manifest.units_by_name,
                 )
                 for form in manifest.forms

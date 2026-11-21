@@ -393,9 +393,6 @@ class Manifest:
     artifacts: ArtifactRegistry = dataclasses.field(compare=False)
     units_by_name: Mapping[str, Unit] = dataclasses.field(default_factory=dict, compare=False)
     kinds: ArtifactRegistry = dataclasses.field(init=False, compare=False)
-    field_defaults: Mapping[str, tuple[Artifact[Any], ...]] = dataclasses.field(
-        init=False, compare=False
-    )
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "forms", tuple(self.forms))
@@ -413,11 +410,6 @@ class Manifest:
         kinds = self.artifacts.extended(derived)
         object.__setattr__(self, "kinds", kinds)
         self._check_artifacts(kinds)
-        object.__setattr__(
-            self,
-            "field_defaults",
-            MappingProxyType({form.name: self._field_defaults(form, kinds) for form in self.forms}),
-        )
 
     def __hash__(self) -> int:
         """Hash by value, like the frozen dataclass it is; the read-only mapping is unhashable."""
@@ -512,22 +504,6 @@ class Manifest:
                     )
 
     @staticmethod
-    def _field_defaults(form: Form, kinds: ArtifactRegistry) -> tuple[Artifact[Any], ...]:
-        """The artifact each optional field of `form`'s records is read as when a record leaves
-        it blank, in the form's order.
-        """
-        if form.instances is None:
-            return ()
-        instances = kinds.kind(form.instances)
-        if not isinstance(instances, RecordListKind):
-            return ()
-        by_name = {kind.identifier: kind for kind in instances.fields}
-        found = (
-            declaration.default_artifact(by_name[declaration.name]) for declaration in form.fields
-        )
-        return tuple(artifact for artifact in found if artifact is not None)
-
-    @staticmethod
     def _check_fields(form: Form, instances: ArtifactKind[Any]) -> None:
         if not isinstance(instances, RecordListKind):
             return  # the composition refuses instances that are not a record list
@@ -542,6 +518,8 @@ class Manifest:
             raise InvalidManifestError(
                 f"form {form.name!r}: field {name!r} is not a field of {instances.identifier!r}"
             )
+        for name, declaration in declared.items():
+            declaration.default_artifact(kinds[name])  # refuses a default of the wrong kind
 
     def _check_predicates(self) -> None:
         """Refuse a `required_when` that names nothing the manifest has or an optional input."""

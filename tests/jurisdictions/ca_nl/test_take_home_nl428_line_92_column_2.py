@@ -31,6 +31,7 @@ from tax_engine.jurisdictions.ca_nl.catalog import (
     NL428_SPOUSE_NET_INCOME_LINE_88,
     NL428_SPOUSE_UCCB_RDSP_INCOME_LINE_91,
 )
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_capabilities,
     newfoundland_kinds,
@@ -38,7 +39,6 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_parameter_parsers,
     newfoundland_units,
 )
-from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
 D = Decimal
 CODE = JurisdictionCode("CA-NL")
@@ -81,16 +81,10 @@ def _service(tmp_path: Path) -> TaxComputationService:
     folder = tmp_path / "manifests" / "2025"
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
-    (folder / "00_t1_salary.yaml").write_text(
-        T1_LINE_10100_INPUT.read_text(encoding="utf-8"), encoding="utf-8"
-    )
-    (folder / "00_t1_form.yaml").write_text(
-        T1_LINE_10100_FORM.read_text(encoding="utf-8"), encoding="utf-8"
-    )
-    (folder / "00_t1_line_10100.yaml").write_text(
-        T1_LINE_10100_STEP.read_text(encoding="utf-8"),
-        encoding="utf-8",
-    )
+    for part in form_parts("t1_employment_income"):
+        (folder / f"00_t1_{part.name}").write_text(
+            part.read_text(encoding="utf-8"), encoding="utf-8"
+        )
     (folder / "01_tax_form.yaml").write_text(TAX_FORM_TEXT, encoding="utf-8")
     for number, part in enumerate(NL_LINE_PARTS, start=2):
         (folder / f"{number:02d}_{part.name}").write_text(

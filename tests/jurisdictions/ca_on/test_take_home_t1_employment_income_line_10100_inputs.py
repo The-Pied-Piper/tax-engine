@@ -12,7 +12,9 @@ from typing import Any
 
 import yaml
 
-from tests.manifest_support import T1_LINE_10100_INPUT as PART
+from tests.federal_forms import FEDERAL_FORMS
+
+PART = FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100_inputs.yaml"
 
 
 def _part() -> dict[str, Any]:

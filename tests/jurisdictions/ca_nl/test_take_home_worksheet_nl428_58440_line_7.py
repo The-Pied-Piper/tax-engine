@@ -38,6 +38,7 @@ from tax_engine.domain.trace import SumLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca.catalog.personal_amounts import DISABILITY_SELF_CARE_EXPENSES
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_capabilities,
     newfoundland_kinds,
@@ -46,7 +47,6 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
 D = Decimal
 PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
@@ -89,16 +89,10 @@ def _service(tmp_path: Path) -> TaxComputationService:
     folder = tmp_path / "manifests" / "2025"
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
-    (folder / "00_t1_salary.yaml").write_text(
-        T1_LINE_10100_INPUT.read_text(encoding="utf-8"), encoding="utf-8"
-    )
-    (folder / "00_t1_form.yaml").write_text(
-        T1_LINE_10100_FORM.read_text(encoding="utf-8"), encoding="utf-8"
-    )
-    (folder / "00_t1_line_10100.yaml").write_text(
-        T1_LINE_10100_STEP.read_text(encoding="utf-8"),
-        encoding="utf-8",
-    )
+    for part in form_parts("t1_employment_income"):
+        (folder / f"00_t1_{part.name}").write_text(
+            part.read_text(encoding="utf-8"), encoding="utf-8"
+        )
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
     # The under-18 answer (`worksheet_nl428_line_58440_input.yaml`) is read by NL428 line 40, not by
     # these lines, and a manifest refuses an input nothing reads, so only the care expenses input

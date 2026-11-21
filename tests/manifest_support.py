@@ -2,20 +2,27 @@
 
 from __future__ import annotations
 
-import re
 from collections.abc import Iterable
 from pathlib import Path
 
 import tax_engine.jurisdictions.ca_qc
+from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import InputDeclaration, Manifest
-from tests.federal_forms import FEDERAL_FORMS
+from tax_engine.registrations import JURISDICTIONS, artifact_kinds, units
 
 
 def input_named(manifest: Manifest, name: str) -> InputDeclaration:
     """The declaration of the input `name`, found on the one form of `manifest` that holds it."""
     (found,) = (d for form in manifest.forms for d in form.inputs if d.name == name)
     return found
+
+
+def real_manifest(code: str, tax_year: int = 2025) -> Manifest:
+    """The registered engine's manifest for `code` and `tax_year`, as the application loads it."""
+    source = YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds(), units())
+    return source.get_jurisdiction(JurisdictionCode(code)).manifest_for(tax_year)
 
 
 def inputs_of(manifest: Manifest) -> dict[str, InputDeclaration]:
@@ -34,33 +41,7 @@ def required_inputs(names: Iterable[str]) -> tuple[InputDeclaration, ...]:
     return tuple(InputDeclaration(name=name, required=True) for name in sorted(names))
 
 
-def inputs_without_form(part: Path) -> str:
-    """The text of a form's inputs part without its `form:` header.
-
-    A test manifest built from lines of several forms does not declare the form that owns the
-    inputs, so the inputs join its default form as the caller's own.
-    """
-    return re.sub(r"^form:\n  name: .*\n", "", part.read_text(encoding="utf-8"), flags=re.MULTILINE)
-
-
-# A test-local T1 employment income form declaration that exports line 10100 alone, for a test that
-# composes a form reading that line (T2204 line 1) with the real line 10100 part.
-T1_LINE_10100_FORM = (
-    Path(__file__).parent / "jurisdictions" / "ca" / "support" / "t1_line_10100_form.yaml"
-)
-
-# The same two parts by file name, for the Ontario take-home builder, which finds each by name.
-T1_LINE_10100_PARTS = (T1_LINE_10100_FORM.name, "t1_employment_income_line_10100.yaml")
-
-
-# The T1 employment income form's part that declares the salary (line 10100) input, federal and
-# Quebec's own. The salary belongs to that form, so a test manifest that copies a step reading it
-# copies this part with its `form:` header.
-T1_LINE_10100_INPUT = (
-    FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100_inputs.yaml"
-)
-# The part that computes line 10100 itself (the step), beside the input part above.
-T1_LINE_10100_STEP = T1_LINE_10100_INPUT.with_name("t1_employment_income_line_10100.yaml")
+# Quebec's own part that declares the salary (line 10100) input.
 QC_T1_LINE_10100_INPUT = (
     Path(tax_engine.jurisdictions.ca_qc.__file__).parent
     / "manifests"

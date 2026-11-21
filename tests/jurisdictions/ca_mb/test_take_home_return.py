@@ -37,6 +37,7 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca.catalog.refund import REFUND_OR_BALANCE_OWING, TOTAL_CREDITS
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_mb.support import (
     manitoba_capabilities,
     manitoba_kinds,
@@ -44,7 +45,6 @@ from tests.jurisdictions.ca_mb.support import (
     manitoba_parameter_parsers,
     manitoba_units,
 )
-from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
 D = Decimal
 MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"
@@ -221,9 +221,10 @@ def _service(tmp_path: Path) -> TaxComputationService:
             (f"03d_{number}.yaml", _other_step(form, out, unit))
             for number, (form, out, unit) in enumerate(OTHER_STEPS)
         ],
-        ("04_salary.yaml", T1_LINE_10100_INPUT.read_text(encoding="utf-8")),
-        ("04a_t1_employment_income_form.yaml", T1_LINE_10100_FORM.read_text(encoding="utf-8")),
-        ("04b_t1_line_10100.yaml", T1_LINE_10100_STEP.read_text(encoding="utf-8")),
+        *(
+            (f"04_{part.name}", part.read_text(encoding="utf-8"))
+            for part in form_parts("t1_employment_income")
+        ),
         ("05_return.yaml", RETURN_PART.read_text(encoding="utf-8")),
     ]
     for name, text in texts:
