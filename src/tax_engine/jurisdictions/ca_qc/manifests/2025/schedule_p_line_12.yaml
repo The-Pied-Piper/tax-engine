@@ -1,0 +1,27 @@
+# Schedule P (TP-1.D.P-V, 2025-12) Part A line 12: "Amount from line 107 of your return". TP-1 line 107
+# is an optional input the TP-1 income form takes and exports, so this step reads that export (a record
+# list of one) with core/record_total (a blank read as 0), then rounds it half-up to the cent
+# through core/sum; line 18 adds it.
+form:
+  name: ca-qc/schedule_p
+capabilities:
+  - name: core/record_total
+    title: "Amount from line 107 of your return"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp1_income.tp1_line_107
+    blank:
+      records:
+        ca-qc/tp1_line_107: "0"
+    produces:
+      output: ca-qc/schedule_p_tp1_line_107_total
+  - name: core/sum
+    title: "Amount from line 107 of your return"
+    reference: "12"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts: [ca-qc/schedule_p_tp1_line_107_total]
+    produces:
+      output: ca-qc/schedule_p_tp1_line_107

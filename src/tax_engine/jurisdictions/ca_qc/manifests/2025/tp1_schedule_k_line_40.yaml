@@ -1,6 +1,6 @@
 # Schedule K (2025) line 40: "Add lines 36 and 37." (Revenu Quebec TP-1.D.K-V (2025-12), Part A).
-# One step: core/sum, rounded half-up to the cent (`ca-qc/cent_rounding`). Line 37 is an optional
-# input, read as 0 when the caller leaves it out. The form prints no label for the line, so the step
+# One step: core/sum, rounded half-up to the cent (`ca-qc/cent_rounding`). Line 37 is the spouse's line 275, read from the TP-1 net income form's export
+# (a blank is read as 0 by line 37's step). The form prints no label for the line, so the step
 # is untitled.
 form:
   name: ca-qc/tp1_schedule_k
@@ -14,7 +14,5 @@ capabilities:
       parts:
         - ca-qc/schedule_k_net_income_line_36
         - ca-qc/schedule_k_spouse_net_income_line_37
-    blank:
-      ca-qc/schedule_k_spouse_net_income_line_37: "0"
     produces:
       output: ca-qc/schedule_k_income_line_40

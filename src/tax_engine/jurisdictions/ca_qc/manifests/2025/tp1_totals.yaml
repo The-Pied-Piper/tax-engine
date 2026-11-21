@@ -8,7 +8,7 @@
 # line 479 (the balance due); the Quebec return summary reads lines 450, 456 and 457.
 form:
   name: ca-qc/tp1_totals
-  title: "Refund or balance due"
+  title: "Income Tax Return"
   required: true
   exports:
     - ca-qc/tp1_income_tax_and_contributions_line_450

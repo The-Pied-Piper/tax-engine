@@ -142,6 +142,9 @@ SCHEDULE_P_HEADER = dedent("""\
 TP1_PARTS = (
     "salary.yaml",
     "tp1_income.yaml",
+    "tp1_income_line_105_input.yaml",
+    "tp1_income_line_107_input.yaml",
+    "tp1_income_line_box_211_input.yaml",
     "tp1_income_line_97_input.yaml",
     "tp1_income_line_97.yaml",
     "tp1_income_line_98_input.yaml",
@@ -155,9 +158,6 @@ TP1_PARTS = (
 )
 WORK_CHART_201_PARTS = (
     "work_chart_201.yaml",
-    "work_chart_201_line_1_input_105.yaml",
-    "work_chart_201_line_1_input_107.yaml",
-    "work_chart_201_line_1_input_box_211.yaml",
     "work_chart_201_line_1.yaml",
     "work_chart_201_line_2_input.yaml",
     "work_chart_201_line_3_input.yaml",
@@ -175,9 +175,10 @@ SCHEDULE_P_FIRST_PARTS = (
 )
 SCHEDULE_P_WORK_INCOME_PARTS = (
     *SCHEDULE_P_FIRST_PARTS,
-    "schedule_p_line_13_inputs.yaml",
     "schedule_p_line_14_inputs.yaml",
-    "schedule_p_line_15_inputs.yaml",
+    "schedule_p_line_12.yaml",
+    "schedule_p_line_13.yaml",
+    "schedule_p_line_15.yaml",
     "schedule_p_line_18.yaml",
     "schedule_p_line_22_inputs.yaml",
     "schedule_p_line_29.yaml",

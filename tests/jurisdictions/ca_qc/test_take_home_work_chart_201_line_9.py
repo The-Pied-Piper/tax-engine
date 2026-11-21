@@ -26,14 +26,12 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     WORK_CHART_201_LINE_293_AMOUNT_LINE_7,
 )
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
+from tests.jurisdictions.ca_qc.support import TP1_PARTS
 
 D = Decimal
 
 PARTS = (
-    "salary.yaml",
-    "work_chart_201_line_1_input_105.yaml",
-    "work_chart_201_line_1_input_107.yaml",
-    "work_chart_201_line_1_input_box_211.yaml",
+    *TP1_PARTS,
     "work_chart_201_line_1.yaml",
     "work_chart_201_line_2_input.yaml",
     "work_chart_201_line_3_input.yaml",
@@ -106,9 +104,13 @@ def test_line_7_is_taken_off_before_the_rate(take_home_service: TakeHomeService)
     assert str(value) == "600.00"
 
 
-def test_the_real_form_declaration_exports_line_9() -> None:
+def test_the_real_form_declaration_exports_line_9_and_the_inputs_other_forms_read() -> None:
     declaration = yaml.safe_load((QUEBEC_PARTS / "work_chart_201.yaml").read_text(encoding="utf-8"))
 
     assert declaration["form"]["name"] == "ca-qc/work_chart_201"
     assert declaration["form"]["required"] is True
-    assert declaration["form"]["exports"] == ["ca-qc/work_chart_201_deduction_for_workers_line_9"]
+    assert declaration["form"]["exports"] == [
+        "ca-qc/work_chart_201_deduction_for_workers_line_9",
+        "ca-qc/work_chart_201_research_grants_line_3",
+        "ca-qc/work_chart_201_wepp_payments_line_4",
+    ]

@@ -1,0 +1,199 @@
+"""Quebec input ownership (2025): a line is an input only on the form it belongs to, and every other
+form imports it from that form's export.
+
+Three groups of figures are read by two forms each:
+- TP-1 lines 105 and 107 and RL-1 box 211 belong to the TP-1 income form; Work Chart 201 line 1 and
+  Schedule P lines 10 and 12 read them from its exports.
+- The net research grants and the WEPP payments belong to Work Chart 201 lines 3 and 4; Schedule P
+  lines 13 and 15 read them from its exports.
+- The spouse's line 275 belongs to the TP-1 net income form; Schedule K line 37 and Schedule P
+  line 53 read it from its export.
+
+Each figure is given once, under its owner's kind, over the real parts of the whole return, and both
+forms show it. The salary is $70,000; the expected figures are hand-computed from the printed lines.
+"""
+
+from __future__ import annotations
+
+from decimal import Decimal
+from typing import Any
+
+import yaml
+
+from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.jurisdictions.ca_qc.catalog import (
+    RL1_SLIP_BOX_211,
+    SCHEDULE_K_INCOME_LINE_40,
+    SCHEDULE_K_SPOUSE_NET_INCOME_LINE_37,
+    SCHEDULE_P_LINE_10,
+    SCHEDULE_P_LINE_18,
+    SCHEDULE_P_RESEARCH_GRANTS_LINE_13,
+    SCHEDULE_P_SPOUSE_NET_INCOME_LINE_53,
+    SCHEDULE_P_TP1_LINE_107,
+    SCHEDULE_P_WEPP_PAYMENTS_LINE_15,
+    TP1_LINE_105,
+    TP1_LINE_107,
+    TP1_SPOUSE_NET_INCOME_LINE_275,
+    WORK_CHART_201_ELIGIBLE_WORK_INCOME_LINE_1,
+    WORK_CHART_201_RESEARCH_GRANTS_LINE_3,
+    WORK_CHART_201_TOTAL_LINE_6,
+    WORK_CHART_201_WEPP_PAYMENTS_LINE_4,
+)
+from tests.jurisdictions.ca_qc.basic_personal_amount_support import FORM as T1_FORM
+from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
+from tests.jurisdictions.ca_qc.return_support import PARTS, header
+from tests.jurisdictions.ca_qc.tp1_net_income_support import slip_artifacts
+
+D = Decimal
+SHARED_INPUTS = {
+    "ca-qc/tp1_line_105": "tp1_income",
+    "ca-qc/tp1_line_107": "tp1_income",
+    "ca-qc/rl1_slip_box_211": "tp1_income",
+    "ca-qc/work_chart_201_research_grants_line_3": "work_chart_201",
+    "ca-qc/work_chart_201_wepp_payments_line_4": "work_chart_201",
+    "ca-qc/tp1_spouse_net_income_line_275": "tp1_net_income",
+}
+REMOVED_COPIES = (
+    "ca-qc/schedule_p_research_grants_line_13",
+    "ca-qc/schedule_p_wepp_payments_line_15",
+    "ca-qc/schedule_p_spouse_net_income_line_53",
+    "ca-qc/schedule_k_spouse_net_income_line_37",
+)
+
+
+def _declared_inputs() -> list[tuple[str, str]]:
+    """Every input the Quebec manifest parts declare, with the form of its part."""
+    declared: list[tuple[str, str]] = []
+    for path in sorted(QUEBEC_PARTS.glob("*.yaml")):
+        part: dict[str, Any] = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+        form = part.get("form", {}).get("name", "")
+        declared += [(declaration["name"], form) for declaration in part.get("inputs", [])]
+    return declared
+
+
+def _exports(form: str) -> list[str]:
+    part = yaml.safe_load((QUEBEC_PARTS / f"{form}.yaml").read_text(encoding="utf-8"))
+    return list(part["form"]["exports"])
+
+
+def test_each_shared_input_is_declared_once_on_the_form_it_belongs_to_and_exported() -> None:
+    declared = _declared_inputs()
+
+    for name, owner in SHARED_INPUTS.items():
+        assert [form for declared_name, form in declared if declared_name == name] == [
+            f"ca-qc/{owner}"
+        ]
+        assert name in _exports(owner)
+
+
+def test_the_copies_that_other_forms_used_to_declare_are_gone() -> None:
+    names = [name for name, _ in _declared_inputs()]
+
+    for name in REMOVED_COPIES:
+        assert name not in names
+
+
+def test_no_input_is_declared_twice() -> None:
+    names = [name for name, _ in _declared_inputs()]
+
+    assert len(names) == len(set(names))
+
+
+def _forms(take_home_service: TakeHomeService, *runs: tuple[tuple[Any, str], ...]) -> list[Any]:
+    """The worksheets of each run: the same salary with that run's figures given."""
+    service = take_home_service(header(), T1_FORM, *PARTS)
+    forms = []
+    for given in runs:
+        starting = [*slip_artifacts("70000"), *(Artifact(kind, D(value)) for kind, value in given)]
+        sheets = service.compute(JurisdictionCode("CA-QC"), 2025, *starting)
+        forms.append({name: found[0] for name, found in sheets.items()})
+    return forms
+
+
+def test_lines_105_and_107_and_box_211_given_once_reach_work_chart_201_and_schedule_p(
+    take_home_service: TakeHomeService,
+) -> None:
+    (sheets,) = _forms(
+        take_home_service,
+        (
+            (TP1_LINE_105, "1000.25"),
+            (TP1_LINE_107, "2000.50"),
+            (RL1_SLIP_BOX_211, "300.10"),
+        ),
+    )
+
+    # Work Chart 201 line 1: 70,000 + 2,000.50 + 1,000.25 - 300.10.
+    assert sheets["ca-qc/work_chart_201"].get(WORK_CHART_201_ELIGIBLE_WORK_INCOME_LINE_1).value == (
+        D("72700.65")
+    )
+    schedule_p = sheets["ca-qc/schedule_p"]
+    # Schedule P line 10: 70,000 + 1,000.25 - 300.10; line 12 is line 107; line 18 adds them.
+    assert schedule_p.get(SCHEDULE_P_LINE_10).value == D("70700.15")
+    assert schedule_p.get(SCHEDULE_P_TP1_LINE_107).value == D("2000.50")
+    assert schedule_p.get(SCHEDULE_P_LINE_18).value == D("72700.65")
+
+
+def test_research_grants_and_wepp_payments_given_once_reach_work_chart_201_and_schedule_p(
+    take_home_service: TakeHomeService,
+) -> None:
+    (sheets,) = _forms(
+        take_home_service,
+        (
+            (WORK_CHART_201_RESEARCH_GRANTS_LINE_3, "400.40"),
+            (WORK_CHART_201_WEPP_PAYMENTS_LINE_4, "500.50"),
+        ),
+    )
+
+    # Work Chart 201 line 6: 70,000 + 400.40 + 500.50.
+    assert sheets["ca-qc/work_chart_201"].get(WORK_CHART_201_TOTAL_LINE_6).value == D("70900.90")
+    schedule_p = sheets["ca-qc/schedule_p"]
+    assert schedule_p.get(SCHEDULE_P_RESEARCH_GRANTS_LINE_13).value == D("400.40")
+    assert schedule_p.get(SCHEDULE_P_WEPP_PAYMENTS_LINE_15).value == D("500.50")
+    assert schedule_p.get(SCHEDULE_P_LINE_18).value == D("70900.90")
+
+
+def test_the_spouse_net_income_given_once_reaches_schedule_k_and_schedule_p(
+    take_home_service: TakeHomeService,
+) -> None:
+    blank, given = _forms(take_home_service, (), ((TP1_SPOUSE_NET_INCOME_LINE_275, "1000.50"),))
+
+    assert blank["ca-qc/schedule_p"].get(SCHEDULE_P_SPOUSE_NET_INCOME_LINE_53).value == D(0)
+    assert given["ca-qc/schedule_p"].get(SCHEDULE_P_SPOUSE_NET_INCOME_LINE_53).value == D("1000.50")
+    line_40 = given["ca-qc/tp1_schedule_k"].get(SCHEDULE_K_INCOME_LINE_40).value
+    assert line_40 - blank["ca-qc/tp1_schedule_k"].get(SCHEDULE_K_INCOME_LINE_40).value == D(
+        "1000.50"
+    )
+
+
+def test_the_printed_lines_that_read_another_forms_export_are_rounded_to_the_cent(
+    take_home_service: TakeHomeService,
+) -> None:
+    (sheets,) = _forms(
+        take_home_service,
+        (
+            (TP1_LINE_107, "2000.505"),
+            (WORK_CHART_201_RESEARCH_GRANTS_LINE_3, "400.404"),
+            (WORK_CHART_201_WEPP_PAYMENTS_LINE_4, "500.505"),
+            (TP1_SPOUSE_NET_INCOME_LINE_275, "600.505"),
+        ),
+    )
+
+    schedule_p = sheets["ca-qc/schedule_p"]
+    assert schedule_p.get(SCHEDULE_P_TP1_LINE_107).value == D("2000.51")
+    assert schedule_p.get(SCHEDULE_P_RESEARCH_GRANTS_LINE_13).value == D("400.40")
+    assert schedule_p.get(SCHEDULE_P_WEPP_PAYMENTS_LINE_15).value == D("500.51")
+    assert schedule_p.get(SCHEDULE_P_SPOUSE_NET_INCOME_LINE_53).value == D("600.51")
+    assert sheets["ca-qc/tp1_schedule_k"].get(SCHEDULE_K_SPOUSE_NET_INCOME_LINE_37).value == D(
+        "600.51"
+    )
+    # Line 18 adds the printed (rounded) lines: 70,000 + 2,000.51 + 400.40 + 500.51.
+    assert schedule_p.get(SCHEDULE_P_LINE_18).value == D("72901.42")
+
+
+def test_every_part_of_the_split_tp1_shares_the_printed_title() -> None:
+    forms = ("tp1_income", "tp1_net_income", "tp1_credits", "tp1_tax", "tp1_totals")
+
+    for form in forms:
+        part = yaml.safe_load((QUEBEC_PARTS / f"{form}.yaml").read_text(encoding="utf-8"))
+        assert part["form"]["title"] == "Income Tax Return"

@@ -5,7 +5,7 @@
 # are not built. Export: line 399, the non-refundable tax credits that TP-1 line 406 reads.
 form:
   name: ca-qc/tp1_credits
-  title: "Non-refundable tax credits"
+  title: "Income Tax Return"
   required: true
   exports:
     - ca-qc/tp1_non_refundable_tax_credits_line_399

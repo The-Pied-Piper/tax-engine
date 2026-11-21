@@ -18,9 +18,9 @@ import yaml
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca_qc.catalog import (
+    RL1_SLIP_BOX_211,
     SCHEDULE_P_LINE_10,
-    WORK_CHART_201_LINE_105,
-    WORK_CHART_201_RL1_BOX_211,
+    TP1_LINE_105,
 )
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
 from tests.jurisdictions.ca_qc.support import (
@@ -52,9 +52,7 @@ def test_a_salary_only_line_10_is_the_salary(
 
 def test_a_positive_line_105_is_added(take_home_service: TakeHomeService) -> None:
     value = (
-        line_10(take_home_service, "70000", (WORK_CHART_201_LINE_105, "1234.56"))
-        .get(SCHEDULE_P_LINE_10)
-        .value
+        line_10(take_home_service, "70000", (TP1_LINE_105, "1234.56")).get(SCHEDULE_P_LINE_10).value
     )
 
     assert value == D("71234.56")
@@ -62,7 +60,7 @@ def test_a_positive_line_105_is_added(take_home_service: TakeHomeService) -> Non
 
 def test_box_211_is_subtracted(take_home_service: TakeHomeService) -> None:
     value = (
-        line_10(take_home_service, "70000", (WORK_CHART_201_RL1_BOX_211, "250.25"))
+        line_10(take_home_service, "70000", (RL1_SLIP_BOX_211, "250.25"))
         .get(SCHEDULE_P_LINE_10)
         .value
     )
@@ -75,8 +73,8 @@ def test_line_105_and_box_211_together(take_home_service: TakeHomeService) -> No
         line_10(
             take_home_service,
             "70000",
-            (WORK_CHART_201_LINE_105, "1000"),
-            (WORK_CHART_201_RL1_BOX_211, "250"),
+            (TP1_LINE_105, "1000"),
+            (RL1_SLIP_BOX_211, "250"),
         )
         .get(SCHEDULE_P_LINE_10)
         .value
@@ -90,8 +88,17 @@ def test_only_the_last_step_carries_the_line_reference() -> None:
 
     assert [step["name"] for step in part["capabilities"]] == [
         "core/record_total",
+        "core/record_total",
+        "core/record_total",
         "core/sum_not_below_zero",
         "core/sum",
         "core/subtract",
     ]
-    assert [step.get("reference") for step in part["capabilities"]] == [None, None, None, "10"]
+    assert [step.get("reference") for step in part["capabilities"]] == [
+        None,
+        None,
+        None,
+        None,
+        None,
+        "10",
+    ]

@@ -112,19 +112,35 @@ TP1_TOTAL_INCOME_LINE_199 = AmountKind.declare(
 """Total income, TP-1 line 199 "Add lines 101 and 105 through 164. Total income": line 101, the
 salary, plus the optional income of lines 105 through 164, rounded half-up to the cent."""
 
-WORK_CHART_201_LINE_105 = AmountKind.declare(CATALOG, "tp1_line_105", non_negative=True)
-"""TP-1 line 105, as Work Chart 201 line 1 reads it ("lines 101, 107 and, if positive, 105"): an
-optional input, blank when the caller has none and read as 0. A negative figure is refused:
+TP1_LINE_105 = AmountKind.declare(CATALOG, "tp1_line_105", non_negative=True)
+"""TP-1 line 105, a line of the TP-1 income form ("lines 101, 107 and, if positive, 105" on Work
+Chart 201 line 1): an optional input that form takes once and exports, blank when the caller has
+none and read as 0 by the forms that read it. A negative figure is refused:
 the owner decided on the ticket (19 Nov 2026) that the chart's "if positive" test on line 105 is
 moot, with no step for it."""
 
-WORK_CHART_201_LINE_107 = AmountKind.declare(CATALOG, "tp1_line_107")
-"""TP-1 line 107, as Work Chart 201 line 1 reads it: an optional input, blank when the caller has
-none and read as 0."""
+TP1_LINE_107 = AmountKind.declare(CATALOG, "tp1_line_107")
+"""TP-1 line 107, a line of the TP-1 income form: an optional input that form takes once and
+exports, blank when the caller has none and read as 0 by the forms that read it."""
 
-WORK_CHART_201_RL1_BOX_211 = AmountKind.declare(CATALOG, "rl1_slip_box_211")
-"""RL-1 slip box 211, taken off by Work Chart 201 line 1 ("minus the amount from box 211 of your
-RL-1 slip"): an optional input, blank when the caller has none and read as 0."""
+RL1_SLIP_BOX_211 = AmountKind.declare(CATALOG, "rl1_slip_box_211")
+"""RL-1 slip box 211 ("minus the amount from box 211 of your RL-1 slip" on Work Chart 201 line 1 and
+Schedule P line 10): an optional input the TP-1 income form takes once and exports, blank when the
+caller has none and read as 0 by the forms that read it."""
+
+WORK_CHART_201_TP1_LINE_107 = AmountKind.declare(CATALOG, "work_chart_201_tp1_line_107")
+"""TP-1 line 107 as Work Chart 201 line 1 reads it: the TP-1 income form's export, a record list of
+one, totalled; a blank is read as 0."""
+
+WORK_CHART_201_TP1_LINE_105 = AmountKind.declare(
+    CATALOG, "work_chart_201_tp1_line_105", non_negative=True
+)
+"""TP-1 line 105 as Work Chart 201 line 1 reads it: the TP-1 income form's export, a record list of
+one, totalled; a blank is read as 0."""
+
+WORK_CHART_201_RL1_SLIP_BOX_211 = AmountKind.declare(CATALOG, "work_chart_201_rl1_slip_box_211")
+"""RL-1 slip box 211 as Work Chart 201 line 1 reads it: the TP-1 income form's export, a record list
+of one, totalled; a blank is read as 0."""
 
 WORK_CHART_201_ELIGIBLE_WORK_INCOME_BEFORE_BOX_211 = AmountKind.declare(
     CATALOG, "work_chart_201_eligible_work_income_before_box_211"
@@ -542,11 +558,24 @@ SCHEDULE_P_LINE_10 = AmountKind.declare(CATALOG, "schedule_p_line_10")
 from line 105 if it is positive, minus the amount from box 211 of your RL-1 slip, if applicable",
 rounded half-up to the cent."""
 
+SCHEDULE_P_TP1_LINE_105 = AmountKind.declare(CATALOG, "schedule_p_tp1_line_105", non_negative=True)
+"""Schedule P line 10, first read of TP-1 line 105: the TP-1 income form's export, a record list of
+one, totalled; a blank is read as 0."""
+
+SCHEDULE_P_RL1_SLIP_BOX_211 = AmountKind.declare(CATALOG, "schedule_p_rl1_slip_box_211")
+"""Schedule P line 10, read of RL-1 box 211: the TP-1 income form's export, a record list of one,
+totalled; a blank is read as 0."""
+
+SCHEDULE_P_TP1_LINE_107 = AmountKind.declare(CATALOG, "schedule_p_tp1_line_107")
+"""Schedule P line 12, a copy of TP-1 line 107: the optional input the TP-1 income form takes and
+exports, read as a record list and totalled; a blank is read as 0."""
+
 SCHEDULE_P_RESEARCH_GRANTS_LINE_13 = AmountKind.declare(
-    CATALOG, "schedule_p_research_grants_line_13", non_negative=True
+    CATALOG, "schedule_p_research_grants_line_13"
 )
-"""Schedule P line 13, "Net amount of research grants (see line 154, point 3(j), in the guide)", as
-the caller gives it; blank when the caller has none, and line 18 reads it as 0."""
+"""Schedule P line 13, "Net amount of research grants (see line 154, point 3(j), in the guide)": the
+figure Work Chart 201 line 3 takes and exports, read as a record list and totalled; a blank is read
+as 0."""
 
 SCHEDULE_P_SCHEDULE_L_INCOME_LINE_14 = AmountKind.declare(
     CATALOG, "schedule_p_schedule_l_income_line_14", non_negative=True
@@ -554,11 +583,10 @@ SCHEDULE_P_SCHEDULE_L_INCOME_LINE_14 = AmountKind.declare(
 """Schedule P line 14, "Total of lines 22 through 26.1 of Schedule L. Do not include losses.", as
 the caller gives it; blank when the caller has none, and line 18 reads it as 0."""
 
-SCHEDULE_P_WEPP_PAYMENTS_LINE_15 = AmountKind.declare(
-    CATALOG, "schedule_p_wepp_payments_line_15", non_negative=True
-)
-"""Schedule P line 15, "Wage Earner Protection Program (WEPP) payments (line 154, point 12)", as
-the caller gives it; blank when the caller has none, and line 18 reads it as 0."""
+SCHEDULE_P_WEPP_PAYMENTS_LINE_15 = AmountKind.declare(CATALOG, "schedule_p_wepp_payments_line_15")
+"""Schedule P line 15, "Wage Earner Protection Program (WEPP) payments (line 154, point 12)": the
+figure Work Chart 201 line 4 takes and exports, read as a record list and totalled; a blank is read
+as 0."""
 
 SCHEDULE_P_LINE_18 = AmountKind.declare(CATALOG, "schedule_p_line_18")
 """Schedule P Part A line 18, "Add lines 10 through 15", column "You", rounded half-up to the
@@ -640,7 +668,8 @@ SCHEDULE_P_SPOUSE_NET_INCOME_LINE_53 = AmountKind.declare(
     CATALOG, "schedule_p_spouse_net_income_line_53", non_negative=True
 )
 """Schedule P Part C line 53, "Amount from line 275 of your spouse's return (spouse on December 31,
-2025)", as the caller gives it; blank when the caller has none, and line 54 reads it as 0."""
+2025)": the spouse's line 275 that the TP-1 net income form takes and exports, read as a record list
+and totalled; a blank is read as 0."""
 
 SCHEDULE_P_FAMILY_INCOME_LINE_54 = AmountKind.declare(
     CATALOG, "schedule_p_family_income_line_54", non_negative=True
@@ -764,6 +793,13 @@ caller does not give; line 275 reads it as 0 when it is left out."""
 TP1_NET_INCOME_LINE_275 = AmountKind.declare(CATALOG, "tp1_net_income_line_275", non_negative=True)
 """Net income, TP-1 line 275 "Add lines 256 and 260. If the result is negative, enter 0": line 256
 plus line 260, not below zero, rounded half-up to the cent."""
+
+TP1_SPOUSE_NET_INCOME_LINE_275 = AmountKind.declare(
+    CATALOG, "tp1_spouse_net_income_line_275", non_negative=True
+)
+"""The spouse's net income, "Amount from line 275 of your spouse's return (spouse on December 31,
+2025)": an optional input the TP-1 net income form takes once and exports, blank when the caller has
+none (a single filer) and read as 0 by Schedule K line 37 and Schedule P line 53."""
 
 TP1_ADJUSTMENT_OF_DEDUCTIONS_LINE_276 = AmountKind.declare(
     CATALOG, "tp1_adjustment_of_deductions_line_276", non_negative=True
@@ -1643,8 +1679,8 @@ SCHEDULE_K_SPOUSE_NET_INCOME_LINE_37 = AmountKind.declare(
     CATALOG, "schedule_k_spouse_net_income_line_37", non_negative=True
 )
 """Spouse's net income, Schedule K line 37 "Amount from line 275 of your spouse's return (spouse on
-December 31, 2025)": an input, the spouse's TP-1 line 275. A single filer has no spouse, so the
-caller leaves it out and line 40 reads it as 0."""
+December 31, 2025)": the spouse's line 275 that the TP-1 net income form takes and exports, read as
+a record list and totalled; a blank is read as 0."""
 
 SCHEDULE_K_INCOME_LINE_40 = AmountKind.declare(
     CATALOG, "schedule_k_income_line_40", non_negative=True
@@ -2340,3 +2376,31 @@ SOLIDARITY_CREDIT = AmountKind.declare(CATALOG, "solidarity_credit", non_negativ
 """Quebec return summary: the solidarity tax credit for July 2026 to June 2027, read from the
 solidarity form's export and shown as its own yearly amount next to the result, not added to the
 2025 refund or balance owing or the total payable. One core/record_total (`return.yaml`)."""
+
+SCHEDULE_P_TP1_LINE_107_TOTAL = AmountKind.declare(CATALOG, "schedule_p_tp1_line_107_total")
+"""The export of the other form that `schedule_p_tp1_line_107` prints, totalled
+before the line rounds it half-up to the cent; a blank is read as 0."""
+
+SCHEDULE_P_RESEARCH_GRANTS_LINE_13_TOTAL = AmountKind.declare(
+    CATALOG, "schedule_p_research_grants_line_13_total"
+)
+"""The export of the other form that `schedule_p_research_grants_line_13` prints, totalled
+before the line rounds it half-up to the cent; a blank is read as 0."""
+
+SCHEDULE_P_WEPP_PAYMENTS_LINE_15_TOTAL = AmountKind.declare(
+    CATALOG, "schedule_p_wepp_payments_line_15_total"
+)
+"""The export of the other form that `schedule_p_wepp_payments_line_15` prints, totalled
+before the line rounds it half-up to the cent; a blank is read as 0."""
+
+SCHEDULE_P_SPOUSE_NET_INCOME_LINE_53_TOTAL = AmountKind.declare(
+    CATALOG, "schedule_p_spouse_net_income_line_53_total", non_negative=True
+)
+"""The export of the other form that `schedule_p_spouse_net_income_line_53` prints, totalled
+before the line rounds it half-up to the cent; a blank is read as 0."""
+
+SCHEDULE_K_SPOUSE_NET_INCOME_LINE_37_TOTAL = AmountKind.declare(
+    CATALOG, "schedule_k_spouse_net_income_line_37_total", non_negative=True
+)
+"""The export of the other form that `schedule_k_spouse_net_income_line_37` prints, totalled
+before the line rounds it half-up to the cent; a blank is read as 0."""

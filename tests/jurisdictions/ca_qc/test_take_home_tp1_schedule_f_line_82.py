@@ -99,6 +99,9 @@ def test_line_82_is_zero_for_a_line_70_of_18130_or_less(
 SCHEDULE_F_PARTS = (
     "salary.yaml",
     "tp1_income.yaml",
+    "tp1_income_line_105_input.yaml",
+    "tp1_income_line_107_input.yaml",
+    "tp1_income_line_box_211_input.yaml",
     "tp1_income_line_199_input.yaml",
     "tp1_income_line_199.yaml",
     "tp1_income_line_97_input.yaml",

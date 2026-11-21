@@ -40,6 +40,9 @@ FORM_PART = (
 PARTS = (
     "salary.yaml",
     "tp1_income.yaml",
+    "tp1_income_line_105_input.yaml",
+    "tp1_income_line_107_input.yaml",
+    "tp1_income_line_box_211_input.yaml",
     "tp1_income_line_199_input.yaml",
     "tp1_income_line_199.yaml",
     "tp1_income_line_97_input.yaml",

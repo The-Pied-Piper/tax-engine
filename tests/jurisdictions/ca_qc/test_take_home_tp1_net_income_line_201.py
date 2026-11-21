@@ -12,7 +12,7 @@ import pytest
 
 from tax_engine.jurisdictions.ca_qc.catalog import (
     TP1_DEDUCTION_FOR_WORKERS_LINE_201,
-    WORK_CHART_201_LINE_107,
+    TP1_LINE_107,
 )
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 from tests.jurisdictions.ca_qc.tp1_net_income_support import net_income_sheet
@@ -37,7 +37,7 @@ def test_line_201_at_each_salary(
 def test_a_negative_chart_line_9_is_carried_as_printed(take_home_service: TakeHomeService) -> None:
     """Work Chart 201 line 1 is signed, so a negative line 107 (a loss) can take line 9 below zero
     (6% of -5,000.00 = -300.00, under the maximum): line 201 carries it as printed."""
-    given = (WORK_CHART_201_LINE_107, "-25000")
+    given = (TP1_LINE_107, "-25000")
     value = net_income_sheet(take_home_service, "20000", EXPORTS, PARTS, given).get(LINE).value
 
     assert str(value) == "-300.00"

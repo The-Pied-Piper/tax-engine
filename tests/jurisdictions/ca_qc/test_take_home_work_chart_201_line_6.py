@@ -26,14 +26,12 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     WORK_CHART_201_WORK_INCENTIVE_AMOUNTS_LINE_2,
 )
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
+from tests.jurisdictions.ca_qc.support import TP1_PARTS
 
 D = Decimal
 
 PARTS = (
-    "salary.yaml",
-    "work_chart_201_line_1_input_105.yaml",
-    "work_chart_201_line_1_input_107.yaml",
-    "work_chart_201_line_1_input_box_211.yaml",
+    *TP1_PARTS,
     "work_chart_201_line_1.yaml",
     "work_chart_201_line_2_input.yaml",
     "work_chart_201_line_3_input.yaml",

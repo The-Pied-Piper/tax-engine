@@ -1,8 +1,10 @@
-"""The Schedule K line 37 input (2025), as the Quebec take-home manifest part declares it.
+"""The spouse's line 275 input (2025), as the Quebec take-home manifest part declares it.
 
-Revenu Quebec TP-1.D.K-V (2025-12), Schedule K, Part A, line 37: "Amount from line 275 of your
-spouse's return (spouse on December 31, 2025)". The spouse's return is not computed here, so the
-amount is an optional input, left blank by a single filer; line 40 reads the blank as 0.
+Revenu Quebec TP-1.D.K-V (2025-12), Schedule K, Part A, line 37, and TP-1.D.P-V, Schedule P,
+Part C, line 53: "Amount from line 275 of your spouse's return (spouse on December 31, 2025)". The
+spouse's return is not computed here, so the amount is an optional input, left blank by a single
+filer. The TP-1 net income form takes it once and exports it; Schedule K line 37 and Schedule P
+line 53 read the export and read the blank as 0.
 
 The real part is loaded under a test-local header and form declaration over the Quebec package list
 of `support.py`.
@@ -20,14 +22,14 @@ import tax_engine.jurisdictions.ca_qc
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.manifest import Manifest
-from tax_engine.jurisdictions.ca_qc.catalog import SCHEDULE_K_SPOUSE_NET_INCOME_LINE_37
+from tax_engine.jurisdictions.ca_qc.catalog import TP1_SPOUSE_NET_INCOME_LINE_275
 from tests.jurisdictions.ca_qc.support import quebec_kinds, quebec_packages, quebec_units
 from tests.kinds import non_negative
 
-IDENTIFIER = SCHEDULE_K_SPOUSE_NET_INCOME_LINE_37.identifier
+IDENTIFIER = TP1_SPOUSE_NET_INCOME_LINE_275.identifier
 PRINTED_BASIS = "Amount from line 275 of your spouse's return (spouse on December 31, 2025)"
 PART = Path(tax_engine.jurisdictions.ca_qc.__file__).parent / (
-    "manifests/2025/tp1_schedule_k_line_37_input.yaml"
+    "manifests/2025/tp1_net_income_line_275_spouse_input.yaml"
 )
 HEADER = """\
 jurisdiction: CA-QC
@@ -42,10 +44,10 @@ capabilities: []
 """
 FORM = """\
 form:
-  name: ca-qc/tp1_schedule_k
+  name: ca-qc/tp1_net_income
   required: true
   exports:
-    - ca-qc/schedule_k_spouse_net_income_line_37
+    - ca-qc/tp1_spouse_net_income_line_275
 capabilities: []
 """
 
@@ -66,15 +68,15 @@ def _part() -> dict[str, Any]:
     return part
 
 
-def test_the_part_declares_only_the_line_37_input_as_optional() -> None:
+def test_the_part_declares_only_the_spouse_line_275_input_as_optional() -> None:
     part = _part()
 
     assert list(part) == ["form", "inputs"]
-    assert part["form"] == {"name": "ca-qc/tp1_schedule_k"}
+    assert part["form"] == {"name": "ca-qc/tp1_net_income"}
     (declaration,) = part["inputs"]
     assert declaration == {
         "name": IDENTIFIER,
-        "reference": "37",
+        "reference": "275",
         "unit": "ca/cad",
         "required": False,
         "default": None,
@@ -85,8 +87,8 @@ def test_the_part_declares_only_the_line_37_input_as_optional() -> None:
 def test_the_amount_is_a_registered_non_negative_decimal_amount() -> None:
     kind = quebec_kinds().kind(IDENTIFIER)
 
-    assert IDENTIFIER == "ca-qc/schedule_k_spouse_net_income_line_37"
-    assert kind is SCHEDULE_K_SPOUSE_NET_INCOME_LINE_37
+    assert IDENTIFIER == "ca-qc/tp1_spouse_net_income_line_275"
+    assert kind is TP1_SPOUSE_NET_INCOME_LINE_275
     assert isinstance(kind, AmountKind)
     assert non_negative(kind)
 

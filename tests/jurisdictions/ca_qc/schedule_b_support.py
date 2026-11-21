@@ -28,6 +28,7 @@ FORM = "ca-qc/schedule_b"
 # The real net income form declaration (it exports lines 275 and 299) and its line parts.
 NET_INCOME_PARTS = (
     "tp1_net_income.yaml",
+    "tp1_net_income_line_275_spouse_input.yaml",
     "tp1_net_income_line_201.yaml",
     "tp1_net_income_line_248.yaml",
     "tp1_net_income_line_254_input.yaml",

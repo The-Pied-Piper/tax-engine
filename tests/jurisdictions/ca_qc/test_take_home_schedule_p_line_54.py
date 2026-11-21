@@ -13,7 +13,7 @@ import pytest
 
 from tax_engine.jurisdictions.ca_qc.catalog import (
     SCHEDULE_P_FAMILY_INCOME_LINE_54,
-    SCHEDULE_P_SPOUSE_NET_INCOME_LINE_53,
+    TP1_SPOUSE_NET_INCOME_LINE_275,
 )
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 from tests.jurisdictions.ca_qc.schedule_p_family_income_support import family_income_worksheet
@@ -21,7 +21,7 @@ from tests.jurisdictions.ca_qc.support import schedule_p_form
 
 PARTS = (
     "schedule_p_line_52.yaml",
-    "schedule_p_line_53_inputs.yaml",
+    "schedule_p_line_53.yaml",
     "schedule_p_line_54.yaml",
 )
 FORM = schedule_p_form("ca-qc/schedule_p_family_income_line_54")
@@ -45,7 +45,7 @@ def test_line_53_is_added_to_line_52(take_home_service: TakeHomeService) -> None
         FORM,
         PARTS,
         "70000",
-        (SCHEDULE_P_SPOUSE_NET_INCOME_LINE_53, "30000.255"),
+        (TP1_SPOUSE_NET_INCOME_LINE_275, "30000.255"),
     )
 
     # 67,915.00 + 30,000.255 = 97,915.255, half-up to the cent.

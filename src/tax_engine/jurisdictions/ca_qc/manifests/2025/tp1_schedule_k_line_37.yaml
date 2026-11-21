@@ -1,0 +1,28 @@
+# Schedule K (2025) line 37: "Amount from line 275 of your spouse's return (spouse on December 31,
+# 2025)" (Revenu Quebec TP-1.D.K-V (2025-12), Part A). The spouse's line 275 is an optional input of
+# the TP-1 net income form, which exports it, so this step reads that export (a record list of one)
+# with core/record_total (a blank read as 0), then rounds it half-up to the cent
+# through core/sum for a single filer; line 40 adds it.
+form:
+  name: ca-qc/tp1_schedule_k
+capabilities:
+  - name: core/record_total
+    title: "Amount from line 275 of your spouse's return"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp1_net_income.tp1_spouse_net_income_line_275
+    blank:
+      records:
+        ca-qc/tp1_spouse_net_income_line_275: "0"
+    produces:
+      output: ca-qc/schedule_k_spouse_net_income_line_37_total
+  - name: core/sum
+    title: "Amount from line 275 of your spouse's return"
+    reference: "37"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts: [ca-qc/schedule_k_spouse_net_income_line_37_total]
+    produces:
+      output: ca-qc/schedule_k_spouse_net_income_line_37

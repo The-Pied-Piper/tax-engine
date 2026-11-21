@@ -140,7 +140,7 @@ def test_the_real_form_declaration_exports_lines_450_456_457_478_and_479() -> No
 
     assert list(declaration["form"]) == ["name", "title", "required", "exports"]
     assert declaration["form"]["name"] == FORM
-    assert declaration["form"]["title"] == "Refund or balance due"
+    assert declaration["form"]["title"] == "Income Tax Return"
     assert declaration["form"]["required"] is True
     assert declaration["form"]["exports"] == [
         "ca-qc/tp1_income_tax_and_contributions_line_450",

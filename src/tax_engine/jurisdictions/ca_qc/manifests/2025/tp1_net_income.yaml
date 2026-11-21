@@ -8,9 +8,10 @@
 # the schedules read, and line 299, the taxable income that Work Chart 401 reads.
 form:
   name: ca-qc/tp1_net_income
-  title: "Net income"
+  title: "Income Tax Return"
   required: true
   exports:
     - ca-qc/tp1_net_income_line_275
     - ca-qc/tp1_taxable_income_line_299
+    - ca-qc/tp1_spouse_net_income_line_275
 capabilities: []

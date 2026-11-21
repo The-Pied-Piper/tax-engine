@@ -1,0 +1,15 @@
+# Spouse's net income, "Amount from line 275 of your spouse's return (spouse on December 31, 2025)":
+# the figure Schedule P line 53 and Schedule K line 37 both print. It is a line 275, the one the TP-1
+# net income form prints for the filer, taken from the spouse's return, which is not one of ours, so
+# this form takes it once and exports it. A single filer has no spouse and a salary-only caller does
+# not give it; Schedule P and Schedule K read the export (`ca-qc/tp1_net_income.tp1_spouse_net_income_line_275`)
+# and read a blank as 0.
+form:
+  name: ca-qc/tp1_net_income
+inputs:
+  - name: ca-qc/tp1_spouse_net_income_line_275
+    reference: "275"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Amount from line 275 of your spouse's return (spouse on December 31, 2025)"
