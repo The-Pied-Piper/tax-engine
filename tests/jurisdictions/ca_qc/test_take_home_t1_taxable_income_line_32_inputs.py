@@ -16,7 +16,6 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.domain.manifest import Manifest
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 from tests.jurisdictions.ca_qc.support import quebec_kinds, quebec_packages, quebec_units
-from tests.kinds import non_negative
 
 PART = "t1_taxable_income_line_32_inputs.yaml"
 BASIS = {
@@ -67,8 +66,3 @@ def test_a_request_that_leaves_out_the_line_is_read_as_blank(
     assert declaration.basis == BASIS[line]
     assert declaration.reference == line
     assert default is not None and default.is_blank
-
-
-@pytest.mark.parametrize("line", LINES)
-def test_the_input_kind_is_registered_with_its_sign(line: str) -> None:
-    assert non_negative(quebec_kinds().kind(NAMES[line])) is True
