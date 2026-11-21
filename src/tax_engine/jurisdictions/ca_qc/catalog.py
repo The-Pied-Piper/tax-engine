@@ -1792,10 +1792,23 @@ TP1_LINE_377_1 = AmountKind.declare(CATALOG, "tp1_line_377_1")
 cent. Signed, as line 377 is. Produced by one core/apply_rate (`tp1_credits_line_377_1.yaml`)."""
 
 
+TP1_LINE_378 = AmountKind.declare(CATALOG, "tp1_line_378", non_negative=True)
+"""TP-1 line 378 "Expenses for medical services not available in your area": one of the lines that
+line 388 adds, an optional input (form TP-752.0.13.1-V is not built), read as 0 when blank
+(`tp1_credits_line_388_inputs.yaml`)."""
+
+TP1_LINE_381 = AmountKind.declare(CATALOG, "tp1_line_381", non_negative=True)
+"""TP-1 line 381 "Medical expenses": one of the lines that line 388 adds, an optional input
+(Schedule B Part C is not built), read as 0 when blank (`tp1_credits_line_388_inputs.yaml`)."""
+
+TP1_LINE_385 = AmountKind.declare(CATALOG, "tp1_line_385", non_negative=True)
+"""TP-1 line 385 "Interest paid on a student loan": one of the lines that line 388 adds, an
+optional input (Schedule M is not built), read as 0 when blank
+(`tp1_credits_line_388_inputs.yaml`)."""
+
 TP1_LINE_388 = AmountKind.declare(CATALOG, "tp1_line_388", non_negative=True)
-"""TP-1 line 388 "Add lines 378 through 385": the printed sum of lines 378 to 385, one optional
-input a salary-only caller does not give; line 389 reads a blank as 0
-(`tp1_credits_line_388_input.yaml`)."""
+"""TP-1 line 388 "Add lines 378 through 385": lines 378, 381 and 385 added, rounded half-up to the
+cent; blank lines read as 0. Produced by one core/sum (`tp1_credits_line_388.yaml`)."""
 
 
 TP1_LINE_389 = AmountKind.declare(CATALOG, "tp1_line_389", non_negative=True)
@@ -2025,10 +2038,28 @@ non-refundable tax credits, rounded half-up to the cent. The form prints no floo
 signed (line 432 floors it). Produced by one core/subtract (`tp1_tax_line_413.yaml`) and exported by
 the form for lines 425 and 430."""
 
+TP1_LINE_414 = AmountKind.declare(CATALOG, "tp1_line_414", non_negative=True)
+"""TP-1 line 414 "Tax credit for contributions to authorized Québec political parties": one of the
+lines that line 425 adds, an optional input (Work Chart 414 is not built), read as 0 when blank
+(`tp1_tax_line_425_inputs.yaml`)."""
+
+TP1_LINE_415 = AmountKind.declare(CATALOG, "tp1_line_415", non_negative=True)
+"""TP-1 line 415 "Dividend tax credit": one of the lines that line 425 adds, an optional input,
+read as 0 when blank (`tp1_tax_line_425_inputs.yaml`)."""
+
+TP1_LINE_422 = AmountKind.declare(CATALOG, "tp1_line_422", non_negative=True)
+"""TP-1 line 422 "Tax credit for the acquisition of Capital régional et coopératif Desjardins
+shares" (RL-26 slip, box B): one of the lines that line 425 adds, an optional input, read as 0 when
+blank (`tp1_tax_line_425_inputs.yaml`)."""
+
+TP1_LINE_424 = AmountKind.declare(CATALOG, "tp1_line_424", non_negative=True)
+"""TP-1 line 424 "Tax credit for a labour-sponsored fund": one of the lines that line 425 adds, an
+optional input, read as 0 when blank (`tp1_tax_line_425_inputs.yaml`)."""
+
 TP1_LINE_425 = AmountKind.declare(CATALOG, "tp1_line_425", non_negative=True)
-"""TP-1 line 425 "Add lines 414 through 424": the printed sum of lines 414 to 424, one optional
-input a salary-only caller does not give; line 430 reads a blank as 0
-(`tp1_tax_line_425_input.yaml`)."""
+"""TP-1 line 425 "Add lines 414 through 424": lines 414, 415, 422 and 424 added, rounded half-up
+to the cent; blank lines read as 0. Produced by one core/sum (`tp1_tax_line_425.yaml`)."""
+
 
 TP1_LINE_430 = AmountKind.declare(CATALOG, "tp1_line_430")
 """TP-1 line 430 "Subtract line 425 from line 413": signed, as the form prints no floor here (line

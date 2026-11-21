@@ -14,7 +14,12 @@ import yaml
 
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.kinds import AmountKind
-from tax_engine.jurisdictions.ca_qc.catalog import TP1_LINE_388, TP1_LINE_389
+from tax_engine.jurisdictions.ca_qc.catalog import (
+    TP1_LINE_378,
+    TP1_LINE_381,
+    TP1_LINE_385,
+    TP1_LINE_389,
+)
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
 from tests.jurisdictions.ca_qc.support import quebec_kinds
 from tests.jurisdictions.ca_qc.tp1_credits_support import LINE_389_PARTS, credits_sheet
@@ -34,10 +39,15 @@ def test_line_389_with_line_388_blank_is_zero(take_home_service: TakeHomeService
 
 
 def test_line_389_is_line_388_at_20_percent(take_home_service: TakeHomeService) -> None:
-    given = Artifact(TP1_LINE_388, D("1234.56"))
-    sheet = credits_sheet(take_home_service, EXPORTS, LINE_389_PARTS, given)
+    given = (
+        Artifact(TP1_LINE_378, D("1000.00")),
+        Artifact(TP1_LINE_381, D("200.56")),
+        Artifact(TP1_LINE_385, D("34.00")),
+    )
+    sheet = credits_sheet(take_home_service, EXPORTS, LINE_389_PARTS, *given)
 
-    # 1,234.56 x 0.20 = 246.912, rounded half-up to the cent.
+    # Line 388 is 1,000.00 + 200.56 + 34.00 = 1,234.56; 1,234.56 x 0.20 = 246.912, rounded half-up
+    # to the cent.
     assert str(sheet.get(TP1_LINE_389).value) == "246.91"
 
 
