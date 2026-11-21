@@ -1,0 +1,42 @@
+# Schedule F (2025) line 68: "Add lines 41 through 62." (Revenu Quebec TP-1.D.F-V (2025-12), Part A).
+# One core/sum over the printed lines 41, 42, 43, 43.1, 44, 45, 46, 54, 56, 58, 60 and 62, rounded
+# half-up to the cent. Each blank line is read as 0. Line 70 reads it. The printed label "Deductions"
+# is the step's title.
+form:
+  name: ca-qc/tp1_schedule_f
+capabilities:
+  - name: core/sum
+    title: "Deductions"
+    reference: "68"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/tp1_schedule_f_line_41
+        - ca-qc/tp1_schedule_f_line_42
+        - ca-qc/tp1_schedule_f_line_43
+        - ca-qc/tp1_schedule_f_line_43_1
+        - ca-qc/tp1_schedule_f_line_44
+        - ca-qc/tp1_schedule_f_line_45
+        - ca-qc/tp1_schedule_f_line_46
+        - ca-qc/tp1_schedule_f_line_54
+        - ca-qc/tp1_schedule_f_line_56
+        - ca-qc/tp1_schedule_f_line_58
+        - ca-qc/tp1_schedule_f_line_60
+        - ca-qc/tp1_schedule_f_line_62
+    blank:
+      ca-qc/tp1_schedule_f_line_41: "0"
+      ca-qc/tp1_schedule_f_line_42: "0"
+      ca-qc/tp1_schedule_f_line_43: "0"
+      ca-qc/tp1_schedule_f_line_43_1: "0"
+      ca-qc/tp1_schedule_f_line_44: "0"
+      ca-qc/tp1_schedule_f_line_45: "0"
+      ca-qc/tp1_schedule_f_line_46: "0"
+      ca-qc/tp1_schedule_f_line_54: "0"
+      ca-qc/tp1_schedule_f_line_56: "0"
+      ca-qc/tp1_schedule_f_line_58: "0"
+      ca-qc/tp1_schedule_f_line_60: "0"
+      ca-qc/tp1_schedule_f_line_62: "0"
+    produces:
+      output: ca-qc/tp1_schedule_f_deductions_line_68

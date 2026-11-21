@@ -25,7 +25,9 @@ PART_A = (
     "tp1_schedule_k_line_37.yaml",
     "tp1_schedule_k_line_40.yaml",
     "tp1_schedule_k_line_41.yaml",
-    "tp1_schedule_k_line_42_or_44_input.yaml",
+    "tp1_schedule_k_line_44_input.yaml",
+    "tp1_schedule_k_line_44_amounts.yaml",
+    "tp1_schedule_k_line_44.yaml",
     "tp1_schedule_k_line_46.yaml",
     "tp1_schedule_k_line_48.yaml",
 )
