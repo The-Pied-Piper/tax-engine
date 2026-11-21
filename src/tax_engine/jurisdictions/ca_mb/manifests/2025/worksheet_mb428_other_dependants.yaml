@@ -28,11 +28,4 @@ form:
       required: false
       default: null
       basis: "Line 2: Enter the amount from line 47 of the dependant's Form MB428."
-inputs:
-  - name: ca-mb/worksheet_mb428_other_dependants
-    title: "Allowable amount of medical expenses for other dependants"
-    unit: ca/cad
-    required: false
-    default: []
-    basis: 'Complete one column for each dependant.'
 capabilities: []

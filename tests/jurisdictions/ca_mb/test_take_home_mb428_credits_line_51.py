@@ -77,6 +77,7 @@ CREDIT_PARTS = (
     "mb428_credits_line_47.yaml",
     "mb428_credits_line_48.yaml",
     "worksheet_mb428_other_dependants.yaml",
+    "worksheet_mb428_other_dependants_inputs.yaml",
     "worksheet_mb428_other_dependants_line_3.yaml",
     "worksheet_mb428_other_dependants_total.yaml",
     "mb428_credits_line_49.yaml",
