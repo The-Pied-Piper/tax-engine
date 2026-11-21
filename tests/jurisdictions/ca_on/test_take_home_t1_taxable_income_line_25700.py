@@ -26,6 +26,7 @@ from tax_engine.jurisdictions.ca.catalog.taxable_income import (
     T1_LINE_25500,
     T1_LINE_25600,
 )
+from tax_engine.registrations import artifact_kinds
 from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService
 
 D = Decimal
@@ -135,5 +136,8 @@ def test_the_part_is_two_subtotals_and_a_sum_with_the_lines_read_as_zero() -> No
 
 
 def test_the_output_kind_is_a_registered_non_negative_amount() -> None:
-    assert isinstance(DEDUCTIONS_FROM_NET_INCOME, AmountKind)
-    assert DEDUCTIONS_FROM_NET_INCOME.non_negative
+    kind = artifact_kinds().kind("ca/deductions_from_net_income")
+
+    assert kind is DEDUCTIONS_FROM_NET_INCOME
+    assert isinstance(kind, AmountKind)
+    assert kind.non_negative
