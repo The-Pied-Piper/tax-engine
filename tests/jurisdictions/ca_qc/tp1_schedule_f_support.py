@@ -19,8 +19,9 @@ from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 
 D = Decimal
 FORM = "ca-qc/tp1_schedule_f"
-# The end of the chain: a form cannot hold a produced line that nothing reads or exports.
+# The end of a chain: a form cannot hold a produced line that nothing reads or exports.
 LINE_36 = "ca-qc/tp1_schedule_f_income_line_36"
+LINE_70 = "ca-qc/tp1_schedule_f_income_subject_line_70"
 LINE_34_INPUTS = ("20", "22", "23", "24", "26", "28", "29", "30", "31", "33")
 INCOME_PARTS = (
     "salary.yaml",
@@ -52,6 +53,13 @@ LINE_36_PARTS = (
     "tp1_schedule_f_line_34.yaml",
     "tp1_schedule_f_line_36.yaml",
 )
+LINE_68_INPUTS = ("41", "42", "43", "43_1", "44", "45", "46", "54", "56", "58", "60", "62")
+LINE_70_PARTS = (
+    *LINE_36_PARTS,
+    "tp1_schedule_f_line_68_inputs.yaml",
+    "tp1_schedule_f_line_68.yaml",
+    "tp1_schedule_f_line_70.yaml",
+)
 HEADER = dedent("""\
     jurisdiction: CA-QC
     version: 1
@@ -67,9 +75,12 @@ def schedule_f(
     export: str,
     *given: tuple[AmountKind, str],
     parts: tuple[str, ...] = LINE_36_PARTS,
+    end: str = LINE_36,
 ) -> Worksheet:
-    """The Schedule F worksheet for a salary, exporting `export`; inputs left out unless given."""
-    exports = dict.fromkeys((export, LINE_36))
+    """The Schedule F worksheet for a salary, exporting `export` and the chain's `end`.
+
+    Every optional input is left out unless it is in `given`."""
+    exports = dict.fromkeys((export, end))
     form = f"form:\n  name: {FORM}\n  required: true\n  exports:\n"
     form += "".join(f"    - {name}\n" for name in exports)
     starting = [Artifact(EMPLOYMENT_INCOME, D(salary))]
