@@ -9,7 +9,7 @@
 # Below $64,764 line 41 is 0, so it gives the printed $400; at and above $84,764 it gives 0; between,
 # the form's own arithmetic, so the three printed cases need no step of their own. It is not the
 # line's final step, so it has no reference, and its title is plain words, as the sentence of line 44
-# names this figure.
+# names this figure. The printed "0" has a plain-words title for the same reason.
 # Step 2 is the form's own gate on line 37: a filer who paid no rent for any month does not qualify,
 # so line 44 is the printed "0" (the `ca-bc/renters_credit_zero` dataset, through core/credit_amount)
 # and the amount of step 1 is not claimed. core/choose_by_count chooses by the months of line 37, a
@@ -30,6 +30,7 @@ capabilities:
     produces:
       output: ca-bc/bc479_renters_credit_before_months_check
   - name: core/credit_amount
+    title: "Renter's tax credit when no rent was paid"
     unit: ca/cad
     params:
       amount: ca-bc/renters_credit_zero
