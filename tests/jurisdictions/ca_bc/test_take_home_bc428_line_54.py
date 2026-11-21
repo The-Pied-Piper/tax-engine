@@ -1,8 +1,8 @@
 """BC428 (2025) line 54, line 45 plus line 53, from the salary alone, real parts.
 
 Form text (Form BC428, CRA 5010-C, read 2026-11-14): "Line 54 and line 58800: Line 45 plus line 53
-= ^". Line 53 (medical expenses) is computed from lines 46 to 52 and is 0.00 for a salary-only caller;
-line 54 is one core/sum over line 45 and line 53.
+= ^". Line 53 (medical expenses) is computed from lines 46 to 52 and is 0.00 for a salary-only
+caller; line 54 is one core/sum over line 45 and line 53.
 
 The test composes the real British Columbia salary part, the real Schedule 8 and T2204 parts, the
 real line 16, 25, 27, 29, 33, 35, 37, 40 and 45 parts, the line 36 and line 53 input parts and the
@@ -70,8 +70,8 @@ FORM = dedent("""\
     capabilities: []
     """)
 
-# salary, line 54 (line 45, which is line 40, plus a line 53 of 0.00). At $200,000 lines 27 and 29 are
-# at their maximums.
+# salary, line 54 (line 45, which is line 40, plus a line 53 of 0.00). At $200,000 lines 27 and 29
+# are at their maximums.
 CASES = [
     ("17000", "13879.05"),
     ("200000", "17365.58"),
