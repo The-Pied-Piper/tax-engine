@@ -55,7 +55,7 @@ from tax_engine.jurisdictions.ca.catalog.refund import (
 )
 from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
-from tests.manifest_support import T1_LINE_10100_PARTS
+from tests.manifest_support import T1_LINE_10100_INPUT, T1_LINE_10100_PARTS
 
 D = Decimal
 HEADER = dedent("""\
@@ -70,7 +70,7 @@ HEADER = dedent("""\
 # form text is an empty mapping.
 FORM = "{}\n"
 PARTS = (
-    "t1_employment_income_line_10100_inputs.yaml",
+    T1_LINE_10100_INPUT.name,
     *T1_LINE_10100_PARTS,
     *form_part_names("t2204"),
 )

@@ -30,7 +30,7 @@ from tax_engine.jurisdictions.ca.catalog.refund import (
     T2204_PREMIUMS_DEDUCTED_GIVEN,
 )
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
-from tests.manifest_support import T1_LINE_10100_PARTS
+from tests.manifest_support import T1_LINE_10100_INPUT, T1_LINE_10100_PARTS
 
 D = Decimal
 
@@ -78,7 +78,7 @@ def t2204(take_home_service: TakeHomeService, salary: str, given: str | None = N
         HEADER,
         FORM,
         *T1_LINE_10100_PARTS,
-        "t1_employment_income_line_10100_inputs.yaml",
+        T1_LINE_10100_INPUT.name,
         LINE_1_PART,
         LINE_4_PART,
     ).compute(JurisdictionCode("CA-ON"), 2025, *starting)["ca/t2204"]

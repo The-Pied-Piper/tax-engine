@@ -7,7 +7,7 @@ over line 39 and the rounded line 41 (`ca-ab/ab428_unused_tuition_rounded_line_4
 step's output, #831), as Ontario line 44 is; the rounded line 41 is never blank, so line 43 has
 no blank rule.
 
-The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts, the real
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the real
 line 16, line 25, line 27, line 29, line 32, line 33, line 36 and line 39 parts, the line 34
 inputs part, the line 41 input part, the line 41 step part and the new
 `ab428_credits_line_43.yaml`, and types in only the salary (and, in one test, line 41). The form

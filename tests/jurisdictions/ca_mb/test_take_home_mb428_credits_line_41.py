@@ -6,7 +6,7 @@ Form text (Form MB428, CRA 5007-C, read 2026-11-17): "Line 41 and line 61470: Fa
 that gives line 12 (another form reads an export only as a record list), as line 9 reads the
 Worksheet MB428 export.
 
-The test composes the real Manitoba salary part, the real Schedule 8 and T1 taxable income parts,
+The test composes the T1 employment income form, the real Schedule 8 and T1 taxable income parts,
 the real parts of Schedule MB428-A lines 1 to 12 (`mb428_a_line_1.yaml`,
 `mb428_a_line_10.yaml`, `mb428_a_line_11.yaml`, `mb428_a_line_11_product.yaml`,
 `mb428_a_line_12.yaml`) and the real line part (`mb428_credits_line_41.yaml`), and types in only

@@ -6,7 +6,7 @@ printed rate, so it is the `ca-ab/credit_rate` dataset figure and has no step of
 is one core/apply_rate step over line 52, rounded half-up to the cent by the dataset's own rule,
 as Ontario line 46 is over line 45. Line 54 prints no name, so the step has no title.
 
-The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts, the real
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the real
 line 16, line 25, line 27, line 29, line 32, line 33, line 36, line 39, line 43 and line 52
 parts, the line 34 inputs part, the line 41 input part, the medical expenses parts (lines 44 to
 51) and the new `ab428_credits_line_54.yaml`, and types in only the salary (and, in one test,

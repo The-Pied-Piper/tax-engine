@@ -11,7 +11,7 @@ Line 4 is one `core/subtract_not_below_zero` step with `amount` = line 1 and `le
 rounded by `ca-sk/cent_rounding`, output `ca-sk/sk428_taxable_income_over_lower_bound_line_4`, in
 the part `sk428_credits_line_4.yaml`.
 
-The test composes the real Saskatchewan salary part, the real Schedule 8 and T1 taxable income
+The test composes the T1 employment income form, the real Schedule 8 and T1 taxable income
 parts, the real `sk428_credits_line_1.yaml`, `sk428_credits_line_3.yaml` and
 `sk428_credits_line_4.yaml`, and types in only the salary. The form declaration is test-local,
 exporting lines 1, 3 and 4.

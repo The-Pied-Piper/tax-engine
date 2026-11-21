@@ -5,7 +5,7 @@ Form text (Form BC428, CRA 5010-C, read 2026-11-14): "Line 58: Line 56 plus line
 as 0 by the step's own blank rule, as Alberta line 58 reads its line 57; line 58 is one core/sum
 over line 56 and line 57.
 
-The test composes the real British Columbia salary part, the real Schedule 8 and T2204 parts, the
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the
 real line 16, 25, 27, 29, 33, 35, 37, 40, 45, 54 and 56 parts, the line 36, line 53 and line 57
 input parts and the new `bc428_line_58.yaml`, and types in only the salary (and, in one test, line
 57). The form declaration is made up here, exporting only line 58. The figures are hand-computed

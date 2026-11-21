@@ -6,7 +6,7 @@ as the T1 form exports it, floored, `ca/t1_taxable_income.net_income`, which rea
 as a record list: line 74 is a core/record_total over it, as ON428-A line 6 is. The kind is
 non-negative.
 
-The test composes the real British Columbia salary part, the real federal parts the T1 taxable
+The test composes the T1 employment income form, the real federal parts the T1 taxable
 income form needs (Schedule 8 for line 23300, and the T1 lines 15000, 23300, 23400, 23600, 23600
 signed and 26000 with their inputs) and the real `bc428_line_74.yaml`, and types in only the salary.
 The BC428 form declaration is made up here, exporting only line 74, because the real header is owned

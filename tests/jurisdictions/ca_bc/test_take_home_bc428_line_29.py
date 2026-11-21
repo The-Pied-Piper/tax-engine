@@ -5,7 +5,7 @@ Form text (Form BC428, CRA 5010-c-25e.txt): "Employment insurance premiums: Line
 amount. Another form's export arrives only as a record list of one amount, so line 29 is a
 core/record_total over that export, as Ontario's line 21 is.
 
-The test composes the real British Columbia salary part, the real Schedule 8 and T2204 parts and the
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts and the
 real `bc428_line_29.yaml`, and types in only the salary. The BC428 form declaration is made up here,
 exporting only line 29, because the real header is owned by another change. The service is built
 over the British Columbia package list of `support.py`.
@@ -33,7 +33,7 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_bc.catalog import BC428_EI_PREMIUMS_LINE_29
-from tests.federal_forms import FEDERAL_FORMS, form_parts
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -42,7 +42,7 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT
+from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
 D = Decimal
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
@@ -72,7 +72,7 @@ def _part_files() -> Iterator[Path]:
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
     yield T1_LINE_10100_FORM
-    yield FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml"
+    yield T1_LINE_10100_STEP
     yield PART
 
 

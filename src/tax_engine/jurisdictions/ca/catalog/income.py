@@ -43,13 +43,6 @@ OTHER_EMPLOYMENT_INCOME_LINE_10400 = AmountKind.declare(
 """Other employment income as T1 line 10400 prints it (`t1_employment_income_line_10400.yaml`): the
 optional input (`ca/other_employment_income`), exported by the T1 employment income form."""
 
-RETURN_EMPLOYMENT_INCOME = AmountKind.declare(
-    CATALOG, "return_employment_income", non_negative=True
-)
-"""The default form's own copy of T1 line 10100 (`return.yaml`): a `core/record_total` of the T1
-employment income form's export `employment_income_line_10100`, which a province's average income
-tax rate divides by."""
-
 UCCB_INCOME = AmountKind.declare(CATALOG, "uccb_income", non_negative=True)
 """Universal child care benefit (UCCB), T1 line 7 and line 11700 "Universal child care benefit
 (UCCB) (see the RC62 slip)": the optional input
@@ -106,6 +99,13 @@ TOTAL_INCOME_OTHER_EMPLOYMENT_INCOME_LINE_10400 = AmountKind.declare(
 )
 """Total income, the part from T1 line 10400 (other employment income): the T1 employment income
 form's export, read by line 15000 (`t1_taxable_income_line_15000.yaml`)."""
+
+RETURN_EMPLOYMENT_INCOME = AmountKind.declare(
+    CATALOG, "return_employment_income", non_negative=True
+)
+"""The default form's own copy of T1 line 10100 (`return.yaml`): a `core/record_total` of the T1
+employment income form's export `employment_income_line_10100`, which a province's average income
+tax rate divides by."""
 
 CREDITS_AGAINST_BASIC_FEDERAL_TAX = AmountKind.declare(
     CATALOG, "credits_against_basic_federal_tax", non_negative=True

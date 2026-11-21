@@ -7,7 +7,7 @@ is one core/apply_rate step over line 51, rounded half-up to the cent by the dat
 Manitoba's line 53 is over its line 51. The form prints no label for line 53, so the step has no
 title.
 
-The test composes the real Saskatchewan salary part, the real Schedule 8 and T2204 parts, the real
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the real
 line parts (`sk428_credits_line_9.yaml`, `_line_20.yaml`, `_line_22.yaml`, `_line_24.yaml`,
 `_line_31.yaml`, `_line_32.yaml`, `_line_33.yaml`, `_line_35.yaml`, `_line_38.yaml`,
 `_line_42.yaml`, `_line_51.yaml`), the real `sk428_line_33_inputs.yaml`, the real

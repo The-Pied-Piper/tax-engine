@@ -6,7 +6,7 @@ core/record_total over the T1 export that gives taxable income
 (`ca/t1_taxable_income.taxable_income`), as Ontario's line 1 is (`on428_line_3.yaml`). Lines 2
 and 9 are copies of line 1 and have no step.
 
-The test composes the real British Columbia salary part, the real Schedule 8 parts, the real T1
+The test composes the T1 employment income form, the real Schedule 8 parts, the real T1
 taxable income parts and the real line part (`bc428_line_1.yaml`), and types in only the salary. The
 form declaration is made up here, exporting the line read, because the real form part is owned by
 another change. The figures are hand-computed from the printed forms (not a CRA example) and are

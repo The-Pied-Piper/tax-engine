@@ -5,7 +5,7 @@ Form text (Form MB428, Manitoba Tax, CRA 5007-c-25e.txt, line 105, read 2026-11-
 `mb428_credits_line_18.yaml`) and line 28 (the CPP, EI and other credits sum,
 `mb428_credits_line_28.yaml`), as Alberta's line 33 adds its two subtotals.
 
-The test composes the real Manitoba salary part, the real Schedule 8, T2204 and T1 taxable income
+The test composes the T1 employment income form, the real Schedule 8, T2204 and T1 taxable income
 parts, the real parts of Worksheet MB428 lines 1 to 9, the real parts of lines 9, 18, 19, 21 and 28
 and the new `mb428_credits_line_29.yaml`, and types in only the salary. The header and the form
 declarations are made up here, exporting the lines read, because the shared scaffold owns them. The

@@ -6,7 +6,7 @@ core/sum over line 20 (the credits subtotal, here the basic personal amount alon
 (CPP or QPP, EI and the other lines), as Ontario's line 25 is. The form prints no label for line
 32, so the step has no title.
 
-The test composes the real Saskatchewan salary part, the real Schedule 8 and T2204 parts and the
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts and the
 real line parts (`sk428_credits_line_9.yaml`, `_line_20.yaml`, `_line_22.yaml`, `_line_24.yaml`,
 `_line_31.yaml`, `_line_32.yaml`), and types in only the salary. The form declaration is made up
 here, exporting the lines read, because the real form part exports only the lines already built.
@@ -38,7 +38,7 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_sk.catalog import SK428_CREDITS_SUBTOTAL_LINE_32
-from tests.federal_forms import FEDERAL_FORMS, form_parts
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_sk.support import (
     saskatchewan_capabilities,
     saskatchewan_kinds,
@@ -47,7 +47,7 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT
+from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
 D = Decimal
 SK_PARTS = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / "manifests" / "2025"
@@ -99,7 +99,7 @@ def _part_files() -> Iterator[Path]:
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
     yield T1_LINE_10100_FORM
-    yield FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml"
+    yield T1_LINE_10100_STEP
     yield SK_PARTS / "sk428_credits_line_9.yaml"
     yield SK_PARTS / "sk428_credits_line_20.yaml"
     yield SK_PARTS / "sk428_credits_line_22.yaml"

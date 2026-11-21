@@ -11,7 +11,7 @@ Line 8 is one `core/sum` over `ca-sk/sk428_tax_on_excess_line_6` and
 the part `sk428_credits_line_8.yaml`. Lines 6 and 7 are never blank in Saskatchewan, so line 8 is
 never blank either.
 
-The test composes the real Saskatchewan salary part, the real Schedule 8 and T1 taxable income
+The test composes the T1 employment income form, the real Schedule 8 and T1 taxable income
 parts, the real `sk428_credits_line_1.yaml`, `sk428_credits_line_3.yaml`,
 `sk428_credits_line_4.yaml`, `sk428_credits_line_5.yaml`, `sk428_credits_line_6.yaml`,
 `sk428_credits_line_7.yaml` and `sk428_credits_line_8.yaml`, and types in only the salary. The

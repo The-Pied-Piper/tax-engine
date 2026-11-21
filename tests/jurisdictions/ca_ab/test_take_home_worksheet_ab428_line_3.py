@@ -6,7 +6,7 @@ signed `core/subtract` of line 2 from line 1, rounded by `ca-ab/cent_rounding`, 
 signed (not non-negative). The form prints no title text for the line, so the step is untitled,
 and neither consumed line is ever blank, so the step has no blank rule.
 
-The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts, the real AB428
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the real AB428
 credits parts up to line 52 (line 16, 25, 27, 29, 32, 33, 34 inputs, 36, 39, 41 input, 43, the
 medical expenses parts 44 to 51 and 52), the real `worksheet_ab428_line_1.yaml` and
 `worksheet_ab428_line_2.yaml` parts and the new `worksheet_ab428_line_3.yaml`, and types in only

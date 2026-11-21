@@ -5,7 +5,7 @@ of your return". The line is a copy, so its one step is a core/record_total over
 export that gives T1 line 30800 (Schedule 8 line 25, the CPP base contributions on the return), as
 Ontario's line 19 is (`on428_line_19.yaml`).
 
-The test composes the real British Columbia salary part, the real Schedule 8 parts and the real line
+The test composes the T1 employment income form, the real Schedule 8 parts and the real line
 part (`bc428_line_27.yaml`), and types in only the salary. The form declaration is made up here,
 exporting the line read, because the real form part is owned by another change. The figures are
 hand-computed from the printed forms (not a CRA example).

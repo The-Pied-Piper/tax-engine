@@ -5,7 +5,7 @@ by line 56. Otherwise, enter the amount from line 55." Line 57 prints no label, 
 title. It is one core/multiply of line 55 by the line 56 input. The line 56 input reads 1 when left
 blank, so line 57 takes line 55 and the step needs no blank rule; line 55 is always produced.
 
-The test composes the real Manitoba salary part, the real Schedule 8 parts, the real T1 taxable
+The test composes the T1 employment income form, the real Schedule 8 parts, the real T1 taxable
 income parts, the real MB479 parts of lines 1 to 7, 17, 18, 19 and 53, the real
 `mb479_line_55.yaml`, the real line 56 input part and the new `mb479_line_57.yaml`, and types in
 only

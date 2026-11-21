@@ -9,9 +9,8 @@ is `ca-mb/mb428_additional_tax_minimum_tax_line_66`. The step is titled with the
 prints above the line, "Manitoba additional tax for minimum tax purposes". Because the input is
 blank for a salary-only caller, the step prints its own "left blank, taken as 0" row.
 
-The salary part, the inputs part and the line 66 part are loaded under a test-local header and form
-declaration, over the Manitoba package list of `support.py`.
-"""
+The T1 employment income form, the inputs part and the line 66 part are loaded under a test-local
+header and form declaration, over the Manitoba package list of `support.py`."""
 
 from __future__ import annotations
 

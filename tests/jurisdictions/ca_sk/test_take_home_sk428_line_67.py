@@ -9,7 +9,7 @@ a sum with its own blank rule for line 61, line 66 a sum with its own blank rule
 neither is ever blank and the step has no blank rule. The output is
 `ca-sk/sk428_tax_after_credits_line_67`.
 
-The test composes the real Saskatchewan salary part, the real Schedule 8 and T2204 parts, the T1
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the T1
 taxable income parts, the real line parts of `ca-sk/sk428_credits` that lines 8 and 57 need, the
 real `sk428_line_58.yaml` to `sk428_line_66.yaml` parts and the new `sk428_line_67.yaml`, and types
 in only the salary (and, in some tests, lines 61 and 64). The two form declarations are made up

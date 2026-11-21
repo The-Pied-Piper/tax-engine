@@ -8,7 +8,7 @@ blank line 4 is read as 0 and the step prints its own "left blank, taken as 0" r
 floored at 0, so the kind `ca-mb/mb479_family_income_column_1_line_5` is non-negative. The form
 names no label for the line, so the step has no title.
 
-The test composes the real Manitoba salary part, the real Schedule 8 parts, the real T1 taxable
+The test composes the T1 employment income form, the real Schedule 8 parts, the real T1 taxable
 income parts, the real line 1 and line 3 parts, the line 2 and line 4 input parts and the line 5
 part, and types in only the salary (and, in some tests, line 4). The MB479 form declaration is made
 up here, exporting only line 5.

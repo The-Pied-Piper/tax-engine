@@ -13,7 +13,7 @@ it). Then `core/divide` takes `ca/total_payable` divided by `ca/employment_incom
 the `ca-nl/rate_rounding` dataset (half-up to 0.0001), and produces `ca-nl/average_income_tax_rate`
 (unit `core/percent`, non-negative). A salary of 0 gives a rate of 0, not an error.
 
-The test composes the real Newfoundland and Labrador salary part and the real `return.yaml`; the
+The test composes the T1 employment income form and the real `return.yaml`; the
 header, the declaration of the T1 tax and credits form and the steps producing its two exports are
 made up here, because the shared scaffold and the T1 form own them: the stand-in steps take a given
 `ca/total_credits` off the salary, so line 43500 is the salary less those credits. The worked

@@ -12,7 +12,7 @@ prints its own "left blank, taken as 0" row, as Alberta's AB428 line 70 does for
 form floors line 71 at 0 (printed), unlike signed line 69, so the output `ca-sk/sk428_tax_line_71`
 is a non-negative kind on the form `ca-sk/sk428`.
 
-The test composes the real Saskatchewan salary part, the real Schedule 8 and T2204 parts, the T1
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the T1
 taxable income parts, the real line parts of `ca-sk/sk428_credits` that lines 8 and 57 need, the
 real `sk428_line_58.yaml` to `sk428_line_69.yaml` parts, the line 70 inputs part and the new
 `sk428_line_71.yaml`, and types in only the salary (and, in some tests, lines 61 and 64, the Form

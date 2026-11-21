@@ -9,9 +9,8 @@ reference), `core/at_most` checks the entry against it (no title, no reference, 
 and `core/apply_rate` multiplies the checked amount by 15%, rounded half-up to the cent, and
 carries the reference "79". The heading above the line is a section heading, so no step is titled.
 
-The salary part, the input part and the line 79 part are loaded under a test-local header and form
-declaration, over the Manitoba package list of `support.py`.
-"""
+The T1 employment income form, the input part and the line 79 part are loaded under a test-local
+header and form declaration, over the Manitoba package list of `support.py`."""
 
 from __future__ import annotations
 

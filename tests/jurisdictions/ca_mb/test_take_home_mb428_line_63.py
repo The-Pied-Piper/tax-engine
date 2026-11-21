@@ -9,9 +9,8 @@ the cent. The output is `ca-mb/mb428_minimum_tax_carryover_credit_line_63`. The 
 titled with the heading the form prints above the line, "Manitoba minimum tax carryover". Because
 the input is blank for a salary-only caller, the step prints its own "left blank, taken as 0" row.
 
-The salary part, the inputs part and the line 63 part are loaded under a test-local header and form
-declaration, over the Manitoba package list of `support.py`.
-"""
+The T1 employment income form, the inputs part and the line 63 part are loaded under a test-local
+header and form declaration, over the Manitoba package list of `support.py`."""
 
 from __future__ import annotations
 

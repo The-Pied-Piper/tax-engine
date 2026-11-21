@@ -6,7 +6,7 @@ the part reads line 25 (the credits subtotal, `ab428_line_25.yaml`) directly. Li
 lines 27 to 31 (`ab428_credits_line_32.yaml`). So line 33 is one core/sum over line 25 then line
 32, as Ontario's line 28 adds line 25 to its line 27.
 
-The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts, the real line
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the real line
 16, line 25, line 27, line 29 and line 32 parts and the new `ab428_credits_line_33.yaml`, and types
 in only the salary. The form declaration is made up here, exporting only line 33. The figures are
 hand-computed from the printed forms (not a CRA example): line 25 is the basic personal amount

@@ -9,7 +9,7 @@ net income above 400,000.00 gives a line 4 above the 200,000.00 threshold), whic
 `core/multiply_by_rate` would refuse, so the step is `core/multiply`. Its unit is `ca/cad`. The kind
 `ca-mb/worksheet_mb428_line_8` is non-negative.
 
-The test composes the real Manitoba salary part, the real federal parts the T1 taxable income form
+The test composes the T1 employment income form, the real federal parts the T1 taxable income form
 needs, the real line 2 to 7 parts and the new `worksheet_mb428_line_8.yaml`, and types in only the
 salary. The header and the Worksheet MB428 form declaration are made up here, because the shared
 scaffold owns them.

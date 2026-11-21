@@ -9,12 +9,11 @@ line 44 input, producing `ca-bc/bc479_british_columbia_credits_line_45`, a non-n
 reference "45", titled as printed. Line 44 is optional and a salary-only caller leaves it blank, so
 the step carries the blank rule that reads it as 0 and prints its own "left blank, taken as 0" row.
 
-The test composes the real salary part, the real Schedule 8 and T1 taxable income parts, the real
-line 1 to line 44 parts and the new line 45 part, and types in the salary and, in some tests, the
-inputs. The form declaration is made up here, exporting only line 45. Figures are hand-computed from
-the printed forms (not a CRA example): line 35 is 37.70 at 17,000 and 0.00 above, so line 45 is
-37.70 at 17,000 and 0.00 above with line 44 blank.
-"""
+The test composes the T1 employment income form, the real Schedule 8 and T1 taxable income parts,
+the real line 1 to line 44 parts and the new line 45 part, and types in the salary and, in some
+tests, the inputs. The form declaration is made up here, exporting only line 45. Figures are
+hand-computed from the printed forms (not a CRA example): line 35 is 37.70 at 17,000 and 0.00 above,
+so line 45 is 37.70 at 17,000 and 0.00 above with line 44 blank."""
 
 from __future__ import annotations
 

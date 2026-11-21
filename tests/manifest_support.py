@@ -6,8 +6,10 @@ import re
 from collections.abc import Iterable
 from pathlib import Path
 
+import tax_engine.jurisdictions.ca_qc
 from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import InputDeclaration
+from tests.federal_forms import FEDERAL_FORMS
 
 
 def required_fields(kind: RecordListKind) -> tuple[InputDeclaration, ...]:
@@ -42,16 +44,14 @@ T1_LINE_10100_PARTS = (T1_LINE_10100_FORM.name, "t1_employment_income_line_10100
 # The T1 employment income form's part that declares the salary (line 10100) input, federal and
 # Quebec's own. The salary belongs to that form, so a test manifest that copies a step reading it
 # copies this part with its `form:` header.
-_JURISDICTIONS = Path(__file__).parent.parent / "src" / "tax_engine" / "jurisdictions"
 T1_LINE_10100_INPUT = (
-    _JURISDICTIONS
-    / "ca"
-    / "forms"
-    / "t1_employment_income"
-    / "t1_employment_income_line_10100_inputs.yaml"
+    FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100_inputs.yaml"
 )
 # The part that computes line 10100 itself (the step), beside the input part above.
 T1_LINE_10100_STEP = T1_LINE_10100_INPUT.with_name("t1_employment_income_line_10100.yaml")
 QC_T1_LINE_10100_INPUT = (
-    _JURISDICTIONS / "ca_qc" / "manifests" / "2025" / "t1_employment_income_line_10100_inputs.yaml"
+    Path(tax_engine.jurisdictions.ca_qc.__file__).parent
+    / "manifests"
+    / "2025"
+    / "t1_employment_income_line_10100_inputs.yaml"
 )

@@ -5,7 +5,7 @@ and no maximum, so its step has no title. It is one core/sum over line 70 and th
 which is optional and read as 0 when left blank, so the step carries a blank block and prints its
 own "left blank, taken as 0" row.
 
-The test composes the real Manitoba salary part, the real Schedule 8 parts, the real T1 taxable
+The test composes the T1 employment income form, the real Schedule 8 parts, the real T1 taxable
 income parts, the real MB479 parts of lines 1 to 7, 17, 18, 19, 53, 55, 56, 57, 59, 60, 61, 62, 63,
 64, 65, 66, 67, 68, 69 and 70, the line 71 input part and the new `mb479_line_72.yaml`, and types
 in only the salary (and, in some tests, line 71). The MB479 form declaration is made up here,

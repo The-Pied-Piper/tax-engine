@@ -7,7 +7,7 @@ calculation, not an input: its one step is a core/record_total over the AB428 li
 export. The form prints no title text for the line, so the step is untitled. Line 52 is always
 computed, so the step has no blank rule.
 
-The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts, the real AB428
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the real AB428
 credits parts up to line 52 (line 16, 25, 27, 29, 32, 33, 34 inputs, 36, 39, 41 input, 43, the
 medical expenses parts 44 to 51 and 52) and the new `worksheet_ab428_line_1.yaml`, and types in
 only the salary. The header and the two form declarations (AB428 credits, exporting line 52, and

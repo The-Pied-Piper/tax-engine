@@ -25,12 +25,13 @@ from tax_engine.jurisdictions.ca.catalog.income import (
     TOTAL_INCOME,
 )
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
+from tests.manifest_support import T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
 D = Decimal
 PARTS = (
     "t1_employment_income.yaml",
-    "t1_employment_income_line_10100.yaml",
-    "t1_employment_income_line_10100_inputs.yaml",
+    T1_LINE_10100_STEP.name,
+    T1_LINE_10100_INPUT.name,
     "t1_employment_income_line_10400.yaml",
     "t1_employment_income_line_10400_inputs.yaml",
     "t1_taxable_income_line_15000.yaml",

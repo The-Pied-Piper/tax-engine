@@ -7,7 +7,7 @@ line 5 is one core/apply_rate step over line 3, rounded half-up to the cent by t
 rule. The form prints no title text for the line, so the step is untitled, and it prints no floor
 on line 3 or line 5 (the floor is on line 7), so line 5 is signed like line 3.
 
-The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts, the real
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the real
 AB428 credits parts up to line 52, the real `worksheet_ab428_line_1.yaml`,
 `worksheet_ab428_line_2.yaml` and `worksheet_ab428_line_3.yaml` parts and the new
 `worksheet_ab428_line_5.yaml`, and types in only the salary (and, in one test, line 41). The

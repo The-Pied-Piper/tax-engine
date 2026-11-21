@@ -9,9 +9,9 @@ as 0 when left out. Line 67 is one calculation: 35% of the amount, a printed rat
 `ca-ab/ab428_additional_minimum_tax_line_67`. The step is titled "Alberta additional tax for
 minimum tax purposes".
 
-The salary part, the inputs part and the line 67 part are loaded under a test-local header and form
-declaration, as Ontario's line 87 test does, over the Alberta package list of `support.py`.
-"""
+The T1 employment income form, the inputs part and the line 67 part are loaded under a test-local
+header and form declaration, as Ontario's line 87 test does, over the Alberta package list of
+`support.py`."""
 
 from __future__ import annotations
 

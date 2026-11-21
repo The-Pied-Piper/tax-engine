@@ -6,7 +6,7 @@ printed rate, so it is the `ca-mb/credit_rate` dataset figure and has no step of
 is one core/apply_rate step over line 51, rounded half-up to the cent by the dataset's own rule, as
 Alberta's line 54 is over line 52. Line 53 prints no name, so the step has no title.
 
-The test composes the real Manitoba salary part, the real Schedule 8, T2204 and T1 taxable income
+The test composes the T1 employment income form, the real Schedule 8, T2204 and T1 taxable income
 parts, the real parts of Worksheet MB428 lines 1 to 9, the real parts of Schedule MB428-A lines 1 to
 12, the real parts of MB428 lines 9, 18, 19, 21, 28, 29, 33, 36, 41, 42 and 51, the line 31 and line
 50 input parts, and the new `mb428_credits_line_53.yaml`, and types in only the salary (and, in one

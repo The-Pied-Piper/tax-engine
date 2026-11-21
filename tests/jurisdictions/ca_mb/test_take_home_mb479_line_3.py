@@ -6,7 +6,7 @@ only; column 2 (the spouse) is not built for a single filer. Line 3 is one core/
 salary-only filer: the blank line 2 is read as 0 and the step prints its own "left blank, taken as
 0" row. The result is signed, because line 1 is.
 
-The test composes the real Manitoba salary part, the real Schedule 8 parts, the real T1 taxable
+The test composes the T1 employment income form, the real Schedule 8 parts, the real T1 taxable
 income parts, the real line 1 part, the line 2 input part and the line 3 part, and types in only the
 salary (and, in some tests, line 2 or the social benefits repayment). The MB479 form declaration is
 made up here, exporting only line 3.

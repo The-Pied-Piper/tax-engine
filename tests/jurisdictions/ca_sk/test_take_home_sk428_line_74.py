@@ -14,7 +14,7 @@ does for its line 70. The output `ca-sk/sk428_tax_line_74` is a non-negative kin
 `ca-sk/sk428`. The $650 maximum itself is tested with line 73; here only that line 74 reads the
 checked figure, so an entry above $650 is rejected through it.
 
-The test composes the real Saskatchewan salary part, the real Schedule 8 and T2204 parts, the T1
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the T1
 taxable income parts, the real line parts of `ca-sk/sk428_credits` that lines 8 and 57 need, the
 real `sk428_line_58.yaml` to `sk428_line_71.yaml` parts (line 71 consumes line 70, so the line 70
 inputs part is composed), the line 73 input part, the `sk428_line_73.yaml` part and the new

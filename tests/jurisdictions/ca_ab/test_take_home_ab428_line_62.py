@@ -7,7 +7,7 @@ input: its one step is a core/record_total over the line 58 export of `ca-ab/ab4
 52. The form prints no title for the line beyond its label, so the step is untitled. Line 58 is
 always computed, so the step has no blank rule.
 
-The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts, the real AB428
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the real AB428
 credits parts up to line 58 (line 16, 25, 27, 29, 32, 33, 34 inputs, 36, 39, 41 input, 43, the
 medical expenses parts 44 to 51, 52, 54, the donations parts 55 to 57 and 58) and the new
 `ab428_line_62.yaml`, and types in only the salary. The header and the two form declarations (AB428

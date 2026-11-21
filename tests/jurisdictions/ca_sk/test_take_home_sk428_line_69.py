@@ -8,7 +8,7 @@ Both lines are always computed (line 68's Form T691 input is declared by its own
 to 0), so neither is ever blank and the step has no blank rule. The output is
 `ca-sk/sk428_tax_line_69`, a signed kind: the form prints no floor.
 
-The test composes the real Saskatchewan salary part, the real Schedule 8 and T2204 parts, the T1
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the T1
 taxable income parts, the real line parts of `ca-sk/sk428_credits` that lines 8 and 57 need, the
 real `sk428_line_58.yaml` to `sk428_line_68.yaml` parts (with `sk428_line_68_inputs.yaml`) and the
 new `sk428_line_69.yaml`, and types in only the salary (and, in some tests, lines 61 and 64 and the

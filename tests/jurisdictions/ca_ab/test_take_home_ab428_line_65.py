@@ -9,7 +9,7 @@ untitled. Line 63 is left blank by a salary-only filer, so the step has a blank 
 line 64 amount, box A, defaults to 0), so they need none. The form prints no floor on line 65, but
 every addend is non-negative, so the kind is non-negative.
 
-The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts, the real AB428
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the real AB428
 credits parts up to line 58, the line 62 part, the line 63 input part, the line 64 input and
 calculation parts, and the new `ab428_line_65.yaml`, and types in only the salary, plus line 63
 and the line 64 amount where a case needs them. The header and the two form declarations (AB428

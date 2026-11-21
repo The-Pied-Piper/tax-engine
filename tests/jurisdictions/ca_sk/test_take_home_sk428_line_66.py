@@ -7,7 +7,7 @@ blank for a salary-only filer and read as 0 by the step's own blank rule, which 
 "left blank, taken as 0" row) and the line 65 product (the minimum tax carryover, always computed,
 so it needs no blank row). The output is `ca-sk/sk428_credits_subtotal_line_66`.
 
-The test composes the real Saskatchewan salary part, the real Schedule 8 and T2204 parts, the real
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the real
 line parts of `ca-sk/sk428_credits` that line 57 needs, the real `sk428_line_63.yaml`,
 `sk428_line_64_input.yaml`, `sk428_line_65_inputs.yaml` and `sk428_line_65.yaml`, and the new
 `sk428_line_66.yaml`, and types in only the salary (and, in some tests, lines 64 and 65). The two

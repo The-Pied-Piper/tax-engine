@@ -6,7 +6,7 @@ and the multiplication is not tested. Line 23600 is read as the T1 form exports 
 `ca/t1_taxable_income.net_income`, which reaches this form only as a record list: line 11 is a
 core/record_total over it, as Worksheet MB428 line 2 is. The kind is non-negative.
 
-The test composes the real Manitoba salary part, the real federal parts the T1 taxable income form
+The test composes the T1 employment income form, the real federal parts the T1 taxable income form
 needs (Schedule 8 for line 23300, and the T1 lines 15000, 23300, 23400, 23600, 23600 signed and
 26000 with their inputs) and the real `mb428_a_line_11.yaml`, and types in only the salary. The
 Schedule MB428-A form declaration is made up here, exporting only line 11. The service is built over

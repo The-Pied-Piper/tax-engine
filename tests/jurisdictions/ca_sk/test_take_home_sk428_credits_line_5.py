@@ -13,7 +13,7 @@ Line 5 is one `core/bracket_column_rate` step over line 1 with that schedule, ou
 held as printed, not rounded, and is not money, so the step has no unit. Titled "Rate" as the form
 prints it.
 
-The test composes the real Saskatchewan salary part, the real Schedule 8 and T1 taxable income
+The test composes the T1 employment income form, the real Schedule 8 and T1 taxable income
 parts, the real `sk428_credits_line_1.yaml` and the real `sk428_credits_line_5.yaml`, and types in
 only the salary. The form declaration is test-local, exporting lines 1 and 5.
 

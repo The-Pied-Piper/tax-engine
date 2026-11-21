@@ -4,7 +4,7 @@ Form text (Form MB428, Manitoba Tax, CRA 5007-c-25e.txt, read 2026-11-17): "Line
 to 41. = ^". Lines 37 to 40 are blank optional inputs for a salary-only filer and are skipped, so
 line 42 is one core/sum over line 36 and line 41, as Alberta's line 43 skips lines 40 and 42.
 
-The test composes the real Manitoba salary part, the real Schedule 8, T2204 and T1 taxable income
+The test composes the T1 employment income form, the real Schedule 8, T2204 and T1 taxable income
 parts, the real parts of Worksheet MB428 lines 1 to 9, the real parts of lines 9, 18, 19, 21, 28,
 29, 33 and 36, the line 31 input part, the real parts of Schedule MB428-A lines 1 to 12 and of
 line 41, and the new `mb428_credits_line_42.yaml`, and types in only the salary (and, in one test,

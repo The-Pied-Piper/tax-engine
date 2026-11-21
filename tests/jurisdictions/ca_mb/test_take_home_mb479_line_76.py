@@ -6,7 +6,7 @@ community enterprise development tax credit, an input the form prints with a max
 the line 75 step checks), which is blank unless entered and read as 0 when blank, so the step
 carries a blank block and prints its own "left blank, taken as 0" row.
 
-The test composes the real Manitoba salary part, the real Schedule 8 parts, the real T1 taxable
+The test composes the T1 employment income form, the real Schedule 8 parts, the real T1 taxable
 income parts, the real MB479 parts of lines 1 to 7, 17, 18, 19, 53, 55, 56, 57, 59 to 75 and the new
 `mb479_line_75.yaml` and `mb479_line_76.yaml`, and types in only the salary (and, in some tests,
 lines 71, 73 and 75). The MB479 form declaration is made up here, exporting only lines 74, 75

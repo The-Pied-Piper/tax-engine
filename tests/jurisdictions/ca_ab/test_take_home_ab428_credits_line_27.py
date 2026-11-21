@@ -5,7 +5,7 @@ line 58240: Amount from line 30800 of your return". The line is a copy, so its o
 core/record_total over the Schedule 8 export that gives T1 line 30800 (Schedule 8 line 25, the CPP
 base contributions on the return), as Ontario's line 19 is (`on428_line_19.yaml`).
 
-The test composes the real Alberta salary part, the real Schedule 8 parts and the real line part
+The test composes the T1 employment income form, the real Schedule 8 parts and the real line part
 (`ab428_credits_line_27.yaml`), and types in only the salary. The form declaration is made up here,
 exporting the line read, because Alberta is not yet listed in the registrations and the real form
 part is owned by another change. The figures are hand-computed from the printed forms (not a CRA

@@ -12,7 +12,7 @@ Line 7 is one `core/bracket_column_tax_at_start` step over line 1 with that sche
 `ca-mb/mb428_bracket_tax_at_start_line_7`, in the part `mb428_credits_line_7.yaml`. The form does
 not name line 7, so the step has no title.
 
-The test composes the real Manitoba salary part, the real Schedule 8 and T1 taxable income parts,
+The test composes the T1 employment income form, the real Schedule 8 and T1 taxable income parts,
 the real `mb428_credits_line_1.yaml` and the real `mb428_credits_line_7.yaml`, and types in only the
 salary. The form declaration is test-local, exporting lines 1 and 7.
 

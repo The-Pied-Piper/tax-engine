@@ -6,7 +6,7 @@ over lines 43 to 49, so it is always a figure, 0.00 for a salary-only filer, and
 blank rule. Line 51 is one core/sum over line 42 and line 50, as Alberta line 52 is over line 43
 and line 51. The form prints no label for line 51, so the step has no title.
 
-The test composes the real Saskatchewan salary part, the real Schedule 8, T2204 and T1 taxable
+The test composes the T1 employment income form, the real Schedule 8, T2204 and T1 taxable
 income parts, the real line parts (`sk428_credits_line_9.yaml`, `_line_20.yaml`, `_line_22.yaml`,
 `_line_24.yaml`, `_line_31.yaml`, `_line_32.yaml`, `_line_33.yaml`, `_line_35.yaml`,
 `_line_38.yaml`, `_line_42.yaml`, `_line_43_input.yaml`, `_line_44.yaml`, `_line_46.yaml`,

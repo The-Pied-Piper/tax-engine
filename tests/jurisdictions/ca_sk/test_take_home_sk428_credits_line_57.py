@@ -6,7 +6,7 @@ line 55", is computed from the two Schedule 9 donation lines and is 0.00 for a s
 Line 57 is one core/sum over line 53 and line 56 with no blank rule. The form prints the label
 "Saskatchewan non-refundable tax credits" on line 57, so the step is titled.
 
-The test composes the real Saskatchewan salary part, the real Schedule 8 and T2204 parts, the T1
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the T1
 taxable income parts, the real line parts up to line 53 (the medical lines 43 to 50 left blank),
 the real line 54 and 55 input and step parts, `sk428_credits_line_56.yaml` and
 `sk428_credits_line_57.yaml`, and types in only the salary and, in some tests, the two Schedule 9

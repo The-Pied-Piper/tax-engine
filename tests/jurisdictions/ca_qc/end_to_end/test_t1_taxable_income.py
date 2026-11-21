@@ -19,13 +19,14 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_qc.catalog import T1_LINE_21, T1_LINE_28, TOTAL_INCOME
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
+from tests.manifest_support import T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
 D = Decimal
 PARTS = (
     "t1_employment_income_line_10400_inputs.yaml",
     "t1_employment_income.yaml",
-    "t1_employment_income_line_10100_inputs.yaml",
-    "t1_employment_income_line_10100.yaml",
+    T1_LINE_10100_INPUT.name,
+    T1_LINE_10100_STEP.name,
     "t1_employment_income_line_10400.yaml",
     "t1_taxable_income_line_21.yaml",
     "t1_taxable_income_line_27_inputs.yaml",

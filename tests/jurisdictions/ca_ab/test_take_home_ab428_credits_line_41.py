@@ -8,7 +8,7 @@ blank as 0, rounds to the cent and produces `ca-ab/ab428_unused_tuition_rounded_
 the form exports in place of the raw input; line 43 and Worksheet AB428 line 2 read that figure,
 so line 43 (through lines 52 and Worksheet line 1) and line 2 agree to the cent.
 
-The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts, the real
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the real
 AB428 credits parts up to line 52 and the real Worksheet AB428 lines 1, 2, 3 and 5 parts, with
 the new `ab428_credits_line_41.yaml`, and types in only the salary and line 41. The figures are
 hand-computed from the printed forms (not a CRA example): line 52 is 26,692.23 at salary 70,000

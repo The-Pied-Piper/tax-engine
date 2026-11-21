@@ -6,7 +6,7 @@ has no step of its own. Line 47 is one core/capped_amount step over line 46
 (`sk428_credits_line_46.yaml`) capped by that dataset. The form prints no label for the line, so
 the step has no title.
 
-The test composes the real Saskatchewan salary part, the real Schedule 8 and T1 taxable income
+The test composes the T1 employment income form, the real Schedule 8 and T1 taxable income
 parts and the real line 44, 46 and 47 parts, and types in only the salary. The header and the form
 declaration are made up here, the form exporting line 47.
 

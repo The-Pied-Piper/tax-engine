@@ -8,7 +8,7 @@ core/subtract_not_below_zero step over line 1 (`amount`) and line 8 (`less`), ro
 cent by `ca-mb/cent_rounding`. The kind `ca-mb/worksheet_mb428_basic_personal_amount_line_9` is
 non-negative; it is the figure the form says to enter on line 58040 of Form MB428.
 
-The test composes the real Manitoba salary part, the real federal parts the T1 taxable income form
+The test composes the T1 employment income form, the real federal parts the T1 taxable income form
 needs, the real parts of lines 1 to 8 and the new
 `worksheet_mb428_line_9.yaml`, and types in only the salary. The header and
 the Worksheet MB428 form declaration (exporting lines 1 to 9) are made up here, because the shared

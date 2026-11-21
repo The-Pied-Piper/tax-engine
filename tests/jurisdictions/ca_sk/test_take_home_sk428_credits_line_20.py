@@ -5,7 +5,7 @@ Form text (Form SK428, CRA 5008-c-25e.txt): "Line 20: Add lines 9, 10, 13, and 1
 amount (19,491.00), contributes, at every salary. The form prints no label for line 20, so the step
 has no title.
 
-The test composes the real Saskatchewan salary part, the real line 9 part
+The test composes the T1 employment income form, the real line 9 part
 (`sk428_credits_line_9.yaml`) and the real line part (`sk428_credits_line_20.yaml`), and types in
 only the salary. The header and the form's exports are made up here, because the shared scaffold
 owns them. The expected amount is re-derived from the printed `ca-sk/basic_personal_amount` dataset

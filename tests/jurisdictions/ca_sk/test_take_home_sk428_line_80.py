@@ -11,7 +11,7 @@ has no mineral exploration tax credit, so line 79 is left blank, and the step ha
 reading it as 0 and prints its own "left blank, taken as 0" row, as line 78 does for its line 77.
 The output `ca-sk/sk428_tax_line_80` is a non-negative kind on the form `ca-sk/sk428`.
 
-The test composes the real Saskatchewan salary part, the real Schedule 8 and T2204 parts, the T1
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the T1
 taxable income parts, the real line parts of `ca-sk/sk428_credits` that lines 8 and 57 need, the
 real `sk428_line_58.yaml` to `sk428_line_78.yaml` parts (line 71 consumes line 70, so the line 70
 inputs part is composed; line 74 consumes the checked line 73, so the line 73 input part and the

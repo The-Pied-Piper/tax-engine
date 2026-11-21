@@ -9,10 +9,10 @@ line 2. The form floors line 5 at 0, so the output `ca-bc/bc479_adjusted_net_inc
 non-negative kind.
 
 Line 5 is one core/subtract_not_below_zero step (`bc479_line_5.yaml`), rounded through
-`ca-bc/cent_rounding`, with `amount` line 3 and `less` line 4. The test composes the real British
-Columbia salary part, the real Schedule 8 parts, the real T1 taxable income parts, the real line
-1, line 2 and line 3 parts, the line 4 input part and the new `bc479_line_5.yaml`, and types in
-only the salary (and, in other tests, line 4, or a negative line 1 through the social benefits
+`ca-bc/cent_rounding`, with `amount` line 3 and `less` line 4. The test composes the real T1
+employment income form, the real Schedule 8 parts, the real T1 taxable income parts, the real line
+1, line 2 and line 3 parts, the line 4 input part and the new `bc479_line_5.yaml`, and types in only
+the salary (and, in other tests, line 4, or a negative line 1 through the social benefits
 repayment). The form declaration is made up here, exporting only line 5.
 
 Figures (hand-computed from the printed forms, not a CRA example): with line 4 blank, line 5 is line

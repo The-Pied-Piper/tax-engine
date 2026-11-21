@@ -9,15 +9,12 @@ reads the part. The end-to-end ticket can move these checks onto the built manif
 
 from __future__ import annotations
 
-from pathlib import Path
 from typing import Any
 
 import yaml
 
-import tax_engine.jurisdictions.ca_qc
 from tests.manifest_support import QC_T1_LINE_10100_INPUT
 
-FOLDER = Path(tax_engine.jurisdictions.ca_qc.__file__).parent / "manifests" / "2025"
 PART = QC_T1_LINE_10100_INPUT
 
 

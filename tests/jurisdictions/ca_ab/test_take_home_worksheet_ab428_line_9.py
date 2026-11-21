@@ -7,7 +7,7 @@ step of its own; line 9 is one core/apply_rate step over line 7, rounded half-up
 dataset's own rule. The form prints no title text for the line, so the step is untitled. Line 7 is
 floored at 0 by the form, so line 9 is never negative.
 
-The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts, the real
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the real
 AB428 credits parts up to line 52, the real `worksheet_ab428_line_1.yaml`, `_line_2.yaml`,
 `_line_3.yaml`, `_line_5.yaml`, `_line_6.yaml` and `_line_7.yaml` parts and the new
 `worksheet_ab428_line_9.yaml`, and types in only the salary. The header and the two form

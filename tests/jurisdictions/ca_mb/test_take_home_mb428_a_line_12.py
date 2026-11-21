@@ -6,7 +6,7 @@ label for the line, so the step has no title. Line 12 is one core/subtract_not_b
 line 10 (`amount`) and line 11 (`less`), rounded half-up to the cent by `ca-mb/cent_rounding`. The
 kind `ca-mb/mb428_a_family_tax_benefit_line_12` is the form's existing non-negative amount.
 
-The test composes the real Manitoba salary part, the real federal parts the T1 taxable income form
+The test composes the T1 employment income form, the real federal parts the T1 taxable income form
 needs (the same as the line 11 product test), the real `mb428_a_line_1.yaml`,
 `mb428_a_line_10.yaml`, `mb428_a_line_11.yaml` and `mb428_a_line_11_product.yaml` parts and the new
 `mb428_a_line_12.yaml`, and types in only the salary. The Schedule MB428-A form declaration is made

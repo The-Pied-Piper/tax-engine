@@ -5,12 +5,11 @@ Form text (Form BC428, CRA 5010-C, read 2026-11-14): "Line 63: Line 61 plus line
 leaves out, read as blank and then as 0 by the step's own blank rule, as Alberta line 61 reads its
 line 60 input; line 63 is one core/sum over line 61 and line 62.
 
-The test composes the real salary part, the real Schedule 8 and T1 parts, the real line 1, 3 to 8,
-10 to 15 and 61 parts, the line 62 input part and the new `bc428_line_63.yaml`, and types in only
-the salary (and, in one test, line 62). The form declaration is made up here, exporting only line
-63. The figures are hand-computed from the printed forms (not a CRA example): with line 62 blank,
-line 63 is line 61.
-"""
+The test composes the T1 employment income form, the real Schedule 8 and T1 parts, the real line 1,
+3 to 8, 10 to 15 and 61 parts, the line 62 input part and the new `bc428_line_63.yaml`, and types in
+only the salary (and, in one test, line 62). The form declaration is made up here, exporting only
+line 63. The figures are hand-computed from the printed forms (not a CRA example): with line 62
+blank, line 63 is line 61."""
 
 from __future__ import annotations
 

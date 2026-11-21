@@ -15,9 +15,8 @@ steps: 40% of the expenses rounded half-up to the cent (`core/apply_rate`, read 
 input is left out, so it prints the "left blank, taken as 0" row), then that figure capped at the
 printed maximum of 16000.00 (`core/capped_amount`, `ca-mb/fertility_treatment_credit_maximum`).
 
-The salary part, the input part and the line 61 part are loaded under a test-local header and form
-declaration, over the Manitoba package list of `support.py`.
-"""
+The T1 employment income form, the input part and the line 61 part are loaded under a test-local
+header and form declaration, over the Manitoba package list of `support.py`."""
 
 from __future__ import annotations
 

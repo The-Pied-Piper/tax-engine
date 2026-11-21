@@ -5,7 +5,7 @@ Form text (Form MB428, CRA 5007-C, read 2026-11-14): "Line 9 and line 58040: Bas
 MB428, so the one step is a core/record_total over the Worksheet MB428 export that gives line 9
 (another form reads an export only as a record list), as line 19 reads the Schedule 8 export.
 
-The test composes the real Manitoba salary part, the real Schedule 8 and T1 taxable income parts,
+The test composes the T1 employment income form, the real Schedule 8 and T1 taxable income parts,
 the real parts of Worksheet MB428 lines 1 to 9 and the real line part
 (`mb428_credits_line_9.yaml`), and types in only the salary. The header and the two form
 declarations are made up here, exporting the lines read, because the shared scaffold owns them.

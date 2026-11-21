@@ -11,7 +11,7 @@ key (the return is the default form) and no params. The average rate step is pin
 `test_take_home_return_average_income_tax_rate.py`; the marginal rate steps run here over stand-ins
 (figures in `end_to_end/test_return_marginal_rates.py`).
 
-The test composes the real Newfoundland and Labrador salary part and the real `return.yaml`. The
+The test composes the T1 employment income form and the real `return.yaml`. The
 header, the declaration of the T1 tax and credits form (exporting `ca/refund_or_balance_owing`) and
 the step producing that export are made up here, because the shared scaffold and the T1 form own
 them: the stand-in step takes a given `ca/total_credits` off the salary, so the figure is positive

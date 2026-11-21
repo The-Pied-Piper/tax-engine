@@ -10,11 +10,11 @@ non-negative kind, reference "15", with no title (the form prints none). Neither
 rule. Line 16 is a page carry with no step. The spouse branch of line 10 is not built, so
 there is no spouse gate here.
 
-The test composes the real salary part, the real Schedule 8 and T1 taxable income parts, the real
-line 1 to line 14 parts and the new line 15 part, and types in the salary and, in some tests, the
-expenses. The form declaration is made up here, exporting only line 15. Figures are hand-computed
-from the printed forms (not a CRA example): line 13 is 37.70 at 17,000 and 0.00 at every higher
-salary, line 14 is 0.00 with no expenses, so line 15 is 37.70 at 17,000 and 0.00 above.
+The test composes the T1 employment income form, the real Schedule 8 and T1 taxable income parts,
+the real line 1 to line 14 parts and the new line 15 part, and types in the salary and, in some
+tests, the expenses. The form declaration is made up here, exporting only line 15. Figures are
+hand-computed from the printed forms (not a CRA example): line 13 is 37.70 at 17,000 and 0.00 at
+every higher salary, line 14 is 0.00 with no expenses, so line 15 is 37.70 at 17,000 and 0.00 above.
 """
 
 from __future__ import annotations

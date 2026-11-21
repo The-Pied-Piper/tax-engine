@@ -5,7 +5,7 @@ Form text (Form AB428, CRA 5009-c-25e.txt): "Employment insurance premiums: Line
 amount. Another form's export arrives only as a record list of one amount, so line 29 is a
 core/record_total over that export, as Ontario's line 21 is.
 
-The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts and the real
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts and the real
 `ab428_line_29.yaml`, and types in only the salary. The AB428 form declaration is made up here,
 exporting only line 29, because the real header is owned by another change. Alberta is not in
 `registrations.JURISDICTIONS`, so the service is built over the Alberta package list of

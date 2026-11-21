@@ -6,7 +6,7 @@ Schedule 8 export that gives T1 line 30800 (Schedule 8 line 25, the CPP base con
 return), as Manitoba's line 19 is (`mb428_credits_line_19.yaml`) and Alberta's line 27 is
 (`ab428_credits_line_27.yaml`).
 
-The test composes the real Saskatchewan salary part, the real Schedule 8 parts and the real line
+The test composes the T1 employment income form, the real Schedule 8 parts and the real line
 part (`sk428_credits_line_22.yaml`), and types in only the salary. The form declaration is made up
 here, exporting the line read, because the real form part exports only the lines already built.
 The figures are hand-computed (not a CRA example): 4.95% of the salary above the $3,500 basic

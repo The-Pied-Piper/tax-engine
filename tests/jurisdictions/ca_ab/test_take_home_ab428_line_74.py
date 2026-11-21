@@ -9,7 +9,7 @@ so the step is untitled. Line 9 is always computed, so the step has no blank rul
 is never negative, and the form prints no floor on line 74, so line 74 has none of its own: the kind
 is non-negative only because the one amount it carries is.
 
-The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts, the real AB428
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the real AB428
 credits parts up to line 52, the real `worksheet_ab428_line_1.yaml`, `_line_2.yaml`, `_line_3.yaml`,
 `_line_5.yaml`, `_line_6.yaml`, `_line_7.yaml` and `_line_9.yaml` parts and the new
 `ab428_line_74.yaml`, and types in only the salary. The header and the three form declarations

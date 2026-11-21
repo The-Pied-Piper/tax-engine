@@ -6,7 +6,7 @@ multiplied by the percentage from line 45 =". Line 45 is a printed rate, the
 step over line 44 (`sk428_credits_line_44.yaml`), rounded half-up to the cent by the dataset's
 rule. The form prints no label for the line, so the step has no title.
 
-The test composes the real Saskatchewan salary part, the real Schedule 8 and T1 taxable income
+The test composes the T1 employment income form, the real Schedule 8 and T1 taxable income
 parts and the real line 44 and line 46 parts, and types in only the salary. The header and the form
 declaration are made up here, the form exporting line 46.
 

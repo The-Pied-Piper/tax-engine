@@ -6,7 +6,7 @@ The form names no label for the line, so the step has no title. Line 4 is one
 core/subtract_not_below_zero step over line 2 (`amount`) and line 3 (`less`), rounded half-up to the
 cent by `ca-mb/cent_rounding`. The kind `ca-mb/worksheet_mb428_line_4` is non-negative.
 
-The test composes the real Manitoba salary part, the real federal parts the T1 taxable income form
+The test composes the T1 employment income form, the real federal parts the T1 taxable income form
 needs (as the line 2 test does), the real `worksheet_mb428_line_2.yaml` and
 `worksheet_mb428_line_3.yaml` parts and the new
 `worksheet_mb428_line_4.yaml`, and types in only the salary. The header and the Worksheet MB428

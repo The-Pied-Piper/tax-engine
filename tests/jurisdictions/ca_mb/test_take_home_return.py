@@ -9,7 +9,7 @@ cross-form read (another form's export is read only as a record list), producing
 key (the return is the default form) and no params. The steps after it read the figures of the two
 rates (`end_to_end/test_return_rates.py`); here they run over stand-ins.
 
-The test composes the real Manitoba salary part and the real `return.yaml`. The header, the
+The test composes the T1 employment income form and the real `return.yaml`. The header, the
 declaration of the T1 tax and credits form (exporting `ca/refund_or_balance_owing`) and the step
 producing that export are made up here, because the shared scaffold and the T1 form own them: the
 stand-in step takes a given `ca/total_credits` off the salary, so the figure is positive at a

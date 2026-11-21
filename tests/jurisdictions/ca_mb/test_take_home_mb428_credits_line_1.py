@@ -6,7 +6,7 @@ over the T1 export that gives taxable income (`ca/t1_taxable_income.taxable_inco
 line 1 is (`ab428_credits_line_1.yaml`). The form prints no label for the line, so the step has no
 title. Line 2 in each column is a copy of line 1 and has no step.
 
-The test composes the real Manitoba salary part, the real Schedule 8 parts, the real T1 taxable
+The test composes the T1 employment income form, the real Schedule 8 parts, the real T1 taxable
 income parts and the real line part (`mb428_credits_line_1.yaml`), and types in only the salary.
 The form declaration is made up here, exporting the line read, because the real form part exports
 only the lines already built.

@@ -196,17 +196,17 @@ WORK_CHART_201_TP1_LINE_107 = AmountKind.declare(CATALOG, "work_chart_201_tp1_li
 """TP-1 line 107 as Work Chart 201 line 1 reads it: the TP-1 income form's export, a record list of
 one, totalled; a blank is read as 0."""
 
-WORK_CHART_201_TP1_LINE_101 = AmountKind.declare(
-    CATALOG, "work_chart_201_tp1_line_101", non_negative=True
-)
-"""Work Chart 201's copy of TP-1 line 101, read from the TP-1 income form's export; line 1 sums
-it."""
-
 WORK_CHART_201_TP1_LINE_105 = AmountKind.declare(
     CATALOG, "work_chart_201_tp1_line_105", non_negative=True
 )
 """TP-1 line 105 as Work Chart 201 line 1 reads it: the TP-1 income form's export, a record list of
 one, totalled; a blank is read as 0."""
+
+WORK_CHART_201_TP1_LINE_101 = AmountKind.declare(
+    CATALOG, "work_chart_201_tp1_line_101", non_negative=True
+)
+"""Work Chart 201's copy of TP-1 line 101, read from the TP-1 income form's export; line 1 sums
+it."""
 
 WORK_CHART_201_RL1_SLIP_BOX_211 = AmountKind.declare(CATALOG, "work_chart_201_rl1_slip_box_211")
 """RL-1 slip box 211 as Work Chart 201 line 1 reads it: the TP-1 income form's export, a record list

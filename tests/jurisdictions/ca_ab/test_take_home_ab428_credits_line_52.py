@@ -5,7 +5,7 @@ Form text (Form AB428, CRA 5009-c): "Line 52 and line 58800: Line 43 plus line 5
 44 to 50), which is 0.00 for a salary-only filer. Line 52 is one core/sum over line 43 and line
 51, as Ontario line 44 is; line 51 is never blank, so the step has no blank rule.
 
-The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts, the real
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the real
 line 16, line 25, line 27, line 29, line 32, line 33, line 36, line 39 and line 43 parts, the
 line 34 inputs part, the line 41 input part, the medical expenses parts (lines 44 to 51) and the
 new `ab428_credits_line_52.yaml`, and types in only the salary (and, in one test, line 50). The

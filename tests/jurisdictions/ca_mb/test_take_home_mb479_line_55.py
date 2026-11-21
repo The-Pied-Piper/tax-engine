@@ -6,7 +6,7 @@ no label, so its step has no title. Line 55 is one core/sum over the line 53 inp
 MB428 line 51 is; a blank line 53 is read as 0 and the step prints its own "Left blank, taken as 0"
 row. Line 19 is always produced, so it needs no blank row.
 
-The test composes the real Manitoba salary part, the real Schedule 8 parts, the real T1 taxable
+The test composes the T1 employment income form, the real Schedule 8 parts, the real T1 taxable
 income parts, the real MB479 parts of lines 1 to 7, 17, 18 and 19, the line 53 input part and the
 new `mb479_line_55.yaml`, and types in only the salary (and, in one test, line 53). The MB479 form
 declaration is made up here, exporting only line 55 and the line 19 it reads. The figures are line

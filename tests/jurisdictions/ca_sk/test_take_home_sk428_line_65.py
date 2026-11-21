@@ -9,9 +9,8 @@ is `ca-sk/sk428_minimum_tax_carryover_line_65`. The step is titled with the head
 above the line, "Saskatchewan minimum tax carryover". Because the input is blank for a salary-only
 caller, the step prints its own "left blank, taken as 0" row.
 
-The salary part, the inputs part and the line 65 part are loaded under a test-local header and form
-declaration, over the Saskatchewan package list of `support.py`.
-"""
+The T1 employment income form, the inputs part and the line 65 part are loaded under a test-local
+header and form declaration, over the Saskatchewan package list of `support.py`."""
 
 from __future__ import annotations
 

@@ -8,7 +8,7 @@ the single part, line 5 (`ca-bc/bc479_adjusted_net_income_line_5`), read through
 `ca-bc/cent_rounding`). The output is `ca-bc/bc479_adjusted_family_net_income_line_6`, a
 non-negative kind.
 
-The test composes the real British Columbia salary part, the real Schedule 8 parts, the real T1
+The test composes the T1 employment income form, the real Schedule 8 parts, the real T1
 taxable income parts, the real line 1 to line 5 parts and the new line 6 part, and types in only
 the salary (and, in other tests, line 4). The form declaration is made up here, exporting only
 line 6.

@@ -7,7 +7,7 @@ core/subtract_not_below_zero step over line 43, the optional medical expenses in
 leaves line 43 blank has no medical expenses, so the blank is read as 0 and line 48 is 0.00. The
 form prints no label for the line, so the step has no title.
 
-The test composes the real Saskatchewan salary part, the real Schedule 8 and T1 taxable income
+The test composes the T1 employment income form, the real Schedule 8 and T1 taxable income
 parts and the real lines 43, 44, 46, 47 and 48 parts, and types in the salary and, where a case
 gives it, line 43. The header and the form declaration are made up here, the form exporting line 48.
 

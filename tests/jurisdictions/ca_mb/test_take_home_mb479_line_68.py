@@ -9,9 +9,8 @@ half-up to the cent. The output is `ca-mb/mb479_geothermal_heat_pump_credit_line
 prints no maximum for line 68, and the heading above the line is a section heading, so the step is
 untitled.
 
-The salary part, the input part and the line 68 part are loaded under a test-local header and form
-declaration, over the Manitoba package list of `support.py`.
-"""
+The T1 employment income form, the input part and the line 68 part are loaded under a test-local
+header and form declaration, over the Manitoba package list of `support.py`."""
 
 from __future__ import annotations
 

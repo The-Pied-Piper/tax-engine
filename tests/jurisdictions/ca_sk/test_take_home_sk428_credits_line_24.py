@@ -34,7 +34,7 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_sk.catalog import SK428_EI_PREMIUMS_LINE_24
-from tests.federal_forms import FEDERAL_FORMS, form_parts
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_sk.support import (
     saskatchewan_capabilities,
     saskatchewan_kinds,
@@ -43,7 +43,7 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT
+from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
 D = Decimal
 SK_PARTS = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / "manifests" / "2025"
@@ -73,7 +73,7 @@ def _part_files() -> Iterator[Path]:
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
     yield T1_LINE_10100_FORM
-    yield FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml"
+    yield T1_LINE_10100_STEP
     yield PART
 
 

@@ -6,7 +6,7 @@ amount on line 62. Alberta non-refundable tax credits =". Line 57, "Line 57 and 
 filer). Line 58 is one core/sum over line 54 and line 57, as Ontario line 50 is; line 57 is never
 blank, so the step has no blank rule.
 
-The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts, the real
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the real
 line 16, line 25, line 27, line 29, line 32, line 33, line 36, line 39, line 43 and line 52
 parts, the line 34 inputs part, the line 41 input part, the medical expenses parts (lines 44 to
 51), the line 54 part, the donations parts (lines 55 to 57) and the new

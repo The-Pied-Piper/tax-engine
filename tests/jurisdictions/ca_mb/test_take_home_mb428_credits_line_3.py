@@ -11,7 +11,7 @@ Line 3 is one `core/bracket_column_lower_bound` step over line 1 with that sched
 `ca-mb/mb428_bracket_lower_bound_line_3`, in the part `mb428_credits_line_3.yaml`. The form does not
 name line 3, so the step has no title.
 
-The test composes the real Manitoba salary part, the real Schedule 8 and T1 taxable income parts,
+The test composes the T1 employment income form, the real Schedule 8 and T1 taxable income parts,
 the real `mb428_credits_line_1.yaml` and the real `mb428_credits_line_3.yaml`, and types in only the
 salary. The form declaration is test-local, exporting lines 1 and 3.
 

@@ -5,7 +5,7 @@ Form text (Form MB479, CRA 5007-TC): "Line 58: Amount from line 57 of the previo
 no label, so its step has no title. It is one core/sum over line 57 and the line 59 input, read as 0
 when left blank, so the step prints its own "left blank, taken as 0" row.
 
-The test composes the real Manitoba salary part, the real Schedule 8 parts, the real T1 taxable
+The test composes the T1 employment income form, the real Schedule 8 parts, the real T1 taxable
 income parts, the real MB479 parts of lines 1 to 7, 17, 18, 19, 53, 55, 56 and 57, the line 59
 input part and the new `mb479_line_60.yaml`, and types in only the salary (and, in some tests,
 line 56 and line 59). The MB479 form declaration is made up here, exporting only lines 57 and 60.

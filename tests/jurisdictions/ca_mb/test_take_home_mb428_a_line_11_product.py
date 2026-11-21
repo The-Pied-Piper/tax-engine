@@ -6,7 +6,7 @@ figure and has no step of its own; the line is one core/apply_rate step over the
 first box, rounded half-up to the cent by the dataset's own rule, as Alberta line 54 is over
 line 52. The form names no label for the line, so the step has no title.
 
-The test composes the real Manitoba salary part, the real federal parts the T1 taxable income form
+The test composes the T1 employment income form, the real federal parts the T1 taxable income form
 needs (the same as the net income box's test), the real `mb428_a_line_11.yaml` and the new
 `mb428_a_line_11_product.yaml`, and types in only the salary. The Schedule MB428-A form declaration
 is made up here, exporting only the product. The service is built over the Manitoba package list of

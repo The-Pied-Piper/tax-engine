@@ -8,7 +8,7 @@ the line, so the step has no title. The figures are hand-computed from the print
 example): line 9 is 15,780.00 while net income is at most $200,000, and net income is 9,935.00 /
 198,926.00 at salaries of 10,000 / 200,000.
 
-The test composes the real Manitoba salary part, the real Schedule 8 and T1 taxable income parts,
+The test composes the T1 employment income form, the real Schedule 8 and T1 taxable income parts,
 the real parts of Worksheet MB428 lines 1 to 9, the real line 9 part (`mb428_credits_line_9.yaml`)
 and the real line part (`mb428_credits_line_18.yaml`), and types in only the salary. The header and
 the two form declarations are made up here, exporting the lines read, because the shared scaffold

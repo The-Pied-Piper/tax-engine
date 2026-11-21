@@ -1,4 +1,4 @@
-# Worksheet NL428 (2025) line 58440, line 3 input. Line 3: "Total child care and attendant care
+# Worksheet NL428 (2025) line 58440, line 3's input. Line 3: "Total child care and attendant care
 # expenses for you, claimed by you or another person" is an amount the filer enters; no other form
 # computes it. It is the existing federal amount `ca/disability_self_care_expenses`, left blank by a
 # salary-only caller and read as 0 by line 5.

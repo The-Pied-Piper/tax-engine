@@ -6,7 +6,7 @@ Manitoba tax). Line 58 is a copy of line 8, which sits on the other form `ca-mb/
 record list (another form reads an export only as a record list). There is one table, so there is
 no choice between two lines and no blank.
 
-The test composes the real Manitoba salary part, the real Schedule 8, the T1 taxable income parts,
+The test composes the T1 employment income form, the real Schedule 8, the T1 taxable income parts,
 the real parts of lines 1, 3, 4, 5, 6, 7 and 8 of `ca-mb/mb428_credits`, and the new
 `mb428_line_58.yaml`, and types in only the salary. The header and the two form declarations are
 made up here: the credits form exports lines 1, 3, 4, 5, 6, 7 and 8, and `ca-mb/mb428` exports only

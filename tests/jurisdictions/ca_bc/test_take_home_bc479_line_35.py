@@ -11,13 +11,12 @@ prints none). The line 26 and 30 inputs are optional and a salary-only caller le
 the step carries the blank rule that reads each as 0 and prints its own "left blank, taken as 0" row
 per blank input.
 
-The test composes the real salary part, the real Schedule 8 and T1 taxable income parts, the real
-line 1 to line 15 parts, the line 17 to 34 parts and the new line 35 part, and types in the salary
-and, in some tests, the inputs. The form declaration is made up here, exporting only line 35.
-Figures are hand-computed from the printed forms (not a CRA example): line 15 is 37.70 at 17,000
-and 0.00 above (no renovation expenses), so line 35 is 37.70 at 17,000 and 0.00 above with the
-inputs blank.
-"""
+The test composes the T1 employment income form, the real Schedule 8 and T1 taxable income parts,
+the real line 1 to line 15 parts, the line 17 to 34 parts and the new line 35 part, and types in the
+salary and, in some tests, the inputs. The form declaration is made up here, exporting only line 35.
+Figures are hand-computed from the printed forms (not a CRA example): line 15 is 37.70 at 17,000 and
+0.00 above (no renovation expenses), so line 35 is 37.70 at 17,000 and 0.00 above with the inputs
+blank."""
 
 from __future__ import annotations
 

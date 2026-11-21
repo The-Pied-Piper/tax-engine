@@ -31,7 +31,7 @@ from tax_engine.domain.unit import UnitRegistry
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca.catalog.refund import T2204_PREMIUMS_DEDUCTED_GIVEN
-from tests.manifest_support import inputs_without_form
+from tests.manifest_support import T1_LINE_10100_INPUT, T1_LINE_10100_STEP, inputs_without_form
 
 
 @cache
@@ -105,8 +105,8 @@ T2204_FORM = dedent("""\
     capabilities: []
     """)
 T2204_T1_PARTS = (
-    "t1_employment_income_line_10100_inputs.yaml",
-    "t1_employment_income_line_10100.yaml",
+    T1_LINE_10100_INPUT.name,
+    T1_LINE_10100_STEP.name,
 )
 
 
@@ -145,8 +145,8 @@ SCHEDULE_P_HEADER = dedent("""\
 # any other form.
 T1_SALARY_PARTS = (
     "t1_employment_income.yaml",
-    "t1_employment_income_line_10100_inputs.yaml",
-    "t1_employment_income_line_10100.yaml",
+    T1_LINE_10100_INPUT.name,
+    T1_LINE_10100_STEP.name,
     "t1_employment_income_line_10400_inputs.yaml",
     "t1_employment_income_line_10400.yaml",
 )

@@ -7,7 +7,7 @@ half-up to the cent by the dataset's own rule. Lines 5 and 6 are never blank (li
 base amount of 4,800.00 and line 5 is signed but always present), so the step has no blank rule.
 The form prints no title text for the line, so the step is untitled.
 
-The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts, the real
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the real
 AB428 credits parts up to line 52, the real `worksheet_ab428_line_1.yaml`,
 `worksheet_ab428_line_2.yaml`, `worksheet_ab428_line_3.yaml`, `worksheet_ab428_line_5.yaml` and
 `worksheet_ab428_line_6.yaml` parts and the new `worksheet_ab428_line_7.yaml`, and types in only

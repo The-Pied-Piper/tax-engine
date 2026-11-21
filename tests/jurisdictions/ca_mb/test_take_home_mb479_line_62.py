@@ -5,7 +5,7 @@ and no maximum, so its step has no title. It is one core/sum over line 60 and li
 a blank input: line 60 is computed, and line 61 is computed by its own step, which reads blank
 expenses as 0 and holds its $16,000 maximum upstream, so the sum has no blank block.
 
-The test composes the real Manitoba salary part, the real Schedule 8 parts, the real T1 taxable
+The test composes the T1 employment income form, the real Schedule 8 parts, the real T1 taxable
 income parts, the real MB479 parts of lines 1 to 7, 17, 18, 19, 53, 55, 56, 57, 59 and 60, the
 line 61 input and step parts and the new `mb479_line_62.yaml`, and types in only the salary (and,
 in some tests, the line 61 expenses). The MB479 form declaration is made up here, exporting only

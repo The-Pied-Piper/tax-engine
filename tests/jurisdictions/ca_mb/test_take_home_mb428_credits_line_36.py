@@ -5,7 +5,7 @@ to 35. = ^". Lines 34 (the disability amount for self) and 35 (the disability am
 from a dependant) are not built, so line 36 is one core/sum over line 33 alone, as Alberta's line
 39 reads its line 36.
 
-The test composes the real Manitoba salary part, the real Schedule 8, T2204 and T1 taxable income
+The test composes the T1 employment income form, the real Schedule 8, T2204 and T1 taxable income
 parts, the real parts of Worksheet MB428 lines 1 to 9, the real parts of lines 9, 18, 19, 21, 28,
 29 and 33, the line 31 input part and the new `mb428_credits_line_36.yaml`, and types in only the
 salary (and, in one test, the pension income amount). The header and the form declarations are made

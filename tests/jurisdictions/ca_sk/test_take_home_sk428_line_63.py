@@ -6,7 +6,7 @@ the other form `ca-sk/sk428_credits`, so line 63 is one `core/record_total` step
 line 57 export, read as a record list (another form reads an export only as a record list). There
 is one record, so there is no choice between two lines and no blank.
 
-The test composes the real Saskatchewan salary part, the real Schedule 8 and T2204 parts, the real
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the real
 line parts of `ca-sk/sk428_credits` that line 57 needs (lines 9, 20, 22, 24, 31, 32, 33 with
 `sk428_line_33_inputs.yaml`, 35, 38, 42, 50 input, 51, 53, 56 input and 57) and the new
 `sk428_line_63.yaml`, and types in only the salary. The two form declarations are made up here: the

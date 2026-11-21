@@ -7,7 +7,7 @@ line 49, the optional allowable amount of medical expenses for other dependants
 (`sk428_credits_line_49_input.yaml`), in line order. A request that leaves line 49 blank has it read
 as 0. The form prints no label for the line, so the step has no title.
 
-The test composes the real Saskatchewan salary part, the real Schedule 8 and T1 taxable income
+The test composes the T1 employment income form, the real Schedule 8 and T1 taxable income
 parts and the real lines 43, 44, 46, 47, 48, 49 and 50 parts, and types in the salary and, where a
 case gives them, lines 43 and 49. The header and the form declaration are made up here, the form
 exporting line 50.

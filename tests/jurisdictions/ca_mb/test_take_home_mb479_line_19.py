@@ -6,7 +6,7 @@ title, as "Total credits" is line 17's. Line 19 is one core/subtract_not_below_z
 line 17 (total credits) less line 18 (the reduction), rounded to the cent, floored at 0. Both
 inputs are always produced, so the step needs no blank rows.
 
-The test composes the real Manitoba salary part, the real Schedule 8 parts, the real T1 taxable
+The test composes the T1 employment income form, the real Schedule 8 parts, the real T1 taxable
 income parts, the real line 1, line 2 input, line 3, line 4 input, line 5, line 5 column 2 input,
 line 6, line 7, line 17 inputs, line 17 and line 18 parts and the new line 19 part, and types in
 only the salary (and, in some tests, the column 2 figure). A salary-only filer leaves every

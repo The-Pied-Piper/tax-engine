@@ -7,7 +7,7 @@ its equivalent), so line 36 is one core/sum over line 33 then the line 34 pensio
 figure, the pension income amount input checked against its printed maximum (`core/at_most`), which
 a salary-only caller leaves out and the input part reads as 0.
 
-The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts, the real line
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the real line
 16, line 25, line 27, line 29, line 32 and line 33 parts, the pension income amount maximum part,
 the line 34 inputs part, the line 34 part and `ab428_credits_line_36.yaml`, and types in only the
 salary (and, in one test, the pension income amount). The form declaration is made up here,

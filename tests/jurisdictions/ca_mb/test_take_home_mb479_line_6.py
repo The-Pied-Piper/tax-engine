@@ -10,7 +10,7 @@ salary) and line 5 of column 2 (the spouse's family income), which is optional a
 salary-only single filer: the blank column 2 is read as 0 and the step prints its own "left blank,
 taken as 0" row.
 
-The test composes the real Manitoba salary part, the real Schedule 8 parts, the real T1 taxable
+The test composes the T1 employment income form, the real Schedule 8 parts, the real T1 taxable
 income parts, the real line 1, line 2 input, line 3, line 4 input and line 5 parts, the line 5
 column 2 input part and the line 6 part, and types in only the salary (and, in some tests, line 4
 or the column 2 figure). The MB479 form declaration is made up here, exporting only line 6.

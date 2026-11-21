@@ -7,7 +7,7 @@ Line 61, "Line 61 and line 61510: Saskatchewan tax on split income (complete For
 optional input, blank for a salary-only filer: the blank is read as 0 and the step prints its own
 "left blank, taken as 0" row.
 
-The test composes the real Saskatchewan salary part, the real Schedule 8, the T1 taxable income
+The test composes the T1 employment income form, the real Schedule 8, the T1 taxable income
 parts, the real parts of lines 1, 3, 4, 5, 6, 7 and 8 of `ca-sk/sk428_credits`, the real
 `sk428_line_58.yaml`, `sk428_line_59_input.yaml`, `sk428_line_60.yaml` and
 `sk428_line_61_input.yaml`, and the new `sk428_line_62.yaml`, and types in only the salary (and,

@@ -10,7 +10,7 @@ own "Left blank, taken as 0" row; line 60 is always computed and line 66 default
 read as 0, not blank), so they need none. The form prints no floor on line 67, but every addend is
 non-negative, so the kind is non-negative.
 
-The test composes the real British Columbia salary part, the Schedule 8 and T2204 parts, the real
+The test composes the T1 employment income form, the Schedule 8 and T2204 parts, the real
 BC428 parts up to line 60, the line 65 input part, the line 66 input and calculation parts, and the
 new `bc428_line_67.yaml`, and types in only the salary, plus line 65 and the line 66 amount where a
 case needs them. The header and the form declaration (BC428, exporting line 67) are made up here,

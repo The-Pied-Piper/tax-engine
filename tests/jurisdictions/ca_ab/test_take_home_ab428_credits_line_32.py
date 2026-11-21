@@ -7,7 +7,7 @@ So line 32 is one core/sum over the two parts built so far, line 27 (CPP or QPP 
 `ab428_credits_line_27.yaml`) and line 29 (employment insurance premiums, `ab428_line_29.yaml`), as
 Ontario's line 24 sums its lines 19 and 21.
 
-The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts, the real line
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the real line
 27 and line 29 parts and the new `ab428_credits_line_32.yaml`, and types in only the salary. The
 form declaration is made up here, exporting only line 32: lines 27 and 29 are read by this sum, so
 they need no export. The figures are hand-computed from the printed forms (not a CRA example).

@@ -10,11 +10,10 @@ printed rate held in the `ca-bc/minimum_tax_rate` dataset, rounded half-up to th
 is `ca-bc/bc428_additional_minimum_tax_line_69`. The step is titled with the heading the form prints
 above the line.
 
-The salary part, the inputs part and the line 69 part are loaded under a test-local header and
-form declaration over the British Columbia package list of `support.py`, as Alberta's line 64
-test does. The expected figures (0.00 at every salary, the amount being blank) are hand-computed
-from the ticket, not a CRA example.
-"""
+The T1 employment income form, the inputs part and the line 69 part are loaded under a test-local
+header and form declaration over the British Columbia package list of `support.py`, as Alberta's
+line 64 test does. The expected figures (0.00 at every salary, the amount being blank) are
+hand-computed from the ticket, not a CRA example."""
 
 from __future__ import annotations
 

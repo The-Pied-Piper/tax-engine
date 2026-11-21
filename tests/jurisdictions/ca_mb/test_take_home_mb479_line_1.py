@@ -7,7 +7,7 @@ Line 1 is a calculation: its one step is a core/record_total over the T1 export 
 net income before its floor (`ca/t1_taxable_income.net_income_signed`). The result is signed,
 because the form shows a negative net income in brackets.
 
-The test composes the real Manitoba salary part, the real Schedule 8 parts, the real T1 taxable
+The test composes the T1 employment income form, the real Schedule 8 parts, the real T1 taxable
 income parts and the real line part (`mb479_line_1.yaml`), and types in only the salary (and, for
 the negative case, the social benefits repayment). The MB479 form declaration is made up here,
 exporting only line 1, because the real declaration exports other lines.

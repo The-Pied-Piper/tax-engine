@@ -9,7 +9,7 @@ titled "Sales tax credit" with reference "13". It consumes line 11
 `ca-bc/bc479_sales_tax_credit_line_13`, a non-negative kind. Lines 11 and 12 are never blank, so the
 step has no blank declaration.
 
-The test composes the real British Columbia salary part, the real Schedule 8 parts, the real T1
+The test composes the T1 employment income form, the real Schedule 8 parts, the real T1
 taxable income parts, the real line 1 to line 12 parts and the new line 13 part, and types in only
 the salary. The form declaration is made up here, exporting only line 13.
 

@@ -11,7 +11,7 @@ Line 5 is one `core/bracket_column_rate` step over line 1 with that schedule, ou
 `ca-mb/mb428_bracket_rate_line_5`, in the part `mb428_credits_line_5.yaml`. The rate is a Decimal
 held as printed, not rounded. Titled "Rate" as the form prints it.
 
-The test composes the real Manitoba salary part, the real Schedule 8 and T1 taxable income parts,
+The test composes the T1 employment income form, the real Schedule 8 and T1 taxable income parts,
 the real `mb428_credits_line_1.yaml` and the real `mb428_credits_line_5.yaml`, and types in only the
 salary. The form declaration is test-local, exporting lines 1 and 5.
 

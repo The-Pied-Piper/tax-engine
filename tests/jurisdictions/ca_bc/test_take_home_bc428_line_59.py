@@ -9,11 +9,10 @@ to the cent by the dataset's own rule. The gifts input is an optional input a sa
 leaves out, read as blank and then as 0 by the step's own blank rule, which prints its own "left
 blank, taken as 0" row.
 
-The test composes the real salary part, the line 59 input part and the new `bc428_line_59.yaml`,
-and types in the salary and, in some tests, the gifts. The form declaration is made up here,
-exporting only line 59. The figures are hand-computed from the printed form (not a CRA example):
-the gifts times 0.25, rounded half-up to the cent.
-"""
+The test composes the T1 employment income form, the line 59 input part and the new
+`bc428_line_59.yaml`, and types in the salary and, in some tests, the gifts. The form declaration is
+made up here, exporting only line 59. The figures are hand-computed from the printed form (not a CRA
+example): the gifts times 0.25, rounded half-up to the cent."""
 
 from __future__ import annotations
 

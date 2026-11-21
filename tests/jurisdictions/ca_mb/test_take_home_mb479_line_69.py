@@ -8,10 +8,9 @@ read as 0 when left out, so line 68 is never blank). Line 69 is one core/sum ove
 line 68, as MB428 line 60 is over line 58 and the line 59 input; the blank line 67 is read as 0 and
 the step prints its own "left blank, taken as 0" row.
 
-The salary part, the line 67 and line 68 input parts, the line 68 part and the line 69 part are
-loaded under a test-local header and form declaration, over the Manitoba package list of
-`support.py`.
-"""
+The T1 employment income form, the line 67 and line 68 input parts, the line 68 part and the line 69
+part are loaded under a test-local header and form declaration, over the Manitoba package list of
+`support.py`."""
 
 from __future__ import annotations
 

@@ -7,7 +7,7 @@ line 64 (`ca-mb/mb428_credits_total_line_64`), rounded by `ca-mb/cent_rounding`.
 always computed (line 60 reads a blank line 59 as 0 and line 64 reads a blank line 62 as 0, each in
 its own step), so line 65 has no blank rule and prints no "left blank, taken as 0" row of its own.
 
-The test composes the real Manitoba salary part, the real Schedule 8, T2204 and T1 taxable income
+The test composes the T1 employment income form, the real Schedule 8, T2204 and T1 taxable income
 parts, the real parts of Worksheet MB428 lines 1 to 9, Schedule MB428-A lines 1 to 12, MB428 lines
 1, 3 to 9, 18, 19, 21, 28, 29, 33, 36, 41, 42 and 51 of `ca-mb/mb428_credits`, the line 31, line 50
 and line 56 input parts, the real `mb428_credits_line_53.yaml`, `mb428_credits_line_57.yaml`,

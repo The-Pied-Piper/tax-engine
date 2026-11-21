@@ -6,7 +6,7 @@ input (`ca-bc/bc479_uccb_rdsp_repayments_line_2`), which a salary-only caller le
 blank and then as 0 by the step's own blank rule, as the line 58 step reads its line 57. Line 3 is
 one core/sum over line 1 and line 2; the result is signed, because line 1 is.
 
-The test composes the real British Columbia salary part, the real Schedule 8 parts, the real T1
+The test composes the T1 employment income form, the real Schedule 8 parts, the real T1
 taxable income parts, the real line 1 and line 2 parts and the new `bc479_line_3.yaml`, and types in
 only the salary (and, in one test, line 2, and in another, line 23500 for a negative line 1). The
 form declaration is made up here, exporting only line 3. The figures are hand-computed from the

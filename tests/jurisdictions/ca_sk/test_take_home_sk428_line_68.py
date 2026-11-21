@@ -9,9 +9,8 @@ rate held in the `ca-sk/minimum_tax_rate` dataset, rounded half-up to the cent. 
 above the line, "Saskatchewan additional tax for minimum tax purposes". The input defaults to 0, as
 the Alberta counterpart's does, so the step has no blank rule.
 
-The salary part, the inputs part and the line 68 part are loaded under a test-local header and form
-declaration, over the Saskatchewan package list of `support.py`.
-"""
+The T1 employment income form, the inputs part and the line 68 part are loaded under a test-local
+header and form declaration, over the Saskatchewan package list of `support.py`."""
 
 from __future__ import annotations
 

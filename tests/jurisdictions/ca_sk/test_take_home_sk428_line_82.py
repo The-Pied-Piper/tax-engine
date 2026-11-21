@@ -12,7 +12,7 @@ has no graduate tuition credit, so line 81 is left blank, and the step has a bla
 it as 0 and prints its own "left blank, taken as 0" row, as line 80 does for its line 79. The
 output `ca-sk/sk428_saskatchewan_tax_line_82` is a non-negative kind on the form `ca-sk/sk428`.
 
-The test composes the real Saskatchewan salary part, the real Schedule 8 and T2204 parts, the T1
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the T1
 taxable income parts, the real line parts of `ca-sk/sk428_credits` that lines 8 and 57 need, the
 real `sk428_line_58.yaml` to `sk428_line_80.yaml` parts (with the inputs parts the lines read),
 the line 81 input part and the new `sk428_line_82.yaml`, and types in only the salary and, in some

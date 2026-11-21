@@ -6,7 +6,7 @@ amount, is an entry rejected above its printed maximum by `bc428_line_36.yaml`; 
 core/sum over line 35 then the line 36 kind that step passes on. A salary-only caller leaves line 36
 out, the input part reads it as blank, line 36 passes it on as blank, and line 37 reads that as 0.
 
-The test composes the real British Columbia salary part, the real Schedule 8 and T2204 parts, the
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the
 real line 16, 25, 27, 29, 33 and 35 parts, the line 36 input part and the new `bc428_line_37.yaml`,
 and types in only the salary (and, in one test, the pension income amount). The form declaration
 is made up here, exporting only line 37. The figures are hand-computed from the printed forms (not
@@ -39,7 +39,7 @@ from tax_engine.jurisdictions.ca_bc.catalog import (
     BC428_PENSION_INCOME_AMOUNT,
     BC428_SUBTOTAL_LINE_37,
 )
-from tests.federal_forms import FEDERAL_FORMS, form_parts
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -48,7 +48,7 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT
+from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT, T1_LINE_10100_STEP
 
 D = Decimal
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
@@ -84,7 +84,7 @@ def _part_files() -> Iterator[Path]:
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
     yield T1_LINE_10100_FORM
-    yield FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml"
+    yield T1_LINE_10100_STEP
     yield BC_PARTS / "bc428_line_16.yaml"
     yield BC_PARTS / "bc428_line_25.yaml"
     yield BC_PARTS / "bc428_line_27.yaml"

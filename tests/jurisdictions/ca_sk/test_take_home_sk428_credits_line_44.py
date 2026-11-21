@@ -5,7 +5,7 @@ read as the T1 form exports it, floored, `ca/t1_taxable_income.net_income`, whic
 only as a record list, so it is a core/record_total over it, as line 1 is. The form prints no label
 for the line, so the step has no title.
 
-The test composes the real Saskatchewan salary part, the real Schedule 8 parts, the real T1 taxable
+The test composes the T1 employment income form, the real Schedule 8 parts, the real T1 taxable
 income parts and the real line part (`sk428_credits_line_44.yaml`), and types in only the salary.
 The header and the form declaration are made up here, the form exporting line 44.
 

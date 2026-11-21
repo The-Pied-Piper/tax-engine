@@ -8,7 +8,7 @@ the form prints no rounding for the line and line 4 over 200,000.00 always termi
 is exact. The step has no unit, as the ratio is neither dollars nor a percent. The kind
 `ca-mb/worksheet_mb428_line_6` is non-negative.
 
-The test composes the real Manitoba salary part, the real federal parts the T1 taxable income form
+The test composes the T1 employment income form, the real federal parts the T1 taxable income form
 needs, the real line 2, 3, 4 and 5 parts and the new `worksheet_mb428_line_6.yaml`, and types in
 only the salary. The header and the Worksheet MB428 form declaration are made up here, because the
 shared scaffold owns them.

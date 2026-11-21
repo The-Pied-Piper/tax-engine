@@ -8,7 +8,7 @@ net income before its floor (`ca/t1_taxable_income.net_income_signed`), as Sched
 it (`schedule_6_line_7.yaml`). The result is signed, because the form shows a negative net income
 in brackets.
 
-The test composes the real British Columbia salary part, the real Schedule 8 parts, the real T1
+The test composes the T1 employment income form, the real Schedule 8 parts, the real T1
 taxable income parts and the real line part (`bc479_line_1.yaml`), and types in only the salary
 (and, for the negative case, line 23500). The form declaration is made up here, exporting the line
 read, because the real form part is owned by another change. The figures are hand-computed from the

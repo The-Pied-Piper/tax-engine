@@ -9,7 +9,7 @@ times that rate, rounded half-up to the cent by the dataset's rule, output
 blank (it is floored at 0), so the step has no blank rule. A line 8 of 0.00 gives a computed 0.00,
 not a blank. The form prints no title for the line, so the step has none.
 
-The test composes the real British Columbia salary part, the real Schedule 8 parts, the real T1
+The test composes the T1 employment income form, the real Schedule 8 parts, the real T1
 taxable income parts, the real line 1 to line 8 parts and the new line 12 part, and types in only
 the salary. The form declaration is made up here, exporting lines 8 and 12.
 

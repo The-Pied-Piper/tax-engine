@@ -4,7 +4,7 @@ Form text (Form MB428, CRA 5007-c): "Line 51 and line 58800: Line 42 plus line 5
 "Line 50 and line 58769: Line 48 plus line 49", is computed from lines 43 to 49 (0.00 for a
 salary-only filer). Line 51 is one core/sum over line 42 and line 50, as Alberta's line 52 is.
 
-The test composes the real Manitoba salary part, the real Schedule 8, T2204 and T1 taxable income
+The test composes the T1 employment income form, the real Schedule 8, T2204 and T1 taxable income
 parts, the real parts of Worksheet MB428 lines 1 to 9, the real parts of lines 9, 18, 19, 21, 28,
 29, 33, 36, 41 and 42, the line 31 input part, the real parts of lines 43 to 50, the real parts of
 Schedule MB428-A lines 1 to 12, and the new `mb428_credits_line_51.yaml`, and types in only the
