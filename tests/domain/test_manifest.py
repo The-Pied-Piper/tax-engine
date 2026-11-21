@@ -1141,7 +1141,7 @@ def test_a_step_reading_the_default_forms_carry_of_another_forms_input_is_refuse
     reading = CapabilitySelection(
         name="ex/total_up",
         params={},
-        consumes={"parts": "ex-on/return.ex/levy"},
+        consumes={"parts": "ex-on/return.levy"},
         produces={"total": "ex/total"},
     )
 

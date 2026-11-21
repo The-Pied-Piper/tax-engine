@@ -574,7 +574,8 @@ class Manifest:
         The owner reads the input: another form reads the owner's export instead. An export that
         is an input is read as entered, so it counts as a read like a step's. The first form is the
         default form, whose exports are the manifest's `outputs`: they carry an input onto the
-        return as entered, whichever form owns it, and are not checked.
+        return as entered, whichever form owns it, and are not checked. Another form may not read
+        that carry (`<default form>.<export>`) of an input it does not own.
         """
         names = {form.name for form in self.forms}
         for name, declaration in self.inputs.items():
@@ -596,8 +597,13 @@ class Manifest:
         """Refuse a step reading the default form's carry of another form's input: the carry is
         the return's output, not the owner's export."""
         default = self.forms[0]
+        namespace, _, form_id = default.name.partition("/")
         for export in default.exports:
-            if identifier == f"{default.name}.{export}":
+            field = self.artifacts.kind(export)
+            if (
+                isinstance(field, RecordField)
+                and identifier == f"{namespace}/{form_id}.{field.label}"
+            ):
                 self._check_owned_by(
                     form, export, f"step {step!r} reads, through the carry of {default.name!r},"
                 )
