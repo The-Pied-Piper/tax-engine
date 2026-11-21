@@ -7,9 +7,9 @@ from typing import Any
 
 import yaml
 
-import tax_engine.jurisdictions.ca
+from tests.federal_forms import FEDERAL_FORMS
 
-T1 = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms" / "t1_taxable_income"
+T1 = FEDERAL_FORMS / "t1_taxable_income"
 
 LINE = "21300"
 NAME = "ca/uccb_repayment"
