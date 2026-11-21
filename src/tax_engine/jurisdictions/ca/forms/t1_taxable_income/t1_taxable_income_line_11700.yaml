@@ -4,7 +4,7 @@
 # that print it again as part of a total (Schedule 6 line 11, BC479 line 4, MB479 line 4, NL428 line 91). It is not added
 # into line 15000 here: the take-home T1 builds employment income only.
 form:
-  name: ca/t1_uccb_rdsp
+  name: ca/t1_taxable_income
 capabilities:
   - name: core/sum
     title: "Universal child care benefit (UCCB)"

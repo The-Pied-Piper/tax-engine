@@ -65,7 +65,6 @@ HEADER_TEMPLATE = dedent("""\
       - ca/t1_taxable_income
       - {schedule_6}
       - ca/schedule_8
-      - ca/t1_uccb_rdsp
     """)
 SWAPPED = (
     "form: ca/schedule_6\n"

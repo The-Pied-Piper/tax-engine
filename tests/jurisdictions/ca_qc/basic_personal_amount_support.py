@@ -154,6 +154,14 @@ PART_C_PARTS: tuple[str, ...] = (
 )
 STEP_4_PARTS = (
     "t1_taxable_income_line_25700_inputs.yaml",
+    "t1_taxable_income_line_11700_inputs.yaml",
+    "t1_taxable_income_line_11700.yaml",
+    "t1_taxable_income_line_12500_inputs.yaml",
+    "t1_taxable_income_line_12500.yaml",
+    "t1_taxable_income_line_21300_inputs.yaml",
+    "t1_taxable_income_line_21300.yaml",
+    "t1_taxable_income_line_23200_inputs.yaml",
+    "t1_taxable_income_line_23200.yaml",
     "t1_taxable_income_line_26000.yaml",
 )
 PARTS = (
@@ -182,7 +190,6 @@ HEADER = (
     """)
     + real_import("ca/schedule_8")
     + real_import("ca/schedule_6")
-    + real_import("ca/t1_uccb_rdsp")
     + real_import("ca/t2204")
 )
 # The real tax and credits declaration is the form; the real T1 declaration is the first part.

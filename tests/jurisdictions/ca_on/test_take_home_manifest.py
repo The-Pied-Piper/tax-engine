@@ -245,7 +245,6 @@ def test_the_federal_forms_are_imported_in_the_order_the_manifest_lists_them() -
         "ca/schedule_6",
         "ca/schedule_8",
         "ca/t2204",
-        "ca/t1_uccb_rdsp",
     ]
     assert names[1 : 1 + len(imported)] == imported
 

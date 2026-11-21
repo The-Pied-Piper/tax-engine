@@ -3,7 +3,7 @@
 # read as blank, and the line 11700 step reads that blank as 0. This form owns the input: Schedule 6,
 # BC479, MB479 and NL428 import line 11700 from this form's export and never ask for it themselves.
 form:
-  name: ca/t1_uccb_rdsp
+  name: ca-qc/t1_taxable_income
 inputs:
   - name: ca/uccb_income
     title: "Universal child care benefit (UCCB)"

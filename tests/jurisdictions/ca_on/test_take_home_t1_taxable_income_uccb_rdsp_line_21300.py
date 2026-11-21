@@ -9,7 +9,7 @@ import yaml
 
 import tax_engine.jurisdictions.ca
 
-T1 = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms" / "t1_uccb_rdsp"
+T1 = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms" / "t1_taxable_income"
 
 LINE = "21300"
 NAME = "ca/uccb_repayment"
@@ -27,9 +27,9 @@ def _part(path: Path) -> dict[str, Any]:
 
 
 def test_each_t1_line_is_one_sum_step_that_reads_its_blank_as_zero() -> None:
-    part = _part(T1 / f"t1_uccb_rdsp_line_{LINE}.yaml")
+    part = _part(T1 / f"t1_taxable_income_line_{LINE}.yaml")
 
-    assert part["form"] == {"name": "ca/t1_uccb_rdsp"}
+    assert part["form"] == {"name": "ca/t1_taxable_income"}
     (step,) = part["capabilities"]
     assert step == {
         "name": "core/sum",

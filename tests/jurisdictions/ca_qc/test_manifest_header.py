@@ -61,7 +61,6 @@ def test_the_federal_forms_are_imported_in_order_and_read_the_quebec_datasets() 
             },
         },
         {"form": "ca/t2204", "datasets": {"ca/ei_premium": "ca-qc/ei_premium"}},
-        "ca/t1_uccb_rdsp",
     ]
 
 

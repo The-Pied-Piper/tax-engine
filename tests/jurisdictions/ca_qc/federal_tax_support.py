@@ -36,7 +36,6 @@ HEADER = (
     """)
     + real_import("ca/schedule_8")
     + "  - ca/schedule_6\n"
-    + "  - ca/t1_uccb_rdsp\n"
 )
 
 

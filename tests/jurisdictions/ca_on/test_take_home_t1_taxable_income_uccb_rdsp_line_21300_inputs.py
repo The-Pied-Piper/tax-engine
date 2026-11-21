@@ -9,7 +9,7 @@ import yaml
 
 import tax_engine.jurisdictions.ca
 
-T1 = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms" / "t1_uccb_rdsp"
+T1 = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms" / "t1_taxable_income"
 
 LINE = "21300"
 NAME = "ca/uccb_repayment"
@@ -27,9 +27,9 @@ def _part(path: Path) -> dict[str, Any]:
 
 
 def test_each_t1_line_has_an_optional_input_left_blank_by_a_salary_only_caller() -> None:
-    part = _part(T1 / f"t1_uccb_rdsp_line_{LINE}_inputs.yaml")
+    part = _part(T1 / f"t1_taxable_income_line_{LINE}_inputs.yaml")
 
-    assert part["form"] == {"name": "ca/t1_uccb_rdsp"}
+    assert part["form"] == {"name": "ca/t1_taxable_income"}
     (declaration,) = part["inputs"]
     assert declaration == {
         "name": NAME,

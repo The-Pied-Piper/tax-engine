@@ -39,4 +39,3 @@ imports:
       ca/cwb_reduction_threshold: ca-ab/cwb_reduction_threshold
   - ca/schedule_8
   - ca/t2204
-  - ca/t1_uccb_rdsp

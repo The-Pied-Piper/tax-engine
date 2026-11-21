@@ -22,8 +22,8 @@ PART = (
     / "mb479_line_4.yaml"
 )
 EXPORTS = (
-    "ca/t1_uccb_rdsp.uccb_income_line_11700",
-    "ca/t1_uccb_rdsp.rdsp_income_line_12500",
+    "ca/t1_taxable_income.uccb_income_line_11700",
+    "ca/t1_taxable_income.rdsp_income_line_12500",
 )
 
 

@@ -3,7 +3,7 @@
 # read as blank, and the line 23200 step reads that blank as 0. This form owns the input: Schedule 6,
 # BC479, MB479 and NL428 import line 23200 from this form's export and never ask for it themselves.
 form:
-  name: ca/t1_uccb_rdsp
+  name: ca-qc/t1_taxable_income
 inputs:
   - name: ca/rdsp_income_repayment
     title: "Registered disability savings plan (RDSP) income repayment (included on line 23200)"

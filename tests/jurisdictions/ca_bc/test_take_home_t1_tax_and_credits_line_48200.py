@@ -66,6 +66,14 @@ T1_PARTS = (
     "t1_taxable_income_line_23600.yaml",
     "t1_taxable_income_line_23600_signed.yaml",
     "t1_taxable_income_line_25700_inputs.yaml",
+    "t1_taxable_income_line_11700_inputs.yaml",
+    "t1_taxable_income_line_11700.yaml",
+    "t1_taxable_income_line_12500_inputs.yaml",
+    "t1_taxable_income_line_12500.yaml",
+    "t1_taxable_income_line_21300_inputs.yaml",
+    "t1_taxable_income_line_21300.yaml",
+    "t1_taxable_income_line_23200_inputs.yaml",
+    "t1_taxable_income_line_23200.yaml",
     "t1_taxable_income_line_25700.yaml",
     "t1_taxable_income_line_26000.yaml",
     "t1_taxable_income.yaml",
@@ -100,7 +108,6 @@ def _part_files() -> Iterator[Path]:
         yield _federal(name)
     yield from sorted(FEDERAL_FORMS.rglob("t2204*.yaml"))
     yield from sorted(FEDERAL_FORMS.rglob("schedule_6*.yaml"))
-    yield from sorted(FEDERAL_FORMS.rglob("t1_uccb_rdsp*.yaml"))
     yield from sorted(BC_PARTS.glob("bc479*.yaml"))
     yield _federal("t1_tax_and_credits_line_47900.yaml")
     yield _federal("t1_tax_and_credits_line_48200.yaml")

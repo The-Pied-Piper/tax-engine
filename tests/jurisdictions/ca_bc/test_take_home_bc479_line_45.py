@@ -78,15 +78,14 @@ T1_PARTS = (
     "t1_taxable_income_line_26000.yaml",
     "t1_taxable_income.yaml",
     "t1_employment_income_line_10400_inputs.yaml",
-    "t1_uccb_rdsp.yaml",
-    "t1_uccb_rdsp_line_11700_inputs.yaml",
-    "t1_uccb_rdsp_line_12500_inputs.yaml",
-    "t1_uccb_rdsp_line_21300_inputs.yaml",
-    "t1_uccb_rdsp_line_23200_inputs.yaml",
-    "t1_uccb_rdsp_line_11700.yaml",
-    "t1_uccb_rdsp_line_12500.yaml",
-    "t1_uccb_rdsp_line_21300.yaml",
-    "t1_uccb_rdsp_line_23200.yaml",
+    "t1_taxable_income_line_11700_inputs.yaml",
+    "t1_taxable_income_line_12500_inputs.yaml",
+    "t1_taxable_income_line_21300_inputs.yaml",
+    "t1_taxable_income_line_23200_inputs.yaml",
+    "t1_taxable_income_line_11700.yaml",
+    "t1_taxable_income_line_12500.yaml",
+    "t1_taxable_income_line_21300.yaml",
+    "t1_taxable_income_line_23200.yaml",
 )
 
 HEADER = dedent("""\

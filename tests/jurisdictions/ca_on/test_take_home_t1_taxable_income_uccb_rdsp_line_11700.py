@@ -1,4 +1,4 @@
-"""T1 line 23200 UCCB/RDSP part: one sum step reading the blank as 0."""
+"""T1 line 11700 UCCB/RDSP part: one sum step reading the blank as 0."""
 
 from __future__ import annotations
 
@@ -9,12 +9,12 @@ import yaml
 
 import tax_engine.jurisdictions.ca
 
-T1 = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms" / "t1_uccb_rdsp"
+T1 = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms" / "t1_taxable_income"
 
-LINE = "23200"
-NAME = "ca/rdsp_income_repayment"
-OUTPUT = "ca/rdsp_income_repayment_line_23200"
-BASIC = "Line 52 and line 23200: Other deductions (specify)"
+LINE = "11700"
+NAME = "ca/uccb_income"
+OUTPUT = "ca/uccb_income_line_11700"
+BASIC = "Line 7 and line 11700: Universal child care benefit (UCCB) (see the RC62 slip)"
 
 
 def _part(path: Path) -> dict[str, Any]:
@@ -24,9 +24,9 @@ def _part(path: Path) -> dict[str, Any]:
 
 
 def test_each_t1_line_is_one_sum_step_that_reads_its_blank_as_zero() -> None:
-    part = _part(T1 / f"t1_uccb_rdsp_line_{LINE}.yaml")
+    part = _part(T1 / f"t1_taxable_income_line_{LINE}.yaml")
 
-    assert part["form"] == {"name": "ca/t1_uccb_rdsp"}
+    assert part["form"] == {"name": "ca/t1_taxable_income"}
     (step,) = part["capabilities"]
     assert step == {
         "name": "core/sum",

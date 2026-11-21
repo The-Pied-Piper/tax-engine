@@ -48,6 +48,14 @@ PARTS = (
     "t1_taxable_income_line_23600.yaml",
     "t1_taxable_income_line_23600_signed.yaml",
     "t1_taxable_income_line_25700_inputs.yaml",
+    "t1_taxable_income_line_11700_inputs.yaml",
+    "t1_taxable_income_line_11700.yaml",
+    "t1_taxable_income_line_12500_inputs.yaml",
+    "t1_taxable_income_line_12500.yaml",
+    "t1_taxable_income_line_21300_inputs.yaml",
+    "t1_taxable_income_line_21300.yaml",
+    "t1_taxable_income_line_23200_inputs.yaml",
+    "t1_taxable_income_line_23200.yaml",
     "t1_taxable_income_line_26000.yaml",
 )
 HEADER = (
@@ -65,7 +73,6 @@ HEADER = (
     """)
     + real_import("ca/schedule_8")
     + "  - ca/schedule_6\n"
-    + "  - ca/t1_uccb_rdsp\n"
 )
 # The real form declaration: its exports and its `supplies`.
 FORM = (QUEBEC_PARTS / "t1_taxable_income.yaml").read_text(encoding="utf-8")

@@ -78,7 +78,6 @@ PARTS = (
     *(part.name for part in sorted(TAKE_HOME.rglob("t1_employment_income*.yaml"))),
     *(part.name for part in sorted(TAKE_HOME.rglob("t1_taxable_income*.yaml"))),
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_6*.yaml"))),
-    *(part.name for part in sorted(TAKE_HOME.rglob("t1_uccb_rdsp*.yaml"))),
 )
 
 # Amount lines by form line. The printed rates (27% on line 19, 15% on line 26) are dataset figures
