@@ -1,0 +1,21 @@
+# Form ON428 (Ontario Tax, 2025, 5006-c-25e) line 41 (ca-on/on428): "Line 41: Line 36 minus line 40
+# (if negative, enter "0") =". Line 36 is the optional medical expenses input
+# (on428_line_36_inputs.yaml) and line 40 the lesser of the printed ceiling and line 39
+# (on428_line_40.yaml). Line 41 is one core/subtract_not_below_zero step, rounded half-up to the cent.
+# A request that leaves line 36 blank has no medical expenses, so a blank line 36 is read as 0 and
+# line 41 is 0.00. The form prints no label for the line, so the step has no title.
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "41"
+    unit: ca/cad
+    params:
+      rounding: ca-on/cent_rounding
+    consumes:
+      amount: ca-on/on428_medical_expenses_line_36
+      less: ca-on/on428_medical_expenses_limited_amount_line_40
+    blank:
+      amount: "0"
+    produces:
+      output: ca-on/on428_medical_expenses_over_limit_line_41
