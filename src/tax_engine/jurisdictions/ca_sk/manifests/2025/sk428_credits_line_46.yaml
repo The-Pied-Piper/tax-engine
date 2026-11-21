@@ -1,0 +1,17 @@
+# SK428 (2025) line 46 (Form SK428, CRA 5008-c-25e): "Line 45: Applicable rate 3%" and "Line 46:
+# Line 44 multiplied by the percentage from line 45 =". Line 45 is the printed 3%, the
+# `ca-sk/medical_expense_rate` dataset, and has no step of its own. Line 46 applies that rate to
+# line 44 (`ca-sk/sk428_net_income_line_44`), rounded half-up to the cent by the dataset's rule. The
+# form names no label for the line, so the step has no title.
+form:
+  name: ca-sk/sk428_credits
+capabilities:
+  - name: core/apply_rate
+    reference: "46"
+    unit: ca/cad
+    params:
+      rate: ca-sk/medical_expense_rate
+    consumes:
+      base: ca-sk/sk428_net_income_line_44
+    produces:
+      output: ca-sk/sk428_medical_expenses_rate_amount_line_46
