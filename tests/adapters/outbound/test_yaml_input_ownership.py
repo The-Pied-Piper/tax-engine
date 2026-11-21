@@ -15,6 +15,7 @@ from pathlib import Path
 import pytest
 
 from tax_engine.domain.errors import InvalidManifestError
+from tax_engine.domain.manifest import Manifest
 from tests.adapters.outbound.test_yaml_imports import (
     EX_ON,
     FEDERAL,
@@ -33,11 +34,17 @@ LEVY_INPUT = "ex-on/levy"
 RETURN = "ex-on/return"
 
 
+def owner_of(manifest: Manifest, name: str) -> str:
+    """The name of the one form of `manifest` that declares the input `name`."""
+    (owner,) = (form.name for form in manifest.forms if name in {i.name for i in form.inputs})
+    return owner
+
+
 def test_an_input_in_a_part_with_a_form_key_belongs_to_that_form(tmp_path: Path) -> None:
     write_federal(tmp_path)
     write_province(tmp_path)
 
-    assert manifest_of(tmp_path).inputs["ex/income"].owner == LEVY_INPUT
+    assert owner_of(manifest_of(tmp_path), "ex/income") == LEVY_INPUT
 
 
 def test_an_input_in_a_part_without_a_form_key_belongs_to_the_default_form(
@@ -48,21 +55,21 @@ def test_an_input_in_a_part_without_a_form_key_belongs_to_the_default_form(
     plain = "inputs: [{name: ex/note, required: false, default: '', basis: b}]\n"
     write(tmp_path, "ex-on/manifests/v1/02-note.yaml", plain)
 
-    assert manifest_of(tmp_path).inputs["ex/note"].owner == RETURN
+    assert owner_of(manifest_of(tmp_path), "ex/note") == RETURN
 
 
 def test_an_input_in_a_whole_file_manifest_belongs_to_the_default_form(tmp_path: Path) -> None:
     write_federal(tmp_path, {"00-federal.yaml": FEDERAL_STANDALONE})
     write(tmp_path, "ex-on/manifests/v1.yaml", header("EX-ON", inputs=True) + "capabilities: []\n")
 
-    assert manifest_of(tmp_path).inputs["ex/income"].owner == RETURN
+    assert owner_of(manifest_of(tmp_path), "ex/income") == RETURN
 
 
 def test_an_input_an_imported_form_declares_belongs_to_the_imported_form(tmp_path: Path) -> None:
     write_federal(tmp_path, {"00-federal.yaml": FEDERAL, "01-inputs.yaml": FEDERAL_INPUTS})
     write_province(tmp_path)
 
-    assert manifest_of(tmp_path).inputs["ex/other_income"].owner == "ex/federal"
+    assert owner_of(manifest_of(tmp_path), "ex/other_income") == "ex/federal"
 
 
 def test_a_step_reading_an_input_another_form_owns_fails_at_load(tmp_path: Path) -> None:
@@ -91,4 +98,4 @@ def test_a_step_reading_its_own_input_and_another_forms_export_loads(tmp_path: P
 
     federal = next(form for form in reading_both.forms if form.name == "ex/federal")
     assert federal.capabilities[0].consumes == {"records": "ex/provincial_tax.amount"}
-    assert reading_both.inputs["ex/income"].owner == LEVY_INPUT
+    assert owner_of(reading_both, "ex/income") == LEVY_INPUT

@@ -15,12 +15,9 @@ def required_fields(kind: RecordListKind) -> tuple[InputDeclaration, ...]:
     return tuple(InputDeclaration(name=field.identifier, required=True) for field in kind.fields)
 
 
-def required_inputs(
-    names: Iterable[str], owner: str = "ex-on/return"
-) -> dict[str, InputDeclaration]:
-    """A required declaration for each of `names`, by identifier, owned by the form `owner`, by
-    default the default form of the made-up `ex-on` manifests."""
-    return {name: InputDeclaration(name=name, required=True, owner=owner) for name in sorted(names)}
+def required_inputs(names: Iterable[str]) -> tuple[InputDeclaration, ...]:
+    """A required declaration for each of `names`, by identifier, for the `inputs` of a form."""
+    return tuple(InputDeclaration(name=name, required=True) for name in sorted(names))
 
 
 def inputs_without_form(part: Path) -> str:

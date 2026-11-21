@@ -11,6 +11,7 @@ include an input, carried onto the return as entered. Names are made up.
 from __future__ import annotations
 
 import dataclasses
+from collections.abc import Iterable
 from decimal import Decimal
 from types import MappingProxyType
 from typing import Any, cast
@@ -132,12 +133,12 @@ def manifest(
         jurisdiction=JurisdictionCode("EX-ON"),
         version=1,
         valid_from_tax_year=2025,
-        inputs=required_inputs(inputs),
         forms=(
             Form(
                 required=True,
                 name="ex-on/return",
                 instances=None,
+                inputs=required_inputs(inputs),
                 exports=outputs,
                 capabilities=(selection(),),
             ),
@@ -163,9 +164,9 @@ def test_manifest_fields_in_order() -> None:
         "jurisdiction",
         "version",
         "valid_from_tax_year",
-        "inputs",
         "forms",
         "artifacts",
+        "inputs",
         "kinds",
         "defaults",
         "field_defaults",
@@ -295,6 +296,7 @@ def test_form_fields_in_order() -> None:
         "required_when",
         "basis",
         "fields",
+        "inputs",
         "title",
         "supplies",
     ]
@@ -475,29 +477,30 @@ def test_manifest_fields_put_forms_before_the_artifacts_it_is_built_with() -> No
     assert names[names.index("forms") + 1] == "artifacts"
 
 
-def owned_by(owner: str) -> dict[str, InputDeclaration]:
-    return required_inputs(["ex/taxable_base", "ex/relief_applies"], owner=owner)
+def with_inputs(
+    owner: Form, names: Iterable[str] = ("ex/taxable_base", "ex/relief_applies")
+) -> Form:
+    """`owner` owning a required input for each of `names`."""
+    return dataclasses.replace(owner, inputs=required_inputs(names))
 
 
 def test_a_manifest_holds_its_forms_as_a_tuple_in_order() -> None:
     other = form(
         name="ex/business", instances="ex/businesses", exports=("ex/profit",), capabilities=()
     )
-    found = dataclasses.replace(
-        manifest(), forms=cast(Any, [form(), other]), inputs=owned_by(form().name)
-    )
+    found = dataclasses.replace(manifest(), forms=cast(Any, [with_inputs(form()), other]))
 
-    assert found.forms == (form(), other)
+    assert found.forms == (with_inputs(form()), other)
     assert isinstance(found.forms, tuple)
 
 
 def test_manifests_with_other_forms_differ_and_equal_ones_hash_alike() -> None:
-    inputs = owned_by("ex/rental")
-    with_form = dataclasses.replace(manifest(), forms=(form(),), inputs=inputs)
+    forms = (with_inputs(form()),)
+    with_form = dataclasses.replace(manifest(), forms=forms)
 
     assert with_form != manifest()
-    assert with_form == dataclasses.replace(manifest(), forms=(form(),), inputs=inputs)
-    assert hash(with_form) == hash(dataclasses.replace(manifest(), forms=(form(),), inputs=inputs))
+    assert with_form == dataclasses.replace(manifest(), forms=forms)
+    assert hash(with_form) == hash(dataclasses.replace(manifest(), forms=forms))
 
 
 def test_a_manifest_refuses_two_forms_of_one_name() -> None:
@@ -517,9 +520,9 @@ def test_a_manifest_refuses_two_forms_of_one_name() -> None:
 def test_a_manifest_needs_no_form_named_return() -> None:
     other = form(name="ex/rental", instances=None, exports=("ex/profit",))
 
-    found = dataclasses.replace(manifest(), forms=(other,), inputs=owned_by("ex/rental"))
+    found = dataclasses.replace(manifest(), forms=(with_inputs(other),))
 
-    assert found.forms == (other,)
+    assert found.forms == (with_inputs(other),)
 
 
 def test_a_form_named_return_is_refused_only_as_a_second_of_that_name() -> None:
@@ -550,7 +553,6 @@ def optional(name: str = "ex/credit", default: Artifact[Any] | None = None) -> I
         if default is None
         else default,
         basis="Line 1: enter 0 if none",
-        owner="ex-on/return",
     )
 
 
@@ -679,9 +681,12 @@ def test_fields_belong_to_a_form_with_instances_and_are_declared_once() -> None:
 
 def with_forms(
     *forms: Form,
-    inputs: dict[str, InputDeclaration] | None = None,
+    inputs: tuple[InputDeclaration, ...] | None = None,
+    owner: str = "ex-on/return",
     artifacts: ArtifactRegistry | None = None,
 ) -> Manifest:
+    """A manifest of the made-up default form and `forms`, the form named `owner` owning `inputs`
+    (by default a required taxable base and relief answer)."""
     default = Form(
         required=True,
         name="ex-on/return",
@@ -689,14 +694,15 @@ def with_forms(
         exports=("ex/levy",),
         capabilities=(selection(),),
     )
+    given = required_inputs(["ex/taxable_base", "ex/relief_applies"]) if inputs is None else inputs
     return Manifest(
         jurisdiction=JurisdictionCode("EX-ON"),
         version=1,
         valid_from_tax_year=2025,
-        inputs=required_inputs(["ex/taxable_base", "ex/relief_applies"])
-        if inputs is None
-        else inputs,
-        forms=(default, *forms),
+        forms=tuple(
+            dataclasses.replace(form, inputs=given) if form.name == owner else form
+            for form in (default, *forms)
+        ),
         artifacts=AutoKinds(["ex/relief_applies"]) if artifacts is None else artifacts,
     )
 
@@ -721,17 +727,10 @@ def test_a_predicate_nothing_declares_or_produces_is_refused_naming_the_form() -
 
 
 def test_a_predicate_that_is_an_optional_input_is_refused() -> None:
-    inputs = required_inputs(["ex/taxable_base"]) | {
-        "ex/relief_applies": optional("ex/relief_applies")
-    }
+    inputs = (*required_inputs(["ex/taxable_base"]), optional("ex/relief_applies"))
 
     with pytest.raises(InvalidManifestError, match="'ex/relief_applies' is an optional input"):
         with_forms(optional_form(), inputs=inputs)
-
-
-def test_an_input_must_be_declared_under_its_own_name() -> None:
-    with pytest.raises(InvalidManifestError, match="input 'ex/a' is declared as 'ex/b'"):
-        with_forms(inputs={"ex/a": InputDeclaration(name="ex/b", required=True)})
 
 
 def test_equal_manifests_with_declarations_hash_alike() -> None:
@@ -763,7 +762,7 @@ def test_the_manifest_is_checked_and_its_defaults_collected_when_it_is_built() -
             optional("ex/count", Artifact(COUNT, BLANK)),
         ),
     )
-    inputs = required_inputs(["ex/relief_applies"]) | {"ex/amount": optional("ex/amount")}
+    inputs = (*required_inputs(["ex/relief_applies"]), optional("ex/amount"))
 
     built = with_forms(gated, inputs=inputs, artifacts=registry(COUNT_APPLIES, ROWS, AMOUNT, COUNT))
 
@@ -829,9 +828,10 @@ def test_a_field_default_must_suit_the_field_kind() -> None:
 
 
 def test_an_input_default_must_suit_its_kind() -> None:
-    inputs = required_inputs(["ex/relief_applies"]) | {
-        "ex/amount": optional("ex/amount", Artifact(COUNT, 1))
-    }
+    inputs = (
+        *required_inputs(["ex/relief_applies"]),
+        optional("ex/amount", Artifact(COUNT, 1)),
+    )
 
     with pytest.raises(
         InvalidManifestError, match="input 'ex/amount': default is an artifact of 'ex/count'"
@@ -948,8 +948,7 @@ def with_reading(*forms: Form, artifacts: ArtifactRegistry) -> Manifest:
         jurisdiction=JurisdictionCode("EX-ON"),
         version=1,
         valid_from_tax_year=2025,
-        inputs=required_inputs(["ex/taxable_base"], owner=forms[0].name),
-        forms=forms,
+        forms=(with_inputs(forms[0], ["ex/taxable_base"]), *forms[1:]),
         artifacts=artifacts,
     )
 
@@ -1069,10 +1068,8 @@ def test_an_optional_slot_without_a_blank_rule_is_listed_by_the_form() -> None:
 
 
 def test_a_step_reading_an_input_another_form_owns_is_refused_naming_all_four() -> None:
-    inputs = owned_by("ex/relief")
-
     with pytest.raises(InvalidManifestError) as caught:
-        with_forms(optional_form(), inputs=inputs)
+        with_forms(optional_form(), owner="ex/relief")
 
     message = str(caught.value)
     assert "form 'ex-on/return'" in message
@@ -1083,7 +1080,7 @@ def test_a_step_reading_an_input_another_form_owns_is_refused_naming_all_four() 
 
 
 def test_a_step_reading_an_input_its_own_form_owns_passes() -> None:
-    assert with_forms(optional_form(), inputs=owned_by("ex-on/return")).inputs.keys() == {
+    assert with_forms(optional_form()).inputs.keys() == {
         "ex/taxable_base",
         "ex/relief_applies",
     }
@@ -1100,18 +1097,17 @@ def test_a_step_reading_a_list_slot_input_another_form_owns_is_refused() -> None
     with pytest.raises(
         InvalidManifestError, match="form 'ex/relief'.*input 'ex/relief_applies'.*'ex-on/return'"
     ):
-        with_forms(optional_form(capabilities=(reading,)), inputs=owned_by("ex-on/return"))
+        with_forms(optional_form(capabilities=(reading,)))
 
 
-def test_an_input_whose_owner_is_not_a_form_of_the_manifest_is_refused() -> None:
-    with pytest.raises(InvalidManifestError, match="input 'ex/relief_applies': owner 'ex/nobody'"):
-        with_forms(optional_form(), inputs=owned_by("ex/nobody"))
-    with pytest.raises(InvalidManifestError, match="input 'ex/relief_applies': owner None"):
-        with_forms(
-            optional_form(),
-            inputs=owned_by("ex-on/return")
-            | {"ex/relief_applies": InputDeclaration("ex/relief_applies", True)},
-        )
+def test_an_input_two_forms_declare_is_refused_naming_both() -> None:
+    again = with_inputs(optional_form(), ["ex/taxable_base"])
+
+    with pytest.raises(
+        InvalidManifestError,
+        match="input 'ex/taxable_base' is declared by form 'ex-on/return' and by form 'ex/relief'",
+    ):
+        with_forms(again)
 
 
 def test_a_form_exporting_an_input_another_form_owns_is_refused() -> None:
@@ -1121,23 +1117,19 @@ def test_a_form_exporting_an_input_another_form_owns_is_refused() -> None:
         InvalidManifestError,
         match="form 'ex/relief': exports input 'ex/taxable_base', which belongs to form 'ex-on",
     ):
-        with_forms(sharing, inputs=owned_by("ex-on/return"))
+        with_forms(sharing)
 
 
 def test_the_default_form_carries_an_input_onto_the_return_as_entered_whoever_owns_it() -> None:
-    inputs = owned_by("ex/relief")
-    inputs["ex/taxable_base"] = InputDeclaration("ex/taxable_base", True, owner="ex-on/return")
-    carrying = dataclasses.replace(
-        with_forms(optional_form(), inputs=inputs).forms[0], exports=("ex/relief_applies",)
-    )
-
-    found = with_forms(optional_form(), inputs=inputs)
+    relief = with_inputs(optional_form(), ["ex/relief_applies"])
+    found = with_forms(relief, inputs=required_inputs(["ex/taxable_base"]))
+    carrying = dataclasses.replace(found.forms[0], exports=("ex/relief_applies",))
 
     assert dataclasses.replace(found, forms=(carrying, *found.forms[1:])).forms[0] == carrying
 
 
 def test_a_step_reading_the_default_forms_carry_of_another_forms_input_is_refused() -> None:
-    inputs = owned_by("ex-on/return") | required_inputs(["ex/levy"], owner="ex-on/return")
+    inputs = required_inputs(["ex/taxable_base", "ex/relief_applies", "ex/levy"])
     reading = CapabilitySelection(
         name="ex/total_up",
         params={},

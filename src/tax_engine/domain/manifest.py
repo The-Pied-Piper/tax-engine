@@ -128,11 +128,7 @@ class InputDeclaration:
     artifact read when the request leaves the line out (a blank artifact is a declared blank, `None`
     is no default); `basis` is the form's printed sentence justifying it, which nothing checks.
     `title` and `reference` are the figure's printed title and line label (`None` for none); `unit`
-    names its unit, as a manifest writes it. `owner` is the name of the form the input belongs
-    to: the form whose part declares it, the default form for one declared at the top of a
-    manifest. Only that form may read or export it; every other form reads the owner's export. It
-    is required of an entry of a manifest's `inputs`, which refuses one whose owner is not a form
-    of the manifest; a field of a form's `instances` belongs to its form and has none.
+    names its unit, as a manifest writes it.
     """
 
     name: str
@@ -142,7 +138,6 @@ class InputDeclaration:
     title: str | None = None
     reference: str | None = None
     unit: str | None = None
-    owner: str | None = None
 
     def __post_init__(self) -> None:
         Form.check_identifier("input", self.name)
@@ -181,7 +176,8 @@ class Form:
 
     `instances` is the record-list kind the caller supplies (`None` for one instance and no
     `fields`); `exports` are readable by every form as `<name>.<local id>`; `supplies` maps neutral
-    identifiers to own exports. See docs/forms.md for the other keys.
+    identifiers to own exports. `inputs` are the starting artifacts the form owns: it alone reads
+    them, and every other form reads its export instead. See docs/forms.md for the other keys.
     """
 
     name: str
@@ -195,6 +191,7 @@ class Form:
     required_when: str | None = None
     basis: str | None = None
     fields: tuple[InputDeclaration, ...] = ()
+    inputs: tuple[InputDeclaration, ...] = ()
     title: str | None = None
     # Not hashed: a read-only mapping is unhashable, and equal forms still hash alike.
     supplies: Mapping[str, str] = dataclasses.field(default_factory=dict, hash=False)
@@ -206,7 +203,7 @@ class Form:
 
     def check_inputs_owned(
         self,
-        inputs: Mapping[str, InputDeclaration],
+        owners: Mapping[str, str],
         carries: Mapping[str, str],
         *,
         carries_inputs: bool,
@@ -215,40 +212,39 @@ class Form:
         through the default form's carry of it (`carries`, by kind name), or exported unless this
         is the default form (`carries_inputs`), whose exports carry inputs as entered.
 
-        The owner reads the input: another form reads the owner's export instead.
+        `owners` gives the name of the form that owns each input. The owner reads the input:
+        another form reads the owner's export instead.
         """
         for selection in self.capabilities:
             for named in selection.consumes.values():
                 for identifier in (named,) if isinstance(named, str) else named:
-                    self._check_read_owned(inputs, carries, selection.name, identifier)
+                    self._check_read_owned(owners, carries, selection.name, identifier)
         if not carries_inputs:
             for identifier in self.exports:
-                self._check_owned(inputs, identifier, "exports")
+                self._check_owned(owners, identifier, "exports")
 
     def _check_read_owned(
         self,
-        inputs: Mapping[str, InputDeclaration],
+        owners: Mapping[str, str],
         carries: Mapping[str, str],
         step: str,
         read: str,
     ) -> None:
         """Refuse step `step` reading the input `read`, or the carry of it, if another form owns
         it."""
-        self._check_owned(inputs, read, f"step {step!r} reads")
+        self._check_owned(owners, read, f"step {step!r} reads")
         if read in carries:
             action = f"step {step!r} reads {read!r}, the carry of"
-            self._check_owned(inputs, carries[read], action)
+            self._check_owned(owners, carries[read], action)
 
-    def _check_owned(
-        self, inputs: Mapping[str, InputDeclaration], identifier: str, action: str
-    ) -> None:
+    def _check_owned(self, owners: Mapping[str, str], identifier: str, action: str) -> None:
         """Refuse this form taking the input `identifier` if another form owns it."""
-        declaration = inputs.get(identifier)
-        if declaration is None or declaration.owner == self.name:
+        owner = owners.get(identifier)
+        if owner is None or owner == self.name:
             return
         raise InvalidManifestError(
             f"form {self.name!r}: {action} input {identifier!r}, which belongs to form "
-            f"{declaration.owner!r}; read the export of {declaration.owner!r} instead"
+            f"{owner!r}; read the export of {owner!r} instead"
         )
 
     def derived_kinds(self, kinds: ArtifactRegistry) -> tuple[RecordListKind, ...]:
@@ -434,8 +430,10 @@ class Form:
 class Manifest:
     """One structural version of a jurisdiction's composition.
 
-    `forms` is a tuple of at least one form with distinct names; `inputs` declare the starting
-    artifacts once each, among them each form's instances kind. A manifest is checked against
+    `forms` is a tuple of at least one form with distinct names. Each form declares the starting
+    artifacts it owns; the first form, the default form, owns the manifest's own. `inputs` gathers
+    them all by name, among them each form's instances kind; an input two forms declare is
+    refused. A manifest is checked against
     `artifacts` (the application's kinds) when built, so one that exists is correct. `kinds` adds
     the `<form>.<export>` kinds and the neutral kinds the forms supply. An unresolvable default or
     `required_when` that is not a yes/no is an InvalidManifestError; an unknown identifier is an
@@ -447,10 +445,10 @@ class Manifest:
     jurisdiction: JurisdictionCode
     version: int
     valid_from_tax_year: int
-    inputs: Mapping[str, InputDeclaration]
     forms: tuple[Form, ...]
     artifacts: ArtifactRegistry = dataclasses.field(compare=False)
     units_by_name: Mapping[str, Unit] = dataclasses.field(default_factory=dict, compare=False)
+    inputs: Mapping[str, InputDeclaration] = dataclasses.field(init=False, compare=False)
     kinds: ArtifactRegistry = dataclasses.field(init=False, compare=False)
     defaults: tuple[Artifact[Any], ...] = dataclasses.field(init=False, compare=False)
     field_defaults: Mapping[str, tuple[Artifact[Any], ...]] = dataclasses.field(
@@ -458,7 +456,6 @@ class Manifest:
     )
 
     def __post_init__(self) -> None:
-        object.__setattr__(self, "inputs", MappingProxyType(dict(self.inputs)))
         object.__setattr__(self, "forms", tuple(self.forms))
         object.__setattr__(self, "units_by_name", MappingProxyType(dict(self.units_by_name)))
         if not self.forms:
@@ -467,11 +464,9 @@ class Manifest:
         for name in names:
             if names.count(name) > 1:
                 raise InvalidManifestError(f"form {name!r} is listed more than once")
+        object.__setattr__(self, "inputs", MappingProxyType(self._gather_inputs()))
         if not self.inputs:
             raise InvalidManifestError("inputs must name at least one artifact")
-        for name, declaration in self.inputs.items():
-            if declaration.name != name:
-                raise InvalidManifestError(f"input {name!r} is declared as {declaration.name!r}")
         self._check_predicates()
         self._check_input_owners()
         derived = [kind for form in self.forms for kind in form.derived_kinds(self.artifacts)]
@@ -500,7 +495,6 @@ class Manifest:
                 self.jurisdiction,
                 self.version,
                 self.valid_from_tax_year,
-                frozenset(self.inputs.items()),
                 self.forms,
             )
         )
@@ -618,27 +612,33 @@ class Manifest:
                 f"form {form.name!r}: field {name!r} is not a field of {instances.identifier!r}"
             )
 
+    def _gather_inputs(self) -> dict[str, InputDeclaration]:
+        """Each form's inputs by name, refusing an input two forms declare."""
+        gathered: dict[str, InputDeclaration] = {}
+        owners: dict[str, str] = {}
+        for form in self.forms:
+            for declaration in form.inputs:
+                name = declaration.name
+                if name in gathered:
+                    raise InvalidManifestError(
+                        f"input {name!r} is declared by form {owners[name]!r} and by form "
+                        f"{form.name!r}"
+                    )
+                gathered[name] = declaration
+                owners[name] = form.name
+        return gathered
+
     def _check_input_owners(self) -> None:
-        """Refuse an input with no owner among the forms, then have each form refuse what it takes
-        from another form's input.
+        """Have each form refuse what it takes from another form's input.
 
         The first form is the default form, whose exports are the manifest's `outputs`: they
         carry an input onto the return as entered, whichever form owns it, so they are not
         checked. Another form may not read that carry either.
         """
-        self._check_owners_are_forms()
+        owners = {declaration.name: form.name for form in self.forms for declaration in form.inputs}
         carries = self._default_carries()
         for form in self.forms:
-            form.check_inputs_owned(self.inputs, carries, carries_inputs=form is self.forms[0])
-
-    def _check_owners_are_forms(self) -> None:
-        """Refuse an input whose owner is not a form of the manifest."""
-        names = {form.name for form in self.forms}
-        for name, declaration in self.inputs.items():
-            if declaration.owner not in names:
-                raise InvalidManifestError(
-                    f"input {name!r}: owner {declaration.owner!r} is not a form of the manifest"
-                )
+            form.check_inputs_owned(owners, carries, carries_inputs=form is self.forms[0])
 
     def _default_carries(self) -> dict[str, str]:
         """The kind `<default form>.<export>` of each of the default form's exports, by name, to

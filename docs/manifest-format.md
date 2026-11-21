@@ -189,13 +189,14 @@ A required input takes neither `default` nor `basis`. By convention an entry wri
 
 ## Input ownership
 
-An input belongs to one form: the form of the part that declares it, the default form for an input
-in a whole-file manifest or in a part without `form:`. Only that form may read it: name it in a
-step's `consumes`, or list it in its `exports`. Every other form that needs the figure reads the
-owner's export, as it reads any other form's figure. A step or export that takes another form's
-input is an `InvalidManifestError` when the manifest loads, naming the form, the input and its
-owner, and so is an input whose owner is not a form of the manifest. The one exception is the
-default form's `outputs`, which carry an input onto the return as entered, whichever form owns it.
+An input is held by one form: the form of the part that declares it, the default form for an input
+in a whole-file manifest or in a part without `form:`. The manifest's `inputs` gather them all, and
+an input two forms declare is an `InvalidManifestError`. Only the form that holds an input may read
+it: name it in a step's `consumes`, or list it in its `exports`. Every other form that needs the
+figure reads the holder's export, as it reads any other form's figure. A step or export that takes
+another form's input is an `InvalidManifestError` when the manifest loads, naming the form, the
+input and the form that holds it. The one exception is the default form's `outputs`, which carry an
+input onto the return as entered, whichever form holds it.
 Fields of a form's `instances` already belong to their form and are not in the manifest's `inputs`.
 
 ## Capability selections

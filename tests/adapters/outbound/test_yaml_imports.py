@@ -282,7 +282,7 @@ def test_an_imported_form_brings_the_inputs_its_part_declares(tmp_path: Path) ->
 
     declared = manifest_of(tmp_path).inputs
 
-    assert list(declared) == ["ex/income", "ex/other_income"]
+    assert list(declared) == ["ex/other_income", "ex/income"]
     assert not declared["ex/other_income"].required
     assert declared["ex/other_income"].basis == "Other income: if none, enter 0."
 

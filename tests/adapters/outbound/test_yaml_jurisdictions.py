@@ -145,14 +145,12 @@ def test_parses_manifest_into_domain_objects(tmp_path: Path) -> None:
                 jurisdiction=EX_ON,
                 version=1,
                 valid_from_tax_year=2025,
-                inputs=required_inputs(
-                    frozenset({"ex/gross_income", "ex/taxable_base"}), owner="ex-on/return"
-                ),
                 forms=(
                     Form(
                         required=True,
                         name="ex-on/return",
                         instances=None,
+                        inputs=required_inputs(frozenset({"ex/gross_income", "ex/taxable_base"})),
                         exports=("ex-on/levy", "ex/savings_deduction"),
                         capabilities=(
                             CapabilitySelection(
@@ -772,12 +770,12 @@ def test_a_folder_is_one_manifest_merged_from_its_parts(tmp_path: Path) -> None:
         jurisdiction=EX_ON,
         version=1,
         valid_from_tax_year=2025,
-        inputs=required_inputs(frozenset({"ex/x"}), owner="ex-on/return"),
         forms=(
             Form(
                 required=True,
                 name="ex-on/return",
                 instances=None,
+                inputs=required_inputs(frozenset({"ex/x"})),
                 exports=("ex/y",),
                 capabilities=(
                     CapabilitySelection(
@@ -2101,22 +2099,15 @@ def test_an_input_declares_whether_it_is_required_and_optional_ones_a_default_an
         },
     )
 
-    OWNER = "ex-on/return"  # the parts name no form, so the inputs belong to the default form
     assert manifest.inputs == {
-        "ex/income": InputDeclaration(name="ex/income", required=True, owner=OWNER),
-        "ex/credit": InputDeclaration(
-            "ex/credit", False, finished("ex/credit", "0"), "Line 1", owner=OWNER
-        ),
-        "ex/note": InputDeclaration(
-            "ex/note", False, finished("ex/note", ""), "Line 2", owner=OWNER
-        ),
-        "ex/rows": InputDeclaration(
-            "ex/rows", False, finished("ex/rows", ()), "Line 3", owner=OWNER
-        ),
-        "ex/box": InputDeclaration(
-            "ex/box", False, finished("ex/box", None), "Line 4", owner=OWNER
-        ),
+        "ex/income": InputDeclaration(name="ex/income", required=True),
+        "ex/credit": InputDeclaration("ex/credit", False, finished("ex/credit", "0"), "Line 1"),
+        "ex/note": InputDeclaration("ex/note", False, finished("ex/note", ""), "Line 2"),
+        "ex/rows": InputDeclaration("ex/rows", False, finished("ex/rows", ()), "Line 3"),
+        "ex/box": InputDeclaration("ex/box", False, finished("ex/box", None), "Line 4"),
     }
+    # the parts name no form, so the inputs belong to the default form
+    assert manifest.forms[0].inputs == tuple(manifest.inputs.values())
 
 
 def test_an_input_may_give_the_title_and_reference_the_form_prints(tmp_path: Path) -> None:
@@ -2132,7 +2123,7 @@ def test_an_input_may_give_the_title_and_reference_the_form_prints(tmp_path: Pat
     )
 
     assert manifest.inputs["ex/income"] == InputDeclaration(
-        "ex/income", True, title="Income", reference="101", owner="ex-on/return"
+        "ex/income", True, title="Income", reference="101"
     )
     assert manifest.inputs["ex/credit"].title == "Credit"
     assert manifest.inputs["ex/credit"].reference is None
