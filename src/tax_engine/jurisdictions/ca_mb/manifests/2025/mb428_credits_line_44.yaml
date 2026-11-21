@@ -1,0 +1,14 @@
+# Form MB428 (CRA 5007-c) line 44: "Line 44: Amount from line 23600 of your return". It is the T1 net
+# income (line 23600, floored), which reaches this form only as a record list
+# (`ca/t1_taxable_income.net_income`), so its step is a core/record_total over it, as Schedule
+# MB428-A line 11 is. The form prints no label for the line, so the step has no title.
+form:
+  name: ca-mb/mb428_credits
+capabilities:
+  - name: core/record_total
+    reference: "44"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_taxable_income.net_income
+    produces:
+      output: ca-mb/mb428_net_income_line_44

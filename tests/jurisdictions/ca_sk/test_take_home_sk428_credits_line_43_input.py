@@ -1,8 +1,8 @@
-"""SK428 (2025) line 56's input, as the Saskatchewan take-home manifest part declares it.
+"""SK428 (2025) line 43's input, as the Saskatchewan take-home manifest part declares it.
 
-Form SK428 Saskatchewan Tax 2025 (CRA 5008-C), line 56, printed as "Line 56 and 58969: Line 54 plus
-line 55 =". A salary-only caller has no donations and gifts, so a request that leaves the line out
-is read as blank, and the line 57 step reads that blank as 0.
+Form SK428 Saskatchewan Tax 2025 (CRA 5008-C), line 43, printed as the line text in
+`PRINTED_BASIS`. A request that leaves the line out is read as blank, and
+the line 48 step reads that blank as 0.
 
 The real part is loaded under a test-local header over the Saskatchewan package list of
 `support.py`.
@@ -19,7 +19,7 @@ import yaml
 import tax_engine.jurisdictions.ca_sk
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.manifest import Manifest
-from tax_engine.jurisdictions.ca_sk.catalog import SK428_DONATIONS_CREDIT_LINE_56
+from tax_engine.jurisdictions.ca_sk.catalog import SK428_MEDICAL_EXPENSES_LINE_43
 from tests.jurisdictions.ca_sk.support import (
     saskatchewan_kinds,
     saskatchewan_packages,
@@ -27,10 +27,10 @@ from tests.jurisdictions.ca_sk.support import (
 )
 from tests.kinds import non_negative
 
-IDENTIFIER = SK428_DONATIONS_CREDIT_LINE_56.identifier
-PRINTED_BASIS = "Line 56 and 58969: Line 54 plus line 55"
+IDENTIFIER = SK428_MEDICAL_EXPENSES_LINE_43.identifier
+PRINTED_BASIS = "Line 43 and line 58689: Amount from line 33099 of your return"
 PART = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / (
-    "manifests/2025/sk428_credits_line_56_input.yaml"
+    "manifests/2025/sk428_credits_line_43_input.yaml"
 )
 HEADER = """\
 jurisdiction: CA-SK
@@ -58,41 +58,31 @@ def _part() -> dict[str, Any]:
     return part
 
 
-def test_the_part_declares_only_the_donations_and_gifts_input() -> None:
+def test_the_part_declares_only_the_line_43_input() -> None:
     part = _part()
 
     assert list(part) == ["inputs"]
     assert part["inputs"] == [
         {
             "name": IDENTIFIER,
-            "title": "Donations and gifts",
-            "reference": "56",
+            "title": ("Amount from line 33099 of your return"),
+            "reference": "43",
             "unit": "ca/cad",
             "required": False,
             "default": None,
             "basis": PRINTED_BASIS,
         }
     ]
-    assert list(part["inputs"][0]) == [
-        "name",
-        "title",
-        "reference",
-        "unit",
-        "required",
-        "default",
-        "basis",
-    ]
 
 
-def test_the_donations_credit_line_56_is_a_non_negative_amount_kind() -> None:
+def test_line_43_is_a_non_negative_amount_kind() -> None:
     kind = saskatchewan_kinds().kind(IDENTIFIER)
 
-    assert IDENTIFIER == "ca-sk/sk428_donations_credit_line_56"
-    assert kind is SK428_DONATIONS_CREDIT_LINE_56
+    assert kind is SK428_MEDICAL_EXPENSES_LINE_43
     assert non_negative(kind)
 
 
-def test_a_request_that_leaves_out_line_56_is_read_as_blank(tmp_path: Path) -> None:
+def test_a_request_that_leaves_out_line_43_is_read_as_blank(tmp_path: Path) -> None:
     declaration = _manifest(tmp_path).inputs[IDENTIFIER]
     default = declaration.default_artifact(saskatchewan_kinds().kind(IDENTIFIER))
 

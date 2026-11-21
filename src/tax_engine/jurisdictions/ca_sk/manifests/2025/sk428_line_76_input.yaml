@@ -1,0 +1,13 @@
+# SK428 (2025) line 76's input, the federally registered venture capital tax credit. Form SK428 (CRA 5008-c-25e):
+# "Line 76: For investments in venture capital corporations registered federally: Enter your tax
+# credit from T2C Slip (Sask.). (maximum $875)". The engine does not read the T2C slip, so the amount
+# is taken as one optional input, the way the form takes it. A request that leaves the line out is
+# read as blank; the line 77 sum reads that blank as 0. The printed maximum is checked on line 77.
+inputs:
+  - name: ca-sk/sk428_venture_capital_credit_federal_line_76
+    title: "For investments in venture capital corporations registered federally: Enter your tax credit from T2C Slip (Sask.)"
+    reference: "76"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 76: For investments in venture capital corporations registered federally: Enter your tax credit from T2C Slip (Sask.). (maximum $875)'
