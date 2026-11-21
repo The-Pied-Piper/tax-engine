@@ -49,6 +49,7 @@ PARTS = (
     "t1_taxable_income_line_23600.yaml",
     "t1_taxable_income_line_23600_signed.yaml",
     "t1_taxable_income_line_25700_inputs.yaml",
+    "t1_taxable_income_line_25700.yaml",
     "t1_taxable_income_line_11700_inputs.yaml",
     "t1_taxable_income_line_11700.yaml",
     "t1_taxable_income_line_12500_inputs.yaml",

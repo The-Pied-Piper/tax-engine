@@ -18,15 +18,16 @@ from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.jurisdictions.ca_qc.catalog import (
     CANADA_TRAINING_CREDIT_LINE_162,
-    ELIGIBLE_EDUCATOR_CREDIT_LINE_167,
     FUEL_CHARGE_FARMERS_CREDIT_LINE_169,
     GST_HST_REBATE_LINE_166,
-    INCOME_TAX_DEDUCTED_NET_LINE_155,
     INVESTMENT_TAX_CREDIT_REFUND_LINE_164,
     JOURNALISM_LABOUR_CREDIT_LINE_168,
     MULTIGENERATIONAL_HOME_RENOVATION_CREDIT_LINE_163,
     PART_XII_2_TAX_CREDIT_LINE_165,
     REFUNDABLE_MEDICAL_EXPENSE_SUPPLEMENT_LINE_160,
+    T1_LINE_43700,
+    T1_LINE_43800,
+    T1_LINE_46800,
     TAX_PAID_BY_INSTALMENTS_LINE_170,
     TOTAL_CREDITS_LINE_171,
 )
@@ -35,18 +36,20 @@ from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 from tests.kinds import non_negative
 
 D = Decimal
+# Lines 155 and 167 are steps; each is reached through the lines it is worked from, chosen so that
+# the line is 100.10 (line 153 of 100.10; line 46800 of 400.40 at 25%).
 OPTIONAL_LINES = [
-    INCOME_TAX_DEDUCTED_NET_LINE_155,
-    REFUNDABLE_MEDICAL_EXPENSE_SUPPLEMENT_LINE_160,
-    CANADA_TRAINING_CREDIT_LINE_162,
-    MULTIGENERATIONAL_HOME_RENOVATION_CREDIT_LINE_163,
-    INVESTMENT_TAX_CREDIT_REFUND_LINE_164,
-    PART_XII_2_TAX_CREDIT_LINE_165,
-    GST_HST_REBATE_LINE_166,
-    ELIGIBLE_EDUCATOR_CREDIT_LINE_167,
-    JOURNALISM_LABOUR_CREDIT_LINE_168,
-    FUEL_CHARGE_FARMERS_CREDIT_LINE_169,
-    TAX_PAID_BY_INSTALMENTS_LINE_170,
+    (T1_LINE_43700, "100.10"),
+    (REFUNDABLE_MEDICAL_EXPENSE_SUPPLEMENT_LINE_160, "100.10"),
+    (CANADA_TRAINING_CREDIT_LINE_162, "100.10"),
+    (MULTIGENERATIONAL_HOME_RENOVATION_CREDIT_LINE_163, "100.10"),
+    (INVESTMENT_TAX_CREDIT_REFUND_LINE_164, "100.10"),
+    (PART_XII_2_TAX_CREDIT_LINE_165, "100.10"),
+    (GST_HST_REBATE_LINE_166, "100.10"),
+    (T1_LINE_46800, "400.40"),
+    (JOURNALISM_LABOUR_CREDIT_LINE_168, "100.10"),
+    (FUEL_CHARGE_FARMERS_CREDIT_LINE_169, "100.10"),
+    (TAX_PAID_BY_INSTALMENTS_LINE_170, "100.10"),
 ]
 
 
@@ -63,17 +66,19 @@ def test_a_salary_only_line_171_is_the_printed_figure(
 
 
 @pytest.mark.parametrize("kind", OPTIONAL_LINES)
-def test_each_optional_line_is_added(take_home_service: TakeHomeService, kind: AmountKind) -> None:
-    _, sheet = sheets(take_home_service, "70000", (kind, "100.10"))
+def test_each_optional_line_is_added(
+    take_home_service: TakeHomeService, kind: tuple[AmountKind, str]
+) -> None:
+    _, sheet = sheets(take_home_service, "70000", kind)
 
     assert sheet.get(TOTAL_CREDITS_LINE_171).value == D("1341.49")
 
 
-def test_a_negative_line_155_larger_than_the_other_credits_is_taken(
+def test_a_line_154_above_line_153_gives_a_negative_line_155_that_is_taken(
     take_home_service: TakeHomeService,
 ) -> None:
     # The form prints no floor on line 171: 1,241.39 less 5,000.00 is -3,758.61.
-    _, sheet = sheets(take_home_service, "70000", (INCOME_TAX_DEDUCTED_NET_LINE_155, "-5000"))
+    _, sheet = sheets(take_home_service, "70000", (T1_LINE_43800, "5000"))
 
     assert sheet.get(TOTAL_CREDITS_LINE_171).value == D("-3758.61")
 

@@ -127,6 +127,7 @@ PART_C_PARTS: tuple[str, ...] = (
     "t1_tax_and_credits_line_137_inputs.yaml",
     "t1_tax_and_credits_line_40600.yaml",
     "t1_tax_and_credits_line_41600_inputs.yaml",
+    "t1_tax_and_credits_line_41600.yaml",
     "t1_tax_and_credits_line_41700.yaml",
     "t1_tax_and_credits_line_41500_inputs.yaml",
     "t1_tax_and_credits_line_41800_inputs.yaml",
@@ -136,6 +137,7 @@ PART_C_PARTS: tuple[str, ...] = (
     "t1_tax_and_credits_line_42800_inputs.yaml",
     "t1_tax_and_credits_line_43500.yaml",
     "t1_tax_and_credits_line_43850_inputs.yaml",
+    "t1_tax_and_credits_line_43850.yaml",
     "t1_tax_and_credits_line_44000.yaml",
     "t1_tax_and_credits_line_45000.yaml",
     "t1_tax_and_credits_line_45100.yaml",
@@ -147,6 +149,7 @@ PART_C_PARTS: tuple[str, ...] = (
     "t1_tax_and_credits_line_45600_inputs.yaml",
     "t1_tax_and_credits_line_45700_inputs.yaml",
     "t1_tax_and_credits_line_46900_inputs.yaml",
+    "t1_tax_and_credits_line_46900.yaml",
     "t1_tax_and_credits_line_47555_inputs.yaml",
     "t1_tax_and_credits_line_47556_inputs.yaml",
     "t1_tax_and_credits_line_47600_inputs.yaml",
@@ -155,6 +158,7 @@ PART_C_PARTS: tuple[str, ...] = (
 )
 STEP_4_PARTS = (
     "t1_taxable_income_line_25700_inputs.yaml",
+    "t1_taxable_income_line_25700.yaml",
     "t1_taxable_income_line_11700_inputs.yaml",
     "t1_taxable_income_line_11700.yaml",
     "t1_taxable_income_line_12500_inputs.yaml",
