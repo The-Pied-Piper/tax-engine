@@ -8,6 +8,7 @@ form:
   name: ca-qc/tp1_tax
 capabilities:
   - name: core/record_total
+    title: "Tax credit for contributions to authorized Québec political parties"
     reference: "414"
     unit: ca/cad
     consumes:
