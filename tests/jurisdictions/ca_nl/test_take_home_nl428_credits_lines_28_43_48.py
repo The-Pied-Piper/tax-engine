@@ -1,4 +1,4 @@
-"""NL428 lines 28, 43 and 48, each a record total of a T1 export: the parts have no input of their own.
+"""NL428 lines 28, 43 and 48, each a record total of a T1 export, with no input of their own.
 
 The form prints "Amount from line 31000 / 31900 / 33099 of your return" on these lines. The T1 lines
 form owns the inputs and exports the lines; another form reads an export only as a record list, so
