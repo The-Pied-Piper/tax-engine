@@ -1,14 +1,25 @@
-# 5005-R (2025) line 32 input a salary-only caller does not give.
-# Line 32 and line 14700: "Line 32 and line 14700: Add lines 29 to 31 (see line 25000 in Step 4). ="
-# (page 3). Lines 29 to 31 (workers' compensation, social assistance, net federal supplements) are
-# blank for a salary-only filer, so the printed sum that collects them is one optional input read as
-# 0; the skipped lines have no step.
+# 5005-R (2025) lines 29 to 31, the lines that line 32 adds ("Line 32 and line 14700: Add lines 29 to
+# 31 (see line 25000 in Step 4).", page 3): workers' compensation benefits (line 14400), social
+# assistance payments (line 14500) and net federal supplements paid (line 14600). Each is an optional
+# input, left blank by a salary-only caller and read as 0 by line 32 (`t1_taxable_income_line_32.yaml`).
 form:
   name: ca-qc/t1_taxable_income
 inputs:
-  - name: ca-qc/t1_line_32
-    reference: "14700"
+  - name: ca-qc/t1_line_14400
+    reference: "14400"
     unit: ca/cad
     required: false
-    default: "0"
-    basis: "Line 32 and line 14700: Add lines 29 to 31"
+    default: null
+    basis: "Line 29 and line 14400: Workers' compensation benefits (box 10 of the T5007 slip)"
+  - name: ca-qc/t1_line_14500
+    reference: "14500"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 30 and line 14500: Social assistance payments"
+  - name: ca-qc/t1_line_14600
+    reference: "14600"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 31 and line 14600: Net federal supplements paid (box 21 of the T4A(OAS) slip)"

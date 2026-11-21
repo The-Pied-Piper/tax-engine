@@ -1,0 +1,22 @@
+# 5005-R (2025) line 32. The form prints: "Line 32 and line 14700: Add lines 29 to 31 (see line 25000 in Step 4). =" (page 3). One core/sum in form line order,
+# rounded half-up to the cent through `ca-qc/cent_rounding`; the optional lines read as 0 when
+# blank (`t1_taxable_income_line_32_inputs.yaml`).
+form:
+  name: ca-qc/t1_taxable_income
+capabilities:
+  - name: core/sum
+    reference: "14700"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/t1_line_14400
+        - ca-qc/t1_line_14500
+        - ca-qc/t1_line_14600
+    blank:
+      ca-qc/t1_line_14400: "0"
+      ca-qc/t1_line_14500: "0"
+      ca-qc/t1_line_14600: "0"
+    produces:
+      output: ca-qc/t1_line_32

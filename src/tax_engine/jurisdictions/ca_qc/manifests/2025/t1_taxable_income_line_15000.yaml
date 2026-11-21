@@ -1,5 +1,5 @@
 # 5005-R (2025) line 33 and line 15000, total income. The form prints: "Line 33 and line 15000: Line 28
-# plus line 32 =" (page 3). Line 32 is the optional input read as 0 (`ca-qc/t1_line_32`, line
+# plus line 32 =" (page 3). Line 32 is a step (`ca-qc/t1_line_32`, line
 # 14700). One step: core/sum in form line order. Line 34 ("Enter the amount from line 33 of the
 # previous page.") is a copy and has no step.
 form:
