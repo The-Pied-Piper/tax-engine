@@ -609,12 +609,30 @@ MB479_AGE_CREDIT_LINE_8 = AmountKind.declare(CATALOG, "mb479_age_credit_line_8",
 """Age credit for self, MB479 line 8 "Age credit for self (if you were born in 1960 or earlier)
 Claim $113": the credit of the first box, a caller input that is read as blank when left out."""
 
+MB479_BASIC_CREDIT_SPOUSE_LINE_9 = AmountKind.declare(
+    CATALOG, "mb479_basic_credit_spouse_line_9", non_negative=True
+)
+"""Basic credit for spouse or common-law partner, MB479 line 9 "Line 9: Basic credit for spouse or
+common-law partner Claim $195": a caller input that is read as blank when left out."""
+
+MB479_AGE_CREDIT_SPOUSE_LINE_10 = AmountKind.declare(
+    CATALOG, "mb479_age_credit_spouse_line_10", non_negative=True
+)
+"""Age credit for spouse or common-law partner, MB479 line 10 "Line 10: Age credit for spouse or
+common-law partner (if they were born in 1960 or earlier) Claim $113": a caller input that is read
+as blank when left out."""
+
+MB479_DISABILITY_CREDIT_SPOUSE_LINE_11 = AmountKind.declare(
+    CATALOG, "mb479_disability_credit_spouse_line_11", non_negative=True
+)
+"""Disability credit for spouse or common-law partner, MB479 line 11 "Line 11: Disability credit for
+spouse or common-law partner Claim $113": a caller input that is read as blank when left out."""
+
 MB479_SPOUSE_CREDITS_LINE_12 = AmountKind.declare(
     CATALOG, "mb479_spouse_credits_line_12", non_negative=True
 )
 """Spouse or common-law partner credits, MB479 line 12 "Line 12 and line 60900: Add lines 9 to 11.":
-the printed sum of lines 9 to 11, taken as one figure because those lines are not modelled, a caller
-input that is read as blank when left out."""
+the sum of lines 9, 10 and 11, rounded half-up to the cent."""
 
 MB479_ELIGIBLE_DEPENDANT_CREDIT_LINE_13 = AmountKind.declare(
     CATALOG, "mb479_eligible_dependant_credit_line_13", non_negative=True
@@ -623,26 +641,59 @@ MB479_ELIGIBLE_DEPENDANT_CREDIT_LINE_13 = AmountKind.declare(
 of your Form MB428 Claim $195": the credit of the box, a caller input that is read as blank when
 left out."""
 
+MB479_DISABILITY_CLAIMS_NUMBER_LINE_14 = AmountKind.declare(
+    CATALOG, "mb479_disability_claims_number_line_14", non_negative=True
+)
+"""Number of disability claims, MB479 line 14 box A "Number of disability claims Line 60950": the
+number as the filer gives it, an optional input; left out, it is 0."""
+
+MB479_DISABILITY_CREDIT_AMOUNT_LINE_14 = AmountKind.declare(
+    CATALOG, "disability_credit_amount_line_14", non_negative=True
+)
+"""Amount for each of the disability claims, MB479 line 14 "multiplied by $113 =": the printed $113,
+from the `ca-mb/disability_credit_amount_line_14` dataset."""
+
 MB479_DISABILITY_CREDIT_LINE_14 = AmountKind.declare(
     CATALOG, "mb479_disability_credit_line_14", non_negative=True
 )
-"""Disability credit, MB479 line 14 "Number of disability claims Line 60950 multiplied by $113": the
-product box, taken as one figure because the count above it is not modelled, a caller input that is
-read as blank when left out."""
+"""Disability credit, MB479 line 14 box B "Number of disability claims Line 60950 multiplied by $113
+=": the number in box A times $113, rounded to the cent; line 17 adds it."""
+
+MB479_DISABLED_DEPENDANTS_NUMBER_LINE_15 = AmountKind.declare(
+    CATALOG, "mb479_disabled_dependants_number_line_15", non_negative=True
+)
+"""Number of disabled dependants, MB479 line 15 box A "Number of disabled dependants Line 60970":
+the number as the filer gives it, an optional input; left out, it is 0."""
+
+MB479_DISABLED_DEPENDANTS_CREDIT_AMOUNT_LINE_15 = AmountKind.declare(
+    CATALOG, "disabled_dependants_credit_amount_line_15", non_negative=True
+)
+"""Amount for each of the disabled dependants, MB479 line 15 "multiplied by $62 =": the printed $62,
+from the `ca-mb/disabled_dependants_credit_amount_line_15` dataset."""
 
 MB479_DISABLED_DEPENDANTS_CREDIT_LINE_15 = AmountKind.declare(
     CATALOG, "mb479_disabled_dependants_credit_line_15", non_negative=True
 )
-"""Disabled dependants credit, MB479 line 15 "Number of disabled dependants Line 60970 multiplied by
-$62": the product box, taken as one figure because the count above it is not modelled, a caller
-input that is read as blank when left out."""
+"""Disabled dependants credit, MB479 line 15 box B "Number of disabled dependants Line 60970
+multiplied by $62 =": the number in box A times $62, rounded to the cent; line 17 adds it."""
+
+MB479_DEPENDENT_CHILDREN_NUMBER_LINE_16 = AmountKind.declare(
+    CATALOG, "mb479_dependent_children_number_line_16", non_negative=True
+)
+"""Number of dependent children, MB479 line 16 box A "Number of dependent children Line 60999": the
+number as the filer gives it, an optional input; left out, it is 0."""
+
+MB479_DEPENDENT_CHILDREN_CREDIT_AMOUNT_LINE_16 = AmountKind.declare(
+    CATALOG, "dependent_children_credit_amount_line_16", non_negative=True
+)
+"""Amount for each of the dependent children, MB479 line 16 "multiplied by $26 =": the printed $26,
+from the `ca-mb/dependent_children_credit_amount_line_16` dataset."""
 
 MB479_DEPENDENT_CHILDREN_CREDIT_LINE_16 = AmountKind.declare(
     CATALOG, "mb479_dependent_children_credit_line_16", non_negative=True
 )
-"""Dependent children credit, MB479 line 16 "Number of dependent children Line 60999 multiplied by
-$26": the product box, taken as one figure because the count above it is not modelled, a caller
-input that is read as blank when left out."""
+"""Dependent children credit, MB479 line 16 box B "Number of dependent children Line 60999
+multiplied by $26 =": the number in box A times $26, rounded to the cent; line 17 adds it."""
 
 MB479_TOTAL_CREDITS_LINE_17 = AmountKind.declare(
     CATALOG, "mb479_total_credits_line_17", non_negative=True

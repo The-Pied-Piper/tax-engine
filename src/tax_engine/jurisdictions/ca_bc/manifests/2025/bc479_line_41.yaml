@@ -1,0 +1,17 @@
+# Form BC479 (2025, CRA 5010-TC) line 41. Line 41: "Line 39 minus line 40 (if negative, enter "0")".
+# One core/subtract_not_below_zero step: the adjusted family net income (line 39 is the carry of line
+# 6, `ca-bc/bc479_adjusted_family_net_income_line_6`, so the step reads line 6) less the threshold
+# (line 40), not below 0. The form prints no title for the line, so the step has none.
+form:
+  name: ca-bc/bc479
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "41"
+    unit: ca/cad
+    params:
+      rounding: ca-bc/cent_rounding
+    consumes:
+      amount: ca-bc/bc479_adjusted_family_net_income_line_6
+      less: ca-bc/bc479_renters_threshold_line_40
+    produces:
+      output: ca-bc/bc479_renters_income_over_threshold_line_41

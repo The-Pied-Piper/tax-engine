@@ -1,0 +1,11 @@
+# Newfoundland and Labrador venture capital tax credit, lifetime maximum, 2025 tax year (Form NL428
+# line 82, guide 5001-PC): "The lifetime maximum you can claim is $75,000." A figure with no cents,
+# so the amount rounds half-up to the cent, the project's choice, as the guide states no rounding
+# rule. Line 82 is refused above it.
+family: ca-nl/venture_capital_credit_lifetime_maximum
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5001-pc/5001-pc-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "75000"

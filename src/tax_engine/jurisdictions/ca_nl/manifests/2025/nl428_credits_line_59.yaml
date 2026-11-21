@@ -1,0 +1,21 @@
+# Form NL428 (CRA 5001-C) line 59 (ca-nl/nl428_credits): "Line 59: Amount from line 13 of your federal
+# Schedule 9 multiplied by 8.7% =". The 8.7% is a printed rate, held in the
+# `ca-nl/donations_credit_rate_line_59` dataset, so the step is one calculation: 8.7% of the Schedule 9
+# amount, rounded half-up to the cent. The amount is an optional input
+# (nl428_credits_line_59_input.yaml), read as 0 when left out. The line has two boxes: the amount (box
+# A, the input) and the multiplied result (box B, this step). The form does not name them; "box A"
+# and "box B" are the owner's naming, as on ON428 line 47.
+form:
+  name: ca-nl/nl428_credits
+capabilities:
+  - name: core/apply_rate
+    reference: "59 box B"
+    unit: ca/cad
+    params:
+      rate: ca-nl/donations_credit_rate_line_59
+    consumes:
+      base: ca-nl/nl428_donations_amount_line_59
+    blank:
+      base: "0"
+    produces:
+      output: ca-nl/nl428_donations_credit_at_rate_line_59

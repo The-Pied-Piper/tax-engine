@@ -1,15 +1,16 @@
 """MB479 (2025) line 17, total credits, from the salary alone, real parts.
 
 Form text (Form MB479, CRA 5007-TC, 5007-tc-25e.txt): "Line 17 and line 61050: Add lines 7, 8, and
-12 to 16. Total credits". Line 17 is one core/sum over the line 7 basic credit (195.00) and the six
-optional inputs of the line 17 inputs part: line 8 (age credit for self), line 12 (the printed sum
-of lines 9 to 11), line 13 (eligible dependant), and the product boxes of lines 14, 15 and 16. A
-salary-only filer leaves all six blank: each blank input is read as 0 and the step prints its own
-"left blank, taken as 0" row, so the total is the basic credit alone.
+12 to 16. Total credits". Line 17 is one core/sum over the line 7 basic credit (195.00), the two
+optional inputs of the line 17 inputs part (line 8, age credit for self; line 13, eligible
+dependant), line 12 (the sum of lines 9 to 11, with its own inputs) and the product boxes of lines
+14, 15 and 16. A salary-only filer leaves lines 8 and 13 blank, and lines 9 to 11 blank too: each
+blank input is read as 0 and its step prints its own "left blank, taken as 0" row; line 12 and
+lines 14 to 16 are 0.00, so the total is the basic credit alone.
 
-The test composes the real line 7 part, the real line 17 inputs part and the real line 17 part, and
-types in only the salary (and, in some tests, the credit boxes). The MB479 form declaration is made
-up here, exporting only line 17.
+The test composes the real line 7 part, the real line 17 inputs part, the real parts of lines 12 and
+14 to 16 and the real line 17 part, and types in only the salary (and, in some tests, the credit
+boxes). The MB479 form declaration is made up here, exporting only line 17.
 """
 
 from __future__ import annotations
@@ -36,11 +37,11 @@ from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_mb.catalog import (
     MB479_AGE_CREDIT_LINE_8,
-    MB479_DEPENDENT_CHILDREN_CREDIT_LINE_16,
-    MB479_DISABILITY_CREDIT_LINE_14,
-    MB479_DISABLED_DEPENDANTS_CREDIT_LINE_15,
+    MB479_BASIC_CREDIT_SPOUSE_LINE_9,
+    MB479_DEPENDENT_CHILDREN_NUMBER_LINE_16,
+    MB479_DISABILITY_CLAIMS_NUMBER_LINE_14,
+    MB479_DISABLED_DEPENDANTS_NUMBER_LINE_15,
     MB479_ELIGIBLE_DEPENDANT_CREDIT_LINE_13,
-    MB479_SPOUSE_CREDITS_LINE_12,
 )
 from tests.jurisdictions.ca_mb.support import (
     manitoba_capabilities,
@@ -57,6 +58,13 @@ LINE_PART = MB_PARTS / "mb479_line_17.yaml"
 PARTS = (
     MB_PARTS / "mb479_line_7.yaml",
     MB_PARTS / "mb479_line_17_inputs.yaml",
+    MB_PARTS / "mb479_line_12_inputs.yaml",
+    MB_PARTS / "mb479_line_12.yaml",
+    *(
+        MB_PARTS / f"mb479_line_{n}{suffix}.yaml"
+        for n in ("14", "15", "16")
+        for suffix in ("_inputs", "_amount", "")
+    ),
     LINE_PART,
 )
 FORM_NAME = "ca-mb/mb479"
@@ -64,16 +72,18 @@ KIND = "ca-mb/mb479_total_credits_line_17"
 BASIC = "ca-mb/mb479_basic_credit_line_7"
 INPUTS = (
     MB479_AGE_CREDIT_LINE_8,
-    MB479_SPOUSE_CREDITS_LINE_12,
+    MB479_BASIC_CREDIT_SPOUSE_LINE_9,
     MB479_ELIGIBLE_DEPENDANT_CREDIT_LINE_13,
-    MB479_DISABILITY_CREDIT_LINE_14,
-    MB479_DISABLED_DEPENDANTS_CREDIT_LINE_15,
-    MB479_DEPENDENT_CHILDREN_CREDIT_LINE_16,
+    MB479_DISABILITY_CLAIMS_NUMBER_LINE_14,
+    MB479_DISABLED_DEPENDANTS_NUMBER_LINE_15,
+    MB479_DEPENDENT_CHILDREN_NUMBER_LINE_16,
 )
+SPOUSE_CREDITS = "ca-mb/mb479_spouse_credits_line_12"
 INPUT_NAMES = [
     "ca-mb/mb479_age_credit_line_8",
-    "ca-mb/mb479_spouse_credits_line_12",
     "ca-mb/mb479_eligible_dependant_credit_line_13",
+]
+PRODUCT_NAMES = [
     "ca-mb/mb479_disability_credit_line_14",
     "ca-mb/mb479_disabled_dependants_credit_line_15",
     "ca-mb/mb479_dependent_children_credit_line_16",
@@ -98,14 +108,15 @@ FORM = dedent("""\
     """)
 
 SALARIES = ["10000", "200000"]
-# One value per input, in INPUTS order, each alone: the credit it adds to the basic 195.00.
+# One value per input, in INPUTS order, each alone: the credit it adds to the basic 195.00. The last
+# three are counts (2 disability claims is 226.00, 2 disabled dependants 124.00, 2 children 52.00).
 ALONE = [
     ("113", "308.00"),
-    ("390", "585.00"),
     ("195", "390.00"),
-    ("226", "421.00"),
-    ("124", "319.00"),
-    ("52", "247.00"),
+    ("195", "390.00"),
+    ("2", "421.00"),
+    ("2", "319.00"),
+    ("2", "247.00"),
 ]
 
 
@@ -168,8 +179,8 @@ def test_line_17_adds_all_six_inputs_and_the_basic_credit(tmp_path: Path) -> Non
         *(Artifact(kind, value) for kind, value in zip(INPUTS, values, strict=True)),
     )
 
-    assert _total(sheet) == D("195.00") + sum(values, D(0))
-    assert _total(sheet) == D("1295.00")
+    # 195.00 + 113 + 195 + 195 + 2 x 113 + 2 x 62 + 2 x 26
+    assert _total(sheet) == D("1100.00")
 
 
 def test_blank_inputs_print_one_left_blank_row_each(tmp_path: Path) -> None:
@@ -177,7 +188,7 @@ def test_blank_inputs_print_one_left_blank_row_each(tmp_path: Path) -> None:
 
     rows = EnglishTraceRenderer().render_all(sheet.trace)
 
-    assert sum("left blank, taken as 0" in row.lower() for row in rows) == 6
+    assert sum("left blank, taken as 0" in row.lower() for row in rows) == 5
 
 
 def test_a_given_input_prints_no_left_blank_row_of_its_own(tmp_path: Path) -> None:
@@ -189,7 +200,7 @@ def test_a_given_input_prints_no_left_blank_row_of_its_own(tmp_path: Path) -> No
 
     rows = EnglishTraceRenderer().render_all(sheet.trace)
 
-    assert sum("left blank, taken as 0" in row.lower() for row in rows) == 5
+    assert sum("left blank, taken as 0" in row.lower() for row in rows) == 4
 
 
 def _part() -> dict[str, Any]:
@@ -220,7 +231,9 @@ def test_the_part_names_the_form_and_has_one_total_credits_sum_step() -> None:
         "reference": "17",
         "unit": "ca/cad",
         "params": {"rounding": "ca-mb/cent_rounding"},
-        "consumes": {"parts": [BASIC, *INPUT_NAMES]},
+        "consumes": {
+            "parts": [BASIC, INPUT_NAMES[0], SPOUSE_CREDITS, INPUT_NAMES[1], *PRODUCT_NAMES]
+        },
         "blank": {name: "0" for name in INPUT_NAMES},
         "produces": {"output": KIND},
     }

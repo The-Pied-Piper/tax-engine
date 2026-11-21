@@ -1,0 +1,24 @@
+# Form MB479 (2025, CRA 5007-TC) line 12. Line 12 and line 60900: "Add lines 9 to 11." One core/sum
+# of the credits of lines 9, 10 and 11 (mb479_line_12_inputs.yaml), each an optional input that a
+# salary-only caller leaves out, so each is read as blank and then as 0 by the blank rule below.
+# The sum is rounded half-up to the cent. Line 17 reads it.
+form:
+  name: ca-mb/mb479
+capabilities:
+  - name: core/sum
+    title: "Spouse or common-law partner credits"
+    reference: "12"
+    unit: ca/cad
+    params:
+      rounding: ca-mb/cent_rounding
+    consumes:
+      parts:
+        - ca-mb/mb479_basic_credit_spouse_line_9
+        - ca-mb/mb479_age_credit_spouse_line_10
+        - ca-mb/mb479_disability_credit_spouse_line_11
+    blank:
+      ca-mb/mb479_basic_credit_spouse_line_9: "0"
+      ca-mb/mb479_age_credit_spouse_line_10: "0"
+      ca-mb/mb479_disability_credit_spouse_line_11: "0"
+    produces:
+      output: ca-mb/mb479_spouse_credits_line_12
