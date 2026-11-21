@@ -130,6 +130,7 @@ NL_PART_NAMES = (
     "nl428_line_81.yaml",
     "nl428_line_82_input.yaml",
     "nl428_line_83_input.yaml",
+    "nl428_line_82.yaml",
     "nl428_line_84.yaml",
     "nl428_line_85.yaml",
     "nl428_line_86_input.yaml",

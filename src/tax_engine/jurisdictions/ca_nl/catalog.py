@@ -478,6 +478,20 @@ NL428_VENTURE_CAPITAL_TAX_CREDIT_FROM_CERTIFICATES_LINE_82 = AmountKind.declare(
 credit from Certificate(s) NL VCTC": the amount as the filer gives it, an optional input; a blank
 input is read as blank."""
 
+NL428_VENTURE_CAPITAL_TAX_CREDIT_LIFETIME_MAXIMUM = AmountKind.declare(
+    CATALOG, "nl428_venture_capital_tax_credit_lifetime_maximum", non_negative=True
+)
+"""Venture capital tax credit lifetime maximum, from the NL428 line 82 guide (5001-PC) "The lifetime
+maximum you can claim is $75,000.": the maximum, from the
+`ca-nl/venture_capital_credit_lifetime_maximum` dataset; the bound line 82 cannot pass."""
+
+NL428_VENTURE_CAPITAL_TAX_CREDIT_CHECKED_LINE_82 = AmountKind.declare(
+    CATALOG, "nl428_venture_capital_tax_credit_checked_line_82", non_negative=True
+)
+"""Venture capital tax credit, NL428 line 82 "Venture capital tax credit from Certificate(s) NL
+VCTC": the amount as the filer gives it (a blank input is read as 0), passed on unchanged when it
+is at most the lifetime maximum; above the maximum it is refused, not capped."""
+
 NL428_UNUSED_VENTURE_CAPITAL_TAX_CREDIT_LINE_83 = AmountKind.declare(
     CATALOG, "nl428_unused_venture_capital_tax_credit_line_83", non_negative=True
 )

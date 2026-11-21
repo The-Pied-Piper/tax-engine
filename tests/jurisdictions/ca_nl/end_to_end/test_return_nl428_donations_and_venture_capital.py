@@ -23,6 +23,7 @@ import pytest
 
 from tax_engine import build_tax_computation
 from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.errors import InputAboveBoundError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.worksheet import Worksheet
@@ -102,3 +103,10 @@ def test_a_donations_and_venture_capital_return_at_70000() -> None:
     assert _value(nl428, LINE_81) == line_81
     assert _value(nl428, LINE_84) == line_84
     assert _value(nl428, LINE_85) == line_85
+
+
+def test_a_line_82_amount_above_the_lifetime_maximum_is_refused() -> None:
+    # The guide (5001-PC, line 82): "The lifetime maximum you can claim is $75,000."
+    _sheets("70000", line_82="75000.00")
+    with pytest.raises(InputAboveBoundError):
+        _sheets("70000", line_82="75000.01")

@@ -3,7 +3,8 @@
 Form text (Form NL428, CRA 5001-C): "Line 84: Line 82 plus line 83 =". Line 82 (venture capital tax
 credit from Certificate(s) NL VCTC) and line 83 (unused credit from the most recent notice of
 assessment or reassessment) are the optional inputs `nl428_line_82_input.yaml` and
-`nl428_line_83_input.yaml`; the step is `nl428_line_84.yaml`, which reads a blank line as 0.
+`nl428_line_83_input.yaml`; line 82 is checked against its lifetime maximum by
+`nl428_line_82.yaml`; the step is `nl428_line_84.yaml`, which reads a blank line 83 as 0.
 The hand figures are asserted (not a CRA example).
 """
 
@@ -36,9 +37,15 @@ D = Decimal
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
 FORM_NAME = "ca-nl/nl428"
 OUTPUT = "ca-nl/nl428_venture_capital_tax_credit_line_84"
-PARTS = ("nl428_line_82_input.yaml", "nl428_line_83_input.yaml", "nl428_line_84.yaml")
+PARTS = (
+    "nl428_line_82_input.yaml",
+    "nl428_line_83_input.yaml",
+    "nl428_line_82.yaml",
+    "nl428_line_84.yaml",
+)
 LINE_82 = "ca-nl/nl428_venture_capital_tax_credit_from_certificates_line_82"
 LINE_83 = "ca-nl/nl428_unused_venture_capital_tax_credit_line_83"
+CHECKED_LINE_82 = "ca-nl/nl428_venture_capital_tax_credit_checked_line_82"
 
 HEADER = dedent(f"""\
     jurisdiction: CA-NL
@@ -124,8 +131,8 @@ def test_the_part_is_one_sum_step() -> None:
                 "reference": "84",
                 "unit": "ca/cad",
                 "params": {"rounding": "ca-nl/cent_rounding"},
-                "consumes": {"parts": [LINE_82, LINE_83]},
-                "blank": {LINE_82: "0", LINE_83: "0"},
+                "consumes": {"parts": [CHECKED_LINE_82, LINE_83]},
+                "blank": {LINE_83: "0"},
                 "produces": {"output": OUTPUT},
             }
         ],
