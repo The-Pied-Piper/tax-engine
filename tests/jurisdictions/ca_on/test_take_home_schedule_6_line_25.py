@@ -35,7 +35,7 @@ D = Decimal
 # 15 subtracts from, the optional line 14 input and the line 15 part; then the line 24 part and the
 # line 25 part under test.
 PARTS = (
-    "salary.yaml",
+    "t1_employment_income_line_10100_inputs.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
     "t1_taxable_income_inputs.yaml",
     "t1_employment_income.yaml",

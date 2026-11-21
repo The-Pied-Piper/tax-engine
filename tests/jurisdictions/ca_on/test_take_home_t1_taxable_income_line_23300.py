@@ -27,7 +27,6 @@ from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService
 D = Decimal
 ONTARIO = JurisdictionCode("CA-ON")
 PARTS = (
-    "salary.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
     *(part.name for part in sorted(TAKE_HOME.rglob("t1_employment_income*.yaml"))),
     "t1_taxable_income_line_23300.yaml",

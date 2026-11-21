@@ -43,7 +43,7 @@ LINE_1 = "ca-on/on428_taxable_income_line_1"
 LINE_3 = "ca-on/on428_bracket_lower_bound_line_3"
 LINE_7 = "ca-on/on428_tax_at_column_start_line_7"
 PARTS = (
-    "salary.yaml",
+    "t1_employment_income_line_10100_inputs.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
     "t1_taxable_income_inputs.yaml",
     "t1_employment_income.yaml",

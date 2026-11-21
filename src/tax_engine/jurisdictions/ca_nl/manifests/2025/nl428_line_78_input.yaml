@@ -3,6 +3,8 @@
 # Form T1272 is not built, so the line is taken as one optional input, as the form takes it. A
 # request that leaves the line out is read as blank; the step that reads line 78 reads that blank
 # as 0.
+form:
+  name: ca-nl/nl428
 inputs:
   - name: ca-nl/nl428_direct_equity_tax_credit_line_78
     title: "Direct equity tax credit"

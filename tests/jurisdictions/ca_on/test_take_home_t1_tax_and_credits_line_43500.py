@@ -49,7 +49,7 @@ ON428_LINE_90 = "ca-on/on428_ontario_tax_line_90"
 # line 40600, line 41700, line 42000, the real ON428 parts (the form, its lines and its inputs,
 # ON428-A included), and the part under test.
 PARTS = (
-    "salary.yaml",
+    "t1_employment_income_line_10100_inputs.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
     *(part.name for part in sorted(TAKE_HOME.rglob("t2204*.yaml"))),
     "t1_taxable_income_inputs.yaml",

@@ -49,7 +49,7 @@ from tests.jurisdictions.ca_ab.support import (
     alberta_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_FORM, inputs_without_form
+from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT
 
 D = Decimal
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
@@ -87,7 +87,7 @@ CASES = [("20000", "23467.75"), ("200000", "26756.58")]
 
 
 def _part_files() -> Iterator[Path]:
-    yield ALBERTA_PARTS / "salary.yaml"
+    yield T1_LINE_10100_INPUT
     yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
     yield from sorted(FEDERAL_FORMS.rglob("t2204*.yaml"))
     yield T1_LINE_10100_FORM
@@ -120,11 +120,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "01_credits_form.yaml").write_text(CREDITS_FORM, encoding="utf-8")
     (folder / "02_worksheet_form.yaml").write_text(WORKSHEET_FORM, encoding="utf-8")
     for number, found in enumerate(_part_files(), start=3):
-        text = (
-            inputs_without_form(found)
-            if found.name.endswith("_inputs.yaml") and found.is_relative_to(FEDERAL_FORMS)
-            else found.read_text(encoding="utf-8")
-        )
+        text = found.read_text(encoding="utf-8")
         (folder / f"{number:02d}_{found.name}").write_text(text, encoding="utf-8")
     roots = {**alberta_packages().roots(), Namespace("ca-ab"): tmp_path}
     return TaxComputationService(

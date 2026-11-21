@@ -2,6 +2,8 @@
 # Line 57: "Line 57 and line 58969: Donations and gifts (use Worksheet BC428)" (5010-c). Worksheet
 # BC428 is not built, so a salary-only caller has none and a request that leaves the line out is
 # read as blank.
+form:
+  name: ca-bc/bc428
 inputs:
   - name: ca-bc/bc428_donations_and_gifts_line_57
     title: "Donations and gifts"

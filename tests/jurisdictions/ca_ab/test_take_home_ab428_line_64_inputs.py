@@ -38,12 +38,22 @@ outputs: [ca/total_income]
 capabilities: []
 """
 
+FORM = """\
+form:
+  name: ca-ab/ab428
+  required: true
+  exports:
+    - ca/total_income
+capabilities: []
+"""
+
 
 def _manifest(tmp_path: Path) -> Manifest:
     folder = tmp_path / "manifest"
     folder.mkdir()
     (folder / "header.yaml").write_text(HEADER)
     shutil.copy(PART, folder / PART.name)
+    (folder / "form.yaml").write_text(FORM)
     source = YamlJurisdictionSource(alberta_packages().roots(), alberta_kinds(), alberta_units())
     return source.load(folder)
 
@@ -56,7 +66,8 @@ def test_the_kind_is_in_the_alberta_catalog() -> None:
 def test_the_part_declares_the_one_untitled_input_as_printed() -> None:
     part: Any = yaml.safe_load(PART.read_text(encoding="utf-8"))
 
-    assert list(part) == ["inputs"]
+    assert list(part) == ["form", "inputs"]
+    assert part["form"] == {"name": "ca-ab/ab428"}
     assert part["inputs"] == [
         {
             "name": IDENTIFIER,

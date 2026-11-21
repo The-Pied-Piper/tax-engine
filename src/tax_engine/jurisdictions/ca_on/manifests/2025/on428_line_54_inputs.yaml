@@ -2,6 +2,8 @@
 # Line 54: "Line 54 and line 61510: Ontario tax on split income (complete Form T1206)". A caller with
 # no split income leaves the line out, so a request that leaves it out is read as blank, and the
 # line 55 part reads that blank as 0.
+form:
+  name: ca-on/on428
 inputs:
   - name: ca-on/on428_tax_on_split_income_line_54
     title: "Ontario tax on split income"

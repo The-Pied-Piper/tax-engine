@@ -31,9 +31,6 @@ HEADER = dedent(f"""\
     jurisdiction: CA-BC
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: {LINE_1}
-        required: true
     outputs:
       - {LINE_1}
     capabilities: []
@@ -45,6 +42,10 @@ FORM = dedent(f"""\
       exports:
         - {LINE_5}
     capabilities: []
+    # Line 1 is the caller's, owned by this form, whose line 5 step reads it.
+    inputs:
+      - name: {LINE_1}
+        required: true
     """)
 
 

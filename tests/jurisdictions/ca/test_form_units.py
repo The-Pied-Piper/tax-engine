@@ -84,7 +84,7 @@ def test_the_figures_are_found() -> None:
     assert len(expected) > 90
     assert list(expected.values()).count("core/months") == 1
     assert list(expected.values()).count(CAD) > 90
-    assert "ca/employment_income" not in expected
+    assert expected["ca/employment_income"] == CAD  # the salary, declared by the T1 income form
 
 
 @pytest.mark.parametrize("name", sorted(declared()))

@@ -24,9 +24,6 @@ HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-inputs:
-  - name: ca/cpp_part_3_line_11
-    required: true
 outputs:
   - ca/cpp_part_3_line_11
 """
@@ -36,6 +33,9 @@ form:
   required: true
   exports:
     - ca/schedule_8_cpp_base_contributions_on_return
+inputs:
+  - name: ca/cpp_part_3_line_11
+    required: true
 """
 
 

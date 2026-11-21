@@ -34,11 +34,6 @@ HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/t2204_line_6
-        required: true
-      - name: ca/t2204_line_7
-        required: true
     outputs:
       - ca/t2204_line_6
       - ca/t2204_line_7
@@ -49,6 +44,11 @@ FORM = dedent("""\
       required: true
       exports:
         - ca/t2204_line_8
+    inputs:
+      - name: ca/t2204_line_6
+        required: true
+      - name: ca/t2204_line_7
+        required: true
     """)
 
 

@@ -41,9 +41,16 @@ HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
+    outputs:
+      - ca/employment_income
+    """)
+FORM = dedent("""\
+    form:
+      name: ca/t2204
+      required: true
+      exports:
+        - ca/t2204_premiums_deducted
     inputs:
-      - name: ca/employment_income
-        required: true
       - name: ca/t2204_exemption
         required: true
       - name: ca/t2204_self_employment_earnings
@@ -56,15 +63,6 @@ HEADER = dedent("""\
         default: null
         basis: "Total premiums deducted: Residents of other than Quebec (box 18 and box 55
           of your T4 slips)"
-    outputs:
-      - ca/employment_income
-    """)
-FORM = dedent("""\
-    form:
-      name: ca/t2204
-      required: true
-      exports:
-        - ca/t2204_premiums_deducted
     """)
 
 
@@ -77,7 +75,12 @@ def t2204(take_home_service: TakeHomeService, salary: str, given: str | None = N
     if given is not None:
         starting.append(Artifact(T2204_PREMIUMS_DEDUCTED_GIVEN, D(given)))
     (sheet,) = take_home_service(
-        HEADER, FORM, *T1_LINE_10100_PARTS, LINE_1_PART, LINE_4_PART
+        HEADER,
+        FORM,
+        *T1_LINE_10100_PARTS,
+        "t1_employment_income_line_10100_inputs.yaml",
+        LINE_1_PART,
+        LINE_4_PART,
     ).compute(JurisdictionCode("CA-ON"), 2025, *starting)["ca/t2204"]
     return sheet
 

@@ -33,7 +33,7 @@ D = Decimal
 # The parts of test_take_home_schedule_6_line_27.py, with the line 1, 5, 6, 17, 18, 20, 21 and 22
 # parts that line 22 reads inserted in form order, then the line 28 part under test.
 PARTS = (
-    "salary.yaml",
+    "t1_employment_income_line_10100_inputs.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
     "t1_taxable_income_inputs.yaml",
     "t1_employment_income.yaml",

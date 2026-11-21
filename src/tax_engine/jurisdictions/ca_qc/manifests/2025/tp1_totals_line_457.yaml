@@ -20,7 +20,7 @@ capabilities:
   - name: core/record_total
     unit: ca/cad
     consumes:
-      records: ca-qc/tp1_income.employment_income
+      records: ca-qc/tp1_income.tp1_employment_income_line_101
     produces:
       output: ca-qc/tp1_employment_income_for_line_457
   - name: core/record_total

@@ -1,13 +1,13 @@
 """Schedule ON428 (2025, Ontario tax, single filer) from the salary alone: the form's real parts
 composed end to end.
 
-Every ON428 line part has its own test with its neighbours typed in. This module composes the
-whole form: it copies `salary.yaml`, every Schedule 8 part (lines 19 and 25 come from there), every
-T2204 part (line 21 reads T2204 line 16), every `t1_taxable_income*.yaml` part (line 1 reads T1 line
-26000), every `on428_a*.yaml` part (line 85 reads ON428-A line 20) and every `on428*.yaml` part of
-the take-home folder into a temporary manifest folder beside a test-only header, and types in only
-the gross salary (`ca/employment_income`). The real header is not used because its output, T1 line
-167, is not built yet. This is not a worked return: no return file, no slips, one form.
+Every ON428 line part has its own test with its neighbours typed in. This module composes the whole
+form: it copies the line 10100 input part, every Schedule 8 part (lines 19 and 25 come from there),
+every T2204 part (line 21 reads T2204 line 16), every `t1_taxable_income*.yaml` part (line 1 reads
+T1 line 26000), every `on428_a*.yaml` part (line 85 reads ON428-A line 20) and every `on428*.yaml`
+part of the take-home folder into a temporary manifest folder beside a test-only header, and types
+in only the gross salary (`ca/employment_income`). The real header is not used because its output,
+T1 line 167, is not built yet. This is not a worked return: no return file, no slips, one form.
 
 Line 2 is a copy of line 1 and has no step, so it has no pin. Line 9 is the basic personal amount
 (`ca-on/basic_personal_amount`) and line 18 reads it. Line 5 is a rate, so it has no cents check.
@@ -105,7 +105,6 @@ FORM = "{}\n"
 ON428_A = sorted(TAKE_HOME.glob("on428_a*.yaml"))
 ON428 = [part for part in sorted(TAKE_HOME.glob("on428*.yaml")) if part not in ON428_A]
 PARTS = (
-    "salary.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
     *(part.name for part in sorted(TAKE_HOME.rglob("t2204*.yaml"))),
     *(part.name for part in sorted(TAKE_HOME.rglob("t1_employment_income*.yaml"))),

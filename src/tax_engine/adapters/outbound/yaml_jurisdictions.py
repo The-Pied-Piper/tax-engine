@@ -218,11 +218,16 @@ class YamlJurisdictionSource:
         declarations: dict[str, tuple[Path, _Declaration]] = {}
         identifier_owners: dict[str, dict[str, Path]] = {key: {} for key in _IDENTIFIER_LISTS}
         form_parts: dict[str, Path] = {}
+        input_forms: dict[str, str] = {}
         for part in parts:
             contents = self._part(part)
+            owner: str | None = None
             if "form" in contents:
-                name = self._join_form(part, contents, form_selections, declarations)
-                form_parts.setdefault(name, part)
+                owner = self._join_form(part, contents, form_selections, declarations)
+                form_parts.setdefault(owner, part)
+            if owner is not None and "inputs" in contents:
+                for item in contents["inputs"].items():
+                    input_forms[item.field("name").require_string()] = owner
             for key, node in contents.items():
                 if key in _SCALAR_KEYS:
                     if key in scalar_owners:
@@ -251,6 +256,7 @@ class YamlJurisdictionSource:
                     for name, selections in form_selections.items()
                 ),
                 lambda imports: self._imported(imports, import_owners, identifier_owners["inputs"]),
+                input_forms,
             )
         except (
             InvalidManifestError,
@@ -365,7 +371,10 @@ class YamlJurisdictionSource:
             if "inputs" in contents:
                 node = contents.pop("inputs")
                 self._claim_identifiers("inputs", node, part, input_owners)
-                inputs.extend(self._declarations(node, self._input_kind))
+                inputs.extend(
+                    dataclasses.replace(declaration, owner=identifier)
+                    for declaration in self._declarations(node, self._input_kind)
+                )
             name = self._join_form(part, contents, selections, declarations)
             if name != identifier:
                 raise InvalidManifestError(
@@ -599,20 +608,27 @@ class YamlJurisdictionSource:
         imported: Callable[[tuple[_ImportEntry, ...]], _LoadedImports] = lambda _: _LoadedImports(
             (), ()
         ),
+        input_forms: Mapping[str, str] | None = None,
     ) -> Manifest:
         """The manifest of `document`, whose selections and `outputs` are the default form's.
 
         `forms_beside` gives the other forms, from the name the default form takes, and `imported`
-        the forms the `imports` name, which run between the two.
+        the forms the `imports` name, which run between the two. `input_forms` gives the form of
+        the part that declares each input a part of a form declares; every other input of the
+        document belongs to the default form.
         """
         doc = document.require_mapping(_MANIFEST_KEYS, optional=_OPTIONAL_MANIFEST_KEYS)
         code = self._code(doc.field("jurisdiction"))
-        inputs = self._declarations(doc.field("inputs"), self._input_kind)
+        default = code.namespace.identifier(_DEFAULT_FORM)
+        owners = input_forms or {}
+        inputs = tuple(
+            dataclasses.replace(declaration, owner=owners.get(declaration.name, default))
+            for declaration in self._declarations(doc.field("inputs"), self._input_kind)
+        )
         outputs = self._identifiers(doc.field("outputs"))
         if not outputs:
             raise InvalidManifestError("outputs must name at least one artifact")
         Form.check_exports("outputs", sorted(outputs))
-        default = code.namespace.identifier(_DEFAULT_FORM)
         title = doc.optional_field("title")
         imports = doc.optional_field("imports")
         found = _LoadedImports((), ()) if imports is None else imported(self._import_list(imports))

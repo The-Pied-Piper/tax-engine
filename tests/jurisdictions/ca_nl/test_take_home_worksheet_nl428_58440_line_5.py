@@ -26,6 +26,7 @@ from typing import Any
 import pytest
 import yaml
 
+import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_nl
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
@@ -46,10 +47,12 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_units,
 )
 from tests.kinds import non_negative
+from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT
 
+FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 D = Decimal
 PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
-INPUT_PART = PARTS / "worksheet_nl428_line_58440_input.yaml"
+INPUT_PART = PARTS / "worksheet_nl428_line_3_input.yaml"
 PART_5 = PARTS / "worksheet_nl428_58440_line_5.yaml"
 PART_6 = PARTS / "worksheet_nl428_58440_line_6.yaml"
 PART_7 = PARTS / "worksheet_nl428_58440_line_7.yaml"
@@ -66,9 +69,6 @@ HEADER = dedent("""\
     jurisdiction: CA-NL
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/employment_income
-        required: true
     outputs:
       - ca/employment_income
     capabilities: []
@@ -92,14 +92,23 @@ def _service(tmp_path: Path) -> TaxComputationService:
     folder = tmp_path / "manifests" / "2025"
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
+    (folder / "00_t1_salary.yaml").write_text(
+        T1_LINE_10100_INPUT.read_text(encoding="utf-8"), encoding="utf-8"
+    )
+    (folder / "00_t1_form.yaml").write_text(
+        T1_LINE_10100_FORM.read_text(encoding="utf-8"), encoding="utf-8"
+    )
+    (folder / "00_t1_line_10100.yaml").write_text(
+        (FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml").read_text(
+            encoding="utf-8"
+        ),
+        encoding="utf-8",
+    )
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
-    # The under-18 answer is read by NL428 line 40, not by these lines, and a manifest refuses an
-    # input nothing reads, so only the care expenses input is loaded here.
-    inputs = _part(INPUT_PART)["inputs"]
-    care_only = {
-        "inputs": [each for each in inputs if each["name"] != "ca/under_18_on_december_31"]
-    }
-    (folder / "02_inputs.yaml").write_text(yaml.safe_dump(care_only), encoding="utf-8")
+    # The under-18 answer (`worksheet_nl428_line_58440_input.yaml`) is read by NL428 line 40, not by
+    # these lines, and a manifest refuses an input nothing reads, so only the care expenses input
+    # part, which the Worksheet NL428 form owns, is loaded here.
+    (folder / "02_inputs.yaml").write_text(INPUT_PART.read_text(encoding="utf-8"), encoding="utf-8")
     for number, found in enumerate((PART_5, PART_6, PART_7), start=3):
         (folder / f"{number:02d}_{found.name}").write_text(
             found.read_text(encoding="utf-8"), encoding="utf-8"

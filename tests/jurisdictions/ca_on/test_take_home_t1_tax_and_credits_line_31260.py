@@ -45,7 +45,7 @@ CAP = "ca/canada_employment_amount"
 # The real parts composed beside the test's header: the salary, the real optional line 10400 input,
 # and the part under test.
 PARTS = (
-    "salary.yaml",
+    "t1_employment_income_line_10100_inputs.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
     "t1_taxable_income_inputs.yaml",
     "t1_employment_income.yaml",

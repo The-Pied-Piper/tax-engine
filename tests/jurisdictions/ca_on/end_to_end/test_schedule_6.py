@@ -2,8 +2,8 @@
 form's real parts composed end to end.
 
 Every Schedule 6 line part has its own test with its neighbours typed in. This module composes the
-whole form: it copies `salary.yaml`, every Schedule 8 part (line 22215 comes from there), every
-`t1_taxable_income*.yaml` part (the form reads T1 lines 10100 and 23600) and every
+whole form: it copies the line 10100 input part, every Schedule 8 part (line 22215 comes from
+there), every `t1_taxable_income*.yaml` part (the form reads T1 lines 10100 and 23600) and every
 `schedule_6*.yaml` part into a temporary manifest folder beside a test-only header, and types in
 only the gross salary (`ca/employment_income`). The real header is not used because its output, T1
 line 167, is not built yet. This is not a worked return: no return file, no slips, one form.
@@ -73,7 +73,6 @@ HEADER = dedent("""\
 # fixture's own form text is an empty mapping.
 FORM = "{}\n"
 PARTS = (
-    "salary.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
     *(part.name for part in sorted(TAKE_HOME.rglob("t1_employment_income*.yaml"))),
     *(part.name for part in sorted(TAKE_HOME.rglob("t1_taxable_income*.yaml"))),

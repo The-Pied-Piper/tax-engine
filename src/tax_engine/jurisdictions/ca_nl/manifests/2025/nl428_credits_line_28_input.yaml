@@ -3,6 +3,8 @@
 # The engine does not compute Quebec Pension Plan contributions, so the figure is taken as one
 # optional input the way the form takes it, an amount from T1 line 31000. A request that leaves the
 # line out is read as blank. Line 31 (a later ticket) reads it.
+form:
+  name: ca-nl/nl428_credits
 inputs:
   - name: ca-nl/nl428_qpp_contributions_line_28
     title: "Amount from line 31000 of your return"

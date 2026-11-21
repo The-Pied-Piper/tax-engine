@@ -33,7 +33,7 @@ from tests.manifest_support import T1_LINE_10100_PARTS
 
 D = Decimal
 PARTS = (
-    "salary.yaml",
+    "t1_employment_income_line_10100_inputs.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
     *(part.name for part in sorted(TAKE_HOME.rglob("t2204*.yaml"))),
     *T1_LINE_10100_PARTS,

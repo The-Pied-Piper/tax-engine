@@ -4,6 +4,8 @@
 # amount above it. Line 14 is the checked amount times a printed 10%, built by a later step. A
 # salary-only caller leaves the line blank; the check step passes that blank on and the step after it
 # reads the blank as 0.
+form:
+  name: ca-bc/bc479
 inputs:
   - name: ca-bc/bc479_home_renovation_expenses_line_14
     title: "Home renovation expenses from line 5 of your Schedule BC(S12)"

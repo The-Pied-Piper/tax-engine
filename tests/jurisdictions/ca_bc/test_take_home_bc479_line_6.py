@@ -54,7 +54,7 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
+from tests.manifest_support import T1_LINE_10100_INPUT
 
 D = Decimal
 CODE = JurisdictionCode("CA-BC")
@@ -104,7 +104,7 @@ def _federal(name: str) -> Path:
 
 
 def _part_files() -> Iterator[Path]:
-    yield BC_PARTS / "salary.yaml"
+    yield T1_LINE_10100_INPUT
     yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
     for name in T1_PARTS:
         yield _federal(name)
@@ -124,11 +124,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(FORM_TEXT, encoding="utf-8")
     for number, part in enumerate(_part_files(), start=2):
-        text = (
-            inputs_without_form(part)
-            if part.name.endswith("_inputs.yaml") and part.is_relative_to(FEDERAL_FORMS)
-            else part.read_text(encoding="utf-8")
-        )
+        text = part.read_text(encoding="utf-8")
         (folder / f"{number:02d}_{part.name}").write_text(text, encoding="utf-8")
     roots = {**british_columbia_packages().roots(), Namespace("ca-bc"): tmp_path}
     return TaxComputationService(

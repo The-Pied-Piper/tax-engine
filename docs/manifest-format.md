@@ -100,7 +100,8 @@ A form may span several parts that carry the same `form.name`, in part order. Ex
 declares `exports`, together with every other key of the block except `name`; a second part that
 declares `exports`, or any of the other keys without `exports`, is rejected. A part with a `form:`
 key takes no `outputs` or `imports`: exports are declared in the block. It may carry `inputs`, which
-join the manifest's inputs like any part's, so a form carries the optional inputs it needs.
+join the manifest's inputs like any part's, so a form carries the optional inputs it needs, and
+which belong to that form (see Input ownership).
 
 The limits apply to the count of instances; a form without `instances` has a default list of one
 instance. Which fields the instances kind has, that defaults suit their kinds, and that
@@ -165,7 +166,7 @@ In a folder manifest each part may carry any of the manifest keys, `title` and `
   `form:` key.
 - The lists (`inputs`, `outputs`, `capabilities`) are concatenated in part order. An identifier
   listed in two parts of `inputs`, or of `outputs`, is rejected.
-- A part without `form:` joins the default form.
+- A part without `form:` joins the default form, and so do its `inputs`.
 
 The merged mapping then goes through the same parse as a whole file.
 
@@ -185,6 +186,15 @@ Each entry of `inputs` (and of a form's `fields`) is a mapping:
 
 A required input takes neither `default` nor `basis`. By convention an entry writes `name`, `title`,
 `reference` and `unit` first, then `required`, `default` and `basis`.
+
+## Input ownership
+
+An input belongs to one form: the form of the part that declares it, the default form for an input
+in a whole-file manifest or in a part without `form:`. Only that form's steps may name it in
+`consumes`. Every other form that needs the figure reads the owner's export, as it reads any other
+form's figure. A step that names another form's input is an `InvalidManifestError` when the manifest
+loads, naming the form, the step, the input and its owner. Fields of a form's `instances` already
+belong to their form and are not in the manifest's `inputs`.
 
 ## Capability selections
 

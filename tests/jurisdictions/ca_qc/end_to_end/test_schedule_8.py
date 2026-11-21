@@ -65,12 +65,6 @@ HEADER_TEMPLATE = dedent("""\
     outputs:
       - ca/employment_income
     capabilities: []
-    inputs:
-      - name: ca/employment_income
-        title: "Employment income"
-        reference: "10100"
-        unit: ca/cad
-        required: true
     imports:
       - {schedule_8}
     """)
@@ -85,6 +79,7 @@ FORM_PART = "capabilities: []\n"
 # The real Quebec T1 employment income parts: Schedule 8 line 1 reads line 10100 from that form.
 T1_EMPLOYMENT_INCOME_PARTS = (
     "t1_employment_income.yaml",
+    "t1_employment_income_line_10100_inputs.yaml",
     "t1_employment_income_line_10100.yaml",
     "t1_employment_income_line_10400.yaml",
     "t1_employment_income_line_10400_inputs.yaml",

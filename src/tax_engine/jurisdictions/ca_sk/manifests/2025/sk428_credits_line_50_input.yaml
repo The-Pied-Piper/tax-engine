@@ -2,6 +2,8 @@
 # Line 50: "Line 50 and line 58769: Line 48 plus line 49 =" (Form SK428, CRA 5008-c).
 # A salary-only caller has no medical expenses, so a request that leaves the line out is read as
 # blank; the step that reads line 50 (line 51) reads that blank as 0.
+form:
+  name: ca-sk/sk428_credits
 inputs:
   - name: ca-sk/sk428_medical_expenses_line_50
     reference: "50"

@@ -42,7 +42,7 @@ LINE_132 = "ca/federal_tax_with_itc_recapture"
 # 33500, 33800, 35000, 125, 40400, 42900 and 128, the line 130 inputs, line 130, and the part under
 # test.
 PARTS = (
-    "salary.yaml",
+    "t1_employment_income_line_10100_inputs.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
     *(part.name for part in sorted(TAKE_HOME.rglob("t2204*.yaml"))),
     "t1_taxable_income_inputs.yaml",

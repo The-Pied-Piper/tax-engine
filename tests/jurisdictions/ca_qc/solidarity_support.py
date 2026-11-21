@@ -1,10 +1,10 @@
 """Shared helpers of the solidarity reduction rule tests: the test header, form part and figures.
 
 The reduction chain consumes four artifacts the solidarity wiring produces (family income, the
-maximum before reduction, the QST component amount and the housing count), so the tests declare the
-ones the part consumes as inputs. The form part exports the printed amounts and every figure of the
-chain that no later step consumes (a form cannot hold an output nothing reads), so the tests can
-read any step's figure.
+maximum before reduction, the QST component amount and the housing count), so the test form
+declares the ones the part consumes as inputs. The form part exports the printed amounts and every
+figure of the chain that no later step consumes (a form cannot hold an output nothing reads), so
+the tests can read any step's figure.
 """
 
 from __future__ import annotations
@@ -46,15 +46,12 @@ def _consumed() -> set[str]:
 
 
 def solidarity_header() -> str:
-    """A test header: the salary and the chain's inputs the part consumes, all required."""
-    names = "".join(
-        f"  - name: {name}\n    required: true\n" for name in INPUTS if name in _consumed()
-    )
+    """A test header: the salary, required. The chain's inputs belong to the form that reads them,
+    so the form part declares them."""
     return (
         "jurisdiction: CA-QC\nversion: 1\nvalid_from_tax_year: 2025\ninputs:\n"
         "  - name: ca/employment_income\n    required: true\n"
-        + names
-        + "outputs:\n  - ca/employment_income\n"
+        "outputs:\n  - ca/employment_income\n"
     )
 
 
@@ -72,6 +69,9 @@ def solidarity_form_part(identifier: str) -> str:
         if name not in exports:
             exports.append(name)
     lines = "".join(f"    - {name}\n" for name in exports)
+    names = "".join(
+        f"  - name: {name}\n    required: true\n" for name in INPUTS if name in consumed
+    )
     return (
         dedent(f"""\
         form:
@@ -80,6 +80,7 @@ def solidarity_form_part(identifier: str) -> str:
           exports:
         """)
         + lines
+        + ("inputs:\n" + names if names else "")
     )
 
 

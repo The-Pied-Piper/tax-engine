@@ -2,6 +2,8 @@
 # Line 79: "Line 79: Saskatchewan mineral exploration tax credit (complete Form T1279)" (Form SK428,
 # CRA 5008-c). Form T1279 is not computed by the engine, so a request that leaves the line out is
 # read as blank; the step that reads line 79 reads that blank as 0.
+form:
+  name: ca-sk/sk428
 inputs:
   - name: ca-sk/sk428_mineral_exploration_credit_line_79
     title: "Saskatchewan mineral exploration tax credit"

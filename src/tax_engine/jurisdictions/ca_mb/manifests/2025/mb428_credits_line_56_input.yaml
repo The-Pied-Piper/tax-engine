@@ -2,6 +2,8 @@
 # Line 56: "Line 56 and line 58969: Line 54 plus line 55" (Form MB428, CRA 5007-c).
 # Lines 54 and 55 are not built, so a request that leaves the line out is read as blank; the step
 # that reads line 56 (line 57) reads that blank as 0.
+form:
+  name: ca-mb/mb428_credits
 inputs:
   - name: ca-mb/mb428_donations_credit_line_56
     title: "Donations and gifts"

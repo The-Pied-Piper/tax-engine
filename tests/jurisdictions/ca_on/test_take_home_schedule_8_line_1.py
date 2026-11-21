@@ -29,9 +29,6 @@ HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/employment_income
-        required: true
     outputs:
       - ca/employment_income
     """)
@@ -45,9 +42,9 @@ FORM = dedent("""\
 
 
 def line_1(take_home_service: TakeHomeService, salary: str) -> Decimal:
-    worksheets = take_home_service(HEADER, FORM, *T1_LINE_10100_PARTS, PART).compute(
-        JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
-    )
+    worksheets = take_home_service(
+        HEADER, FORM, *T1_LINE_10100_PARTS, "t1_employment_income_line_10100_inputs.yaml", PART
+    ).compute(JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary)))
     (sheet,) = worksheets["ca/schedule_8"]
     return sheet.get(T4_CPP_PENSIONABLE_EARNINGS_OUTSIDE_QUEBEC).value
 

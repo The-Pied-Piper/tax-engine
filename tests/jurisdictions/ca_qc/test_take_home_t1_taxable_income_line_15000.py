@@ -28,13 +28,6 @@ HEADER = dedent("""\
     jurisdiction: CA-QC
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/employment_income
-        required: true
-      - name: ca-qc/t1_line_28
-        required: true
-      - name: ca-qc/t1_line_32
-        required: true
     outputs:
       - ca/employment_income
     capabilities: []
@@ -45,6 +38,13 @@ FORM = dedent("""\
       required: true
       exports:
         - ca-qc/total_income
+    inputs:
+      - name: ca/employment_income
+        required: true
+      - name: ca-qc/t1_line_28
+        required: true
+      - name: ca-qc/t1_line_32
+        required: true
     capabilities: []
     """)
 

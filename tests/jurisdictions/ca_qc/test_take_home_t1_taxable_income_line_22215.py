@@ -20,7 +20,7 @@ import pytest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tax_engine.jurisdictions.ca_qc.catalog import T1_LINE_48
+from tax_engine.jurisdictions.ca_qc.catalog import T1_LINE_32, T1_LINE_48
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 from tests.jurisdictions.ca_qc.support import real_import
 
@@ -29,6 +29,7 @@ PART = "t1_taxable_income_line_22215.yaml"
 # The real Quebec T1 employment income parts: Schedule 8 line 1 reads line 10100 from that form.
 T1_EMPLOYMENT_INCOME_PARTS = (
     "t1_employment_income.yaml",
+    "t1_employment_income_line_10100_inputs.yaml",
     "t1_employment_income_line_10100.yaml",
     "t1_employment_income_line_10400.yaml",
     "t1_employment_income_line_10400_inputs.yaml",
@@ -39,10 +40,10 @@ HEADER = dedent("""\
     version: 1
     valid_from_tax_year: 2025
     inputs:
-      - name: ca/employment_income
+      - name: ca-qc/t1_line_32
         required: true
     outputs:
-      - ca/employment_income
+      - ca-qc/t1_line_32
     capabilities: []
     imports:
     """) + real_import("ca/schedule_8")
@@ -58,7 +59,10 @@ FORM = dedent("""\
 
 def line_48(take_home_service: TakeHomeService, salary: str) -> Decimal:
     worksheets = take_home_service(HEADER, FORM, *T1_EMPLOYMENT_INCOME_PARTS, PART).compute(
-        JurisdictionCode("CA-QC"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
+        JurisdictionCode("CA-QC"),
+        2025,
+        Artifact(EMPLOYMENT_INCOME, D(salary)),
+        Artifact(T1_LINE_32, D(0)),
     )
     (sheet,) = worksheets["ca-qc/t1_taxable_income"]
     return sheet.get(T1_LINE_48).value

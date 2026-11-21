@@ -29,7 +29,7 @@ from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService
 D = Decimal
 # The parts of test_take_home_schedule_6_line_25.py, then the line 27 part under test.
 PARTS = (
-    "salary.yaml",
+    "t1_employment_income_line_10100_inputs.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
     "t1_taxable_income_inputs.yaml",
     "t1_employment_income.yaml",

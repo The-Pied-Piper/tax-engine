@@ -3,13 +3,13 @@ manifest's real parts composed end to end, at several salaries.
 
 Every form has its own end-to-end module in this folder, and every line part has its own test with
 its neighbours typed in. This module composes the whole real take-home manifest (the real header
-`manifest.yaml`, the form-less `return.yaml`, `salary.yaml` and every form's part files: Schedule
-8, T2204, ca/t1_taxable_income, ON428-A, ON428, Schedule 6 and the T1 General) and types in only
-the gross salary (`ca/employment_income`). It pins the T1 lines the salary-only filer fills, the
-return's one output (line 167, refund or balance owing) and the CPP and EI figures the calculator
-reads from Schedule 8 and T2204. It is not a worked return: no return file, no slips, no tax paid.
-The partial CPP2 range (salary between 71,300 and 81,200) is covered by one salary in ANCHORS and
-by the boundary salaries (BOUNDARY_ANCHORS).
+`manifest.yaml`, the form-less `return.yaml`, the line 10100 input part and every form's part files:
+Schedule 8, T2204, ca/t1_taxable_income, ON428-A, ON428, Schedule 6 and the T1 General) and types in
+only the gross salary (`ca/employment_income`). It pins the T1 lines the salary-only filer fills,
+the return's one output (line 167, refund or balance owing) and the CPP and EI figures the
+calculator reads from Schedule 8 and T2204. It is not a worked return: no return file, no slips, no
+tax paid. The partial CPP2 range (salary between 71,300 and 81,200) is covered by one salary in
+ANCHORS and by the boundary salaries (BOUNDARY_ANCHORS).
 
 Form text: T1 General (CRA 5006-R, 2025) "Line 75" columns
 "Line 26000 is more than $57,375 but not more than $114,750" and the printed constants 8,319.38,
@@ -113,11 +113,10 @@ CODE = JurisdictionCode("CA-ON")
 HEADER = header_without_imports()
 RETURN = (TAKE_HOME / "return.yaml").read_text(encoding="utf-8")
 PARTS = (
-    "salary.yaml",
     *(
         part.name
         for part in sorted(TAKE_HOME.rglob("*.yaml"))
-        if part.name not in {"manifest.yaml", "return.yaml", "salary.yaml"}
+        if part.name not in {"manifest.yaml", "return.yaml"}
     ),
 )
 

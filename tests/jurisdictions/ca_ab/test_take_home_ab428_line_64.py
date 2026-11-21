@@ -39,6 +39,7 @@ from tests.jurisdictions.ca_ab.support import (
     alberta_units,
 )
 from tests.kinds import non_negative
+from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT
 
 D = Decimal
 CODE = JurisdictionCode("CA-AB")
@@ -73,9 +74,16 @@ def _service(tmp_path: Path) -> TaxComputationService:
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
-    for number, name in enumerate(["salary.yaml", "ab428_line_64_inputs.yaml", PART.name], start=2):
-        text = (ALBERTA_PARTS / name).read_text(encoding="utf-8")
-        (folder / f"{number:02d}_{name}").write_text(text, encoding="utf-8")
+    parts = [
+        T1_LINE_10100_FORM,
+        T1_LINE_10100_INPUT,
+        T1_LINE_10100_INPUT.with_name("t1_employment_income_line_10100.yaml"),
+        ALBERTA_PARTS / "ab428_line_64_inputs.yaml",
+        PART,
+    ]
+    for number, part in enumerate(parts, start=2):
+        text = part.read_text(encoding="utf-8")
+        (folder / f"{number:02d}_{part.name}").write_text(text, encoding="utf-8")
     roots = {**alberta_packages().roots(), Namespace("ca-ab"): tmp_path}
     return TaxComputationService(
         YamlJurisdictionSource(roots, alberta_kinds(), alberta_units()),

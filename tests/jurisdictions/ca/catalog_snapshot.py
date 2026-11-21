@@ -10,6 +10,7 @@ REGISTERED = frozenset(
     {
         "ca/principal_residence_designation_box",
         "ca/employment_income",
+        "ca/return_employment_income",
         "ca/total_income",
         "ca/other_employment_income",
         "ca/employment_income_line_10100",

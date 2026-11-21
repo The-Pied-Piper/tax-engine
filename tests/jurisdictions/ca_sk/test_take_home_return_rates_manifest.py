@@ -24,6 +24,7 @@ PART = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / "manifests" / "202
 OUTPUTS = [
     "ca/refund_or_balance_owing",
     "ca/total_payable",
+    "ca/return_employment_income",
     "ca-sk/average_income_tax_rate",
     "ca/federal_bracket_rate_return",
     "ca/federal_tax_after_credits_return",
@@ -35,6 +36,7 @@ OUTPUTS = [
     "ca-sk/saskatchewan_marginal_rate",
     "ca-sk/marginal_tax_rate",
 ]
+SALARY_RECORD = "ca/return_employment_income"
 EXACT = "ca-sk/exact_rounding"
 GATE = "ca-sk/marginal_rate_gate"
 
@@ -67,8 +69,22 @@ def test_the_steps_produce_these_kinds_in_this_order() -> None:
 def test_every_step_after_line_167_has_no_title_and_no_reference() -> None:
     assert len(_steps()) == len(OUTPUTS)
     for step in _steps()[1:]:
+        if step["produces"] == {"output": SALARY_RECORD}:
+            continue
         assert "title" not in step
         assert "reference" not in step
+
+
+def test_the_salary_record_totals_the_t1_line_10100_export_with_its_title_and_no_reference() -> (
+    None
+):
+    step = _producing(SALARY_RECORD)
+
+    assert step["name"] == "core/record_total"
+    assert step["title"] == "Employment income, T1 line 10100"
+    assert "reference" not in step
+    assert step["unit"] == "ca/cad"
+    assert step["consumes"] == {"records": "ca/t1_employment_income.employment_income_line_10100"}
 
 
 def test_the_average_rate_divides_the_total_payable_by_the_salary_rounded_half_up_once() -> None:
@@ -82,7 +98,7 @@ def test_the_average_rate_divides_the_total_payable_by_the_salary_rounded_half_u
     assert divide["params"] == {"rounding": "ca-sk/rate_rounding"}
     assert divide["consumes"] == {
         "dividend": "ca/total_payable",
-        "divisor": "ca/employment_income",
+        "divisor": SALARY_RECORD,
     }
 
 

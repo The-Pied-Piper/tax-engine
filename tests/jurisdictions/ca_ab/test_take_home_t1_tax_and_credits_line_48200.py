@@ -28,6 +28,7 @@ from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tests.jurisdictions.ca_ab.conftest import TAKE_HOME, TakeHomeService
 from tests.kinds import bundled_kinds
+from tests.manifest_support import T1_LINE_10100_INPUT
 
 D = Decimal
 ALBERTA = JurisdictionCode("CA-AB")
@@ -35,7 +36,7 @@ FORM = "ca/t1_tax_and_credits"
 LINE_47900 = "ca/provincial_credits_line_47900"
 LINE_48200 = "ca/total_credits"
 PARTS = (
-    "salary.yaml",
+    T1_LINE_10100_INPUT.name,
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
     "t1_taxable_income_inputs.yaml",
     "t1_employment_income.yaml",

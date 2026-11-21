@@ -18,6 +18,7 @@ import shutil
 from pathlib import Path
 
 import pytest
+import yaml
 
 import tax_engine.jurisdictions.ca_nl
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
@@ -32,8 +33,12 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_units,
 )
 
-PART = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / (
-    "manifests/2025/worksheet_nl428_line_58440_input.yaml"
+PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
+# The under-18 answer is the NL428 credits form's input; the care expenses (line 3) are the
+# Worksheet NL428 form's own, in a part of their own.
+INPUT_PARTS = (
+    PARTS / "worksheet_nl428_line_58440_input.yaml",
+    PARTS / "worksheet_nl428_line_3_input.yaml",
 )
 HEADER = """\
 jurisdiction: CA-NL
@@ -58,7 +63,14 @@ def _manifest(tmp_path: Path) -> Manifest:
     folder = tmp_path / "manifest"
     folder.mkdir()
     (folder / "header.yaml").write_text(HEADER)
-    shutil.copy(PART, folder / PART.name)
+    for number, part in enumerate(INPUT_PARTS):
+        shutil.copy(part, folder / part.name)
+        declared = yaml.safe_load(part.read_text(encoding="utf-8"))
+        exports = "".join(f"    - {each['name']}\n" for each in declared["inputs"])
+        (folder / f"form_{number}.yaml").write_text(
+            f"form:\n  name: {declared['form']['name']}\n  required: true\n  exports:\n{exports}"
+            "capabilities: []\n"
+        )
     source = YamlJurisdictionSource(
         newfoundland_packages().roots(), newfoundland_kinds(), newfoundland_units()
     )

@@ -1,7 +1,7 @@
 """Shared helpers of the Schedule K Part C line tests (lines 77 to 84).
 
-Part C reads line 48 of Part A. Most tests give line 48 straight to the form (the header takes it as
-an input), so a test can put it on either side of every printed column edge: $5,000 or less is
+Part C reads line 48 of Part A. Most tests give line 48 straight to the form (the form declares it
+as an input), so a test can put it on either side of every printed column edge: $5,000 or less is
 column A, more than $5,000 is column B, and more than $14,669 prints $766 on line 83. The salary
 tests run the real Part A chain (see `schedule_k_support.py`) and the Part C `parts` under test.
 Every figure below is hand-computed from the printed lines, not an official example.
@@ -41,11 +41,14 @@ HEADER = dedent("""\
     jurisdiction: CA-QC
     version: 1
     valid_from_tax_year: 2025
+    outputs:
+      - ca-qc/schedule_k_premium_income_line_48
+    """)
+# Line 48 is an input of the Schedule K form (the form that reads it), declared beside its exports.
+LINE_48_INPUT = dedent("""\
     inputs:
       - name: ca-qc/schedule_k_premium_income_line_48
         required: true
-    outputs:
-      - ca-qc/schedule_k_premium_income_line_48
     """)
 
 # Printed lines 78 to 83 for a line 48 given straight to Part C: line 48 -> (78, 79, 80, 81, 82,
@@ -71,7 +74,7 @@ def part_c(
     take_home_service: TakeHomeService, line_48: str, export: str, parts: tuple[str, ...]
 ) -> Worksheet:
     """The Schedule K worksheet of `parts` for a line 48 given straight to Part C."""
-    (sheet,) = take_home_service(HEADER, form_part(export), *parts).compute(
+    (sheet,) = take_home_service(HEADER, form_part(export) + LINE_48_INPUT, *parts).compute(
         JurisdictionCode("CA-QC"), 2025, Artifact(SCHEDULE_K_PREMIUM_INCOME_LINE_48, D(line_48))
     )[FORM_NAME]
     return sheet

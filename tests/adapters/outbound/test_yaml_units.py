@@ -105,7 +105,9 @@ def test_an_input_may_name_a_unit(tmp_path: Path) -> None:
         """,
     )
 
-    assert manifest.inputs["ex/rent"] == InputDeclaration("ex/rent", True, unit="ex/crowns")
+    assert manifest.inputs["ex/rent"] == InputDeclaration(
+        "ex/rent", True, unit="ex/crowns", owner="ex-on/return"
+    )
     assert manifest.inputs["ex/term"].unit == "core/moons"
     assert manifest.inputs["ex/plain"].unit is None
 

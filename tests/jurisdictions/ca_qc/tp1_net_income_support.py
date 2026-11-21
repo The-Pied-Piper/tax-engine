@@ -18,13 +18,20 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
-from tests.jurisdictions.ca_qc.support import WORK_CHART_201_PARTS
+from tests.jurisdictions.ca_qc.support import T1_SALARY_PARTS, WORK_CHART_201_PARTS
 
 D = Decimal
 
+# The salary: the Quebec T1 employment income form that owns the input (its declaration, the
+# inputs and lines 10100 and 10400) and TP-1 line 101, which totals that form's line 10100 export.
+SALARY_PARTS = (
+    *T1_SALARY_PARTS,
+    "tp1_income_line_101.yaml",
+)
+
 # The TP-1 income parts (lines 97 to 199): the slip figures that Schedule U reads come from them.
 TP1_INCOME_PARTS = (
-    "salary.yaml",
+    *SALARY_PARTS,
     "tp1_income.yaml",
     "tp1_income_line_105_input.yaml",
     "tp1_income_line_107_input.yaml",

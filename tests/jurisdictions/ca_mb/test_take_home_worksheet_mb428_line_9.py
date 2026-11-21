@@ -55,7 +55,7 @@ from tests.jurisdictions.ca_mb.support import (
     manitoba_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
+from tests.manifest_support import T1_LINE_10100_INPUT
 
 D = Decimal
 CENT = D("0.01")
@@ -124,7 +124,7 @@ FLOORED = ("450000", "15780.00", "19640.26", "0.00")
 
 
 def _part_files() -> Iterator[Path]:
-    yield MB_PARTS / "salary.yaml"
+    yield T1_LINE_10100_INPUT
     yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
     for name in FEDERAL_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
@@ -147,11 +147,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
     for number, found in enumerate(_part_files(), start=2):
-        text = (
-            inputs_without_form(found)
-            if found.name.endswith("_inputs.yaml") and found.is_relative_to(FEDERAL_FORMS)
-            else found.read_text(encoding="utf-8")
-        )
+        text = found.read_text(encoding="utf-8")
         (folder / f"{number:02d}_{found.name}").write_text(text, encoding="utf-8")
     roots = {**manitoba_packages().roots(), Namespace("ca-mb"): tmp_path}
     return TaxComputationService(

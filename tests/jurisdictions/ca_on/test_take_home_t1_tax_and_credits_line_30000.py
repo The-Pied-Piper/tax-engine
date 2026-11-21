@@ -63,7 +63,7 @@ NET_INCOME = "ca/net_income"
 # The real parts composed beside the test's header: the salary, the real Schedule 8, and the real
 # T1 taxable-income lines and inputs, so line 23600 is read from the salary through the real lines.
 PARTS = (
-    "salary.yaml",
+    "t1_employment_income_line_10100_inputs.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
     "t1_taxable_income_inputs.yaml",
     "t1_employment_income.yaml",

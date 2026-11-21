@@ -2,6 +2,8 @@
 # Line 81: "Line 81 and line 63640: Saskatchewan graduate tuition tax credit (complete Form RC360)". A
 # salary-only caller has no graduate tuition credit, so a request that leaves the line out is read
 # as blank; the step that reads line 81 reads that blank as 0.
+form:
+  name: ca-sk/sk428
 inputs:
   - name: ca-sk/sk428_graduate_tuition_credit_line_81
     title: "Saskatchewan graduate tuition tax credit"

@@ -5,6 +5,8 @@
 # are skipped and the printed sum that collects them is taken as one optional input. A request that
 # leaves the line out is read as blank. The form prints no title for the line, so the input has
 # none.
+form:
+  name: ca-nl/nl428
 inputs:
   - name: ca-nl/nl428_venture_capital_tax_credit_line_84
     reference: "84"

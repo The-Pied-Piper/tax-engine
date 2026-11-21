@@ -41,12 +41,23 @@ valid_from_tax_year: 2025
 outputs: [ca/total_income]
 capabilities: []
 """
+# The form that owns the input, declared here as the real parts of the form declare it.
+FORM_NAME = "ca-sk/sk428"
+FORM = f"""\
+form:
+  name: {FORM_NAME}
+  required: true
+  exports:
+    - {IDENTIFIER}
+capabilities: []
+"""
 
 
 def _manifest(tmp_path: Path) -> Manifest:
     folder = tmp_path / "manifest"
     folder.mkdir()
     (folder / "header.yaml").write_text(HEADER)
+    (folder / "form.yaml").write_text(FORM)
     shutil.copy(PART, folder / PART.name)
     source = YamlJurisdictionSource(
         saskatchewan_packages().roots(), saskatchewan_kinds(), saskatchewan_units()
@@ -65,7 +76,8 @@ def test_the_kind_is_a_registered_non_negative_amount_kind() -> None:
 def test_the_part_declares_the_one_input_as_printed() -> None:
     part: Any = yaml.safe_load(PART.read_text(encoding="utf-8"))
 
-    assert list(part) == ["inputs"]
+    assert list(part) == ["form", "inputs"]
+    assert part["form"] == {"name": FORM_NAME}
     assert part["inputs"] == [
         {
             "name": IDENTIFIER,

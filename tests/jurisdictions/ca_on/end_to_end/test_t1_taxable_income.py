@@ -67,13 +67,11 @@ FORM = "{}\n"
 # The form's lines compose together: every T1 part beside the salary and the real Schedule 8 whose
 # export line 23300 reads.
 PARTS_15000 = (
-    "salary.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
     *(part.name for part in sorted(TAKE_HOME.rglob("t1_employment_income*.yaml"))),
     *(part.name for part in sorted(TAKE_HOME.rglob("t1_taxable_income*.yaml"))),
 )
 PARTS = (
-    "salary.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
     *(part.name for part in sorted(TAKE_HOME.rglob("t1_employment_income*.yaml"))),
 )

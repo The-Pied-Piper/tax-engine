@@ -2,6 +2,8 @@
 # Line 71: "Line 71: Provincial foreign tax credit (complete Form T2036)" (5010-c). Form T2036 is
 # not built. A salary-only caller has no provincial foreign tax credit, so a request that leaves
 # the line out is read as blank; the step that consumes it (line 72) reads that blank as 0.
+form:
+  name: ca-bc/bc428
 inputs:
   - name: ca-bc/bc428_provincial_foreign_tax_credit_line_71
     title: "Provincial foreign tax credit"

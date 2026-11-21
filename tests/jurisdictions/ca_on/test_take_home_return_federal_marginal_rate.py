@@ -52,7 +52,7 @@ REAL_FORM = next(TAKE_HOME.rglob("t1_tax_and_credits.yaml")).read_text(encoding=
 # The real parts composed beside the real header and form, as the line 167 test composes them: the
 # return reads the T1 form's exports, so the chain up to line 167 is composed, then `return.yaml`.
 PARTS = (
-    "salary.yaml",
+    "t1_employment_income_line_10100_inputs.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
     *(part.name for part in sorted(TAKE_HOME.rglob("t2204*.yaml"))),
     "t1_taxable_income_inputs.yaml",

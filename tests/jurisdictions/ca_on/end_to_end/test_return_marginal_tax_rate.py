@@ -69,11 +69,10 @@ MARGINAL = "ca-on/marginal_tax_rate"
 LINE_167 = "ca/refund_or_balance_owing"
 
 PARTS = (
-    "salary.yaml",
     *(
         part.name
         for part in sorted(TAKE_HOME.rglob("*.yaml"))
-        if part.name not in {"manifest.yaml", "return.yaml", "salary.yaml"}
+        if part.name not in {"manifest.yaml", "return.yaml"}
     ),
 )
 

@@ -53,7 +53,7 @@ LINE_13 = "ca-on/lift_adjusted_net_income"
 # The real parts composed beside the test's header: the salary, the real Schedule 8, the real T1
 # taxable-income lines and inputs, and ON428-A lines 13, 16 and 17.
 PARTS = (
-    "salary.yaml",
+    "t1_employment_income_line_10100_inputs.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
     "t1_taxable_income_inputs.yaml",
     "t1_employment_income.yaml",

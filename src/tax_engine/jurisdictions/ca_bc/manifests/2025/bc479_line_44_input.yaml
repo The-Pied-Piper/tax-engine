@@ -4,6 +4,8 @@
 # not built, so a salary-only caller has no rent and a request that leaves the line out is read as
 # blank; the step that consumes it reads that blank as 0. The printed $400 maximum (line 38) is not
 # enforced here.
+form:
+  name: ca-bc/bc479
 inputs:
   - name: ca-bc/bc479_renters_credit_line_44
     title: "British Columbia renter's tax credit"

@@ -10,12 +10,13 @@ import pytest
 from tax_engine.jurisdictions.ca_qc.catalog import SCHEDULE_P_WORK_PREMIUM_INCOME_CEILING_LINE_66
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 from tests.jurisdictions.ca_qc.support import (
+    T1_SALARY_PARTS,
     schedule_p_form,
     schedule_p_worksheet,
 )
 
 PARTS = (
-    "salary.yaml",
+    *T1_SALARY_PARTS,
     "schedule_p_line_66.yaml",
 )
 FORM = schedule_p_form("ca-qc/schedule_p_work_premium_income_ceiling_line_66")

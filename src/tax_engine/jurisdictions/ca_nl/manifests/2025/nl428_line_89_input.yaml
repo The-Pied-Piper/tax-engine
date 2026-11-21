@@ -3,6 +3,8 @@
 # the registered disability savings plan (RDSP) income repayment (included on line 23200 of the
 # return)" (Form NL428, CRA 5001-C), column 1 (you). A salary-only caller has no such repayment, so
 # a request that leaves the line out is read as blank.
+form:
+  name: ca-nl/nl428
 inputs:
   - name: ca-nl/nl428_uccb_rdsp_repayments_line_89
     title: "Total of the universal child care benefit (UCCB) repayment (line 21300 of the return) and the registered disability savings plan (RDSP) income repayment (included on line 23200 of the return)"

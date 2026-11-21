@@ -21,6 +21,7 @@ from typing import Any
 import pytest
 import yaml
 
+import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_nl
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
@@ -36,7 +37,9 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_parameter_parsers,
     newfoundland_units,
 )
+from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT
 
+FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 D = Decimal
 CODE = JurisdictionCode("CA-NL")
 FORM_NAME = "ca-nl/nl428"
@@ -49,10 +52,6 @@ HEADER = dedent("""\
     jurisdiction: CA-NL
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/employment_income
-        unit: ca/cad
-        required: true
     outputs:
       - ca/employment_income
     capabilities: []
@@ -71,6 +70,18 @@ def _sheet(tmp_path: Path, salary: str, amount: str | None) -> Any:
     folder = tmp_path / "manifests" / "2025"
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
+    (folder / "00_t1_salary.yaml").write_text(
+        T1_LINE_10100_INPUT.read_text(encoding="utf-8"), encoding="utf-8"
+    )
+    (folder / "00_t1_form.yaml").write_text(
+        T1_LINE_10100_FORM.read_text(encoding="utf-8"), encoding="utf-8"
+    )
+    (folder / "00_t1_line_10100.yaml").write_text(
+        (FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml").read_text(
+            encoding="utf-8"
+        ),
+        encoding="utf-8",
+    )
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
     for number, name in enumerate(["nl428_line_71_input.yaml", PART.name], start=2):
         text = (NL_PARTS / name).read_text(encoding="utf-8")

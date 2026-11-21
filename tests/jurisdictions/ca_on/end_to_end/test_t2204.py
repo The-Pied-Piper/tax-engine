@@ -2,10 +2,11 @@
 form's real parts composed end to end.
 
 Every line part has its own test with its neighbours typed in. This module composes the whole form:
-it copies every `t2204*.yaml` part, plus `salary.yaml`, from the package into a temporary manifest
-folder beside a test-only header, and types in only the gross salary (`ca/employment_income`), plus
-the given line 4 figure in one case. The real header is not used because its output, T1 line 167,
-is not built yet. This is not a worked return: no return file, no slips, one form.
+it copies every `t2204*.yaml` part, plus the line 10100 input part, from the package into a
+temporary manifest folder beside a test-only header, and types in only the gross salary
+(`ca/employment_income`), plus the given line 4 figure in one case. The real header is not used
+because its output, T1 line 167, is not built yet. This is not a worked return: no return file, no
+slips, one form.
 
 The form's exports are line 4 (the premiums deducted), the T1 line 45000 amount and line 16.
 
@@ -68,7 +69,7 @@ HEADER = dedent("""\
 # form text is an empty mapping.
 FORM = "{}\n"
 PARTS = (
-    "salary.yaml",
+    "t1_employment_income_line_10100_inputs.yaml",
     *T1_LINE_10100_PARTS,
     *(part.name for part in sorted(TAKE_HOME.rglob("t2204*.yaml"))),
 )

@@ -49,6 +49,7 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_units,
 )
 from tests.kinds import non_negative
+from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT
 
 D = Decimal
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
@@ -82,7 +83,9 @@ CASES = [
 
 def _part_files() -> list[Path]:
     return [
-        BC_PARTS / "salary.yaml",
+        T1_LINE_10100_FORM,
+        T1_LINE_10100_INPUT,
+        T1_LINE_10100_INPUT.with_name("t1_employment_income_line_10100.yaml"),
         BC_PARTS / "bc428_line_59_input.yaml",
         LINE_PART,
     ]

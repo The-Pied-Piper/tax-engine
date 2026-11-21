@@ -1,7 +1,7 @@
 # Work Chart 201 (TP-1.D.GR-V 2025-12), line 1: "Eligible work income (lines 101, 107 and, if
 # positive, 105, minus the amount from box 211 of your RL-1 slip)". Two steps for the one printed
 # line, as NL428 line 98 has a sum before its capped step. Line 101 is the salary
-# (`ca/employment_income`); lines 107 and 105 and box 211 are optional inputs of the TP-1 income
+# (TP-1 line 101, the TP-1 income form's export); lines 107 and 105 and box 211 are optional inputs of the TP-1 income
 # form, which takes and exports them, so each is read as that form's export (a record list of one,
 # totalled by core/record_total, a blank read as 0), ahead of the two steps.
 # Line 105 is "if positive": the owner decided on the ticket (19 Nov 2026) that the test is moot,
@@ -10,6 +10,13 @@
 form:
   name: ca-qc/work_chart_201
 capabilities:
+  - name: core/record_total
+    title: "TP-1 line 101"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp1_income.tp1_employment_income_line_101
+    produces:
+      output: ca-qc/work_chart_201_tp1_line_101
   - name: core/record_total
     title: "TP-1 line 107"
     unit: ca/cad
@@ -47,7 +54,7 @@ capabilities:
       rounding: ca-qc/cent_rounding
     consumes:
       parts:
-        [ca/employment_income, ca-qc/work_chart_201_tp1_line_107, ca-qc/work_chart_201_tp1_line_105]
+        [ca-qc/work_chart_201_tp1_line_101, ca-qc/work_chart_201_tp1_line_107, ca-qc/work_chart_201_tp1_line_105]
     produces:
       output: ca-qc/work_chart_201_eligible_work_income_before_box_211
   - name: core/subtract

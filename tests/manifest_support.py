@@ -15,9 +15,9 @@ def required_fields(kind: RecordListKind) -> tuple[InputDeclaration, ...]:
     return tuple(InputDeclaration(name=field.identifier, required=True) for field in kind.fields)
 
 
-def required_inputs(names: Iterable[str]) -> dict[str, InputDeclaration]:
-    """A required declaration for each of `names`, by identifier."""
-    return {name: InputDeclaration(name=name, required=True) for name in sorted(names)}
+def required_inputs(names: Iterable[str], owner: str | None = None) -> dict[str, InputDeclaration]:
+    """A required declaration for each of `names`, by identifier, owned by the form `owner`."""
+    return {name: InputDeclaration(name=name, required=True, owner=owner) for name in sorted(names)}
 
 
 def inputs_without_form(part: Path) -> str:
@@ -37,3 +37,19 @@ T1_LINE_10100_FORM = (
 
 # The same two parts by file name, for the Ontario take-home builder, which finds each by name.
 T1_LINE_10100_PARTS = (T1_LINE_10100_FORM.name, "t1_employment_income_line_10100.yaml")
+
+
+# The T1 employment income form's part that declares the salary (line 10100) input, federal and
+# Quebec's own. The salary belongs to that form, so a test manifest that copies a step reading it
+# copies this part with its `form:` header.
+_JURISDICTIONS = Path(__file__).parent.parent / "src" / "tax_engine" / "jurisdictions"
+T1_LINE_10100_INPUT = (
+    _JURISDICTIONS
+    / "ca"
+    / "forms"
+    / "t1_employment_income"
+    / "t1_employment_income_line_10100_inputs.yaml"
+)
+QC_T1_LINE_10100_INPUT = (
+    _JURISDICTIONS / "ca_qc" / "manifests" / "2025" / "t1_employment_income_line_10100_inputs.yaml"
+)

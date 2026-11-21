@@ -1,0 +1,16 @@
+# Revenu Quebec TP-1.D-V (2025-12), page 2, line 101: "Employment income, RL-1 slip, box A". The
+# salary is the Quebec T1 employment income form's input (`ca/employment_income`, T1 line 10100), so
+# TP-1 takes it as that form's export (a record list of one, totalled by core/record_total) and prints
+# it as its own line 101. Lines 97, 98, 98.1, 98.2 and 199 read this step, as do Work Chart 201 line 1
+# through this form's export.
+form:
+  name: ca-qc/tp1_income
+capabilities:
+  - name: core/record_total
+    title: "Employment income"
+    reference: "101"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/t1_employment_income.employment_income_line_10100
+    produces:
+      output: ca-qc/tp1_employment_income_line_101

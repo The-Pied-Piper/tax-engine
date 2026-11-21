@@ -14,6 +14,8 @@ from __future__ import annotations
 import shutil
 from pathlib import Path
 
+import yaml
+
 import tax_engine.jurisdictions.ca_nl
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.manifest import Manifest
@@ -43,6 +45,12 @@ def _manifest(tmp_path: Path) -> Manifest:
     folder.mkdir()
     (folder / "header.yaml").write_text(HEADER)
     shutil.copy(PART, folder / PART.name)
+    declared = yaml.safe_load(PART.read_text(encoding="utf-8"))
+    exports = "".join(f"    - {each['name']}\n" for each in declared["inputs"])
+    (folder / "form.yaml").write_text(
+        f"form:\n  name: {declared['form']['name']}\n  required: true\n  exports:\n{exports}"
+        "capabilities: []\n"
+    )
     source = YamlJurisdictionSource(
         newfoundland_packages().roots(), newfoundland_kinds(), newfoundland_units()
     )

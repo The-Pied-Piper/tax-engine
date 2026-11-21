@@ -44,10 +44,13 @@ from tests.jurisdictions.ca_mb.support import (
     manitoba_parameter_parsers,
     manitoba_units,
 )
+from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT
 
 D = Decimal
 MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"
 RETURN_PART = MB_PARTS / "return.yaml"
+FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
+T1_LINE_10100_STEP = next(FEDERAL_FORMS.rglob("t1_employment_income_line_10100.yaml"))
 
 HEADER = dedent("""\
     jurisdiction: CA-MB
@@ -98,6 +101,8 @@ WORKSHEET_FORM = dedent("""\
     capabilities: []
     """)
 CREDITS_INPUT = dedent("""\
+    form:
+      name: ca/t1_tax_and_credits
     inputs:
       - name: ca/total_credits
         title: "Total credits"
@@ -115,11 +120,38 @@ T1_STEP = dedent("""\
         params:
           rounding: ca/cent_rounding
         consumes:
-          amount: ca/employment_income
+          amount: ca/canada_employment_amount_line_1
           less: ca/total_credits
         produces:
           output: ca/refund_or_balance_owing
     """)
+
+# The salary belongs to the T1 employment income form, so a stand-in step in another form reads it
+# as that form's own total of the T1 line 10100 export, as the real forms do. Each form takes one
+# real kind that form's line 10100 total would hold (the kinds are made up here for the stand-ins:
+# a form needs a kind of its own, and no stand-in form has one for the salary).
+SALARY_OF = {
+    "ca/t1_tax_and_credits": "ca/canada_employment_amount_line_1",
+    "ca-mb/mb428_credits": "ca/schedule_8_employment_income_line_10100",
+    "ca-mb/mb428": "ca/t2204_employment_income_line_10100",
+    "ca-mb/worksheet_mb428": "ca/cwb_employment_income_line_10100",
+}
+
+
+def _salary_total(form: str) -> str:
+    """The stand-in form's own total of the T1 line 10100 export."""
+    return dedent(f"""\
+        form:
+          name: {form}
+        capabilities:
+          - name: core/record_total
+            unit: ca/cad
+            consumes:
+              records: ca/t1_employment_income.employment_income_line_10100
+            produces:
+              output: {SALARY_OF[form]}
+        """)
+
 
 # Stand-ins for the other figures the return reads (the total payable, the rates, the taxes and the
 # worksheet lines): each amount is the salary itself and each rate is the slope chart's 0.108,
@@ -147,6 +179,7 @@ CASES = [
 def _other_step(form: str, output: str, unit: str) -> str:
     """A stand-in step for a figure the return reads: the slope chart's 0.108 for a rate (a rate is
     at most 1, and the salary is above 0) and the salary itself for an amount."""
+    salary = SALARY_OF[form]
     if unit == "core/percent":
         step = f"""\
           - name: core/amount_by_band_rate
@@ -154,7 +187,7 @@ def _other_step(form: str, output: str, unit: str) -> str:
             params:
               table: ca-mb/reduction_slope
             consumes:
-              base: ca/employment_income
+              base: {salary}
             produces:
               output: {output}
         """
@@ -165,7 +198,7 @@ def _other_step(form: str, output: str, unit: str) -> str:
             params:
               rounding: ca/cent_rounding
             consumes:
-              parts: [ca/employment_income]
+              parts: [{salary}]
             produces:
               output: {output}
         """
@@ -182,6 +215,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
         ("01_t1_form.yaml", T1_FORM),
         ("02_credits_input.yaml", CREDITS_INPUT),
         ("03_t1_step.yaml", T1_STEP),
+        *[(f"03s_{number}.yaml", _salary_total(form)) for number, form in enumerate(SALARY_OF)],
         ("03a_credits_form.yaml", CREDITS_FORM),
         ("03b_mb428_form.yaml", MB428_FORM),
         ("03c_worksheet_form.yaml", WORKSHEET_FORM),
@@ -189,7 +223,9 @@ def _service(tmp_path: Path) -> TaxComputationService:
             (f"03d_{number}.yaml", _other_step(form, out, unit))
             for number, (form, out, unit) in enumerate(OTHER_STEPS)
         ],
-        ("04_salary.yaml", (MB_PARTS / "salary.yaml").read_text(encoding="utf-8")),
+        ("04_salary.yaml", T1_LINE_10100_INPUT.read_text(encoding="utf-8")),
+        ("04a_t1_employment_income_form.yaml", T1_LINE_10100_FORM.read_text(encoding="utf-8")),
+        ("04b_t1_line_10100.yaml", T1_LINE_10100_STEP.read_text(encoding="utf-8")),
         ("05_return.yaml", RETURN_PART.read_text(encoding="utf-8")),
     ]
     for name, text in texts:

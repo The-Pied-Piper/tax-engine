@@ -7,6 +7,13 @@
 form:
   name: ca-qc/ppip_premium
 capabilities:
+  - name: core/record_total
+    title: "Employment income, T1 line 10100"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/t1_employment_income.employment_income_line_10100
+    produces:
+      output: ca-qc/ppip_premium_employment_income
   - name: ca/given_or_contribution_tier
     title: "Provincial parental insurance plan (PPIP) premiums paid"
     reference: "91"
@@ -15,7 +22,7 @@ capabilities:
       tier: ca-qc/ppip_premium
     consumes:
       given: ca-qc/ppip_premiums_given
-      earnings: ca/employment_income
+      earnings: ca-qc/ppip_premium_employment_income
     blank:
       given: compute
     produces:

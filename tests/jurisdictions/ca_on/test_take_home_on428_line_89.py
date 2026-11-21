@@ -39,7 +39,7 @@ LINE_89 = "ca-on/on428_ontario_health_premium_line_89"
 # The real parts composed beside the test's header: the salary, the real Schedule 8, the real T1
 # taxable-income lines and inputs, and the ON428 line 89 part.
 PARTS = (
-    "salary.yaml",
+    "t1_employment_income_line_10100_inputs.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
     "t1_taxable_income_inputs.yaml",
     "t1_employment_income.yaml",

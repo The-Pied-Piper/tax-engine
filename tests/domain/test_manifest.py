@@ -1048,3 +1048,52 @@ def test_an_optional_slot_without_a_blank_rule_is_listed_by_the_form() -> None:
     )
 
     assert reading_form(capabilities=(ruled,)).unruled_optional == (("more", "ex/more.total"),)
+
+
+# --- input ownership ----------------------------------------------------------------------------
+#
+# An input belongs to the form that declares it; only that form's steps may read it. Another form
+# reads the owner's export instead.
+
+
+def owned_by(owner: str | None) -> dict[str, InputDeclaration]:
+    return required_inputs(["ex/taxable_base", "ex/relief_applies"], owner=owner)
+
+
+def test_a_step_reading_an_input_another_form_owns_is_refused_naming_all_four() -> None:
+    inputs = owned_by("ex/relief")
+
+    with pytest.raises(InvalidManifestError) as caught:
+        with_forms(optional_form(), inputs=inputs)
+
+    message = str(caught.value)
+    assert "form 'ex-on/return'" in message
+    assert "step 'ex/progressive_tax'" in message
+    assert "input 'ex/taxable_base'" in message
+    assert "belongs to form 'ex/relief'" in message
+    assert "read the export of 'ex/relief' instead" in message
+
+
+def test_a_step_reading_an_input_its_own_form_owns_passes() -> None:
+    assert with_forms(optional_form(), inputs=owned_by("ex-on/return")).inputs.keys() == {
+        "ex/taxable_base",
+        "ex/relief_applies",
+    }
+
+
+def test_a_step_reading_a_list_slot_input_another_form_owns_is_refused() -> None:
+    reading = CapabilitySelection(
+        name="ex/total_up",
+        params={},
+        consumes={"parts": ("ex/relief_applies", "ex/taxable_base")},
+        produces={"total": "ex/total"},
+    )
+
+    with pytest.raises(
+        InvalidManifestError, match="form 'ex/relief'.*input 'ex/relief_applies'.*'ex-on/return'"
+    ):
+        with_forms(optional_form(capabilities=(reading,)), inputs=owned_by("ex-on/return"))
+
+
+def test_an_input_declared_without_an_owner_is_not_checked() -> None:
+    assert with_forms(optional_form(), inputs=owned_by(None)).forms[1].name == "ex/relief"

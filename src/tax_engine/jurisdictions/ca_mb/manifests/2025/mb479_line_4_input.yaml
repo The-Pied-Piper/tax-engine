@@ -2,6 +2,8 @@
 # Line 4: "Total of the UCCB income (line 11700 of the return) and RDSP income (line 12500 of the
 # return)" (Form MB479, CRA 5007-TC), column 1 (you). A salary-only caller has no such income, so
 # a request that leaves the line out is read as blank.
+form:
+  name: ca-mb/mb479
 inputs:
   - name: ca-mb/mb479_uccb_rdsp_income_line_4
     title: "Total of the UCCB income (line 11700 of the return) and RDSP income (line 12500 of the return)"

@@ -40,7 +40,7 @@ LINE_101 = "ca/credit_amounts_subtotal"
 # parts, the real T1 taxable-income lines and inputs, lines 30000, 84, 31260, 96 and 98, and the
 # part under test.
 PARTS = (
-    "salary.yaml",
+    "t1_employment_income_line_10100_inputs.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
     *(part.name for part in sorted(TAKE_HOME.rglob("t2204*.yaml"))),
     "t1_taxable_income_inputs.yaml",

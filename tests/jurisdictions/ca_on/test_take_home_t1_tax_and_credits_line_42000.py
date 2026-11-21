@@ -43,7 +43,7 @@ LINE_142 = "ca/net_federal_tax"
 # 33500, 33800, 35000, 125, 40400, 42900, 128, 130 and 132, the input of line 40600, lines 40600 and
 # 41600, line 41700 and the part under test.
 PARTS = (
-    "salary.yaml",
+    "t1_employment_income_line_10100_inputs.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
     *(part.name for part in sorted(TAKE_HOME.rglob("t2204*.yaml"))),
     "t1_taxable_income_inputs.yaml",

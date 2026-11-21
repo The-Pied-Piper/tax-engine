@@ -1,6 +1,6 @@
 # Revenu Quebec TP-1.D-V (2025-12), page 2, line 199: "Add lines 101 and 105 through 164. Total
-# income". Line 101 is the salary (`ca/employment_income`), which has no step of its own. Lines 105
-# to 164 are one optional input, read as 0 when the caller has none, so a salary-only filer's total
+# income". Line 101 is the salary, read from the Quebec T1 employment
+# income form by its own step. Lines 105 to 164 are one optional input, read as 0 when the caller has none, so a salary-only filer's total
 # income is the salary. The sum is rounded half-up to the cent (`ca-qc/cent_rounding`).
 form:
   name: ca-qc/tp1_income
@@ -12,7 +12,7 @@ capabilities:
     params:
       rounding: ca-qc/cent_rounding
     consumes:
-      parts: [ca/employment_income, ca-qc/tp1_other_income_lines_105_to_164]
+      parts: [ca-qc/tp1_employment_income_line_101, ca-qc/tp1_other_income_lines_105_to_164]
     blank:
       ca-qc/tp1_other_income_lines_105_to_164: "0"
     produces:

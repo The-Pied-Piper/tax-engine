@@ -52,6 +52,7 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_units,
 )
 from tests.kinds import non_negative
+from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT
 
 D = Decimal
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
@@ -91,7 +92,9 @@ SALARIES = ["17000", "200000"]
 
 
 def _part_files() -> Iterator[Path]:
-    yield BC_PARTS / "salary.yaml"
+    yield T1_LINE_10100_FORM
+    yield T1_LINE_10100_INPUT
+    yield T1_LINE_10100_INPUT.with_name("t1_employment_income_line_10100.yaml")
     yield MAXIMUM_PART
     yield BC_PARTS / "bc479_line_14_input.yaml"
     yield CHECK_PART

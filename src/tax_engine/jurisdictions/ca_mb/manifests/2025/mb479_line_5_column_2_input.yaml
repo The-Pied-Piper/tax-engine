@@ -3,6 +3,8 @@
 # spouse or common-law partner), taken as one figure: the spouse's own lines 1 to 4 are not
 # modelled. A salary-only single filer has no spouse, so a request that leaves the line out is read
 # as blank.
+form:
+  name: ca-mb/mb479
 inputs:
   - name: ca-mb/mb479_family_income_column_2_line_5
     title: 'Line 3 minus line 4 (if negative, enter "0")'

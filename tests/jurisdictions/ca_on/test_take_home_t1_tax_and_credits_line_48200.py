@@ -48,7 +48,7 @@ LINE_45300 = "ca/cwb_line_45300"
 LINE_47900 = "ca/provincial_credits_line_47900"
 LINE_48200 = "ca/total_credits"
 PARTS = (
-    "salary.yaml",
+    "t1_employment_income_line_10100_inputs.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
     "t1_taxable_income_inputs.yaml",
     "t1_employment_income.yaml",

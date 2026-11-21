@@ -43,7 +43,7 @@ LINE_14 = "ca/cwb_secondary_earner_exemption"
 # part, the line 10 part, the optional line 11 input, the line 12 part, the line 13 part this line
 # subtracts from, the optional line 14 input and the line 15 part itself.
 PARTS = (
-    "salary.yaml",
+    "t1_employment_income_line_10100_inputs.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
     "t1_taxable_income_inputs.yaml",
     "t1_employment_income.yaml",

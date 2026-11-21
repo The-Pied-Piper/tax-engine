@@ -106,6 +106,24 @@ TP1_OTHER_INCOME_LINES_105_TO_164 = AmountKind.declare(
 """The income of TP-1 lines 105 through 164, summed: the figure the caller gives for "Add lines 101
 and 105 through 164"; blank when the caller has none, and line 199 reads it as 0."""
 
+TP1_EMPLOYMENT_INCOME_LINE_101 = AmountKind.declare(
+    CATALOG, "tp1_employment_income_line_101", non_negative=True
+)
+"""Employment income, TP-1 line 101 "Employment income, RL-1 slip, box A": the salary, read from the
+Quebec T1 employment income form's line 10100 export and exported for Work Chart 201."""
+
+PPIP_PREMIUM_EMPLOYMENT_INCOME = AmountKind.declare(
+    CATALOG, "ppip_premium_employment_income", non_negative=True
+)
+"""The PPIP premium form's own copy of line 10100, read from the Quebec T1 employment income form's
+export (core/record_total); the premium is computed from it."""
+
+WORK_CHART_201_TP1_LINE_101 = AmountKind.declare(
+    CATALOG, "work_chart_201_tp1_line_101", non_negative=True
+)
+"""Work Chart 201's copy of TP-1 line 101, read from the TP-1 income form's export; line 1 sums
+it."""
+
 TP1_TOTAL_INCOME_LINE_199 = AmountKind.declare(
     CATALOG, "tp1_total_income_line_199", non_negative=True
 )

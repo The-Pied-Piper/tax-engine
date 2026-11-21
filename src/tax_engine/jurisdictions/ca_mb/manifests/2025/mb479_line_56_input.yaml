@@ -5,6 +5,8 @@
 # 5007-TC). The form prints no label for the line, so the input has no title.
 # Left blank the number reads 1, so line 57 (line 55 multiplied by line 56) takes line 55; an
 # entered 0.00 gives 0.
+form:
+  name: ca-mb/mb479
 inputs:
   - name: ca-mb/mb479_eia_mspd_number_line_56
     reference: "56"

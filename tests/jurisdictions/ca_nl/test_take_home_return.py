@@ -28,6 +28,7 @@ from typing import Any
 import pytest
 import yaml
 
+import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_nl
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
@@ -46,10 +47,12 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_parameter_parsers,
     newfoundland_units,
 )
+from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT
 
 D = Decimal
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
 RETURN_PART = NL_PARTS / "return.yaml"
+FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 
 HEADER = dedent("""\
     jurisdiction: CA-NL
@@ -91,6 +94,8 @@ NL428_FORM = dedent("""\
     capabilities: []
     """)
 CREDITS_INPUT = dedent("""\
+    form:
+      name: ca/t1_tax_and_credits
     inputs:
       - name: ca/total_credits
         title: "Total credits"
@@ -108,11 +113,28 @@ T1_STEP = dedent("""\
         params:
           rounding: ca/cent_rounding
         consumes:
-          amount: ca/employment_income
+          amount: ca/return_employment_income
           less: ca/total_credits
         produces:
           output: ca/refund_or_balance_owing
     """)
+
+
+def _salary_total(form: str) -> str:
+    """The step through which a stand-in form reads the salary: a form reads another form's export
+    (here the T1 employment income form's line 10100) as a record list, and totals it."""
+    return dedent(f"""\
+        form:
+          name: {form}
+        capabilities:
+          - name: core/record_total
+            unit: ca/cad
+            consumes:
+              records: ca/t1_employment_income.employment_income_line_10100
+            produces:
+              output: ca/return_employment_income
+        """)
+
 
 # Stand-ins for the other figures the return reads (the total payable): each amount is the salary
 # itself, a made-up figure, because this test is about line 167 only; the average rate is in
@@ -151,7 +173,7 @@ def _other_step(form: str, output: str, unit: str) -> str:
             params:
               table: {table}
             consumes:
-              base: ca/employment_income
+              base: ca/return_employment_income
             produces:
               output: {output}
         """
@@ -162,7 +184,7 @@ def _other_step(form: str, output: str, unit: str) -> str:
           params:
             rounding: ca/cent_rounding
           consumes:
-            parts: [ca/employment_income]
+            parts: [ca/return_employment_income]
           produces:
             output: {output}
     """
@@ -182,10 +204,23 @@ def _service(tmp_path: Path) -> TaxComputationService:
         ("03a_nl428_credits_form.yaml", NL428_CREDITS_FORM),
         ("03a_nl428_form.yaml", NL428_FORM),
         *[
+            (f"03b_{number}_salary.yaml", _salary_total(form))
+            for number, form in enumerate(
+                ("ca/t1_tax_and_credits", "ca-nl/nl428_credits", "ca-nl/nl428")
+            )
+        ],
+        *[
             (f"03d_{number}.yaml", _other_step(form, out, unit))
             for number, (form, out, unit) in enumerate(OTHER_STEPS)
         ],
-        ("04_salary.yaml", (NL_PARTS / "salary.yaml").read_text(encoding="utf-8")),
+        ("04_salary.yaml", T1_LINE_10100_INPUT.read_text(encoding="utf-8")),
+        ("04a_t1_form.yaml", T1_LINE_10100_FORM.read_text(encoding="utf-8")),
+        (
+            "04b_t1_line_10100.yaml",
+            (
+                FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml"
+            ).read_text(encoding="utf-8"),
+        ),
         ("05_return.yaml", RETURN_PART.read_text(encoding="utf-8")),
     ]
     for name, text in texts:

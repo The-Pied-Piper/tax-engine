@@ -128,7 +128,10 @@ class InputDeclaration:
     artifact read when the request leaves the line out (a blank artifact is a declared blank, `None`
     is no default); `basis` is the form's printed sentence justifying it, which nothing checks.
     `title` and `reference` are the figure's printed title and line label (`None` for none); `unit`
-    names its unit, as a manifest writes it.
+    names its unit, as a manifest writes it. `owner` is the name of the form the input belongs
+    to: the form whose part declares it, the default form for one declared at the top of a
+    manifest. Only that form's steps may read it; every other form reads the owner's export. The
+    loader always sets it; an input declared by hand without one is not checked.
     """
 
     name: str
@@ -138,6 +141,7 @@ class InputDeclaration:
     title: str | None = None
     reference: str | None = None
     unit: str | None = None
+    owner: str | None = None
 
     def __post_init__(self) -> None:
         Form.check_identifier("input", self.name)
@@ -417,6 +421,7 @@ class Manifest:
             if declaration.name != name:
                 raise InvalidManifestError(f"input {name!r} is declared as {declaration.name!r}")
         self._check_predicates()
+        self._check_input_owners()
         derived = [kind for form in self.forms for kind in form.derived_kinds(self.artifacts)]
         derived += self._stand_ins(derived)
         self._check_derived(derived)
@@ -560,6 +565,24 @@ class Manifest:
             raise InvalidManifestError(
                 f"form {form.name!r}: field {name!r} is not a field of {instances.identifier!r}"
             )
+
+    def _check_input_owners(self) -> None:
+        """Refuse a step that reads an input another form owns: it reads the owner's export.
+
+        Only an input with an owner is checked; the loader gives every input one.
+        """
+        for form in self.forms:
+            for selection in form.capabilities:
+                for named in selection.consumes.values():
+                    for identifier in (named,) if isinstance(named, str) else named:
+                        declaration = self.inputs.get(identifier)
+                        if declaration is None or declaration.owner in (None, form.name):
+                            continue
+                        raise InvalidManifestError(
+                            f"form {form.name!r}: step {selection.name!r} reads input "
+                            f"{identifier!r}, which belongs to form {declaration.owner!r}; "
+                            f"read the export of {declaration.owner!r} instead"
+                        )
 
     def _check_predicates(self) -> None:
         """Refuse a `required_when` that names nothing the manifest has or an optional input."""

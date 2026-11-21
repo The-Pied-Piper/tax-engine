@@ -37,7 +37,7 @@ LINE_11 = "ca/uccb_and_rdsp_income"
 # T1 taxable-income lines and inputs, so the T1 net income is read from the salary; then the line 7
 # part this line adds up, the line 10 part, the optional line 11 input and the line 12 part itself.
 PARTS = (
-    "salary.yaml",
+    "t1_employment_income_line_10100_inputs.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
     "t1_taxable_income_inputs.yaml",
     "t1_employment_income.yaml",

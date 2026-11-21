@@ -34,6 +34,7 @@ LINE_16 = "ca/t2204_line_16"
 FORM = next(TAKE_HOME.rglob("t2204.yaml")).read_text(encoding="utf-8")
 PARTS = (
     *T1_LINE_10100_PARTS,
+    "t1_employment_income_line_10100_inputs.yaml",
     "t2204_inputs.yaml",
     "t2204_line_1.yaml",
     "t2204_line_3.yaml",
@@ -51,9 +52,6 @@ HEADER = f"""\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-inputs:
-  - name: {SALARY}
-    required: true
 outputs:
   - {SALARY}
 capabilities: []

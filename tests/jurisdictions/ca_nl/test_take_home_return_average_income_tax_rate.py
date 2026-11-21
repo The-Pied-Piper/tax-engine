@@ -30,6 +30,7 @@ from textwrap import dedent
 import pytest
 import yaml
 
+import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_nl
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
@@ -40,7 +41,7 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.trace import QuotientLine
 from tax_engine.domain.worksheet import Worksheet
-from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME, RETURN_EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca.catalog.net_tax import TOTAL_PAYABLE
 from tax_engine.jurisdictions.ca.catalog.refund import TOTAL_CREDITS
 from tax_engine.jurisdictions.ca_nl.catalog import AVERAGE_INCOME_TAX_RATE
@@ -52,10 +53,12 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_units,
 )
 from tests.kinds import non_negative
+from tests.manifest_support import T1_LINE_10100_FORM, T1_LINE_10100_INPUT, T1_LINE_10100_PARTS
 
 D = Decimal
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
 RETURN_PART = NL_PARTS / "return.yaml"
+FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 
 HEADER = dedent("""\
     jurisdiction: CA-NL
@@ -76,6 +79,8 @@ T1_FORM = dedent("""\
     capabilities: []
     """)
 CREDITS_INPUT = dedent("""\
+    form:
+      name: ca/t1_tax_and_credits
     inputs:
       - name: ca/total_credits
         title: "Total credits"
@@ -88,12 +93,18 @@ T1_STEPS = dedent("""\
     form:
       name: ca/t1_tax_and_credits
     capabilities:
+      - name: core/record_total
+        unit: ca/cad
+        consumes:
+          records: ca/t1_employment_income.employment_income_line_10100
+        produces:
+          output: ca/return_employment_income
       - name: core/subtract
         unit: ca/cad
         params:
           rounding: ca/cent_rounding
         consumes:
-          amount: ca/employment_income
+          amount: ca/return_employment_income
           less: ca/total_credits
         produces:
           output: ca/total_payable
@@ -102,7 +113,7 @@ T1_STEPS = dedent("""\
         params:
           rounding: ca/cent_rounding
         consumes:
-          amount: ca/employment_income
+          amount: ca/return_employment_income
           less: ca/total_credits
         produces:
           output: ca/refund_or_balance_owing
@@ -121,7 +132,12 @@ def _average_part() -> str:
     """The real `return.yaml` cut to the steps of line 167 and the average rate: the marginal rate
     steps after them read figures this test does not stand in for (they have their own tests)."""
     part = yaml.safe_load(RETURN_PART.read_text(encoding="utf-8"))
-    kept = {"ca/refund_or_balance_owing", "ca/total_payable", "ca-nl/average_income_tax_rate"}
+    kept = {
+        "ca/refund_or_balance_owing",
+        "ca/total_payable",
+        "ca/return_employment_income",
+        "ca-nl/average_income_tax_rate",
+    }
     part["capabilities"] = [
         step for step in part["capabilities"] if step["produces"]["output"] in kept
     ]
@@ -138,7 +154,14 @@ def _service(tmp_path: Path) -> TaxComputationService:
         ("01_t1_form.yaml", T1_FORM),
         ("02_credits_input.yaml", CREDITS_INPUT),
         ("03_t1_steps.yaml", T1_STEPS),
-        ("04_salary.yaml", (NL_PARTS / "salary.yaml").read_text(encoding="utf-8")),
+        ("04_salary.yaml", T1_LINE_10100_INPUT.read_text(encoding="utf-8")),
+        ("04a_t1_form.yaml", T1_LINE_10100_FORM.read_text(encoding="utf-8")),
+        (
+            "04b_t1_line_10100.yaml",
+            (FEDERAL_FORMS / "t1_employment_income" / T1_LINE_10100_PARTS[1]).read_text(
+                encoding="utf-8"
+            ),
+        ),
         ("05_return.yaml", _average_part()),
     ]
     for name, text in texts:
@@ -197,7 +220,7 @@ def test_the_trace_records_one_quotient_line_with_the_rate_rounding(tmp_path: Pa
     ]
     assert line.dividend == TOTAL_PAYABLE
     assert line.dividend_amount == D("11497.09")
-    assert line.divisor == EMPLOYMENT_INCOME
+    assert line.divisor == RETURN_EMPLOYMENT_INCOME
     assert line.divisor_amount == D("70000")
     assert line.result == D("0.1642")
     assert line.label == AVERAGE_INCOME_TAX_RATE.label

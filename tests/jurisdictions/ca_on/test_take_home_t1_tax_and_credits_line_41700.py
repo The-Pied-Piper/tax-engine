@@ -48,7 +48,7 @@ LINE_139 = "ca/federal_tax_less_credits"
 # 33500, 33800, 35000, 40400, 125, 42900, 128, 130 and 132, lines 40600 and 41600 with the input of
 # line 40600, and the part under test.
 PARTS = (
-    "salary.yaml",
+    "t1_employment_income_line_10100_inputs.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
     *(part.name for part in sorted(TAKE_HOME.rglob("t2204*.yaml"))),
     "t1_taxable_income_inputs.yaml",

@@ -51,7 +51,7 @@ LINE_96 = "ca/credits_subtotal_line_96"
 # (every part of each, so their on-return and line 16 kinds are produced as they are on the return),
 # the real T1 taxable-income parts, the real line 31260 part, and the part under test.
 PARTS = (
-    "salary.yaml",
+    "t1_employment_income_line_10100_inputs.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("t2204*.yaml"))),
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
     "t1_taxable_income_inputs.yaml",

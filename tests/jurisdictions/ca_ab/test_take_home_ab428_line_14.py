@@ -61,7 +61,7 @@ from tests.jurisdictions.ca_ab.support import (
     alberta_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
+from tests.manifest_support import T1_LINE_10100_INPUT
 
 D = Decimal
 ALBERTA = JurisdictionCode("CA-AB")
@@ -114,16 +114,14 @@ def _federal(name: str) -> Path:
 
 def _part_files() -> Iterator[tuple[str, str]]:
     """Each part's name and text, in composition order."""
-    yield "salary.yaml", (ALBERTA_PARTS / "salary.yaml").read_text(encoding="utf-8")
+    yield "salary.yaml", (T1_LINE_10100_INPUT).read_text(encoding="utf-8")
     for found in sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml")):
         yield found.name, found.read_text(encoding="utf-8")
     for name in T1_PARTS:
         found = _federal(name)
         yield (
             name,
-            inputs_without_form(found)
-            if name.endswith("_inputs.yaml")
-            else found.read_text("utf-8"),
+            found.read_text("utf-8"),
         )
     yield LINE_1_PART.name, LINE_1_PART.read_text(encoding="utf-8")
     yield PART.name, PART.read_text(encoding="utf-8")
