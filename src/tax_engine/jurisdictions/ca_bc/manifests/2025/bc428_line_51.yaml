@@ -1,0 +1,20 @@
+# Form BC428 (CRA 5010-C) line 51: "Line 51: Line 46 minus line 50 (if negative, enter "0") = ^". Line 46
+# is the optional medical expenses input (bc428_line_46_input.yaml) and line 50 the lesser of the
+# printed ceiling and line 49 (bc428_line_50.yaml). One core/subtract_not_below_zero step, rounded
+# half-up to the cent. A request that leaves line 46 blank has no medical expenses, so a blank line 46
+# is read as 0 and line 51 is 0.00. The form prints no label for the line, so the step has no title.
+form:
+  name: ca-bc/bc428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "51"
+    unit: ca/cad
+    params:
+      rounding: ca-bc/cent_rounding
+    consumes:
+      amount: ca-bc/bc428_medical_expenses_line_46
+      less: ca-bc/bc428_medical_expenses_limited_amount_line_50
+    blank:
+      amount: "0"
+    produces:
+      output: ca-bc/bc428_medical_expenses_over_limit_line_51

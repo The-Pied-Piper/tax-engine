@@ -1,0 +1,11 @@
+# BC479 (2025) line 33's input. Form BC479 (CRA 5010-TC): "Line 33 and line 60570: Shipbuilding and ship repair industry tax credit". The figure is taken as one optional
+# input, the way the form takes it. A request that leaves the line out is read as blank; the step that
+# reads it (a printed sum) reads that blank as 0.
+inputs:
+  - name: ca-bc/bc479_shipbuilding_credit_line_33
+    title: "Shipbuilding and ship repair industry tax credit"
+    reference: "33"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 33 and line 60570: Shipbuilding and ship repair industry tax credit'
