@@ -1,0 +1,29 @@
+# 5005-R (2025) line 167. The form prints: "Line 167 and line 46900: Eligible educator school supply
+# tax credit Supplies expenses (maximum $1,000) Line 46800 multiplied by 25% =" (page 8). Two steps:
+# the maximum sits before the percentage, so core/capped_amount holds line 46800 at the printed
+# $1,000 (`ca-qc/educator_supplies_maximum`), then core/apply_rate takes the printed 25%
+# (`ca-qc/educator_credit_rate`), rounded half-up to the cent by its dataset. The first step is not a
+# printed line, so it has no reference (`t1_tax_and_credits_line_46900_inputs.yaml` gives line 46800,
+# "0" when left out).
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/capped_amount
+    title: "Supplies expenses that count"
+    unit: ca/cad
+    params:
+      cap: ca-qc/educator_supplies_maximum
+    consumes:
+      base: ca-qc/t1_line_46800
+    produces:
+      output: ca-qc/educator_supplies_counted_line_167
+  - name: core/apply_rate
+    title: "Eligible educator school supply tax credit"
+    reference: "46900"
+    unit: ca/cad
+    params:
+      rate: ca-qc/educator_credit_rate
+    consumes:
+      base: ca-qc/educator_supplies_counted_line_167
+    produces:
+      output: ca-qc/eligible_educator_credit_line_167

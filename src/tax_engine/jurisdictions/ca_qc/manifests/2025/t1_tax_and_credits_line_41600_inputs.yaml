@@ -1,14 +1,27 @@
-# 5005-R (2025) line 142 input a salary-only caller does not give. Line 142 sums lines 139 to 141 (the
-# political contribution, investment tax and labour-sponsored funds credits), a block skipped for a
-# salary-only filer, so the sum is one optional input (owner, 19 Nov 2026).
-# Line 142 and line 41600: "Add lines 139 to 141. =" (page 7). A salary-only filer has no such amount, so it is an
-# optional input left blank; the sum or difference that reads it takes a blank as 0.
+# 5005-R (2025) lines 139 to 141, the credits that line 142 adds ("Line 142 and line 41600: Add lines
+# 139 to 141. =", page 7): line 41000 (federal political contribution tax credit, from the Federal
+# Worksheet), line 41200 (investment tax credit, Form T2038(IND)) and line 41400 (labour-sponsored funds
+# tax credit, the allowable credit). Each is an optional input, left blank by a salary-only caller and
+# read as 0 by line 142. Declared here, with the step that consumes them
+# (`t1_tax_and_credits_line_41600.yaml`).
 form:
   name: ca-qc/t1_tax_and_credits
 inputs:
-  - name: ca-qc/federal_credits_line_142
-    reference: "41600"
+  - name: ca-qc/t1_line_41000
+    reference: "41000"
     unit: ca/cad
     required: false
     default: null
-    basis: "Add lines 139 to 141. ="
+    basis: "Line 139 and line 41000: Federal political contribution tax credit (use Federal Worksheet)"
+  - name: ca-qc/t1_line_41200
+    reference: "41200"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 140 and line 41200: Investment tax credit (complete Form T2038(IND))"
+  - name: ca-qc/t1_line_41400
+    reference: "41400"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 141 and line 41400: Labour-sponsored funds tax credit"

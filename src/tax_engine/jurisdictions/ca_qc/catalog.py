@@ -320,9 +320,10 @@ income": the figure TP-1 line 248 takes, rounded half-up to the cent. Line 22.1 
 is never negative, because line 14 is floored at zero."""
 
 T1_LINE_21 = AmountKind.declare(CATALOG, "t1_line_21")
-"""Add lines 1 to 20, 5005-R line 21 "Line 21: Add lines 1 to 20.": the employment income of line 1
-(`ca/employment_income`) and line 2 (`ca/other_employment_income`); lines 3 to 20 are not built (the
-salary-only filer has none). Produced by one core/sum (`t1_taxable_income_line_21.yaml`)."""
+"""Add lines 1 to 20, 5005-R line 21 "Line 21: Add lines 1 to 20.": the employment income of line
+1 (`ca/employment_income`) and line 2 (`ca/other_employment_income`); lines 3 to 20 are not
+built (the salary-only filer has none). Produced by one core/sum
+(`t1_taxable_income_line_21.yaml`)."""
 
 T1_LINE_13500 = AmountKind.declare(CATALOG, "t1_line_13500")
 """5005-R line 22, line 13500 "Net" (business income): an optional input, read as 0 when blank;
@@ -371,6 +372,59 @@ T1_LINE_32 = AmountKind.declare(CATALOG, "t1_line_32")
 the printed sum of lines 14400, 14500 and 14600 (lines 29 to 31), one core/sum
 (`t1_taxable_income_line_32.yaml`)."""
 
+T1_LINE_24400 = AmountKind.declare(CATALOG, "t1_line_24400", non_negative=True)
+"""5005-R line 59 and line 24400, Canadian Armed Forces personnel and police deduction: an optional
+input, read as 0 when blank (`t1_taxable_income_line_25700_inputs.yaml`)."""
+
+T1_LINE_24900 = AmountKind.declare(CATALOG, "t1_line_24900", non_negative=True)
+"""5005-R line 60 and line 24900, security options deductions: an optional input, read as 0 when
+blank (`t1_taxable_income_line_25700_inputs.yaml`)."""
+
+T1_LINE_25000 = AmountKind.declare(CATALOG, "t1_line_25000", non_negative=True)
+"""5005-R line 61 and line 25000, other payments deduction: an optional input, read as 0 when blank
+(`t1_taxable_income_line_25700_inputs.yaml`)."""
+
+T1_LINE_25100 = AmountKind.declare(CATALOG, "t1_line_25100", non_negative=True)
+"""5005-R line 62 and line 25100, limited partnership losses of other years: an optional input,
+read as 0 when blank (`t1_taxable_income_line_25700_inputs.yaml`)."""
+
+T1_LINE_25200 = AmountKind.declare(CATALOG, "t1_line_25200", non_negative=True)
+"""5005-R line 63 and line 25200, non-capital losses of other years: an optional input, read as 0
+when blank (`t1_taxable_income_line_25700_inputs.yaml`)."""
+
+T1_LINE_25300 = AmountKind.declare(CATALOG, "t1_line_25300", non_negative=True)
+"""5005-R line 64 and line 25300, net capital losses of other years: an optional input, read as 0
+when blank (`t1_taxable_income_line_25700_inputs.yaml`)."""
+
+T1_LINE_25395 = AmountKind.declare(CATALOG, "t1_line_25395", non_negative=True)
+"""5005-R line 65 and line 25395, capital gains deduction for qualifying business transfers or
+qualifying cooperative conversions: an optional input, read as 0 when blank
+(`t1_taxable_income_line_25700_inputs.yaml`)."""
+
+T1_LINE_25400 = AmountKind.declare(CATALOG, "t1_line_25400", non_negative=True)
+"""5005-R line 66 and line 25400, capital gains deduction: an optional input, read as 0 when blank
+(`t1_taxable_income_line_25700_inputs.yaml`)."""
+
+T1_LINE_25500 = AmountKind.declare(CATALOG, "t1_line_25500", non_negative=True)
+"""5005-R line 67 and line 25500, northern residents deductions: an optional input, read as 0 when
+blank (`t1_taxable_income_line_25700_inputs.yaml`)."""
+
+T1_LINE_25600 = AmountKind.declare(CATALOG, "t1_line_25600", non_negative=True)
+"""5005-R line 68 and line 25600, additional deductions: an optional input, read as 0 when blank
+(`t1_taxable_income_line_25700_inputs.yaml`)."""
+
+DEDUCTIONS_LINES_59_TO_63_SUBTOTAL = AmountKind.declare(
+    CATALOG, "deductions_lines_59_to_63_subtotal", non_negative=True
+)
+"""Lines 59 to 63 added up, an unprinted subtotal that keeps the sentence of line 69 short
+(`t1_taxable_income_line_25700.yaml`)."""
+
+DEDUCTIONS_LINES_64_TO_68_SUBTOTAL = AmountKind.declare(
+    CATALOG, "deductions_lines_64_to_68_subtotal", non_negative=True
+)
+"""Lines 64 to 68 added up, an unprinted subtotal that keeps the sentence of line 69 short
+(`t1_taxable_income_line_25700.yaml`)."""
+
 EMPLOYMENT_INCOME_LINE_10100 = AmountKind.declare(
     CATALOG, "employment_income_line_10100", non_negative=True
 )
@@ -380,8 +434,8 @@ Quebec T1 employment income form (`t1_employment_income_line_10100.yaml`)."""
 OTHER_EMPLOYMENT_INCOME_LINE_10400 = AmountKind.declare(
     CATALOG, "other_employment_income_line_10400", non_negative=True
 )
-"""Other employment income as 5005-R line 2 and T1 line 10400 print it: the optional input, exported
-by the Quebec T1 employment income form (`t1_employment_income_line_10400.yaml`)."""
+"""Other employment income as 5005-R line 2 and T1 line 10400 print it: the optional input,
+exported by the Quebec T1 employment income form (`t1_employment_income_line_10400.yaml`)."""
 
 T1_LINE_21_EMPLOYMENT_INCOME_LINE_10100 = AmountKind.declare(
     CATALOG, "t1_line_21_employment_income_line_10100", non_negative=True
@@ -439,9 +493,10 @@ computed."""
 
 PPIP_PREMIUMS_PAID = AmountKind.declare(CATALOG, "ppip_premiums_paid", non_negative=True)
 """PPIP premiums paid, 5005-R line 91 "Line 91 and line 31205: Provincial parental insurance plan
-(PPIP) premiums paid (box 55 of all T4 slips) (maximum $484.12)": the given figure
-(`ca-qc/ppip_premiums_given`) or, when none is given, 0.494% of the employment income to the
-$98,000 maximum insurable income (maximum $484.12). TP-1 line 97 (RL-1 box H) is the same figure."""
+(PPIP) premiums paid (box 55 of all T4 slips) (maximum $484.12)": the given figure (`ca-
+qc/ppip_premiums_given`) or, when none is given, 0.494% of the employment income to the
+$98,000 maximum insurable income (maximum $484.12). TP-1 line 97 (RL-1 box H) is the same
+figure."""
 
 SOLIDARITY_FAMILY_INCOME = AmountKind.declare(
     CATALOG, "solidarity_family_income", non_negative=True
@@ -757,15 +812,15 @@ Form RC381, whichever applies) (maximum $1,074.00)": the figure Schedule 8 line 
 totalled by one core/record_total (`t1_taxable_income_line_22215.yaml`)."""
 
 T1_LINE_54 = AmountKind.declare(CATALOG, "t1_line_54", non_negative=True)
-"""Deductions from total income, 5005-R line 54 and line 23300 "Add lines 35 to 53.": line 48 alone,
-the only deduction a salary-only filer has (lines 35 to 47 and 49 to 53 are blank and not built).
-Produced by one core/sum (`t1_taxable_income_line_23300.yaml`)."""
+"""Deductions from total income, 5005-R line 54 and line 23300 "Add lines 35 to 53.": line 48
+alone, the only deduction a salary-only filer has (lines 35 to 47 and 49 to 53 are blank and
+not built). Produced by one core/sum (`t1_taxable_income_line_23300.yaml`)."""
 
 T1_LINE_55 = AmountKind.declare(CATALOG, "t1_line_55")
-"""Net income before adjustments, 5005-R line 55 and line 23400 "Line 34 minus line 54 (if negative,
-show in brackets) Net income before adjustments =": total income (line 33, copied to line 34) less
-line 54, not floored, so a deduction above income is shown in brackets as the form prints it.
-Produced by one core/subtract (`t1_taxable_income_line_23400.yaml`)."""
+"""Net income before adjustments, 5005-R line 55 and line 23400 "Line 34 minus line 54 (if
+negative, show in brackets) Net income before adjustments =": total income (line 33, copied to
+line 34) less line 54, not floored, so a deduction above income is shown in brackets as the
+form prints it. Produced by one core/subtract (`t1_taxable_income_line_23400.yaml`)."""
 
 NET_INCOME = AmountKind.declare(CATALOG, "net_income", non_negative=True)
 """Net income, 5005-R line 57 and line 23600 "Line 55 minus line 56 (if negative, enter "0") ...
@@ -1278,12 +1333,25 @@ Federal tax =": line 136 less the federal logging tax credit (line 137), a blank
 below zero; line 143 and the Quebec abatement read it from one core/subtract_not_below_zero
 (`t1_tax_and_credits_line_40600.yaml`)."""
 
+T1_LINE_41000 = AmountKind.declare(CATALOG, "t1_line_41000", non_negative=True)
+"""5005-R line 139 and line 41000, federal political contribution tax credit (from the Federal
+Worksheet): an optional input, read as 0 when blank
+(`t1_tax_and_credits_line_41600_inputs.yaml`)."""
+
+T1_LINE_41200 = AmountKind.declare(CATALOG, "t1_line_41200", non_negative=True)
+"""5005-R line 140 and line 41200, investment tax credit (Form T2038(IND)): an optional input, read
+as 0 when blank (`t1_tax_and_credits_line_41600_inputs.yaml`)."""
+
+T1_LINE_41400 = AmountKind.declare(CATALOG, "t1_line_41400", non_negative=True)
+"""5005-R line 141 and line 41400, labour-sponsored funds tax credit (the allowable credit): an
+optional input, read as 0 when blank (`t1_tax_and_credits_line_41600_inputs.yaml`)."""
+
 FEDERAL_CREDITS_LINE_142 = AmountKind.declare(
     CATALOG, "federal_credits_line_142", non_negative=True
 )
-"""Federal political contribution, investment tax and labour-sponsored funds credits (the sum of
-lines 139 to 141), 5005-R line 142 and line 41600: an optional input a salary-only caller does not
-give; the line that reads it takes a blank as 0 (`t1_tax_and_credits_line_41600_inputs.yaml`)."""
+"""Federal political contribution, investment tax and labour-sponsored funds credits, 5005-R line
+142 and line 41600 "Add lines 139 to 141. =": the printed sum of lines 41000, 41200 and 41400,
+one core/sum (`t1_tax_and_credits_line_41600.yaml`)."""
 
 FEDERAL_TAX_LESS_CREDITS_LINE_143 = AmountKind.declare(
     CATALOG, "federal_tax_less_credits_line_143", non_negative=True
@@ -1313,16 +1381,16 @@ blank read as 0, from one core/sum (`t1_tax_and_credits_line_42000.yaml`); line 
 EI_PREMIUMS_SELF_EMPLOYED_LINE_148 = AmountKind.declare(
     CATALOG, "ei_premiums_self_employed_line_148", non_negative=True
 )
-"""Employment insurance premiums payable on self-employment and other eligible earnings, 5005-R line
-148 and line 42120: an optional input a salary-only caller does not give; the line that reads it
-takes a blank as 0 (`t1_tax_and_credits_line_42120_inputs.yaml`)."""
+"""Employment insurance premiums payable on self-employment and other eligible earnings, 5005-R
+line 148 and line 42120: an optional input a salary-only caller does not give; the line that
+reads it takes a blank as 0 (`t1_tax_and_credits_line_42120_inputs.yaml`)."""
 
 SOCIAL_BENEFITS_REPAYMENT_LINE_149 = AmountKind.declare(
     CATALOG, "social_benefits_repayment_line_149", non_negative=True
 )
-"""Social benefits repayment, 5005-R line 149 and line 42200 "Social benefits repayment (amount from
-line 23500)": a copy of line 56, read from the T1 taxable-income export by one core/record_total
-(`t1_tax_and_credits_line_42200.yaml`)."""
+"""Social benefits repayment, 5005-R line 149 and line 42200 "Social benefits repayment (amount
+from line 23500)": a copy of line 56, read from the T1 taxable-income export by one
+core/record_total (`t1_tax_and_credits_line_42200.yaml`)."""
 
 PROVINCIAL_TAX_LINE_150 = AmountKind.declare(CATALOG, "provincial_tax_line_150", non_negative=True)
 """Provincial or territorial tax (from Form T2203, if applicable), 5005-R line 150 and line
@@ -1335,20 +1403,27 @@ TOTAL_PAYABLE_LINE_151 = AmountKind.declare(CATALOG, "total_payable_line_151", n
 repayment (line 149) from one core/sum (`t1_tax_and_credits_line_43500.yaml`);
 Step 6 line 152 reads it."""
 
+T1_LINE_43700 = AmountKind.declare(CATALOG, "t1_line_43700", non_negative=True)
+"""5005-R line 153 and line 43700, total income tax deducted: an optional input, read as 0 when
+blank (`t1_tax_and_credits_line_43850_inputs.yaml`)."""
+
+T1_LINE_43800 = AmountKind.declare(CATALOG, "t1_line_43800", non_negative=True)
+"""5005-R line 154 and line 43800, tax transfer for residents of Quebec: an optional input, read
+as 0 when blank (`t1_tax_and_credits_line_43850_inputs.yaml`)."""
+
 INCOME_TAX_DEDUCTED_NET_LINE_155 = AmountKind.declare(CATALOG, "income_tax_deducted_net_line_155")
-"""Total income tax deducted less the tax transfer for residents of Quebec, 5005-R line 155 and line
-43850 "Line 153 minus line 154 =": lines 153 (43700) and 154 (43800) are left out of the take-home
-(no T4 slip, so tax deducted is 0), so the difference is one optional input a salary-only caller
-does not give; the sum on line 171 takes a blank as 0
-(`t1_tax_and_credits_line_43850_inputs.yaml`)."""
+"""Total income tax deducted less the tax transfer for residents of Quebec, 5005-R line 155 and
+line 43850 "Line 153 minus line 154 =": line 43700 less line 43800, one core/subtract, signed
+because the form prints no floor (`t1_tax_and_credits_line_43850.yaml`); the sum on line 171
+takes a blank as 0."""
 
 REFUNDABLE_QUEBEC_ABATEMENT_LINE_156 = AmountKind.declare(
     CATALOG, "refundable_quebec_abatement_line_156", non_negative=True
 )
-"""Refundable Quebec abatement, 5005-R line 156 and line 44000 "Amount from Line 42900 multiplied by
-16.5% =": line 130 (line 42900) at the printed 16.5% from one core/apply_rate
-(`t1_tax_and_credits_line_44000.yaml`); the total credits of line 171 add it, and the Quebec return
-summary reads it."""
+"""Refundable Quebec abatement, 5005-R line 156 and line 44000 "Amount from Line 42900 multiplied
+by 16.5% =": line 130 (line 42900) at the printed 16.5% from one core/apply_rate
+(`t1_tax_and_credits_line_44000.yaml`); the total credits of line 171 add it, and the Quebec
+return summary reads it."""
 
 EI_OVERPAYMENT_LINE_157 = AmountKind.declare(CATALOG, "ei_overpayment_line_157", non_negative=True)
 """Employment insurance (EI) overpayment, 5005-R line 157 and line 45000: the T2204 line 15 amount
@@ -1380,8 +1455,8 @@ caller does not give; the sum on line 171 takes a blank as 0
 MULTIGENERATIONAL_HOME_RENOVATION_CREDIT_LINE_163 = AmountKind.declare(
     CATALOG, "multigenerational_home_renovation_credit_line_163", non_negative=True
 )
-"""Multigenerational home renovation tax credit (MHRTC), 5005-R line 163 and line 45355: an optional
-input a salary-only caller does not give; the sum on line 171 takes a blank as 0
+"""Multigenerational home renovation tax credit (MHRTC), 5005-R line 163 and line 45355: an
+optional input a salary-only caller does not give; the sum on line 171 takes a blank as 0
 (`t1_tax_and_credits_line_45355_inputs.yaml`)."""
 
 INVESTMENT_TAX_CREDIT_REFUND_LINE_164 = AmountKind.declare(
@@ -1403,13 +1478,23 @@ GST_HST_REBATE_LINE_166 = AmountKind.declare(CATALOG, "gst_hst_rebate_line_166",
 salary-only caller does not give; the sum on line 171 takes a blank as 0
 (`t1_tax_and_credits_line_45700_inputs.yaml`)."""
 
+T1_LINE_46800 = AmountKind.declare(CATALOG, "t1_line_46800", non_negative=True)
+"""5005-R line 167 and line 46800, educator supplies expenses, before the maximum: an optional
+input, "0" when left out (`t1_tax_and_credits_line_46900_inputs.yaml`)."""
+
+EDUCATOR_SUPPLIES_COUNTED_LINE_167 = AmountKind.declare(
+    CATALOG, "educator_supplies_counted_line_167", non_negative=True
+)
+"""Educator supplies expenses that count, 5005-R line 167 "Supplies expenses (maximum $1,000)
+Line 46800": line 46800 held at the printed $1,000, which sits before the 25%, so it caps the
+supplies and not the credit (`t1_tax_and_credits_line_46900.yaml`)."""
+
 ELIGIBLE_EDUCATOR_CREDIT_LINE_167 = AmountKind.declare(
     CATALOG, "eligible_educator_credit_line_167", non_negative=True
 )
-"""Eligible educator school supply tax credit, 5005-R line 167 and line 46900: an optional input a
-salary-only caller does not give (the credit of line 46800 at 25% is a block skipped for a
-salary-only filer); the sum on line 171 takes a blank as 0
-(`t1_tax_and_credits_line_46900_inputs.yaml`)."""
+"""Eligible educator school supply tax credit, 5005-R line 167 and line 46900 "Supplies expenses
+(maximum $1,000) Line 46800 multiplied by 25% =": the supplies that count at 25%, one
+core/apply_rate (`t1_tax_and_credits_line_46900.yaml`); the sum on line 171 takes a blank as 0."""
 
 JOURNALISM_LABOUR_CREDIT_LINE_168 = AmountKind.declare(
     CATALOG, "journalism_labour_credit_line_168", non_negative=True
@@ -1421,8 +1506,8 @@ salary-only caller does not give; the sum on line 171 takes a blank as 0
 FUEL_CHARGE_FARMERS_CREDIT_LINE_169 = AmountKind.declare(
     CATALOG, "fuel_charge_farmers_credit_line_169", non_negative=True
 )
-"""Return of fuel charge proceeds to farmers tax credit, 5005-R line 169 and line 47556: an optional
-input a salary-only caller does not give; the sum on line 171 takes a blank as 0
+"""Return of fuel charge proceeds to farmers tax credit, 5005-R line 169 and line 47556: an
+optional input a salary-only caller does not give; the sum on line 171 takes a blank as 0
 (`t1_tax_and_credits_line_47556_inputs.yaml`)."""
 
 TAX_PAID_BY_INSTALMENTS_LINE_170 = AmountKind.declare(
@@ -1458,17 +1543,18 @@ TOTAL_CREDITS_LINES_162_TO_170_SUBTOTAL = AmountKind.declare(
 short: lines 162 to 170 added up."""
 
 REFUND_OR_BALANCE_OWING_LINE_172 = AmountKind.declare(CATALOG, "refund_or_balance_owing_line_172")
-"""Refund or balance owing, 5005-R line 172 "Line 152 minus line 171 ... Refund or balance owing =":
-line 152 (a copy of line 151) less the total credits of line 171 from one core/subtract
-(`t1_tax_and_credits_line_172.yaml`). Signed, as the line prints no floor: negative is a refund
-(line 48400), positive a balance owing (line 48500); the Quebec return summary reads it."""
+"""Refund or balance owing, 5005-R line 172 "Line 152 minus line 171 ... Refund or balance owing
+=": line 152 (a copy of line 151) less the total credits of line 171 from one core/subtract
+(`t1_tax_and_credits_line_172.yaml`). Signed, as the line prints no floor: negative is a
+refund (line 48400), positive a balance owing (line 48500); the Quebec return summary reads
+it."""
 
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, 5005-R line 70 and line 26000 "Line 58 minus line 69 (if negative, enter "0")
-Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income (line
-69, an optional input read as 0), not below zero. Produced by one core/subtract_not_below_zero
-(`t1_taxable_income_line_26000.yaml`); the federal bracket columns (line 71 onward) start from
-it."""
+Taxable income =": net income (line 58, a copy of line 57) less the deductions from net income
+(line 69, an optional input read as 0), not below zero. Produced by one
+core/subtract_not_below_zero (`t1_taxable_income_line_26000.yaml`); the federal bracket
+columns (line 71 onward) start from it."""
 
 TP1_SCHEDULE_F_LOWER_BOUND_LINE_77 = AmountKind.declare(
     CATALOG, "tp1_schedule_f_lower_bound_line_77", non_negative=True

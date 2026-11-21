@@ -1,13 +1,20 @@
-# 5005-R (2025) line 155 input a salary-only caller does not give.
-# Line 155 and line 43850: "Line 153 minus line 154 =" (page 8). A salary-only filer has no such amount, so it is an
-# optional input left blank; the sum that reads it takes a blank as 0.
-# Lines 153 and 154 are left out of the take-home (owner, 19 Nov 2026), so their difference is the optional input.
+# 5005-R (2025) lines 153 and 154, the two lines that line 155 subtracts ("Line 155 and line 43850:
+# Line 153 minus line 154 =", page 8): line 43700 (total income tax deducted) and line 43800 (tax
+# transfer for residents of Quebec). Each is an optional input, left blank by a salary-only caller (no
+# T4 slip, so tax deducted is 0) and read as 0 by line 155. Declared here, with the step that consumes
+# them (`t1_tax_and_credits_line_43850.yaml`).
 form:
   name: ca-qc/t1_tax_and_credits
 inputs:
-  - name: ca-qc/income_tax_deducted_net_line_155
-    reference: "43850"
+  - name: ca-qc/t1_line_43700
+    reference: "43700"
     unit: ca/cad
     required: false
     default: null
-    basis: "Line 153 minus line 154 ="
+    basis: "Line 153 and line 43700: Total income tax deducted"
+  - name: ca-qc/t1_line_43800
+    reference: "43800"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 154 and line 43800: Tax transfer for residents of Quebec"
