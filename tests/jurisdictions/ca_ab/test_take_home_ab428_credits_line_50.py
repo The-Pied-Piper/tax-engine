@@ -46,13 +46,6 @@ LINE_PARTS = (
     "ab428_credits_line_50_input.yaml",
     "ab428_credits_line_50.yaml",
 )
-INPUTS = {
-    "line_44": ab.AB428_MEDICAL_EXPENSES_LINE_44,
-    "line_50": ab.AB428_ALLOWABLE_MEDICAL_EXPENSES_FOR_OTHER_DEPENDANTS_LINE_50,
-    "line_55": ab.AB428_DONATIONS_AMOUNT_LINE_55,
-    "line_56": ab.AB428_DONATIONS_AMOUNT_LINE_56,
-}
-
 HEADER = dedent("""\
     jurisdiction: CA-AB
     version: 1
@@ -103,9 +96,8 @@ def _service(tmp_path: Path) -> TaxComputationService:
     )
 
 
-def _sheet(tmp_path: Path, salary: str, **given: str) -> Worksheet:
-    artifacts = [Artifact(EMPLOYMENT_INCOME, D(salary))]
-    artifacts += [Artifact(INPUTS[name], D(value)) for name, value in given.items()]
+def _sheet(tmp_path: Path, salary: str, *extra: Artifact[Decimal]) -> Worksheet:
+    artifacts = [Artifact(EMPLOYMENT_INCOME, D(salary)), *extra]
     worksheets = _service(tmp_path).compute(JurisdictionCode("CA-AB"), 2025, *artifacts)
     (sheet,) = worksheets["ca-ab/ab428_credits"]
     return sheet
@@ -131,18 +123,22 @@ STEP: dict[str, Any] = {
     },
 }
 
-# salary, given inputs, expected line
-CASES: list[tuple[str, dict[str, str], str]] = [
-    ("70000", {}, "0.00"),
-    ("70000", {"line_50": "250.505"}, "250.51"),
+# salary, given optional inputs, expected line
+CASES: list[tuple[str, list[Artifact[Decimal]], str]] = [
+    ("70000", [], "0.00"),
+    (
+        "70000",
+        [Artifact(ab.AB428_ALLOWABLE_MEDICAL_EXPENSES_FOR_OTHER_DEPENDANTS_LINE_50, D("250.505"))],
+        "250.51",
+    ),
 ]
 
 
 @pytest.mark.parametrize(("salary", "given", "expected"), CASES)
 def test_the_rounded_line_50_is_the_input_to_the_cent_at_each_case(
-    tmp_path: Path, salary: str, given: dict[str, str], expected: str
+    tmp_path: Path, salary: str, given: list[Artifact[Decimal]], expected: str
 ) -> None:
-    assert _value(_sheet(tmp_path, salary, **given), KIND) == D(expected)
+    assert _value(_sheet(tmp_path, salary, *given), KIND) == D(expected)
 
 
 def test_the_part_names_the_form_and_is_one_step_as_the_form_prints_the_line() -> None:
