@@ -4,8 +4,8 @@ real parts.
 Form text (Form SK428, CRA 5008-c-25e.txt): "Line 77 and line 63557: Line 75 plus line 76 (maximum
 $875) =". The part `sk428_line_77.yaml` has three steps: a first `core/credit_amount` that supplies
 the printed maximum (a plain-words title, no reference), a `core/sum` of lines 75 and 76 (a
-plain-words title, no reference, blanks read as 0) and a `core/at_most`, which is line 77 (reference "77"). A
-sum above the maximum is refused, not capped.
+plain-words title, no reference, blanks read as 0) and a `core/at_most`, which is line 77
+(reference "77"). A sum above the maximum is refused, not capped.
 
 The real parts `sk428_line_75_input.yaml`, `sk428_line_76_input.yaml` and `sk428_line_77.yaml` are
 loaded under a test-local header and form, and only the salary and, in some tests, lines 75 and 76
