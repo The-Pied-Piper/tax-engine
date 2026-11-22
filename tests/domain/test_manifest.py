@@ -20,7 +20,11 @@ import pytest
 
 from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
 from tax_engine.domain.blank import BLANK
-from tax_engine.domain.errors import InvalidManifestError, UnknownRegistrationError
+from tax_engine.domain.errors import (
+    InvalidManifestError,
+    SubCentAmountError,
+    UnknownRegistrationError,
+)
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind, CountKind, DigitsKind, RecordListKind, TextKind
 from tax_engine.domain.manifest import (
@@ -549,6 +553,47 @@ def test_a_required_input_takes_no_default_and_no_basis() -> None:
         InputDeclaration(name="ex/income", required=True, default=zero(AMOUNT))
     with pytest.raises(InvalidManifestError, match="input 'ex/income': a required input takes no"):
         InputDeclaration(name="ex/income", required=True, basis="Line 1")
+
+
+@pytest.mark.parametrize("value", ["0.004", "70000.005", "-0.001", "1" + "0" * 40 + ".001"])
+def test_a_whole_cents_input_refuses_a_fraction_of_a_cent(value: str) -> None:
+    declaration = InputDeclaration(name="ex/amount", required=True, whole_cents=True)
+
+    with pytest.raises(SubCentAmountError, match="ex/amount must be in whole cents, got"):
+        declaration.check_given(Artifact(AMOUNT, Decimal(value)))
+
+
+@pytest.mark.parametrize("value", ["0", "70000", "1000.5", "70000.01", "1.230E+2", "0.0000"])
+def test_a_whole_cents_input_accepts_a_value_to_the_cent(value: str) -> None:
+    declaration = InputDeclaration(name="ex/amount", required=True, whole_cents=True)
+
+    declaration.check_given(Artifact(AMOUNT, Decimal(value)))
+
+
+def test_a_whole_cents_input_leaves_a_blank_to_the_blank_rules() -> None:
+    declaration = InputDeclaration(name="ex/amount", required=True, whole_cents=True)
+
+    declaration.check_given(Artifact(AMOUNT, BLANK))
+
+
+def test_an_input_is_not_whole_cents_unless_declared() -> None:
+    InputDeclaration(name="ex/amount", required=True).check_given(
+        Artifact(AMOUNT, Decimal("0.004"))
+    )
+
+
+def test_a_field_may_not_be_whole_cents() -> None:
+    with pytest.raises(
+        InvalidManifestError, match="field 'ex/amount': whole_cents is for an input"
+    ):
+        Form(
+            name="ex/rental",
+            instances="ex/rentals",
+            exports=(),
+            capabilities=(),
+            required=True,
+            fields=(InputDeclaration(name="ex/amount", required=True, whole_cents=True),),
+        )
 
 
 def test_an_optional_input_needs_a_default_and_a_basis() -> None:

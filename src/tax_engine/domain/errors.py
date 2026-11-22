@@ -82,6 +82,14 @@ class InvalidTextError(DomainError):
     """A text is not what its kind accepts, such as a digits kind given other than its digits."""
 
 
+class SubCentAmountError(ValidationError):
+    """An amount of a whole-cents kind was given with a fraction of a cent.
+
+    A ValidationError like `InputAboveBoundError`: the amount is the caller's input, so it is
+    mapped to 422 with no entry of its own.
+    """
+
+
 class InputAboveBoundError(ValidationError):
     """An amount was given above the bound it may not exceed.
 

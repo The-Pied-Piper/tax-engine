@@ -183,9 +183,10 @@ Each entry of `inputs` (and of a form's `fields`) is a mapping:
 | `reference` | What the form prints beside the figure, such as `10400` or `Box 14`. Optional, for either kind. |
 | `unit` | The full identifier of the figure's unit, such as `core/months`; see Units. Optional, for either kind. |
 | `position` | Where the form prints the figure, counted from 1 (see Printed position). Optional, for either kind. |
+| `whole_cents` | Input only; a field refuses it. `true` for an input a caller keys in from a slip that prints dollars and cents: a value with a fraction of a cent is refused, not rounded. Optional; `false` when left out. |
 
 A required input takes neither `default` nor `basis`. By convention an entry writes `name`, `title`,
-`reference`, `unit` and `position` first, then `required`, `default` and `basis`.
+`reference`, `unit` and `position` first, then `required`, `whole_cents`, `default` and `basis`.
 
 ## Input ownership
 
