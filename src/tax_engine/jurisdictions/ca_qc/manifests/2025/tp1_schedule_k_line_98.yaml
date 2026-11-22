@@ -1,5 +1,5 @@
 # Schedule K (2025) Part C, line 98: "Add lines 90 and 97. Carry the result to line 447 of your
-# return. Premium payable under the Quebec prescription drug insurance plan." One step: core/sum,
+# return. Premium payable under the Québec prescription drug insurance plan." One step: core/sum,
 # rounded half-up to the cent (`ca-qc/cent_rounding`). Line 97 is an optional input, read as 0 when
 # the caller leaves it out. The step is titled as the form prints it. The form exports the line for
 # TP-1 line 447 (the TP-1 totals ticket).
@@ -7,7 +7,7 @@ form:
   name: ca-qc/tp1_schedule_k
 capabilities:
   - name: core/sum
-    title: "Premium payable under the Quebec prescription drug insurance plan"
+    title: "Premium payable under the Québec prescription drug insurance plan"
     reference: "98"
     unit: ca/cad
     params:
