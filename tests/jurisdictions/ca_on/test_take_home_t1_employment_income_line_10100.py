@@ -13,6 +13,7 @@ from textwrap import dedent
 import pytest
 
 from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.errors import SubCentAmountError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.income import (
     EMPLOYMENT_INCOME,
@@ -56,12 +57,20 @@ def line_10100(take_home_service: TakeHomeService, salary: str, other: str | Non
 
 @pytest.mark.parametrize(
     ("salary", "expected"),
-    [("70000", "70000.00"), ("0", "0"), ("1000.5", "1000.50"), ("70000.005", "70000.01")],
+    [("70000", "70000.00"), ("0", "0"), ("1000.5", "1000.50"), ("70000.01", "70000.01")],
 )
 def test_line_10100_is_the_salary(
     take_home_service: TakeHomeService, salary: str, expected: str
 ) -> None:
     assert line_10100(take_home_service, salary, None) == D(expected)
+
+
+@pytest.mark.parametrize("salary", ["70000.004", "70000.005", "1999.995"])
+def test_a_salary_with_a_fraction_of_a_cent_is_refused(
+    take_home_service: TakeHomeService, salary: str
+) -> None:
+    with pytest.raises(SubCentAmountError, match="ca/employment_income must be in whole cents"):
+        line_10100(take_home_service, salary, None)
 
 
 def test_line_10100_is_listed_once_with_its_title_and_reference(

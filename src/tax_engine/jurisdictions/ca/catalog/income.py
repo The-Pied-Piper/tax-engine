@@ -16,8 +16,12 @@ from tax_engine.jurisdictions.ca.catalog.personal_amounts import (
     CCA_ZEPV_PROCEEDS,
 )
 
-EMPLOYMENT_INCOME = AmountKind.declare(CATALOG, "employment_income", non_negative=True)
-"""Employment income, T1 line 10100: a starting amount that total income sums directly."""
+EMPLOYMENT_INCOME = AmountKind.declare(
+    CATALOG, "employment_income", non_negative=True, whole_cents=True
+)
+"""Employment income, T1 line 10100: a starting amount that total income sums directly. The salary
+a caller keys in comes from a T4 or RL-1, which print dollars and cents, so a fraction of a cent is
+refused."""
 
 TOTAL_INCOME = AmountKind.declare(CATALOG, "total_income")
 """Total income, T1 line 15000 "Line 28 plus line 32 Total income": in the take-home, one core/sum

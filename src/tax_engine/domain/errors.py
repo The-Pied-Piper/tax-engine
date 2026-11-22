@@ -82,6 +82,21 @@ class InvalidTextError(DomainError):
     """A text is not what its kind accepts, such as a digits kind given other than its digits."""
 
 
+class SubCentAmountError(ValidationError):
+    """An amount of a whole-cents kind was given with a fraction of a cent.
+
+    A ValidationError: the amount is the caller's input, so it is mapped to 422 with no entry of
+    its own. It carries the kind's `identifier` and the `value` as given.
+    """
+
+    def __init__(
+        self, message: str, *, identifier: str | None = None, value: Decimal | None = None
+    ) -> None:
+        super().__init__(message)
+        self.identifier = identifier
+        self.value = value
+
+
 class InputAboveBoundError(ValidationError):
     """An amount was given above the bound it may not exceed.
 

@@ -16,6 +16,7 @@ from tax_engine.domain.errors import (
     InvalidRecordError,
     InvalidRegistrationError,
     InvalidTextError,
+    SubCentAmountError,
 )
 from tax_engine.domain.parameters.rate import Rate
 from tax_engine.domain.record_list import RecordList
@@ -27,31 +28,59 @@ __all__ = ["AmountKind", "CountKind", "DigitsKind", "RateKind", "RecordListKind"
 class AmountKind(ArtifactKind[Decimal]):
     """An amount: its values are exact `Decimal`s, never below zero if `non_negative`.
 
+    A `whole_cents` amount is a figure a caller keys in from a slip that prints dollars and cents,
+    so a value with a fraction of a cent is refused, not rounded.
+
     `value_type` is `Decimal` unless a subclass of it is given.
     """
 
     non_negative: bool = field(default=False, kw_only=True)
+    whole_cents: bool = field(default=False, kw_only=True)
 
     def __init__(
-        self, identifier: str, value_type: type[Decimal] = Decimal, *, non_negative: bool = False
+        self,
+        identifier: str,
+        value_type: type[Decimal] = Decimal,
+        *,
+        non_negative: bool = False,
+        whole_cents: bool = False,
     ) -> None:
         # Written by hand, so the dataclass keeps it: the value type defaults to `Decimal`.
         object.__setattr__(self, "identifier", identifier)
         object.__setattr__(self, "value_type", value_type)
         object.__setattr__(self, "non_negative", non_negative)
+        object.__setattr__(self, "whole_cents", whole_cents)
         self.__post_init__()
 
     @classmethod
     def declare(
-        cls, catalog: ArtifactCatalog, local_id: str, *, non_negative: bool = False
+        cls,
+        catalog: ArtifactCatalog,
+        local_id: str,
+        *,
+        non_negative: bool = False,
+        whole_cents: bool = False,
     ) -> AmountKind:
         """Declare the amount `<namespace>/<local_id>` on `catalog`, e.g. `ca/taxable_income`.
 
         A local id the catalog already declared is an error.
         """
-        kind = cls(catalog.namespace.identifier(local_id), non_negative=non_negative)
+        kind = cls(
+            catalog.namespace.identifier(local_id),
+            non_negative=non_negative,
+            whole_cents=whole_cents,
+        )
         catalog.add(kind)
         return kind
+
+    def check_value(self, value: Decimal) -> None:
+        """Refuse a value with a fraction of a cent if this kind is `whole_cents`."""
+        if self.whole_cents and value != value.quantize(Decimal("0.01")):
+            raise SubCentAmountError(
+                f"{self.identifier} must be in whole cents, got {value}",
+                identifier=self.identifier,
+                value=value,
+            )
 
     def is_below_floor(self, value: Decimal) -> bool:
         """Whether this kind is non-negative and `value` is below zero."""
