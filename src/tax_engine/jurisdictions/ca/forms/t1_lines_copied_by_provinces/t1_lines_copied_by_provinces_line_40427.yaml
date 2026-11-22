@@ -3,7 +3,7 @@
 # none) is read by this step, which is the one line the T1 prints for it, and the blank reads as
 # 0. The form exports the line (`ca/minimum_tax_carryover_line_40427`) for the forms that print it
 # again (AB428 line 64, BC428 line 66, MB428 line 63, NL428 line 68 and SK428 line 65). It is not
-# added into the federal sums here: the take-home T1 leaves those lines out.
+# added into the federal sums here: the T1 reads it as line 124 into line 125.
 form:
   name: ca/t1_lines_copied_by_provinces
 capabilities:

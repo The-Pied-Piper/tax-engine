@@ -1,0 +1,17 @@
+# T1 General 2025 (form 5006-R), Step 5 Part B line 110 "Line 110: Line 107 minus line 109 (if
+# negative, enter "0") =" (CRA 5006-R-25E). Line 107 is `ca/medical_expenses_line_107` and line 109 is
+# `ca/medical_threshold`. One core/subtract_not_below_zero step, rounded half-up to the cent through
+# the shared `ca/cent_rounding` dataset. Line 112 reads it.
+form:
+  name: ca/t1_tax_and_credits
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "110"
+    unit: ca/cad
+    params:
+      rounding: ca/cent_rounding
+    consumes:
+      amount: ca/medical_expenses_line_107
+      less: ca/medical_threshold
+    produces:
+      output: ca/medical_expenses_over_threshold

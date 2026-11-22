@@ -1,0 +1,17 @@
+# T1 General 2025 (form 5006-R), Step 5 Part B line 109 "Line 109: Enter whichever is less: $2,834
+# or the amount from line 108." (CRA 5006-R-25E). The $2,834 is the printed ceiling, the
+# `ca/medical_threshold_ceiling` dataset, and has no step. Line 109 is the lesser of that ceiling and
+# line 108 (`ca/medical_net_income_share`), one core/capped_amount step, rounded half-up to the cent
+# by the dataset's rule. Line 110 reads it.
+form:
+  name: ca/t1_tax_and_credits
+capabilities:
+  - name: core/capped_amount
+    reference: "109"
+    unit: ca/cad
+    params:
+      cap: ca/medical_threshold_ceiling
+    consumes:
+      base: ca/medical_net_income_share
+    produces:
+      output: ca/medical_threshold
