@@ -43,10 +43,14 @@ def test_the_part_declares_the_three_answers_with_their_defaults() -> None:
     assert part["inputs"] == [
         {
             "name": ALONE,
+            "title": "Did you live alone in a dwelling throughout 2025?",
             "reference": "12",
             "required": False,
             "default": "0",
-            "basis": "Lived alone in a dwelling throughout 2025",
+            "basis": (
+                "Did you live alone in a dwelling throughout 2025? (You are considered to have "
+                "lived alone if everyone you lived with was under 18.)"
+            ),
         },
         {
             "name": TENANT,
