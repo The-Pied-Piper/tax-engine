@@ -3,17 +3,19 @@
 # subject to the QPIP and your insurable earnings as a person responsible for a family-type resource
 # or an intermediate resource is less than $2,000, carry the amount from line 97 to line 457. If the
 # amount on line 97 is more than $484.12, enter the overpayment (that is, the excess) on line 457."
-# The line is eight steps, as Schedule B line 20 is built, and the form prints no figure on any of
+# The line is nine steps, as Schedule B line 20 is built, and the form prints no figure on any of
 # them but line 457 itself, so only the last carries a reference and no step rounds:
 # 1. core/record_total reads line 101 (the employment income, the income form's export).
 # 2. core/record_total reads line 97 (the income form's export).
-# 3. core/sum of line 101 and the two Schedule L inputs, a blank read as 0.
-# 4. ca/count_by_conditions: 0 when that total is $2,000 or more, else 1. No condition reads "less
+# 3. ca-qc/given_or_fallback: the employment income subject to the QPIP, RL-1 box I as the caller
+#    gives it, else line 101 (Schedule R line 14: "if box I is blank, use the amount from box A").
+# 4. core/sum of that and the two Schedule L inputs, a blank read as 0.
+# 5. ca/count_by_conditions: 0 when that total is $2,000 or more, else 1. No condition reads "less
 #    than", so the printed test is its two complements, equal to and more than $2,000.
-# 5. core/credit_amount: the printed $484.12.
-# 6. core/lesser_of: line 97 or $484.12.
-# 7. core/subtract: line 97 less that, the excess over $484.12 (0 when line 97 is not above it).
-# 8. core/choose_by_count: line 97 for a count of 1, else the excess: line 457.
+# 6. core/credit_amount: the printed $484.12.
+# 7. core/lesser_of: line 97 or $484.12.
+# 8. core/subtract: line 97 less that, the excess over $484.12 (0 when line 97 is not above it).
+# 9. core/choose_by_count: line 97 for a count of 1, else the excess: line 457.
 form:
   name: ca-qc/tp1_totals
 capabilities:
@@ -29,6 +31,16 @@ capabilities:
       records: ca-qc/tp1_income.tp1_qpip_premium_line_97
     produces:
       output: ca-qc/tp1_line_97_for_line_457
+  - name: ca-qc/given_or_fallback
+    title: "Employment income subject to the QPIP"
+    unit: ca/cad
+    consumes:
+      given: ca-qc/tp1_rl1_slip_box_i
+      fallback: ca-qc/tp1_employment_income_for_line_457
+    blank:
+      given: compute
+    produces:
+      output: ca-qc/tp1_qpip_employment_income_for_line_457
   - name: core/sum
     title: "Employment income, net business income and family-resource earnings added up"
     unit: ca/cad
@@ -36,7 +48,7 @@ capabilities:
       rounding: ca-qc/exact_rounding
     consumes:
       parts:
-        - ca-qc/tp1_employment_income_for_line_457
+        - ca-qc/tp1_qpip_employment_income_for_line_457
         - ca-qc/tp1_net_business_income_schedule_l_line_27
         - ca-qc/tp1_family_resource_earnings_schedule_l_line_40
     blank:
