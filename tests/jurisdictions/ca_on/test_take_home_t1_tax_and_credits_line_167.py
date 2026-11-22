@@ -167,7 +167,7 @@ def test_line_167_names_line_43500_line_48200_and_its_rounding_in_the_trace(
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
 
 
-def test_the_real_t1_form_header_exports_167_43500_the_73_rate_and_basic_federal_tax() -> None:
+def test_the_real_t1_form_header_exports() -> None:
     # Line 76 is read inside the form by line 40400 only, so it is not exported.
     exports = yaml.safe_load(REAL_FORM)["form"]["exports"]
 
@@ -176,6 +176,9 @@ def test_the_real_t1_form_header_exports_167_43500_the_73_rate_and_basic_federal
         LINE_43500,
         FEDERAL_BRACKET_COLUMN_RATE_LINE_73,
         FEDERAL_TAX_AFTER_CREDITS,
+        "ca/ei_overpayment_line_45000",
+        "ca/cwb_line_45300",
+        "ca/provincial_credits_line_47900",
     }
     assert FEDERAL_TAX_ON_TAXABLE_INCOME_LINE_76 not in exports
 

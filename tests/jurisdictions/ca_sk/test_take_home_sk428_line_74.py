@@ -105,11 +105,10 @@ SK_LINE_PARTS = (
     "sk428_line_61_input.yaml",
     "sk428_line_62.yaml",
     "sk428_line_63.yaml",
-    "sk428_line_64_input.yaml",
+    "sk428_line_64.yaml",
     "sk428_line_65.yaml",
     "sk428_line_66.yaml",
     "sk428_line_67.yaml",
-    "sk428_line_68_inputs.yaml",
     "sk428_line_68.yaml",
     "sk428_line_69.yaml",
     "sk428_line_70_inputs.yaml",
@@ -118,7 +117,7 @@ SK_LINE_PARTS = (
     "sk428_line_73.yaml",
 )
 T1_PARTS = form_part_names(
-    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces", "t691"
 )
 FORM_NAME = "ca-sk/sk428"
 CREDITS_FORM_NAME = "ca-sk/sk428_credits"

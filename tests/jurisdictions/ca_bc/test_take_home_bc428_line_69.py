@@ -4,13 +4,13 @@ parts, real engine.
 Form text (Form BC428, CRA 5010-C, read 2026-11-14): "British Columbia additional tax for minimum
 tax purposes:", "Line 69: Amount from line 14 of Part 7 of Form T691 multiplied by 34.9% = ^". The
 input is the amount from line 14 of Part 7 of Form T691
-(`ca-bc/bc428_additional_minimum_tax_amount_line_69`, box A), which the inputs part declares as
-optional, read as 0 when left out. Line 69 is one calculation: 34.9% of the amount (box B), a
-printed rate held in the `ca-bc/minimum_tax_rate` dataset, rounded half-up to the cent. The output
-is `ca-bc/bc428_additional_minimum_tax_line_69`. The step is titled with the heading the form prints
-above the line.
+(`ca-bc/bc428_additional_minimum_tax_amount_line_69`, box A), the total of the T691 export
+(the T691 form owns the input), read as 0 when left out. Line 69 is one calculation: 34.9% of the
+amount (box B), a printed rate held in the `ca-bc/minimum_tax_rate` dataset, rounded half-up to the
+cent. The output is `ca-bc/bc428_additional_minimum_tax_line_69`. The step is titled with the
+heading the form prints above the line.
 
-The T1 employment income form, the inputs part and the line 69 part are loaded under a test-local
+The T1 employment income form, the T691 form and the line 69 part are loaded under a test-local
 header and form declaration over the British Columbia package list of `support.py`, as Alberta's
 line 64 test does. The expected figures (0.00 at every salary, the amount being blank) are
 hand-computed from the ticket, not a CRA example."""
@@ -43,10 +43,12 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_units,
 )
 from tests.kinds import non_negative
+from tests.t691_support import line_14
 
 D = Decimal
 CODE = JurisdictionCode("CA-BC")
 AMOUNT = "ca-bc/bc428_additional_minimum_tax_amount_line_69"
+T691_EXPORT = "ca/t691.t691_additional_taxes_for_minimum_tax_carryover_line_14"
 LINE_69 = "ca-bc/bc428_additional_minimum_tax_line_69"
 SALARY = "ca/employment_income"
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
@@ -77,8 +79,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
     parts = [
-        *form_parts("t1_employment_income"),
-        BC_PARTS / "bc428_line_69_input.yaml",
+        *form_parts("t1_employment_income", "t691"),
         PART,
     ]
     for number, found in enumerate(parts, start=2):
@@ -101,7 +102,7 @@ def _line_69(tmp_path: Path, salary: str, amount: str | None) -> Decimal:
     kinds = british_columbia_kinds()
     given = [Artifact(kinds.kind(SALARY), D(salary))]
     if amount is not None:
-        given.append(Artifact(kinds.kind(AMOUNT), D(amount)))
+        given.extend(line_14(amount))
     (sheet,) = _service(tmp_path).compute(CODE, 2025, *given)["ca-bc/bc428"]
     value = sheet.get(kinds.kind(LINE_69)).value
     assert isinstance(value, Decimal)
@@ -113,7 +114,7 @@ def _step() -> dict[str, Any]:
     assert isinstance(part, dict)
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": "ca-bc/bc428"}
-    (step,) = part["capabilities"]
+    *_, step = part["capabilities"]
     assert isinstance(step, dict)
     return step
 
@@ -129,6 +130,8 @@ def test_a_salary_only_caller_who_leaves_out_the_amount_gets_0(tmp_path: Path, s
     [
         # An amount of 1000: 34.9% of 1000 is 349.00.
         ("1000", "349.00"),
+        # 5,000 x 34.9% = 1,745.00.
+        ("5000", "1745.00"),
         # 0.02 x 34.9% = 0.00698, rounded half-up to 0.01.
         ("0.02", "0.01"),
     ],
@@ -159,3 +162,15 @@ def test_the_kind_is_a_registered_non_negative_decimal_amount() -> None:
     assert kind.identifier == LINE_69
     assert kind.value_type is Decimal
     assert non_negative(kind)
+
+
+def test_the_amount_is_a_record_total_of_the_t691_export_with_no_input_of_its_own() -> None:
+    part = yaml.safe_load(PART.read_text(encoding="utf-8"))
+
+    assert "inputs" not in part
+    first = part["capabilities"][0]
+    assert first["name"] == "core/record_total"
+    assert first["title"] == "Amount from line 14 of Part 7 of Form T691"
+    assert first["unit"] == "ca/cad"
+    assert first["consumes"] == {"records": T691_EXPORT}
+    assert first["produces"] == {"output": AMOUNT}

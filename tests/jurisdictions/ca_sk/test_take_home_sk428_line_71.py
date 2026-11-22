@@ -41,6 +41,7 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.errors import CapabilityContractError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY
@@ -60,6 +61,7 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_units,
 )
 from tests.kinds import non_negative
+from tests.t691_support import line_1_minus_line_2
 
 D = Decimal
 CENT = D("0.01")
@@ -100,17 +102,16 @@ SK_LINE_PARTS = (
     "sk428_line_61_input.yaml",
     "sk428_line_62.yaml",
     "sk428_line_63.yaml",
-    "sk428_line_64_input.yaml",
+    "sk428_line_64.yaml",
     "sk428_line_65.yaml",
     "sk428_line_66.yaml",
     "sk428_line_67.yaml",
-    "sk428_line_68_inputs.yaml",
     "sk428_line_68.yaml",
     "sk428_line_69.yaml",
     "sk428_line_70_inputs.yaml",
 )
 T1_PARTS = form_part_names(
-    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces", "t691"
 )
 FORM_NAME = "ca-sk/sk428"
 CREDITS_FORM_NAME = "ca-sk/sk428_credits"
@@ -273,7 +274,7 @@ def _sheet(
     if line_70 is not None:
         given.append(Artifact(_amount_kind(LINE_70), D(line_70)))
     if amount is not None:
-        given.append(Artifact(sk_catalog.SK428_MINIMUM_TAX_T691_AMOUNT_LINE_68, D(amount)))
+        given.extend(line_1_minus_line_2(amount))
     worksheets = _service(tmp_path).compute(JurisdictionCode("CA-SK"), 2025, *given)
     (sheet,) = worksheets[FORM_NAME]
     return sheet
@@ -327,25 +328,9 @@ def test_line_71_is_line_69_minus_line_70_not_below_zero_when_line_70_is_given(
     assert not line_71.is_signed()
 
 
-def test_a_negative_line_69_is_floored_to_zero_on_line_71(tmp_path: Path) -> None:
-    # The Form T691 input is signed: at 20,000 line 67 is 0.00 and -1000 x 50% = -500.00 makes
-    # line 69 negative; line 71 floors it at 0 whether line 70 is blank or given.
-    sheet = _sheet(tmp_path, "20000", amount="-1000")
-    assert _line(sheet, LINE_69) == D("-500.00")
-    assert _line(sheet, IDENTIFIER) == ZERO
-    assert str(_line(sheet, IDENTIFIER)) == "0.00"
-
-    sheet = _sheet(tmp_path / "given", "20000", "100.00", amount="-1000")
-    assert _line(sheet, IDENTIFIER) == ZERO
-    assert not _line(sheet, IDENTIFIER).is_signed()
-
-
-def test_a_negative_t691_amount_lowers_line_71_through_line_69(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "70000", "1000.00", amount="-1000")
-
-    assert _line(sheet, LINE_69) == D("4592.30")
-    assert _line(sheet, IDENTIFIER) == D("3592.30")
-    assert _line(sheet, IDENTIFIER) == _derived(D("70000"), D("1000.00"), D("-1000"))
+def test_a_negative_t691_amount_is_refused_at_the_t691_figure(tmp_path: Path) -> None:
+    with pytest.raises(CapabilityContractError, match="t691_line_1_minus_line_2_of_part_7 -1000"):
+        _sheet(tmp_path, "70000", "1000.00", amount="-1000")
 
 
 def test_the_step_traces_one_subtracted_not_below_zero_line_with_the_cent_rounding(

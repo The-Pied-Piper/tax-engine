@@ -176,12 +176,12 @@ TP1_EMPLOYMENT_INCOME_LINE_101 = AmountKind.declare(
 """Employment income, TP-1 line 101 "Employment income, RL-1 slip, box A": the salary, read from the
 Quebec T1 employment income form's line 10100 export and exported for Work Chart 201."""
 
-TP1_LINE_105 = AmountKind.declare(CATALOG, "tp1_line_105", non_negative=True)
-"""TP-1 line 105, a line of the TP-1 income form ("lines 101, 107 and, if positive, 105" on Work
-Chart 201 line 1): an optional input that form takes once and exports, blank when the caller has
-none and read as 0 by the forms that read it. A negative figure is refused:
-the owner decided on the ticket (19 Nov 2026) that the chart's "if positive" test on line 105 is
-moot, with no step for it."""
+TP1_LINE_105 = AmountKind.declare(CATALOG, "tp1_line_105")
+"""TP-1 line 105, "Correction of employment income", a line of the TP-1 income form: an optional
+input that form takes once and exports, blank when the caller has none and read as 0 by the forms
+that read it. It carries its sign: Work Chart 105 prints "If the result is negative, enter a minus
+sign (-) before the amount and subtract it instead of adding it". Line 199 and Schedule F line 14
+take it signed; Work Chart 201 line 1 and Schedule P line 10 take it only "if positive"."""
 
 TP1_LINE_107 = AmountKind.declare(CATALOG, "tp1_line_107")
 """TP-1 line 107, a line of the TP-1 income form: an optional input that form takes once and
@@ -196,11 +196,15 @@ WORK_CHART_201_TP1_LINE_107 = AmountKind.declare(CATALOG, "work_chart_201_tp1_li
 """TP-1 line 107 as Work Chart 201 line 1 reads it: the TP-1 income form's export, a record list of
 one, totalled; a blank is read as 0."""
 
-WORK_CHART_201_TP1_LINE_105 = AmountKind.declare(
-    CATALOG, "work_chart_201_tp1_line_105", non_negative=True
-)
+WORK_CHART_201_TP1_LINE_105 = AmountKind.declare(CATALOG, "work_chart_201_tp1_line_105")
 """TP-1 line 105 as Work Chart 201 line 1 reads it: the TP-1 income form's export, a record list of
-one, totalled; a blank is read as 0."""
+one, totalled; a blank is read as 0. Signed."""
+
+WORK_CHART_201_LINE_105_IF_POSITIVE = AmountKind.declare(
+    CATALOG, "work_chart_201_line_105_if_positive", non_negative=True
+)
+"""Work Chart 201 line 1, "if positive, 105": the amount of TP-1 line 105 if it is positive, else 0,
+rounded half-up to the cent."""
 
 WORK_CHART_201_TP1_LINE_101 = AmountKind.declare(
     CATALOG, "work_chart_201_tp1_line_101", non_negative=True
@@ -879,9 +883,9 @@ SCHEDULE_P_LINE_10 = AmountKind.declare(CATALOG, "schedule_p_line_10")
 from line 105 if it is positive, minus the amount from box 211 of your RL-1 slip, if applicable",
 rounded half-up to the cent."""
 
-SCHEDULE_P_TP1_LINE_105 = AmountKind.declare(CATALOG, "schedule_p_tp1_line_105", non_negative=True)
+SCHEDULE_P_TP1_LINE_105 = AmountKind.declare(CATALOG, "schedule_p_tp1_line_105")
 """Schedule P line 10, first read of TP-1 line 105: the TP-1 income form's export, a record list of
-one, totalled; a blank is read as 0."""
+one, totalled; a blank is read as 0. Signed."""
 
 SCHEDULE_P_RL1_SLIP_BOX_211 = AmountKind.declare(CATALOG, "schedule_p_rl1_slip_box_211")
 """Schedule P line 10, read of RL-1 box 211: the TP-1 income form's export, a record list of one,
@@ -2466,7 +2470,7 @@ line 98 reads it as 0."""
 SCHEDULE_K_PREMIUM_PAYABLE_LINE_98 = AmountKind.declare(
     CATALOG, "schedule_k_premium_payable_line_98", non_negative=True
 )
-"""Premium payable under the Quebec prescription drug insurance plan, Schedule K line 98, "Add
+"""Premium payable under the Québec prescription drug insurance plan, Schedule K line 98, "Add
 lines 90 and 97": line 90 and the optional line 97 (read as 0 when left out) added, rounded
 half-up to the cent. One core/sum (`tp1_schedule_k_line_98.yaml`). The form exports it for
 TP-1 line 447."""
@@ -2653,7 +2657,7 @@ one core/record_total over Schedule F's export (`tp1_totals_line_446.yaml`)."""
 TP1_DRUG_INSURANCE_PREMIUM_LINE_447 = AmountKind.declare(
     CATALOG, "tp1_drug_insurance_premium_line_447", non_negative=True
 )
-"""TP-1 line 447 "Premium payable under the Quebec prescription drug insurance plan": Schedule K
+"""TP-1 line 447 "Premium payable under the Québec prescription drug insurance plan": Schedule K
 line 98, a copy. Produced by one core/record_total over Schedule K's export
 (`tp1_totals_line_447.yaml`)."""
 
