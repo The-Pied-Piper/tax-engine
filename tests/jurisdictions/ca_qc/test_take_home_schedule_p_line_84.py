@@ -4,7 +4,7 @@ manifest wires it: one `core/subtract_not_below_zero` of line 83 from line 76, r
 the cent. Line 87 ("Amount from line 84 in column 1 or column 2, whichever is greater") has no
 step: column 2 is left out, so line 87 is line 84, and line 90 reads it.
 
-The line 52 to 54 and line 76 chains run for real, over the real TP-1 income parts. The expected
+The line 52 and line 76 chains run for real, over the real TP-1 income parts. The expected
 figures of a salary-only filer are hand-computed from the printed lines (the Quebec 2025 hand
 calculation of 19 Nov 2026), not from a Revenu Quebec example."""
 

@@ -1922,8 +1922,9 @@ whole (`schedule_b_line_16.yaml`)."""
 
 SCHEDULE_B_LINE_18 = AmountKind.declare(CATALOG, "schedule_b_line_18", non_negative=True)
 """Schedule B Part A line 18, "Subtract line 16 from line 15. If the result is negative, enter 0":
-the family income (line 15, a copy of line 14) less line 16, not below zero, rounded half-up to the
-cent. Produced by one core/subtract_not_below_zero (`schedule_b_line_18.yaml`)."""
+the family income (line 15, a copy of line 14, which is line 10 for a single filer) less line 16,
+not below zero, rounded half-up to the cent. Produced by one
+core/subtract_not_below_zero (`schedule_b_line_18.yaml`)."""
 
 SCHEDULE_B_LIVED_ALONE_LINE_20 = CountKind.declare(
     CATALOG, "schedule_b_lived_alone_line_20", non_negative=True

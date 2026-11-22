@@ -1,13 +1,11 @@
 """Quebec input ownership (2025): a line is an input only on the form it belongs to, and every other
 form imports it from that form's export.
 
-Three groups of figures are read by two forms each:
+Two groups of figures are read by two forms each:
 - TP-1 lines 105 and 107 and RL-1 box 211 belong to the TP-1 income form; Work Chart 201 line 1 and
   Schedule P lines 10 and 12 read them from its exports.
 - The net research grants and the WEPP payments belong to Work Chart 201 lines 3 and 4; Schedule P
   lines 13 and 15 read them from its exports.
-- The spouse's line 275 belongs to the TP-1 net income form; Schedule K line 37 and Schedule P
-  line 53 read it from its export.
 
 Each figure is given once, under its owner's kind, over the real parts of the whole return, and both
 forms show it. The salary is $70,000; the expected figures are hand-computed from the printed lines.

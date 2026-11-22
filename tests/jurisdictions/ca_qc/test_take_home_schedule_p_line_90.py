@@ -3,7 +3,7 @@ respecting the work premium", as the Quebec take-home manifest wires it: one `co
 (line 88 is its copy) and line 87 (line 89 is its copy), rounded half-up to the cent, which the form
 exports for TP-1 line 456.
 
-The chains of lines 52 to 60 and 66 to 87 run for real, over the real TP-1 income parts. The
+The chains of lines 52 and 56 to 60 and 66 to 87 run for real, over the real TP-1 income parts. The
 expected figures of a salary-only filer are hand-computed from the printed lines (the Quebec 2025
 hand calculation of 19 Nov 2026), not from a Revenu Quebec example."""
 

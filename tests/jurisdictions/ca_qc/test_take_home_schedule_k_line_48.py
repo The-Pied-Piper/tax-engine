@@ -61,7 +61,8 @@ def test_a_dependent_child_lowers_line_48(
 
 
 def test_a_negative_result_is_entered_as_zero(take_home_service: TakeHomeService) -> None:
-    """At $20,000, line 40 is 18,635.00 and line 46 is 19,890.00: the result is -1,255.00, so 0."""
+    """At $20,000, line 40 (line 36) is 18,635.00 and line 46 is 19,890.00: the result is -1,255.00,
+    so 0."""
     sheet = schedule_k_sheet(take_home_service, "20000", LINE_48, PARTS)
 
     assert str(sheet.get(SCHEDULE_K_PREMIUM_INCOME_LINE_48).value) == "0.00"
