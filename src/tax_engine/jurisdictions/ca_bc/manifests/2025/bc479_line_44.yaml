@@ -10,12 +10,18 @@
 # the form's own arithmetic, so the three printed cases need no step of their own. It is not the
 # line's final step, so it has no reference, and its title is plain words, as the sentence of line 44
 # names this figure. The printed "0" has a plain-words title for the same reason.
-# Step 2 is the form's own gate on line 37: a filer who paid no rent for any month does not qualify,
-# so line 44 is the printed "0" (the `ca-bc/renters_credit_zero` dataset, through core/credit_amount)
-# and the amount of step 1 is not claimed. core/choose_by_count chooses by the months of line 37, a
-# blank read as 0 months. The guide's other eligibility rules (one claim for a couple, no months paid
-# to a non-arm's length party) are answered by the filer in the months entered on line 37. A
-# salary-only caller gives no months, so line 44 is 0.00 at every salary.
+# Step 2 counts the guide's rule for the credit: "You rented and occupied a rental unit for at least
+# six months in the calendar year" (British Columbia Tax Information for 2025, CRA 5010-PC; the form
+# itself prints no such number). ca/count_by_conditions reads the months of line 37 against the
+# `ca-bc/renters_credit_conditions` dataset, a blank read as 0 months, and gives 1 for six months or
+# more, else 0.
+# Step 3 is the form's own gate: a filer under six months does not qualify, so line 44 is the printed
+# "0" (the `ca-bc/renters_credit_zero` dataset, through core/credit_amount) and the amount of step 1
+# is not claimed. core/choose_by_count chooses by the count of step 2. The count and the "0" have
+# plain-words titles, as the sentence of line 44 names them. The guide's other eligibility
+# rules (age, residence at the end of December, one claim for a couple, no months paid to a
+# non-arm's length party) are answered by the filer in the months entered on line 37. A salary-only
+# caller gives no months, so line 44 is 0.00 at every salary.
 form:
   name: ca-bc/bc479
 capabilities:
@@ -29,8 +35,20 @@ capabilities:
       less: ca-bc/bc479_renters_reduction_line_43
     produces:
       output: ca-bc/bc479_renters_credit_before_months_check
+  - name: ca/count_by_conditions
+    title: "Rent paid for at least six months"
+    params:
+      conditions: ca-bc/renters_credit_conditions
+    consumes:
+      counts:
+        - ca-bc/bc479_renters_months_line_37
+      amounts: []
+    blank:
+      counts: "0"
+    produces:
+      output: ca-bc/bc479_renters_months_enough
   - name: core/credit_amount
-    title: "Renter's tax credit when no rent was paid"
+    title: "Renter's tax credit when rent was not paid for six months"
     unit: ca/cad
     params:
       amount: ca-bc/renters_credit_zero
@@ -41,10 +59,8 @@ capabilities:
     reference: "44"
     unit: ca/cad
     consumes:
-      count: ca-bc/bc479_renters_months_line_37
+      count: ca-bc/bc479_renters_months_enough
       when_none: ca-bc/bc479_renters_zero
       when_any: ca-bc/bc479_renters_credit_before_months_check
-    blank:
-      count: "0"
     produces:
       output: ca-bc/bc479_renters_credit_line_44

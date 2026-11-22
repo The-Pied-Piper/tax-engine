@@ -1,0 +1,13 @@
+# Ontario medical expense federal adapted van maximum, 2025 tax year (CRA Guide RC4065 "Medical Expenses", PDF page 19, confirmed 2026-11-21 from the PDF; no .txt published): "to a limit of $5,000 (for residents of Ontario, the provincial limit is $8,813)"
+# It is the federal limit that the Ontario maximum replaces on ON428 line 36; a plain cap, not a credit.
+# The figure feeds an unprinted working step, so the dataset carries no rounding (exact); the cent
+# rule is applied once, on line 36.
+family: ca-on/medical_expense_federal_adapted_van_maximum
+tax_year: 2025
+kind: amount
+title: "medical expense federal adapted van maximum"
+unit: ca/cad
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/rc4065/rc4065-25e.pdf
+rounding: none
+amount: "5000"
