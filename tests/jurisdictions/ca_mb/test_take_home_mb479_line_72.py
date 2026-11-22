@@ -56,7 +56,9 @@ FORM_NAME = "ca-mb/mb479"
 IDENTIFIER = "ca-mb/mb479_credits_line_72"
 LINE_70 = "ca-mb/mb479_credits_line_70"
 LINE_71 = "ca-mb/mb479_book_publishing_credit_line_71"
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 MB479_PARTS = (
     "mb479_line_1.yaml",
     "mb479_line_2.yaml",

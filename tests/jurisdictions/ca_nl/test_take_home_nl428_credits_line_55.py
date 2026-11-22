@@ -56,7 +56,7 @@ NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / 
 LINE_49_PART = NL_PARTS / "nl428_credits_line_49.yaml"
 LINE_51_PART = NL_PARTS / "nl428_credits_line_51.yaml"
 LINE_52_PART = NL_PARTS / "nl428_credits_line_52.yaml"
-LINE_48_PART = NL_PARTS / "nl428_credits_line_48_input.yaml"
+LINE_48_PART = NL_PARTS / "nl428_credits_line_48.yaml"
 LINE_53_PART = NL_PARTS / "nl428_credits_line_53.yaml"
 LINE_54_PART = NL_PARTS / "nl428_credits_line_54_input.yaml"
 LINE_PART = NL_PARTS / "nl428_credits_line_55.yaml"
@@ -65,7 +65,9 @@ LINE_53 = "ca-nl/nl428_medical_expenses_over_limit_line_53"
 LINE_54 = "ca-nl/nl428_allowable_medical_expenses_for_other_dependants_line_54"
 KIND = "ca-nl/nl428_medical_expenses_allowable_line_55"
 # The real federal parts the T1 taxable-income form needs, beside the salary and lines 49 to 52.
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 
 HEADER = dedent("""\
     jurisdiction: CA-NL
@@ -129,7 +131,7 @@ def _sheet(
 ) -> Worksheet:
     given = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if line_48 is not None:
-        given.append(Artifact(nl_catalog.NL428_MEDICAL_EXPENSES_LINE_48, D(line_48)))
+        given.append(Artifact(newfoundland_kinds().kind("ca/medical_expenses"), D(line_48)))
     if line_54 is not None:
         given.append(
             Artifact(

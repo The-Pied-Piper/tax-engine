@@ -56,7 +56,9 @@ IDENTIFIER = "ca-mb/mb479_credits_line_64"
 LINE_62 = "ca-mb/mb479_credits_line_62"
 LINE_63 = "ca-mb/mb479_paid_work_experience_credit_line_63"
 EXPENSES_61 = "ca-mb/mb479_fertility_treatment_expenses_line_61"
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 MB479_PARTS = (
     "mb479_line_1.yaml",
     "mb479_line_2.yaml",

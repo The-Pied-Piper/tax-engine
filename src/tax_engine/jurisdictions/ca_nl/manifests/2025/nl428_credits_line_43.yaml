@@ -1,0 +1,16 @@
+# Form NL428 (CRA 5001-C) line 43: "Line 43 and line 58520: Interest paid on your student loans
+# (amount from line 31900 of your return)". A copy of T1 line 31900, which the T1 owns and exports
+# (`ca/student_loan_interest_line_31900`), so the one step is core/record_total over that export (a
+# form reads another form's export only as a record list), as line 27 does. A salary-only caller has
+# no such amount, so the total is 0.
+form:
+  name: ca-nl/nl428_credits
+capabilities:
+  - name: core/record_total
+    title: "Interest paid on your student loans (amount from line 31900 of your return)"
+    reference: "43"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_lines_copied_by_provinces.student_loan_interest_line_31900
+    produces:
+      output: ca-nl/nl428_student_loan_interest_line_43

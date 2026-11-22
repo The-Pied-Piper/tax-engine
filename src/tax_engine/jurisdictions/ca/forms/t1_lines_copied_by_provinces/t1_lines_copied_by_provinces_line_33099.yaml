@@ -1,0 +1,21 @@
+# T1 (5006-R, 2025) line 33099: "Line 107 and line 33099: Medical expenses for self, spouse or
+# common-law partner and your dependent children under 18 years of age" (5006-R page 6). The
+# optional input (`ca/medical_expenses`, blank when the filer has none) is read by this step,
+# which is the one line the T1 prints for it, and the blank reads as 0. The form exports the line
+# (`ca/medical_expenses_line_33099`) for the forms that print it again (NL428 line 48). It is not
+# added into the federal sums here: the take-home T1 leaves those lines out.
+form:
+  name: ca/t1_lines_copied_by_provinces
+capabilities:
+  - name: core/sum
+    title: "Medical expenses for self, spouse or common-law partner and your dependent children under 18 years of age"
+    reference: "33099"
+    unit: ca/cad
+    params:
+      rounding: ca/cent_rounding
+    consumes:
+      parts: [ca/medical_expenses]
+    blank:
+      ca/medical_expenses: "0"
+    produces:
+      output: ca/medical_expenses_line_33099

@@ -82,7 +82,9 @@ LINE_PARTS = (
     *(BC_PARTS / f"bc428_line_{number}.yaml" for number in (10, 11, 12, 13, 14, 15)),
     PART,
 )
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 
 HEADER = dedent("""\
     jurisdiction: CA-BC

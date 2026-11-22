@@ -55,7 +55,9 @@ PART_88 = NL_PARTS / "nl428_line_88.yaml"
 PART_90 = NL_PARTS / "nl428_line_90.yaml"
 # The real parts, in composition order: line 88, the line 89 input, line 90.
 NL_LINE_PARTS = (PART_88, NL_PARTS / "nl428_line_89.yaml", PART_90)
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 
 HEADER = dedent("""\
     jurisdiction: CA-NL

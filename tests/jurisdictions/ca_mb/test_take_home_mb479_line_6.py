@@ -68,7 +68,9 @@ FORM_NAME = "ca-mb/mb479"
 COLUMN_1_LINE_5 = "ca-mb/mb479_family_income_column_1_line_5"
 COLUMN_2_LINE_5 = "ca-mb/mb479_family_income_column_2_line_5"
 KIND = "ca-mb/mb479_family_income_line_6"
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 
 HEADER = dedent("""\
     jurisdiction: CA-MB

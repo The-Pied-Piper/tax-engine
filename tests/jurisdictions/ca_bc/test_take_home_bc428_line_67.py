@@ -40,10 +40,10 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog.credits_against_federal_tax import MINIMUM_TAX_CARRYOVER
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_bc.catalog import (
     BC428_DIVIDEND_TAX_CREDIT_LINE_65,
-    BC428_MINIMUM_TAX_CARRYOVER_AMOUNT,
     BC428_MINIMUM_TAX_CARRYOVER_LINE_66,
     BC428_NON_REFUNDABLE_CREDITS_LINE_60,
     BC428_TOTAL_LINE_67,
@@ -93,6 +93,7 @@ CASES = [
 def _part_files() -> Iterator[Path]:
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
+    yield from form_parts("t1_lines_copied_by_provinces")
     for name in T1_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
     yield BC_PARTS / "bc428_line_16.yaml"
@@ -121,7 +122,6 @@ def _part_files() -> Iterator[Path]:
     yield BC_PARTS / "bc428_line_59.yaml"
     yield BC_PARTS / "bc428_line_60.yaml"
     yield BC_PARTS / "bc428_line_65_input.yaml"
-    yield BC_PARTS / "bc428_line_66_input.yaml"
     yield BC_PARTS / "bc428_line_66.yaml"
     yield LINE_PART
 
@@ -172,12 +172,12 @@ def test_line_67_is_line_60_when_lines_65_and_66_are_empty(
         # 875.44 at $70,000 with line 65 of 100.00 alone.
         ([Artifact(BC428_DIVIDEND_TAX_CREDIT_LINE_65, D("100.00"))], "975.44"),
         # Line 66 is 34.9% of 1,000.00, 349.00, so line 67 is 875.44 plus 349.00.
-        ([Artifact(BC428_MINIMUM_TAX_CARRYOVER_AMOUNT, D("1000"))], "1224.44"),
+        ([Artifact(MINIMUM_TAX_CARRYOVER, D("1000"))], "1224.44"),
         # Both: 875.44 plus 100.00 plus 349.00.
         (
             [
                 Artifact(BC428_DIVIDEND_TAX_CREDIT_LINE_65, D("100.00")),
-                Artifact(BC428_MINIMUM_TAX_CARRYOVER_AMOUNT, D("1000")),
+                Artifact(MINIMUM_TAX_CARRYOVER, D("1000")),
             ],
             "1324.44",
         ),
@@ -192,7 +192,7 @@ def test_line_67_adds_lines_65_and_66_when_they_are_given(
 
 
 def test_line_66_is_34_9_percent_of_the_amount_given(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "70000", Artifact(BC428_MINIMUM_TAX_CARRYOVER_AMOUNT, D("1000")))
+    sheet = _sheet(tmp_path, "70000", Artifact(MINIMUM_TAX_CARRYOVER, D("1000")))
 
     assert sheet.get(BC428_MINIMUM_TAX_CARRYOVER_LINE_66).value == D("349.00")
 

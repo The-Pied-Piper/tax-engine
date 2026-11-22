@@ -79,7 +79,9 @@ LINE_PARTS = (
     LINE_62_PART,
     LINE_PART,
 )
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 
 # salary, line 63 (line 61 plus a blank line 62). Line 61 is line 8 for the first four salaries
 # and line 15 for the fifth.

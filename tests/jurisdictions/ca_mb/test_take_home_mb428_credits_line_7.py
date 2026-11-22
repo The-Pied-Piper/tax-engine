@@ -64,7 +64,9 @@ FORM_NAME = "ca-mb/mb428_credits"
 LINE_1 = "ca-mb/mb428_taxable_income_line_1"
 LINE_7 = "ca-mb/mb428_bracket_tax_at_start_line_7"
 # The real federal parts the T1 taxable-income form needs, beside the salary and line 1.
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 
 HEADER = dedent("""\
     jurisdiction: CA-MB

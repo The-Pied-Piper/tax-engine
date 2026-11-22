@@ -41,6 +41,7 @@ from tests.jurisdictions.ca_nl.support import (
 )
 
 D = Decimal
+MINIMUM_TAX_CARRYOVER = "ca/minimum_tax_carryover"
 CODE = JurisdictionCode("CA-NL")
 FORM_NAME = "ca-nl/nl428"
 AMOUNT = "ca-nl/nl428_minimum_tax_carryover_amount_line_68"
@@ -74,9 +75,12 @@ def _sheet(tmp_path: Path, salary: str, amount: str | None) -> Any:
             part.read_text(encoding="utf-8"), encoding="utf-8"
         )
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
-    for number, name in enumerate(["nl428_line_68_inputs.yaml", PART.name], start=2):
+    for number, name in enumerate([PART.name], start=2):
         text = (NL_PARTS / name).read_text(encoding="utf-8")
         (folder / f"{number:02d}_{name}").write_text(text, encoding="utf-8")
+    for number, found in enumerate(form_parts("t1_lines_copied_by_provinces"), start=20):
+        text = found.read_text(encoding="utf-8")
+        (folder / f"{number:02d}_{found.name}").write_text(text, encoding="utf-8")
     roots = {**newfoundland_packages().roots(), Namespace("ca-nl"): tmp_path}
     service = TaxComputationService(
         YamlJurisdictionSource(roots, newfoundland_kinds(), newfoundland_units()),
@@ -89,7 +93,7 @@ def _sheet(tmp_path: Path, salary: str, amount: str | None) -> Any:
     )
     given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if amount is not None:
-        given.append(Artifact(newfoundland_kinds().kind(AMOUNT), D(amount)))
+        given.append(Artifact(newfoundland_kinds().kind(MINIMUM_TAX_CARRYOVER), D(amount)))
     (sheet,) = service.compute(CODE, 2025, *given)[FORM_NAME]
     return sheet
 
@@ -132,7 +136,7 @@ def test_the_part_is_one_apply_rate_step_over_the_line_68_amount() -> None:
 
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": FORM_NAME}
-    assert part["capabilities"] == [
+    assert part["capabilities"][1:] == [
         {
             "name": "core/apply_rate",
             "title": "Newfoundland and Labrador minimum tax carryover",
@@ -140,17 +144,31 @@ def test_the_part_is_one_apply_rate_step_over_the_line_68_amount() -> None:
             "unit": "ca/cad",
             "params": {"rate": "ca-nl/minimum_tax_rate"},
             "consumes": {"base": AMOUNT},
-            "blank": {"base": "0"},
             "produces": {"output": LINE_68},
         }
     ]
-    assert list(part["capabilities"][0]) == [
+    assert list(part["capabilities"][1]) == [
         "name",
         "title",
         "reference",
         "unit",
         "params",
         "consumes",
-        "blank",
         "produces",
     ]
+
+
+def test_the_amount_is_a_record_total_of_the_t1_line_40427_export_with_no_input_of_its_own() -> (
+    None
+):
+    part = yaml.safe_load(PART.read_text(encoding="utf-8"))
+
+    assert "inputs" not in part
+    assert part["capabilities"][0] == {
+        "name": "core/record_total",
+        "title": "Amount from line 40427 of your return",
+        "reference": "68 box A",
+        "unit": "ca/cad",
+        "consumes": {"records": "ca/t1_lines_copied_by_provinces.minimum_tax_carryover_line_40427"},
+        "produces": {"output": AMOUNT},
+    }

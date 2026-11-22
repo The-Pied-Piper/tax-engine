@@ -80,7 +80,6 @@ LINE_59_PART = MB_PARTS / "mb428_line_59_input.yaml"
 LINE_58_PART = MB_PARTS / "mb428_line_58.yaml"
 LINE_61_PART = MB_PARTS / "mb428_line_61.yaml"
 LINE_62_PART = MB_PARTS / "mb428_line_62_input.yaml"
-LINE_63_INPUT_PART = MB_PARTS / "mb428_credits_line_63_input.yaml"
 LINE_63_PART = MB_PARTS / "mb428_line_63.yaml"
 LINE_57_PART = MB_PARTS / "mb428_credits_line_57.yaml"
 LINE_53_PART = MB_PARTS / "mb428_credits_line_53.yaml"
@@ -146,7 +145,9 @@ WORKSHEET_PARTS = (
     "worksheet_mb428_line_9.yaml",
 )
 # The real federal parts the T1 taxable-income form needs, beside the salary and the worksheet.
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 
 HEADER = dedent("""\
     jurisdiction: CA-MB
@@ -244,7 +245,6 @@ def _part_files() -> Iterator[Path]:
     yield LINE_60_PART
     yield LINE_61_PART
     yield LINE_62_PART
-    yield LINE_63_INPUT_PART
     yield LINE_63_PART
     yield LINE_64_PART
     yield LINE_65_PART
