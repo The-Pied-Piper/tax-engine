@@ -3,7 +3,9 @@
 Form text (CRA 5005-R, 5005-r-25e.txt, page 6): "Line 91 and line 31205: Provincial parental
 insurance plan (PPIP) premiums paid (box 55 of all T4 slips) (maximum $484.12)". The take-home
 caller has no T4 slip, so the input `ca-qc/ppip_premiums_given` is optional: a request that gives it
-has that figure as line 91, unchanged; a request that leaves it out has line 91 computed by
+has that figure as line 91, unchanged, up to the printed maximum $484.12 and refused above it (never
+capped; the figure is checked by `core/at_most` against the `ca-qc/ppip_premium_maximum` dataset, as
+NL428 line 82 is); a request that leaves it out has line 91 computed by
 `ca/given_or_contribution_tier` from the employment income with the `ca-qc/ppip_premium` dataset
 (0.494% of the earnings to $98,000, at most $484.12), as T2204 line 4 is. RL-1 box H (TP-1 line 97)
 is the same figure. The figures are hand-computed from the printed forms, not a CRA example:
@@ -25,6 +27,7 @@ import pytest
 import yaml
 
 from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.errors import InputAboveBoundError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
@@ -68,13 +71,30 @@ def _step() -> dict[str, Any]:
     assert isinstance(part, dict)
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": "ca-qc/ppip_premium"}
-    record_total, step = part["capabilities"]
+    record_total, maximum, check, step = part["capabilities"]
     assert record_total == {
         "name": "core/record_total",
         "title": "Employment income, T1 line 10100",
         "unit": "ca/cad",
         "consumes": {"records": "ca-qc/t1_employment_income.employment_income_line_10100"},
         "produces": {"output": "ca-qc/ppip_premium_employment_income"},
+    }
+    assert maximum == {
+        "name": "core/credit_amount",
+        "title": "Most you can enter on line 91",
+        "unit": "ca/cad",
+        "params": {"amount": "ca-qc/ppip_premium_maximum"},
+        "produces": {"output": "ca-qc/ppip_premium_maximum"},
+    }
+    assert check == {
+        "name": "core/at_most",
+        "unit": "ca/cad",
+        "consumes": {
+            "amount": "ca-qc/ppip_premiums_given",
+            "bound": "ca-qc/ppip_premium_maximum",
+        },
+        "blank": {"amount": "pass_on"},
+        "produces": {"output": "ca-qc/ppip_premiums_given_checked"},
     }
     assert isinstance(step, dict)
     return step
@@ -115,9 +135,29 @@ def test_a_given_line_91_is_not_computed_from_the_salary(
     assert str(_line_91(take_home_service, "20000", "400.00")) == "400.00"
 
 
-def test_the_part_is_a_record_total_of_line_10100_then_one_given_or_contribution_tier_step() -> (
-    None
-):
+@pytest.mark.parametrize("given", ["484.12", "484.11"])
+def test_a_given_line_91_up_to_the_printed_maximum_is_kept(
+    take_home_service: TakeHomeService, given: str
+) -> None:
+    assert str(_line_91(take_home_service, "70000", given)) == given
+
+
+@pytest.mark.parametrize("given", ["484.13", "1000.00"])
+def test_a_given_line_91_above_the_printed_maximum_is_refused_not_capped(
+    take_home_service: TakeHomeService, given: str
+) -> None:
+    with pytest.raises(InputAboveBoundError):
+        _line_91(take_home_service, "70000", given)
+
+
+def test_a_given_line_91_above_the_maximum_is_refused_whatever_the_salary(
+    take_home_service: TakeHomeService,
+) -> None:
+    with pytest.raises(InputAboveBoundError):
+        _line_91(take_home_service, "20000", "484.13")
+
+
+def test_the_part_is_a_record_total_the_maximum_its_check_then_the_given_or_tier_step() -> None:
     assert _step() == {
         "name": "ca/given_or_contribution_tier",
         "title": "Provincial parental insurance plan (PPIP) premiums paid",
@@ -125,7 +165,7 @@ def test_the_part_is_a_record_total_of_line_10100_then_one_given_or_contribution
         "unit": "ca/cad",
         "params": {"tier": "ca-qc/ppip_premium"},
         "consumes": {
-            "given": "ca-qc/ppip_premiums_given",
+            "given": "ca-qc/ppip_premiums_given_checked",
             "earnings": "ca-qc/ppip_premium_employment_income",
         },
         "blank": {"given": "compute"},
