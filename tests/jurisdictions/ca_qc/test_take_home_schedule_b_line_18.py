@@ -1,8 +1,9 @@
 """Quebec Schedule B (TP-1.D.B-V, 2025-12) Part A line 18, "Subtract line 16 from line 15. If the
 result is negative, enter 0", as the Quebec take-home manifest wires it: one
 `core/subtract_not_below_zero`, rounded half-up to the cent by `ca-qc/cent_rounding`. The expected
-figures are hand-computed from the printed lines (line 14 is line 275 at a salary of 20,000 / 70,000
-/ 200,000, less line 16, 42,090.00), not a Revenu Quebec example.
+figures are hand-computed from the printed lines (line 14, which is line 10 for a single filer,
+is line 275 at a salary of 20,000 / 70,000 / 200,000, less line 16, 42,090.00), not a Revenu Quebec
+example.
 """
 
 from __future__ import annotations

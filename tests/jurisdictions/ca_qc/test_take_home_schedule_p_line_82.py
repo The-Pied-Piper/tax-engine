@@ -1,7 +1,8 @@
 """Quebec Schedule P (TP-1.D.P-V, 2025) Part E, section 2, column 1 "Work premium", line 82,
 "Subtract line 80 from line 78. If the result is negative, enter 0", as the Quebec take-home
 manifest wires it: one `core/subtract_not_below_zero` of line 80 (12,620) from line 78, which is a
-copy of line 54 and has no step of its own, rounded half-up to the cent.
+copy of line 54 (line 52 for a single filer) and has no step of its own, rounded half-up to the
+cent.
 
 The expected figures of a salary-only filer are hand-computed from the printed lines (the Quebec
 2025 hand calculation of 19 Nov 2026), not from a Revenu Quebec example."""

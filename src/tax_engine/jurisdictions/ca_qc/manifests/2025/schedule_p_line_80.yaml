@@ -2,7 +2,7 @@
 # 2025", column 1 "Work premium", line 80: the printed figure 12,620 (printed with a minus sign). It is
 # a dataset figure, so step 1 claims it whole through core/credit_amount; line 82 subtracts it. The
 # form prints no label for the line, so the step is untitled. Line 78 ("Amount from line 54") is a
-# copy and has no step: line 82 reads line 54 directly.
+# copy and has no step: line 54 is line 52 for a single filer, so line 82 reads line 52 directly.
 form:
   name: ca-qc/schedule_p
 capabilities:
