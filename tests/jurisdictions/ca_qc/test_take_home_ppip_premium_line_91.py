@@ -29,9 +29,16 @@ import yaml
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InputAboveBoundError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.kinds import AmountKind
+from tax_engine.domain.kinds import AmountKind, CountKind
+from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tax_engine.jurisdictions.ca_qc.catalog import PPIP_PREMIUMS_GIVEN, PPIP_PREMIUMS_PAID
+from tax_engine.jurisdictions.ca_qc.catalog import (
+    PPIP_PREMIUM_UNDER_THRESHOLD_COUNT,
+    PPIP_PREMIUM_ZERO,
+    PPIP_PREMIUMS_BEFORE_EARNINGS_TEST,
+    PPIP_PREMIUMS_GIVEN,
+    PPIP_PREMIUMS_PAID,
+)
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
 from tests.jurisdictions.ca_qc.support import T1_SALARY_PARTS, quebec_kinds
 from tests.kinds import non_negative
@@ -51,7 +58,7 @@ HEADER = dedent("""\
     """)
 
 
-def _line_91(take_home_service: TakeHomeService, salary: str, given: str | None = None) -> Decimal:
+def _sheet(take_home_service: TakeHomeService, salary: str, given: str | None = None) -> Worksheet:
     starting = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if given is not None:
         starting.append(Artifact(PPIP_PREMIUMS_GIVEN, D(given)))
@@ -63,7 +70,11 @@ def _line_91(take_home_service: TakeHomeService, salary: str, given: str | None 
         LINE_PART.name,
     )
     (sheet,) = service.compute(JurisdictionCode("CA-QC"), 2025, *starting)["ca-qc/ppip_premium"]
-    return sheet.get(PPIP_PREMIUMS_PAID).value
+    return sheet
+
+
+def _line_91(take_home_service: TakeHomeService, salary: str, given: str | None = None) -> Decimal:
+    return _sheet(take_home_service, salary, given).get(PPIP_PREMIUMS_PAID).value
 
 
 def _step() -> dict[str, Any]:
@@ -230,4 +241,30 @@ def test_the_kind_is_a_registered_non_negative_decimal_amount() -> None:
     assert kind is PPIP_PREMIUMS_PAID
     assert isinstance(kind, AmountKind)
     assert kind.value_type is Decimal
+    assert non_negative(kind)
+
+
+def test_every_step_is_traced_at_1500(take_home_service: TakeHomeService) -> None:
+    sheet = _sheet(take_home_service, "1500")
+
+    assert str(sheet.get(PPIP_PREMIUMS_BEFORE_EARNINGS_TEST).value) == "7.41"
+    assert sheet.get(PPIP_PREMIUM_UNDER_THRESHOLD_COUNT).value == 1
+    assert str(sheet.get(PPIP_PREMIUM_ZERO).value) == "0.00"
+    assert str(sheet.get(PPIP_PREMIUMS_PAID).value) == "0.00"
+
+
+@pytest.mark.parametrize(
+    ("identifier", "kind_class"),
+    [
+        ("ca-qc/ppip_premiums_before_earnings_test", AmountKind),
+        ("ca-qc/ppip_premium_under_threshold_count", CountKind),
+        ("ca-qc/ppip_premium_zero", AmountKind),
+    ],
+)
+def test_the_new_kinds_are_registered_and_non_negative(
+    identifier: str, kind_class: type[AmountKind] | type[CountKind]
+) -> None:
+    kind = quebec_kinds().kind(identifier)
+
+    assert isinstance(kind, kind_class)
     assert non_negative(kind)

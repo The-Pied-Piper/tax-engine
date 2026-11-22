@@ -9,10 +9,12 @@
 # Guide 5000-G (2025), line 31205: "If your PPIP insurable earnings are less than $2,000, do not claim
 # any PPIP premiums on line 31205. Instead, claim this amount as an overpayment on your Revenu Québec
 # Income Tax Return." The premium above is the figure before that test. The test reads the employment
-# income (line 10100), the earnings the T4 box 55 premium is paid on (self-employment earnings have
-# their own line, 31215), and is its two complements, as TP-1 line 457's is
-# (`tp1_totals_line_457.yaml`), which already carries the whole of TP-1 line 97 to line 457 in that
-# case; so line 91 and line 31205 are 0 and the premium is claimed once, as the overpayment. The last
+# income (line 10100), the figure the premium itself is computed from; Schedule 10 line 13 prints the
+# box 56 total of the Quebec T4 slips, which the engine has no input for, so the two differ only for
+# a filer with non-Quebec employment income. TP-1 line 457 (`tp1_totals_line_457.yaml`) carries the
+# whole of TP-1 line 97 under $2,000 of employment, business and family-resource earnings together,
+# so a salary-only filer claims the premium once, as the overpayment, and the return's total is the
+# same as before. The test is its two complements, as TP-1 line 457's is. The last
 # step carries line 91.
 form:
   name: ca-qc/ppip_premium
