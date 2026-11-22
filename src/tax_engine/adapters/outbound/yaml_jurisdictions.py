@@ -59,11 +59,13 @@ _OPTIONAL_FORM_KEYS = frozenset(
     }
 )
 _IMPORTED_PART_KEYS = frozenset({"form", "capabilities", "inputs"})
-_OPTIONAL_INPUT_KEYS = frozenset({"default", "basis", "title", "reference", "unit", "whole_cents"})
+_OPTIONAL_INPUT_KEYS = frozenset(
+    {"default", "basis", "title", "reference", "unit", "position", "whole_cents"}
+)
 _DEFAULT_FORM = "return"
 _CAPABILITY_KEYS = frozenset({"name", "produces"})
 _OPTIONAL_CAPABILITY_KEYS = frozenset(
-    {"params", "consumes", "blank", "optional", "title", "reference", "unit"}
+    {"params", "consumes", "blank", "optional", "title", "reference", "unit", "position"}
 )
 _SCALAR_KEYS = ("jurisdiction", "version", "valid_from_tax_year", "title")
 _IDENTIFIER_LISTS = ("inputs", "outputs", "imports")
@@ -732,8 +734,9 @@ class YamlJurisdictionSource:
         """One input or field: its `name`, `required`, and for an optional one `default` and
         `basis`.
 
-        `default` is written as the value (`null` for blank); `title`, `reference` and `unit` (the
-        full identifier of a unit, looked up when the manifest is built) may also be given.
+        `default` is written as the value (`null` for blank); `title`, `reference`, `unit` (the
+        full identifier of a unit, looked up when the manifest is built) and `position` (the
+        figure's place on the printed form, from 1) may also be given.
         """
         fields = entry.require_mapping(
             frozenset({"name"}), optional=_OPTIONAL_INPUT_KEYS | {"required"}
@@ -747,6 +750,7 @@ class YamlJurisdictionSource:
         title = fields.optional_field("title")
         reference = fields.optional_field("reference")
         unit = fields.optional_field("unit")
+        position = fields.optional_field("position")
         whole_cents = fields.optional_field("whole_cents")
         return InputDeclaration(
             name=name,
@@ -756,6 +760,7 @@ class YamlJurisdictionSource:
             title=None if title is None else self._title(title),
             reference=None if reference is None else self._title(reference),
             unit=None if unit is None else unit.require_non_empty_string(),
+            position=None if position is None else position.require_integer(),
             whole_cents=False if whole_cents is None else whole_cents.require_boolean(),
         )
 
@@ -813,6 +818,7 @@ class YamlJurisdictionSource:
         title = fields.optional_field("title")
         reference = fields.optional_field("reference")
         unit = fields.optional_field("unit")
+        position = fields.optional_field("position")
         return CapabilitySelection(
             name=name,
             params=self._bindings(fields.optional_field("params")),
@@ -824,6 +830,7 @@ class YamlJurisdictionSource:
             title=None if title is None else self._title(title),
             reference=None if reference is None else self._title(reference),
             unit=None if unit is None else unit.require_non_empty_string(),
+            position=None if position is None else position.require_integer(),
         )
 
     @staticmethod

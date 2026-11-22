@@ -38,6 +38,7 @@ from tax_engine.jurisdictions.ca.catalog.refund import REFUND_OR_BALANCE_OWING
 from tax_engine.jurisdictions.ca_qc.catalog import (
     CWB_LINE_161,
     FEDERAL_TOTAL_PAYABLE_RETURN,
+    PPIP_PREMIUMS_LINE_91,
     REFUND_OR_BALANCE_OWING_LINE_172,
     REFUNDABLE_QUEBEC_ABATEMENT_RETURN,
     SCHEDULE_B_LIVED_ALONE_LINE_20,
@@ -47,6 +48,7 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     SOLIDARITY_TENANT_OR_OWNER_LINES_32_36,
     TOTAL_PAYABLE,
     TP1_INCOME_TAX_AND_CONTRIBUTIONS_LINE_450,
+    TP1_LINE_457,
     TP1_WORK_PREMIUM_TAX_CREDITS_LINE_456,
 )
 
@@ -239,3 +241,25 @@ def test_the_refund_and_the_total_payable_follow_from_the_printed_lines(
     line_43500 = summary.get(FEDERAL_TOTAL_PAYABLE_RETURN).value
     line_44000 = summary.get(REFUNDABLE_QUEBEC_ABATEMENT_RETURN).value
     assert summary.get(TOTAL_PAYABLE).value == line_43500 - line_44000 + line_450
+
+
+# 5000-G, line 31205: under $2,000 of PPIP insurable earnings, "do not claim any PPIP premiums on
+# line 31205. Instead, claim this amount as an overpayment on your Revenu Quebec Income Tax Return":
+# 0.494% of 1,500 is 7.41, claimed on TP-1 line 457 and nowhere else. Columns: 5005-R line 91 and
+# 31205, TP-1 line 457, the refund or balance owing.
+UNDER_2000_FIGURES = {
+    "1500": ("0.00", "7.41", "-7.41"),
+}
+
+
+@pytest.mark.parametrize(("salary", "figures"), list(UNDER_2000_FIGURES.items()))
+def test_under_2000_of_salary_the_premium_is_claimed_once_as_the_qpip_overpayment(
+    salary: str, figures: tuple[str, str, str]
+) -> None:
+    sheets = _sheets(salary, DEFAULT)
+
+    assert (
+        sheets["ca-qc/t1_tax_and_credits"].get(PPIP_PREMIUMS_LINE_91).value,
+        sheets["ca-qc/tp1_totals"].get(TP1_LINE_457).value,
+        sheets["ca-qc/return"].get(REFUND_OR_BALANCE_OWING).value,
+    ) == tuple(D(figure) for figure in figures)

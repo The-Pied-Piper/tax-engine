@@ -61,6 +61,7 @@ class Composition:
         figure_titles: Mapping[str, str] | None = None,
         figure_references: Mapping[str, str] | None = None,
         figure_units: Mapping[str, Unit] | None = None,
+        figure_positions: Mapping[str, int] | None = None,
         imported_figures: Mapping[str, ImportedFigure] | None = None,
         defaulted: Iterable[ArtifactKind[Any]] = (),
     ) -> Worksheet:
@@ -69,9 +70,9 @@ class Composition:
         The starting artifacts are exactly one of each input kind; only a kind in `blank_inputs` may
         be blank (else BlankNotAllowedError). A capability producing a value below zero for a
         non-negative kind raises CapabilityContractError naming it. `form_title`, `figure_titles`,
-        `figure_references`, `imported_figures` and `defaulted` only annotate the worksheet's
-        trace. `figure_units` also stamps each artifact the worksheet holds with its figure's
-        unit, replacing any unit an artifact arrived with.
+        `figure_references`, `figure_positions`, `imported_figures` and `defaulted` only annotate
+        the worksheet's trace. `figure_units` also stamps each artifact the worksheet holds with its
+        figure's unit, replacing any unit an artifact arrived with.
         """
         worksheet = Worksheet(
             *artifacts,
@@ -79,6 +80,7 @@ class Composition:
             figure_titles=figure_titles,
             figure_references=figure_references,
             figure_units=figure_units,
+            figure_positions=figure_positions,
             imported_figures=imported_figures,
             defaulted=defaulted,
         )

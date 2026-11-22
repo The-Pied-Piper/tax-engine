@@ -67,6 +67,7 @@ def test_has_no_params_family() -> None:
         "title",
         "reference",
         "unit",
+        "position",
     ]
 
 

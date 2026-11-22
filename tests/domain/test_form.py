@@ -351,6 +351,46 @@ def test_a_worksheet_carries_the_title_and_reference_of_a_declared_instance_fiel
     assert shop_form.figure_references == {SALES.label: "1"}
 
 
+def test_a_worksheet_carries_the_position_of_the_inputs_and_steps_of_the_form() -> None:
+    placed = composition(
+        "ex/placed",
+        [Sum(EXACT_TOTAL, (AMOUNT,), STEP_TOTAL)],
+        exports=[STEP_TOTAL],
+        starting=frozenset({AMOUNT}),
+        declared=[InputDeclaration(AMOUNT.identifier, True, position=1)],
+        selections=(
+            CapabilitySelection(
+                name="ex/sum",
+                params={},
+                consumes={},
+                produces={"output": STEP_TOTAL.identifier},
+                position=2,
+            ),
+        ),
+    )
+
+    (sheet,) = FormSet([placed]).compute(Artifact(AMOUNT, D(1)))["ex/placed"]
+
+    assert placed.figure_positions == {AMOUNT.label: 1, STEP_TOTAL.label: 2}
+    assert sheet.position(AMOUNT.label) == 1
+    assert sheet.position(STEP_TOTAL.label) == 2
+
+
+def test_a_form_gives_the_position_of_a_declared_instance_field() -> None:
+    shop_form = composition(
+        "ex/shop",
+        [Subtract(EXACT_TOTAL, SALES, COSTS, PROFIT)],
+        instances=SHOPS,
+        exports=[PROFIT],
+        fields=(
+            InputDeclaration(SALES.identifier, True, position=3),
+            InputDeclaration(COSTS.identifier, True),
+        ),
+    )
+
+    assert shop_form.figure_positions == {SALES.label: 3}
+
+
 def test_two_forms_may_not_declare_the_same_input() -> None:
     first, second = (
         composition(

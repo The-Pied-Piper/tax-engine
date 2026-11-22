@@ -1,0 +1,10 @@
+# 5000-G (2025) line 31205: the nothing claimed when the PPIP insurable earnings are less than $2,000
+# ("do not claim any PPIP premiums on line 31205"). A dollars-and-cents box, so "0" to the cent,
+# rounded half-up as the form states no rounding rule.
+family: ca-qc/ppip_premium_zero
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-g/5000-g-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "0"
