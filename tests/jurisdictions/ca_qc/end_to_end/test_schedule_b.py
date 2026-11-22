@@ -19,7 +19,6 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca_qc.catalog import (
     SCHEDULE_B_LINE_10,
-    SCHEDULE_B_LINE_14,
     SCHEDULE_B_LINE_18,
     SCHEDULE_B_LINE_20,
     SCHEDULE_B_LINE_30,
@@ -39,11 +38,11 @@ PARTS = (
     "schedule_b_line_33_input.yaml",
     "schedule_b_line_34.yaml",
 )
-# salary: lines 10, 14, 16, 18 and 31 (the same whether or not the filer lives alone)
+# salary: lines 10, 16, 18 and 31 (the same whether or not the filer lives alone)
 FAMILY_INCOME = {
-    "20000": ("18635.00", "18635.00", "42090.00", "0.00", "0.00"),
-    "70000": ("67915.00", "67915.00", "42090.00", "25825.00", "4842.19"),
-    "200000": ("197506.00", "197506.00", "42090.00", "155416.00", "29140.50"),
+    "20000": ("18635.00", "42090.00", "0.00", "0.00"),
+    "70000": ("67915.00", "42090.00", "25825.00", "4842.19"),
+    "200000": ("197506.00", "42090.00", "155416.00", "29140.50"),
 }
 # salary: lines 20, 30, 32 and 34, by the answer to "lived alone"
 RELIEF = {
@@ -73,7 +72,6 @@ def test_the_family_income_lines_from_line_10_to_line_31(
 
     kinds = (
         SCHEDULE_B_LINE_10,
-        SCHEDULE_B_LINE_14,
         SCHEDULE_B_THRESHOLD_LINE_16,
         SCHEDULE_B_LINE_18,
         SCHEDULE_B_LINE_31,

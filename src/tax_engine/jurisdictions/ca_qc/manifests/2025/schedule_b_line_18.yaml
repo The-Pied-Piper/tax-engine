@@ -1,5 +1,7 @@
 # Schedule B (TP-1.D.B-V, 2025-12) Part A line 18: "Subtract line 16 from line 15. If the result is
-# negative, enter 0." Line 15 is "Amount from line 14", a copy, so the step reads line 14 directly.
+# negative, enter 0." Line 15 is "Amount from line 14", and line 14
+# adds the spouse's line 12, which the take-home leaves out (single filer), so lines 14 and 15 are
+# copies of line 10 with no step and the step reads line 10 directly.
 # One step, core/subtract_not_below_zero, rounded half-up to the cent through ca-qc/cent_rounding.
 # The form prints no label for the line, so the step is untitled.
 form:
@@ -11,7 +13,7 @@ capabilities:
     params:
       rounding: ca-qc/cent_rounding
     consumes:
-      amount: ca-qc/schedule_b_line_14
+      amount: ca-qc/schedule_b_line_10
       less: ca-qc/schedule_b_threshold_line_16
     produces:
       output: ca-qc/schedule_b_line_18

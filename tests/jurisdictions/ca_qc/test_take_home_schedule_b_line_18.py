@@ -13,9 +13,8 @@ from typing import Any
 import pytest
 import yaml
 
-from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.kinds import AmountKind
-from tax_engine.jurisdictions.ca_qc.catalog import SCHEDULE_B_LINE_12, SCHEDULE_B_LINE_18
+from tax_engine.jurisdictions.ca_qc.catalog import SCHEDULE_B_LINE_18
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
 from tests.jurisdictions.ca_qc.schedule_b_support import schedule_b_sheet
 from tests.jurisdictions.ca_qc.support import quebec_kinds
@@ -28,8 +27,6 @@ IDENTIFIER = "ca-qc/schedule_b_line_18"
 EXPORTS = (IDENTIFIER,)
 PARTS = (
     "schedule_b_line_10.yaml",
-    "schedule_b_line_12_input.yaml",
-    "schedule_b_line_14.yaml",
     "schedule_b_line_16.yaml",
     PART,
 )
@@ -52,21 +49,13 @@ def test_line_18_at_each_salary(
     assert str(value.value) == expected
 
 
-def test_line_12_raises_the_family_income(take_home_service: TakeHomeService) -> None:
-    """A spouse's line 275 of 30,000.00 on a $20,000 salary: 18,635.00 + 30,000.00 - 42,090.00."""
-    given = Artifact(SCHEDULE_B_LINE_12, D("30000"))
-    value = schedule_b_sheet(take_home_service, "20000", EXPORTS, PARTS, given)
-
-    assert str(value.get(SCHEDULE_B_LINE_18).value) == "6545.00"
-
-
 def _part() -> dict[str, Any]:
     part = yaml.safe_load((QUEBEC_PARTS / PART).read_text(encoding="utf-8"))
     assert isinstance(part, dict)
     return part
 
 
-def test_the_part_is_one_subtract_not_below_zero_of_line_16_from_line_14() -> None:
+def test_the_part_is_one_subtract_not_below_zero_of_line_16_from_line_10() -> None:
     part = _part()
 
     assert list(part) == ["form", "capabilities"]
@@ -78,7 +67,7 @@ def test_the_part_is_one_subtract_not_below_zero_of_line_16_from_line_14() -> No
         "unit": "ca/cad",
         "params": {"rounding": "ca-qc/cent_rounding"},
         "consumes": {
-            "amount": "ca-qc/schedule_b_line_14",
+            "amount": "ca-qc/schedule_b_line_10",
             "less": "ca-qc/schedule_b_threshold_line_16",
         },
         "produces": {"output": IDENTIFIER},

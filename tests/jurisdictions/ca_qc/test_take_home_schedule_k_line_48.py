@@ -18,7 +18,6 @@ import yaml
 from tax_engine.jurisdictions.ca_qc.catalog import (
     SCHEDULE_K_DEPENDENT_CHILDREN_LINE_44,
     SCHEDULE_K_PREMIUM_INCOME_LINE_48,
-    TP1_SPOUSE_NET_INCOME_LINE_275,
 )
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
 from tests.jurisdictions.ca_qc.schedule_k_support import FORM_NAME, schedule_k_sheet
@@ -29,8 +28,6 @@ D = Decimal
 LINE_48 = "ca-qc/schedule_k_premium_income_line_48"
 PARTS = (
     "tp1_schedule_k_line_36.yaml",
-    "tp1_schedule_k_line_37.yaml",
-    "tp1_schedule_k_line_40.yaml",
     "tp1_schedule_k_line_41.yaml",
     "tp1_schedule_k_line_44_input.yaml",
     "tp1_schedule_k_line_44_amounts.yaml",
@@ -50,13 +47,6 @@ def test_line_48_at_each_salary(
     sheet = schedule_k_sheet(take_home_service, salary, LINE_48, PARTS)
 
     assert str(sheet.get(SCHEDULE_K_PREMIUM_INCOME_LINE_48).value) == expected
-
-
-def test_the_spouse_amount_raises_line_48(take_home_service: TakeHomeService) -> None:
-    given = (TP1_SPOUSE_NET_INCOME_LINE_275, "1000.50")
-    sheet = schedule_k_sheet(take_home_service, "70000", LINE_48, PARTS, given)
-
-    assert str(sheet.get(SCHEDULE_K_PREMIUM_INCOME_LINE_48).value) == "49025.50"
 
 
 @pytest.mark.parametrize(("children", "expected"), [("1", "35675.00"), ("2", "31455.00")])
@@ -89,7 +79,7 @@ def test_the_part_is_one_subtraction_of_line_46_from_line_40() -> None:
         "unit": "ca/cad",
         "params": {"rounding": "ca-qc/cent_rounding"},
         "consumes": {
-            "amount": "ca-qc/schedule_k_income_line_40",
+            "amount": "ca-qc/schedule_k_net_income_line_36",
             "less": "ca-qc/schedule_k_total_line_46",
         },
         "produces": {"output": LINE_48},

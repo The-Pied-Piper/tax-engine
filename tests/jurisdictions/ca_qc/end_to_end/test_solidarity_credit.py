@@ -54,7 +54,6 @@ PARTS = (
     "tp1_net_income_line_260_input.yaml",
     "tp1_net_income_line_275.yaml",
     "tp1_net_income_line_276_input.yaml",
-    "tp1_net_income_line_275_spouse_input.yaml",
     "tp1_net_income_line_278_input.yaml",
     "tp1_net_income_line_279.yaml",
     "tp1_net_income_line_298_inputs.yaml",

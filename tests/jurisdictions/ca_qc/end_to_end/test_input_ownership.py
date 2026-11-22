@@ -24,17 +24,13 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca_qc.catalog import (
     RL1_SLIP_BOX_211,
-    SCHEDULE_K_INCOME_LINE_40,
-    SCHEDULE_K_SPOUSE_NET_INCOME_LINE_37,
     SCHEDULE_P_LINE_10,
     SCHEDULE_P_LINE_18,
     SCHEDULE_P_RESEARCH_GRANTS_LINE_13,
-    SCHEDULE_P_SPOUSE_NET_INCOME_LINE_53,
     SCHEDULE_P_TP1_LINE_107,
     SCHEDULE_P_WEPP_PAYMENTS_LINE_15,
     TP1_LINE_105,
     TP1_LINE_107,
-    TP1_SPOUSE_NET_INCOME_LINE_275,
     WORK_CHART_201_ELIGIBLE_WORK_INCOME_LINE_1,
     WORK_CHART_201_RESEARCH_GRANTS_LINE_3,
     WORK_CHART_201_TOTAL_LINE_6,
@@ -52,13 +48,10 @@ SHARED_INPUTS = {
     "ca-qc/rl1_slip_box_211": "tp1_income",
     "ca-qc/work_chart_201_research_grants_line_3": "work_chart_201",
     "ca-qc/work_chart_201_wepp_payments_line_4": "work_chart_201",
-    "ca-qc/tp1_spouse_net_income_line_275": "tp1_net_income",
 }
 REMOVED_COPIES = (
     "ca-qc/schedule_p_research_grants_line_13",
     "ca-qc/schedule_p_wepp_payments_line_15",
-    "ca-qc/schedule_p_spouse_net_income_line_53",
-    "ca-qc/schedule_k_spouse_net_income_line_37",
 )
 
 
@@ -153,19 +146,6 @@ def test_research_grants_and_wepp_payments_given_once_reach_work_chart_201_and_s
     assert schedule_p.get(SCHEDULE_P_LINE_18).value == D("70900.90")
 
 
-def test_the_spouse_net_income_given_once_reaches_schedule_k_and_schedule_p(
-    take_home_service: TakeHomeService,
-) -> None:
-    blank, given = _forms(take_home_service, (), ((TP1_SPOUSE_NET_INCOME_LINE_275, "1000.50"),))
-
-    assert blank["ca-qc/schedule_p"].get(SCHEDULE_P_SPOUSE_NET_INCOME_LINE_53).value == D(0)
-    assert given["ca-qc/schedule_p"].get(SCHEDULE_P_SPOUSE_NET_INCOME_LINE_53).value == D("1000.50")
-    line_40 = given["ca-qc/tp1_schedule_k"].get(SCHEDULE_K_INCOME_LINE_40).value
-    assert line_40 - blank["ca-qc/tp1_schedule_k"].get(SCHEDULE_K_INCOME_LINE_40).value == D(
-        "1000.50"
-    )
-
-
 def test_the_printed_lines_that_read_another_forms_export_are_rounded_to_the_cent(
     take_home_service: TakeHomeService,
 ) -> None:
@@ -175,7 +155,6 @@ def test_the_printed_lines_that_read_another_forms_export_are_rounded_to_the_cen
             (TP1_LINE_107, "2000.505"),
             (WORK_CHART_201_RESEARCH_GRANTS_LINE_3, "400.404"),
             (WORK_CHART_201_WEPP_PAYMENTS_LINE_4, "500.505"),
-            (TP1_SPOUSE_NET_INCOME_LINE_275, "600.505"),
         ),
     )
 
@@ -183,10 +162,6 @@ def test_the_printed_lines_that_read_another_forms_export_are_rounded_to_the_cen
     assert schedule_p.get(SCHEDULE_P_TP1_LINE_107).value == D("2000.51")
     assert schedule_p.get(SCHEDULE_P_RESEARCH_GRANTS_LINE_13).value == D("400.40")
     assert schedule_p.get(SCHEDULE_P_WEPP_PAYMENTS_LINE_15).value == D("500.51")
-    assert schedule_p.get(SCHEDULE_P_SPOUSE_NET_INCOME_LINE_53).value == D("600.51")
-    assert sheets["ca-qc/tp1_schedule_k"].get(SCHEDULE_K_SPOUSE_NET_INCOME_LINE_37).value == D(
-        "600.51"
-    )
     # Line 18 adds the printed (rounded) lines: 70,000 + 2,000.51 + 400.40 + 500.51.
     assert schedule_p.get(SCHEDULE_P_LINE_18).value == D("72901.42")
 
