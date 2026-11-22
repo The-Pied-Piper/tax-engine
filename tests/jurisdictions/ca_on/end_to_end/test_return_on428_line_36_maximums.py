@@ -40,9 +40,9 @@ def test_a_limited_attendant_care_claim_raises_line_36_and_line_41() -> None:
     assert sheet.get(on.ON428_MEDICAL_EXPENSES_OVER_LIMIT_LINE_41).value == D("35546.95")
 
 
-def test_a_limited_adapted_van_claim_is_raised_to_the_ontario_maximum() -> None:
+def test_an_adapted_van_claim_is_raised_to_the_ontario_maximum() -> None:
     """RC4065 limits the federal van claim to $5,000 and Ontario to $8,813: a van paid at 10,000
-    with the federal claim limited raises a claim of 20,000 by 8,813 less 5,000, 3,813, to
+    raises a claim of 20,000 by 8,813 less 5,000, 3,813, to
     23,813.00,
     and line 41 to 23,813.00 less 2,080.05, 21,732.95."""
     kinds = bundled_kinds()
@@ -50,7 +50,6 @@ def test_a_limited_adapted_van_claim_is_raised_to_the_ontario_maximum() -> None:
         Artifact(EMPLOYMENT_INCOME, D("70000")),
         Artifact(on.ON428_MEDICAL_EXPENSES_LINE_36, D("20000")),
         Artifact(kinds.kind("ca-on/on428_adapted_van_expenses_line_36"), D("10000")),
-        Artifact(kinds.kind("ca-on/on428_attendant_care_federal_limit_applied_line_36"), 1),
     ]
     (sheet,) = build_tax_computation().compute(JurisdictionCode("CA-ON"), 2025, *given)[
         "ca-on/on428"
