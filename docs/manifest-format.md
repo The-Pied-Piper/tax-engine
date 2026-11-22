@@ -192,7 +192,8 @@ An input is held by one form: the form of the part that declares it, or the defa
 input in a whole-file manifest or in a part without `form:`. A form's composition has the inputs
 it holds and nothing else, so a step that reads another form's input finds no producer for it and
 fails when the forms are composed, naming the form and the figure. Every other form that needs the
-figure reads the holder's export, as it reads any other form's figure.
+figure reads the holder's export, as it reads any other form's figure. An input two forms both
+declare is refused by the loader, by `Manifest` and by `FormSet`, and so is one repeated within a form.
 Fields of a form's `instances` belong to their form and are not listed as inputs.
 
 ## Capability selections

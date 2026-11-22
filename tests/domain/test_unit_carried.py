@@ -309,34 +309,10 @@ def reader(name: str, total: AmountKind, unit: str | None) -> FormComposition:
     )
 
 
-def test_forms_reading_a_field_in_one_unit_agree() -> None:
-    first = reader("ex/first", FEE_TOTAL, "ex/crowns")
-    second = reader("ex/second", OTHER_TOTAL, "ex/crowns")
-
-    FormSet([first, second])
-
-
-def test_two_consumers_disagreeing_on_the_unit_of_a_field_are_refused() -> None:
-    first = reader("ex/first", FEE_TOTAL, "ex/crowns")
-    second = reader("ex/second", OTHER_TOTAL, "ex/moons")
-
-    with pytest.raises(
-        InvalidCompositionError, match=r"'fee'.*'ex/crowns'.*'ex/first'.*'ex/moons'.*'ex/second'"
-    ):
-        FormSet([first, second])
-
-
-def test_a_consumer_with_a_unit_and_one_without_disagree() -> None:
-    first = reader("ex/first", FEE_TOTAL, "ex/crowns")
-    second = reader("ex/second", OTHER_TOTAL, None)
-
-    with pytest.raises(InvalidCompositionError, match=r"'fee'.*unit"):
-        FormSet([first, second])
-
-
-def test_a_producer_and_a_consumer_disagreeing_on_the_unit_are_refused() -> None:
-    producer = composition(
-        "ex/producer",
+def producer(name: str, unit: str | None) -> FormComposition:
+    """A form that produces `ex/fee` (in `unit`) from inputs of its own."""
+    return composition(
+        name,
         [Subtract(EXACT, INCOME, RELIEF, FEE)],
         exports=[FEE],
         starting=frozenset({INCOME, RELIEF}),
@@ -346,15 +322,44 @@ def test_a_producer_and_a_consumer_disagreeing_on_the_unit_are_refused() -> None
                 {},
                 {"minuend": "ex/income", "subtrahend": "ex/relief"},
                 {"output": "ex/fee"},
-                unit="ex/moons",
+                unit=unit,
             ),
         ),
         units=UNITS,
     )
+
+
+# An input is held by one form, so two forms can no longer both read a field as their own input:
+# the figure's units are compared between the one form that holds or produces it and the form
+# that reads it.
+
+
+def test_a_producer_and_a_consumer_in_one_unit_agree() -> None:
+    FormSet([producer("ex/producer", "ex/crowns"), reader("ex/first", FEE_TOTAL, "ex/crowns")])
+
+
+def test_the_disagreement_is_found_whichever_form_is_listed_first() -> None:
+    consumer = reader("ex/consumer", FEE_TOTAL, "ex/crowns")
+
+    with pytest.raises(
+        InvalidCompositionError,
+        match=r"'fee'.*read in 'ex/crowns' by 'ex/consumer'.*'ex/moons'.*'ex/producer'",
+    ):
+        FormSet([consumer, producer("ex/producer", "ex/moons")])
+
+
+def test_a_consumer_with_a_unit_and_a_producer_without_disagree() -> None:
+    consumer = reader("ex/first", FEE_TOTAL, "ex/crowns")
+
+    with pytest.raises(InvalidCompositionError, match=r"'fee'.*unit"):
+        FormSet([producer("ex/producer", None), consumer])
+
+
+def test_a_producer_and_a_consumer_disagreeing_on_the_unit_are_refused() -> None:
     consumer = reader("ex/consumer", FEE_TOTAL, "ex/crowns")
 
     with pytest.raises(
         InvalidCompositionError,
         match=r"'fee'.*produced in 'ex/moons' by 'ex/producer'.*'ex/crowns'.*'ex/consumer'",
     ):
-        FormSet([producer, consumer])
+        FormSet([producer("ex/producer", "ex/moons"), consumer])

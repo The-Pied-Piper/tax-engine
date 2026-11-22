@@ -286,6 +286,7 @@ class FormSet:
         listed = tuple(forms)
         self._check_names(listed)
         self._check_groups(listed)
+        self._check_input_holders(listed)
         inputs = frozenset(kind for form in listed for kind in form.declared)
         self._producers: dict[ArtifactKind[Any], str] = {
             kind: form.name for form in listed for kind in form.derived
@@ -565,6 +566,19 @@ class FormSet:
                     f"exclusive group {group!r}: forms {listed} can never hold: "
                     "each always has at least one instance"
                 )
+
+    @staticmethod
+    def _check_input_holders(forms: tuple[FormComposition, ...]) -> None:
+        """Refuse an input two forms both declare: an input is held by one form."""
+        holder: dict[ArtifactKind[Any], str] = {}
+        for form in forms:
+            for kind in sorted(form.declared, key=Composition.sort_key):
+                if kind in holder:
+                    raise InvalidCompositionError(
+                        f"input {kind.label!r} is declared by forms {holder[kind]!r} and "
+                        f"{form.name!r}: an input is held by one form"
+                    )
+                holder[kind] = form.name
 
     @staticmethod
     def _check_names(forms: tuple[FormComposition, ...]) -> None:

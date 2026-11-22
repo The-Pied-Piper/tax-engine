@@ -669,6 +669,14 @@ def test_a_form_declares_each_input_once() -> None:
         optional_form(inputs=(optional("ex/amount"), optional("ex/amount")))
 
 
+def test_two_forms_may_not_declare_the_same_input() -> None:
+    with pytest.raises(InvalidManifestError, match="held by one form"):
+        with_forms(
+            optional_form(inputs=(optional("ex/amount"),)),
+            optional_form(name="ex/other", inputs=(optional("ex/amount"),)),
+        )
+
+
 def with_forms(
     *forms: Form,
     inputs: tuple[InputDeclaration, ...] | None = None,

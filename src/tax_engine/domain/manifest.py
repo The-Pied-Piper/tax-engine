@@ -407,6 +407,7 @@ class Manifest:
         for name in names:
             if names.count(name) > 1:
                 raise InvalidManifestError(f"form {name!r} is listed more than once")
+        self._check_input_holders()
         self._check_predicates()
         derived = [kind for form in self.forms for kind in form.derived_kinds(self.artifacts)]
         derived += self._stand_ins(derived)
@@ -524,6 +525,19 @@ class Manifest:
             )
         for name, declaration in declared.items():
             declaration.default_artifact(kinds[name])  # refuses a default of the wrong kind
+
+    def _check_input_holders(self) -> None:
+        """Refuse an input two forms both declare: an input is held by one form."""
+        holder: dict[str, str] = {}
+        for form in self.forms:
+            for declaration in form.inputs:
+                if declaration.name in holder:
+                    raise InvalidManifestError(
+                        f"input {declaration.name!r} is declared by forms "
+                        f"{holder[declaration.name]!r} and {form.name!r}: "
+                        "an input is held by one form"
+                    )
+                holder[declaration.name] = form.name
 
     def _check_predicates(self) -> None:
         """Refuse a `required_when` that names nothing the manifest has or an optional input."""
