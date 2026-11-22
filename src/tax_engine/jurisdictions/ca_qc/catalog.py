@@ -695,7 +695,8 @@ TP1_SCHEDULE_F_EMPLOYMENT_INCOME_CORRECTION_LINE_14 = AmountKind.declare(
     CATALOG, "tp1_schedule_f_employment_income_correction_line_14"
 )
 """Schedule F line 14, "Correction of employment income (line 105)", signed: a figure to subtract is
-negative. Blank when the caller has none, and line 16 reads it as 0."""
+negative. A copy of TP-1 line 105, read from the TP-1 income form's export
+(`tp1_schedule_f_line_14.yaml`), 0 when the caller gave none."""
 
 TP1_SCHEDULE_F_EMPLOYMENT_INCOME_TOTAL_LINE_16 = AmountKind.declare(
     CATALOG, "tp1_schedule_f_employment_income_total_line_16"
@@ -2465,7 +2466,7 @@ line 98 reads it as 0."""
 SCHEDULE_K_PREMIUM_PAYABLE_LINE_98 = AmountKind.declare(
     CATALOG, "schedule_k_premium_payable_line_98", non_negative=True
 )
-"""Premium payable under the Quebec prescription drug insurance plan, Schedule K line 98, "Add
+"""Premium payable under the Québec prescription drug insurance plan, Schedule K line 98, "Add
 lines 90 and 97": line 90 and the optional line 97 (read as 0 when left out) added, rounded
 half-up to the cent. One core/sum (`tp1_schedule_k_line_98.yaml`). The form exports it for
 TP-1 line 447."""
@@ -2652,7 +2653,7 @@ one core/record_total over Schedule F's export (`tp1_totals_line_446.yaml`)."""
 TP1_DRUG_INSURANCE_PREMIUM_LINE_447 = AmountKind.declare(
     CATALOG, "tp1_drug_insurance_premium_line_447", non_negative=True
 )
-"""TP-1 line 447 "Premium payable under the Quebec prescription drug insurance plan": Schedule K
+"""TP-1 line 447 "Premium payable under the Québec prescription drug insurance plan": Schedule K
 line 98, a copy. Produced by one core/record_total over Schedule K's export
 (`tp1_totals_line_447.yaml`)."""
 
@@ -2905,29 +2906,11 @@ TP1_INCOME_TAX_AND_CONTRIBUTIONS_RETURN = AmountKind.declare(
 """Quebec return summary: TP-1 line 450 "Income tax and contributions", read from the totals form's
 export. One core/record_total (`return.yaml`)."""
 
-TP1_WORK_PREMIUM_TAX_CREDITS_RETURN = AmountKind.declare(
-    CATALOG, "tp1_work_premium_tax_credits_return", non_negative=True
-)
-"""Quebec return summary: TP-1 line 456 "Tax credits respecting the work premium", read from the
-totals form's export. One core/record_total (`return.yaml`)."""
-
-TP1_INCOME_TAX_LESS_WORK_PREMIUM_RETURN = AmountKind.declare(
-    CATALOG, "tp1_income_tax_less_work_premium_return"
-)
-"""Quebec return summary: TP-1 line 450 less line 456, signed (no floor). For a salary-only filer
-only line 456 reduces line 450, because the credits that TP-1 line 468 collects are left out of the
-take-home. One core/subtract (`return.yaml`)."""
-
-TP1_QPIP_OVERPAYMENT_RETURN = AmountKind.declare(
-    CATALOG, "tp1_qpip_overpayment_return", non_negative=True
-)
-"""Quebec return summary: TP-1 line 457 "QPIP overpayment", read from the totals form's export. One
-core/record_total (`return.yaml`)."""
-
 TP1_INCOME_TAX_LESS_CREDITS_RETURN = AmountKind.declare(
     CATALOG, "tp1_income_tax_less_credits_return"
 )
-"""Quebec return summary: TP-1 line 450 less lines 456 and 457, signed (no floor). One core/subtract
+"""Quebec return summary: TP-1 line 470 "Subtract line 468 from line 450", read from the totals
+form's export (signed: negative is a refund, positive a balance due). One core/record_total
 (`return.yaml`)."""
 
 FEDERAL_TOTAL_PAYABLE_RETURN = AmountKind.declare(

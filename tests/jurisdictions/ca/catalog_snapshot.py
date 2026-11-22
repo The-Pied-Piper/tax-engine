@@ -1226,6 +1226,7 @@ REGISTERED = frozenset(
         "ca/ei_premiums_line_88",
         "ca/student_loan_interest_line_102",
         "ca/medical_expenses_line_107",
+        "ca/other_dependants_medical_expenses_line_111",
         "ca/medical_net_income_line_108",
         "ca/minimum_tax_carryover_line_124",
         "ca/credits_subtotal_line_96",

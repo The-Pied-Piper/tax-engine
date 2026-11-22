@@ -58,6 +58,7 @@ PARTS = (
     "t1_tax_and_credits_line_108.yaml",
     "t1_tax_and_credits_line_109.yaml",
     "t1_tax_and_credits_line_110.yaml",
+    "t1_tax_and_credits_line_111.yaml",
     "t1_tax_and_credits_line_33200.yaml",
     "t1_tax_and_credits_line_33500.yaml",
     "t1_tax_and_credits_line_33800.yaml",

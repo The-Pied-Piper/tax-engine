@@ -1,16 +1,17 @@
 """T1 General 2025 (5006-R, Ontario) line 112 and line 33200 "Line 110 plus line 111",
 from the salary alone.
 
-Line 111 (line 33199, other dependants, a Federal Worksheet) is not built and is left out, so line
-112 is one `core/sum` over line 110, rounded half-up to the cent; it produces `ca/medical_claim`,
-a non-negative kind.
+Line 112 is one `core/sum` over line 110 and line 111 (the T1's copy of line 33199, other
+dependants, a Federal Worksheet result typed in), in line order, rounded half-up to the cent; it
+produces `ca/medical_claim`, a non-negative kind.
 
 The real parts are composed beside a test-local header: the salary, the real T1 lines copied by
-provinces form (the optional medical expenses input), the real Schedule 8 and T2204 parts, the real
-T1 taxable-income lines and inputs,
-and the part under test. The form declaration is test-local: its one export is line 33200.
+provinces form (the optional medical expenses and other dependants inputs), the real Schedule 8 and
+T2204 parts, the real T1 taxable-income lines and inputs, the real line 111 part, and the part under
+test. The form declaration is test-local: its one export is line 33200.
 
-The salary is the only input the caller gives, except the medical expenses where a test gives them.
+The salary is the only input the caller gives, except the medical expenses and line 33199 where a
+test gives them.
 """
 
 from __future__ import annotations
@@ -25,7 +26,10 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tax_engine.jurisdictions.ca.catalog.personal_amounts import MEDICAL_EXPENSES
+from tax_engine.jurisdictions.ca.catalog.personal_amounts import (
+    MEDICAL_EXPENSES,
+    OTHER_DEPENDANTS_MEDICAL_EXPENSES,
+)
 from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
 from tests.kinds import bundled_kinds, non_negative
@@ -44,6 +48,7 @@ PARTS = (
     "t1_tax_and_credits_line_108.yaml",
     "t1_tax_and_credits_line_109.yaml",
     "t1_tax_and_credits_line_110.yaml",
+    "t1_tax_and_credits_line_111.yaml",
     "t1_tax_and_credits_line_33200.yaml",
 )
 HEADER = dedent("""\
@@ -63,11 +68,15 @@ T1_TAX_AND_CREDITS = dedent(f"""\
     """)
 
 
-def _sheet(take_home_service: TakeHomeService, salary: str, medical: str | None) -> Worksheet:
-    """The tax and credits sheet for `salary`, with the medical expenses when given."""
+def _sheet(
+    take_home_service: TakeHomeService, salary: str, medical: str | None, dependants: str | None
+) -> Worksheet:
+    """The tax and credits sheet for `salary`, with line 33099 and line 33199 when given."""
     artifacts = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if medical is not None:
         artifacts.append(Artifact(MEDICAL_EXPENSES, D(medical)))
+    if dependants is not None:
+        artifacts.append(Artifact(OTHER_DEPENDANTS_MEDICAL_EXPENSES, D(dependants)))
     worksheets = take_home_service(HEADER, T1_TAX_AND_CREDITS, *PARTS).compute(
         ONTARIO, 2025, *artifacts
     )
@@ -76,16 +85,22 @@ def _sheet(take_home_service: TakeHomeService, salary: str, medical: str | None)
 
 
 @pytest.mark.parametrize(
-    ("salary", "medical", "expected"),
+    ("salary", "medical", "dependants", "expected"),
     [
-        ("70000", None, "0.00"),
-        ("70000", "5000", "2919.95"),
+        ("70000", None, None, "0.00"),
+        ("70000", "5000", None, "2919.95"),
+        ("70000", None, "800", "800.00"),
+        ("70000", "5000", "800", "3719.95"),
     ],
 )
 def test_line_33200_figures(
-    take_home_service: TakeHomeService, salary: str, medical: str | None, expected: str
+    take_home_service: TakeHomeService,
+    salary: str,
+    medical: str | None,
+    dependants: str | None,
+    expected: str,
 ) -> None:
-    sheet = _sheet(take_home_service, salary, medical)
+    sheet = _sheet(take_home_service, salary, medical, dependants)
 
     value = sheet.get(bundled_kinds().kind(LINE)).value
     assert value == D(expected)
@@ -93,10 +108,11 @@ def test_line_33200_figures(
 
 
 def test_the_line_33200_step_is_in_the_trace(take_home_service: TakeHomeService) -> None:
-    sheet = _sheet(take_home_service, "70000", "5000")
+    sheet = _sheet(take_home_service, "70000", "5000", "800")
 
     assert (
-        "Line 110 (CA$2919.95) gives CA$2919.95 (rounded to the nearest cent)."
+        "Line 110 (CA$2919.95) plus line 33199 (CA$800.00) gives CA$3719.95 "
+        "(rounded to the nearest cent)."
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
 
 

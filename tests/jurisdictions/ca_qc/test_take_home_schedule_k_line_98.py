@@ -65,7 +65,7 @@ def test_the_part_is_as_printed() -> None:
     assert part["capabilities"] == [
         {
             "name": "core/sum",
-            "title": "Premium payable under the Quebec prescription drug insurance plan",
+            "title": "Premium payable under the Québec prescription drug insurance plan",
             "reference": "98",
             "unit": "ca/cad",
             "params": {"rounding": "ca-qc/cent_rounding"},
