@@ -2,12 +2,21 @@
 # Columbia additional tax for minimum tax purposes: Line 69: Amount from line 14 of Part 7 of Form
 # T691 ^ multiplied by 34.9% = ^". The 34.9% is a printed rate, held in the `ca-bc/minimum_tax_rate`
 # dataset, so line 69 is one calculation: 34.9% of the amount, rounded half-up to the cent. The
-# amount is an optional input (read as 0 when left out), not read from another part. The line has
-# two boxes: the amount (box A, the input) and the 34.9% result (box B, this step). The form does
-# not name them; "box A" and "box B" are the owner's naming.
+# amount (box A) is the T691's Part 7 line 14: the T691 owns the input and exports the line
+# (`ca/t691_additional_taxes_for_minimum_tax_carryover_line_14`), so the first step totals that
+# export (a form reads another form's export only as a record list) and the second applies the
+# rate. The form does not name the boxes; "box A" and "box B" are the owner's naming.
 form:
   name: ca-bc/bc428
 capabilities:
+  - name: core/record_total
+    title: "Amount from line 14 of Part 7 of Form T691"
+    reference: "69 box A"
+    unit: ca/cad
+    consumes:
+      records: ca/t691.t691_additional_taxes_for_minimum_tax_carryover_line_14
+    produces:
+      output: ca-bc/bc428_additional_minimum_tax_amount_line_69
   - name: core/apply_rate
     title: "British Columbia additional tax for minimum tax purposes"
     reference: "69 box B"

@@ -1,0 +1,21 @@
+# Form ON428 (Ontario Tax, 2025, 5006-c-25e) line 58 (ca-on/on428), "Line 58: Line 56 minus line 57
+# (if negative, enter "0") =": line 56 (`ca-on/on428_tax_minus_credits_line_56`) less line 57, the
+# Ontario dividend tax credit (`ca-on/on428_dividend_tax_credit_line_57`), not below 0. Line 57 is
+# an optional input that a salary-only caller leaves out, read as blank and then as 0 by the blank
+# rule below.
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/subtract_not_below_zero
+    title: "Line 56 minus line 57"
+    reference: "58"
+    unit: ca/cad
+    params:
+      rounding: ca-on/cent_rounding
+    consumes:
+      amount: ca-on/on428_tax_minus_credits_line_56
+      less: ca-on/on428_dividend_tax_credit_line_57
+    blank:
+      less: "0"
+    produces:
+      output: ca-on/on428_tax_minus_dividend_tax_credit_line_58

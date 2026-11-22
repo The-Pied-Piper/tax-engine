@@ -31,6 +31,7 @@ imports:
   - ca/t1_taxable_income
   - ca/t1_tax_and_credits
   - ca/t1_lines_copied_by_provinces
+  - ca/t691
   # Alberta prints its own Schedule 6 (5009-S6): the shared form reads the Alberta datasets instead.
   - form: ca/schedule_6
     datasets:

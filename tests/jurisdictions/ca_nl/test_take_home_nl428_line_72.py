@@ -47,11 +47,11 @@ NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / 
 LINE_PART = NL_PARTS / "nl428_line_72.yaml"
 LINE_70 = "ca-nl/nl428_tax_line_70"
 LINE_71 = "ca-nl/nl428_additional_tax_minimum_tax_line_71"
-AMOUNT = "ca-nl/nl428_t691_amount_line_71"
+AMOUNT = "ca/t691_additional_taxes_for_minimum_tax_carryover"
 IDENTIFIER = "ca-nl/nl428_tax_with_minimum_tax_line_72"
 FORM_NAME = "ca-nl/nl428"
 FEDERAL_PARTS = form_part_names(
-    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces", "t691"
 )
 NL_PART_NAMES = (
     *(
@@ -121,7 +121,6 @@ NL_PART_NAMES = (
     "nl428_line_68.yaml",
     "nl428_line_69.yaml",
     "nl428_line_70.yaml",
-    "nl428_line_71_input.yaml",
     "nl428_line_71.yaml",
     "nl428_line_72.yaml",
 )

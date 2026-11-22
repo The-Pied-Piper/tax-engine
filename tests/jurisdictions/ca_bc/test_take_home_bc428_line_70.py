@@ -65,12 +65,12 @@ LINE_67 = "ca-bc/bc428_total_line_67"
 LINE_68 = "ca-bc/bc428_tax_after_credits_line_68"
 LINE_69 = "ca-bc/bc428_additional_minimum_tax_line_69"
 LINE_70 = "ca-bc/bc428_tax_with_minimum_tax_line_70"
-AMOUNT = "ca-bc/bc428_additional_minimum_tax_amount_line_69"
+AMOUNT = "ca/t691_additional_taxes_for_minimum_tax_carryover"
 ROUNDING = "ca-bc/cent_rounding"
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
 LINE_PART = BC_PARTS / "bc428_line_70.yaml"
 T1_PARTS = form_part_names(
-    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces", "t691"
 )
 # The real British Columbia parts after the federal ones, in composition order: the line 68 test's
 # (lines 1 to 68), then the line 69 input and line 69, then line 70.
@@ -108,7 +108,6 @@ BC_LINE_PARTS = (
     "bc428_line_66.yaml",
     "bc428_line_67.yaml",
     "bc428_line_68.yaml",
-    "bc428_line_69_input.yaml",
     "bc428_line_69.yaml",
     LINE_PART.name,
 )

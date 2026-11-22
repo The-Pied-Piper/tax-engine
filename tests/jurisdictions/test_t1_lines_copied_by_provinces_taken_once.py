@@ -3,8 +3,9 @@
 Four T1 lines are the inputs: line 31000 (line 87, base CPP or QPP contributions on self-employment
 income and other earnings), line 31900 (line 102, student loan interest), line 33099 (line 107,
 medical expenses) and line 40427 (line 124, minimum tax carryover). AB428 line 64, BC428 line 66,
-MB428 line 63, NL428 line 68 and SK428 line 65 print "amount from line 40427 of your return", and
-NL428 lines 28, 43 and 48 print the amounts from lines 31000, 31900 and 33099, so each of those is
+MB428 line 63, NL428 line 68 and SK428 line 65 print "amount from line 40427 of your return", as
+does ON428 line 59 (whose line 60 is the lesser of line 58 and that amount at 24.63%), and NL428
+lines 28, 43 and 48 print the amounts from lines 31000, 31900 and 33099, so each of those is
 a total of the T1 export and none of them has an input of its own. A caller who gives line 40427
 once reaches every one of those forms; a caller who gives none reads each as 0.00.
 
@@ -24,6 +25,7 @@ import tax_engine.jurisdictions.ca_ab
 import tax_engine.jurisdictions.ca_bc
 import tax_engine.jurisdictions.ca_mb
 import tax_engine.jurisdictions.ca_nl
+import tax_engine.jurisdictions.ca_on
 import tax_engine.jurisdictions.ca_sk
 from tax_engine import build_tax_computation
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
@@ -49,6 +51,7 @@ CARRYOVER = {
     "CA-BC": ("ca-bc/bc428", "ca-bc/bc428_minimum_tax_carryover_line_66", D("0.349")),
     "CA-MB": ("ca-mb/mb428", "ca-mb/mb428_minimum_tax_carryover_credit_line_63", D("0.5")),
     "CA-NL": ("ca-nl/nl428", "ca-nl/nl428_minimum_tax_carryover_line_68", D("0.6")),
+    "CA-ON": ("ca-on/on428", "ca-on/on428_minimum_tax_carryover_line_60", D("0.2463")),
     "CA-SK": ("ca-sk/sk428", "ca-sk/sk428_minimum_tax_carryover_line_65", D("0.5")),
 }
 NL_COPIES = {
@@ -62,6 +65,7 @@ OLD_INPUTS = (
     "ca-mb/mb428_minimum_tax_carryover_line_63",
     "ca-nl/nl428_minimum_tax_carryover_amount_line_68",
     "ca-sk/sk428_minimum_tax_carryover_amount_line_65",
+    "ca-on/on428_minimum_tax_carryover_line_60",
     *NL_COPIES.values(),
 )
 
@@ -119,6 +123,7 @@ def test_a_caller_who_gives_none_reads_nl428_lines_28_43_and_48_as_zero() -> Non
         ("CA-BC", tax_engine.jurisdictions.ca_bc),
         ("CA-MB", tax_engine.jurisdictions.ca_mb),
         ("CA-NL", tax_engine.jurisdictions.ca_nl),
+        ("CA-ON", tax_engine.jurisdictions.ca_on),
         ("CA-SK", tax_engine.jurisdictions.ca_sk),
     ],
 )

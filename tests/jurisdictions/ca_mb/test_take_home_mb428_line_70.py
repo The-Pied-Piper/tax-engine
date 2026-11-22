@@ -57,7 +57,6 @@ MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / 
 LINE_PART = MB_PARTS / "mb428_line_70.yaml"
 LINE_69_INPUT_PART = MB_PARTS / "mb428_line_69_input.yaml"
 LINE_67_PART = MB_PARTS / "mb428_line_67.yaml"
-LINE_66_INPUT_PART = MB_PARTS / "mb428_line_66_input.yaml"
 LINE_66_PART = MB_PARTS / "mb428_line_66.yaml"
 LINE_65_PART = MB_PARTS / "mb428_line_65.yaml"
 LINE_64_PART = MB_PARTS / "mb428_line_64.yaml"
@@ -139,7 +138,7 @@ WORKSHEET_PARTS = (
 )
 # The real federal parts the T1 taxable-income form needs, beside the salary and the worksheet.
 T1_PARTS = form_part_names(
-    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces", "t691"
 )
 
 HEADER = dedent("""\
@@ -236,7 +235,6 @@ def _part_files() -> Iterator[Path]:
     yield LINE_63_PART
     yield LINE_64_PART
     yield LINE_65_PART
-    yield LINE_66_INPUT_PART
     yield LINE_66_PART
     yield LINE_67_PART
     yield LINE_69_INPUT_PART

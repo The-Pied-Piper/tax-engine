@@ -1,0 +1,16 @@
+# T691 (T691 E (25), 2025) Part 7 line 14 input a salary-only caller does not give. "Line 1 minus
+# line 13 (if negative, enter "0") / Additional taxes paid for minimum tax carryover = 14". A
+# salary-only caller has no additional taxes paid, so a request that leaves the line out is read as
+# blank, and the line 14 step reads that blank as 0. Lines 1 to 13 are not built, so the figure is
+# taken as the form prints it, one input. This form owns the input: AB428 line 67, BC428 line 69,
+# MB428 line 66, NL428 line 71 and SK428 line 68 import it from this form's export.
+form:
+  name: ca/t691
+inputs:
+  - name: ca/t691_additional_taxes_for_minimum_tax_carryover
+    title: "Additional taxes paid for minimum tax carryover"
+    reference: "14"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 1 minus line 13 (if negative, enter "0"): Additional taxes paid for minimum tax carryover'

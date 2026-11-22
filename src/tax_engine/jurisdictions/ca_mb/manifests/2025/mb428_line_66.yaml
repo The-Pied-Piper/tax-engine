@@ -1,11 +1,22 @@
 # Form MB428 (Manitoba Tax, 2025, CRA 5007-C) line 66 (ca-mb/mb428). "Manitoba additional tax for
 # minimum tax purposes:" / "Line 66: Form T691: line 1 minus line 2 of Part 7 multiplied by 50% =
 # ^". The 50% is a printed rate, held in the `ca-mb/minimum_tax_rate` dataset, so line 66 is one
-# calculation: 50% of the amount, rounded half-up to the cent. The amount is an optional input
-# (read as 0 when left out), declared by its own part.
+# calculation: 50% of the amount, rounded half-up to the cent. The amount is the T691's Part 7
+# line 14: the T691 owns the input and exports the line
+# (`ca/t691_additional_taxes_for_minimum_tax_carryover_line_14`), so the first step totals that
+# export (a form reads another form's export only as a record list) and the second applies the
+# rate.
 form:
   name: ca-mb/mb428
 capabilities:
+  - name: core/record_total
+    title: "Form T691: line 1 minus line 2 of Part 7"
+    reference: "66 (Form T691)"
+    unit: ca/cad
+    consumes:
+      records: ca/t691.t691_additional_taxes_for_minimum_tax_carryover_line_14
+    produces:
+      output: ca-mb/mb428_t691_amount_line_66
   - name: core/apply_rate
     title: "Manitoba additional tax for minimum tax purposes"
     reference: "66"
@@ -14,7 +25,5 @@ capabilities:
       rate: ca-mb/minimum_tax_rate
     consumes:
       base: ca-mb/mb428_t691_amount_line_66
-    blank:
-      base: "0"
     produces:
       output: ca-mb/mb428_additional_tax_minimum_tax_line_66

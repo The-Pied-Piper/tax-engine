@@ -1,0 +1,13 @@
+# Form T691 (T691 E (25), Alternative Minimum Tax), the parts the provincial forms read: Part 7
+# line 14, "Additional taxes paid for minimum tax carryover". The rest of the form is built by
+# other forms of this engine. The form owns the input, so the provincial forms import it and never
+# ask for it again.
+# Exports: Part 7 line 14 (`ca/t691_additional_taxes_for_minimum_tax_carryover_line_14`), read as a
+# record list by AB428 line 67, BC428 line 69, MB428 line 66, NL428 line 71 and SK428 line 68.
+form:
+  name: ca/t691
+  title: "Alternative Minimum Tax"
+  required: true
+  exports:
+    - ca/t691_additional_taxes_for_minimum_tax_carryover_line_14
+capabilities: []

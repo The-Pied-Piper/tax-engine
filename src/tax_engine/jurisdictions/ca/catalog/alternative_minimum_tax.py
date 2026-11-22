@@ -1150,3 +1150,18 @@ charges for resource property and flow-through shares (included on lines 22100, 
 of your return)", checked: the amount of `amt_resource_expenditures` after the check that it is not
 more than `amt_lines_22100_22400_and_23200` (`core/at_most`). An amount above those lines is an
 input error, not capped. Part 9 line 6 reads it."""
+
+T691_ADDITIONAL_TAXES_FOR_MINIMUM_TAX_CARRYOVER = AmountKind.declare(
+    CATALOG, "t691_additional_taxes_for_minimum_tax_carryover", non_negative=True
+)
+"""Additional taxes paid for minimum tax carryover, Form T691 Part 7 line 14 "Line 1 minus line 13
+(if negative, enter "0")" "Additional taxes paid for minimum tax carryover": the optional input
+(`t691_line_14_inputs.yaml`), blank when the filer has none. The T691 form owns it; AB428 line 67,
+BC428 line 69, MB428 line 66, NL428 line 71 and SK428 line 68 import line 14."""
+
+T691_ADDITIONAL_TAXES_FOR_MINIMUM_TAX_CARRYOVER_LINE_14 = AmountKind.declare(
+    CATALOG, "t691_additional_taxes_for_minimum_tax_carryover_line_14", non_negative=True
+)
+"""Additional taxes paid for minimum tax carryover as Form T691 Part 7 line 14 prints it
+(`t691_line_14.yaml`): the optional input (`ca/t691_additional_taxes_for_minimum_tax_carryover`),
+read as 0 when blank, exported by the T691 form."""

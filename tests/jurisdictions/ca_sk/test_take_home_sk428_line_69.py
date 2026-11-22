@@ -10,7 +10,7 @@ to 0), so neither is ever blank and the step has no blank rule. The output is
 
 The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the T1
 taxable income parts, the real line parts of `ca-sk/sk428_credits` that lines 8 and 57 need, the
-real `sk428_line_58.yaml` to `sk428_line_68.yaml` parts (with `sk428_line_68_inputs.yaml`) and the
+real `sk428_line_58.yaml` to `sk428_line_68.yaml` parts (with the T691 form) and the
 new `sk428_line_69.yaml`, and types in only the salary (and, in some tests, lines 61 and 64 and the
 Form T691 amount of line 68). The two form declarations are made up here: the credits form exports
 lines 1, 3 to 8 and 57, and `ca-sk/sk428` exports only line 69.
@@ -56,6 +56,7 @@ from tests.jurisdictions.ca_sk.support import (
 from tests.kinds import non_negative
 
 D = Decimal
+T691_INPUT = "ca/t691_additional_taxes_for_minimum_tax_carryover"
 CENT = D("0.01")
 ZERO = D(0)
 SK_PARTS = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / "manifests" / "2025"
@@ -100,11 +101,10 @@ SK_LINE_PARTS = (
     "sk428_line_65.yaml",
     "sk428_line_66.yaml",
     "sk428_line_67.yaml",
-    "sk428_line_68_inputs.yaml",
     "sk428_line_68.yaml",
 )
 T1_PARTS = form_part_names(
-    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces", "t691"
 )
 FORM_NAME = "ca-sk/sk428"
 CREDITS_FORM_NAME = "ca-sk/sk428_credits"
@@ -254,7 +254,7 @@ def _sheet(
     kinds = saskatchewan_kinds()
     given = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if amount is not None:
-        given.append(Artifact(sk_catalog.SK428_MINIMUM_TAX_T691_AMOUNT_LINE_68, D(amount)))
+        given.append(Artifact(kinds.kind(T691_INPUT), D(amount)))
     if line_61 is not None:
         given.append(Artifact(sk_catalog.SK428_TAX_ON_SPLIT_INCOME_LINE_61, D(line_61)))
     if line_64 is not None:
@@ -319,21 +319,6 @@ def test_a_t691_amount_of_1000_adds_500_to_line_67(
     assert _line(sheet, LINE_67) == D(line_67)
     assert _line(sheet, IDENTIFIER) == D(expected) == _derived(D(salary), D("1000.00"))
     assert str(_line(sheet, IDENTIFIER)) == expected
-
-
-def test_a_negative_t691_amount_gives_a_negative_line_68_and_a_signed_line_69(
-    tmp_path: Path,
-) -> None:
-    # The Form T691 input is signed: -1000 x 50% = -500.00, added to line 67 with no floor.
-    sheet = _sheet(tmp_path, "70000", amount="-1000")
-    assert _line(sheet, LINE_68) == D("-500.00")
-    assert _line(sheet, IDENTIFIER) == D("4592.30") == _derived(D("70000"), D("-1000"))
-
-    sheet = _sheet(tmp_path / "low", "20000", amount="-1000")
-    assert _line(sheet, LINE_67) == ZERO
-    assert _line(sheet, IDENTIFIER) == D("-500.00")
-    assert str(_line(sheet, IDENTIFIER)) == "-500.00"
-    assert _line(sheet, IDENTIFIER).is_signed()
 
 
 def test_line_69_reads_lines_61_and_64_through_line_67(tmp_path: Path) -> None:

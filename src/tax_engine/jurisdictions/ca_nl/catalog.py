@@ -842,8 +842,9 @@ NL428_T691_AMOUNT_LINE_71 = AmountKind.declare(
     CATALOG, "nl428_t691_amount_line_71", non_negative=True
 )
 """Form T691 amount, NL428 line 71 "Line 71: Amount from line 14 of Part 7 of Form T691 multiplied
-by 60% =": the amount from line 14 of Part 7 of Form T691 as the filer gives it, an optional input;
-a blank input is read as blank, and the 60% multiplication step reads it."""
+by 60% =": the amount from line 14 of Part 7 of Form T691, a record total of the T691's export
+(`ca/t691_additional_taxes_for_minimum_tax_carryover_line_14`),
+0 when the caller leaves it out; the 60% multiplication step reads it."""
 
 NL428_ADDITIONAL_TAX_MINIMUM_TAX_LINE_71 = AmountKind.declare(
     CATALOG, "nl428_additional_tax_minimum_tax_line_71", non_negative=True

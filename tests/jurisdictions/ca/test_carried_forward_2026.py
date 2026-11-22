@@ -1,4 +1,4 @@
-"""The twenty 2026 datasets carried forward unchanged from 2025 (structure or a rule, not an
+"""The twenty-one 2026 datasets carried forward unchanged from 2025 (structure or a rule, not an
 indexed dollar amount): each equals its 2025 file apart from the year, and its 2026 file opens
 with the provisional and derivation header lines.
 """
@@ -52,6 +52,7 @@ FAMILIES: list[tuple[str, ParameterKind[Any]]] = [
     ("ca-on/lift_single_rate", RATE),
     ("ca-on/tax_reduction_multiplier", FRACTION),
     ("ca-on/marginal_rate_gate", AMOUNT_BY_BAND),
+    ("ca-on/minimum_tax_rate", RATE),
 ]
 
 

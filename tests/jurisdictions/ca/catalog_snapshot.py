@@ -21,6 +21,8 @@ REGISTERED = frozenset(
         "ca/medical_expenses_line_33099",
         "ca/minimum_tax_carryover",
         "ca/minimum_tax_carryover_line_40427",
+        "ca/t691_additional_taxes_for_minimum_tax_carryover",
+        "ca/t691_additional_taxes_for_minimum_tax_carryover_line_14",
         "ca/uccb_income_line_11700",
         "ca/rdsp_income",
         "ca/rdsp_income_line_12500",
