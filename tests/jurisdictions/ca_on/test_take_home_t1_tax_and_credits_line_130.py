@@ -47,6 +47,7 @@ LINE_130 = "ca/federal_tax_less_foreign_tax_credit"
 # parts, the real T1 taxable-income lines and inputs, lines 30000, 76, 31260, 84, 96, 98, 101, 106,
 # 33500, 33800, 35000, 125, 40400, 42900 and 128, and the part under test with its inputs.
 PARTS = (
+    *form_part_names("t1_lines_copied_by_provinces"),
     *form_part_names("schedule_8"),
     *form_part_names("t2204"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),
@@ -58,6 +59,11 @@ PARTS = (
     "t1_tax_and_credits_line_98.yaml",
     "t1_tax_and_credits_line_101.yaml",
     "t1_tax_and_credits_line_106.yaml",
+    "t1_tax_and_credits_line_107.yaml",
+    "t1_tax_and_credits_line_108.yaml",
+    "t1_tax_and_credits_line_109.yaml",
+    "t1_tax_and_credits_line_110.yaml",
+    "t1_tax_and_credits_line_33200.yaml",
     "t1_tax_and_credits_line_33500.yaml",
     "t1_tax_and_credits_line_33800.yaml",
     "t1_tax_and_credits_line_35000.yaml",

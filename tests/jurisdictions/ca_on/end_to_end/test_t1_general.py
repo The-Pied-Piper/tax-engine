@@ -40,7 +40,7 @@ import pytest
 
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.errors import NegativeArtifactError
+from tax_engine.domain.errors import NegativeArtifactError, SubCentAmountError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.worksheet import Worksheet
@@ -49,6 +49,7 @@ from tax_engine.jurisdictions.ca.catalog.credits_against_federal_tax import (
     FEDERAL_LOGGING_TAX_CREDIT,
     FEDERAL_TAX,
     FEDERAL_TAX_LESS_CREDITS,
+    MINIMUM_TAX_CARRYOVER_LINE_124,
 )
 from tax_engine.jurisdictions.ca.catalog.deductions import (
     SCHEDULE_8_CPP_BASE_CONTRIBUTIONS_ON_RETURN,
@@ -83,6 +84,7 @@ from tax_engine.jurisdictions.ca.catalog.non_refundable_credits import (
 from tax_engine.jurisdictions.ca.catalog.personal_amounts import (
     BASIC_PERSONAL_AMOUNT,
     CPP_BASE_CONTRIBUTIONS_LINE_86,
+    CPP_BASE_CONTRIBUTIONS_LINE_87,
     CREDITS_SUBTOTAL_LINE_96,
     EI_PREMIUMS_LINE_88,
     FEDERAL_BRACKET_COLUMN_RATE_LINE_73,
@@ -92,6 +94,12 @@ from tax_engine.jurisdictions.ca.catalog.personal_amounts import (
     FEDERAL_TAX_ON_TAXABLE_INCOME_LINE_76,
     FEDERAL_TAX_TAXABLE_INCOME_LINE_70,
     FEDERAL_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_72,
+    MEDICAL_CLAIM,
+    MEDICAL_EXPENSES_LINE_107,
+    MEDICAL_EXPENSES_OVER_THRESHOLD,
+    MEDICAL_NET_INCOME_SHARE,
+    MEDICAL_THRESHOLD,
+    STUDENT_LOAN_INTEREST_LINE_102,
 )
 from tax_engine.jurisdictions.ca.catalog.refund import (
     CWB_LINE_45300,
@@ -132,15 +140,23 @@ T1_AT_70000: dict[str, tuple[AmountKind, str]] = {
     "76": (FEDERAL_TAX_ON_TAXABLE_INCOME_LINE_76, "10771.18"),
     "84": (CREDIT_AMOUNTS_LINE_84, "16129.00"),
     "86": (CPP_BASE_CONTRIBUTIONS_LINE_86, "3291.75"),
+    "87": (CPP_BASE_CONTRIBUTIONS_LINE_87, "0.00"),
     "88": (EI_PREMIUMS_LINE_88, "1077.48"),
     "96": (CREDITS_SUBTOTAL_LINE_96, "5840.23"),
     "98": (CREDIT_AMOUNTS_LINE_98, "21969.23"),
+    "102": (STUDENT_LOAN_INTEREST_LINE_102, "0.00"),
     "106": (CREDIT_AMOUNTS_LINE_106, "21969.23"),
+    "107": (MEDICAL_EXPENSES_LINE_107, "0.00"),
+    "108": (MEDICAL_NET_INCOME_SHARE, "2080.05"),
+    "109": (MEDICAL_THRESHOLD, "2080.05"),
+    "110": (MEDICAL_EXPENSES_OVER_THRESHOLD, "0.00"),
+    "33200": (MEDICAL_CLAIM, "0.00"),
     "31260 income": (CANADA_EMPLOYMENT_AMOUNT_INCOME, "70000.00"),
     "31260": (CANADA_EMPLOYMENT_AMOUNT, "1471.00"),
     "33800": (CREDIT_AMOUNTS_AT_CREDIT_RATE, "3185.54"),
     "33500": (NON_REFUNDABLE_CREDIT_AMOUNTS, "21969.23"),
     "35000": (NON_REFUNDABLE_TAX_CREDITS, "3185.54"),
+    "124": (MINIMUM_TAX_CARRYOVER_LINE_124, "0.00"),
     "125": (CREDITS_AGAINST_BASIC_FEDERAL_TAX, "3185.54"),
     "40400": (FEDERAL_TAX_WITH_SPLIT_INCOME, "10771.18"),
     "42800": (PROVINCIAL_TAX_LINE_42800, "3911.45"),
@@ -581,6 +597,14 @@ def test_the_federal_edge_at_114750_belongs_to_the_lower_column(
 def test_a_negative_salary_is_refused(take_home_service: TakeHomeService) -> None:
     with pytest.raises(NegativeArtifactError, match="ca/employment_income cannot be negative"):
         run(take_home_service, "-1")
+
+
+@pytest.mark.parametrize("salary", ["70000.004", "1999.995"])
+def test_a_salary_with_a_fraction_of_a_cent_is_refused(
+    take_home_service: TakeHomeService, salary: str
+) -> None:
+    with pytest.raises(SubCentAmountError, match="ca/employment_income must be in whole cents"):
+        run(take_home_service, salary)
 
 
 def test_the_ninety_thousand_dollar_return_matches_the_hand_computed_chain(

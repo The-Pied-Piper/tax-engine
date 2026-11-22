@@ -13,6 +13,6 @@ capabilities:
       rounding: ca-mb/cent_rounding
     consumes:
       multiplicand: ca-mb/worksheet_mb428_line_6
-      multiplier: ca-mb/worksheet_mb428_basic_personal_amount_line_7
+      multiplier: ca-mb/worksheet_mb428_line_7
     produces:
       output: ca-mb/worksheet_mb428_line_8

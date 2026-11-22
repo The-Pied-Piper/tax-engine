@@ -523,8 +523,7 @@ NON_REFUNDABLE_CREDIT_AMOUNTS = AmountKind.declare(
 )
 """Total of the non-refundable credit amounts, T1 line 113 and line 33500 "Line 106 plus line 112":
 the credit amounts through line 106 (`credit_amounts_line_106`) plus the medical expenses amount of
-line 112 (line 33200, line 110 plus line 111). The take-home filer has no medical expenses, so the
-total is line 106 alone. Line 33800 (line 115) reads it."""
+line 112 (line 33200, line 110 plus line 111), `medical_claim`. Line 33800 (line 115) reads it."""
 
 CHARITABLE_DONATIONS = AmountKind.declare(CATALOG, "charitable_donations", non_negative=True)
 """Charitable donations, Schedule 9 line 1 "Donations to registered charities and similar

@@ -182,9 +182,11 @@ Each entry of `inputs` (and of a form's `fields`) is a mapping:
 | `title` | The figure's printed title. Optional, for either kind. |
 | `reference` | What the form prints beside the figure, such as `10400` or `Box 14`. Optional, for either kind. |
 | `unit` | The full identifier of the figure's unit, such as `core/months`; see Units. Optional, for either kind. |
+| `position` | Where the form prints the figure, counted from 1 (see Printed position). Optional, for either kind. |
+| `whole_cents` | Input only; a field refuses it. `true` for an input a caller keys in from a slip that prints dollars and cents: a value with a fraction of a cent is refused, not rounded. Optional; `false` when left out. |
 
 A required input takes neither `default` nor `basis`. By convention an entry writes `name`, `title`,
-`reference` and `unit` first, then `required`, `default` and `basis`.
+`reference`, `unit` and `position` first, then `required`, `whole_cents`, `default` and `basis`.
 
 ## Input ownership
 
@@ -211,8 +213,9 @@ Each entry of `capabilities` is a mapping:
 | `title` | The printed wording of the one figure the selection produces. A step the form does not print may carry plain words instead, but only when the sentence of a numbered line names it, so that the sentence does not name it by its internal label; such a step has no `reference`. A selection that produces several figures is rejected if it has one. |
 | `reference` | What the form prints beside that figure, as free text. Same one-figure rule. |
 | `unit` | The full identifier of that figure's unit; see Units. Same one-figure rule. |
+| `position` | Where the form prints that figure, counted from 1; see Printed position. Same one-figure rule. |
 
-A selection writes `name`, `title`, `reference` and `unit` before its other keys.
+A selection writes `name`, `title`, `reference`, `unit` and `position` before its other keys.
 
 ### Blank rules
 
@@ -260,6 +263,14 @@ A capability must list the slot in `BLANK_ALLOWED` for a blank rule to be allowe
 
 `title` and `reference` are for the reader of a trace. All are non-empty text, optional, and never
 used to look anything up: the identifier stays the unique name.
+
+## Printed position
+
+`position` is a whole number from 1, the place of the figure among the lines of the printed form,
+so a reader can list a form's lines in the order the form prints them. A `reference` cannot do
+that: a line may print a line number and a box code, a column of a table repeats line numbers, and a
+code can sit between two line numbers. A worksheet gives it as `Worksheet.position(label)`. It is
+optional, only counts figures of its own form, and nothing checks that two figures differ.
 
 ## Units
 
