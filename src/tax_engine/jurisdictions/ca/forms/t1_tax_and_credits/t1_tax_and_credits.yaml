@@ -15,6 +15,12 @@
 #     Canada, foreign tax credit, investment tax credit recapture, logging tax credit and the
 #     line 41600 credits) are, for the take-home filer, not applied in payroll or not given, so
 #     they do not move the gate. The return counts the rate only where this is above zero.
+#   - Lines 45000, 45300 and 47900 (`ca/ei_overpayment_line_45000` "Employment insurance (EI)
+#     overpayment", `ca/cwb_line_45300` "Canada workers benefit (CWB)" and
+#     `ca/provincial_credits_line_47900` "Provincial or territorial credits") are the three parts
+#     of line 48200 the take-home filer has: the credits that arrive only when the return is filed.
+#     A caller lists each by its title and line. Line 47900 is blank where no provincial form
+#     supplies it (Ontario, Alberta, Saskatchewan, Newfoundland and Labrador).
 # Line 76 (`ca/federal_tax_on_taxable_income_line_76`, "Line 74 plus line 75 Federal tax on
 # taxable income") is read inside the form by line 40400 only, and line 70 by line 76, so neither
 # is exported.
@@ -27,4 +33,7 @@ form:
     - ca/total_payable
     - ca/federal_bracket_column_rate_line_73
     - ca/federal_tax_after_credits
+    - ca/ei_overpayment_line_45000
+    - ca/cwb_line_45300
+    - ca/provincial_credits_line_47900
 capabilities: []
