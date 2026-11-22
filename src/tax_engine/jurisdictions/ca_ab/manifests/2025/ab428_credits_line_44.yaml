@@ -1,10 +1,20 @@
-# AB428 (2025) line 44, rounded to the cent. Form AB428 (CRA 5009-c): "Line 44 and line 58689: Amount from line 33099 of your return". The line is an optional input
-# (`ca-ab/ab428_medical_expenses_line_44`), blank for a salary-only filer. One core/sum step over the input alone, as line 41 is
-# (ab428_credits_line_41.yaml), reads the blank as 0 and rounds to the cent, because a line written on
-# the form is a whole-cent figure: `ca-ab/ab428_medical_expenses_rounded_line_44`.
+# AB428 (2025) line 44, rounded to the cent. Form AB428 (CRA 5009-c): "Line 44 and line 58689: Amount
+# from line 33099 of your return". The amount is T1 line 33099, which the T1 owns and exports
+# (`ca/medical_expenses_line_33099`), so this form has no input for it. Another form reads an export
+# only as a record list, so core/record_total gives the figure first
+# (`ca-ab/ab428_medical_expenses_line_44`). A salary-only caller has none, so it is 0. One core/sum
+# step over it alone, as line 41 is (ab428_credits_line_41.yaml), rounds to the cent, because a line
+# written on the form is a whole-cent figure: `ca-ab/ab428_medical_expenses_rounded_line_44`.
 form:
   name: ca-ab/ab428_credits
 capabilities:
+  - name: core/record_total
+    title: "Amount from line 33099 of your return"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_lines_copied_by_provinces.medical_expenses_line_33099
+    produces:
+      output: ca-ab/ab428_medical_expenses_line_44
   - name: core/sum
     reference: "44"
     unit: ca/cad

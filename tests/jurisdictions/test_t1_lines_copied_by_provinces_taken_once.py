@@ -1,12 +1,16 @@
 """The T1 lines a provincial form copies are asked once, by the T1, and imported from its export.
 
-Four T1 lines are the inputs: line 31000 (line 87, base CPP or QPP contributions on self-employment
+Five T1 lines are the inputs: line 31000 (line 87, base CPP or QPP contributions on self-employment
 income and other earnings), line 31900 (line 102, student loan interest), line 33099 (line 107,
-medical expenses) and line 40427 (line 124, minimum tax carryover). AB428 line 64, BC428 line 66,
-MB428 line 63, NL428 line 68 and SK428 line 65 print "amount from line 40427 of your return", and
-NL428 lines 28, 43 and 48 print the amounts from lines 31000, 31900 and 33099, so each of those is
-a total of the T1 export and none of them has an input of its own. A caller who gives line 40427
-once reaches every one of those forms; a caller who gives none reads each as 0.00.
+medical expenses), line 33199 (line 111, allowable medical expenses for other dependants) and line
+40427 (line 124, minimum tax carryover). AB428 line 64, BC428 line 66, MB428 line 63, NL428 line 68
+and SK428 line 65 print "amount from line 40427 of your return", NL428 lines 28, 43 and 48 print
+the amounts from lines 31000, 31900 and 33099, AB428 line 44, BC428 line 46, MB428 line 43 and SK428
+line 43 print "amount from line 33099 of your return", and SK428 line 49 prints the amount from line
+33199, so each of those is a total of the T1 export and none of them has an input of its own. A
+caller who gives a T1 line once reaches every one of those forms; a caller who gives none reads each
+as 0.00. AB428 line 50, BC428 line 52 and ON428 line 42 (other dependants) and ON428 line 36 are not
+copies of the T1 and keep their own inputs.
 
 The real registered engine is run end to end over each province's real 2025 manifest, as the
 provincial end-to-end tests do, with the T1 amounts as inputs. The results are hand-computed from
@@ -40,7 +44,14 @@ MINIMUM_TAX_CARRYOVER = "ca/minimum_tax_carryover"
 CPP_QPP = "ca/self_employment_cpp_qpp_contributions"
 STUDENT_LOAN_INTEREST = "ca/student_loan_interest"
 MEDICAL_EXPENSES = "ca/medical_expenses"
-T1_INPUTS = {MINIMUM_TAX_CARRYOVER, CPP_QPP, STUDENT_LOAN_INTEREST, MEDICAL_EXPENSES}
+OTHER_DEPENDANTS = "ca/other_dependants_medical_expenses"
+T1_INPUTS = {
+    MINIMUM_TAX_CARRYOVER,
+    CPP_QPP,
+    STUDENT_LOAN_INTEREST,
+    MEDICAL_EXPENSES,
+    OTHER_DEPENDANTS,
+}
 # Province code, then each form that prints a copy: its form, the figure, and what it is of the
 # $1,000.00 given on line 40427 (the printed rate) or of the amount given on line 31000, 31900 or
 # 33099 (the amount itself, "1"), as a fraction of the amount.
@@ -56,7 +67,44 @@ NL_COPIES = {
     STUDENT_LOAN_INTEREST: "ca-nl/nl428_student_loan_interest_line_43",
     MEDICAL_EXPENSES: "ca-nl/nl428_medical_expenses_line_48",
 }
+# Province code, then the form and figure of its line that prints "amount from line 33099", and the
+# line after it (over the limit) that reads it, with that line's value for 5,000.005 given at a
+# $70,000 salary: the T1 export is 5,000.01, net income is 69,335.00 and 3% of it is 2,080.05, so
+# the line is 2,919.96 (Manitoba's own cap is 1,728.00, so 3,272.01).
+MEDICAL = {
+    "CA-AB": (
+        "ca-ab/ab428_credits",
+        "ca-ab/ab428_medical_expenses_line_44",
+        "ca-ab/ab428_medical_expenses_over_limit_line_49",
+        D("2919.96"),
+    ),
+    "CA-BC": (
+        "ca-bc/bc428",
+        "ca-bc/bc428_medical_expenses_line_46",
+        "ca-bc/bc428_medical_expenses_over_limit_line_51",
+        D("2919.96"),
+    ),
+    "CA-MB": (
+        "ca-mb/mb428_credits",
+        "ca-mb/mb428_medical_expenses_line_43",
+        "ca-mb/mb428_medical_expenses_over_limit_line_48",
+        D("3272.01"),
+    ),
+    "CA-SK": (
+        "ca-sk/sk428_credits",
+        "ca-sk/sk428_medical_expenses_line_43",
+        "ca-sk/sk428_medical_expenses_over_limit_line_48",
+        D("2919.96"),
+    ),
+}
+SK_LINE_49 = "ca-sk/sk428_other_dependants_medical_expenses_line_49"
+SK_LINE_50 = "ca-sk/sk428_medical_expenses_line_50"
 OLD_INPUTS = (
+    "ca-ab/ab428_medical_expenses_line_44",
+    "ca-bc/bc428_medical_expenses_line_46",
+    "ca-mb/mb428_medical_expenses_line_43",
+    "ca-sk/sk428_medical_expenses_line_43",
+    SK_LINE_49,
     "ca-ab/ab428_minimum_tax_carryover_amount_line_64",
     "ca-bc/bc428_minimum_tax_carryover_amount",
     "ca-mb/mb428_minimum_tax_carryover_line_63",
@@ -110,6 +158,34 @@ def test_a_caller_who_gives_none_reads_nl428_lines_28_43_and_48_as_zero() -> Non
 
     for name in NL_COPIES.values():
         assert _figure(worksheets, "ca-nl/nl428_credits", name) == D("0.00"), name
+
+
+@pytest.mark.parametrize("code", MEDICAL)
+def test_line_33099_given_once_reaches_the_province_and_the_line_after_it(code: str) -> None:
+    form, line, over_limit, expected = MEDICAL[code]
+
+    worksheets = _compute(code, {MEDICAL_EXPENSES: "5000.005"})
+
+    # The T1 export is cent-rounded, half up, and the provincial line is that figure.
+    assert _figure(worksheets, form, line) == D("5000.01")
+    assert _figure(worksheets, form, over_limit) == expected
+
+
+@pytest.mark.parametrize("code", MEDICAL)
+def test_a_caller_who_gives_none_reads_the_medical_line_as_zero(code: str) -> None:
+    form, line, _, _ = MEDICAL[code]
+
+    assert _figure(_compute(code, {}), form, line) == D("0.00")
+
+
+def test_sk428_line_49_is_the_amount_given_on_t1_line_33199() -> None:
+    worksheets = _compute("CA-SK", {OTHER_DEPENDANTS: "250.555"})
+
+    # The T1 export is cent-rounded, half up, and line 49 is that figure; with no line 33099 the
+    # line 48 is 0.00, so line 50 (line 48 plus line 49) is the same 250.56.
+    assert _figure(worksheets, "ca-sk/sk428_credits", SK_LINE_49) == D("250.56")
+    assert _figure(worksheets, "ca-sk/sk428_credits", SK_LINE_50) == D("250.56")
+    assert _figure(_compute("CA-SK", {}), "ca-sk/sk428_credits", SK_LINE_49) == D("0.00")
 
 
 @pytest.mark.parametrize(

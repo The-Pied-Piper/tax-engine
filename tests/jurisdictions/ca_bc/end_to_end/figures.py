@@ -15,6 +15,7 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.registrations import artifact_kinds
+from tests import medical_support
 
 D = Decimal
 BRITISH_COLUMBIA = JurisdictionCode("CA-BC")
@@ -27,9 +28,12 @@ def kind(name: str) -> AmountKind:
     return found
 
 
-def sheet(form: str, year: int, **given: str) -> Worksheet:
-    """The `ca-bc/<form>` worksheet at the salary, with each `name=amount` typed in."""
+def sheet(form: str, year: int, medical_expenses: str | None = None, **given: str) -> Worksheet:
+    """The `ca-bc/<form>` worksheet at the salary, with each `name=amount` typed in and, when
+    given, the one T1 line 33099 amount (`ca/medical_expenses`)."""
     artifacts = [Artifact(EMPLOYMENT_INCOME, D(SALARY))]
+    if medical_expenses is not None:
+        artifacts.append(medical_support.medical_expenses(medical_expenses))
     artifacts += [Artifact(kind(name), D(amount)) for name, amount in given.items()]
     worksheets = build_tax_computation().compute(BRITISH_COLUMBIA, year, *artifacts)
     (found,) = worksheets[f"ca-bc/{form}"]
