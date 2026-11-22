@@ -99,6 +99,7 @@ from tax_engine.jurisdictions.ca.catalog.personal_amounts import (
     MEDICAL_EXPENSES_OVER_THRESHOLD,
     MEDICAL_NET_INCOME_SHARE,
     MEDICAL_THRESHOLD,
+    OTHER_DEPENDANTS_MEDICAL_EXPENSES_LINE_111,
     STUDENT_LOAN_INTEREST_LINE_102,
 )
 from tax_engine.jurisdictions.ca.catalog.refund import (
@@ -150,6 +151,7 @@ T1_AT_70000: dict[str, tuple[AmountKind, str]] = {
     "108": (MEDICAL_NET_INCOME_SHARE, "2080.05"),
     "109": (MEDICAL_THRESHOLD, "2080.05"),
     "110": (MEDICAL_EXPENSES_OVER_THRESHOLD, "0.00"),
+    "111": (OTHER_DEPENDANTS_MEDICAL_EXPENSES_LINE_111, "0.00"),
     "33200": (MEDICAL_CLAIM, "0.00"),
     "31260 income": (CANADA_EMPLOYMENT_AMOUNT_INCOME, "70000.00"),
     "31260": (CANADA_EMPLOYMENT_AMOUNT, "1471.00"),
