@@ -42,8 +42,7 @@ def test_a_limited_attendant_care_claim_raises_line_36_and_line_41() -> None:
 
 def test_an_adapted_van_claim_is_raised_to_the_ontario_maximum() -> None:
     """RC4065 limits the federal van claim to $5,000 and Ontario to $8,813: a van paid at 10,000
-    raises a claim of 20,000 by 8,813 less 5,000, 3,813, to
-    23,813.00,
+    raises a claim of 20,000 by 8,813 less 5,000, 3,813, to 23,813.00,
     and line 41 to 23,813.00 less 2,080.05, 21,732.95."""
     kinds = bundled_kinds()
     given = [
