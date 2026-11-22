@@ -2,6 +2,10 @@
 # 5005-R line 91: "Line 91 and line 31205: Provincial parental insurance plan (PPIP) premiums paid
 # (box 55 of all T4 slips) (maximum $484.12)". The take-home caller has no T4 slip, so a request that
 # leaves the figure out is read as blank, and the line 91 part computes it from the salary.
+# 5005-S10 line 13 "Enter the amount from box 56 of all of your T4 slips where Quebec is the province
+# of employment (if box 56 is blank, enter the amount from box 14 of the T4 slip) (include employment
+# income that you did not get a T4 slip for)": a request that leaves box 56 out is read as blank, and
+# the guide to line 31205's $2,000 test then reads the employment income, as the form does.
 form:
   name: ca-qc/ppip_premium
 inputs:
@@ -12,3 +16,10 @@ inputs:
     required: false
     default: null
     basis: 'Provincial parental insurance plan (PPIP) premiums paid (box 55 of all T4 slips)'
+  - name: ca-qc/ppip_insurable_earnings_given
+    title: "PPIP insurable earnings"
+    reference: "Box 56"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Enter the amount from box 56 of all of your T4 slips where Quebec is the province of employment (if box 56 is blank, enter the amount from box 14 of the T4 slip)'
