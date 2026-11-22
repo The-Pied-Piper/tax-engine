@@ -10,4 +10,4 @@ inputs:
     unit: ca/cad
     required: false
     default: null
-    basis: "Other employment income"
+    basis: "Other employment income. Specify: 106 + 107"

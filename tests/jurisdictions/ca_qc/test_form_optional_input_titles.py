@@ -8,15 +8,10 @@ Sources: Revenu Quebec TP-1.D-V (2025-12) and its Schedules B, F, K and P; CRA 5
 
 from __future__ import annotations
 
-from pathlib import Path
-from typing import Any
-
 import pytest
-import yaml
 
-import tax_engine.jurisdictions.ca_qc
+from tests.manifest_support import inputs_of, real_manifest
 
-MANIFESTS = Path(tax_engine.jurisdictions.ca_qc.__file__).parent / "manifests/2025"
 TITLES = {
     "ca-qc/schedule_b_lived_alone_line_20": (
         "You maintained and ordinarily lived in a dwelling in which you lived alone or only "
@@ -121,16 +116,6 @@ TITLES = {
 }
 
 
-def _declared_titles() -> dict[str, Any]:
-    titles: dict[str, Any] = {}
-    for path in sorted(MANIFESTS.glob("*.yaml")):
-        part = yaml.safe_load(path.read_text(encoding="utf-8"))
-        if isinstance(part, dict):
-            for declaration in part.get("inputs") or []:
-                titles[declaration["name"]] = declaration.get("title")
-    return titles
-
-
 @pytest.mark.parametrize("name", sorted(TITLES))
 def test_the_input_carries_the_printed_title_of_its_line(name: str) -> None:
-    assert _declared_titles()[name] == TITLES[name]
+    assert inputs_of(real_manifest("CA-QC"))[name].title == TITLES[name]
