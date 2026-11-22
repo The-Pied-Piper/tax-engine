@@ -4,6 +4,8 @@
 # ask for it again.
 # Exports: Part 7 line 14 (`ca/t691_additional_taxes_for_minimum_tax_carryover_line_14`), read as a
 # record list by AB428 line 67, BC428 line 69, MB428 line 66, NL428 line 71 and SK428 line 68.
+# Lines 1 to 13 of Part 7 are not built, so a typed line 14 stands in for them. A negative figure is
+# refused, as the kind is non-negative.
 form:
   name: ca/t691
   title: "Alternative Minimum Tax"

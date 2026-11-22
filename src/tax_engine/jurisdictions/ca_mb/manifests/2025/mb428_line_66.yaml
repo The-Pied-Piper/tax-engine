@@ -5,7 +5,7 @@
 # line 14: the T691 owns the input and exports the line
 # (`ca/t691_additional_taxes_for_minimum_tax_carryover_line_14`), so the first step totals that
 # export (a form reads another form's export only as a record list) and the second applies the
-# rate.
+# rate. The printed "line 1 minus line 2 of Part 7" is read as T691 Part 7 line 14, the same figure BC and NL print.
 form:
   name: ca-mb/mb428
 capabilities:

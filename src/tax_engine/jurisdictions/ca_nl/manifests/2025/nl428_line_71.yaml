@@ -1,6 +1,8 @@
-# Form NL428 (Newfoundland and Labrador Tax, 2025, CRA 5001-C) line 71 (ca-nl/nl428).
+# Form NL428 (Newfoundland and Labrador Tax, 2025) line 71 (ca-nl/nl428). The printed NL428 is
+# not in the form text on hand (5001-pc only names Line 71 and Form T691), so the quote below and
+# the 60% are to be confirmed against the printed NL428:
 # "Newfoundland and Labrador additional tax for minimum tax purposes:" / "Line 71: Amount from line
-# 14 of Part 7 of Form T691 multiplied by 60% =". The 60% is a printed rate, held in the
+# 14 of Part 7 of Form T691 multiplied by 60% =". The 60% is a rate, held in the
 # `ca-nl/minimum_tax_rate` dataset, so line 71 is one calculation: 60% of the amount, rounded
 # half-up to the cent. The amount is the T691's Part 7 line 14: the T691 owns the input and exports
 # the line (`ca/t691_additional_taxes_for_minimum_tax_carryover_line_14`), so the first step totals

@@ -4,6 +4,8 @@
 # this step, the one line the form prints for it, and the blank reads as 0. The form exports the
 # line (`ca/t691_additional_taxes_for_minimum_tax_carryover_line_14`) for the provincial forms that
 # print it again (AB428 line 67, BC428 line 69, MB428 line 66, NL428 line 71 and SK428 line 68).
+# Lines 1 to 13 of Part 7 are not built, so a typed line 14 stands in for them. A negative figure is
+# refused, as the kind is non-negative.
 form:
   name: ca/t691
 capabilities:
