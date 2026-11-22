@@ -42,6 +42,7 @@ from tests.kinds import non_negative
 D = Decimal
 LINE_44 = "ca-bc/bc479_renters_credit_line_44"
 LINE_BEFORE = "ca-bc/bc479_renters_credit_before_months_check"
+ENOUGH = "ca-bc/bc479_renters_months_enough"
 LINE_41 = "ca-bc/bc479_renters_income_over_threshold_line_41"
 LINE_43 = "ca-bc/bc479_renters_reduction_line_43"
 CODE = JurisdictionCode("CA-BC")
@@ -173,13 +174,13 @@ def test_a_salary_only_caller_has_line_44_of_zero(tmp_path: Path, salary: str) -
     assert str(line_44.value) == "0.00"
 
 
-@pytest.mark.parametrize("months", [0, 1, 12])
-def test_line_44_is_the_credit_for_one_month_or_more_and_zero_for_none(
+@pytest.mark.parametrize("months", [0, 1, 5, 6, 7, 12])
+def test_line_44_is_the_credit_for_six_months_or_more_and_zero_for_fewer(
     tmp_path: Path, months: int
 ) -> None:
     sheet = _sheet(tmp_path, "17000", Artifact(MONTHS, months))
 
-    assert str(_value(sheet, LINE_44)) == ("400.00" if months else "0.00")
+    assert str(_value(sheet, LINE_44)) == ("400.00" if months >= 6 else "0.00")
 
 
 def test_the_subtraction_is_still_shown_when_the_gate_gives_zero(tmp_path: Path) -> None:
@@ -197,7 +198,7 @@ def test_the_gate_is_traced_with_the_months_and_the_chosen_amount(tmp_path: Path
         for each in sheet.trace
         if isinstance(each, ChosenByCountLine) and each.output is _kind(LINE_44)
     )
-    assert line.count == 12
+    assert line.count == 1
     assert line.chosen_kind is _kind(LINE_BEFORE)
     assert line.chosen_value == D("400.00")
 
@@ -209,7 +210,9 @@ def _step(part_name: str, index: int = 0) -> dict[str, Any]:
     return dict(part["capabilities"][index])
 
 
-def test_line_44_part_has_the_subtraction_then_the_gate_with_the_reference_on_the_gate() -> None:
+def test_line_44_part_has_the_subtraction_the_months_count_then_the_gate_with_the_reference() -> (
+    None
+):
     assert _step("bc479_line_44.yaml", 0) == {
         "name": "core/subtract_not_below_zero",
         "title": "Renter's tax credit before the months check",
@@ -221,17 +224,24 @@ def test_line_44_part_has_the_subtraction_then_the_gate_with_the_reference_on_th
         },
         "produces": {"output": LINE_BEFORE},
     }
-    assert _step("bc479_line_44.yaml", 2) == {
+    assert _step("bc479_line_44.yaml", 1) == {
+        "name": "ca/count_by_conditions",
+        "title": "Rent paid for at least six months",
+        "params": {"conditions": "ca-bc/renters_credit_conditions"},
+        "consumes": {"counts": [MONTHS.identifier], "amounts": []},
+        "blank": {"counts": "0"},
+        "produces": {"output": ENOUGH},
+    }
+    assert _step("bc479_line_44.yaml", 3) == {
         "name": "core/choose_by_count",
         "title": "British Columbia renter's tax credit",
         "reference": "44",
         "unit": "ca/cad",
         "consumes": {
-            "count": MONTHS.identifier,
+            "count": ENOUGH,
             "when_none": "ca-bc/bc479_renters_zero",
             "when_any": LINE_BEFORE,
         },
-        "blank": {"count": "0"},
         "produces": {"output": LINE_44},
     }
 
@@ -244,3 +254,14 @@ def test_the_new_kinds_are_registered_with_the_right_types() -> None:
         assert isinstance(kind, AmountKind)
         assert kind.value_type is Decimal
         assert non_negative(kind)
+
+
+@pytest.mark.parametrize(("months", "enough"), [(None, 0), (0, 0), (5, 0), (6, 1), (12, 1)])
+def test_the_months_count_is_1_for_at_least_six_months_and_0_otherwise(
+    tmp_path: Path, months: int | None, enough: int
+) -> None:
+    extra = () if months is None else (Artifact(MONTHS, months),)
+    sheet = _sheet(tmp_path, "17000", *extra)
+
+    assert sheet.get(british_columbia_kinds().kind(ENOUGH)).value == enough
+    assert not sheet.get(_kind(LINE_44)).is_blank
