@@ -548,6 +548,20 @@ insurance plan (PPIP) premiums paid (box 55 of all T4 slips) (maximum $484.12)":
 caller gives, from the T4 slips; blank when the caller does not give it, and line 91 is then
 computed."""
 
+PPIP_INSURABLE_EARNINGS_GIVEN = AmountKind.declare(
+    CATALOG, "ppip_insurable_earnings_given", non_negative=True
+)
+"""PPIP insurable earnings as given, 5005-S10 line 13 "Enter the amount from box 56 of all of your
+T4 slips where Quebec is the province of employment (if box 56 is blank, enter the amount from box
+14 of the T4 slip) (include employment income that you did not get a T4 slip for)": the figure the
+caller gives from box 56; blank when the caller does not give it, and the employment income is
+then taken in its place."""
+
+PPIP_INSURABLE_EARNINGS = AmountKind.declare(CATALOG, "ppip_insurable_earnings", non_negative=True)
+"""PPIP insurable earnings, the figure the guide to line 31205 tests against $2,000: the box 56
+figure the caller gave or, when it is blank, the employment income (the box 14 of 5005-S10
+line 13)."""
+
 PPIP_PREMIUM_MAXIMUM = AmountKind.declare(CATALOG, "ppip_premium_maximum", non_negative=True)
 """PPIP premiums maximum, 5005-R line 91 "(maximum $484.12)": the printed maximum, from the
 `ca-qc/ppip_premium_maximum` dataset; the bound a given figure cannot pass."""
