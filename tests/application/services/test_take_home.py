@@ -8,22 +8,27 @@ from __future__ import annotations
 
 import hashlib
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from decimal import Decimal
 from pathlib import Path
 from typing import Any
 
 import pytest
 
-from tax_engine import build_take_home
+from tax_engine import build_take_home, build_tax_computation
+from tax_engine.adapters.inbound.take_home_text import EnglishTakeHomeText
+from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.application.models.take_home import (
     TraceEntry,
     UnitDescription,
 )
 from tax_engine.application.models.take_home_request import TakeHomeRequest
+from tax_engine.application.ports.jurisdiction_source import JurisdictionSource
 from tax_engine.application.services.take_home import TakeHomeService
 from tax_engine.domain.errors import NotFoundError
+from tax_engine.domain.jurisdiction import Jurisdiction
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.registrations import JURISDICTIONS, artifact_kinds, units
 
 ANSWERS: list[dict[str, Any]] = json.loads(
     (Path(__file__).parent / "take_home_answers.json").read_text()
@@ -87,6 +92,7 @@ def test_answers_match_what_tax_service_gave(service: TakeHomeService, case: Cas
         (got.average_income_tax_rate, "average_income_tax_rate"),
         (got.marginal_income_tax_rate, "marginal_income_tax_rate"),
     ):
+        assert rate is not None
         assert str(rate.value) == want[key]["value"]
         assert _unit(rate.unit) == want[key]["unit"]
     if "trace_sha256" not in want:
@@ -116,8 +122,62 @@ def test_trace_is_left_out_unless_asked_for(service: TakeHomeService) -> None:
     assert service.calculate(request).trace is None
 
 
+class _WithoutTakeHome:
+    """The real jurisdictions, each manifest as if it declared no take-home figures."""
+
+    def __init__(self, source: JurisdictionSource) -> None:
+        self._source = source
+
+    def get_jurisdiction(self, code: JurisdictionCode) -> Jurisdiction:
+        found = self._source.get_jurisdiction(code)
+        return Jurisdiction(found.code, tuple(replace(m, take_home=None) for m in found.manifests))
+
+
 def test_a_jurisdiction_that_declares_no_take_home_figures_is_not_found(
     service: TakeHomeService,
 ) -> None:
-    with pytest.raises(NotFoundError, match="CA-QC"):
-        service.calculate(TakeHomeRequest(JurisdictionCode("CA-QC"), 2025, Decimal(70000)))
+    source = YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds(), units())
+    bare = TakeHomeService(_WithoutTakeHome(source), build_tax_computation(), EnglishTakeHomeText())
+    with pytest.raises(NotFoundError, match="CA-ON 2025"):
+        bare.calculate(TakeHomeRequest(JurisdictionCode("CA-ON"), 2025, Decimal(70000)))
+
+
+@pytest.mark.parametrize(
+    ("year", "figures", "take_home"),
+    [
+        (
+            2025,
+            {
+                "income_tax": "14678.32",
+                "qpp_base": "3591.00",
+                "qpp_enhanced": "665.00",
+                "qpp2": "0.00",
+                "ei": "860.67",
+                "qpip": "345.80",
+            },
+            "49859.21",
+        ),
+        (
+            2026,
+            {
+                "income_tax": "14346.59",
+                "qpp_base": "3524.50",
+                "qpp_enhanced": "665.00",
+                "qpp2": "0.00",
+                "ei": "895.70",
+                "qpip": "301.00",
+            },
+            "50267.21",
+        ),
+    ],
+)
+def test_quebec_takes_off_both_returns_the_pension_plan_ei_and_qpip(
+    service: TakeHomeService, year: int, figures: dict[str, str], take_home: str
+) -> None:
+    got = service.calculate(TakeHomeRequest(JurisdictionCode("CA-QC"), year, Decimal(70000)))
+    assert {f.name: str(f.amount) for f in got.figures} == figures
+    assert str(got.take_home) == take_home
+    assert str(got.income_tax) == figures["income_tax"]
+    # Quebec's return does not compute the two rates yet, so it declares none.
+    assert got.average_income_tax_rate is None
+    assert got.marginal_income_tax_rate is None

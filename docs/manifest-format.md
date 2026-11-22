@@ -270,7 +270,7 @@ application layer names none, the manifest does. It is a mapping with all of the
 | `salary` | The identifier of the one amount input the caller gives. |
 | `income_tax` | The figure of the income tax. |
 | `deductions` | The other figures taken off the salary, each under the name its answer carries (`cpp_base`, `ei`, ...). |
-| `average_income_tax_rate`, `marginal_income_tax_rate` | The two rates, which must have a unit. |
+| `average_income_tax_rate`, `marginal_income_tax_rate` | Optional: the two rates, which must have a unit. A jurisdiction whose return does not compute them leaves them out, and its answer has none. |
 
 A figure is `{form: <form name>, kind: <artifact identifier>}`: the form whose worksheet holds it and
 its kind. The form must be one of the manifest's, the kinds registered, and the salary an amount;

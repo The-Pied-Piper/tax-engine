@@ -656,15 +656,8 @@ class YamlJurisdictionSource:
         """The take-home declaration: the salary kind, the income tax, the other deductions by
         name, and the two rates, each figure as the form that exports it and its kind."""
         node.require_mapping(
-            frozenset(
-                {
-                    "salary",
-                    "income_tax",
-                    "deductions",
-                    "average_income_tax_rate",
-                    "marginal_income_tax_rate",
-                }
-            )
+            frozenset({"salary", "income_tax", "deductions"}),
+            optional=frozenset({"average_income_tax_rate", "marginal_income_tax_rate"}),
         )
 
         def reference(figure: YamlNode) -> FigureReference:
@@ -674,14 +667,18 @@ class YamlJurisdictionSource:
                 figure.field("kind").require_non_empty_string(),
             )
 
+        def optional_reference(key: str) -> FigureReference | None:
+            found = node.optional_field(key)
+            return None if found is None else reference(found)
+
         return TakeHomeFigures(
             salary=node.field("salary").require_non_empty_string(),
             income_tax=reference(node.field("income_tax")),
             deductions=tuple(
                 (name, reference(figure)) for name, figure in node.field("deductions").fields()
             ),
-            average_income_tax_rate=reference(node.field("average_income_tax_rate")),
-            marginal_income_tax_rate=reference(node.field("marginal_income_tax_rate")),
+            average_income_tax_rate=optional_reference("average_income_tax_rate"),
+            marginal_income_tax_rate=optional_reference("marginal_income_tax_rate"),
         )
 
     def _units_named(self, forms: Iterable[Form]) -> dict[str, Unit]:

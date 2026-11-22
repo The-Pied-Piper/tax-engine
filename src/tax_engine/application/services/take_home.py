@@ -85,8 +85,10 @@ class TakeHomeService:
         who: str,
         sheets: Mapping[str, Sequence[Worksheet]],
         kinds: ArtifactRegistry,
-        reference: FigureReference,
-    ) -> Rate:
+        reference: FigureReference | None,
+    ) -> Rate | None:
+        if reference is None:
+            return None
         value = reference.read(sheets, kinds)
         return Rate(value.amount, self._text.unit(rate_unit(who, value)))
 

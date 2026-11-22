@@ -58,7 +58,8 @@ class TakeHomeResult:
     """The answer: figures exact, the total and the take-home in whole cents.
 
     `figures` holds the income tax then each deduction, as computed; `income_tax` is the first of
-    them in whole cents. `trace` is `None` unless it was asked for.
+    them in whole cents. A rate is `None` where the jurisdiction declares none; `trace` is `None`
+    unless it was asked for.
     """
 
     salary: Decimal
@@ -67,6 +68,6 @@ class TakeHomeResult:
     income_tax: Decimal
     take_home: Decimal
     unit: UnitDescription
-    average_income_tax_rate: Rate
-    marginal_income_tax_rate: Rate
+    average_income_tax_rate: Rate | None
+    marginal_income_tax_rate: Rate | None
     trace: tuple[FormTrace, ...] | None
