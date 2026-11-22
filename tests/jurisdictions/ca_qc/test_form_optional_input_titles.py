@@ -2,7 +2,9 @@
 
 Each input stands for a line the form names. The title is the line's printed name (instruction
 sentences and years left out); a line the form prints no name for has no title and is not listed.
-Titles of inputs whose part has its own test are pinned in that test.
+Titles of the inputs whose part test already asserts the whole declaration (Schedule B line 33,
+Schedule K line 50, lines 390 to 398.1, 438 to 463) are pinned in that test; every other title
+this ticket added is pinned here, once.
 Sources: Revenu Quebec TP-1.D-V (2025-12) and its Schedules B, F, K and P; CRA 5005-R (2025).
 """
 
