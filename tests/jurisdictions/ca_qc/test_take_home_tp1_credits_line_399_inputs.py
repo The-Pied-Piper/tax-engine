@@ -19,7 +19,34 @@ from tests.kinds import non_negative
 from tests.manifest_support import input_named, inputs_of
 
 PART = "tp1_credits_line_399_inputs.yaml"
-PRINTED_BASIS = "Add lines 377.1, 389 through 392, 395 through 397, 398 and 398.1."
+PRINTED = {
+    "390": (
+        "Tax credit for volunteer firefighters and search and rescue volunteers",
+        "Tax credit for volunteer firefighters and search and rescue volunteers. Specify:",
+    ),
+    "391": (
+        "Tax credit for career extension",
+        "Tax credit for career extension. Complete form TP-752.PC-V.",
+    ),
+    "392": (
+        "Tax credit for recent graduates working in remote resource regions",
+        "Tax credit for recent graduates working in remote resource regions. "
+        "Complete form TP-776.1.ND-V.",
+    ),
+    "395": (
+        "Tax credits for donations and gifts",
+        "Tax credits for donations and gifts. Amount from line 1 of Work Chart 395",
+    ),
+    "396": ("Home buyers' tax credit", "Home buyers' tax credit. Complete form TP-752.HA-V."),
+    "398": (
+        "Tax credit for tuition or examination fees",
+        "Tax credit for tuition or examination fees. Complete Schedule T.",
+    ),
+    "398.1": (
+        "Tax credit for tuition or examination fees transferred by a child",
+        "Tax credit for tuition or examination fees transferred by a child",
+    ),
+}
 LINES = ("390", "391", "392", "395", "396", "398", "398.1")
 NAMES = {line: f"ca-qc/tp1_line_{line.replace('.', '_')}" for line in LINES}
 HEADER = """\
@@ -60,7 +87,7 @@ def test_a_request_that_leaves_out_the_line_is_read_as_blank(
     default = declaration.default_artifact(quebec_kinds().kind(NAMES[line]))
 
     assert not declaration.required
-    assert declaration.basis == PRINTED_BASIS
+    assert (declaration.title, declaration.basis) == PRINTED[line]
     assert declaration.reference == line
     assert default is not None and default.is_blank
 

@@ -5,6 +5,7 @@ form:
   name: ca-qc/tp1_income
 inputs:
   - name: ca-qc/tp1_line_148
+    title: "Income replacement indemnities and net federal supplements"
     reference: "148"
     unit: ca/cad
     required: false

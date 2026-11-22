@@ -8,6 +8,7 @@ form:
   name: ca-qc/tp1_net_income
 inputs:
   - name: ca-qc/tp1_spouse_net_income_line_275
+    title: "Amount from line 275 of your spouse's return"
     reference: "275"
     unit: ca/cad
     required: false

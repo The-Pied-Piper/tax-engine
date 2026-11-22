@@ -6,44 +6,51 @@ form:
   name: ca-qc/tp1_credits
 inputs:
   - name: ca-qc/tp1_line_390
+    title: "Tax credit for volunteer firefighters and search and rescue volunteers"
     reference: "390"
     unit: ca/cad
     required: false
     default: null
-    basis: "Add lines 377.1, 389 through 392, 395 through 397, 398 and 398.1."
+    basis: "Tax credit for volunteer firefighters and search and rescue volunteers. Specify:"
   - name: ca-qc/tp1_line_391
+    title: "Tax credit for career extension"
     reference: "391"
     unit: ca/cad
     required: false
     default: null
-    basis: "Add lines 377.1, 389 through 392, 395 through 397, 398 and 398.1."
+    basis: "Tax credit for career extension. Complete form TP-752.PC-V."
   - name: ca-qc/tp1_line_392
+    title: "Tax credit for recent graduates working in remote resource regions"
     reference: "392"
     unit: ca/cad
     required: false
     default: null
-    basis: "Add lines 377.1, 389 through 392, 395 through 397, 398 and 398.1."
+    basis: "Tax credit for recent graduates working in remote resource regions. Complete form TP-776.1.ND-V."
   - name: ca-qc/tp1_line_395
+    title: "Tax credits for donations and gifts"
     reference: "395"
     unit: ca/cad
     required: false
     default: null
-    basis: "Add lines 377.1, 389 through 392, 395 through 397, 398 and 398.1."
+    basis: "Tax credits for donations and gifts. Amount from line 1 of Work Chart 395"
   - name: ca-qc/tp1_line_396
+    title: "Home buyers' tax credit"
     reference: "396"
     unit: ca/cad
     required: false
     default: null
-    basis: "Add lines 377.1, 389 through 392, 395 through 397, 398 and 398.1."
+    basis: "Home buyers' tax credit. Complete form TP-752.HA-V."
   - name: ca-qc/tp1_line_398
+    title: "Tax credit for tuition or examination fees"
     reference: "398"
     unit: ca/cad
     required: false
     default: null
-    basis: "Add lines 377.1, 389 through 392, 395 through 397, 398 and 398.1."
+    basis: "Tax credit for tuition or examination fees. Complete Schedule T."
   - name: ca-qc/tp1_line_398_1
+    title: "Tax credit for tuition or examination fees transferred by a child"
     reference: "398.1"
     unit: ca/cad
     required: false
     default: null
-    basis: "Add lines 377.1, 389 through 392, 395 through 397, 398 and 398.1."
+    basis: "Tax credit for tuition or examination fees transferred by a child"

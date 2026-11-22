@@ -8,18 +8,21 @@ form:
   name: ca-qc/t1_tax_and_credits
 inputs:
   - name: ca-qc/t1_line_41000
+    title: "Federal political contribution tax credit"
     reference: "41000"
     unit: ca/cad
     required: false
     default: null
     basis: "Line 139 and line 41000: Federal political contribution tax credit (use Federal Worksheet)"
   - name: ca-qc/t1_line_41200
+    title: "Investment tax credit"
     reference: "41200"
     unit: ca/cad
     required: false
     default: null
     basis: "Line 140 and line 41200: Investment tax credit (complete Form T2038(IND))"
   - name: ca-qc/t1_line_41400
+    title: "Labour-sponsored funds tax credit"
     reference: "41400"
     unit: ca/cad
     required: false

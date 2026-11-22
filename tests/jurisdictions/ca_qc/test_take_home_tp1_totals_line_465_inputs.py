@@ -17,7 +17,31 @@ from tests.kinds import non_negative
 from tests.manifest_support import input_named, inputs_of
 
 PART = "tp1_totals_line_465_inputs.yaml"
-PRINTED_BASIS = "Add lines 451.2 through 463."
+PRINTED = {
+    "451.2": (None, "Subtract line 451.1 from line 451."),
+    "451.3": (
+        "Québec income tax withholding transferred by your spouse",
+        "Québec income tax withholding transferred by your spouse",
+    ),
+    "452": ("QPP or CPP overpayment", "QPP or CPP overpayment"),
+    "453": ("Income tax paid in instalments", "Income tax paid in instalments"),
+    "454": (
+        "Transferable portion of the income tax withheld for another province",
+        "Transferable portion of the income tax withheld for another province",
+    ),
+    "455": (
+        "Tax credit for childcare expenses",
+        "Tax credit for childcare expenses. Complete Schedule C.",
+    ),
+    "458": (
+        "Tax credit for home-support services for seniors",
+        "Tax credit for home-support services for seniors. Complete Schedule J.",
+    ),
+    "459": ("QST rebate for employees and partners", "QST rebate for employees and partners"),
+    "460": ("Tax shield", "Tax shield"),
+    "462": ("Other credits", "Other credits. Specify:"),
+    "463": ("Senior assistance tax credit", "Senior assistance tax credit"),
+}
 LINES = (
     "451.2",
     "451.3",
@@ -70,7 +94,7 @@ def test_a_request_that_leaves_out_the_line_is_read_as_blank(
     default = declaration.default_artifact(quebec_kinds().kind(NAMES[line]))
 
     assert not declaration.required
-    assert declaration.basis == PRINTED_BASIS
+    assert (declaration.title, declaration.basis) == PRINTED[line]
     assert declaration.reference == line
     assert default is not None and default.is_blank
 

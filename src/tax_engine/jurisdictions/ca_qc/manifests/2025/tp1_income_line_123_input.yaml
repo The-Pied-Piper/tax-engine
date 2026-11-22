@@ -5,6 +5,7 @@ form:
   name: ca-qc/tp1_income
 inputs:
   - name: ca-qc/tp1_line_123
+    title: "Retirement income transferred by your spouse"
     reference: "123"
     unit: ca/cad
     required: false

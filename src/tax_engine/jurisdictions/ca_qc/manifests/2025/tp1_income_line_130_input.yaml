@@ -5,6 +5,7 @@ form:
   name: ca-qc/tp1_income
 inputs:
   - name: ca-qc/tp1_line_130
+    title: "Interest and other investment income"
     reference: "130"
     unit: ca/cad
     required: false

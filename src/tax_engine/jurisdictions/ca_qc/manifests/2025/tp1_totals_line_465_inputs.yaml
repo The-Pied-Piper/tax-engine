@@ -15,64 +15,74 @@ inputs:
     unit: ca/cad
     required: false
     default: null
-    basis: "Add lines 451.2 through 463."
+    basis: "Subtract line 451.1 from line 451."
   - name: ca-qc/tp1_line_451_3
+    title: "Québec income tax withholding transferred by your spouse"
     reference: "451.3"
     unit: ca/cad
     required: false
     default: null
-    basis: "Add lines 451.2 through 463."
+    basis: "Québec income tax withholding transferred by your spouse"
   - name: ca-qc/tp1_line_452
+    title: "QPP or CPP overpayment"
     reference: "452"
     unit: ca/cad
     required: false
     default: null
-    basis: "Add lines 451.2 through 463."
+    basis: "QPP or CPP overpayment"
   - name: ca-qc/tp1_line_453
+    title: "Income tax paid in instalments"
     reference: "453"
     unit: ca/cad
     required: false
     default: null
-    basis: "Add lines 451.2 through 463."
+    basis: "Income tax paid in instalments"
   - name: ca-qc/tp1_line_454
+    title: "Transferable portion of the income tax withheld for another province"
     reference: "454"
     unit: ca/cad
     required: false
     default: null
-    basis: "Add lines 451.2 through 463."
+    basis: "Transferable portion of the income tax withheld for another province"
   - name: ca-qc/tp1_line_455
+    title: "Tax credit for childcare expenses"
     reference: "455"
     unit: ca/cad
     required: false
     default: null
-    basis: "Add lines 451.2 through 463."
+    basis: "Tax credit for childcare expenses. Complete Schedule C."
   - name: ca-qc/tp1_line_458
+    title: "Tax credit for home-support services for seniors"
     reference: "458"
     unit: ca/cad
     required: false
     default: null
-    basis: "Add lines 451.2 through 463."
+    basis: "Tax credit for home-support services for seniors. Complete Schedule J."
   - name: ca-qc/tp1_line_459
+    title: "QST rebate for employees and partners"
     reference: "459"
     unit: ca/cad
     required: false
     default: null
-    basis: "Add lines 451.2 through 463."
+    basis: "QST rebate for employees and partners"
   - name: ca-qc/tp1_line_460
+    title: "Tax shield"
     reference: "460"
     unit: ca/cad
     required: false
     default: null
-    basis: "Add lines 451.2 through 463."
+    basis: "Tax shield"
   - name: ca-qc/tp1_line_462
+    title: "Other credits"
     reference: "462"
     unit: ca/cad
     required: false
     default: null
-    basis: "Add lines 451.2 through 463."
+    basis: "Other credits. Specify:"
   - name: ca-qc/tp1_line_463
+    title: "Senior assistance tax credit"
     reference: "463"
     unit: ca/cad
     required: false
     default: null
-    basis: "Add lines 451.2 through 463."
+    basis: "Senior assistance tax credit"

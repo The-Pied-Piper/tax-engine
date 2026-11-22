@@ -9,84 +9,98 @@ form:
   name: ca-qc/tp1_net_income
 inputs:
   - name: ca-qc/tp1_line_205
+    title: "Registered pension plan (RPP) deduction, RL-1 slip, box D"
     reference: "205"
     unit: ca/cad
     required: false
     default: null
     basis: "Registered pension plan (RPP) deduction, RL-1 slip, box D"
   - name: ca-qc/tp1_line_207
+    title: "Employment expenses and deductions"
     reference: "207"
     unit: ca/cad
     required: false
     default: null
     basis: "Employment expenses and deductions"
   - name: ca-qc/tp1_line_214
+    title: "RRSP or PRPP/VRSP deduction, HBP or LLP"
     reference: "214"
     unit: ca/cad
     required: false
     default: null
     basis: "RRSP or PRPP/VRSP deduction, HBP or LLP"
   - name: ca-qc/tp1_line_215
+    title: "FHSA deduction"
     reference: "215"
     unit: ca/cad
     required: false
     default: null
     basis: "FHSA deduction"
   - name: ca-qc/tp1_line_225
+    title: "Support payments made (deductible amount)"
     reference: "225"
     unit: ca/cad
     required: false
     default: null
     basis: "Support payments made (deductible amount)"
   - name: ca-qc/tp1_line_228
+    title: "Moving expenses"
     reference: "228"
     unit: ca/cad
     required: false
     default: null
     basis: "Moving expenses. Complete form TP-348-V."
   - name: ca-qc/tp1_line_231
+    title: "Carrying charges and interest expenses"
     reference: "231"
     unit: ca/cad
     required: false
     default: null
     basis: "Carrying charges and interest expenses"
   - name: ca-qc/tp1_line_234
+    title: "Business investment loss"
     reference: "234"
     unit: ca/cad
     required: false
     default: null
     basis: "Business investment loss. Complete form TP-232.1-V: Allowable loss"
   - name: ca-qc/tp1_line_236
+    title: "Deduction for residents of designated remote areas"
     reference: "236"
     unit: ca/cad
     required: false
     default: null
     basis: "Deduction for residents of designated remote areas. Complete form TP-350.1-V."
   - name: ca-qc/tp1_line_241
+    title: "Deduction for exploration and development expenses"
     reference: "241"
     unit: ca/cad
     required: false
     default: null
     basis: "Deduction for exploration and development expenses"
   - name: ca-qc/tp1_line_245
+    title: "Deduction for retirement income transferred to your spouse on December 31"
     reference: "245"
     unit: ca/cad
     required: false
     default: null
     basis: "Deduction for retirement income transferred to your spouse on December 31. Complete Schedule Q."
   - name: ca-qc/tp1_line_246
+    title: "Deduction for a repayment of amounts overpaid to you"
     reference: "246"
     unit: ca/cad
     required: false
     default: null
     basis: "Deduction for a repayment of amounts overpaid to you"
   - name: ca-qc/tp1_line_250
+    title: "Other deductions"
     reference: "250"
     unit: ca/cad
     required: false
     default: null
     basis: "Other deductions"
   - name: ca-qc/tp1_line_252
+    title: "Carry-over of the adjustment of investment expenses"
     reference: "252"
     unit: ca/cad
     required: false

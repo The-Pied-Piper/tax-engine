@@ -7,12 +7,14 @@ form:
   name: ca-qc/t1_tax_and_credits
 inputs:
   - name: ca-qc/t1_line_43700
+    title: "Total income tax deducted"
     reference: "43700"
     unit: ca/cad
     required: false
     default: null
     basis: "Line 153 and line 43700: Total income tax deducted"
   - name: ca-qc/t1_line_43800
+    title: "Tax transfer for residents of Quebec"
     reference: "43800"
     unit: ca/cad
     required: false

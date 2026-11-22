@@ -6,8 +6,9 @@ form:
   name: ca-qc/tp1_income
 inputs:
   - name: ca-qc/tp1_line_105
+    title: "Correction of employment income, if you received an RL-22 slip"
     reference: "105"
     unit: ca/cad
     required: false
     default: null
-    basis: 'Eligible work income: lines 101, 107 and, if positive, 105.'
+    basis: "Correction of employment income, if you received an RL-22 slip. Complete Work Chart 105."

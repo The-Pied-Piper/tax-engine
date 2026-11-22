@@ -5,6 +5,7 @@ form:
   name: ca-qc/tp1_income
 inputs:
   - name: ca-qc/tp1_line_128
+    title: "Dividends from taxable Canadian corporations, taxable amount of dividends"
     reference: "128"
     unit: ca/cad
     required: false

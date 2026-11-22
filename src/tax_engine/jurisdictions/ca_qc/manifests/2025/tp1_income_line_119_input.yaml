@@ -5,6 +5,7 @@ form:
   name: ca-qc/tp1_income
 inputs:
   - name: ca-qc/tp1_line_119
+    title: "QPP or CPP benefits, RL-2 slip, box C"
     reference: "119"
     unit: ca/cad
     required: false

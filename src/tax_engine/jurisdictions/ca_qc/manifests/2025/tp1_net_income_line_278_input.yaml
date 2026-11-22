@@ -5,6 +5,7 @@ form:
   name: ca-qc/tp1_net_income
 inputs:
   - name: ca-qc/tp1_benefit_and_disability_savings_income_line_278
+    title: "Universal Child Care Benefit and income from a registered disability savings plan"
     reference: "278"
     unit: ca/cad
     required: false

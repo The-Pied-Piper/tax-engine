@@ -5,6 +5,7 @@ form:
   name: ca-qc/tp1_income
 inputs:
   - name: ca-qc/tp1_line_164
+    title: "Net business income"
     reference: "164"
     unit: ca/cad
     required: false

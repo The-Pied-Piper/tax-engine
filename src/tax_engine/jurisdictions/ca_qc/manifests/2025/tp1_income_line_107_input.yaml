@@ -5,8 +5,9 @@ form:
   name: ca-qc/tp1_income
 inputs:
   - name: ca-qc/tp1_line_107
+    title: "Other employment income"
     reference: "107"
     unit: ca/cad
     required: false
     default: null
-    basis: 'Eligible work income: lines 101, 107 and, if positive, 105.'
+    basis: "Other employment income"

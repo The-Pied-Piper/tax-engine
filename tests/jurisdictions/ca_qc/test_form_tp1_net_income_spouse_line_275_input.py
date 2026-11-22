@@ -73,6 +73,7 @@ def test_the_part_declares_only_the_spouse_line_275_input_as_optional() -> None:
     (declaration,) = part["inputs"]
     assert declaration == {
         "name": IDENTIFIER,
+        "title": "Amount from line 275 of your spouse's return",
         "reference": "275",
         "unit": "ca/cad",
         "required": False,

@@ -5,6 +5,7 @@ form:
   name: ca-qc/tp1_income
 inputs:
   - name: ca-qc/tp1_line_122
+    title: "Payments from a pension plan, an RRSP, a RRIF, a DPSP or a PRPP/VRSP, or annuities"
     reference: "122"
     unit: ca/cad
     required: false

@@ -5,6 +5,7 @@ form:
   name: ca-qc/tp1_income
 inputs:
   - name: ca-qc/tp1_line_111
+    title: "Employment Insurance benefits, T4E slip"
     reference: "111"
     unit: ca/cad
     required: false

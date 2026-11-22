@@ -5,6 +5,7 @@ form:
   name: ca-qc/tp1_income
 inputs:
   - name: ca-qc/tp1_line_154
+    title: "Other income"
     reference: "154"
     unit: ca/cad
     required: false

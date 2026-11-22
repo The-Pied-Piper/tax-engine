@@ -5,6 +5,7 @@ form:
   name: ca-qc/tp1_income
 inputs:
   - name: ca-qc/tp1_line_147
+    title: "Social assistance payments, RL-5 slip, box A, and similar financial assistance, RL-5 slip, box B"
     reference: "147"
     unit: ca/cad
     required: false
