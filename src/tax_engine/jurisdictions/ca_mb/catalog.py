@@ -893,8 +893,10 @@ first box, a caller input that is read as blank when left out."""
 MB428_T691_AMOUNT_LINE_66 = AmountKind.declare(
     CATALOG, "mb428_t691_amount_line_66", non_negative=True
 )
-"""Form T691 amount, MB428 line 66 "Line 66: Form T691: line 1 minus line 2 of Part 7": a caller
-input, read as blank when left out; the 50% multiplication step reads it."""
+"""Form T691 amount, MB428 line 66 "Line 66: Form T691: line 1 minus line 2 of Part 7": a record
+total of the T691's export (`ca/t691_line_1_minus_line_2_of_part_7`), 0 when the caller leaves
+it out. The 50% multiplication step reads it. The kind keeps the non-negative declaration it
+already had; the one refusal of a negative figure is at the T691."""
 
 MB479_PAID_WORK_EXPERIENCE_CREDIT_LINE_63 = AmountKind.declare(
     CATALOG, "mb479_paid_work_experience_credit_line_63", non_negative=True

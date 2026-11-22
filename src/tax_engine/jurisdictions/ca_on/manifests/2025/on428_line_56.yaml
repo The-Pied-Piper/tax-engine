@@ -1,0 +1,17 @@
+# Form ON428 (Ontario Tax, 2025, 5006-c-25e) line 56 (ca-on/on428), "Ontario minimum tax
+# carryover:" / "Line 56: Enter the amount from line 53 above.": a copy of line 53, read from its
+# source part (`ca-on/on428_tax_minus_credits_line_53`). A single part is still a sum, so the step
+# is built, as line 18 does.
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/sum
+    title: "Amount from line 53"
+    reference: "56"
+    unit: ca/cad
+    params:
+      rounding: ca-on/cent_rounding
+    consumes:
+      parts: [ca-on/on428_tax_minus_credits_line_53]
+    produces:
+      output: ca-on/on428_tax_minus_credits_line_56

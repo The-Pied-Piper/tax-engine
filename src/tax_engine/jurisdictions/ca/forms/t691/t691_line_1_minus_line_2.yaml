@@ -1,0 +1,22 @@
+# T691 (T691 E (25), 2025) Part 7 lines 1 and 2: AB428 line 67, MB428 line 66 and SK428 line 68
+# print "Form T691: line 1 minus line 2 of Part 7". Line 1 is "Minimum amount from line 103 of Part
+# 1" and line 2 is "Basic federal tax from line 7 of Part 2". The form prints no floor on the
+# difference; its intent is non-negative, since Part 7 is completed only when minimum tax is payable
+# (Part 5: "If line 11 is positive, complete parts 6 and 7"). So the kind is non-negative and the
+# engine refuses a negative difference here, once; the provincial forms read the export as is. It
+# reads the cent-rounded lines 1 and 2 (`t691_line_1.yaml`, `t691_line_2.yaml`, blank read as 0).
+# The form exports the figure (`ca/t691_line_1_minus_line_2_of_part_7`) for those provincial forms.
+form:
+  name: ca/t691
+capabilities:
+  - name: core/subtract
+    title: "Line 1 minus line 2 of Part 7"
+    reference: "1 minus 2"
+    unit: ca/cad
+    params:
+      rounding: ca/cent_rounding
+    consumes:
+      amount: ca/t691_line_1_amount
+      less: ca/t691_line_2_amount
+    produces:
+      output: ca/t691_line_1_minus_line_2_of_part_7
