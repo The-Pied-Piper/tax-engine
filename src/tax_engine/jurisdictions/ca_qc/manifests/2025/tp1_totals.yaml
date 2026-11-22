@@ -4,16 +4,15 @@
 # Schedule K and Schedule P, each as that form's export; line 457 reads the income form's lines 97 and
 # 101. Lines 438, 439, 441, 443, 445, 451.2 to 455,
 # 458 to 460, 462, 463, 466, 476 and 477 are optional inputs, read as 0 when left out; tax withheld
-# (line 451) is left out by ruling. Exports: line 450, line 456 and line 457, and line 478 (the refund) and
-# line 479 (the balance due); the Quebec return summary reads lines 450, 456 and 457.
+# (line 451) is left out by ruling. Exports: line 450, line 470, line 478 (the refund) and line 479
+# (the balance due); the Quebec return summary reads lines 450 and 470.
 form:
   name: ca-qc/tp1_totals
   title: "Income Tax Return"
   required: true
   exports:
     - ca-qc/tp1_income_tax_and_contributions_line_450
-    - ca-qc/tp1_work_premium_tax_credits_line_456
-    - ca-qc/tp1_line_457
+    - ca-qc/tp1_line_470
     - ca-qc/tp1_refund_line_478
     - ca-qc/tp1_balance_due_line_479
 capabilities: []
