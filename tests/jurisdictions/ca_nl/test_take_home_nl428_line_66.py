@@ -49,7 +49,7 @@ AMOUNT_60 = "ca-nl/nl428_donations_amount_line_60"
 LINE_62 = "ca-nl/nl428_non_refundable_credits_line_62"
 IDENTIFIER = "ca-nl/nl428_non_refundable_credits_line_66"
 FORM_NAME = "ca-nl/nl428"
-FEDERAL_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+FEDERAL_PARTS = form_part_names("t1_taxable_income", "t1_employment_income", "t1_medical_expenses")
 NL_PART_NAMES = (
     "worksheet_nl428_line_4.yaml",
     "worksheet_nl428_line_6.yaml",
@@ -91,7 +91,7 @@ NL_PART_NAMES = (
     "nl428_credits_line_45_input.yaml",
     "nl428_credits_line_46_input.yaml",
     "nl428_credits_line_47.yaml",
-    "nl428_credits_line_48_input.yaml",
+    "nl428_credits_line_48.yaml",
     "nl428_credits_line_49.yaml",
     "nl428_credits_line_51.yaml",
     "nl428_credits_line_52.yaml",

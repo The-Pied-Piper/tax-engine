@@ -44,8 +44,6 @@ from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_sk.catalog import (
     SK428_CREDITS_TOTAL_LINE_51,
-    SK428_MEDICAL_EXPENSES_LINE_43,
-    SK428_OTHER_DEPENDANTS_MEDICAL_EXPENSES_LINE_49,
 )
 from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_sk.support import (
@@ -56,6 +54,7 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_units,
 )
 from tests.kinds import non_negative
+from tests.medical_support import medical_expenses, other_dependants_medical_expenses
 
 D = Decimal
 SK_PARTS = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / "manifests" / "2025"
@@ -117,7 +116,7 @@ def _expected(salary: str, medical: str = "0") -> Decimal:
 def _part_files() -> Iterator[Path]:
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
-    yield from form_parts("t1_taxable_income", "t1_employment_income")
+    yield from form_parts("t1_taxable_income", "t1_employment_income", "t1_medical_expenses")
     yield SK_PARTS / "sk428_credits_line_9.yaml"
     yield SK_PARTS / "sk428_credits_line_20.yaml"
     yield SK_PARTS / "sk428_credits_line_22.yaml"
@@ -129,12 +128,12 @@ def _part_files() -> Iterator[Path]:
     yield SK_PARTS / "sk428_credits_line_35.yaml"
     yield SK_PARTS / "sk428_credits_line_38.yaml"
     yield SK_PARTS / "sk428_credits_line_42.yaml"
-    yield SK_PARTS / "sk428_credits_line_43_input.yaml"
+    yield SK_PARTS / "sk428_credits_line_43.yaml"
     yield SK_PARTS / "sk428_credits_line_44.yaml"
     yield SK_PARTS / "sk428_credits_line_46.yaml"
     yield SK_PARTS / "sk428_credits_line_47.yaml"
     yield SK_PARTS / "sk428_credits_line_48.yaml"
-    yield SK_PARTS / "sk428_credits_line_49_input.yaml"
+    yield SK_PARTS / "sk428_credits_line_49.yaml"
     yield SK_PARTS / "sk428_credits_line_50.yaml"
     yield PART
 
@@ -168,9 +167,9 @@ def _sheet(
 ) -> Worksheet:
     given = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if line_43 is not None:
-        given.append(Artifact(SK428_MEDICAL_EXPENSES_LINE_43, D(line_43)))
+        given.append(medical_expenses(line_43))
     if line_49 is not None:
-        given.append(Artifact(SK428_OTHER_DEPENDANTS_MEDICAL_EXPENSES_LINE_49, D(line_49)))
+        given.append(other_dependants_medical_expenses(line_49))
     worksheets = _service(tmp_path).compute(JurisdictionCode("CA-SK"), 2025, *given)
     (sheet,) = worksheets["ca-sk/sk428_credits"]
     return sheet

@@ -523,7 +523,32 @@ from line 3 of columns 1, 2, and 3 (and others, if any)", each line 3 being "Lin
 
 MEDICAL_EXPENSES = AmountKind.declare(CATALOG, "medical_expenses", non_negative=True)
 """Medical expenses, T1 line 107 and line 33099 "Medical expenses for self, spouse or common-law
-partner and your dependent children under 18 years of age": a starting amount."""
+partner and your dependent children under 18 years of age": the optional input
+(`t1_medical_expenses_line_33099_inputs.yaml`), blank when the filer has none. The T1 owns it; every
+other form that prints it imports line 33099."""
+
+MEDICAL_EXPENSES_LINE_33099 = AmountKind.declare(
+    CATALOG, "medical_expenses_line_33099", non_negative=True
+)
+"""Medical expenses as T1 line 33099 prints it (`t1_medical_expenses_line_33099.yaml`): the optional
+input (`ca/medical_expenses`), read as 0 when blank, exported by the T1 medical expenses form."""
+
+OTHER_DEPENDANTS_MEDICAL_EXPENSES = AmountKind.declare(
+    CATALOG, "other_dependants_medical_expenses", non_negative=True
+)
+"""Allowable amount of medical expenses for other dependants, T1 line 111 and line 33199 "Allowable
+amount of medical expenses for other dependants (use Federal Worksheet)": the optional input
+(`t1_medical_expenses_line_33199_inputs.yaml`), blank when the filer has none. The federal
+worksheet is not built, so the T1 takes the result as typed in; every other form that prints it
+imports line 33199."""
+
+OTHER_DEPENDANTS_MEDICAL_EXPENSES_LINE_33199 = AmountKind.declare(
+    CATALOG, "other_dependants_medical_expenses_line_33199", non_negative=True
+)
+"""Allowable amount of medical expenses for other dependants as T1 line 33199 prints it
+(`t1_medical_expenses_line_33199.yaml`): the optional input
+(`ca/other_dependants_medical_expenses`), read as 0 when blank, exported by the T1 medical expenses
+form."""
 
 MEDICAL_NET_INCOME_SHARE = AmountKind.declare(
     CATALOG, "medical_net_income_share", non_negative=True

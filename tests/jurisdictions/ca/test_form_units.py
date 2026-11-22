@@ -64,15 +64,20 @@ def units_in(manifest: Manifest) -> dict[str, str | None]:
     return units
 
 
+# Ontario does not import the T1 medical expenses form; the provinces that copy its lines do.
 @pytest.fixture(scope="module")
-def manifest() -> Manifest:
+def manifests() -> tuple[Manifest, ...]:
     source = YamlJurisdictionSource(
         registrations.JURISDICTIONS.roots(),
         registrations.artifact_kinds(),
         registrations.units(),
     )
-    (loaded,) = source.get_jurisdiction(JurisdictionCode("CA-ON")).manifests
-    return loaded
+    codes = ("CA-ON", "CA-AB")
+    return tuple(
+        manifest
+        for code in codes
+        for manifest in source.get_jurisdiction(JurisdictionCode(code)).manifests
+    )
 
 
 def test_the_figures_are_found() -> None:
@@ -85,5 +90,8 @@ def test_the_figures_are_found() -> None:
 
 
 @pytest.mark.parametrize("name", sorted(declared()))
-def test_each_federal_figure_declares_its_unit(manifest: Manifest, name: str) -> None:
-    assert units_in(manifest)[name] == declared()[name]
+def test_each_federal_figure_declares_its_unit(manifests: tuple[Manifest, ...], name: str) -> None:
+    units: dict[str, str | None] = {}
+    for manifest in manifests:
+        units.update(units_in(manifest))
+    assert units[name] == declared()[name]

@@ -289,8 +289,10 @@ from a spouse or common-law partner), lines 43 to 46 being read as 0 when blank.
 NL428_MEDICAL_EXPENSES_LINE_48 = AmountKind.declare(
     CATALOG, "nl428_medical_expenses_line_48", non_negative=True
 )
-"""Medical expenses, NL428 line 48 (line 58689) "Amount from line 33099 of your return": the amount
-as the filer gives it, an optional input; a blank input is read as blank."""
+"""Medical expenses, NL428 line 48 (line 58689) "Amount from line 33099 of your return": the
+T1 line 33099 amount, the total of the `ca/t1_medical_expenses` form's export
+(`ca/medical_expenses_line_33099`).
+The line has no input of its own."""
 
 NL428_ALLOWABLE_MEDICAL_EXPENSES_FOR_OTHER_DEPENDANTS_LINE_54 = AmountKind.declare(
     CATALOG, "nl428_allowable_medical_expenses_for_other_dependants_line_54", non_negative=True

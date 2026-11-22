@@ -1,5 +1,5 @@
 # NL428 (2025) line 53 (Form NL428, CRA 5001-C): "Line 53: Line 48 minus line 52 (if negative, enter
-# "0") =". Line 48 is the optional medical expenses input (nl428_credits_line_48_input.yaml) and
+# "0") =". Line 48 is the T1 line 33099 amount (nl428_credits_line_48.yaml) and
 # line 52 is the lesser of the printed ceiling and line 51 (nl428_credits_line_52.yaml). Line 53 is
 # one core/subtract_not_below_zero step, rounded half-up to the cent by the dataset's rule. A request
 # that leaves line 48 blank has no medical expenses, so a blank line 48 is read as 0 and line 53 is

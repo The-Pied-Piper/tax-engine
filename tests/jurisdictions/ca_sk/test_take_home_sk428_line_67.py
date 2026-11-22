@@ -73,12 +73,12 @@ CREDITS_PARTS = (
     "sk428_credits_line_35.yaml",
     "sk428_credits_line_38.yaml",
     "sk428_credits_line_42.yaml",
-    "sk428_credits_line_43_input.yaml",
+    "sk428_credits_line_43.yaml",
     "sk428_credits_line_44.yaml",
     "sk428_credits_line_46.yaml",
     "sk428_credits_line_47.yaml",
     "sk428_credits_line_48.yaml",
-    "sk428_credits_line_49_input.yaml",
+    "sk428_credits_line_49.yaml",
     "sk428_credits_line_50.yaml",
     "sk428_credits_line_51.yaml",
     "sk428_credits_line_53.yaml",
@@ -101,7 +101,7 @@ SK_LINE_PARTS = (
     "sk428_line_65.yaml",
     "sk428_line_66.yaml",
 )
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income", "t1_medical_expenses")
 FORM_NAME = "ca-sk/sk428"
 CREDITS_FORM_NAME = "ca-sk/sk428_credits"
 LINE_62 = "ca-sk/sk428_tax_line_62"

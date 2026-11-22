@@ -24,6 +24,7 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_ab import catalog as ab
+from tests.medical_support import medical_expenses
 
 D = Decimal
 ALBERTA = JurisdictionCode("CA-AB")
@@ -31,13 +32,16 @@ ALBERTA = JurisdictionCode("CA-AB")
 
 def _ab428(salary: str, **given: str) -> Worksheet:
     inputs = {
-        "line_44": ab.AB428_MEDICAL_EXPENSES_LINE_44,
         "line_50": ab.AB428_ALLOWABLE_MEDICAL_EXPENSES_FOR_OTHER_DEPENDANTS_LINE_50,
         "line_55": ab.AB428_DONATIONS_AMOUNT_LINE_55,
         "line_56": ab.AB428_DONATIONS_AMOUNT_LINE_56,
     }
     artifacts = [Artifact(EMPLOYMENT_INCOME, D(salary))]
-    artifacts += [Artifact(inputs[name], D(value)) for name, value in given.items()]
+    # Line 44 is T1 line 33099, asked once as `ca/medical_expenses`.
+    artifacts += [
+        medical_expenses(value) if name == "line_44" else Artifact(inputs[name], D(value))
+        for name, value in given.items()
+    ]
     (sheet,) = build_tax_computation().compute(ALBERTA, 2025, *artifacts)["ca-ab/ab428_credits"]
     return sheet
 

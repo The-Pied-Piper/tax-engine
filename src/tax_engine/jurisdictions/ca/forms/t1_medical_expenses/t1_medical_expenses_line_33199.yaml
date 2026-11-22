@@ -1,0 +1,19 @@
+# T1 (5006-R, 2025) line 33199: "Line 111 and line 33199: Allowable amount of medical expenses for other dependants (use Federal Worksheet)" (5006-R). The optional input
+# (`ca/other_dependants_medical_expenses`, blank when the filer has none) is read by this step, the one line the T1 prints for it, and
+# the blank reads as 0. The form exports the line (`ca/other_dependants_medical_expenses_line_33199`) for the provincial forms that
+# print it again.
+form:
+  name: ca/t1_medical_expenses
+capabilities:
+  - name: core/sum
+    title: "Allowable amount of medical expenses for other dependants"
+    reference: "33199"
+    unit: ca/cad
+    params:
+      rounding: ca/cent_rounding
+    consumes:
+      parts: [ca/other_dependants_medical_expenses]
+    blank:
+      ca/other_dependants_medical_expenses: "0"
+    produces:
+      output: ca/other_dependants_medical_expenses_line_33199

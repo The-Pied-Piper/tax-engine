@@ -221,8 +221,10 @@ copy of T2204 line 16, the EI premiums credit amount."""
 BC428_MEDICAL_EXPENSES_LINE_46 = AmountKind.declare(
     CATALOG, "bc428_medical_expenses_line_46", non_negative=True
 )
-"""Medical expenses, BC428 line 46 (line 58689) "Amount from line 33099 of your return": the amount
-as the filer gives it, an optional input; a blank input is read as blank."""
+"""Medical expenses, BC428 line 46 (line 58689) "Amount from line 33099 of your return": the
+T1 line 33099 amount, the total of the `ca/t1_medical_expenses` form's export
+(`ca/medical_expenses_line_33099`).
+The line has no input of its own."""
 
 BC428_NET_INCOME_LINE_47 = AmountKind.declare(
     CATALOG, "bc428_net_income_line_47", non_negative=True

@@ -47,6 +47,7 @@ def test_the_federal_forms_are_imported_in_order() -> None:
     assert _header()["imports"] == [
         "ca/t1_employment_income",
         "ca/t1_taxable_income",
+        "ca/t1_medical_expenses",
         "ca/t1_tax_and_credits",
         "ca/schedule_6",
         "ca/schedule_8",

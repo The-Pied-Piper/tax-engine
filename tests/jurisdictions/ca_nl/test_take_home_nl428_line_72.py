@@ -50,7 +50,7 @@ LINE_71 = "ca-nl/nl428_additional_tax_minimum_tax_line_71"
 AMOUNT = "ca-nl/nl428_t691_amount_line_71"
 IDENTIFIER = "ca-nl/nl428_tax_with_minimum_tax_line_72"
 FORM_NAME = "ca-nl/nl428"
-FEDERAL_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+FEDERAL_PARTS = form_part_names("t1_taxable_income", "t1_employment_income", "t1_medical_expenses")
 NL_PART_NAMES = (
     *(
         f"nl428_credits_line_{number}.yaml"
@@ -99,7 +99,7 @@ NL_PART_NAMES = (
     "nl428_credits_line_45_input.yaml",
     "nl428_credits_line_46_input.yaml",
     "nl428_credits_line_47.yaml",
-    "nl428_credits_line_48_input.yaml",
+    "nl428_credits_line_48.yaml",
     "nl428_credits_line_49.yaml",
     "nl428_credits_line_51.yaml",
     "nl428_credits_line_52.yaml",

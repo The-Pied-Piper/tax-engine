@@ -92,7 +92,7 @@ CREDIT_PARTS = (
     "mb428_credits_line_36.yaml",
     "mb428_credits_line_41.yaml",
     "mb428_credits_line_42.yaml",
-    "mb428_credits_line_43_inputs.yaml",
+    "mb428_credits_line_43.yaml",
     "mb428_credits_line_44.yaml",
     "mb428_credits_line_46.yaml",
     "mb428_credits_line_47.yaml",
@@ -124,7 +124,7 @@ WORKSHEET_PARTS = (
     "worksheet_mb428_line_9.yaml",
 )
 # The real federal parts the T1 taxable-income form needs, beside the salary and the worksheet.
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income", "t1_medical_expenses")
 
 HEADER = dedent("""\
     jurisdiction: CA-MB

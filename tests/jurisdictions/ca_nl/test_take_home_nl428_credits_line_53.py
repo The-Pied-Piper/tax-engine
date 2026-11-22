@@ -2,7 +2,7 @@
 
 Form text (Form NL428, CRA 5001-C, confirmed 2026-11-18): "Line 53: Line 48 minus line 52 (if
 negative, enter "0") =". Line 53 is one core/subtract_not_below_zero step over line 48, the optional
-medical expenses input (`nl428_credits_line_48_input.yaml`), and line 52
+medical expenses input (`nl428_credits_line_48.yaml`), and line 52
 (`nl428_credits_line_52.yaml`), rounded half-up to the cent. A request that leaves line 48 blank
 has no medical expenses, so the blank is read as 0 and line 53 is 0.00. The form prints no label for
 the line, so the step has no title.
@@ -49,20 +49,21 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_units,
 )
 from tests.kinds import non_negative
+from tests.medical_support import medical_expenses
 
 D = Decimal
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
 LINE_49_PART = NL_PARTS / "nl428_credits_line_49.yaml"
 LINE_51_PART = NL_PARTS / "nl428_credits_line_51.yaml"
 LINE_52_PART = NL_PARTS / "nl428_credits_line_52.yaml"
-LINE_48_PART = NL_PARTS / "nl428_credits_line_48_input.yaml"
+LINE_48_PART = NL_PARTS / "nl428_credits_line_48.yaml"
 LINE_PART = NL_PARTS / "nl428_credits_line_53.yaml"
 FORM_NAME = "ca-nl/nl428_credits"
 LINE_52 = "ca-nl/nl428_medical_expenses_limited_amount_line_52"
 LINE_48 = "ca-nl/nl428_medical_expenses_line_48"
 KIND = "ca-nl/nl428_medical_expenses_over_limit_line_53"
 # The real federal parts the T1 taxable-income form needs, beside the salary and lines 49 to 52.
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income", "t1_medical_expenses")
 
 HEADER = dedent("""\
     jurisdiction: CA-NL
@@ -126,7 +127,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
 def _sheet(tmp_path: Path, salary: str, line_48: str | None = None) -> Worksheet:
     given = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if line_48 is not None:
-        given.append(Artifact(nl_catalog.NL428_MEDICAL_EXPENSES_LINE_48, D(line_48)))
+        given.append(medical_expenses(line_48))
     worksheets = _service(tmp_path).compute(JurisdictionCode("CA-NL"), 2025, *given)
     (sheet,) = worksheets[FORM_NAME]
     return sheet
@@ -144,14 +145,6 @@ def test_line_53_is_line_48_less_line_52_not_below_zero(
 
     assert _value(sheet, LINE_52) == D(line_52)
     assert _value(sheet, KIND) == D(expected)
-
-
-def test_a_blank_line_48_is_read_as_zero_and_prints_its_own_row(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "70000")
-
-    rows = EnglishTraceRenderer().render_all(sheet.trace, sheet)
-
-    assert any("left blank, taken as" in row.lower() for row in rows)
 
 
 def test_a_given_line_48_prints_no_left_blank_row(tmp_path: Path) -> None:

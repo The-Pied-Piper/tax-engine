@@ -1,0 +1,16 @@
+# BC428 (2025) line 46. Form BC428 (CRA 5010-C): "Line 46 and line 58689: Amount from line 33099 of your return".
+# The amount is T1 line 33099, which the `ca/t1_medical_expenses` form owns and exports
+# (`ca/medical_expenses_line_33099`), so this form has no input for it. Another form reads an export
+# only as a record list, so the one step is core/record_total, which gives the figure the typed input
+# gave (`ca-bc/bc428_medical_expenses_line_46`). A salary-only caller has none, so it is 0.
+form:
+  name: ca-bc/bc428
+capabilities:
+  - name: core/record_total
+    title: "Amount from line 33099 of your return"
+    reference: "46"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_medical_expenses.medical_expenses_line_33099
+    produces:
+      output: ca-bc/bc428_medical_expenses_line_46

@@ -1,0 +1,24 @@
+# T1 General 2025 (form 5006-R), medical expenses, lines 33099 and 33199. This part names the form and
+# its exports; each line's capability goes in a part of its own with the same `form.name`. The form is
+# its own, upstream of `ca/t1_tax_and_credits`, because that form reads the provincial tax and would
+# otherwise loop back into this one.
+# Exports: what the take-home forms read from this one.
+#   - Line 33099 (medical expenses for self, spouse or common-law partner and dependent children under
+#     18, `ca/medical_expenses_line_33099`) is the optional input `ca/medical_expenses` of this form, read
+#     as 0 when blank. AB428 line 44, BC428 line 46, MB428 line 43, SK428 line 43 and NL428 line 48 print
+#     it again ("Amount from line 33099 of your return") and read it from here, never asking for it a
+#     second time.
+#   - Line 33199 (allowable amount of medical expenses for other dependants,
+#     `ca/other_dependants_medical_expenses_line_33199`) is the optional input
+#     `ca/other_dependants_medical_expenses` of this form, read as 0 when blank: the federal worksheet
+#     that works it out is not built, so the figure is typed in. SK428 line 49 prints it again ("from line
+#     33199 of your return") and reads it from here. AB428 line 50, BC428 line 52 and ON428 line 42 each
+#     use a provincial worksheet and do not read it.
+form:
+  name: ca/t1_medical_expenses
+  title: "T1 Income Tax and Benefit Return"
+  required: true
+  exports:
+    - ca/medical_expenses_line_33099
+    - ca/other_dependants_medical_expenses_line_33199
+capabilities: []

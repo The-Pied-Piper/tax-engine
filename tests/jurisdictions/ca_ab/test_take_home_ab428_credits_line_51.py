@@ -36,12 +36,12 @@ from tests.jurisdictions.ca_ab.support import (
     alberta_units,
 )
 from tests.kinds import non_negative
+from tests.medical_support import medical_expenses
 
 D = Decimal
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
 # The real parts this line needs, beside the salary, Schedule 8 and the T1 taxable income parts.
 LINE_PARTS = (
-    "ab428_credits_line_44_input.yaml",
     "ab428_credits_line_44.yaml",
     "ab428_credits_line_45.yaml",
     "ab428_credits_line_47.yaml",
@@ -70,7 +70,7 @@ FORM = dedent("""\
 
 def _part_files() -> Iterator[Path]:
     yield from form_parts("schedule_8")
-    yield from form_parts("t1_employment_income", "t1_taxable_income")
+    yield from form_parts("t1_employment_income", "t1_taxable_income", "t1_medical_expenses")
     for name in LINE_PARTS:
         yield ALBERTA_PARTS / name
 
@@ -133,7 +133,7 @@ CASES: list[tuple[str, list[Artifact[Decimal]], str]] = [
     (
         "70000",
         [
-            Artifact(ab.AB428_MEDICAL_EXPENSES_LINE_44, D("5000")),
+            medical_expenses("5000"),
             Artifact(ab.AB428_ALLOWABLE_MEDICAL_EXPENSES_FOR_OTHER_DEPENDANTS_LINE_50, D("250.50")),
         ],
         "3170.45",

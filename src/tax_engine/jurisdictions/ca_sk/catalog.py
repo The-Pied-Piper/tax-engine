@@ -42,7 +42,9 @@ SK428_MEDICAL_EXPENSES_LINE_43 = AmountKind.declare(
     CATALOG, "sk428_medical_expenses_line_43", non_negative=True
 )
 """Medical expenses, SK428 line 43 (line 58689) "Amount from line 33099 of your return": the
-amount as the filer gives it, an optional input; a blank input is read as blank."""
+T1 line 33099 amount, the total of the `ca/t1_medical_expenses` form's export
+(`ca/medical_expenses_line_33099`).
+The line has no input of its own."""
 
 SK428_NET_INCOME_LINE_44 = AmountKind.declare(
     CATALOG, "sk428_net_income_line_44", non_negative=True
@@ -72,8 +74,8 @@ SK428_OTHER_DEPENDANTS_MEDICAL_EXPENSES_LINE_49 = AmountKind.declare(
     CATALOG, "sk428_other_dependants_medical_expenses_line_49", non_negative=True
 )
 """Allowable amount of medical expenses for other dependants, SK428 line 49 (line 58729) "from line
-33199 of your return": the amount as the filer gives it, an optional input; a blank input is read as
-blank."""
+33199 of your return": the T1 line 33199 amount, the total of the `ca/t1_medical_expenses` form's
+export (`ca/other_dependants_medical_expenses_line_33199`). The line has no input of its own."""
 
 SK428_MEDICAL_EXPENSES_LINE_50 = AmountKind.declare(
     CATALOG, "sk428_medical_expenses_line_50", non_negative=True

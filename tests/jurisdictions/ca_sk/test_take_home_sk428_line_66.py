@@ -71,12 +71,12 @@ CREDITS_PARTS = (
     "sk428_credits_line_35.yaml",
     "sk428_credits_line_38.yaml",
     "sk428_credits_line_42.yaml",
-    "sk428_credits_line_43_input.yaml",
+    "sk428_credits_line_43.yaml",
     "sk428_credits_line_44.yaml",
     "sk428_credits_line_46.yaml",
     "sk428_credits_line_47.yaml",
     "sk428_credits_line_48.yaml",
-    "sk428_credits_line_49_input.yaml",
+    "sk428_credits_line_49.yaml",
     "sk428_credits_line_50.yaml",
     "sk428_credits_line_51.yaml",
     "sk428_credits_line_53.yaml",
@@ -157,7 +157,7 @@ def _derived(salary: Decimal, line_64: Decimal = ZERO, line_65_amount: Decimal =
 def _part_files() -> Iterator[Path]:
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
-    yield from form_parts("t1_taxable_income", "t1_employment_income")
+    yield from form_parts("t1_taxable_income", "t1_employment_income", "t1_medical_expenses")
     for name in CREDITS_PARTS:
         yield SK_PARTS / name
     for name in SK_LINE_PARTS:

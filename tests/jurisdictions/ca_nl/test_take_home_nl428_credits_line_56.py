@@ -43,6 +43,7 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_units,
 )
 from tests.kinds import non_negative
+from tests.medical_support import medical_expenses
 
 D = Decimal
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
@@ -52,7 +53,7 @@ LINE_47 = "ca-nl/nl428_credits_subtotal_line_47"
 LINE_55 = "ca-nl/nl428_medical_expenses_allowable_line_55"
 LINE_48 = "ca-nl/nl428_medical_expenses_line_48"
 FORM_NAME = "ca-nl/nl428_credits"
-FEDERAL_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+FEDERAL_PARTS = form_part_names("t1_taxable_income", "t1_employment_income", "t1_medical_expenses")
 NL_PART_NAMES = (
     "worksheet_nl428_line_4.yaml",
     "worksheet_nl428_line_6.yaml",
@@ -94,7 +95,7 @@ NL_PART_NAMES = (
     "nl428_credits_line_45_input.yaml",
     "nl428_credits_line_46_input.yaml",
     "nl428_credits_line_47.yaml",
-    "nl428_credits_line_48_input.yaml",
+    "nl428_credits_line_48.yaml",
     "nl428_credits_line_49.yaml",
     "nl428_credits_line_51.yaml",
     "nl428_credits_line_52.yaml",
@@ -176,7 +177,10 @@ def _sheet(
     given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     kinds = newfoundland_kinds()
     for identifier, amount in (given_lines or {}).items():
-        given.append(Artifact(kinds.kind(identifier), D(amount)))
+        if identifier == LINE_48:
+            given.append(medical_expenses(amount))
+        else:
+            given.append(Artifact(kinds.kind(identifier), D(amount)))
     worksheets = _service(tmp_path).compute(JurisdictionCode("CA-NL"), 2025, *given)
     (sheet,) = worksheets[FORM_NAME]
     return sheet

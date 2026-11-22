@@ -51,7 +51,7 @@ from tests.jurisdictions.ca_bc.support import (
 from tests.kinds import non_negative
 
 D = Decimal
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income", "t1_medical_expenses")
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
 LINE_PART = BC_PARTS / "bc428_line_60.yaml"
 LINE_58 = "ca-bc/bc428_subtotal_line_58"
@@ -98,7 +98,7 @@ def _part_files() -> Iterator[Path]:
     yield BC_PARTS / "bc428_line_37.yaml"
     yield BC_PARTS / "bc428_line_40.yaml"
     yield BC_PARTS / "bc428_line_45.yaml"
-    yield BC_PARTS / "bc428_line_46_input.yaml"
+    yield BC_PARTS / "bc428_line_46.yaml"
     yield BC_PARTS / "bc428_line_47.yaml"
     yield BC_PARTS / "bc428_line_49.yaml"
     yield BC_PARTS / "bc428_line_50.yaml"

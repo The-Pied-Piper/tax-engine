@@ -1,5 +1,5 @@
 # SK428 (2025) line 48 (Form SK428, CRA 5008-c-25e): "Line 48: Line 43 minus line 47 (if negative,
-# enter "0") =". Line 43 is the optional medical expenses input (sk428_credits_line_43_input.yaml)
+# enter "0") =". Line 43 is the T1 line 33099 amount (sk428_credits_line_43.yaml)
 # and line 47 is the lesser of the printed ceiling and line 46 (sk428_credits_line_47.yaml). Line 48
 # is one core/subtract_not_below_zero step, rounded half-up to the cent by the dataset's rule. A
 # request that leaves line 43 blank has no medical expenses, so a blank line 43 is read as 0 and
