@@ -1,23 +1,23 @@
 # T691 (T691 E (25), 2025) Part 7 line 14, "Line 1 minus line 13 (if negative, enter "0") /
-# Additional taxes paid for minimum tax carryover = 14". The optional input
-# (`ca/t691_additional_taxes_for_minimum_tax_carryover`, blank when the filer has none) is read by
-# this step, the one line the form prints for it, and the blank reads as 0. The form exports the
-# line (`ca/t691_additional_taxes_for_minimum_tax_carryover_line_14`) for the provincial forms that
-# print it again (AB428 line 67, BC428 line 69, MB428 line 66, NL428 line 71 and SK428 line 68).
-# Lines 1 to 13 of Part 7 are not built, so a typed line 14 stands in for them. A negative figure is
-# refused, as the kind is non-negative.
+# Additional taxes paid for minimum tax carryover = 14". Line 1 is "Minimum amount from line 103 of
+# Part 1" and line 13 is "Line 8 plus line 12", both typed inputs (lines 2 to 12 are not built).
+# Each blank reads as 0, and the printed floor keeps the result from going below 0. The form exports
+# the line (`ca/t691_additional_taxes_for_minimum_tax_carryover_line_14`) for BC428 line 69 and
+# NL428 line 71, which print "Amount from line 14 of Part 7 of Form T691".
 form:
   name: ca/t691
 capabilities:
-  - name: core/sum
+  - name: core/subtract_not_below_zero
     title: "Additional taxes paid for minimum tax carryover"
     reference: "14"
     unit: ca/cad
     params:
       rounding: ca/cent_rounding
     consumes:
-      parts: [ca/t691_additional_taxes_for_minimum_tax_carryover]
+      amount: ca/t691_minimum_amount
+      less: ca/t691_line_8_plus_line_12
     blank:
-      ca/t691_additional_taxes_for_minimum_tax_carryover: "0"
+      amount: "0"
+      less: "0"
     produces:
       output: ca/t691_additional_taxes_for_minimum_tax_carryover_line_14

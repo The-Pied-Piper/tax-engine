@@ -4,7 +4,7 @@ parts, real engine.
 Form text (Form BC428, CRA 5010-C, read 2026-11-14): "British Columbia additional tax for minimum
 tax purposes:", "Line 69: Amount from line 14 of Part 7 of Form T691 multiplied by 34.9% = ^". The
 input is the amount from line 14 of Part 7 of Form T691
-(`ca-bc/bc428_additional_minimum_tax_amount_line_69`, box A), the total of the T691 line 14 export
+(`ca-bc/bc428_additional_minimum_tax_amount_line_69`, box A), the total of the T691 export
 (the T691 form owns the input), read as 0 when left out. Line 69 is one calculation: 34.9% of the
 amount (box B), a printed rate held in the `ca-bc/minimum_tax_rate` dataset, rounded half-up to the
 cent. The output is `ca-bc/bc428_additional_minimum_tax_line_69`. The step is titled with the
@@ -47,7 +47,7 @@ from tests.kinds import non_negative
 D = Decimal
 CODE = JurisdictionCode("CA-BC")
 AMOUNT = "ca-bc/bc428_additional_minimum_tax_amount_line_69"
-T691_INPUT = "ca/t691_additional_taxes_for_minimum_tax_carryover"
+LINE_1 = "ca/t691_minimum_amount"
 T691_EXPORT = "ca/t691.t691_additional_taxes_for_minimum_tax_carryover_line_14"
 LINE_69 = "ca-bc/bc428_additional_minimum_tax_line_69"
 SALARY = "ca/employment_income"
@@ -69,6 +69,11 @@ FORM = dedent(f"""\
         - {LINE_69}
     capabilities: []
     """)
+
+
+def _t691(kinds: Any, amount: str) -> list[Artifact[Any]]:
+    """T691 Part 7 line 14 equal to `amount`: line 1 given, line 13 left blank."""
+    return [Artifact(kinds.kind(LINE_1), D(amount))]
 
 
 def _service(tmp_path: Path) -> TaxComputationService:
@@ -102,7 +107,7 @@ def _line_69(tmp_path: Path, salary: str, amount: str | None) -> Decimal:
     kinds = british_columbia_kinds()
     given = [Artifact(kinds.kind(SALARY), D(salary))]
     if amount is not None:
-        given.append(Artifact(kinds.kind(T691_INPUT), D(amount)))
+        given.extend(_t691(kinds, amount))
     (sheet,) = _service(tmp_path).compute(CODE, 2025, *given)["ca-bc/bc428"]
     value = sheet.get(kinds.kind(LINE_69)).value
     assert isinstance(value, Decimal)
@@ -164,12 +169,13 @@ def test_the_kind_is_a_registered_non_negative_decimal_amount() -> None:
     assert non_negative(kind)
 
 
-def test_the_amount_is_a_record_total_of_the_t691_line_14_export_with_no_input_of_its_own() -> None:
+def test_the_amount_is_a_record_total_of_the_t691_export_with_no_input_of_its_own() -> None:
     part = yaml.safe_load(PART.read_text(encoding="utf-8"))
 
     assert "inputs" not in part
     first = part["capabilities"][0]
     assert first["name"] == "core/record_total"
+    assert first["title"] == "Amount from line 14 of Part 7 of Form T691"
     assert first["unit"] == "ca/cad"
     assert first["consumes"] == {"records": T691_EXPORT}
     assert first["produces"] == {"output": AMOUNT}

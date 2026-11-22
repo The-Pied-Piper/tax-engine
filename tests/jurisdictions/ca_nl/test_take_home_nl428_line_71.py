@@ -43,7 +43,7 @@ D = Decimal
 CODE = JurisdictionCode("CA-NL")
 FORM_NAME = "ca-nl/nl428"
 AMOUNT = "ca-nl/nl428_t691_amount_line_71"
-T691_INPUT = "ca/t691_additional_taxes_for_minimum_tax_carryover"
+LINE_1 = "ca/t691_minimum_amount"
 T691_EXPORT = "ca/t691.t691_additional_taxes_for_minimum_tax_carryover_line_14"
 LINE_71 = "ca-nl/nl428_additional_tax_minimum_tax_line_71"
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
@@ -64,6 +64,11 @@ FORM = dedent(f"""\
         - {LINE_71}
     capabilities: []
     """)
+
+
+def _t691(kinds: Any, amount: str) -> list[Artifact[Any]]:
+    """T691 Part 7 line 14 equal to `amount`: line 1 given, line 13 left blank."""
+    return [Artifact(kinds.kind(LINE_1), D(amount))]
 
 
 def _sheet(tmp_path: Path, salary: str, amount: str | None) -> Any:
@@ -90,7 +95,7 @@ def _sheet(tmp_path: Path, salary: str, amount: str | None) -> Any:
     )
     given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if amount is not None:
-        given.append(Artifact(newfoundland_kinds().kind(T691_INPUT), D(amount)))
+        given.extend(_t691(newfoundland_kinds(), amount))
     (sheet,) = service.compute(CODE, 2025, *given)[FORM_NAME]
     return sheet
 
@@ -156,12 +161,13 @@ def test_the_part_is_one_apply_rate_step_over_the_line_71_amount() -> None:
     ]
 
 
-def test_the_amount_is_a_record_total_of_the_t691_line_14_export_with_no_input_of_its_own() -> None:
+def test_the_amount_is_a_record_total_of_the_t691_export_with_no_input_of_its_own() -> None:
     part = yaml.safe_load(PART.read_text(encoding="utf-8"))
 
     assert "inputs" not in part
     first = part["capabilities"][0]
     assert first["name"] == "core/record_total"
+    assert first["title"] == "Amount from line 14 of Part 7 of Form T691"
     assert first["unit"] == "ca/cad"
     assert first["consumes"] == {"records": T691_EXPORT}
     assert first["produces"] == {"output": AMOUNT}

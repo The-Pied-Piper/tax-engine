@@ -188,10 +188,8 @@ SK428_MINIMUM_TAX_T691_AMOUNT_LINE_68 = AmountKind.declare(
 )
 """Saskatchewan additional tax for minimum tax purposes, SK428 line 68 "Line 68: Form T691: Line 1
 minus Line 2 of Part 7 multiplied by 50%": the amount from Form T691, box A of the line, a record
-total of the T691's export (`ca/t691_additional_taxes_for_minimum_tax_carryover_line_14`),
-0 for a salary-only caller.
-The printed "line 1 minus line 2 of Part 7" is read as T691 Part 7 line 14, the same
-figure BC and NL print. The 50% multiply is a separate step."""
+total of the T691's export (`ca/t691_line_1_minus_line_2_of_part_7`), 0 for a salary-only
+caller. The form prints no floor, so it is signed. The 50% multiply is a separate step."""
 
 SK428_POLITICAL_CONTRIBUTIONS_CREDIT_LINE_73 = AmountKind.declare(
     CATALOG, "sk428_political_contributions_credit_line_73", non_negative=True

@@ -1,8 +1,7 @@
 # Newfoundland and Labrador minimum tax rate, 2025 tax year (Form NL428 lines 68 and 71): 60%.
 # Line 68 applies it to the amount from line 40427 of the return, and line 71 to the Form T691
 # Part 7 line 14 amount. Each product is a dollars-and-cents line, so it rounds half-up to the cent,
-# the project's choice, as the form states no rounding rule. The 60% of line 71 is to be confirmed
-# against the printed NL428 (5001-pc only names Line 71 and Form T691).
+# the project's choice, as the form states no rounding rule.
 family: ca-nl/minimum_tax_rate
 tax_year: 2025
 kind: rate

@@ -1,7 +1,7 @@
-"""T691 Part 7 line 14: one cent-rounded sum step reading the blank as 0, exported to the provinces.
+"""T691 Part 7 line 14, "Additional taxes paid for minimum tax carryover": the amount BC428 line 69
+and NL428 line 71 read, as one cent-rounded subtraction with the printed floor.
 
-Form text (T691 E (25), Part 7): "Line 1 minus line 13 (if negative, enter "0") / Additional taxes
-paid for minimum tax carryover = 14". Lines 1 to 13 are not built, so line 14 is one typed input.
+Form text (T691 E (25), Part 7): "Line 1 minus line 13 (if negative, enter "0")". Line 13 is typed.
 """
 
 from __future__ import annotations
@@ -9,37 +9,85 @@ from __future__ import annotations
 from decimal import Decimal
 from typing import Any
 
+import pytest
 import yaml
 
+from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
-from tax_engine.registrations import artifact_kinds
-from tests.federal_forms import FEDERAL_FORMS
-from tests.kinds import non_negative
+from tests.federal_forms import FEDERAL_FORMS, form_part_names
+from tests.jurisdictions.ca_on.conftest import TakeHomeService
+from tests.kinds import bundled_kinds, non_negative
 
-NAME = "ca/t691_additional_taxes_for_minimum_tax_carryover"
-OUTPUT = "ca/t691_additional_taxes_for_minimum_tax_carryover_line_14"
-TITLE = "Additional taxes paid for minimum tax carryover"
+D = Decimal
+CODE = JurisdictionCode("CA-ON")
+IN1 = "ca/t691_minimum_amount"
+IN2 = "ca/t691_basic_federal_tax"
+IN13 = "ca/t691_line_8_plus_line_12"
+HEADER = """\
+jurisdiction: CA-ON
+version: 1
+valid_from_tax_year: 2025
+outputs: []
+capabilities: []
+"""
 
 
-def test_line_14_is_one_sum_step_that_reads_its_blank_as_zero() -> None:
-    part: Any = yaml.safe_load((FEDERAL_FORMS / "t691" / "t691_line_14.yaml").read_text("utf-8"))
+def _figure(take_home_service: TakeHomeService, output: str, **given: str) -> Decimal:
+    kinds = bundled_kinds()
+    names = {"line_1": IN1, "line_2": IN2, "line_13": IN13}
+    starting = [Artifact(kinds.kind(names[key]), D(value)) for key, value in given.items()]
+    service = take_home_service(HEADER, "{}\n", *form_part_names("t691"))
+    (sheet,) = service.compute(CODE, 2025, *starting)["ca/t691"]
+    value = sheet.get(kinds.kind(output)).value
+    assert isinstance(value, Decimal)
+    return value
 
+
+def _step(name: str) -> dict[str, Any]:
+    part = yaml.safe_load((FEDERAL_FORMS / "t691" / name).read_text(encoding="utf-8"))
     assert part["form"] == {"name": "ca/t691"}
     (step,) = part["capabilities"]
-    assert step == {
-        "name": "core/sum",
-        "title": TITLE,
+    return dict(step)
+
+
+OUTPUT = "ca/t691_additional_taxes_for_minimum_tax_carryover_line_14"
+
+
+@pytest.mark.parametrize(
+    ("given", "expected"),
+    [
+        # 5,000.00 minus 1,200.00.
+        ({"line_1": "5000.00", "line_13": "1200.00"}, "3800.00"),
+        # Line 13 above line 1: the printed floor gives 0.
+        ({"line_1": "1000.00", "line_13": "5000.00"}, "0.00"),
+        # Line 13 left out reads 0.
+        ({"line_1": "5000.00"}, "5000.00"),
+        # Both left out read 0.
+        ({}, "0.00"),
+    ],
+)
+def test_the_figure_is_line_1_minus_line_13_not_below_zero(
+    take_home_service: TakeHomeService, given: dict[str, str], expected: str
+) -> None:
+    assert _figure(take_home_service, OUTPUT, **given) == D(expected)
+
+
+def test_the_part_is_one_subtract_not_below_zero_step() -> None:
+    assert _step("t691_line_14.yaml") == {
+        "name": "core/subtract_not_below_zero",
+        "title": "Additional taxes paid for minimum tax carryover",
         "reference": "14",
         "unit": "ca/cad",
         "params": {"rounding": "ca/cent_rounding"},
-        "consumes": {"parts": [NAME]},
-        "blank": {NAME: "0"},
+        "consumes": {"amount": IN1, "less": IN13},
+        "blank": {"amount": "0", "less": "0"},
         "produces": {"output": OUTPUT},
     }
 
 
 def test_the_export_kind_is_a_non_negative_decimal_amount() -> None:
-    kind = artifact_kinds().kind(OUTPUT)
+    kind = bundled_kinds().kind(OUTPUT)
 
     assert isinstance(kind, AmountKind)
     assert kind.value_type is Decimal

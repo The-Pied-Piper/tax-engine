@@ -2,7 +2,7 @@
 
 Form text (Form SK428, CRA 5008-C): "Saskatchewan additional tax for minimum tax purposes:" / "Line
 68: Form T691: Line 1 minus Line 2 of Part 7 ^ multiplied by 50% = ^". The input is the Form T691
-amount (`ca-sk/sk428_minimum_tax_t691_amount_line_68`), the total of the T691 line 14 export (the
+amount (`ca-sk/sk428_minimum_tax_t691_amount_line_68`), the total of the T691 export (the
 T691 form owns the input), 0 when left out. Line 68 box B is one calculation: 50% of the amount, a
 printed rate held in the `ca-sk/minimum_tax_rate` dataset, rounded half-up to the cent. The output
 is `ca-sk/sk428_minimum_tax_additional_line_68`. The step is titled with the heading the form
@@ -44,8 +44,9 @@ D = Decimal
 CODE = JurisdictionCode("CA-SK")
 FORM_NAME = "ca-sk/sk428"
 AMOUNT = "ca-sk/sk428_minimum_tax_t691_amount_line_68"
-T691_INPUT = "ca/t691_additional_taxes_for_minimum_tax_carryover"
-T691_EXPORT = "ca/t691.t691_additional_taxes_for_minimum_tax_carryover_line_14"
+LINE_1 = "ca/t691_minimum_amount"
+LINE_2 = "ca/t691_basic_federal_tax"
+T691_EXPORT = "ca/t691.t691_line_1_minus_line_2_of_part_7"
 LINE_68 = "ca-sk/sk428_minimum_tax_additional_line_68"
 SALARY = "ca/employment_income"
 SK_PARTS = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / "manifests" / "2025"
@@ -69,6 +70,15 @@ FORM = dedent(f"""\
         - {LINE_68}
     capabilities: []
     """)
+
+
+def _t691(kinds: Any, amount: str) -> list[Artifact[Any]]:
+    """T691 Part 7 line 1 minus line 2 equal to `amount`: line 1 when it is not negative, else
+    line 2 with the absolute value (line 1 left blank)."""
+    value = D(amount)
+    if value >= 0:
+        return [Artifact(kinds.kind(LINE_1), value)]
+    return [Artifact(kinds.kind(LINE_2), -value)]
 
 
 def _service(tmp_path: Path) -> TaxComputationService:
@@ -96,7 +106,7 @@ def _sheet(tmp_path: Path, salary: str, amount: str | None) -> Worksheet:
     kinds = saskatchewan_kinds()
     given = [Artifact(kinds.kind(SALARY), D(salary))]
     if amount is not None:
-        given.append(Artifact(kinds.kind(T691_INPUT), D(amount)))
+        given.extend(_t691(kinds, amount))
     (sheet,) = _service(tmp_path).compute(CODE, 2025, *given)[FORM_NAME]
     return sheet
 
@@ -185,12 +195,21 @@ def test_the_kind_is_a_registered_decimal_amount() -> None:
     assert kind.value_type is Decimal
 
 
-def test_the_amount_is_a_record_total_of_the_t691_line_14_export_with_no_input_of_its_own() -> None:
+def test_the_amount_is_a_record_total_of_the_t691_export_with_no_input_of_its_own() -> None:
     part = yaml.safe_load(PART.read_text(encoding="utf-8"))
 
     assert "inputs" not in part
     first = part["capabilities"][0]
     assert first["name"] == "core/record_total"
+    assert first["title"] == "Form T691: line 1 minus line 2 of Part 7"
     assert first["unit"] == "ca/cad"
     assert first["consumes"] == {"records": T691_EXPORT}
     assert first["produces"] == {"output": AMOUNT}
+
+
+def test_line_2_above_line_1_gives_a_negative_line_68(tmp_path: Path) -> None:
+    # Line 1 minus line 2 of Part 7 is -10000 (line 2 of 10000, line 1 blank): -10000 x 50%.
+    value = _line_68(tmp_path, "70000", "-10000")
+
+    assert value == D("-5000.00")
+    assert str(value) == "-5000.00"

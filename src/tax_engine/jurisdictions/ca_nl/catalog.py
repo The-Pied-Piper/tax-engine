@@ -844,7 +844,7 @@ NL428_T691_AMOUNT_LINE_71 = AmountKind.declare(
     CATALOG, "nl428_t691_amount_line_71", non_negative=True
 )
 """Form T691 amount, NL428 line 71 "Line 71: Amount from line 14 of Part 7 of Form T691 multiplied
-by 60% =" (the quote and the 60% are to be confirmed against the printed NL428): the amount from
+by 60% =" (CRA 5001-C): the amount from
 line 14 of Part 7 of Form T691, a record total of the T691's export
 (`ca/t691_additional_taxes_for_minimum_tax_carryover_line_14`), 0 when the caller leaves it out;
 the 60% multiplication step reads it."""

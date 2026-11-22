@@ -2,10 +2,11 @@
 # Columbia additional tax for minimum tax purposes: Line 69: Amount from line 14 of Part 7 of Form
 # T691 ^ multiplied by 34.9% = ^". The 34.9% is a printed rate, held in the `ca-bc/minimum_tax_rate`
 # dataset, so line 69 is one calculation: 34.9% of the amount, rounded half-up to the cent. The
-# amount (box A) is the T691's Part 7 line 14: the T691 owns the input and exports the line
+# amount (box A) is the T691's Part 7 line 14, which the T691 form computes and exports
 # (`ca/t691_additional_taxes_for_minimum_tax_carryover_line_14`), so the first step totals that
-# export (a form reads another form's export only as a record list) and the second applies the
-# rate. The form does not name the boxes; "box A" and "box B" are the owner's naming.
+# export (a form reads another form's export only as a record list) and the second applies the rate.
+# This is line 14 (line 1 minus line 13, not below 0), not line 1 minus line 2, which AB428, MB428
+# and SK428 print. The form does not name the boxes; "box A" and "box B" are the owner's naming.
 form:
   name: ca-bc/bc428
 capabilities:

@@ -1,0 +1,15 @@
+# T691 (T691 E (25), 2025) Part 7 line 1 input a salary-only caller does not give. "Minimum amount from line 103 of Part 1". A
+# salary-only caller has no figure here, so a request that leaves the line out is read as blank, and
+# the steps that read it take the blank as 0. The lines above it are not built, so the figure is
+# taken as the form prints it, one input. This form owns the input; the provincial forms import
+# the T691's exports and never ask for it themselves.
+form:
+  name: ca/t691
+inputs:
+  - name: ca/t691_minimum_amount
+    title: "Minimum amount from line 103 of Part 1"
+    reference: "1"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Minimum amount from line 103 of Part 1'

@@ -3,7 +3,7 @@ real engine.
 
 Form text (Form AB428, CRA 5009-c-25e.txt): "Line 67: Form T691: line 1 minus line 2 of Part 7 ^ /
 multiplied by 35% = ^". The input is the T691 amount
-(`ca-ab/ab428_minimum_tax_t691_amount_line_67`), the total of the T691 line 14 export (the T691
+(`ca-ab/ab428_minimum_tax_t691_amount_line_67`), the total of the T691 export (the T691
 form owns the input and the reader has none of its own), read as 0 when the caller leaves it out.
 Line 67 is one calculation: 35% of the amount, a printed rate held in the `ca-ab/minimum_tax_rate`
 dataset, rounded half-up to the cent. The output is `ca-ab/ab428_additional_minimum_tax_line_67`.
@@ -44,8 +44,9 @@ from tests.jurisdictions.ca_ab.support import (
 D = Decimal
 CODE = JurisdictionCode("CA-AB")
 AMOUNT = "ca-ab/ab428_minimum_tax_t691_amount_line_67"
-T691_INPUT = "ca/t691_additional_taxes_for_minimum_tax_carryover"
-T691_EXPORT = "ca/t691.t691_additional_taxes_for_minimum_tax_carryover_line_14"
+LINE_1 = "ca/t691_minimum_amount"
+LINE_2 = "ca/t691_basic_federal_tax"
+T691_EXPORT = "ca/t691.t691_line_1_minus_line_2_of_part_7"
 LINE_67 = "ca-ab/ab428_additional_minimum_tax_line_67"
 SALARY = "ca/employment_income"
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
@@ -66,6 +67,15 @@ FORM = dedent(f"""\
         - {LINE_67}
     capabilities: []
     """)
+
+
+def _t691(kinds: Any, amount: str) -> list[Artifact[Any]]:
+    """T691 Part 7 line 1 minus line 2 equal to `amount`: line 1 when it is not negative, else
+    line 2 with the absolute value (line 1 left blank)."""
+    value = D(amount)
+    if value >= 0:
+        return [Artifact(kinds.kind(LINE_1), value)]
+    return [Artifact(kinds.kind(LINE_2), -value)]
 
 
 def _service(tmp_path: Path) -> TaxComputationService:
@@ -96,7 +106,7 @@ def _line_67(tmp_path: Path, salary: str, amount: str | None) -> Decimal:
     kinds = alberta_kinds()
     given = [Artifact(kinds.kind(SALARY), D(salary))]
     if amount is not None:
-        given.append(Artifact(kinds.kind(T691_INPUT), D(amount)))
+        given.extend(_t691(kinds, amount))
     (sheet,) = _service(tmp_path).compute(CODE, 2025, *given)["ca-ab/ab428"]
     value = sheet.get(kinds.kind(LINE_67)).value
     assert isinstance(value, Decimal)
@@ -128,6 +138,8 @@ def test_a_salary_only_caller_who_leaves_out_the_amount_gets_0(tmp_path: Path, s
         ("5000.00", "1750.00"),
         # 0.10 x 35% = 0.035, a tie, rounded half-up to 0.04.
         ("0.10", "0.04"),
+        # Line 2 above line 1 (line 1 minus line 2 of -1,000.00): negative, not floored.
+        ("-1000.00", "-350.00"),
     ],
 )
 def test_line_67_is_35_percent_of_the_amount_rounded_half_up(
@@ -161,12 +173,13 @@ def test_the_kind_is_a_registered_decimal_amount() -> None:
     assert kind.value_type is Decimal
 
 
-def test_the_amount_is_a_record_total_of_the_t691_line_14_export_with_no_input_of_its_own() -> None:
+def test_the_amount_is_a_record_total_of_the_t691_export_with_no_input_of_its_own() -> None:
     part = yaml.safe_load(PART.read_text(encoding="utf-8"))
 
     assert "inputs" not in part
     first = part["capabilities"][0]
     assert first["name"] == "core/record_total"
+    assert first["title"] == "Form T691: line 1 minus line 2 of Part 7"
     assert first["unit"] == "ca/cad"
     assert first["consumes"] == {"records": T691_EXPORT}
     assert first["produces"] == {"output": AMOUNT}

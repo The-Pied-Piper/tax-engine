@@ -64,7 +64,8 @@ TAX = "ca-ab/ab428"
 LINE_66 = "ca-ab/ab428_tax_after_credits_line_66"
 LINE_67 = "ca-ab/ab428_additional_minimum_tax_line_67"
 LINE_68 = "ca-ab/ab428_tax_line_68"
-AMOUNT = "ca/t691_additional_taxes_for_minimum_tax_carryover"
+AMOUNT = "ca/t691_minimum_amount"
+LINE_2 = "ca/t691_basic_federal_tax"
 ROUNDING = "ca-ab/cent_rounding"
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
 LINE_PART = ALBERTA_PARTS / "ab428_line_68.yaml"
@@ -224,7 +225,12 @@ def _service(tmp_path: Path) -> TaxComputationService:
 def _sheet(tmp_path: Path, salary: str, amount: str | None = None) -> Worksheet:
     given = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if amount is not None:
-        given.append(Artifact(_amount_kind(AMOUNT), D(amount)))
+        # Line 1 minus line 2 is the amount: a negative one is line 2 with line 1 left blank.
+        given.append(
+            Artifact(_amount_kind(AMOUNT), D(amount))
+            if D(amount) >= 0
+            else Artifact(_amount_kind(LINE_2), -D(amount))
+        )
     worksheets = _service(tmp_path).compute(CODE, 2025, *given)
     (sheet,) = worksheets[TAX]
     return sheet
@@ -274,6 +280,25 @@ def test_line_68_adds_line_67_when_the_t691_amount_is_given(
     assert line_68 == got_66 + got_67
     assert line_68 == D(expected)
     assert line_68.as_tuple().exponent == -2
+
+
+@pytest.mark.parametrize(
+    ("salary", "line_66", "line_67", "expected"),
+    [
+        ("20000", "0.00", "-350.00", "-350.00"),
+        ("70000", "3598.12", "-350.00", "3248.12"),
+    ],
+)
+def test_a_negative_t691_amount_gives_a_negative_line_67_and_line_68_without_raising(
+    tmp_path: Path, salary: str, line_66: str, line_67: str, expected: str
+) -> None:
+    sheet = _sheet(tmp_path, salary, "-1000")
+
+    assert sheet.get(_amount_kind(LINE_66)).value == D(line_66)
+    assert sheet.get(_amount_kind(LINE_67)).value == D(line_67)
+    line_68 = sheet.get(_amount_kind(LINE_68)).value
+    assert line_68 == D(expected)
+    assert str(line_68) == expected
 
 
 def test_line_68_is_never_blank_and_traces_no_blank_row(tmp_path: Path) -> None:

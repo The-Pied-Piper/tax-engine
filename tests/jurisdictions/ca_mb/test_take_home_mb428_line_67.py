@@ -57,7 +57,8 @@ from tests.jurisdictions.ca_mb.support import (
 from tests.kinds import non_negative
 
 D = Decimal
-T691_INPUT = "ca/t691_additional_taxes_for_minimum_tax_carryover"
+LINE_1 = "ca/t691_minimum_amount"
+LINE_2 = "ca/t691_basic_federal_tax"
 MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"
 LINE_PART = MB_PARTS / "mb428_line_67.yaml"
 LINE_66_PART = MB_PARTS / "mb428_line_66.yaml"
@@ -214,6 +215,15 @@ LINES_60_AND_64 = {
 }
 
 
+def _t691(kinds: Any, amount: str) -> list[Artifact[Any]]:
+    """T691 Part 7 line 1 minus line 2 equal to `amount`: line 1 when it is not negative, else
+    line 2 with the absolute value (line 1 left blank)."""
+    value = D(amount)
+    if value >= 0:
+        return [Artifact(kinds.kind(LINE_1), value)]
+    return [Artifact(kinds.kind(LINE_2), -value)]
+
+
 def _part_files() -> Iterator[Path]:
     yield from form_parts("schedule_8")
     yield from form_parts("schedule_9")
@@ -269,12 +279,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
 def _sheet(tmp_path: Path, salary: str, t691_amount: str | None = None) -> Worksheet:
     given = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if t691_amount is not None:
-        given.append(
-            Artifact(
-                manitoba_kinds().kind(T691_INPUT),
-                D(t691_amount),
-            )
-        )
+        given.extend(_t691(manitoba_kinds(), t691_amount))
     worksheets = _service(tmp_path).compute(JurisdictionCode("CA-MB"), 2025, *given)
     (sheet,) = worksheets[FORM_NAME]
     return sheet

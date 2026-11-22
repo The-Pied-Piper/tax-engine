@@ -1,11 +1,11 @@
 # Form AB428 (Alberta Tax and Credits, 2025, 5009-c-25e) line 67 (ca-ab/ab428): "Line 67: Form T691:
-# line 1 minus line 2 of Part 7 multiplied by 35% =". The 35% is a printed rate, held in the
-# `ca-ab/minimum_tax_rate` dataset, so line 67 is one calculation: 35% of the T691 amount, rounded
-# half-up to the cent. The T691 amount (box A) is the T691's Part 7 line 14: the T691 owns the input
-# and exports the line (`ca/t691_additional_taxes_for_minimum_tax_carryover_line_14`), so the first
+# line 1 minus line 2 of Part 7 multiplied by 35% =". The 35% is a printed rate, held in the `ca-
+# ab/minimum_tax_rate` dataset, so line 67 is one calculation: 35% of the T691 amount, rounded half-
+# up to the cent. The T691 amount (box A) is what the form prints, line 1 minus line 2 of Part 7,
+# which the T691 form computes and exports (`ca/t691_line_1_minus_line_2_of_part_7`), so the first
 # step totals that export (a form reads another form's export only as a record list) and the second
-# applies the rate. The printed "line 1 minus line 2 of Part 7" is read as T691 Part 7 line 14, the same figure BC and NL print.
-# The form does not name the boxes; "box A" and "box B" are the owner's naming.
+# applies the rate. The form prints no floor, so the figure can be negative. The form does not name
+# the boxes; "box A" and "box B" are the owner's naming.
 form:
   name: ca-ab/ab428
 capabilities:
@@ -14,7 +14,7 @@ capabilities:
     reference: "67 box A"
     unit: ca/cad
     consumes:
-      records: ca/t691.t691_additional_taxes_for_minimum_tax_carryover_line_14
+      records: ca/t691.t691_line_1_minus_line_2_of_part_7
     produces:
       output: ca-ab/ab428_minimum_tax_t691_amount_line_67
   - name: core/apply_rate

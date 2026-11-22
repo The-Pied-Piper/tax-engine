@@ -56,7 +56,8 @@ from tests.jurisdictions.ca_sk.support import (
 from tests.kinds import non_negative
 
 D = Decimal
-T691_INPUT = "ca/t691_additional_taxes_for_minimum_tax_carryover"
+LINE_1 = "ca/t691_minimum_amount"
+LINE_2 = "ca/t691_basic_federal_tax"
 CENT = D("0.01")
 ZERO = D(0)
 SK_PARTS = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / "manifests" / "2025"
@@ -153,6 +154,15 @@ CASES = [
     ("20000", "0.00"),
     ("70000", "5092.30"),
 ]
+
+
+def _t691(kinds: Any, amount: str) -> list[Artifact[Any]]:
+    """T691 Part 7 line 1 minus line 2 equal to `amount`: line 1 when it is not negative, else
+    line 2 with the absolute value (line 1 left blank)."""
+    value = D(amount)
+    if value >= 0:
+        return [Artifact(kinds.kind(LINE_1), value)]
+    return [Artifact(kinds.kind(LINE_2), -value)]
 
 
 def _cent(value: Decimal) -> Decimal:
@@ -253,7 +263,7 @@ def _sheet(
     kinds = saskatchewan_kinds()
     given = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if amount is not None:
-        given.append(Artifact(kinds.kind(T691_INPUT), D(amount)))
+        given.extend(_t691(kinds, amount))
     if line_61 is not None:
         given.append(Artifact(sk_catalog.SK428_TAX_ON_SPLIT_INCOME_LINE_61, D(line_61)))
     if line_64 is not None:
@@ -318,6 +328,21 @@ def test_a_t691_amount_of_1000_adds_500_to_line_67(
     assert _line(sheet, LINE_67) == D(line_67)
     assert _line(sheet, IDENTIFIER) == D(expected) == _derived(D(salary), D("1000.00"))
     assert str(_line(sheet, IDENTIFIER)) == expected
+
+
+def test_a_negative_t691_amount_gives_a_negative_line_68_and_a_signed_line_69(
+    tmp_path: Path,
+) -> None:
+    # The Form T691 input is signed: -1000 x 50% = -500.00, added to line 67 with no floor.
+    sheet = _sheet(tmp_path, "70000", amount="-1000")
+    assert _line(sheet, LINE_68) == D("-500.00")
+    assert _line(sheet, IDENTIFIER) == D("4592.30") == _derived(D("70000"), D("-1000"))
+
+    sheet = _sheet(tmp_path / "low", "20000", amount="-1000")
+    assert _line(sheet, LINE_67) == ZERO
+    assert _line(sheet, IDENTIFIER) == D("-500.00")
+    assert str(_line(sheet, IDENTIFIER)) == "-500.00"
+    assert _line(sheet, IDENTIFIER).is_signed()
 
 
 def test_line_69_reads_lines_61_and_64_through_line_67(tmp_path: Path) -> None:

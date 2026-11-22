@@ -23,7 +23,10 @@ REGISTERED = frozenset(
         "ca/other_dependants_medical_expenses_line_33199",
         "ca/minimum_tax_carryover",
         "ca/minimum_tax_carryover_line_40427",
-        "ca/t691_additional_taxes_for_minimum_tax_carryover",
+        "ca/t691_minimum_amount",
+        "ca/t691_basic_federal_tax",
+        "ca/t691_line_8_plus_line_12",
+        "ca/t691_line_1_minus_line_2_of_part_7",
         "ca/t691_additional_taxes_for_minimum_tax_carryover_line_14",
         "ca/donations_and_gifts_line_12",
         "ca/donations_and_gifts_amount_line_12",
@@ -2174,6 +2177,7 @@ REGISTERED = frozenset(
 
 SIGNED = frozenset(
     {
+        "ca/t691_line_1_minus_line_2_of_part_7",
         "ca/fuel_charge_part_5a_credit",
         "ca/fuel_charge_chart_c_total_ab",
         "ca/fuel_charge_chart_c_total_mb",

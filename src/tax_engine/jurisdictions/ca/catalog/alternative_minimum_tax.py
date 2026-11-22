@@ -1151,17 +1151,35 @@ of your return)", checked: the amount of `amt_resource_expenditures` after the c
 more than `amt_lines_22100_22400_and_23200` (`core/at_most`). An amount above those lines is an
 input error, not capped. Part 9 line 6 reads it."""
 
-T691_ADDITIONAL_TAXES_FOR_MINIMUM_TAX_CARRYOVER = AmountKind.declare(
-    CATALOG, "t691_additional_taxes_for_minimum_tax_carryover", non_negative=True
+T691_MINIMUM_AMOUNT = AmountKind.declare(CATALOG, "t691_minimum_amount", non_negative=True)
+"""Minimum amount, Form T691 Part 7 line 1 "Minimum amount from line 103 of Part 1": the optional
+input (`t691_line_1_inputs.yaml`), blank when the filer has none. The T691 form owns it; lines 1
+minus 2 and 14 read it."""
+
+T691_BASIC_FEDERAL_TAX = AmountKind.declare(CATALOG, "t691_basic_federal_tax", non_negative=True)
+"""Basic federal tax, Form T691 Part 7 line 2 "Basic federal tax from line 7 of Part 2": the
+optional input (`t691_line_2_inputs.yaml`), blank when the filer has none. Line 1 minus line 2
+reads it."""
+
+T691_LINE_8_PLUS_LINE_12 = AmountKind.declare(
+    CATALOG, "t691_line_8_plus_line_12", non_negative=True
 )
-"""Additional taxes paid for minimum tax carryover, Form T691 Part 7 line 14 "Line 1 minus line 13
-(if negative, enter "0")" "Additional taxes paid for minimum tax carryover": the optional input
-(`t691_line_14_inputs.yaml`), blank when the filer has none. The T691 form owns it; AB428 line 67,
-BC428 line 69, MB428 line 66, NL428 line 71 and SK428 line 68 import line 14."""
+"""Line 8 plus line 12, Form T691 Part 7 line 13 "Line 8 plus line 12": the optional input
+(`t691_line_13_inputs.yaml`), blank when the filer has none. Lines 3 to 12 are not built, so line 13
+is typed; line 14 reads it."""
+
+T691_LINE_1_MINUS_LINE_2_OF_PART_7 = AmountKind.declare(
+    CATALOG, "t691_line_1_minus_line_2_of_part_7"
+)
+"""Line 1 minus line 2 of Part 7, Form T691 Part 7 "Form T691: line 1 minus line 2 of Part 7", the
+words AB428 line 67, MB428 line 66 and SK428 line 68 print: line 1 less line 2, each blank read as
+0, rounded to the cent. The form prints no floor, so the kind is signed. Exported by the T691
+(`t691_line_1_minus_line_2.yaml`)."""
 
 T691_ADDITIONAL_TAXES_FOR_MINIMUM_TAX_CARRYOVER_LINE_14 = AmountKind.declare(
     CATALOG, "t691_additional_taxes_for_minimum_tax_carryover_line_14", non_negative=True
 )
-"""Additional taxes paid for minimum tax carryover as Form T691 Part 7 line 14 prints it
-(`t691_line_14.yaml`): the optional input (`ca/t691_additional_taxes_for_minimum_tax_carryover`),
-read as 0 when blank, exported by the T691 form."""
+"""Additional taxes paid for minimum tax carryover, Form T691 Part 7 line 14 "Line 1 minus line 13
+(if negative, enter "0")": line 1 less line 13, each blank read as 0, not below 0
+(`t691_line_14.yaml`). Exported by the T691; BC428 line 69 and NL428 line 71 print "Amount from line
+14 of Part 7 of Form T691"."""

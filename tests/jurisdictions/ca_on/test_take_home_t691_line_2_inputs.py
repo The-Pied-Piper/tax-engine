@@ -1,9 +1,8 @@
-"""T691 Part 7 line 14 input: the one optional amount the five provinces' forms read."""
+"""T691 Part 7 line 2 input: an optional amount, read as 0 when blank."""
 
 from __future__ import annotations
 
 from decimal import Decimal
-from pathlib import Path
 from typing import Any
 
 import yaml
@@ -13,26 +12,20 @@ from tax_engine.registrations import artifact_kinds
 from tests.federal_forms import FEDERAL_FORMS
 from tests.kinds import non_negative
 
-T691 = FEDERAL_FORMS / "t691"
-NAME = "ca/t691_additional_taxes_for_minimum_tax_carryover"
-TITLE = "Additional taxes paid for minimum tax carryover"
+NAME = "ca/t691_basic_federal_tax"
 
 
-def _part(path: Path) -> dict[str, Any]:
-    part = yaml.safe_load(path.read_text(encoding="utf-8"))
-    assert isinstance(part, dict)
-    return part
-
-
-def test_line_14_has_an_optional_input_left_blank_by_a_salary_only_caller() -> None:
-    part = _part(T691 / "t691_line_14_inputs.yaml")
+def test_line_2_has_an_optional_input_left_blank_by_a_salary_only_caller() -> None:
+    part: Any = yaml.safe_load(
+        (FEDERAL_FORMS / "t691" / "t691_line_2_inputs.yaml").read_text(encoding="utf-8")
+    )
 
     assert part["form"] == {"name": "ca/t691"}
     (declaration,) = part["inputs"]
     assert {key: declaration[key] for key in declaration if key != "basis"} == {
         "name": NAME,
-        "title": TITLE,
-        "reference": "14",
+        "title": "Basic federal tax from line 7 of Part 2",
+        "reference": "2",
         "unit": "ca/cad",
         "required": False,
         "default": None,
