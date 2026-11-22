@@ -26,8 +26,9 @@ from tax_engine.domain.errors import (
     UnknownRegistrationError,
 )
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.kinds import RecordListKind
+from tax_engine.domain.kinds import AmountKind, RecordListKind
 from tax_engine.domain.registry import Namespace
+from tax_engine.domain.take_home import TakeHomeFigures
 from tax_engine.domain.unit import Unit
 
 
@@ -423,7 +424,9 @@ class Manifest:
     `required_when` that is not a yes/no is an InvalidManifestError; an unknown identifier is an
     UnknownRegistrationError. `units_by_name` holds each unit its declarations name, by the full
     identifier they write, already looked up in the unit registry; the loader builds it and refuses
-    an unknown identifier.
+    an unknown identifier. `take_home`, when given, declares where the take-home figures are read:
+    each must be a registered kind exported by a form of the manifest, and the salary a registered
+    amount kind.
     """
 
     jurisdiction: JurisdictionCode
@@ -432,6 +435,7 @@ class Manifest:
     forms: tuple[Form, ...]
     artifacts: ArtifactRegistry = dataclasses.field(compare=False)
     units_by_name: Mapping[str, Unit] = dataclasses.field(default_factory=dict, compare=False)
+    take_home: TakeHomeFigures | None = None
     kinds: ArtifactRegistry = dataclasses.field(init=False, compare=False)
 
     def __post_init__(self) -> None:
@@ -451,6 +455,24 @@ class Manifest:
         kinds = self.artifacts.extended(derived)
         object.__setattr__(self, "kinds", kinds)
         self._check_artifacts(kinds)
+        self._check_take_home(kinds)
+
+    def _check_take_home(self, kinds: ArtifactRegistry) -> None:
+        """Refuse a take-home declaration that names a form, kind or salary the manifest lacks."""
+        if self.take_home is None:
+            return
+        try:
+            salary = kinds.kind(self.take_home.salary)
+            if not isinstance(salary, AmountKind):
+                raise InvalidManifestError(f"{self.take_home.salary!r} is not an amount")
+            for reference in self.take_home.references:
+                kinds.kind(reference.kind)
+        except (UnknownRegistrationError, InvalidManifestError) as exc:
+            raise InvalidManifestError(f"take_home: {exc}") from None
+        names = {form.name for form in self.forms}
+        for reference in self.take_home.references:
+            if reference.form not in names:
+                raise InvalidManifestError(f"take_home: no form {reference.form!r}")
 
     def __hash__(self) -> int:
         """Hash by value, like the frozen dataclass it is; the read-only mapping is unhashable."""

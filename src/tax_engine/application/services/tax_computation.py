@@ -12,6 +12,7 @@ from typing import Any
 from tax_engine.application.ports.jurisdiction_source import JurisdictionSource
 from tax_engine.application.ports.parameter_source import ParameterSource
 from tax_engine.domain.artifact import Artifact, ArtifactRegistry
+from tax_engine.domain.calculation_request import TaxCalculationRequest
 from tax_engine.domain.capability import Capability, CapabilityRegistry
 from tax_engine.domain.capability_builder import CapabilityBuilder
 from tax_engine.domain.form import FormComposition, FormSet
@@ -68,17 +69,21 @@ class TaxComputationService:
             ]
         )
 
-    def compute(
-        self, code: JurisdictionCode, tax_year: int, *artifacts: Artifact[Any]
-    ) -> dict[str, tuple[Worksheet, ...]]:
-        """The worksheets of every form, by form name, from `artifacts`.
+    def calculate(self, request: TaxCalculationRequest) -> dict[str, tuple[Worksheet, ...]]:
+        """The worksheets of every form, by form name, from the request's artifacts.
 
-        `artifacts` are one of each declared input kind, among them each form's instances. An
+        The artifacts are one of each declared input kind, among them each form's instances. An
         optional input left out, or given blank where its default is a value, is read as its
         manifest default; a required one left out is refused, naming it. Each form has one worksheet
         per instance, in instance order.
         """
-        return self.compose(code, tax_year).compute(*artifacts)
+        return self.compose(request.jurisdiction, request.tax_year).compute(*request.artifacts)
+
+    def compute(
+        self, code: JurisdictionCode, tax_year: int, *artifacts: Artifact[Any]
+    ) -> dict[str, tuple[Worksheet, ...]]:
+        """`calculate` for the request made of `code`, `tax_year` and `artifacts`."""
+        return self.calculate(TaxCalculationRequest(code, tax_year, artifacts))
 
     def _capability(
         self, selection: CapabilitySelection, tax_year: int, kinds: ArtifactRegistry

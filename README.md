@@ -92,6 +92,27 @@ for form, form_sheets in sheets.items():
 
 The example uses Ontario (`CA-ON`) and tax year 2025. Change `CA-ON` to `CA-AB` for Alberta, `CA-BC` for British Columbia, `CA-MB` for Manitoba, `CA-SK` for Saskatchewan, `CA-NL` for Newfoundland and Labrador or `CA-QC` for Quebec, and `2025` to `2026` for the provisional 2026 year.
 
+### Take-home pay
+
+To get what a salary leaves after income tax, CPP and EI, ask the take-home service. It returns each
+figure exactly, the total and the take-home in whole cents, both average and marginal income tax
+rates and the unit text of the figures, and, only when asked for, the English trace of every form:
+
+```python
+from decimal import Decimal
+
+from tax_engine import build_take_home
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.take_home import TakeHomeRequest
+
+answer = build_take_home().compute(
+    TakeHomeRequest(JurisdictionCode("CA-ON"), 2025, Decimal(70000), include_trace=False)
+)
+print(answer.take_home)  # 53468.68
+```
+
+A jurisdiction takes part when its manifest declares `take_home` figures (see `docs/manifest-format.md`).
+
 ## How it works
 
 A jurisdiction's manifest lists the forms that make up a return. Each form is built line by line from small capabilities (sum, bracket tax, credit, cap, and so on) fed by parameter datasets for the tax year. The engine wires the forms together, runs them, and records a trace for every step.
