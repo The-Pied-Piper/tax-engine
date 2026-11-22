@@ -2741,11 +2741,24 @@ resource (Schedule L line 40), one of the three amounts TP-1 line 457 tests agai
 optional input a salary-only caller does not give; line 457 reads a blank as 0
 (`tp1_totals_line_457_inputs.yaml`)."""
 
+TP1_RL1_SLIP_BOX_I = AmountKind.declare(CATALOG, "tp1_rl1_slip_box_i", non_negative=True)
+"""RL-1 slip box I, the employment income subject to the QPIP that Schedule R line 14 totals ("Total
+of the amounts from box I of your RL-1 slips (if box I is blank, use the amount from box A of the
+RL-1 slip)"), which TP-1 line 457 tests against $2,000. An optional input a salary-only caller does
+not give; line 457 then takes line 101 (`tp1_totals_line_457_inputs.yaml`)."""
+
 TP1_EMPLOYMENT_INCOME_FOR_LINE_457 = AmountKind.declare(
     CATALOG, "tp1_employment_income_for_line_457", non_negative=True
 )
-"""TP-1 line 457: the employment income subject to the QPIP, line 101 of the return, read as the
-export of the income form (`tp1_totals_line_457.yaml`). It prints no line of its own."""
+"""TP-1 line 457: the employment income of line 101 of the return (the RL-1 box A figure), read as
+the export of the income form (`tp1_totals_line_457.yaml`); it is the figure taken when box I is
+blank. It prints no line of its own."""
+
+TP1_QPIP_EMPLOYMENT_INCOME_FOR_LINE_457 = AmountKind.declare(
+    CATALOG, "tp1_qpip_employment_income_for_line_457", non_negative=True
+)
+"""TP-1 line 457: the employment income subject to the QPIP, the RL-1 box I figure the caller gave
+or, when it is blank, line 101 (`tp1_totals_line_457.yaml`). It prints no line of its own."""
 
 TP1_LINE_97_FOR_LINE_457 = AmountKind.declare(
     CATALOG, "tp1_line_97_for_line_457", non_negative=True
