@@ -3,7 +3,9 @@
 # other forms of this engine. Lines 1 to 13 of Part 7 are not built, so lines 1, 2 and 13 are typed
 # inputs (the minimum amount, the basic federal tax and the line 8 plus line 12 figure) that stand
 # in for them; the form owns them, so the provincial forms import its exports and never ask again.
-# A negative line 1, line 2 or line 13 is refused, as their kinds are non-negative.
+# Each typed line has a core/sum part that reads blank as 0 and rounds to the cent; the computed
+# lines read those. A negative line 1, line 2 or line 13 is refused, as their kinds are
+# non-negative.
 # Exports, each read as a record list, in this order:
 #   - "Line 1 minus line 2 of Part 7" (`ca/t691_line_1_minus_line_2_of_part_7`, signed, no floor
 #     is printed): AB428 line 67, MB428 line 66 and SK428 line 68, which print "Form T691: line 1

@@ -1,9 +1,10 @@
 # T691 (T691 E (25), 2025) Part 7 line 14, "Line 1 minus line 13 (if negative, enter "0") /
 # Additional taxes paid for minimum tax carryover = 14". Line 1 is "Minimum amount from line 103 of
-# Part 1" and line 13 is "Line 8 plus line 12", both typed inputs (lines 2 to 12 are not built).
-# Each blank reads as 0, and the printed floor keeps the result from going below 0. The form exports
-# the line (`ca/t691_additional_taxes_for_minimum_tax_carryover_line_14`) for BC428 line 69 and
-# NL428 line 71, which print "Amount from line 14 of Part 7 of Form T691".
+# Part 1" and line 13 is "Line 8 plus line 12", both typed inputs (lines 2 to 12 are not built). It
+# reads the cent-rounded lines 1 and 13 (`t691_line_1.yaml`, `t691_line_13.yaml`, blank read as 0),
+# and the printed floor keeps the result from going below 0. The form exports the line
+# (`ca/t691_additional_taxes_for_minimum_tax_carryover_line_14`) for BC428 line 69 and NL428 line
+# 71, which print "Amount from line 14 of Part 7 of Form T691".
 form:
   name: ca/t691
 capabilities:
@@ -14,10 +15,7 @@ capabilities:
     params:
       rounding: ca/cent_rounding
     consumes:
-      amount: ca/t691_minimum_amount
-      less: ca/t691_line_8_plus_line_12
-    blank:
-      amount: "0"
-      less: "0"
+      amount: ca/t691_line_1_amount
+      less: ca/t691_line_13_amount
     produces:
       output: ca/t691_additional_taxes_for_minimum_tax_carryover_line_14

@@ -95,6 +95,37 @@ def test_t691_given_once_reaches_the_province_with_its_printed_rate(code: str) -
     assert _figure(worksheets, form, name) == D(base) * rate
 
 
+def test_t691_exports_line_1_minus_line_2_and_line_14_of_the_same_three_lines() -> None:
+    worksheets = _compute("CA-AB", GIVEN)
+
+    assert _figure(worksheets, "ca/t691", "ca/t691_line_1_minus_line_2_of_part_7") == D("3800.00")
+    assert _figure(
+        worksheets, "ca/t691", "ca/t691_additional_taxes_for_minimum_tax_carryover_line_14"
+    ) == D("3500.00")
+
+
+@pytest.mark.parametrize("code", ["CA-AB", "CA-MB", "CA-SK"])
+def test_line_2_above_line_1_gives_a_negative_figure_the_form_prints_no_floor_for(
+    code: str,
+) -> None:
+    # Line 1 of 1,000.00 minus line 2 of 3,000.00 is -2,000.00, times the printed rate.
+    form, name, rate, _ = FIGURES[code]
+
+    worksheets = _compute(code, {LINE_1: "1000.00", LINE_2: "3000.00"})
+
+    assert _figure(worksheets, "ca/t691", "ca/t691_line_1_minus_line_2_of_part_7") == D("-2000.00")
+    assert _figure(worksheets, form, name) == D("-2000.00") * rate
+
+
+@pytest.mark.parametrize("code", ["CA-BC", "CA-NL"])
+def test_line_13_above_line_1_floors_line_14_at_zero(code: str) -> None:
+    form, name, *_ = FIGURES[code]
+
+    worksheets = _compute(code, {LINE_1: "1000.00", LINE_13: "3000.00"})
+
+    assert _figure(worksheets, form, name) == D("0.00")
+
+
 @pytest.mark.parametrize("code", FIGURES)
 def test_a_caller_who_gives_none_reads_the_t691_amount_as_zero(code: str) -> None:
     form, name, *_ = FIGURES[code]

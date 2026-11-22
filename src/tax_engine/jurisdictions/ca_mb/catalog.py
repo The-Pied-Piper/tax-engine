@@ -229,14 +229,15 @@ MB428_TAX_AFTER_CREDITS_LINE_65 = AmountKind.declare(
 "0") =": calculated, line 60 less line 64, not below 0."""
 
 MB428_ADDITIONAL_TAX_MINIMUM_TAX_LINE_66 = AmountKind.declare(
-    CATALOG, "mb428_additional_tax_minimum_tax_line_66", non_negative=True
+    CATALOG, "mb428_additional_tax_minimum_tax_line_66"
 )
 """Manitoba additional tax for minimum tax purposes, MB428 line 66 "Line 66: Form T691: line 1 minus
-line 2 of Part 7 multiplied by 50% =": calculated, the Form T691 amount multiplied by 50%."""
+line 2 of Part 7 multiplied by 50% =": calculated, the Form T691 amount multiplied by 50%. The form
+prints no floor, so it is signed."""
 
-MB428_TAX_LINE_67 = AmountKind.declare(CATALOG, "mb428_tax_line_67", non_negative=True)
+MB428_TAX_LINE_67 = AmountKind.declare(CATALOG, "mb428_tax_line_67")
 """Manitoba tax, MB428 line 67 "Line 67: Line 65 plus line 66 =": calculated, line 65 plus line
-66."""
+66. The form prints no floor and line 66 can be negative, so it is signed."""
 
 MB428_TAX_LINE_70 = AmountKind.declare(CATALOG, "mb428_tax_line_70", non_negative=True)
 """Manitoba tax, MB428 line 70 "Line 70: Line 67 minus line 69 (if negative, enter "0") =":
@@ -856,12 +857,10 @@ MB479_FERTILITY_TREATMENT_EXPENSES_LINE_61 = AmountKind.declare(
 treatments Line 61268 multiplied by 40% (maximum $16,000)": the eligible medical expenses of the
 first box, a caller input that is read as blank when left out."""
 
-MB428_T691_AMOUNT_LINE_66 = AmountKind.declare(
-    CATALOG, "mb428_t691_amount_line_66", non_negative=True
-)
+MB428_T691_AMOUNT_LINE_66 = AmountKind.declare(CATALOG, "mb428_t691_amount_line_66")
 """Form T691 amount, MB428 line 66 "Line 66: Form T691: line 1 minus line 2 of Part 7": a record
 total of the T691's export (`ca/t691_line_1_minus_line_2_of_part_7`), 0 when the caller leaves
-it out; the 50% multiplication step reads it."""
+it out. The form prints no floor, so it is signed. The 50% multiplication step reads it."""
 
 MB479_PAID_WORK_EXPERIENCE_CREDIT_LINE_63 = AmountKind.declare(
     CATALOG, "mb479_paid_work_experience_credit_line_63", non_negative=True

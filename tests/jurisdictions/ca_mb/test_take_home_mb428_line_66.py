@@ -2,13 +2,13 @@
 
 Form text (Form MB428, CRA 5007-C, read 2026-11-17): "Manitoba additional tax for minimum tax
 purposes:" / "Line 66: Form T691: line 1 minus line 2 of Part 7 ^" / "multiplied by 50% = ^". The
-input is the amount from Form T691 (`ca-mb/mb428_t691_amount_line_66`), the total of the T691 line
-14 export (the T691 form owns the input), read as 0 when left out. Line 66 is one calculation: 50%
-of the amount, a printed rate held in the `ca-mb/minimum_tax_rate` dataset, rounded half-up to the
-cent. The output is `ca-mb/mb428_additional_tax_minimum_tax_line_66`. The step is titled with the
-heading the form prints above the line, "Manitoba additional tax for minimum tax purposes". The
-T691 form and the line 66 part are loaded under a test-local header and form declaration, over the
-Manitoba package list of `support.py`."""
+input is the amount from Form T691 (`ca-mb/mb428_t691_amount_line_66`), the total of the T691
+line 1 minus line 2 export (the T691 form owns the input), read as 0 when left out. Line 66 is one
+calculation: 50% of the amount, a printed rate held in the `ca-mb/minimum_tax_rate` dataset,
+rounded half-up to the cent. The output is `ca-mb/mb428_additional_tax_minimum_tax_line_66`. The
+step is titled with the heading the form prints above the line, "Manitoba additional tax for
+minimum tax purposes". The T691 form and the line 66 part are loaded under a test-local header and
+form declaration, over the Manitoba package list of `support.py`."""
 
 from __future__ import annotations
 
@@ -25,7 +25,6 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.errors import NegativeArtifactError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
@@ -142,6 +141,11 @@ def test_a_salary_only_caller_who_leaves_out_the_amount_gets_0(tmp_path: Path, s
         ("5000.00", "2500.00"),
         # 0.01 x 50% = 0.005, a tie, rounded half-up to 0.01.
         ("0.01", "0.01"),
+        # Line 2 above line 1 (line 1 minus line 2 of -1,000.00): the form prints no floor, so the
+        # negative stands: -1,000.00 x 50% = -500.00.
+        ("-1000.00", "-500.00"),
+        # -0.01 x 50% = -0.005, a tie, rounded half up (away from zero) to -0.01.
+        ("-0.01", "-0.01"),
     ],
 )
 def test_line_66_is_50_percent_of_the_amount_rounded_half_up(
@@ -181,16 +185,17 @@ def test_the_step_is_titled_with_the_heading_the_form_prints_above_the_line() ->
     assert _step()["title"] == "Manitoba additional tax for minimum tax purposes"
 
 
-def test_the_kind_is_a_registered_non_negative_decimal_amount() -> None:
-    kind = manitoba_kinds().kind(LINE_66)
+def test_the_kinds_are_registered_signed_decimal_amounts_as_the_form_prints_no_floor() -> None:
+    kinds = manitoba_kinds()
+    kind = kinds.kind(LINE_66)
 
     assert kind is MB428_ADDITIONAL_TAX_MINIMUM_TAX_LINE_66
     assert isinstance(kind, AmountKind)
     assert kind.identifier == LINE_66
     assert kind.value_type is Decimal
-    assert non_negative(kind)
-    with pytest.raises(NegativeArtifactError):
-        Artifact(kind, D("-0.01"))
+    assert not non_negative(kind)
+    assert not non_negative(kinds.kind(AMOUNT))
+    assert Artifact(kind, D("-0.01")).value == D("-0.01")
 
 
 def test_the_amount_is_a_record_total_of_the_t691_export_with_no_input_of_its_own() -> None:

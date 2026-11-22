@@ -9,41 +9,18 @@ No floor is printed, so the result can be negative and its kind is signed.
 from __future__ import annotations
 
 from decimal import Decimal
+from pathlib import Path
 from typing import Any
 
 import pytest
 import yaml
 
-from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
-from tests.federal_forms import FEDERAL_FORMS, form_part_names
-from tests.jurisdictions.ca_on.conftest import TakeHomeService
+from tests.federal_forms import FEDERAL_FORMS
+from tests.jurisdictions.ca.t691_support import t691_figure
 from tests.kinds import bundled_kinds, non_negative
 
 D = Decimal
-CODE = JurisdictionCode("CA-ON")
-IN1 = "ca/t691_minimum_amount"
-IN2 = "ca/t691_basic_federal_tax"
-IN13 = "ca/t691_line_8_plus_line_12"
-HEADER = """\
-jurisdiction: CA-ON
-version: 1
-valid_from_tax_year: 2025
-outputs: []
-capabilities: []
-"""
-
-
-def _figure(take_home_service: TakeHomeService, output: str, **given: str) -> Decimal:
-    kinds = bundled_kinds()
-    names = {"line_1": IN1, "line_2": IN2, "line_13": IN13}
-    starting = [Artifact(kinds.kind(names[key]), D(value)) for key, value in given.items()]
-    service = take_home_service(HEADER, "{}\n", *form_part_names("t691"))
-    (sheet,) = service.compute(CODE, 2025, *starting)["ca/t691"]
-    value = sheet.get(kinds.kind(output)).value
-    assert isinstance(value, Decimal)
-    return value
 
 
 def _step(name: str) -> dict[str, Any]:
@@ -70,9 +47,9 @@ OUTPUT = "ca/t691_line_1_minus_line_2_of_part_7"
     ],
 )
 def test_the_figure_is_line_1_minus_line_2_with_blanks_read_as_0(
-    take_home_service: TakeHomeService, given: dict[str, str], expected: str
+    tmp_path: Path, given: dict[str, str], expected: str
 ) -> None:
-    assert _figure(take_home_service, OUTPUT, **given) == D(expected)
+    assert t691_figure(tmp_path, OUTPUT, **given) == D(expected)
 
 
 def test_the_part_is_one_subtract_step_with_no_floor() -> None:
@@ -82,8 +59,7 @@ def test_the_part_is_one_subtract_step_with_no_floor() -> None:
         "reference": "1 minus 2",
         "unit": "ca/cad",
         "params": {"rounding": "ca/cent_rounding"},
-        "consumes": {"amount": IN1, "less": IN2},
-        "blank": {"amount": "0", "less": "0"},
+        "consumes": {"amount": "ca/t691_line_1_amount", "less": "ca/t691_line_2_amount"},
         "produces": {"output": OUTPUT},
     }
 

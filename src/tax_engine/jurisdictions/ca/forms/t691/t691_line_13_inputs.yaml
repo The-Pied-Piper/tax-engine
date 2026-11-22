@@ -1,8 +1,8 @@
-# T691 (T691 E (25), 2025) Part 7 line 13 input a salary-only caller does not give. "Line 8 plus line 12". A
-# salary-only caller has no figure here, so a request that leaves the line out is read as blank, and
-# the steps that read it take the blank as 0. The lines above it are not built, so the figure is
-# taken as the form prints it, one input. This form owns the input; the provincial forms import
-# the T691's exports and never ask for it themselves.
+# T691 (T691 E (25), 2025) Part 7 line 13 input a salary-only caller does not give: "Line 8 plus
+# line 12". A salary-only caller has no figure here, so a request that leaves the line out is read
+# as blank; `t691_line_13.yaml` reads it as 0 and rounds it to the cent. The lines above it are not
+# built, so the figure is taken as the form prints it, one input. This form owns the input; the
+# provincial forms import the T691's exports and never ask for it themselves.
 form:
   name: ca/t691
 inputs:

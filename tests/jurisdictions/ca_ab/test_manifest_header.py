@@ -52,7 +52,6 @@ def test_the_federal_forms_are_imported_in_order_and_schedule_6_reads_the_albert
         "ca/t1_taxable_income",
         "ca/t1_tax_and_credits",
         "ca/t1_lines_copied_by_provinces",
-        "ca/t691",
         {
             "form": "ca/schedule_6",
             "datasets": {
@@ -65,6 +64,7 @@ def test_the_federal_forms_are_imported_in_order_and_schedule_6_reads_the_albert
         "ca/schedule_8",
         "ca/schedule_9",
         "ca/t2204",
+        "ca/t691",
     ]
 
 

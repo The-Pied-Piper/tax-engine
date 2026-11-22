@@ -7,41 +7,18 @@ Form text (T691 E (25), Part 7): "Line 1 minus line 13 (if negative, enter "0")"
 from __future__ import annotations
 
 from decimal import Decimal
+from pathlib import Path
 from typing import Any
 
 import pytest
 import yaml
 
-from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
-from tests.federal_forms import FEDERAL_FORMS, form_part_names
-from tests.jurisdictions.ca_on.conftest import TakeHomeService
+from tests.federal_forms import FEDERAL_FORMS
+from tests.jurisdictions.ca.t691_support import t691_figure
 from tests.kinds import bundled_kinds, non_negative
 
 D = Decimal
-CODE = JurisdictionCode("CA-ON")
-IN1 = "ca/t691_minimum_amount"
-IN2 = "ca/t691_basic_federal_tax"
-IN13 = "ca/t691_line_8_plus_line_12"
-HEADER = """\
-jurisdiction: CA-ON
-version: 1
-valid_from_tax_year: 2025
-outputs: []
-capabilities: []
-"""
-
-
-def _figure(take_home_service: TakeHomeService, output: str, **given: str) -> Decimal:
-    kinds = bundled_kinds()
-    names = {"line_1": IN1, "line_2": IN2, "line_13": IN13}
-    starting = [Artifact(kinds.kind(names[key]), D(value)) for key, value in given.items()]
-    service = take_home_service(HEADER, "{}\n", *form_part_names("t691"))
-    (sheet,) = service.compute(CODE, 2025, *starting)["ca/t691"]
-    value = sheet.get(kinds.kind(output)).value
-    assert isinstance(value, Decimal)
-    return value
 
 
 def _step(name: str) -> dict[str, Any]:
@@ -68,9 +45,9 @@ OUTPUT = "ca/t691_additional_taxes_for_minimum_tax_carryover_line_14"
     ],
 )
 def test_the_figure_is_line_1_minus_line_13_not_below_zero(
-    take_home_service: TakeHomeService, given: dict[str, str], expected: str
+    tmp_path: Path, given: dict[str, str], expected: str
 ) -> None:
-    assert _figure(take_home_service, OUTPUT, **given) == D(expected)
+    assert t691_figure(tmp_path, OUTPUT, **given) == D(expected)
 
 
 def test_the_part_is_one_subtract_not_below_zero_step() -> None:
@@ -80,8 +57,7 @@ def test_the_part_is_one_subtract_not_below_zero_step() -> None:
         "reference": "14",
         "unit": "ca/cad",
         "params": {"rounding": "ca/cent_rounding"},
-        "consumes": {"amount": IN1, "less": IN13},
-        "blank": {"amount": "0", "less": "0"},
+        "consumes": {"amount": "ca/t691_line_1_amount", "less": "ca/t691_line_13_amount"},
         "produces": {"output": OUTPUT},
     }
 

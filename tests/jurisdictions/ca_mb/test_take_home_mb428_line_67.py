@@ -317,6 +317,8 @@ def test_line_67_is_line_65_when_line_66_is_blank(
         ("1000.00", "500.00", "6247.59"),
         # 0.01 x 50% = 0.005, a tie, rounded half-up to 0.01 at line 66; 5,747.59 + 0.01.
         ("0.01", "0.01", "5747.60"),
+        # Line 2 above line 1 (-1,000.00): line 66 is -500.00 and stands; 5,747.59 - 500.00.
+        ("-1000.00", "-500.00", "5247.59"),
     ],
 )
 def test_line_67_adds_line_66_to_line_65_at_70000(
@@ -337,6 +339,16 @@ def test_line_67_is_line_66_alone_when_line_65_is_floored_at_10000(tmp_path: Pat
 
     assert _line(sheet, LINE_65) == D("0.00")
     assert _line(sheet, IDENTIFIER) == D("500.00")
+
+
+def test_line_67_can_be_negative_when_line_66_is_negative_and_line_65_is_0(tmp_path: Path) -> None:
+    # At 10,000 line 65 is 0.00; line 1 minus line 2 of -1,000.00 gives line 66 of -500.00, and the
+    # form prints no floor on line 67, so it is -500.00 rather than an error.
+    sheet = _sheet(tmp_path, "10000", "-1000.00")
+
+    assert _line(sheet, LINE_65) == D("0.00")
+    assert _line(sheet, LINE_66) == D("-500.00")
+    assert _line(sheet, IDENTIFIER) == D("-500.00")
 
 
 def test_line_67_has_no_left_blank_row_of_its_own(tmp_path: Path) -> None:
@@ -396,12 +408,12 @@ def test_the_part_names_the_form_and_has_one_untitled_sum_step_over_lines_65_and
     assert "blank" not in step
 
 
-def test_line_67_is_a_registered_non_negative_decimal_amount_kind() -> None:
+def test_line_67_is_a_registered_signed_decimal_amount_kind() -> None:
     kinds = manitoba_kinds()
 
     assert IDENTIFIER in kinds.identifiers()
     kind = kinds.kind(IDENTIFIER)
     assert isinstance(kind, AmountKind)
     assert kind.value_type is Decimal
-    assert non_negative(kind)
+    assert not non_negative(kind)
     assert kind is mb_catalog.MB428_TAX_LINE_67
