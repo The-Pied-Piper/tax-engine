@@ -45,8 +45,8 @@ class Worksheet:
         self._form_title = form_title
         self._figure_titles = dict(figure_titles or {})
         self._figure_references = dict(figure_references or {})
-        self._figure_positions = dict(figure_positions or {})
         self._figure_units = dict(figure_units or {})
+        self._figure_positions = dict(figure_positions or {})
         self._imported_figures = dict(imported_figures or {})
         self._artifacts: dict[ArtifactKind[Any], Artifact[Any]] = {}
         self._producers: dict[ArtifactKind[Any], Capability] = {}
@@ -84,12 +84,6 @@ class Worksheet:
         """
         return self._figure_references.get(label)
 
-    def position(self, label: str) -> int | None:
-        """Where the form prints the figure `label`, counted from 1; `None` if the manifest gives
-        none.
-        """
-        return self._figure_positions.get(label)
-
     def unit(self, label: str) -> Unit | None:
         """The unit of the figure `label`: this form's own, else that of the form it is read from;
         `None` if neither has one.
@@ -99,6 +93,12 @@ class Worksheet:
             return own
         imported = self._imported_figures.get(label)
         return None if imported is None else imported.unit
+
+    def position(self, label: str) -> int | None:
+        """Where the form prints the figure `label`, counted from 1; `None` if the manifest gives
+        none.
+        """
+        return self._figure_positions.get(label)
 
     def unit_of(self, line: TraceLine) -> Unit | None:
         """The unit of the figure `line` is about; `None` if it is about none or it has none."""

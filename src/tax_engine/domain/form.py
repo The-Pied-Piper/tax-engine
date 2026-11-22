@@ -93,11 +93,6 @@ class FormComposition:
             for kind, found in produced_by
             if found.reference is not None
         }
-        self._figure_positions = {
-            kind.label: found.position for kind, found in printed if found.position is not None
-        } | {
-            kind.label: found.position for kind, found in produced_by if found.position is not None
-        }
         known = {} if units is None else units
         self._unit_claims = tuple(
             (kind, how, None if found.unit is None else known[found.unit])
@@ -106,6 +101,11 @@ class FormComposition:
         )
         self._figure_units = {
             kind.label: unit for kind, _, unit in self._unit_claims if unit is not None
+        }
+        self._figure_positions = {
+            kind.label: found.position for kind, found in printed if found.position is not None
+        } | {
+            kind.label: found.position for kind, found in produced_by if found.position is not None
         }
         self._instances = instances
         self._exports = listed
@@ -177,14 +177,14 @@ class FormComposition:
         return MappingProxyType(self._figure_references)
 
     @property
-    def figure_positions(self) -> Mapping[str, int]:
-        """Where the form prints each figure, counted from 1, by the figure's label."""
-        return MappingProxyType(self._figure_positions)
-
-    @property
     def figure_units(self) -> Mapping[str, Unit]:
         """The unit of each figure of the form that has one, by the figure's label."""
         return MappingProxyType(self._figure_units)
+
+    @property
+    def figure_positions(self) -> Mapping[str, int]:
+        """Where the form prints each figure, counted from 1, by the figure's label."""
+        return MappingProxyType(self._figure_positions)
 
     @property
     def unit_claims(self) -> tuple[tuple[ArtifactKind[Any], str, Unit | None], ...]:
