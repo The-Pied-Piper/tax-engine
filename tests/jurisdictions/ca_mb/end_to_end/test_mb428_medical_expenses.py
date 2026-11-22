@@ -28,6 +28,7 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tests.medical_support import medical_expenses
 
 D = Decimal
 MANITOBA = JurisdictionCode("CA-MB")
@@ -40,7 +41,7 @@ def _credits(
     left blank)."""
     artifacts: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if "line_43" in given:
-        artifacts.append(Artifact(mb.MB428_MEDICAL_EXPENSES_LINE_43, D(given["line_43"])))
+        artifacts.append(medical_expenses(given["line_43"]))
     if dependants:
         columns = RecordList(
             mb.WORKSHEET_MB428_OTHER_DEPENDANTS.fields,

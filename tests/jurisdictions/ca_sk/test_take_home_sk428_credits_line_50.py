@@ -4,7 +4,7 @@ Form text (Form SK428, CRA 5008-c-25e): "Line 49 and line 58729: Allowable amoun
 expenses for other dependants from line 33199 of your return" and "Line 50 and line 58769: Line 48
 plus line 49 =". Line 50 is one core/sum step over line 48 (`sk428_credits_line_48.yaml`) and
 line 49, the optional allowable amount of medical expenses for other dependants
-(`sk428_credits_line_49_input.yaml`), in line order. A request that leaves line 49 blank has it read
+(`sk428_credits_line_49.yaml`), in line order. A request that leaves line 49 blank has it read
 as 0. The form prints no label for the line, so the step has no title.
 
 The test composes the T1 employment income form, the real Schedule 8 and T1 taxable income
@@ -49,6 +49,7 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_units,
 )
 from tests.kinds import non_negative
+from tests.medical_support import medical_expenses, other_dependants_medical_expenses
 
 D = Decimal
 CENT = D("0.01")
@@ -78,13 +79,15 @@ FORM = dedent("""\
 
 def _part_files() -> Iterator[Path]:
     yield from form_parts("schedule_8")
-    yield from form_parts("t1_taxable_income", "t1_employment_income")
-    yield SK_PARTS / "sk428_credits_line_43_input.yaml"
+    yield from form_parts(
+        "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+    )
+    yield SK_PARTS / "sk428_credits_line_43.yaml"
     yield SK_PARTS / "sk428_credits_line_44.yaml"
     yield SK_PARTS / "sk428_credits_line_46.yaml"
     yield SK_PARTS / "sk428_credits_line_47.yaml"
     yield SK_PARTS / "sk428_credits_line_48.yaml"
-    yield SK_PARTS / "sk428_credits_line_49_input.yaml"
+    yield SK_PARTS / "sk428_credits_line_49.yaml"
     yield SK_PARTS / "sk428_credits_line_50.yaml"
 
 
@@ -115,11 +118,9 @@ def _sheet(
 ) -> Worksheet:
     given = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if line_43 is not None:
-        given.append(Artifact(sk_catalog.SK428_MEDICAL_EXPENSES_LINE_43, D(line_43)))
+        given.append(medical_expenses(line_43))
     if line_49 is not None:
-        given.append(
-            Artifact(sk_catalog.SK428_OTHER_DEPENDANTS_MEDICAL_EXPENSES_LINE_49, D(line_49))
-        )
+        given.append(other_dependants_medical_expenses(line_49))
     worksheets = _service(tmp_path).compute(JurisdictionCode("CA-SK"), 2025, *given)
     (sheet,) = worksheets[FORM_NAME]
     return sheet
