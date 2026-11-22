@@ -26,7 +26,6 @@ D = Decimal
 FORM_NAME = "ca-qc/tp1_schedule_k"
 NET_INCOME_PARTS = (
     "tp1_net_income.yaml",
-    "tp1_net_income_line_275_spouse_input.yaml",
     "tp1_net_income_line_201.yaml",
     "tp1_net_income_line_248.yaml",
     "tp1_net_income_line_254_inputs.yaml",

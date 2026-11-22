@@ -1,6 +1,7 @@
 # Schedule P (TP-1.D.P-V, 2025-12) Part E, section 2, column 1 "Work premium", line 82: "Subtract line
-# 80 from line 78. If the result is negative, enter 0." Line 78 is "Amount from line 54", a copy, so it
-# has no step and this step reads the family income of line 54 (schedule_p_line_54.yaml); line 80 is
+# 80 from line 78. If the result is negative, enter 0." Line 78 is "Amount from line 54", and line 54
+# adds the spouse's line 53, which the take-home leaves out (single filer), so lines 54 and 78 are
+# copies of line 52 with no step and this step reads line 52 (schedule_p_line_52.yaml); line 80 is
 # the printed 12,620 (schedule_p_line_80.yaml). The step is core/subtract_not_below_zero, rounded to
 # the cent by `ca-qc/cent_rounding`. The form prints no label for the line, so the step is untitled.
 form:
@@ -12,7 +13,7 @@ capabilities:
     params:
       rounding: ca-qc/cent_rounding
     consumes:
-      amount: ca-qc/schedule_p_family_income_line_54
+      amount: ca-qc/schedule_p_net_income_line_52
       less: ca-qc/schedule_p_work_premium_reduction_threshold_line_80
     produces:
       output: ca-qc/schedule_p_family_income_over_threshold_line_82

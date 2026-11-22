@@ -28,7 +28,6 @@ FORM = "ca-qc/schedule_b"
 # The real net income form declaration (it exports lines 275 and 299) and its line parts.
 NET_INCOME_PARTS = (
     "tp1_net_income.yaml",
-    "tp1_net_income_line_275_spouse_input.yaml",
     "tp1_net_income_line_201.yaml",
     "tp1_net_income_line_248.yaml",
     "tp1_net_income_line_254_inputs.yaml",
@@ -79,8 +78,6 @@ def schedule_b_sheet(
 # cannot hold an output nothing reads, so a test takes the parts up to the line it exports.
 LINE_18_PARTS = (
     "schedule_b_line_10.yaml",
-    "schedule_b_line_12_input.yaml",
-    "schedule_b_line_14.yaml",
     "schedule_b_line_16.yaml",
     "schedule_b_line_18.yaml",
 )

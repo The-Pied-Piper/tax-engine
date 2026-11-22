@@ -77,8 +77,6 @@ SCHEDULE_P_PARTS = (
     "schedule_p_line_22_inputs.yaml",
     "schedule_p_line_29.yaml",
     "schedule_p_line_52.yaml",
-    "schedule_p_line_53.yaml",
-    "schedule_p_line_54.yaml",
     "schedule_p_line_56.yaml",
     "schedule_p_line_57_inputs.yaml",
     "schedule_p_line_58_inputs.yaml",
