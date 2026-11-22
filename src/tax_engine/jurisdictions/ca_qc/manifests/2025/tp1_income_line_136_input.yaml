@@ -5,6 +5,7 @@ form:
   name: ca-qc/tp1_income
 inputs:
   - name: ca-qc/tp1_line_136
+    title: "Rental income, net rental income"
     reference: "136"
     unit: ca/cad
     required: false

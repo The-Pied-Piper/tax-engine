@@ -5,6 +5,7 @@ form:
   name: ca-qc/tp1_income
 inputs:
   - name: ca-qc/tp1_line_110
+    title: "Parental insurance benefits, RL-6 slip, box A"
     reference: "110"
     unit: ca/cad
     required: false

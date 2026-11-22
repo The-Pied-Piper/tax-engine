@@ -5,6 +5,7 @@ form:
   name: ca-qc/tp1_income
 inputs:
   - name: ca-qc/tp1_line_142
+    title: "Support payments received (taxable amount)"
     reference: "142"
     unit: ca/cad
     required: false

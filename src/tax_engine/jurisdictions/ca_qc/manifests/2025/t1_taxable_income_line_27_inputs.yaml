@@ -8,30 +8,35 @@ form:
   name: ca-qc/t1_taxable_income
 inputs:
   - name: ca-qc/t1_line_13500
+    title: "Business income: Net"
     reference: "13500"
     unit: ca/cad
     required: false
     default: null
     basis: "Line 22: Business income: Line 13500: Net"
   - name: ca-qc/t1_line_13700
+    title: "Professional income: Net"
     reference: "13700"
     unit: ca/cad
     required: false
     default: null
     basis: "Line 23: Professional income Line 13700: Net"
   - name: ca-qc/t1_line_13900
+    title: "Commission income: Net"
     reference: "13900"
     unit: ca/cad
     required: false
     default: null
     basis: "Line 24: Commission income: Line 13900: Net"
   - name: ca-qc/t1_line_14100
+    title: "Farming income: Net"
     reference: "14100"
     unit: ca/cad
     required: false
     default: null
     basis: "Line 25: Farming income Line 14100: Net"
   - name: ca-qc/t1_line_14300
+    title: "Fishing income: Net"
     reference: "14300"
     unit: ca/cad
     required: false

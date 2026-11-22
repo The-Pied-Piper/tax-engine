@@ -28,7 +28,12 @@ from tests.kinds import non_negative
 from tests.manifest_support import input_named
 
 IDENTIFIER = SCHEDULE_K_GROUP_PLAN_COVERED_LINE_50.identifier
-PRINTED_BASIS = "Covered by basic prescription drug insurance provided by a group insurance plan"
+PRINTED_BASIS = (
+    "You were covered by basic prescription drug insurance provided by a group insurance plan "
+    "(see line 447 in the guide) of which you, your spouse, your father or your mother "
+    "was a member, "
+    "and this plan covered the cost of medications"
+)
 PART = Path(tax_engine.jurisdictions.ca_qc.__file__).parent / (
     "manifests/2025/tp1_schedule_k_line_50_input.yaml"
 )
@@ -73,6 +78,12 @@ def test_the_part_declares_only_the_line_50_input_as_optional() -> None:
     (declaration,) = part["inputs"]
     assert declaration == {
         "name": "ca-qc/schedule_k_group_plan_covered_line_50",
+        "title": (
+            "You were covered by basic prescription drug insurance provided by a group "
+            "insurance plan "
+            "of which you, your spouse, your father or your mother was a member, "
+            "and this plan covered the cost of medications"
+        ),
         "reference": "50",
         "required": False,
         "default": "0",
