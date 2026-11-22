@@ -1,6 +1,8 @@
-"""TP-1 (2025) line 457, the two Schedule L amounts the guide totals against $2,000: net business
-income (Schedule L line 27) and the insurable earnings of a family-type resource (Schedule L line
-40). The take-home gives neither, so each is an optional input; a blank is read as 0 by line 457.
+"""TP-1 (2025) line 457, the amounts the guide totals against $2,000 that the take-home does not
+give: net business income (Schedule L line 27), the insurable earnings of a family-type resource
+(Schedule L line 40) and the employment income subject to the QPIP (RL-1 box I, Schedule R line 14).
+Each is an optional input; line 457 reads a blank Schedule L amount as 0 and a blank box I as line
+101.
 The real part is loaded under a test-local header and form declaration over the Quebec package list
 of `support.py`."""
 
@@ -29,6 +31,7 @@ INPUTS = {
         "your insurable earnings as a person responsible for a family-type resource or an "
         "intermediate resource",
     ),
+    "ca-qc/tp1_rl1_slip_box_i": ("RL-1, box I", "your employment income subject to the QPIP"),
 }
 HEADER = """\
 jurisdiction: CA-QC
@@ -52,7 +55,7 @@ def _manifest(take_home_service: TakeHomeService, tmp_path: Path) -> Manifest:
     )
 
 
-def test_the_part_declares_exactly_the_two_schedule_l_amounts(
+def test_the_part_declares_exactly_the_three_amounts(
     take_home_service: TakeHomeService, tmp_path: Path
 ) -> None:
     inputs = inputs_of(_manifest(take_home_service, tmp_path))

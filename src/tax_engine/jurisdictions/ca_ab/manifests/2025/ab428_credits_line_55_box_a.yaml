@@ -1,10 +1,18 @@
-# AB428 (2025) line 55 box A, rounded to the cent. Form AB428 (CRA 5009-c): "Line 55: Amount from line 13 of your federal Schedule 9". The line is an optional input
-# (`ca-ab/ab428_donations_amount_line_55`), blank for a salary-only filer. One core/sum step over the input alone, as line 41 is
-# (ab428_credits_line_41.yaml), reads the blank as 0 and rounds to the cent, because a line written on
+# AB428 (2025) line 55 box A, rounded to the cent. Form AB428 (CRA 5009-c): "Line 55: Amount from line 13 of your federal Schedule 9". The amount is the Schedule 9 export (`ca/schedule_9.donations_and_gifts_line_13`),
+# totalled by the first step (a form reads another form's export only as a record list). A second
+# core/sum step over it alone, as line 41 is (ab428_credits_line_41.yaml), reads the blank as 0 and rounds to the cent, because a line written on
 # the form is a whole-cent figure: `ca-ab/ab428_donations_amount_rounded_line_55`.
 form:
   name: ca-ab/ab428_credits
 capabilities:
+  - name: core/record_total
+    title: "Amount from line 13 of your federal Schedule 9"
+    reference: "55 box A"
+    unit: ca/cad
+    consumes:
+      records: ca/schedule_9.donations_and_gifts_line_13
+    produces:
+      output: ca-ab/ab428_donations_amount_line_55
   - name: core/sum
     reference: "55 box A"
     unit: ca/cad

@@ -46,5 +46,13 @@ def test_the_salary_input_is_the_printed_employment_income_in_canadian_dollars()
         "reference": "10100",
         "unit": "ca/cad",
         "required": True,
+        "whole_cents": True,
     }
-    assert list(_inputs()[0]) == ["name", "title", "reference", "unit", "required"]
+    assert list(_inputs()[0]) == [
+        "name",
+        "title",
+        "reference",
+        "unit",
+        "required",
+        "whole_cents",
+    ]

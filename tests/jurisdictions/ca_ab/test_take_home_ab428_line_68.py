@@ -105,7 +105,6 @@ ALBERTA_LINE_PARTS = (
     "ab428_line_41_input.yaml",
     "ab428_credits_line_41.yaml",
     "ab428_credits_line_43.yaml",
-    "ab428_credits_line_44_input.yaml",
     "ab428_credits_line_44.yaml",
     "ab428_credits_line_45.yaml",
     "ab428_credits_line_47.yaml",
@@ -116,10 +115,8 @@ ALBERTA_LINE_PARTS = (
     "ab428_credits_line_51.yaml",
     "ab428_credits_line_52.yaml",
     "ab428_credits_line_54.yaml",
-    "ab428_credits_line_55_input.yaml",
     "ab428_credits_line_55_box_a.yaml",
     "ab428_credits_line_55.yaml",
-    "ab428_credits_line_56_input.yaml",
     "ab428_credits_line_56_box_a.yaml",
     "ab428_credits_line_56.yaml",
     "ab428_credits_line_57.yaml",
@@ -195,6 +192,7 @@ def _federal(name: str) -> Path:
 
 def _part_files() -> Iterator[Path]:
     yield from form_parts("schedule_8")
+    yield from form_parts("schedule_9")
     yield from form_parts("t2204")
     for name in T1_PARTS:
         yield _federal(name)

@@ -1,0 +1,13 @@
+# Schedule 9 (5000-S9, 2025) line 13: "Enter whichever is less: amount from line 12 or $200." The
+# lesser of line 12 and the printed $200 (schedule_9_line_13_limit.yaml). Both are whole-cent
+# figures, so the step needs no rounding. Exported to the provincial forms.
+form:
+  name: ca/schedule_9
+capabilities:
+  - name: core/lesser_of
+    reference: "13"
+    unit: ca/cad
+    consumes:
+      amounts: [ca/donations_and_gifts_amount_line_12, ca/donations_and_gifts_line_13_limit]
+    produces:
+      output: ca/donations_and_gifts_line_13

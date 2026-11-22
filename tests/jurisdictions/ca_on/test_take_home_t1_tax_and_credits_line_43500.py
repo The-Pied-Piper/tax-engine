@@ -52,6 +52,7 @@ ON428_LINE_90 = "ca-on/on428_ontario_tax_line_90"
 PARTS = (
     *form_part_names("t1_lines_copied_by_provinces"),
     *form_part_names("schedule_8"),
+    *form_part_names("schedule_9"),
     *form_part_names("t2204"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),
     "t1_tax_and_credits_line_30000.yaml",

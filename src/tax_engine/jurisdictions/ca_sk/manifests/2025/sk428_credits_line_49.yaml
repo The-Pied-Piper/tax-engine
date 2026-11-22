@@ -1,0 +1,16 @@
+# SK428 (2025) line 49, the medical expenses for other dependants. Form SK428 (CRA 5008-c-25e): "Line 49 and line 58729: Allowable amount of medical expenses for other dependants from line 33199 of your return".
+# The amount is T1 line 33199, which the T1 owns and exports (`ca/other_dependants_medical_expenses_line_33199`), so this form
+# has no input for it. Another form reads an export only as a record list, so the one step is
+# core/record_total (`ca-sk/sk428_other_dependants_medical_expenses_line_49`), as NL428 line 48 is. A salary-only caller has none,
+# so it is 0.
+form:
+  name: ca-sk/sk428_credits
+capabilities:
+  - name: core/record_total
+    title: "Allowable amount of medical expenses for other dependants from line 33199 of your return"
+    reference: "49"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_lines_copied_by_provinces.other_dependants_medical_expenses_line_33199
+    produces:
+      output: ca-sk/sk428_other_dependants_medical_expenses_line_49

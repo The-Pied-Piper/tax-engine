@@ -26,6 +26,7 @@ from __future__ import annotations
 
 from decimal import Decimal
 from functools import cache
+from typing import Any
 
 import pytest
 
@@ -38,6 +39,8 @@ from tax_engine.jurisdictions.ca.catalog.refund import REFUND_OR_BALANCE_OWING
 from tax_engine.jurisdictions.ca_qc.catalog import (
     CWB_LINE_161,
     FEDERAL_TOTAL_PAYABLE_RETURN,
+    PPIP_INSURABLE_EARNINGS_GIVEN,
+    PPIP_PREMIUMS_LINE_91,
     REFUND_OR_BALANCE_OWING_LINE_172,
     REFUNDABLE_QUEBEC_ABATEMENT_RETURN,
     SCHEDULE_B_LIVED_ALONE_LINE_20,
@@ -47,6 +50,9 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     SOLIDARITY_TENANT_OR_OWNER_LINES_32_36,
     TOTAL_PAYABLE,
     TP1_INCOME_TAX_AND_CONTRIBUTIONS_LINE_450,
+    TP1_LINE_457,
+    TP1_NET_BUSINESS_INCOME_SCHEDULE_L_LINE_27,
+    TP1_RL1_SLIP_BOX_I,
     TP1_WORK_PREMIUM_TAX_CREDITS_LINE_456,
 )
 
@@ -239,3 +245,72 @@ def test_the_refund_and_the_total_payable_follow_from_the_printed_lines(
     line_43500 = summary.get(FEDERAL_TOTAL_PAYABLE_RETURN).value
     line_44000 = summary.get(REFUNDABLE_QUEBEC_ABATEMENT_RETURN).value
     assert summary.get(TOTAL_PAYABLE).value == line_43500 - line_44000 + line_450
+
+
+# 5000-G, line 31205: under $2,000 of PPIP insurable earnings, "do not claim any PPIP premiums on
+# line 31205. Instead, claim this amount as an overpayment on your Revenu Quebec Income Tax Return":
+# 0.494% of 1,500 is 7.41, claimed on TP-1 line 457 and nowhere else. Columns: 5005-R line 91 and
+# 31205, TP-1 line 457, the refund or balance owing.
+UNDER_2000_FIGURES = {
+    "1500": ("0.00", "7.41", "-7.41"),
+}
+
+
+@pytest.mark.parametrize(("salary", "figures"), list(UNDER_2000_FIGURES.items()))
+def test_under_2000_of_salary_the_premium_is_claimed_once_as_the_qpip_overpayment(
+    salary: str, figures: tuple[str, str, str]
+) -> None:
+    sheets = _sheets(salary, DEFAULT)
+
+    assert (
+        sheets["ca-qc/t1_tax_and_credits"].get(PPIP_PREMIUMS_LINE_91).value,
+        sheets["ca-qc/tp1_totals"].get(TP1_LINE_457).value,
+        sheets["ca-qc/return"].get(REFUND_OR_BALANCE_OWING).value,
+    ) == tuple(D(figure) for figure in figures)
+
+
+def _figures(salary: str, *answers: Artifact[Any]) -> tuple[Decimal, Decimal, Decimal]:
+    """Line 91 and 31205, TP-1 line 457 and the refund or balance owing for a salary and answers."""
+    worksheets = build_tax_computation().compute(
+        QUEBEC, 2025, Artifact(EMPLOYMENT_INCOME, D(salary)), *answers
+    )
+    sheets = {form: forms[0] for form, forms in worksheets.items()}
+    return (
+        sheets["ca-qc/t1_tax_and_credits"].get(PPIP_PREMIUMS_LINE_91).value,
+        sheets["ca-qc/tp1_totals"].get(TP1_LINE_457).value,
+        sheets["ca-qc/return"].get(REFUND_OR_BALANCE_OWING).value,
+    )
+
+
+def test_quebec_earnings_under_2000_in_a_larger_salary_claim_no_premium_on_31205() -> None:
+    # A $50,000 salary of which only $1,500 is Quebec employment (box 56): the guide to line 31205
+    # tests the PPIP insurable earnings, so $247.00 (0.494% of 50,000) is not claimed there. TP-1
+    # line 457 tests the employment income on TP-1 (RL-1 box I, blank here, so line 101,
+    # $50,000), so it carries nothing.
+    line_91, line_457, _refund = _figures(
+        "50000", Artifact(PPIP_INSURABLE_EARNINGS_GIVEN, D("1500"))
+    )
+
+    assert (line_91, line_457) == (D("0.00"), D("0"))
+
+
+def test_quebec_earnings_under_2000_on_the_rl1_claim_the_premium_on_line_457_only() -> None:
+    # The same $50,000 salary with RL-1 box I of $1,500 (T4 box 56 likewise): neither form's test
+    # is met, so line 91 and 31205 carry nothing and TP-1 line 457 carries line 97, $247.00.
+    line_91, line_457, _refund = _figures(
+        "50000",
+        Artifact(PPIP_INSURABLE_EARNINGS_GIVEN, D("1500")),
+        Artifact(TP1_RL1_SLIP_BOX_I, D("1500")),
+    )
+
+    assert (line_91, line_457) == (D("0.00"), D("247.00"))
+
+
+def test_employment_under_2000_and_business_income_over_it_claim_the_premium_on_neither() -> None:
+    # 31205's guide tests PPIP insurable earnings only ($1,500, under $2,000, so nothing on line
+    # 91 and 31205); TP-1 line 457's guide adds net business income (Schedule L line 27), so
+    # $1,500 plus $3,000 is not under $2,000 and line 457 carries nothing. Each form is followed
+    # as printed.
+    business = Artifact(TP1_NET_BUSINESS_INCOME_SCHEDULE_L_LINE_27, D("3000"))
+
+    assert _figures("1500", business) == (D("0.00"), D("0"), D("0.00"))

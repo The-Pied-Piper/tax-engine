@@ -1,9 +1,10 @@
-"""AB428 (2025) line 44, from the salary and the optional inputs, from real parts.
+"""AB428 (2025) line 44, from the salary and the T1 medical expenses input, from real parts.
 
 Form text (Form AB428, CRA 5009-c-25e.txt): "Line 44 and line 58689: Amount from line 33099 of
-your return". The part is one core/sum step that reads a blank as 0 and rounds to the cent; the
-figures are hand-computed from the printed form (not a CRA example): a $70,000 salary has net
-income 69,335.00 (the salary less the enhanced CPP deduction).
+your return". The amount is T1 line 33099, asked once on the `ca/t1_lines_copied_by_provinces`
+form as `ca/medical_expenses`; this part has no input of its own. It totals the form's export with
+core/record_total (the figure the old input held), then one core/sum step reads a blank as 0 and
+rounds to the cent. The figures are hand-computed from the printed form (not a CRA example).
 """
 
 from __future__ import annotations
@@ -27,7 +28,6 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tax_engine.jurisdictions.ca_ab import catalog as ab
 from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_ab.support import (
     alberta_capabilities,
@@ -37,14 +37,12 @@ from tests.jurisdictions.ca_ab.support import (
     alberta_units,
 )
 from tests.kinds import non_negative
+from tests.medical_support import medical_expenses
 
 D = Decimal
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
 # The real parts this line needs, beside the salary, Schedule 8 and the T1 taxable income parts.
-LINE_PARTS = (
-    "ab428_credits_line_44_input.yaml",
-    "ab428_credits_line_44.yaml",
-)
+LINE_PARTS = ("ab428_credits_line_44.yaml",)
 HEADER = dedent("""\
     jurisdiction: CA-AB
     version: 1
@@ -64,7 +62,9 @@ FORM = dedent("""\
 
 def _part_files() -> Iterator[Path]:
     yield from form_parts("schedule_8")
-    yield from form_parts("t1_employment_income", "t1_taxable_income")
+    yield from form_parts(
+        "t1_employment_income", "t1_taxable_income", "t1_lines_copied_by_provinces"
+    )
     for name in LINE_PARTS:
         yield ALBERTA_PARTS / name
 
@@ -106,6 +106,12 @@ def _value(sheet: Worksheet, identifier: str) -> Decimal:
 
 PART = ALBERTA_PARTS / "ab428_credits_line_44.yaml"
 KIND = "ca-ab/ab428_medical_expenses_rounded_line_44"
+RECORD_TOTAL: dict[str, Any] = {
+    "name": "core/record_total",
+    "unit": "ca/cad",
+    "consumes": {"records": "ca/t1_lines_copied_by_provinces.medical_expenses_line_33099"},
+    "produces": {"output": "ca-ab/ab428_medical_expenses_line_44"},
+}
 STEP: dict[str, Any] = {
     "name": "core/sum",
     "reference": "44",
@@ -119,8 +125,8 @@ STEP: dict[str, Any] = {
 # salary, given optional inputs, expected line
 CASES: list[tuple[str, list[Artifact[Decimal]], str]] = [
     ("70000", [], "0.00"),
-    ("70000", [Artifact(ab.AB428_MEDICAL_EXPENSES_LINE_44, D("100.005"))], "100.01"),
-    ("70000", [Artifact(ab.AB428_MEDICAL_EXPENSES_LINE_44, D("5000"))], "5000.00"),
+    ("70000", [medical_expenses("100.005")], "100.01"),
+    ("70000", [medical_expenses("5000")], "5000.00"),
 ]
 
 
@@ -131,11 +137,15 @@ def test_the_line_is_ab428_medical_expenses_rounded_line_44_at_each_case(
     assert _value(_sheet(tmp_path, salary, *given), KIND) == D(expected)
 
 
-def test_the_part_names_the_form_and_is_one_step_as_the_form_prints_the_line() -> None:
+def test_the_part_is_a_record_total_of_the_t1_export_then_the_one_sum_step_of_the_line() -> None:
     part = yaml.safe_load(PART.read_text(encoding="utf-8"))
 
-    assert part == {"form": {"name": "ca-ab/ab428_credits"}, "capabilities": [STEP]}
-    assert list(part) == ["form", "capabilities"]
+    assert part["form"] == {"name": "ca-ab/ab428_credits"}
+    total, line = part["capabilities"]
+    # The title is wording; every other key is pinned.
+    assert {key: value for key, value in total.items() if key != "title"} == RECORD_TOTAL
+    assert line == STEP
+    assert len(part["capabilities"]) == 2
 
 
 def test_the_line_is_a_registered_non_negative_amount_kind() -> None:

@@ -70,9 +70,7 @@ LINE_53_PART = MB_PARTS / "mb428_credits_line_53.yaml"
 LINE_56_PARTS = tuple(
     MB_PARTS / name
     for name in (
-        "mb428_credits_line_54_inputs.yaml",
         "mb428_credits_line_54.yaml",
-        "mb428_credits_line_55_inputs.yaml",
         "mb428_credits_line_55.yaml",
         "mb428_credits_line_56.yaml",
     )
@@ -100,7 +98,7 @@ CREDIT_PARTS = (
     "mb428_credits_line_36.yaml",
     "mb428_credits_line_41.yaml",
     "mb428_credits_line_42.yaml",
-    "mb428_credits_line_43_inputs.yaml",
+    "mb428_credits_line_43.yaml",
     "mb428_credits_line_44.yaml",
     "mb428_credits_line_46.yaml",
     "mb428_credits_line_47.yaml",
@@ -211,6 +209,7 @@ LINES_60_AND_64 = {
 
 def _part_files() -> Iterator[Path]:
     yield from form_parts("schedule_8")
+    yield from form_parts("schedule_9")
     yield from form_parts("t2204")
     for name in T1_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))

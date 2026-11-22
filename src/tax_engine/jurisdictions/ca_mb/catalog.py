@@ -61,8 +61,8 @@ left out; above the maximum it is refused, not capped."""
 MB428_MEDICAL_EXPENSES_LINE_43 = AmountKind.declare(
     CATALOG, "mb428_medical_expenses_line_43", non_negative=True
 )
-"""Medical expenses, MB428 line 43 (line 58689) "Amount from line 33099 of your return": the amount
-as the filer gives it, an optional input; a blank input is read as blank."""
+"""Medical expenses, MB428 line 43 (line 58689) "Amount from line 33099 of your return": a record
+total of the T1's export (`ca/medical_expenses_line_33099`), 0 for a salary-only caller."""
 
 MB428_NET_INCOME_LINE_44 = AmountKind.declare(
     CATALOG, "mb428_net_income_line_44", non_negative=True
@@ -142,7 +142,8 @@ MB428_DONATIONS_AMOUNT_LINE_54 = AmountKind.declare(
     CATALOG, "mb428_donations_amount_line_54", non_negative=True
 )
 """Donations amount, MB428 line 54 box A "Amount from line 13 of your federal Schedule 9": the
-amount as the filer gives it, an optional input; a blank input is read as blank."""
+amount, a record total of Schedule 9's export
+(`ca/schedule_9.donations_and_gifts_line_13`), 0 for a salary-only caller."""
 
 MB428_DONATIONS_CREDIT_AT_RATE_LINE_54 = AmountKind.declare(
     CATALOG, "mb428_donations_credit_at_rate_line_54", non_negative=True
@@ -154,7 +155,8 @@ MB428_DONATIONS_AMOUNT_LINE_55 = AmountKind.declare(
     CATALOG, "mb428_donations_amount_line_55", non_negative=True
 )
 """Donations amount, MB428 line 55 box A "Amount from line 14 of your federal Schedule 9": the
-amount as the filer gives it, an optional input; a blank input is read as blank."""
+amount, a record total of Schedule 9's export
+(`ca/schedule_9.donations_and_gifts_line_14`), 0 for a salary-only caller."""
 
 MB428_DONATIONS_CREDIT_AT_RATE_LINE_55 = AmountKind.declare(
     CATALOG, "mb428_donations_credit_at_rate_line_55", non_negative=True

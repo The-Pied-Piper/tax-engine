@@ -4,8 +4,18 @@
 # at most $484.12, half-up to the cent, from the `ca-qc/ppip_premium` dataset. A given figure is
 # produced unchanged, but is first checked against the printed maximum (`ca-qc/ppip_premium_maximum`,
 # 484.12): a figure above it is refused, not capped, as the form says line 91 cannot exceed it. The
-# check is its own untitled step, as NL428 line 82's is. RL-1 box H (TP-1 line 97) is the same
-# figure. Mirrors T2204 line 4 (`ca/forms/t2204/t2204_line_4.yaml`).
+# check is its own untitled step, as NL428 line 82's is. Mirrors T2204 line 4
+# (`ca/forms/t2204/t2204_line_4.yaml`).
+# Guide 5000-G (2025), line 31205: "If your PPIP insurable earnings are less than $2,000, do not claim
+# any PPIP premiums on line 31205. Instead, claim this amount as an overpayment on your Revenu Québec
+# Income Tax Return." The premium above is the figure before that test. The earnings tested are
+# Schedule 10 line 13's: the box 56 total of the Quebec T4 slips (`ca-qc/ppip_insurable_earnings_given`),
+# or, when it is blank, the employment income (line 10100, box 14). The guide names PPIP insurable
+# earnings only, so business income is not added here; TP-1 line 457
+# (`tp1_totals_line_457.yaml`) tests employment, net business and family-resource earnings together,
+# as its own guide prints, so a filer under $2,000 of employment with business income claims the
+# premium on neither line. The test is its two complements, as TP-1 line 457's is. The last
+# step carries line 91.
 form:
   name: ca-qc/ppip_premium
 capabilities:
@@ -33,8 +43,7 @@ capabilities:
     produces:
       output: ca-qc/ppip_premiums_given_checked
   - name: ca/given_or_contribution_tier
-    title: "Provincial parental insurance plan (PPIP) premiums paid"
-    reference: "91"
+    title: "PPIP premiums paid before the earnings test"
     unit: ca/cad
     params:
       tier: ca-qc/ppip_premium
@@ -43,5 +52,42 @@ capabilities:
       earnings: ca-qc/ppip_premium_employment_income
     blank:
       given: compute
+    produces:
+      output: ca-qc/ppip_premiums_before_earnings_test
+  - name: ca-qc/given_or_fallback
+    title: "PPIP insurable earnings"
+    unit: ca/cad
+    consumes:
+      given: ca-qc/ppip_insurable_earnings_given
+      fallback: ca-qc/ppip_premium_employment_income
+    blank:
+      given: compute
+    produces:
+      output: ca-qc/ppip_insurable_earnings
+  - name: ca/count_by_conditions
+    title: "The PPIP insurable earnings are less than $2,000"
+    params:
+      conditions: ca-qc/ppip_premium_line_91_conditions
+    consumes:
+      counts: []
+      amounts:
+        - ca-qc/ppip_insurable_earnings
+    produces:
+      output: ca-qc/ppip_premium_under_threshold_count
+  - name: core/credit_amount
+    title: "PPIP premiums claimed when the earnings are under $2,000"
+    unit: ca/cad
+    params:
+      amount: ca-qc/ppip_premium_zero
+    produces:
+      output: ca-qc/ppip_premium_zero
+  - name: core/choose_by_count
+    title: "Provincial parental insurance plan (PPIP) premiums paid"
+    reference: "91"
+    unit: ca/cad
+    consumes:
+      count: ca-qc/ppip_premium_under_threshold_count
+      when_none: ca-qc/ppip_premiums_before_earnings_test
+      when_any: ca-qc/ppip_premium_zero
     produces:
       output: ca-qc/ppip_premiums_paid

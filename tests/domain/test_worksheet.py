@@ -469,6 +469,13 @@ def test_a_worksheet_gives_the_references_it_was_given_by_label() -> None:
     assert worksheet.reference("b") is None
 
 
+def test_a_worksheet_gives_the_positions_it_was_given_by_label() -> None:
+    worksheet = Worksheet(Artifact(A, D(1)), figure_positions={"a": 7})
+
+    assert worksheet.position("a") == 7
+    assert worksheet.position("b") is None
+
+
 def test_a_worksheet_without_titles_gives_none() -> None:
     worksheet = Worksheet(Artifact(A, D(1)))
 

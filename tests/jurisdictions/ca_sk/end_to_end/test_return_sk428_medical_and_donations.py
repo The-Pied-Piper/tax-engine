@@ -9,8 +9,8 @@ medical expenses for other dependants from line 33199 of your return", line 50 "
 49 =", line 54 "Amount from line 13 of your federal Schedule 9 multiplied by 10.5% =", line 55
 "Amount from line 14 of your federal Schedule 9 multiplied by 14.5% =", line 56 "Line 54 plus line
 55 =" and line 77 "Line 75 plus line 76 (maximum $875) =". The medical amounts of lines 43 and 49,
-the Schedule 9 amounts of lines 54 and 55 and the T2C slip amounts of lines 75 and 76 are the
-caller's optional inputs; every other line is computed.
+Schedule 9 line 12 (lines 13 and 14, read by lines 54 and 55, are computed from it) and the T2C
+slip amounts of lines 75 and 76 are the caller's optional inputs; every other line is computed.
 
 The figures are derived by hand below with Decimal, not read from the engine (not a CRA example).
 A $70,000 salary has net income 69,335.00, so line 46 is 3% of it, 2,080.05, under the 2,681 limit
@@ -41,10 +41,9 @@ LINE_57 = "ca-sk/sk428_non_refundable_credits_line_57"
 LINE_77 = "ca-sk/sk428_labour_sponsored_credit_checked_line_77"
 LINE_82 = "ca-sk/sk428_saskatchewan_tax_line_82"
 INPUTS = {
-    "line_43": "ca-sk/sk428_medical_expenses_line_43",
-    "line_49": "ca-sk/sk428_other_dependants_medical_expenses_line_49",
-    "line_54": "ca-sk/sk428_donations_amount_line_54",
-    "line_55": "ca-sk/sk428_donations_amount_line_55",
+    "line_43": "ca/medical_expenses",
+    "line_49": "ca/other_dependants_medical_expenses",
+    "line_12": "ca/donations_and_gifts_line_12",
     "line_75": "ca-sk/sk428_venture_capital_credit_saskatchewan_line_75",
     "line_76": "ca-sk/sk428_venture_capital_credit_federal_line_76",
 }
@@ -94,8 +93,7 @@ def test_a_medical_donations_and_venture_capital_return_at_70000() -> None:
         "70000",
         line_43="5000",
         line_49="250.50",
-        line_54="1000",
-        line_55="2000",
+        line_12="2200",
         line_75="400.00",
         line_76="300.00",
     )
@@ -105,17 +103,18 @@ def test_a_medical_donations_and_venture_capital_return_at_70000() -> None:
     line_50 = max(D("5000") - line_47, D(0)) + D("250.50")
     assert line_47 == D("2080.05")
     assert line_50 == D("3170.45")
-    # Line 56: 1,000 at 10.5% plus 2,000 at 14.5%.
-    line_56 = _cents(D("1000") * D("0.105")) + _cents(D("2000") * D("0.145"))
-    assert line_56 == D("395.00")
+    # Line 12 is 2,200: line 13 is the printed 200 and line 14 is 2,000. Line 56: 200 at 10.5% plus
+    # 2,000 at 14.5%.
+    line_56 = _cents(D("200") * D("0.105")) + _cents(D("2000") * D("0.145"))
+    assert line_56 == D("311.00")
     # Line 57: line 53 (line 51 at 10.5%) plus line 56.
     line_57 = _cents((LINE_42 + line_50) * D("0.105")) + line_56
-    assert line_57 == D("3233.22")
+    assert line_57 == D("3149.22")
     # Line 77: 400.00 plus 300.00, under the 875 maximum. Tax: 7,597.62 less line 66 (line 57,
     # no line 64 or 65) less line 77.
     line_77 = D("400.00") + D("300.00")
     tax = D("7597.62") - line_57 - line_77
-    assert tax == D("3664.40")
+    assert tax == D("3748.40")
 
     assert _value(credits_sheet, LINE_50) == line_50
     assert _value(credits_sheet, LINE_56) == line_56

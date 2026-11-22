@@ -23,6 +23,7 @@ RENDERERS = "tax_engine.jurisdictions.ca_qc.trace_english"
 
 HOMES: dict[str, tuple[str, ...]] = {
     "divide_by_count": ("DivideByCountLine",),
+    "given_or_fallback": ("GivenOrFallbackLine",),
     "lesser_of_counts": ("LesserOfCountsLine",),
 }
 

@@ -53,6 +53,7 @@ def test_the_federal_forms_are_imported_in_order() -> None:
         "ca/t691",
         "ca/schedule_6",
         "ca/schedule_8",
+        "ca/schedule_9",
         "ca/t2204",
     ]
 

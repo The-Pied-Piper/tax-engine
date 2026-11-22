@@ -4,8 +4,11 @@
 # amount from line 97 to line 457." Net business income (Schedule L line 27) and the insurable
 # earnings of a family-type resource (Schedule L line 40) come from Schedule L, which the engine does
 # not compute, so each is an optional input the take-home does not give, read as 0 when left blank
-# (`tp1_totals_line_457.yaml`). The employment income subject to the QPIP is line 101 of the return
-# (Schedule R reads RL-1 box I, box A when blank; a salary-only caller has the same figure for both).
+# (`tp1_totals_line_457.yaml`). The employment income subject to the QPIP is Schedule R line 14, the
+# total of RL-1 box I ("if box I is blank, use the amount from box A of the RL-1 slip"): box I is an
+# optional input, and a blank takes line 101 of the return (a salary-only caller has no slip). The
+# engine takes one total, not one figure per slip, so a filer with one slip whose box I is blank and
+# another whose box I is filled is not modelled.
 # The guide (line 439) takes the family-resource earnings from line 40 of Schedule L if an RL-29 slip
 # was received, otherwise line 27 of Schedule L; the caller gives whichever applies, and a loss in
 # line 27 as 0, as Schedule R line 10 prints.
@@ -26,3 +29,10 @@ inputs:
     required: false
     default: null
     basis: "your insurable earnings as a person responsible for a family-type resource or an intermediate resource"
+  - name: ca-qc/tp1_rl1_slip_box_i
+    title: "Employment income subject to the QPIP"
+    reference: "RL-1, box I"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "your employment income subject to the QPIP"

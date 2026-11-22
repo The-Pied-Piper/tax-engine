@@ -1,13 +1,21 @@
 # Form SK428 (Saskatchewan Tax, 2025, CRA 5008-c-25e) line 55 (ca-sk/sk428_credits): "Line 55: Amount
 # from line 14 of your federal Schedule 9 multiplied by 14.5% =". The 14.5% is a printed rate, held
 # in the `ca-sk/donations_credit_rate_line_55` dataset, so the step is one calculation: 14.5% of the
-# Schedule 9 amount, rounded half-up to the cent. The amount is an optional input
-# (sk428_credits_line_55_input.yaml), read as 0 when left out. The line has two boxes: the amount
-# (box A, the input) and the multiplied result (box B, this step). The form does not name them; "box
+# Schedule 9 amount, rounded half-up to the cent. The amount (box A) is read from the Schedule 9 export: the first step totals it (a form reads
+# another form's export only as a record list). The line has two boxes: the amount
+# (box A, the first step) and the multiplied result (box B, this step). The form does not name them; "box
 # A" and "box B" are the owner's naming, as on ON428 line 48.
 form:
   name: ca-sk/sk428_credits
 capabilities:
+  - name: core/record_total
+    title: "Amount from line 14 of your federal Schedule 9"
+    reference: "55 box A"
+    unit: ca/cad
+    consumes:
+      records: ca/schedule_9.donations_and_gifts_line_14
+    produces:
+      output: ca-sk/sk428_donations_amount_line_55
   - name: core/apply_rate
     reference: "55 box B"
     unit: ca/cad

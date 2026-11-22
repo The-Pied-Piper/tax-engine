@@ -73,17 +73,15 @@ CREDITS_PARTS = (
     "sk428_credits_line_35.yaml",
     "sk428_credits_line_38.yaml",
     "sk428_credits_line_42.yaml",
-    "sk428_credits_line_43_input.yaml",
+    "sk428_credits_line_43.yaml",
     "sk428_credits_line_44.yaml",
     "sk428_credits_line_46.yaml",
     "sk428_credits_line_47.yaml",
     "sk428_credits_line_48.yaml",
-    "sk428_credits_line_49_input.yaml",
+    "sk428_credits_line_49.yaml",
     "sk428_credits_line_50.yaml",
     "sk428_credits_line_51.yaml",
     "sk428_credits_line_53.yaml",
-    "sk428_credits_line_54_input.yaml",
-    "sk428_credits_line_55_input.yaml",
     "sk428_credits_line_54.yaml",
     "sk428_credits_line_55.yaml",
     "sk428_credits_line_56.yaml",
@@ -192,6 +190,7 @@ def _derived(salary: Decimal, line_61: Decimal = ZERO, line_64: Decimal = ZERO) 
 
 def _part_files() -> Iterator[Path]:
     yield from form_parts("schedule_8")
+    yield from form_parts("schedule_9")
     yield from form_parts("t2204")
     for name in T1_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
