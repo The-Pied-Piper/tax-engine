@@ -6,9 +6,9 @@ multiplied by 8.7% =", line 60 "Amount from line 14 of your federal Schedule 9 m
 =", line 61 "Line 59 plus line 60 =", line 62 "Line 58 plus line 61", line 82 "Venture capital tax
 credit from Certificate(s) NL VCTC", line 83 "Unused Newfoundland and Labrador venture capital tax
 credit from your most recent notice of assessment or reassessment", line 84 "Line 82 plus line 83
-=" and line 85 "Line 81 minus line 84 (if negative, enter "0") =". The Schedule 9 amounts of lines
-59 and 60 and the venture capital amounts of lines 82 and 83 are the caller's optional inputs;
-every other line is computed.
+=" and line 85 "Line 81 minus line 84 (if negative, enter "0") =". Schedule 9 line 12 (lines 13 and
+14, read by lines 59 and 60, are computed from it) and the venture capital amounts of lines 82 and
+83 are the caller's optional inputs; every other line is computed.
 
 The figures are derived by hand below with Decimal, not read from the engine (not a CRA example).
 A $70,000 salary alone has line 62 of 1,342.95 and line 81 of 6,147.49 (test_nl428.py pins the

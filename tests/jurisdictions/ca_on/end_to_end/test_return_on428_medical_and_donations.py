@@ -6,8 +6,8 @@ Form text (Form ON428, CRA 5006-c-25e.txt): line 37 "Amount from line 23600 of y
 whichever is less: $2,885 or the amount on line 39.", line 41 "Line 36 minus line 40 (if negative,
 enter "0") =", line 43 "Line 41 plus line 42 =", line 47 "Amount from line 13 of your federal
 Schedule 9 multiplied by 5.05% =", line 48 "Amount from line 14 of your federal Schedule 9
-multiplied by 11.16% =" and line 49 "Line 47 plus line 48 =". Lines 36, 42 and the two Schedule 9
-amounts are the caller's optional inputs; every other line is computed.
+multiplied by 11.16% =" and line 49 "Line 47 plus line 48 =". Lines 36, 42 and Schedule 9 line 12
+are the caller's optional inputs; every other line is computed.
 
 The hand figures are asserted (not a CRA example). A $70,000 salary has net income 69,335.00 (the
 salary less the enhanced CPP deduction), so line 39 is 3% of it, 2,080.05, under the 2,885 cap.

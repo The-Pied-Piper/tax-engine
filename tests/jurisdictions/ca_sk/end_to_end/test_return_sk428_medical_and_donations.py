@@ -9,8 +9,8 @@ medical expenses for other dependants from line 33199 of your return", line 50 "
 49 =", line 54 "Amount from line 13 of your federal Schedule 9 multiplied by 10.5% =", line 55
 "Amount from line 14 of your federal Schedule 9 multiplied by 14.5% =", line 56 "Line 54 plus line
 55 =" and line 77 "Line 75 plus line 76 (maximum $875) =". The medical amounts of lines 43 and 49,
-the Schedule 9 amounts of lines 54 and 55 and the T2C slip amounts of lines 75 and 76 are the
-caller's optional inputs; every other line is computed.
+Schedule 9 line 12 (lines 13 and 14, read by lines 54 and 55, are computed from it) and the T2C
+slip amounts of lines 75 and 76 are the caller's optional inputs; every other line is computed.
 
 The figures are derived by hand below with Decimal, not read from the engine (not a CRA example).
 A $70,000 salary has net income 69,335.00, so line 46 is 3% of it, 2,080.05, under the 2,681 limit

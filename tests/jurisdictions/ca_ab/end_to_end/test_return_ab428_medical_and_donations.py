@@ -6,8 +6,8 @@ Form text (Form AB428, CRA 5009-c-25e.txt): line 45 "Amount from line 23600 of y
 "Enter whichever is less: $2,884 or the amount from line 47.", line 49 "Line 44 minus line 48 (if
 negative, enter "0") =", line 51 "Line 49 plus line 50 =", line 55 "Amount from line 13 of your
 federal Schedule 9 multiplied by 60% =", line 56 "Amount from line 14 of your federal Schedule 9
-multiplied by 21% =" and line 57 "Line 55 plus line 56 =". Lines 44, 50 and the two Schedule 9
-amounts are the caller's optional inputs; every other line is computed.
+multiplied by 21% =" and line 57 "Line 55 plus line 56 =". Lines 44, 50 and Schedule 9 line 12
+are the caller's optional inputs; every other line is computed.
 
 The hand figures are asserted (not a CRA example). A $70,000 salary has net income 69,335.00 (the
 salary less the enhanced CPP deduction), so line 47 is 3% of it, 2,080.05, under the 2,884 ceiling.
