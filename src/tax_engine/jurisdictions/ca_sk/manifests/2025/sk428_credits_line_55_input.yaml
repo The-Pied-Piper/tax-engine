@@ -4,6 +4,8 @@
 # sk428_credits_line_55.yaml). The engine does not compute Schedule 9, so the amount is taken as one
 # optional input, the way the form takes it. A request that leaves the line out is read as blank; the
 # step that multiplies it reads that blank as 0.
+form:
+  name: ca-sk/sk428_credits
 inputs:
   - name: ca-sk/sk428_donations_amount_line_55
     title: "Amount from line 14 of your federal Schedule 9"

@@ -4,6 +4,8 @@
 # compute, and line 75 (the contributions made) is not built. A salary-only caller has no political
 # contributions, so a request that leaves the line out is read as blank; line 76
 # (nl428_line_76.yaml) checks it against the printed maximum and passes that blank on.
+form:
+  name: ca-nl/nl428
 inputs:
   - name: ca-nl/nl428_political_contribution_tax_credit_claimed_line_76
     title: "Newfoundland and Labrador political contribution tax credit"

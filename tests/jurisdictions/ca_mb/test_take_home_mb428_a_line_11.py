@@ -6,7 +6,7 @@ and the multiplication is not tested. Line 23600 is read as the T1 form exports 
 `ca/t1_taxable_income.net_income`, which reaches this form only as a record list: line 11 is a
 core/record_total over it, as Worksheet MB428 line 2 is. The kind is non-negative.
 
-The test composes the real Manitoba salary part, the real federal parts the T1 taxable income form
+The test composes the T1 employment income form, the real federal parts the T1 taxable income form
 needs (Schedule 8 for line 23300, and the T1 lines 15000, 23300, 23400, 23600, 23600 signed and
 26000 with their inputs) and the real `mb428_a_line_11.yaml`, and types in only the salary. The
 Schedule MB428-A form declaration is made up here, exporting only line 11. The service is built over
@@ -50,7 +50,6 @@ from tests.jurisdictions.ca_mb.support import (
     manitoba_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 CENT = D("0.01")
@@ -65,8 +64,7 @@ HEADER = dedent("""\
     jurisdiction: CA-MB
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 FORM = dedent("""\
@@ -80,7 +78,6 @@ FORM = dedent("""\
 
 
 def _part_files() -> Iterator[Path]:
-    yield MB_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     for name in FEDERAL_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
@@ -95,11 +92,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
     for number, found in enumerate(_part_files(), start=2):
-        text = (
-            inputs_without_form(found)
-            if found.name.endswith("_inputs.yaml") and found.is_relative_to(FEDERAL_FORMS)
-            else found.read_text(encoding="utf-8")
-        )
+        text = found.read_text(encoding="utf-8")
         (folder / f"{number:02d}_{found.name}").write_text(text, encoding="utf-8")
     roots = {**manitoba_packages().roots(), Namespace("ca-mb"): tmp_path}
     return TaxComputationService(

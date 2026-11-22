@@ -16,7 +16,6 @@ from textwrap import dedent
 
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_qc.catalog import (
     NET_SELF_EMPLOYMENT_INCOME,
     T1_LINE_21,
@@ -31,15 +30,7 @@ HEADER = dedent("""\
     jurisdiction: CA-QC
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/employment_income
-        required: true
-      - name: ca-qc/t1_line_21
-        required: true
-      - name: ca-qc/net_self_employment_income
-        required: true
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 FORM = dedent("""\
@@ -48,6 +39,11 @@ FORM = dedent("""\
       required: true
       exports:
         - ca-qc/t1_line_28
+    inputs:
+      - name: ca-qc/t1_line_21
+        required: true
+      - name: ca-qc/net_self_employment_income
+        required: true
     capabilities: []
     """)
 
@@ -56,7 +52,6 @@ def line_28(take_home_service: TakeHomeService, line_21: str, line_27: str) -> D
     worksheets = take_home_service(HEADER, FORM, PART).compute(
         JurisdictionCode("CA-QC"),
         2025,
-        Artifact(EMPLOYMENT_INCOME, D(line_21)),
         Artifact(T1_LINE_21, D(line_21)),
         Artifact(NET_SELF_EMPLOYMENT_INCOME, D(line_27)),
     )

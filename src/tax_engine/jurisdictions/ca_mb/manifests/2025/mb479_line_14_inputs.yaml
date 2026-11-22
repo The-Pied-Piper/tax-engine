@@ -7,6 +7,8 @@
 # The heading above the line, "Disability credit for self or for a dependant other than your spouse or common-law partner",
 # says whom the count is of. The filer gives the count; the heading is part of the printed basis
 # shown with the box.
+form:
+  name: ca-mb/mb479
 inputs:
   - name: ca-mb/mb479_disability_claims_number_line_14
     title: "Number of disability claims"

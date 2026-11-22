@@ -24,6 +24,7 @@ from tax_engine.domain.manifest import Manifest
 from tax_engine.jurisdictions.ca_ab.catalog import AB428_DIVIDEND_TAX_CREDIT_LINE_63
 from tests.jurisdictions.ca_ab.support import alberta_kinds, alberta_packages, alberta_units
 from tests.kinds import non_negative
+from tests.manifest_support import input_named
 
 IDENTIFIER = "ca-ab/ab428_dividend_tax_credit_line_63"
 PRINTED_BASIS = "Line 63 and line 61520: Alberta dividend tax credit (use Worksheet AB428)"
@@ -34,7 +35,16 @@ HEADER = """\
 jurisdiction: CA-AB
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
+capabilities: []
+"""
+
+FORM = """\
+form:
+  name: ca-ab/ab428
+  required: true
+  exports:
+    - ca/total_income
 capabilities: []
 """
 
@@ -44,6 +54,7 @@ def _manifest(tmp_path: Path) -> Manifest:
     folder.mkdir()
     (folder / "header.yaml").write_text(HEADER)
     shutil.copy(PART, folder / PART.name)
+    (folder / "form.yaml").write_text(FORM)
     return YamlJurisdictionSource(
         alberta_packages().roots(), alberta_kinds(), alberta_units()
     ).load(folder)
@@ -59,7 +70,7 @@ def _declaration() -> dict[str, object]:
 
 def test_a_request_that_leaves_out_line_63_is_read_as_blank(tmp_path: Path) -> None:
     kinds = alberta_kinds()
-    declaration = _manifest(tmp_path).inputs[IDENTIFIER]
+    declaration = input_named(_manifest(tmp_path), IDENTIFIER)
     default = declaration.default_artifact(kinds.kind(IDENTIFIER))
     assert not declaration.required
     assert declaration.basis == PRINTED_BASIS

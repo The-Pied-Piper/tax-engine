@@ -6,7 +6,7 @@ equivalents. So line 33 is one core/sum over the two parts built so far, line 27
 contributions, `bc428_line_27.yaml`) and line 29 (employment insurance premiums,
 `bc428_line_29.yaml`).
 
-The test composes the real British Columbia salary part, the real Schedule 8 and T2204 parts, the
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the
 real line 27 and line 29 parts and the new `bc428_line_33.yaml`, and types in only the salary. The
 form declaration is made up here, exporting only line 33: lines 27 and 29 are read by this sum, so
 they need no export. The figures are hand-computed from the printed forms (not a CRA example).
@@ -34,7 +34,7 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_bc.catalog import BC428_CPP_EI_AND_OTHER_LINE_33
-from tests.federal_forms import FEDERAL_FORMS, form_parts
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -43,7 +43,6 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_FORM, inputs_without_form
 
 D = Decimal
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
@@ -54,8 +53,7 @@ HEADER = dedent("""\
     jurisdiction: CA-BC
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 FORM = dedent("""\
@@ -75,11 +73,9 @@ CASES = [
 
 
 def _part_files() -> Iterator[Path]:
-    yield BC_PARTS / "salary.yaml"
+    yield from form_parts("t1_employment_income")
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
-    yield T1_LINE_10100_FORM
-    yield FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml"
     yield BC_PARTS / "bc428_line_27.yaml"
     yield BC_PARTS / "bc428_line_29.yaml"
     yield LINE_PART
@@ -93,11 +89,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
     for number, found in enumerate(_part_files(), start=2):
-        text = (
-            inputs_without_form(found)
-            if found.name.endswith("_inputs.yaml") and found.is_relative_to(FEDERAL_FORMS)
-            else found.read_text(encoding="utf-8")
-        )
+        text = found.read_text(encoding="utf-8")
         (folder / f"{number:02d}_{found.name}").write_text(text, encoding="utf-8")
     roots = {**british_columbia_packages().roots(), Namespace("ca-bc"): tmp_path}
     return TaxComputationService(

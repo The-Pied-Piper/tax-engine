@@ -25,6 +25,7 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     NET_INCOME,
     TAXABLE_INCOME,
 )
+from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
 from tests.jurisdictions.ca_qc.support import real_import
 
@@ -32,7 +33,7 @@ D = Decimal
 PARTS = (
     "t1_employment_income_line_10400_inputs.yaml",
     "t1_employment_income.yaml",
-    "t1_employment_income_line_10100.yaml",
+    *form_part_names("t1_employment_income"),
     "t1_employment_income_line_10400.yaml",
     "t1_taxable_income_line_21.yaml",
     "t1_taxable_income_line_27_inputs.yaml",
@@ -64,11 +65,7 @@ HEADER = (
     jurisdiction: CA-QC
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/employment_income
-        required: true
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     imports:
     """)

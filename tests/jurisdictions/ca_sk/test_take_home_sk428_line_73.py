@@ -35,7 +35,6 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.trace import AtMostLine
 from tax_engine.domain.worksheet import Worksheet
-from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_sk.catalog import SK428_POLITICAL_CONTRIBUTIONS_CREDIT_LINE_73
 from tests.jurisdictions.ca_sk.support import (
     saskatchewan_capabilities,
@@ -59,11 +58,8 @@ HEADER = dedent("""\
     jurisdiction: CA-SK
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/employment_income
-        required: true
-    outputs:
-      - ca/employment_income
+    outputs: []
+    capabilities: []
     """)
 FORM = dedent("""\
     form:
@@ -95,7 +91,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
 
 
 def _sheet(tmp_path: Path, credit: str | None = None, salary: str = "70000") -> Worksheet:
-    given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, D(salary))]
+    given: list[Artifact[Any]] = []
     if credit is not None:
         given.append(Artifact(SK428_POLITICAL_CONTRIBUTIONS_CREDIT_LINE_73, D(credit)))
     worksheets = _service(tmp_path).compute(JurisdictionCode("CA-SK"), 2025, *given)

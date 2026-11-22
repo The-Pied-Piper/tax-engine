@@ -43,12 +43,11 @@ MAXIMUM = "ca-nl/nl428_venture_capital_tax_credit_lifetime_maximum"
 PARTS = ("nl428_line_82_input.yaml", "nl428_line_82.yaml")
 LINE_82 = "ca-nl/nl428_venture_capital_tax_credit_from_certificates_line_82"
 
-HEADER = dedent(f"""\
+HEADER = dedent("""\
     jurisdiction: CA-NL
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - {LINE_82}
+    outputs: []
     capabilities: []
     """)
 FORM = dedent(f"""\

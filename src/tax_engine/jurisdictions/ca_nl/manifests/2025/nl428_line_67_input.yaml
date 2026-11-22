@@ -3,6 +3,8 @@
 # (Form NL428, CRA 5001-C). The Worksheet NL428 section behind this line exists only to compute a
 # credit a salary-only caller leaves empty, so that block is skipped and the line is taken as one
 # optional input. A request that leaves the line out is read as blank.
+form:
+  name: ca-nl/nl428
 inputs:
   - name: ca-nl/nl428_dividend_tax_credit_line_67
     title: "Newfoundland and Labrador dividend tax credit (use Worksheet NL428)"

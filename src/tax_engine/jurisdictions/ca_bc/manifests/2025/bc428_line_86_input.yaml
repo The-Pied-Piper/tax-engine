@@ -1,6 +1,8 @@
 # BC428 (2025) line 86's input. Form BC428 (CRA 5010-C): "Line 86 and line 60450: ESOP 20 certificate
 # number; Tax credit amount indicated on the certificate". The credit amount is taken as one optional
 # input. A request that leaves it out is read as blank; the line 88 step reads that blank as 0.
+form:
+  name: ca-bc/bc428
 inputs:
   - name: ca-bc/bc428_esop_credit_line_86
     title: "ESOP tax credit amount indicated on the certificate"

@@ -34,7 +34,6 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
-from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_mb.catalog import (
     MB479_AGE_CREDIT_LINE_8,
     MB479_BASIC_CREDIT_SPOUSE_LINE_9,
@@ -93,11 +92,8 @@ HEADER = dedent("""\
     jurisdiction: CA-MB
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/employment_income
-        required: true
-    outputs:
-      - ca/employment_income
+    outputs: []
+    capabilities: []
     """)
 FORM = dedent("""\
     form:
@@ -152,7 +148,7 @@ def _total(sheet: Worksheet) -> Decimal:
 
 @pytest.mark.parametrize("salary", SALARIES)
 def test_line_17_is_the_basic_credit_when_every_input_is_blank(tmp_path: Path, salary: str) -> None:
-    sheet = _sheet(tmp_path, Artifact(EMPLOYMENT_INCOME, D(salary)))
+    sheet = _sheet(tmp_path)
 
     assert _total(sheet) == D("195.00")
 
@@ -164,7 +160,6 @@ def test_line_17_adds_each_input_alone_to_the_basic_credit(
     value, expected = case
     sheet = _sheet(
         tmp_path,
-        Artifact(EMPLOYMENT_INCOME, D("70000")),
         Artifact(INPUTS[index], D(value)),
     )
 
@@ -175,7 +170,6 @@ def test_line_17_adds_all_six_inputs_and_the_basic_credit(tmp_path: Path) -> Non
     values = [D(value) for value, _ in ALONE]
     sheet = _sheet(
         tmp_path,
-        Artifact(EMPLOYMENT_INCOME, D("70000")),
         *(Artifact(kind, value) for kind, value in zip(INPUTS, values, strict=True)),
     )
 
@@ -184,7 +178,7 @@ def test_line_17_adds_all_six_inputs_and_the_basic_credit(tmp_path: Path) -> Non
 
 
 def test_blank_inputs_print_one_left_blank_row_each(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, Artifact(EMPLOYMENT_INCOME, D("70000")))
+    sheet = _sheet(tmp_path)
 
     rows = EnglishTraceRenderer().render_all(sheet.trace)
 
@@ -194,7 +188,6 @@ def test_blank_inputs_print_one_left_blank_row_each(tmp_path: Path) -> None:
 def test_a_given_input_prints_no_left_blank_row_of_its_own(tmp_path: Path) -> None:
     sheet = _sheet(
         tmp_path,
-        Artifact(EMPLOYMENT_INCOME, D("70000")),
         Artifact(MB479_AGE_CREDIT_LINE_8, D("113")),
     )
 

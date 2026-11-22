@@ -8,10 +8,9 @@ read as 0 when left out, so line 68 is never blank). Line 69 is one core/sum ove
 line 68, as MB428 line 60 is over line 58 and the line 59 input; the blank line 67 is read as 0 and
 the step prints its own "left blank, taken as 0" row.
 
-The salary part, the line 67 and line 68 input parts, the line 68 part and the line 69 part are
-loaded under a test-local header and form declaration, over the Manitoba package list of
-`support.py`.
-"""
+The T1 employment income form, the line 67 and line 68 input parts, the line 68 part and the line 69
+part are loaded under a test-local header and form declaration, over the Manitoba package list of
+`support.py`."""
 
 from __future__ import annotations
 
@@ -51,23 +50,20 @@ LINE_67 = "ca-mb/mb479_green_energy_purchaser_credit_line_67"
 COST_68 = "ca-mb/mb479_geothermal_heat_pump_cost_line_68"
 LINE_68 = "ca-mb/mb479_geothermal_heat_pump_credit_line_68"
 LINE_69 = "ca-mb/mb479_green_energy_credits_line_69"
-SALARY = "ca/employment_income"
 MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"
 PART = MB_PARTS / "mb479_line_69.yaml"
 PART_NAMES = [
-    "salary.yaml",
     "mb479_line_67_input.yaml",
     "mb479_line_68_input.yaml",
     "mb479_line_68.yaml",
     PART.name,
 ]
 
-HEADER = dedent(f"""\
+HEADER = dedent("""\
     jurisdiction: CA-MB
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - {SALARY}
+    outputs: []
     capabilities: []
     """)
 FORM = dedent(f"""\
@@ -105,7 +101,7 @@ def _sheet(
     tmp_path: Path, salary: str, line_67: str | None = None, cost_68: str | None = None
 ) -> Worksheet:
     kinds = manitoba_kinds()
-    given = [Artifact(kinds.kind(SALARY), D(salary))]
+    given: list[Artifact[Any]] = []
     if line_67 is not None:
         given.append(Artifact(kinds.kind(LINE_67), D(line_67)))
     if cost_68 is not None:

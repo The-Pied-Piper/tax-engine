@@ -93,8 +93,7 @@ def test_the_trace_of_a_form_without_an_instances_list_reads_as_instance_1() -> 
                 exports=[NET_INCOME],
                 starting=frozenset({GROSS_RENT, EXPENSES}),
             )
-        ],
-        inputs=frozenset({GROSS_RENT, EXPENSES}),
+        ]
     )
     worksheets = forms.compute(Artifact(GROSS_RENT, D("12000")), Artifact(EXPENSES, D("2000")))
 
@@ -164,8 +163,7 @@ def test_the_form_set_trace_carries_each_runs_worksheet() -> None:
                 exports=[NET_INCOME],
                 starting=frozenset({GROSS_RENT, EXPENSES}),
             )
-        ],
-        inputs=frozenset({GROSS_RENT, EXPENSES}),
+        ]
     )
     worksheets = forms.compute(Artifact(GROSS_RENT, D("12000")), Artifact(EXPENSES, D("2000")))
 

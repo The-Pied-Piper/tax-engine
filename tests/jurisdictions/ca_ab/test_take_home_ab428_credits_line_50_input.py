@@ -15,6 +15,7 @@ import tax_engine.jurisdictions.ca_ab
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.manifest import Manifest
 from tests.jurisdictions.ca_ab.support import alberta_kinds, alberta_packages, alberta_units
+from tests.manifest_support import input_named, inputs_of
 
 IDENTIFIER = "ca-ab/ab428_allowable_medical_expenses_for_other_dependants_line_50"
 PRINTED_BASIS = (
@@ -31,7 +32,16 @@ HEADER = """\
 jurisdiction: CA-AB
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
+capabilities: []
+"""
+
+FORM = """\
+form:
+  name: ca-ab/ab428_credits
+  required: true
+  exports:
+    - ca/total_income
 capabilities: []
 """
 
@@ -41,6 +51,7 @@ def _manifest(tmp_path: Path) -> Manifest:
     folder.mkdir()
     (folder / "header.yaml").write_text(HEADER)
     shutil.copy(PART, folder / PART.name)
+    (folder / "form.yaml").write_text(FORM)
     source = YamlJurisdictionSource(alberta_packages().roots(), alberta_kinds(), alberta_units())
     return source.load(folder)
 
@@ -48,8 +59,8 @@ def _manifest(tmp_path: Path) -> Manifest:
 def test_the_part_declares_the_one_optional_input_as_printed(tmp_path: Path) -> None:
     manifest = _manifest(tmp_path)
 
-    assert list(manifest.inputs) == [IDENTIFIER]
-    declaration = manifest.inputs[IDENTIFIER]
+    assert list(inputs_of(manifest)) == [IDENTIFIER]
+    declaration = input_named(manifest, IDENTIFIER)
     assert not declaration.required
     assert declaration.basis == PRINTED_BASIS
     assert (
@@ -61,7 +72,7 @@ def test_the_part_declares_the_one_optional_input_as_printed(tmp_path: Path) -> 
 
 
 def test_a_request_that_leaves_the_line_out_is_read_as_blank(tmp_path: Path) -> None:
-    declaration = _manifest(tmp_path).inputs[IDENTIFIER]
+    declaration = input_named(_manifest(tmp_path), IDENTIFIER)
     default = declaration.default_artifact(alberta_kinds().kind(IDENTIFIER))
 
     assert default is not None and default.is_blank

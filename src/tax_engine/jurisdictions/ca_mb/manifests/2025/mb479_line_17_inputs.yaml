@@ -3,6 +3,8 @@
 # 7. Line 12 is computed from lines 9 to 11 (mb479_line_12_inputs.yaml, mb479_line_12.yaml) and
 # lines 14 to 16 from their counts (mb479_line_14_inputs.yaml and its neighbours). A salary-only
 # caller claims none of them, so a request that leaves a line out is read as blank.
+form:
+  name: ca-mb/mb479
 inputs:
   - name: ca-mb/mb479_age_credit_line_8
     title: "Age credit for self (if you were born in 1960 or earlier)"

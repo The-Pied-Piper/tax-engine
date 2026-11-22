@@ -7,6 +7,8 @@
 # The heading above the line, "Credit for disabled dependants born in 2007 or earlier",
 # says whom the count is of. The filer gives the count; the heading is part of the printed basis
 # shown with the box.
+form:
+  name: ca-mb/mb479
 inputs:
   - name: ca-mb/mb479_disabled_dependants_number_line_15
     title: "Number of disabled dependants"

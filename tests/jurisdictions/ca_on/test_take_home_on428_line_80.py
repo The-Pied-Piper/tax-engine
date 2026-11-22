@@ -54,22 +54,11 @@ BASIS = (
     "Line 72: If you entered an amount on line 11 of Part 5 of Form T691, use Worksheet ON428 to "
     "calculate your additional tax for minimum tax purposes"
 )
-HEADER = f"""\
+HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-inputs:
-  - name: {LINE_78}
-    required: true
-  - name: {LINE_73}
-    required: true
-  - name: {LINE_72}
-    required: false
-    default: null
-    basis: '{BASIS}'
-outputs:
-  - {LINE_78}
-  - {LINE_73}
+outputs: []
 capabilities: []
 """
 
@@ -79,6 +68,15 @@ form:
   required: true
   exports:
     - {LINE_80}
+inputs:
+  - name: {LINE_78}
+    required: true
+  - name: {LINE_73}
+    required: true
+  - name: {LINE_72}
+    required: false
+    default: null
+    basis: '{BASIS}'
 capabilities: []
 """
 # The steps test also exports the two intermediate kinds, so the test can read each step.
@@ -90,6 +88,15 @@ form:
     - {LINE_80}
     - {BEFORE_CONDITIONS}
     - {CONDITIONS_COUNT}
+inputs:
+  - name: {LINE_78}
+    required: true
+  - name: {LINE_73}
+    required: true
+  - name: {LINE_72}
+    required: false
+    default: null
+    basis: '{BASIS}'
 capabilities: []
 """
 

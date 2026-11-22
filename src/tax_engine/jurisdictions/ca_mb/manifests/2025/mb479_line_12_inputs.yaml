@@ -4,6 +4,8 @@
 # earlier) Claim $113", "Line 11: Disability credit for spouse or common-law partner Claim $113").
 # Each is the credit claimed, as lines 8 and 13 are. A salary-only caller claims none of them, so a
 # request that leaves a line out is read as blank, and the step of line 12 reads each blank as 0.
+form:
+  name: ca-mb/mb479
 inputs:
   - name: ca-mb/mb479_basic_credit_spouse_line_9
     title: "Basic credit for spouse or common-law partner"

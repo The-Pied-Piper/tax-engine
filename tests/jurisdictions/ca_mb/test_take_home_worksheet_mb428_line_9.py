@@ -8,7 +8,7 @@ core/subtract_not_below_zero step over line 1 (`amount`) and line 8 (`less`), ro
 cent by `ca-mb/cent_rounding`. The kind `ca-mb/worksheet_mb428_basic_personal_amount_line_9` is
 non-negative; it is the figure the form says to enter on line 58040 of Form MB428.
 
-The test composes the real Manitoba salary part, the real federal parts the T1 taxable income form
+The test composes the T1 employment income form, the real federal parts the T1 taxable income form
 needs, the real parts of lines 1 to 8 and the new
 `worksheet_mb428_line_9.yaml`, and types in only the salary. The header and
 the Worksheet MB428 form declaration (exporting lines 1 to 9) are made up here, because the shared
@@ -56,7 +56,6 @@ from tests.jurisdictions.ca_mb.support import (
     manitoba_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 CENT = D("0.01")
@@ -76,8 +75,7 @@ HEADER = dedent("""\
     jurisdiction: CA-MB
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 FORM = dedent("""\
@@ -110,7 +108,6 @@ FLOORED = ("450000", "15780.00", "19640.26", "0.00")
 
 
 def _part_files() -> Iterator[Path]:
-    yield MB_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     for name in FEDERAL_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
@@ -133,11 +130,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
     for number, found in enumerate(_part_files(), start=2):
-        text = (
-            inputs_without_form(found)
-            if found.name.endswith("_inputs.yaml") and found.is_relative_to(FEDERAL_FORMS)
-            else found.read_text(encoding="utf-8")
-        )
+        text = found.read_text(encoding="utf-8")
         (folder / f"{number:02d}_{found.name}").write_text(text, encoding="utf-8")
     roots = {**manitoba_packages().roots(), Namespace("ca-mb"): tmp_path}
     return TaxComputationService(

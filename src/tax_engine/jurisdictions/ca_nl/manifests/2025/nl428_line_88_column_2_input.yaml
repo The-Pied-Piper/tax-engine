@@ -5,6 +5,8 @@
 # and has no step. A salary-only single filer has no spouse or common-law partner, so a request that
 # leaves the line out is read as blank. The figure is signed: the line takes the amount as if a
 # negative were shown in brackets.
+form:
+  name: ca-nl/nl428
 inputs:
   - name: ca-nl/nl428_spouse_net_income_line_88
     title: 'Net income from line 23600 of the return (or the amount you would have entered if the instructions on line 23600 said "if negative, show in brackets")'

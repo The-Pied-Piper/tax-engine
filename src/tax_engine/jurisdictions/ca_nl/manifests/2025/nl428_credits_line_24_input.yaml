@@ -4,6 +4,8 @@
 # claim a salary-only caller leaves empty, so that block is skipped and the line is taken as one
 # optional input. A request that leaves the line out is read as blank. Line 25 (a later ticket)
 # reads it.
+form:
+  name: ca-nl/nl428_credits
 inputs:
   - name: ca-nl/nl428_infirm_dependants_amount_line_24
     title: "Amount for infirm dependants age 18 or older (use Worksheet NL428)"

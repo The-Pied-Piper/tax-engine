@@ -8,7 +8,7 @@ blank as 0, rounds to the cent and produces `ca-ab/ab428_unused_tuition_rounded_
 the form exports in place of the raw input; line 43 and Worksheet AB428 line 2 read that figure,
 so line 43 (through lines 52 and Worksheet line 1) and line 2 agree to the cent.
 
-The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts, the real
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the real
 AB428 credits parts up to line 52 and the real Worksheet AB428 lines 1, 2, 3 and 5 parts, with
 the new `ab428_credits_line_41.yaml`, and types in only the salary and line 41. The figures are
 hand-computed from the printed forms (not a CRA example): line 52 is 26,692.23 at salary 70,000
@@ -46,7 +46,7 @@ from tax_engine.jurisdictions.ca_ab.catalog import (
     WORKSHEET_AB428_LINE_3,
     WORKSHEET_AB428_LINE_5,
 )
-from tests.federal_forms import FEDERAL_FORMS, form_parts
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_ab.support import (
     alberta_capabilities,
     alberta_kinds,
@@ -55,7 +55,6 @@ from tests.jurisdictions.ca_ab.support import (
     alberta_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
@@ -66,8 +65,7 @@ HEADER = dedent("""\
     jurisdiction: CA-AB
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 CREDITS_FORM = dedent("""\
@@ -93,7 +91,6 @@ WORKSHEET_FORM = dedent("""\
 
 
 def _part_files() -> Iterator[Path]:
-    yield ALBERTA_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
     yield from form_parts("t1_employment_income", "t1_taxable_income")
@@ -136,11 +133,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "01_credits_form.yaml").write_text(CREDITS_FORM, encoding="utf-8")
     (folder / "02_worksheet_form.yaml").write_text(WORKSHEET_FORM, encoding="utf-8")
     for number, found in enumerate(_part_files(), start=3):
-        text = (
-            inputs_without_form(found)
-            if found.name.endswith("_inputs.yaml") and found.is_relative_to(FEDERAL_FORMS)
-            else found.read_text(encoding="utf-8")
-        )
+        text = found.read_text(encoding="utf-8")
         (folder / f"{number:02d}_{found.name}").write_text(text, encoding="utf-8")
     roots = {**alberta_packages().roots(), Namespace("ca-ab"): tmp_path}
     return TaxComputationService(

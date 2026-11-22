@@ -34,6 +34,7 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_units,
 )
 from tests.kinds import non_negative
+from tests.manifest_support import input_named
 
 KIND = NL428_SPOUSE_UCCB_AND_RDSP_REPAYMENT_LINE_89
 IDENTIFIER = KIND.identifier
@@ -50,7 +51,7 @@ HEADER = """\
 jurisdiction: CA-NL
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
 capabilities: []
 """
 
@@ -60,6 +61,12 @@ def _manifest(tmp_path: Path) -> Manifest:
     folder.mkdir()
     (folder / "header.yaml").write_text(HEADER)
     shutil.copy(PART, folder / PART.name)
+    declared = yaml.safe_load(PART.read_text(encoding="utf-8"))
+    exports = "".join(f"    - {each['name']}\n" for each in declared["inputs"])
+    (folder / "form.yaml").write_text(
+        f"form:\n  name: {declared['form']['name']}\n  required: true\n  exports:\n{exports}"
+        "capabilities: []\n"
+    )
     source = YamlJurisdictionSource(
         newfoundland_packages().roots(), newfoundland_kinds(), newfoundland_units()
     )
@@ -75,7 +82,8 @@ def _part() -> dict[str, Any]:
 def test_the_part_declares_the_input_with_its_unit_reference_and_title() -> None:
     part = _part()
 
-    assert list(part) == ["inputs"]
+    assert list(part) == ["form", "inputs"]
+    assert part["form"] == {"name": "ca-nl/nl428"}
     assert part["inputs"] == [
         {
             "name": IDENTIFIER,
@@ -90,7 +98,7 @@ def test_the_part_declares_the_input_with_its_unit_reference_and_title() -> None
 
 
 def test_a_request_that_leaves_out_line_89_is_read_as_blank(tmp_path: Path) -> None:
-    declaration = _manifest(tmp_path).inputs[IDENTIFIER]
+    declaration = input_named(_manifest(tmp_path), IDENTIFIER)
     default = declaration.default_artifact(newfoundland_kinds().kind(IDENTIFIER))
 
     assert not declaration.required

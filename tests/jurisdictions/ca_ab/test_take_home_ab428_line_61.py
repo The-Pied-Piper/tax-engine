@@ -59,7 +59,6 @@ from tests.jurisdictions.ca_ab.support import (
     alberta_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 CODE = JurisdictionCode("CA-AB")
@@ -109,8 +108,7 @@ HEADER = dedent("""\
     jurisdiction: CA-AB
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 CREDITS_FORM = dedent(f"""\
@@ -157,16 +155,13 @@ def _federal(name: str) -> Path:
 
 def _part_files() -> Iterator[tuple[str, str]]:
     """Each part's name and text, in composition order."""
-    yield "salary.yaml", (ALBERTA_PARTS / "salary.yaml").read_text(encoding="utf-8")
     for found in form_parts("schedule_8"):
         yield found.name, found.read_text(encoding="utf-8")
     for name in T1_PARTS:
         found = _federal(name)
         yield (
             name,
-            inputs_without_form(found)
-            if name.endswith("_inputs.yaml")
-            else found.read_text("utf-8"),
+            found.read_text("utf-8"),
         )
     for name in ALBERTA_LINE_PARTS:
         yield name, (ALBERTA_PARTS / name).read_text(encoding="utf-8")

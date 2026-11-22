@@ -26,15 +26,11 @@ LINE_17 = "ca-on/lift_single_excess_over_threshold"
 LINE_19 = "ca-on/lift_reduction"
 PART = "on428_a_line_19.yaml"
 
-HEADER = f"""\
+HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-inputs:
-  - name: {LINE_17}
-    required: true
-outputs:
-  - {LINE_17}
+outputs: []
 capabilities: []
 """
 
@@ -44,6 +40,9 @@ form:
   required: true
   exports:
     - {LINE_19}
+inputs:
+  - name: {LINE_17}
+    required: true
 capabilities: []
 """
 

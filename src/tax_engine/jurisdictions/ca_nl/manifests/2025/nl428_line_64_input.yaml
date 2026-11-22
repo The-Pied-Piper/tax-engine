@@ -2,6 +2,8 @@
 # Line 64: "Line 64 and line 61510: Newfoundland and Labrador tax on split income (complete Form
 # T1206)" (Form NL428, CRA 5001-C). Form T1206 is not built, so the line is taken as one optional
 # input, as the form takes it. A request that leaves the line out is read as blank.
+form:
+  name: ca-nl/nl428
 inputs:
   - name: ca-nl/nl428_tax_on_split_income_line_64
     title: "Newfoundland and Labrador tax on split income"

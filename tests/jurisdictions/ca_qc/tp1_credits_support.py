@@ -34,11 +34,7 @@ HEADER = dedent("""\
     jurisdiction: CA-QC
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/employment_income
-        required: true
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 # The real Schedule B form declaration (it exports line 34) and its parts up to line 34.
@@ -85,11 +81,9 @@ def credits_sheet(
     *given: Artifact[Any],
 ) -> Worksheet:
     """The credits worksheet over the real `parts` of lines that read no other form; every optional
-    input is left out unless in `given`. The salary is not read, so the figures do not move."""
+    input is left out unless in `given`."""
     service = take_home_service(HEADER, credits_form(*exports), *parts)
-    (sheet,) = service.compute(
-        JurisdictionCode("CA-QC"), 2025, Artifact(EMPLOYMENT_INCOME, D("70000")), *given
-    )[FORM]
+    (sheet,) = service.compute(JurisdictionCode("CA-QC"), 2025, *given)[FORM]
     return sheet
 
 

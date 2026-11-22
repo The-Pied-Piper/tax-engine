@@ -27,12 +27,10 @@ import tax_engine.jurisdictions.ca_bc
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
-from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
-from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_bc.catalog import BC479_CREDIT_BEFORE_REDUCTION_LINE_11
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
@@ -55,11 +53,8 @@ HEADER = dedent("""\
     jurisdiction: CA-BC
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/employment_income
-        required: true
-    outputs:
-      - ca/employment_income
+    outputs: []
+    capabilities: []
     """)
 FORM = dedent("""\
     form:
@@ -96,9 +91,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
 
 
 def _sheet(tmp_path: Path, salary: str) -> Worksheet:
-    worksheets = _service(tmp_path).compute(
-        JurisdictionCode("CA-BC"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
-    )
+    worksheets = _service(tmp_path).compute(JurisdictionCode("CA-BC"), 2025)
     (sheet,) = worksheets["ca-bc/bc479"]
     return sheet
 

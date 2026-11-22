@@ -18,13 +18,8 @@ HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
-    inputs:
-      - name: ca/employment_income
-        required: true
-        title: Employment income
-        reference: "10100"
+    outputs: []
+    capabilities: []
     """)
 FORM = dedent("""\
     form:
@@ -32,6 +27,11 @@ FORM = dedent("""\
       required: true
       exports:
         - ca/non_refundable_tax_credits
+    inputs:
+      - name: ca/employment_income
+        required: true
+        title: Employment income
+        reference: "10100"
     capabilities:
       - name: core/sum
         params:

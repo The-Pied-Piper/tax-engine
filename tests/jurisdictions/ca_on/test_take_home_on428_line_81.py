@@ -27,17 +27,11 @@ LINE_80 = "ca-on/on428_ontario_tax_reduction_line_80"
 LINE_81 = "ca-on/on428_tax_after_tax_reduction_line_81"
 PART = "on428_line_81.yaml"
 
-HEADER = f"""\
+HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-inputs:
-  - name: {LINE_73}
-    required: true
-  - name: {LINE_80}
-    required: true
-outputs:
-  - {LINE_73}
+outputs: []
 capabilities: []
 """
 
@@ -47,6 +41,11 @@ form:
   required: true
   exports:
     - {LINE_81}
+inputs:
+  - name: {LINE_73}
+    required: true
+  - name: {LINE_80}
+    required: true
 capabilities: []
 """
 

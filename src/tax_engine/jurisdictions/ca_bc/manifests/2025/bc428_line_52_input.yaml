@@ -2,6 +2,8 @@
 # medical expenses for other dependants (use Worksheet BC428)". Worksheet BC428 is not built, so the
 # figure is taken as one optional input. A request that leaves the line out is read as blank; the line
 # 53 step reads that blank as 0.
+form:
+  name: ca-bc/bc428
 inputs:
   - name: ca-bc/bc428_other_dependants_medical_expenses_line_52
     title: "Allowable amount of medical expenses for other dependants"

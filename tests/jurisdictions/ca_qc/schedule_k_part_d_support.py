@@ -1,7 +1,7 @@
 """Shared helpers of the Schedule K Part C line tests for lines 85 to 98.
 
 Lines 85 to 98 read line 83 of Part C (line 84 is a copy of it) and boxes 60 to 62 of Part B.
-Most tests give those four figures straight to the form (the header takes them as inputs), so a test
+Most tests give those four figures straight to the form (the form takes them as inputs), so a test
 can pick the months without going through line 50. The salary tests run the real Part A, Part B and
 Part C chains from a salary, for the default answer to line 50 (not covered) and for the answer yes
 (covered). Every
@@ -72,40 +72,46 @@ def _steps(parts: tuple[str, ...]) -> list[dict[str, Any]]:
     return steps
 
 
+def consumed(parts: tuple[str, ...]) -> set[str]:
+    """The kinds a step of the real `parts` reads."""
+    found: set[str] = set()
+    for step in _steps(parts):
+        for value in (step.get("consumes") or {}).values():
+            found.update(value if isinstance(value, list) else [value])
+    return found
+
+
 def unconsumed(parts: tuple[str, ...]) -> tuple[str, ...]:
     """The kinds the real `parts` produce that no step of `parts` consumes: what a test form must
     export for the composition to be valid."""
-    steps = _steps(parts)
-    consumed: set[str] = set()
-    for step in steps:
-        for value in (step.get("consumes") or {}).values():
-            consumed.update(value if isinstance(value, list) else [value])
+    read = consumed(parts)
     return tuple(
-        step["produces"]["output"] for step in steps if step["produces"]["output"] not in consumed
+        step["produces"]["output"]
+        for step in _steps(parts)
+        if step["produces"]["output"] not in read
     )
 
 
-def header(parts: tuple[str, ...]) -> str:
-    """A test header that takes line 83 and boxes 60 to 62; those no part reads are its outputs, or
-    line 83 when every one is read."""
-    consumed: set[str] = set()
-    for step in _steps(parts):
-        for value in (step.get("consumes") or {}).values():
-            consumed.update(value if isinstance(value, list) else [value])
-    inputs = "".join(f"  - name: {kind.identifier}\n    required: true\n" for kind in INPUTS)
-    left = [kind for kind in INPUTS if kind.identifier not in consumed] or [INPUTS[0]]
-    outputs = "".join(f"  - {kind.identifier}\n" for kind in left)
-    return (
-        dedent("""\
+def header() -> str:
+    """A test header: the default form exports nothing, so the form under test owns every line."""
+    return dedent("""\
         jurisdiction: CA-QC
         version: 1
         valid_from_tax_year: 2025
-        inputs:
+        outputs: []
         """)
-        + inputs
-        + "outputs:\n"
-        + outputs
+
+
+def form_declaration(parts: tuple[str, ...]) -> str:
+    """The test form of Schedule K: its exports and the line 83 and boxes 60 to 62 inputs, which
+    belong to the form that reads them."""
+    read = consumed(parts)
+    inputs = "".join(
+        f"  - name: {kind.identifier}\n    required: true\n"
+        for kind in INPUTS
+        if kind.identifier in read
     )
+    return form_part(unconsumed(parts)) + ("inputs:\n" + inputs if inputs else "")
 
 
 # Printed lines 85 to 98 for a line 83, box 60 and box 61 given straight to the form (box 62 is
@@ -195,13 +201,18 @@ def part_d(
 ) -> Worksheet:
     """The Schedule K worksheet of `parts` for a line 83 and boxes 60 and 61 given straight in."""
     line_84, box_60, box_61 = key
-    (sheet,) = take_home_service(header(parts), form_part(unconsumed(parts)), *parts).compute(
+    values = {
+        SCHEDULE_K_COLUMN_PREMIUM_LINE_83: D(line_84),
+        SCHEDULE_K_MONTHS_JANUARY_TO_JUNE_BOX_60: D(box_60),
+        SCHEDULE_K_MONTHS_JULY_TO_DECEMBER_BOX_61: D(box_61),
+        SCHEDULE_K_MONTHS_TOTAL_BOX_62: D(box_60) + D(box_61),
+    }
+    read = consumed(parts)
+    given = [Artifact(kind, value) for kind, value in values.items() if kind.identifier in read]
+    (sheet,) = take_home_service(header(), form_declaration(parts), *parts).compute(
         JurisdictionCode("CA-QC"),
         2025,
-        Artifact(SCHEDULE_K_COLUMN_PREMIUM_LINE_83, D(line_84)),
-        Artifact(SCHEDULE_K_MONTHS_JANUARY_TO_JUNE_BOX_60, D(box_60)),
-        Artifact(SCHEDULE_K_MONTHS_JULY_TO_DECEMBER_BOX_61, D(box_61)),
-        Artifact(SCHEDULE_K_MONTHS_TOTAL_BOX_62, D(box_60) + D(box_61)),
+        *given,
     )[FORM_NAME]
     return sheet
 

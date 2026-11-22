@@ -17,7 +17,6 @@ from textwrap import dedent
 
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_qc.catalog import T1_LINE_28, T1_LINE_32, TOTAL_INCOME
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 
@@ -28,15 +27,7 @@ HEADER = dedent("""\
     jurisdiction: CA-QC
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/employment_income
-        required: true
-      - name: ca-qc/t1_line_28
-        required: true
-      - name: ca-qc/t1_line_32
-        required: true
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 FORM = dedent("""\
@@ -45,6 +36,11 @@ FORM = dedent("""\
       required: true
       exports:
         - ca-qc/total_income
+    inputs:
+      - name: ca-qc/t1_line_28
+        required: true
+      - name: ca-qc/t1_line_32
+        required: true
     capabilities: []
     """)
 
@@ -53,7 +49,6 @@ def line_33(take_home_service: TakeHomeService, line_28: str, line_32: str) -> D
     worksheets = take_home_service(HEADER, FORM, PART).compute(
         JurisdictionCode("CA-QC"),
         2025,
-        Artifact(EMPLOYMENT_INCOME, D(line_28)),
         Artifact(T1_LINE_28, D(line_28)),
         Artifact(T1_LINE_32, D(line_32)),
     )

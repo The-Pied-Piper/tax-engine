@@ -42,7 +42,6 @@ LINE_33800 = "ca/credit_amounts_at_credit_rate"
 # parts, the real T1 taxable-income lines and inputs, lines 30000, 84, 31260, 96, 98, 101, 106 and
 # 33500, and the part under test.
 PARTS = (
-    "salary.yaml",
     *form_part_names("schedule_8"),
     *form_part_names("t2204"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),
@@ -60,8 +59,7 @@ HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 # The T1 tax and credits declaration, test-local: its one export is line 33800, the line under test.
@@ -76,15 +74,11 @@ T1_TAX_AND_CREDITS = dedent(f"""\
 # The direct case: line 33800 fed by line 33500 alone, the input declared in a header of its own,
 # and the take-home folder's `t1_tax_and_credits_line_33800.yaml` loaded beside it.
 PART = "t1_tax_and_credits_line_33800.yaml"
-DIRECT_HEADER = f"""\
+DIRECT_HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-inputs:
-  - name: {LINE_33500}
-    required: true
-outputs:
-  - {LINE_33500}
+outputs: []
 capabilities: []
 """
 
@@ -94,6 +88,9 @@ form:
   required: true
   exports:
     - {LINE_33800}
+inputs:
+  - name: {LINE_33500}
+    required: true
 capabilities: []
 """
 

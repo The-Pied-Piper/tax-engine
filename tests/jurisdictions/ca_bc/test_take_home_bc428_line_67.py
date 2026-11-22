@@ -10,7 +10,7 @@ own "Left blank, taken as 0" row; line 60 is always computed and line 66 default
 read as 0, not blank), so they need none. The form prints no floor on line 67, but every addend is
 non-negative, so the kind is non-negative.
 
-The test composes the real British Columbia salary part, the Schedule 8 and T2204 parts, the real
+The test composes the T1 employment income form, the Schedule 8 and T2204 parts, the real
 BC428 parts up to line 60, the line 65 input part, the line 66 input and calculation parts, and the
 new `bc428_line_67.yaml`, and types in only the salary, plus line 65 and the line 66 amount where a
 case needs them. The header and the form declaration (BC428, exporting line 67) are made up here,
@@ -57,7 +57,6 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
@@ -72,8 +71,7 @@ HEADER = dedent("""\
     jurisdiction: CA-BC
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 FORM = dedent("""\
@@ -93,7 +91,6 @@ CASES = [
 
 
 def _part_files() -> Iterator[Path]:
-    yield BC_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
     for name in T1_PARTS:
@@ -137,11 +134,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
     for number, found in enumerate(_part_files(), start=2):
-        text = (
-            inputs_without_form(found)
-            if found.name.endswith("_inputs.yaml") and found.is_relative_to(FEDERAL_FORMS)
-            else found.read_text(encoding="utf-8")
-        )
+        text = found.read_text(encoding="utf-8")
         (folder / f"{number:02d}_{found.name}").write_text(text, encoding="utf-8")
     roots = {**british_columbia_packages().roots(), Namespace("ca-bc"): tmp_path}
     return TaxComputationService(

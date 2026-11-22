@@ -4,6 +4,7 @@ The application builds one from the manifest's `Form` and its kinds. A test that
 declares the `Form` that names them and registers them, so the composition resolves the same names.
 """
 
+import dataclasses
 from collections.abc import Iterable, Mapping
 from typing import TYPE_CHECKING, Any
 
@@ -75,19 +76,52 @@ def composition(
         exclusive_group=exclusive_group,
         title=title,
         selections=selections,
-        fields=fields,
+        fields=(
+            *fields,
+            *(
+                InputDeclaration(
+                    name=artifact.kind.identifier,
+                    required=False,
+                    default=artifact,
+                    basis="made up",
+                )
+                for artifact in field_defaults
+            ),
+        ),
         **({} if supplies is None else {"supplies": supplies}),
     )
-    for kind in starting:
+    given = frozenset(starting) | (frozenset() if instances is None else {instances})
+    for kind in given:
         if kind.identifier not in kinds.identifiers():
             kinds.register(kind.identifier, kind)
-    return FormComposition(
-        form,
-        capabilities,
-        kinds=kinds,
-        starting=starting,
-        defaults=defaults,
-        field_defaults=field_defaults,
-        declared=declared,
-        units=units,
-    )
+    form = dataclasses.replace(form, inputs=_inputs(given, defaults, declared))
+    return FormComposition(form, capabilities, kinds=kinds, units=units)
+
+
+def _inputs(
+    kinds: Iterable[ArtifactKind[Any]],
+    defaults: Iterable[Artifact[Any]],
+    declared: Iterable[InputDeclaration],
+) -> tuple[InputDeclaration, ...]:
+    """The form's inputs: one for each of `kinds`, optional with its default where `defaults` has
+    one, and printed as `declared` says where it has an entry."""
+    printed = {d.name: d for d in declared}
+    given = {artifact.kind: artifact for artifact in defaults}
+    found: list[InputDeclaration] = []
+    for kind in sorted(kinds, key=lambda each: each.identifier):
+        base = printed.get(kind.identifier)
+        if kind in given:
+            found.append(
+                InputDeclaration(
+                    name=kind.identifier,
+                    title=None if base is None else base.title,
+                    reference=None if base is None else base.reference,
+                    unit=None if base is None else base.unit,
+                    required=False,
+                    default=given[kind],
+                    basis="made up",
+                )
+            )
+        else:
+            found.append(base or InputDeclaration(name=kind.identifier, required=True))
+    return tuple(found)

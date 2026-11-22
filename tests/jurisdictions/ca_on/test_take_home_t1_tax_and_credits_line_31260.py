@@ -46,7 +46,6 @@ CAP = "ca/canada_employment_amount"
 # The real parts composed beside the test's header: the salary, the real optional line 10400 input,
 # and the part under test.
 PARTS = (
-    "salary.yaml",
     *form_part_names("schedule_8"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),
     "t1_tax_and_credits_line_31260.yaml",
@@ -55,8 +54,7 @@ HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 # The T1 tax and credits declaration, test-local: its one export is line 31260, the only line

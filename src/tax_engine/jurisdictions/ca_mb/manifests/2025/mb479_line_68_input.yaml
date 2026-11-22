@@ -3,6 +3,8 @@
 # CRA 5007-TC), in the green energy equipment tax credit (manufacturer) part. The form prints no
 # name for the line, so the input has no title. A salary-only caller has no such equipment, so a
 # request that leaves the line out is read as blank.
+form:
+  name: ca-mb/mb479
 inputs:
   - name: ca-mb/mb479_geothermal_heat_pump_cost_line_68
     reference: "68"

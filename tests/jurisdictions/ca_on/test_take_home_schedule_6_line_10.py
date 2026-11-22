@@ -43,7 +43,6 @@ LINE_10 = "ca/cwb_net_income_total_line_10"
 # T1 taxable-income lines and inputs, so the T1 net income is read from the salary; then the line 7
 # part this line adds up, and the line 10 part itself.
 PARTS = (
-    "salary.yaml",
     *form_part_names("schedule_8"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),
     "schedule_6_line_7.yaml",
@@ -54,8 +53,7 @@ HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 # The Schedule 6 declaration, test-local: its one export is line 10, the only line of the sum

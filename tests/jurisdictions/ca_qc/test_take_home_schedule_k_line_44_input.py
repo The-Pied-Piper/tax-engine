@@ -21,6 +21,7 @@ from tax_engine.jurisdictions.ca_qc.catalog import SCHEDULE_K_DEPENDENT_CHILDREN
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 from tests.jurisdictions.ca_qc.support import quebec_kinds, quebec_packages, quebec_units
 from tests.kinds import non_negative
+from tests.manifest_support import input_named
 
 IDENTIFIER = SCHEDULE_K_DEPENDENT_CHILDREN_LINE_44.identifier
 PART = "tp1_schedule_k_line_44_input.yaml"
@@ -29,11 +30,11 @@ PRINTED_BASIS = (
     "(see line 447 in the guide for the definition), enter $12,350. If you had more than one "
     "dependent child, enter $16,570."
 )
-HEADER = f"""\
+HEADER = """\
 jurisdiction: CA-QC
 version: 1
 valid_from_tax_year: 2025
-outputs: [{IDENTIFIER}]
+outputs: []
 capabilities: []
 """
 FORM = f"""\
@@ -57,7 +58,7 @@ def _manifest(take_home_service: TakeHomeService, tmp_path: Path) -> Manifest:
 def test_the_part_declares_the_count_as_optional_and_blank(
     take_home_service: TakeHomeService, tmp_path: Path
 ) -> None:
-    declaration = _manifest(take_home_service, tmp_path).inputs[IDENTIFIER]
+    declaration = input_named(_manifest(take_home_service, tmp_path), IDENTIFIER)
     default = declaration.default_artifact(quebec_kinds().kind(IDENTIFIER))
 
     assert IDENTIFIER == "ca-qc/schedule_k_dependent_children_line_44"

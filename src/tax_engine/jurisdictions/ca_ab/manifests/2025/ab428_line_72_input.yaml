@@ -4,6 +4,8 @@
 # contributions, so a request that leaves the line out is read as blank. Line 72
 # (ab428_line_72.yaml) checks the amount against its printed maximum and passes a blank on; line 73
 # reads that blank as 0.
+form:
+  name: ca-ab/ab428
 inputs:
   - name: ca-ab/ab428_political_contributions_credit_line_72
     title: "Alberta political contributions tax credit"

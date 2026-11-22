@@ -44,15 +44,11 @@ TAXABLE_INCOME = "ca-on/return_taxable_income"
 SLOPE = "ca-on/return_health_premium_slope"
 ROWS = "ca-on/health_premium_rows"
 
-HEADER = f"""\
+HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-inputs:
-  - name: {TAXABLE_INCOME}
-    required: true
-outputs:
-  - {TAXABLE_INCOME}
+outputs: []
 capabilities: []
 """
 
@@ -62,6 +58,9 @@ form:
   required: true
   exports:
     - {SLOPE}
+inputs:
+  - name: {TAXABLE_INCOME}
+    required: true
 capabilities:
   - name: core/amount_by_band_rate
     params:
@@ -134,11 +133,10 @@ def test_the_slope_at_a_row_edge_is_the_rate_of_the_lower_row(
 
 RETURN = (TAKE_HOME / "return.yaml").read_text(encoding="utf-8")
 PARTS = (
-    "salary.yaml",
     *(
         part.name
         for part in sorted(TAKE_HOME.rglob("*.yaml"))
-        if part.name not in {"manifest.yaml", "return.yaml", "salary.yaml"}
+        if part.name not in {"manifest.yaml", "return.yaml"}
     ),
 )
 

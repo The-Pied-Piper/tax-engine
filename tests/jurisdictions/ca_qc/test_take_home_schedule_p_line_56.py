@@ -12,12 +12,13 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
 )
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 from tests.jurisdictions.ca_qc.support import (
+    T1_SALARY_PARTS,
     schedule_p_form,
     schedule_p_worksheet,
 )
 
 PARTS = (
-    "salary.yaml",
+    *T1_SALARY_PARTS,
     "schedule_p_line_56.yaml",
 )
 FORM = schedule_p_form("ca-qc/schedule_p_work_premium_supplement_amount_line_56")

@@ -27,21 +27,21 @@ INPUTS = (
 OUTPUT = "ca-on/on428_medical_expenses_line_43"
 PART = "on428_line_43.yaml"
 
-HEADER = (
-    "jurisdiction: CA-ON\nversion: 1\nvalid_from_tax_year: 2025\ninputs:\n"
-    + "".join(f"  - name: {name}\n    required: true\n" for name in INPUTS)
-    + "outputs:\n"
-    + "".join(f"  - {name}\n" for name in INPUTS)
-)
+HEADER = "jurisdiction: CA-ON\nversion: 1\nvalid_from_tax_year: 2025\noutputs: []\n"
 
-FORM = f"""\
+
+FORM = (
+    f"""\
 form:
   name: ca-on/on428
   required: true
   exports:
     - {OUTPUT}
-capabilities: []
+inputs:
 """
+    + "".join(f"  - name: {name}\n    required: true\n" for name in INPUTS)
+    + "capabilities: []\n"
+)
 
 
 def _compute(take_home_service: TakeHomeService, values: tuple[str, ...]) -> Decimal:

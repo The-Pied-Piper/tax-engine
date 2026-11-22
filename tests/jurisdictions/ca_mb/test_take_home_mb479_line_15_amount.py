@@ -19,11 +19,10 @@ from tests.jurisdictions.ca_mb.mb428_medical_support import MB_PARTS, compute_li
 
 FILE = "mb479_line_15_amount.yaml"
 LINE = "ca-mb/disabled_dependants_credit_amount_line_15"
-COUNT = "ca-mb/mb479_disabled_dependants_number_line_15"
 
 
 def test_line_15_amount_is_the_printed_figure(tmp_path: Path) -> None:
-    value = compute_line(tmp_path, FILE, {COUNT: "1"}, LINE, form_name="ca-mb/mb479")
+    value = compute_line(tmp_path, FILE, {}, LINE, form_name="ca-mb/mb479")
 
     assert str(value) == "62.00"
 

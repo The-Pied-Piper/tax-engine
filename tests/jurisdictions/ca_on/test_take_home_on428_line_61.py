@@ -29,19 +29,11 @@ LINE_60 = "ca-on/on428_minimum_tax_carryover_line_60"
 LINE_61 = "ca-on/on428_tax_after_minimum_tax_carryover_line_61"
 PART = "on428_line_61.yaml"
 
-HEADER = f"""\
+HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-inputs:
-  - name: {LINE_55}
-    required: true
-  - name: {LINE_60}
-    required: false
-    default: null
-    basis: 'Line 60 and line 61540: Enter whichever is less: amount from line 58 or line 59'
-outputs:
-  - {LINE_55}
+outputs: []
 capabilities: []
 """
 
@@ -51,6 +43,13 @@ form:
   required: true
   exports:
     - {LINE_61}
+inputs:
+  - name: {LINE_55}
+    required: true
+  - name: {LINE_60}
+    required: false
+    default: null
+    basis: 'Line 60 and line 61540: Enter whichever is less: amount from line 58 or line 59'
 capabilities: []
 """
 

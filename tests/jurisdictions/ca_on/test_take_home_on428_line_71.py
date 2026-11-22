@@ -33,19 +33,11 @@ LINE_57 = "ca-on/on428_dividend_tax_credit_line_57"
 LINE_71 = "ca-on/on428_tax_after_dividend_credit_line_71"
 PART = "on428_line_71.yaml"
 
-HEADER = f"""\
+HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-inputs:
-  - name: {LINE_69}
-    required: true
-  - name: {LINE_57}
-    required: false
-    default: null
-    basis: 'Line 57 and line and line 61520: Ontario dividend tax credit (use Worksheet ON428)'
-outputs:
-  - {LINE_69}
+outputs: []
 capabilities: []
 """
 
@@ -55,6 +47,13 @@ form:
   required: true
   exports:
     - {LINE_71}
+inputs:
+  - name: {LINE_69}
+    required: true
+  - name: {LINE_57}
+    required: false
+    default: null
+    basis: 'Line 57 and line and line 61520: Ontario dividend tax credit (use Worksheet ON428)'
 capabilities: []
 """
 

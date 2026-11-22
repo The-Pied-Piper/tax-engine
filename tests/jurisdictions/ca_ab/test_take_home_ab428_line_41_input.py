@@ -20,6 +20,7 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.domain.manifest import Manifest
 from tax_engine.jurisdictions.ca_ab.catalog import AB428_UNUSED_TUITION_LINE_41
 from tests.jurisdictions.ca_ab.support import alberta_kinds, alberta_packages, alberta_units
+from tests.manifest_support import input_named
 
 PRINTED_BASIS = "Line 41 and line 58560: Your unused tuition and education amounts"
 PART = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / (
@@ -29,7 +30,16 @@ HEADER = """\
 jurisdiction: CA-AB
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
+capabilities: []
+"""
+
+FORM = """\
+form:
+  name: ca-ab/ab428_credits
+  required: true
+  exports:
+    - ca/total_income
 capabilities: []
 """
 
@@ -39,6 +49,7 @@ def _manifest(tmp_path: Path) -> Manifest:
     folder.mkdir()
     (folder / "header.yaml").write_text(HEADER)
     shutil.copy(PART, folder / PART.name)
+    (folder / "form.yaml").write_text(FORM)
     source = YamlJurisdictionSource(alberta_packages().roots(), alberta_kinds(), alberta_units())
     return source.load(folder)
 
@@ -46,7 +57,7 @@ def _manifest(tmp_path: Path) -> Manifest:
 def test_a_request_that_leaves_out_line_41_is_read_as_blank(tmp_path: Path) -> None:
     kinds = alberta_kinds()
     identifier = AB428_UNUSED_TUITION_LINE_41.identifier
-    declaration = _manifest(tmp_path).inputs[identifier]
+    declaration = input_named(_manifest(tmp_path), identifier)
     default = declaration.default_artifact(kinds.kind(identifier))
     assert not declaration.required
     assert declaration.basis == PRINTED_BASIS

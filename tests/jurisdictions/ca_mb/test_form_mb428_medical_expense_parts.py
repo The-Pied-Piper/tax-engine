@@ -98,7 +98,8 @@ def test_each_calculated_line_is_one_step_on_the_credits_form(
 def test_each_input_part_declares_only_its_optional_input(name: str, identifier: str) -> None:
     part = _load(name)
 
-    assert list(part) == ["inputs"]
+    assert list(part) == ["form", "inputs"]
+    assert part["form"] == FORM
     (declared,) = part["inputs"]
     assert declared["name"] == identifier
     assert declared["required"] is False

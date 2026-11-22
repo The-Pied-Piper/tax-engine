@@ -3,6 +3,8 @@
 # The credit is a worksheet result the engine does not compute yet. A salary-only caller has no
 # political contributions, so a request that leaves the line out is read as blank. The line 73 step
 # (sk428_line_73.yaml) checks it against the printed maximum and passes that blank on.
+form:
+  name: ca-sk/sk428
 inputs:
   - name: ca-sk/sk428_political_contributions_credit_line_73
     title: "Saskatchewan political contribution tax credit"

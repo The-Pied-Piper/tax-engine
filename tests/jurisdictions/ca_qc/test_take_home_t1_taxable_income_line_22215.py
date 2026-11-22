@@ -34,11 +34,7 @@ HEADER = dedent("""\
     jurisdiction: CA-QC
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/employment_income
-        required: true
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     imports:
     """) + real_import("ca/schedule_8")
@@ -54,7 +50,9 @@ FORM = dedent("""\
 
 def line_48(take_home_service: TakeHomeService, salary: str) -> Decimal:
     worksheets = take_home_service(HEADER, FORM, *T1_EMPLOYMENT_INCOME_PARTS, PART).compute(
-        JurisdictionCode("CA-QC"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
+        JurisdictionCode("CA-QC"),
+        2025,
+        Artifact(EMPLOYMENT_INCOME, D(salary)),
     )
     (sheet,) = worksheets["ca-qc/t1_taxable_income"]
     return sheet.get(T1_LINE_48).value

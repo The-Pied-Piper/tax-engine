@@ -3,6 +3,8 @@
 # (maximum $16,000)" (Form MB479, CRA 5007-TC). Only the first box, the eligible medical expenses,
 # is the input; the multiplication by 40% is a later step. A salary-only caller has no such
 # expenses, so a request that leaves the line out is read as blank.
+form:
+  name: ca-mb/mb479
 inputs:
   - name: ca-mb/mb479_fertility_treatment_expenses_line_61
     title: "Eligible medical expenses for fertility treatments"

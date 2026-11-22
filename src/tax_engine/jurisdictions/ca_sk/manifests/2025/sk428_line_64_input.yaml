@@ -2,6 +2,8 @@
 # Line 64: "Line 64 and line 61520: Saskatchewan dividend tax credit (use Worksheet SK428)" (Form SK428,
 # CRA 5008-c). The dividend tax credit section of Worksheet SK428 is not built, so a request that
 # leaves the line out is read as blank; the step that reads line 64 reads that blank as 0.
+form:
+  name: ca-sk/sk428
 inputs:
   - name: ca-sk/sk428_dividend_tax_credit_line_64
     title: "Saskatchewan dividend tax credit"

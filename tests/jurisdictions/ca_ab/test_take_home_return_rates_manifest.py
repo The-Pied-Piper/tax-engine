@@ -56,7 +56,7 @@ def test_the_average_rate_divides_the_total_payable_by_the_salary_rounded_half_u
     assert divide["params"] == {"rounding": "ca-ab/rate_rounding"}
     assert divide["consumes"] == {
         "dividend": "ca/total_payable",
-        "divisor": "ca/employment_income",
+        "divisor": "ca/return_employment_income",
     }
     assert divide["produces"] == {"output": "ca-ab/average_income_tax_rate"}
     assert divide["unit"] == "core/percent"

@@ -24,7 +24,6 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InputAboveBoundError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
-from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_on.catalog import ON428_PENSION_INCOME_AMOUNT
 from tests.jurisdictions.ca_on.conftest import ONTARIO_PARTS, TakeHomeService
 from tests.kinds import bundled_kinds, non_negative
@@ -41,11 +40,8 @@ HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-inputs:
-  - name: ca/employment_income
-    required: true
-outputs:
-  - ca/employment_income
+outputs: []
+capabilities: []
 """
 FORM = """\
 form:
@@ -57,7 +53,7 @@ form:
 
 
 def _line_27(take_home_service: TakeHomeService, pension: str | None = None) -> Decimal:
-    given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, D("70000"))]
+    given: list[Artifact[Any]] = []
     if pension is not None:
         given.append(Artifact(ON428_PENSION_INCOME_AMOUNT, D(pension)))
     service = take_home_service(HEADER, FORM, INPUTS_PART, PART)

@@ -170,6 +170,12 @@ TP1_TOTAL_INCOME_LINE_199 = AmountKind.declare(CATALOG, "tp1_total_income_line_1
 """Total income, TP-1 line 199 "Add lines 101 and 105 through 164. Total income": line 101, the
 salary, plus the optional income of lines 105 through 164, rounded half-up to the cent."""
 
+TP1_EMPLOYMENT_INCOME_LINE_101 = AmountKind.declare(
+    CATALOG, "tp1_employment_income_line_101", non_negative=True
+)
+"""Employment income, TP-1 line 101 "Employment income, RL-1 slip, box A": the salary, read from the
+Quebec T1 employment income form's line 10100 export and exported for Work Chart 201."""
+
 TP1_LINE_105 = AmountKind.declare(CATALOG, "tp1_line_105", non_negative=True)
 """TP-1 line 105, a line of the TP-1 income form ("lines 101, 107 and, if positive, 105" on Work
 Chart 201 line 1): an optional input that form takes once and exports, blank when the caller has
@@ -195,6 +201,12 @@ WORK_CHART_201_TP1_LINE_105 = AmountKind.declare(
 )
 """TP-1 line 105 as Work Chart 201 line 1 reads it: the TP-1 income form's export, a record list of
 one, totalled; a blank is read as 0."""
+
+WORK_CHART_201_TP1_LINE_101 = AmountKind.declare(
+    CATALOG, "work_chart_201_tp1_line_101", non_negative=True
+)
+"""Work Chart 201's copy of TP-1 line 101, read from the TP-1 income form's export; line 1 sums
+it."""
 
 WORK_CHART_201_RL1_SLIP_BOX_211 = AmountKind.declare(CATALOG, "work_chart_201_rl1_slip_box_211")
 """RL-1 slip box 211 as Work Chart 201 line 1 reads it: the TP-1 income form's export, a record list
@@ -535,6 +547,12 @@ PPIP_PREMIUMS_GIVEN = AmountKind.declare(CATALOG, "ppip_premiums_given", non_neg
 insurance plan (PPIP) premiums paid (box 55 of all T4 slips) (maximum $484.12)": the figure the
 caller gives, from the T4 slips; blank when the caller does not give it, and line 91 is then
 computed."""
+
+PPIP_PREMIUM_EMPLOYMENT_INCOME = AmountKind.declare(
+    CATALOG, "ppip_premium_employment_income", non_negative=True
+)
+"""The PPIP premium form's own copy of line 10100, read from the Quebec T1 employment income form's
+export (core/record_total); the premium is computed from it."""
 
 PPIP_PREMIUMS_PAID = AmountKind.declare(CATALOG, "ppip_premiums_paid", non_negative=True)
 """PPIP premiums paid, 5005-R line 91 "Line 91 and line 31205: Provincial parental insurance plan

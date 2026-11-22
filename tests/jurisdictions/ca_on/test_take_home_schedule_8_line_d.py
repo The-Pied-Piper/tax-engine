@@ -24,13 +24,7 @@ HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-inputs:
-  - name: ca/cpp_months
-    required: false
-    default: "12"
-    basis: Enter "12" on line A below unless any of the following conditions apply
-outputs:
-  - ca/cpp_months
+outputs: []
 """
 FORM = """\
 form:
@@ -38,6 +32,11 @@ form:
   required: true
   exports:
     - ca/cpp_additional_maximum_pensionable_earnings
+inputs:
+  - name: ca/cpp_months
+    required: false
+    default: "12"
+    basis: Enter "12" on line A below unless any of the following conditions apply
 """
 
 

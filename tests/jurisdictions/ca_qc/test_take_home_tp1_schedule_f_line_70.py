@@ -28,6 +28,7 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     TP1_SCHEDULE_F_LINE_62,
 )
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
+from tests.jurisdictions.ca_qc.tp1_net_income_support import SALARY_PARTS
 
 D = Decimal
 
@@ -39,7 +40,7 @@ FORM_PART = (
 )
 
 PARTS = (
-    "salary.yaml",
+    *SALARY_PARTS,
     "tp1_income.yaml",
     "tp1_income_line_105_input.yaml",
     "tp1_income_line_107_input.yaml",
@@ -88,8 +89,8 @@ HEADER = dedent("""\
     jurisdiction: CA-QC
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
+    capabilities: []
     """)
 FORM = dedent("""\
     form:

@@ -11,6 +11,7 @@ include an input, carried onto the return as entered. Names are made up.
 from __future__ import annotations
 
 import dataclasses
+from collections.abc import Iterable
 from decimal import Decimal
 from types import MappingProxyType
 from typing import Any, cast
@@ -29,7 +30,7 @@ from tax_engine.domain.manifest import (
     Manifest,
 )
 from tests.kinds import AutoKinds
-from tests.manifest_support import required_inputs
+from tests.manifest_support import inputs_of, required_inputs
 
 
 def selection() -> CapabilitySelection:
@@ -132,12 +133,12 @@ def manifest(
         jurisdiction=JurisdictionCode("EX-ON"),
         version=1,
         valid_from_tax_year=2025,
-        inputs=required_inputs(inputs),
         forms=(
             Form(
                 required=True,
                 name="ex-on/return",
                 instances=None,
+                inputs=required_inputs(inputs),
                 exports=outputs,
                 capabilities=(selection(),),
             ),
@@ -149,7 +150,7 @@ def manifest(
 def test_manifest_holds_its_inputs_and_its_forms() -> None:
     found = manifest(inputs=frozenset({"ex/taxable_base", "ex/gross_income"}), outputs=("ex/levy",))
 
-    assert found.inputs.keys() == frozenset({"ex/taxable_base", "ex/gross_income"})
+    assert inputs_of(found).keys() == frozenset({"ex/taxable_base", "ex/gross_income"})
     (only,) = found.forms
     assert only.name == "ex-on/return"
     assert only.exports == ("ex/levy",)
@@ -163,12 +164,9 @@ def test_manifest_fields_in_order() -> None:
         "jurisdiction",
         "version",
         "valid_from_tax_year",
-        "inputs",
         "forms",
         "artifacts",
         "kinds",
-        "defaults",
-        "field_defaults",
     ]
 
 
@@ -186,11 +184,6 @@ def test_equal_manifests_are_equal_and_hash_alike() -> None:
     assert manifest() != manifest(outputs=("ex/other",))
 
 
-def test_manifest_rejects_empty_inputs() -> None:
-    with pytest.raises(InvalidManifestError, match="inputs must name at least one artifact"):
-        manifest(inputs=frozenset())
-
-
 def test_manifest_rejects_no_forms() -> None:
     with pytest.raises(InvalidManifestError, match="forms must name at least one form"):
         dataclasses.replace(manifest(), forms=())
@@ -199,7 +192,7 @@ def test_manifest_rejects_no_forms() -> None:
 def test_manifest_accepts_an_identifier_that_is_both_input_and_export() -> None:
     found = manifest(inputs=frozenset({"ex/taxable_base", "ex/levy"}), outputs=("ex/levy",))
 
-    assert found.inputs.keys() == frozenset({"ex/taxable_base", "ex/levy"})
+    assert inputs_of(found).keys() == frozenset({"ex/taxable_base", "ex/levy"})
     assert found.forms[0].exports == ("ex/levy",)
 
 
@@ -295,6 +288,7 @@ def test_form_fields_in_order() -> None:
         "required_when",
         "basis",
         "fields",
+        "inputs",
         "title",
         "supplies",
     ]
@@ -353,13 +347,6 @@ def test_a_form_may_have_no_instances_list_and_then_has_one_instance() -> None:
 def test_an_export_is_a_plain_namespaced_identifier(bad: str) -> None:
     with pytest.raises(InvalidManifestError, match="exports"):
         form(exports=("ex/net_income", bad))
-
-
-def test_a_form_must_export_something() -> None:
-    with pytest.raises(
-        InvalidManifestError, match=r"form '[^']+': exports must name at least one artifact"
-    ):
-        form(exports=())
 
 
 @pytest.mark.parametrize(
@@ -475,20 +462,30 @@ def test_manifest_fields_put_forms_before_the_artifacts_it_is_built_with() -> No
     assert names[names.index("forms") + 1] == "artifacts"
 
 
-def test_a_manifest_holds_its_forms_as_a_tuple_in_order() -> None:
-    other = form(name="ex/business", instances="ex/businesses", exports=("ex/profit",))
-    found = dataclasses.replace(manifest(), forms=cast(Any, [form(), other]))
+def with_inputs(
+    owner: Form, names: Iterable[str] = ("ex/taxable_base", "ex/relief_applies")
+) -> Form:
+    """`owner` owning a required input for each of `names`."""
+    return dataclasses.replace(owner, inputs=required_inputs(names))
 
-    assert found.forms == (form(), other)
+
+def test_a_manifest_holds_its_forms_as_a_tuple_in_order() -> None:
+    other = form(
+        name="ex/business", instances="ex/businesses", exports=("ex/profit",), capabilities=()
+    )
+    found = dataclasses.replace(manifest(), forms=cast(Any, [with_inputs(form()), other]))
+
+    assert found.forms == (with_inputs(form()), other)
     assert isinstance(found.forms, tuple)
 
 
 def test_manifests_with_other_forms_differ_and_equal_ones_hash_alike() -> None:
-    with_form = dataclasses.replace(manifest(), forms=(form(),))
+    forms = (with_inputs(form()),)
+    with_form = dataclasses.replace(manifest(), forms=forms)
 
     assert with_form != manifest()
-    assert with_form == dataclasses.replace(manifest(), forms=(form(),))
-    assert hash(with_form) == hash(dataclasses.replace(manifest(), forms=(form(),)))
+    assert with_form == dataclasses.replace(manifest(), forms=forms)
+    assert hash(with_form) == hash(dataclasses.replace(manifest(), forms=forms))
 
 
 def test_a_manifest_refuses_two_forms_of_one_name() -> None:
@@ -508,7 +505,9 @@ def test_a_manifest_refuses_two_forms_of_one_name() -> None:
 def test_a_manifest_needs_no_form_named_return() -> None:
     other = form(name="ex/rental", instances=None, exports=("ex/profit",))
 
-    assert dataclasses.replace(manifest(), forms=(other,)).forms == (other,)
+    found = dataclasses.replace(manifest(), forms=(with_inputs(other),))
+
+    assert found.forms == (with_inputs(other),)
 
 
 def test_a_form_named_return_is_refused_only_as_a_second_of_that_name() -> None:
@@ -665,11 +664,27 @@ def test_fields_belong_to_a_form_with_instances_and_are_declared_once() -> None:
         optional_form(instances="ex/rows", fields=(optional("ex/amount"), optional("ex/amount")))
 
 
+def test_a_form_declares_each_input_once() -> None:
+    with pytest.raises(InvalidManifestError, match="input 'ex/amount' is declared twice"):
+        optional_form(inputs=(optional("ex/amount"), optional("ex/amount")))
+
+
+def test_two_forms_may_not_declare_the_same_input() -> None:
+    with pytest.raises(InvalidManifestError, match="held by one form"):
+        with_forms(
+            optional_form(inputs=(optional("ex/amount"),)),
+            optional_form(name="ex/other", inputs=(optional("ex/amount"),)),
+        )
+
+
 def with_forms(
     *forms: Form,
-    inputs: dict[str, InputDeclaration] | None = None,
+    inputs: tuple[InputDeclaration, ...] | None = None,
+    owner: str = "ex-on/return",
     artifacts: ArtifactRegistry | None = None,
 ) -> Manifest:
+    """A manifest of the made-up default form and `forms`, the form named `owner` owning `inputs`
+    (by default a required taxable base and relief answer)."""
     default = Form(
         required=True,
         name="ex-on/return",
@@ -677,14 +692,15 @@ def with_forms(
         exports=("ex/levy",),
         capabilities=(selection(),),
     )
+    given = required_inputs(["ex/taxable_base", "ex/relief_applies"]) if inputs is None else inputs
     return Manifest(
         jurisdiction=JurisdictionCode("EX-ON"),
         version=1,
         valid_from_tax_year=2025,
-        inputs=required_inputs(["ex/taxable_base", "ex/relief_applies"])
-        if inputs is None
-        else inputs,
-        forms=(default, *forms),
+        forms=tuple(
+            dataclasses.replace(form, inputs=given) if form.name == owner else form
+            for form in (default, *forms)
+        ),
         artifacts=AutoKinds(["ex/relief_applies"]) if artifacts is None else artifacts,
     )
 
@@ -709,17 +725,10 @@ def test_a_predicate_nothing_declares_or_produces_is_refused_naming_the_form() -
 
 
 def test_a_predicate_that_is_an_optional_input_is_refused() -> None:
-    inputs = required_inputs(["ex/taxable_base"]) | {
-        "ex/relief_applies": optional("ex/relief_applies")
-    }
+    inputs = (*required_inputs(["ex/taxable_base"]), optional("ex/relief_applies"))
 
     with pytest.raises(InvalidManifestError, match="'ex/relief_applies' is an optional input"):
         with_forms(optional_form(), inputs=inputs)
-
-
-def test_an_input_must_be_declared_under_its_own_name() -> None:
-    with pytest.raises(InvalidManifestError, match="input 'ex/a' is declared as 'ex/b'"):
-        with_forms(inputs={"ex/a": InputDeclaration(name="ex/b", required=True)})
 
 
 def test_equal_manifests_with_declarations_hash_alike() -> None:
@@ -743,7 +752,7 @@ def registry(*kinds: ArtifactKind[Any]) -> ArtifactRegistry:
 COUNT_APPLIES = CountKind("ex/relief_applies", non_negative=True)
 
 
-def test_the_manifest_is_checked_and_its_defaults_collected_when_it_is_built() -> None:
+def test_the_manifest_is_checked_when_it_is_built() -> None:
     gated = optional_form(
         instances="ex/rows",
         fields=(
@@ -751,16 +760,11 @@ def test_the_manifest_is_checked_and_its_defaults_collected_when_it_is_built() -
             optional("ex/count", Artifact(COUNT, BLANK)),
         ),
     )
-    inputs = required_inputs(["ex/relief_applies"]) | {"ex/amount": optional("ex/amount")}
+    inputs = (*required_inputs(["ex/relief_applies"]), optional("ex/amount"))
 
     built = with_forms(gated, inputs=inputs, artifacts=registry(COUNT_APPLIES, ROWS, AMOUNT, COUNT))
 
-    assert built.defaults == (Artifact(AMOUNT, Decimal(0)),)
-    assert built.field_defaults["ex/relief"] == (
-        Artifact(AMOUNT, Decimal("2.50")),
-        Artifact(COUNT, BLANK),
-    )
-    assert built.field_defaults["ex-on/return"] == ()
+    assert built.forms[1] is gated
 
 
 def test_the_kinds_are_the_artifacts_and_those_the_forms_derive() -> None:
@@ -817,9 +821,10 @@ def test_a_field_default_must_suit_the_field_kind() -> None:
 
 
 def test_an_input_default_must_suit_its_kind() -> None:
-    inputs = required_inputs(["ex/relief_applies"]) | {
-        "ex/amount": optional("ex/amount", Artifact(COUNT, 1))
-    }
+    inputs = (
+        *required_inputs(["ex/relief_applies"]),
+        optional("ex/amount", Artifact(COUNT, 1)),
+    )
 
     with pytest.raises(
         InvalidManifestError, match="input 'ex/amount': default is an artifact of 'ex/count'"
@@ -936,8 +941,7 @@ def with_reading(*forms: Form, artifacts: ArtifactRegistry) -> Manifest:
         jurisdiction=JurisdictionCode("EX-ON"),
         version=1,
         valid_from_tax_year=2025,
-        inputs=required_inputs(["ex/taxable_base"]),
-        forms=forms,
+        forms=(with_inputs(forms[0], ["ex/taxable_base"]), *forms[1:]),
         artifacts=artifacts,
     )
 

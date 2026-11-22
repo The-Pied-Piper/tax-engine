@@ -3,6 +3,8 @@
 # The engine does not compute medical expenses, so the figure is taken as one optional input the
 # way the form takes it, an amount from T1 line 33099. A request that leaves the line out is read
 # as blank; line 49 reads that blank as 0.
+form:
+  name: ca-ab/ab428_credits
 inputs:
   - name: ca-ab/ab428_medical_expenses_line_44
     title: "Amount from line 33099 of your return"

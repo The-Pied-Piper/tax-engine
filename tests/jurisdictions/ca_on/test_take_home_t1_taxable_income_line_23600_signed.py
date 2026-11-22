@@ -38,15 +38,11 @@ FORM = "ca/t1_taxable_income"
 LINE_23400 = "ca/net_income_before_adjustments"
 LINE_23500 = "ca/social_benefits_repayment"
 LINE_23600_SIGNED = "ca/net_income_signed"
-HEADER = f"""\
+HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-inputs:
-  - name: {LINE_23400}
-    required: true
-outputs:
-  - {LINE_23400}
+outputs: []
 capabilities: []
 """
 # The part under test beside the optional line 23500 input.
@@ -57,6 +53,9 @@ form:
   required: true
   exports:
     - {LINE_23600_SIGNED}
+inputs:
+  - name: {LINE_23400}
+    required: true
 capabilities: []
 """
 

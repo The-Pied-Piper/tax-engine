@@ -8,37 +8,16 @@ The real part is loaded under a test-local header, as the take-home header is an
 
 from __future__ import annotations
 
-from pathlib import Path
-
-from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_engine.domain.manifest import Manifest
-from tax_engine.registrations import JURISDICTIONS, artifact_kinds, units
-from tests.federal_forms import FEDERAL_FORMS
-from tests.manifest_support import inputs_without_form
+from tax_engine.registrations import artifact_kinds
+from tests.manifest_support import input_named, real_manifest
 
 LINE_A = "ca/cpp_months"
 PRINTED_BASIS = 'Enter "12" on line A below unless any of the following conditions apply:'
-PART = FEDERAL_FORMS / "schedule_8" / "schedule_8_inputs.yaml"
-HEADER = """\
-jurisdiction: CA-ON
-version: 1
-valid_from_tax_year: 2025
-outputs: [ca/cpp_months]
-capabilities: []
-"""
 
 
-def _manifest(tmp_path: Path) -> Manifest:
-    folder = tmp_path / "manifest"
-    folder.mkdir()
-    (folder / "header.yaml").write_text(HEADER)
-    (folder / PART.name).write_text(inputs_without_form(PART), encoding="utf-8")
-    return YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds(), units()).load(folder)
-
-
-def test_a_request_that_leaves_out_the_months_is_read_as_twelve(tmp_path: Path) -> None:
+def test_a_request_that_leaves_out_the_months_is_read_as_twelve() -> None:
     kinds = artifact_kinds()
-    declaration = _manifest(tmp_path).inputs[LINE_A]
+    declaration = input_named(real_manifest("CA-ON"), LINE_A)
     default = declaration.default_artifact(kinds.kind(LINE_A))
     assert not declaration.required
     assert declaration.basis == PRINTED_BASIS

@@ -31,6 +31,7 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.registrations import JURISDICTIONS, artifact_kinds, units
+from tests.manifest_support import inputs_of
 
 D = Decimal
 UCCB_INCOME = "ca/uccb_income"
@@ -177,5 +178,5 @@ def test_no_form_declares_a_total_of_the_two_lines_as_an_input(code: str) -> Non
         _manifest_folder(code)
     )
 
-    assert not set(OLD_TOTAL_INPUTS) & set(manifest.inputs)
-    assert {UCCB_INCOME, RDSP_INCOME, UCCB_REPAYMENT, RDSP_REPAYMENT} <= set(manifest.inputs)
+    assert not set(OLD_TOTAL_INPUTS) & set(inputs_of(manifest))
+    assert {UCCB_INCOME, RDSP_INCOME, UCCB_REPAYMENT, RDSP_REPAYMENT} <= set(inputs_of(manifest))

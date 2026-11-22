@@ -40,11 +40,10 @@ FACTOR = "ca-on/ontario_surtax_factor"
 HEADER = header_without_imports()
 RETURN = (TAKE_HOME / "return.yaml").read_text(encoding="utf-8")
 PARTS = (
-    "salary.yaml",
     *(
         part.name
         for part in sorted(TAKE_HOME.rglob("*.yaml"))
-        if part.name not in {"manifest.yaml", "return.yaml", "salary.yaml"}
+        if part.name not in {"manifest.yaml", "return.yaml"}
     ),
 )
 

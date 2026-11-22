@@ -24,6 +24,7 @@ from typing import Any
 import pytest
 import yaml
 
+import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_nl
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
@@ -34,7 +35,6 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.manifest import Manifest
 from tax_engine.domain.registry import Namespace
-from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_nl.catalog import (
     NL428_PENSION_INCOME_AMOUNT_CLAIMED_LINE_37,
     NL428_PENSION_INCOME_AMOUNT_LINE_37,
@@ -48,6 +48,9 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_units,
 )
 from tests.kinds import non_negative
+from tests.manifest_support import (
+    input_named,
+)
 
 D = Decimal
 PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
@@ -63,18 +66,15 @@ INPUT_HEADER = """\
 jurisdiction: CA-NL
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
 capabilities: []
 """
 HEADER = dedent("""\
     jurisdiction: CA-NL
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/employment_income
-        required: true
-    outputs:
-      - ca/employment_income
+    outputs: []
+    capabilities: []
     """)
 FORM_PART = dedent(f"""\
     form:
@@ -91,6 +91,12 @@ def _input_manifest(tmp_path: Path) -> Manifest:
     folder.mkdir()
     (folder / "header.yaml").write_text(INPUT_HEADER)
     shutil.copy(INPUT_PART, folder / INPUT_PART.name)
+    declared = yaml.safe_load(INPUT_PART.read_text(encoding="utf-8"))
+    exports = "".join(f"    - {each['name']}\n" for each in declared["inputs"])
+    (folder / "form.yaml").write_text(
+        f"form:\n  name: {declared['form']['name']}\n  required: true\n  exports:\n{exports}"
+        "capabilities: []\n"
+    )
     source = YamlJurisdictionSource(
         newfoundland_packages().roots(), newfoundland_kinds(), newfoundland_units()
     )
@@ -117,7 +123,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
 
 
 def _line_37(tmp_path: Path, pension: str | None = None) -> Artifact[Any]:
-    given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, D("70000"))]
+    given: list[Artifact[Any]] = []
     if pension is not None:
         given.append(Artifact(NL428_PENSION_INCOME_AMOUNT_CLAIMED_LINE_37, D(pension)))
     worksheets = _service(tmp_path).compute(JurisdictionCode("CA-NL"), 2025, *given)
@@ -158,7 +164,7 @@ def test_a_salary_only_run_computes_and_leaves_line_37_blank(tmp_path: Path) -> 
 
 def test_a_request_that_leaves_out_line_37_is_read_as_blank(tmp_path: Path) -> None:
     kinds = newfoundland_kinds()
-    declaration = _input_manifest(tmp_path).inputs[CLAIMED]
+    declaration = input_named(_input_manifest(tmp_path), CLAIMED)
     default = declaration.default_artifact(kinds.kind(CLAIMED))
     assert not declaration.required
     assert declaration.basis == PRINTED_BASIS
@@ -174,7 +180,8 @@ def _input_part() -> dict[str, Any]:
 def test_the_input_part_declares_the_input_with_its_unit_reference_and_title() -> None:
     part = _input_part()
 
-    assert list(part) == ["inputs"]
+    assert list(part) == ["form", "inputs"]
+    assert part["form"] == {"name": "ca-nl/nl428_credits"}
     assert part["inputs"] == [
         {
             "name": CLAIMED,

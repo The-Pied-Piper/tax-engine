@@ -4,6 +4,8 @@
 # input has no title. A salary-only caller does not give the credit, so a request that leaves the
 # line out is read as blank; the line 75 step (mb479_line_75.yaml) checks it against the printed
 # maximum and passes that blank on.
+form:
+  name: ca-mb/mb479
 inputs:
   - name: ca-mb/mb479_community_enterprise_development_tax_credit_line_75
     reference: "75"

@@ -63,11 +63,10 @@ FACTOR = "ca-on/ontario_surtax_factor"
 MARGINAL = "ca-on/ontario_bracket_marginal_rate"
 
 PARTS = (
-    "salary.yaml",
     *(
         part.name
         for part in sorted(TAKE_HOME.rglob("*.yaml"))
-        if part.name not in {"manifest.yaml", "return.yaml", "salary.yaml"}
+        if part.name not in {"manifest.yaml", "return.yaml"}
     ),
 )
 

@@ -9,9 +9,8 @@ rate held in the `ca-sk/minimum_tax_rate` dataset, rounded half-up to the cent. 
 above the line, "Saskatchewan additional tax for minimum tax purposes". The input defaults to 0, as
 the Alberta counterpart's does, so the step has no blank rule.
 
-The salary part, the inputs part and the line 68 part are loaded under a test-local header and form
-declaration, over the Saskatchewan package list of `support.py`.
-"""
+The T1 employment income form, the inputs part and the line 68 part are loaded under a test-local
+header and form declaration, over the Saskatchewan package list of `support.py`."""
 
 from __future__ import annotations
 
@@ -23,6 +22,7 @@ from typing import Any
 import pytest
 import yaml
 
+import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_sk
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
@@ -33,6 +33,7 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca_sk.catalog import SK428_MINIMUM_TAX_ADDITIONAL_LINE_68
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_sk.support import (
     saskatchewan_capabilities,
     saskatchewan_kinds,
@@ -48,14 +49,16 @@ AMOUNT = "ca-sk/sk428_minimum_tax_t691_amount_line_68"
 LINE_68 = "ca-sk/sk428_minimum_tax_additional_line_68"
 SALARY = "ca/employment_income"
 SK_PARTS = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / "manifests" / "2025"
+# The T1 employment income form owns the salary input: its declaration, its line 10100 step and
+# the input part, as the real parts have them.
+T1_PARTS = (*form_parts("t1_employment_income"),)
 PART = SK_PARTS / "sk428_line_68.yaml"
 
-HEADER = dedent(f"""\
+HEADER = dedent("""\
     jurisdiction: CA-SK
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - {SALARY}
+    outputs: []
     capabilities: []
     """)
 FORM = dedent(f"""\
@@ -75,10 +78,10 @@ def _service(tmp_path: Path) -> TaxComputationService:
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
-    names = ["salary.yaml", "sk428_line_68_inputs.yaml", PART.name]
-    for number, name in enumerate(names, start=2):
-        text = (SK_PARTS / name).read_text(encoding="utf-8")
-        (folder / f"{number:02d}_{name}").write_text(text, encoding="utf-8")
+    parts = [*T1_PARTS, SK_PARTS / "sk428_line_68_inputs.yaml", PART]
+    for number, part in enumerate(parts, start=2):
+        text = part.read_text(encoding="utf-8")
+        (folder / f"{number:02d}_{part.name}").write_text(text, encoding="utf-8")
     roots = {**saskatchewan_packages().roots(), Namespace("ca-sk"): tmp_path}
     return TaxComputationService(
         YamlJurisdictionSource(roots, saskatchewan_kinds(), saskatchewan_units()),

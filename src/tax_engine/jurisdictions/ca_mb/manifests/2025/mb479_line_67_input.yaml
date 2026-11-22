@@ -3,6 +3,8 @@
 # energy equipment tax credit (purchaser) part. The form prints no name for the line (its heading
 # is a section heading), so the input has no title. A salary-only caller has no such equipment, so
 # a request that leaves the line out is read as blank.
+form:
+  name: ca-mb/mb479
 inputs:
   - name: ca-mb/mb479_green_energy_purchaser_credit_line_67
     reference: "67"

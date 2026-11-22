@@ -26,18 +26,11 @@ LINE_24 = "ca-on/on428_cpp_ei_credit_amounts_line_24"
 LINE_25 = "ca-on/on428_credits_subtotal_line_25"
 PART = "on428_line_25.yaml"
 
-HEADER = f"""\
+HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-inputs:
-  - name: {LINE_18}
-    required: true
-  - name: {LINE_24}
-    required: true
-outputs:
-  - {LINE_18}
-  - {LINE_24}
+outputs: []
 capabilities: []
 """
 
@@ -47,6 +40,11 @@ form:
   required: true
   exports:
     - {LINE_25}
+inputs:
+  - name: {LINE_18}
+    required: true
+  - name: {LINE_24}
+    required: true
 capabilities: []
 """
 

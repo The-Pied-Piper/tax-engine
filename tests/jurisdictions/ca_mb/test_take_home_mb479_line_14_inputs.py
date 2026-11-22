@@ -28,6 +28,7 @@ from tests.jurisdictions.ca_mb.support import (
     manitoba_units,
 )
 from tests.kinds import non_negative
+from tests.manifest_support import input_named
 
 IDENTIFIER = MB479_DISABILITY_CLAIMS_NUMBER_LINE_14.identifier
 PRINTED_BASIS = (
@@ -41,7 +42,16 @@ HEADER = """\
 jurisdiction: CA-MB
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
+capabilities: []
+"""
+
+FORM = """\
+form:
+  name: ca-mb/mb479
+  required: true
+  exports:
+    - ca/total_income
 capabilities: []
 """
 
@@ -50,6 +60,7 @@ def _manifest(tmp_path: Path) -> Manifest:
     folder = tmp_path / "manifest"
     folder.mkdir()
     (folder / "header.yaml").write_text(HEADER)
+    (folder / "form.yaml").write_text(FORM)
     shutil.copy(PART, folder / PART.name)
     source = YamlJurisdictionSource(manitoba_packages().roots(), manitoba_kinds(), manitoba_units())
     return source.load(folder)
@@ -64,7 +75,8 @@ def _part() -> dict[str, Any]:
 def test_the_part_declares_only_the_line_14_input() -> None:
     part = _part()
 
-    assert list(part) == ["inputs"]
+    assert list(part) == ["form", "inputs"]
+    assert part["form"] == {"name": "ca-mb/mb479"}
     assert part["inputs"] == [
         {
             "name": IDENTIFIER,
@@ -96,7 +108,7 @@ def test_the_line_14_input_is_a_non_negative_amount_kind() -> None:
 
 
 def test_a_request_that_leaves_out_line_14_is_read_as_0(tmp_path: Path) -> None:
-    declaration = _manifest(tmp_path).inputs[IDENTIFIER]
+    declaration = input_named(_manifest(tmp_path), IDENTIFIER)
     default = declaration.default_artifact(manitoba_kinds().kind(IDENTIFIER))
 
     assert not declaration.required

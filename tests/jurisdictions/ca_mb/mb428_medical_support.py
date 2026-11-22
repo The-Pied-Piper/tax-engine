@@ -49,13 +49,12 @@ def compute_line(
     kinds = manitoba_kinds()
     header = (
         "jurisdiction: CA-MB\nversion: 1\nvalid_from_tax_year: 2025\n"
-        + ("inputs:\n" if inputs else "")
-        + "".join(f"  - name: {name}\n    required: true\n" for name in inputs)
-        + "outputs:\n"
-        + "".join(f"  - {name}\n" for name in (*inputs, *(part_inputs or {}), *outputs))
+        + "outputs: []\n"
         + "capabilities: []\n"
     )
-    form = dedent(f"""\
+    # The inputs are the form's own: the form's steps read them, so no other form may hold them.
+    form = (
+        dedent(f"""\
         form:
           name: {form_name}
           required: true
@@ -63,6 +62,9 @@ def compute_line(
             - {output}
         capabilities: []
         """)
+        + ("inputs:\n" if inputs else "")
+        + "".join(f"  - name: {name}\n    required: true\n" for name in inputs)
+    )
     folder = tmp_path / "manifests" / "2025"
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(header, encoding="utf-8")

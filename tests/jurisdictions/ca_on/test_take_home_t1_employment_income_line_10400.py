@@ -15,7 +15,6 @@ import pytest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.income import (
-    EMPLOYMENT_INCOME,
     OTHER_EMPLOYMENT_INCOME,
     OTHER_EMPLOYMENT_INCOME_LINE_10400,
 )
@@ -28,11 +27,8 @@ HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/employment_income
-        required: true
-    outputs:
-      - ca/employment_income
+    outputs: []
+    capabilities: []
     """)
 FORM = dedent("""\
     form:
@@ -44,7 +40,7 @@ FORM = dedent("""\
 
 
 def line_10400(take_home_service: TakeHomeService, salary: str, other: str | None) -> Decimal:
-    artifacts = [Artifact(EMPLOYMENT_INCOME, D(salary))]
+    artifacts: list[Artifact[Decimal]] = []
     if other is not None:
         artifacts.append(Artifact(OTHER_EMPLOYMENT_INCOME, D(other)))
     worksheets = take_home_service(
@@ -68,7 +64,7 @@ def test_line_10400_is_listed_once_with_its_title_and_reference(
 ) -> None:
     worksheets = take_home_service(
         HEADER, FORM, "t1_employment_income_line_10400_inputs.yaml", PART
-    ).compute(JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, D("70000")))
+    ).compute(JurisdictionCode("CA-ON"), 2025)
     (sheet,) = worksheets["ca/t1_employment_income"]
     assert sheet.reference("other_employment_income_line_10400") == "10400"
     assert sheet.reference("other_employment_income") is None

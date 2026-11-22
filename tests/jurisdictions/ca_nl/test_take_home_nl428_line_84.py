@@ -47,13 +47,11 @@ LINE_82 = "ca-nl/nl428_venture_capital_tax_credit_from_certificates_line_82"
 LINE_83 = "ca-nl/nl428_unused_venture_capital_tax_credit_line_83"
 CHECKED_LINE_82 = "ca-nl/nl428_venture_capital_tax_credit_checked_line_82"
 
-HEADER = dedent(f"""\
+HEADER = dedent("""\
     jurisdiction: CA-NL
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - {LINE_82}
-      - {LINE_83}
+    outputs: []
     capabilities: []
     """)
 FORM = dedent(f"""\

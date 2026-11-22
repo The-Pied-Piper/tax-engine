@@ -15,14 +15,9 @@ another part's.
 
 from __future__ import annotations
 
-from pathlib import Path
-
-from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_engine.domain.manifest import Manifest
-from tax_engine.registrations import JURISDICTIONS, artifact_kinds, units
-from tests.federal_forms import FEDERAL_FORMS
+from tax_engine.registrations import artifact_kinds
 from tests.kinds import bundled_kinds, non_negative
-from tests.manifest_support import inputs_without_form
+from tests.manifest_support import input_named, real_manifest
 
 LINE_14 = "ca/cwb_secondary_earner_exemption"
 PRINTED_BASIS = (
@@ -31,27 +26,11 @@ PRINTED_BASIS = (
     "(line 5) is equal to or more than your eligible spouse's working income, enter whichever is "
     "less from column 2: amount from line 5 or line 12. (maximum $16,386)"
 )
-PART = FEDERAL_FORMS / "schedule_6" / "schedule_6_line_14_inputs.yaml"
-HEADER = """\
-jurisdiction: CA-ON
-version: 1
-valid_from_tax_year: 2025
-outputs: [ca/total_income]
-capabilities: []
-"""
 
 
-def _manifest(tmp_path: Path) -> Manifest:
-    folder = tmp_path / "manifest"
-    folder.mkdir()
-    (folder / "header.yaml").write_text(HEADER)
-    (folder / PART.name).write_text(inputs_without_form(PART), encoding="utf-8")
-    return YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds(), units()).load(folder)
-
-
-def test_a_request_that_leaves_out_line_14_is_read_as_blank(tmp_path: Path) -> None:
+def test_a_request_that_leaves_out_line_14_is_read_as_blank() -> None:
     kinds = artifact_kinds()
-    declaration = _manifest(tmp_path).inputs[LINE_14]
+    declaration = input_named(real_manifest("CA-ON"), LINE_14)
     default = declaration.default_artifact(kinds.kind(LINE_14))
     assert not declaration.required
     assert declaration.basis == PRINTED_BASIS

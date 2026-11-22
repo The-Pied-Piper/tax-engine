@@ -16,7 +16,7 @@ capabilities:
       tier: ca-qc/tp1_line_98_1_pensionable_salary
     consumes:
       given: ca-qc/tp1_pensionable_salary_given_line_98_1
-      earnings: ca/employment_income
+      earnings: ca-qc/tp1_employment_income_line_101
     blank:
       given: compute
     produces:

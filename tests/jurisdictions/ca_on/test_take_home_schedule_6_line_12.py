@@ -38,7 +38,6 @@ LINE_11 = "ca/uccb_and_rdsp_income"
 # T1 taxable-income lines and inputs, so the T1 net income is read from the salary; then the line 7
 # part this line adds up, the line 10 part, the optional line 11 input and the line 12 part itself.
 PARTS = (
-    "salary.yaml",
     *form_part_names("schedule_8"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),
     "schedule_6_line_7.yaml",
@@ -51,8 +50,7 @@ HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 # The Schedule 6 declaration, test-local: its one export is line 12, the line under test.

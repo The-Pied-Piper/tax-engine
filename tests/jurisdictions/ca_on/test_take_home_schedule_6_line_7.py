@@ -47,7 +47,6 @@ LINE_7 = "ca/cwb_net_income_line_7"
 # The real parts composed beside the test's header: the salary, the real Schedule 8, and the real
 # T1 taxable-income lines and inputs, so the T1 net income is read from the salary.
 PARTS = (
-    "salary.yaml",
     *form_part_names("schedule_8"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),
     "schedule_6_line_7.yaml",
@@ -56,8 +55,7 @@ HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 # The Schedule 6 declaration, test-local: its one export is line 7, the only line composed here.

@@ -32,8 +32,7 @@ HEADER = dedent("""\
     jurisdiction: CA-QC
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca-qc/t1_line_24400
+    outputs: []
     capabilities: []
     """)
 FORM = dedent("""\

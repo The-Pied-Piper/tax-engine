@@ -48,6 +48,11 @@ TAX = AmountKind("ex-on/tax")
 OTHER_TAX = AmountKind("ex-ab/tax")
 FEDERAL_TOTAL = AmountKind("ex/federal_total")
 NET = AmountKind("ex-on/net")
+# The return and the other province's form hold inputs of their own: an input is held by one form.
+RETURN_INCOME = AmountKind("ex/return_income")
+RETURN_RELIEF = AmountKind("ex/return_relief")
+AB_INCOME = AmountKind("ex-ab/income")
+AB_RELIEF = AmountKind("ex-ab/relief")
 
 NEUTRAL_ID = "ex/provincial_tax.amount"
 # What the engine derives for the supplied export: one field, that export's kind.
@@ -78,14 +83,20 @@ def federal(neutral: RecordListKind = NEUTRAL) -> FormComposition:
 def the_return() -> FormComposition:
     return composition(
         RETURN,
-        [Subtract(EXACT, INCOME, RELIEF, NET)],
+        [Subtract(EXACT, RETURN_INCOME, RETURN_RELIEF, NET)],
         exports=[NET],
-        starting=frozenset({INCOME, RELIEF}),
+        starting=frozenset({RETURN_INCOME, RETURN_RELIEF}),
     )
 
 
-def given() -> tuple[Artifact[Decimal], ...]:
-    return (Artifact(INCOME, D("1000")), Artifact(RELIEF, D("400")))
+def given(province: str | None = "on") -> tuple[Artifact[Decimal], ...]:
+    """What the caller types: the return's inputs and those of the province's form, if any."""
+    own = {"on": (INCOME, RELIEF), "ab": (AB_INCOME, AB_RELIEF), None: ()}[province]
+    return (
+        *(Artifact(kind, amount) for kind, amount in zip(own, (D("1000"), D("400")), strict=False)),
+        Artifact(RETURN_INCOME, D("1000")),
+        Artifact(RETURN_RELIEF, D("400")),
+    )
 
 
 def test_a_form_supplies_nothing_by_default() -> None:
@@ -123,7 +134,7 @@ def test_a_form_without_supplies_derives_no_neutral_kind() -> None:
 
 
 def test_the_supplier_runs_first_and_the_reader_computes_its_figure() -> None:
-    forms = FormSet([federal(), levy(), the_return()], inputs=frozenset({INCOME, RELIEF}))
+    forms = FormSet([federal(), levy(), the_return()])
 
     (sheet,) = forms.compute(*given())["ex/federal"]
 
@@ -133,25 +144,22 @@ def test_the_supplier_runs_first_and_the_reader_computes_its_figure() -> None:
 def test_the_supplied_kinds_field_is_the_kind_of_the_supplied_export() -> None:
     other = composition(
         "ex-ab/levy",
-        [Subtract(EXACT, INCOME, RELIEF, OTHER_TAX)],
+        [Subtract(EXACT, AB_INCOME, AB_RELIEF, OTHER_TAX)],
         exports=[OTHER_TAX],
-        starting=frozenset({INCOME, RELIEF}),
+        starting=frozenset({AB_INCOME, AB_RELIEF}),
         supplies={NEUTRAL_ID: "ex-ab/tax"},
     )
     neutral = RecordListKind(NEUTRAL_ID, fields=(OTHER_TAX,))
-    forms = FormSet([federal(neutral), other, the_return()], inputs=frozenset({INCOME, RELIEF}))
+    forms = FormSet([federal(neutral), other, the_return()])
 
-    (sheet,) = forms.compute(*given())["ex/federal"]
+    (sheet,) = forms.compute(*given("ab"))["ex/federal"]
 
     assert sheet.get(FEDERAL_TOTAL).value == D("600")
 
 
 def test_without_a_supplier_the_reader_is_refused_naming_the_form() -> None:
     with pytest.raises(InvalidCompositionError, match="ex/federal.*no form exports"):
-        FormSet(
-            [federal(), levy(supplies={}), the_return()],
-            inputs=frozenset({INCOME, RELIEF}),
-        )
+        FormSet([federal(), levy(supplies={}), the_return()])
 
 
 # --- optional slots ---------------------------------------------------------------------------
@@ -192,17 +200,14 @@ def reader(*, optional: dict[str, str], rule: bool | None = None) -> FormComposi
     )
 
 
-def sheet(forms: FormSet) -> Worksheet:
-    (found,) = forms.compute(*given())[READER]
+def sheet(forms: FormSet, *, supplied: bool = True) -> Worksheet:
+    (found,) = forms.compute(*given("on" if supplied else None))[READER]
     return found
 
 
 def build(federal: FormComposition, *, supplied: bool) -> FormSet:
     suppliers = [levy()] if supplied else []
-    return FormSet(
-        [federal, *suppliers, the_return()],
-        inputs=frozenset({INCOME, RELIEF}),
-    )
+    return FormSet([federal, *suppliers, the_return()])
 
 
 def test_a_selection_is_required_throughout_by_default() -> None:
@@ -269,13 +274,13 @@ def test_an_import_also_read_through_a_list_slot_is_required() -> None:
 
 
 def test_an_optional_read_that_nothing_supplies_is_blank_and_passes_on() -> None:
-    found = sheet(build(reader(optional=OPTIONAL), supplied=False))
+    found = sheet(build(reader(optional=OPTIONAL), supplied=False), supplied=False)
 
     assert found.get(FEDERAL_TOTAL).is_blank
 
 
 def test_the_blank_pass_on_is_traced_by_the_existing_blank_line() -> None:
-    found = sheet(build(reader(optional=OPTIONAL), supplied=False))
+    found = sheet(build(reader(optional=OPTIONAL), supplied=False), supplied=False)
 
     (line,) = [each for each in found.trace if isinstance(each, BlankPassedOnLine)]
     assert line.output is FEDERAL_TOTAL

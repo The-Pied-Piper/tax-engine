@@ -40,7 +40,8 @@ def _load(name: str) -> dict[str, Any]:
 def test_the_input_part_declares_only_lines_9_to_11_as_optional_blank_inputs() -> None:
     part = _load("mb479_line_12_inputs.yaml")
 
-    assert list(part) == ["inputs"]
+    assert list(part) == ["form", "inputs"]
+    assert part["form"] == {"name": "ca-mb/mb479"}
     assert [item["name"] for item in part["inputs"]] == list(KINDS)[:3]
     for declared in part["inputs"]:
         assert declared["required"] is False

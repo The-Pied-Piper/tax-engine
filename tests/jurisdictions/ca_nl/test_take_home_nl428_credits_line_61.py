@@ -9,7 +9,6 @@ from __future__ import annotations
 
 from decimal import Decimal
 from pathlib import Path
-from textwrap import dedent
 
 import pytest
 import yaml
@@ -41,19 +40,13 @@ INPUTS = (
 )
 
 HEADER = (
-    "jurisdiction: CA-NL\nversion: 1\nvalid_from_tax_year: 2025\ninputs:\n"
-    + "".join(f"  - name: {name}\n    required: true\n" for name in INPUTS)
-    + "outputs:\n"
-    + "".join(f"  - {name}\n" for name in INPUTS)
+    "jurisdiction: CA-NL\nversion: 1\nvalid_from_tax_year: 2025\noutputs: []\n"
+    + "capabilities: []\n"
 )
-FORM = dedent("""\
-    form:
-      name: ca-nl/nl428_credits
-      required: true
-      exports:
-        - ca-nl/nl428_donations_and_gifts_credit_line_61
-    capabilities: []
-    """)
+FORM = (
+    f"form:\n  name: {FORM_NAME}\n  required: true\n  exports:\n    - {OUTPUT}\ncapabilities: []\n"
+    "inputs:\n" + "".join(f"  - name: {name}\n    required: true\n" for name in INPUTS)
+)
 
 
 def _service(tmp_path: Path) -> TaxComputationService:

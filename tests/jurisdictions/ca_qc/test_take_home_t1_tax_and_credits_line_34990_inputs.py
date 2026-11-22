@@ -13,6 +13,7 @@ from tax_engine.domain.manifest import Manifest
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 from tests.jurisdictions.ca_qc.support import quebec_kinds, quebec_packages, quebec_units
 from tests.kinds import non_negative
+from tests.manifest_support import input_named
 
 PART = "t1_tax_and_credits_line_34990_inputs.yaml"
 NAME = "ca-qc/top_up_tax_credit_line_121"
@@ -21,7 +22,7 @@ HEADER = """\
 jurisdiction: CA-QC
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca-qc/top_up_tax_credit_line_121]
+outputs: []
 capabilities: []
 """
 FORM = """\
@@ -45,7 +46,7 @@ def _manifest(take_home_service: TakeHomeService, tmp_path: Path) -> Manifest:
 def test_a_request_that_leaves_out_line_121_is_read_as_blank(
     take_home_service: TakeHomeService, tmp_path: Path
 ) -> None:
-    declaration = _manifest(take_home_service, tmp_path).inputs[NAME]
+    declaration = input_named(_manifest(take_home_service, tmp_path), NAME)
     default = declaration.default_artifact(quebec_kinds().kind(NAME))
 
     assert not declaration.required

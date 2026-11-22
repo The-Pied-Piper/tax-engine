@@ -22,6 +22,7 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_units,
 )
 from tests.kinds import non_negative
+from tests.manifest_support import input_named
 
 IDENTIFIER = "ca-bc/bc479_shipbuilding_credit_line_33"
 PART = (
@@ -31,7 +32,17 @@ HEADER = """\
 jurisdiction: CA-BC
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
+capabilities: []
+"""
+# The form that owns the input, declared here as the real parts of the form declare it.
+FORM_NAME = "ca-bc/bc479"
+FORM = f"""\
+form:
+  name: {FORM_NAME}
+  required: true
+  exports:
+    - ca/total_income
 capabilities: []
 """
 
@@ -40,6 +51,7 @@ def _manifest(tmp_path: Path) -> Manifest:
     folder = tmp_path / "manifest"
     folder.mkdir()
     (folder / "header.yaml").write_text(HEADER)
+    (folder / "form.yaml").write_text(FORM)
     shutil.copy(PART, folder / PART.name)
     source = YamlJurisdictionSource(
         british_columbia_packages().roots(), british_columbia_kinds(), british_columbia_units()
@@ -56,7 +68,8 @@ def _part() -> dict[str, Any]:
 def test_the_part_declares_only_this_optional_input() -> None:
     part = _part()
 
-    assert list(part) == ["inputs"]
+    assert list(part) == ["form", "inputs"]
+    assert part["form"] == {"name": FORM_NAME}
     assert part["inputs"] == [
         {
             "name": "ca-bc/bc479_shipbuilding_credit_line_33",
@@ -77,7 +90,7 @@ def test_the_input_is_a_registered_non_negative_amount_kind() -> None:
 
 
 def test_a_request_that_leaves_out_the_line_is_read_as_blank(tmp_path: Path) -> None:
-    declaration = _manifest(tmp_path).inputs[IDENTIFIER]
+    declaration = input_named(_manifest(tmp_path), IDENTIFIER)
     default = declaration.default_artifact(british_columbia_kinds().kind(IDENTIFIER))
 
     assert not declaration.required

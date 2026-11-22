@@ -11,7 +11,6 @@ not give takes its default (not alone, neither tenant nor owner, one owner or te
 
 from __future__ import annotations
 
-from decimal import Decimal
 from textwrap import dedent
 from typing import Any
 
@@ -19,7 +18,6 @@ import yaml
 
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
 from tests.jurisdictions.ca_qc.support import quebec_kinds
 
@@ -34,11 +32,8 @@ HEADER = dedent("""\
     jurisdiction: CA-QC
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/employment_income
-        required: true
-    outputs:
-      - ca/employment_income
+    outputs: []
+    capabilities: []
     """)
 
 
@@ -91,7 +86,7 @@ def maximum_figure(
     service = take_home_service(
         HEADER, form_part(identifier, parts), AMOUNTS_PART, ANSWERS_PART, *parts
     )
-    given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, Decimal("70000"))]
+    given: list[Artifact[Any]] = []
     for name, answer in ((ALONE, alone), (TENANT, tenant), (OCCUPANTS, occupants)):
         if answer is not None:
             given.append(Artifact(quebec_kinds().kind(name), answer))

@@ -2,6 +2,8 @@
 # Line 69: "Line 69: Manitoba political contribution tax credit (use Worksheet MB428) (maximum $1,000)"
 # (Form MB428, CRA 5007-c). The political contribution section of Worksheet MB428 is not built, so a
 # request that leaves the line out is read as blank; the step that reads line 69 reads that blank as 0.
+form:
+  name: ca-mb/mb428
 inputs:
   - name: ca-mb/mb428_political_contribution_tax_credit_line_69
     title: "Manitoba political contribution tax credit"

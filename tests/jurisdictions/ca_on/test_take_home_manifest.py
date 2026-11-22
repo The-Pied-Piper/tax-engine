@@ -14,6 +14,7 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.manifest import Manifest
 from tax_engine.registrations import JURISDICTIONS, artifact_kinds, units
+from tests.manifest_support import inputs_of
 
 SALARY = "ca/employment_income"
 
@@ -25,7 +26,9 @@ def _manifest() -> Manifest:
 
 
 def test_the_salary_is_the_only_required_input() -> None:
-    required = {name for name, declaration in _manifest().inputs.items() if declaration.required}
+    required = {
+        name for name, declaration in inputs_of(_manifest()).items() if declaration.required
+    }
 
     assert required == {SALARY}
 
@@ -266,7 +269,7 @@ def test_the_ontario_manifest_declares_the_federal_inputs_by_importing_their_for
         "ca/cpp_months",
         "ca/other_employment_income",
         "ca/social_benefits_repayment",
-    } <= set(_manifest().inputs)
+    } <= set(inputs_of(_manifest()))
 
 
 def test_on428_exports_lines_90_81_and_80_the_surtax_base_line_65_and_the_line_5_rate() -> None:

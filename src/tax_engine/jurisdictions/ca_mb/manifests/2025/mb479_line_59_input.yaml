@@ -1,6 +1,8 @@
 # MB479 (2025) line 59's input, which a salary-only caller does not give.
 # Line 59 and line 61260: "Primary caregiver tax credit" (Form MB479, CRA 5007-TC). A salary-only
 # caller has no such credit, so a request that leaves the line out is read as blank.
+form:
+  name: ca-mb/mb479
 inputs:
   - name: ca-mb/mb479_primary_caregiver_credit_line_59
     title: "Primary caregiver tax credit"

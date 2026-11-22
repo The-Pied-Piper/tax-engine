@@ -1,12 +1,13 @@
 # Revenu Quebec TP-1.D-V (2025-12), page 2, line 199: "Add lines 101 and 105 through 164. Total
-# income". Line 101 is the salary (`ca/employment_income`), which has no step of its own. Each
-# printed income line from 105 to 164 is an optional input of this form (tp1_income_line_<n>_input.yaml),
-# read as 0 when the caller has none, so a salary-only filer's total income is the salary. The form
-# prints lines 106, 149 and 153 as text boxes that say what lines 107, 148 and 154 are, and 165 to
-# 169 as sub-boxes of lines 107, 128, 136 and 154; none of those is added. Lines 136 and 164 are
-# signed (a loss is a minus), so line 199 is signed too: the form prints no floor. One step for the
-# one printed line; its English sentence words the long sum as line 101 plus lines 105 to 164 in
-# total. The sum is rounded half-up to the cent (`ca-qc/cent_rounding`).
+# income". Line 101 is the salary, read from the Quebec T1 employment income form by its own step
+# (TP-1 line 101). Each printed income line from 105 to 164 is an optional input of this form
+# (tp1_income_line_<n>_input.yaml), read as 0 when the caller has none, so a salary-only filer's
+# total income is the salary. The form prints lines 106, 149 and 153 as text boxes that say what
+# lines 107, 148 and 154 are, and 165 to 169 as sub-boxes of lines 107, 128, 136 and 154; none of
+# those is added. Lines 136 and 164 are signed (a loss is a minus), so line 199 is signed too: the
+# form prints no floor. One step for the one printed line; its English sentence words the long sum
+# as line 101 plus lines 105 to 164 in total. The sum is rounded half-up to the cent
+# (`ca-qc/cent_rounding`).
 form:
   name: ca-qc/tp1_income
 capabilities:
@@ -18,7 +19,7 @@ capabilities:
       rounding: ca-qc/cent_rounding
     consumes:
       parts:
-        - ca/employment_income
+        - ca-qc/tp1_employment_income_line_101
         - ca-qc/tp1_line_105
         - ca-qc/tp1_line_107
         - ca-qc/tp1_line_110

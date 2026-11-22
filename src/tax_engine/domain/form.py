@@ -24,7 +24,7 @@ from tax_engine.domain.errors import (
 )
 from tax_engine.domain.figure_names import ImportedFigure
 from tax_engine.domain.kinds import RecordListKind
-from tax_engine.domain.manifest import Form, InputDeclaration
+from tax_engine.domain.manifest import Form
 from tax_engine.domain.record_list import Record, RecordList
 from tax_engine.domain.trace import FormInstanceLine, TraceLine
 from tax_engine.domain.unit import Unit
@@ -48,19 +48,16 @@ class FormComposition:
         capabilities: Iterable[Capability],
         *,
         kinds: ArtifactRegistry,
-        starting: frozenset[ArtifactKind[Any]] = frozenset(),
-        defaults: Iterable[Artifact[Any]] = (),
-        field_defaults: Iterable[Artifact[Any]] = (),
-        declared: Iterable[InputDeclaration] = (),
         units: Mapping[str, Unit] | None = None,
     ) -> None:
         """Wire `capabilities` as `form`, whose names `kinds` resolves to artifact kinds.
 
-        `defaults` are what a starting artifact is read as when left out, and `field_defaults` the
-        same for an `instances` field left blank; an input or field whose default is blank may
-        arrive blank, and any other blank is refused. `declared` gives the `title` and `reference`
-        of the inputs and fields this form reads. `units` holds the units the manifest names, by
-        identifier: every one `declared`, a field or a selection uses.
+        The form's own `inputs` are what the caller gives it: each is read as its declared default
+        when left out, and an input or field whose default is blank may arrive blank (any other
+        blank is refused). The same holds for the `fields` of its `instances`. The
+        `title` and `reference` of an input and of a field print beside the figure. `units` holds
+        the units the manifest names, by identifier: every one an input, a field or a selection
+        uses.
         """
         name = form.name
         instances = None if form.instances is None else kinds.kind(form.instances)
@@ -73,10 +70,11 @@ class FormComposition:
         produced = {kind for capability in wired for kind in capability.produces}
         read = {kind for capability in wired for kind in capability.consumes} | set(listed)
         self._form = form
+        declared = {kinds.kind(d.name): d for d in form.inputs}
         by_name = {} if instances is None else {kind.identifier: kind for kind in instances.fields}
         # A field the form's `instances` does not have is the manifest's own check to refuse; here
         # it is skipped. A title and a reference are only for the input kinds the form reads.
-        printed = [(kinds.kind(d.name), d) for d in declared if kinds.kind(d.name) in read] + [
+        printed = [(kind, d) for kind, d in declared.items() if kind in read] + [
             (by_name[d.name], d) for d in form.fields if d.name in by_name
         ]
         produced_by = [
@@ -111,13 +109,22 @@ class FormComposition:
         self._earlier = frozenset(kind for kind in self._derived if kind in foreign)
         self._imports = foreign - self._earlier
         fields = frozenset(instances.fields) if instances is not None else frozenset()
-        clash = fields & starting
+        clash = fields & declared.keys()
         if clash:
             kind = min(clash, key=Composition.sort_key)
             raise InvalidCompositionError(
-                f"form {name!r}: instance field {kind.label!r} is also a starting artifact"
+                f"form {name!r}: instance field {kind.label!r} is also an input"
             )
-        self._inputs = fields | frozenset(read & starting)
+        if instances is not None and instances not in declared:
+            raise InvalidCompositionError(
+                f"form {name!r}: instances {instances.identifier!r} is not an input of the form"
+            )
+        # The caller's list of instances is read by the form set, not by a step.
+        self._declared = frozenset(declared)
+        self._inputs = fields | (self._declared - {instances})
+        self._defaults = tuple(
+            found for kind, d in declared.items() if (found := d.default_artifact(kind)) is not None
+        )
         # A kind read only through slots the form marks optional may go without a producer.
         self._optional_imports = (
             frozenset(kinds.kind(identifier) for identifier in form.optionally_read) & self._imports
@@ -125,16 +132,15 @@ class FormComposition:
         self._unruled_optional = tuple(
             (slot, kinds.kind(identifier)) for slot, identifier in form.unruled_optional
         )
-        self._field_defaults = {artifact.kind: artifact for artifact in field_defaults}
+        self._field_defaults: dict[ArtifactKind[Any], Artifact[Any]] = {}
+        for d in form.fields:
+            if d.name in by_name:
+                found = d.default_artifact(by_name[d.name])
+                if found is not None:
+                    self._field_defaults[by_name[d.name]] = found
         self._blank_inputs = (
-            self._blank_kinds(defaults, self._field_defaults.values()) & self._inputs
+            self._blank_kinds(self._defaults, self._field_defaults.values()) & self._inputs
         )
-        stray = self._field_defaults.keys() - fields
-        if stray:
-            kind = min(stray, key=Composition.sort_key)
-            raise InvalidCompositionError(
-                f"form {name!r}: default for {kind.label!r}, which is not a field of its instances"
-            )
         try:
             self._composition = Composition(
                 wired,
@@ -214,8 +220,18 @@ class FormComposition:
 
     @property
     def inputs(self) -> frozenset[ArtifactKind[Any]]:
-        """The kinds the form starts from, imports aside: starting artifacts it reads and fields."""
+        """The kinds the steps start from, imports aside: the form's inputs and its fields."""
         return self._inputs
+
+    @property
+    def declared(self) -> frozenset[ArtifactKind[Any]]:
+        """The kinds of the inputs the form declares, among them its list of instances."""
+        return self._declared
+
+    @property
+    def defaults(self) -> tuple[Artifact[Any], ...]:
+        """The artifact each input with a default is read as when the caller leaves it out."""
+        return self._defaults
 
     @property
     def imports(self) -> frozenset[ArtifactKind[Any]]:
@@ -245,7 +261,7 @@ class FormComposition:
 
     @property
     def blank_inputs(self) -> frozenset[ArtifactKind[Any]]:
-        """The starting kinds this form's composition may take blank."""
+        """The input kinds this form's composition may take blank."""
         return self._blank_inputs
 
     @property
@@ -257,36 +273,27 @@ class FormComposition:
 class FormSet:
     """The forms of a computation, run in the order of their imports.
 
-    Construction raises InvalidCompositionError naming the forms for a duplicate form, an instances
-    kind not among `inputs`, an input that is a form's derived `<form>.<export>` kind, an invalid
-    exclusive group, an unexported import, an import cycle, or an input no form reads. A form's read
+    Construction raises InvalidCompositionError naming the forms for a duplicate form, an invalid
+    exclusive group, an unexported import or an import cycle. A form's read
     of its own derived export is not a cycle.
     """
 
     def __init__(
         self,
         forms: Iterable[FormComposition],
-        *,
-        inputs: frozenset[ArtifactKind[Any]],
-        defaults: Iterable[Artifact[Any]] = (),
     ) -> None:
-        """Wire `forms` into a computation that starts from the artifacts of the kinds `inputs`.
-
-        `defaults` are what an input left out, or blank where the default is a value, is read as;
-        each is of one of the `inputs`, once.
-        """
+        """Wire `forms` into a computation that starts from the inputs the forms declare."""
         listed = tuple(forms)
         self._check_names(listed)
-        self._check_instances(listed, inputs)
         self._check_groups(listed)
+        self._check_input_holders(listed)
+        inputs = frozenset(kind for form in listed for kind in form.declared)
         self._producers: dict[ArtifactKind[Any], str] = {
             kind: form.name for form in listed for kind in form.derived
         }
-        self._check_not_derived(inputs)
         self._check_imports(listed)
         self._check_units(listed)
-        self._check_inputs_are_read(listed, inputs)
-        self._defaults = self._index_defaults(defaults, inputs)
+        self._defaults = {artifact.kind: artifact for form in listed for artifact in form.defaults}
         self._inputs = inputs
         self._forms = self._order(listed)
 
@@ -486,21 +493,6 @@ class FormSet:
             )
 
     @staticmethod
-    def _index_defaults(
-        defaults: Iterable[Artifact[Any]], inputs: frozenset[ArtifactKind[Any]]
-    ) -> dict[ArtifactKind[Any], Artifact[Any]]:
-        found: dict[ArtifactKind[Any], Artifact[Any]] = {}
-        for artifact in defaults:
-            if artifact.kind not in inputs:
-                raise InvalidCompositionError(
-                    f"default for {artifact.kind.label!r}, which is not an input of the computation"
-                )
-            if artifact.kind in found:
-                raise InvalidCompositionError(f"two defaults for {artifact.kind.label!r}")
-            found[artifact.kind] = artifact
-        return found
-
-    @staticmethod
     def _check_units(forms: Sequence[FormComposition]) -> None:
         """Refuse a figure that two forms give different units: its producer and its readers, or
         readers among themselves; a figure with a unit in one form and none in another differs."""
@@ -576,22 +568,24 @@ class FormSet:
                 )
 
     @staticmethod
+    def _check_input_holders(forms: tuple[FormComposition, ...]) -> None:
+        """Refuse an input two forms both declare: an input is held by one form."""
+        holder: dict[ArtifactKind[Any], str] = {}
+        for form in forms:
+            for kind in sorted(form.declared, key=Composition.sort_key):
+                if kind in holder:
+                    raise InvalidCompositionError(
+                        f"input {kind.label!r} is declared by forms {holder[kind]!r} and "
+                        f"{form.name!r}: an input is held by one form"
+                    )
+                holder[kind] = form.name
+
+    @staticmethod
     def _check_names(forms: tuple[FormComposition, ...]) -> None:
         names = [form.name for form in forms]
         for each in names:
             if names.count(each) > 1:
                 raise InvalidCompositionError(f"form {each!r} is listed more than once")
-
-    @staticmethod
-    def _check_instances(
-        forms: tuple[FormComposition, ...], inputs: frozenset[ArtifactKind[Any]]
-    ) -> None:
-        for form in forms:
-            if form.instances is not None and form.instances not in inputs:
-                raise InvalidCompositionError(
-                    f"form {form.name!r}: instances {form.instances.identifier!r} "
-                    "is not an input of the computation"
-                )
 
     def _check_imports(self, forms: tuple[FormComposition, ...]) -> None:
         for form in forms:
@@ -606,16 +600,6 @@ class FormSet:
                         f"form {form.name!r}: optional slot {slot!r} reads {kind.label!r}, which "
                         "no form exports, and has no blank rule to read it as a blank"
                     )
-
-    def _check_inputs_are_read(
-        self, forms: tuple[FormComposition, ...], inputs: frozenset[ArtifactKind[Any]]
-    ) -> None:
-        read = {kind for form in forms for kind in form.inputs}
-        read |= {form.instances for form in forms if form.instances is not None}
-        unread = inputs - read
-        if unread:
-            kind = min(unread, key=Composition.sort_key)
-            raise InvalidCompositionError(f"input {kind.label!r} is consumed by nothing")
 
     def _order(self, forms: tuple[FormComposition, ...]) -> tuple[FormComposition, ...]:
         """The forms so that each runs after every form it imports from; ties by name."""

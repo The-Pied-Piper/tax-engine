@@ -2,6 +2,8 @@
 # Line 34 and line 58360: "Line 34 and line 58360: Pension income amount (maximum $1,719)" (5009-c-25e).
 # A salary-only caller has no pension income, so a request that leaves the line out is read as 0,
 # not blank.
+form:
+  name: ca-ab/ab428_credits
 inputs:
   - name: ca-ab/ab428_pension_income_amount
     title: "Pension income amount"
