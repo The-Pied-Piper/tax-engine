@@ -15,15 +15,15 @@ The part has three steps:
    (`ca-on/on428_line_80_conditions`) on line 72
    (`ca-on/on428_additional_tax_for_minimum_tax_line_72`), giving the count
    `ca-on/on428_tax_reduction_conditions_count_line_80`. The count is 0 when line 72 is an amount
-   other than 0, and 1 otherwise. Line 72 is an optional input: a salary-only caller leaves it out,
-   it is read as blank, and the blank rule of the part reads that blank as "0".
+   other than 0, and 1 otherwise. Line 72 is calculated by Worksheet ON428 and is 0 for a caller
+   with no T691 Part 5 line 11.
 3. `core/times_count`: step 1 times step 2, the output `ca-on/on428_ontario_tax_reduction_line_80`,
    exported by the form. So a line 72 amount gives 0, and no amount on line 72 gives step 1.
 
 Only the line 72 condition is in this part. The form's other printed conditions are not read here.
 
 The inputs are lines 78, 73 and 72, produced by other parts or given by the caller. This test
-declares them as the inputs of its header (line 72 optional, as its real inputs part declares it)
+declares them as the inputs of its header
 and loads the take-home folder's `on428_line_80.yaml` beside it. The output and the two
 intermediate steps are exported by the test's form, so each can be read from the worksheet.
 """
@@ -50,10 +50,6 @@ CONDITIONS_COUNT = "ca-on/on428_tax_reduction_conditions_count_line_80"
 LINE_80 = "ca-on/on428_ontario_tax_reduction_line_80"
 PART = "on428_line_80.yaml"
 
-BASIS = (
-    "Line 72: If you entered an amount on line 11 of Part 5 of Form T691, use Worksheet ON428 to "
-    "calculate your additional tax for minimum tax purposes"
-)
 HEADER = """\
 jurisdiction: CA-ON
 version: 1
@@ -74,9 +70,7 @@ inputs:
   - name: {LINE_73}
     required: true
   - name: {LINE_72}
-    required: false
-    default: null
-    basis: '{BASIS}'
+    required: true
 capabilities: []
 """
 # The steps test also exports the two intermediate kinds, so the test can read each step.
@@ -94,9 +88,7 @@ inputs:
   - name: {LINE_73}
     required: true
   - name: {LINE_72}
-    required: false
-    default: null
-    basis: '{BASIS}'
+    required: true
 capabilities: []
 """
 
@@ -105,18 +97,20 @@ def _worksheet(
     take_home_service: TakeHomeService,
     line_78: str,
     line_73: str,
-    line_72: str | None,
+    line_72: str,
     form: str = FORM,
 ) -> Worksheet:
     kinds = bundled_kinds()
-    given = [Artifact(kinds.kind(LINE_78), D(line_78)), Artifact(kinds.kind(LINE_73), D(line_73))]
-    if line_72 is not None:
-        given.append(Artifact(kinds.kind(LINE_72), D(line_72)))
+    given = [
+        Artifact(kinds.kind(LINE_78), D(line_78)),
+        Artifact(kinds.kind(LINE_73), D(line_73)),
+        Artifact(kinds.kind(LINE_72), D(line_72)),
+    ]
     return take_home_service(HEADER, form, PART).compute(CODE, 2025, *given)["ca-on/on428"][0]
 
 
 def _line_80(
-    take_home_service: TakeHomeService, line_78: str, line_73: str, line_72: str | None = None
+    take_home_service: TakeHomeService, line_78: str, line_73: str, line_72: str = "0.00"
 ) -> Decimal:
     value = (
         _worksheet(take_home_service, line_78, line_73, line_72)
@@ -138,7 +132,7 @@ def _line_80(
         ("300.14", "300.14", "0.00"),
     ],
 )
-def test_line_80_is_line_78_minus_line_73_not_below_zero_when_line_72_is_left_out(
+def test_line_80_is_line_78_minus_line_73_not_below_zero_when_line_72_is_0(
     take_home_service: TakeHomeService, line_78: str, line_73: str, line_80: str
 ) -> None:
     assert _line_80(take_home_service, line_78, line_73) == D(line_80)
@@ -164,21 +158,21 @@ def test_line_72_of_0_is_not_an_amount_so_line_80_is_line_78_minus_line_73(
     take_home_service: TakeHomeService,
 ) -> None:
     # Line 72 is "0.00": the condition "There is an amount on line 72" does not apply, so line 80
-    # is line 78 (588.00) less line 73 (300.14), 287.86, as it is with line 72 left out.
+    # is line 78 (588.00) less line 73 (300.14), 287.86.
     assert _line_80(take_home_service, "588.00", "300.14", "0.00") == D("287.86")
 
 
 @pytest.mark.parametrize(
     ("line_72", "count"),
     [
-        # Line 72 left out is read as blank and then as "0": not an amount, so the count is 1.
-        (None, 1),
+        # Line 72 is 0: not an amount, so the count is 1.
+        ("0.00", 1),
         # Line 72 an amount: the condition applies, so the count is 0.
         ("100.00", 0),
     ],
 )
 def test_the_steps_are_the_difference_and_the_condition_count(
-    take_home_service: TakeHomeService, line_72: str | None, count: int
+    take_home_service: TakeHomeService, line_72: str, count: int
 ) -> None:
     # Line 78 is 588.00 and line 73 is 300.14: step 1 is 287.86, and step 3 multiplies it by the
     # count from step 2.

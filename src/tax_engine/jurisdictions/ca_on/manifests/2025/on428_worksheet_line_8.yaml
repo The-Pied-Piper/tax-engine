@@ -1,0 +1,20 @@
+# Worksheet ON428 (2025, CRA 5006-d-25e), "Line 72 - Ontario additional tax for minimum tax purposes",
+# lines 7 and 8 (ca-on/on428): "Line 7: Amount from line 68 of your Form ON428" and "Line 8: Line 6
+# minus line 7 =": the surtax on the additional tax. Line 7 is a copy of line 68, read from its source
+# part (`ca-on/on428_surtax_total_line_68`). Line 8 is line 6
+# (`ca-on/on428_worksheet_surtax_total_line_6`) less that figure. The worksheet prints no floor, so
+# the difference is signed.
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/subtract
+    title: "Ontario surtax on additional tax"
+    reference: "72 worksheet line 8"
+    unit: ca/cad
+    params:
+      rounding: ca-on/cent_rounding
+    consumes:
+      amount: ca-on/on428_worksheet_surtax_total_line_6
+      less: ca-on/on428_surtax_total_line_68
+    produces:
+      output: ca-on/on428_worksheet_surtax_on_additional_tax_line_8

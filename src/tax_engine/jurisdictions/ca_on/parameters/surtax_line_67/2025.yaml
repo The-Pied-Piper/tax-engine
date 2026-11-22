@@ -4,6 +4,7 @@
 # line 67" adds the two.
 # Line 67 is a dollars-and-cents box, so the tier rounds half-up to the cent before line 68 adds
 # it, the project's choice, as the form states no rounding rule.
+# Worksheet ON428 line 5 (ON428 line 72) prints the same threshold and rate and reads it too.
 family: ca-on/surtax_line_67
 tax_year: 2025
 kind: surcharge_tiers

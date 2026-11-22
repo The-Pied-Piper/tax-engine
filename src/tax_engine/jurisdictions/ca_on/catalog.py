@@ -499,12 +499,56 @@ ON428_TAX_AFTER_DIVIDEND_CREDIT_LINE_71 = AmountKind.declare(
 """Ontario tax after the dividend tax credit, ON428 line 71 "Line 71: Line 69 minus line 70 (if
 negative, enter "0") =": line 69 minus the dividend tax credit, not below zero."""
 
+ON428_WORKSHEET_T691_AMOUNT_LINE_1 = AmountKind.declare(
+    CATALOG, "on428_worksheet_t691_amount_line_1", non_negative=True
+)
+"""Amount from line 11 of Part 5 of Form T691, Worksheet ON428 (line 72) line 1 "Amount from line
+11 of Part 5 of your Form T691": a record total of the T691's export
+(`ca/t691_part_5_line_11_amount`); the 24.63% is applied by the next step."""
+
+ON428_WORKSHEET_BASIC_ADDITIONAL_TAX_LINE_1 = AmountKind.declare(
+    CATALOG, "on428_worksheet_basic_additional_tax_line_1", non_negative=True
+)
+"""Ontario basic additional tax, Worksheet ON428 (line 72) line 1 "multiplied by 24.63% =": the
+amount from line 11 of Part 5 of Form T691 multiplied by 24.63%."""
+
+ON428_WORKSHEET_SURTAX_BASE_LINE_3 = AmountKind.declare(
+    CATALOG, "on428_worksheet_surtax_base_line_3", non_negative=True
+)
+"""Surtax base on the additional tax, Worksheet ON428 (line 72) line 3 "Line 1 plus line 2 =": line
+1 plus line 2, where line 2 is the amount from line 65 of Form ON428."""
+
+ON428_WORKSHEET_SURTAX_20_PERCENT_TIER_LINE_4 = AmountKind.declare(
+    CATALOG, "on428_worksheet_surtax_20_percent_tier_line_4", non_negative=True
+)
+"""Worksheet ON428 (line 72) line 4 "(Line 3 Minus $5,710) multiplied by 20% (if negative, enter
+"0") =": 20% of line 3 above $5,710, never below 0."""
+
+ON428_WORKSHEET_SURTAX_36_PERCENT_TIER_LINE_5 = AmountKind.declare(
+    CATALOG, "on428_worksheet_surtax_36_percent_tier_line_5", non_negative=True
+)
+"""Worksheet ON428 (line 72) line 5 "(Line 3 Minus $7,307) multiplied by 36% (if negative, enter
+"0") =": 36% of line 3 above $7,307, never below 0."""
+
+ON428_WORKSHEET_SURTAX_TOTAL_LINE_6 = AmountKind.declare(
+    CATALOG, "on428_worksheet_surtax_total_line_6", non_negative=True
+)
+"""Worksheet ON428 (line 72) line 6 "Line 4 plus line 5 =": line 4 plus line 5."""
+
+ON428_WORKSHEET_SURTAX_ON_ADDITIONAL_TAX_LINE_8 = AmountKind.declare(
+    CATALOG, "on428_worksheet_surtax_on_additional_tax_line_8"
+)
+"""Ontario surtax on additional tax, Worksheet ON428 (line 72) line 8 "Line 6 minus line 7 =":
+line 6 less line 7 (the amount from line 68 of Form ON428). The worksheet prints no floor, so the
+kind is signed."""
+
 ON428_ADDITIONAL_TAX_FOR_MINIMUM_TAX_LINE_72 = AmountKind.declare(
     CATALOG, "on428_additional_tax_for_minimum_tax_line_72", non_negative=True
 )
 """Additional tax for minimum tax purposes, ON428 line 72 "Line 72: If you entered an amount on line
 11 of Part 5 of Form T691, use Worksheet ON428 to calculate your additional tax for minimum tax
-purposes": an optional input that a salary-only caller leaves out."""
+purposes": calculated by Worksheet ON428 line 9 "Line 1 plus line 8", the basic additional tax plus
+the surtax on it."""
 
 ON428_TAX_WITH_MINIMUM_TAX_ADDITION_LINE_73 = AmountKind.declare(
     CATALOG, "on428_tax_with_minimum_tax_addition_line_73", non_negative=True

@@ -1,0 +1,19 @@
+# T691 (T691 E (25), 2025) Part 5 line 11: "Line 7 minus line 10 (if negative, enter "0")". The line
+# is an optional input (`ca/t691_line_7_minus_line_10`), blank for a salary-only filer. One core/sum
+# step over the input alone reads the blank as 0 and rounds to the cent, because a line written on
+# the form is a whole-cent figure: `ca/t691_part_5_line_11_amount`. The form exports it for Worksheet
+# ON428 line 1, which prints "Amount from line 11 of Part 5 of your Form T691".
+form:
+  name: ca/t691
+capabilities:
+  - name: core/sum
+    reference: "Part 5 line 11"
+    unit: ca/cad
+    params:
+      rounding: ca/cent_rounding
+    consumes:
+      parts: [ca/t691_line_7_minus_line_10]
+    blank:
+      ca/t691_line_7_minus_line_10: "0"
+    produces:
+      output: ca/t691_part_5_line_11_amount

@@ -1,0 +1,17 @@
+# Worksheet ON428 (2025, CRA 5006-d-25e), "Line 72 - Ontario additional tax for minimum tax purposes",
+# line 5 (ca-on/on428): "(Line 3 Minus $7,307) multiplied by 36% (if negative, enter "0") =".
+# Line 3 is `ca-on/on428_worksheet_surtax_base_line_3`. The worksheet prints the same threshold and rate
+# as ON428 line 67, so it reads the same dataset (`ca-on/surtax_line_67`): one tiered surcharge,
+# 36% of line 3 above $7,307, never below 0, rounded half-up to the cent.
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/tiered_surcharge
+    reference: "72 worksheet line 5"
+    unit: ca/cad
+    params:
+      tiers: ca-on/surtax_line_67
+    consumes:
+      base: ca-on/on428_worksheet_surtax_base_line_3
+    produces:
+      output: ca-on/on428_worksheet_surtax_36_percent_tier_line_5
