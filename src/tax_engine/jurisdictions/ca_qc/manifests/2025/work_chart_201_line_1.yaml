@@ -1,9 +1,9 @@
 # Work Chart 201 (TP-1.D.GR-V 2025-12), line 1: "Eligible work income (lines 101, 107 and, if
-# positive, 105, minus the amount from box 211 of your RL-1 slip)". A sum and a subtraction for the
-# one printed line, as NL428 line 98 has a sum before its capped step. Line 101 is the salary (TP-1 line 101,
+# positive, 105, minus the amount from box 211 of your RL-1 slip)". A sum and a subtraction for
+# the one printed line, as NL428 line 98 has a sum before its capped step. Line 101 is the salary (TP-1 line 101,
 # the TP-1 income form's export); lines 107 and 105 and box 211 are optional inputs of the TP-1
 # income form, which takes and exports them, so each is read as that form's export (a record list of
-# one, totalled by core/record_total, a blank read as 0), ahead of the steps. Line 105 is "if
+# one, totalled by core/record_total, a blank read as 0), ahead of the other steps. Line 105 is "if
 # positive" and is signed (Work Chart 105 allows a negative result), so core/sum_not_below_zero over
 # line 105 alone takes it as 0 when it is negative, as Schedule P line 10 does. The form prints no
 # floor on the subtraction, so the result is signed (core/subtract, as T1 line 23400) and is
@@ -38,15 +38,6 @@ capabilities:
         ca-qc/tp1_line_105: "0"
     produces:
       output: ca-qc/work_chart_201_tp1_line_105
-  - name: core/sum_not_below_zero
-    title: "TP-1 line 105 if positive"
-    unit: ca/cad
-    params:
-      rounding: ca-qc/cent_rounding
-    consumes:
-      parts: [ca-qc/work_chart_201_tp1_line_105]
-    produces:
-      output: ca-qc/work_chart_201_line_105_if_positive
   - name: core/record_total
     title: "RL-1 slip, box 211"
     unit: ca/cad
@@ -57,6 +48,15 @@ capabilities:
         ca-qc/rl1_slip_box_211: "0"
     produces:
       output: ca-qc/work_chart_201_rl1_slip_box_211
+  - name: core/sum_not_below_zero
+    title: "TP-1 line 105 if positive"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts: [ca-qc/work_chart_201_tp1_line_105]
+    produces:
+      output: ca-qc/work_chart_201_line_105_if_positive
   - name: core/sum
     title: "Work income before box 211"
     unit: ca/cad
