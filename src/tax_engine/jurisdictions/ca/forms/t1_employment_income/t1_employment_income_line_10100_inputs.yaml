@@ -3,6 +3,8 @@
 # income"). Every other input a form declares is optional with its blank rule in that form's part.
 # The salary is an input of the T1 employment income form only: every other form reads line 10100 as
 # that form's export (`ca/t1_employment_income.employment_income_line_10100`).
+# A salary keyed with a fraction of a cent is refused (`whole_cents`): a T4 or RL-1 prints dollars and
+# cents.
 form:
   name: ca/t1_employment_income
 inputs:
@@ -11,3 +13,4 @@ inputs:
     reference: "10100"
     unit: ca/cad
     required: true
+    whole_cents: true

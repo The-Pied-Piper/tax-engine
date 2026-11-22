@@ -58,7 +58,7 @@ T1_INPUTS = {
 CARRYOVER = {
     "CA-AB": ("ca-ab/ab428", "ca-ab/ab428_minimum_tax_carryover_line_64", D("0.35")),
     "CA-BC": ("ca-bc/bc428", "ca-bc/bc428_minimum_tax_carryover_line_66", D("0.349")),
-    "CA-MB": ("ca-mb/mb428", "ca-mb/mb428_minimum_tax_carryover_credit_line_63", D("0.5")),
+    "CA-MB": ("ca-mb/mb428", "ca-mb/mb428_minimum_tax_carryover_line_63", D("0.5")),
     "CA-NL": ("ca-nl/nl428", "ca-nl/nl428_minimum_tax_carryover_line_68", D("0.6")),
     "CA-SK": ("ca-sk/sk428", "ca-sk/sk428_minimum_tax_carryover_line_65", D("0.5")),
 }
@@ -107,7 +107,7 @@ OLD_INPUTS = (
     SK_LINE_49,
     "ca-ab/ab428_minimum_tax_carryover_amount_line_64",
     "ca-bc/bc428_minimum_tax_carryover_amount",
-    "ca-mb/mb428_minimum_tax_carryover_line_63",
+    "ca-mb/mb428_minimum_tax_carryover_amount_line_63",
     "ca-nl/nl428_minimum_tax_carryover_amount_line_68",
     "ca-sk/sk428_minimum_tax_carryover_amount_line_65",
     *NL_COPIES.values(),

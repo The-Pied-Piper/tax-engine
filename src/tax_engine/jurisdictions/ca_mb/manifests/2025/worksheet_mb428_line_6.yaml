@@ -12,6 +12,6 @@ capabilities:
       rounding: ca-mb/exact_rounding
     consumes:
       dividend: ca-mb/worksheet_mb428_line_4
-      divisor: ca-mb/worksheet_mb428_basic_personal_amount_line_5
+      divisor: ca-mb/worksheet_mb428_line_5
     produces:
       output: ca-mb/worksheet_mb428_line_6

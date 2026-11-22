@@ -92,8 +92,8 @@ WORKSHEET_FORM = dedent("""\
       name: ca-mb/worksheet_mb428
       required: true
       exports:
-        - ca-mb/worksheet_mb428_basic_personal_amount_line_5
-        - ca-mb/worksheet_mb428_basic_personal_amount_line_7
+        - ca-mb/worksheet_mb428_line_5
+        - ca-mb/worksheet_mb428_line_7
         - ca-mb/worksheet_mb428_line_8
         - ca-mb/worksheet_mb428_basic_personal_amount_line_9
     capabilities: []
@@ -161,8 +161,8 @@ OTHER_STEPS = [
     ("ca/t1_tax_and_credits", "ca/federal_tax_after_credits", "ca/cad"),
     ("ca-mb/mb428_credits", "ca-mb/mb428_bracket_rate_line_5", "core/percent"),
     ("ca-mb/mb428", "ca-mb/mb428_tax_after_credits_line_65", "ca/cad"),
-    ("ca-mb/worksheet_mb428", "ca-mb/worksheet_mb428_basic_personal_amount_line_5", "ca/cad"),
-    ("ca-mb/worksheet_mb428", "ca-mb/worksheet_mb428_basic_personal_amount_line_7", "ca/cad"),
+    ("ca-mb/worksheet_mb428", "ca-mb/worksheet_mb428_line_5", "ca/cad"),
+    ("ca-mb/worksheet_mb428", "ca-mb/worksheet_mb428_line_7", "ca/cad"),
     ("ca-mb/worksheet_mb428", "ca-mb/worksheet_mb428_line_8", "ca/cad"),
     ("ca-mb/worksheet_mb428", "ca-mb/worksheet_mb428_basic_personal_amount_line_9", "ca/cad"),
 ]

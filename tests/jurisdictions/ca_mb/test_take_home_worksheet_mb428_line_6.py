@@ -63,9 +63,9 @@ MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / 
 PART = MB_PARTS / "worksheet_mb428_line_6.yaml"
 KIND = "ca-mb/worksheet_mb428_line_6"
 LINE_2 = "ca-mb/worksheet_mb428_line_2"
-LINE_3 = "ca-mb/worksheet_mb428_basic_personal_amount_line_3"
+LINE_3 = "ca-mb/worksheet_mb428_line_3"
 LINE_4 = "ca-mb/worksheet_mb428_line_4"
-LINE_5 = "ca-mb/worksheet_mb428_basic_personal_amount_line_5"
+LINE_5 = "ca-mb/worksheet_mb428_line_5"
 ROUNDING = "ca-mb/exact_rounding"
 FORM_NAME = "ca-mb/worksheet_mb428"
 # The real federal parts the T1 taxable-income form needs, beside the salary and lines 2 to 5.
@@ -86,9 +86,9 @@ FORM = dedent("""\
       required: true
       exports:
         - ca-mb/worksheet_mb428_line_2
-        - ca-mb/worksheet_mb428_basic_personal_amount_line_3
+        - ca-mb/worksheet_mb428_line_3
         - ca-mb/worksheet_mb428_line_4
-        - ca-mb/worksheet_mb428_basic_personal_amount_line_5
+        - ca-mb/worksheet_mb428_line_5
         - ca-mb/worksheet_mb428_line_6
     capabilities: []
     """)

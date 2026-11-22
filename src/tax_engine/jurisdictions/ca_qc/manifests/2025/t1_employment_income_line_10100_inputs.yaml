@@ -11,3 +11,4 @@ inputs:
     reference: "10100"
     unit: ca/cad
     required: true
+    whole_cents: true
