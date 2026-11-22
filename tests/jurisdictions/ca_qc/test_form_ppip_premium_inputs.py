@@ -40,7 +40,8 @@ PRINTED_BASIS = "Provincial parental insurance plan (PPIP) premiums paid (box 55
 EARNINGS_IDENTIFIER = PPIP_INSURABLE_EARNINGS_GIVEN.identifier
 EARNINGS_BASIS = (
     "Enter the amount from box 56 of all of your T4 slips where Quebec is the province of "
-    "employment (if box 56 is blank, enter the amount from box 14 of the T4 slip)"
+    "employment (if box 56 is blank, enter the amount from box 14 of the T4 slip) "
+    "(include employment income that you did not get a T4 slip for)"
 )
 PART = Path(tax_engine.jurisdictions.ca_qc.__file__).parent / (
     "manifests/2025/ppip_premium_inputs.yaml"

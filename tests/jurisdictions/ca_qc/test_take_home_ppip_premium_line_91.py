@@ -273,12 +273,17 @@ def test_the_2000_test_reads_box_56_and_the_salary_only_when_it_is_blank(
     assert str(_line_91(take_home_service, salary, box_56=box_56)) == expected
 
 
-def test_the_insurable_earnings_are_traced_with_the_box_56_figure_or_the_salary(
+def test_the_insurable_earnings_are_the_box_56_figure_when_given(
     take_home_service: TakeHomeService,
 ) -> None:
-    assert _sheet(take_home_service, "50000", box_56="1500").get(
-        PPIP_INSURABLE_EARNINGS
-    ).value == D("1500")
+    sheet = _sheet(take_home_service, "50000", box_56="1500")
+
+    assert sheet.get(PPIP_INSURABLE_EARNINGS).value == D("1500")
+
+
+def test_the_insurable_earnings_are_the_salary_when_box_56_is_blank(
+    take_home_service: TakeHomeService,
+) -> None:
     assert _sheet(take_home_service, "50000").get(PPIP_INSURABLE_EARNINGS).value == D("50000")
 
 

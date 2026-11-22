@@ -22,4 +22,4 @@ inputs:
     unit: ca/cad
     required: false
     default: null
-    basis: 'Enter the amount from box 56 of all of your T4 slips where Quebec is the province of employment (if box 56 is blank, enter the amount from box 14 of the T4 slip)'
+    basis: 'Enter the amount from box 56 of all of your T4 slips where Quebec is the province of employment (if box 56 is blank, enter the amount from box 14 of the T4 slip) (include employment income that you did not get a T4 slip for)'

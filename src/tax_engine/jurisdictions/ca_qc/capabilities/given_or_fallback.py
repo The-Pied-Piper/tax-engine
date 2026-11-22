@@ -38,7 +38,8 @@ class GivenOrFallback(Capability):
     def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
         given = self._input(inputs, self._given)
         given_was_blank = given.is_blank
-        value = self._input(inputs, self._fallback).value if given_was_blank else given.value
+        fallback = self._input(inputs, self._fallback).value
+        value = fallback if given_was_blank else given.value
         return CapabilityResult(
             outputs=(Artifact(self._output, value),),
             trace=(

@@ -131,7 +131,7 @@ def test_a_blank_given_produces_the_fallback() -> None:
     assert compute(computing(), BLANK, D("50000")) == Artifact(OUTPUT, D("50000"))
 
 
-def test_the_fallback_is_not_read_when_a_figure_is_given_but_must_still_be_present() -> None:
+def test_the_fallback_must_be_present_even_when_a_figure_is_given() -> None:
     with pytest.raises(MissingArtifactError, match="fallback"):
         computing().compute((Artifact(GIVEN, D("1")),))
 
@@ -202,14 +202,14 @@ def test_trace_holds_no_text() -> None:
 def test_a_given_figure_reads_in_english() -> None:
     trace = computing().compute((Artifact(GIVEN, D("1500")), Artifact(FALLBACK, D("50000")))).trace
 
-    assert EnglishTraceRenderer().render_all(trace) == ("given (1500.00), as given",)
+    assert EnglishTraceRenderer().render_all(trace) == ("Given (1500.00), as given.",)
 
 
 def test_the_fallback_reads_in_english() -> None:
     trace = computing().compute((Artifact(GIVEN, BLANK), Artifact(FALLBACK, D("50000")))).trace
 
     assert EnglishTraceRenderer().render_all(trace) == (
-        "given was left blank, so fallback (50000.00) is used",
+        "Given was left blank, so fallback (50000.00) is used.",
     )
 
 
