@@ -6,6 +6,7 @@ form:
   name: ca-qc/t1_tax_and_credits
 inputs:
   - name: ca-qc/t1_line_46800
+    title: "Eligible educator school supply tax credit Supplies expenses"
     reference: "46800"
     unit: ca/cad
     required: false

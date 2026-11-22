@@ -5,6 +5,7 @@ form:
   name: ca-qc/schedule_p
 inputs:
   - name: ca-qc/schedule_p_schedule_l_income_line_14
+    title: "Total of lines 22 through 26.1 of Schedule L"
     reference: "14"
     unit: ca/cad
     required: false

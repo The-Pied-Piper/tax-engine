@@ -5,6 +5,7 @@ form:
   name: ca-qc/tp1_income
 inputs:
   - name: ca-qc/tp1_line_139
+    title: "Taxable capital gains"
     reference: "139"
     unit: ca/cad
     required: false

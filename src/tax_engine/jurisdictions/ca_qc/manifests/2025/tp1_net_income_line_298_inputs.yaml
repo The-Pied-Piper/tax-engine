@@ -7,48 +7,56 @@ form:
   name: ca-qc/tp1_net_income
 inputs:
   - name: ca-qc/tp1_line_287
+    title: "Deductions for strategic investments"
     reference: "287"
     unit: ca/cad
     required: false
     default: null
     basis: "Deductions for strategic investments"
   - name: ca-qc/tp1_line_289
+    title: "Non-capital losses from other years"
     reference: "289"
     unit: ca/cad
     required: false
     default: null
     basis: "Non-capital losses from other years"
   - name: ca-qc/tp1_line_290
+    title: "Net capital losses from other years"
     reference: "290"
     unit: ca/cad
     required: false
     default: null
     basis: "Net capital losses from other years"
   - name: ca-qc/tp1_line_291
+    title: "Capital gains deduction for a qualifying business transfer"
     reference: "291"
     unit: ca/cad
     required: false
     default: null
     basis: "Capital gains deduction for a qualifying business transfer"
   - name: ca-qc/tp1_line_292
+    title: "Capital gains deduction"
     reference: "292"
     unit: ca/cad
     required: false
     default: null
     basis: "Capital gains deduction"
   - name: ca-qc/tp1_line_293
+    title: "Deduction for income situated on a reserve"
     reference: "293"
     unit: ca/cad
     required: false
     default: null
     basis: "Deduction for income situated on a reserve"
   - name: ca-qc/tp1_line_295
+    title: "Deductions for certain income"
     reference: "295"
     unit: ca/cad
     required: false
     default: null
     basis: "Deductions for certain income"
   - name: ca-qc/tp1_line_297
+    title: "Miscellaneous deductions"
     reference: "297"
     unit: ca/cad
     required: false

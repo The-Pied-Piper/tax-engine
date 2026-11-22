@@ -5,6 +5,7 @@ form:
   name: ca-qc/tp1_credits
 inputs:
   - name: ca-qc/tp1_income_replacement_adjustment_line_358
+    title: "Adjustment for income replacement indemnities"
     reference: "358"
     unit: ca/cad
     required: false

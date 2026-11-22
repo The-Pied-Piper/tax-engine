@@ -6,6 +6,7 @@ form:
   name: ca-qc/schedule_p
 inputs:
   - name: ca-qc/schedule_p_supplement_months_line_58
+    title: "Number of months for which you meet the requirements for claiming the supplement to the work premium"
     reference: "58"
     required: false
     default: null

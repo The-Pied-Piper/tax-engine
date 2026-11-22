@@ -5,6 +5,7 @@ form:
   name: ca-qc/tp1_income
 inputs:
   - name: ca-qc/tp1_line_114
+    title: "Old Age Security pension, T4A(OAS) slip"
     reference: "114"
     unit: ca/cad
     required: false

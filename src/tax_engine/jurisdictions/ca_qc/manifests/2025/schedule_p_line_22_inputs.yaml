@@ -5,6 +5,7 @@ form:
   name: ca-qc/schedule_p
 inputs:
   - name: ca-qc/schedule_p_deductible_income_line_22
+    title: "Amount included in one of the above sources of income and entitling you to a deduction on line 293 of your return"
     reference: "22"
     unit: ca/cad
     required: false

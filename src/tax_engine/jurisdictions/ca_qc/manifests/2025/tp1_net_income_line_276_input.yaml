@@ -5,8 +5,9 @@ form:
   name: ca-qc/tp1_net_income
 inputs:
   - name: ca-qc/tp1_adjustment_of_deductions_line_276
+    title: "Adjustment of deductions"
     reference: "276"
     unit: ca/cad
     required: false
     default: null
-    basis: 'Adjustment of deductions. Specify: 277 + 276'
+    basis: "Adjustment of deductions. Specify: 277 + 276"

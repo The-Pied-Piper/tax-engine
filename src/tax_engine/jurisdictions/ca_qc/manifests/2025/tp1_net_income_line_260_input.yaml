@@ -5,6 +5,7 @@ form:
   name: ca-qc/tp1_net_income
 inputs:
   - name: ca-qc/tp1_investment_expenses_adjustment_line_260
+    title: "Adjustment of investment expenses"
     reference: "260"
     unit: ca/cad
     required: false
