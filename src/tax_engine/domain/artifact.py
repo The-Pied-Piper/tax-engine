@@ -182,9 +182,9 @@ class ArtifactRegistry(Registry[object]):
         identifier taken by another object is an error, and then nothing from the catalog is
         registered.
         """
-        pending = [kind for kind in catalog.kinds if self.identifier_of(kind) != kind.identifier]
+        pending = [kind for kind in catalog.kinds if self._items.get(kind.identifier) is not kind]
         for kind in pending:
-            if kind.identifier in self.identifiers():
+            if kind.identifier in self._items:
                 raise DuplicateRegistrationError(f"{kind.identifier!r} is already registered")
         for kind in pending:
             self.register(kind.identifier, kind)
