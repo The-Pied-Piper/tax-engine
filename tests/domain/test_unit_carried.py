@@ -287,7 +287,7 @@ def test_an_imported_figure_with_no_unit_has_none() -> None:
     assert sheet.unit("income") is None
 
 
-# One record list, one field: the consumers and a producer of the field `ex/fee`.
+# Each reader has a list of audits of its own with the field `ex/fee`; one form can also produce it.
 FEE = AmountKind("ex/fee")
 FEE2 = AmountKind("ex/fee_less")
 FEE_TOTAL = AmountKind("ex/fee_total")
@@ -328,9 +328,8 @@ def producer(name: str, unit: str | None) -> FormComposition:
     )
 
 
-# An input is held by one form, so two forms can no longer both read a field as their own input:
-# the figure's units are compared between the one form that holds or produces it and the form
-# that reads it.
+# A figure's units are compared between every form that reads it (each in its own list of
+# instances) and the form that produces it.
 
 
 def test_forms_reading_a_field_in_one_unit_agree() -> None:
