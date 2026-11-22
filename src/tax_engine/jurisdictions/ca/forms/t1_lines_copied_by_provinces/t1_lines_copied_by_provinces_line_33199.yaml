@@ -2,8 +2,8 @@
 # other dependants (use Federal Worksheet)". The optional input (`ca/other_dependants_medical_expenses`, blank when the
 # filer has none) is read by this step, which is the one line the T1 prints for it, and the blank
 # reads as 0. The form exports the line (`ca/other_dependants_medical_expenses_line_33199`) for the form that prints it
-# again (SK428 line 49). It is not added into the federal sums here: the take-home T1 leaves those
-# lines out.
+# again (SK428 line 49). It is not added into the federal sums here: the T1 reads it as line 111 into
+# line 112.
 form:
   name: ca/t1_lines_copied_by_provinces
 capabilities:
