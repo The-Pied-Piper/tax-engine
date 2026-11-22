@@ -85,7 +85,8 @@ SK428_DONATIONS_AMOUNT_LINE_54 = AmountKind.declare(
     CATALOG, "sk428_donations_amount_line_54", non_negative=True
 )
 """Donations amount, SK428 line 54 box A "Amount from line 13 of your federal Schedule 9": the
-amount as the filer gives it, an optional input; a blank input is read as blank."""
+amount, a record total of Schedule 9's export
+(`ca/schedule_9.donations_and_gifts_line_13`), 0 for a salary-only caller."""
 
 SK428_DONATIONS_CREDIT_AT_RATE_LINE_54 = AmountKind.declare(
     CATALOG, "sk428_donations_credit_at_rate_line_54", non_negative=True
@@ -97,7 +98,8 @@ SK428_DONATIONS_AMOUNT_LINE_55 = AmountKind.declare(
     CATALOG, "sk428_donations_amount_line_55", non_negative=True
 )
 """Donations amount, SK428 line 55 box A "Amount from line 14 of your federal Schedule 9": the
-amount as the filer gives it, an optional input; a blank input is read as blank."""
+amount, a record total of Schedule 9's export
+(`ca/schedule_9.donations_and_gifts_line_14`), 0 for a salary-only caller."""
 
 SK428_DONATIONS_CREDIT_AT_RATE_LINE_55 = AmountKind.declare(
     CATALOG, "sk428_donations_credit_at_rate_line_55", non_negative=True

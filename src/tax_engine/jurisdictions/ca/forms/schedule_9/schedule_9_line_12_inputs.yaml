@@ -1,0 +1,14 @@
+# Schedule 9 (5000-S9, 2025) line 12's input: "Line 12: Line 10 plus line 11 =". Lines 1 to 11 feed
+# nothing else the engine uses, so the line is typed in once, as the form's own total. A salary-only
+# caller has no donations, so a request that leaves the line out is read as blank, and the step in
+# schedule_9_line_12.yaml reads that blank as 0.
+form:
+  name: ca/schedule_9
+inputs:
+  - name: ca/donations_and_gifts_line_12
+    title: "Donations and gifts"
+    reference: "12"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 12: Line 10 plus line 11 ="

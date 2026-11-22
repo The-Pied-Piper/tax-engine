@@ -26,8 +26,8 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import DONATIONS_AND_GIFTS_LINE_12
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tax_engine.jurisdictions.ca_ab import catalog as ab
 from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_ab.support import (
     alberta_capabilities,
@@ -41,10 +41,7 @@ from tests.kinds import non_negative
 D = Decimal
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
 # The real parts this line needs, beside the salary, Schedule 8 and the T1 taxable income parts.
-LINE_PARTS = (
-    "ab428_credits_line_55_input.yaml",
-    "ab428_credits_line_55_box_a.yaml",
-)
+LINE_PARTS = ("ab428_credits_line_55_box_a.yaml",)
 HEADER = dedent("""\
     jurisdiction: CA-AB
     version: 1
@@ -64,6 +61,7 @@ FORM = dedent("""\
 
 def _part_files() -> Iterator[Path]:
     yield from form_parts("schedule_8")
+    yield from form_parts("schedule_9")
     yield from form_parts("t1_employment_income", "t1_taxable_income")
     for name in LINE_PARTS:
         yield ALBERTA_PARTS / name
@@ -106,6 +104,16 @@ def _value(sheet: Worksheet, identifier: str) -> Decimal:
 
 PART = ALBERTA_PARTS / "ab428_credits_line_55_box_a.yaml"
 KIND = "ca-ab/ab428_donations_amount_rounded_line_55"
+# The amount is the Schedule 9 export, which the part totals (a form reads another form's export
+# only as a record list) under the kind the old typed input had.
+RECORD_TOTAL: dict[str, Any] = {
+    "name": "core/record_total",
+    "title": "Amount from line 13 of your federal Schedule 9",
+    "reference": "55 box A",
+    "unit": "ca/cad",
+    "consumes": {"records": "ca/schedule_9.donations_and_gifts_line_13"},
+    "produces": {"output": "ca-ab/ab428_donations_amount_line_55"},
+}
 STEP: dict[str, Any] = {
     "name": "core/sum",
     "reference": "55 box A",
@@ -119,7 +127,7 @@ STEP: dict[str, Any] = {
 # salary, given optional inputs, expected line
 CASES: list[tuple[str, list[Artifact[Decimal]], str]] = [
     ("70000", [], "0.00"),
-    ("70000", [Artifact(ab.AB428_DONATIONS_AMOUNT_LINE_55, D("200.005"))], "200.01"),
+    ("70000", [Artifact(DONATIONS_AND_GIFTS_LINE_12, D("150.005"))], "150.01"),
 ]
 
 
@@ -133,7 +141,7 @@ def test_the_line_is_ab428_donations_amount_rounded_line_55_at_each_case(
 def test_the_part_names_the_form_and_is_one_step_as_the_form_prints_the_line() -> None:
     part = yaml.safe_load(PART.read_text(encoding="utf-8"))
 
-    assert part == {"form": {"name": "ca-ab/ab428_credits"}, "capabilities": [STEP]}
+    assert part == {"form": {"name": "ca-ab/ab428_credits"}, "capabilities": [RECORD_TOTAL, STEP]}
     assert list(part) == ["form", "capabilities"]
 
 

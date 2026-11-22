@@ -2,8 +2,8 @@
 
 Form text (Form MB428, CRA 5007-c-25e.txt): line 54 "Amount from line 13 of your federal Schedule 9
 multiplied by 10.8% =", line 55 "Amount from line 14 of your federal Schedule 9 multiplied by 17.4%
-=" and line 56 "Line 54 plus line 55 =". The two Schedule 9 amounts are the caller's optional
-inputs; lines 54 to 56 are computed.
+=" and line 56 "Line 54 plus line 55 =". Schedule 9 line 12 is the caller's optional input
+(lines 13 and 14 are computed from it); lines 54 to 56 are computed.
 
 The hand figures are asserted (not a CRA example). Line 53 at a $70,000 salary is 2,176.12, and line
 57 is line 53 plus line 56.
@@ -19,6 +19,7 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import DONATIONS_AND_GIFTS_LINE_12
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 
 D = Decimal
@@ -27,8 +28,7 @@ MANITOBA = JurisdictionCode("CA-MB")
 
 def _credits(salary: str, **given: str) -> Worksheet:
     inputs = {
-        "line_54": mb.MB428_DONATIONS_AMOUNT_LINE_54,
-        "line_55": mb.MB428_DONATIONS_AMOUNT_LINE_55,
+        "line_12": DONATIONS_AND_GIFTS_LINE_12,
     }
     artifacts = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     artifacts += [Artifact(inputs[name], D(value)) for name, value in given.items()]
@@ -52,7 +52,7 @@ def test_a_salary_only_caller_has_no_donations_claim() -> None:
 
 
 def test_each_schedule_9_amount_is_at_its_own_rate() -> None:
-    sheet = _credits("70000", line_54="200", line_55="1000")
+    sheet = _credits("70000", line_12="1200")
 
     assert _value(sheet, mb.MB428_DONATIONS_CREDIT_AT_RATE_LINE_54) == D("21.60")
     assert _value(sheet, mb.MB428_DONATIONS_CREDIT_AT_RATE_LINE_55) == D("174.00")
@@ -62,6 +62,6 @@ def test_each_schedule_9_amount_is_at_its_own_rate() -> None:
 
 
 def test_a_half_cent_rounds_up() -> None:
-    sheet = _credits("70000", line_54="0.05")
+    sheet = _credits("70000", line_12="0.05")
 
     assert _value(sheet, mb.MB428_DONATIONS_CREDIT_AT_RATE_LINE_54) == D("0.01")

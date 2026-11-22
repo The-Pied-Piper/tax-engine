@@ -85,6 +85,7 @@ CASES = [("20000", "1877.42"), ("200000", "2140.53")]
 
 def _part_files() -> Iterator[Path]:
     yield from form_parts("schedule_8")
+    yield from form_parts("schedule_9")
     yield from form_parts("t2204")
     yield from form_parts(
         "t1_employment_income", "t1_taxable_income", "t1_lines_copied_by_provinces"
@@ -113,10 +114,8 @@ def _part_files() -> Iterator[Path]:
     yield ALBERTA_PARTS / "ab428_credits_line_51.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_52.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_54.yaml"
-    yield ALBERTA_PARTS / "ab428_credits_line_55_input.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_55_box_a.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_55.yaml"
-    yield ALBERTA_PARTS / "ab428_credits_line_56_input.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_56_box_a.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_56.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_57.yaml"

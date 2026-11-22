@@ -153,8 +153,8 @@ AB428_DONATIONS_AMOUNT_LINE_55 = AmountKind.declare(
     CATALOG, "ab428_donations_amount_line_55", non_negative=True
 )
 """Donations and gifts, AB428 line 55 "Amount from line 13 of your federal Schedule 9 multiplied by
-60%": the Schedule 9 amount as the filer gives it, an optional input; a blank input is read as 0 by
-the line 55 step."""
+60%": the Schedule 9 amount, a record total of Schedule 9's export
+(`ca/schedule_9.donations_and_gifts_line_13`), 0 for a salary-only caller."""
 
 AB428_DONATIONS_AMOUNT_ROUNDED_LINE_55 = AmountKind.declare(
     CATALOG, "ab428_donations_amount_rounded_line_55", non_negative=True
@@ -172,8 +172,8 @@ AB428_DONATIONS_AMOUNT_LINE_56 = AmountKind.declare(
     CATALOG, "ab428_donations_amount_line_56", non_negative=True
 )
 """Donations and gifts, AB428 line 56 "Amount from line 14 of your federal Schedule 9 multiplied by
-21%": the Schedule 9 amount as the filer gives it, an optional input; a blank input is read as 0 by
-the line 56 step."""
+21%": the Schedule 9 amount, a record total of Schedule 9's export
+(`ca/schedule_9.donations_and_gifts_line_14`), 0 for a salary-only caller."""
 
 AB428_DONATIONS_AMOUNT_ROUNDED_LINE_56 = AmountKind.declare(
     CATALOG, "ab428_donations_amount_rounded_line_56", non_negative=True
