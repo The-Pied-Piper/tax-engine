@@ -2184,7 +2184,6 @@ SIGNED = frozenset(
         "ca/t691_line_2_amount",
         "ca/t691_line_8_plus_line_12",
         "ca/t691_line_13_amount",
-        "ca/t691_line_1_minus_line_2_of_part_7",
         "ca/fuel_charge_part_5a_credit",
         "ca/fuel_charge_chart_c_total_ab",
         "ca/fuel_charge_chart_c_total_mb",

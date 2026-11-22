@@ -65,16 +65,18 @@ def test_line_2_is_one_sum_step_that_reads_the_blank_as_zero_and_rounds_to_the_c
 @pytest.mark.parametrize(
     ("given", "expected"),
     [
+        # Line 1 is given large enough that line 1 minus line 2 (which the T691 refuses below 0)
+        # is not negative; line 2 is what is read.
         # Left blank: read as 0.
         ({}, "0.00"),
         # A whole-cent figure is kept.
-        ({"line_2": "1234.56"}, "1234.56"),
+        ({"line_1": "100000.00", "line_2": "1234.56"}, "1234.56"),
         # A half cent rounds half up to the cent.
-        ({"line_2": "1000.005"}, "1000.01"),
-        ({"line_2": "0.004"}, "0.00"),
+        ({"line_1": "100000.00", "line_2": "1000.005"}, "1000.01"),
+        ({"line_1": "100000.00", "line_2": "0.004"}, "0.00"),
         # No floor is printed: a negative figure is kept, rounded half up to the cent.
-        ({"line_2": "-250.00"}, "-250.00"),
-        ({"line_2": "-1000.005"}, "-1000.01"),
+        ({"line_1": "100000.00", "line_2": "-250.00"}, "-250.00"),
+        ({"line_1": "100000.00", "line_2": "-1000.005"}, "-1000.01"),
     ],
 )
 def test_the_amount_reads_blank_as_0_and_rounds_to_the_cent(

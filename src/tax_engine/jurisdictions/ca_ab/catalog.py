@@ -225,7 +225,7 @@ AB428_MINIMUM_TAX_T691_AMOUNT_LINE_67 = AmountKind.declare(
 """Alberta additional tax for minimum tax purposes, AB428 line 67 "Line 67: Form T691: line 1 minus
 line 2 of Part 7 multiplied by 35%": the amount from Form T691, box A of the line, a record total of
 the T691's export (`ca/t691_line_1_minus_line_2_of_part_7`), 0 for a salary-only caller. The
-form prints no floor, so it is signed. The 35% multiply is a separate step."""
+35% multiply is a separate step."""
 
 AB428_ADDITIONAL_MINIMUM_TAX_LINE_67 = AmountKind.declare(
     CATALOG, "ab428_additional_minimum_tax_line_67"

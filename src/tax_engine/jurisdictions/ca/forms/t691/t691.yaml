@@ -5,10 +5,12 @@
 # in for them; the form owns them, so the provincial forms import its exports and never ask again.
 # Each typed line has a core/sum part that reads blank as 0 and rounds to the cent; the computed
 # lines read those. A negative line 1 is refused, as its kind is non-negative; lines 2 and 13 are
-# signed, as the form prints no floor on them.
+# signed, as the form prints no floor on them. The difference of lines 1 and 2 is non-negative: the
+# form prints no floor, but Part 7 is completed only when minimum tax is payable (Part 5: "If line
+# 11 is positive, complete parts 6 and 7"), so that is the form's intent.
 # Exports, each read as a record list, in this order:
-#   - "Line 1 minus line 2 of Part 7" (`ca/t691_line_1_minus_line_2_of_part_7`, signed, no floor
-#     is printed): AB428 line 67, MB428 line 66 and SK428 line 68, which print "Form T691: line 1
+#   - "Line 1 minus line 2 of Part 7" (`ca/t691_line_1_minus_line_2_of_part_7`, not below 0: the
+#     form's intent, no floor is printed): AB428 line 67, MB428 line 66 and SK428 line 68, which print "Form T691: line 1
 #     minus line 2 of Part 7".
 #   - Line 14 (`ca/t691_additional_taxes_for_minimum_tax_carryover_line_14`, line 1 minus line 13,
 #     not below 0): BC428 line 69 and NL428 line 71, which print "Amount from line 14 of Part 7 of

@@ -27,6 +27,7 @@ import tax_engine.jurisdictions.ca_sk
 from tax_engine import build_tax_computation
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.errors import CapabilityContractError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.worksheet import Worksheet
@@ -105,16 +106,25 @@ def test_t691_exports_line_1_minus_line_2_and_line_14_of_the_same_three_lines() 
 
 
 @pytest.mark.parametrize("code", ["CA-AB", "CA-MB", "CA-SK"])
-def test_line_2_above_line_1_gives_a_negative_figure_the_form_prints_no_floor_for(
-    code: str,
-) -> None:
-    # Line 1 of 1,000.00 minus line 2 of 3,000.00 is -2,000.00, times the printed rate.
+def test_line_2_above_line_1_is_refused_once_at_the_t691_figure(code: str) -> None:
+    # Line 1 of 1,000.00 minus line 2 of 3,000.00 is -2,000.00: the form prints no floor, but the
+    # kind is not negative (Part 7 is completed only when minimum tax is payable), so the engine
+    # refuses it at the T691, whichever province reads it.
+    with pytest.raises(
+        CapabilityContractError, match="t691_line_1_minus_line_2_of_part_7 -2000.00"
+    ):
+        _compute(code, {LINE_1: "1000.00", LINE_2: "3000.00"})
+
+
+@pytest.mark.parametrize("code", ["CA-AB", "CA-MB", "CA-SK"])
+def test_a_negative_line_2_alone_gives_a_positive_figure(code: str) -> None:
+    # Line 2 is signed: line 1 of 1,000.00 minus line 2 of -200.00 is 1,200.00, times the rate.
     form, name, rate, _ = FIGURES[code]
 
-    worksheets = _compute(code, {LINE_1: "1000.00", LINE_2: "3000.00"})
+    worksheets = _compute(code, {LINE_1: "1000.00", LINE_2: "-200.00"})
 
-    assert _figure(worksheets, "ca/t691", "ca/t691_line_1_minus_line_2_of_part_7") == D("-2000.00")
-    assert _figure(worksheets, form, name) == D("-2000.00") * rate
+    assert _figure(worksheets, "ca/t691", "ca/t691_line_1_minus_line_2_of_part_7") == D("1200.00")
+    assert _figure(worksheets, form, name) == D("1200.00") * rate
 
 
 @pytest.mark.parametrize("code", ["CA-BC", "CA-NL"])

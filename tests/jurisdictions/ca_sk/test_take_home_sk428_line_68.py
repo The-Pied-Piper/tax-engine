@@ -26,6 +26,7 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.errors import CapabilityContractError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
@@ -197,9 +198,8 @@ def test_the_amount_is_a_record_total_of_the_t691_export_with_no_input_of_its_ow
     assert first["produces"] == {"output": AMOUNT}
 
 
-def test_line_2_above_line_1_gives_a_negative_line_68(tmp_path: Path) -> None:
-    # Line 1 minus line 2 of Part 7 is -10000 (line 2 of 10000, line 1 blank): -10000 x 50%.
-    value = _line_68(tmp_path, "70000", "-10000")
-
-    assert value == D("-5000.00")
-    assert str(value) == "-5000.00"
+def test_line_2_above_line_1_is_refused_at_the_t691_figure(tmp_path: Path) -> None:
+    # Line 1 minus line 2 of Part 7 is -10000 (line 2 of 10000, line 1 blank): the T691 figure is
+    # not below 0, so the engine refuses it there, once; line 68 never sees a negative.
+    with pytest.raises(CapabilityContractError, match="t691_line_1_minus_line_2_of_part_7 -10000"):
+        _line_68(tmp_path, "70000", "-10000")

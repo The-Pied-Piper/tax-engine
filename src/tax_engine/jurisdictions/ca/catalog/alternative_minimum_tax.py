@@ -1179,12 +1179,15 @@ T691_LINE_13_AMOUNT = AmountKind.declare(CATALOG, "t691_line_13_amount")
 input (`ca/t691_line_8_plus_line_12`), read as 0 when blank, rounded to the cent. Signed."""
 
 T691_LINE_1_MINUS_LINE_2_OF_PART_7 = AmountKind.declare(
-    CATALOG, "t691_line_1_minus_line_2_of_part_7"
+    CATALOG, "t691_line_1_minus_line_2_of_part_7", non_negative=True
 )
 """Line 1 minus line 2 of Part 7, Form T691 Part 7 "Form T691: line 1 minus line 2 of Part 7", the
 words AB428 line 67, MB428 line 66 and SK428 line 68 print: line 1 less line 2, each blank read as
-0, rounded to the cent. The form prints no floor, so the kind is signed. Exported by the T691
-(`t691_line_1_minus_line_2.yaml`)."""
+0, rounded to the cent. Not below 0: Part 7 is completed only when minimum tax is payable (Part 5
+"If line 11 is positive, complete parts 6 and 7"), so a negative difference is not a state the form
+reaches. The form prints no floor on the difference; the kind's non-negative check is the form's
+intent, not a printed instruction, and the one place the engine refuses a negative here. Exported by
+the T691 (`t691_line_1_minus_line_2.yaml`)."""
 
 T691_ADDITIONAL_TAXES_FOR_MINIMUM_TAX_CARRYOVER_LINE_14 = AmountKind.declare(
     CATALOG, "t691_additional_taxes_for_minimum_tax_carryover_line_14", non_negative=True

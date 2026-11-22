@@ -4,7 +4,7 @@
 # up to the cent. The T691 amount (box A) is what the form prints, line 1 minus line 2 of Part 7,
 # which the T691 form computes and exports (`ca/t691_line_1_minus_line_2_of_part_7`), so the first
 # step totals that export (a form reads another form's export only as a record list) and the second
-# applies the rate. The form prints no floor, so the figure can be negative. The form does not name
+# applies the rate. The export is not negative (see the T691 form). The form does not name
 # the boxes; "box A" and "box B" are the owner's naming.
 form:
   name: ca-ab/ab428

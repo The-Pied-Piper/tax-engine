@@ -41,6 +41,7 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.errors import CapabilityContractError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY
@@ -327,25 +328,9 @@ def test_line_71_is_line_69_minus_line_70_not_below_zero_when_line_70_is_given(
     assert not line_71.is_signed()
 
 
-def test_a_negative_line_69_is_floored_to_zero_on_line_71(tmp_path: Path) -> None:
-    # The Form T691 input is signed: at 20,000 line 67 is 0.00 and -1000 x 50% = -500.00 makes
-    # line 69 negative; line 71 floors it at 0 whether line 70 is blank or given.
-    sheet = _sheet(tmp_path, "20000", amount="-1000")
-    assert _line(sheet, LINE_69) == D("-500.00")
-    assert _line(sheet, IDENTIFIER) == ZERO
-    assert str(_line(sheet, IDENTIFIER)) == "0.00"
-
-    sheet = _sheet(tmp_path / "given", "20000", "100.00", amount="-1000")
-    assert _line(sheet, IDENTIFIER) == ZERO
-    assert not _line(sheet, IDENTIFIER).is_signed()
-
-
-def test_a_negative_t691_amount_lowers_line_71_through_line_69(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "70000", "1000.00", amount="-1000")
-
-    assert _line(sheet, LINE_69) == D("4592.30")
-    assert _line(sheet, IDENTIFIER) == D("3592.30")
-    assert _line(sheet, IDENTIFIER) == _derived(D("70000"), D("1000.00"), D("-1000"))
+def test_a_negative_t691_amount_is_refused_at_the_t691_figure(tmp_path: Path) -> None:
+    with pytest.raises(CapabilityContractError, match="t691_line_1_minus_line_2_of_part_7 -1000"):
+        _sheet(tmp_path, "70000", "1000.00", amount="-1000")
 
 
 def test_the_step_traces_one_subtracted_not_below_zero_line_with_the_cent_rounding(

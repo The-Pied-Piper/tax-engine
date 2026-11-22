@@ -25,6 +25,7 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.errors import CapabilityContractError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
@@ -130,11 +131,6 @@ def test_a_salary_only_caller_who_leaves_out_the_amount_gets_0(tmp_path: Path, s
         ("5000.00", "2500.00"),
         # 0.01 x 50% = 0.005, a tie, rounded half-up to 0.01.
         ("0.01", "0.01"),
-        # Line 2 above line 1 (line 1 minus line 2 of -1,000.00): the form prints no floor, so the
-        # negative stands: -1,000.00 x 50% = -500.00.
-        ("-1000.00", "-500.00"),
-        # -0.01 x 50% = -0.005, a tie, rounded half up (away from zero) to -0.01.
-        ("-0.01", "-0.01"),
     ],
 )
 def test_line_66_is_50_percent_of_the_amount_rounded_half_up(
@@ -144,6 +140,25 @@ def test_line_66_is_50_percent_of_the_amount_rounded_half_up(
 
     assert value == D(expected)
     assert str(value) == expected
+
+
+def test_line_2_above_line_1_is_refused_at_the_t691_figure(tmp_path: Path) -> None:
+    # Line 1 minus line 2 of -1,000.00: the T691 figure is not below 0, so the engine refuses it
+    # there, once; line 66 never sees a negative.
+    with pytest.raises(CapabilityContractError, match="part_7 -1000.00"):
+        _line_66(tmp_path, "70000", "-1000.00")
+
+
+def test_a_negative_line_2_alone_still_gives_a_positive_amount(tmp_path: Path) -> None:
+    # Line 2 is signed: line 1 of 1,000.00 minus line 2 of -200.00 is 1,200.00, 50% is 600.00.
+    kinds = manitoba_kinds()
+    given = [
+        Artifact(kinds.kind("ca/t691_minimum_amount"), D("1000.00")),
+        Artifact(kinds.kind("ca/t691_basic_federal_tax"), D("-200.00")),
+    ]
+    (sheet,) = _service(tmp_path).compute(CODE, 2025, *given)["ca-mb/mb428"]
+
+    assert sheet.get(kinds.kind(LINE_66)).value == D("600.00")
 
 
 def test_the_part_is_one_apply_rate_step_over_the_line_66_amount() -> None:
@@ -174,7 +189,7 @@ def test_the_step_is_titled_with_the_heading_the_form_prints_above_the_line() ->
     assert _step()["title"] == "Manitoba additional tax for minimum tax purposes"
 
 
-def test_the_kinds_are_registered_signed_decimal_amounts_as_the_form_prints_no_floor() -> None:
+def test_the_kinds_are_registered_non_negative_decimal_amounts() -> None:
     kinds = manitoba_kinds()
     kind = kinds.kind(LINE_66)
 
@@ -182,9 +197,8 @@ def test_the_kinds_are_registered_signed_decimal_amounts_as_the_form_prints_no_f
     assert isinstance(kind, AmountKind)
     assert kind.identifier == LINE_66
     assert kind.value_type is Decimal
-    assert not non_negative(kind)
-    assert not non_negative(kinds.kind(AMOUNT))
-    assert Artifact(kind, D("-0.01")).value == D("-0.01")
+    assert non_negative(kind)
+    assert non_negative(kinds.kind(AMOUNT))
 
 
 def test_the_amount_is_a_record_total_of_the_t691_export_with_no_input_of_its_own() -> None:

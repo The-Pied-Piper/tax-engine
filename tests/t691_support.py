@@ -26,7 +26,8 @@ def basic_federal_tax(amount: str) -> Artifact[Decimal]:
 
 def line_1_minus_line_2(amount: str) -> list[Artifact[Decimal]]:
     """Starting artifacts that make T691 Part 7 line 1 minus line 2 equal to `amount`: line 1 when
-    it is not negative, else line 2 with the absolute value (line 1 left blank)."""
+    it is not negative, else line 2 with the absolute value (line 1 left blank). A negative `amount`
+    is a figure the engine refuses at the T691, so only refusal tests pass one."""
     value = Decimal(amount)
     if value >= 0:
         return [minimum_amount(amount)]

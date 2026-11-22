@@ -28,6 +28,7 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.errors import CapabilityContractError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
@@ -128,14 +129,32 @@ def test_a_salary_only_caller_who_leaves_out_the_amount_gets_0(tmp_path: Path, s
         ("5000.00", "1750.00"),
         # 0.10 x 35% = 0.035, a tie, rounded half-up to 0.04.
         ("0.10", "0.04"),
-        # Line 2 above line 1 (line 1 minus line 2 of -1,000.00): negative, not floored.
-        ("-1000.00", "-350.00"),
     ],
 )
 def test_line_67_is_35_percent_of_the_amount_rounded_half_up(
     tmp_path: Path, amount: str, expected: str
 ) -> None:
     assert _line_67(tmp_path, "70000", amount) == D(expected)
+
+
+def test_line_2_above_line_1_is_refused_at_the_t691_figure(tmp_path: Path) -> None:
+    # Line 1 minus line 2 of -1,000.00: the T691 figure is not below 0, so the engine refuses it
+    # there, once; line 67 never sees a negative.
+    with pytest.raises(CapabilityContractError, match="part_7 -1000.00"):
+        _line_67(tmp_path, "70000", "-1000.00")
+
+
+def test_a_negative_line_2_alone_still_gives_a_positive_amount(tmp_path: Path) -> None:
+    # Line 2 is signed: line 1 of 1,000.00 minus line 2 of -200.00 is 1,200.00, 35% is 420.00.
+    kinds = alberta_kinds()
+    given = [
+        Artifact(kinds.kind(SALARY), D("70000")),
+        Artifact(kinds.kind("ca/t691_minimum_amount"), D("1000.00")),
+        Artifact(kinds.kind("ca/t691_basic_federal_tax"), D("-200.00")),
+    ]
+    (sheet,) = _service(tmp_path).compute(CODE, 2025, *given)["ca-ab/ab428"]
+
+    assert sheet.get(kinds.kind(LINE_67)).value == D("420.00")
 
 
 def test_the_part_is_one_apply_rate_step_over_the_line_67_amount() -> None:

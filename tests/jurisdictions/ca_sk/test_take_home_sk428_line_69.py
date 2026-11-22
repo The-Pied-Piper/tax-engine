@@ -38,6 +38,7 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.errors import CapabilityContractError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY
@@ -320,19 +321,9 @@ def test_a_t691_amount_of_1000_adds_500_to_line_67(
     assert str(_line(sheet, IDENTIFIER)) == expected
 
 
-def test_a_negative_t691_amount_gives_a_negative_line_68_and_a_signed_line_69(
-    tmp_path: Path,
-) -> None:
-    # The Form T691 input is signed: -1000 x 50% = -500.00, added to line 67 with no floor.
-    sheet = _sheet(tmp_path, "70000", amount="-1000")
-    assert _line(sheet, LINE_68) == D("-500.00")
-    assert _line(sheet, IDENTIFIER) == D("4592.30") == _derived(D("70000"), D("-1000"))
-
-    sheet = _sheet(tmp_path / "low", "20000", amount="-1000")
-    assert _line(sheet, LINE_67) == ZERO
-    assert _line(sheet, IDENTIFIER) == D("-500.00")
-    assert str(_line(sheet, IDENTIFIER)) == "-500.00"
-    assert _line(sheet, IDENTIFIER).is_signed()
+def test_a_negative_t691_amount_is_refused_at_the_t691_figure(tmp_path: Path) -> None:
+    with pytest.raises(CapabilityContractError, match="t691_line_1_minus_line_2_of_part_7 -1000"):
+        _sheet(tmp_path, "70000", amount="-1000")
 
 
 def test_line_69_reads_lines_61_and_64_through_line_67(tmp_path: Path) -> None:
@@ -423,6 +414,6 @@ def test_line_69_is_a_registered_signed_decimal_amount_kind() -> None:
     kind = kinds.kind(IDENTIFIER)
     assert isinstance(kind, AmountKind)
     assert kind.value_type is Decimal
-    # The form prints no floor on line 69, and line 68 is signed, so the kind is not non_negative.
+    # The form prints no floor on line 69, so the kind is not non_negative.
     assert not non_negative(kind)
     assert kind is vars(sk_catalog)["SK428_TAX_LINE_69"]
