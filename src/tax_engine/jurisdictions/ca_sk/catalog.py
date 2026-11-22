@@ -84,8 +84,8 @@ blank line 49 is read as 0)."""
 SK428_DONATIONS_AMOUNT_LINE_54 = AmountKind.declare(
     CATALOG, "sk428_donations_amount_line_54", non_negative=True
 )
-"""Donations amount, SK428 line 54 box A "Amount from line 13 of your federal Schedule 9": a
-record total of the T1's export (`ca/medical_expenses_line_33099`), 0 for a salary-only caller."""
+"""Donations amount, SK428 line 54 box A "Amount from line 13 of your federal Schedule 9": the
+amount as the filer gives it, an optional input; a blank input is read as blank."""
 
 SK428_DONATIONS_CREDIT_AT_RATE_LINE_54 = AmountKind.declare(
     CATALOG, "sk428_donations_credit_at_rate_line_54", non_negative=True
@@ -96,8 +96,8 @@ multiplied by 10.5% =": the Schedule 9 amount times 10.5%; a blank amount is rea
 SK428_DONATIONS_AMOUNT_LINE_55 = AmountKind.declare(
     CATALOG, "sk428_donations_amount_line_55", non_negative=True
 )
-"""Donations amount, SK428 line 55 box A "Amount from line 14 of your federal Schedule 9": a
-record total of the T1's export (`ca/medical_expenses_line_33099`), 0 for a salary-only caller."""
+"""Donations amount, SK428 line 55 box A "Amount from line 14 of your federal Schedule 9": the
+amount as the filer gives it, an optional input; a blank input is read as blank."""
 
 SK428_DONATIONS_CREDIT_AT_RATE_LINE_55 = AmountKind.declare(
     CATALOG, "sk428_donations_credit_at_rate_line_55", non_negative=True
@@ -201,16 +201,16 @@ SK428_VENTURE_CAPITAL_CREDIT_SASKATCHEWAN_LINE_75 = AmountKind.declare(
 )
 """Venture capital tax credit, Saskatchewan corporations, SK428 line 75 "For investments in venture
 capital corporations registered in Saskatchewan: Enter your tax credit from T2C Slip (Sask.).
-(maximum $875)": a record total of the T1's export
-(`ca/other_dependants_medical_expenses_line_33199`), 0 for a salary-only caller."""
+(maximum $875)": the amount as the filer gives it, an optional input; a blank input is read as
+blank."""
 
 SK428_VENTURE_CAPITAL_CREDIT_FEDERAL_LINE_76 = AmountKind.declare(
     CATALOG, "sk428_venture_capital_credit_federal_line_76", non_negative=True
 )
 """Venture capital tax credit, federally registered corporations, SK428 line 76 "For investments in
 venture capital corporations registered federally: Enter your tax credit from T2C Slip (Sask.).
-(maximum $875)": a record total of the T1's export
-(`ca/other_dependants_medical_expenses_line_33199`), 0 for a salary-only caller."""
+(maximum $875)": the amount as the filer gives it, an optional input; a blank input is read as
+blank."""
 
 SK428_LABOUR_SPONSORED_CREDIT_LINE_77 = AmountKind.declare(
     CATALOG, "sk428_labour_sponsored_credit_line_77", non_negative=True
