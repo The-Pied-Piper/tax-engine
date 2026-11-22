@@ -8,10 +8,10 @@
 #
 # Refund or balance owing (the default output, `ca/refund_or_balance_owing`): positive is owing,
 # negative is a refund, as T1 line 167 in the other provinces. 5005-R line 172 is the federal
-# figure and TP-1 line 450 less line 456 and line 457 (the QPIP overpayment) is the Quebec one, added
-# with no floor. TP-1 lines 470 to 479 (450 less 468) are not used, because the credits that line 468
-# collects (tax withheld, instalments and so on) are left out of the take-home, so only lines 456 and
-# 457 reduce line 450.
+# figure and TP-1 line 470 (450 less 468) is the Quebec one, added with no floor. Line 468 collects
+# the credits typed on lines 451.2 to 466 and the work premium (456) and QPIP overpayment (457), so
+# the summary follows what the caller types there, as the federal half does through line 172. Tax
+# withheld (line 451) is left out of the take-home by ruling and is not on line 468.
 #
 # Total payable (`ca-qc/total_payable`; `ca/total_payable` is the federal kind the shared forms
 # declare): 5005-R line 43500 less line 44000 (the refundable Quebec abatement) plus TP-1 line 450.
@@ -37,33 +37,9 @@ capabilities:
   - name: core/record_total
     unit: ca/cad
     consumes:
-      records: ca-qc/tp1_totals.tp1_work_premium_tax_credits_line_456
+      records: ca-qc/tp1_totals.tp1_line_470
     produces:
-      output: ca-qc/tp1_work_premium_tax_credits_return
-  - name: core/subtract
-    unit: ca/cad
-    params:
-      rounding: ca-qc/cent_rounding
-    consumes:
-      amount: ca-qc/tp1_income_tax_and_contributions_return
-      less: ca-qc/tp1_work_premium_tax_credits_return
-    produces:
-      output: ca-qc/tp1_income_tax_less_work_premium_return
-  - name: core/record_total
-    unit: ca/cad
-    consumes:
-      records: ca-qc/tp1_totals.tp1_line_457
-    produces:
-      output: ca-qc/tp1_qpip_overpayment_return
-  - name: core/subtract
-    unit: ca/cad
-    params:
-      rounding: ca-qc/cent_rounding
-    consumes:
-      amount: ca-qc/tp1_income_tax_less_work_premium_return
-      less: ca-qc/tp1_qpip_overpayment_return
-    produces:
-      output: ca-qc/tp1_income_tax_less_credits_return
+      output: ca-qc/tp1_line_470_return
   - name: core/sum
     unit: ca/cad
     params:
@@ -71,7 +47,7 @@ capabilities:
     consumes:
       parts:
         - ca-qc/federal_refund_or_balance_owing_return
-        - ca-qc/tp1_income_tax_less_credits_return
+        - ca-qc/tp1_line_470_return
     produces:
       output: ca/refund_or_balance_owing
   - name: core/record_total
