@@ -1,9 +1,9 @@
 # T1 (5006-R, 2025) line 40427 input a salary-only caller does not give. "Line 124 and line 40427:
 # Minimum tax carryover (complete Form T691)" (5006-R page 7). A salary-only caller has no minimum
 # tax carryover, so a request that leaves the line out is read as blank, and this step reads that
-# blank as 0. Form T691 Part 8 is not built, so the figure is taken as the T1 prints it, one input. This
-# form owns the input: AB428 line 64, BC428 line 66, MB428 line 63, NL428 line 68 and SK428 line
-# 65 import line 40427 from this form's export and never ask for it themselves.
+# blank as 0. Form T691 Part 8 is not built, so the figure is taken as the T1 prints it, one
+# input. This form owns the input: AB428 line 64, BC428 line 66, MB428 line 63, NL428 line 68 and
+# SK428 line 65 import line 40427 from this form's export and never ask for it themselves.
 form:
   name: ca/t1_lines_copied_by_provinces
 inputs:

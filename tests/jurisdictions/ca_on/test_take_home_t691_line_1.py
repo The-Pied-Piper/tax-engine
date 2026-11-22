@@ -2,14 +2,44 @@
 
 from __future__ import annotations
 
-from pathlib import Path
+from decimal import Decimal
 from typing import Any
 
 import pytest
 import yaml
 
-from tests.federal_forms import FEDERAL_FORMS
-from tests.jurisdictions.ca.t691_support import D, t691_figure
+from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tests.federal_forms import FEDERAL_FORMS, form_part_names
+from tests.jurisdictions.ca_on.conftest import TakeHomeService
+from tests.kinds import bundled_kinds
+
+D = Decimal
+CODE = JurisdictionCode("CA-ON")
+NAMES = {
+    "line_1": "ca/t691_minimum_amount",
+    "line_2": "ca/t691_basic_federal_tax",
+    "line_13": "ca/t691_line_8_plus_line_12",
+}
+HEADER = """\
+jurisdiction: CA-ON
+version: 1
+valid_from_tax_year: 2025
+outputs: []
+capabilities: []
+"""
+
+
+def _figure(take_home_service: TakeHomeService, output: str, **given: str) -> Decimal:
+    """The T691 form's figure `output`, with the named lines given and the others left blank."""
+    kinds = bundled_kinds()
+    starting = [Artifact(kinds.kind(NAMES[key]), D(value)) for key, value in given.items()]
+    service = take_home_service(HEADER, "{}\n", *form_part_names("t691"))
+    (sheet,) = service.compute(CODE, 2025, *starting)["ca/t691"]
+    value = sheet.get(kinds.kind(output)).value
+    assert isinstance(value, Decimal)
+    return value
+
 
 PART = FEDERAL_FORMS / "t691" / "t691_line_1.yaml"
 INPUT = "ca/t691_minimum_amount"
@@ -45,9 +75,9 @@ def test_line_1_is_one_sum_step_that_reads_the_blank_as_zero_and_rounds_to_the_c
     ],
 )
 def test_the_amount_reads_blank_as_0_and_rounds_to_the_cent(
-    tmp_path: Path, given: dict[str, str], expected: str
+    take_home_service: TakeHomeService, given: dict[str, str], expected: str
 ) -> None:
-    value = t691_figure(tmp_path, OUTPUT, **given)
+    value = _figure(take_home_service, OUTPUT, **given)
 
     assert value == D(expected)
     assert str(value) == expected

@@ -20,15 +20,15 @@ from tax_engine.jurisdictions.ca.catalog import (
 )
 from tests.kinds import non_negative
 
-# Each kind with whether it is non-negative: the typed lines and line 14 are never below 0, and
-# the form prints no floor on line 1 minus line 2, so that one is signed.
+# Each kind with whether it is non-negative: lines 1 and 14 are never below 0, and the
+# form prints no floor on lines 2 and 13 or on line 1 minus line 2, so those are signed.
 KINDS = [
     ("ca/t691_minimum_amount", T691_MINIMUM_AMOUNT, True),
-    ("ca/t691_basic_federal_tax", T691_BASIC_FEDERAL_TAX, True),
-    ("ca/t691_line_8_plus_line_12", T691_LINE_8_PLUS_LINE_12, True),
+    ("ca/t691_basic_federal_tax", T691_BASIC_FEDERAL_TAX, False),
+    ("ca/t691_line_8_plus_line_12", T691_LINE_8_PLUS_LINE_12, False),
     ("ca/t691_line_1_amount", T691_LINE_1_AMOUNT, True),
-    ("ca/t691_line_2_amount", T691_LINE_2_AMOUNT, True),
-    ("ca/t691_line_13_amount", T691_LINE_13_AMOUNT, True),
+    ("ca/t691_line_2_amount", T691_LINE_2_AMOUNT, False),
+    ("ca/t691_line_13_amount", T691_LINE_13_AMOUNT, False),
     ("ca/t691_line_1_minus_line_2_of_part_7", T691_LINE_1_MINUS_LINE_2_OF_PART_7, False),
     (
         "ca/t691_additional_taxes_for_minimum_tax_carryover_line_14",
