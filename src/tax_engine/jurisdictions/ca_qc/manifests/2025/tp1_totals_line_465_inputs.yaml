@@ -6,7 +6,8 @@
 # services credit for seniors, the QST rebate for employees and partners, the tax shield, other
 # credits and the senior assistance credit. The take-home gives none of them (tax withheld, line
 # 451, is left out by ruling), so each is an optional input left blank, read as 0 by line 465.
-# Line 457, the QPIP overpayment, is a step (`tp1_totals_line_457.yaml`). Line 461 is the code that line 462 specifies, not an amount, and has no input.
+# Line 451.2 has no title: the form prints only the instruction "Subtract line 451.1 from line 451." there
+# (the named line is 451). Line 457, the QPIP overpayment, is a step (`tp1_totals_line_457.yaml`). Line 461 is the code that line 462 specifies, not an amount, and has no input.
 form:
   name: ca-qc/tp1_totals
 inputs:

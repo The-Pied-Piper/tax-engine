@@ -73,6 +73,12 @@ def test_the_part_declares_only_the_line_50_input_as_optional() -> None:
     (declaration,) = part["inputs"]
     assert declaration == {
         "name": "ca-qc/schedule_k_group_plan_covered_line_50",
+        "title": (
+            "You were covered by basic prescription drug insurance provided by a group "
+            "insurance plan "
+            "of which you, your spouse, your father or your mother was a member, "
+            "and this plan covered the cost of medications"
+        ),
         "reference": "50",
         "required": False,
         "default": "0",
