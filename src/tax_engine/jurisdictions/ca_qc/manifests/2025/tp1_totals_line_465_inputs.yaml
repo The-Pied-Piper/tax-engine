@@ -79,7 +79,7 @@ inputs:
     unit: ca/cad
     required: false
     default: null
-    basis: "Other credits. Specify:"
+    basis: "Other credits. Specify: 461 + 462"
   - name: ca-qc/tp1_line_463
     title: "Senior assistance tax credit"
     reference: "463"

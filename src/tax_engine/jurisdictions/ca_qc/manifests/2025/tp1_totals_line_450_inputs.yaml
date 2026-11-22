@@ -35,7 +35,7 @@ inputs:
     unit: ca/cad
     required: false
     default: null
-    basis: "Special taxes and tax adjustment. Specify:"
+    basis: "Special taxes and tax adjustment. Specify: 442 + 443"
   - name: ca-qc/tp1_line_445
     title: "QPP contribution on income from self-employment"
     reference: "445"

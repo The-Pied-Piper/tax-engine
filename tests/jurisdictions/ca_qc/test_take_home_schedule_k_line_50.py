@@ -106,7 +106,8 @@ def test_the_input_part_declares_the_optional_answer_with_the_default_0() -> Non
         "required": False,
         "default": "0",
         "basis": (
-            "Covered by basic prescription drug insurance provided by a group insurance plan "
+            "You were covered by basic prescription drug insurance provided by a group "
+            "insurance plan "
             "(see line 447 in the guide) of which you, your spouse, your father or your mother "
             "was a member, and this plan covered the cost of medications"
         ),

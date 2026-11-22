@@ -39,7 +39,7 @@ PRINTED = {
     ),
     "459": ("QST rebate for employees and partners", "QST rebate for employees and partners"),
     "460": ("Tax shield", "Tax shield"),
-    "462": ("Other credits", "Other credits. Specify:"),
+    "462": ("Other credits", "Other credits. Specify: 461 + 462"),
     "463": ("Senior assistance tax credit", "Senior assistance tax credit"),
 }
 LINES = (

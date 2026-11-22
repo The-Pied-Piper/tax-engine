@@ -31,7 +31,10 @@ PRINTED = {
         "Advance payments of tax credits, RL-19 slip, box A, B, C, D, G or H",
         "Advance payments of tax credits, RL-19 slip, box A, B, C, D, G or H",
     ),
-    "443": ("Special taxes and tax adjustment", "Special taxes and tax adjustment. Specify:"),
+    "443": (
+        "Special taxes and tax adjustment",
+        "Special taxes and tax adjustment. Specify: 442 + 443",
+    ),
     "445": (
         "QPP contribution on income from self-employment",
         "QPP contribution on income from self-employment. Complete Schedule U.",

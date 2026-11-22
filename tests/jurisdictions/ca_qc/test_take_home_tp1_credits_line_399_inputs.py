@@ -22,7 +22,8 @@ PART = "tp1_credits_line_399_inputs.yaml"
 PRINTED = {
     "390": (
         "Tax credit for volunteer firefighters and search and rescue volunteers",
-        "Tax credit for volunteer firefighters and search and rescue volunteers. Specify:",
+        "Tax credit for volunteer firefighters and search and rescue volunteers. "
+        "Specify: 390.1 + 390",
     ),
     "391": (
         "Tax credit for career extension",

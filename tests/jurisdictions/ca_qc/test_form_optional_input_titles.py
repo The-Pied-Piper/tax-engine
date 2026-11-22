@@ -2,6 +2,7 @@
 
 Each input stands for a line the form names. The title is the line's printed name (instruction
 sentences and years left out); a line the form prints no name for has no title and is not listed.
+Titles of inputs whose part has its own test are pinned in that test.
 Sources: Revenu Quebec TP-1.D-V (2025-12) and its Schedules B, F, K and P; CRA 5005-R (2025).
 """
 
@@ -17,7 +18,6 @@ import tax_engine.jurisdictions.ca_qc
 
 MANIFESTS = Path(tax_engine.jurisdictions.ca_qc.__file__).parent / "manifests/2025"
 TITLES = {
-    "ca-qc/schedule_b_line_12": ("Amount from line 275 of your spouse's return"),
     "ca-qc/schedule_b_lived_alone_line_20": (
         "You maintained and ordinarily lived in a dwelling in which you lived alone or only "
         "with one or more individuals under the age of 18, or with one or more of your "
@@ -25,7 +25,6 @@ TITLES = {
         "students pursuing vocational training at the secondary level or post-secondary "
         "studies"
     ),
-    "ca-qc/schedule_b_line_33": ("Amount claimed on line 361 of your spouse's return"),
     "ca-qc/schedule_p_schedule_l_income_line_14": ("Total of lines 22 through 26.1 of Schedule L"),
     "ca-qc/schedule_p_deductible_income_line_22": (
         "Amount included in one of the above sources of income and entitling you to a "
@@ -66,15 +65,6 @@ TITLES = {
     "ca-qc/tp1_income_replacement_adjustment_line_358": (
         "Adjustment for income replacement indemnities"
     ),
-    "ca-qc/tp1_line_390": (
-        "Tax credit for volunteer firefighters and search and rescue volunteers"
-    ),
-    "ca-qc/tp1_line_391": ("Tax credit for career extension"),
-    "ca-qc/tp1_line_392": ("Tax credit for recent graduates working in remote resource regions"),
-    "ca-qc/tp1_line_395": ("Tax credits for donations and gifts"),
-    "ca-qc/tp1_line_396": ("Home buyers' tax credit"),
-    "ca-qc/tp1_line_398": ("Tax credit for tuition or examination fees"),
-    "ca-qc/tp1_line_398_1": ("Tax credit for tuition or examination fees transferred by a child"),
     "ca-qc/tp1_line_105": ("Correction of employment income, if you received an RL-22 slip"),
     "ca-qc/tp1_line_107": ("Other employment income"),
     "ca-qc/tp1_line_110": ("Parental insurance benefits, RL-6 slip, box A"),
@@ -116,7 +106,6 @@ TITLES = {
     "ca-qc/tp1_line_250": ("Other deductions"),
     "ca-qc/tp1_line_252": ("Carry-over of the adjustment of investment expenses"),
     "ca-qc/tp1_investment_expenses_adjustment_line_260": ("Adjustment of investment expenses"),
-    "ca-qc/tp1_spouse_net_income_line_275": ("Amount from line 275 of your spouse's return"),
     "ca-qc/tp1_adjustment_of_deductions_line_276": ("Adjustment of deductions"),
     "ca-qc/tp1_benefit_and_disability_savings_income_line_278": (
         "Universal Child Care Benefit and income from a registered disability savings plan"
@@ -129,28 +118,6 @@ TITLES = {
     "ca-qc/tp1_line_293": ("Deduction for income situated on a reserve"),
     "ca-qc/tp1_line_295": ("Deductions for certain income"),
     "ca-qc/tp1_line_297": ("Miscellaneous deductions"),
-    "ca-qc/schedule_k_group_plan_covered_line_50": (
-        "You were covered by basic prescription drug insurance provided by a group insurance "
-        "plan of which you, your spouse, your father or your mother was a member, and this "
-        "plan covered the cost of medications"
-    ),
-    "ca-qc/tp1_line_438": ("Annual registration fee for the enterprise register"),
-    "ca-qc/tp1_line_439": (
-        "QPIP premium on income from self-employment or employment outside Québec"
-    ),
-    "ca-qc/tp1_line_441": ("Advance payments of tax credits, RL-19 slip, box A, B, C, D, G or H"),
-    "ca-qc/tp1_line_443": ("Special taxes and tax adjustment"),
-    "ca-qc/tp1_line_445": ("QPP contribution on income from self-employment"),
-    "ca-qc/tp1_line_451_3": ("Québec income tax withholding transferred by your spouse"),
-    "ca-qc/tp1_line_452": ("QPP or CPP overpayment"),
-    "ca-qc/tp1_line_453": ("Income tax paid in instalments"),
-    "ca-qc/tp1_line_454": ("Transferable portion of the income tax withheld for another province"),
-    "ca-qc/tp1_line_455": ("Tax credit for childcare expenses"),
-    "ca-qc/tp1_line_458": ("Tax credit for home-support services for seniors"),
-    "ca-qc/tp1_line_459": ("QST rebate for employees and partners"),
-    "ca-qc/tp1_line_460": ("Tax shield"),
-    "ca-qc/tp1_line_462": ("Other credits"),
-    "ca-qc/tp1_line_463": ("Senior assistance tax credit"),
 }
 
 

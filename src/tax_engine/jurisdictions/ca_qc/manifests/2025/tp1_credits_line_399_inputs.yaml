@@ -11,7 +11,7 @@ inputs:
     unit: ca/cad
     required: false
     default: null
-    basis: "Tax credit for volunteer firefighters and search and rescue volunteers. Specify:"
+    basis: "Tax credit for volunteer firefighters and search and rescue volunteers. Specify: 390.1 + 390"
   - name: ca-qc/tp1_line_391
     title: "Tax credit for career extension"
     reference: "391"
