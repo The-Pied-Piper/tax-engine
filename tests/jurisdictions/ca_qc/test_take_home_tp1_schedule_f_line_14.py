@@ -97,7 +97,7 @@ def test_a_blank_line_105_makes_line_14_zero(take_home_service: TakeHomeService)
     assert value == D("0")
 
 
-@pytest.mark.parametrize("given", ["500", "1234.56"])
+@pytest.mark.parametrize("given", ["500", "1234.56", "-500"])
 def test_line_14_is_the_line_105_the_caller_gave(
     take_home_service: TakeHomeService, given: str
 ) -> None:
