@@ -12,10 +12,11 @@ form:
   name: ca-qc/solidarity_credit
 inputs:
   - name: ca-qc/solidarity_lived_alone_line_12
+    title: "Did you live alone in a dwelling throughout 2025?"
     reference: "12"
     required: false
     default: "0"
-    basis: "Lived alone in a dwelling throughout 2025"
+    basis: "Did you live alone in a dwelling throughout 2025? (You are considered to have lived alone if everyone you lived with was under 18.)"
   - name: ca-qc/solidarity_tenant_or_owner_lines_32_36
     reference: "32 to 36"
     required: false
