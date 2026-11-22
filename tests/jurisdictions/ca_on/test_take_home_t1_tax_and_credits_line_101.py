@@ -41,6 +41,7 @@ LINE_101 = "ca/credit_amounts_subtotal"
 # parts, the real T1 taxable-income lines and inputs, lines 30000, 84, 31260, 96 and 98, and the
 # part under test.
 PARTS = (
+    *form_part_names("t1_lines_copied_by_provinces"),
     *form_part_names("schedule_8"),
     *form_part_names("t2204"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),
