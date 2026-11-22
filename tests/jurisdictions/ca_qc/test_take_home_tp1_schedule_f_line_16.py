@@ -114,3 +114,14 @@ def test_a_positive_line_105_reaches_line_16(take_home_service: TakeHomeService)
     )
 
     assert str(value) == "70500.00"
+
+
+def test_a_negative_line_105_is_subtracted_on_line_16(take_home_service: TakeHomeService) -> None:
+    given = (TP1_LINE_105, "-500")
+    value = (
+        schedule_f(take_home_service, "70000", given)
+        .get(TP1_SCHEDULE_F_EMPLOYMENT_INCOME_TOTAL_LINE_16)
+        .value
+    )
+
+    assert str(value) == "69500.00"

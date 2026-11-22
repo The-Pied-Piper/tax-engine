@@ -56,6 +56,7 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_units,
 )
 from tests.kinds import non_negative
+from tests.t691_support import line_14
 
 D = Decimal
 CODE = JurisdictionCode("CA-BC")
@@ -65,12 +66,11 @@ LINE_67 = "ca-bc/bc428_total_line_67"
 LINE_68 = "ca-bc/bc428_tax_after_credits_line_68"
 LINE_69 = "ca-bc/bc428_additional_minimum_tax_line_69"
 LINE_70 = "ca-bc/bc428_tax_with_minimum_tax_line_70"
-AMOUNT = "ca-bc/bc428_additional_minimum_tax_amount_line_69"
 ROUNDING = "ca-bc/cent_rounding"
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
 LINE_PART = BC_PARTS / "bc428_line_70.yaml"
 T1_PARTS = form_part_names(
-    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces", "t691"
 )
 # The real British Columbia parts after the federal ones, in composition order: the line 68 test's
 # (lines 1 to 68), then the line 69 input and line 69, then line 70.
@@ -108,7 +108,6 @@ BC_LINE_PARTS = (
     "bc428_line_66.yaml",
     "bc428_line_67.yaml",
     "bc428_line_68.yaml",
-    "bc428_line_69_input.yaml",
     "bc428_line_69.yaml",
     LINE_PART.name,
 )
@@ -206,7 +205,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
 def _sheet(tmp_path: Path, salary: str, amount: str | None = None) -> Worksheet:
     given = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if amount is not None:
-        given.append(Artifact(_amount_kind(AMOUNT), D(amount)))
+        given.extend(line_14(amount))
     worksheets = _service(tmp_path).compute(CODE, 2025, *given)
     (sheet,) = worksheets[TAX]
     return sheet

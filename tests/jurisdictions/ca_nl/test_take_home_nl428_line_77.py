@@ -48,7 +48,7 @@ LINE_76 = "ca-nl/nl428_political_contribution_tax_credit_claimed_line_76"
 IDENTIFIER = "ca-nl/nl428_tax_line_77"
 FORM_NAME = "ca-nl/nl428"
 FEDERAL_PARTS = form_part_names(
-    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces", "t691"
 )
 NL_PART_NAMES = (
     *(
@@ -116,7 +116,6 @@ NL_PART_NAMES = (
     "nl428_line_68.yaml",
     "nl428_line_69.yaml",
     "nl428_line_70.yaml",
-    "nl428_line_71_input.yaml",
     "nl428_line_71.yaml",
     "nl428_line_72.yaml",
     "nl428_line_73_input.yaml",

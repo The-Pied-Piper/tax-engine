@@ -4,13 +4,14 @@ Five T1 lines are the inputs: line 31000 (line 87, base CPP or QPP contributions
 income and other earnings), line 31900 (line 102, student loan interest), line 33099 (line 107,
 medical expenses), line 33199 (line 111, allowable medical expenses for other dependants) and line
 40427 (line 124, minimum tax carryover). AB428 line 64, BC428 line 66, MB428 line 63, NL428 line 68
-and SK428 line 65 print "amount from line 40427 of your return", NL428 lines 28, 43 and 48 print
-the amounts from lines 31000, 31900 and 33099, AB428 line 44, BC428 line 46, MB428 line 43 and SK428
-line 43 print "amount from line 33099 of your return", and SK428 line 49 prints the amount from line
-33199, so each of those is a total of the T1 export and none of them has an input of its own. A
-caller who gives a T1 line once reaches every one of those forms; a caller who gives none reads each
-as 0.00. AB428 line 50, BC428 line 52 and ON428 line 42 (other dependants) and ON428 line 36 are not
-copies of the T1 and keep their own inputs.
+and SK428 line 65 print "amount from line 40427 of your return", as does ON428 line 59 (whose line
+60 is the lesser of line 58 and that amount at 24.63%), NL428 lines 28, 43 and 48 print the amounts
+from lines 31000, 31900 and 33099, AB428 line 44, BC428 line 46, MB428 line 43 and SK428 line 43
+print "amount from line 33099 of your return", and SK428 line 49 prints the amount from line 33199,
+so each of those is a total of the T1 export and none of them has an input of its own. A caller who
+gives a T1 line once reaches every one of those forms; a caller who gives none reads each as 0.00.
+AB428 line 50, BC428 line 52 and ON428 line 42 (other dependants) and ON428 line 36 are not copies
+of the T1 and keep their own inputs.
 
 The real registered engine is run end to end over each province's real 2025 manifest, as the
 provincial end-to-end tests do, with the T1 amounts as inputs. The results are hand-computed from
@@ -28,6 +29,7 @@ import tax_engine.jurisdictions.ca_ab
 import tax_engine.jurisdictions.ca_bc
 import tax_engine.jurisdictions.ca_mb
 import tax_engine.jurisdictions.ca_nl
+import tax_engine.jurisdictions.ca_on
 import tax_engine.jurisdictions.ca_sk
 from tax_engine import build_tax_computation
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
@@ -60,6 +62,7 @@ CARRYOVER = {
     "CA-BC": ("ca-bc/bc428", "ca-bc/bc428_minimum_tax_carryover_line_66", D("0.349")),
     "CA-MB": ("ca-mb/mb428", "ca-mb/mb428_minimum_tax_carryover_line_63", D("0.5")),
     "CA-NL": ("ca-nl/nl428", "ca-nl/nl428_minimum_tax_carryover_line_68", D("0.6")),
+    "CA-ON": ("ca-on/on428", "ca-on/on428_minimum_tax_carryover_line_60", D("0.2463")),
     "CA-SK": ("ca-sk/sk428", "ca-sk/sk428_minimum_tax_carryover_line_65", D("0.5")),
 }
 NL_COPIES = {
@@ -110,6 +113,7 @@ OLD_INPUTS = (
     "ca-mb/mb428_minimum_tax_carryover_amount_line_63",
     "ca-nl/nl428_minimum_tax_carryover_amount_line_68",
     "ca-sk/sk428_minimum_tax_carryover_amount_line_65",
+    "ca-on/on428_minimum_tax_carryover_line_60",
     *NL_COPIES.values(),
 )
 
@@ -195,6 +199,7 @@ def test_sk428_line_49_is_the_amount_given_on_t1_line_33199() -> None:
         ("CA-BC", tax_engine.jurisdictions.ca_bc),
         ("CA-MB", tax_engine.jurisdictions.ca_mb),
         ("CA-NL", tax_engine.jurisdictions.ca_nl),
+        ("CA-ON", tax_engine.jurisdictions.ca_on),
         ("CA-SK", tax_engine.jurisdictions.ca_sk),
     ],
 )

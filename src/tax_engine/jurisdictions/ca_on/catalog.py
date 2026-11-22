@@ -388,12 +388,37 @@ ON428_TAX_WITH_SPLIT_INCOME_LINE_55 = AmountKind.declare(
 )
 """Tax with split income, ON428 line 55 "Line 55: Line 53 plus line 54 =": line 53 plus line 54."""
 
+ON428_TAX_MINUS_CREDITS_LINE_56 = AmountKind.declare(
+    CATALOG, "on428_tax_minus_credits_line_56", non_negative=True
+)
+"""Tax minus credits copied, ON428 line 56 "Line 56: Enter the amount from line 53 above.": a copy
+of line 53."""
+
+ON428_TAX_MINUS_DIVIDEND_TAX_CREDIT_LINE_58 = AmountKind.declare(
+    CATALOG, "on428_tax_minus_dividend_tax_credit_line_58", non_negative=True
+)
+"""Tax minus the dividend tax credit, ON428 line 58 "Line 58: Line 56 minus line 57 (if negative,
+enter "0") =": line 56 minus line 57, not below zero."""
+
+ON428_MINIMUM_TAX_CARRYOVER_AMOUNT_LINE_59 = AmountKind.declare(
+    CATALOG, "on428_minimum_tax_carryover_amount_line_59", non_negative=True
+)
+"""Minimum tax carryover amount, ON428 line 59 "Line 59: Amount from line 40427 of your return":
+the amount from line 40427 of the T1 return, a record total of the T1's export
+(`ca/minimum_tax_carryover_line_40427`), 0 for a salary-only caller; the 24.63% is applied by the
+next step."""
+
+ON428_MINIMUM_TAX_CARRYOVER_LIMIT_LINE_59 = AmountKind.declare(
+    CATALOG, "on428_minimum_tax_carryover_limit_line_59", non_negative=True
+)
+"""Minimum tax carryover limit, ON428 line 59 "Line 59: Amount from line 40427 of your return
+multiplied by 24.63% =": calculated, the amount from line 40427 multiplied by 24.63%."""
+
 ON428_MINIMUM_TAX_CARRYOVER_LINE_60 = AmountKind.declare(
     CATALOG, "on428_minimum_tax_carryover_line_60", non_negative=True
 )
 """Minimum tax carryover applied, ON428 line 60 "Line 60 and line 61540: Enter whichever is less:
-amount from line 58 or line 59.": the lesser of line 58 and line 59, an optional input that a
-salary-only caller leaves out."""
+amount from line 58 or line 59.": the lesser of line 58 and line 59."""
 
 ON428_TAX_AFTER_MINIMUM_TAX_CARRYOVER_LINE_61 = AmountKind.declare(
     CATALOG, "on428_tax_after_minimum_tax_carryover_line_61", non_negative=True
