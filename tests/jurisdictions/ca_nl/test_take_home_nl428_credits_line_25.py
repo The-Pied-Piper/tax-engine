@@ -69,7 +69,9 @@ LINES = [LINE_16, LINE_17, LINE_20, LINE_23, LINE_24]
 OPTIONAL_LINES = [LINE_20, LINE_23, LINE_24]
 SPOUSE_NET_INCOME = "ca-nl/nl428_spouse_net_income_line_19"
 DEPENDANT_NET_INCOME = "ca-nl/nl428_eligible_dependant_net_income_line_22"
-FEDERAL_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+FEDERAL_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 NL_PART_NAMES = (
     "worksheet_nl428_line_4.yaml",
     "worksheet_nl428_line_6.yaml",

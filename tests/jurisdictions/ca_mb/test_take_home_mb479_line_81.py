@@ -64,7 +64,9 @@ LINE_79_INPUT = "ca-mb/mb479_teaching_supplies_expenses_line_79"
 LINE_79 = "ca-mb/mb479_teaching_expense_credit_line_79"
 LINE_80 = "ca-mb/mb479_rental_housing_construction_incentive_tax_credit_line_80"
 
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 MB479_PARTS = (
     "mb479_line_1.yaml",
     "mb479_line_2.yaml",

@@ -40,12 +40,12 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog.credits_against_federal_tax import MINIMUM_TAX_CARRYOVER
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_ab.catalog import (
     AB428_CREDITS_FROM_LINE_58_LINE_62,
     AB428_CREDITS_SUBTOTAL_LINE_65,
     AB428_DIVIDEND_TAX_CREDIT_LINE_63,
-    AB428_MINIMUM_TAX_CARRYOVER_AMOUNT_LINE_64,
     AB428_MINIMUM_TAX_CARRYOVER_LINE_64,
 )
 from tests.federal_forms import form_parts
@@ -95,6 +95,7 @@ def _part_files() -> Iterator[Path]:
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
     yield from form_parts("t1_employment_income", "t1_taxable_income")
+    yield from form_parts("t1_lines_copied_by_provinces")
     yield ALBERTA_PARTS / "ab428_line_16.yaml"
     yield ALBERTA_PARTS / "ab428_line_25.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_27.yaml"
@@ -130,7 +131,6 @@ def _part_files() -> Iterator[Path]:
     yield ALBERTA_PARTS / "ab428_credits_line_58.yaml"
     yield ALBERTA_PARTS / "ab428_line_62.yaml"
     yield ALBERTA_PARTS / "ab428_line_63_inputs.yaml"
-    yield ALBERTA_PARTS / "ab428_line_64_inputs.yaml"
     yield ALBERTA_PARTS / "ab428_line_64.yaml"
     yield LINE_PART
 
@@ -179,7 +179,7 @@ def test_line_65_adds_lines_63_and_64_when_they_are_given(tmp_path: Path) -> Non
         tmp_path,
         "70000",
         Artifact(AB428_DIVIDEND_TAX_CREDIT_LINE_63, D("100.00")),
-        Artifact(AB428_MINIMUM_TAX_CARRYOVER_AMOUNT_LINE_64, D("1000")),
+        Artifact(MINIMUM_TAX_CARRYOVER, D("1000")),
     )
 
     assert sheet.get(AB428_MINIMUM_TAX_CARRYOVER_LINE_64).value == D("350.00")

@@ -55,7 +55,9 @@ LINE_37_INPUT = "ca-nl/nl428_pension_income_amount_claimed_line_37"
 LINE_37 = "ca-nl/nl428_pension_income_amount_line_37"
 LINE_38 = "ca-nl/nl428_caregiver_amount_line_38"
 FORM_NAME = "ca-nl/nl428_credits"
-FEDERAL_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+FEDERAL_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 NL_PART_NAMES = (
     "worksheet_nl428_line_4.yaml",
     "worksheet_nl428_line_6.yaml",
@@ -70,7 +72,7 @@ NL_PART_NAMES = (
     "nl428_credits_line_24_input.yaml",
     "nl428_credits_line_25.yaml",
     "nl428_credits_line_27.yaml",
-    "nl428_credits_line_28_input.yaml",
+    "nl428_credits_line_28.yaml",
     "nl428_credits_line_29.yaml",
     "nl428_credits_line_30_input.yaml",
     "nl428_credits_line_31_input.yaml",

@@ -59,7 +59,9 @@ CREDITS_FORM_NAME = "ca-mb/mb428_credits"
 LINE_58 = "ca-mb/mb428_manitoba_tax_on_taxable_income_line_58"
 LINE_59 = "ca-mb/mb428_tax_on_split_income_line_59"
 IDENTIFIER = "ca-mb/mb428_tax_before_credits_line_60"
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 
 HEADER = dedent("""\
     jurisdiction: CA-MB

@@ -42,6 +42,7 @@ from tests.jurisdictions.ca_ab.support import (
 from tests.kinds import non_negative
 
 D = Decimal
+MINIMUM_TAX_CARRYOVER = "ca/minimum_tax_carryover"
 CODE = JurisdictionCode("CA-AB")
 AMOUNT = "ca-ab/ab428_minimum_tax_carryover_amount_line_64"
 LINE_64 = "ca-ab/ab428_minimum_tax_carryover_line_64"
@@ -74,8 +75,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
     parts = [
-        *form_parts("t1_employment_income"),
-        ALBERTA_PARTS / "ab428_line_64_inputs.yaml",
+        *form_parts("t1_employment_income", "t1_lines_copied_by_provinces"),
         PART,
     ]
     for number, part in enumerate(parts, start=2):
@@ -95,7 +95,7 @@ def _line_64(tmp_path: Path, salary: str, amount: str | None) -> Decimal:
     kinds = alberta_kinds()
     given = [Artifact(kinds.kind(SALARY), D(salary))]
     if amount is not None:
-        given.append(Artifact(kinds.kind(AMOUNT), D(amount)))
+        given.append(Artifact(kinds.kind(MINIMUM_TAX_CARRYOVER), D(amount)))
     (sheet,) = _service(tmp_path).compute(CODE, 2025, *given)["ca-ab/ab428"]
     value = sheet.get(kinds.kind(LINE_64)).value
     assert isinstance(value, Decimal)
@@ -107,7 +107,7 @@ def _step() -> dict[str, Any]:
     assert isinstance(part, dict)
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": "ca-ab/ab428"}
-    (step,) = part["capabilities"]
+    *_, step = part["capabilities"]
     assert isinstance(step, dict)
     return step
 
@@ -157,3 +157,19 @@ def test_the_kind_is_a_registered_non_negative_decimal_amount() -> None:
     assert kind.identifier == LINE_64
     assert kind.value_type is Decimal
     assert non_negative(kind)
+
+
+def test_the_amount_is_a_record_total_of_the_t1_line_40427_export_with_no_input_of_its_own() -> (
+    None
+):
+    part = yaml.safe_load(PART.read_text(encoding="utf-8"))
+
+    assert "inputs" not in part
+    assert part["capabilities"][0] == {
+        "name": "core/record_total",
+        "title": "Amount from line 40427 of your return",
+        "reference": "64 box A",
+        "unit": "ca/cad",
+        "consumes": {"records": "ca/t1_lines_copied_by_provinces.minimum_tax_carryover_line_40427"},
+        "produces": {"output": AMOUNT},
+    }

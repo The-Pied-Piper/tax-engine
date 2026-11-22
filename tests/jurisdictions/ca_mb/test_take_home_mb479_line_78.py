@@ -61,7 +61,9 @@ LINE_73_INPUT = "ca-mb/mb479_cultural_industries_printing_credit_line_73"
 LINE_75 = "ca-mb/mb479_community_enterprise_development_tax_credit_line_75"
 LINE_77_INPUT = "ca-mb/mb479_employee_share_purchase_credit_line_77"
 LINE_77 = "ca-mb/mb479_employee_share_purchase_credit_checked_line_77"
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 MB479_PARTS = (
     "mb479_line_1.yaml",
     "mb479_line_2.yaml",

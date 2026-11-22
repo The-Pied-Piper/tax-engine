@@ -523,7 +523,16 @@ from line 3 of columns 1, 2, and 3 (and others, if any)", each line 3 being "Lin
 
 MEDICAL_EXPENSES = AmountKind.declare(CATALOG, "medical_expenses", non_negative=True)
 """Medical expenses, T1 line 107 and line 33099 "Medical expenses for self, spouse or common-law
-partner and your dependent children under 18 years of age": a starting amount."""
+partner and your dependent children under 18 years of age": the optional input
+(`t1_lines_copied_by_provinces_line_33099_inputs.yaml`), blank when the filer has none. The T1 owns
+it; NL428 line 48 imports line 33099."""
+
+MEDICAL_EXPENSES_LINE_33099 = AmountKind.declare(
+    CATALOG, "medical_expenses_line_33099", non_negative=True
+)
+"""Medical expenses as T1 line 33099 prints it (`t1_lines_copied_by_provinces_line_33099.yaml`): the
+optional input (`ca/medical_expenses`), read as 0 when blank, exported by the T1 lines copied by
+provinces form."""
 
 MEDICAL_NET_INCOME_SHARE = AmountKind.declare(
     CATALOG, "medical_net_income_share", non_negative=True

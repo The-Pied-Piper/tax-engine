@@ -58,6 +58,7 @@ IDENTIFIER = "ca-nl/nl428_cpp_ei_and_other_line_35"
 FORM_NAME = "ca-nl/nl428_credits"
 LINE_27 = "ca-nl/nl428_cpp_contributions_line_27"
 LINE_28 = "ca-nl/nl428_qpp_contributions_line_28"
+T1_LINE_31000 = "ca/self_employment_cpp_qpp_contributions"
 LINE_29 = "ca-nl/nl428_ei_premiums_line_29"
 LINE_30 = "ca-nl/nl428_ei_premiums_line_30"
 LINE_31 = "ca-nl/nl428_volunteer_firefighters_amount_line_31"
@@ -65,10 +66,10 @@ LINE_32 = "ca-nl/nl428_search_and_rescue_volunteers_amount_line_32"
 LINE_33 = "ca-nl/nl428_child_care_amount_line_33"
 LINE_34 = "ca-nl/nl428_adoption_expenses_line_34"
 LINES = [LINE_27, LINE_28, LINE_29, LINE_30, LINE_31, LINE_32, LINE_33, LINE_34]
-OPTIONAL_LINES = [LINE_28, LINE_30, LINE_31, LINE_32, LINE_33, LINE_34]
+OPTIONAL_LINES = [LINE_30, LINE_31, LINE_32, LINE_33, LINE_34]
 CREDIT_PARTS = (
     "nl428_credits_line_27.yaml",
-    "nl428_credits_line_28_input.yaml",
+    "nl428_credits_line_28.yaml",
     "nl428_credits_line_29.yaml",
     "nl428_credits_line_30_input.yaml",
     "nl428_credits_line_31_input.yaml",
@@ -103,6 +104,7 @@ CASES = [
 def _part_files() -> Iterator[Path]:
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
+    yield from form_parts("t1_lines_copied_by_provinces")
     yield from form_parts("t1_employment_income")
     for name in CREDIT_PARTS:
         yield NL_PARTS / name
@@ -142,13 +144,13 @@ def _line_35(tmp_path: Path, salary: str, given_lines: dict[str, str] | None = N
 
 
 @pytest.mark.parametrize(("salary", "expected"), CASES)
-def test_line_35_adds_lines_27_and_29_and_the_blank_optional_lines_read_as_0(
+def test_line_35_adds_lines_27_28_and_29_and_the_blank_optional_lines_read_as_0(
     tmp_path: Path, salary: str, expected: str
 ) -> None:
     assert _line_35(tmp_path, salary) == D(expected)
 
 
-@pytest.mark.parametrize("identifier", [LINE_28, LINE_34])
+@pytest.mark.parametrize("identifier", [T1_LINE_31000, LINE_34])
 def test_line_35_adds_each_optional_line_when_given(tmp_path: Path, identifier: str) -> None:
     # Line 27 plus line 29 at a 20,000 salary is 1,144.75; a given 100.25 makes 1,245.00.
     assert _line_35(tmp_path, "20000", {identifier: "100.25"}) == D("1245.00")
@@ -156,7 +158,7 @@ def test_line_35_adds_each_optional_line_when_given(tmp_path: Path, identifier: 
 
 def test_line_35_adds_all_the_optional_lines_together(tmp_path: Path) -> None:
     given = {
-        LINE_28: "10.01",
+        T1_LINE_31000: "10.01",
         LINE_30: "20.02",
         LINE_31: "30.03",
         LINE_32: "40.04",
@@ -200,10 +202,11 @@ def test_the_part_names_the_form_and_has_one_sum_step_over_lines_27_to_34() -> N
     }
 
 
-def test_lines_27_and_29_have_no_blank_mapping_and_the_optional_lines_read_as_0() -> None:
+def test_lines_27_28_and_29_have_no_blank_mapping_and_the_optional_lines_read_as_0() -> None:
     (step,) = _part()["capabilities"]
 
     assert LINE_27 not in step["blank"]
+    assert LINE_28 not in step["blank"]
     assert LINE_29 not in step["blank"]
     assert set(step["blank"]) == set(OPTIONAL_LINES)
     assert set(step["blank"].values()) == {"0"}

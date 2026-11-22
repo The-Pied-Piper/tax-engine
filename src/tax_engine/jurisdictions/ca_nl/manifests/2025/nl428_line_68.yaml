@@ -1,11 +1,21 @@
-# Form NL428 (Newfoundland and Labrador Tax, 2025, CRA 5001-C) line 68 (ca-nl/nl428). "Newfoundland and
-# Labrador minimum tax carryover:" / "Line 68 and line 61540: Amount from line 40427 of your return
-# multiplied by 60% =". The 60% is a printed rate, held in the `ca-nl/minimum_tax_rate` dataset, so
-# line 68 is one calculation: 60% of the amount, rounded half-up to the cent. The amount is an
-# optional input (read as 0 when left out), declared by its own part.
+# Form NL428 (Newfoundland and Labrador Tax, 2025, CRA 5001-C) line 68 (ca-nl/nl428). "Newfoundland
+# and Labrador minimum tax carryover:" / "Line 68 and line 61540: Amount from line 40427 of your
+# return multiplied by 60% =". The 60% is a printed rate, held in the `ca-nl/minimum_tax_rate`
+# dataset, so line 68 is one calculation: 60% of the amount, rounded half-up to the cent. The amount
+# (box A) is the T1's line 40427: the T1 owns the input and exports the line
+# (`ca/minimum_tax_carryover_line_40427`), so the first step totals that export (a form reads
+# another form's export only as a record list) and the second applies the rate.
 form:
   name: ca-nl/nl428
 capabilities:
+  - name: core/record_total
+    title: "Amount from line 40427 of your return"
+    reference: "68 box A"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_lines_copied_by_provinces.minimum_tax_carryover_line_40427
+    produces:
+      output: ca-nl/nl428_minimum_tax_carryover_amount_line_68
   - name: core/apply_rate
     title: "Newfoundland and Labrador minimum tax carryover"
     reference: "68"
@@ -14,7 +24,5 @@ capabilities:
       rate: ca-nl/minimum_tax_rate
     consumes:
       base: ca-nl/nl428_minimum_tax_carryover_amount_line_68
-    blank:
-      base: "0"
     produces:
       output: ca-nl/nl428_minimum_tax_carryover_line_68

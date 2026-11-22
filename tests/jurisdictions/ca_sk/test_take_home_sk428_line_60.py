@@ -69,7 +69,9 @@ LINE_58 = "ca-sk/sk428_tax_on_taxable_income_line_58"
 LINE_59 = "ca-sk/sk428_farm_capital_gains_credit_line_59"
 IDENTIFIER = "ca-sk/sk428_tax_line_60"
 ROUNDING = "ca-sk/cent_rounding"
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 
 HEADER = dedent("""\
     jurisdiction: CA-SK

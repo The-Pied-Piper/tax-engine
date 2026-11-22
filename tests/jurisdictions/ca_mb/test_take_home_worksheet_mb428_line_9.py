@@ -69,7 +69,9 @@ LINE_8 = "ca-mb/worksheet_mb428_line_8"
 ROUNDING = "ca-mb/cent_rounding"
 FORM_NAME = "ca-mb/worksheet_mb428"
 # The real federal parts the T1 taxable-income form needs, beside the salary and lines 1 to 8.
-FEDERAL_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+FEDERAL_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 
 HEADER = dedent("""\
     jurisdiction: CA-MB

@@ -85,7 +85,9 @@ LINE_85 = "ca-bc/bc428_tax_after_political_credit_line_85"
 ROUNDING = "ca-bc/cent_rounding"
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
 LINE_PART = BC_PARTS / "bc428_line_85.yaml"
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 # The real British Columbia parts after the federal ones, in composition order: the line 72 test's
 # (lines 1 to 72), then the line 79 test's (lines 74, 75, 76, 78, 73 and 79), then lines 80, 81,
 # 82, 84 and 85.
@@ -120,7 +122,6 @@ BC_LINE_PARTS = (
     "bc428_line_59.yaml",
     "bc428_line_60.yaml",
     "bc428_line_65_input.yaml",
-    "bc428_line_66_input.yaml",
     "bc428_line_66.yaml",
     "bc428_line_67.yaml",
     "bc428_line_68.yaml",

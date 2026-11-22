@@ -37,7 +37,7 @@ LINE_47900 = "ca/provincial_credits_line_47900"
 LINE_48200 = "ca/total_credits"
 PARTS = (
     *form_part_names("schedule_8"),
-    *form_part_names("t1_taxable_income", "t1_employment_income"),
+    *form_part_names("t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"),
     *form_part_names("t2204"),
     *form_part_names("schedule_6"),
     "t1_tax_and_credits_line_47900.yaml",

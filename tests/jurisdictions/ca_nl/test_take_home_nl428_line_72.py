@@ -50,7 +50,9 @@ LINE_71 = "ca-nl/nl428_additional_tax_minimum_tax_line_71"
 AMOUNT = "ca-nl/nl428_t691_amount_line_71"
 IDENTIFIER = "ca-nl/nl428_tax_with_minimum_tax_line_72"
 FORM_NAME = "ca-nl/nl428"
-FEDERAL_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+FEDERAL_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 NL_PART_NAMES = (
     *(
         f"nl428_credits_line_{number}.yaml"
@@ -77,7 +79,7 @@ NL_PART_NAMES = (
     "nl428_credits_line_24_input.yaml",
     "nl428_credits_line_25.yaml",
     "nl428_credits_line_27.yaml",
-    "nl428_credits_line_28_input.yaml",
+    "nl428_credits_line_28.yaml",
     "nl428_credits_line_29.yaml",
     "nl428_credits_line_30_input.yaml",
     "nl428_credits_line_31_input.yaml",
@@ -94,12 +96,12 @@ NL_PART_NAMES = (
     "nl428_credits_line_40.yaml",
     "nl428_credits_line_41_input.yaml",
     "nl428_credits_line_42.yaml",
-    "nl428_credits_line_43_input.yaml",
+    "nl428_credits_line_43.yaml",
     "nl428_credits_line_44_input.yaml",
     "nl428_credits_line_45_input.yaml",
     "nl428_credits_line_46_input.yaml",
     "nl428_credits_line_47.yaml",
-    "nl428_credits_line_48_input.yaml",
+    "nl428_credits_line_48.yaml",
     "nl428_credits_line_49.yaml",
     "nl428_credits_line_51.yaml",
     "nl428_credits_line_52.yaml",
@@ -116,7 +118,6 @@ NL_PART_NAMES = (
     "nl428_credits_line_62.yaml",
     "nl428_line_66.yaml",
     "nl428_line_67_input.yaml",
-    "nl428_line_68_inputs.yaml",
     "nl428_line_68.yaml",
     "nl428_line_69.yaml",
     "nl428_line_70.yaml",
