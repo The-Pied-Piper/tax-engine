@@ -1,0 +1,38 @@
+# 5005-R (2025) line 69. The form prints: "Line 69 and line 25700: Add lines 59 to 68. =" (page 5). One
+# core/sum in form line order, rounded half-up to the cent through `ca-qc/cent_rounding`; the optional
+# lines read as 0 when blank (`t1_taxable_income_line_25700_inputs.yaml`). Ten terms stay one step: the
+# English trace groups a long sum (owner, 21 Nov 2026). The output keeps the name
+# `ca/deductions_from_net_income`, which line 70 reads.
+form:
+  name: ca-qc/t1_taxable_income
+capabilities:
+  - name: core/sum
+    reference: "25700"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/t1_line_24400
+        - ca-qc/t1_line_24900
+        - ca-qc/t1_line_25000
+        - ca-qc/t1_line_25100
+        - ca-qc/t1_line_25200
+        - ca-qc/t1_line_25300
+        - ca-qc/t1_line_25395
+        - ca-qc/t1_line_25400
+        - ca-qc/t1_line_25500
+        - ca-qc/t1_line_25600
+    blank:
+      ca-qc/t1_line_24400: "0"
+      ca-qc/t1_line_24900: "0"
+      ca-qc/t1_line_25000: "0"
+      ca-qc/t1_line_25100: "0"
+      ca-qc/t1_line_25200: "0"
+      ca-qc/t1_line_25300: "0"
+      ca-qc/t1_line_25395: "0"
+      ca-qc/t1_line_25400: "0"
+      ca-qc/t1_line_25500: "0"
+      ca-qc/t1_line_25600: "0"
+    produces:
+      output: ca/deductions_from_net_income

@@ -4,6 +4,8 @@
 # report leaves the line out, so a request that leaves it out is read as 0, not blank, because the
 # next step multiplies it by the printed rate with core/apply_rate and needs a base. The 34.9%
 # multiply is a separate step.
+form:
+  name: ca-bc/bc428
 inputs:
   - name: ca-bc/bc428_additional_minimum_tax_amount_line_69
     title: "Amount from line 14 of Part 7 of Form T691"

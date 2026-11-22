@@ -7,7 +7,8 @@ reads it as 0. The form prints no title for line 92, so its step is untitled.
 
 Figures (hand-computed, not a CRA example): line 90 is 19,835.00 / 198,926.00 at
 salaries of 20,000 / 200,000 and line 91 is blank, so line 92 is the same; with 100.00 on
-line 91 at 70,000, line 92 is 69,235.00, and with 80,000.00 it is 0.00.
+line 91 at 70,000 the income is in the net income too (T1 line 15000), so line 92 is 69,335.00, and
+with 80,000.00 of income and a social benefits repayment of 75,000.00 it is 0.00.
 """
 
 from __future__ import annotations
@@ -42,7 +43,6 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_parameter_parsers,
     newfoundland_units,
 )
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 CODE = JurisdictionCode("CA-NL")
@@ -70,11 +70,7 @@ HEADER = dedent("""\
     jurisdiction: CA-NL
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/employment_income
-        required: true
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 # The form declaration, test-local: the tax form exports line 92.
@@ -96,9 +92,7 @@ def _part_files() -> Iterator[tuple[str, str]]:
         found = next(FEDERAL_FORMS.rglob(name))
         yield (
             name,
-            inputs_without_form(found)
-            if name.endswith("_inputs.yaml")
-            else found.read_text("utf-8"),
+            found.read_text("utf-8"),
         )
     for part in NL_LINE_PARTS:
         yield part.name, part.read_text(encoding="utf-8")
@@ -141,14 +135,21 @@ def test_line_92_is_line_90_when_line_91_is_left_blank(
 
 
 def test_line_92_takes_line_91_from_line_90_when_it_is_given(tmp_path: Path) -> None:
+    # The UCCB is in the net income (T1 line 15000) and line 91 takes it off again.
     sheet = _sheet(tmp_path, "70000", Artifact(UCCB_INCOME, D("100.00")))
 
     # 69,335.00 less 100.00.
-    assert sheet.get(NL428_FAMILY_INCOME_LESS_UCCB_RDSP_LINE_92).value == D("69235.00")
+    assert sheet.get(NL428_FAMILY_INCOME_LESS_UCCB_RDSP_LINE_92).value == D("69335.00")
 
 
 def test_line_92_is_zero_when_line_91_is_more_than_line_90(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "70000", Artifact(UCCB_INCOME, D("80000.00")))
+    # Line 90 is 70,000 + 80,000 - 665.00 - 75,000 = 74,335.00, below the 80,000.00 of line 91.
+    sheet = _sheet(
+        tmp_path,
+        "70000",
+        Artifact(UCCB_INCOME, D("80000.00")),
+        Artifact(newfoundland_kinds().kind("ca/social_benefits_repayment"), D("75000")),
+    )
 
     assert sheet.get(NL428_FAMILY_INCOME_LESS_UCCB_RDSP_LINE_92).value == D("0.00")
 

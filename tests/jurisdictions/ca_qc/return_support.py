@@ -39,7 +39,7 @@ SOLIDARITY_PARTS = (
 PARTS = tuple(
     dict.fromkeys(
         (
-            *(part for part in T1_PARTS if part != "salary.yaml"),
+            *T1_PARTS,
             *CHAIN_PARTS,
             "tp1_totals.yaml",
             *ALL_PARTS,

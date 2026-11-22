@@ -494,10 +494,10 @@ def service(dataset: ParameterDataset[ThresholdRate] | None = None) -> TaxComput
         jurisdiction=code,
         version=1,
         valid_from_tax_year=2025,
-        inputs=required_inputs(frozenset({"ex/amount", "ex/dividend"})),
         forms=(
             Form(
                 required=True,
+                inputs=required_inputs(frozenset({"ex/amount", "ex/dividend"})),
                 name=code.namespace.identifier("return"),
                 instances=None,
                 exports=("ex/out",),

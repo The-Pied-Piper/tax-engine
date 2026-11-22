@@ -299,12 +299,35 @@ NL428_ALLOWABLE_MEDICAL_EXPENSES_FOR_OTHER_DEPENDANTS_LINE_54 = AmountKind.decla
 58729: Allowable amount of medical expenses for other dependants (use Worksheet NL428)": the amount
 as the filer gives it, an optional input; a blank input is read as blank."""
 
+NL428_DONATIONS_AMOUNT_LINE_59 = AmountKind.declare(
+    CATALOG, "nl428_donations_amount_line_59", non_negative=True
+)
+"""Donations amount, NL428 line 59 box A "Amount from line 13 of your federal Schedule 9": the
+amount as the filer gives it, an optional input; a blank input is read as blank."""
+
+NL428_DONATIONS_CREDIT_AT_RATE_LINE_59 = AmountKind.declare(
+    CATALOG, "nl428_donations_credit_at_rate_line_59", non_negative=True
+)
+"""Donations credit at 8.7%, NL428 line 59 box B "Amount from line 13 of your federal Schedule 9
+multiplied by 8.7% =": the Schedule 9 amount times 8.7%; a blank amount is read as 0."""
+
+NL428_DONATIONS_AMOUNT_LINE_60 = AmountKind.declare(
+    CATALOG, "nl428_donations_amount_line_60", non_negative=True
+)
+"""Donations amount, NL428 line 60 box A "Amount from line 14 of your federal Schedule 9": the
+amount as the filer gives it, an optional input; a blank input is read as blank."""
+
+NL428_DONATIONS_CREDIT_AT_RATE_LINE_60 = AmountKind.declare(
+    CATALOG, "nl428_donations_credit_at_rate_line_60", non_negative=True
+)
+"""Donations credit at 21.8%, NL428 line 60 box B "Amount from line 14 of your federal Schedule 9
+multiplied by 21.8% =": the Schedule 9 amount times 21.8%; a blank amount is read as 0."""
+
 NL428_DONATIONS_AND_GIFTS_CREDIT_LINE_61 = AmountKind.declare(
     CATALOG, "nl428_donations_and_gifts_credit_line_61", non_negative=True
 )
-"""Donations and gifts credit, NL428 line 61 "Line 61 and line 58969: Line 59 plus line 60 =": the
-amount as the filer gives it, an optional input; lines 59 and 60 are not built, and a blank input
-is read as blank."""
+"""Donations and gifts credit, NL428 line 61 (line 58969) "Line 61 and line 58969: Line 59 plus
+line 60 =": line 59 plus line 60; line 62 reads it."""
 
 NL428_NON_REFUNDABLE_CREDITS_LINE_62 = AmountKind.declare(
     CATALOG, "nl428_non_refundable_credits_line_62", non_negative=True
@@ -448,13 +471,39 @@ NL428_TAX_LINE_87 = AmountKind.declare(CATALOG, "nl428_tax_line_87", non_negativ
 "Line 87: Line 85 minus line 86 (if negative, enter "0") =": line 85 less the amount of line 86
 (blank read as 0), floored at 0 as the form prints, rounded half-up to the cent."""
 
+NL428_VENTURE_CAPITAL_TAX_CREDIT_FROM_CERTIFICATES_LINE_82 = AmountKind.declare(
+    CATALOG, "nl428_venture_capital_tax_credit_from_certificates_line_82", non_negative=True
+)
+"""Venture capital tax credit from certificates, NL428 line 82 (line 61820) "Venture capital tax
+credit from Certificate(s) NL VCTC": the amount as the filer gives it, an optional input; a blank
+input is read as blank."""
+
+NL428_VENTURE_CAPITAL_TAX_CREDIT_LIFETIME_MAXIMUM = AmountKind.declare(
+    CATALOG, "nl428_venture_capital_tax_credit_lifetime_maximum", non_negative=True
+)
+"""Venture capital tax credit lifetime maximum, from the NL428 line 82 guide (5001-PC) "The lifetime
+maximum you can claim is $75,000.": the maximum, from the
+`ca-nl/venture_capital_credit_lifetime_maximum` dataset; the bound line 82 cannot pass."""
+
+NL428_VENTURE_CAPITAL_TAX_CREDIT_CHECKED_LINE_82 = AmountKind.declare(
+    CATALOG, "nl428_venture_capital_tax_credit_checked_line_82", non_negative=True
+)
+"""Venture capital tax credit, NL428 line 82 "Venture capital tax credit from Certificate(s) NL
+VCTC": the amount as the filer gives it (a blank input passes on as blank), passed on unchanged when
+it is at most the lifetime maximum; above the maximum it is refused, not capped."""
+
+NL428_UNUSED_VENTURE_CAPITAL_TAX_CREDIT_LINE_83 = AmountKind.declare(
+    CATALOG, "nl428_unused_venture_capital_tax_credit_line_83", non_negative=True
+)
+"""Unused venture capital tax credit, NL428 line 83 "Unused Newfoundland and Labrador venture
+capital tax credit from your most recent notice of assessment or reassessment": the amount as the
+filer gives it, an optional input; a blank input is read as blank."""
+
 NL428_VENTURE_CAPITAL_TAX_CREDIT_LINE_84 = AmountKind.declare(
     CATALOG, "nl428_venture_capital_tax_credit_line_84", non_negative=True
 )
-"""Venture capital tax credit, NL428 line 84 "Line 84: Line 82 plus line 83": the venture capital
-tax credit from Certificate(s) NL VCTC (line 82) plus the unused credit from the most recent notice
-of assessment or reassessment (line 83), taken as one optional input that a salary-only caller
-leaves out; a blank input is read as blank."""
+"""Venture capital tax credit, NL428 line 84 "Line 84: Line 82 plus line 83 =": line 82 plus line
+83 (a blank line is read as 0); line 85 reads it."""
 
 NL428_UNUSED_LOW_INCOME_REDUCTION_FROM_SPOUSE_LINE_86 = AmountKind.declare(
     CATALOG, "nl428_unused_low_income_reduction_from_spouse_line_86", non_negative=True
@@ -977,8 +1026,8 @@ AVERAGE_INCOME_TAX_RATE = AmountKind.declare(CATALOG, "average_income_tax_rate",
 """Average income tax rate, the Newfoundland and Labrador return summary's own figure (no form
 prints it): T1 line 43500 "Total payable" (for the take-home filer, line 143 plus line 147: the
 federal and the Newfoundland and Labrador income tax) divided by the salary
-(`ca/employment_income`), as a fraction, so 0.1598 is 15.98%. CPP and EI are not income tax and are
-not in it. It is 0 when the salary is 0."""
+(`ca/return_employment_income`), as a fraction, so 0.1598 is 15.98%. CPP and EI are not income tax
+and are not in it. It is 0 when the salary is 0."""
 
 NEWFOUNDLAND_AND_LABRADOR_BRACKET_RATE_LINE_5_RETURN = AmountKind.declare(
     CATALOG, "newfoundland_and_labrador_bracket_rate_line_5_return", non_negative=True

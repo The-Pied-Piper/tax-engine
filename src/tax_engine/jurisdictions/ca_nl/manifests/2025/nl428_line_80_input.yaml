@@ -3,6 +3,8 @@
 # 5001-C). Form T1297 is not built, so the line is taken as one optional input, as the form takes
 # it. A request that leaves the line out is read as blank; the step that reads line 80 reads that
 # blank as 0.
+form:
+  name: ca-nl/nl428
 inputs:
   - name: ca-nl/nl428_resort_property_investment_tax_credit_line_80
     title: "Resort property investment tax credit"

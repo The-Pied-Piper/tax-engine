@@ -1,7 +1,7 @@
 # Schedule K (2025) line 46: "Add line 41 and, as applicable, line 42 or line 44." (Revenu Quebec
-# TP-1.D.K-V (2025-12), Part A). One step: core/sum of line 41 and the dependent child input (lines
-# 42 and 44 are one optional input, read as 0 when the caller leaves it out), rounded half-up to the
-# cent (`ca-qc/cent_rounding`). The form prints no label for the line, so the step is untitled.
+# TP-1.D.K-V (2025-12), Part A). One step: core/sum of line 41 and line 44 (line 42 is for a filer
+# with a spouse and has no step), rounded half-up to the cent (`ca-qc/cent_rounding`). The form
+# prints no label for the line, so the step is untitled.
 form:
   name: ca-qc/tp1_schedule_k
 capabilities:
@@ -13,8 +13,6 @@ capabilities:
     consumes:
       parts:
         - ca-qc/schedule_k_amount_line_41
-        - ca-qc/schedule_k_dependent_child_amount_line_42_or_44
-    blank:
-      ca-qc/schedule_k_dependent_child_amount_line_42_or_44: "0"
+        - ca-qc/schedule_k_amount_line_44
     produces:
       output: ca-qc/schedule_k_total_line_46

@@ -8,7 +8,7 @@ the single part, line 5 (`ca-bc/bc479_adjusted_net_income_line_5`), read through
 `ca-bc/cent_rounding`). The output is `ca-bc/bc479_adjusted_family_net_income_line_6`, a
 non-negative kind.
 
-The test composes the real British Columbia salary part, the real Schedule 8 parts, the real T1
+The test composes the T1 employment income form, the real Schedule 8 parts, the real T1
 taxable income parts, the real line 1 to line 5 parts and the new line 6 part, and types in only
 the salary (and, in other tests, line 4). The form declaration is made up here, exporting only
 line 6.
@@ -54,7 +54,6 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 CODE = JurisdictionCode("CA-BC")
@@ -72,8 +71,7 @@ HEADER = dedent("""\
     jurisdiction: CA-BC
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 FORM_TEXT = dedent(f"""\
@@ -91,7 +89,6 @@ def _federal(name: str) -> Path:
 
 
 def _part_files() -> Iterator[Path]:
-    yield BC_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     for name in T1_PARTS:
         yield _federal(name)
@@ -111,11 +108,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(FORM_TEXT, encoding="utf-8")
     for number, part in enumerate(_part_files(), start=2):
-        text = (
-            inputs_without_form(part)
-            if part.name.endswith("_inputs.yaml") and part.is_relative_to(FEDERAL_FORMS)
-            else part.read_text(encoding="utf-8")
-        )
+        text = part.read_text(encoding="utf-8")
         (folder / f"{number:02d}_{part.name}").write_text(text, encoding="utf-8")
     roots = {**british_columbia_packages().roots(), Namespace("ca-bc"): tmp_path}
     return TaxComputationService(
@@ -162,16 +155,24 @@ def test_line_6_is_line_5_for_a_single_filer(tmp_path: Path, salary: str, expect
 
 
 def test_line_6_follows_line_5_when_line_4_is_given(tmp_path: Path) -> None:
+    # The UCCB is in the net income, so line 3 is 17,865.00; line 4 takes the 1,000.00 off again.
     sheet = _sheet(tmp_path, "17000", Artifact(UCCB_INCOME, D("1000.00")))
 
     line_6 = sheet.get(BC479_ADJUSTED_FAMILY_NET_INCOME_LINE_6).value
-    assert line_6 == D("15865.00")
-    assert str(line_6) == "15865.00"
+    assert line_6 == D("16865.00")
+    assert str(line_6) == "16865.00"
 
 
 def test_line_6_is_0_when_line_4_is_above_line_3(tmp_path: Path) -> None:
-    # Line 3 is 16,865.00 at 17,000 and line 4 is 20,000.00: line 5 is floored, so line 6 is 0.00.
-    sheet = _sheet(tmp_path, "17000", Artifact(UCCB_INCOME, D("20000.00")))
+    # The UCCB of 20,000.00 is in the net income, which a social benefits repayment of 40,000.00
+    # takes to -3,135.00 at 17,000: line 4 is above line 3, line 5 is floored, so line 6 is 0.00.
+    kinds = british_columbia_kinds()
+    sheet = _sheet(
+        tmp_path,
+        "17000",
+        Artifact(UCCB_INCOME, D("20000.00")),
+        Artifact(kinds.kind("ca/social_benefits_repayment"), D("40000")),
+    )
 
     line_6 = sheet.get(BC479_ADJUSTED_FAMILY_NET_INCOME_LINE_6).value
     assert line_6 == D("0.00")
@@ -186,9 +187,9 @@ def test_the_step_traces_one_sum_line_over_line_5_with_the_cent_rounding(tmp_pat
     (line,) = [t for t in sheet.trace if isinstance(t, SumLine) and t.output is kinds.kind(LINE_6)]
     assert line == SumLine(
         output=kinds.kind(LINE_6),
-        parts=((kinds.kind(LINE_5), D("15865.00")),),
+        parts=((kinds.kind(LINE_5), D("16865.00")),),
         rounding=_rounding().rounding,
-        total=D("15865.00"),
+        total=D("16865.00"),
     )
 
 

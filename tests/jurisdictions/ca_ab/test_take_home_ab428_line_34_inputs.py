@@ -23,6 +23,7 @@ from tax_engine.domain.manifest import Manifest
 from tax_engine.jurisdictions.ca_ab.catalog import AB428_PENSION_INCOME_AMOUNT
 from tests.jurisdictions.ca_ab.support import alberta_kinds, alberta_packages, alberta_units
 from tests.kinds import non_negative
+from tests.manifest_support import input_named
 
 D = Decimal
 IDENTIFIER = AB428_PENSION_INCOME_AMOUNT.identifier
@@ -34,7 +35,16 @@ HEADER = """\
 jurisdiction: CA-AB
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
+capabilities: []
+"""
+
+FORM = """\
+form:
+  name: ca-ab/ab428_credits
+  required: true
+  exports:
+    - ca/total_income
 capabilities: []
 """
 
@@ -44,6 +54,7 @@ def _manifest(tmp_path: Path) -> Manifest:
     folder.mkdir()
     (folder / "header.yaml").write_text(HEADER)
     shutil.copy(PART, folder / PART.name)
+    (folder / "form.yaml").write_text(FORM)
     source = YamlJurisdictionSource(alberta_packages().roots(), alberta_kinds(), alberta_units())
     return source.load(folder)
 
@@ -57,7 +68,8 @@ def _part() -> dict[str, Any]:
 def test_the_part_declares_only_the_pension_income_input_in_the_printed_order() -> None:
     part = _part()
 
-    assert list(part) == ["inputs"]
+    assert list(part) == ["form", "inputs"]
+    assert part["form"] == {"name": "ca-ab/ab428_credits"}
     assert part["inputs"] == [
         {
             "name": IDENTIFIER,
@@ -91,7 +103,7 @@ def test_the_pension_income_amount_is_a_non_negative_amount_kind() -> None:
 def test_a_request_that_leaves_out_the_pension_income_amount_is_read_as_zero(
     tmp_path: Path,
 ) -> None:
-    declaration = _manifest(tmp_path).inputs[IDENTIFIER]
+    declaration = input_named(_manifest(tmp_path), IDENTIFIER)
     default = declaration.default_artifact(alberta_kinds().kind(IDENTIFIER))
 
     assert not declaration.required

@@ -3,6 +3,8 @@
 # Form T1231)" (5010-c). Form T1231 is not built, and no maximum is printed. A salary-only caller
 # has no mining flow-through share credit, so a request that leaves the line out is read as blank;
 # the step that consumes it (line 91) reads that blank as 0.
+form:
+  name: ca-bc/bc428
 inputs:
   - name: ca-bc/bc428_mining_flow_through_credit_line_90
     title: "British Columbia mining flow-through share tax credit"

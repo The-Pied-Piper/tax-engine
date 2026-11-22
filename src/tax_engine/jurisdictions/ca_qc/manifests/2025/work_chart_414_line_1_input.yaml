@@ -1,0 +1,13 @@
+# Work Chart 414 (TP-1.D.GR-V 2025-12), line 1's input: "Contributions to authorized Québec municipal
+# political parties (maximum $200)". The chart's only input, optional; a caller who gives none gets the
+# default 0, so line 1 reads 0.00 and the credit is 0.00.
+form:
+  name: ca-qc/work_chart_414
+inputs:
+  - name: ca-qc/work_chart_414_contributions_input_line_1
+    title: "Contributions to authorized Québec municipal political parties"
+    reference: "1"
+    unit: ca/cad
+    required: false
+    default: "0"
+    basis: "Contributions to authorized Québec municipal political parties (maximum $200)"

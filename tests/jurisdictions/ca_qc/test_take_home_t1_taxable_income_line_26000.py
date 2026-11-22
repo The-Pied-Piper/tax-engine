@@ -2,7 +2,7 @@
 
 Form text (CRA 5005-R page 5, https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5005-r/5005-r-25e.txt):
 "Line 70 and line 26000: Line 58 minus line 69 (if negative, enter "0") Taxable income =". The step
-is core/subtract_not_below_zero of line 69 (`ca/deductions_from_net_income`) from net income
+is core/subtract_not_below_zero of line 69 (`ca/deductions_from_net_income`, a step) from net income
 (line 58, a copy of line 57), rounded through `ca-qc/cent_rounding`. Line 69 is the real optional
 input part, read as 0 when left out.
 
@@ -18,23 +18,19 @@ import pytest
 
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.jurisdictions.ca.catalog.taxable_income import DEDUCTIONS_FROM_NET_INCOME
-from tax_engine.jurisdictions.ca_qc.catalog import NET_INCOME, TAXABLE_INCOME
+from tax_engine.jurisdictions.ca_qc.catalog import NET_INCOME, T1_LINE_24400, TAXABLE_INCOME
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 
 D = Decimal
 INPUTS = "t1_taxable_income_line_25700_inputs.yaml"
+LINE_69 = "t1_taxable_income_line_25700.yaml"
 PART = "t1_taxable_income_line_26000.yaml"
 
 HEADER = dedent("""\
     jurisdiction: CA-QC
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca-qc/net_income
-        required: true
-    outputs:
-      - ca-qc/net_income
+    outputs: []
     capabilities: []
     """)
 FORM = dedent("""\
@@ -43,6 +39,9 @@ FORM = dedent("""\
       required: true
       exports:
         - ca-qc/taxable_income
+    inputs:
+      - name: ca-qc/net_income
+        required: true
     capabilities: []
     """)
 
@@ -50,8 +49,8 @@ FORM = dedent("""\
 def taxable_income(take_home_service: TakeHomeService, net: str, deductions: str | None) -> Decimal:
     starting = [Artifact(NET_INCOME, D(net))]
     if deductions is not None:
-        starting.append(Artifact(DEDUCTIONS_FROM_NET_INCOME, D(deductions)))
-    worksheets = take_home_service(HEADER, FORM, INPUTS, PART).compute(
+        starting.append(Artifact(T1_LINE_24400, D(deductions)))
+    worksheets = take_home_service(HEADER, FORM, INPUTS, LINE_69, PART).compute(
         JurisdictionCode("CA-QC"), 2025, *starting
     )
     (sheet,) = worksheets["ca-qc/t1_taxable_income"]

@@ -3,6 +3,8 @@
 # A salary-only single filer claims no cultural industries printing credit, so a request that leaves
 # the line out is read as blank. The step that reads it (a later one) applies the blank rule and the
 # printed maximum.
+form:
+  name: ca-mb/mb479
 inputs:
   - name: ca-mb/mb479_cultural_industries_printing_credit_line_73
     title: "Cultural industries printing tax credit"

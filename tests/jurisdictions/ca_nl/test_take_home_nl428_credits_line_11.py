@@ -59,7 +59,6 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 NEWFOUNDLAND = JurisdictionCode("CA-NL")
@@ -80,11 +79,7 @@ HEADER = dedent("""\
     jurisdiction: CA-NL
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/employment_income
-        required: true
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 # The NL428 declaration, test-local: lines 1, 10 and 11 are composed, so it exports those.
@@ -111,9 +106,7 @@ def _part_files() -> Iterator[tuple[str, str]]:
         found = _federal(name)
         yield (
             name,
-            inputs_without_form(found)
-            if name.endswith("_inputs.yaml")
-            else found.read_text("utf-8"),
+            found.read_text("utf-8"),
         )
     for part in (LINE_1_PART, LINE_10_PART, PART):
         yield part.name, part.read_text(encoding="utf-8")

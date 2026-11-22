@@ -35,10 +35,11 @@ def take_home_service(tmp_path: Path) -> TakeHomeService:
     """A builder of services over a temporary Quebec take-home manifest.
 
     The builder writes `header` and `form` to the temporary folder, copies each named part file
-    (for example "solidarity_credit_amounts.yaml") from the package's manifest folder beside them,
-    and points the Quebec namespace at that folder. The two texts sort ahead of the parts, because
-    the folder is composed in file-name order. Quebec is not yet in the registered engine, so the
-    service is built over the Quebec package list of `support.py`.
+    (once; for example "solidarity_credit_amounts.yaml") from the package's manifest folder beside
+    them, and points the Quebec namespace at that folder. The two texts sort ahead of the parts,
+    because the folder is composed in file-name order.
+    Quebec is not yet in the registered engine, so
+    the service is built over the Quebec package list of `support.py`.
     """
 
     def build(header: str, form: str, *parts: str) -> TaxComputationService:
@@ -46,7 +47,8 @@ def take_home_service(tmp_path: Path) -> TakeHomeService:
         folder.mkdir(parents=True)
         (folder / "00_header.yaml").write_text(header, encoding="utf-8")
         (folder / "01_form.yaml").write_text(form, encoding="utf-8")
-        for number, part in enumerate(parts, start=2):
+        # A part named twice (a chain that several lists of a test share) is copied once.
+        for number, part in enumerate(dict.fromkeys(parts), start=2):
             (folder / f"{number:02d}_{part}").write_text(
                 (QUEBEC_PARTS / part).read_text(encoding="utf-8"), encoding="utf-8"
             )

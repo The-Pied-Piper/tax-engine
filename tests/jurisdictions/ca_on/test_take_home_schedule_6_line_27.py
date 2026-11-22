@@ -30,10 +30,10 @@ from tests.jurisdictions.ca_on.conftest import TakeHomeService
 D = Decimal
 # The parts of test_take_home_schedule_6_line_25.py, then the line 27 part under test.
 PARTS = (
-    "salary.yaml",
     *form_part_names("schedule_8"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),
     "schedule_6_line_7.yaml",
+    "schedule_6_line_9.yaml",
     "schedule_6_line_10.yaml",
     "schedule_6_line_11.yaml",
     "schedule_6_line_12.yaml",
@@ -48,8 +48,7 @@ HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 FORM = dedent("""\

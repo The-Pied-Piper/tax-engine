@@ -8,7 +8,7 @@ blank line 4 is read as 0 and the step prints its own "left blank, taken as 0" r
 floored at 0, so the kind `ca-mb/mb479_family_income_column_1_line_5` is non-negative. The form
 names no label for the line, so the step has no title.
 
-The test composes the real Manitoba salary part, the real Schedule 8 parts, the real T1 taxable
+The test composes the T1 employment income form, the real Schedule 8 parts, the real T1 taxable
 income parts, the real line 1 and line 3 parts, the line 2 and line 4 input parts and the line 5
 part, and types in only the salary (and, in some tests, line 4). The MB479 form declaration is made
 up here, exporting only line 5.
@@ -54,7 +54,6 @@ from tests.jurisdictions.ca_mb.support import (
     manitoba_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 CENT = D("0.01")
@@ -72,8 +71,7 @@ HEADER = dedent("""\
     jurisdiction: CA-MB
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 FORM = dedent("""\
@@ -113,7 +111,6 @@ def docstring_of(identifier: str) -> str:
 
 
 def _part_files() -> Iterator[Path]:
-    yield MB_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     for name in T1_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
@@ -131,9 +128,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
     for number, part in enumerate(_part_files(), start=2):
         (folder / f"{number:02d}_{part.name}").write_text(
-            inputs_without_form(part)
-            if part.name.endswith("_inputs.yaml") and part.is_relative_to(FEDERAL_FORMS)
-            else part.read_text(encoding="utf-8"),
+            part.read_text(encoding="utf-8"),
             encoding="utf-8",
         )
     roots = {**manitoba_packages().roots(), Namespace("ca-mb"): tmp_path}
@@ -180,19 +175,24 @@ def test_line_5_subtracts_line_4_when_it_is_given(tmp_path: Path) -> None:
         Artifact(UCCB_INCOME, D("500")),
     )
 
-    assert sheet.get(manitoba_kinds().kind(KIND)).value == _net_income(D("70000")) - D("500")
-    assert sheet.get(manitoba_kinds().kind(KIND)).value == D("68835.00")
+    # The UCCB is in the net income (T1 line 15000) and line 4 takes it off again, so line 5 is the
+    # net income of the salary alone.
+    assert sheet.get(manitoba_kinds().kind(KIND)).value == _net_income(D("70000"))
+    assert sheet.get(manitoba_kinds().kind(KIND)).value == D("69335.00")
 
 
 def test_line_5_is_the_floor_when_line_4_exceeds_line_3(tmp_path: Path) -> None:
+    # The UCCB of 10,000 is in the net income, which a social benefits repayment of 30,000 takes to
+    # 10,000 + 10,000 - 65.00 - 30,000 = -10,065.00, below line 4.
+    kinds = manitoba_kinds()
     sheet = _sheet(
         tmp_path,
         Artifact(EMPLOYMENT_INCOME, D("10000")),
         Artifact(UCCB_INCOME, D("10000")),
+        Artifact(kinds.kind("ca/social_benefits_repayment"), D("30000")),
     )
 
     line_5 = sheet.get(manitoba_kinds().kind(KIND)).value
-    assert D("10000") > _net_income(D("10000"))
     assert line_5 == D("0.00")
     # The floor is the cent zero of the rounding dataset: printed 0.00, never -0.00.
     assert str(line_5) == "0.00"
@@ -200,10 +200,13 @@ def test_line_5_is_the_floor_when_line_4_exceeds_line_3(tmp_path: Path) -> None:
 
 
 def test_line_5_is_the_floor_when_line_4_equals_line_3(tmp_path: Path) -> None:
+    # Line 3 is 10,000 + 9,935.00 - 65.00 - 9,935.00 = 9,935.00, the same as line 4.
+    kinds = manitoba_kinds()
     sheet = _sheet(
         tmp_path,
         Artifact(EMPLOYMENT_INCOME, D("10000")),
         Artifact(UCCB_INCOME, D("9935.00")),
+        Artifact(kinds.kind("ca/social_benefits_repayment"), D("9935")),
     )
 
     assert sheet.get(manitoba_kinds().kind(KIND)).value == D("0.00")

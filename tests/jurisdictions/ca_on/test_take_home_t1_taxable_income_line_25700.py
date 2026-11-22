@@ -36,7 +36,7 @@ HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/t1_line_25400]
+outputs: []
 capabilities: []
 """
 FORM = """\

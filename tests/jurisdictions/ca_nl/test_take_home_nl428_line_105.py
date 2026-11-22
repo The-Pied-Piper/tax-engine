@@ -45,7 +45,6 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_parameter_parsers,
     newfoundland_units,
 )
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
@@ -71,6 +70,7 @@ NL_PART_NAMES = (
     "worksheet_nl428_line_7.yaml",
     "worksheet_nl428_line_58080_input.yaml",
     "worksheet_nl428_line_58440_input.yaml",
+    "worksheet_nl428_line_3_input.yaml",
     "worksheet_nl428_58440_line_5.yaml",
     "worksheet_nl428_58440_line_6.yaml",
     "worksheet_nl428_58440_line_7.yaml",
@@ -114,7 +114,11 @@ NL_PART_NAMES = (
     "nl428_credits_line_55.yaml",
     "nl428_credits_line_56.yaml",
     "nl428_credits_line_58.yaml",
-    "nl428_credits_line_61_input.yaml",
+    "nl428_credits_line_59_input.yaml",
+    "nl428_credits_line_59.yaml",
+    "nl428_credits_line_60_input.yaml",
+    "nl428_credits_line_60.yaml",
+    "nl428_credits_line_61.yaml",
     "nl428_credits_line_62.yaml",
     "nl428_line_66.yaml",
     "nl428_line_67_input.yaml",
@@ -133,7 +137,10 @@ NL_PART_NAMES = (
     "nl428_line_79.yaml",
     "nl428_line_80_input.yaml",
     "nl428_line_81.yaml",
-    "nl428_line_84_input.yaml",
+    "nl428_line_82_input.yaml",
+    "nl428_line_83_input.yaml",
+    "nl428_line_82.yaml",
+    "nl428_line_84.yaml",
     "nl428_line_85.yaml",
     "nl428_line_86_input.yaml",
     "nl428_line_87.yaml",
@@ -164,14 +171,7 @@ HEADER = dedent("""\
     jurisdiction: CA-NL
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/employment_income
-        title: "Employment income"
-        reference: "10100"
-        unit: ca/cad
-        required: true
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 FORMS = dedent("""\
@@ -226,11 +226,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     for number, text in enumerate(forms, start=1):
         (folder / f"01_form_{number}.yaml").write_text(text, encoding="utf-8")
     for number, found in enumerate(_part_files(), start=2):
-        text = (
-            inputs_without_form(found)
-            if found.name.endswith("_inputs.yaml") and found.is_relative_to(FEDERAL_FORMS)
-            else found.read_text(encoding="utf-8")
-        )
+        text = found.read_text(encoding="utf-8")
         (folder / f"{number:02d}_{found.name}").write_text(text, encoding="utf-8")
     roots = {**newfoundland_packages().roots(), Namespace("ca-nl"): tmp_path}
     return TaxComputationService(

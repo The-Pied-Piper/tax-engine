@@ -39,15 +39,7 @@ HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/t2204_premiums_deducted
-        required: true
-      - name: ca/t2204_line_5
-        required: false
-        default: null
-        basis: "Residents of other than Quebec (amount from line 9 of Schedule 13)"
-    outputs:
-      - ca/t2204_premiums_deducted
+    outputs: []
     """)
 FORM = dedent("""\
     form:
@@ -55,6 +47,13 @@ FORM = dedent("""\
       required: true
       exports:
         - ca/t2204_line_6
+    inputs:
+      - name: ca/t2204_premiums_deducted
+        required: true
+      - name: ca/t2204_line_5
+        required: false
+        default: null
+        basis: "Residents of other than Quebec (amount from line 9 of Schedule 13)"
     """)
 
 

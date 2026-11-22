@@ -1,8 +1,10 @@
 """ON428 (2025) line 41, computed from the real part file through the real engine.
 
-Form text (Form ON428, CRA 5006-c-25e.txt): "Line 41: Line 36 minus line 40 (if negative, enter
-"0") =". The inputs come from other parts, so this test declares them in a header of its own and
-loads the take-home folder's `on428_line_41.yaml` beside it. The output is `ca-
+Form text (Form ON428, CRA 5006-c-25e.txt): "Line 41: Line 36 minus line 40 (if negative, enter "0")
+=". Line 36 is the final step of `on428_line_36.yaml`,
+`ca-on/on428_medical_expenses_allowed_line_36` (the claim after the printed maximums). The inputs
+come from other parts, so this test declares them in a header of its own and loads the take-home
+folder's `on428_line_41.yaml` beside it. The output is `ca-
 on/on428_medical_expenses_over_limit_line_41`, exported by the form. The hand figures are asserted
 (not a CRA example).
 """
@@ -21,27 +23,27 @@ from tests.kinds import bundled_kinds
 D = Decimal
 CODE = JurisdictionCode("CA-ON")
 INPUTS = (
-    "ca-on/on428_medical_expenses_line_36",
+    "ca-on/on428_medical_expenses_allowed_line_36",
     "ca-on/on428_medical_expenses_limited_amount_line_40",
 )
 OUTPUT = "ca-on/on428_medical_expenses_over_limit_line_41"
 PART = "on428_line_41.yaml"
 
-HEADER = (
-    "jurisdiction: CA-ON\nversion: 1\nvalid_from_tax_year: 2025\ninputs:\n"
-    + "".join(f"  - name: {name}\n    required: true\n" for name in INPUTS)
-    + "outputs:\n"
-    + "".join(f"  - {name}\n" for name in INPUTS)
-)
+HEADER = "jurisdiction: CA-ON\nversion: 1\nvalid_from_tax_year: 2025\noutputs: []\n"
 
-FORM = f"""\
+
+FORM = (
+    f"""\
 form:
   name: ca-on/on428
   required: true
   exports:
     - {OUTPUT}
-capabilities: []
+inputs:
 """
+    + "".join(f"  - name: {name}\n    required: true\n" for name in INPUTS)
+    + "capabilities: []\n"
+)
 
 
 def _compute(take_home_service: TakeHomeService, values: tuple[str, ...]) -> Decimal:

@@ -3,6 +3,8 @@
 # The engine does not compute the child care amount, so the figure is taken as one
 # optional input the way the form takes it, a dollar amount entered on the line. A request that
 # leaves the line out is read as blank.
+form:
+  name: ca-nl/nl428_credits
 inputs:
   - name: ca-nl/nl428_child_care_amount_line_33
     title: "Child care amount"

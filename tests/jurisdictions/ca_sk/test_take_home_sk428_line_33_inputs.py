@@ -27,6 +27,7 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_units,
 )
 from tests.kinds import non_negative
+from tests.manifest_support import input_named
 
 D = Decimal
 IDENTIFIER = SK428_PENSION_INCOME_AMOUNT.identifier
@@ -38,7 +39,17 @@ HEADER = """\
 jurisdiction: CA-SK
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
+capabilities: []
+"""
+# The form that owns the input, declared here as the real parts of the form declare it.
+FORM_NAME = "ca-sk/sk428_credits"
+FORM = f"""\
+form:
+  name: {FORM_NAME}
+  required: true
+  exports:
+    - {IDENTIFIER}
 capabilities: []
 """
 
@@ -47,6 +58,7 @@ def _manifest(tmp_path: Path) -> Manifest:
     folder = tmp_path / "manifest"
     folder.mkdir()
     (folder / "header.yaml").write_text(HEADER)
+    (folder / "form.yaml").write_text(FORM)
     shutil.copy(PART, folder / PART.name)
     source = YamlJurisdictionSource(
         saskatchewan_packages().roots(), saskatchewan_kinds(), saskatchewan_units()
@@ -63,7 +75,8 @@ def _part() -> dict[str, Any]:
 def test_the_part_declares_only_the_pension_income_input_in_the_printed_order() -> None:
     part = _part()
 
-    assert list(part) == ["inputs"]
+    assert list(part) == ["form", "inputs"]
+    assert part["form"] == {"name": FORM_NAME}
     assert part["inputs"] == [
         {
             "name": IDENTIFIER,
@@ -97,7 +110,7 @@ def test_the_pension_income_amount_is_a_non_negative_amount_kind() -> None:
 def test_a_request_that_leaves_out_the_pension_income_amount_is_read_as_zero(
     tmp_path: Path,
 ) -> None:
-    declaration = _manifest(tmp_path).inputs[IDENTIFIER]
+    declaration = input_named(_manifest(tmp_path), IDENTIFIER)
     default = declaration.default_artifact(saskatchewan_kinds().kind(IDENTIFIER))
 
     assert not declaration.required

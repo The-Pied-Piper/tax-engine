@@ -1,0 +1,13 @@
+# Ontario medical expense patient move maximum, 2025 tax year (CRA 5006-PC "Ontario tax information for 2025", section "Line 58689": "The maximum Ontario claim for moving expenses for a patient's move to a more accessible dwelling is $3,525". It is a
+# plain cap, not a credit.
+# The figure feeds an unprinted working step, so the dataset carries no rounding (exact); the cent
+# rule is applied once, on line 36.
+family: ca-on/medical_expense_patient_move_maximum
+tax_year: 2025
+kind: amount
+title: "medical expense patient move maximum"
+unit: ca/cad
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/5006-pc/5006-pc-25e.txt
+rounding: none
+amount: "3525"

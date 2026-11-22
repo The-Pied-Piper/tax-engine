@@ -1,0 +1,21 @@
+# Form SK428 (CRA 5008-c) line 50: "Line 50 and line 58769: Line 48 plus line 49 =". Line 48 is the
+# medical expenses over the limit (sk428_credits_line_48.yaml) and line 49 the allowable amount of
+# medical expenses for other dependants, an optional input (sk428_credits_line_49_input.yaml) that a
+# salary-only filer leaves blank, read as 0. One core/sum step. The form names no label for the line,
+# so the step has no title. Line 51 reads it.
+form:
+  name: ca-sk/sk428_credits
+capabilities:
+  - name: core/sum
+    reference: "50"
+    unit: ca/cad
+    params:
+      rounding: ca-sk/cent_rounding
+    consumes:
+      parts:
+        - ca-sk/sk428_medical_expenses_over_limit_line_48
+        - ca-sk/sk428_other_dependants_medical_expenses_line_49
+    blank:
+      ca-sk/sk428_other_dependants_medical_expenses_line_49: "0"
+    produces:
+      output: ca-sk/sk428_medical_expenses_line_50

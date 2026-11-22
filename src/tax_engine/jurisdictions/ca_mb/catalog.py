@@ -7,7 +7,7 @@ Amounts are `Decimal`, non-negative unless the form prints no floor. Federal kin
 from __future__ import annotations
 
 from tax_engine.domain.artifact import ArtifactCatalog
-from tax_engine.domain.kinds import AmountKind
+from tax_engine.domain.kinds import AmountKind, RecordListKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca_mb import NAMESPACE
 
@@ -58,17 +58,115 @@ MB428_PENSION_INCOME_AMOUNT_LINE_31 = AmountKind.declare(
 $1,000)": the entered amount, passed on unchanged when it is at most the printed maximum, blank when
 left out; above the maximum it is refused, not capped."""
 
+MB428_MEDICAL_EXPENSES_LINE_43 = AmountKind.declare(
+    CATALOG, "mb428_medical_expenses_line_43", non_negative=True
+)
+"""Medical expenses, MB428 line 43 (line 58689) "Amount from line 33099 of your return": the amount
+as the filer gives it, an optional input; a blank input is read as blank."""
+
+MB428_NET_INCOME_LINE_44 = AmountKind.declare(
+    CATALOG, "mb428_net_income_line_44", non_negative=True
+)
+"""Net income, MB428 line 44 "Amount from line 23600 of your return": the T1 net income, read from
+the T1 taxable income form."""
+
+MB428_MEDICAL_EXPENSES_RATE_AMOUNT_LINE_46 = AmountKind.declare(
+    CATALOG, "mb428_medical_expenses_rate_amount_line_46", non_negative=True
+)
+"""Medical expenses threshold, MB428 line 46 "Line 44 multiplied by the percentage from line 45 =":
+line 44 times the 3% of line 45."""
+
+MB428_MEDICAL_EXPENSES_LIMITED_AMOUNT_LINE_47 = AmountKind.declare(
+    CATALOG, "mb428_medical_expenses_limited_amount_line_47", non_negative=True
+)
+"""Medical expenses threshold, limited, MB428 line 47 "Enter whichever is less: $1,728 or the amount
+from line 46.": the lesser of the printed ceiling and line 46."""
+
+MB428_MEDICAL_EXPENSES_OVER_LIMIT_LINE_48 = AmountKind.declare(
+    CATALOG, "mb428_medical_expenses_over_limit_line_48", non_negative=True
+)
+"""Medical expenses over the limit, MB428 line 48 "Line 43 minus line 47 (if negative, enter "0")
+=": line 43 minus line 47, never below 0; a blank line 43 is read as 0."""
+
+MB428_OTHER_DEPENDANTS_MEDICAL_EXPENSES_LINE_49 = AmountKind.declare(
+    CATALOG, "mb428_other_dependants_medical_expenses_line_49", non_negative=True
+)
+"""Allowable amount of medical expenses for other dependants, MB428 line 49 (line 58729) "(use
+Worksheet MB428)": the total of Worksheet MB428 line 4 of the section "Line 58729", which says to
+enter it on line 58729 of Form MB428; 0 when the filer lists no other dependant."""
+
+WORKSHEET_MB428_OTHER_DEPENDANTS_LINE_1 = AmountKind.declare(
+    CATALOG, "worksheet_mb428_other_dependants_medical_expenses_line_1", non_negative=True
+)
+"""Medical expenses for other dependant, Worksheet MB428 (CRA 5007-D) section "Line 58729", line 1
+"Medical expenses for other dependant": the amount the filer enters for each dependant, a field of
+each record of `ca-mb/worksheet_mb428_other_dependants`."""
+
+WORKSHEET_MB428_OTHER_DEPENDANTS_LINE_2 = AmountKind.declare(
+    CATALOG, "worksheet_mb428_other_dependants_medical_expenses_line_2", non_negative=True
+)
+"""Amount from line 47 of the dependant's Form MB428, Worksheet MB428 section "Line 58729", line 2
+"Enter the amount from line 47 of the dependant's Form MB428.": the amount the filer enters for
+each dependant (another person's return), blank when left out; a field of each record of
+`ca-mb/worksheet_mb428_other_dependants`."""
+
+WORKSHEET_MB428_OTHER_DEPENDANTS_LINE_3 = AmountKind.declare(
+    CATALOG, "worksheet_mb428_other_dependants_medical_expenses_line_3", non_negative=True
+)
+"""Line 1 minus line 2 for one dependant, Worksheet MB428 section "Line 58729", line 3 "Line 1 minus
+line 2 (if negative, enter "0")": never below 0, the export of the column form."""
+
+WORKSHEET_MB428_OTHER_DEPENDANTS = RecordListKind.declare(
+    CATALOG,
+    "worksheet_mb428_other_dependants",
+    fields=(WORKSHEET_MB428_OTHER_DEPENDANTS_LINE_1, WORKSHEET_MB428_OTHER_DEPENDANTS_LINE_2),
+)
+"""Dependants of Worksheet MB428 section "Line 58729", lines 1 and 2: a starting list with one
+record for each dependant ("Complete one column for each dependant"), holding line 1 and line 2.
+The column form `ca-mb/worksheet_mb428_other_dependants` runs once for each record."""
+
+WORKSHEET_MB428_OTHER_DEPENDANTS_LINE_4 = AmountKind.declare(
+    CATALOG, "worksheet_mb428_other_dependants_medical_expenses_line_4", non_negative=True
+)
+"""Total of the dependants' line 3, Worksheet MB428 section "Line 58729", line 4 "Add the amounts
+from line 3 for columns 1, 2, and 3 (and others, if any). Enter this amount on line 58729 of your
+Form MB428.": the total of the column form's line 3 over its records, 0 with no dependant."""
+
 MB428_MEDICAL_EXPENSES_LINE_50 = AmountKind.declare(
     CATALOG, "mb428_medical_expenses_line_50", non_negative=True
 )
-"""Medical expenses, MB428 line 50 (line 58769) "Line 48 plus line 49 =": line 48 plus line 49, an
-optional input; a blank is read as 0 by the line 51 step."""
+"""Medical expenses, MB428 line 50 (line 58769) "Line 48 plus line 49 =": line 48 plus line 49
+(a blank line 49 is read as 0), read by line 51."""
+
+MB428_DONATIONS_AMOUNT_LINE_54 = AmountKind.declare(
+    CATALOG, "mb428_donations_amount_line_54", non_negative=True
+)
+"""Donations amount, MB428 line 54 box A "Amount from line 13 of your federal Schedule 9": the
+amount as the filer gives it, an optional input; a blank input is read as blank."""
+
+MB428_DONATIONS_CREDIT_AT_RATE_LINE_54 = AmountKind.declare(
+    CATALOG, "mb428_donations_credit_at_rate_line_54", non_negative=True
+)
+"""Donations credit at 10.8%, MB428 line 54 box B "Amount from line 13 of your federal Schedule 9
+multiplied by 10.8% =": the Schedule 9 amount times 10.8%; a blank amount is read as 0."""
+
+MB428_DONATIONS_AMOUNT_LINE_55 = AmountKind.declare(
+    CATALOG, "mb428_donations_amount_line_55", non_negative=True
+)
+"""Donations amount, MB428 line 55 box A "Amount from line 14 of your federal Schedule 9": the
+amount as the filer gives it, an optional input; a blank input is read as blank."""
+
+MB428_DONATIONS_CREDIT_AT_RATE_LINE_55 = AmountKind.declare(
+    CATALOG, "mb428_donations_credit_at_rate_line_55", non_negative=True
+)
+"""Donations credit at 17.4%, MB428 line 55 box B "Amount from line 14 of your federal Schedule 9
+multiplied by 17.4% =": the Schedule 9 amount times 17.4%; a blank amount is read as 0."""
 
 MB428_DONATIONS_CREDIT_LINE_56 = AmountKind.declare(
     CATALOG, "mb428_donations_credit_line_56", non_negative=True
 )
 """Donations and gifts credit, MB428 line 56 (line 58969) "Line 56 and line 58969: Line 54 plus line
-55 =": a caller input, read as blank when left out; line 57 reads it."""
+55 =": line 54 plus line 55, read by line 57."""
 
 MB428_NON_REFUNDABLE_CREDITS_LINE_57 = AmountKind.declare(
     CATALOG, "mb428_non_refundable_credits_line_57", non_negative=True
@@ -512,12 +610,30 @@ MB479_AGE_CREDIT_LINE_8 = AmountKind.declare(CATALOG, "mb479_age_credit_line_8",
 """Age credit for self, MB479 line 8 "Age credit for self (if you were born in 1960 or earlier)
 Claim $113": the credit of the first box, a caller input that is read as blank when left out."""
 
+MB479_BASIC_CREDIT_SPOUSE_LINE_9 = AmountKind.declare(
+    CATALOG, "mb479_basic_credit_spouse_line_9", non_negative=True
+)
+"""Basic credit for spouse or common-law partner, MB479 line 9 "Line 9: Basic credit for spouse or
+common-law partner Claim $195": a caller input that is read as blank when left out."""
+
+MB479_AGE_CREDIT_SPOUSE_LINE_10 = AmountKind.declare(
+    CATALOG, "mb479_age_credit_spouse_line_10", non_negative=True
+)
+"""Age credit for spouse or common-law partner, MB479 line 10 "Line 10: Age credit for spouse or
+common-law partner (if they were born in 1960 or earlier) Claim $113": a caller input that is read
+as blank when left out."""
+
+MB479_DISABILITY_CREDIT_SPOUSE_LINE_11 = AmountKind.declare(
+    CATALOG, "mb479_disability_credit_spouse_line_11", non_negative=True
+)
+"""Disability credit for spouse or common-law partner, MB479 line 11 "Line 11: Disability credit for
+spouse or common-law partner Claim $113": a caller input that is read as blank when left out."""
+
 MB479_SPOUSE_CREDITS_LINE_12 = AmountKind.declare(
     CATALOG, "mb479_spouse_credits_line_12", non_negative=True
 )
 """Spouse or common-law partner credits, MB479 line 12 "Line 12 and line 60900: Add lines 9 to 11.":
-the printed sum of lines 9 to 11, taken as one figure because those lines are not modelled, a caller
-input that is read as blank when left out."""
+the sum of lines 9, 10 and 11, rounded half-up to the cent."""
 
 MB479_ELIGIBLE_DEPENDANT_CREDIT_LINE_13 = AmountKind.declare(
     CATALOG, "mb479_eligible_dependant_credit_line_13", non_negative=True
@@ -526,26 +642,59 @@ MB479_ELIGIBLE_DEPENDANT_CREDIT_LINE_13 = AmountKind.declare(
 of your Form MB428 Claim $195": the credit of the box, a caller input that is read as blank when
 left out."""
 
+MB479_DISABILITY_CLAIMS_NUMBER_LINE_14 = AmountKind.declare(
+    CATALOG, "mb479_disability_claims_number_line_14", non_negative=True
+)
+"""Number of disability claims, MB479 line 14 box A "Number of disability claims Line 60950": the
+number as the filer gives it, an optional input; left out, it is 0."""
+
+MB479_DISABILITY_CREDIT_AMOUNT_LINE_14 = AmountKind.declare(
+    CATALOG, "disability_credit_amount_line_14", non_negative=True
+)
+"""Amount for each of the disability claims, MB479 line 14 "multiplied by $113 =": the printed $113,
+from the `ca-mb/disability_credit_amount_line_14` dataset."""
+
 MB479_DISABILITY_CREDIT_LINE_14 = AmountKind.declare(
     CATALOG, "mb479_disability_credit_line_14", non_negative=True
 )
-"""Disability credit, MB479 line 14 "Number of disability claims Line 60950 multiplied by $113": the
-product box, taken as one figure because the count above it is not modelled, a caller input that is
-read as blank when left out."""
+"""Disability credit, MB479 line 14 box B "Number of disability claims Line 60950 multiplied by $113
+=": the number in box A times $113, rounded to the cent; line 17 adds it."""
+
+MB479_DISABLED_DEPENDANTS_NUMBER_LINE_15 = AmountKind.declare(
+    CATALOG, "mb479_disabled_dependants_number_line_15", non_negative=True
+)
+"""Number of disabled dependants, MB479 line 15 box A "Number of disabled dependants Line 60970":
+the number as the filer gives it, an optional input; left out, it is 0."""
+
+MB479_DISABLED_DEPENDANTS_CREDIT_AMOUNT_LINE_15 = AmountKind.declare(
+    CATALOG, "disabled_dependants_credit_amount_line_15", non_negative=True
+)
+"""Amount for each of the disabled dependants, MB479 line 15 "multiplied by $62 =": the printed $62,
+from the `ca-mb/disabled_dependants_credit_amount_line_15` dataset."""
 
 MB479_DISABLED_DEPENDANTS_CREDIT_LINE_15 = AmountKind.declare(
     CATALOG, "mb479_disabled_dependants_credit_line_15", non_negative=True
 )
-"""Disabled dependants credit, MB479 line 15 "Number of disabled dependants Line 60970 multiplied by
-$62": the product box, taken as one figure because the count above it is not modelled, a caller
-input that is read as blank when left out."""
+"""Disabled dependants credit, MB479 line 15 box B "Number of disabled dependants Line 60970
+multiplied by $62 =": the number in box A times $62, rounded to the cent; line 17 adds it."""
+
+MB479_DEPENDENT_CHILDREN_NUMBER_LINE_16 = AmountKind.declare(
+    CATALOG, "mb479_dependent_children_number_line_16", non_negative=True
+)
+"""Number of dependent children, MB479 line 16 box A "Number of dependent children Line 60999": the
+number as the filer gives it, an optional input; left out, it is 0."""
+
+MB479_DEPENDENT_CHILDREN_CREDIT_AMOUNT_LINE_16 = AmountKind.declare(
+    CATALOG, "dependent_children_credit_amount_line_16", non_negative=True
+)
+"""Amount for each of the dependent children, MB479 line 16 "multiplied by $26 =": the printed $26,
+from the `ca-mb/dependent_children_credit_amount_line_16` dataset."""
 
 MB479_DEPENDENT_CHILDREN_CREDIT_LINE_16 = AmountKind.declare(
     CATALOG, "mb479_dependent_children_credit_line_16", non_negative=True
 )
-"""Dependent children credit, MB479 line 16 "Number of dependent children Line 60999 multiplied by
-$26": the product box, taken as one figure because the count above it is not modelled, a caller
-input that is read as blank when left out."""
+"""Dependent children credit, MB479 line 16 box B "Number of dependent children Line 60999
+multiplied by $26 =": the number in box A times $26, rounded to the cent; line 17 adds it."""
 
 MB479_TOTAL_CREDITS_LINE_17 = AmountKind.declare(
     CATALOG, "mb479_total_credits_line_17", non_negative=True
@@ -797,8 +946,8 @@ cent."""
 AVERAGE_INCOME_TAX_RATE = AmountKind.declare(CATALOG, "average_income_tax_rate", non_negative=True)
 """Average income tax rate, the Manitoba return summary's own figure (no form prints it): T1 line
 43500 "Total payable" (for the take-home filer, line 143 plus line 147: the federal and the Manitoba
-income tax) divided by the salary (`ca/employment_income`), as a fraction, so 0.1598 is 15.98%. CPP
-and EI are not income tax and are not in it. It is 0 when the salary is 0."""
+income tax) divided by the salary (`ca/return_employment_income`), as a fraction, so 0.1598 is
+15.98%. CPP and EI are not income tax and are not in it. It is 0 when the salary is 0."""
 
 MANITOBA_BRACKET_RATE_RETURN = AmountKind.declare(
     CATALOG, "manitoba_bracket_rate_return", non_negative=True

@@ -27,15 +27,11 @@ from tests.kinds import bundled_kinds
 D = Decimal
 LINE_1 = "ca-bc/bc428_taxable_income_line_1"
 LINE_5 = "ca-bc/bc428_bracket_rate_line_5"
-HEADER = dedent(f"""\
+HEADER = dedent("""\
     jurisdiction: CA-BC
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: {LINE_1}
-        required: true
-    outputs:
-      - {LINE_1}
+    outputs: []
     capabilities: []
     """)
 FORM = dedent(f"""\
@@ -45,6 +41,10 @@ FORM = dedent(f"""\
       exports:
         - {LINE_5}
     capabilities: []
+    # Line 1 is the caller's, owned by this form, whose line 5 step reads it.
+    inputs:
+      - name: {LINE_1}
+        required: true
     """)
 
 

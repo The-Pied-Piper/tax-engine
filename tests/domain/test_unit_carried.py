@@ -204,7 +204,7 @@ def test_the_form_hands_its_units_to_each_worksheet_it_computes() -> None:
         declared=(InputDeclaration("ex/income", True, unit="ex/crowns"),),
         units=UNITS,
     )
-    forms = FormSet([form], inputs=frozenset({INCOME, RELIEF}))
+    forms = FormSet([form])
 
     (sheet,) = forms.compute(Artifact(INCOME, D("1000")), Artifact(RELIEF, D("400")))["ex-on/levy"]
 
@@ -242,7 +242,7 @@ def test_a_form_without_a_unit_for_a_figure_strips_the_unit_of_the_artifact_pass
         ),
         units=UNITS,
     )
-    forms = FormSet([form], inputs=frozenset({INCOME, RELIEF}))
+    forms = FormSet([form])
 
     (sheet,) = forms.compute(
         Artifact(INCOME, D("1000"), unit=CROWNS), Artifact(RELIEF, D("400"), unit=MOONS)
@@ -287,10 +287,9 @@ def test_an_imported_figure_with_no_unit_has_none() -> None:
     assert sheet.unit("income") is None
 
 
-# One record list, one field: the consumers and a producer of the field `ex/fee`.
+# Each reader has a list of audits of its own with the field `ex/fee`; one form can also produce it.
 FEE = AmountKind("ex/fee")
 FEE2 = AmountKind("ex/fee_less")
-AUDITS = RecordListKind("ex/audits", fields=(FEE, FEE2))
 FEE_TOTAL = AmountKind("ex/fee_total")
 OTHER_TOTAL = AmountKind("ex/other_total")
 
@@ -300,7 +299,7 @@ def reader(name: str, total: AmountKind, unit: str | None) -> FormComposition:
         name,
         [Subtract(EXACT, FEE, FEE2, total)],
         exports=[total],
-        instances=AUDITS,
+        instances=RecordListKind("ex/audits_" + name.split("/")[1], fields=(FEE, FEE2)),
         fields=(
             InputDeclaration("ex/fee", True, unit=unit),
             InputDeclaration("ex/fee_less", True),
@@ -309,34 +308,10 @@ def reader(name: str, total: AmountKind, unit: str | None) -> FormComposition:
     )
 
 
-def test_forms_reading_a_field_in_one_unit_agree() -> None:
-    first = reader("ex/first", FEE_TOTAL, "ex/crowns")
-    second = reader("ex/second", OTHER_TOTAL, "ex/crowns")
-
-    FormSet([first, second], inputs=frozenset({AUDITS}))
-
-
-def test_two_consumers_disagreeing_on_the_unit_of_a_field_are_refused() -> None:
-    first = reader("ex/first", FEE_TOTAL, "ex/crowns")
-    second = reader("ex/second", OTHER_TOTAL, "ex/moons")
-
-    with pytest.raises(
-        InvalidCompositionError, match=r"'fee'.*'ex/crowns'.*'ex/first'.*'ex/moons'.*'ex/second'"
-    ):
-        FormSet([first, second], inputs=frozenset({AUDITS}))
-
-
-def test_a_consumer_with_a_unit_and_one_without_disagree() -> None:
-    first = reader("ex/first", FEE_TOTAL, "ex/crowns")
-    second = reader("ex/second", OTHER_TOTAL, None)
-
-    with pytest.raises(InvalidCompositionError, match=r"'fee'.*unit"):
-        FormSet([first, second], inputs=frozenset({AUDITS}))
-
-
-def test_a_producer_and_a_consumer_disagreeing_on_the_unit_are_refused() -> None:
-    producer = composition(
-        "ex/producer",
+def producer(name: str, unit: str | None) -> FormComposition:
+    """A form that produces `ex/fee` (in `unit`) from inputs of its own."""
+    return composition(
+        name,
         [Subtract(EXACT, INCOME, RELIEF, FEE)],
         exports=[FEE],
         starting=frozenset({INCOME, RELIEF}),
@@ -346,18 +321,68 @@ def test_a_producer_and_a_consumer_disagreeing_on_the_unit_are_refused() -> None
                 {},
                 {"minuend": "ex/income", "subtrahend": "ex/relief"},
                 {"output": "ex/fee"},
-                unit="ex/moons",
+                unit=unit,
             ),
         ),
         units=UNITS,
     )
+
+
+# A figure's units are compared between every form that reads it (each in its own list of
+# instances) and the form that produces it.
+
+
+def test_forms_reading_a_field_in_one_unit_agree() -> None:
+    first = reader("ex/first", FEE_TOTAL, "ex/crowns")
+    second = reader("ex/second", OTHER_TOTAL, "ex/crowns")
+
+    FormSet([first, second])
+
+
+def test_two_consumers_disagreeing_on_the_unit_of_a_field_are_refused() -> None:
+    first = reader("ex/first", FEE_TOTAL, "ex/crowns")
+    second = reader("ex/second", OTHER_TOTAL, "ex/moons")
+
+    with pytest.raises(
+        InvalidCompositionError, match=r"'fee'.*'ex/crowns'.*'ex/first'.*'ex/moons'.*'ex/second'"
+    ):
+        FormSet([first, second])
+
+
+def test_a_consumer_with_a_unit_and_one_without_disagree() -> None:
+    first = reader("ex/first", FEE_TOTAL, "ex/crowns")
+    second = reader("ex/second", OTHER_TOTAL, None)
+
+    with pytest.raises(InvalidCompositionError, match=r"'fee'.*unit"):
+        FormSet([first, second])
+
+
+def test_a_producer_and_a_consumer_in_one_unit_agree() -> None:
+    FormSet([producer("ex/producer", "ex/crowns"), reader("ex/first", FEE_TOTAL, "ex/crowns")])
+
+
+def test_the_disagreement_is_found_whichever_form_is_listed_first() -> None:
+    consumer = reader("ex/consumer", FEE_TOTAL, "ex/crowns")
+
+    with pytest.raises(
+        InvalidCompositionError,
+        match=r"'fee'.*read in 'ex/crowns' by 'ex/consumer'.*'ex/moons'.*'ex/producer'",
+    ):
+        FormSet([consumer, producer("ex/producer", "ex/moons")])
+
+
+def test_a_consumer_with_a_unit_and_a_producer_without_disagree() -> None:
+    consumer = reader("ex/first", FEE_TOTAL, "ex/crowns")
+
+    with pytest.raises(InvalidCompositionError, match=r"'fee'.*unit"):
+        FormSet([producer("ex/producer", None), consumer])
+
+
+def test_a_producer_and_a_consumer_disagreeing_on_the_unit_are_refused() -> None:
     consumer = reader("ex/consumer", FEE_TOTAL, "ex/crowns")
 
     with pytest.raises(
         InvalidCompositionError,
         match=r"'fee'.*produced in 'ex/moons' by 'ex/producer'.*'ex/crowns'.*'ex/consumer'",
     ):
-        FormSet(
-            [producer, consumer],
-            inputs=frozenset({AUDITS, INCOME, RELIEF}),
-        )
+        FormSet([producer("ex/producer", "ex/moons"), consumer])

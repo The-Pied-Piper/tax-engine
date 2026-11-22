@@ -25,18 +25,23 @@ PART = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / "manifests" / "202
 LINE_67 = "ca-sk/sk428_tax_after_credits_line_67"
 LINE_82 = "ca-sk/sk428_saskatchewan_tax_line_82"
 
-HEADER = f"""\
+HEADER = """\
 jurisdiction: CA-SK
 version: 1
 valid_from_tax_year: 2025
+inputs: []
+outputs: []
+capabilities: []
+"""
+# The inputs belong to the form that exports them, so they are declared in a part of that form.
+OWNED_INPUTS = f"""\
+form:
+  name: ca-sk/sk428
 inputs:
   - name: {LINE_67}
     required: true
   - name: {LINE_82}
     required: true
-outputs:
-  - {LINE_82}
-capabilities: []
 """
 
 
@@ -44,6 +49,7 @@ def test_the_form_is_declared_with_its_export_and_supply(tmp_path: Path) -> None
     folder = tmp_path / "manifests" / "2025"
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
+    (folder / "00_inputs.yaml").write_text(OWNED_INPUTS, encoding="utf-8")
     (folder / "01_sk428.yaml").write_text(PART.read_text(encoding="utf-8"), encoding="utf-8")
     source = YamlJurisdictionSource(
         saskatchewan_packages().roots(),

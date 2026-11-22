@@ -30,8 +30,8 @@ from tax_engine.jurisdictions.ca.catalog.refund import (
     T2204_LINE_1_COUNT,
     T2204_SELF_EMPLOYMENT_EARNINGS,
 )
+from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
-from tests.manifest_support import T1_LINE_10100_PARTS
 
 D = Decimal
 
@@ -41,18 +41,8 @@ HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/employment_income
-        required: true
-      - name: ca/t2204_exemption
-        required: true
-      - name: ca/t2204_self_employment_earnings
-        required: false
-        default: null
-        basis: "Total self-employment and other earnings eligible for the EI program
-          for access to EI special benefits"
-    outputs:
-      - ca/employment_income
+    outputs: []
+    capabilities: []
     """)
 FORM = dedent("""\
     form:
@@ -60,6 +50,14 @@ FORM = dedent("""\
       required: true
       exports:
         - ca/t2204_line_1
+    inputs:
+      - name: ca/t2204_exemption
+        required: true
+      - name: ca/t2204_self_employment_earnings
+        required: false
+        default: null
+        basis: "Total self-employment and other earnings eligible for the EI program
+          for access to EI special benefits"
     """)
 
 
@@ -73,9 +71,9 @@ def t2204(
     ]
     if self_employment is not None:
         starting.append(Artifact(T2204_SELF_EMPLOYMENT_EARNINGS, D(self_employment)))
-    (sheet,) = take_home_service(HEADER, FORM, *T1_LINE_10100_PARTS, PART).compute(
-        JurisdictionCode("CA-ON"), 2025, *starting
-    )["ca/t2204"]
+    (sheet,) = take_home_service(
+        HEADER, FORM, *form_part_names("t1_employment_income"), PART
+    ).compute(JurisdictionCode("CA-ON"), 2025, *starting)["ca/t2204"]
     return sheet
 
 

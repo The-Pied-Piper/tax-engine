@@ -11,7 +11,7 @@ key (the return is the default form) and no params. The average rate step is pin
 `test_take_home_return_average_income_tax_rate.py`; the marginal rate steps run here over stand-ins
 (figures in `end_to_end/test_return_marginal_rates.py`).
 
-The test composes the real Newfoundland and Labrador salary part and the real `return.yaml`. The
+The test composes the T1 employment income form and the real `return.yaml`. The
 header, the declaration of the T1 tax and credits form (exporting `ca/refund_or_balance_owing`) and
 the step producing that export are made up here, because the shared scaffold and the T1 form own
 them: the stand-in step takes a given `ca/total_credits` off the salary, so the figure is positive
@@ -28,6 +28,7 @@ from typing import Any
 import pytest
 import yaml
 
+import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_nl
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
@@ -39,6 +40,7 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca.catalog.refund import REFUND_OR_BALANCE_OWING, TOTAL_CREDITS
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_capabilities,
     newfoundland_kinds,
@@ -91,6 +93,8 @@ NL428_FORM = dedent("""\
     capabilities: []
     """)
 CREDITS_INPUT = dedent("""\
+    form:
+      name: ca/t1_tax_and_credits
     inputs:
       - name: ca/total_credits
         title: "Total credits"
@@ -108,11 +112,28 @@ T1_STEP = dedent("""\
         params:
           rounding: ca/cent_rounding
         consumes:
-          amount: ca/employment_income
+          amount: ca/return_employment_income
           less: ca/total_credits
         produces:
           output: ca/refund_or_balance_owing
     """)
+
+
+def _salary_total(form: str) -> str:
+    """The step through which a stand-in form reads the salary: a form reads another form's export
+    (here the T1 employment income form's line 10100) as a record list, and totals it."""
+    return dedent(f"""\
+        form:
+          name: {form}
+        capabilities:
+          - name: core/record_total
+            unit: ca/cad
+            consumes:
+              records: ca/t1_employment_income.employment_income_line_10100
+            produces:
+              output: ca/return_employment_income
+        """)
+
 
 # Stand-ins for the other figures the return reads (the total payable): each amount is the salary
 # itself, a made-up figure, because this test is about line 167 only; the average rate is in
@@ -151,7 +172,7 @@ def _other_step(form: str, output: str, unit: str) -> str:
             params:
               table: {table}
             consumes:
-              base: ca/employment_income
+              base: ca/return_employment_income
             produces:
               output: {output}
         """
@@ -162,7 +183,7 @@ def _other_step(form: str, output: str, unit: str) -> str:
           params:
             rounding: ca/cent_rounding
           consumes:
-            parts: [ca/employment_income]
+            parts: [ca/return_employment_income]
           produces:
             output: {output}
     """
@@ -182,10 +203,19 @@ def _service(tmp_path: Path) -> TaxComputationService:
         ("03a_nl428_credits_form.yaml", NL428_CREDITS_FORM),
         ("03a_nl428_form.yaml", NL428_FORM),
         *[
+            (f"03b_{number}_salary.yaml", _salary_total(form))
+            for number, form in enumerate(
+                ("ca/t1_tax_and_credits", "ca-nl/nl428_credits", "ca-nl/nl428")
+            )
+        ],
+        *[
             (f"03d_{number}.yaml", _other_step(form, out, unit))
             for number, (form, out, unit) in enumerate(OTHER_STEPS)
         ],
-        ("04_salary.yaml", (NL_PARTS / "salary.yaml").read_text(encoding="utf-8")),
+        *(
+            (f"04_{part.name}", part.read_text(encoding="utf-8"))
+            for part in form_parts("t1_employment_income")
+        ),
         ("05_return.yaml", RETURN_PART.read_text(encoding="utf-8")),
     ]
     for name, text in texts:

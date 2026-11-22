@@ -1,0 +1,17 @@
+# Form BC428 (CRA 5010-C) line 50: "Line 50: Enter whichever is less: $2,689 or the amount from line 49."
+# The $2,689 is the printed ceiling, the `ca-bc/medical_expense_dollar_limit` dataset, and has no
+# step of its own. Line 50 is the lesser of that ceiling and line 49
+# (`ca-bc/bc428_medical_expenses_rate_amount_line_49`), one core/capped_amount step, rounded half-up
+# to the cent by the dataset's rule. The form prints no label for the line, so the step has no title.
+form:
+  name: ca-bc/bc428
+capabilities:
+  - name: core/capped_amount
+    reference: "50"
+    unit: ca/cad
+    params:
+      cap: ca-bc/medical_expense_dollar_limit
+    consumes:
+      base: ca-bc/bc428_medical_expenses_rate_amount_line_49
+    produces:
+      output: ca-bc/bc428_medical_expenses_limited_amount_line_50

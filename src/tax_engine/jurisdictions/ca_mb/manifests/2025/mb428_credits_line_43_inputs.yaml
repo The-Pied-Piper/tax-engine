@@ -1,0 +1,14 @@
+# MB428 (2025) line 43's input. Form MB428 (CRA 5007-c): "Line 43 and line 58689: Amount from line
+# 33099 of your return". The engine does not compute medical expenses, so the figure is taken as one
+# optional input, the way the form takes it. A request that leaves the line out is read as blank; the
+# line 48 step reads that blank as 0.
+form:
+  name: ca-mb/mb428_credits
+inputs:
+  - name: ca-mb/mb428_medical_expenses_line_43
+    title: "Amount from line 33099 of your return"
+    reference: "43"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 43 and line 58689: Amount from line 33099 of your return'

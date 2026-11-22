@@ -17,6 +17,7 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.domain.manifest import Manifest
 from tax_engine.registrations import JURISDICTIONS, artifact_kinds, units
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
+from tests.manifest_support import input_named
 
 LINE_23500 = "ca/social_benefits_repayment"
 PRINTED_BASIS = 'Line 55 and line 23500: If not, enter "0" on line 23500.'
@@ -25,7 +26,7 @@ HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/social_benefits_repayment]
+outputs: []
 capabilities: []
 """
 FORM = """\
@@ -49,7 +50,7 @@ def test_a_request_that_leaves_out_line_23500_is_read_as_zero(
     take_home_service: TakeHomeService, tmp_path: Path
 ) -> None:
     kinds = artifact_kinds()
-    declaration = _manifest(take_home_service, tmp_path).inputs[LINE_23500]
+    declaration = input_named(_manifest(take_home_service, tmp_path), LINE_23500)
     default = declaration.default_artifact(kinds.kind(LINE_23500))
     assert not declaration.required
     assert declaration.basis == PRINTED_BASIS

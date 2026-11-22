@@ -28,6 +28,7 @@ from typing import Any
 import pytest
 import yaml
 
+import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_nl
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
@@ -53,6 +54,7 @@ from tax_engine.jurisdictions.ca_nl.catalog import (
     NL428_DISABILITY_AMOUNT_SELF_LINE_40,
     NL428_DISABILITY_AMOUNT_SELF_WORKSHEET_LINE_40,
 )
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_capabilities,
     newfoundland_kinds,
@@ -68,6 +70,7 @@ LINE_PART = PARTS / "nl428_credits_line_40.yaml"
 INPUT_PART = PARTS / "nl428_credits_line_40_input.yaml"
 WORKSHEET_PARTS = (
     "worksheet_nl428_line_58440_input.yaml",
+    "worksheet_nl428_line_3_input.yaml",
     "worksheet_nl428_58440_line_5.yaml",
     "worksheet_nl428_58440_line_6.yaml",
     "worksheet_nl428_58440_line_7.yaml",
@@ -79,11 +82,8 @@ HEADER = dedent("""\
     jurisdiction: CA-NL
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/employment_income
-        required: true
-    outputs:
-      - ca/employment_income
+    outputs: []
+    capabilities: []
     """)
 WORKSHEET_FORM_PART = dedent("""\
     form:
@@ -110,6 +110,10 @@ def _service(tmp_path: Path) -> TaxComputationService:
     folder = tmp_path / "manifests" / "2025"
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
+    for part in form_parts("t1_employment_income"):
+        (folder / f"00_t1_{part.name}").write_text(
+            part.read_text(encoding="utf-8"), encoding="utf-8"
+        )
     (folder / "01_form.yaml").write_text(FORM_PART, encoding="utf-8")
     (folder / "01_worksheet_form.yaml").write_text(WORKSHEET_FORM_PART, encoding="utf-8")
     (folder / "02_input.yaml").write_text(INPUT_PART.read_text(encoding="utf-8"), encoding="utf-8")

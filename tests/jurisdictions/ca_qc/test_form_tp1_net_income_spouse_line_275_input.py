@@ -25,6 +25,7 @@ from tax_engine.domain.manifest import Manifest
 from tax_engine.jurisdictions.ca_qc.catalog import TP1_SPOUSE_NET_INCOME_LINE_275
 from tests.jurisdictions.ca_qc.support import quebec_kinds, quebec_packages, quebec_units
 from tests.kinds import non_negative
+from tests.manifest_support import input_named
 
 IDENTIFIER = TP1_SPOUSE_NET_INCOME_LINE_275.identifier
 PRINTED_BASIS = "Amount from line 275 of your spouse's return (spouse on December 31, 2025)"
@@ -35,11 +36,7 @@ HEADER = """\
 jurisdiction: CA-QC
 version: 1
 valid_from_tax_year: 2025
-inputs:
-  - name: ca/employment_income
-    required: true
-outputs:
-  - ca/employment_income
+outputs: []
 capabilities: []
 """
 FORM = """\
@@ -94,7 +91,7 @@ def test_the_amount_is_a_registered_non_negative_decimal_amount() -> None:
 
 
 def test_a_request_that_leaves_out_the_amount_is_left_blank(tmp_path: Path) -> None:
-    declaration = _manifest(tmp_path).inputs[IDENTIFIER]
+    declaration = input_named(_manifest(tmp_path), IDENTIFIER)
     default = declaration.default_artifact(quebec_kinds().kind(IDENTIFIER))
 
     assert not declaration.required

@@ -6,7 +6,7 @@ only; column 2 (the spouse) is not built for a single filer. Line 3 is one core/
 salary-only filer: the blank line 2 is read as 0 and the step prints its own "left blank, taken as
 0" row. The result is signed, because line 1 is.
 
-The test composes the real Manitoba salary part, the real Schedule 8 parts, the real T1 taxable
+The test composes the T1 employment income form, the real Schedule 8 parts, the real T1 taxable
 income parts, the real line 1 part, the line 2 input part and the line 3 part, and types in only the
 salary (and, in some tests, line 2 or the social benefits repayment). The MB479 form declaration is
 made up here, exporting only line 3.
@@ -50,7 +50,6 @@ from tests.jurisdictions.ca_mb.support import (
     manitoba_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 CENT = D("0.01")
@@ -66,8 +65,7 @@ HEADER = dedent("""\
     jurisdiction: CA-MB
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 FORM = dedent("""\
@@ -107,7 +105,6 @@ def docstring_of(identifier: str) -> str:
 
 
 def _part_files() -> Iterator[Path]:
-    yield MB_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     for name in T1_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
@@ -123,9 +120,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
     for number, part in enumerate(_part_files(), start=2):
         (folder / f"{number:02d}_{part.name}").write_text(
-            inputs_without_form(part)
-            if part.name.endswith("_inputs.yaml") and part.is_relative_to(FEDERAL_FORMS)
-            else part.read_text(encoding="utf-8"),
+            part.read_text(encoding="utf-8"),
             encoding="utf-8",
         )
     roots = {**manitoba_packages().roots(), Namespace("ca-mb"): tmp_path}
@@ -172,8 +167,10 @@ def test_line_3_adds_line_2_when_it_is_given(tmp_path: Path) -> None:
         Artifact(UCCB_REPAYMENT, D("500")),
     )
 
-    assert sheet.get(manitoba_kinds().kind(KIND)).value == _net_income(D("70000")) + D("500")
-    assert sheet.get(manitoba_kinds().kind(KIND)).value == D("69835.00")
+    # The 500 repayment is deducted in the net income (T1 line 23300) and line 2 adds it back, so
+    # line 3 is the net income of the salary alone.
+    assert sheet.get(manitoba_kinds().kind(KIND)).value == _net_income(D("70000"))
+    assert sheet.get(manitoba_kinds().kind(KIND)).value == D("69335.00")
 
 
 def test_line_3_stays_negative_when_line_1_is_negative(tmp_path: Path) -> None:
@@ -186,7 +183,8 @@ def test_line_3_stays_negative_when_line_1_is_negative(tmp_path: Path) -> None:
     given = _sheet(tmp_path / "given", salary, repayment, Artifact(UCCB_REPAYMENT, D("500")))
 
     assert blank.get(kinds.kind(KIND)).value == D("-5665.00")
-    assert given.get(kinds.kind(KIND)).value == D("-5165.00")
+    # The repayment is deducted in line 1 and added back by line 2, so line 3 stays -5,665.00.
+    assert given.get(kinds.kind(KIND)).value == D("-5665.00")
 
 
 def _part() -> dict[str, Any]:

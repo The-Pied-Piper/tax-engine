@@ -2,10 +2,11 @@
 form's real parts composed end to end.
 
 Every line part has its own test with its neighbours typed in. This module composes the whole form:
-it copies every `t2204*.yaml` part, plus `salary.yaml`, from the package into a temporary manifest
-folder beside a test-only header, and types in only the gross salary (`ca/employment_income`), plus
-the given line 4 figure in one case. The real header is not used because its output, T1 line 167,
-is not built yet. This is not a worked return: no return file, no slips, one form.
+it copies every `t2204*.yaml` part, plus the line 10100 input part, from the package into a
+temporary manifest folder beside a test-only header, and types in only the gross salary
+(`ca/employment_income`), plus the given line 4 figure in one case. The real header is not used
+because its output, T1 line 167, is not built yet. This is not a worked return: no return file, no
+slips, one form.
 
 The form's exports are line 4 (the premiums deducted), the T1 line 45000 amount and line 16.
 
@@ -54,23 +55,20 @@ from tax_engine.jurisdictions.ca.catalog.refund import (
 )
 from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
-from tests.manifest_support import T1_LINE_10100_PARTS
 
 D = Decimal
 HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 # The real T2204 declaration (`t2204.yaml`) carries the form and its exports, so the fixture's own
 # form text is an empty mapping.
 FORM = "{}\n"
 PARTS = (
-    "salary.yaml",
-    *T1_LINE_10100_PARTS,
+    *form_part_names("t1_employment_income"),
     *form_part_names("t2204"),
 )
 

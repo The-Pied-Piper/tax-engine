@@ -24,6 +24,7 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.domain.manifest import Manifest
 from tax_engine.registrations import JURISDICTIONS, artifact_kinds, units
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
+from tests.manifest_support import input_named
 
 LINE_2 = "ca/t2204_self_employment_earnings"
 LINE_4_GIVEN = "ca/t2204_premiums_deducted_given"
@@ -38,7 +39,7 @@ HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/t2204_line_1]
+outputs: []
 capabilities: []
 """
 
@@ -64,7 +65,7 @@ def test_a_request_that_leaves_out_the_self_employment_earnings_is_read_as_blank
     take_home_service: TakeHomeService, tmp_path: Path
 ) -> None:
     kinds = artifact_kinds()
-    declaration = _manifest(take_home_service, tmp_path).inputs[LINE_2]
+    declaration = input_named(_manifest(take_home_service, tmp_path), LINE_2)
     default = declaration.default_artifact(kinds.kind(LINE_2))
     assert not declaration.required
     assert declaration.basis == PRINTED_BASIS
@@ -75,7 +76,7 @@ def test_a_request_that_leaves_out_line_5_is_read_as_blank(
     take_home_service: TakeHomeService, tmp_path: Path
 ) -> None:
     kinds = artifact_kinds()
-    declaration = _manifest(take_home_service, tmp_path).inputs[LINE_5]
+    declaration = input_named(_manifest(take_home_service, tmp_path), LINE_5)
     default = declaration.default_artifact(kinds.kind(LINE_5))
     assert not declaration.required
     assert declaration.basis == PRINTED_BASIS_LINE_5
@@ -86,7 +87,7 @@ def test_a_request_that_leaves_out_the_premiums_deducted_is_read_as_blank(
     take_home_service: TakeHomeService, tmp_path: Path
 ) -> None:
     kinds = artifact_kinds()
-    declaration = _manifest(take_home_service, tmp_path).inputs[LINE_4_GIVEN]
+    declaration = input_named(_manifest(take_home_service, tmp_path), LINE_4_GIVEN)
     default = declaration.default_artifact(kinds.kind(LINE_4_GIVEN))
     assert not declaration.required
     assert declaration.basis is not None and "premiums deducted" in declaration.basis.lower()

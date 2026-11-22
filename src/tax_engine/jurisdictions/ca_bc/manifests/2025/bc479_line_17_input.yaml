@@ -1,0 +1,13 @@
+# BC479 (2025) line 17's input. Form BC479 (CRA 5010-TC): "Line 17: Enter your unused venture capital tax credit from your most recent notice of assessment or reassessment". The figure is taken as one optional
+# input, the way the form takes it. A request that leaves the line out is read as blank; the step that
+# reads it (a printed sum) reads that blank as 0.
+form:
+  name: ca-bc/bc479
+inputs:
+  - name: ca-bc/bc479_venture_capital_unused_credit_line_17
+    title: "Unused venture capital tax credit"
+    reference: "17"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 17: Enter your unused venture capital tax credit from your most recent notice of assessment or reassessment'

@@ -24,6 +24,7 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.domain.manifest import Manifest
 from tax_engine.jurisdictions.ca_ab.catalog import AB428_MINIMUM_TAX_T691_AMOUNT_LINE_67
 from tests.jurisdictions.ca_ab.support import alberta_kinds, alberta_packages, alberta_units
+from tests.manifest_support import input_named
 
 D = Decimal
 IDENTIFIER = "ca-ab/ab428_minimum_tax_t691_amount_line_67"
@@ -35,7 +36,16 @@ HEADER = """\
 jurisdiction: CA-AB
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
+capabilities: []
+"""
+
+FORM = """\
+form:
+  name: ca-ab/ab428
+  required: true
+  exports:
+    - ca/total_income
 capabilities: []
 """
 
@@ -45,6 +55,7 @@ def _manifest(tmp_path: Path) -> Manifest:
     folder.mkdir()
     (folder / "header.yaml").write_text(HEADER)
     shutil.copy(PART, folder / PART.name)
+    (folder / "form.yaml").write_text(FORM)
     source = YamlJurisdictionSource(alberta_packages().roots(), alberta_kinds(), alberta_units())
     return source.load(folder)
 
@@ -57,7 +68,8 @@ def test_the_kind_is_in_the_alberta_catalog() -> None:
 def test_the_part_declares_the_one_input_as_printed() -> None:
     part: Any = yaml.safe_load(PART.read_text(encoding="utf-8"))
 
-    assert list(part) == ["inputs"]
+    assert list(part) == ["form", "inputs"]
+    assert part["form"] == {"name": "ca-ab/ab428"}
     assert part["inputs"] == [
         {
             "name": IDENTIFIER,
@@ -81,7 +93,7 @@ def test_the_part_declares_the_one_input_as_printed() -> None:
 
 
 def test_a_request_that_leaves_out_line_67_is_read_as_zero(tmp_path: Path) -> None:
-    declaration = _manifest(tmp_path).inputs[IDENTIFIER]
+    declaration = input_named(_manifest(tmp_path), IDENTIFIER)
     default = declaration.default_artifact(alberta_kinds().kind(IDENTIFIER))
 
     assert not declaration.required

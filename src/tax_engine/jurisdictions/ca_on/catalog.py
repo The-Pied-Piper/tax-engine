@@ -84,6 +84,188 @@ ON428_MEDICAL_EXPENSES_LINE_36 = AmountKind.declare(
 allowable amounts for attendant care, an adapted van, and moving expenses": the amount as the filer
 gives it, an optional input; a blank input is read as blank."""
 
+ON428_ATTENDANT_CARE_EXPENSES_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_attendant_care_expenses_line_36", non_negative=True
+)
+"""Attendant care expenses, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum
+allowable amounts for attendant care, an adapted van, and moving expenses": the
+attendant care expenses paid (CRA 5006-PC, section "Line 58689"), an optional input; a blank
+input is read as 0 by the line 36 steps."""
+
+ON428_ADAPTED_VAN_EXPENSES_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_adapted_van_expenses_line_36", non_negative=True
+)
+"""Adapted van expenses, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum
+allowable amounts for attendant care, an adapted van, and moving expenses": how much of the
+medical claim is the cost of a van adapted for transporting a patient who requires the use of a
+wheelchair, an optional input; a blank input is read as 0 by the line 36 steps."""
+
+ON428_PATIENT_MOVE_EXPENSES_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_patient_move_expenses_line_36", non_negative=True
+)
+"""Patient move expenses, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum
+allowable amounts for attendant care, an adapted van, and moving expenses": how much of the
+medical claim is moving expenses for a patient's move to a more accessible dwelling, an optional
+input; a blank input is read as 0 by the line 36 steps."""
+
+ON428_YEAR_OF_DEATH_LINE_36 = CountKind.declare(
+    CATALOG, "on428_year_of_death_line_36", non_negative=True
+)
+"""Year of death, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum allowable
+amounts for attendant care, an adapted van, and moving expenses": 1 when the attendant care
+maximum is the one "in the year of death" ($35,253), 0 otherwise, an optional input; a blank
+input is read as 0."""
+
+ON428_YEAR_OF_DEATH_CHECKED_LINE_36 = CountKind.declare(
+    CATALOG, "on428_year_of_death_checked_line_36", non_negative=True
+)
+"""Year of death, checked, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum
+allowable amounts for attendant care, an adapted van, and moving expenses": the year of death
+answer with a blank read as 0, refused above 1."""
+
+ON428_ATTENDANT_CARE_PAID_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_attendant_care_paid_line_36", non_negative=True
+)
+"""Attendant care paid, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum
+allowable amounts for attendant care, an adapted van, and moving expenses": the attendant care
+expenses paid, a blank input read as 0."""
+
+ON428_ADAPTED_VAN_READ_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_adapted_van_read_line_36", non_negative=True
+)
+"""Adapted van, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum allowable
+amounts for attendant care, an adapted van, and moving expenses": the adapted van expenses, a
+blank input read as 0."""
+
+ON428_PATIENT_MOVE_READ_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_patient_move_read_line_36", non_negative=True
+)
+"""Patient move, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum allowable
+amounts for attendant care, an adapted van, and moving expenses": the patient move expenses, a
+blank input read as 0."""
+
+ON428_ATTENDANT_CARE_AT_ORDINARY_MAXIMUM_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_attendant_care_at_ordinary_maximum_line_36", non_negative=True
+)
+"""Attendant care at the ordinary maximum, ON428, line 36 "See line 58689 at canada.ca/on-tax-
+info for maximum allowable amounts for attendant care, an adapted van, and moving expenses": the
+attendant care expenses limited to $17,627."""
+
+ON428_ATTENDANT_CARE_AT_DEATH_MAXIMUM_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_attendant_care_at_death_maximum_line_36", non_negative=True
+)
+"""Attendant care at the year of death maximum, ON428, line 36 "See line 58689 at canada.ca/on-
+tax-info for maximum allowable amounts for attendant care, an adapted van, and moving expenses":
+the attendant care expenses limited to $35,253."""
+
+ON428_ATTENDANT_CARE_ALLOWED_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_attendant_care_allowed_line_36", non_negative=True
+)
+"""Attendant care allowed, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum
+allowable amounts for attendant care, an adapted van, and moving expenses": the ordinary or the
+year of death figure, chosen by the checked year of death answer."""
+
+ON428_ADAPTED_VAN_ALLOWED_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_adapted_van_allowed_line_36", non_negative=True
+)
+"""Adapted van allowed, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum
+allowable amounts for attendant care, an adapted van, and moving expenses": the adapted van
+expenses limited to $8,813."""
+
+ON428_PATIENT_MOVE_ALLOWED_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_patient_move_allowed_line_36", non_negative=True
+)
+"""Patient move allowed, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum
+allowable amounts for attendant care, an adapted van, and moving expenses": the patient move
+expenses limited to $3,525."""
+
+ON428_ADAPTED_VAN_EXCESS_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_adapted_van_excess_line_36", non_negative=True
+)
+"""Adapted van excess, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum
+allowable amounts for attendant care, an adapted van, and moving expenses": the adapted van
+expenses less the amount allowed, what the maximum takes off."""
+
+ON428_PATIENT_MOVE_EXCESS_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_patient_move_excess_line_36", non_negative=True
+)
+"""Patient move excess, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum
+allowable amounts for attendant care, an adapted van, and moving expenses": the patient move
+expenses less the amount allowed, what the maximum takes off."""
+
+ON428_MEDICAL_EXPENSES_EXCESS_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_medical_expenses_excess_line_36", non_negative=True
+)
+"""Medical expenses excess, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum
+allowable amounts for attendant care, an adapted van, and moving expenses": the sum of the van and
+patient move excesses."""
+
+ON428_ATTENDANT_CARE_FEDERAL_LIMIT_APPLIED_LINE_36 = CountKind.declare(
+    CATALOG, "on428_attendant_care_federal_limit_applied_line_36", non_negative=True
+)
+"""Attendant care federal limit applied, ON428, line 36 "See line 58689 at canada.ca/on-tax-info
+for maximum allowable amounts for attendant care, an adapted van, and moving expenses": 1 when
+the attendant care expenses in the medical claim "was limited to $10,000 ($20,000 in the year of
+death)", 0 otherwise, an optional input; a blank input is read as 0."""
+
+ON428_ATTENDANT_CARE_FEDERAL_LIMIT_APPLIED_CHECKED_LINE_36 = CountKind.declare(
+    CATALOG, "on428_attendant_care_federal_limit_applied_checked_line_36", non_negative=True
+)
+"""Attendant care federal limit applied, checked, ON428, line 36 "See line 58689 at
+canada.ca/on-tax-info for maximum allowable amounts for attendant care, an adapted van, and
+moving expenses": the answer with a blank read as 0, refused above 1."""
+
+ON428_ATTENDANT_CARE_AT_FEDERAL_ORDINARY_LIMIT_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_attendant_care_at_federal_ordinary_limit_line_36", non_negative=True
+)
+"""Attendant care at the federal limit, ON428, line 36 "See line 58689 at canada.ca/on-tax-info
+for maximum allowable amounts for attendant care, an adapted van, and moving expenses": the
+attendant care expenses paid limited to $10,000."""
+
+ON428_ATTENDANT_CARE_AT_FEDERAL_DEATH_LIMIT_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_attendant_care_at_federal_death_limit_line_36", non_negative=True
+)
+"""Attendant care at the federal limit in the year of death, ON428, line 36 "See line 58689 at
+canada.ca/on-tax-info for maximum allowable amounts for attendant care, an adapted van, and
+moving expenses": the attendant care expenses paid limited to $20,000."""
+
+ON428_ATTENDANT_CARE_FEDERAL_INCLUDED_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_attendant_care_federal_included_line_36", non_negative=True
+)
+"""Attendant care included in the federal claim, ON428, line 36 "See line 58689 at canada.ca/on-
+tax-info for maximum allowable amounts for attendant care, an adapted van, and moving expenses":
+the ordinary or the year of death federal figure, chosen by the checked year of death answer."""
+
+ON428_ATTENDANT_CARE_ABOVE_FEDERAL_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_attendant_care_above_federal_line_36", non_negative=True
+)
+"""Attendant care above the federal claim, ON428, line 36 "See line 58689 at canada.ca/on-tax-
+info for maximum allowable amounts for attendant care, an adapted van, and moving expenses": the
+Ontario attendant care figure less the one included in the federal claim."""
+
+ON428_ATTENDANT_CARE_INCREASE_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_attendant_care_increase_line_36", non_negative=True
+)
+"""Attendant care increase, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum
+allowable amounts for attendant care, an adapted van, and moving expenses": the attendant care
+above the federal claim when the federal claim was limited, else 0."""
+
+ON428_MEDICAL_EXPENSES_PLUS_INCREASE_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_medical_expenses_plus_increase_line_36", non_negative=True
+)
+"""Medical expenses plus the attendant care increase, ON428, line 36 "See line 58689 at
+canada.ca/on-tax-info for maximum allowable amounts for attendant care, an adapted van, and
+moving expenses": the medical claim plus the attendant care increase, a blank claim read as
+0."""
+
+ON428_MEDICAL_EXPENSES_ALLOWED_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_medical_expenses_allowed_line_36", non_negative=True
+)
+"""Medical expenses allowed, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum
+allowable amounts for attendant care, an adapted van, and moving expenses": the medical claim
+plus the attendant care increase, less the van and patient move excesses, the amount line 41
+reads. A result below 0 is refused, not floored."""
+
 ON428_NET_INCOME_LINE_37 = AmountKind.declare(
     CATALOG, "on428_net_income_line_37", non_negative=True
 )
@@ -487,8 +669,8 @@ whole."""
 AVERAGE_INCOME_TAX_RATE = AmountKind.declare(CATALOG, "average_income_tax_rate", non_negative=True)
 """Average income tax rate, the Ontario return summary's own figure (no form prints it): T1 line
 43500 "Total payable" (for the take-home filer, line 143 plus line 147: the federal and the Ontario
-income tax) divided by the salary (`ca/employment_income`), as a fraction, so 0.1642 is 16.42%. CPP
-and EI are not income tax and are not in it. It is 0 when the salary is 0."""
+income tax) divided by the salary (`ca/return_employment_income`), as a fraction, so 0.1642 is
+16.42%. CPP and EI are not income tax and are not in it. It is 0 when the salary is 0."""
 
 ONTARIO_SURTAX_BASE = AmountKind.declare(CATALOG, "ontario_surtax_base", non_negative=True)
 """Ontario surtax base, ON428 line 65 "Line 65: Line 63 minus line 64 (if negative, enter "0") =":

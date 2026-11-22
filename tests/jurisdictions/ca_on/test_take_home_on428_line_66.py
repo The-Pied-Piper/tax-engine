@@ -26,15 +26,11 @@ LINE_65 = "ca-on/on428_surtax_base_line_65"
 LINE_66 = "ca-on/on428_surtax_20_percent_tier_line_66"
 PART = "on428_line_66.yaml"
 
-HEADER = f"""\
+HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-inputs:
-  - name: {LINE_65}
-    required: true
-outputs:
-  - {LINE_65}
+outputs: []
 capabilities: []
 """
 
@@ -44,6 +40,9 @@ form:
   required: true
   exports:
     - {LINE_66}
+inputs:
+  - name: {LINE_65}
+    required: true
 capabilities: []
 """
 

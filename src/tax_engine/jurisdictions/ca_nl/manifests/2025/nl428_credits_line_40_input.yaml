@@ -3,6 +3,8 @@
 # years of age, use Worksheet NL428)" (Form NL428, CRA 5001-C). The input is the eligibility claim,
 # a count: 1 when the disability tax credit is approved, 0 or blank when not. A salary-only caller
 # leaves it out, so a request that omits it is read as blank; the line 40 step reads that blank as 0.
+form:
+  name: ca-nl/nl428_credits
 inputs:
   - name: ca-nl/nl428_disability_amount_self_claimed_line_40
     reference: "40"

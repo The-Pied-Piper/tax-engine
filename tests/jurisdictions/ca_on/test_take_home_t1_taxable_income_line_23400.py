@@ -34,14 +34,7 @@ HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-inputs:
-  - name: ca/total_income
-    required: true
-  - name: ca/deductions_from_total_income
-    required: true
-outputs:
-  - ca/total_income
-  - ca/deductions_from_total_income
+outputs: []
 """
 FORM = """\
 form:
@@ -49,6 +42,11 @@ form:
   required: true
   exports:
     - ca/net_income_before_adjustments
+inputs:
+  - name: ca/total_income
+    required: true
+  - name: ca/deductions_from_total_income
+    required: true
 """
 
 

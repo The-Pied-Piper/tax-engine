@@ -1,0 +1,15 @@
+# NL428 (2025) line 83's input, the unused venture capital tax credit. Form NL428 (CRA 5001-C): "Line
+# 83: Unused Newfoundland and Labrador venture capital tax credit from your most recent notice of
+# assessment or reassessment". The figure comes from the filer's notice of assessment, which the
+# engine does not hold, so it is taken as one optional input, the way the form takes it. A request
+# that leaves the line out is read as blank; the line 84 step reads that blank as 0.
+form:
+  name: ca-nl/nl428
+inputs:
+  - name: ca-nl/nl428_unused_venture_capital_tax_credit_line_83
+    title: "Unused Newfoundland and Labrador venture capital tax credit from your most recent notice of assessment or reassessment"
+    reference: "83"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 83: Unused Newfoundland and Labrador venture capital tax credit from your most recent notice of assessment or reassessment"

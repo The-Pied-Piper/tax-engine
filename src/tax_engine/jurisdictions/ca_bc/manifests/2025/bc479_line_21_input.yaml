@@ -1,0 +1,13 @@
+# BC479 (2025) line 21's input. Form BC479 (CRA 5010-TC): "Line 21 and line 60490: Tax credit amount". The figure is taken as one optional
+# input, the way the form takes it. A request that leaves the line out is read as blank; the step that
+# reads it (a printed sum) reads that blank as 0.
+form:
+  name: ca-bc/bc479
+inputs:
+  - name: ca-bc/bc479_venture_capital_credit_line_21
+    title: "Tax credit amount, shares acquired March 4 to December 31, 2025"
+    reference: "21"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 21 and line 60490: Tax credit amount'

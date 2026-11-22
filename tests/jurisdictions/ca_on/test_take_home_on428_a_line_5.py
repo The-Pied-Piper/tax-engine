@@ -31,11 +31,7 @@ HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-inputs:
-  - name: ca-on/lift_employment_income
-    required: true
-outputs:
-  - ca-on/lift_employment_income
+outputs: []
 """
 FORM = """\
 form:
@@ -44,6 +40,9 @@ form:
   exports:
     - ca-on/lift_credit_before_maximum
     - ca-on/lift_maximum_credit
+inputs:
+  - name: ca-on/lift_employment_income
+    required: true
 """
 
 

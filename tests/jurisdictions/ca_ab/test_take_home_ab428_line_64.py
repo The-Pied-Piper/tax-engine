@@ -8,9 +8,9 @@ read as 0 when left out. Line 64 is one calculation: 35% of the amount, a printe
 `ca-ab/ab428_minimum_tax_carryover_line_64`. The step is titled with the heading the form prints
 above the line, "Alberta minimum tax carryover:".
 
-The salary part, the inputs part and the line 64 part are loaded under a test-local header and form
-declaration, as Ontario's line 87 test does, over the Alberta package list of `support.py`.
-"""
+The T1 employment income form, the inputs part and the line 64 part are loaded under a test-local
+header and form declaration, as Ontario's line 87 test does, over the Alberta package list of
+`support.py`."""
 
 from __future__ import annotations
 
@@ -40,7 +40,6 @@ from tests.jurisdictions.ca_ab.support import (
     alberta_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 MINIMUM_TAX_CARRYOVER = "ca/minimum_tax_carryover"
@@ -51,12 +50,11 @@ SALARY = "ca/employment_income"
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
 PART = ALBERTA_PARTS / "ab428_line_64.yaml"
 
-HEADER = dedent(f"""\
+HEADER = dedent("""\
     jurisdiction: CA-AB
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - {SALARY}
+    outputs: []
     capabilities: []
     """)
 FORM = dedent(f"""\
@@ -76,16 +74,13 @@ def _service(tmp_path: Path) -> TaxComputationService:
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
-    for number, name in enumerate(["salary.yaml", PART.name], start=2):
-        text = (ALBERTA_PARTS / name).read_text(encoding="utf-8")
-        (folder / f"{number:02d}_{name}").write_text(text, encoding="utf-8")
-    for number, found in enumerate(form_parts("t1_lines_copied_by_provinces"), start=20):
-        text = (
-            inputs_without_form(found)
-            if found.name.endswith("_inputs.yaml")
-            else found.read_text(encoding="utf-8")
-        )
-        (folder / f"{number:02d}_{found.name}").write_text(text, encoding="utf-8")
+    parts = [
+        *form_parts("t1_employment_income", "t1_lines_copied_by_provinces"),
+        PART,
+    ]
+    for number, part in enumerate(parts, start=2):
+        text = part.read_text(encoding="utf-8")
+        (folder / f"{number:02d}_{part.name}").write_text(text, encoding="utf-8")
     roots = {**alberta_packages().roots(), Namespace("ca-ab"): tmp_path}
     return TaxComputationService(
         YamlJurisdictionSource(roots, alberta_kinds(), alberta_units()),

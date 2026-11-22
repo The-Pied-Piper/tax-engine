@@ -1,6 +1,6 @@
 """The header of the Alberta 2025 manifest: the return's identity, its output and its federal
 imports (Schedule 6 reads the Alberta Canada workers benefit datasets, 5009-S6). It declares no
-inputs itself; the salary input is in the part `salary.yaml`."""
+inputs itself; the salary input is declared by the federal T1 employment income form."""
 
 from __future__ import annotations
 

@@ -10,40 +10,17 @@ The real part is loaded under a test-local header, as the take-home header is an
 
 from __future__ import annotations
 
-import shutil
-from pathlib import Path
-
-import tax_engine.jurisdictions.ca_on
-from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_engine.domain.manifest import Manifest
 from tax_engine.jurisdictions.ca_on.catalog import ON428_TAX_ON_SPLIT_INCOME_LINE_54
-from tax_engine.registrations import JURISDICTIONS, artifact_kinds, units
+from tax_engine.registrations import artifact_kinds
+from tests.manifest_support import input_named, real_manifest
 
 PRINTED_BASIS = "Line 54 and line 61510: Ontario tax on split income (complete Form T1206)"
-PART = Path(tax_engine.jurisdictions.ca_on.__file__).parent / (
-    "manifests/2025/on428_line_54_inputs.yaml"
-)
-HEADER = """\
-jurisdiction: CA-ON
-version: 1
-valid_from_tax_year: 2025
-outputs: [ca/total_income]
-capabilities: []
-"""
 
 
-def _manifest(tmp_path: Path) -> Manifest:
-    folder = tmp_path / "manifest"
-    folder.mkdir()
-    (folder / "header.yaml").write_text(HEADER)
-    shutil.copy(PART, folder / PART.name)
-    return YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds(), units()).load(folder)
-
-
-def test_a_request_that_leaves_out_line_54_is_read_as_blank(tmp_path: Path) -> None:
+def test_a_request_that_leaves_out_line_54_is_read_as_blank() -> None:
     kinds = artifact_kinds()
     identifier = ON428_TAX_ON_SPLIT_INCOME_LINE_54.identifier
-    declaration = _manifest(tmp_path).inputs[identifier]
+    declaration = input_named(real_manifest("CA-ON"), identifier)
     default = declaration.default_artifact(kinds.kind(identifier))
     assert not declaration.required
     assert declaration.basis == PRINTED_BASIS

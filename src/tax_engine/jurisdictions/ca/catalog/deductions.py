@@ -58,10 +58,16 @@ printed figure, as an artifact of the same name."""
 DEDUCTIONS_FROM_TOTAL_INCOME = AmountKind.declare(
     CATALOG, "deductions_from_total_income", non_negative=True
 )
-"""Total deductions, T1 line 23300 "Add lines 35 to 52": in the take-home, one core/record_total
-over Schedule 8's export `ca/schedule_8.schedule_8_cpp_enhanced_contributions_on_return` (line
-22215, the enhanced CPP contributions), the only deduction a salary-only filer has
+"""Total deductions, T1 line 23300 "Add lines 35 to 52": in the take-home, the sum of the UCCB
+repayment (line 21300), the enhanced CPP contributions (line 22215, Schedule 8's export
+`ca/schedule_8.schedule_8_cpp_enhanced_contributions_on_return`) and the RDSP income repayment
+(included on line 23200), the lines a take-home filer can have
 (`t1_taxable_income_line_23300.yaml`)."""
+
+T1_LINE_22215 = AmountKind.declare(CATALOG, "t1_line_22215", non_negative=True)
+"""Deduction for CPP or QPP enhanced contributions on employment income, T1 line 48 and line 22215:
+Schedule 8's export, read by line 23300 (`t1_taxable_income_line_23300.yaml`), which adds it in
+form line order between line 21300 (line 40) and line 23200 (line 52)."""
 
 NET_INCOME_BEFORE_ADJUSTMENTS = AmountKind.declare(CATALOG, "net_income_before_adjustments")
 """Net income before adjustments, T1 line 54 and line 23400 "Line 34 minus line 53 (if negative,

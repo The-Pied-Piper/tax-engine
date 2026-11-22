@@ -1,0 +1,15 @@
+# Form BC479 (2025, CRA 5010-TC) line 40. Line 40: "Income threshold 64,764.00". The printed $64,764
+# is the `ca-bc/renters_credit_threshold` dataset, claimed whole through core/credit_amount, so it is
+# the same at every salary. Line 39 ("Enter your adjusted family net income from line 6 of page 1") is a
+# carry of line 6 within this form and has no step, as line 36 has none: line 41 reads line 6.
+form:
+  name: ca-bc/bc479
+capabilities:
+  - name: core/credit_amount
+    title: "Income threshold"
+    reference: "40"
+    unit: ca/cad
+    params:
+      amount: ca-bc/renters_credit_threshold
+    produces:
+      output: ca-bc/bc479_renters_threshold_line_40

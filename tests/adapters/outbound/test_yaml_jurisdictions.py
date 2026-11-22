@@ -40,7 +40,7 @@ from tax_engine.domain.manifest import (
 )
 from tax_engine.domain.registry import Namespace
 from tests.kinds import AutoKinds
-from tests.manifest_support import required_inputs
+from tests.manifest_support import input_named, inputs_of, required_inputs
 
 EX_ON = JurisdictionCode("EX-ON")
 
@@ -145,12 +145,12 @@ def test_parses_manifest_into_domain_objects(tmp_path: Path) -> None:
                 jurisdiction=EX_ON,
                 version=1,
                 valid_from_tax_year=2025,
-                inputs=required_inputs(frozenset({"ex/gross_income", "ex/taxable_base"})),
                 forms=(
                     Form(
                         required=True,
                         name="ex-on/return",
                         instances=None,
+                        inputs=required_inputs(frozenset({"ex/gross_income", "ex/taxable_base"})),
                         exports=("ex-on/levy", "ex/savings_deduction"),
                         capabilities=(
                             CapabilitySelection(
@@ -602,15 +602,6 @@ def test_one_bad_file_fails_the_whole_load(tmp_path: Path) -> None:
             id="capability-name-int",
         ),
         pytest.param(
-            EX_ON_V1.replace(
-                "inputs:\n  - {name: ex/gross_income, required: true}\n"
-                "  - {name: ex/taxable_base, required: true}\n",
-                "",
-            ),
-            r"missing keys \['inputs'\]",
-            id="missing-inputs",
-        ),
-        pytest.param(
             EX_ON_V1.replace("outputs:\n  - ex/savings_deduction\n  - ex-on/levy\n", ""),
             r"missing keys \['outputs'\]",
             id="missing-outputs",
@@ -630,22 +621,6 @@ def test_one_bad_file_fails_the_whole_load(tmp_path: Path) -> None:
             ),
             "outputs must be a list",
             id="outputs-not-list",
-        ),
-        pytest.param(
-            EX_ON_V1.replace(
-                "inputs:\n  - {name: ex/gross_income, required: true}\n"
-                "  - {name: ex/taxable_base, required: true}\n",
-                "inputs: []\n",
-            ),
-            "inputs must name at least one artifact",
-            id="inputs-empty",
-        ),
-        pytest.param(
-            EX_ON_V1.replace(
-                "outputs:\n  - ex/savings_deduction\n  - ex-on/levy\n", "outputs: []\n"
-            ),
-            "outputs must name at least one artifact",
-            id="outputs-empty",
         ),
         pytest.param(
             EX_ON_V1.replace(
@@ -702,7 +677,7 @@ def test_an_identifier_listed_as_both_input_and_output_is_carried_by_the_manifes
 
     manifest = source(tmp_path).get_jurisdiction(EX_ON).manifests[0]
 
-    assert manifest.inputs.keys() == frozenset({"ex/gross_income", "ex/taxable_base"})
+    assert inputs_of(manifest).keys() == frozenset({"ex/gross_income", "ex/taxable_base"})
     assert frozenset(returned(manifest).exports) == frozenset(
         {"ex/savings_deduction", "ex-on/levy", "ex/taxable_base"}
     )
@@ -770,12 +745,12 @@ def test_a_folder_is_one_manifest_merged_from_its_parts(tmp_path: Path) -> None:
         jurisdiction=EX_ON,
         version=1,
         valid_from_tax_year=2025,
-        inputs=required_inputs(frozenset({"ex/x"})),
         forms=(
             Form(
                 required=True,
                 name="ex-on/return",
                 instances=None,
+                inputs=required_inputs(frozenset({"ex/x"})),
                 exports=("ex/y",),
                 capabilities=(
                     CapabilitySelection(
@@ -862,7 +837,7 @@ def test_inputs_and_outputs_are_concatenated_across_parts(tmp_path: Path) -> Non
 
     manifest = only_manifest(tmp_path)
 
-    assert manifest.inputs.keys() == frozenset({"ex/x1", "ex/x2"})
+    assert inputs_of(manifest).keys() == frozenset({"ex/x1", "ex/x2"})
     assert frozenset(returned(manifest).exports) == frozenset({"ex/y1", "ex/y2"})
 
 
@@ -884,7 +859,7 @@ def test_a_part_may_carry_any_subset_of_the_keys(tmp_path: Path) -> None:
         1,
         2025,
     )
-    assert manifest.inputs.keys() == frozenset({"ex/x"})
+    assert inputs_of(manifest).keys() == frozenset({"ex/x"})
     assert [c.name for c in returned(manifest).capabilities] == ["ex/a", "ex/b"]
 
 
@@ -1091,13 +1066,13 @@ def test_the_same_identifier_as_input_in_one_part_and_output_in_another_is_not_a
 
     manifest = only_manifest(tmp_path)
 
-    assert manifest.inputs.keys() == frozenset({"ex/x"})
+    assert inputs_of(manifest).keys() == frozenset({"ex/x"})
     assert frozenset(returned(manifest).exports) == frozenset({"ex/y", "ex/x"})
 
 
 @pytest.mark.parametrize(
     "key",
-    ["jurisdiction", "version", "valid_from_tax_year", "inputs", "outputs", "capabilities"],
+    ["jurisdiction", "version", "valid_from_tax_year", "outputs", "capabilities"],
 )
 def test_a_key_in_no_part_is_still_missing_after_the_merge(tmp_path: Path, key: str) -> None:
     whole = {
@@ -1329,7 +1304,7 @@ def test_a_form_part_may_declare_inputs_which_join_the_manifests(tmp_path: Path)
     extra = "inputs: [{name: ex/extra_input, required: false, default: '0', basis: printed}]\n"
     write_parts(tmp_path, {"00-header.yaml": HEADER_PART, "01-rental.yaml": FORM_RENTAL + extra})
 
-    assert "ex/extra_input" in only_manifest(tmp_path).inputs
+    assert "ex/extra_input" in inputs_of(only_manifest(tmp_path))
 
 
 def test_an_input_a_form_part_and_another_part_both_declare_is_rejected(tmp_path: Path) -> None:
@@ -1427,11 +1402,6 @@ def test_a_form_part_with_no_capabilities_is_allowed(tmp_path: Path) -> None:
             "exports: [ex/rental.n]}\n",
             r"ex/rental\.n",
             id="export-dotted",
-        ),
-        pytest.param(
-            "form: {name: ex/rental, required: true, instances: ex/rentals, exports: []}\n",
-            "exports must name at least one artifact",
-            id="no-exports",
         ),
         pytest.param(
             "form: {name: ex/rental, instances: ex/rentals}\n",
@@ -2099,13 +2069,15 @@ def test_an_input_declares_whether_it_is_required_and_optional_ones_a_default_an
         },
     )
 
-    assert manifest.inputs == {
+    assert inputs_of(manifest) == {
         "ex/income": InputDeclaration(name="ex/income", required=True),
         "ex/credit": InputDeclaration("ex/credit", False, finished("ex/credit", "0"), "Line 1"),
         "ex/note": InputDeclaration("ex/note", False, finished("ex/note", ""), "Line 2"),
         "ex/rows": InputDeclaration("ex/rows", False, finished("ex/rows", ()), "Line 3"),
         "ex/box": InputDeclaration("ex/box", False, finished("ex/box", None), "Line 4"),
     }
+    # the parts name no form, so the inputs belong to the default form
+    assert manifest.forms[0].inputs == tuple(inputs_of(manifest).values())
 
 
 def test_an_input_may_give_the_title_and_reference_the_form_prints(tmp_path: Path) -> None:
@@ -2120,11 +2092,11 @@ def test_an_input_may_give_the_title_and_reference_the_form_prints(tmp_path: Pat
         },
     )
 
-    assert manifest.inputs["ex/income"] == InputDeclaration(
+    assert input_named(manifest, "ex/income") == InputDeclaration(
         "ex/income", True, title="Income", reference="101"
     )
-    assert manifest.inputs["ex/credit"].title == "Credit"
-    assert manifest.inputs["ex/credit"].reference is None
+    assert input_named(manifest, "ex/credit").title == "Credit"
+    assert input_named(manifest, "ex/credit").reference is None
 
 
 @pytest.mark.parametrize("key", ["title", "reference"])

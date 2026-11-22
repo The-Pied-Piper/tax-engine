@@ -37,6 +37,7 @@ from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.core.capabilities.record_total import RecordTotal
 from tests.adapters.outbound.test_yaml_jurisdictions import manifest_kinds, write
+from tests.manifest_support import inputs_of
 
 EX_ON = JurisdictionCode("EX-ON")
 EX_AB = JurisdictionCode("EX-AB")
@@ -56,13 +57,15 @@ def source(directory: Path) -> YamlJurisdictionSource:
     return YamlJurisdictionSource(package_roots(directory), manifest_kinds())
 
 
-def header(code: str, imports: str = "[ex/federal]") -> str:
+def header(code: str, imports: str = "[ex/federal]", inputs: bool = False) -> str:
+    """A province header; a whole-file manifest has no `levy` form, so `inputs` gives the default
+    form the income, which the province's `levy` form otherwise owns."""
+    declared = "inputs: [{name: ex/income, required: true}]\n" if inputs else ""
     return f"""\
 jurisdiction: {code}
 version: 1
 valid_from_tax_year: 2025
-inputs: [{{name: ex/income, required: true}}]
-outputs: [ex/income]
+{declared}outputs: []
 imports: {imports}
 """
 
@@ -103,6 +106,7 @@ form:
   required: true
   exports: [{code}/tax]
   supplies: {{{NEUTRAL}: {code}/tax}}
+inputs: [{{name: ex/income, required: true}}]
 capabilities:
   - name: {capability}
     consumes: {{source: ex/income}}
@@ -224,7 +228,7 @@ def test_a_whole_file_manifest_may_import(tmp_path: Path) -> None:
     write(
         tmp_path,
         "ex-on/manifests/v1.yaml",
-        header("EX-ON") + "capabilities: []\n",
+        header("EX-ON", inputs=True) + "capabilities: []\n",
     )
 
     assert "ex/federal" in names(manifest_of(tmp_path))
@@ -277,9 +281,9 @@ def test_an_imported_form_brings_the_inputs_its_part_declares(tmp_path: Path) ->
     write_federal(tmp_path, {"00-federal.yaml": FEDERAL, "01-inputs.yaml": FEDERAL_INPUTS})
     write_province(tmp_path)
 
-    declared = manifest_of(tmp_path).inputs
+    declared = inputs_of(manifest_of(tmp_path))
 
-    assert list(declared) == ["ex/income", "ex/other_income"]
+    assert list(declared) == ["ex/other_income", "ex/income"]
     assert not declared["ex/other_income"].required
     assert declared["ex/other_income"].basis == "Other income: if none, enter 0."
 
@@ -291,15 +295,15 @@ def test_two_provinces_importing_the_form_both_get_its_inputs_without_declaring_
     write_province(tmp_path, "ex-on")
     write_province(tmp_path, "ex-ab")
 
-    assert "ex/other_income" in manifest_of(tmp_path, EX_ON).inputs
-    assert "ex/other_income" in manifest_of(tmp_path, EX_AB).inputs
+    assert "ex/other_income" in inputs_of(manifest_of(tmp_path, EX_ON))
+    assert "ex/other_income" in inputs_of(manifest_of(tmp_path, EX_AB))
 
 
 def test_a_manifest_that_does_not_import_the_form_does_not_get_its_inputs(tmp_path: Path) -> None:
     write_federal(tmp_path, {"00-federal.yaml": FEDERAL, "01-inputs.yaml": FEDERAL_INPUTS})
     write_province(tmp_path, head=header("EX-ON", "[]"), form=province_form("ex-on"))
 
-    assert "ex/other_income" not in manifest_of(tmp_path).inputs
+    assert "ex/other_income" not in inputs_of(manifest_of(tmp_path))
 
 
 def test_an_imported_input_the_manifest_declares_too_is_rejected_naming_it(tmp_path: Path) -> None:
@@ -331,7 +335,7 @@ def test_an_input_two_imported_forms_declare_is_rejected(tmp_path: Path) -> None
 
 def test_a_whole_file_manifest_input_an_imported_form_declares_is_rejected(tmp_path: Path) -> None:
     write_federal(tmp_path, {"00-federal.yaml": FEDERAL, "01-inputs.yaml": FEDERAL_INPUTS})
-    whole = header("EX-ON").replace(
+    whole = header("EX-ON", inputs=True).replace(
         "inputs: [{name: ex/income, required: true}]",
         "inputs: [{name: ex/income, required: true}, {name: ex/other_income, required: true}]",
     )
@@ -573,6 +577,7 @@ def test_a_supplied_figure_that_is_not_an_export_of_the_form_is_rejected(tmp_pat
 def test_a_neutral_identifier_supplied_by_two_forms_is_rejected(tmp_path: Path) -> None:
     write_federal(tmp_path)
     second = province_form("ex-on").replace("levy", "second").replace("ex-on/tax", "ex-on/tax2")
+    second = second.replace("inputs: [{name: ex/income, required: true}]\n", "")
     write_province(tmp_path, extra={"02-second.yaml": second})
 
     with pytest.raises(InvalidManifestError, match="ex/provincial_tax.amount") as caught:

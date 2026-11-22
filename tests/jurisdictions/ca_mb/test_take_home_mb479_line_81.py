@@ -11,7 +11,7 @@ titled "Manitoba credits" as printed. Only the line 80 input can be blank, so th
 blank rule reading it as 0 and prints its own "left blank, taken as 0" row. The form exports line
 81 and supplies it as `ca/provincial_credits.amount` (`mb479.yaml`, already in place).
 
-The test composes the real Manitoba salary part, the real Schedule 8 and T1 taxable income parts,
+The test composes the T1 employment income form, the real Schedule 8 and T1 taxable income parts,
 the real MB479 parts of lines 1 to 80 and the new `mb479_line_81.yaml`, and types in the salary
 and, in some tests, the line 79 teaching supplies expenses and the line 80 credit. The form
 declaration is made up here, exporting only lines 78 to 81. Figures are hand-computed from the
@@ -53,7 +53,6 @@ from tests.jurisdictions.ca_mb.support import (
     manitoba_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"
@@ -78,6 +77,17 @@ MB479_PARTS = (
     "mb479_line_6.yaml",
     "mb479_line_7.yaml",
     "mb479_line_17_inputs.yaml",
+    "mb479_line_12_inputs.yaml",
+    "mb479_line_12.yaml",
+    "mb479_line_14_inputs.yaml",
+    "mb479_line_14_amount.yaml",
+    "mb479_line_14.yaml",
+    "mb479_line_15_inputs.yaml",
+    "mb479_line_15_amount.yaml",
+    "mb479_line_15.yaml",
+    "mb479_line_16_inputs.yaml",
+    "mb479_line_16_amount.yaml",
+    "mb479_line_16.yaml",
     "mb479_line_17.yaml",
     "mb479_line_18.yaml",
     "mb479_line_19.yaml",
@@ -119,8 +129,7 @@ HEADER = dedent("""\
     jurisdiction: CA-MB
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 FORM = dedent("""\
@@ -143,7 +152,6 @@ CASES = [
 
 
 def _part_files() -> Iterator[Path]:
-    yield MB_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     for name in T1_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
@@ -161,9 +169,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
     for number, part in enumerate(_part_files(), start=2):
         (folder / f"{number:02d}_{part.name}").write_text(
-            inputs_without_form(part)
-            if part.name.endswith("_inputs.yaml") and part.is_relative_to(FEDERAL_FORMS)
-            else part.read_text(encoding="utf-8"),
+            part.read_text(encoding="utf-8"),
             encoding="utf-8",
         )
     roots = {**manitoba_packages().roots(), Namespace("ca-mb"): tmp_path}

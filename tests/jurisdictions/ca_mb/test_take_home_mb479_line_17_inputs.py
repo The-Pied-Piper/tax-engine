@@ -1,9 +1,9 @@
 """MB479 (2025) line 17's inputs, as the Manitoba take-home manifest part declares them.
 
-Form MB479 (CRA 5007-TC, 5007-tc-25e.txt), the personal tax credit lines that line 17 adds: line 8,
-line 12 (the printed sum of lines 9 to 11, whose own lines are not built), line 13 and the product
-boxes of lines 14, 15 and 16 (the counts above them are not built). A salary-only caller claims none
-of them, so a request that leaves one out is read as blank.
+Form MB479 (CRA 5007-TC, 5007-tc-25e.txt), the personal tax credit lines that line 17 adds and that
+are taken as one figure: line 8 and line 13. Line 12 is computed from lines 9 to 11 and lines 14 to
+16 from their counts; they have their own parts. A salary-only caller claims none of them, so a
+request that leaves one out is read as blank.
 
 The real part is loaded under a test-local header over the Manitoba package list of `support.py`.
 """
@@ -22,11 +22,7 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.domain.manifest import Manifest
 from tax_engine.jurisdictions.ca_mb.catalog import (
     MB479_AGE_CREDIT_LINE_8,
-    MB479_DEPENDENT_CHILDREN_CREDIT_LINE_16,
-    MB479_DISABILITY_CREDIT_LINE_14,
-    MB479_DISABLED_DEPENDANTS_CREDIT_LINE_15,
     MB479_ELIGIBLE_DEPENDANT_CREDIT_LINE_13,
-    MB479_SPOUSE_CREDITS_LINE_12,
 )
 from tests.jurisdictions.ca_mb.support import (
     manitoba_kinds,
@@ -34,6 +30,7 @@ from tests.jurisdictions.ca_mb.support import (
     manitoba_units,
 )
 from tests.kinds import non_negative
+from tests.manifest_support import input_named
 
 PART = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / (
     "manifests/2025/mb479_line_17_inputs.yaml"
@@ -42,7 +39,7 @@ HEADER = """\
 jurisdiction: CA-MB
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
 capabilities: []
 """
 # (kind, identifier, reference, printed title), in the order of the form.
@@ -54,34 +51,10 @@ LINES = [
         "Age credit for self (if you were born in 1960 or earlier)",
     ),
     (
-        MB479_SPOUSE_CREDITS_LINE_12,
-        "ca-mb/mb479_spouse_credits_line_12",
-        "12",
-        "Add lines 9 to 11.",
-    ),
-    (
         MB479_ELIGIBLE_DEPENDANT_CREDIT_LINE_13,
         "ca-mb/mb479_eligible_dependant_credit_line_13",
         "13",
         "Credit for an eligible dependant claimed on line 58160 of your Form MB428",
-    ),
-    (
-        MB479_DISABILITY_CREDIT_LINE_14,
-        "ca-mb/mb479_disability_credit_line_14",
-        "14",
-        "Number of disability claims multiplied by $113",
-    ),
-    (
-        MB479_DISABLED_DEPENDANTS_CREDIT_LINE_15,
-        "ca-mb/mb479_disabled_dependants_credit_line_15",
-        "15",
-        "Number of disabled dependants multiplied by $62",
-    ),
-    (
-        MB479_DEPENDENT_CHILDREN_CREDIT_LINE_16,
-        "ca-mb/mb479_dependent_children_credit_line_16",
-        "16",
-        "Number of dependent children multiplied by $26",
     ),
 ]
 
@@ -91,6 +64,18 @@ def _manifest(tmp_path: Path) -> Manifest:
     folder.mkdir()
     (folder / "header.yaml").write_text(HEADER)
     shutil.copy(PART, folder / PART.name)
+    # The part gives its inputs to the form named in its header, so the manifest declares that form,
+    # here exporting the part's own inputs.
+    part = _part()
+    form = {
+        "form": {
+            "name": part["form"]["name"],
+            "required": True,
+            "exports": [declaration["name"] for declaration in part["inputs"]],
+        },
+        "capabilities": [],
+    }
+    (folder / "form.yaml").write_text(yaml.safe_dump(form), encoding="utf-8")
     source = YamlJurisdictionSource(manitoba_packages().roots(), manitoba_kinds(), manitoba_units())
     return source.load(folder)
 
@@ -101,10 +86,11 @@ def _part() -> dict[str, Any]:
     return part
 
 
-def test_the_part_declares_only_the_six_credit_inputs() -> None:
+def test_the_part_declares_only_the_two_credit_inputs() -> None:
     part = _part()
 
-    assert list(part) == ["inputs"]
+    assert list(part) == ["form", "inputs"]
+    assert list(part["form"]) == ["name"]
     assert part["inputs"] == [
         {
             "name": identifier,
@@ -144,7 +130,7 @@ def test_each_credit_is_a_non_negative_amount_kind(
 def test_a_request_that_leaves_out_a_credit_is_read_as_blank(
     tmp_path: Path, constant: Any, identifier: str, reference: str, title: str
 ) -> None:
-    declaration = _manifest(tmp_path).inputs[identifier]
+    declaration = input_named(_manifest(tmp_path), identifier)
     default = declaration.default_artifact(manitoba_kinds().kind(identifier))
 
     assert not declaration.required

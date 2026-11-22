@@ -57,7 +57,6 @@ from tests.jurisdictions.ca_ab.support import (
     alberta_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 CODE = JurisdictionCode("CA-AB")
@@ -106,10 +105,24 @@ ALBERTA_LINE_PARTS = (
     "ab428_line_41_input.yaml",
     "ab428_credits_line_41.yaml",
     "ab428_credits_line_43.yaml",
-    "ab428_line_51_inputs.yaml",
+    "ab428_credits_line_44_input.yaml",
+    "ab428_credits_line_44.yaml",
+    "ab428_credits_line_45.yaml",
+    "ab428_credits_line_47.yaml",
+    "ab428_credits_line_48.yaml",
+    "ab428_credits_line_49.yaml",
+    "ab428_credits_line_50_input.yaml",
+    "ab428_credits_line_50.yaml",
+    "ab428_credits_line_51.yaml",
     "ab428_credits_line_52.yaml",
     "ab428_credits_line_54.yaml",
-    "ab428_line_57_inputs.yaml",
+    "ab428_credits_line_55_input.yaml",
+    "ab428_credits_line_55_box_a.yaml",
+    "ab428_credits_line_55.yaml",
+    "ab428_credits_line_56_input.yaml",
+    "ab428_credits_line_56_box_a.yaml",
+    "ab428_credits_line_56.yaml",
+    "ab428_credits_line_57.yaml",
     "ab428_credits_line_58.yaml",
     "ab428_line_62.yaml",
     "ab428_line_63_inputs.yaml",
@@ -125,8 +138,7 @@ HEADER = dedent("""\
     jurisdiction: CA-AB
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 CREDITS_FORM = dedent("""\
@@ -183,7 +195,6 @@ def _federal(name: str) -> Path:
 
 
 def _part_files() -> Iterator[Path]:
-    yield ALBERTA_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
     for name in T1_PARTS:
@@ -201,11 +212,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "01_credits_form.yaml").write_text(CREDITS_FORM, encoding="utf-8")
     (folder / "02_tax_form.yaml").write_text(TAX_FORM, encoding="utf-8")
     for number, found in enumerate(_part_files(), start=3):
-        text = (
-            inputs_without_form(found)
-            if found.name.endswith("_inputs.yaml") and found.is_relative_to(FEDERAL_FORMS)
-            else found.read_text(encoding="utf-8")
-        )
+        text = found.read_text(encoding="utf-8")
         (folder / f"{number:02d}_{found.name}").write_text(text, encoding="utf-8")
     roots = {**alberta_packages().roots(), Namespace("ca-ab"): tmp_path}
     return TaxComputationService(

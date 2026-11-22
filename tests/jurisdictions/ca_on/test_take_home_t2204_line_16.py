@@ -16,9 +16,9 @@ import pytest
 
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
 from tests.kinds import bundled_kinds
-from tests.manifest_support import T1_LINE_10100_PARTS
 
 D = Decimal
 CODE = JurisdictionCode("CA-ON")
@@ -28,19 +28,11 @@ LINE_10 = "ca/t2204_line_10"
 LINE_16 = "ca/t2204_line_16"
 PART = "t2204_line_16.yaml"
 
-HEADER = f"""\
+HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-inputs:
-  - name: {LINE_7}
-    required: true
-  - name: {LINE_4}
-    required: true
-  - name: {LINE_10}
-    required: true
-outputs:
-  - {LINE_7}
+outputs: []
 capabilities: []
 """
 
@@ -50,6 +42,13 @@ form:
   required: true
   exports:
     - {LINE_16}
+inputs:
+  - name: {LINE_7}
+    required: true
+  - name: {LINE_4}
+    required: true
+  - name: {LINE_10}
+    required: true
 capabilities: []
 """
 
@@ -86,7 +85,7 @@ def test_line_16_is_the_least_of_lines_7_4_and_10(
 
 
 COMPOSED_PARTS = (
-    *T1_LINE_10100_PARTS,
+    *form_part_names("t1_employment_income"),
     "t2204_line_1.yaml",
     "t2204_line_3.yaml",
     "t2204_line_4.yaml",
@@ -96,13 +95,20 @@ COMPOSED_PARTS = (
 )
 SALARY = "ca/employment_income"
 LINE_4_GIVEN = "ca/t2204_premiums_deducted_given"
-COMPOSED_HEADER = f"""\
+COMPOSED_HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
+outputs: []
+capabilities: []
+"""
+COMPOSED_FORM = f"""\
+form:
+  name: ca/t2204
+  required: true
+  exports:
+    - {LINE_16}
 inputs:
-  - name: {SALARY}
-    required: true
   - name: ca/t2204_self_employment_earnings
     required: false
     default: null
@@ -111,8 +117,6 @@ inputs:
     required: false
     default: null
     basis: "Total premiums deducted: Residents of other than Quebec"
-outputs:
-  - {SALARY}
 capabilities: []
 """
 
@@ -134,6 +138,6 @@ def test_line_16_from_the_salary_with_line_4_blank_or_given(
     starting = [Artifact(kinds.kind(SALARY), D(salary))]
     if line_4_given is not None:
         starting.append(Artifact(kinds.kind(LINE_4_GIVEN), D(line_4_given)))
-    service = take_home_service(COMPOSED_HEADER, FORM, *COMPOSED_PARTS)
+    service = take_home_service(COMPOSED_HEADER, COMPOSED_FORM, *COMPOSED_PARTS)
     worksheet = service.compute(CODE, 2025, *starting)["ca/t2204"][0]
     assert worksheet.get(kinds.kind(LINE_16)).value == D(expected)

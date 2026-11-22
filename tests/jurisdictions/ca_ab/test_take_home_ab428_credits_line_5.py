@@ -1,18 +1,18 @@
 """AB428 (2025) line 5, the bracket column rate, computed from the real part file through the real
 engine.
 
-Form text (Form AB428, CRA 5009-c-25e.txt): each of
-the three columns of lines 2 to 8 prints its rate on "Line 5": "Line 5: Rate 8%", "Line 5: Rate 10%"
-and "Line 5: Rate 12%". Line 5 is the printed rate of the column that taxable income falls in, and a
-taxable income exactly at a column's upper bound falls in that lower column. A taxable income above
-the table's range (181,481) is left blank on this line.
+Form text (Form AB428, CRA 5009-c-25e.txt): each of the three columns of lines 2 to 8 prints its
+rate on "Line 5": "Line 5: Rate 8%", "Line 5: Rate 10%" and "Line 5: Rate 12%". Line 5 is the
+printed rate of the column that taxable income falls in, and a taxable income exactly at a
+column's upper bound falls in that lower column. A taxable income above the table's range
+(181,481) is left blank on this line.
 
 Line 1 is the taxable income (line 26000), taken as given: it is declared as a required input of
 the test header and given directly as an Artifact, so this test does not compose the T1 lines.
 Line 5 is one `core/bracket_column_rate` over line 1 with the `ca-ab/brackets_lines_2_to_8`
-schedule, output `ca-ab/ab428_bracket_rate_line_5`, in the one part `ab428_credits_line_5.yaml`. The
-output is a rate held in a Decimal artifact, not rounded. The form declaration is test-local: it
-exports line 5.
+schedule, output `ca-ab/ab428_bracket_rate_line_5`, in the one part `ab428_credits_line_5.yaml`.
+The output is a rate held in a Decimal artifact, not rounded. The form declaration is test-local:
+it exports line 5.
 
 Figures: the taxable income at a $20,000 salary is 19,835.00, at $70,000 is 69,335.00 and at
 $200,000 is 198,926.00 (hand-computed, not a CRA example), so line 5 is 8%, 10% and blank.
@@ -58,15 +58,11 @@ LINE_PART = (
 LINE_1 = "ca-ab/ab428_taxable_income_line_1"
 LINE_5 = "ca-ab/ab428_bracket_rate_line_5"
 
-HEADER = dedent(f"""\
+HEADER = dedent("""\
     jurisdiction: CA-AB
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: {LINE_1}
-        required: true
-    outputs:
-      - {LINE_1}
+    outputs: []
     capabilities: []
     """)
 FORM = dedent(f"""\
@@ -75,6 +71,9 @@ FORM = dedent(f"""\
       required: true
       exports:
         - {LINE_5}
+    inputs:
+      - name: {LINE_1}
+        required: true
     capabilities: []
     """)
 

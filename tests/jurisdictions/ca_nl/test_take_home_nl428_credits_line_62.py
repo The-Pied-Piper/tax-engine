@@ -4,8 +4,8 @@ Form text (Form NL428, CRA 5001-C, confirmed 2026-11-18): "Line 62 and line 6150
 line 61 Enter this amount on line 66." and the printed label "Newfoundland and Labrador
 non-refundable tax credits". Line 62 is one core/sum step over line 58
 (`nl428_credits_line_58.yaml`) and line 61, the optional donations and gifts credit
-(`nl428_credits_line_61_input.yaml`), in line order. A request that leaves line 61 blank has it
-read as 0.
+(`nl428_credits_line_61.yaml`), in line order. Line 61 is always a figure; a request with no
+Schedule 9 amounts has it at 0.00.
 
 The test composes the real parts behind line 58 and the new `nl428_credits_line_62.yaml`. The
 figures are hand-computed from the printed form (not a CRA example): line 58 is 1,062.42 /
@@ -40,13 +40,14 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_parameter_parsers,
     newfoundland_units,
 )
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
 LINE_PART = NL_PARTS / "nl428_credits_line_62.yaml"
 LINE_58 = "ca-nl/nl428_credits_at_rate_line_58"
 LINE_61 = "ca-nl/nl428_donations_and_gifts_credit_line_61"
+AMOUNT_59 = "ca-nl/nl428_donations_amount_line_59"
+AMOUNT_60 = "ca-nl/nl428_donations_amount_line_60"
 IDENTIFIER = "ca-nl/nl428_non_refundable_credits_line_62"
 FORM_NAME = "ca-nl/nl428_credits"
 FEDERAL_PARTS = form_part_names(
@@ -58,6 +59,7 @@ NL_PART_NAMES = (
     "worksheet_nl428_line_7.yaml",
     "worksheet_nl428_line_58080_input.yaml",
     "worksheet_nl428_line_58440_input.yaml",
+    "worksheet_nl428_line_3_input.yaml",
     "worksheet_nl428_58440_line_5.yaml",
     "worksheet_nl428_58440_line_6.yaml",
     "worksheet_nl428_58440_line_7.yaml",
@@ -101,7 +103,11 @@ NL_PART_NAMES = (
     "nl428_credits_line_55.yaml",
     "nl428_credits_line_56.yaml",
     "nl428_credits_line_58.yaml",
-    "nl428_credits_line_61_input.yaml",
+    "nl428_credits_line_59_input.yaml",
+    "nl428_credits_line_59.yaml",
+    "nl428_credits_line_60_input.yaml",
+    "nl428_credits_line_60.yaml",
+    "nl428_credits_line_61.yaml",
     "nl428_credits_line_62.yaml",
 )
 
@@ -109,14 +115,7 @@ HEADER = dedent("""\
     jurisdiction: CA-NL
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/employment_income
-        title: "Employment income"
-        reference: "10100"
-        unit: ca/cad
-        required: true
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 FORMS = dedent("""\
@@ -162,11 +161,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     for number, text in enumerate(forms, start=1):
         (folder / f"01_form_{number}.yaml").write_text(text, encoding="utf-8")
     for number, found in enumerate(_part_files(), start=2):
-        text = (
-            inputs_without_form(found)
-            if found.name.endswith("_inputs.yaml") and found.is_relative_to(FEDERAL_FORMS)
-            else found.read_text(encoding="utf-8")
-        )
+        text = found.read_text(encoding="utf-8")
         (folder / f"{number:02d}_{found.name}").write_text(text, encoding="utf-8")
     roots = {**newfoundland_packages().roots(), Namespace("ca-nl"): tmp_path}
     return TaxComputationService(
@@ -207,10 +202,10 @@ def test_line_62_with_line_61_blank_is_line_58(tmp_path: Path, salary: str, expe
 
 
 def test_line_62_adds_line_61_to_line_58(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "70000", {LINE_61: "250.25"})
+    sheet = _sheet(tmp_path, "70000", {AMOUNT_59: "1000", AMOUNT_60: "1000"})
 
     assert _value(sheet, LINE_58) == D("1342.95")
-    assert _value(sheet, IDENTIFIER) == D("1593.20")
+    assert _value(sheet, IDENTIFIER) == D("1647.95")
 
 
 def _part() -> dict[str, Any]:
@@ -231,6 +226,5 @@ def test_the_part_is_one_core_sum_step_over_lines_58_and_61() -> None:
         "unit": "ca/cad",
         "params": {"rounding": "ca-nl/cent_rounding"},
         "consumes": {"parts": [LINE_58, LINE_61]},
-        "blank": {LINE_61: "0"},
         "produces": {"output": IDENTIFIER},
     }

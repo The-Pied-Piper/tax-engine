@@ -1,0 +1,18 @@
+# Schedule K (2025) line 44 (Revenu Quebec TP-1.D.K-V (2025-12), Part A): the printed amounts, each a
+# dataset figure taken as printed and claimed whole. core/credit_amount makes each one an artifact
+# that line 44 reads; no figure is calculated here and no input is taken.
+form:
+  name: ca-qc/tp1_schedule_k
+capabilities:
+  - name: core/credit_amount
+    unit: ca/cad
+    params:
+      amount: ca-qc/schedule_k_line_44_one_child_amount
+    produces:
+      output: ca-qc/schedule_k_line_44_one_child_amount
+  - name: core/credit_amount
+    unit: ca/cad
+    params:
+      amount: ca-qc/schedule_k_line_44_more_than_one_child_amount
+    produces:
+      output: ca-qc/schedule_k_line_44_more_than_one_child_amount

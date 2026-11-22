@@ -145,7 +145,10 @@ def test_the_part_is_the_eight_steps_of_line_457() -> None:
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": FORM}
     assert part["capabilities"] == [
-        _read("ca-qc/tp1_income.employment_income", "ca-qc/tp1_employment_income_for_line_457"),
+        _read(
+            "ca-qc/tp1_income.tp1_employment_income_line_101",
+            "ca-qc/tp1_employment_income_for_line_457",
+        ),
         _read(
             "ca-qc/tp1_income.tp1_qpip_premium_line_97",
             "ca-qc/tp1_line_97_for_line_457",

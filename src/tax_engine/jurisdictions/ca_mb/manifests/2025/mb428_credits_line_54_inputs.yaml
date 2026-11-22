@@ -1,0 +1,16 @@
+# MB428 (2025) line 54's input, the amount from the federal Schedule 9. Form MB428 (CRA 5007-c):
+# "Line 54: Amount from line 13 of your federal Schedule 9 multiplied by 10.8% =". The line has two
+# boxes: the amount (box A, the input here) and the multiplied result (box B, the step in
+# mb428_credits_line_54.yaml). The engine does not compute Schedule 9, so the amount is taken as one
+# optional input, the way the form takes it. A request that leaves the line out is read as blank; the
+# step that multiplies it reads that blank as 0.
+form:
+  name: ca-mb/mb428_credits
+inputs:
+  - name: ca-mb/mb428_donations_amount_line_54
+    title: "Amount from line 13 of your federal Schedule 9"
+    reference: "54 box A"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 54: Amount from line 13 of your federal Schedule 9'

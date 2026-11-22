@@ -5,7 +5,7 @@ core/sum over line 32 (the credits subtotal so far) and line 33 (the pension inc
 input read as 0 when left out), as Ontario's line 28 is. Line 34, the caregiver amount, is not
 built, so it adds nothing. The form prints no label for line 35, so the step has no title.
 
-The test composes the real Saskatchewan salary part, the real Schedule 8 and T2204 parts, the real
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the real
 line parts (`sk428_credits_line_9.yaml`, `_line_20.yaml`, `_line_22.yaml`, `_line_24.yaml`,
 `_line_31.yaml`, `_line_32.yaml`, `_line_33.yaml`, `_line_35.yaml`) and the real
 `sk428_line_33_inputs.yaml`, and types in only the salary, or the salary and a pension income
@@ -42,7 +42,7 @@ from tax_engine.jurisdictions.ca_sk.catalog import (
     SK428_CREDITS_SUBTOTAL_LINE_35,
     SK428_PENSION_INCOME_AMOUNT,
 )
-from tests.federal_forms import FEDERAL_FORMS, form_parts
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_sk.support import (
     saskatchewan_capabilities,
     saskatchewan_kinds,
@@ -51,7 +51,6 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_FORM, inputs_without_form
 
 D = Decimal
 SK_PARTS = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / "manifests" / "2025"
@@ -63,8 +62,7 @@ HEADER = dedent("""\
     jurisdiction: CA-SK
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 FORM = dedent("""\
@@ -102,11 +100,9 @@ def _expected(salary: str, pension: str = "0") -> Decimal:
 
 
 def _part_files() -> Iterator[Path]:
-    yield SK_PARTS / "salary.yaml"
+    yield from form_parts("t1_employment_income")
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
-    yield T1_LINE_10100_FORM
-    yield FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml"
     yield SK_PARTS / "sk428_credits_line_9.yaml"
     yield SK_PARTS / "sk428_credits_line_20.yaml"
     yield SK_PARTS / "sk428_credits_line_22.yaml"
@@ -127,9 +123,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
     for number, part in enumerate(_part_files(), start=2):
         (folder / f"{number:02d}_{part.name}").write_text(
-            inputs_without_form(part)
-            if part.name.endswith("_inputs.yaml") and part.is_relative_to(FEDERAL_FORMS)
-            else part.read_text(encoding="utf-8"),
+            part.read_text(encoding="utf-8"),
             encoding="utf-8",
         )
     roots = {**saskatchewan_packages().roots(), Namespace("ca-sk"): tmp_path}

@@ -9,10 +9,10 @@ line 2. The form floors line 5 at 0, so the output `ca-bc/bc479_adjusted_net_inc
 non-negative kind.
 
 Line 5 is one core/subtract_not_below_zero step (`bc479_line_5.yaml`), rounded through
-`ca-bc/cent_rounding`, with `amount` line 3 and `less` line 4. The test composes the real British
-Columbia salary part, the real Schedule 8 parts, the real T1 taxable income parts, the real line
-1, line 2 and line 3 parts, the line 4 input part and the new `bc479_line_5.yaml`, and types in
-only the salary (and, in other tests, line 4, or a negative line 1 through the social benefits
+`ca-bc/cent_rounding`, with `amount` line 3 and `less` line 4. The test composes the real T1
+employment income form, the real Schedule 8 parts, the real T1 taxable income parts, the real line
+1, line 2 and line 3 parts, the line 4 input part and the new `bc479_line_5.yaml`, and types in only
+the salary (and, in other tests, line 4, or a negative line 1 through the social benefits
 repayment). The form declaration is made up here, exporting only line 5.
 
 Figures (hand-computed from the printed forms, not a CRA example): with line 4 blank, line 5 is line
@@ -59,7 +59,6 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 CODE = JurisdictionCode("CA-BC")
@@ -78,8 +77,7 @@ HEADER = dedent("""\
     jurisdiction: CA-BC
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 FORM_TEXT = dedent(f"""\
@@ -97,7 +95,6 @@ def _federal(name: str) -> Path:
 
 
 def _part_files() -> Iterator[Path]:
-    yield BC_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     for name in T1_PARTS:
         yield _federal(name)
@@ -116,11 +113,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(FORM_TEXT, encoding="utf-8")
     for number, part in enumerate(_part_files(), start=2):
-        text = (
-            inputs_without_form(part)
-            if part.name.endswith("_inputs.yaml") and part.is_relative_to(FEDERAL_FORMS)
-            else part.read_text(encoding="utf-8")
-        )
+        text = part.read_text(encoding="utf-8")
         (folder / f"{number:02d}_{part.name}").write_text(text, encoding="utf-8")
     roots = {**british_columbia_packages().roots(), Namespace("ca-bc"): tmp_path}
     return TaxComputationService(
@@ -173,14 +166,24 @@ def test_line_5_is_line_3_when_line_4_is_blank(tmp_path: Path, salary: str, expe
 
 
 def test_line_5_takes_line_4_off_line_3_when_line_4_is_given(tmp_path: Path) -> None:
+    # The UCCB is in the net income (T1 line 15000), so line 3 is 17,865.00 and line 4 takes the
+    # 1,000.00 off again: line 5 is the 16,865.00 of the salary alone.
     sheet = _sheet(tmp_path, "17000", Artifact(UCCB_INCOME, D("1000.00")))
 
-    assert sheet.get(BC479_ADJUSTED_NET_INCOME_LINE_5).value == D("15865.00")
+    assert sheet.get(BC479_ADJUSTED_NET_INCOME_LINE_5).value == D("16865.00")
 
 
 def test_line_5_is_0_when_line_4_is_above_line_3(tmp_path: Path) -> None:
-    # Line 3 is 16,865.00 at 17,000 and line 4 is 20,000.00: the floor.
-    sheet = _sheet(tmp_path, "17000", Artifact(UCCB_INCOME, D("20000.00")))
+    # The UCCB of 20,000.00 is in the net income, which a social benefits repayment of 40,000.00
+    # takes below it: line 3 is 17,000 + 20,000 - 135.00 - 40,000 = -3,135.00 and line 4 is
+    # 20,000.00, so line 5 is the floor.
+    kinds = british_columbia_kinds()
+    sheet = _sheet(
+        tmp_path,
+        "17000",
+        Artifact(UCCB_INCOME, D("20000.00")),
+        Artifact(kinds.kind("ca/social_benefits_repayment"), D("40000")),
+    )
 
     line_5 = sheet.get(BC479_ADJUSTED_NET_INCOME_LINE_5).value
     assert line_5 == D("0.00")
@@ -189,7 +192,14 @@ def test_line_5_is_0_when_line_4_is_above_line_3(tmp_path: Path) -> None:
 
 
 def test_line_5_is_0_when_line_4_equals_line_3(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "17000", Artifact(UCCB_INCOME, D("16865.00")))
+    # Line 3 is 17,000 + 1,000 - 135.00 - 16,865 = 1,000.00, the same as line 4.
+    kinds = british_columbia_kinds()
+    sheet = _sheet(
+        tmp_path,
+        "17000",
+        Artifact(UCCB_INCOME, D("1000.00")),
+        Artifact(kinds.kind("ca/social_benefits_repayment"), D("16865")),
+    )
 
     assert sheet.get(BC479_ADJUSTED_NET_INCOME_LINE_5).value == D("0.00")
 
@@ -222,11 +232,11 @@ def test_the_step_traces_one_subtracted_not_below_zero_line_with_the_cent_roundi
     assert line == SubtractedNotBelowZeroLine(
         output=kinds.kind(LINE_5),
         minuend=kinds.kind(LINE_3),
-        minuend_amount=D("16865.00"),
+        minuend_amount=D("17865.00"),
         subtrahend=kinds.kind(LINE_4),
         subtrahend_amount=D("1000.00"),
         rounding=_rounding().rounding,
-        result=D("15865.00"),
+        result=D("16865.00"),
     )
 
 

@@ -31,19 +31,11 @@ LINE_82 = "ca-on/on428_provincial_foreign_tax_credit_line_82"
 LINE_83 = "ca-on/on428_tax_after_foreign_tax_credit_line_83"
 PART = "on428_line_83.yaml"
 
-HEADER = f"""\
+HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-inputs:
-  - name: {LINE_81}
-    required: true
-  - name: {LINE_82}
-    required: false
-    default: null
-    basis: 'Line 82: Provincial foreign tax credit (complete Form T2036)'
-outputs:
-  - {LINE_81}
+outputs: []
 capabilities: []
 """
 
@@ -53,6 +45,13 @@ form:
   required: true
   exports:
     - {LINE_83}
+inputs:
+  - name: {LINE_81}
+    required: true
+  - name: {LINE_82}
+    required: false
+    default: null
+    basis: 'Line 82: Provincial foreign tax credit (complete Form T2036)'
 capabilities: []
 """
 

@@ -1,0 +1,19 @@
+# Form NL428 (CRA 5001-C) line 61: "Line 61 and line 58969: Line 59 plus line 60 =". It
+# sums line 59 (`ca-nl/nl428_donations_credit_at_rate_line_59`) and line 60
+# (`ca-nl/nl428_donations_credit_at_rate_line_60`), each read from its own step and never blank (a
+# blank Schedule 9 amount gives 0.00 there). Line 62 reads it. One core/sum step. The form names no
+# label for the line, so the step has no title.
+form:
+  name: ca-nl/nl428_credits
+capabilities:
+  - name: core/sum
+    reference: "61"
+    unit: ca/cad
+    params:
+      rounding: ca-nl/cent_rounding
+    consumes:
+      parts:
+        - ca-nl/nl428_donations_credit_at_rate_line_59
+        - ca-nl/nl428_donations_credit_at_rate_line_60
+    produces:
+      output: ca-nl/nl428_donations_and_gifts_credit_line_61

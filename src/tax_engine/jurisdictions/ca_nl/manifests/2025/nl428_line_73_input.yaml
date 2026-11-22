@@ -3,6 +3,8 @@
 # Form T2036 is not built, so the line is taken as one optional input, as the form takes it. A
 # request that leaves the line out is read as blank; the step that reads line 73 reads that blank
 # as 0.
+form:
+  name: ca-nl/nl428
 inputs:
   - name: ca-nl/nl428_provincial_foreign_tax_credit_line_73
     title: "Provincial foreign tax credit"

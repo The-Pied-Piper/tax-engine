@@ -2,11 +2,11 @@
 form's real parts composed end to end.
 
 Every ON428-A line part has its own test with its neighbours typed in. This module composes the
-whole form: it copies `salary.yaml`, every Schedule 8 part (line 22215 comes from there), every
-`t1_taxable_income*.yaml` part (the form reads T1 lines 10100 and 23600) and every `on428_a*.yaml`
-part into a temporary manifest folder beside a test-only header, and types in only the gross salary
-(`ca/employment_income`). The real header is not used because its output, T1 line 167, is not built
-yet. This is not a worked return: no return file, no slips, one form.
+whole form: it copies the line 10100 input part, every Schedule 8 part (line 22215 comes from
+there), every `t1_taxable_income*.yaml` part (the form reads T1 lines 10100 and 23600) and every
+`on428_a*.yaml` part into a temporary manifest folder beside a test-only header, and types in only
+the gross salary (`ca/employment_income`). The real header is not used because its output, T1 line
+167, is not built yet. This is not a worked return: no return file, no slips, one form.
 
 Line 1 is the salary itself, the input, so the form builds no step for it. Line 2 (T1 line 10400,
 other employment income) is read as 0 when not given, is never typed in here and has no pin of its
@@ -56,15 +56,13 @@ HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 # The real ON428-A declaration (`on428_a.yaml`) carries the form and its exports, so the fixture's
 # own form text is an empty mapping.
 FORM = "{}\n"
 PARTS = (
-    "salary.yaml",
     *form_part_names("schedule_8"),
     *form_part_names("t1_employment_income"),
     *form_part_names("t1_taxable_income"),

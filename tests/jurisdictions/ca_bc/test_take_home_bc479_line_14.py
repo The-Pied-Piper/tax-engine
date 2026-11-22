@@ -12,11 +12,11 @@ blank rule reads the checked amount as 0 and prints its own "left blank, taken a
 printed $10,000 maximum is checked before the step reads the amount (`bc479_line_14_check.yaml`):
 an amount above it is rejected with `InputAboveBoundError`, not multiplied.
 
-The test composes the real salary part, the real maximum and check parts, the real line 14 input
-part and the new `bc479_line_14.yaml`, and types in the salary and, in some tests, the expenses.
-The form declaration is made up here, exporting only line 14. The figures are hand-computed from
-the printed form (not a CRA example): the expenses times 0.10, rounded half-up to the cent.
-"""
+The test composes the T1 employment income form, the real maximum and check parts, the real line 14
+input part and the new `bc479_line_14.yaml`, and types in the salary and, in some tests, the
+expenses. The form declaration is made up here, exporting only line 14. The figures are
+hand-computed from the printed form (not a CRA example): the expenses times 0.10, rounded half-up to
+the cent."""
 
 from __future__ import annotations
 
@@ -44,6 +44,7 @@ from tax_engine.domain.trace import BlankFallbackLine, RateAppliedLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_bc.catalog import BC479_HOME_RENOVATION_EXPENSES_LINE_14
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -68,8 +69,7 @@ HEADER = dedent("""\
     jurisdiction: CA-BC
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 FORM_TEXT = dedent(f"""\
@@ -91,7 +91,7 @@ SALARIES = ["17000", "200000"]
 
 
 def _part_files() -> Iterator[Path]:
-    yield BC_PARTS / "salary.yaml"
+    yield from form_parts("t1_employment_income")
     yield MAXIMUM_PART
     yield BC_PARTS / "bc479_line_14_input.yaml"
     yield CHECK_PART

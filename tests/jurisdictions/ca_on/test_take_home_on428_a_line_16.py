@@ -15,9 +15,7 @@ from textwrap import dedent
 
 import pytest
 
-from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_on.catalog import LIFT_INDIVIDUAL_INCOME_THRESHOLD
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
 
@@ -29,11 +27,8 @@ HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/employment_income
-        required: true
-    outputs:
-      - ca/employment_income
+    outputs: []
+    capabilities: []
     """)
 FORM = dedent("""\
     form:
@@ -45,9 +40,7 @@ FORM = dedent("""\
 
 
 def line_16(take_home_service: TakeHomeService, salary: str) -> Decimal:
-    worksheets = take_home_service(HEADER, FORM, PART).compute(
-        JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
-    )
+    worksheets = take_home_service(HEADER, FORM, PART).compute(JurisdictionCode("CA-ON"), 2025)
     (sheet,) = worksheets["ca-on/on428_a"]
     return sheet.get(LIFT_INDIVIDUAL_INCOME_THRESHOLD).value
 

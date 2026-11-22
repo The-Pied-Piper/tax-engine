@@ -1,0 +1,32 @@
+# Schedule 6 (5000-S6, 2025, CRA 5000-S6-25E) line 9. Line 9: "Total of universal child care benefit (UCCB) repayment (line 21300 of the return) and registered disability savings plan (RDSP) income repayment (included on line 23200 of the return)", column 1 "You"
+# Both parts are T1 lines, so this form does not ask for them: the T1 taxable income form owns the
+# inputs and exports lines 21300 and 23200 (`ca/t1_taxable_income`). Another form reads an export only as a
+# record list, so each part is totalled by core/record_total first (as line 11 reads lines 11700 and 12500), and the
+# printed total adds the two in line order. A salary-only caller has neither, so the total is 0.
+form:
+  name: ca/schedule_6
+capabilities:
+  - name: core/record_total
+    title: "Amount from line 21300 of the return (UCCB repayment)"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_taxable_income.uccb_repayment_line_21300
+    produces:
+      output: ca/cwb_uccb_repayment_line_21300
+  - name: core/record_total
+    title: "Amount from line 23200 of the return (RDSP income repayment)"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_taxable_income.rdsp_income_repayment_line_23200
+    produces:
+      output: ca/cwb_rdsp_income_repayment_line_23200
+  - name: core/sum
+    title: "Total of universal child care benefit (UCCB) repayment (line 21300 of the return) and registered disability savings plan (RDSP) income repayment (included on line 23200 of the return)"
+    reference: "9"
+    unit: ca/cad
+    params:
+      rounding: ca/cent_rounding
+    consumes:
+      parts: [ca/cwb_uccb_repayment_line_21300, ca/cwb_rdsp_income_repayment_line_23200]
+    produces:
+      output: ca/cwb_uccb_and_rdsp_repayment_line_9

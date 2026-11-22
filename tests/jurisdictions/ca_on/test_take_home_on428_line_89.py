@@ -40,7 +40,6 @@ LINE_89 = "ca-on/on428_ontario_health_premium_line_89"
 # The real parts composed beside the test's header: the salary, the real Schedule 8, the real T1
 # taxable-income lines and inputs, and the ON428 line 89 part.
 PARTS = (
-    "salary.yaml",
     *form_part_names("schedule_8"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),
     "on428_line_89.yaml",
@@ -49,8 +48,7 @@ HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 # The ON428 declaration, test-local: its exports are lines 1 and 89, the two lines of this part.

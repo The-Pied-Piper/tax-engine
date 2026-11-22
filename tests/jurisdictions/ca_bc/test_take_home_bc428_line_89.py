@@ -57,7 +57,6 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 CODE = JurisdictionCode("CA-BC")
@@ -77,6 +76,7 @@ LINE_81 = "ca-bc/bc428_logging_tax_credit_line_81"
 LINE_85 = "ca-bc/bc428_tax_after_political_credit_line_85"
 LINE_82 = "ca-bc/bc428_tax_after_logging_credit_line_82"
 LINE_84 = "ca-bc/bc428_british_columbia_political_contribution_tax_credit_line_84"
+LINE_86 = "ca-bc/bc428_esop_credit_line_86"
 LINE_88 = "ca-bc/bc428_esop_evcc_credits_line_88"
 LINE_89 = "ca-bc/bc428_tax_after_esop_evcc_line_89"
 ROUNDING = "ca-bc/cent_rounding"
@@ -104,7 +104,13 @@ BC_LINE_PARTS = (
     "bc428_line_37.yaml",
     "bc428_line_40.yaml",
     "bc428_line_45.yaml",
-    "bc428_line_53_inputs.yaml",
+    "bc428_line_46_input.yaml",
+    "bc428_line_47.yaml",
+    "bc428_line_49.yaml",
+    "bc428_line_50.yaml",
+    "bc428_line_51.yaml",
+    "bc428_line_52_input.yaml",
+    "bc428_line_53.yaml",
     "bc428_line_54.yaml",
     "bc428_line_56.yaml",
     "bc428_line_57_input.yaml",
@@ -128,7 +134,9 @@ BC_LINE_PARTS = (
     "bc428_political_contribution_tax_credit_maximum.yaml",
     "bc428_line_84.yaml",
     "bc428_line_85.yaml",
-    "bc428_line_88_input.yaml",
+    "bc428_line_86_input.yaml",
+    "bc428_line_87_input.yaml",
+    "bc428_line_88.yaml",
     LINE_PART.name,
 )
 
@@ -136,8 +144,7 @@ HEADER = dedent("""\
     jurisdiction: CA-BC
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 FORM = dedent("""\
@@ -163,7 +170,7 @@ FORM = dedent("""\
     """)
 
 # salary, taxable income (line 1 and line 74), line 67 (the line 67 test's figure), line 72 (line 70
-# with line 71 blank), line 79 and the line 89 figure (lines 81, 84 and 88 blank, so line 80).
+# with line 71 blank), line 79 and the line 89 figure (lines 81, 84, 86 and 87 blank, so line 80).
 CASES = [
     ("17000", "16865", "702.28", "151.09", "562.00", "0.00"),
     ("30000", "29735", "745.63", "758.96", "394.15", "364.81"),
@@ -212,7 +219,6 @@ def _federal(name: str) -> Path:
 
 
 def _part_files() -> Iterator[Path]:
-    yield BC_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
     for name in T1_PARTS:
@@ -229,11 +235,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
     for number, found in enumerate(_part_files(), start=2):
-        text = (
-            inputs_without_form(found)
-            if found.name.endswith("_inputs.yaml") and found.is_relative_to(FEDERAL_FORMS)
-            else found.read_text(encoding="utf-8")
-        )
+        text = found.read_text(encoding="utf-8")
         (folder / f"{number:02d}_{found.name}").write_text(text, encoding="utf-8")
     roots = {**british_columbia_packages().roots(), Namespace("ca-bc"): tmp_path}
     return TaxComputationService(
@@ -250,7 +252,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
 def _sheet(tmp_path: Path, salary: str, credit: str | None = None) -> Worksheet:
     given = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if credit is not None:
-        given.append(Artifact(_amount_kind(LINE_88), D(credit)))
+        given.append(Artifact(_amount_kind(LINE_86), D(credit)))
     worksheets = _service(tmp_path).compute(CODE, 2025, *given)
     (sheet,) = worksheets[TAX]
     return sheet
@@ -273,7 +275,7 @@ def _amount_kind(identifier: str) -> AmountKind:
 @pytest.mark.parametrize(
     ("salary", "taxable_income", "line_67", "line_72", "line_79", "expected"), CASES
 )
-def test_line_89_is_line_85_at_each_salary_when_line_88_is_left_blank(
+def test_line_89_is_line_85_at_each_salary_when_lines_86_and_87_are_left_blank(
     tmp_path: Path,
     salary: str,
     taxable_income: str,
@@ -288,7 +290,8 @@ def test_line_89_is_line_85_at_each_salary_when_line_88_is_left_blank(
 
     sheet = _sheet(tmp_path, salary)
 
-    assert sheet.get(_amount_kind(LINE_88)).is_blank
+    assert not sheet.get(_amount_kind(LINE_88)).is_blank
+    assert sheet.get(_amount_kind(LINE_88)).value == D("0.00")
     assert sheet.get(_amount_kind(LINE_85)).value == D(expected)
     result = sheet.get(_amount_kind(LINE_89))
     assert not result.is_blank
@@ -346,7 +349,7 @@ def test_the_step_traces_one_subtracted_not_below_zero_line_with_the_cent_roundi
     )
 
 
-def test_the_blank_fallback_row_names_line_88_only_when_line_88_is_blank(tmp_path: Path) -> None:
+def test_the_blank_fallback_row_names_line_86_only_when_line_86_is_blank(tmp_path: Path) -> None:
     given_dir = tmp_path / "given"
     given_dir.mkdir()
     kinds = british_columbia_kinds()
@@ -355,7 +358,7 @@ def test_the_blank_fallback_row_names_line_88_only_when_line_88_is_blank(tmp_pat
         return [
             t
             for t in sheet.trace
-            if isinstance(t, BlankFallbackLine) and t.kind is kinds.kind(LINE_88)
+            if isinstance(t, BlankFallbackLine) and t.kind is kinds.kind(LINE_86)
         ]
 
     (row,) = fallbacks(_sheet(tmp_path, "70000"))
@@ -388,20 +391,19 @@ def _part() -> dict[str, Any]:
     return part
 
 
-def test_the_part_names_the_form_and_has_one_untitled_subtract_step_with_a_blank_rule() -> None:
+def test_the_part_names_the_form_and_has_one_untitled_subtract_step() -> None:
     part = _part()
 
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": TAX}
     (step,) = part["capabilities"]
-    assert list(step) == ["name", "reference", "unit", "params", "consumes", "blank", "produces"]
+    assert list(step) == ["name", "reference", "unit", "params", "consumes", "produces"]
     assert step == {
         "name": "core/subtract_not_below_zero",
         "reference": "89",
         "unit": "ca/cad",
         "params": {"rounding": ROUNDING},
         "consumes": {"amount": LINE_85, "less": LINE_88},
-        "blank": {"less": "0"},
         "produces": {"output": LINE_89},
     }
     assert "title" not in step

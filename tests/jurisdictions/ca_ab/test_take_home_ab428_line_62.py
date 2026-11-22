@@ -7,13 +7,13 @@ input: its one step is a core/record_total over the line 58 export of `ca-ab/ab4
 52. The form prints no title for the line beyond its label, so the step is untitled. Line 58 is
 always computed, so the step has no blank rule.
 
-The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts, the real AB428
-credits parts up to line 58 (line 16, 25, 27, 29, 32, 33, 34 inputs, 36, 39, 41 input, 43, 51
-inputs, 52, 54, 57 inputs and 58) and the new `ab428_line_62.yaml`, and types in only the salary.
-The header and the two form declarations (AB428 credits, exporting line 58, and AB428, exporting
-line 62) are made up here, because the shared scaffold owns them. The figures are the line 58
-figures of the line 58 test (line 54 plus a blank line 57 read as 0): 1,877.42, 2,135.38 and
-2,140.53 at the three salaries.
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the real AB428
+credits parts up to line 58 (line 16, 25, 27, 29, 32, 33, 34 inputs, 36, 39, 41 input, 43, the
+medical expenses parts 44 to 51, 52, 54, the donations parts 55 to 57 and 58) and the new
+`ab428_line_62.yaml`, and types in only the salary. The header and the two form declarations (AB428
+credits, exporting line 58, and AB428, exporting line 62) are made up here, because the shared
+scaffold owns them. The figures are the line 58 figures of the line 58 test (line 54 plus a blank
+line 57 read as 0): 1,877.42, 2,135.38 and 2,140.53 at the three salaries.
 """
 
 from __future__ import annotations
@@ -40,7 +40,7 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_ab.catalog import AB428_CREDITS_FROM_LINE_58_LINE_62
-from tests.federal_forms import FEDERAL_FORMS, form_parts
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_ab.support import (
     alberta_capabilities,
     alberta_kinds,
@@ -49,7 +49,6 @@ from tests.jurisdictions.ca_ab.support import (
     alberta_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_FORM, inputs_without_form
 
 D = Decimal
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
@@ -60,8 +59,7 @@ HEADER = dedent("""\
     jurisdiction: CA-AB
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 CREDITS_FORM = dedent("""\
@@ -86,11 +84,9 @@ CASES = [("20000", "1877.42"), ("200000", "2140.53")]
 
 
 def _part_files() -> Iterator[Path]:
-    yield ALBERTA_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
-    yield T1_LINE_10100_FORM
-    yield FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml"
+    yield from form_parts("t1_employment_income", "t1_taxable_income")
     yield ALBERTA_PARTS / "ab428_line_16.yaml"
     yield ALBERTA_PARTS / "ab428_line_25.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_27.yaml"
@@ -105,10 +101,24 @@ def _part_files() -> Iterator[Path]:
     yield ALBERTA_PARTS / "ab428_line_41_input.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_41.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_43.yaml"
-    yield ALBERTA_PARTS / "ab428_line_51_inputs.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_44_input.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_44.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_45.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_47.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_48.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_49.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_50_input.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_50.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_51.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_52.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_54.yaml"
-    yield ALBERTA_PARTS / "ab428_line_57_inputs.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_55_input.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_55_box_a.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_55.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_56_input.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_56_box_a.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_56.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_57.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_58.yaml"
     yield LINE_PART
 
@@ -122,11 +132,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "01_credits_form.yaml").write_text(CREDITS_FORM, encoding="utf-8")
     (folder / "02_ab428_form.yaml").write_text(AB428_FORM, encoding="utf-8")
     for number, found in enumerate(_part_files(), start=3):
-        text = (
-            inputs_without_form(found)
-            if found.name.endswith("_inputs.yaml") and found.is_relative_to(FEDERAL_FORMS)
-            else found.read_text(encoding="utf-8")
-        )
+        text = found.read_text(encoding="utf-8")
         (folder / f"{number:02d}_{found.name}").write_text(text, encoding="utf-8")
     roots = {**alberta_packages().roots(), Namespace("ca-ab"): tmp_path}
     return TaxComputationService(

@@ -34,7 +34,6 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.trace import AtMostLine
 from tax_engine.domain.worksheet import Worksheet
-from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_mb.catalog import MB479_CULTURAL_INDUSTRIES_PRINTING_CREDIT_LINE_73
 from tests.jurisdictions.ca_mb.support import (
     manitoba_capabilities,
@@ -58,11 +57,8 @@ HEADER = dedent("""\
     jurisdiction: CA-MB
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/employment_income
-        required: true
-    outputs:
-      - ca/employment_income
+    outputs: []
+    capabilities: []
     """)
 FORM = dedent("""\
     form:
@@ -92,7 +88,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
 
 
 def _sheet(tmp_path: Path, credit: str | None = None) -> Worksheet:
-    given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, D("70000"))]
+    given: list[Artifact[Any]] = []
     if credit is not None:
         given.append(Artifact(MB479_CULTURAL_INDUSTRIES_PRINTING_CREDIT_LINE_73, D(credit)))
     worksheets = _service(tmp_path).compute(JurisdictionCode("CA-MB"), 2025, *given)

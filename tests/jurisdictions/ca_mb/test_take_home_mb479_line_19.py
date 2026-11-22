@@ -6,7 +6,7 @@ title, as "Total credits" is line 17's. Line 19 is one core/subtract_not_below_z
 line 17 (total credits) less line 18 (the reduction), rounded to the cent, floored at 0. Both
 inputs are always produced, so the step needs no blank rows.
 
-The test composes the real Manitoba salary part, the real Schedule 8 parts, the real T1 taxable
+The test composes the T1 employment income form, the real Schedule 8 parts, the real T1 taxable
 income parts, the real line 1, line 2 input, line 3, line 4 input, line 5, line 5 column 2 input,
 line 6, line 7, line 17 inputs, line 17 and line 18 parts and the new line 19 part, and types in
 only the salary (and, in some tests, the column 2 figure). A salary-only filer leaves every
@@ -54,7 +54,6 @@ from tests.jurisdictions.ca_mb.support import (
     manitoba_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 CENT = D("0.01")
@@ -71,8 +70,7 @@ HEADER = dedent("""\
     jurisdiction: CA-MB
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 FORM = dedent("""\
@@ -114,7 +112,6 @@ def docstring_of(identifier: str) -> str:
 
 
 def _part_files() -> Iterator[Path]:
-    yield MB_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     for name in T1_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
@@ -127,6 +124,11 @@ def _part_files() -> Iterator[Path]:
     yield MB_PARTS / "mb479_line_6.yaml"
     yield MB_PARTS / "mb479_line_7.yaml"
     yield MB_PARTS / "mb479_line_17_inputs.yaml"
+    yield MB_PARTS / "mb479_line_12_inputs.yaml"
+    yield MB_PARTS / "mb479_line_12.yaml"
+    for n in ("14", "15", "16"):
+        for suffix in ("_inputs", "_amount", ""):
+            yield MB_PARTS / f"mb479_line_{n}{suffix}.yaml"
     yield MB_PARTS / "mb479_line_17.yaml"
     yield MB_PARTS / "mb479_line_18.yaml"
     yield LINE_PART
@@ -139,9 +141,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
     for number, part in enumerate(_part_files(), start=2):
         (folder / f"{number:02d}_{part.name}").write_text(
-            inputs_without_form(part)
-            if part.name.endswith("_inputs.yaml") and part.is_relative_to(FEDERAL_FORMS)
-            else part.read_text(encoding="utf-8"),
+            part.read_text(encoding="utf-8"),
             encoding="utf-8",
         )
     roots = {**manitoba_packages().roots(), Namespace("ca-mb"): tmp_path}

@@ -81,6 +81,8 @@ EXACT_TOTAL = ParameterDataset(
 
 SALES = AmountKind("ex/sales")
 COSTS = AmountKind("ex/costs")
+SALES_B = AmountKind("ex/sales_b")
+COSTS_B = AmountKind("ex/costs_b")
 PROFIT = AmountKind("ex/profit", non_negative=True)
 FEE = AmountKind("ex/fee")
 FEE_TOTAL = AmountKind("ex/fee_total")
@@ -138,13 +140,25 @@ class Reject(Capability):
         return CapabilityResult(outputs=(Artifact(self._target, value),), trace=())
 
 
-def shop(name: str = "ex/shop") -> FormComposition:
-    """Profit of each shop: sales less costs; exports the profit."""
+def own_shops(name: str) -> RecordListKind:
+    """A list of shops of its own for a second form: an input is held by one form."""
+    return RecordListKind(f"{name}_list", fields=(SALES, COSTS))
+
+
+def shop(
+    name: str = "ex/shop",
+    *,
+    instances: RecordListKind = SHOPS,
+    default: Artifact[Any] | None = None,
+) -> FormComposition:
+    """Profit of each shop: sales less costs; exports the profit. The list of shops is read as
+    `default` when the caller leaves it out."""
     return composition(
         name,
         [Subtract(EXACT_TOTAL, SALES, COSTS, PROFIT)],
-        instances=SHOPS,
+        instances=instances,
         exports=[PROFIT],
+        defaults=() if default is None else [default],
     )
 
 
@@ -176,14 +190,16 @@ def flat(
     outputs: frozenset[ArtifactKind[Any]],
     forms: Iterable[FormComposition] = (),
 ) -> FormSet:
-    """The forms plus a form `ex-on/return` of `capabilities`, which has one instance."""
+    """The forms plus a form `ex-on/return` of `capabilities`, which has one instance and holds
+    the `inputs` its steps read."""
+    read = {kind for capability in capabilities for kind in capability.consumes}
     default = composition(
         RETURN,
         capabilities,
         exports=sorted(outputs, key=lambda kind: kind.identifier),
-        starting=inputs,
+        starting=inputs & read,
     )
-    return FormSet([*forms, default], inputs=inputs)
+    return FormSet([*forms, default])
 
 
 def form_set(*forms: FormComposition) -> FormSet:
@@ -258,7 +274,7 @@ def test_a_worksheet_carries_the_titles_its_form_and_selections_were_given() -> 
         ),
     )
 
-    sheets = FormSet([titled], inputs=frozenset({AMOUNT})).compute(Artifact(AMOUNT, D(1)))
+    sheets = FormSet([titled]).compute(Artifact(AMOUNT, D(1)))
     (sheet,) = sheets["ex/titled"]
 
     assert titled.title == "Titled form"
@@ -276,26 +292,11 @@ def test_a_worksheet_carries_the_title_and_reference_of_the_inputs_it_reads() ->
         declared=[InputDeclaration(AMOUNT.identifier, True, title="Amount", reference="10100")],
     )
 
-    (sheet,) = FormSet([titled], inputs=frozenset({AMOUNT})).compute(Artifact(AMOUNT, D(1)))[
-        "ex/titled"
-    ]
+    (sheet,) = FormSet([titled]).compute(Artifact(AMOUNT, D(1)))["ex/titled"]
 
     assert sheet.title(AMOUNT.label) == "Amount"
     assert sheet.reference(AMOUNT.label) == "10100"
     assert sheet.title(STEP_TOTAL.label) is None
-
-
-def test_a_worksheet_leaves_out_the_title_of_an_input_the_form_does_not_read() -> None:
-    titled = composition(
-        "ex/titled",
-        [Sum(EXACT_TOTAL, (AMOUNT,), STEP_TOTAL)],
-        exports=[STEP_TOTAL],
-        starting=frozenset({AMOUNT, COSTS}),
-        declared=[InputDeclaration(COSTS.identifier, True, title="Costs", reference="9")],
-    )
-
-    assert titled.figure_titles == {}
-    assert titled.figure_references == {}
 
 
 def test_a_worksheet_carries_the_title_and_reference_of_a_declared_instance_field() -> None:
@@ -312,6 +313,21 @@ def test_a_worksheet_carries_the_title_and_reference_of_a_declared_instance_fiel
 
     assert shop_form.figure_titles == {SALES.label: "Sales"}
     assert shop_form.figure_references == {SALES.label: "1"}
+
+
+def test_two_forms_may_not_declare_the_same_input() -> None:
+    first, second = (
+        composition(
+            name,
+            [Subtract(EXACT_TOTAL, SALES, COSTS, profit)],
+            exports=[profit],
+            starting=frozenset({SALES, COSTS}),
+        )
+        for name, profit in (("ex/first", PROFIT), ("ex/second", AmountKind("ex/profit_b")))
+    )
+
+    with pytest.raises(InvalidCompositionError, match="held by one form"):
+        FormSet([first, second])
 
 
 def test_the_inner_composition_takes_the_instance_fields_and_the_imports() -> None:
@@ -378,13 +394,6 @@ def test_an_export_that_is_another_forms_export_is_refused() -> None:
         )
 
 
-def test_a_form_must_export_something() -> None:
-    with pytest.raises(InvalidManifestError, match="ex/shop.*exports"):
-        composition(
-            "ex/shop", [Subtract(EXACT_TOTAL, SALES, COSTS, PROFIT)], instances=SHOPS, exports=[]
-        )
-
-
 def test_a_name_the_kinds_lack_is_refused() -> None:
     declared = Form(
         name="ex/shop",
@@ -424,7 +433,11 @@ def test_forms_that_do_not_import_each_other_run_in_name_order() -> None:
         [Subtract(EXACT_TOTAL, LEVY, FEE_TOTAL, GRAND)],
         inputs=frozenset({SHOPS, LEVY, FEE_TOTAL}),
         outputs=frozenset({GRAND}),
-        forms=[shop("ex/zebra"), shop("ex/apple"), shop("ex/mango")],
+        forms=[
+            shop("ex/zebra", instances=own_shops("ex/zebra")),
+            shop("ex/apple", instances=own_shops("ex/apple")),
+            shop("ex/mango", instances=own_shops("ex/mango")),
+        ],
     )
 
     assert [found.name for found in forms.forms] == [RETURN, "ex/apple", "ex/mango", "ex/zebra"]
@@ -461,7 +474,9 @@ def test_a_form_outside_the_cycle_is_not_named() -> None:
     )
 
     with pytest.raises(InvalidCompositionError, match="cycle") as caught:
-        form_set(shop_needs_audit, audit(), shop("ex/bystander"))
+        form_set(
+            shop_needs_audit, audit(), shop("ex/bystander", instances=own_shops("ex/bystander"))
+        )
 
     assert "ex/bystander" not in str(caught.value)
 
@@ -499,16 +514,6 @@ def test_a_form_named_like_the_return_is_refused() -> None:
         form_set(shop(RETURN), audit())
 
 
-def test_a_forms_instances_kind_must_be_one_of_the_computations_inputs() -> None:
-    with pytest.raises(InvalidCompositionError, match="ex/shop.*'ex/shops'.*not.*input"):
-        flat(
-            [Subtract(EXACT_TOTAL, FEE, COSTS, LEVY)],
-            inputs=frozenset({FEE, COSTS}),
-            outputs=frozenset({LEVY}),
-            forms=[shop()],
-        )
-
-
 def test_the_default_form_is_an_ordinary_form_with_one_instance_that_exports_like_any() -> None:
     returns = form_set(shop(), audit()).form(RETURN)
 
@@ -519,15 +524,15 @@ def test_the_default_form_is_an_ordinary_form_with_one_instance_that_exports_lik
     assert returns.imports == frozenset({AUDIT_AUDITED})
 
 
-def test_a_form_without_instances_takes_the_starting_artifacts_it_reads() -> None:
+def test_a_form_without_instances_takes_the_inputs_it_declares() -> None:
     once = composition(
         "ex/once",
         [Subtract(EXACT_TOTAL, SALES, COSTS, LEVY)],
         exports=[LEVY],
-        starting=frozenset({SALES, COSTS, FEE}),
+        starting=frozenset({SALES, COSTS}),
     )
 
-    assert once.inputs == frozenset({SALES, COSTS})  # FEE is a starting artifact it does not read
+    assert once.inputs == frozenset({SALES, COSTS})
     assert once.imports == frozenset()
 
 
@@ -571,10 +576,10 @@ def test_a_forms_inputs_are_only_the_starting_artifacts_it_reads() -> None:
         inner.compute(Artifact(SALES, D(3)), Artifact(COSTS, D(1)), audits("1"))
 
 
-def test_a_form_with_instances_takes_the_starting_artifacts_it_reads_and_its_fields() -> None:
-    levy = levy_each(frozenset({SALES, COSTS}))
+def test_a_form_with_instances_takes_the_inputs_it_declares_and_its_fields() -> None:
+    levy = levy_each(frozenset({SALES}))
 
-    assert levy.inputs == frozenset({SALES, FEE})  # COSTS is a starting artifact it does not read
+    assert levy.inputs == frozenset({SALES, FEE})
 
 
 def test_an_instance_field_that_is_also_a_starting_artifact_is_refused_naming_the_form() -> None:
@@ -585,7 +590,7 @@ def test_an_instance_field_that_is_also_a_starting_artifact_is_refused_naming_th
 
 
 def test_each_instance_runs_on_the_starting_artifacts_and_its_own_record() -> None:
-    forms = FormSet([levy_each(frozenset({SALES}))], inputs=frozenset({SALES, AUDITS}))
+    forms = FormSet([levy_each(frozenset({SALES}))])
 
     first, second = forms.compute(Artifact(SALES, D(500)), TWO_AUDITS)["ex/levy"]
 
@@ -595,22 +600,10 @@ def test_each_instance_runs_on_the_starting_artifacts_and_its_own_record() -> No
 
 
 def test_a_starting_artifact_is_still_required_when_only_a_form_with_instances_reads_it() -> None:
-    forms = FormSet([levy_each(frozenset({SALES}))], inputs=frozenset({SALES, AUDITS}))
+    forms = FormSet([levy_each(frozenset({SALES}))])
 
     with pytest.raises(InvalidCompositionError, match="missing input 'sales'"):
         forms.compute(TWO_AUDITS)
-
-
-def test_a_derived_kind_among_the_inputs_is_refused_when_the_set_is_built() -> None:
-    with pytest.raises(
-        InvalidCompositionError, match="'shop.profit' is exported by a form, not an input"
-    ):
-        flat(
-            [RecordTotal(AUDIT_AUDITED, GRAND)],
-            inputs=frozenset({SHOPS, AUDITS, SHOP_PROFIT}),
-            outputs=frozenset({GRAND}),
-            forms=[shop(), audit()],
-        )
 
 
 def test_a_cycle_between_forms_without_instances_is_refused_naming_them() -> None:
@@ -620,7 +613,7 @@ def test_a_cycle_between_forms_without_instances_is_refused_naming_them() -> Non
     )
 
     with pytest.raises(InvalidCompositionError, match="cycle") as caught:
-        FormSet([first, second], inputs=frozenset())
+        FormSet([first, second])
 
     assert "ex/first" in str(caught.value) and "ex/second" in str(caught.value)
 
@@ -631,15 +624,18 @@ def test_an_import_no_form_exports_is_refused_for_a_form_without_instances() -> 
     with pytest.raises(
         InvalidCompositionError, match="ex/lonely.*no form exports 'second.profit_total'"
     ):
-        FormSet([lonely], inputs=frozenset())
+        FormSet([lonely])
 
 
-def test_an_input_no_form_reads_is_refused() -> None:
-    with pytest.raises(InvalidCompositionError, match="input 'fee' is consumed by nothing"):
-        flat(
+def test_an_input_no_step_of_its_form_reads_is_refused_naming_the_form() -> None:
+    with pytest.raises(
+        InvalidCompositionError, match="ex-on/return.*input 'fee' is consumed by nothing"
+    ):
+        composition(
+            RETURN,
             [Subtract(EXACT_TOTAL, SALES, COSTS, LEVY)],
-            inputs=frozenset({SALES, COSTS, FEE}),
-            outputs=frozenset({LEVY}),
+            exports=[LEVY],
+            starting=frozenset({SALES, COSTS, FEE}),
         )
 
 
@@ -653,7 +649,7 @@ def test_an_input_one_form_reads_and_another_form_does_not_is_fine() -> None:
                 "ex/fees",
                 [Reject(FEE, FEE_TOTAL)],
                 exports=[FEE_TOTAL],
-                starting=frozenset({SALES, COSTS, FEE}),
+                starting=frozenset({FEE}),
             )
         ],
     )
@@ -667,10 +663,11 @@ def test_an_input_one_form_reads_and_another_form_does_not_is_fine() -> None:
 
 def test_an_input_that_a_form_also_produces_is_refused() -> None:
     with pytest.raises(InvalidCompositionError, match="input 'levy' is also produced by Subtract"):
-        flat(
+        composition(
+            RETURN,
             [Subtract(EXACT_TOTAL, SALES, COSTS, LEVY)],
-            inputs=frozenset({SALES, COSTS, LEVY}),
-            outputs=frozenset({LEVY}),
+            exports=[LEVY],
+            starting=frozenset({SALES, COSTS, LEVY}),
         )
 
 
@@ -712,10 +709,11 @@ def test_instance_order_is_the_order_of_the_records_given() -> None:
 
 
 def test_two_forms_importing_one_export_both_see_all_its_records() -> None:
+    review_list = RecordListKind("ex/reviews", fields=(FEE,))
     review = composition(
         "ex/review",
         [RecordTotal(SHOP_PROFIT, PROFIT_TOTAL), Subtract(EXACT_TOTAL, PROFIT_TOTAL, FEE, AUDITED)],
-        instances=AUDITS,
+        instances=review_list,
         exports=[AUDITED],
     )
     forms = flat(
@@ -725,7 +723,11 @@ def test_two_forms_importing_one_export_both_see_all_its_records() -> None:
         forms=[shop(), audit(), review],
     )
 
-    result = forms.compute(TWO_SHOPS, TWO_AUDITS)
+    result = forms.compute(
+        TWO_SHOPS,
+        TWO_AUDITS,
+        Artifact(review_list, RecordList(review_list.fields, [{FEE: D("100")}, {FEE: D("30")}])),
+    )
 
     assert result["ex/audit"][0].get(AUDITED).value == D("13900")
     assert result["ex/review"][0].get(AUDITED).value == D("13900")
@@ -754,10 +756,7 @@ def test_a_form_without_instances_exports_one_record_that_other_forms_read() -> 
         "ex/summary", [RecordTotal(RETURN_GRAND, PROFIT_TOTAL)], exports=[PROFIT_TOTAL]
     )
     # RETURN_GRAND is the default form's export: one record whatever the instances.
-    forms = FormSet(
-        [*form_set(shop(), audit()).forms, summary],
-        inputs=frozenset({SHOPS, AUDITS}),
-    )
+    forms = FormSet([*form_set(shop(), audit()).forms, summary])
 
     result = forms.compute(TWO_SHOPS, TWO_AUDITS)
 
@@ -1001,7 +1000,7 @@ def once_form() -> FormComposition:
 
 
 def test_a_run_error_in_a_form_without_an_instances_list_names_it_and_instance_1() -> None:
-    forms = FormSet([once_form()], inputs=frozenset({SALES, COSTS}))
+    forms = FormSet([once_form()])
 
     with pytest.raises(CapabilityContractError, match=r"^ex/once, instance 1: ") as caught:
         forms.compute(Artifact(SALES, D(1)), Artifact(COSTS, D(2)))  # a loss: PROFIT is >= 0
@@ -1022,7 +1021,7 @@ def test_a_wiring_error_in_a_form_without_an_instances_list_names_the_form_only(
 
 
 def test_the_trace_of_a_form_without_an_instances_list_has_one_line_at_position_1() -> None:
-    forms = FormSet([once_form()], inputs=frozenset({SALES, COSTS}))
+    forms = FormSet([once_form()])
     result = forms.compute(Artifact(SALES, D(5)), Artifact(COSTS, D(2)))
 
     (line,) = forms.trace(result)
@@ -1200,14 +1199,21 @@ def sides(form: FormComposition, count: int) -> Artifact[Any]:
     return Artifact(kind, RecordList(kind.fields, [{SALES: D(10), COSTS: D(4)}] * count))
 
 
-def copies(name: str, *, group: str | None = None) -> FormComposition:
-    """A form of up to one copy whose copies carry no figures: it reads sales and costs as given."""
+def copies(
+    name: str,
+    *,
+    group: str | None = None,
+    sales: AmountKind = SALES,
+    costs: AmountKind = COSTS,
+) -> FormComposition:
+    """A form of up to one copy whose copies carry no figures: it reads sales and costs as given.
+    Two forms read their own `sales` and `costs`, as an input is held by one form."""
     return composition(
         name,
-        [Subtract(EXACT_TOTAL, SALES, COSTS, PROFIT)],
+        [Subtract(EXACT_TOTAL, sales, costs, PROFIT)],
         instances=RecordListKind(f"{name}_copies", fields=()),
         exports=[PROFIT],
-        starting=frozenset({SALES, COSTS}),
+        starting=frozenset({sales, costs}),
         max_instances=1,
         min_instances=0,
         exclusive_group=group,
@@ -1466,16 +1472,21 @@ def test_a_form_whose_copies_carry_no_figures_does_not_run_for_an_empty_list() -
 
 def test_two_forms_with_empty_copies_in_one_group_hold_when_only_one_has_a_copy() -> None:
     first = copies("ex/first", group="ex/either")
-    second = copies("ex/second", group="ex/either")
+    second = copies("ex/second", group="ex/either", sales=SALES_B, costs=COSTS_B)
     found = once_set(first, second)
+    second_given = (Artifact(SALES_B, D(10)), Artifact(COSTS_B, D(4)))
 
-    assert grand(found.compute(*ONCE_GIVEN, copy_list(first, 1), copy_list(second, 0))) == D(6)
-    assert grand(found.compute(*ONCE_GIVEN, copy_list(first, 0), copy_list(second, 1))) == D(0)
+    assert grand(
+        found.compute(*ONCE_GIVEN, *second_given, copy_list(first, 1), copy_list(second, 0))
+    ) == D(6)
+    assert grand(
+        found.compute(*ONCE_GIVEN, *second_given, copy_list(first, 0), copy_list(second, 1))
+    ) == D(0)
     with pytest.raises(
         ValidationError,
         match=r"^forms 'ex/first' and 'ex/second' both have instances, but are in exclusive group",
     ):
-        found.compute(*ONCE_GIVEN, copy_list(first, 1), copy_list(second, 1))
+        found.compute(*ONCE_GIVEN, *second_given, copy_list(first, 1), copy_list(second, 1))
 
 
 def test_a_group_with_one_minimum_of_one_beside_a_free_form_is_allowed() -> None:
@@ -1647,13 +1658,13 @@ EARLY_TOTALS = RecordListKind("ex/early.total", fields=(STEP_TOTAL,))
 STEP_RETURN = RecordTotal(STEP_TOTALS, GRAND)
 
 
-def step(name: str = "ex/step") -> FormComposition:
+def step(name: str = "ex/step", *, instances: RecordListKind = STEPS) -> FormComposition:
     """Each step: the amount plus the total carried from the earlier steps' own totals."""
     own = derived(name, [STEP_TOTAL])[0]
     return composition(
         name,
         [RecordTotal(own, CARRIED), Sum(EXACT_TOTAL, (AMOUNT, CARRIED), STEP_TOTAL)],
-        instances=STEPS,
+        instances=instances,
         exports=[STEP_TOTAL],
     )
 
@@ -1732,7 +1743,13 @@ def test_a_form_without_an_instances_list_reading_its_own_export_sees_an_empty_l
 
 
 def test_each_form_sees_only_its_own_earlier_runs() -> None:
-    result = step_set(step(), step("ex/zzz")).compute(steps("10", "15", "20"))
+    other = step("ex/zzz", instances=RecordListKind("ex/zzz_list", fields=(AMOUNT,)))
+    other_list = other.instances
+    assert isinstance(other_list, RecordListKind)
+    other_steps = Artifact(
+        other_list, RecordList(other_list.fields, [{AMOUNT: D(a)} for a in (10, 15, 20)])
+    )
+    result = step_set(step(), other).compute(steps("10", "15", "20"), other_steps)
 
     assert [w.get(STEP_TOTAL).value for w in result["ex/zzz"]] == [D(10), D(25), D(55)]
     assert values(result["ex/zzz"][2], derived("ex/zzz", [STEP_TOTAL])[0]) == [
@@ -1805,7 +1822,7 @@ def test_a_cycle_between_two_forms_is_still_refused_when_one_reads_its_own_expor
     )
 
     with pytest.raises(InvalidCompositionError, match="cycle") as caught:
-        form_set(reading_shop, audit(), shop("ex/bystander"))
+        form_set(reading_shop, audit(), shop("ex/bystander", instances=own_shops("ex/bystander")))
 
     assert "ex/shop" in str(caught.value) and "ex/audit" in str(caught.value)
     assert "ex/bystander" not in str(caught.value)
@@ -1932,14 +1949,8 @@ def less_form(*, defaults: Iterable[Artifact[Any]]) -> FormComposition:
     )
 
 
-def less_set(
-    defaults: Iterable[Artifact[Any]], *, blank_inputs: frozenset[ArtifactKind[Any]] = frozenset()
-) -> FormSet:
-    return FormSet(
-        [less_form(defaults=[Artifact(kind, BLANK) for kind in blank_inputs])],
-        inputs=frozenset({SALES, COSTS}),
-        defaults=defaults,
-    )
+def less_set(defaults: Iterable[Artifact[Any]]) -> FormSet:
+    return FormSet([less_form(defaults=defaults)])
 
 
 def levy(forms: FormSet, *given: Artifact[Any]) -> Decimal:
@@ -1974,7 +1985,7 @@ def test_the_default_itself_given_by_the_caller_is_not_traced_as_a_default() -> 
 
 
 def test_a_blank_default_is_not_traced_as_a_default() -> None:
-    forms = less_set([Artifact(COSTS, BLANK)], blank_inputs=frozenset({COSTS}))
+    forms = less_set([Artifact(COSTS, BLANK)])
 
     worksheet = forms.compute(Artifact(SALES, D(100)))[RETURN][0]
 
@@ -1995,7 +2006,7 @@ def test_a_required_input_left_out_is_refused_naming_it() -> None:
 
 
 def test_a_default_blank_reaches_the_form_that_declares_it_and_its_own_rule_applies() -> None:
-    forms = less_set([Artifact(COSTS, BLANK)], blank_inputs=frozenset({COSTS}))
+    forms = less_set([Artifact(COSTS, BLANK)])
 
     assert levy(forms, Artifact(SALES, D(100))) == D(100)
 
@@ -2009,36 +2020,32 @@ def test_a_blank_the_caller_gives_for_an_input_with_a_value_default_is_read_as_t
 
 
 def test_a_blank_the_caller_gives_for_a_blank_default_stays_blank_for_the_forms_rule() -> None:
-    forms = less_set([Artifact(COSTS, BLANK)], blank_inputs=frozenset({COSTS}))
+    forms = less_set([Artifact(COSTS, BLANK)])
 
     assert levy(forms, Artifact(SALES, D(100)), Artifact(COSTS, BLANK)) == D(100)
 
 
 def test_a_form_that_does_not_declare_the_blank_input_refuses_it() -> None:
-    forms = less_set([Artifact(COSTS, BLANK)])
+    forms = less_set([])
 
     with pytest.raises(
         BlankNotAllowedError, match=r"^'costs' may not be left blank in this computation"
     ):
-        forms.compute(Artifact(SALES, D(100)))
+        forms.compute(Artifact(SALES, D(100)), Artifact(COSTS, BLANK))
 
 
 def test_each_form_has_its_own_blank_inputs() -> None:
     open_form = less_form(defaults=[Artifact(COSTS, BLANK)])
     strict_form = composition(
         "ex/strict",
-        [Subtract(EXACT_TOTAL, SALES, COSTS, PROFIT)],
+        [Subtract(EXACT_TOTAL, SALES_B, COSTS_B, PROFIT)],
         exports=[PROFIT],
-        starting=frozenset({SALES, COSTS}),
+        starting=frozenset({SALES_B, COSTS_B}),
     )
-    forms = FormSet(
-        [open_form, strict_form],
-        inputs=frozenset({SALES, COSTS}),
-        defaults=[Artifact(COSTS, BLANK)],
-    )
+    forms = FormSet([open_form, strict_form])
 
-    with pytest.raises(BlankNotAllowedError, match=r"^ex/strict, instance 1: 'costs'"):
-        forms.compute(Artifact(SALES, D(100)))
+    with pytest.raises(BlankNotAllowedError, match="'costs_b' may not be left blank"):
+        forms.compute(Artifact(SALES, D(100)), Artifact(SALES_B, D(100)), Artifact(COSTS_B, BLANK))
 
 
 def test_a_blank_the_form_does_not_read_is_not_its_to_refuse() -> None:
@@ -2047,18 +2054,14 @@ def test_a_blank_the_form_does_not_read_is_not_its_to_refuse() -> None:
     )
     other = composition(
         "ex/other",
-        [Less(SALES, COSTS, PROFIT).with_blank_rules({"cost": D(0)})],
+        [Less(SALES_B, COSTS_B, PROFIT).with_blank_rules({"cost": D(0)})],
         exports=[PROFIT],
-        starting=frozenset({SALES, COSTS}),
-        defaults=[Artifact(COSTS, BLANK)],
+        starting=frozenset({SALES_B, COSTS_B}),
+        defaults=[Artifact(COSTS_B, BLANK)],
     )
-    forms = FormSet(
-        [reads_sales_only, other],
-        inputs=frozenset({SALES, COSTS}),
-        defaults=[Artifact(COSTS, BLANK)],
-    )
+    forms = FormSet([reads_sales_only, other])
 
-    assert levy(forms, Artifact(SALES, D(100))) == D(100)
+    assert levy(forms, Artifact(SALES, D(100)), Artifact(SALES_B, D(100))) == D(100)
 
 
 def test_a_blank_instances_list_is_refused_naming_it_before_any_form_runs() -> None:
@@ -2071,26 +2074,12 @@ def test_a_blank_instances_list_is_refused_naming_it_before_any_form_runs() -> N
 
 def test_a_default_instances_list_is_an_empty_list() -> None:
     empty = Artifact(SHOPS, RecordList(SHOPS.fields, ()))
-    forms = FormSet(
-        [shop(), audit()],
-        inputs=frozenset({SHOPS, AUDITS}),
-        defaults=[empty],
-    )
+    forms = FormSet([shop(default=empty), audit()])
 
     result = forms.compute(TWO_AUDITS)
 
     assert result["ex/shop"] == ()
     assert len(result["ex/audit"]) == 2
-
-
-def test_a_default_for_a_kind_that_is_not_an_input_is_refused() -> None:
-    with pytest.raises(InvalidCompositionError, match="default for 'fee', which is not an input"):
-        less_set([Artifact(FEE, D(1))])
-
-
-def test_two_defaults_for_one_kind_are_refused() -> None:
-    with pytest.raises(InvalidCompositionError, match="two defaults for 'costs'"):
-        less_set([Artifact(COSTS, D(1)), Artifact(COSTS, BLANK)])
 
 
 def test_a_form_that_exports_a_blank_gives_a_record_with_a_blank_field() -> None:
@@ -2101,9 +2090,8 @@ def test_a_form_that_exports_a_blank_gives_a_record_with_a_blank_field() -> None
         RETURN,
         [RecordTotal(FACT_FEE, FEE_TOTAL)],
         exports=[FEE_TOTAL],
-        starting=frozenset({FEE}),
     )
-    forms = FormSet([fact, total], inputs=frozenset({FEE}), defaults=[Artifact(FEE, BLANK)])
+    forms = FormSet([fact, total])
 
     with pytest.raises(BlankNotAllowedError, match="'fee' was left blank in item 1"):
         forms.compute()
@@ -2121,7 +2109,7 @@ def test_a_blank_field_of_a_record_reaches_the_form_and_its_rule_applies() -> No
         exports=[PROFIT],
         field_defaults=[Artifact(COSTS, BLANK)],
     )
-    forms = FormSet([shop_form], inputs=frozenset({SHOPS}))
+    forms = FormSet([shop_form])
 
     result = forms.compute(blank_costs)
 
@@ -2130,7 +2118,7 @@ def test_a_blank_field_of_a_record_reaches_the_form_and_its_rule_applies() -> No
 
 def test_a_blank_field_the_form_does_not_accept_is_refused_naming_the_instance() -> None:
     blank_costs = Artifact(SHOPS, RecordList(SHOPS.fields, [{SALES: D(1), COSTS: BLANK}]))
-    forms = FormSet([shop()], inputs=frozenset({SHOPS}))
+    forms = FormSet([shop()])
 
     with pytest.raises(BlankNotAllowedError, match=r"^ex/shop, instance 1: 'costs' may not"):
         forms.compute(blank_costs)
@@ -2145,25 +2133,14 @@ def test_a_blank_field_where_the_default_is_a_value_is_read_as_the_default() -> 
         exports=[PROFIT],
         field_defaults=[Artifact(COSTS, D(30))],
     )
-    forms = FormSet([shop_form], inputs=frozenset({SHOPS}))
+    forms = FormSet([shop_form])
 
     assert forms.compute(blank_costs)["ex/shop"][0].get(PROFIT).value == D(70)
 
 
-def test_a_default_for_something_that_is_not_a_field_is_refused() -> None:
-    with pytest.raises(InvalidCompositionError, match="default for 'fee', which is not a field"):
-        composition(
-            "ex/shop",
-            [Subtract(EXACT_TOTAL, SALES, COSTS, PROFIT)],
-            instances=SHOPS,
-            exports=[PROFIT],
-            field_defaults=[Artifact(FEE, D(1))],
-        )
-
-
 def test_a_blank_instances_list_with_an_empty_list_default_is_read_as_no_instances() -> None:
     empty = Artifact(SHOPS, RecordList(SHOPS.fields, ()))
-    forms = FormSet([shop(), audit()], inputs=frozenset({SHOPS, AUDITS}), defaults=[empty])
+    forms = FormSet([shop(default=empty), audit()])
 
     result = forms.compute(Artifact(SHOPS, BLANK), TWO_AUDITS)
 
@@ -2180,7 +2157,7 @@ def test_a_blank_nothing_accepts_is_refused_even_when_the_form_reading_it_has_no
         exports=[AUDITED],
         starting=frozenset({SALES}),
     )
-    forms = FormSet([fee_less], inputs=frozenset({SALES, AUDITS}))
+    forms = FormSet([fee_less])
     no_audits = Artifact(AUDITS, RecordList(AUDITS.fields, ()))
 
     with pytest.raises(BlankNotAllowedError, match="'sales' may not be left blank"):

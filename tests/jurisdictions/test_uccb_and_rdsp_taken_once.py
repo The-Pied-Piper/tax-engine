@@ -31,6 +31,7 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.registrations import JURISDICTIONS, artifact_kinds, units
+from tests.manifest_support import inputs_of
 
 D = Decimal
 UCCB_INCOME = "ca/uccb_income"
@@ -123,17 +124,43 @@ def test_a_caller_who_gives_none_reads_every_total_as_zero(code: str) -> None:
         assert _figure(worksheets, form, name) == D("0.00"), name
 
 
+NET_INCOME = ("ca/t1_taxable_income", "ca/net_income")
+LINE_7 = ("ca/schedule_6", "ca/cwb_net_income_line_7")
+LINE_9 = ("ca/schedule_6", "ca/cwb_uccb_and_rdsp_repayment_line_9")
+LINE_10 = ("ca/schedule_6", "ca/cwb_net_income_total_line_10")
+LINE_12 = ("ca/schedule_6", "ca/cwb_net_income_less_uccb_rdsp_line_12")
+
+
 @pytest.mark.parametrize("code", PROVINCES)
-def test_the_income_given_once_lowers_the_cwb_net_income_of_schedule_6(code: str) -> None:
-    given = _compute(code, {UCCB_INCOME: "1000.00"})
+def test_the_income_given_once_is_in_the_net_income_and_schedule_6_takes_it_out_again(
+    code: str,
+) -> None:
+    given = _compute(code, {UCCB_INCOME: "1000.00", RDSP_INCOME: "250.00"})
     none = _compute(code, {})
 
-    line_10 = "ca/cwb_net_income_total_line_10"
-    line_12 = "ca/cwb_net_income_less_uccb_rdsp_line_12"
-    assert _figure(given, "ca/schedule_6", line_10) == _figure(none, "ca/schedule_6", line_10)
-    assert _figure(given, "ca/schedule_6", line_12) == (
-        _figure(none, "ca/schedule_6", line_12) - D("1000.00")
-    )
+    # Line 15000 adds lines 11700 and 12500, so the net income is higher by both.
+    assert _figure(given, *NET_INCOME) == _figure(none, *NET_INCOME) + D("1250.00")
+    # Schedule 6 line 7 is that net income and line 10 adds nothing back for an income, so line 10
+    # is higher by both; line 11 (the same two incomes) takes them out again at line 12.
+    assert _figure(given, *LINE_10) == _figure(none, *LINE_10) + D("1250.00")
+    assert _figure(given, *LINE_12) == _figure(none, *LINE_12)
+
+
+@pytest.mark.parametrize("code", PROVINCES)
+def test_the_repayments_given_once_lower_the_net_income_and_schedule_6_adds_them_back(
+    code: str,
+) -> None:
+    given = _compute(code, {UCCB_REPAYMENT: "40.10", RDSP_REPAYMENT: "9.90"})
+    none = _compute(code, {})
+
+    # Lines 21300 and 23200 are in line 23300, so the net income is lower by both.
+    assert _figure(given, *NET_INCOME) == _figure(none, *NET_INCOME) - D("50.00")
+    assert _figure(given, *LINE_7) == _figure(none, *LINE_7) - D("50.00")
+    # Line 9 totals them and line 10 adds line 9 back, so lines 10 and 12 do not change.
+    assert _figure(given, *LINE_9) == D("50.00")
+    assert _figure(none, *LINE_9) == D("0.00")
+    assert _figure(given, *LINE_10) == _figure(none, *LINE_10)
+    assert _figure(given, *LINE_12) == _figure(none, *LINE_12)
 
 
 def _manifest_folder(code: str) -> Path:
@@ -151,5 +178,5 @@ def test_no_form_declares_a_total_of_the_two_lines_as_an_input(code: str) -> Non
         _manifest_folder(code)
     )
 
-    assert not set(OLD_TOTAL_INPUTS) & set(manifest.inputs)
-    assert {UCCB_INCOME, RDSP_INCOME, UCCB_REPAYMENT, RDSP_REPAYMENT} <= set(manifest.inputs)
+    assert not set(OLD_TOTAL_INPUTS) & set(inputs_of(manifest))
+    assert {UCCB_INCOME, RDSP_INCOME, UCCB_REPAYMENT, RDSP_REPAYMENT} <= set(inputs_of(manifest))

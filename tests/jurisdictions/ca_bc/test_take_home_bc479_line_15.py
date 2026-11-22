@@ -10,11 +10,11 @@ non-negative kind, reference "15", with no title (the form prints none). Neither
 rule. Line 16 is a page carry with no step. The spouse branch of line 10 is not built, so
 there is no spouse gate here.
 
-The test composes the real salary part, the real Schedule 8 and T1 taxable income parts, the real
-line 1 to line 14 parts and the new line 15 part, and types in the salary and, in some tests, the
-expenses. The form declaration is made up here, exporting only line 15. Figures are hand-computed
-from the printed forms (not a CRA example): line 13 is 37.70 at 17,000 and 0.00 at every higher
-salary, line 14 is 0.00 with no expenses, so line 15 is 37.70 at 17,000 and 0.00 above.
+The test composes the T1 employment income form, the real Schedule 8 and T1 taxable income parts,
+the real line 1 to line 14 parts and the new line 15 part, and types in the salary and, in some
+tests, the expenses. The form declaration is made up here, exporting only line 15. Figures are
+hand-computed from the printed forms (not a CRA example): line 13 is 37.70 at 17,000 and 0.00 at
+every higher salary, line 14 is 0.00 with no expenses, so line 15 is 37.70 at 17,000 and 0.00 above.
 """
 
 from __future__ import annotations
@@ -50,7 +50,6 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 CODE = JurisdictionCode("CA-BC")
@@ -70,8 +69,7 @@ HEADER = dedent("""\
     jurisdiction: CA-BC
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 FORM_TEXT = dedent(f"""\
@@ -89,7 +87,6 @@ def _federal(name: str) -> Path:
 
 
 def _part_files() -> Iterator[Path]:
-    yield BC_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     for name in T1_PARTS:
         yield _federal(name)
@@ -120,11 +117,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(FORM_TEXT, encoding="utf-8")
     for number, part in enumerate(_part_files(), start=2):
-        text = (
-            inputs_without_form(part)
-            if part.name.endswith("_inputs.yaml") and part.is_relative_to(FEDERAL_FORMS)
-            else part.read_text(encoding="utf-8")
-        )
+        text = part.read_text(encoding="utf-8")
         (folder / f"{number:02d}_{part.name}").write_text(text, encoding="utf-8")
     roots = {**british_columbia_packages().roots(), Namespace("ca-bc"): tmp_path}
     return TaxComputationService(

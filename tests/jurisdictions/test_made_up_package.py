@@ -19,6 +19,7 @@ from tests.capabilities import bundled_capabilities
 from tests.jurisdictions.registration_fixtures import ex_on
 from tests.jurisdictions.registration_fixtures.ex_on import catalog
 from tests.jurisdictions.registration_fixtures.ex_on.catalog import CATALOG, LEVY, LEVY_BASE
+from tests.manifest_support import inputs_of
 
 D = Decimal
 EX_ON = JurisdictionCode("EX-ON")
@@ -42,7 +43,7 @@ def test_the_package_directory_is_its_root() -> None:
 def test_its_manifest_is_read_from_the_package() -> None:
     (manifest,) = source().get_jurisdiction(EX_ON).manifests
 
-    assert manifest.inputs.keys() == frozenset({"ex-on/levy_base"})
+    assert inputs_of(manifest).keys() == frozenset({"ex-on/levy_base"})
     (default,) = manifest.forms
     assert default.name == "ex-on/return"
     assert default.instances is None

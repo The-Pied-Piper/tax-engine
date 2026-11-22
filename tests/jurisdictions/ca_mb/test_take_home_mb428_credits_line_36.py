@@ -5,7 +5,7 @@ to 35. = ^". Lines 34 (the disability amount for self) and 35 (the disability am
 from a dependant) are not built, so line 36 is one core/sum over line 33 alone, as Alberta's line
 39 reads its line 36.
 
-The test composes the real Manitoba salary part, the real Schedule 8, T2204 and T1 taxable income
+The test composes the T1 employment income form, the real Schedule 8, T2204 and T1 taxable income
 parts, the real parts of Worksheet MB428 lines 1 to 9, the real parts of lines 9, 18, 19, 21, 28,
 29 and 33, the line 31 input part and the new `mb428_credits_line_36.yaml`, and types in only the
 salary (and, in one test, the pension income amount). The header and the form declarations are made
@@ -46,7 +46,6 @@ from tests.jurisdictions.ca_mb.support import (
     manitoba_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"
@@ -85,8 +84,7 @@ HEADER = dedent("""\
     jurisdiction: CA-MB
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 WORKSHEET_FORM = dedent("""\
@@ -123,7 +121,6 @@ CASES = [
 
 
 def _part_files() -> Iterator[Path]:
-    yield MB_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
     for name in T1_PARTS:
@@ -145,9 +142,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "02_credits_form.yaml").write_text(FORM, encoding="utf-8")
     for number, part in enumerate(_part_files(), start=3):
         (folder / f"{number:02d}_{part.name}").write_text(
-            inputs_without_form(part)
-            if part.name.endswith("_inputs.yaml") and part.is_relative_to(FEDERAL_FORMS)
-            else part.read_text(encoding="utf-8"),
+            part.read_text(encoding="utf-8"),
             encoding="utf-8",
         )
     roots = {**manitoba_packages().roots(), Namespace("ca-mb"): tmp_path}

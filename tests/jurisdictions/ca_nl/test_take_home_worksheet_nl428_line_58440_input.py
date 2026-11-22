@@ -18,6 +18,7 @@ import shutil
 from pathlib import Path
 
 import pytest
+import yaml
 
 import tax_engine.jurisdictions.ca_nl
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
@@ -31,15 +32,20 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_packages,
     newfoundland_units,
 )
+from tests.manifest_support import input_named
 
-PART = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / (
-    "manifests/2025/worksheet_nl428_line_58440_input.yaml"
+PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
+# The under-18 answer is the NL428 credits form's input; the care expenses (line 3) are the
+# Worksheet NL428 form's own, in a part of their own.
+INPUT_PARTS = (
+    PARTS / "worksheet_nl428_line_58440_input.yaml",
+    PARTS / "worksheet_nl428_line_3_input.yaml",
 )
 HEADER = """\
 jurisdiction: CA-NL
 version: 1
 valid_from_tax_year: 2025
-outputs: [ca/total_income]
+outputs: []
 capabilities: []
 """
 UNDER_18_TITLE = (
@@ -58,7 +64,14 @@ def _manifest(tmp_path: Path) -> Manifest:
     folder = tmp_path / "manifest"
     folder.mkdir()
     (folder / "header.yaml").write_text(HEADER)
-    shutil.copy(PART, folder / PART.name)
+    for number, part in enumerate(INPUT_PARTS):
+        shutil.copy(part, folder / part.name)
+        declared = yaml.safe_load(part.read_text(encoding="utf-8"))
+        exports = "".join(f"    - {each['name']}\n" for each in declared["inputs"])
+        (folder / f"form_{number}.yaml").write_text(
+            f"form:\n  name: {declared['form']['name']}\n  required: true\n  exports:\n{exports}"
+            "capabilities: []\n"
+        )
     source = YamlJurisdictionSource(
         newfoundland_packages().roots(), newfoundland_kinds(), newfoundland_units()
     )
@@ -76,7 +89,7 @@ def test_a_request_that_leaves_out_the_input_is_read_as_blank(
     tmp_path: Path, identifier: str, title: str, basis: str, reference: str
 ) -> None:
     kinds = newfoundland_kinds()
-    declaration = _manifest(tmp_path).inputs[identifier]
+    declaration = input_named(_manifest(tmp_path), identifier)
     default = declaration.default_artifact(kinds.kind(identifier))
     assert not declaration.required
     assert declaration.basis == basis

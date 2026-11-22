@@ -4,18 +4,19 @@ or left out.
 Form text (Form BC479, CRA 5010-TC, read 2026-11-14, as recorded on the ticket): "Line 35: Add lines
 16, 25, 26, 30 and 34. = ^". Line 35 is one core/sum step (`bc479_line_35.yaml`), rounded through
 `ca-bc/cent_rounding`, over line 15 (`ca-bc/bc479_page_1_total_line_15`; line 16 is a page carry of
-it, with no step of its own) and the line 25, 26, 30 and 34 inputs, producing
+it, with no step of its own), lines 25 and 34 (each computed from its printed lines) and the line 26
+and 30 inputs, producing
 `ca-bc/bc479_page_2_total_line_35`, a non-negative kind, reference "35", with no title (the form
-prints none). The four inputs are optional and a salary-only caller leaves them blank, so the step
-carries the blank rule that reads each as 0 and prints its own "left blank, taken as 0" row per
-blank input.
+prints none). The line 26 and 30 inputs are optional and a salary-only caller leaves them blank, so
+the step carries the blank rule that reads each as 0 and prints its own "left blank, taken as 0" row
+per blank input.
 
-The test composes the real salary part, the real Schedule 8 and T1 taxable income parts, the real
-line 1 to line 15 parts, the four input parts and the new line 35 part, and types in the salary and,
-in some tests, the inputs. The form declaration is made up here, exporting only line 35. Figures are
-hand-computed from the printed forms (not a CRA example): line 15 is 37.70 at 17,000 and 0.00 above
-(no renovation expenses), so line 35 is 37.70 at 17,000 and 0.00 above with the four inputs blank.
-"""
+The test composes the T1 employment income form, the real Schedule 8 and T1 taxable income parts,
+the real line 1 to line 15 parts, the line 17 to 34 parts and the new line 35 part, and types in the
+salary and, in some tests, the inputs. The form declaration is made up here, exporting only line 35.
+Figures are hand-computed from the printed forms (not a CRA example): line 15 is 37.70 at 17,000 and
+0.00 above (no renovation expenses), so line 35 is 37.70 at 17,000 and 0.00 above with the inputs
+blank."""
 
 from __future__ import annotations
 
@@ -51,7 +52,6 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 CODE = JurisdictionCode("CA-BC")
@@ -60,11 +60,13 @@ LINE_13 = "ca-bc/bc479_sales_tax_credit_line_13"
 LINE_15 = "ca-bc/bc479_page_1_total_line_15"
 LINE_35 = "ca-bc/bc479_page_2_total_line_35"
 VENTURE = bc_catalog.BC479_VENTURE_CAPITAL_CREDIT_LINE_25
+VENTURE_GIVEN = bc_catalog.BC479_VENTURE_CAPITAL_CREDIT_LINE_21
 MINING = bc_catalog.BC479_MINING_EXPLORATION_CREDIT_LINE_26
 CLEAN = bc_catalog.BC479_CLEAN_BUILDINGS_CREDIT_LINE_30
 TRAINING = bc_catalog.BC479_TRAINING_CREDITS_LINE_34
+TRAINING_GIVEN = bc_catalog.BC479_TRAINING_CREDIT_INDIVIDUALS_LINE_31
 EXPENSES = bc_catalog.BC479_HOME_RENOVATION_EXPENSES_LINE_14
-INPUTS = (VENTURE, MINING, CLEAN, TRAINING)
+BLANK_INPUTS = (MINING, CLEAN)
 ROUNDING = "ca-bc/cent_rounding"
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
 LINE_PART = BC_PARTS / "bc479_line_35.yaml"
@@ -76,8 +78,7 @@ HEADER = dedent("""\
     jurisdiction: CA-BC
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 FORM_TEXT = dedent(f"""\
@@ -95,7 +96,6 @@ def _federal(name: str) -> Path:
 
 
 def _part_files() -> Iterator[Path]:
-    yield BC_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     for name in T1_PARTS:
         yield _federal(name)
@@ -116,10 +116,18 @@ def _part_files() -> Iterator[Path]:
     yield BC_PARTS / "bc479_line_14_check.yaml"
     yield BC_PARTS / "bc479_line_14.yaml"
     yield BC_PARTS / "bc479_line_15.yaml"
-    yield BC_PARTS / "bc479_line_25_input.yaml"
+    yield BC_PARTS / "bc479_line_17_input.yaml"
+    yield BC_PARTS / "bc479_line_18_input.yaml"
+    yield BC_PARTS / "bc479_line_20.yaml"
+    yield BC_PARTS / "bc479_line_21_input.yaml"
+    yield BC_PARTS / "bc479_line_23_input.yaml"
+    yield BC_PARTS / "bc479_line_25.yaml"
     yield BC_PARTS / "bc479_line_26_input.yaml"
     yield BC_PARTS / "bc479_line_30_input.yaml"
-    yield BC_PARTS / "bc479_line_34_input.yaml"
+    yield BC_PARTS / "bc479_line_31_input.yaml"
+    yield BC_PARTS / "bc479_line_32_input.yaml"
+    yield BC_PARTS / "bc479_line_33_input.yaml"
+    yield BC_PARTS / "bc479_line_34.yaml"
     yield LINE_PART
 
 
@@ -131,11 +139,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(FORM_TEXT, encoding="utf-8")
     for number, part in enumerate(_part_files(), start=2):
-        text = (
-            inputs_without_form(part)
-            if part.name.endswith("_inputs.yaml") and part.is_relative_to(FEDERAL_FORMS)
-            else part.read_text(encoding="utf-8")
-        )
+        text = part.read_text(encoding="utf-8")
         (folder / f"{number:02d}_{part.name}").write_text(text, encoding="utf-8")
     roots = {**british_columbia_packages().roots(), Namespace("ca-bc"): tmp_path}
     return TaxComputationService(
@@ -180,15 +184,15 @@ def test_line_35_is_line_15_with_the_inputs_blank_for_a_single_filer(
     assert not line_35.is_signed()
 
 
-def test_line_35_adds_the_four_inputs_to_line_15(tmp_path: Path) -> None:
+def test_line_35_adds_the_inputs_to_line_15(tmp_path: Path) -> None:
     # 17,000 gives line 15 of 37.70; 100.10 + 200.20 + 300.30 + 400.40 = 1,001.00 more.
     sheet = _sheet(
         tmp_path,
         "17000",
-        Artifact(VENTURE, D("100.10")),
+        Artifact(VENTURE_GIVEN, D("100.10")),
         Artifact(MINING, D("200.20")),
         Artifact(CLEAN, D("300.30")),
-        Artifact(TRAINING, D("400.40")),
+        Artifact(TRAINING_GIVEN, D("400.40")),
     )
 
     assert sheet.get(_kind(LINE_15)).value == D("37.70")
@@ -197,7 +201,9 @@ def test_line_35_adds_the_four_inputs_to_line_15(tmp_path: Path) -> None:
 
 def test_line_35_includes_the_renovation_credit_through_line_15(tmp_path: Path) -> None:
     # 1,234.56 of expenses gives line 14 of 123.46, so line 15 is 161.16.
-    sheet = _sheet(tmp_path, "17000", Artifact(EXPENSES, D("1234.56")), Artifact(TRAINING, D("1")))
+    sheet = _sheet(
+        tmp_path, "17000", Artifact(EXPENSES, D("1234.56")), Artifact(TRAINING_GIVEN, D("1"))
+    )
 
     assert sheet.get(_kind(LINE_35)).value == D("162.16")
 
@@ -214,29 +220,29 @@ def test_each_blank_input_prints_the_steps_own_left_blank_row(tmp_path: Path) ->
     sheet = _sheet(tmp_path, "70000")
 
     blanks = [each for each in sheet.trace if isinstance(each, BlankFallbackLine)]
-    for kind in INPUTS:
+    for kind in BLANK_INPUTS:
         (blank,) = [each for each in blanks if each.kind is kind]
         assert blank.fallback == 0
     rows = EnglishTraceRenderer().render_all(sheet.trace)
-    assert sum("Left blank, taken as 0" in row for row in rows) >= 4
+    assert sum("Left blank, taken as 0" in row for row in rows) >= 2
 
 
 def test_a_given_input_prints_no_left_blank_row(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "70000", Artifact(TRAINING, D("5.00")))
+    sheet = _sheet(tmp_path, "70000", Artifact(TRAINING_GIVEN, D("5.00")))
 
     blanked = {each.kind for each in sheet.trace if isinstance(each, BlankFallbackLine)}
-    assert TRAINING not in blanked
-    assert {VENTURE, MINING, CLEAN} <= blanked
+    assert TRAINING_GIVEN not in blanked
+    assert {MINING, CLEAN} <= blanked
 
 
 def test_the_step_traces_one_sum_line_over_line_15_and_the_four_inputs(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "17000", Artifact(TRAINING, D("2.50")))
+    sheet = _sheet(tmp_path, "17000", Artifact(TRAINING_GIVEN, D("2.50")))
     kinds = british_columbia_kinds()
 
     (line,) = [t for t in sheet.trace if isinstance(t, SumLine) and t.output is kinds.kind(LINE_35)]
     assert line.parts == (
         (kinds.kind(LINE_15), D("37.70")),
-        (VENTURE, D("0")),
+        (VENTURE, D("0.00")),
         (MINING, D("0")),
         (CLEAN, D("0")),
         (TRAINING, D("2.50")),
@@ -251,7 +257,7 @@ def _part() -> dict[str, Any]:
     return part
 
 
-def test_the_part_has_one_untitled_sum_step_with_a_blank_rule_for_each_input() -> None:
+def test_the_part_has_one_untitled_sum_step_with_a_blank_rule_for_lines_26_and_30() -> None:
     part = _part()
 
     assert list(part) == ["form", "capabilities"]
@@ -262,8 +268,16 @@ def test_the_part_has_one_untitled_sum_step_with_a_blank_rule_for_each_input() -
         "reference": "35",
         "unit": "ca/cad",
         "params": {"rounding": ROUNDING},
-        "consumes": {"parts": [LINE_15, *(k.identifier for k in INPUTS)]},
-        "blank": {k.identifier: "0" for k in INPUTS},
+        "consumes": {
+            "parts": [
+                LINE_15,
+                VENTURE.identifier,
+                MINING.identifier,
+                CLEAN.identifier,
+                TRAINING.identifier,
+            ]
+        },
+        "blank": {k.identifier: "0" for k in BLANK_INPUTS},
         "produces": {"output": LINE_35},
     }
 

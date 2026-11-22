@@ -59,7 +59,6 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 CODE = JurisdictionCode("CA-BC")
@@ -108,7 +107,13 @@ BC_LINE_PARTS = (
     "bc428_line_37.yaml",
     "bc428_line_40.yaml",
     "bc428_line_45.yaml",
-    "bc428_line_53_inputs.yaml",
+    "bc428_line_46_input.yaml",
+    "bc428_line_47.yaml",
+    "bc428_line_49.yaml",
+    "bc428_line_50.yaml",
+    "bc428_line_51.yaml",
+    "bc428_line_52_input.yaml",
+    "bc428_line_53.yaml",
     "bc428_line_54.yaml",
     "bc428_line_56.yaml",
     "bc428_line_57_input.yaml",
@@ -132,7 +137,9 @@ BC_LINE_PARTS = (
     "bc428_political_contribution_tax_credit_maximum.yaml",
     "bc428_line_84.yaml",
     "bc428_line_85.yaml",
-    "bc428_line_88_input.yaml",
+    "bc428_line_86_input.yaml",
+    "bc428_line_87_input.yaml",
+    "bc428_line_88.yaml",
     "bc428_line_89.yaml",
     "bc428_line_90_input.yaml",
     LINE_PART.name,
@@ -142,8 +149,7 @@ HEADER = dedent("""\
     jurisdiction: CA-BC
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 FORM = dedent("""\
@@ -220,7 +226,6 @@ def _federal(name: str) -> Path:
 
 
 def _part_files() -> Iterator[Path]:
-    yield BC_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
     for name in T1_PARTS:
@@ -237,11 +242,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
     for number, found in enumerate(_part_files(), start=2):
-        text = (
-            inputs_without_form(found)
-            if found.name.endswith("_inputs.yaml") and found.is_relative_to(FEDERAL_FORMS)
-            else found.read_text(encoding="utf-8")
-        )
+        text = found.read_text(encoding="utf-8")
         (folder / f"{number:02d}_{found.name}").write_text(text, encoding="utf-8")
     roots = {**british_columbia_packages().roots(), Namespace("ca-bc"): tmp_path}
     return TaxComputationService(

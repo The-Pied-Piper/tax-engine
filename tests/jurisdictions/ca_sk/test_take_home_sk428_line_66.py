@@ -7,7 +7,7 @@ blank for a salary-only filer and read as 0 by the step's own blank rule, which 
 "left blank, taken as 0" row) and the line 65 product (the minimum tax carryover, always computed,
 so it needs no blank row). The output is `ca-sk/sk428_credits_subtotal_line_66`.
 
-The test composes the real Saskatchewan salary part, the real Schedule 8 and T2204 parts, the real
+The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the real
 line parts of `ca-sk/sk428_credits` that line 57 needs, the real `sk428_line_63.yaml`,
 `sk428_line_64_input.yaml`, `sk428_line_65_inputs.yaml` and `sk428_line_65.yaml`, and the new
 `sk428_line_66.yaml`, and types in only the salary (and, in some tests, lines 64 and 65). The two
@@ -44,7 +44,7 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.domain.trace import SumLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tests.federal_forms import FEDERAL_FORMS, form_parts
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_sk.support import (
     saskatchewan_capabilities,
     saskatchewan_kinds,
@@ -53,7 +53,6 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import T1_LINE_10100_FORM, inputs_without_form
 
 D = Decimal
 CENT = D("0.01")
@@ -72,10 +71,20 @@ CREDITS_PARTS = (
     "sk428_credits_line_35.yaml",
     "sk428_credits_line_38.yaml",
     "sk428_credits_line_42.yaml",
-    "sk428_credits_line_50_input.yaml",
+    "sk428_credits_line_43_input.yaml",
+    "sk428_credits_line_44.yaml",
+    "sk428_credits_line_46.yaml",
+    "sk428_credits_line_47.yaml",
+    "sk428_credits_line_48.yaml",
+    "sk428_credits_line_49_input.yaml",
+    "sk428_credits_line_50.yaml",
     "sk428_credits_line_51.yaml",
     "sk428_credits_line_53.yaml",
-    "sk428_credits_line_56_input.yaml",
+    "sk428_credits_line_54_input.yaml",
+    "sk428_credits_line_55_input.yaml",
+    "sk428_credits_line_54.yaml",
+    "sk428_credits_line_55.yaml",
+    "sk428_credits_line_56.yaml",
     "sk428_credits_line_57.yaml",
 )
 SK_LINE_PARTS = (
@@ -98,8 +107,7 @@ HEADER = dedent("""\
     jurisdiction: CA-SK
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 # The credits form declaration, test-local: only line 57 is exported.
@@ -146,12 +154,10 @@ def _derived(salary: Decimal, line_64: Decimal = ZERO, line_65_amount: Decimal =
 
 
 def _part_files() -> Iterator[Path]:
-    yield SK_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
+    yield from form_parts("t1_taxable_income", "t1_employment_income")
     yield from form_parts("t1_lines_copied_by_provinces")
-    yield T1_LINE_10100_FORM
-    yield FEDERAL_FORMS / "t1_employment_income" / "t1_employment_income_line_10100.yaml"
     for name in CREDITS_PARTS:
         yield SK_PARTS / name
     for name in SK_LINE_PARTS:
@@ -169,9 +175,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "02_form.yaml").write_text(FORM, encoding="utf-8")
     for number, part in enumerate(_part_files(), start=3):
         (folder / f"{number:02d}_{part.name}").write_text(
-            inputs_without_form(part)
-            if part.name.endswith("_inputs.yaml") and part.is_relative_to(FEDERAL_FORMS)
-            else part.read_text(encoding="utf-8"),
+            part.read_text(encoding="utf-8"),
             encoding="utf-8",
         )
     roots = {**saskatchewan_packages().roots(), Namespace("ca-sk"): tmp_path}

@@ -36,7 +36,6 @@ LINE_83 = "ca-on/on428_tax_after_foreign_tax_credit_line_83"
 LINE_85 = "ca-on/on428_lift_credit_line_85"
 LINE_86 = "ca-on/on428_tax_after_lift_credit_line_86"
 PARTS = (
-    "salary.yaml",
     *form_part_names("schedule_8"),
     *form_part_names("t1_employment_income"),
     *form_part_names("t1_taxable_income"),
@@ -44,15 +43,11 @@ PARTS = (
     "on428_line_85.yaml",
     "on428_line_86.yaml",
 )
-HEADER = dedent(f"""\
+HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: {LINE_83}
-        required: true
-    outputs:
-      - {LINE_83}
+    outputs: []
     capabilities: []
     """)
 FORM = dedent(f"""\
@@ -62,6 +57,9 @@ FORM = dedent(f"""\
       exports:
         - {LINE_85}
         - {LINE_86}
+    inputs:
+      - name: {LINE_83}
+        required: true
     capabilities: []
     """)
 

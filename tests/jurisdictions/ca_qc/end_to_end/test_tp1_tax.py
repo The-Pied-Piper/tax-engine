@@ -23,12 +23,15 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     SCHEDULE_B_LIVED_ALONE_LINE_20,
     TP1_INCOME_TAX_ON_TAXABLE_INCOME_LINE_401,
     TP1_LINE_413,
+    TP1_LINE_414,
+    TP1_LINE_425,
     TP1_LINE_430,
     TP1_LINE_432,
     TP1_NON_REFUNDABLE_TAX_CREDITS_LINE_406,
+    WORK_CHART_414_CONTRIBUTIONS_INPUT_LINE_1,
 )
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
-from tests.jurisdictions.ca_qc.tp1_tax_support import LINE_413_CHAIN, tax_sheet
+from tests.jurisdictions.ca_qc.tp1_tax_support import LINE_413_CHAIN, LINE_414_PARTS, tax_sheet
 
 D = Decimal
 FORM = (QUEBEC_PARTS / "tp1_tax.yaml").read_text(encoding="utf-8")
@@ -37,6 +40,7 @@ PARTS = (
     "tp1_tax_line_401.yaml",
     "tp1_tax_line_406.yaml",
     "tp1_tax_line_413.yaml",
+    *LINE_414_PARTS,
     "tp1_tax_line_425_inputs.yaml",
     "tp1_tax_line_425.yaml",
     "tp1_tax_line_430.yaml",
@@ -82,6 +86,19 @@ def test_a_caller_who_gives_no_answer_gets_the_default_not_alone(
     sheet = tax_sheet(take_home_service, salary, (), PARTS, form=FORM)
 
     assert str(sheet.get(TP1_LINE_432).value) == EXPECTED[(salary, 0)][3]
+
+
+def test_political_party_contributions_of_400_give_the_maximum_credit_of_155_on_lines_414_and_425(
+    take_home_service: TakeHomeService,
+) -> None:
+    # $400 is capped at the chart's $200 on line 1; the chart's line 14 is then 155.00, which
+    # line 414 carries, line 425 adds and line 430 takes off line 413 (7,641.16 at $70,000).
+    given = Artifact(WORK_CHART_414_CONTRIBUTIONS_INPUT_LINE_1, D("400"))
+    sheet = tax_sheet(take_home_service, "70000", (), PARTS, given, form=FORM)
+
+    assert str(sheet.get(TP1_LINE_414).value) == "155.00"
+    assert str(sheet.get(TP1_LINE_425).value) == "155.00"
+    assert str(sheet.get(TP1_LINE_430).value) == "7486.16"
 
 
 def test_the_real_form_declaration_exports_line_432() -> None:

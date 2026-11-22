@@ -19,7 +19,6 @@ from tax_engine.registrations import JURISDICTIONS, parameter_parsers, units
 from tests.capabilities import bundled_capabilities
 from tests.federal_forms import FEDERAL_FORMS
 from tests.kinds import bundled_kinds
-from tests.manifest_support import inputs_without_form
 
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
 
@@ -79,9 +78,7 @@ def take_home_service(tmp_path: Path) -> TakeHomeService:
         for number, part in enumerate(parts, start=2):
             found = next(TAKE_HOME.rglob(part))
             (folder / f"{number:02d}_{part}").write_text(
-                inputs_without_form(found)
-                if part.endswith("_inputs.yaml") and found.is_relative_to(FEDERAL_FORMS)
-                else found.read_text(encoding="utf-8"),
+                found.read_text(encoding="utf-8"),
                 encoding="utf-8",
             )
         roots = {**JURISDICTIONS.roots(), Namespace("ca-ab"): tmp_path}

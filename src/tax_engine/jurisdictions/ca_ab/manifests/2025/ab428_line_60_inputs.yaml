@@ -2,6 +2,8 @@
 # Line 60: "Line 60 and line 61510: Alberta tax on split income (complete Form T1206)". A caller with
 # no split income leaves the line out, so a request that leaves it out is read as blank, and the
 # line 61 part reads that blank as 0.
+form:
+  name: ca-ab/ab428
 inputs:
   - name: ca-ab/ab428_tax_on_split_income_line_60
     title: "Alberta tax on split income"

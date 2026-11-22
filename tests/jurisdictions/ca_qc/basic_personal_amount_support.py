@@ -12,6 +12,7 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
 from tests.jurisdictions.ca_qc.support import real_import
 
@@ -21,7 +22,7 @@ TAX_FORM = "ca-qc/t1_tax_and_credits"
 STEP_3_PARTS = (
     "t1_employment_income_line_10400_inputs.yaml",
     "t1_employment_income.yaml",
-    "t1_employment_income_line_10100.yaml",
+    *form_part_names("t1_employment_income"),
     "t1_employment_income_line_10400.yaml",
     "t1_taxable_income_line_21.yaml",
     "t1_taxable_income_line_27_inputs.yaml",
@@ -126,6 +127,7 @@ PART_C_PARTS: tuple[str, ...] = (
     "t1_tax_and_credits_line_137_inputs.yaml",
     "t1_tax_and_credits_line_40600.yaml",
     "t1_tax_and_credits_line_41600_inputs.yaml",
+    "t1_tax_and_credits_line_41600.yaml",
     "t1_tax_and_credits_line_41700.yaml",
     "t1_tax_and_credits_line_41500_inputs.yaml",
     "t1_tax_and_credits_line_41800_inputs.yaml",
@@ -135,6 +137,7 @@ PART_C_PARTS: tuple[str, ...] = (
     "t1_tax_and_credits_line_42800_inputs.yaml",
     "t1_tax_and_credits_line_43500.yaml",
     "t1_tax_and_credits_line_43850_inputs.yaml",
+    "t1_tax_and_credits_line_43850.yaml",
     "t1_tax_and_credits_line_44000.yaml",
     "t1_tax_and_credits_line_45000.yaml",
     "t1_tax_and_credits_line_45100.yaml",
@@ -146,6 +149,7 @@ PART_C_PARTS: tuple[str, ...] = (
     "t1_tax_and_credits_line_45600_inputs.yaml",
     "t1_tax_and_credits_line_45700_inputs.yaml",
     "t1_tax_and_credits_line_46900_inputs.yaml",
+    "t1_tax_and_credits_line_46900.yaml",
     "t1_tax_and_credits_line_47555_inputs.yaml",
     "t1_tax_and_credits_line_47556_inputs.yaml",
     "t1_tax_and_credits_line_47600_inputs.yaml",
@@ -154,6 +158,7 @@ PART_C_PARTS: tuple[str, ...] = (
 )
 STEP_4_PARTS = (
     "t1_taxable_income_line_25700_inputs.yaml",
+    "t1_taxable_income_line_25700.yaml",
     "t1_taxable_income_line_11700_inputs.yaml",
     "t1_taxable_income_line_11700.yaml",
     "t1_taxable_income_line_12500_inputs.yaml",
@@ -180,11 +185,7 @@ HEADER = (
     jurisdiction: CA-QC
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/employment_income
-        required: true
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     imports:
     """)

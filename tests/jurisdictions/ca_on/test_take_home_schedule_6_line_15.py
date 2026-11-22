@@ -44,10 +44,10 @@ LINE_14 = "ca/cwb_secondary_earner_exemption"
 # part, the line 10 part, the optional line 11 input, the line 12 part, the line 13 part this line
 # subtracts from, the optional line 14 input and the line 15 part itself.
 PARTS = (
-    "salary.yaml",
     *form_part_names("schedule_8"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),
     "schedule_6_line_7.yaml",
+    "schedule_6_line_9.yaml",
     "schedule_6_line_10.yaml",
     "schedule_6_line_11.yaml",
     "schedule_6_line_12.yaml",
@@ -59,8 +59,7 @@ HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 # The Schedule 6 declaration, test-local: its one export is line 15, the line under test.

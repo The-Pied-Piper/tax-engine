@@ -2,6 +2,8 @@
 # Line 75: "Line 75 and line 60830: Manitoba community enterprise development tax credit (complete Form T1256)"
 # (Form MB428, CRA 5007-c). Form T1256 is not built, so a request that leaves the line out is read as
 # blank; the step that reads line 75 reads that blank as 0.
+form:
+  name: ca-mb/mb428
 inputs:
   - name: ca-mb/mb428_community_enterprise_development_tax_credit_line_75
     title: "Manitoba community enterprise development tax credit"

@@ -7,7 +7,7 @@ Line 61, "Line 61 and line 61510: Saskatchewan tax on split income (complete For
 optional input, blank for a salary-only filer: the blank is read as 0 and the step prints its own
 "left blank, taken as 0" row.
 
-The test composes the real Saskatchewan salary part, the real Schedule 8, the T1 taxable income
+The test composes the T1 employment income form, the real Schedule 8, the T1 taxable income
 parts, the real parts of lines 1, 3, 4, 5, 6, 7 and 8 of `ca-sk/sk428_credits`, the real
 `sk428_line_58.yaml`, `sk428_line_59_input.yaml`, `sk428_line_60.yaml` and
 `sk428_line_61_input.yaml`, and the new `sk428_line_62.yaml`, and types in only the salary (and,
@@ -55,7 +55,6 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 CENT = D("0.01")
@@ -83,8 +82,7 @@ HEADER = dedent("""\
     jurisdiction: CA-SK
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 # The credits form declaration, test-local: lines 1, 3, 4, 5, 6, 7 and 8 are composed.
@@ -121,7 +119,6 @@ ALL = [
 
 
 def _part_files() -> Iterator[Path]:
-    yield SK_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     for name in T1_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
@@ -144,9 +141,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "02_form.yaml").write_text(FORM, encoding="utf-8")
     for number, part in enumerate(_part_files(), start=3):
         (folder / f"{number:02d}_{part.name}").write_text(
-            inputs_without_form(part)
-            if part.name.endswith("_inputs.yaml") and part.is_relative_to(FEDERAL_FORMS)
-            else part.read_text(encoding="utf-8"),
+            part.read_text(encoding="utf-8"),
             encoding="utf-8",
         )
     roots = {**saskatchewan_packages().roots(), Namespace("ca-sk"): tmp_path}

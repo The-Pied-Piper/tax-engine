@@ -44,7 +44,6 @@ LINE_142 = "ca/net_federal_tax"
 # 33500, 33800, 35000, 125, 40400, 42900, 128, 130 and 132, the input of line 40600, lines 40600 and
 # 41600, line 41700 and the part under test.
 PARTS = (
-    "salary.yaml",
     *form_part_names("schedule_8"),
     *form_part_names("t2204"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),
@@ -76,8 +75,7 @@ HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 # The T1 tax and credits declaration, test-local: its one export is line 42000, the line under test.

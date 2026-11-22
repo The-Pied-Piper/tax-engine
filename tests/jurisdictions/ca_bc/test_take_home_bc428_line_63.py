@@ -5,12 +5,11 @@ Form text (Form BC428, CRA 5010-C, read 2026-11-14): "Line 63: Line 61 plus line
 leaves out, read as blank and then as 0 by the step's own blank rule, as Alberta line 61 reads its
 line 60 input; line 63 is one core/sum over line 61 and line 62.
 
-The test composes the real salary part, the real Schedule 8 and T1 parts, the real line 1, 3 to 8,
-10 to 15 and 61 parts, the line 62 input part and the new `bc428_line_63.yaml`, and types in only
-the salary (and, in one test, line 62). The form declaration is made up here, exporting only line
-63. The figures are hand-computed from the printed forms (not a CRA example): with line 62 blank,
-line 63 is line 61.
-"""
+The test composes the T1 employment income form, the real Schedule 8 and T1 parts, the real line 1,
+3 to 8, 10 to 15 and 61 parts, the line 62 input part and the new `bc428_line_63.yaml`, and types in
+only the salary (and, in one test, line 62). The form declaration is made up here, exporting only
+line 63. The figures are hand-computed from the printed forms (not a CRA example): with line 62
+blank, line 63 is line 61."""
 
 from __future__ import annotations
 
@@ -46,7 +45,6 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
@@ -60,8 +58,7 @@ HEADER = dedent("""\
     jurisdiction: CA-BC
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 FORM = dedent("""\
@@ -100,16 +97,13 @@ def _federal(name: str) -> Path:
 
 def _part_files() -> Iterator[tuple[str, str]]:
     """Each part's name and text, in composition order."""
-    yield "salary.yaml", (BC_PARTS / "salary.yaml").read_text(encoding="utf-8")
     for found in form_parts("schedule_8"):
         yield found.name, found.read_text(encoding="utf-8")
     for name in T1_PARTS:
         found = _federal(name)
         yield (
             name,
-            inputs_without_form(found)
-            if name.endswith("_inputs.yaml")
-            else found.read_text("utf-8"),
+            found.read_text("utf-8"),
         )
     for part in LINE_PARTS:
         yield part.name, part.read_text(encoding="utf-8")

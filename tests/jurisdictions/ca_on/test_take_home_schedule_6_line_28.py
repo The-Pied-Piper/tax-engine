@@ -34,13 +34,13 @@ D = Decimal
 # The parts of test_take_home_schedule_6_line_27.py, with the line 1, 5, 6, 17, 18, 20, 21 and 22
 # parts that line 22 reads inserted in form order, then the line 28 part under test.
 PARTS = (
-    "salary.yaml",
     *form_part_names("schedule_8"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),
     "schedule_6_line_1.yaml",
     "schedule_6_line_5.yaml",
     "schedule_6_line_6.yaml",
     "schedule_6_line_7.yaml",
+    "schedule_6_line_9.yaml",
     "schedule_6_line_10.yaml",
     "schedule_6_line_11.yaml",
     "schedule_6_line_12.yaml",
@@ -61,8 +61,7 @@ HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 FORM = dedent("""\

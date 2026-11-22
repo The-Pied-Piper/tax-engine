@@ -28,18 +28,11 @@ LINE_50 = "ca-on/on428_non_refundable_credits_line_50"
 LINE_53 = "ca-on/on428_tax_minus_credits_line_53"
 PART = "on428_line_53.yaml"
 
-HEADER = f"""\
+HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-inputs:
-  - name: {LINE_8}
-    required: true
-  - name: {LINE_50}
-    required: true
-outputs:
-  - {LINE_8}
-  - {LINE_50}
+outputs: []
 capabilities: []
 """
 
@@ -49,6 +42,11 @@ form:
   required: true
   exports:
     - {LINE_53}
+inputs:
+  - name: {LINE_8}
+    required: true
+  - name: {LINE_50}
+    required: true
 capabilities: []
 """
 

@@ -3,19 +3,17 @@
 Form text (Form MB428, CRA 5007-c): "Line 57 and line 61500: Line 53 plus line 56 Enter this
 amount on line 61. Manitoba non-refundable tax credits = ^". The form prints the title "Manitoba
 non-refundable tax credits" for the line, so the step carries that title and the reference "57".
-Line 56, "Line 56 and line 58969: Line 54 plus line 55", is an optional input, blank for a
-salary-only filer. Line 57 is one core/sum over line 53 and the line 56 input, as line 60 is over
-lines 58 and 59; the blank line 56 is read as 0 and the step prints its own "left blank, taken as
-0" row.
+Line 56, "Line 56 and line 58969: Line 54 plus line 55", is computed from lines 54 and 55 (0.00
+for a salary-only filer). Line 57 is one core/sum over line 53 and line 56.
 
-The test composes the real Manitoba salary part, the real Schedule 8, T2204 and T1 taxable income
-parts, the real parts of Worksheet MB428 lines 1 to 9, the real parts of Schedule MB428-A lines 1 to
-12, the real parts of MB428 lines 9, 18, 19, 21, 28, 29, 33, 36, 41, 42 and 51, the line 31, line 50
-and line 56 input parts, the real `mb428_credits_line_53.yaml`, and the new
-`mb428_credits_line_57.yaml`, and types in only the salary (and, in one test, line 56). The header
-and the form declarations are made up here, exporting only line 57. The figures are line 53 (the
-same as in the line 53 test, line 56 blank and read as 0), and line 53 plus 100.00 when line 56 is
-given.
+The test composes the T1 employment income form, the real Schedule 8, T2204 and T1 taxable income
+parts, the real parts of Worksheet MB428 lines 1 to 9, the real parts of Schedule MB428-A lines 1
+to 12, the real parts of MB428 lines 9, 18, 19, 21, 28, 29, 33, 36, 41, 42 and 51, the line 31,
+line 50 input parts, the real parts of lines 54 to 56, the real `mb428_credits_line_53.yaml`, and
+the new `mb428_credits_line_57.yaml`, and types in only the salary (and, in one test, the line 54
+amount). The header and the form declarations are made up here, exporting only line 57. The figures
+are line 53 (the same as in the line 53 test, line 56 0.00), and line 53 plus 108.00 when the line
+54 amount is 1,000.00.
 """
 
 from __future__ import annotations
@@ -50,13 +48,21 @@ from tests.jurisdictions.ca_mb.support import (
     manitoba_units,
 )
 from tests.kinds import non_negative
-from tests.manifest_support import inputs_without_form
 
 D = Decimal
 MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"
 LINE_PART = MB_PARTS / "mb428_credits_line_57.yaml"
 LINE_53_PART = MB_PARTS / "mb428_credits_line_53.yaml"
-LINE_56_PART = MB_PARTS / "mb428_credits_line_56_input.yaml"
+LINE_56_PARTS = tuple(
+    MB_PARTS / name
+    for name in (
+        "mb428_credits_line_54_inputs.yaml",
+        "mb428_credits_line_54.yaml",
+        "mb428_credits_line_55_inputs.yaml",
+        "mb428_credits_line_55.yaml",
+        "mb428_credits_line_56.yaml",
+    )
+)
 IDENTIFIER = "ca-mb/mb428_non_refundable_credits_line_57"
 LINE_53 = "ca-mb/mb428_credits_at_rate_line_53"
 LINE_56 = "ca-mb/mb428_donations_credit_line_56"
@@ -75,7 +81,17 @@ CREDIT_PARTS = (
     "mb428_credits_line_36.yaml",
     "mb428_credits_line_41.yaml",
     "mb428_credits_line_42.yaml",
-    "mb428_credits_line_50_input.yaml",
+    "mb428_credits_line_43_inputs.yaml",
+    "mb428_credits_line_44.yaml",
+    "mb428_credits_line_46.yaml",
+    "mb428_credits_line_47.yaml",
+    "mb428_credits_line_48.yaml",
+    "worksheet_mb428_other_dependants.yaml",
+    "worksheet_mb428_other_dependants_inputs.yaml",
+    "worksheet_mb428_other_dependants_line_3.yaml",
+    "worksheet_mb428_other_dependants_total.yaml",
+    "mb428_credits_line_49.yaml",
+    "mb428_credits_line_50.yaml",
     "mb428_credits_line_51.yaml",
 )
 SCHEDULE_PARTS = (
@@ -105,8 +121,7 @@ HEADER = dedent("""\
     jurisdiction: CA-MB
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 WORKSHEET_FORM = dedent("""\
@@ -144,7 +159,7 @@ FORM = dedent(f"""\
     capabilities: []
     """)
 
-# salary, line 57: line 53 (the same figures as the line 53 test, line 56 blank and read as 0),
+# salary, line 57: line 53 (the same figures as the line 53 test, line 56 0.00),
 # rounded half-up to the cent: 1,883.15 / 1,858.10 / 2,176.12 / 2,183.07.
 CASES = [
     ("10000", "1883.15"),
@@ -153,7 +168,6 @@ CASES = [
 
 
 def _part_files() -> Iterator[Path]:
-    yield MB_PARTS / "salary.yaml"
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
     for name in T1_PARTS:
@@ -165,7 +179,7 @@ def _part_files() -> Iterator[Path]:
     for name in CREDIT_PARTS:
         yield MB_PARTS / name
     yield LINE_53_PART
-    yield LINE_56_PART
+    yield from LINE_56_PARTS
     yield LINE_PART
 
 
@@ -180,9 +194,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "03_credits_form.yaml").write_text(FORM, encoding="utf-8")
     for number, part in enumerate(_part_files(), start=4):
         (folder / f"{number:02d}_{part.name}").write_text(
-            inputs_without_form(part)
-            if part.name.endswith("_inputs.yaml") and part.is_relative_to(FEDERAL_FORMS)
-            else part.read_text(encoding="utf-8"),
+            part.read_text(encoding="utf-8"),
             encoding="utf-8",
         )
     roots = {**manitoba_packages().roots(), Namespace("ca-mb"): tmp_path}
@@ -207,7 +219,7 @@ def _line(sheet: Worksheet, identifier: str) -> Decimal:
 
 
 @pytest.mark.parametrize(("salary", "expected"), CASES)
-def test_line_57_is_line_53_when_line_56_is_blank(
+def test_line_57_is_line_53_when_line_56_is_zero(
     tmp_path: Path, salary: str, expected: str
 ) -> None:
     sheet = _sheet(tmp_path, salary)
@@ -216,13 +228,14 @@ def test_line_57_is_line_53_when_line_56_is_blank(
     assert str(_line(sheet, IDENTIFIER)) == expected
 
 
-def test_line_57_adds_line_56_when_it_is_given(tmp_path: Path) -> None:
-    # Line 53 at a 70,000 salary is 2,176.12; line 56 of 100.00 makes 2,276.12.
+def test_line_57_adds_line_56_when_line_54_is_given(tmp_path: Path) -> None:
+    # Line 53 at a 70,000 salary is 2,176.12; a line 54 amount of 1,000.00 makes line 54 108.00 and
+    # line 56 108.00, so line 57 is 2,284.12.
     sheet = _sheet(
-        tmp_path, "70000", Artifact(mb_catalog.MB428_DONATIONS_CREDIT_LINE_56, D("100.00"))
+        tmp_path, "70000", Artifact(mb_catalog.MB428_DONATIONS_AMOUNT_LINE_54, D("1000.00"))
     )
 
-    assert _line(sheet, IDENTIFIER) == D("2276.12")
+    assert _line(sheet, IDENTIFIER) == D("2284.12")
 
 
 def test_the_sheet_prints_the_title_and_the_reference_of_line_57(tmp_path: Path) -> None:
@@ -252,7 +265,6 @@ def test_the_part_names_the_form_and_has_one_titled_sum_step_over_lines_53_and_5
         "unit",
         "params",
         "consumes",
-        "blank",
         "produces",
     ]
     assert step == {
@@ -262,7 +274,6 @@ def test_the_part_names_the_form_and_has_one_titled_sum_step_over_lines_53_and_5
         "unit": "ca/cad",
         "params": {"rounding": "ca-mb/cent_rounding"},
         "consumes": {"parts": [LINE_53, LINE_56]},
-        "blank": {LINE_56: "0"},
         "produces": {"output": IDENTIFIER},
     }
 

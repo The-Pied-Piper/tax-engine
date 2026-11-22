@@ -80,11 +80,62 @@ AB428_UNUSED_TUITION_ROUNDED_LINE_41 = AmountKind.declare(
 education amounts": the input rounded to the cent and read as 0 when blank, read by line 43 and by
 line 2 of Worksheet AB428."""
 
+AB428_MEDICAL_EXPENSES_LINE_44 = AmountKind.declare(
+    CATALOG, "ab428_medical_expenses_line_44", non_negative=True
+)
+"""Medical expenses, AB428 line 44 (line 58689) "Amount from line 33099 of your return": the amount
+as the filer gives it, an optional input; a blank input is read as blank."""
+
+AB428_MEDICAL_EXPENSES_ROUNDED_LINE_44 = AmountKind.declare(
+    CATALOG, "ab428_medical_expenses_rounded_line_44", non_negative=True
+)
+"""Medical expenses, AB428 line 44 (line 58689) "Amount from line 33099 of your return": the input
+rounded to the cent and read as 0 when blank, read by line 49."""
+
+AB428_NET_INCOME_LINE_45 = AmountKind.declare(
+    CATALOG, "ab428_net_income_line_45", non_negative=True
+)
+"""Net income, AB428 line 45 "Amount from line 23600 of your return": the T1 net income, read by
+line 47 before it is multiplied by the line 46 rate."""
+
+AB428_MEDICAL_EXPENSES_RATE_AMOUNT_LINE_47 = AmountKind.declare(
+    CATALOG, "ab428_medical_expenses_rate_amount_line_47", non_negative=True
+)
+"""Net income multiplied by 3%, AB428 line 47 "Line 45 multiplied by the percentage from line 46":
+line 45 times the printed line 46 rate, rounded half-up to the cent."""
+
+AB428_MEDICAL_EXPENSES_LIMITED_AMOUNT_LINE_48 = AmountKind.declare(
+    CATALOG, "ab428_medical_expenses_limited_amount_line_48", non_negative=True
+)
+"""Line 47 limited to $2,884, AB428 line 48 "Enter whichever is less: $2,884 or the amount from line
+47": the lesser of the printed $2,884 and line 47."""
+
+AB428_MEDICAL_EXPENSES_OVER_LIMIT_LINE_49 = AmountKind.declare(
+    CATALOG, "ab428_medical_expenses_over_limit_line_49", non_negative=True
+)
+"""Medical expenses over the limit, AB428 line 49 "Line 44 minus line 48 (if negative, enter "0")":
+line 44 less line 48, not below 0; a blank line 44 is read as 0."""
+
+AB428_ALLOWABLE_MEDICAL_EXPENSES_FOR_OTHER_DEPENDANTS_LINE_50 = AmountKind.declare(
+    CATALOG, "ab428_allowable_medical_expenses_for_other_dependants_line_50", non_negative=True
+)
+"""Allowable amount of medical expenses for other dependants, AB428 line 50 (line 58729) "Allowable
+amount of medical expenses for other dependants (use Worksheet AB428)": the amount as the filer
+gives it, an optional input; a blank input is read as blank."""
+
+AB428_ALLOWABLE_MEDICAL_EXPENSES_FOR_OTHER_DEPENDANTS_ROUNDED_LINE_50 = AmountKind.declare(
+    CATALOG,
+    "ab428_allowable_medical_expenses_for_other_dependants_rounded_line_50",
+    non_negative=True,
+)
+"""Allowable amount of medical expenses for other dependants, AB428 line 50 (line 58729): the
+input rounded to the cent and read as 0 when blank, read by line 51."""
+
 AB428_MEDICAL_EXPENSES_LINE_51 = AmountKind.declare(
     CATALOG, "ab428_medical_expenses_line_51", non_negative=True
 )
-"""Medical expenses, AB428 line 51 (line 58769) "Line 49 plus line 50 =": line 49 plus line 50, an
-optional input; a blank is read as 0 by the line 52 part."""
+"""Medical expenses, AB428 line 51 (line 58769) "Line 49 plus line 50 =": line 49 plus line 50,
+line 50 being an optional input read as 0 when blank; read by line 52."""
 
 AB428_CREDITS_TOTAL_LINE_52 = AmountKind.declare(
     CATALOG, "ab428_credits_total_line_52", non_negative=True
@@ -98,11 +149,49 @@ AB428_CREDITS_AT_RATE_LINE_54 = AmountKind.declare(
 """Credit amounts at the credit rate, AB428 line 54 (line 58840) "Line 52 multiplied by the
 percentage from line 53 =": line 52 multiplied by the 8% of line 53, rounded half-up to the cent."""
 
+AB428_DONATIONS_AMOUNT_LINE_55 = AmountKind.declare(
+    CATALOG, "ab428_donations_amount_line_55", non_negative=True
+)
+"""Donations and gifts, AB428 line 55 "Amount from line 13 of your federal Schedule 9 multiplied by
+60%": the Schedule 9 amount as the filer gives it, an optional input; a blank input is read as 0 by
+the line 55 step."""
+
+AB428_DONATIONS_AMOUNT_ROUNDED_LINE_55 = AmountKind.declare(
+    CATALOG, "ab428_donations_amount_rounded_line_55", non_negative=True
+)
+"""Donations and gifts, AB428 line 55: the Schedule 9 line 13 input rounded to the cent and read
+as 0 when blank, read by the line 55 multiplication."""
+
+AB428_DONATIONS_CREDIT_AT_FIRST_RATE_LINE_55 = AmountKind.declare(
+    CATALOG, "ab428_donations_credit_at_first_rate_line_55", non_negative=True
+)
+"""Donations and gifts at 60%, AB428 line 55 "Amount from line 13 of your federal Schedule 9
+multiplied by 60% =": the Schedule 9 amount times the printed 60%, rounded half-up to the cent."""
+
+AB428_DONATIONS_AMOUNT_LINE_56 = AmountKind.declare(
+    CATALOG, "ab428_donations_amount_line_56", non_negative=True
+)
+"""Donations and gifts, AB428 line 56 "Amount from line 14 of your federal Schedule 9 multiplied by
+21%": the Schedule 9 amount as the filer gives it, an optional input; a blank input is read as 0 by
+the line 56 step."""
+
+AB428_DONATIONS_AMOUNT_ROUNDED_LINE_56 = AmountKind.declare(
+    CATALOG, "ab428_donations_amount_rounded_line_56", non_negative=True
+)
+"""Donations and gifts, AB428 line 56: the Schedule 9 line 14 input rounded to the cent and read
+as 0 when blank, read by the line 56 multiplication."""
+
+AB428_DONATIONS_CREDIT_AT_SECOND_RATE_LINE_56 = AmountKind.declare(
+    CATALOG, "ab428_donations_credit_at_second_rate_line_56", non_negative=True
+)
+"""Donations and gifts at 21%, AB428 line 56 "Amount from line 14 of your federal Schedule 9
+multiplied by 21% =": the Schedule 9 amount times the printed 21%, rounded half-up to the cent."""
+
 AB428_DONATIONS_CREDIT_LINE_57 = AmountKind.declare(
     CATALOG, "ab428_donations_credit_line_57", non_negative=True
 )
-"""Donations and gifts credit, AB428 line 57 (line 58969) "Line 57 and line 58969: Line 55 plus line
-56 =": a caller input, read as 0 when the filer has no donations or gifts."""
+"""Donations and gifts credit, AB428 line 57 (line 58969) "Line 55 plus line 56 =": line 55 plus
+line 56, read by line 58."""
 
 AB428_NON_REFUNDABLE_CREDITS_LINE_58 = AmountKind.declare(
     CATALOG, "ab428_non_refundable_credits_line_58", non_negative=True
@@ -374,8 +463,8 @@ as the form prints, rounded to the cent."""
 AVERAGE_INCOME_TAX_RATE = AmountKind.declare(CATALOG, "average_income_tax_rate", non_negative=True)
 """Average income tax rate, the Alberta return summary's own figure (no form prints it): T1 line
 43500 "Total payable" (for the take-home filer, line 143 plus line 147: the federal and the Alberta
-income tax) divided by the salary (`ca/employment_income`), as a fraction, so 0.1598 is 15.98%. CPP
-and EI are not income tax and are not in it. It is 0 when the salary is 0."""
+income tax) divided by the salary (`ca/return_employment_income`), as a fraction, so 0.1598 is
+15.98%. CPP and EI are not income tax and are not in it. It is 0 when the salary is 0."""
 
 ALBERTA_BRACKET_RATE_LINE_5_RETURN = AmountKind.declare(
     CATALOG, "alberta_bracket_rate_line_5_return", non_negative=True

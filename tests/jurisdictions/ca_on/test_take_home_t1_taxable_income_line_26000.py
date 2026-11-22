@@ -42,11 +42,7 @@ HEADER = """\
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
-inputs:
-  - name: ca/net_income
-    required: true
-outputs:
-  - ca/net_income
+outputs: []
 """
 FORM = """\
 form:
@@ -58,6 +54,9 @@ form:
     - ca/rdsp_income_line_12500
     - ca/uccb_repayment_line_21300
     - ca/rdsp_income_repayment_line_23200
+inputs:
+  - name: ca/net_income
+    required: true
 """
 
 

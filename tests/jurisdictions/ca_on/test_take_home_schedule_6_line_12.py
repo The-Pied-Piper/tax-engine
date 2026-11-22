@@ -38,10 +38,10 @@ LINE_11 = "ca/uccb_and_rdsp_income"
 # T1 taxable-income lines and inputs, so the T1 net income is read from the salary; then the line 7
 # part this line adds up, the line 10 part, the optional line 11 input and the line 12 part itself.
 PARTS = (
-    "salary.yaml",
     *form_part_names("schedule_8"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),
     "schedule_6_line_7.yaml",
+    "schedule_6_line_9.yaml",
     "schedule_6_line_10.yaml",
     "schedule_6_line_11.yaml",
     "schedule_6_line_12.yaml",
@@ -50,8 +50,7 @@ HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 # The Schedule 6 declaration, test-local: its one export is line 12, the line under test.
@@ -96,15 +95,18 @@ def test_line_12_equals_line_10_when_line_11_is_blank(
 @pytest.mark.parametrize(
     ("salary", "uccb", "expected"),
     [
-        ("20000", "1000.00", "18835.00"),
-        ("20000", "19835.00", "0.00"),
-        ("20000", "25000.00", "0.00"),
+        # The UCCB is in the net income (T1 line 15000), so line 10 rises by it and line 11 takes it
+        # out again: line 12 is the 19835.00 of the salary alone.
+        ("20000", "1000.00", "19835.00"),
+        ("20000", "25000.00", "19835.00"),
+        # Nothing but the UCCB: line 10 and line 11 are both 1000.00.
+        ("0", "1000.00", "0.00"),
     ],
 )
-def test_line_12_subtracts_line_11_and_floors_at_zero(
+def test_line_12_takes_the_uccb_out_of_the_net_income_it_is_in(
     take_home_service: TakeHomeService, salary: str, uccb: str, expected: str
 ) -> None:
-    # Line 10 for a 20000 salary is 19835.00; line 12 is line 10 minus line 11, never below zero.
+    # Line 12 is line 10 minus line 11, never below zero.
     sheet = _schedule_6(take_home_service, salary, uccb)
 
     value = sheet.get(bundled_kinds().kind(LINE_12)).value
@@ -125,3 +127,22 @@ def test_the_line_11_input_kind_is_registered_and_non_negative() -> None:
 
     assert kind.identifier == LINE_11
     assert non_negative(kind) is True
+
+
+def test_line_12_floors_at_zero_when_line_11_is_more_than_line_10(
+    take_home_service: TakeHomeService,
+) -> None:
+    # Salary 1,000 with a UCCB of 100.00 and a social benefits repayment of 5,000: line 10 is
+    # 1,000 + 100 - 5,000 = -3,900.00 (no CPP deduction under the exemption), line 11 is 100.00.
+    kinds = bundled_kinds()
+    worksheets = take_home_service(HEADER, SCHEDULE_6, *PARTS).compute(
+        ONTARIO,
+        2025,
+        Artifact(EMPLOYMENT_INCOME, D("1000")),
+        Artifact(kinds.kind("ca/uccb_income"), D("100.00")),
+        Artifact(kinds.kind("ca/social_benefits_repayment"), D("5000")),
+    )
+    (sheet,) = worksheets[FORM]
+
+    assert sheet.get(kinds.kind("ca/cwb_net_income_total_line_10")).value == D("-3900.00")
+    assert sheet.get(kinds.kind(LINE_12)).value == D("0.00")

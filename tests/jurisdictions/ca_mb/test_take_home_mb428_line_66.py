@@ -9,9 +9,8 @@ is `ca-mb/mb428_additional_tax_minimum_tax_line_66`. The step is titled with the
 prints above the line, "Manitoba additional tax for minimum tax purposes". Because the input is
 blank for a salary-only caller, the step prints its own "left blank, taken as 0" row.
 
-The salary part, the inputs part and the line 66 part are loaded under a test-local header and form
-declaration, over the Manitoba package list of `support.py`.
-"""
+The T1 employment income form, the inputs part and the line 66 part are loaded under a test-local
+header and form declaration, over the Manitoba package list of `support.py`."""
 
 from __future__ import annotations
 
@@ -49,16 +48,14 @@ CODE = JurisdictionCode("CA-MB")
 FORM_NAME = "ca-mb/mb428"
 AMOUNT = "ca-mb/mb428_t691_amount_line_66"
 LINE_66 = "ca-mb/mb428_additional_tax_minimum_tax_line_66"
-SALARY = "ca/employment_income"
 MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"
 PART = MB_PARTS / "mb428_line_66.yaml"
 
-HEADER = dedent(f"""\
+HEADER = dedent("""\
     jurisdiction: CA-MB
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - {SALARY}
+    outputs: []
     capabilities: []
     """)
 FORM = dedent(f"""\
@@ -78,7 +75,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
-    names = ["salary.yaml", "mb428_line_66_input.yaml", PART.name]
+    names = ["mb428_line_66_input.yaml", PART.name]
     for number, name in enumerate(names, start=2):
         text = (MB_PARTS / name).read_text(encoding="utf-8")
         (folder / f"{number:02d}_{name}").write_text(text, encoding="utf-8")
@@ -94,7 +91,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
 
 def _sheet(tmp_path: Path, salary: str, amount: str | None) -> Worksheet:
     kinds = manitoba_kinds()
-    given = [Artifact(kinds.kind(SALARY), D(salary))]
+    given: list[Artifact[Any]] = []
     if amount is not None:
         given.append(Artifact(kinds.kind(AMOUNT), D(amount)))
     (sheet,) = _service(tmp_path).compute(CODE, 2025, *given)[FORM_NAME]

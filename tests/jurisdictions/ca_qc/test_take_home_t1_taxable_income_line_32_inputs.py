@@ -16,6 +16,7 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.domain.manifest import Manifest
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 from tests.jurisdictions.ca_qc.support import quebec_kinds, quebec_packages, quebec_units
+from tests.manifest_support import input_named, inputs_of
 
 PART = "t1_taxable_income_line_32_inputs.yaml"
 BASIS = {
@@ -25,11 +26,11 @@ BASIS = {
 }
 LINES = ("14400", "14500", "14600")
 NAMES = {line: f"ca-qc/t1_line_{line}" for line in LINES}
-HEADER = f"""\
+HEADER = """\
 jurisdiction: CA-QC
 version: 1
 valid_from_tax_year: 2025
-outputs: [{", ".join(NAMES.values())}]
+outputs: []
 capabilities: []
 """
 FORM = (
@@ -50,7 +51,7 @@ def _manifest(take_home_service: TakeHomeService, tmp_path: Path) -> Manifest:
 def test_the_part_declares_exactly_these_lines(
     take_home_service: TakeHomeService, tmp_path: Path
 ) -> None:
-    inputs = _manifest(take_home_service, tmp_path).inputs
+    inputs = inputs_of(_manifest(take_home_service, tmp_path))
 
     assert {name for name in inputs if name.startswith("ca-qc/t1_line_")} == set(NAMES.values())
 
@@ -59,7 +60,7 @@ def test_the_part_declares_exactly_these_lines(
 def test_a_request_that_leaves_out_the_line_is_read_as_blank(
     take_home_service: TakeHomeService, tmp_path: Path, line: str
 ) -> None:
-    declaration = _manifest(take_home_service, tmp_path).inputs[NAMES[line]]
+    declaration = input_named(_manifest(take_home_service, tmp_path), NAMES[line])
     default = declaration.default_artifact(quebec_kinds().kind(NAMES[line]))
 
     assert not declaration.required

@@ -44,7 +44,6 @@ LINE_1 = "ca-on/on428_taxable_income_line_1"
 LINE_3 = "ca-on/on428_bracket_lower_bound_line_3"
 LINE_7 = "ca-on/on428_tax_at_column_start_line_7"
 PARTS = (
-    "salary.yaml",
     *form_part_names("schedule_8"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),
     "on428_line_3.yaml",
@@ -54,8 +53,7 @@ HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
+    outputs: []
     capabilities: []
     """)
 # The ON428 declaration, test-local: lines 3 and 7 are composed (line 3 comes with the part that

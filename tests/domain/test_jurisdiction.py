@@ -27,10 +27,10 @@ def manifest(version: int, valid_from_tax_year: int) -> Manifest:
         jurisdiction=EX_ON,
         version=version,
         valid_from_tax_year=valid_from_tax_year,
-        inputs=required_inputs(frozenset({"ex/levy_base"})),
         forms=(
             Form(
                 required=True,
+                inputs=required_inputs(frozenset({"ex/levy_base"})),
                 name="ex-on/return",
                 instances=None,
                 exports=("ex/levy",),

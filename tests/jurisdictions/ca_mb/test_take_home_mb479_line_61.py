@@ -15,9 +15,8 @@ steps: 40% of the expenses rounded half-up to the cent (`core/apply_rate`, read 
 input is left out, so it prints the "left blank, taken as 0" row), then that figure capped at the
 printed maximum of 16000.00 (`core/capped_amount`, `ca-mb/fertility_treatment_credit_maximum`).
 
-The salary part, the input part and the line 61 part are loaded under a test-local header and form
-declaration, over the Manitoba package list of `support.py`.
-"""
+The T1 employment income form, the input part and the line 61 part are loaded under a test-local
+header and form declaration, over the Manitoba package list of `support.py`."""
 
 from __future__ import annotations
 
@@ -57,16 +56,14 @@ FORM_NAME = "ca-mb/mb479"
 AMOUNT = "ca-mb/mb479_fertility_treatment_expenses_line_61"
 BEFORE_MAXIMUM = "ca-mb/mb479_fertility_treatment_credit_before_maximum_line_61"
 LINE_61 = "ca-mb/mb479_fertility_treatment_credit_line_61"
-SALARY = "ca/employment_income"
 MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"
 PART = MB_PARTS / "mb479_line_61.yaml"
 
-HEADER = dedent(f"""\
+HEADER = dedent("""\
     jurisdiction: CA-MB
     version: 1
     valid_from_tax_year: 2025
-    outputs:
-      - {SALARY}
+    outputs: []
     capabilities: []
     """)
 FORM = dedent(f"""\
@@ -86,7 +83,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
-    names = ["salary.yaml", "mb479_line_61_input.yaml", PART.name]
+    names = ["mb479_line_61_input.yaml", PART.name]
     for number, name in enumerate(names, start=2):
         text = (MB_PARTS / name).read_text(encoding="utf-8")
         (folder / f"{number:02d}_{name}").write_text(text, encoding="utf-8")
@@ -102,7 +99,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
 
 def _sheet(tmp_path: Path, salary: str, amount: str | None) -> Worksheet:
     kinds = manitoba_kinds()
-    given = [Artifact(kinds.kind(SALARY), D(salary))]
+    given: list[Artifact[Any]] = []
     if amount is not None:
         given.append(Artifact(kinds.kind(AMOUNT), D(amount)))
     (sheet,) = _service(tmp_path).compute(CODE, 2025, *given)[FORM_NAME]

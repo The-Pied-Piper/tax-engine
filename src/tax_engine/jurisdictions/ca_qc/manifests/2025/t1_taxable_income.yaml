@@ -11,7 +11,7 @@
 #     the shared forms that read them import.
 #   - Lines 11700, 12500, 21300 and 23200 (UCCB income, RDSP income, UCCB repayment, RDSP income repayment)
 #     are the same lines as the federal T1's, with the same inputs. The shared Schedule 6 line 11 reads them
-#     through the neutral names below. They are not added into line 33 here.
+#     through the neutral names below. Lines 11700 and 12500 are added into line 21 (so line 33), lines 21300 and 23200 into line 54.
 # Lines 33 (line 15000), 48 (line 22215), 54 (line 23300) and 55 (line 23400) are read inside the
 # form and are not exported.
 form:

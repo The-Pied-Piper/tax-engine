@@ -33,6 +33,7 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.registrations import JURISDICTIONS, artifact_kinds, units
+from tests.manifest_support import inputs_of
 
 D = Decimal
 MINIMUM_TAX_CARRYOVER = "ca/minimum_tax_carryover"
@@ -127,5 +128,5 @@ def test_no_provincial_form_declares_a_copy_of_a_t1_line_as_an_input(
     folder = Path(package.__path__[0]) / "manifests" / "2025"  # type: ignore[attr-defined]
     manifest = YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds(), units()).load(folder)
 
-    assert not set(OLD_INPUTS) & set(manifest.inputs)
-    assert T1_INPUTS <= set(manifest.inputs)
+    assert not set(OLD_INPUTS) & set(inputs_of(manifest))
+    assert T1_INPUTS <= set(inputs_of(manifest))

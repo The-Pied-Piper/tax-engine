@@ -1,0 +1,14 @@
+# Form BC479 (2025, CRA 5010-TC) line 38. Line 38: "Renter's tax credit maximum amount 400.00". The
+# printed $400 is the `ca-bc/renters_credit_maximum` dataset, claimed whole through core/credit_amount,
+# so it is the same at every salary.
+form:
+  name: ca-bc/bc479
+capabilities:
+  - name: core/credit_amount
+    title: "Renter's tax credit maximum amount"
+    reference: "38"
+    unit: ca/cad
+    params:
+      amount: ca-bc/renters_credit_maximum
+    produces:
+      output: ca-bc/bc479_renters_maximum_line_38
