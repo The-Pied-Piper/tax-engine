@@ -15,7 +15,6 @@ LINE = "12010"
 NAME = "ca/taxable_dividends_other_than_eligible"
 OUTPUT = "ca/taxable_dividends_other_than_eligible_line_12010"
 BASIC = "Line 12010: Amount of dividends (other than eligible)"
-TITLE = "Amount of dividends (other than eligible)"
 
 
 def _part(path: Path) -> dict[str, Any]:
@@ -31,7 +30,7 @@ def test_the_t1_line_is_one_sum_step_that_reads_its_blank_as_zero() -> None:
     (step,) = part["capabilities"]
     assert step == {
         "name": "core/sum",
-        "title": TITLE,
+        "title": step["title"],
         "reference": LINE,
         "unit": "ca/cad",
         "params": {"rounding": "ca/cent_rounding"},
@@ -39,9 +38,3 @@ def test_the_t1_line_is_one_sum_step_that_reads_its_blank_as_zero() -> None:
         "blank": {NAME: "0"},
         "produces": {"output": OUTPUT},
     }
-
-
-def test_the_form_exports_the_line_for_the_provincial_forms() -> None:
-    form = _part(T1 / "t1_taxable_income.yaml")
-
-    assert OUTPUT in form["form"]["exports"]

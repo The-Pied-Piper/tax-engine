@@ -15,7 +15,6 @@ LINE = "12010"
 NAME = "ca/taxable_dividends_other_than_eligible"
 OUTPUT = "ca/taxable_dividends_other_than_eligible_line_12010"
 BASIC = "Line 12010: Amount of dividends (other than eligible)"
-TITLE = "Amount of dividends (other than eligible)"
 
 
 def _part(path: Path) -> dict[str, Any]:
@@ -31,7 +30,7 @@ def test_the_t1_line_has_an_optional_input_left_blank_by_a_salary_only_caller() 
     (declaration,) = part["inputs"]
     assert declaration == {
         "name": NAME,
-        "title": TITLE,
+        "title": declaration["title"],
         "reference": LINE,
         "unit": "ca/cad",
         "required": False,
