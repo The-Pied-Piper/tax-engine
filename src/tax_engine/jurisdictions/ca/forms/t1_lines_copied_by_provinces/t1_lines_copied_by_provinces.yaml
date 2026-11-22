@@ -17,8 +17,9 @@
 #     ON428 line 42 use a provincial worksheet and do not read it.
 #   - Line 40427 (`ca/minimum_tax_carryover_line_40427`): AB428 line 64, BC428 line 66, MB428 line
 #     63, NL428 line 68 and SK428 line 65.
-# Each is an optional input read as 0 when blank. They are not added into the federal sums of lines
-# 87, 106, 107 and 125 (`ca/t1_tax_and_credits` leaves those lines out).
+# Each is an optional input read as 0 when blank. `ca/t1_tax_and_credits` reads each as a record list
+# and adds it into the federal sums: line 87 into line 96, line 102 into line 106, line 107 into line
+# 110 (medical expenses) and line 124 into line 125.
 form:
   name: ca/t1_lines_copied_by_provinces
   title: "T1 Income Tax and Benefit Return"

@@ -4,7 +4,7 @@
 # which is the one line the T1 prints for it, and the blank reads as 0. The form exports the line
 # (`ca/medical_expenses_line_33099`) for the forms that print it again (AB428 line 44, BC428 line
 # 46, MB428 line 43, NL428 line 48 and SK428 line 43). It is not added into the federal sums here:
-# the take-home T1 leaves those lines out.
+# the T1 reads it as line 107 into line 110.
 form:
   name: ca/t1_lines_copied_by_provinces
 capabilities:
