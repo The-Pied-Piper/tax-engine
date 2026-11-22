@@ -29,8 +29,8 @@ from tests.kinds import non_negative
 
 MB_ROOT = Path(tax_engine.jurisdictions.ca_mb.__file__).parent
 PART = MB_ROOT / "manifests" / "2025" / "worksheet_mb428.yaml"
-LINE_5 = "ca-mb/worksheet_mb428_basic_personal_amount_line_5"
-LINE_7 = "ca-mb/worksheet_mb428_basic_personal_amount_line_7"
+LINE_5 = "ca-mb/worksheet_mb428_line_5"
+LINE_7 = "ca-mb/worksheet_mb428_line_7"
 LINE_8 = "ca-mb/worksheet_mb428_line_8"
 LINE_9 = "ca-mb/worksheet_mb428_basic_personal_amount_line_9"
 

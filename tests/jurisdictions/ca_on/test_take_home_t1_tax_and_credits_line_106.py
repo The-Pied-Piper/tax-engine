@@ -2,19 +2,21 @@
 salary alone.
 
 Line 106 is "Add lines 101 to 105." (T1 General 5006-R, CRA 5006-R-25E, confirmed). Line 101 is
-`ca/credit_amounts_subtotal`. Lines 102 to 105 are
-0 for the take-home filer and are left out.
-Line 106 is therefore one `core/sum` over line 101 only, rounded half-up to the cent with the shared
-`ca/cent_rounding` dataset, and produces `ca/credit_amounts_line_106`, a non-negative kind.
+`ca/credit_amounts_subtotal`. Line 102 (line 31900, student loan interest) is a copy of line 31900,
+which the T1 lines copied by provinces form owns as an optional input (0 when blank) and exports,
+so it is a `core/record_total` (`ca/student_loan_interest_line_102`). Lines 103 to 105 are not
+built and are left out. Line 106 is one `core/sum` over lines 101 and 102, rounded half-up to the
+cent with the shared `ca/cent_rounding` dataset, and produces `ca/credit_amounts_line_106`, a
+non-negative kind.
 
 The real parts are composed beside a test-local header: the salary, the real Schedule 8 and T2204
 parts, the real T1 taxable-income lines and inputs (line 23600 feeds line 30000), line 30000, line
-84, line 31260, line 96, line 98, line 101 and the part under test. The form declaration of line 106
-is test-local: its one export is line 106.
+84, line 31260, line 96, line 98, line 101 and the part under test. The form declaration of line
+106 is test-local: its one export is line 106.
 
-The salary is the only input the caller gives. Ontario resident, single filer, salary the only
-income, tax withheld 0, basic credits only, as the take-home calculator states them.
-"""
+The salary is the only input the caller gives, except line 31900 where a test gives it. Ontario
+resident, single filer, salary the only income, tax withheld 0, basic credits only, as the
+take-home calculator states them."""
 
 from __future__ import annotations
 
@@ -28,6 +30,7 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.non_refundable_credits import STUDENT_LOAN_INTEREST
 from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
 from tests.kinds import bundled_kinds, non_negative
@@ -41,6 +44,7 @@ LINE_106 = "ca/credit_amounts_line_106"
 # parts, the real T1 taxable-income lines and inputs, lines 30000, 84, 31260, 96 and 98, and the
 # part under test.
 PARTS = (
+    *form_part_names("t1_lines_copied_by_provinces"),
     *form_part_names("schedule_8"),
     *form_part_names("t2204"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),
@@ -69,10 +73,10 @@ T1_TAX_AND_CREDITS = dedent(f"""\
     """)
 
 
-def _sheet(take_home_service: TakeHomeService, salary: str) -> Worksheet:
+def _sheet(take_home_service: TakeHomeService, salary: str, *given: Artifact[Decimal]) -> Worksheet:
     """The tax and credits sheet, with lines 101 and 106 on it."""
     worksheets = take_home_service(HEADER, T1_TAX_AND_CREDITS, *PARTS).compute(
-        ONTARIO, 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
+        ONTARIO, 2025, Artifact(EMPLOYMENT_INCOME, D(salary)), *given
     )
     (sheet,) = worksheets[FORM]
     return sheet
@@ -104,7 +108,8 @@ def test_line_106_names_line_101_and_its_rounding_in_the_trace(
 ) -> None:
     sheet = _sheet(take_home_service, "70000")
     assert (
-        "Line 101 (CA$21969.23) gives CA$21969.23 (rounded to the nearest cent)."
+        "Line 101 (CA$21969.23) plus line 31900 (CA$0.00) gives CA$21969.23 "
+        "(rounded to the nearest cent)."
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
 
 
@@ -113,3 +118,18 @@ def test_the_line_106_kind_is_registered_and_non_negative() -> None:
 
     assert kind.identifier == LINE_106
     assert non_negative(kind) is True
+
+
+def test_line_106_adds_line_102_the_student_loan_interest(
+    take_home_service: TakeHomeService,
+) -> None:
+    # $70,000: line 101 is 21,969.23; line 31900 of 300.00 is line 102.
+    sheet = _sheet(take_home_service, "70000", Artifact(STUDENT_LOAN_INTEREST, D("300")))
+    kinds = bundled_kinds()
+
+    assert sheet.get(kinds.kind("ca/student_loan_interest_line_102")).value == D("300.00")
+    assert sheet.get(kinds.kind(LINE_106)).value == D("22269.23")
+    assert (
+        "Line 101 (CA$21969.23) plus line 31900 (CA$300.00) gives CA$22269.23 "
+        "(rounded to the nearest cent)."
+    ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)

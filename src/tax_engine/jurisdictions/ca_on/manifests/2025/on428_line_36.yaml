@@ -10,20 +10,21 @@
 #
 # The filer's claim is the input of on428_line_36_inputs.yaml; so are the attendant care expenses
 # paid, a 0/1 answer that the federal claim was limited, a 0/1 year of death, the van and the move.
-# Steps 1, 12 and 15 each add one category input on its own through core/sum, so a blank category is
+# Steps 1, 12 and 16 each add one category input on its own through core/sum, so a blank category is
 # read as 0 before it is capped. Steps 2 and 3 cap the attendant care paid at the Ontario figures,
 # step 4 checks the year of death answer (a blank read as 0, refused above 1) and step 5 chooses the
 # Ontario allowed figure. Steps 6 to 8 do the same at the federal limits $10,000 and $20,000, the
 # attendant care included in the federal claim. Step 9 takes the Ontario figure less the federal
 # one, step 10 checks the limited answer (a blank read as 0, refused above 1) and step 11
 # multiplies, so the increase is 0 unless the federal claim was limited, and a limited claim rises
-# to the Ontario maximum. Steps 13, 14, 16 and 17 cap the van and the move and take what each is
-# over its maximum, and step 18 adds the two. Step 19 is the claim plus the increase, a blank claim
-# read as 0, and step 20 takes that less the excess. A result below 0 (a van or move larger than the
-# claim) is refused, never floored. Every working step is exact (`ca-on/exact_rounding`) and only
-# step 20, the line, rounds half-up to the cent. Only step 20 has the reference "36"; steps 18 and 19
-# have titles because the sentence of line 36 names them, the others are not lines of the form. Line
-# 41 reads step 20.
+# to the Ontario maximum. The van (steps 12 to 15) and the move (steps 16 to 19) take no answer:
+# CRA Guide RC4065 "Medical Expenses" prints their federal limits ($5,000 and $2,000) without a
+# condition, "for residents of Ontario, the provincial limit is $8,813" and "$3,525", so each is one
+# Ontario cap, one federal cap and the difference, which is 0 up to the federal limit and so needs
+# no limited answer. Step 20 is the claim plus the three increases, a blank claim read as 0. Every
+# working step is exact (`ca-on/exact_rounding`) and only step 20, the line, rounds half-up to the
+# cent. Only step 20 has the reference "36"; the others are not lines of the form (steps 11, 15 and
+# 19 have titles because the sentence of line 36 names them). Line 41 reads step 20.
 form:
   name: ca-on/on428
 capabilities:
@@ -110,6 +111,7 @@ capabilities:
     produces:
       output: ca-on/on428_attendant_care_federal_limit_applied_checked_line_36
   - name: core/times_count
+    title: "Increase for attendant care"
     unit: ca/cad
     params:
       rounding: ca-on/exact_rounding
@@ -137,15 +139,24 @@ capabilities:
       base: ca-on/on428_adapted_van_read_line_36
     produces:
       output: ca-on/on428_adapted_van_allowed_line_36
+  - name: core/capped_amount
+    unit: ca/cad
+    params:
+      cap: ca-on/medical_expense_federal_adapted_van_maximum
+    consumes:
+      base: ca-on/on428_adapted_van_read_line_36
+    produces:
+      output: ca-on/on428_adapted_van_federal_included_line_36
   - name: core/subtract
+    title: "Increase for an adapted van"
     unit: ca/cad
     params:
       rounding: ca-on/exact_rounding
     consumes:
-      amount: ca-on/on428_adapted_van_read_line_36
-      less: ca-on/on428_adapted_van_allowed_line_36
+      amount: ca-on/on428_adapted_van_allowed_line_36
+      less: ca-on/on428_adapted_van_federal_included_line_36
     produces:
-      output: ca-on/on428_adapted_van_excess_line_36
+      output: ca-on/on428_adapted_van_increase_line_36
   - name: core/sum
     unit: ca/cad
     params:
@@ -165,47 +176,37 @@ capabilities:
       base: ca-on/on428_patient_move_read_line_36
     produces:
       output: ca-on/on428_patient_move_allowed_line_36
+  - name: core/capped_amount
+    unit: ca/cad
+    params:
+      cap: ca-on/medical_expense_federal_patient_move_maximum
+    consumes:
+      base: ca-on/on428_patient_move_read_line_36
+    produces:
+      output: ca-on/on428_patient_move_federal_included_line_36
   - name: core/subtract
+    title: "Increase for a patient's move"
     unit: ca/cad
     params:
       rounding: ca-on/exact_rounding
     consumes:
-      amount: ca-on/on428_patient_move_read_line_36
-      less: ca-on/on428_patient_move_allowed_line_36
+      amount: ca-on/on428_patient_move_allowed_line_36
+      less: ca-on/on428_patient_move_federal_included_line_36
     produces:
-      output: ca-on/on428_patient_move_excess_line_36
+      output: ca-on/on428_patient_move_increase_line_36
   - name: core/sum
-    title: "Amount over the maximums for attendant care, an adapted van, and moving expenses"
-    unit: ca/cad
-    params:
-      rounding: ca-on/exact_rounding
-    consumes:
-      parts:
-        - ca-on/on428_adapted_van_excess_line_36
-        - ca-on/on428_patient_move_excess_line_36
-    produces:
-      output: ca-on/on428_medical_expenses_excess_line_36
-  - name: core/sum
-    title: "Medical expenses plus the attendant care increase"
-    unit: ca/cad
-    params:
-      rounding: ca-on/exact_rounding
-    consumes:
-      parts:
-        - ca-on/on428_medical_expenses_line_36
-        - ca-on/on428_attendant_care_increase_line_36
-    blank:
-      ca-on/on428_medical_expenses_line_36: "0"
-    produces:
-      output: ca-on/on428_medical_expenses_plus_increase_line_36
-  - name: core/subtract
     title: "Maximum allowable amounts for attendant care, an adapted van, and moving expenses"
     reference: "36"
     unit: ca/cad
     params:
       rounding: ca-on/cent_rounding
     consumes:
-      amount: ca-on/on428_medical_expenses_plus_increase_line_36
-      less: ca-on/on428_medical_expenses_excess_line_36
+      parts:
+        - ca-on/on428_medical_expenses_line_36
+        - ca-on/on428_attendant_care_increase_line_36
+        - ca-on/on428_adapted_van_increase_line_36
+        - ca-on/on428_patient_move_increase_line_36
+    blank:
+      ca-on/on428_medical_expenses_line_36: "0"
     produces:
       output: ca-on/on428_medical_expenses_allowed_line_36

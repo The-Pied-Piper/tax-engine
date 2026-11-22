@@ -5,8 +5,8 @@
 # care maximum only "if the amount you claimed for medical expenses on your return includes an
 # amount for attendant care expenses that was limited to $10,000 ($20,000 in the year of death)",
 # so four optional inputs follow: the attendant care expenses paid, a 0/1 answer that the federal
-# claim was limited, and a 0/1 year of death, which has its own figures. The van and the move each
-# take one optional amount, as the text prints a maximum for each. A request that leaves an input
+# claim was limited (attendant care only: the van and the move have printed federal limits and need no answer), and a 0/1 year of death, which has its own figures. The van and the
+# move each take one optional amount, as the text prints a maximum for each. A request that leaves an input
 # out is read as blank; the line 36 steps (on428_line_36.yaml) read that blank as 0, each category input through a
 # core/sum step of its own, so no capped step reads a blank.
 form:
