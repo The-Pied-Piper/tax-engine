@@ -37,7 +37,7 @@ def test_line_51_is_line_46_less_the_threshold_and_line_53_adds_line_52(year: in
     worksheet = sheet(
         FORM,
         year,
-        bc428_medical_expenses_line_46="5000",
+        medical_expenses="5000",
         bc428_other_dependants_medical_expenses_line_52="100.50",
     )
 
@@ -47,7 +47,7 @@ def test_line_51_is_line_46_less_the_threshold_and_line_53_adds_line_52(year: in
 
 @pytest.mark.parametrize("year", YEARS)
 def test_line_51_is_0_when_line_46_is_below_the_threshold(year: int) -> None:
-    worksheet = sheet(FORM, year, bc428_medical_expenses_line_46="2000")
+    worksheet = sheet(FORM, year, medical_expenses="2000")
 
     assert figure(worksheet, "bc428_medical_expenses_over_limit_line_51") == D("0.00")
 

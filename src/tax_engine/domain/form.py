@@ -24,7 +24,7 @@ from tax_engine.domain.errors import (
 )
 from tax_engine.domain.figure_names import ImportedFigure
 from tax_engine.domain.kinds import RecordListKind
-from tax_engine.domain.manifest import Form
+from tax_engine.domain.manifest import Form, InputDeclaration
 from tax_engine.domain.record_list import Record, RecordList
 from tax_engine.domain.trace import FormInstanceLine, TraceLine
 from tax_engine.domain.unit import Unit
@@ -55,9 +55,9 @@ class FormComposition:
         The form's own `inputs` are what the caller gives it: each is read as its declared default
         when left out, and an input or field whose default is blank may arrive blank (any other
         blank is refused). The same holds for the `fields` of its `instances`. The
-        `title` and `reference` of an input and of a field print beside the figure. `units` holds
-        the units the manifest names, by identifier: every one an input, a field or a selection
-        uses.
+        `title`, `reference` and `position` of an input and of a field print beside the figure.
+        `units` holds the units the manifest names, by identifier: every one an input, a field or a
+        selection uses.
         """
         name = form.name
         instances = None if form.instances is None else kinds.kind(form.instances)
@@ -102,6 +102,11 @@ class FormComposition:
         self._figure_units = {
             kind.label: unit for kind, _, unit in self._unit_claims if unit is not None
         }
+        self._figure_positions = {
+            kind.label: found.position for kind, found in printed if found.position is not None
+        } | {
+            kind.label: found.position for kind, found in produced_by if found.position is not None
+        }
         self._instances = instances
         self._exports = listed
         self._derived = form.derived_kinds(kinds)
@@ -122,6 +127,7 @@ class FormComposition:
         # The caller's list of instances is read by the form set, not by a step.
         self._declared = frozenset(declared)
         self._inputs = fields | (self._declared - {instances})
+        self._whole_cents = {kind: d for kind, d in declared.items() if d.whole_cents}
         self._defaults = tuple(
             found for kind, d in declared.items() if (found := d.default_artifact(kind)) is not None
         )
@@ -177,6 +183,11 @@ class FormComposition:
         return MappingProxyType(self._figure_units)
 
     @property
+    def figure_positions(self) -> Mapping[str, int]:
+        """Where the form prints each figure, counted from 1, by the figure's label."""
+        return MappingProxyType(self._figure_positions)
+
+    @property
     def unit_claims(self) -> tuple[tuple[ArtifactKind[Any], str, Unit | None], ...]:
         """The unit this form gives each figure it prints, as `(kind, "read" or "produced", unit)`;
         `None` for a figure it gives none.
@@ -227,6 +238,11 @@ class FormComposition:
     def declared(self) -> frozenset[ArtifactKind[Any]]:
         """The kinds of the inputs the form declares, among them its list of instances."""
         return self._declared
+
+    @property
+    def whole_cents(self) -> Mapping[ArtifactKind[Any], InputDeclaration]:
+        """The declaration of each input the form takes in whole cents, by kind."""
+        return self._whole_cents
 
     @property
     def defaults(self) -> tuple[Artifact[Any], ...]:
@@ -462,6 +478,7 @@ class FormSet:
                 figure_titles=form.figure_titles,
                 figure_references=form.figure_references,
                 figure_units=form.figure_units,
+                figure_positions=form.figure_positions,
                 imported_figures=self._imported_figures(form),
                 defaulted=defaulted,
             )
@@ -471,6 +488,10 @@ class FormSet:
 
     def _check_given(self, given: Mapping[ArtifactKind[Any], Artifact[Any]]) -> None:
         self._check_not_derived(given.keys())
+        for form in self._forms:
+            for kind, declaration in form.whole_cents.items():
+                if kind in given:
+                    declaration.check_given(given[kind])
         Composition.check_starting_kinds(given.keys(), self._inputs)
         # The form set itself reads each instances list, so it cannot take a blank one; any other
         # blank goes on to the composition of each form that reads it, which checks its own.

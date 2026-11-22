@@ -12,7 +12,7 @@ parts, the real parts of Worksheet MB428 lines 1 to 9, Schedule MB428-A lines 1 
 1, 3 to 9, 18, 19, 21, 28, 29, 33, 36, 41, 42 and 51 of `ca-mb/mb428_credits`, the line 31, line 50
 and line 56 input parts, the real `mb428_credits_line_53.yaml`, `mb428_credits_line_57.yaml`,
 `mb428_line_58.yaml`, `mb428_line_59_input.yaml`, `mb428_line_60.yaml`, `mb428_line_61.yaml`,
-`mb428_line_62_input.yaml`, `mb428_credits_line_63_input.yaml`, `mb428_line_63.yaml` and
+`mb428_line_62_input.yaml`, `mb428_line_63_input.yaml`, `mb428_line_63.yaml` and
 `mb428_line_64.yaml`, and the new `mb428_line_65.yaml`, and types in only the salary (and, in some
 tests, line 59, line 62 and the line 63 amount). The header and the form declarations are made up
 here: the credits form exports lines 1, 3 to 8 and 57, and `ca-mb/mb428` exports only line 65. The
@@ -82,7 +82,7 @@ LINE_60 = "ca-mb/mb428_tax_before_credits_line_60"
 LINE_64 = "ca-mb/mb428_credits_total_line_64"
 LINE_61 = "ca-mb/mb428_non_refundable_credits_line_61"
 LINE_62 = "ca-mb/mb428_dividend_tax_credit_line_62"
-LINE_63 = "ca-mb/mb428_minimum_tax_carryover_credit_line_63"
+LINE_63 = "ca-mb/mb428_minimum_tax_carryover_line_63"
 IDENTIFIER = "ca-mb/mb428_tax_after_credits_line_65"
 CREDIT_PARTS = (
     *(f"mb428_credits_line_{n}.yaml" for n in (1, 3, 4, 5, 6, 7, 8)),
@@ -98,7 +98,7 @@ CREDIT_PARTS = (
     "mb428_credits_line_36.yaml",
     "mb428_credits_line_41.yaml",
     "mb428_credits_line_42.yaml",
-    "mb428_credits_line_43_inputs.yaml",
+    "mb428_credits_line_43.yaml",
     "mb428_credits_line_44.yaml",
     "mb428_credits_line_46.yaml",
     "mb428_credits_line_47.yaml",
@@ -146,13 +146,13 @@ WORKSHEET_FORM = dedent("""\
       name: ca-mb/worksheet_mb428
       required: true
       exports:
-        - ca-mb/worksheet_mb428_basic_personal_amount_line_1
+        - ca-mb/worksheet_mb428_line_1
         - ca-mb/worksheet_mb428_line_2
-        - ca-mb/worksheet_mb428_basic_personal_amount_line_3
+        - ca-mb/worksheet_mb428_line_3
         - ca-mb/worksheet_mb428_line_4
-        - ca-mb/worksheet_mb428_basic_personal_amount_line_5
+        - ca-mb/worksheet_mb428_line_5
         - ca-mb/worksheet_mb428_line_6
-        - ca-mb/worksheet_mb428_basic_personal_amount_line_7
+        - ca-mb/worksheet_mb428_line_7
         - ca-mb/worksheet_mb428_line_8
         - ca-mb/worksheet_mb428_basic_personal_amount_line_9
     capabilities: []

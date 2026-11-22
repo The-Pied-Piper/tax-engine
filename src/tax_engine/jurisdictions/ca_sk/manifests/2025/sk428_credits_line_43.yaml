@@ -1,0 +1,16 @@
+# SK428 (2025) line 43. Form SK428 (CRA 5008-c-25e): "Line 43 and line 58689: Amount from line 33099 of your return".
+# The amount is T1 line 33099, which the T1 owns and exports (`ca/medical_expenses_line_33099`), so this form
+# has no input for it. Another form reads an export only as a record list, so the one step is
+# core/record_total (`ca-sk/sk428_medical_expenses_line_43`), as NL428 line 48 is. A salary-only caller has none,
+# so it is 0.
+form:
+  name: ca-sk/sk428_credits
+capabilities:
+  - name: core/record_total
+    title: "Amount from line 33099 of your return"
+    reference: "43"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_lines_copied_by_provinces.medical_expenses_line_33099
+    produces:
+      output: ca-sk/sk428_medical_expenses_line_43

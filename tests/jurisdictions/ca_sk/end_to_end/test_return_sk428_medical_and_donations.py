@@ -41,8 +41,8 @@ LINE_57 = "ca-sk/sk428_non_refundable_credits_line_57"
 LINE_77 = "ca-sk/sk428_labour_sponsored_credit_checked_line_77"
 LINE_82 = "ca-sk/sk428_saskatchewan_tax_line_82"
 INPUTS = {
-    "line_43": "ca-sk/sk428_medical_expenses_line_43",
-    "line_49": "ca-sk/sk428_other_dependants_medical_expenses_line_49",
+    "line_43": "ca/medical_expenses",
+    "line_49": "ca/other_dependants_medical_expenses",
     "line_12": "ca/donations_and_gifts_line_12",
     "line_75": "ca-sk/sk428_venture_capital_credit_saskatchewan_line_75",
     "line_76": "ca-sk/sk428_venture_capital_credit_federal_line_76",

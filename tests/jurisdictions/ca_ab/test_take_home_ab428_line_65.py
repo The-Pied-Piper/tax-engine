@@ -111,7 +111,6 @@ def _part_files() -> Iterator[Path]:
     yield ALBERTA_PARTS / "ab428_line_41_input.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_41.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_43.yaml"
-    yield ALBERTA_PARTS / "ab428_credits_line_44_input.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_44.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_45.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_47.yaml"

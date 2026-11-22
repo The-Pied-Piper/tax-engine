@@ -548,6 +548,48 @@ insurance plan (PPIP) premiums paid (box 55 of all T4 slips) (maximum $484.12)":
 caller gives, from the T4 slips; blank when the caller does not give it, and line 91 is then
 computed."""
 
+PPIP_INSURABLE_EARNINGS_GIVEN = AmountKind.declare(
+    CATALOG, "ppip_insurable_earnings_given", non_negative=True
+)
+"""PPIP insurable earnings as given, 5005-S10 line 13 "Enter the amount from box 56 of all of your
+T4 slips where Quebec is the province of employment (if box 56 is blank, enter the amount from box
+14 of the T4 slip) (include employment income that you did not get a T4 slip for)": the figure the
+caller gives from box 56; blank when the caller does not give it, and the employment income is
+then taken in its place."""
+
+PPIP_INSURABLE_EARNINGS = AmountKind.declare(CATALOG, "ppip_insurable_earnings", non_negative=True)
+"""PPIP insurable earnings, the figure the guide to line 31205 tests against $2,000: the box 56
+figure the caller gave or, when it is blank, the employment income (the box 14 of 5005-S10
+line 13)."""
+
+PPIP_PREMIUM_MAXIMUM = AmountKind.declare(CATALOG, "ppip_premium_maximum", non_negative=True)
+"""PPIP premiums maximum, 5005-R line 91 "(maximum $484.12)": the printed maximum, from the
+`ca-qc/ppip_premium_maximum` dataset; the bound a given figure cannot pass."""
+
+PPIP_PREMIUMS_GIVEN_CHECKED = AmountKind.declare(
+    CATALOG, "ppip_premiums_given_checked", non_negative=True
+)
+"""PPIP premiums paid as given, 5005-R line 91, checked against the printed maximum: the given
+figure (a blank passes on as blank) when it is at most `ca-qc/ppip_premium_maximum`; above it, it
+is refused, not capped. Line 91 reads it."""
+
+PPIP_PREMIUMS_BEFORE_EARNINGS_TEST = AmountKind.declare(
+    CATALOG, "ppip_premiums_before_earnings_test", non_negative=True
+)
+"""PPIP premiums paid, 5005-R line 91, before the $2,000 test of the guide to line 31205: the given
+figure or, when none is given, the premium computed from the employment income. Line 91 and line
+31205 read it only through the earnings test (`ppip_premium_line_91.yaml`)."""
+
+PPIP_PREMIUM_UNDER_THRESHOLD_COUNT = CountKind.declare(
+    CATALOG, "ppip_premium_under_threshold_count", non_negative=True
+)
+"""Guide to line 31205: 1 when the PPIP insurable earnings are less than $2,000 (no premium is
+claimed on line 31205), else 0."""
+
+PPIP_PREMIUM_ZERO = AmountKind.declare(CATALOG, "ppip_premium_zero", non_negative=True)
+"""Guide to line 31205: the nothing claimed when the PPIP insurable earnings are less than $2,000,
+from the `ca-qc/ppip_premium_zero` dataset."""
+
 PPIP_PREMIUM_EMPLOYMENT_INCOME = AmountKind.declare(
     CATALOG, "ppip_premium_employment_income", non_negative=True
 )
@@ -558,7 +600,8 @@ PPIP_PREMIUMS_PAID = AmountKind.declare(CATALOG, "ppip_premiums_paid", non_negat
 """PPIP premiums paid, 5005-R line 91 "Line 91 and line 31205: Provincial parental insurance plan
 (PPIP) premiums paid (box 55 of all T4 slips) (maximum $484.12)": the given figure
 (`ca-qc/ppip_premiums_given`) or, when none is given, 0.494% of the employment income to the
-$98,000 maximum insurable income (maximum $484.12). TP-1 line 97 (RL-1 box H) is the same figure."""
+$98,000 maximum insurable income (maximum $484.12); 0 when the PPIP insurable earnings are less than
+$2,000, as the guide to line 31205 says. TP-1 line 97 (RL-1 box H) carries the premium itself."""
 
 SOLIDARITY_FAMILY_INCOME = AmountKind.declare(
     CATALOG, "solidarity_family_income", non_negative=True

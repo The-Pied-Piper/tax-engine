@@ -11,8 +11,8 @@ The test composes the T1 employment income form, the real Schedule 8 and T2204 p
 line parts (`sk428_credits_line_9.yaml`, `_line_20.yaml`, `_line_22.yaml`, `_line_24.yaml`,
 `_line_31.yaml`, `_line_32.yaml`, `_line_33.yaml`, `_line_35.yaml`, `_line_38.yaml`,
 `_line_42.yaml`, `_line_51.yaml`), the real `sk428_line_33_inputs.yaml`, the real
-`sk428_credits_line_43_input.yaml`, `_line_44.yaml`, `_line_46.yaml`, `_line_47.yaml`,
-`_line_48.yaml`, `_line_49_input.yaml`, `_line_50.yaml` and the new `sk428_credits_line_53.yaml`,
+`sk428_credits_line_43.yaml`, `_line_44.yaml`, `_line_46.yaml`, `_line_47.yaml`,
+`_line_48.yaml`, `_line_49.yaml`, `_line_50.yaml` and the new `sk428_credits_line_53.yaml`,
 and types in the salary and, where a case gives them, lines 43 and 49. The form declaration is
 made up here, exporting only line 53. The figures are line 51 as the engine produces it, re-
 derived below with Decimal from the printed basic personal amount dataset (19,491), CPP at 4.95%
@@ -44,10 +44,6 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tax_engine.jurisdictions.ca_sk.catalog import (
-    SK428_MEDICAL_EXPENSES_LINE_43,
-    SK428_OTHER_DEPENDANTS_MEDICAL_EXPENSES_LINE_49,
-)
 from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_sk.support import (
     saskatchewan_capabilities,
@@ -57,6 +53,7 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_units,
 )
 from tests.kinds import non_negative
+from tests.medical_support import medical_expenses, other_dependants_medical_expenses
 
 D = Decimal
 SK_PARTS = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / "manifests" / "2025"
@@ -127,7 +124,9 @@ def _expected(salary: str, medical: str = "0") -> Decimal:
 def _part_files() -> Iterator[Path]:
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
-    yield from form_parts("t1_taxable_income", "t1_employment_income")
+    yield from form_parts(
+        "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+    )
     yield SK_PARTS / "sk428_credits_line_9.yaml"
     yield SK_PARTS / "sk428_credits_line_20.yaml"
     yield SK_PARTS / "sk428_credits_line_22.yaml"
@@ -139,12 +138,12 @@ def _part_files() -> Iterator[Path]:
     yield SK_PARTS / "sk428_credits_line_35.yaml"
     yield SK_PARTS / "sk428_credits_line_38.yaml"
     yield SK_PARTS / "sk428_credits_line_42.yaml"
-    yield SK_PARTS / "sk428_credits_line_43_input.yaml"
+    yield SK_PARTS / "sk428_credits_line_43.yaml"
     yield SK_PARTS / "sk428_credits_line_44.yaml"
     yield SK_PARTS / "sk428_credits_line_46.yaml"
     yield SK_PARTS / "sk428_credits_line_47.yaml"
     yield SK_PARTS / "sk428_credits_line_48.yaml"
-    yield SK_PARTS / "sk428_credits_line_49_input.yaml"
+    yield SK_PARTS / "sk428_credits_line_49.yaml"
     yield SK_PARTS / "sk428_credits_line_50.yaml"
     yield SK_PARTS / "sk428_credits_line_51.yaml"
     yield LINE_PART
@@ -179,9 +178,9 @@ def _sheet(
 ) -> Worksheet:
     given = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if line_43 is not None:
-        given.append(Artifact(SK428_MEDICAL_EXPENSES_LINE_43, D(line_43)))
+        given.append(medical_expenses(line_43))
     if line_49 is not None:
-        given.append(Artifact(SK428_OTHER_DEPENDANTS_MEDICAL_EXPENSES_LINE_49, D(line_49)))
+        given.append(other_dependants_medical_expenses(line_49))
     worksheets = _service(tmp_path).compute(JurisdictionCode("CA-SK"), 2025, *given)
     (sheet,) = worksheets[FORM_NAME]
     return sheet

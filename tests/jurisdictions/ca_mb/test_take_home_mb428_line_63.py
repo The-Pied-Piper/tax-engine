@@ -2,10 +2,11 @@
 
 Form text (Form MB428, CRA 5007-C, read 2026-11-17): "Manitoba minimum tax carryover:" /
 "Line 63 and line 61540: Amount from line 40427 of your return ^" / "multiplied by 50% = ^". The
-input is the amount from line 40427 of the return (`ca-mb/mb428_minimum_tax_carryover_line_63`),
-which the inputs part declares as optional, read as 0 when left out. Line 63 is one calculation:
+input is the amount from line 40427 of the return
+(`ca-mb/mb428_minimum_tax_carryover_amount_line_63`), which the inputs part declares as optional,
+read as 0 when left out. Line 63 is one calculation:
 50% of the amount, a printed rate held in the `ca-mb/minimum_tax_rate` dataset, rounded half-up to
-the cent. The output is `ca-mb/mb428_minimum_tax_carryover_credit_line_63`. The step is
+the cent. The output is `ca-mb/mb428_minimum_tax_carryover_line_63`. The step is
 titled with the heading the form prints above the line, "Manitoba minimum tax carryover". Because
 the input is blank for a salary-only caller, the step prints its own "left blank, taken as 0" row.
 
@@ -33,7 +34,7 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
-from tax_engine.jurisdictions.ca_mb.catalog import MB428_MINIMUM_TAX_CARRYOVER_CREDIT_LINE_63
+from tax_engine.jurisdictions.ca_mb.catalog import MB428_MINIMUM_TAX_CARRYOVER_LINE_63
 from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_mb.support import (
     manitoba_capabilities,
@@ -48,8 +49,8 @@ D = Decimal
 MINIMUM_TAX_CARRYOVER = "ca/minimum_tax_carryover"
 CODE = JurisdictionCode("CA-MB")
 FORM_NAME = "ca-mb/mb428"
-AMOUNT = "ca-mb/mb428_minimum_tax_carryover_line_63"
-LINE_63 = "ca-mb/mb428_minimum_tax_carryover_credit_line_63"
+AMOUNT = "ca-mb/mb428_minimum_tax_carryover_amount_line_63"
+LINE_63 = "ca-mb/mb428_minimum_tax_carryover_line_63"
 MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"
 PART = MB_PARTS / "mb428_line_63.yaml"
 
@@ -186,7 +187,7 @@ def test_the_step_is_titled_with_the_heading_the_form_prints_above_the_line() ->
 def test_the_kind_is_a_registered_non_negative_decimal_amount() -> None:
     kind = manitoba_kinds().kind(LINE_63)
 
-    assert kind is MB428_MINIMUM_TAX_CARRYOVER_CREDIT_LINE_63
+    assert kind is MB428_MINIMUM_TAX_CARRYOVER_LINE_63
     assert isinstance(kind, AmountKind)
     assert kind.identifier == LINE_63
     assert kind.value_type is Decimal

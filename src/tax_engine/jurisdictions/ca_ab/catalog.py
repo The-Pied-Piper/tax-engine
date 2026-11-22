@@ -83,14 +83,14 @@ line 2 of Worksheet AB428."""
 AB428_MEDICAL_EXPENSES_LINE_44 = AmountKind.declare(
     CATALOG, "ab428_medical_expenses_line_44", non_negative=True
 )
-"""Medical expenses, AB428 line 44 (line 58689) "Amount from line 33099 of your return": the amount
-as the filer gives it, an optional input; a blank input is read as blank."""
+"""Medical expenses, AB428 line 44 (line 58689) "Amount from line 33099 of your return": a record
+total of the T1's export (`ca/medical_expenses_line_33099`), 0 for a salary-only caller."""
 
 AB428_MEDICAL_EXPENSES_ROUNDED_LINE_44 = AmountKind.declare(
     CATALOG, "ab428_medical_expenses_rounded_line_44", non_negative=True
 )
-"""Medical expenses, AB428 line 44 (line 58689) "Amount from line 33099 of your return": the input
-rounded to the cent and read as 0 when blank, read by line 49."""
+"""Medical expenses, AB428 line 44 (line 58689) "Amount from line 33099 of your return": the record
+total of the T1 export (`AB428_MEDICAL_EXPENSES_LINE_44`) rounded to the cent, read by line 49."""
 
 AB428_NET_INCOME_LINE_45 = AmountKind.declare(
     CATALOG, "ab428_net_income_line_45", non_negative=True

@@ -117,6 +117,7 @@ def _inputs(
                     title=None if base is None else base.title,
                     reference=None if base is None else base.reference,
                     unit=None if base is None else base.unit,
+                    position=None if base is None else base.position,
                     required=False,
                     default=given[kind],
                     basis="made up",

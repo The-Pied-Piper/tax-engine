@@ -46,6 +46,7 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_units,
 )
 from tests.kinds import non_negative
+from tests.medical_support import medical_expenses, other_dependants_medical_expenses
 
 D = Decimal
 CENT = D("0.01")
@@ -106,11 +107,9 @@ def _sheet(
 ) -> Worksheet:
     given = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if line_43 is not None:
-        given.append(Artifact(sk_catalog.SK428_MEDICAL_EXPENSES_LINE_43, D(line_43)))
+        given.append(medical_expenses(line_43))
     if line_49 is not None:
-        given.append(
-            Artifact(sk_catalog.SK428_OTHER_DEPENDANTS_MEDICAL_EXPENSES_LINE_49, D(line_49))
-        )
+        given.append(other_dependants_medical_expenses(line_49))
     worksheets = _service(tmp_path).compute(JurisdictionCode("CA-SK"), 2025, *given)
     (sheet,) = worksheets[FORM_NAME]
     return sheet
