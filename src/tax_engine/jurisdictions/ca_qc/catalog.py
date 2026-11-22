@@ -2466,7 +2466,7 @@ line 98 reads it as 0."""
 SCHEDULE_K_PREMIUM_PAYABLE_LINE_98 = AmountKind.declare(
     CATALOG, "schedule_k_premium_payable_line_98", non_negative=True
 )
-"""Premium payable under the Quebec prescription drug insurance plan, Schedule K line 98, "Add
+"""Premium payable under the Québec prescription drug insurance plan, Schedule K line 98, "Add
 lines 90 and 97": line 90 and the optional line 97 (read as 0 when left out) added, rounded
 half-up to the cent. One core/sum (`tp1_schedule_k_line_98.yaml`). The form exports it for
 TP-1 line 447."""
@@ -2653,7 +2653,7 @@ one core/record_total over Schedule F's export (`tp1_totals_line_446.yaml`)."""
 TP1_DRUG_INSURANCE_PREMIUM_LINE_447 = AmountKind.declare(
     CATALOG, "tp1_drug_insurance_premium_line_447", non_negative=True
 )
-"""TP-1 line 447 "Premium payable under the Quebec prescription drug insurance plan": Schedule K
+"""TP-1 line 447 "Premium payable under the Québec prescription drug insurance plan": Schedule K
 line 98, a copy. Produced by one core/record_total over Schedule K's export
 (`tp1_totals_line_447.yaml`)."""
 

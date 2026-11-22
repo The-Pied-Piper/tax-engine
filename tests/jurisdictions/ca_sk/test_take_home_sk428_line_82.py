@@ -100,7 +100,7 @@ SK_LINE_PARTS = (
     "sk428_line_61_input.yaml",
     "sk428_line_62.yaml",
     "sk428_line_63.yaml",
-    "sk428_line_64_input.yaml",
+    "sk428_line_64.yaml",
     "sk428_line_65.yaml",
     "sk428_line_66.yaml",
     "sk428_line_67.yaml",

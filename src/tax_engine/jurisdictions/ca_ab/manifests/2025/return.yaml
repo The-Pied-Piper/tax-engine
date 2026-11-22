@@ -29,7 +29,7 @@
 # before line 69 (provincial foreign tax credit), line 72 (political contributions) and line 74
 # (supplemental tax credit). Payroll (T4127) applies the personal amounts, CPP and EI and the other
 # credits (K1P to K3P); the dividend credit, the minimum tax carry-over and additional minimum tax
-# in lines 63, 64 and 67 are not payroll terms and are blank for the take-home filer. The July 2025
+# in lines 63, 64 and 67 are not payroll terms and are zero or blank for the take-home filer. The July 2025
 # edition adds K5P, the Alberta supplemental tax credit (AB428 line 74), which is
 # ((K1P + K2P) - 3,600) x 0.04/0.06 for 2025 and ((K1P + K2P) - 4,800) x 0.02/0.08 for 2026, not
 # below 0; the January 2025 edition has no such term. For the take-home filer K1P + K2P is below

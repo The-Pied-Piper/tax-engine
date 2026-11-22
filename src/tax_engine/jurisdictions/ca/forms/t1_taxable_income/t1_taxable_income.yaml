@@ -13,6 +13,12 @@
 #     read them from here (`ca/uccb_income_line_11700`, `ca/rdsp_income_line_12500`, `ca/uccb_repayment_line_21300`,
 #     `ca/rdsp_income_repayment_line_23200`), never asking for them a second time. Lines 11700 and 12500 are added into line
 #     15000, lines 21300 and 23200 into line 23300, as the form says.
+#   - Lines 12000 and 12010 (the amount of dividends, eligible and other than eligible, and the amount of
+#     dividends other than eligible) are inputs of this form, each read as 0 when blank. The provincial
+#     dividend tax credit worksheets (AB428 line 63, BC428 line 65, MB428 line 62, ON428 line 57 and SK428
+#     line 64) read them from here (`ca/taxable_dividends_line_12000`,
+#     `ca/taxable_dividends_other_than_eligible_line_12010`). Line 12000 (T1 line 9) is added into line
+#     15000; line 12010 is the "of which" line and is not added.
 #   - Line 26000 (taxable income, `ca/taxable_income`) is read by T1 line 70 and the provincial tax form.
 # Lines 15000 and 23300 are read inside the form by line 23400 and are not exported.
 form:
@@ -25,6 +31,8 @@ form:
     - ca/taxable_income
     - ca/uccb_income_line_11700
     - ca/rdsp_income_line_12500
+    - ca/taxable_dividends_line_12000
+    - ca/taxable_dividends_other_than_eligible_line_12010
     - ca/uccb_repayment_line_21300
     - ca/rdsp_income_repayment_line_23200
 capabilities: []

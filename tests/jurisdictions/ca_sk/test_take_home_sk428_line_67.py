@@ -94,7 +94,7 @@ SK_LINE_PARTS = (
     "sk428_line_61_input.yaml",
     "sk428_line_62.yaml",
     "sk428_line_63.yaml",
-    "sk428_line_64_input.yaml",
+    "sk428_line_64.yaml",
     "sk428_line_65.yaml",
     "sk428_line_66.yaml",
 )
@@ -235,7 +235,8 @@ def _sheet(
     if line_61 is not None:
         given.append(Artifact(sk_catalog.SK428_TAX_ON_SPLIT_INCOME_LINE_61, D(line_61)))
     if line_64 is not None:
-        given.append(Artifact(kinds.kind(LINE_64), D(line_64)))
+        # `line_64` is the amount of line 12000 (line 12010 left out), so line 64 is 11% of it.
+        given.append(Artifact(kinds.kind("ca/taxable_dividends"), D(line_64)))
     worksheets = _service(tmp_path).compute(JurisdictionCode("CA-SK"), 2025, *given)
     (sheet,) = worksheets[FORM_NAME]
     return sheet
@@ -285,23 +286,13 @@ def test_line_67_is_zero_and_not_negative_when_line_66_exceeds_line_62(tmp_path:
     assert not _line(sheet, IDENTIFIER).is_signed()
 
 
-def test_a_large_line_64_floors_line_67_at_zero(tmp_path: Path) -> None:
-    # Line 62 at 70,000 is 7,597.62; line 66 is 2,505.32 plus 5,000.00 (line 64) = 7,505.32.
-    sheet = _sheet(tmp_path, "70000", line_64="5000.00")
-    assert _line(sheet, IDENTIFIER) == D("92.30") == _derived(D("70000"), line_64=D("5000.00"))
+def test_line_67_reads_a_given_line_64_through_line_66(tmp_path: Path) -> None:
+    # Line 12000 of 1,000.00 (line 12010 left out) makes line 64 110.00 (11%), so line 66 is
+    # 2,505.32 plus 110.00. Line 12000 is also income, so line 62 rises: line 67 is 62 less 66.
+    sheet = _sheet(tmp_path, "70000", line_64="1000.00")
 
-    sheet = _sheet(tmp_path / "over", "70000", line_64="6000.00")
-    assert _line(sheet, LINE_66) == D("8505.32")
-    assert _line(sheet, IDENTIFIER) == ZERO
-    assert not _line(sheet, IDENTIFIER).is_signed()
-
-
-def test_line_67_is_zero_when_line_66_equals_line_62(tmp_path: Path) -> None:
-    # Line 62 at 70,000 is 7,597.62 and line 66 is 2,505.32 plus 5,092.30 (line 64).
-    sheet = _sheet(tmp_path, "70000", line_64="5092.30")
-
-    assert _line(sheet, LINE_62) == _line(sheet, LINE_66) == D("7597.62")
-    assert _line(sheet, IDENTIFIER) == ZERO
+    assert _line(sheet, LINE_66) == D("2615.32")
+    assert _line(sheet, IDENTIFIER) == _line(sheet, LINE_62) - D("2615.32")
 
 
 def test_line_67_reads_a_given_line_61_through_line_62(tmp_path: Path) -> None:

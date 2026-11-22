@@ -1,4 +1,4 @@
-"""Revenu Quebec TP-1 (2025) line 447, "Premium payable under the Quebec prescription drug insurance
+"""Revenu Quebec TP-1 (2025) line 447, "Premium payable under the Québec prescription drug insurance
 plan. Complete Schedule K or enter the number corresponding to your situation in box 449.", as the
 Quebec take-home manifest wires it: one `core/record_total` over the line 98 export of
 `ca-qc/tp1_schedule_k`. The chain runs the real Schedule K parts (see `tp1_totals_support.py`). The
@@ -67,7 +67,7 @@ def test_the_part_is_one_record_total_over_the_export_with_the_printed_title() -
     (step,) = part["capabilities"]
     assert step == {
         "name": "core/record_total",
-        "title": "Premium payable under the Quebec prescription drug insurance plan",
+        "title": "Premium payable under the Québec prescription drug insurance plan",
         "reference": "447",
         "unit": "ca/cad",
         "consumes": {"records": "ca-qc/tp1_schedule_k.schedule_k_premium_payable_line_98"},

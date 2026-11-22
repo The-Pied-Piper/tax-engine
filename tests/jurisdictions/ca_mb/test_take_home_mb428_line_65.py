@@ -4,15 +4,16 @@ Form text (Form MB428, CRA 5007-c): "Line 65: Line 60 minus line 64 (if negative
 The form prints no title for the line, so the step is untitled. Line 65 is one
 core/subtract_not_below_zero step over line 60 (`ca-mb/mb428_tax_before_credits_line_60`) and
 line 64 (`ca-mb/mb428_credits_total_line_64`), rounded by `ca-mb/cent_rounding`. Both lines are
-always computed (line 60 reads a blank line 59 as 0 and line 64 reads a blank line 62 as 0, each in
-its own step), so line 65 has no blank rule and prints no "left blank, taken as 0" row of its own.
+always computed (line 60 reads a blank line 59 as 0 and line 64 needs no blank rule for line 62,
+which is always computed),
+so line 65 has no blank rule and prints no "left blank, taken as 0" row of its own.
 
 The test composes the T1 employment income form, the real Schedule 8, T2204 and T1 taxable income
 parts, the real parts of Worksheet MB428 lines 1 to 9, Schedule MB428-A lines 1 to 12, MB428 lines
 1, 3 to 9, 18, 19, 21, 28, 29, 33, 36, 41, 42 and 51 of `ca-mb/mb428_credits`, the line 31, line 50
 and line 56 input parts, the real `mb428_credits_line_53.yaml`, `mb428_credits_line_57.yaml`,
 `mb428_line_58.yaml`, `mb428_line_59_input.yaml`, `mb428_line_60.yaml`, `mb428_line_61.yaml`,
-`mb428_line_62_input.yaml`, `mb428_line_63_input.yaml`, `mb428_line_63.yaml` and
+`mb428_line_62.yaml`, `mb428_line_63_input.yaml`, `mb428_line_63.yaml` and
 `mb428_line_64.yaml`, and the new `mb428_line_65.yaml`, and types in only the salary (and, in some
 tests, line 59, line 62 and the line 63 amount). The header and the form declarations are made up
 here: the credits form exports lines 1, 3 to 8 and 57, and `ca-mb/mb428` exports only line 65. The
@@ -63,7 +64,7 @@ LINE_60_PART = MB_PARTS / "mb428_line_60.yaml"
 LINE_59_PART = MB_PARTS / "mb428_line_59_input.yaml"
 LINE_58_PART = MB_PARTS / "mb428_line_58.yaml"
 LINE_61_PART = MB_PARTS / "mb428_line_61.yaml"
-LINE_62_PART = MB_PARTS / "mb428_line_62_input.yaml"
+LINE_62_PART = MB_PARTS / "mb428_line_62.yaml"
 LINE_63_PART = MB_PARTS / "mb428_line_63.yaml"
 LINE_57_PART = MB_PARTS / "mb428_credits_line_57.yaml"
 LINE_53_PART = MB_PARTS / "mb428_credits_line_53.yaml"
@@ -268,7 +269,14 @@ def _sheet(
     if line_59 is not None:
         given.append(Artifact(mb_catalog.MB428_TAX_ON_SPLIT_INCOME_LINE_59, D(line_59)))
     if line_62 is not None:
-        given.append(Artifact(mb_catalog.MB428_DIVIDEND_TAX_CREDIT_LINE_62, D(line_62)))
+        # `line_62` is the amount of line 12000, with line 12010 at 40% of it.
+        given.append(Artifact(manitoba_kinds().kind("ca/taxable_dividends"), D(line_62)))
+        given.append(
+            Artifact(
+                manitoba_kinds().kind("ca/taxable_dividends_other_than_eligible"),
+                D(line_62) * D("0.4"),
+            )
+        )
     if line_63_amount is not None:
         given.append(Artifact(manitoba_kinds().kind("ca/minimum_tax_carryover"), D(line_63_amount)))
     worksheets = _service(tmp_path).compute(JurisdictionCode("CA-MB"), 2025, *given)
@@ -319,11 +327,12 @@ def test_line_65_falls_when_line_62_and_line_63_raise_line_64(tmp_path: Path) ->
 
 
 def test_line_65_falls_when_line_62_is_given(tmp_path: Path) -> None:
-    # Line 62 of 100.00 makes line 64 2,276.12; 7,923.71 less 2,276.12 is 5,647.59.
-    sheet = _sheet(tmp_path, "70000", line_62="100.00")
+    # Line 12000 of 1,000.00 and line 12010 of 400.00 make line 62 51.13 (3.13 plus 48.00), so line
+    # 64 is 2,227.25. Line 12000 is also income, so line 60 rises too: line 65 is line 60 less 64.
+    sheet = _sheet(tmp_path, "70000", line_62="1000.00")
 
-    assert _line(sheet, LINE_64) == D("2276.12")
-    assert _line(sheet, IDENTIFIER) == D("5647.59")
+    assert _line(sheet, LINE_64) == D("2227.25")
+    assert _line(sheet, IDENTIFIER) == _line(sheet, LINE_60) - D("2227.25")
 
 
 def test_line_65_rises_when_line_59_raises_line_60(tmp_path: Path) -> None:
@@ -337,7 +346,7 @@ def test_line_65_rises_when_line_59_raises_line_60(tmp_path: Path) -> None:
 def test_line_65_has_no_left_blank_row_of_its_own(tmp_path: Path) -> None:
     # With lines 59 and 62 given, the steps that read them print no blank row, and line 65's step
     # (which has no blank rule) prints none either.
-    sheet = _sheet(tmp_path, "70000", line_59="100.00", line_62="100.00", line_63_amount="1000.00")
+    sheet = _sheet(tmp_path, "70000", line_59="100.00", line_62="1000.00", line_63_amount="1000.00")
 
     assert EnglishTraceRenderer().render_all(sheet.trace, sheet)
     assert not _blank_rows(sheet)

@@ -1,5 +1,5 @@
-# T1 (5006-R, 2025) line 23200 input a salary-only caller does not give.
-# "Line 52 and line 23200: Other deductions (specify)" (5006-R page 3). A salary-only caller has none, so a request that leaves the line out is
+# T1 (5005-R, 2025) line 23200 input a salary-only caller does not give.
+# "Line 53 and line 23200: Other deductions (specify)" (5005-R page 4). A salary-only caller has none, so a request that leaves the line out is
 # read as blank, and the line 23200 step reads that blank as 0. This form owns the input: Schedule 6,
 # BC479, MB479 and NL428 import line 23200 from this form's export and never ask for it themselves.
 form:
@@ -11,4 +11,4 @@ inputs:
     unit: ca/cad
     required: false
     default: null
-    basis: 'Line 52 and line 23200: Other deductions (specify)'
+    basis: 'Line 53 and line 23200: Other deductions (specify)'

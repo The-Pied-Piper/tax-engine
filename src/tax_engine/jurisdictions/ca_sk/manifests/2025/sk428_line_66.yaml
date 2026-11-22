@@ -1,9 +1,10 @@
 # Form SK428 (Saskatchewan Tax, CRA 5008-C) line 66, "Line 66: Add lines 63 to 65. =". One core/sum
 # step over line 63 (the credits from line 57, `ca-sk/sk428_credits_from_line_57_line_63`), line 64
 # (the dividend tax credit, `ca-sk/sk428_dividend_tax_credit_line_64`) and line 65 (the minimum tax
-# carryover, `ca-sk/sk428_minimum_tax_carryover_line_65`). Line 64 is an input a salary-only caller
-# leaves out, so the blank rule below reads it as 0; lines 63 and 65 are always computed and need
-# none. The form prints no title for the line, so the step has none.
+# carryover, `ca-sk/sk428_minimum_tax_carryover_line_65`). Line 64 is the computed dividend tax
+# credit worksheet (0.00 for a caller who gives no dividends), and lines 63 and 65 are always
+# computed, so the step needs no blank rule. The form prints no title for the line, so the step has
+# none.
 form:
   name: ca-sk/sk428
 capabilities:
@@ -17,7 +18,5 @@ capabilities:
         - ca-sk/sk428_credits_from_line_57_line_63
         - ca-sk/sk428_dividend_tax_credit_line_64
         - ca-sk/sk428_minimum_tax_carryover_line_65
-    blank:
-      ca-sk/sk428_dividend_tax_credit_line_64: "0"
     produces:
       output: ca-sk/sk428_credits_subtotal_line_66

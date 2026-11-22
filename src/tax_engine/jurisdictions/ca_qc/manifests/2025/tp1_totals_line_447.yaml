@@ -1,4 +1,4 @@
-# TP-1 (2025) line 447: "Premium payable under the Quebec prescription drug insurance plan. Complete
+# TP-1 (2025) line 447: "Premium payable under the Québec prescription drug insurance plan. Complete
 # Schedule K or enter the number corresponding to your situation in box 449. + 447" (page 5). The
 # figure is Schedule K line 98 ("Carry the result to line 447 of your return"), which that form
 # exports; another form reads an export only as a record list
@@ -9,7 +9,7 @@ form:
   name: ca-qc/tp1_totals
 capabilities:
   - name: core/record_total
-    title: "Premium payable under the Quebec prescription drug insurance plan"
+    title: "Premium payable under the Québec prescription drug insurance plan"
     reference: "447"
     unit: ca/cad
     consumes:
