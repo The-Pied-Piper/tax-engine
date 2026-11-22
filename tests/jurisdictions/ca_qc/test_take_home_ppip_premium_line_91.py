@@ -3,7 +3,9 @@
 Form text (CRA 5005-R, 5005-r-25e.txt, page 6): "Line 91 and line 31205: Provincial parental
 insurance plan (PPIP) premiums paid (box 55 of all T4 slips) (maximum $484.12)". The take-home
 caller has no T4 slip, so the input `ca-qc/ppip_premiums_given` is optional: a request that gives it
-has that figure as line 91, unchanged; a request that leaves it out has line 91 computed by
+has that figure as line 91, unchanged, up to the printed maximum $484.12 and refused above it (never
+capped; the figure is checked by `core/at_most` against the `ca-qc/ppip_premium_maximum` dataset, as
+NL428 line 82 is); a request that leaves it out has line 91 computed by
 `ca/given_or_contribution_tier` from the employment income with the `ca-qc/ppip_premium` dataset
 (0.494% of the earnings to $98,000, at most $484.12), as T2204 line 4 is. RL-1 box H (TP-1 line 97)
 is the same figure. The figures are hand-computed from the printed forms, not a CRA example:
@@ -25,10 +27,18 @@ import pytest
 import yaml
 
 from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.errors import InputAboveBoundError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.kinds import AmountKind
+from tax_engine.domain.kinds import AmountKind, CountKind
+from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tax_engine.jurisdictions.ca_qc.catalog import PPIP_PREMIUMS_GIVEN, PPIP_PREMIUMS_PAID
+from tax_engine.jurisdictions.ca_qc.catalog import (
+    PPIP_PREMIUM_UNDER_THRESHOLD_COUNT,
+    PPIP_PREMIUM_ZERO,
+    PPIP_PREMIUMS_BEFORE_EARNINGS_TEST,
+    PPIP_PREMIUMS_GIVEN,
+    PPIP_PREMIUMS_PAID,
+)
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
 from tests.jurisdictions.ca_qc.support import T1_SALARY_PARTS, quebec_kinds
 from tests.kinds import non_negative
@@ -48,7 +58,7 @@ HEADER = dedent("""\
     """)
 
 
-def _line_91(take_home_service: TakeHomeService, salary: str, given: str | None = None) -> Decimal:
+def _sheet(take_home_service: TakeHomeService, salary: str, given: str | None = None) -> Worksheet:
     starting = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if given is not None:
         starting.append(Artifact(PPIP_PREMIUMS_GIVEN, D(given)))
@@ -60,7 +70,11 @@ def _line_91(take_home_service: TakeHomeService, salary: str, given: str | None 
         LINE_PART.name,
     )
     (sheet,) = service.compute(JurisdictionCode("CA-QC"), 2025, *starting)["ca-qc/ppip_premium"]
-    return sheet.get(PPIP_PREMIUMS_PAID).value
+    return sheet
+
+
+def _line_91(take_home_service: TakeHomeService, salary: str, given: str | None = None) -> Decimal:
+    return _sheet(take_home_service, salary, given).get(PPIP_PREMIUMS_PAID).value
 
 
 def _step() -> dict[str, Any]:
@@ -68,13 +82,56 @@ def _step() -> dict[str, Any]:
     assert isinstance(part, dict)
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": "ca-qc/ppip_premium"}
-    record_total, step = part["capabilities"]
+    record_total, maximum, check, step, count, zero, choose = part["capabilities"]
     assert record_total == {
         "name": "core/record_total",
         "title": "Employment income, T1 line 10100",
         "unit": "ca/cad",
         "consumes": {"records": "ca-qc/t1_employment_income.employment_income_line_10100"},
         "produces": {"output": "ca-qc/ppip_premium_employment_income"},
+    }
+    assert maximum == {
+        "name": "core/credit_amount",
+        "title": "Most you can enter on line 91",
+        "unit": "ca/cad",
+        "params": {"amount": "ca-qc/ppip_premium_maximum"},
+        "produces": {"output": "ca-qc/ppip_premium_maximum"},
+    }
+    assert check == {
+        "name": "core/at_most",
+        "unit": "ca/cad",
+        "consumes": {
+            "amount": "ca-qc/ppip_premiums_given",
+            "bound": "ca-qc/ppip_premium_maximum",
+        },
+        "blank": {"amount": "pass_on"},
+        "produces": {"output": "ca-qc/ppip_premiums_given_checked"},
+    }
+    assert count == {
+        "name": "ca/count_by_conditions",
+        "title": "The PPIP insurable earnings are less than $2,000",
+        "params": {"conditions": "ca-qc/ppip_premium_line_91_conditions"},
+        "consumes": {"counts": [], "amounts": ["ca-qc/ppip_premium_employment_income"]},
+        "produces": {"output": "ca-qc/ppip_premium_under_threshold_count"},
+    }
+    assert zero == {
+        "name": "core/credit_amount",
+        "title": "PPIP premiums claimed when the earnings are under $2,000",
+        "unit": "ca/cad",
+        "params": {"amount": "ca-qc/ppip_premium_zero"},
+        "produces": {"output": "ca-qc/ppip_premium_zero"},
+    }
+    assert choose == {
+        "name": "core/choose_by_count",
+        "title": "Provincial parental insurance plan (PPIP) premiums paid",
+        "reference": "91",
+        "unit": "ca/cad",
+        "consumes": {
+            "count": "ca-qc/ppip_premium_under_threshold_count",
+            "when_none": "ca-qc/ppip_premiums_before_earnings_test",
+            "when_any": "ca-qc/ppip_premium_zero",
+        },
+        "produces": {"output": IDENTIFIER},
     }
     assert isinstance(step, dict)
     return step
@@ -115,21 +172,66 @@ def test_a_given_line_91_is_not_computed_from_the_salary(
     assert str(_line_91(take_home_service, "20000", "400.00")) == "400.00"
 
 
-def test_the_part_is_a_record_total_of_line_10100_then_one_given_or_contribution_tier_step() -> (
-    None
-):
+@pytest.mark.parametrize("given", ["484.12", "484.11"])
+def test_a_given_line_91_up_to_the_printed_maximum_is_kept(
+    take_home_service: TakeHomeService, given: str
+) -> None:
+    assert str(_line_91(take_home_service, "70000", given)) == given
+
+
+@pytest.mark.parametrize("given", ["484.13", "1000.00"])
+def test_a_given_line_91_above_the_printed_maximum_is_refused_not_capped(
+    take_home_service: TakeHomeService, given: str
+) -> None:
+    with pytest.raises(InputAboveBoundError):
+        _line_91(take_home_service, "70000", given)
+
+
+def test_a_given_line_91_above_the_maximum_is_refused_whatever_the_salary(
+    take_home_service: TakeHomeService,
+) -> None:
+    with pytest.raises(InputAboveBoundError):
+        _line_91(take_home_service, "20000", "484.13")
+
+
+@pytest.mark.parametrize(
+    ("salary", "expected"),
+    [
+        # Under $2,000 of PPIP insurable earnings, the guide to line 31205 says to claim nothing
+        # there (the premium goes to TP-1 line 457 instead): 0.494% of 1,500 would be 7.41.
+        ("0", "0.00"),
+        ("1500", "0.00"),
+        ("1999.99", "0.00"),
+        # Exactly $2,000 is not "less than $2,000": 0.494% of 2,000 is 9.88.
+        ("2000", "9.88"),
+        ("2000.01", "9.88"),
+    ],
+)
+def test_line_91_is_nothing_when_the_ppip_insurable_earnings_are_under_2000(
+    take_home_service: TakeHomeService, salary: str, expected: str
+) -> None:
+    assert str(_line_91(take_home_service, salary)) == expected
+
+
+def test_a_given_line_91_is_nothing_when_the_earnings_are_under_2000(
+    take_home_service: TakeHomeService,
+) -> None:
+    # The guide does not let a premium be claimed on line 31205 under $2,000, however it is entered.
+    assert str(_line_91(take_home_service, "1500", "7.41")) == "0.00"
+
+
+def test_the_part_ends_in_the_given_or_tier_step_the_earnings_test_and_the_choice() -> None:
     assert _step() == {
         "name": "ca/given_or_contribution_tier",
-        "title": "Provincial parental insurance plan (PPIP) premiums paid",
-        "reference": "91",
+        "title": "PPIP premiums paid before the earnings test",
         "unit": "ca/cad",
         "params": {"tier": "ca-qc/ppip_premium"},
         "consumes": {
-            "given": "ca-qc/ppip_premiums_given",
+            "given": "ca-qc/ppip_premiums_given_checked",
             "earnings": "ca-qc/ppip_premium_employment_income",
         },
         "blank": {"given": "compute"},
-        "produces": {"output": IDENTIFIER},
+        "produces": {"output": "ca-qc/ppip_premiums_before_earnings_test"},
     }
 
 
@@ -139,4 +241,30 @@ def test_the_kind_is_a_registered_non_negative_decimal_amount() -> None:
     assert kind is PPIP_PREMIUMS_PAID
     assert isinstance(kind, AmountKind)
     assert kind.value_type is Decimal
+    assert non_negative(kind)
+
+
+def test_every_step_is_traced_at_1500(take_home_service: TakeHomeService) -> None:
+    sheet = _sheet(take_home_service, "1500")
+
+    assert str(sheet.get(PPIP_PREMIUMS_BEFORE_EARNINGS_TEST).value) == "7.41"
+    assert sheet.get(PPIP_PREMIUM_UNDER_THRESHOLD_COUNT).value == 1
+    assert str(sheet.get(PPIP_PREMIUM_ZERO).value) == "0.00"
+    assert str(sheet.get(PPIP_PREMIUMS_PAID).value) == "0.00"
+
+
+@pytest.mark.parametrize(
+    ("identifier", "kind_class"),
+    [
+        ("ca-qc/ppip_premiums_before_earnings_test", AmountKind),
+        ("ca-qc/ppip_premium_under_threshold_count", CountKind),
+        ("ca-qc/ppip_premium_zero", AmountKind),
+    ],
+)
+def test_the_new_kinds_are_registered_and_non_negative(
+    identifier: str, kind_class: type[AmountKind] | type[CountKind]
+) -> None:
+    kind = quebec_kinds().kind(identifier)
+
+    assert isinstance(kind, kind_class)
     assert non_negative(kind)
