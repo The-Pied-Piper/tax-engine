@@ -11,6 +11,6 @@ capabilities:
       rounding: ca-mb/cent_rounding
     consumes:
       amount: ca-mb/worksheet_mb428_line_2
-      less: ca-mb/worksheet_mb428_basic_personal_amount_line_3
+      less: ca-mb/worksheet_mb428_line_3
     produces:
       output: ca-mb/worksheet_mb428_line_4
