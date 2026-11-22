@@ -1,21 +1,22 @@
 """T1 General 2025 (5006-R, Ontario) line 125 "Add lines 122 to 124.", from the salary alone.
 
 Line 125 is "Add lines 122 to 124" (T1 General 5006-R, CRA 5006-R-25E, confirmed). Line 122 is
-"Amount from line 35000"
-(`ca/non_refundable_tax_credits`), a pure copy with no step. Line 123 (line 40425, the federal
-dividend tax credit) and line 124 (line 40427, the minimum tax carryover) are 0 for a filer with no
-dividends and no minimum tax carryover, so both are left out. Line 125 is therefore one `core/sum`
-over line 35000 only, rounded half-up to the cent with the shared `ca/cent_rounding` dataset, and
-produces `ca/credits_against_basic_federal_tax`, a non-negative kind.
+"Amount from line 35000" (`ca/non_refundable_tax_credits`), a pure copy with no step. Line 123
+(line 40425, the federal dividend tax credit, a Federal Worksheet) is not built and is left out.
+Line 124 (line 40427, the minimum tax carryover) is a copy of line 40427 from the T1 lines copied
+by provinces form (0 when blank), a `core/record_total` (`ca/minimum_tax_carryover_line_124`). Line
+125 is one `core/sum` over lines 122 and 124, rounded half-up to the cent with the shared
+`ca/cent_rounding` dataset, and produces `ca/credits_against_basic_federal_tax`, a non-negative
+kind.
 
 The real parts are composed beside a test-local header: the salary, the real Schedule 8 and T2204
 parts, the real T1 taxable-income lines and inputs (line 23600 feeds line 30000), line 30000, line
 84, line 31260, line 96, line 98, line 101, line 106, line 33500, line 33800, line 35000 and the
 part under test. The form declaration of line 125 is test-local: its one export is line 125.
 
-The salary is the only input the caller gives. Ontario resident, single filer, salary the only
-income, tax withheld 0, basic credits only, as the take-home calculator states them.
-"""
+The salary is the only input the caller gives, except line 40427 where a test gives it. Ontario
+resident, single filer, salary the only income, tax withheld 0, basic credits only, as the
+take-home calculator states them."""
 
 from __future__ import annotations
 
@@ -28,6 +29,7 @@ from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog.credits_against_federal_tax import MINIMUM_TAX_CARRYOVER
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
@@ -42,6 +44,7 @@ LINE_125 = "ca/credits_against_basic_federal_tax"
 # parts, the real T1 taxable-income lines and inputs, lines 30000, 84, 31260, 96, 98, 101, 106,
 # 33500, 33800 and 35000, and the part under test.
 PARTS = (
+    *form_part_names("t1_lines_copied_by_provinces"),
     *form_part_names("schedule_8"),
     *form_part_names("t2204"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),
@@ -52,6 +55,11 @@ PARTS = (
     "t1_tax_and_credits_line_98.yaml",
     "t1_tax_and_credits_line_101.yaml",
     "t1_tax_and_credits_line_106.yaml",
+    "t1_tax_and_credits_line_107.yaml",
+    "t1_tax_and_credits_line_108.yaml",
+    "t1_tax_and_credits_line_109.yaml",
+    "t1_tax_and_credits_line_110.yaml",
+    "t1_tax_and_credits_line_33200.yaml",
     "t1_tax_and_credits_line_33500.yaml",
     "t1_tax_and_credits_line_33800.yaml",
     "t1_tax_and_credits_line_35000.yaml",
@@ -74,10 +82,10 @@ T1_TAX_AND_CREDITS = dedent(f"""\
     """)
 
 
-def _sheet(take_home_service: TakeHomeService, salary: str) -> Worksheet:
+def _sheet(take_home_service: TakeHomeService, salary: str, *given: Artifact[Decimal]) -> Worksheet:
     """The tax and credits sheet, with lines 35000 and 125 on it."""
     worksheets = take_home_service(HEADER, T1_TAX_AND_CREDITS, *PARTS).compute(
-        ONTARIO, 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
+        ONTARIO, 2025, Artifact(EMPLOYMENT_INCOME, D(salary)), *given
     )
     (sheet,) = worksheets[FORM]
     return sheet
@@ -104,12 +112,13 @@ def test_line_125_is_line_35000(
     assert line_125.as_tuple().exponent == -2
 
 
-def test_line_125_names_line_35000_and_its_rounding_in_the_trace(
+def test_line_125_names_lines_35000_and_40427_and_its_rounding_in_the_trace(
     take_home_service: TakeHomeService,
 ) -> None:
     sheet = _sheet(take_home_service, "70000")
     assert (
-        "Line 35000 (CA$3185.54) gives CA$3185.54 (rounded to the nearest cent)."
+        "Line 35000 (CA$3185.54) plus line 40427 (CA$0.00) gives CA$3185.54 "
+        "(rounded to the nearest cent)."
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
 
 
@@ -118,3 +127,18 @@ def test_the_line_125_kind_is_registered_and_non_negative() -> None:
 
     assert kind.identifier == LINE_125
     assert non_negative(kind) is True
+
+
+def test_line_125_adds_line_124_the_minimum_tax_carryover(
+    take_home_service: TakeHomeService,
+) -> None:
+    # $70,000: line 35000 is 3,185.54; line 40427 of 200.00 is line 124.
+    sheet = _sheet(take_home_service, "70000", Artifact(MINIMUM_TAX_CARRYOVER, D("200")))
+    kinds = bundled_kinds()
+
+    assert sheet.get(kinds.kind("ca/minimum_tax_carryover_line_124")).value == D("200.00")
+    assert sheet.get(kinds.kind(LINE_125)).value == D("3385.54")
+    assert (
+        "Line 35000 (CA$3185.54) plus line 40427 (CA$200.00) gives CA$3385.54 "
+        "(rounded to the nearest cent)."
+    ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
