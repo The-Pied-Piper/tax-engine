@@ -1,4 +1,7 @@
-"""Outbound port: how a take-home answer is worded and how its units are written."""
+"""Port: how a take-home answer is worded and how its units are written.
+
+Implemented by the inbound adapters, which write results for a caller.
+"""
 
 from __future__ import annotations
 

@@ -42,7 +42,7 @@ class TakeHomeService:
         self._computation = computation
         self._text = text
 
-    def compute(self, request: TakeHomeRequest) -> TakeHomeResult:
+    def calculate(self, request: TakeHomeRequest) -> TakeHomeResult:
         """The take-home answer for `request`.
 
         Raises NotFoundError when the jurisdiction's manifest for the tax year declares no take-home

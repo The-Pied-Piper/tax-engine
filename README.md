@@ -105,7 +105,7 @@ from tax_engine import build_take_home
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.application.models.take_home_request import TakeHomeRequest
 
-answer = build_take_home().compute(
+answer = build_take_home().calculate(
     TakeHomeRequest(JurisdictionCode("CA-ON"), 2025, Decimal(70000), include_trace=False)
 )
 print(answer.take_home)  # 53468.68
