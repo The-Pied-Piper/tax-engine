@@ -242,10 +242,12 @@ def test_the_form_exports_the_return_lines_and_the_worksheet_holds_them_at_70000
         NET_INCOME_SIGNED,
         TAXABLE_INCOME,
     )
-    # The four UCCB and RDSP lines follow; other forms import them instead of re-taking them.
+    # The UCCB, RDSP and dividend lines follow; other forms import them instead of re-taking them.
     assert [kind.identifier for kind in form.exports[3:]] == [
         "ca/uccb_income_line_11700",
         "ca/rdsp_income_line_12500",
+        "ca/taxable_dividends_line_12000",
+        "ca/taxable_dividends_other_than_eligible_line_12010",
         "ca/uccb_repayment_line_21300",
         "ca/rdsp_income_repayment_line_23200",
     ]
@@ -257,6 +259,8 @@ def test_the_form_exports_the_return_lines_and_the_worksheet_holds_them_at_70000
         D("69335.00"),
         D("69335.00"),
         D("69335.00"),
+        D("0.00"),
+        D("0.00"),
         D("0.00"),
         D("0.00"),
         D("0.00"),

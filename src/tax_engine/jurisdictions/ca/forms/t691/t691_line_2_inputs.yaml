@@ -1,0 +1,15 @@
+# T691 (T691 E (25), 2025) Part 7 line 2 input a salary-only caller does not give: "Basic federal
+# tax from line 7 of Part 2". A salary-only caller has no figure here, so a request that leaves the
+# line out is read as blank; `t691_line_2.yaml` reads it as 0 and rounds it to the cent. The lines
+# above it are not built, so the figure is taken as the form prints it, one input. This form owns
+# the input; the provincial forms import the T691's exports and never ask for it themselves.
+form:
+  name: ca/t691
+inputs:
+  - name: ca/t691_basic_federal_tax
+    title: "Basic federal tax from line 7 of Part 2"
+    reference: "2"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Basic federal tax from line 7 of Part 2'

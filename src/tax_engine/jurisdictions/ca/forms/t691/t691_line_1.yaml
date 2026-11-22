@@ -1,0 +1,19 @@
+# T691 (T691 E (25), 2025) Part 7 line 1: "Minimum amount from line 103 of Part 1". The line is an
+# optional input (`ca/t691_minimum_amount`), blank for a salary-only filer. One core/sum step over
+# the input alone reads the blank as 0 and rounds to the cent, because a line written on the form is
+# a whole-cent figure: `ca/t691_line_1_amount`. The computed lines of Part 7 read this figure, never
+# the input.
+form:
+  name: ca/t691
+capabilities:
+  - name: core/sum
+    reference: "1"
+    unit: ca/cad
+    params:
+      rounding: ca/cent_rounding
+    consumes:
+      parts: [ca/t691_minimum_amount]
+    blank:
+      ca/t691_minimum_amount: "0"
+    produces:
+      output: ca/t691_line_1_amount

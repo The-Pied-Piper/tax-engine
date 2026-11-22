@@ -10,7 +10,7 @@ a group drug plan" (Schedule K line 50).
 
 Each printed figure of the chain is one test, over the three salaries and the scenarios:
 - the refund or balance owing (positive is owing, negative a refund): 5005-R line 172 plus
-  TP-1 line 450 less line 456;
+  TP-1 line 470 (line 450 less line 468);
 - the total payable: 5005-R line 43500 less line 44000 plus TP-1 line 450;
 - 5005-R line 172, "Line 152 minus line 171 ... Refund or balance owing" (CRA 5005-R);
 - TP-1 line 450, "Add lines 432 through 447. Income tax and contributions" (Revenu Quebec TP-1.D-V
@@ -51,6 +51,7 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     TOTAL_PAYABLE,
     TP1_INCOME_TAX_AND_CONTRIBUTIONS_LINE_450,
     TP1_LINE_457,
+    TP1_LINE_470,
     TP1_NET_BUSINESS_INCOME_SCHEDULE_L_LINE_27,
     TP1_RL1_SLIP_BOX_I,
     TP1_WORK_PREMIUM_TAX_CREDITS_LINE_456,
@@ -238,10 +239,10 @@ def test_the_refund_and_the_total_payable_follow_from_the_printed_lines(
     sheets = _sheets(salary, scenario)
     line_172 = sheets["ca-qc/t1_tax_and_credits"].get(REFUND_OR_BALANCE_OWING_LINE_172).value
     line_450 = sheets["ca-qc/tp1_totals"].get(TP1_INCOME_TAX_AND_CONTRIBUTIONS_LINE_450).value
-    line_456 = sheets["ca-qc/tp1_totals"].get(TP1_WORK_PREMIUM_TAX_CREDITS_LINE_456).value
+    line_470 = sheets["ca-qc/tp1_totals"].get(TP1_LINE_470).value
     summary = sheets["ca-qc/return"]
 
-    assert summary.get(REFUND_OR_BALANCE_OWING).value == line_172 + line_450 - line_456
+    assert summary.get(REFUND_OR_BALANCE_OWING).value == line_172 + line_470
     line_43500 = summary.get(FEDERAL_TOTAL_PAYABLE_RETURN).value
     line_44000 = summary.get(REFUNDABLE_QUEBEC_ABATEMENT_RETURN).value
     assert summary.get(TOTAL_PAYABLE).value == line_43500 - line_44000 + line_450
