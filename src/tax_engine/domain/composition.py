@@ -60,8 +60,8 @@ class Composition:
         form_title: str | None = None,
         figure_titles: Mapping[str, str] | None = None,
         figure_references: Mapping[str, str] | None = None,
-        figure_positions: Mapping[str, int] | None = None,
         figure_units: Mapping[str, Unit] | None = None,
+        figure_positions: Mapping[str, int] | None = None,
         imported_figures: Mapping[str, ImportedFigure] | None = None,
         defaulted: Iterable[ArtifactKind[Any]] = (),
     ) -> Worksheet:
@@ -79,8 +79,8 @@ class Composition:
             form_title=form_title,
             figure_titles=figure_titles,
             figure_references=figure_references,
-            figure_positions=figure_positions,
             figure_units=figure_units,
+            figure_positions=figure_positions,
             imported_figures=imported_figures,
             defaulted=defaulted,
         )

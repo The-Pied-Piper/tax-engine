@@ -340,6 +340,21 @@ def test_a_worksheet_carries_the_position_of_the_inputs_and_steps_of_the_form() 
     assert sheet.position(STEP_TOTAL.label) == 2
 
 
+def test_a_form_gives_the_position_of_a_declared_instance_field() -> None:
+    shop_form = composition(
+        "ex/shop",
+        [Subtract(EXACT_TOTAL, SALES, COSTS, PROFIT)],
+        instances=SHOPS,
+        exports=[PROFIT],
+        fields=(
+            InputDeclaration(SALES.identifier, True, position=3),
+            InputDeclaration(COSTS.identifier, True),
+        ),
+    )
+
+    assert shop_form.figure_positions == {SALES.label: 3}
+
+
 def test_two_forms_may_not_declare_the_same_input() -> None:
     first, second = (
         composition(

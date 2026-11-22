@@ -471,8 +471,8 @@ class FormSet:
                 form_title=form.title,
                 figure_titles=form.figure_titles,
                 figure_references=form.figure_references,
-                figure_positions=form.figure_positions,
                 figure_units=form.figure_units,
+                figure_positions=form.figure_positions,
                 imported_figures=self._imported_figures(form),
                 defaulted=defaulted,
             )

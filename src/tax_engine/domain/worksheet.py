@@ -32,8 +32,8 @@ class Worksheet:
         form_title: str | None = None,
         figure_titles: Mapping[str, str] | None = None,
         figure_references: Mapping[str, str] | None = None,
-        figure_positions: Mapping[str, int] | None = None,
         figure_units: Mapping[str, Unit] | None = None,
+        figure_positions: Mapping[str, int] | None = None,
         imported_figures: Mapping[str, ImportedFigure] | None = None,
         defaulted: Iterable[ArtifactKind[Any]] = (),
     ) -> None:
