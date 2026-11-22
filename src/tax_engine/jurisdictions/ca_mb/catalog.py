@@ -200,15 +200,16 @@ MB428_NON_REFUNDABLE_CREDITS_LINE_61 = AmountKind.declare(
 """Manitoba non-refundable tax credits, MB428 line 61 "Line 61: Manitoba non-refundable tax credits
 from line 57 ^": line 57 of the credits form, read across the forms."""
 
-MB428_MINIMUM_TAX_CARRYOVER_LINE_63 = AmountKind.declare(
-    CATALOG, "mb428_minimum_tax_carryover_line_63", non_negative=True
+MB428_MINIMUM_TAX_CARRYOVER_AMOUNT_LINE_63 = AmountKind.declare(
+    CATALOG, "mb428_minimum_tax_carryover_amount_line_63", non_negative=True
 )
 """Minimum tax carryover amount, MB428 line 63 (line 40427) "Line 63 and line 61540: Amount from
-line 40427 of your return": a caller input, read as blank when left out; the carryover credit step
-reads it."""
+line 40427 of your return": a record total of the T1's export
+(`ca/minimum_tax_carryover_line_40427`), 0 for a salary-only caller; the carryover credit step reads
+it."""
 
-MB428_MINIMUM_TAX_CARRYOVER_CREDIT_LINE_63 = AmountKind.declare(
-    CATALOG, "mb428_minimum_tax_carryover_credit_line_63", non_negative=True
+MB428_MINIMUM_TAX_CARRYOVER_LINE_63 = AmountKind.declare(
+    CATALOG, "mb428_minimum_tax_carryover_line_63", non_negative=True
 )
 """Manitoba minimum tax carryover, MB428 line 63 and line 61540 "Amount from line 40427 of your
 return multiplied by 50% =": calculated, the amount from line 40427 multiplied by 50%."""
@@ -352,9 +353,7 @@ MB428_A_FAMILY_TAX_BENEFIT_LINE_12 = AmountKind.declare(
 "0") Enter this amount on line 61470 of your Form MB428.": the family tax benefit entered on line
 61470 of Form MB428."""
 
-WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_3 = AmountKind.declare(
-    CATALOG, "worksheet_mb428_basic_personal_amount_line_3", non_negative=True
-)
+WORKSHEET_MB428_LINE_3 = AmountKind.declare(CATALOG, "worksheet_mb428_line_3", non_negative=True)
 """Income threshold, Worksheet MB428 line 3 "Line 3: Income threshold 200,000.00": the income
 threshold of the basic personal amount section."""
 
@@ -362,9 +361,7 @@ WORKSHEET_MB428_LINE_2 = AmountKind.declare(CATALOG, "worksheet_mb428_line_2", n
 """Net income, Worksheet MB428 line 2 "Line 2: Amount from line 23600 of your return": the T1 net
 income, line 23600 after its floor."""
 
-WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_1 = AmountKind.declare(
-    CATALOG, "worksheet_mb428_basic_personal_amount_line_1", non_negative=True
-)
+WORKSHEET_MB428_LINE_1 = AmountKind.declare(CATALOG, "worksheet_mb428_line_1", non_negative=True)
 """Base amount, Worksheet MB428 line 1 "Line 1: Base amount 15,780.00": the base amount of the
 basic personal amount section."""
 
@@ -374,9 +371,7 @@ MB428_EI_PREMIUMS_LINE_21 = AmountKind.declare(
 """EI premiums credit amount, MB428 line 21 (line 58300) "Amount from line 31200 of your return": a
 copy of T2204 line 16, the EI premiums credit amount."""
 
-WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_5 = AmountKind.declare(
-    CATALOG, "worksheet_mb428_basic_personal_amount_line_5", non_negative=True
-)
+WORKSHEET_MB428_LINE_5 = AmountKind.declare(CATALOG, "worksheet_mb428_line_5", non_negative=True)
 """Income threshold, Worksheet MB428 line 5 "Line 5: Income threshold 200,000.00": the income
 threshold of the basic personal amount section."""
 
@@ -384,9 +379,7 @@ WORKSHEET_MB428_LINE_4 = AmountKind.declare(CATALOG, "worksheet_mb428_line_4", n
 """Net income over the threshold, Worksheet MB428 line 4 "Line 4: Line 2 minus line 3 (if negative,
 enter "0")": line 2 minus line 3, not below zero."""
 
-WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_7 = AmountKind.declare(
-    CATALOG, "worksheet_mb428_basic_personal_amount_line_7", non_negative=True
-)
+WORKSHEET_MB428_LINE_7 = AmountKind.declare(CATALOG, "worksheet_mb428_line_7", non_negative=True)
 """Base amount, Worksheet MB428 line 7 "Line 7: Base amount 15,780.00": the base amount of the
 basic personal amount section."""
 

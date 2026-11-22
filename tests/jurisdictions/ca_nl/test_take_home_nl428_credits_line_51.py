@@ -60,7 +60,9 @@ FORM_NAME = "ca-nl/nl428_credits"
 LINE_49 = "ca-nl/nl428_net_income_line_49"
 KIND = "ca-nl/nl428_medical_expenses_rate_amount_line_51"
 # The real federal parts the T1 taxable-income form needs, beside the salary, line 49 and line 51.
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 
 HEADER = dedent("""\
     jurisdiction: CA-NL

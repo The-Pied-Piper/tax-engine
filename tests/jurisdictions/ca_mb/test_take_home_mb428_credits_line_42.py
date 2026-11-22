@@ -86,7 +86,9 @@ WORKSHEET_PARTS = (
     "worksheet_mb428_line_9.yaml",
 )
 # The real federal parts the T1 taxable-income form needs, beside the salary and the worksheet.
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 
 HEADER = dedent("""\
     jurisdiction: CA-MB
@@ -100,13 +102,13 @@ WORKSHEET_FORM = dedent("""\
       name: ca-mb/worksheet_mb428
       required: true
       exports:
-        - ca-mb/worksheet_mb428_basic_personal_amount_line_1
+        - ca-mb/worksheet_mb428_line_1
         - ca-mb/worksheet_mb428_line_2
-        - ca-mb/worksheet_mb428_basic_personal_amount_line_3
+        - ca-mb/worksheet_mb428_line_3
         - ca-mb/worksheet_mb428_line_4
-        - ca-mb/worksheet_mb428_basic_personal_amount_line_5
+        - ca-mb/worksheet_mb428_line_5
         - ca-mb/worksheet_mb428_line_6
-        - ca-mb/worksheet_mb428_basic_personal_amount_line_7
+        - ca-mb/worksheet_mb428_line_7
         - ca-mb/worksheet_mb428_line_8
         - ca-mb/worksheet_mb428_basic_personal_amount_line_9
     capabilities: []

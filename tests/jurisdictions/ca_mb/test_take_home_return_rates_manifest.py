@@ -166,8 +166,8 @@ def test_the_worksheet_lines_are_totalled_from_the_worksheet_form_in_amounts() -
         "ca-mb/manitoba_basic_personal_amount_return": (
             "worksheet_mb428_basic_personal_amount_line_9"
         ),
-        "ca-mb/manitoba_base_amount_return": "worksheet_mb428_basic_personal_amount_line_7",
-        "ca-mb/manitoba_income_threshold_return": "worksheet_mb428_basic_personal_amount_line_5",
+        "ca-mb/manitoba_base_amount_return": "worksheet_mb428_line_7",
+        "ca-mb/manitoba_income_threshold_return": "worksheet_mb428_line_5",
     }
 
     for output, line in expected.items():

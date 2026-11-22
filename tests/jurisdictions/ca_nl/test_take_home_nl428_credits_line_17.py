@@ -59,7 +59,9 @@ LINE_PART = NL_PARTS / "nl428_credits_line_17.yaml"
 IDENTIFIER = "ca-nl/nl428_age_amount_line_17"
 WORKSHEET_AMOUNT = "ca-nl/nl428_age_amount_worksheet_line_17"
 FORM_NAME = "ca-nl/nl428_credits"
-FEDERAL_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+FEDERAL_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 NL_PART_NAMES = (
     "worksheet_nl428_line_4.yaml",
     "worksheet_nl428_line_6.yaml",

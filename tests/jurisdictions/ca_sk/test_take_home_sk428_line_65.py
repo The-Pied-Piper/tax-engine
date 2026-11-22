@@ -46,6 +46,7 @@ from tests.jurisdictions.ca_sk.support import (
 from tests.kinds import non_negative
 
 D = Decimal
+MINIMUM_TAX_CARRYOVER = "ca/minimum_tax_carryover"
 CODE = JurisdictionCode("CA-SK")
 FORM_NAME = "ca-sk/sk428"
 AMOUNT = "ca-sk/sk428_minimum_tax_carryover_amount_line_65"
@@ -81,7 +82,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
-    parts = [*T1_PARTS, SK_PARTS / "sk428_line_65_inputs.yaml", PART]
+    parts = [*T1_PARTS, *form_parts("t1_lines_copied_by_provinces"), PART]
     for number, part in enumerate(parts, start=2):
         text = part.read_text(encoding="utf-8")
         (folder / f"{number:02d}_{part.name}").write_text(text, encoding="utf-8")
@@ -99,7 +100,7 @@ def _sheet(tmp_path: Path, salary: str, amount: str | None) -> Worksheet:
     kinds = saskatchewan_kinds()
     given = [Artifact(kinds.kind(SALARY), D(salary))]
     if amount is not None:
-        given.append(Artifact(kinds.kind(AMOUNT), D(amount)))
+        given.append(Artifact(kinds.kind(MINIMUM_TAX_CARRYOVER), D(amount)))
     (sheet,) = _service(tmp_path).compute(CODE, 2025, *given)[FORM_NAME]
     return sheet
 
@@ -115,7 +116,7 @@ def _step() -> dict[str, Any]:
     assert isinstance(part, dict)
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": FORM_NAME}
-    (step,) = part["capabilities"]
+    *_, step = part["capabilities"]
     assert isinstance(step, dict)
     return step
 
@@ -149,15 +150,6 @@ def test_line_65_is_50_percent_of_the_amount_rounded_half_up(
     assert str(value) == expected
 
 
-def test_a_blank_amount_prints_the_steps_own_left_blank_row(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "70000", None)
-
-    rows = EnglishTraceRenderer().render_all(sheet.trace)
-
-    blank_rows = [row for row in rows if "left blank, taken as 0" in row.lower()]
-    assert len(blank_rows) == 1
-
-
 def test_a_given_amount_prints_no_left_blank_row(tmp_path: Path) -> None:
     sheet = _sheet(tmp_path, "70000", "1000.00")
 
@@ -175,7 +167,6 @@ def test_the_part_is_one_apply_rate_step_over_the_line_65_amount() -> None:
         "unit": "ca/cad",
         "params": {"rate": "ca-sk/minimum_tax_rate"},
         "consumes": {"base": AMOUNT},
-        "blank": {"base": "0"},
         "produces": {"output": LINE_65},
     }
 
@@ -188,7 +179,6 @@ def test_the_step_keys_are_in_the_order_of_the_neighbouring_parts() -> None:
         "unit",
         "params",
         "consumes",
-        "blank",
         "produces",
     ]
 
@@ -214,3 +204,19 @@ def test_a_negative_amount_is_rejected() -> None:
 
     with pytest.raises(NegativeArtifactError):
         Artifact(kind, D("-0.01"))
+
+
+def test_the_amount_is_a_record_total_of_the_t1_line_40427_export_with_no_input_of_its_own() -> (
+    None
+):
+    part = yaml.safe_load(PART.read_text(encoding="utf-8"))
+
+    assert "inputs" not in part
+    assert part["capabilities"][0] == {
+        "name": "core/record_total",
+        "title": "Amount from line 40427 of your return",
+        "reference": "65 box A",
+        "unit": "ca/cad",
+        "consumes": {"records": "ca/t1_lines_copied_by_provinces.minimum_tax_carryover_line_40427"},
+        "produces": {"output": AMOUNT},
+    }

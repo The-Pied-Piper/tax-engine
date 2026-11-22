@@ -11,7 +11,7 @@ The test composes the T1 employment income form, the real Schedule 8, T2204 and 
 parts, the real parts of Worksheet MB428 lines 1 to 9, Schedule MB428-A lines 1 to 12, MB428 lines
 9, 18, 19, 21, 28, 29, 33, 36, 41, 42 and 51 of `ca-mb/mb428_credits`, the line 31, line 50 and line
 56 input parts, the real `mb428_credits_line_53.yaml`, `mb428_credits_line_57.yaml`,
-`mb428_line_61.yaml`, `mb428_line_62_input.yaml`, `mb428_credits_line_63_input.yaml` and
+`mb428_line_61.yaml`, `mb428_line_62_input.yaml`, `mb428_line_63_input.yaml` and
 `mb428_line_63.yaml`, and the new `mb428_line_64.yaml`, and types in only the salary (and, in some
 tests, line 62 and the line 63 amount). The header and the form declarations are made up here: the
 credits form exports only line 57, and `ca-mb/mb428` exports only line 64. The figures are line 61
@@ -58,7 +58,6 @@ MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / 
 LINE_PART = MB_PARTS / "mb428_line_64.yaml"
 LINE_61_PART = MB_PARTS / "mb428_line_61.yaml"
 LINE_62_PART = MB_PARTS / "mb428_line_62_input.yaml"
-LINE_63_INPUT_PART = MB_PARTS / "mb428_credits_line_63_input.yaml"
 LINE_63_PART = MB_PARTS / "mb428_line_63.yaml"
 LINE_57_PART = MB_PARTS / "mb428_credits_line_57.yaml"
 LINE_53_PART = MB_PARTS / "mb428_credits_line_53.yaml"
@@ -77,7 +76,7 @@ CREDITS_FORM_NAME = "ca-mb/mb428_credits"
 LINE_57 = "ca-mb/mb428_non_refundable_credits_line_57"
 LINE_61 = "ca-mb/mb428_non_refundable_credits_line_61"
 LINE_62 = "ca-mb/mb428_dividend_tax_credit_line_62"
-LINE_63 = "ca-mb/mb428_minimum_tax_carryover_credit_line_63"
+LINE_63 = "ca-mb/mb428_minimum_tax_carryover_line_63"
 IDENTIFIER = "ca-mb/mb428_credits_total_line_64"
 CREDIT_PARTS = (
     "mb428_credits_line_9.yaml",
@@ -124,7 +123,9 @@ WORKSHEET_PARTS = (
     "worksheet_mb428_line_9.yaml",
 )
 # The real federal parts the T1 taxable-income form needs, beside the salary and the worksheet.
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 
 HEADER = dedent("""\
     jurisdiction: CA-MB
@@ -138,13 +139,13 @@ WORKSHEET_FORM = dedent("""\
       name: ca-mb/worksheet_mb428
       required: true
       exports:
-        - ca-mb/worksheet_mb428_basic_personal_amount_line_1
+        - ca-mb/worksheet_mb428_line_1
         - ca-mb/worksheet_mb428_line_2
-        - ca-mb/worksheet_mb428_basic_personal_amount_line_3
+        - ca-mb/worksheet_mb428_line_3
         - ca-mb/worksheet_mb428_line_4
-        - ca-mb/worksheet_mb428_basic_personal_amount_line_5
+        - ca-mb/worksheet_mb428_line_5
         - ca-mb/worksheet_mb428_line_6
-        - ca-mb/worksheet_mb428_basic_personal_amount_line_7
+        - ca-mb/worksheet_mb428_line_7
         - ca-mb/worksheet_mb428_line_8
         - ca-mb/worksheet_mb428_basic_personal_amount_line_9
     capabilities: []
@@ -199,7 +200,6 @@ def _part_files() -> Iterator[Path]:
     yield LINE_57_PART
     yield LINE_61_PART
     yield LINE_62_PART
-    yield LINE_63_INPUT_PART
     yield LINE_63_PART
     yield LINE_PART
 
@@ -236,7 +236,7 @@ def _sheet(
     if line_62 is not None:
         given.append(Artifact(mb_catalog.MB428_DIVIDEND_TAX_CREDIT_LINE_62, D(line_62)))
     if line_63_amount is not None:
-        given.append(Artifact(mb_catalog.MB428_MINIMUM_TAX_CARRYOVER_LINE_63, D(line_63_amount)))
+        given.append(Artifact(manitoba_kinds().kind("ca/minimum_tax_carryover"), D(line_63_amount)))
     worksheets = _service(tmp_path).compute(JurisdictionCode("CA-MB"), 2025, *given)
     (sheet,) = worksheets[FORM_NAME]
     return sheet

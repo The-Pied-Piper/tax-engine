@@ -1,11 +1,21 @@
-# Form MB428 (Manitoba Tax, 2025, CRA 5007-C) line 63 (ca-mb/mb428). "Manitoba minimum
-# tax carryover:" / "Line 63 and line 61540: Amount from line 40427 of your return ^ multiplied by
-# 50% = ^". The 50% is a printed rate, held in the `ca-mb/minimum_tax_rate` dataset, so line 63 is
-# one calculation: 50% of the amount, rounded half-up to the cent. The amount is an optional input
-# (read as 0 when left out), declared by its own part.
+# Form MB428 (Manitoba Tax, 2025, CRA 5007-C) line 63 (ca-mb/mb428). "Manitoba minimum tax
+# carryover:" / "Line 63 and line 61540: Amount from line 40427 of your return ^ multiplied by 50% =
+# ^". The 50% is a printed rate, held in the `ca-mb/minimum_tax_rate` dataset, so line 63 is one
+# calculation: 50% of the amount, rounded half-up to the cent. The amount (box A) is the T1's line
+# 40427: the T1 owns the input and exports the line (`ca/minimum_tax_carryover_line_40427`), so the
+# first step totals that export (a form reads another form's export only as a record list) and the
+# second applies the rate.
 form:
   name: ca-mb/mb428
 capabilities:
+  - name: core/record_total
+    title: "Amount from line 40427 of your return"
+    reference: "63 box A"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_lines_copied_by_provinces.minimum_tax_carryover_line_40427
+    produces:
+      output: ca-mb/mb428_minimum_tax_carryover_amount_line_63
   - name: core/apply_rate
     title: "Manitoba minimum tax carryover"
     reference: "63"
@@ -13,8 +23,6 @@ capabilities:
     params:
       rate: ca-mb/minimum_tax_rate
     consumes:
-      base: ca-mb/mb428_minimum_tax_carryover_line_63
-    blank:
-      base: "0"
+      base: ca-mb/mb428_minimum_tax_carryover_amount_line_63
     produces:
-      output: ca-mb/mb428_minimum_tax_carryover_credit_line_63
+      output: ca-mb/mb428_minimum_tax_carryover_line_63

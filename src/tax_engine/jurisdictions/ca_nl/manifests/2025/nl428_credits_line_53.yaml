@@ -1,9 +1,8 @@
 # NL428 (2025) line 53 (Form NL428, CRA 5001-C): "Line 53: Line 48 minus line 52 (if negative, enter
-# "0") =". Line 48 is the optional medical expenses input (nl428_credits_line_48_input.yaml) and
-# line 52 is the lesser of the printed ceiling and line 51 (nl428_credits_line_52.yaml). Line 53 is
+# "0") =". Line 48 is a linked record total, the amount from line 33099 of your return
+# (nl428_credits_line_48.yaml), and line 52 is the lesser of the printed ceiling and line 51 (nl428_credits_line_52.yaml). Line 53 is
 # one core/subtract_not_below_zero step, rounded half-up to the cent by the dataset's rule. A request
-# that leaves line 48 blank has no medical expenses, so a blank line 48 is read as 0 and line 53 is
-# 0.00. The form names no label for the line, so the step has no title.
+# with no medical expenses on the T1 has a line 48 of 0, so line 53 is 0.00. The form names no label for the line, so the step has no title.
 form:
   name: ca-nl/nl428_credits
 capabilities:
@@ -15,7 +14,5 @@ capabilities:
     consumes:
       amount: ca-nl/nl428_medical_expenses_line_48
       less: ca-nl/nl428_medical_expenses_limited_amount_line_52
-    blank:
-      amount: "0"
     produces:
       output: ca-nl/nl428_medical_expenses_over_limit_line_53

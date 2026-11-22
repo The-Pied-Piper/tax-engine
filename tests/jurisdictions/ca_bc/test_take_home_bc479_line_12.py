@@ -63,7 +63,9 @@ LINE_12 = "ca-bc/bc479_income_reduction_line_12"
 RATE_FAMILY = "ca-bc/sales_tax_credit_rate"
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
 PART = BC_PARTS / "bc479_line_12.yaml"
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 
 HEADER = dedent("""\
     jurisdiction: CA-BC

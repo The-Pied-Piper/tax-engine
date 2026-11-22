@@ -1,0 +1,17 @@
+# T1 (5006-R, 2025) line 31000 input a salary-only caller does not give. Base CPP or QPP
+# contributions (complete Schedule 8 or Form RC381, whichever applies): "Line 87 and line 31000:
+# on self-employment income and other earnings" (5006-R page 6). A salary-only caller has no self-
+# employment earnings, so a request that leaves the line out is read as blank, and this step reads
+# that blank as 0. Schedule 8 Part 4 and Form RC381 (the forms the line says to complete) are not
+# built for this line, so the figure is taken as the T1 prints it, one input. This form owns the
+# input: NL428 line 28 import line 31000 from this form's export and never ask for it themselves.
+form:
+  name: ca/t1_lines_copied_by_provinces
+inputs:
+  - name: ca/self_employment_cpp_qpp_contributions
+    title: "Base CPP or QPP contributions on self-employment income and other earnings"
+    reference: "31000"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 87 and line 31000: on self-employment income and other earnings'

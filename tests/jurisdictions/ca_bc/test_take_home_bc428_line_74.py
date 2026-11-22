@@ -50,7 +50,9 @@ BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / 
 PART = BC_PARTS / "bc428_line_74.yaml"
 IDENTIFIER = "ca-bc/bc428_net_income_line_74"
 # The real federal parts the T1 taxable-income form needs, beside the salary and line 74.
-FEDERAL_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+FEDERAL_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 
 HEADER = dedent("""\
     jurisdiction: CA-BC

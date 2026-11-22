@@ -56,7 +56,9 @@ FORM_NAME = "ca-mb/mb479"
 IDENTIFIER = "ca-mb/mb479_credits_line_57"
 LINE_55 = "ca-mb/mb479_credits_line_55"
 LINE_56 = "ca-mb/mb479_eia_mspd_number_line_56"
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 MB479_PARTS = (
     "mb479_line_1.yaml",
     "mb479_line_2.yaml",

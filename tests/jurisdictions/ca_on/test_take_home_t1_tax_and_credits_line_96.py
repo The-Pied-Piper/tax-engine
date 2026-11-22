@@ -1,24 +1,24 @@
 """T1 General 2025 (5006-R, Ontario) Step 5 Part B line 96, from the salary alone.
 
-Line 96 is "Line 96: Add lines 86 to 95." (T1 General 5006-R, CRA 5006-R-25E, confirmed).
-The take-home filer has three of the lines 86 to 95:
-line 86 (`ca/cpp_base_contributions_line_86`, the base CPP of Schedule 8 for T1 line 30800), line 88
-(`ca/ei_premiums_line_88`, the EI premiums of T2204 line 16 for T1 line 31200) and line 92
-(`ca/canada_employment_amount`, the Canada employment amount of T1 line 31260). The other lines
-from 86 to 95 are 0 for this filer and are left out.
+Line 96 is "Line 96: Add lines 86 to 95." (T1 General 5006-R, CRA 5006-R-25E, confirmed). The filer
+has four of the lines 86 to 95: line 86 (`ca/cpp_base_contributions_line_86`, the base CPP of
+Schedule 8 for T1 line 30800), line 88 (`ca/ei_premiums_line_88`, the EI premiums of T2204 line 16
+for T1 line 31200), line 87 (`ca/cpp_base_contributions_line_87`, a copy of line 31000 from the T1
+lines copied by provinces form, 0 when blank) and line 92 (`ca/canada_employment_amount`, the
+Canada employment amount of T1 line 31260). Lines 89 to 91 and 93 to 95 are not built and are left
+out.
 
-The part has three steps. Lines 86 and 88 are pure reads of other forms, so each is a
+The part has four steps. Lines 86, 87 and 88 are pure reads of other forms, so each is a
 `core/record_total` over the record list the other form exports (the engine lets one form read
 another form's exports only as record lists): the Schedule 8 record list
 `ca/schedule_8.schedule_8_cpp_base_contributions_on_return` and the T2204 record list
-`ca/t2204.t2204_line_16`. Line 96 is a `core/sum`, rounded to the cent, of the two new kinds and
-the line 31260 amount. All three new kinds are non-negative amounts.
+`ca/t2204.t2204_line_16`. Line 96 is a `core/sum`, rounded to the cent, of the three new kinds and
+the line 31260 amount. All four new kinds are non-negative amounts.
 
-The real parts are composed beside a test-local header: the salary, the real Schedule 8 and T2204
-parts (their headers export the two read kinds), the real T1 taxable-income parts, the real 31260
-part and the part under test. The form declaration of line 96 is test-local: its one export is
-line 96.
-"""
+The real parts are composed beside a test-local header: the salary, the real T1 lines copied by
+provinces form, the real Schedule 8 and T2204 parts (their headers export the read kinds), the real
+T1 taxable-income parts, the real 31260 part and the part under test. The form declaration of line
+96 is test-local: its one export is line 96."""
 
 from __future__ import annotations
 
@@ -33,6 +33,9 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.non_refundable_credits import (
+    SELF_EMPLOYMENT_CPP_QPP_CONTRIBUTIONS,
+)
 from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
 from tests.kinds import bundled_kinds, non_negative
@@ -46,12 +49,14 @@ T2204_FORM = "ca/t2204"
 T2204_LINE_16 = "ca/t2204_line_16"
 CANADA_EMPLOYMENT_AMOUNT = "ca/canada_employment_amount"
 LINE_86 = "ca/cpp_base_contributions_line_86"
+LINE_87 = "ca/cpp_base_contributions_line_87"
 LINE_88 = "ca/ei_premiums_line_88"
 LINE_96 = "ca/credits_subtotal_line_96"
 # The real parts composed beside the test's header: the salary, the real Schedule 8 and T2204 parts
 # (every part of each, so their on-return and line 16 kinds are produced as they are on the return),
 # the real T1 taxable-income parts, the real line 31260 part, and the part under test.
 PARTS = (
+    *form_part_names("t1_lines_copied_by_provinces"),
     *form_part_names("t2204"),
     *form_part_names("schedule_8"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),
@@ -77,11 +82,11 @@ T1_TAX_AND_CREDITS = dedent(f"""\
 
 
 def _sheets(
-    take_home_service: TakeHomeService, salary: str
+    take_home_service: TakeHomeService, salary: str, *given: Artifact[Decimal]
 ) -> tuple[Worksheet, Worksheet, Worksheet]:
     """The tax and credits sheet, the Schedule 8 sheet and the T2204 sheet for `salary`."""
     worksheets = take_home_service(HEADER, T1_TAX_AND_CREDITS, *PARTS).compute(
-        ONTARIO, 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
+        ONTARIO, 2025, Artifact(EMPLOYMENT_INCOME, D(salary)), *given
     )
     (sheet,) = worksheets[FORM]
     (schedule_8,) = worksheets[SCHEDULE_8_FORM]
@@ -158,7 +163,7 @@ def test_line_96_is_line_86_plus_line_88_plus_the_canada_employment_amount(
     )
 
 
-@pytest.mark.parametrize("kind_identifier", [LINE_86, LINE_88, LINE_96])
+@pytest.mark.parametrize("kind_identifier", [LINE_86, LINE_87, LINE_88, LINE_96])
 def test_the_line_96_kinds_are_registered_and_non_negative(kind_identifier: str) -> None:
     # Non-negative: each is a CPP or EI amount, or the Canada employment amount, that the form
     # adds up, never a negative figure.
@@ -168,13 +173,29 @@ def test_the_line_96_kinds_are_registered_and_non_negative(kind_identifier: str)
     assert non_negative(kind) is True
 
 
-def test_line_96_names_its_three_parts_and_its_rounding_in_the_trace(
+def test_line_96_names_its_four_parts_and_its_rounding_in_the_trace(
     take_home_service: TakeHomeService,
 ) -> None:
     sheet, _, _ = _sheets(take_home_service, "70000")
 
     assert (
-        "Line 30800 (CA$3291.75) plus line 31200 (CA$1077.48) plus line 31260 (CA$1471.00) "
-        "gives CA$5840.23 "
+        "Line 30800 (CA$3291.75) plus line 31000 (CA$0.00) plus line 31200 (CA$1077.48) "
+        "plus line 31260 (CA$1471.00) gives CA$5840.23 "
         "(rounded to the nearest cent)."
+    ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
+
+
+def test_line_96_adds_line_87_the_self_employment_base_cpp(
+    take_home_service: TakeHomeService,
+) -> None:
+    # $70,000: 5,840.23 without line 31000; line 31000 of 500.00 is line 87.
+    sheet, _, _ = _sheets(
+        take_home_service, "70000", Artifact(SELF_EMPLOYMENT_CPP_QPP_CONTRIBUTIONS, D("500"))
+    )
+
+    assert _value(sheet, LINE_87) == D("500.00")
+    assert _value(sheet, LINE_96) == D("6340.23")
+    assert (
+        "Line 30800 (CA$3291.75) plus line 31000 (CA$500.00) plus line 31200 (CA$1077.48) "
+        "plus line 31260 (CA$1471.00) gives CA$6340.23 (rounded to the nearest cent)."
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)

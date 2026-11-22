@@ -54,7 +54,9 @@ FORM_NAME = "ca-mb/mb479"
 IDENTIFIER = "ca-mb/mb479_credits_line_55"
 LINE_19 = "ca-mb/mb479_personal_tax_credit_line_19"
 LINE_53 = "ca-mb/mb479_homeowner_renter_senior_credits_line_53"
-T1_PARTS = form_part_names("t1_taxable_income", "t1_employment_income")
+T1_PARTS = form_part_names(
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+)
 MB479_PARTS = (
     "mb479_line_1.yaml",
     "mb479_line_2.yaml",

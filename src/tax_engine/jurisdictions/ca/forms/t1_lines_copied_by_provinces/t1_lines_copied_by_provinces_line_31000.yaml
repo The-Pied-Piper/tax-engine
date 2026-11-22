@@ -1,0 +1,22 @@
+# T1 (5006-R, 2025) line 31000: Base CPP or QPP contributions (complete Schedule 8 or Form RC381,
+# whichever applies): "Line 87 and line 31000: on self-employment income and other earnings"
+# (5006-R page 6). The optional input (`ca/self_employment_cpp_qpp_contributions`, blank when the
+# filer has none) is read by this step, which is the one line the T1 prints for it, and the blank
+# reads as 0. The form exports the line (`ca/self_employment_cpp_qpp_contributions_line_31000`)
+# for the forms that print it again (NL428 line 28). The T1 reads it
+# as line 87 into line 96.
+form:
+  name: ca/t1_lines_copied_by_provinces
+capabilities:
+  - name: core/sum
+    title: "Base CPP or QPP contributions on self-employment income and other earnings"
+    reference: "31000"
+    unit: ca/cad
+    params:
+      rounding: ca/cent_rounding
+    consumes:
+      parts: [ca/self_employment_cpp_qpp_contributions]
+    blank:
+      ca/self_employment_cpp_qpp_contributions: "0"
+    produces:
+      output: ca/self_employment_cpp_qpp_contributions_line_31000
