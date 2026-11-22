@@ -695,7 +695,8 @@ TP1_SCHEDULE_F_EMPLOYMENT_INCOME_CORRECTION_LINE_14 = AmountKind.declare(
     CATALOG, "tp1_schedule_f_employment_income_correction_line_14"
 )
 """Schedule F line 14, "Correction of employment income (line 105)", signed: a figure to subtract is
-negative. Blank when the caller has none, and line 16 reads it as 0."""
+negative. A copy of TP-1 line 105, read from the TP-1 income form's export
+(`tp1_schedule_f_line_14.yaml`), 0 when the caller gave none."""
 
 TP1_SCHEDULE_F_EMPLOYMENT_INCOME_TOTAL_LINE_16 = AmountKind.declare(
     CATALOG, "tp1_schedule_f_employment_income_total_line_16"

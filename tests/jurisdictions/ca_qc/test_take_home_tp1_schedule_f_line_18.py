@@ -19,7 +19,7 @@ from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_qc.catalog import (
     TP1_FOREST_PRODUCER_AVERAGING_LINE_276,
-    TP1_SCHEDULE_F_EMPLOYMENT_INCOME_CORRECTION_LINE_14,
+    TP1_LINE_105,
     TP1_SCHEDULE_F_INCOME_LINE_18,
 )
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
@@ -60,7 +60,7 @@ PARTS = (
     "tp1_schedule_f_line_10_input.yaml",
     "tp1_schedule_f_line_10.yaml",
     "tp1_schedule_f_line_12.yaml",
-    "tp1_schedule_f_line_14_input.yaml",
+    "tp1_schedule_f_line_14.yaml",
     "tp1_schedule_f_line_16.yaml",
     "tp1_schedule_f_line_18.yaml",
 )
@@ -107,8 +107,12 @@ def test_the_forest_averaging_amount_reaches_line_18(take_home_service: TakeHome
     assert str(value) == "1000.00"
 
 
-def test_line_18_is_not_floored(take_home_service: TakeHomeService) -> None:
-    given = (TP1_SCHEDULE_F_EMPLOYMENT_INCOME_CORRECTION_LINE_14, "500")
+def test_a_typed_line_105_is_taken_out_again_by_line_16(
+    take_home_service: TakeHomeService,
+) -> None:
+    """Line 105 is added into line 199 (so line 10) and is Schedule F line 14, so line 16 takes it
+    back out and line 18 stays at the salary-only figure."""
+    given = (TP1_LINE_105, "500")
     value = schedule_f(take_home_service, "70000", given).get(TP1_SCHEDULE_F_INCOME_LINE_18).value
 
-    assert str(value) == "-500.00"
+    assert str(value) == "0.00"
