@@ -10,6 +10,7 @@ from threading import Lock
 from typing import Any
 
 from tax_engine.application.models.calculation_request import TaxCalculationRequest
+from tax_engine.application.models.calculation_result import TaxCalculationResult
 from tax_engine.application.ports.jurisdiction_source import JurisdictionSource
 from tax_engine.application.ports.parameter_source import ParameterSource
 from tax_engine.domain.artifact import ArtifactRegistry
@@ -19,11 +20,13 @@ from tax_engine.domain.form import FormComposition, FormSet
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.domain.parameters.datasets import ParameterDataset
-from tax_engine.domain.worksheet import Worksheet
 
 
 class TaxComputationService:
-    """Builds and runs the set of forms (a `FormSet`) a manifest describes for a tax year."""
+    """Builds and runs the set of forms (a `FormSet`) a manifest describes for a tax year.
+
+    Implements the `TaxCalculation` port.
+    """
 
     def __init__(
         self,
@@ -69,7 +72,7 @@ class TaxComputationService:
             ]
         )
 
-    def compute(self, request: TaxCalculationRequest) -> dict[str, tuple[Worksheet, ...]]:
+    def compute(self, request: TaxCalculationRequest) -> TaxCalculationResult:
         """The worksheets of every form, by form name, from the request's artifacts.
 
         The artifacts are one of each declared input kind, among them each form's instances. An

@@ -20,7 +20,7 @@ from tax_engine.application.models.take_home import (
 from tax_engine.application.models.take_home_request import TakeHomeRequest
 from tax_engine.application.ports.jurisdiction_source import JurisdictionSource
 from tax_engine.application.ports.take_home_text import TakeHomeText
-from tax_engine.application.services.tax_computation import TaxComputationService
+from tax_engine.application.ports.tax_calculation import TaxCalculation
 from tax_engine.domain.artifact import Artifact, ArtifactRegistry
 from tax_engine.domain.errors import NotFoundError
 from tax_engine.domain.take_home import FigureReference, Totals, rate_unit, shared_unit
@@ -29,12 +29,15 @@ from tax_engine.domain.worksheet import Worksheet
 
 
 class TakeHomeService:
-    """Answers a `TakeHomeRequest` for a jurisdiction that declares its take-home figures."""
+    """Answers a `TakeHomeRequest` for a jurisdiction that declares its take-home figures.
+
+    Implements the `TakeHomeCalculation` port.
+    """
 
     def __init__(
         self,
         jurisdictions: JurisdictionSource,
-        computation: TaxComputationService,
+        computation: TaxCalculation,
         text: TakeHomeText,
     ) -> None:
         """Find declarations in `jurisdictions`, compute with `computation`, word with `text`."""
