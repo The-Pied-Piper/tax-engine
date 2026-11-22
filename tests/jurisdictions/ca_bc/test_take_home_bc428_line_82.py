@@ -100,7 +100,7 @@ BC_LINE_PARTS = (
     "bc428_line_37.yaml",
     "bc428_line_40.yaml",
     "bc428_line_45.yaml",
-    "bc428_line_46_input.yaml",
+    "bc428_line_46.yaml",
     "bc428_line_47.yaml",
     "bc428_line_49.yaml",
     "bc428_line_50.yaml",

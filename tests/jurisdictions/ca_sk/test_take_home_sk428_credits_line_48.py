@@ -2,8 +2,8 @@
 
 Form text (Form SK428, CRA 5008-c-25e): "Line 43 and line 58689: Amount from line 33099 of your
 return" and "Line 48: Line 43 minus line 47 (if negative, enter "0") =". Line 48 is one
-core/subtract_not_below_zero step over line 43, the optional medical expenses input
-(`sk428_credits_line_43_input.yaml`), and line 47 (`sk428_credits_line_47.yaml`). A request that
+core/subtract_not_below_zero step over line 43, the T1 line 33099 amount
+(`sk428_credits_line_43.yaml`), and line 47 (`sk428_credits_line_47.yaml`). A request that
 leaves line 43 blank has no medical expenses, so the blank is read as 0 and line 48 is 0.00. The
 form prints no label for the line, so the step has no title.
 
@@ -48,6 +48,7 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_units,
 )
 from tests.kinds import non_negative
+from tests.medical_support import medical_expenses, other_dependants_medical_expenses
 
 D = Decimal
 CENT = D("0.01")
@@ -77,8 +78,10 @@ FORM = dedent("""\
 
 def _part_files() -> Iterator[Path]:
     yield from form_parts("schedule_8")
-    yield from form_parts("t1_taxable_income", "t1_employment_income")
-    yield SK_PARTS / "sk428_credits_line_43_input.yaml"
+    yield from form_parts(
+        "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+    )
+    yield SK_PARTS / "sk428_credits_line_43.yaml"
     yield SK_PARTS / "sk428_credits_line_44.yaml"
     yield SK_PARTS / "sk428_credits_line_46.yaml"
     yield SK_PARTS / "sk428_credits_line_47.yaml"
@@ -112,11 +115,9 @@ def _sheet(
 ) -> Worksheet:
     given = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if line_43 is not None:
-        given.append(Artifact(sk_catalog.SK428_MEDICAL_EXPENSES_LINE_43, D(line_43)))
+        given.append(medical_expenses(line_43))
     if line_49 is not None:
-        given.append(
-            Artifact(sk_catalog.SK428_OTHER_DEPENDANTS_MEDICAL_EXPENSES_LINE_49, D(line_49))
-        )
+        given.append(other_dependants_medical_expenses(line_49))
     worksheets = _service(tmp_path).compute(JurisdictionCode("CA-SK"), 2025, *given)
     (sheet,) = worksheets[FORM_NAME]
     return sheet

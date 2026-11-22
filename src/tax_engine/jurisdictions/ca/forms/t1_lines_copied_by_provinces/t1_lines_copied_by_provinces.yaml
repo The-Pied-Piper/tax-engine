@@ -1,15 +1,20 @@
 # T1 General 2025 (form 5006-R): the lines a provincial form copies as "amount from line N of your
 # return" that no other T1 form of this engine builds: line 31000 (line 87, base CPP or QPP
 # contributions on self-employment income and other earnings), line 31900 (line 102, student loan
-# interest), line 33099 (line 107, medical expenses) and line 40427 (line 124, minimum tax
-# carryover). They are the T1's inputs, so the provincial forms import them and never ask again.
+# interest), line 33099 (line 107, medical expenses), line 33199 (line 111, allowable medical
+# expenses for other dependants) and line 40427 (line 124, minimum tax carryover). They are the T1's inputs, so the provincial forms import them
+# and never ask again.
 # The form is split from `ca/t1_tax_and_credits`, which reads the provincial forms' results: a
 # provincial form that read an export of that form would make a cycle. It carries the same printed
 # title as the T1 forms it is split from, so the front end can reintegrate them.
 # Exports: each line, read by the provincial forms as a record list.
 #   - Line 31000 (`ca/self_employment_cpp_qpp_contributions_line_31000`): NL428 line 28.
 #   - Line 31900 (`ca/student_loan_interest_line_31900`): NL428 line 43.
-#   - Line 33099 (`ca/medical_expenses_line_33099`): NL428 line 48.
+#   - Line 33099 (`ca/medical_expenses_line_33099`): AB428 line 44, BC428 line 46, MB428 line 43,
+#     NL428 line 48 and SK428 line 43.
+#   - Line 33199 (`ca/other_dependants_medical_expenses_line_33199`): SK428 line 49. The Federal
+#     Worksheet that works it out is not built, so it is typed in. AB428 line 50, BC428 line 52 and
+#     ON428 line 42 use a provincial worksheet and do not read it.
 #   - Line 40427 (`ca/minimum_tax_carryover_line_40427`): AB428 line 64, BC428 line 66, MB428 line
 #     63, NL428 line 68 and SK428 line 65.
 # Each is an optional input read as 0 when blank. `ca/t1_tax_and_credits` reads each as a
@@ -23,5 +28,6 @@ form:
     - ca/self_employment_cpp_qpp_contributions_line_31000
     - ca/student_loan_interest_line_31900
     - ca/medical_expenses_line_33099
+    - ca/other_dependants_medical_expenses_line_33199
     - ca/minimum_tax_carryover_line_40427
 capabilities: []

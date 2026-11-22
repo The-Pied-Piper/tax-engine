@@ -19,6 +19,8 @@ REGISTERED = frozenset(
         "ca/self_employment_cpp_qpp_contributions_line_31000",
         "ca/student_loan_interest_line_31900",
         "ca/medical_expenses_line_33099",
+        "ca/other_dependants_medical_expenses",
+        "ca/other_dependants_medical_expenses_line_33199",
         "ca/minimum_tax_carryover",
         "ca/minimum_tax_carryover_line_40427",
         "ca/taxable_dividends",
