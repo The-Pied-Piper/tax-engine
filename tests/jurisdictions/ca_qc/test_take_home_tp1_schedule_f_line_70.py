@@ -139,7 +139,7 @@ def test_the_form_part_names_the_form_and_exports_lines_70_and_82() -> None:
     part = yaml.safe_load(FORM_PART.read_text(encoding="utf-8"))
 
     assert part["form"]["name"] == "ca-qc/tp1_schedule_f"
-    assert part["form"]["title"] == "Contribution to the Health Services Fund"
+    assert part["form"]["title"] == "Schedule F: Contribution to the Health Services Fund"
     assert part["form"]["exports"] == [
         "ca-qc/tp1_schedule_f_income_subject_line_70",
         "ca-qc/tp1_schedule_f_contribution_line_82",

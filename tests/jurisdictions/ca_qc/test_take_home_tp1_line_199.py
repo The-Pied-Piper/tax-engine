@@ -150,10 +150,8 @@ def test_all_the_lines_are_added_together(take_home_service: TakeHomeService) ->
     assert value == D(70000 + 100 * sum(range(1, len(LINES) + 1)))
 
 
-@pytest.mark.parametrize("line", ["136", "164"])
-def test_a_rental_or_business_loss_is_subtracted(
-    take_home_service: TakeHomeService, line: str
-) -> None:
+@pytest.mark.parametrize("line", ["105", "136", "164"])
+def test_a_negative_line_is_subtracted(take_home_service: TakeHomeService, line: str) -> None:
     value = tp1(take_home_service, "70000", **{line: "-500"}).get(TP1_TOTAL_INCOME_LINE_199).value
 
     assert value == D("69500")
