@@ -85,7 +85,7 @@ def test_the_mb428_form_exports_line_65(salary: str, line_65: str) -> None:
 def test_the_worksheet_exports_lines_5_7_8_and_9(salary: str, line_8: str, line_9: str) -> None:
     sheet = _sheet(salary, "ca-mb/worksheet_mb428")
 
-    assert _value(sheet, "ca-mb/worksheet_mb428_basic_personal_amount_line_5") == D("200000.00")
-    assert _value(sheet, "ca-mb/worksheet_mb428_basic_personal_amount_line_7") == D("15780.00")
+    assert _value(sheet, "ca-mb/worksheet_mb428_line_5") == D("200000.00")
+    assert _value(sheet, "ca-mb/worksheet_mb428_line_7") == D("15780.00")
     assert _value(sheet, "ca-mb/worksheet_mb428_line_8") == D(line_8)
     assert _value(sheet, "ca-mb/worksheet_mb428_basic_personal_amount_line_9") == D(line_9)

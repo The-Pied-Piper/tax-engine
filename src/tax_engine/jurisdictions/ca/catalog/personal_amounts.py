@@ -90,6 +90,15 @@ through employment): a copy of Schedule 8 line 25, read from the Schedule 8 expo
 (`ca/schedule_8.schedule_8_cpp_base_contributions_on_return`) into Step 5 Part B, line 96.
 """
 
+CPP_BASE_CONTRIBUTIONS_LINE_87 = AmountKind.declare(
+    CATALOG, "cpp_base_contributions_line_87", non_negative=True
+)
+"""T1 line 87 "Line 87 and line 31000: on self-employment income and other earnings" (base CPP or
+QPP contributions, on self-employment income and other earnings): a copy of line 31000, read from
+the T1 lines copied by provinces export (`ca/self_employment_cpp_qpp_contributions_line_31000`)
+into Step 5 Part B, line 96.
+"""
+
 EI_PREMIUMS_LINE_88 = AmountKind.declare(CATALOG, "ei_premiums_line_88", non_negative=True)
 """T1 line 88 "Line 88 and line 31200: through employment (boxes 18 and 55 of all T4 slips)"
 (employment insurance premiums, maximum $1,077.48): a copy of T2204 line 16, read from the T2204
@@ -100,8 +109,8 @@ CREDITS_SUBTOTAL_LINE_96 = AmountKind.declare(
     CATALOG, "credits_subtotal_line_96", non_negative=True
 )
 """T1 line 96 "Line 96: Add lines 86 to 95. =", the subtotal of Step 5 Part B: the base CPP
-contributions, the EI premiums and the Canada employment amount for the take-home filer (lines 87,
-89 to 91 and 93 to 95 are 0 and are left out). It feeds line 98.
+contributions, the self-employment base CPP contributions, the EI premiums and the Canada employment
+amount (lines 89 to 91 and 93 to 95 are not built and are left out). It feeds line 98.
 """
 
 BASIC_PERSONAL_AMOUNT_NET_INCOME_LINE_3 = AmountKind.declare(
@@ -533,6 +542,30 @@ MEDICAL_EXPENSES_LINE_33099 = AmountKind.declare(
 """Medical expenses as T1 line 33099 prints it (`t1_lines_copied_by_provinces_line_33099.yaml`): the
 optional input (`ca/medical_expenses`), read as 0 when blank, exported by the T1 lines copied by
 provinces form."""
+
+STUDENT_LOAN_INTEREST_LINE_102 = AmountKind.declare(
+    CATALOG, "student_loan_interest_line_102", non_negative=True
+)
+"""T1 line 102 "Line 102 and line 31900: Interest paid on your student loans (go to
+canada.ca/taxes-students)": a copy of line 31900, read from the T1 lines copied by provinces export
+(`ca/student_loan_interest_line_31900`) into Step 5 Part B, line 106.
+"""
+
+MEDICAL_EXPENSES_LINE_107 = AmountKind.declare(
+    CATALOG, "medical_expenses_line_107", non_negative=True
+)
+"""T1 line 107 "Line 107 and line 33099: Medical expenses for self, spouse or common-law partner and
+your dependent children under 18 years of age": a copy of line 33099, read from the T1 lines copied
+by provinces export (`ca/medical_expenses_line_33099`) into Step 5 Part B, line 110.
+"""
+
+MEDICAL_NET_INCOME_LINE_108 = AmountKind.declare(
+    CATALOG, "medical_net_income_line_108", non_negative=True
+)
+"""T1 line 108 "Amount from line 23600" (before "multiplied by 3%"): the floored net income, read
+from the T1 taxable income export (`ca/t1_taxable_income.net_income`) into the medical expenses
+threshold.
+"""
 
 MEDICAL_NET_INCOME_SHARE = AmountKind.declare(
     CATALOG, "medical_net_income_share", non_negative=True

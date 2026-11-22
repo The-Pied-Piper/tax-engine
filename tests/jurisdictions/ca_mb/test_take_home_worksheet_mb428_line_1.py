@@ -24,7 +24,7 @@ from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.registry import Namespace
-from tax_engine.jurisdictions.ca_mb.catalog import WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_1
+from tax_engine.jurisdictions.ca_mb.catalog import WORKSHEET_MB428_LINE_1
 from tests.jurisdictions.ca_mb.support import (
     manitoba_capabilities,
     manitoba_kinds,
@@ -53,7 +53,7 @@ FORM = dedent("""\
       name: ca-mb/worksheet_mb428
       required: true
       exports:
-        - ca-mb/worksheet_mb428_basic_personal_amount_line_1
+        - ca-mb/worksheet_mb428_line_1
     """)
 
 
@@ -78,7 +78,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
 def line_1(tmp_path: Path, salary: str) -> Decimal:
     worksheets = _service(tmp_path).compute(JurisdictionCode("CA-MB"), 2025)
     (sheet,) = worksheets["ca-mb/worksheet_mb428"]
-    return sheet.get(WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_1).value
+    return sheet.get(WORKSHEET_MB428_LINE_1).value
 
 
 @pytest.mark.parametrize("salary", ["10000", "200000"])

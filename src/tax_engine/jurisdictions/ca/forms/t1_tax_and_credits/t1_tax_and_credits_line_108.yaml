@@ -1,0 +1,25 @@
+# T1 General 2025 (form 5006-R), Step 5 Part B line 108 "Line 108: Amount from line 23600
+# multiplied by 3% =" (CRA 5006-R-25E). The 3% is the printed rate, held in the
+# `ca/medical_net_income_rate` dataset, so it has no step. Line 23600 is a copy of the T1 taxable
+# income export (`ca/t1_taxable_income.net_income`), read only as a record list, so a
+# core/record_total totals the one amount and a core/apply_rate step applies the rate, rounded
+# half-up to the cent by the dataset's rule. Line 109 reads it.
+form:
+  name: ca/t1_tax_and_credits
+capabilities:
+  - name: core/record_total
+    title: "Amount from line 23600"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_taxable_income.net_income
+    produces:
+      output: ca/medical_net_income_line_108
+  - name: core/apply_rate
+    reference: "108"
+    unit: ca/cad
+    params:
+      rate: ca/medical_net_income_rate
+    consumes:
+      base: ca/medical_net_income_line_108
+    produces:
+      output: ca/medical_net_income_share

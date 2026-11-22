@@ -456,3 +456,11 @@ MINIMUM_TAX_CARRYOVER_LINE_40427 = AmountKind.declare(
 """Minimum tax carryover as T1 line 40427 prints it
 (`t1_lines_copied_by_provinces_line_40427.yaml`): the optional input (`ca/minimum_tax_carryover`),
 read as 0 when blank, exported by the T1 lines copied by provinces form."""
+
+MINIMUM_TAX_CARRYOVER_LINE_124 = AmountKind.declare(
+    CATALOG, "minimum_tax_carryover_line_124", non_negative=True
+)
+"""T1 line 124 "Line 124 and line 40427: Minimum tax carryover (complete Form T691)": a copy of line
+40427, read from the T1 lines copied by provinces export (`ca/minimum_tax_carryover_line_40427`)
+into Step 5 Part C, line 125.
+"""

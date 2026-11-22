@@ -1,0 +1,19 @@
+# BC renter's tax credit: the condition on the months of rent, BC479 line 37
+# British Columbia Tax Information for 2025 (CRA 5010-PC), section "British Columbia renter's tax
+# credit": "You rented and occupied a rental unit for at least six months in the calendar year in
+# British Columbia" and "You must be an eligible renter for at least six months in 2025." Form BC479
+# line 37 prints no such number. The months are whole numbers, so "at least six" is the condition
+# "more than 5" on the first count (line 37, the months rent was paid). The count is 1 when it applies
+# and 0 when it does not. It is a count, so nothing is rounded.
+family: ca-bc/renters_credit_conditions
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/5010-pc/5010-pc-25e.txt
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: Rented and occupied a rental unit for at least six months
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "5"}
