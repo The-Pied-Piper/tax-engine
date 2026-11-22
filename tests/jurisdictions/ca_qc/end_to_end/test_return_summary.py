@@ -52,6 +52,7 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     TP1_INCOME_TAX_AND_CONTRIBUTIONS_LINE_450,
     TP1_LINE_457,
     TP1_NET_BUSINESS_INCOME_SCHEDULE_L_LINE_27,
+    TP1_RL1_SLIP_BOX_I,
     TP1_WORK_PREMIUM_TAX_CREDITS_LINE_456,
 )
 
@@ -284,12 +285,25 @@ def _figures(salary: str, *answers: Artifact[Any]) -> tuple[Decimal, Decimal, De
 def test_quebec_earnings_under_2000_in_a_larger_salary_claim_no_premium_on_31205() -> None:
     # A $50,000 salary of which only $1,500 is Quebec employment (box 56): the guide to line 31205
     # tests the PPIP insurable earnings, so $247.00 (0.494% of 50,000) is not claimed there. TP-1
-    # line 457 tests the employment income on TP-1, $50,000, so it carries nothing.
+    # line 457 tests the employment income on TP-1 (RL-1 box I, blank here, so line 101,
+    # $50,000), so it carries nothing.
     line_91, line_457, _refund = _figures(
         "50000", Artifact(PPIP_INSURABLE_EARNINGS_GIVEN, D("1500"))
     )
 
     assert (line_91, line_457) == (D("0.00"), D("0"))
+
+
+def test_quebec_earnings_under_2000_on_the_rl1_claim_the_premium_on_line_457_only() -> None:
+    # The same $50,000 salary with RL-1 box I of $1,500 (T4 box 56 likewise): neither form's test
+    # is met, so line 91 and 31205 carry nothing and TP-1 line 457 carries line 97, $247.00.
+    line_91, line_457, _refund = _figures(
+        "50000",
+        Artifact(PPIP_INSURABLE_EARNINGS_GIVEN, D("1500")),
+        Artifact(TP1_RL1_SLIP_BOX_I, D("1500")),
+    )
+
+    assert (line_91, line_457) == (D("0.00"), D("247.00"))
 
 
 def test_employment_under_2000_and_business_income_over_it_claim_the_premium_on_neither() -> None:

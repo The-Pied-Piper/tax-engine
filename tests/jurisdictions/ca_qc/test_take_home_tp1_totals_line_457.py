@@ -5,7 +5,7 @@ Guide TP-1.G-V (2025-12), line 457: "If the total of your net business income, y
 income subject to the QPIP and your insurable earnings as a person responsible for a family-type
 resource or an intermediate resource is less than $2,000, carry the amount from line 97 to line
 457. If the amount on line 97 is more than $484.12, enter the overpayment (that is, the excess) on
-line 457." The line is eight steps (see the part's header), none rounded, so the figure is line 97
+line 457." The line is nine steps (see the part's header), none rounded, so the figure is line 97
 as it is or the excess over $484.12. Line 97 is computed from the salary as 0.494% (half-up to the
 cent) unless the caller gives the slip figure. The expected figures are hand-computed from the
 printed lines, not an official example: 0.494% of $1,000 is $4.94.
@@ -30,7 +30,9 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     TP1_LINE_457_MAXIMUM_PREMIUM,
     TP1_LINE_457_UNDER_THRESHOLD_COUNT,
     TP1_NET_BUSINESS_INCOME_SCHEDULE_L_LINE_27,
+    TP1_QPIP_EMPLOYMENT_INCOME_FOR_LINE_457,
     TP1_QPIP_PREMIUM_GIVEN_LINE_97,
+    TP1_RL1_SLIP_BOX_I,
 )
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
 from tests.jurisdictions.ca_qc.support import quebec_kinds
@@ -113,6 +115,35 @@ def test_a_line_97_given_from_the_slips_is_carried_or_its_excess_over_484_12(
     assert _line_457(take_home_service, salary, slip) == D(line_457)
 
 
+@pytest.mark.parametrize(
+    ("salary", "box_i", "line_457"),
+    [
+        # Box I is the employment income subject to the QPIP, not all of line 101: $1,500 of
+        # Quebec earnings in a $50,000 salary is under $2,000, so line 97 ($247.00) is carried.
+        ("50000", "1500", "247.00"),
+        ("50000", "1999.99", "247.00"),
+        # $2,000 is not "less than $2,000": only the excess over $484.12 is carried.
+        ("50000", "2000", "0"),
+        # A box I above line 101 is taken as given.
+        ("1000", "2000", "0"),
+        # A box I of 0 is a given figure, not a blank, so it is not replaced by line 101.
+        ("50000", "0", "247.00"),
+    ],
+)
+def test_box_i_is_the_employment_income_subject_to_the_qpip_when_given(
+    take_home_service: TakeHomeService, salary: str, box_i: str, line_457: str
+) -> None:
+    given = Artifact(TP1_RL1_SLIP_BOX_I, D(box_i))
+
+    assert _line_457(take_home_service, salary, given) == D(line_457)
+
+
+def test_a_blank_box_i_takes_line_101(take_home_service: TakeHomeService) -> None:
+    sheet = totals_sheet(take_home_service, "1000", totals_form(IDENTIFIER), LINE_457_PARTS)
+
+    assert sheet.get(TP1_QPIP_EMPLOYMENT_INCOME_FOR_LINE_457).value == D("1000")
+
+
 def test_every_step_is_traced_at_1000(take_home_service: TakeHomeService) -> None:
     sheet = totals_sheet(take_home_service, "1000", totals_form(IDENTIFIER), LINE_457_PARTS)
 
@@ -139,7 +170,7 @@ def _read(records: str, output: str) -> dict[str, object]:
     }
 
 
-def test_the_part_is_the_eight_steps_of_line_457() -> None:
+def test_the_part_is_the_nine_steps_of_line_457() -> None:
     part = _part()
 
     assert list(part) == ["form", "capabilities"]
@@ -154,13 +185,24 @@ def test_the_part_is_the_eight_steps_of_line_457() -> None:
             "ca-qc/tp1_line_97_for_line_457",
         ),
         {
+            "name": "ca-qc/given_or_fallback",
+            "title": "Employment income subject to the QPIP",
+            "unit": "ca/cad",
+            "consumes": {
+                "given": "ca-qc/tp1_rl1_slip_box_i",
+                "fallback": "ca-qc/tp1_employment_income_for_line_457",
+            },
+            "blank": {"given": "compute"},
+            "produces": {"output": "ca-qc/tp1_qpip_employment_income_for_line_457"},
+        },
+        {
             "name": "core/sum",
             "title": "Employment income, net business income and family-resource earnings added up",
             "unit": "ca/cad",
             "params": {"rounding": "ca-qc/exact_rounding"},
             "consumes": {
                 "parts": [
-                    "ca-qc/tp1_employment_income_for_line_457",
+                    "ca-qc/tp1_qpip_employment_income_for_line_457",
                     "ca-qc/tp1_net_business_income_schedule_l_line_27",
                     "ca-qc/tp1_family_resource_earnings_schedule_l_line_40",
                 ]
@@ -229,6 +271,8 @@ def test_the_part_is_the_eight_steps_of_line_457() -> None:
         ("ca-qc/tp1_line_457_under_threshold_count", CountKind),
         ("ca-qc/tp1_line_457_income_total", AmountKind),
         ("ca-qc/tp1_line_457_excess", AmountKind),
+        ("ca-qc/tp1_rl1_slip_box_i", AmountKind),
+        ("ca-qc/tp1_qpip_employment_income_for_line_457", AmountKind),
     ],
 )
 def test_the_kinds_are_registered_and_non_negative(
