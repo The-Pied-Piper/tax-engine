@@ -92,7 +92,7 @@ LINE_60 = "ca-mb/mb428_tax_before_credits_line_60"
 LINE_64 = "ca-mb/mb428_credits_total_line_64"
 LINE_61 = "ca-mb/mb428_non_refundable_credits_line_61"
 LINE_62 = "ca-mb/mb428_dividend_tax_credit_line_62"
-LINE_63 = "ca-mb/mb428_minimum_tax_carryover_credit_line_63"
+LINE_63 = "ca-mb/mb428_minimum_tax_carryover_line_63"
 LINE_65 = "ca-mb/mb428_tax_after_credits_line_65"
 LINE_66 = "ca-mb/mb428_additional_tax_minimum_tax_line_66"
 LINE_74 = "ca-mb/mb428_tax_line_74"
@@ -162,13 +162,13 @@ WORKSHEET_FORM = dedent("""\
       name: ca-mb/worksheet_mb428
       required: true
       exports:
-        - ca-mb/worksheet_mb428_basic_personal_amount_line_1
+        - ca-mb/worksheet_mb428_line_1
         - ca-mb/worksheet_mb428_line_2
-        - ca-mb/worksheet_mb428_basic_personal_amount_line_3
+        - ca-mb/worksheet_mb428_line_3
         - ca-mb/worksheet_mb428_line_4
-        - ca-mb/worksheet_mb428_basic_personal_amount_line_5
+        - ca-mb/worksheet_mb428_line_5
         - ca-mb/worksheet_mb428_line_6
-        - ca-mb/worksheet_mb428_basic_personal_amount_line_7
+        - ca-mb/worksheet_mb428_line_7
         - ca-mb/worksheet_mb428_line_8
         - ca-mb/worksheet_mb428_basic_personal_amount_line_9
     capabilities: []

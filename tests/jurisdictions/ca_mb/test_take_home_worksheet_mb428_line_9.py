@@ -62,7 +62,7 @@ CENT = D("0.01")
 MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"
 PART = MB_PARTS / "worksheet_mb428_line_9.yaml"
 KIND = "ca-mb/worksheet_mb428_basic_personal_amount_line_9"
-LINE_1 = "ca-mb/worksheet_mb428_basic_personal_amount_line_1"
+LINE_1 = "ca-mb/worksheet_mb428_line_1"
 LINE_2 = "ca-mb/worksheet_mb428_line_2"
 LINE_6 = "ca-mb/worksheet_mb428_line_6"
 LINE_8 = "ca-mb/worksheet_mb428_line_8"
@@ -85,13 +85,13 @@ FORM = dedent("""\
       name: ca-mb/worksheet_mb428
       required: true
       exports:
-        - ca-mb/worksheet_mb428_basic_personal_amount_line_1
+        - ca-mb/worksheet_mb428_line_1
         - ca-mb/worksheet_mb428_line_2
-        - ca-mb/worksheet_mb428_basic_personal_amount_line_3
+        - ca-mb/worksheet_mb428_line_3
         - ca-mb/worksheet_mb428_line_4
-        - ca-mb/worksheet_mb428_basic_personal_amount_line_5
+        - ca-mb/worksheet_mb428_line_5
         - ca-mb/worksheet_mb428_line_6
-        - ca-mb/worksheet_mb428_basic_personal_amount_line_7
+        - ca-mb/worksheet_mb428_line_7
         - ca-mb/worksheet_mb428_line_8
         - ca-mb/worksheet_mb428_basic_personal_amount_line_9
     capabilities: []
