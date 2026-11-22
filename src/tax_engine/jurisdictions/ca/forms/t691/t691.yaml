@@ -10,8 +10,8 @@
 # 11 is positive, complete parts 6 and 7"), so that is the form's intent.
 # Exports, each read as a record list, in this order:
 #   - "Line 1 minus line 2 of Part 7" (`ca/t691_line_1_minus_line_2_of_part_7`, not below 0: the
-#     form's intent, no floor is printed): AB428 line 67, MB428 line 66 and SK428 line 68, which print "Form T691: line 1
-#     minus line 2 of Part 7".
+#     form's intent, no floor is printed): AB428 line 67, MB428 line 66 and SK428 line 68, which
+#     print "Form T691: line 1 minus line 2 of Part 7".
 #   - Line 14 (`ca/t691_additional_taxes_for_minimum_tax_carryover_line_14`, line 1 minus line 13,
 #     not below 0): BC428 line 69 and NL428 line 71, which print "Amount from line 14 of Part 7 of
 #     Form T691". Each province reads the figure its own form prints; they are different figures.
