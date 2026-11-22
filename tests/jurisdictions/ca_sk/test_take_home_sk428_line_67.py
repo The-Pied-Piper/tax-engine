@@ -287,27 +287,13 @@ def test_line_67_is_zero_and_not_negative_when_line_66_exceeds_line_62(tmp_path:
     assert not _line(sheet, IDENTIFIER).is_signed()
 
 
-def test_a_large_line_64_floors_line_67_at_zero(tmp_path: Path) -> None:
-    # Line 62 at 70,000 is 7,597.62; line 12000 of 45,000.00 makes line 64 4,950.00 (11%), so line
-    # 66 is 2,505.32 plus 4,950.00 = 7,455.32.
-    sheet = _sheet(tmp_path, "70000", line_64="45000.00")
-    assert _line(sheet, IDENTIFIER) == D("142.30")
-    assert _line(sheet, IDENTIFIER) == _derived(D("70000"), line_64=D("4950.00"))
+def test_line_67_reads_a_given_line_64_through_line_66(tmp_path: Path) -> None:
+    # Line 12000 of 1,000.00 (line 12010 left out) makes line 64 110.00 (11%), so line 66 is
+    # 2,505.32 plus 110.00. Line 12000 is also income, so line 62 rises: line 67 is 62 less 66.
+    sheet = _sheet(tmp_path, "70000", line_64="1000.00")
 
-    sheet = _sheet(tmp_path / "over", "70000", line_64="60000.00")
-    assert _line(sheet, LINE_66) == D("9105.32")
-    assert _line(sheet, IDENTIFIER) == ZERO
-    assert not _line(sheet, IDENTIFIER).is_signed()
-
-
-def test_line_67_is_zero_when_line_66_is_not_below_line_62(tmp_path: Path) -> None:
-    # Line 62 at 70,000 is 7,597.62; line 12000 of 46,294.00 makes line 64 5,092.34 (11%), so line
-    # 66 is 2,505.32 plus 5,092.34 = 7,597.66.
-    sheet = _sheet(tmp_path, "70000", line_64="46294.00")
-
-    assert _line(sheet, LINE_62) == D("7597.62")
-    assert _line(sheet, LINE_66) == D("7597.66")
-    assert _line(sheet, IDENTIFIER) == ZERO
+    assert _line(sheet, LINE_66) == D("2615.32")
+    assert _line(sheet, IDENTIFIER) == _line(sheet, LINE_62) - D("2615.32")
 
 
 def test_line_67_reads_a_given_line_61_through_line_62(tmp_path: Path) -> None:

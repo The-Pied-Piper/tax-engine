@@ -338,15 +338,13 @@ def test_a_negative_t691_amount_gives_a_negative_line_68_and_a_signed_line_69(
 
 
 def test_line_69_reads_lines_61_and_64_through_line_67(tmp_path: Path) -> None:
-    # Line 67 at 70,000 with line 61 of 100.00 is 5,192.30; line 12000 of 9,090.91 makes line 64
-    # 1,000.00 (11%, rounded), which lowers it to 4,192.30, and line 68 adds 500.00.
-    sheet = _sheet(tmp_path, "70000", amount="1000.00", line_61="100.00", line_64="9090.91")
+    # Line 12000 of 1,000.00 makes line 64 110.00 (11%); line 61 of 100.00 raises line 62 and line
+    # 68 adds 500.00. Line 12000 is also income, so line 62 is read from the sheet.
+    sheet = _sheet(tmp_path, "70000", amount="1000.00", line_61="100.00", line_64="1000.00")
 
-    assert _line(sheet, LINE_67) == D("4192.30")
-    assert _line(sheet, IDENTIFIER) == D("4692.30")
-    assert _line(sheet, IDENTIFIER) == _derived(
-        D("70000"), D("1000.00"), line_61=D("100.00"), line_64=D("1000.00")
-    )
+    assert _line(sheet, LINE_66) == D("2615.32")
+    assert _line(sheet, LINE_67) == _line(sheet, LINE_62) - D("2615.32")
+    assert _line(sheet, IDENTIFIER) == _line(sheet, LINE_67) + D("500.00")
 
 
 def test_line_69_rounds_to_the_cent_half_up(tmp_path: Path) -> None:

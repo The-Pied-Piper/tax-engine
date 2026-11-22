@@ -56,21 +56,21 @@ UCCB_INCOME_LINE_11700 = AmountKind.declare(CATALOG, "uccb_income_line_11700", n
 TAXABLE_DIVIDENDS = AmountKind.declare(CATALOG, "taxable_dividends", non_negative=True)
 """Amount of dividends (eligible and other than eligible), T1 line 9 and line 12000 "Amount of
 dividends (eligible and other than eligible)": the optional input
-(`t1_lines_copied_by_provinces_line_12000_inputs.yaml`), blank when the filer has none. The T1 owns
+(`t1_taxable_income_line_12000_inputs.yaml`), blank when the filer has none. The T1 owns
 it; the provincial dividend tax credit worksheets import line 12000."""
 
 TAXABLE_DIVIDENDS_LINE_12000 = AmountKind.declare(
     CATALOG, "taxable_dividends_line_12000", non_negative=True
 )
-"""Amount of dividends as T1 line 12000 prints it (`t1_lines_copied_by_provinces_line_12000.yaml`):
-the optional input (`ca/taxable_dividends`), read as 0 when blank, exported by the T1 lines copied
-by provinces form."""
+"""Amount of dividends as T1 line 12000 prints it (`t1_taxable_income_line_12000.yaml`):
+the optional input (`ca/taxable_dividends`), read as 0 when blank, added into total income and
+exported by the T1 taxable income form."""
 
 TAXABLE_DIVIDENDS_OTHER_THAN_ELIGIBLE = AmountKind.declare(
     CATALOG, "taxable_dividends_other_than_eligible", non_negative=True
 )
 """Amount of dividends (other than eligible), T1 line 12010 "Amount of dividends (other than
-eligible)": the optional input (`t1_lines_copied_by_provinces_line_12010_inputs.yaml`), blank when
+eligible)": the optional input (`t1_taxable_income_line_12010_inputs.yaml`), blank when
 the filer has none. The T1 owns it; the provincial dividend tax credit worksheets import line
 12010."""
 
@@ -78,9 +78,9 @@ TAXABLE_DIVIDENDS_OTHER_THAN_ELIGIBLE_LINE_12010 = AmountKind.declare(
     CATALOG, "taxable_dividends_other_than_eligible_line_12010", non_negative=True
 )
 """Amount of dividends (other than eligible) as T1 line 12010 prints it
-(`t1_lines_copied_by_provinces_line_12010.yaml`): the optional input
-(`ca/taxable_dividends_other_than_eligible`), read as 0 when blank, exported by the T1 lines copied
-by provinces form."""
+(`t1_taxable_income_line_12010.yaml`): the optional input
+(`ca/taxable_dividends_other_than_eligible`), read as 0 when blank, exported by the T1 taxable
+income form and not added into total income."""
 
 RDSP_INCOME = AmountKind.declare(CATALOG, "rdsp_income", non_negative=True)
 """Registered disability savings plan (RDSP) income, T1 line 12 and line 12500 "Registered

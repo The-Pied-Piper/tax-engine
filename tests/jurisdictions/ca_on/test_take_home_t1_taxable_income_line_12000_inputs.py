@@ -1,4 +1,4 @@
-"""T1 line 12000 part of the lines the provinces copy: its optional input."""
+"""T1 line 12000 part of the taxable income form: its optional input."""
 
 from __future__ import annotations
 
@@ -9,13 +9,13 @@ import yaml
 
 from tests.federal_forms import FEDERAL_FORMS
 
-T1 = FEDERAL_FORMS / "t1_lines_copied_by_provinces"
+T1 = FEDERAL_FORMS / "t1_taxable_income"
 
 LINE = "12000"
 NAME = "ca/taxable_dividends"
 OUTPUT = "ca/taxable_dividends_line_12000"
 BASIC = "Line 9 and line 12000: Amount of dividends (eligible and other than eligible)"
-TITLE = "Amount of dividends (eligible and other than eligible)"
+TITLE = "Dividends"
 
 
 def _part(path: Path) -> dict[str, Any]:
@@ -25,9 +25,9 @@ def _part(path: Path) -> dict[str, Any]:
 
 
 def test_the_t1_line_has_an_optional_input_left_blank_by_a_salary_only_caller() -> None:
-    part = _part(T1 / f"t1_lines_copied_by_provinces_line_{LINE}_inputs.yaml")
+    part = _part(T1 / f"t1_taxable_income_line_{LINE}_inputs.yaml")
 
-    assert part["form"] == {"name": "ca/t1_lines_copied_by_provinces"}
+    assert part["form"] == {"name": "ca/t1_taxable_income"}
     (declaration,) = part["inputs"]
     assert declaration == {
         "name": NAME,

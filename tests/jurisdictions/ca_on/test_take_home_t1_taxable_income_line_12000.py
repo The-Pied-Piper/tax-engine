@@ -1,4 +1,4 @@
-"""T1 line 12000 part of the lines the provinces copy: one sum step reading the blank as 0."""
+"""T1 line 12000 part of the taxable income form: one sum step reading the blank as 0."""
 
 from __future__ import annotations
 
@@ -9,13 +9,13 @@ import yaml
 
 from tests.federal_forms import FEDERAL_FORMS
 
-T1 = FEDERAL_FORMS / "t1_lines_copied_by_provinces"
+T1 = FEDERAL_FORMS / "t1_taxable_income"
 
 LINE = "12000"
 NAME = "ca/taxable_dividends"
 OUTPUT = "ca/taxable_dividends_line_12000"
 BASIC = "Line 9 and line 12000: Amount of dividends (eligible and other than eligible)"
-TITLE = "Amount of dividends (eligible and other than eligible)"
+TITLE = "Dividends"
 
 
 def _part(path: Path) -> dict[str, Any]:
@@ -25,9 +25,9 @@ def _part(path: Path) -> dict[str, Any]:
 
 
 def test_the_t1_line_is_one_sum_step_that_reads_its_blank_as_zero() -> None:
-    part = _part(T1 / f"t1_lines_copied_by_provinces_line_{LINE}.yaml")
+    part = _part(T1 / f"t1_taxable_income_line_{LINE}.yaml")
 
-    assert part["form"] == {"name": "ca/t1_lines_copied_by_provinces"}
+    assert part["form"] == {"name": "ca/t1_taxable_income"}
     (step,) = part["capabilities"]
     assert step == {
         "name": "core/sum",
@@ -42,6 +42,6 @@ def test_the_t1_line_is_one_sum_step_that_reads_its_blank_as_zero() -> None:
 
 
 def test_the_form_exports_the_line_for_the_provincial_forms() -> None:
-    form = _part(T1 / "t1_lines_copied_by_provinces.yaml")
+    form = _part(T1 / "t1_taxable_income.yaml")
 
     assert OUTPUT in form["form"]["exports"]

@@ -2,10 +2,10 @@
 
 Form text (Form MB428, CRA 5007-c): "Line 64: Add lines 61 to 63. = ^". The form prints no title
 for the line and no maximum, so the step is untitled and has no cap. Line 62, "Line 62 and line
-61520: Manitoba dividend tax credit (use Worksheet MB428)", is an optional input, blank for a
-salary-only filer. Line 63 is its own calculation (50% of the optional amount from line 40427),
-always computed because that step reads a blank amount as 0. Line 64 is one core/sum over lines 61,
-62 and 63; the blank line 62 is read as 0 and the step prints its own "left blank, taken as 0" row.
+61520: Manitoba dividend tax credit (use Worksheet MB428)", is computed from the worksheet over
+T1 lines 12000 and 12010 (0.00 for a salary-only filer). Line 63 is its own calculation (50% of the
+optional amount from line 40427), always computed because that step reads a blank amount as 0.
+Line 64 is one core/sum over lines 61, 62 and 63, with no blank rule of its own.
 
 The test composes the T1 employment income form, the real Schedule 8, T2204 and T1 taxable income
 parts, the real parts of Worksheet MB428 lines 1 to 9, Schedule MB428-A lines 1 to 12, MB428 lines

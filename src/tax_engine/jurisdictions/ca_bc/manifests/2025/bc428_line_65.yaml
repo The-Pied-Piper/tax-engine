@@ -2,7 +2,7 @@
 # "Line 61520 - British Columbia dividend tax credit") in six steps: "Line A: Amount from line 12000 of your
 # return", "Line 1: Amount from line 12010 of your return Line B multiplied by 1.96% =", "Line 2:
 # Amount A minus amount B Line C = multiplied by 12% =" and the sum of line 1 and line 2, which is
-# line 65 of the form. The two amounts are the T1's lines 12000 and 12010: the T1 owns the inputs and
+# line 65 of the form. The two amounts are the T1's lines 12000 and 12010: the T1 taxable income form owns the inputs and
 # exports the lines, so the first two steps total those exports (a form reads another form's export
 # only as a record list). Each printed rate is held in its own dataset and each product rounds
 # half-up to the cent. A caller who gives neither line has a credit of 0.00.
@@ -14,7 +14,7 @@ capabilities:
     reference: "65 worksheet line A"
     unit: ca/cad
     consumes:
-      records: ca/t1_lines_copied_by_provinces.taxable_dividends_line_12000
+      records: ca/t1_taxable_income.taxable_dividends_line_12000
     produces:
       output: ca-bc/bc428_dividend_tax_credit_worksheet_line_a
   - name: core/record_total
@@ -22,7 +22,7 @@ capabilities:
     reference: "65 worksheet line B"
     unit: ca/cad
     consumes:
-      records: ca/t1_lines_copied_by_provinces.taxable_dividends_other_than_eligible_line_12010
+      records: ca/t1_taxable_income.taxable_dividends_other_than_eligible_line_12010
     produces:
       output: ca-bc/bc428_dividend_tax_credit_worksheet_line_b
   - name: core/apply_rate

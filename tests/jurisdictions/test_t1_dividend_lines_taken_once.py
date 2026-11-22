@@ -1,13 +1,15 @@
 """T1 lines 12000 and 12010 are asked once, by the T1, and read by the five dividend worksheets.
 
+T1 lines 12000 and 12010 are inputs of `ca/t1_taxable_income` (line 12000 is also an addend of total
+income, line 15000); the split form `ca/t1_lines_copied_by_provinces` does not own them.
+
 T1 General 2025 (5006-R) prints line 12000 ("Line 9 and line 12000: Amount of dividends (eligible
 and other than eligible)") and line 12010 ("Line 12010: Amount of dividends (other than
 eligible)").
 The provincial worksheets (AB428 line 63, BC428 line 65, MB428 line 62, ON428 line 57 and SK428
 line 64, each "Amount from line 12000 of your return" and "Amount from line 12010 of your return")
 read them, so each province's dividend tax credit is computed from the T1 export and none of them
-has an input of its own. NL428 line 67 stays a typed input: no NL worksheet is in the forms folder
-(to be confirmed).
+has an input of its own. No NL worksheet is in the forms folder, so NL428 line 67 stays typed.
 
 The real registered engine is run end to end over each province's real 2025 manifest with line
 12000 of $1,000.00 and line 12010 of $400.00, so the worksheet's line 1 is 400.00 at the printed
@@ -29,6 +31,7 @@ import tax_engine.jurisdictions.ca_sk
 from tax_engine import build_tax_computation
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.errors import CapabilityContractError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.worksheet import Worksheet
@@ -102,3 +105,19 @@ def test_no_provincial_form_declares_its_dividend_tax_credit_as_an_input(
 
     assert not set(OLD_INPUTS) & set(inputs_of(manifest))
     assert T1_INPUTS <= set(inputs_of(manifest))
+
+
+def test_line_12000_is_an_addend_of_total_income() -> None:
+    plain = _compute("CA-AB", {})["ca/t1_taxable_income"]
+    given = _compute("CA-AB", {DIVIDENDS: "10000.00", OTHER_THAN_ELIGIBLE: "2000.00"})
+    total = artifact_kinds().kind("ca/total_income")
+    assert isinstance(total, AmountKind)
+
+    (before,) = plain
+    (after,) = given["ca/t1_taxable_income"]
+    assert after.get(total).value - before.get(total).value == D("10000.00")
+
+
+def test_line_12010_above_line_12000_is_refused() -> None:
+    with pytest.raises(CapabilityContractError):
+        _compute("CA-AB", {DIVIDENDS: "400.00", OTHER_THAN_ELIGIBLE: "1000.00"})

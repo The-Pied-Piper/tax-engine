@@ -4,8 +4,9 @@ Form text (Form MB428, CRA 5007-c): "Line 65: Line 60 minus line 64 (if negative
 The form prints no title for the line, so the step is untitled. Line 65 is one
 core/subtract_not_below_zero step over line 60 (`ca-mb/mb428_tax_before_credits_line_60`) and
 line 64 (`ca-mb/mb428_credits_total_line_64`), rounded by `ca-mb/cent_rounding`. Both lines are
-always computed (line 60 reads a blank line 59 as 0 and line 64 reads a blank line 62 as 0, each in
-its own step), so line 65 has no blank rule and prints no "left blank, taken as 0" row of its own.
+always computed (line 60 reads a blank line 59 as 0 and line 64 needs no blank rule for line 62,
+which is always computed),
+so line 65 has no blank rule and prints no "left blank, taken as 0" row of its own.
 
 The test composes the T1 employment income form, the real Schedule 8, T2204 and T1 taxable income
 parts, the real parts of Worksheet MB428 lines 1 to 9, Schedule MB428-A lines 1 to 12, MB428 lines
@@ -328,11 +329,11 @@ def test_line_65_falls_when_line_62_and_line_63_raise_line_64(tmp_path: Path) ->
 
 def test_line_65_falls_when_line_62_is_given(tmp_path: Path) -> None:
     # Line 12000 of 1,000.00 and line 12010 of 400.00 make line 62 51.13 (3.13 plus 48.00), so line
-    # 64 is 2,227.25; 7,923.71 less 2,227.25 is 5,696.46.
+    # 64 is 2,227.25. Line 12000 is also income, so line 60 rises too: line 65 is line 60 less 64.
     sheet = _sheet(tmp_path, "70000", line_62="1000.00")
 
     assert _line(sheet, LINE_64) == D("2227.25")
-    assert _line(sheet, IDENTIFIER) == D("5696.46")
+    assert _line(sheet, IDENTIFIER) == _line(sheet, LINE_60) - D("2227.25")
 
 
 def test_line_65_rises_when_line_59_raises_line_60(tmp_path: Path) -> None:

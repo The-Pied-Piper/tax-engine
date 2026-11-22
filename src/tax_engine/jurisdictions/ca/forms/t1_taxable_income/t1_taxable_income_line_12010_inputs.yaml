@@ -4,7 +4,7 @@
 # dividend tax credit worksheets (AB428 line 63, BC428 line 65, MB428 line 62, ON428 line 57 and
 # SK428 line 64) import line 12010 from this form's export and never ask for it themselves.
 form:
-  name: ca/t1_lines_copied_by_provinces
+  name: ca/t1_taxable_income
 inputs:
   - name: ca/taxable_dividends_other_than_eligible
     title: "Amount of dividends (other than eligible)"

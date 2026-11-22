@@ -66,7 +66,7 @@ def test_the_part_is_the_printed_worksheet_in_six_steps() -> None:
             "title": "Amount from line 12000 of your return",
             "reference": "62 worksheet line A",
             "unit": "ca/cad",
-            "consumes": {"records": "ca/t1_lines_copied_by_provinces.taxable_dividends_line_12000"},
+            "consumes": {"records": "ca/t1_taxable_income.taxable_dividends_line_12000"},
             "produces": {"output": PREFIX + "a"},
         },
         {
@@ -75,9 +75,7 @@ def test_the_part_is_the_printed_worksheet_in_six_steps() -> None:
             "reference": "62 worksheet line B",
             "unit": "ca/cad",
             "consumes": {
-                "records": (
-                    "ca/t1_lines_copied_by_provinces.taxable_dividends_other_than_eligible_line_12010"
-                )
+                "records": ("ca/t1_taxable_income.taxable_dividends_other_than_eligible_line_12010")
             },
             "produces": {"output": PREFIX + "b"},
         },

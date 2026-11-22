@@ -8,8 +8,9 @@ The manifest part is loaded from the package. The header and the form's export a
 because the shared scaffold owns them. Employment income (`ca/employment_income`, line 10100) and
 other employment income (`ca/other_employment_income`, line 10400, owned by another ticket) are
 plain starting inputs here. The UCCB (line 11700) and the RDSP income (line 12500) are the form's
-own steps, composed beside it. The sum is core/sum over line 10100, line 10400, line 11700 and line
-12500, in that order; each of the last two reads as 0 when the caller gives none.
+own steps, composed beside it, as is the taxable dividends (line 12000). The sum is core/sum over
+line 10100, line 10400, line 11700, line 12000 and line 12500, in that order;
+each of the last three reads as 0 when the caller gives none.
 """
 
 from __future__ import annotations
@@ -18,6 +19,7 @@ from decimal import Decimal
 from textwrap import dedent
 
 import pytest
+import yaml
 
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -28,14 +30,17 @@ from tax_engine.jurisdictions.ca.catalog.income import (
     TOTAL_INCOME,
     UCCB_INCOME,
 )
-from tests.federal_forms import form_part_names
+from tests.federal_forms import FEDERAL_FORMS, form_part_names
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
+from tests.kinds import bundled_kinds
 
 D = Decimal
 PARTS = (
     *form_part_names("t1_employment_income"),
     "t1_taxable_income_line_11700_inputs.yaml",
     "t1_taxable_income_line_11700.yaml",
+    "t1_taxable_income_line_12000_inputs.yaml",
+    "t1_taxable_income_line_12000.yaml",
     "t1_taxable_income_line_12500_inputs.yaml",
     "t1_taxable_income_line_12500.yaml",
     "t1_taxable_income_line_15000.yaml",
@@ -63,10 +68,15 @@ def line_15000(
     other: str,
     uccb: str | None = None,
     rdsp: str | None = None,
+    dividends: str | None = None,
 ) -> Decimal:
     given = [
         Artifact(kind, D(amount))
-        for kind, amount in ((UCCB_INCOME, uccb), (RDSP_INCOME, rdsp))
+        for kind, amount in (
+            (UCCB_INCOME, uccb),
+            (RDSP_INCOME, rdsp),
+            (bundled_kinds().kind("ca/taxable_dividends"), dividends),
+        )
         if amount is not None
     ]
     worksheets = take_home_service(HEADER, FORM, *PARTS).compute(
@@ -106,3 +116,23 @@ def test_line_15000_reads_a_blank_rdsp_income_as_zero(take_home_service: TakeHom
 
 def test_line_15000_reads_a_blank_uccb_as_zero(take_home_service: TakeHomeService) -> None:
     assert line_15000(take_home_service, "70000", "0", rdsp="300.25") == D("70300.25")
+
+
+def test_line_15000_adds_the_taxable_dividends_of_line_12000(
+    take_home_service: TakeHomeService,
+) -> None:
+    # Line 9 (line 12000) is among lines 1 to 20 that line 21, and so line 15000, add.
+    assert line_15000(take_home_service, "70000", "0", dividends="10000") == D("80000.00")
+
+
+def test_line_15000_is_one_sum_with_line_12000_between_lines_11700_and_12500() -> None:
+    part = yaml.safe_load((FEDERAL_FORMS / "t1_taxable_income" / PARTS[-1]).read_text("utf-8"))
+
+    (total,) = [s for s in part["capabilities"] if s["name"] == "core/sum"]
+    assert total["consumes"]["parts"] == [
+        "ca/total_income_employment_income_line_10100",
+        "ca/total_income_other_employment_income_line_10400",
+        "ca/uccb_income_line_11700",
+        "ca/taxable_dividends_line_12000",
+        "ca/rdsp_income_line_12500",
+    ]

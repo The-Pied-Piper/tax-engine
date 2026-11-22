@@ -3,11 +3,12 @@
 Form text (Form BC428, CRA 5010-C): "Line 67: Add lines 64 to 66. = ^". One core/sum step, rounded
 half-up to the cent by `ca-bc/cent_rounding`, over line 64 (a copy of line 60, so the step consumes
 `ca-bc/bc428_non_refundable_credits_line_60` and has no step of its own), line 65 (the British
-Columbia dividend tax credit, an optional input) and line 66 (the minimum tax carryover, the 34.9%
+Columbia dividend tax credit, computed from its
+worksheet) and line 66 (the minimum tax carryover, the 34.9%
 result). The form prints no title for the line beyond its label, so the step is untitled. Line 65
-is left blank by a salary-only filer, so the step has a blank rule reading it as 0 and prints its
-own "Left blank, taken as 0" row; line 60 is always computed and line 66 defaults to 0 (its input is
-read as 0, not blank), so they need none. The form prints no floor on line 67, but every addend is
+is always computed (a salary-only filer's worksheet gives 0.00), so the step has no blank rule; line
+60 is always computed and line 66 defaults to 0 (its input is read as 0, not blank), so they need
+none. The form prints no floor on line 67, but every addend is
 non-negative, so the kind is non-negative.
 
 The test composes the T1 employment income form, the Schedule 8 and T2204 parts, the real

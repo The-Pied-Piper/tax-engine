@@ -2,11 +2,11 @@
 
 Form text (Form AB428, CRA 5009-c): "Line 65: Add lines 62 to 64. = ^". One core/sum step, rounded
 half-up to the cent by `ca-ab/cent_rounding`, over line 62 (the credits from line 58), line 63
-(the Alberta dividend tax credit, an optional input) and line 64 (the minimum tax carryover, the
+(the Alberta dividend tax credit, computed from its
+worksheet) and line 64 (the minimum tax carryover, the
 35% result, box B). The form prints no title for the line beyond its label, so the step is
 untitled. Line 63 is the computed dividend tax credit worksheet (a blank caller gives 0.00), so
-the step has
-no blank rule; line 62 and line 64 are always computed (the
+the step has no blank rule; line 62 and line 64 are always computed (the
 line 64 amount, box A, defaults to 0), so they need none. The form prints no floor on line 65, but
 every addend is non-negative, so the kind is non-negative.
 
