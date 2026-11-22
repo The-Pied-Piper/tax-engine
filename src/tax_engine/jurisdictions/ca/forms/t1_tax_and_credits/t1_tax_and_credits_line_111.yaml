@@ -1,0 +1,16 @@
+# T1 General 2025 (form 5006-R), Step 5 Part B line 111 "Line 111 and line 33199: Allowable amount
+# of medical expenses for other dependants (use Federal Worksheet)" (CRA 5006-R-25E). The figure is
+# a copy of line 33199, which the T1 lines copied by provinces form owns as an optional input (the
+# Federal Worksheet that works it out is not built) and exports as a record list, so this is a
+# core/record_total over that list. The export is 0 when the filer gives none. Line 112 reads it.
+form:
+  name: ca/t1_tax_and_credits
+capabilities:
+  - name: core/record_total
+    title: "Allowable amount of medical expenses for other dependants (use Federal Worksheet)"
+    reference: "33199"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_lines_copied_by_provinces.other_dependants_medical_expenses_line_33199
+    produces:
+      output: ca/other_dependants_medical_expenses_line_111
