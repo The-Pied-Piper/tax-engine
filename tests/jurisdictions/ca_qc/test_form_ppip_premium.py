@@ -27,11 +27,12 @@ def _part() -> dict[str, Any]:
     return part
 
 
-def test_the_form_is_named_and_required_and_has_no_printed_title() -> None:
+def test_the_form_is_named_and_required_and_shares_the_return_title() -> None:
     form = _part()["form"]
 
-    assert list(form) == ["name", "required", "exports"]
+    assert list(form) == ["name", "title", "required", "exports"]
     assert form["name"] == "ca-qc/ppip_premium"
+    assert form["title"] == "T1 Income Tax and Benefit Return"
     assert form["required"] is True
 
 

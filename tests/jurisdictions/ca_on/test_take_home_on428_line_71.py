@@ -5,14 +5,13 @@ Form text (Form ON428, CRA 5006-c-25e.txt): "Line 71: Line 69 minus line 70 (if 
 (`ca-on/on428_tax_with_surtax_line_69`, required) less line 70, the Ontario dividend tax credit from
 line 57
 (`ca-on/on428_dividend_tax_credit_line_57`). Line 70 is a copy of line 57, so the part reads line 57
-directly, and line 57 is an optional input with blank fallback 0. A salary-only caller has no
-dividend income, so a request that leaves line 57 out is read as blank, and the line 71 part reads
-that blank as 0. The output is `ca-on/on428_tax_after_dividend_credit_line_71`, exported by the
-form.
+directly, and line 57 is always computed (never blank), so the line 71 part has no blank rule.
+The output is
+`ca-on/on428_tax_after_dividend_credit_line_71`, exported by the form.
 
 Line 69 is built by another part, so this test declares it as a required input of its header, as
-the ON428 line tests do. Line 57 is declared as its real inputs part
-declares it, and the test loads the test data folder's `on428_line_71.yaml` beside it.
+the ON428 line tests do, and line 57 as a required input too. The test loads the
+`on428_line_71.yaml` part beside them.
 """
 
 from __future__ import annotations
@@ -51,37 +50,18 @@ inputs:
   - name: {LINE_69}
     required: true
   - name: {LINE_57}
-    required: false
-    default: null
-    basis: 'Line 57 and line and line 61520: Ontario dividend tax credit (use Worksheet ON428)'
+    required: true
 capabilities: []
 """
 
 
-def _line_71(take_home_service: TakeHomeService, line_69: str, line_57: str | None) -> Decimal:
+def _line_71(take_home_service: TakeHomeService, line_69: str, line_57: str) -> Decimal:
     kinds = bundled_kinds()
-    given = [Artifact(kinds.kind(LINE_69), D(line_69))]
-    if line_57 is not None:
-        given.append(Artifact(kinds.kind(LINE_57), D(line_57)))
+    given = [Artifact(kinds.kind(LINE_69), D(line_69)), Artifact(kinds.kind(LINE_57), D(line_57))]
     worksheet = take_home_service(HEADER, FORM, PART).compute(CODE, 2025, *given)["ca-on/on428"][0]
     value = worksheet.get(kinds.kind(LINE_71)).value
     assert isinstance(value, Decimal)
     return value
-
-
-@pytest.mark.parametrize(
-    ("line_69", "line_71"),
-    [
-        # A $20,000 salary: line 69 is 300.14 and line 57 is blank (0), so line 71 is 300.14.
-        ("300.14", "300.14"),
-        # A $150,000 salary: line 69 is 14,102.14 and line 57 is blank (0), so line 71 is 14,102.14.
-        ("14102.14", "14102.14"),
-    ],
-)
-def test_line_71_is_line_69_when_line_57_is_left_out(
-    take_home_service: TakeHomeService, line_69: str, line_71: str
-) -> None:
-    assert _line_71(take_home_service, line_69, None) == D(line_71)
 
 
 def test_line_71_is_line_69_minus_line_57(take_home_service: TakeHomeService) -> None:

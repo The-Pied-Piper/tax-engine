@@ -1,4 +1,4 @@
-"""The units the federal form manifests declare, as the Ontario return loads them.
+"""The units the federal form manifests declare, as the registered returns load them.
 
 Every amount a `ca/forms/**/*.yaml` manifest declares, as an input or as the figure of a capability,
 is in Canadian dollars (`ca/cad`); the CPP months input of Schedule 8 is in `core/months`. The
@@ -9,12 +9,13 @@ declared in the Ontario manifest, so it is not listed here.
 
 from __future__ import annotations
 
+from collections.abc import Sequence
+
 import pytest
 import yaml
 
 from tax_engine import registrations
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.manifest import Manifest
 from tests.federal_forms import FEDERAL_FORMS
@@ -53,26 +54,35 @@ def declared() -> dict[str, str | None]:
     return found
 
 
-def units_in(manifest: Manifest) -> dict[str, str | None]:
-    """The unit each figure of the ca forms and the return's inputs declares, as written."""
-    units = {name: declaration.unit for name, declaration in inputs_of(manifest).items()}
-    for form in manifest.forms:
-        if form.name.startswith("ca/"):
-            for selection in form.capabilities:
-                for name in selection.produces.values():
-                    units[name] = selection.unit
+def units_in(manifests: Sequence[Manifest]) -> dict[str, str | None]:
+    """The unit each figure of the ca forms and the returns' inputs declares, as written.
+
+    A federal form is imported by the returns that use it (the T691 by the provinces that read it,
+    not by Ontario), so the figures are read over every registered return's manifest; a form
+    imported by several declares the same unit in each.
+    """
+    units: dict[str, str | None] = {}
+    for manifest in manifests:
+        units.update({name: d.unit for name, d in inputs_of(manifest).items()})
+        for form in manifest.forms:
+            if form.name.startswith("ca/"):
+                for selection in form.capabilities:
+                    for name in selection.produces.values():
+                        units[name] = selection.unit
     return units
 
 
 @pytest.fixture(scope="module")
-def manifest() -> Manifest:
+def manifests() -> list[Manifest]:
     source = YamlJurisdictionSource(
         registrations.JURISDICTIONS.roots(),
         registrations.artifact_kinds(),
         registrations.units(),
     )
-    (loaded,) = source.get_jurisdiction(JurisdictionCode("CA-ON")).manifests
-    return loaded
+    return [
+        source.get_jurisdiction(code).manifest_for(2025)
+        for code in registrations.JURISDICTIONS.jurisdiction_codes()
+    ]
 
 
 def test_the_figures_are_found() -> None:
@@ -85,5 +95,5 @@ def test_the_figures_are_found() -> None:
 
 
 @pytest.mark.parametrize("name", sorted(declared()))
-def test_each_federal_figure_declares_its_unit(manifest: Manifest, name: str) -> None:
-    assert units_in(manifest)[name] == declared()[name]
+def test_each_federal_figure_declares_its_unit(manifests: list[Manifest], name: str) -> None:
+    assert units_in(manifests)[name] == declared()[name]

@@ -9,7 +9,7 @@
 # which TP-1 line 447 carries.
 form:
   name: ca-qc/tp1_schedule_k
-  title: "Premium Payable Under the Québec Prescription Drug Insurance Plan"
+  title: "Schedule K: Premium Payable Under the Québec Prescription Drug Insurance Plan"
   required: true
   exports:
     - ca-qc/schedule_k_months_total_box_62

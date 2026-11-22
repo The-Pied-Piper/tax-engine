@@ -1,11 +1,24 @@
 # Form MB428 (Manitoba Tax, 2025, CRA 5007-C) line 66 (ca-mb/mb428). "Manitoba additional tax for
 # minimum tax purposes:" / "Line 66: Form T691: line 1 minus line 2 of Part 7 multiplied by 50% =
 # ^". The 50% is a printed rate, held in the `ca-mb/minimum_tax_rate` dataset, so line 66 is one
-# calculation: 50% of the amount, rounded half-up to the cent. The amount is an optional input
-# (read as 0 when left out), declared by its own part.
+# calculation: 50% of the amount, rounded half-up to the cent. The amount is what the form prints,
+# line 1 minus line 2 of Part 7, which the T691 form computes and exports
+# (`ca/t691_line_1_minus_line_2_of_part_7`), so the first step totals that export (a form reads
+# another form's export only as a record list) and the second applies the rate. The form prints no
+# floor on this line; the T691 refuses a negative "line 1 minus line 2" once, because Part 7 is
+# completed only when minimum tax is payable (T691 Part 5), which is the form's intent and not a
+# printed instruction.
 form:
   name: ca-mb/mb428
 capabilities:
+  - name: core/record_total
+    title: "Form T691: line 1 minus line 2 of Part 7"
+    reference: "66 (Form T691)"
+    unit: ca/cad
+    consumes:
+      records: ca/t691.t691_line_1_minus_line_2_of_part_7
+    produces:
+      output: ca-mb/mb428_t691_amount_line_66
   - name: core/apply_rate
     title: "Manitoba additional tax for minimum tax purposes"
     reference: "66"
@@ -14,7 +27,5 @@ capabilities:
       rate: ca-mb/minimum_tax_rate
     consumes:
       base: ca-mb/mb428_t691_amount_line_66
-    blank:
-      base: "0"
     produces:
       output: ca-mb/mb428_additional_tax_minimum_tax_line_66

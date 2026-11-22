@@ -10,7 +10,7 @@ to 0), so neither is ever blank and the step has no blank rule. The output is
 
 The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the T1
 taxable income parts, the real line parts of `ca-sk/sk428_credits` that lines 8 and 57 need, the
-real `sk428_line_58.yaml` to `sk428_line_68.yaml` parts (with `sk428_line_68_inputs.yaml`) and the
+real `sk428_line_58.yaml` to `sk428_line_68.yaml` parts (with the T691 form) and the
 new `sk428_line_69.yaml`, and types in only the salary (and, in some tests, lines 61 and 64 and the
 Form T691 amount of line 68). The two form declarations are made up here: the credits form exports
 lines 1, 3 to 8 and 57, and `ca-sk/sk428` exports only line 69.
@@ -38,6 +38,7 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.errors import CapabilityContractError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY
@@ -54,6 +55,7 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_units,
 )
 from tests.kinds import non_negative
+from tests.t691_support import line_1_minus_line_2
 
 D = Decimal
 CENT = D("0.01")
@@ -94,15 +96,14 @@ SK_LINE_PARTS = (
     "sk428_line_61_input.yaml",
     "sk428_line_62.yaml",
     "sk428_line_63.yaml",
-    "sk428_line_64_input.yaml",
+    "sk428_line_64.yaml",
     "sk428_line_65.yaml",
     "sk428_line_66.yaml",
     "sk428_line_67.yaml",
-    "sk428_line_68_inputs.yaml",
     "sk428_line_68.yaml",
 )
 T1_PARTS = form_part_names(
-    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces", "t691"
 )
 FORM_NAME = "ca-sk/sk428"
 CREDITS_FORM_NAME = "ca-sk/sk428_credits"
@@ -253,11 +254,12 @@ def _sheet(
     kinds = saskatchewan_kinds()
     given = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if amount is not None:
-        given.append(Artifact(sk_catalog.SK428_MINIMUM_TAX_T691_AMOUNT_LINE_68, D(amount)))
+        given.extend(line_1_minus_line_2(amount))
     if line_61 is not None:
         given.append(Artifact(sk_catalog.SK428_TAX_ON_SPLIT_INCOME_LINE_61, D(line_61)))
     if line_64 is not None:
-        given.append(Artifact(kinds.kind(LINE_64), D(line_64)))
+        # `line_64` is the amount of line 12000 (line 12010 left out), so line 64 is 11% of it.
+        given.append(Artifact(kinds.kind("ca/taxable_dividends"), D(line_64)))
     worksheets = _service(tmp_path).compute(JurisdictionCode("CA-SK"), 2025, *given)
     (sheet,) = worksheets[FORM_NAME]
     return sheet
@@ -320,31 +322,19 @@ def test_a_t691_amount_of_1000_adds_500_to_line_67(
     assert str(_line(sheet, IDENTIFIER)) == expected
 
 
-def test_a_negative_t691_amount_gives_a_negative_line_68_and_a_signed_line_69(
-    tmp_path: Path,
-) -> None:
-    # The Form T691 input is signed: -1000 x 50% = -500.00, added to line 67 with no floor.
-    sheet = _sheet(tmp_path, "70000", amount="-1000")
-    assert _line(sheet, LINE_68) == D("-500.00")
-    assert _line(sheet, IDENTIFIER) == D("4592.30") == _derived(D("70000"), D("-1000"))
-
-    sheet = _sheet(tmp_path / "low", "20000", amount="-1000")
-    assert _line(sheet, LINE_67) == ZERO
-    assert _line(sheet, IDENTIFIER) == D("-500.00")
-    assert str(_line(sheet, IDENTIFIER)) == "-500.00"
-    assert _line(sheet, IDENTIFIER).is_signed()
+def test_a_negative_t691_amount_is_refused_at_the_t691_figure(tmp_path: Path) -> None:
+    with pytest.raises(CapabilityContractError, match="t691_line_1_minus_line_2_of_part_7 -1000"):
+        _sheet(tmp_path, "70000", amount="-1000")
 
 
 def test_line_69_reads_lines_61_and_64_through_line_67(tmp_path: Path) -> None:
-    # Line 67 at 70,000 with line 61 of 100.00 is 5,192.30; a line 64 of 1,000.00 lowers it to
-    # 4,192.30, and line 68 adds 500.00.
+    # Line 12000 of 1,000.00 makes line 64 110.00 (11%); line 61 of 100.00 raises line 62 and line
+    # 68 adds 500.00. Line 12000 is also income, so line 62 is read from the sheet.
     sheet = _sheet(tmp_path, "70000", amount="1000.00", line_61="100.00", line_64="1000.00")
 
-    assert _line(sheet, LINE_67) == D("4192.30")
-    assert _line(sheet, IDENTIFIER) == D("4692.30")
-    assert _line(sheet, IDENTIFIER) == _derived(
-        D("70000"), D("1000.00"), line_61=D("100.00"), line_64=D("1000.00")
-    )
+    assert _line(sheet, LINE_66) == D("2615.32")
+    assert _line(sheet, LINE_67) == _line(sheet, LINE_62) - D("2615.32")
+    assert _line(sheet, IDENTIFIER) == _line(sheet, LINE_67) + D("500.00")
 
 
 def test_line_69_rounds_to_the_cent_half_up(tmp_path: Path) -> None:
@@ -423,6 +413,6 @@ def test_line_69_is_a_registered_signed_decimal_amount_kind() -> None:
     kind = kinds.kind(IDENTIFIER)
     assert isinstance(kind, AmountKind)
     assert kind.value_type is Decimal
-    # The form prints no floor on line 69, and line 68 is signed, so the kind is not non_negative.
+    # The form prints no floor on line 69, so the kind is not non_negative.
     assert not non_negative(kind)
     assert kind is vars(sk_catalog)["SK428_TAX_LINE_69"]

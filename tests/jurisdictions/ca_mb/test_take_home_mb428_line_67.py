@@ -12,8 +12,8 @@ parts, the real parts of Worksheet MB428 lines 1 to 9, Schedule MB428-A lines 1 
 1, 3 to 9, 18, 19, 21, 28, 29, 33, 36, 41, 42 and 51 of `ca-mb/mb428_credits`, the line 31, line 50
 and line 56 input parts, the real `mb428_credits_line_53.yaml`, `mb428_credits_line_57.yaml`,
 `mb428_line_58.yaml`, `mb428_line_59_input.yaml`, `mb428_line_60.yaml`, `mb428_line_61.yaml`,
-`mb428_line_62_input.yaml`, `mb428_line_63_input.yaml`, `mb428_line_63.yaml`,
-`mb428_line_64.yaml`, `mb428_line_65.yaml`, `mb428_line_66_input.yaml` and `mb428_line_66.yaml`, and
+`mb428_line_62.yaml`, `mb428_line_63_input.yaml`, `mb428_line_63.yaml`,
+`mb428_line_64.yaml`, `mb428_line_65.yaml`, the T691 form and `mb428_line_66.yaml`, and
 the new `mb428_line_67.yaml`, and types in only the salary (and, in some tests, the T691 amount of
 line 66). The header and the form declarations are made up here: the credits form exports lines 1,
 3 to 8 and 57, and `ca-mb/mb428` exports only line 67. The figures are line 65 (the line 65 test)
@@ -40,6 +40,7 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.errors import CapabilityContractError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
@@ -55,11 +56,11 @@ from tests.jurisdictions.ca_mb.support import (
     manitoba_units,
 )
 from tests.kinds import non_negative
+from tests.t691_support import line_1_minus_line_2
 
 D = Decimal
 MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"
 LINE_PART = MB_PARTS / "mb428_line_67.yaml"
-LINE_66_INPUT_PART = MB_PARTS / "mb428_line_66_input.yaml"
 LINE_66_PART = MB_PARTS / "mb428_line_66.yaml"
 LINE_65_PART = MB_PARTS / "mb428_line_65.yaml"
 LINE_64_PART = MB_PARTS / "mb428_line_64.yaml"
@@ -67,7 +68,7 @@ LINE_60_PART = MB_PARTS / "mb428_line_60.yaml"
 LINE_59_PART = MB_PARTS / "mb428_line_59_input.yaml"
 LINE_58_PART = MB_PARTS / "mb428_line_58.yaml"
 LINE_61_PART = MB_PARTS / "mb428_line_61.yaml"
-LINE_62_PART = MB_PARTS / "mb428_line_62_input.yaml"
+LINE_62_PART = MB_PARTS / "mb428_line_62.yaml"
 LINE_63_PART = MB_PARTS / "mb428_line_63.yaml"
 LINE_57_PART = MB_PARTS / "mb428_credits_line_57.yaml"
 LINE_53_PART = MB_PARTS / "mb428_credits_line_53.yaml"
@@ -137,7 +138,7 @@ WORKSHEET_PARTS = (
 )
 # The real federal parts the T1 taxable-income form needs, beside the salary and the worksheet.
 T1_PARTS = form_part_names(
-    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
+    "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces", "t691"
 )
 
 HEADER = dedent("""\
@@ -237,7 +238,6 @@ def _part_files() -> Iterator[Path]:
     yield LINE_63_PART
     yield LINE_64_PART
     yield LINE_65_PART
-    yield LINE_66_INPUT_PART
     yield LINE_66_PART
     yield LINE_PART
 
@@ -270,7 +270,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
 def _sheet(tmp_path: Path, salary: str, t691_amount: str | None = None) -> Worksheet:
     given = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if t691_amount is not None:
-        given.append(Artifact(mb_catalog.MB428_T691_AMOUNT_LINE_66, D(t691_amount)))
+        given.extend(line_1_minus_line_2(t691_amount))
     worksheets = _service(tmp_path).compute(JurisdictionCode("CA-MB"), 2025, *given)
     (sheet,) = worksheets[FORM_NAME]
     return sheet
@@ -330,17 +330,22 @@ def test_line_67_is_line_66_alone_when_line_65_is_floored_at_10000(tmp_path: Pat
     assert _line(sheet, IDENTIFIER) == D("500.00")
 
 
+def test_a_negative_t691_figure_is_refused_before_line_67(tmp_path: Path) -> None:
+    with pytest.raises(CapabilityContractError, match="part_7 -1000.00"):
+        _sheet(tmp_path, "10000", "-1000.00")
+
+
 def test_line_67_has_no_left_blank_row_of_its_own(tmp_path: Path) -> None:
-    # The composed steps for lines 60 and 64 print one blank row each (line 63's amount is the T1
-    # export, never blank); line 67's step has no
-    # blank rule and adds none. A blank T691 amount adds exactly one more, line 66's own.
+    # The composed step for line 60 prints one blank row (line 64 has no blank rule now that line 62
+    # is always computed, and line 63's amount is the T1 export, never blank); line 67's step has no
+    # blank rule and adds none. A blank T691 amount adds none: line 66 totals the export.
     (tmp_path / "given").mkdir()
     (tmp_path / "blank").mkdir()
     given = _blank_rows(_sheet(tmp_path / "given", "70000", "1000.00"))
     blank = _blank_rows(_sheet(tmp_path / "blank", "70000"))
 
-    assert len(given) == 2
-    assert len(blank) == len(given) + 1
+    assert len(given) == 1
+    assert len(blank) == len(given)
 
 
 def test_the_sheet_prints_no_title_and_the_reference_of_line_67(tmp_path: Path) -> None:

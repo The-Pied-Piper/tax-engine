@@ -129,7 +129,41 @@ BC428_DIVIDEND_TAX_CREDIT_LINE_65 = AmountKind.declare(
     CATALOG, "bc428_dividend_tax_credit_line_65", non_negative=True
 )
 """British Columbia dividend tax credit, BC428 line 65 "Line 65 and line 61520: British Columbia
-dividend tax credit (use Worksheet BC428)": a caller input that is read as blank when left out."""
+dividend tax credit (use Worksheet BC428)": computed from Worksheet BC428 (5010-D), the sum of its
+line 1 and line 2 over the T1 lines 12000 and 12010. A caller who gives neither line has a credit of
+0.00."""
+
+BC428_DIVIDEND_TAX_CREDIT_WORKSHEET_LINE_A = AmountKind.declare(
+    CATALOG, "bc428_dividend_tax_credit_worksheet_line_a", non_negative=True
+)
+"""British Columbia dividend tax credit worksheet, BC428 line 65 (Worksheet BC428, 5010-D), Line A
+"Amount from line 12000 of your return": the T1 line 12000 total."""
+
+BC428_DIVIDEND_TAX_CREDIT_WORKSHEET_LINE_B = AmountKind.declare(
+    CATALOG, "bc428_dividend_tax_credit_worksheet_line_b", non_negative=True
+)
+"""British Columbia dividend tax credit worksheet, BC428 line 65 (Worksheet BC428, 5010-D), Line B
+"Amount from line 12010 of your return": the T1 line 12010 total."""
+
+BC428_DIVIDEND_TAX_CREDIT_WORKSHEET_LINE_1 = AmountKind.declare(
+    CATALOG, "bc428_dividend_tax_credit_worksheet_line_1", non_negative=True
+)
+"""British Columbia dividend tax credit worksheet, BC428 line 65 (Worksheet BC428, 5010-D), Line 1
+"Amount from line 12010 of your return Line B multiplied by 1.96% =": line B at the first printed
+rate, rounded half-up to the cent."""
+
+BC428_DIVIDEND_TAX_CREDIT_WORKSHEET_LINE_C = AmountKind.declare(
+    CATALOG, "bc428_dividend_tax_credit_worksheet_line_c", non_negative=True
+)
+"""British Columbia dividend tax credit worksheet, BC428 line 65 (Worksheet BC428, 5010-D), Line C
+"Amount A minus amount B": line A less line B."""
+
+BC428_DIVIDEND_TAX_CREDIT_WORKSHEET_LINE_2 = AmountKind.declare(
+    CATALOG, "bc428_dividend_tax_credit_worksheet_line_2", non_negative=True
+)
+"""British Columbia dividend tax credit worksheet, BC428 line 65 (Worksheet BC428, 5010-D), Line 2
+"Amount A minus amount B Line C = multiplied by 12% =": line C at the second printed rate, rounded
+half-up to the cent."""
 
 BC428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_71 = AmountKind.declare(
     CATALOG, "bc428_provincial_foreign_tax_credit_line_71", non_negative=True
@@ -197,8 +231,9 @@ BC428_ADDITIONAL_MINIMUM_TAX_AMOUNT_LINE_69 = AmountKind.declare(
     CATALOG, "bc428_additional_minimum_tax_amount_line_69"
 )
 """Amount from line 14 of Part 7 of Form T691, BC428 line 69 "Amount from line 14 of Part 7 of Form
-T691 multiplied by 34.9% =": the amount from Form T691, an optional input that a caller with no
-minimum tax leaves out. The multiply is a separate step."""
+T691 multiplied by 34.9% =": the amount from Form T691, box A of the line, a record total of the
+T691's export (`ca/t691_additional_taxes_for_minimum_tax_carryover_line_14`),
+0 for a caller with no minimum tax. The multiply is a separate step."""
 
 BC428_ADDITIONAL_MINIMUM_TAX_LINE_69 = AmountKind.declare(
     CATALOG, "bc428_additional_minimum_tax_line_69", non_negative=True

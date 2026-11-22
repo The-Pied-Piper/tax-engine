@@ -1,0 +1,29 @@
+# Form ON428 (Ontario Tax, 2025, 5006-c-25e) line 59 (ca-on/on428), "Line 59: Amount from line 40427
+# of your return multiplied by 24.63% =". The 24.63% is a printed rate, held in the
+# `ca-on/minimum_tax_rate` dataset, so line 59 is one calculation: 24.63% of the amount, rounded
+# half-up to the cent. The amount is the T1's line 40427: the T1 owns the input and exports the line
+# (`ca/minimum_tax_carryover_line_40427`), so the first step totals that export (a form reads
+# another form's export only as a record list) and the second applies the rate. The line has two
+# boxes: the amount (box A, the first step) and the multiplied result (box B, the second); the form
+# does not name them, "box A" and "box B" are the owner's naming, as on line 47.
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/record_total
+    title: "Amount from line 40427 of your return"
+    reference: "59 box A"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_lines_copied_by_provinces.minimum_tax_carryover_line_40427
+    produces:
+      output: ca-on/on428_minimum_tax_carryover_amount_line_59
+  - name: core/apply_rate
+    title: "Ontario minimum tax carryover limit"
+    reference: "59 box B"
+    unit: ca/cad
+    params:
+      rate: ca-on/minimum_tax_rate
+    consumes:
+      base: ca-on/on428_minimum_tax_carryover_amount_line_59
+    produces:
+      output: ca-on/on428_minimum_tax_carryover_limit_line_59

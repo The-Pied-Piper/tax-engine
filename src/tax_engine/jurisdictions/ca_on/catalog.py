@@ -388,12 +388,37 @@ ON428_TAX_WITH_SPLIT_INCOME_LINE_55 = AmountKind.declare(
 )
 """Tax with split income, ON428 line 55 "Line 55: Line 53 plus line 54 =": line 53 plus line 54."""
 
+ON428_TAX_MINUS_CREDITS_LINE_56 = AmountKind.declare(
+    CATALOG, "on428_tax_minus_credits_line_56", non_negative=True
+)
+"""Tax minus credits copied, ON428 line 56 "Line 56: Enter the amount from line 53 above.": a copy
+of line 53."""
+
+ON428_TAX_MINUS_DIVIDEND_TAX_CREDIT_LINE_58 = AmountKind.declare(
+    CATALOG, "on428_tax_minus_dividend_tax_credit_line_58", non_negative=True
+)
+"""Tax minus the dividend tax credit, ON428 line 58 "Line 58: Line 56 minus line 57 (if negative,
+enter "0") =": line 56 minus line 57, not below zero."""
+
+ON428_MINIMUM_TAX_CARRYOVER_AMOUNT_LINE_59 = AmountKind.declare(
+    CATALOG, "on428_minimum_tax_carryover_amount_line_59", non_negative=True
+)
+"""Minimum tax carryover amount, ON428 line 59 "Line 59: Amount from line 40427 of your return":
+the amount from line 40427 of the T1 return, a record total of the T1's export
+(`ca/minimum_tax_carryover_line_40427`), 0 for a salary-only caller; the 24.63% is applied by the
+next step."""
+
+ON428_MINIMUM_TAX_CARRYOVER_LIMIT_LINE_59 = AmountKind.declare(
+    CATALOG, "on428_minimum_tax_carryover_limit_line_59", non_negative=True
+)
+"""Minimum tax carryover limit, ON428 line 59 "Line 59: Amount from line 40427 of your return
+multiplied by 24.63% =": calculated, the amount from line 40427 multiplied by 24.63%."""
+
 ON428_MINIMUM_TAX_CARRYOVER_LINE_60 = AmountKind.declare(
     CATALOG, "on428_minimum_tax_carryover_line_60", non_negative=True
 )
 """Minimum tax carryover applied, ON428 line 60 "Line 60 and line 61540: Enter whichever is less:
-amount from line 58 or line 59.": the lesser of line 58 and line 59, an optional input that a
-salary-only caller leaves out."""
+amount from line 58 or line 59.": the lesser of line 58 and line 59."""
 
 ON428_TAX_AFTER_MINIMUM_TAX_CARRYOVER_LINE_61 = AmountKind.declare(
     CATALOG, "on428_tax_after_minimum_tax_carryover_line_61", non_negative=True
@@ -421,8 +446,41 @@ ON428_SURTAX_TOTAL_LINE_68 = AmountKind.declare(
 ON428_DIVIDEND_TAX_CREDIT_LINE_57 = AmountKind.declare(
     CATALOG, "on428_dividend_tax_credit_line_57", non_negative=True
 )
-"""Ontario dividend tax credit, ON428 line 57 "Line 57 and line and line 61520: Ontario dividend
-tax credit (use Worksheet ON428)": an optional input that a salary-only caller leaves out."""
+"""Ontario dividend tax credit, ON428 line 57 "Line 57 and line and line 61520: Ontario dividend tax
+credit (use Worksheet ON428)": computed from Worksheet ON428 (5006-D), the sum of its line 1 and
+line 2 over the T1 lines 12000 and 12010. A caller who gives neither line has a credit of 0.00."""
+
+ON428_DIVIDEND_TAX_CREDIT_WORKSHEET_LINE_A = AmountKind.declare(
+    CATALOG, "on428_dividend_tax_credit_worksheet_line_a", non_negative=True
+)
+"""Ontario dividend tax credit worksheet, ON428 line 57 (Worksheet ON428, 5006-D), Line A "Amount
+from line 12000 of your return": the T1 line 12000 total."""
+
+ON428_DIVIDEND_TAX_CREDIT_WORKSHEET_LINE_B = AmountKind.declare(
+    CATALOG, "on428_dividend_tax_credit_worksheet_line_b", non_negative=True
+)
+"""Ontario dividend tax credit worksheet, ON428 line 57 (Worksheet ON428, 5006-D), Line B "Amount
+from line 12010 of your return": the T1 line 12010 total."""
+
+ON428_DIVIDEND_TAX_CREDIT_WORKSHEET_LINE_1 = AmountKind.declare(
+    CATALOG, "on428_dividend_tax_credit_worksheet_line_1", non_negative=True
+)
+"""Ontario dividend tax credit worksheet, ON428 line 57 (Worksheet ON428, 5006-D), Line 1 "Amount
+from line 12010 of your return Line B multiplied by 2.9863% =": line B at the first printed rate,
+rounded half-up to the cent."""
+
+ON428_DIVIDEND_TAX_CREDIT_WORKSHEET_LINE_C = AmountKind.declare(
+    CATALOG, "on428_dividend_tax_credit_worksheet_line_c", non_negative=True
+)
+"""Ontario dividend tax credit worksheet, ON428 line 57 (Worksheet ON428, 5006-D), Line C "Amount A
+minus amount B": line A less line B."""
+
+ON428_DIVIDEND_TAX_CREDIT_WORKSHEET_LINE_2 = AmountKind.declare(
+    CATALOG, "on428_dividend_tax_credit_worksheet_line_2", non_negative=True
+)
+"""Ontario dividend tax credit worksheet, ON428 line 57 (Worksheet ON428, 5006-D), Line 2 "Amount A
+minus amount B Line C = multiplied by 10% =": line C at the second printed rate, rounded half-up to
+the cent."""
 
 ON428_TAX_WITH_SURTAX_LINE_69 = AmountKind.declare(
     CATALOG, "on428_tax_with_surtax_line_69", non_negative=True
