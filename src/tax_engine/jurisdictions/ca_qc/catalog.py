@@ -695,7 +695,8 @@ TP1_SCHEDULE_F_EMPLOYMENT_INCOME_CORRECTION_LINE_14 = AmountKind.declare(
     CATALOG, "tp1_schedule_f_employment_income_correction_line_14"
 )
 """Schedule F line 14, "Correction of employment income (line 105)", signed: a figure to subtract is
-negative. Blank when the caller has none, and line 16 reads it as 0."""
+negative. A copy of TP-1 line 105, read from the TP-1 income form's export
+(`tp1_schedule_f_line_14.yaml`), 0 when the caller gave none."""
 
 TP1_SCHEDULE_F_EMPLOYMENT_INCOME_TOTAL_LINE_16 = AmountKind.declare(
     CATALOG, "tp1_schedule_f_employment_income_total_line_16"
@@ -2905,29 +2906,11 @@ TP1_INCOME_TAX_AND_CONTRIBUTIONS_RETURN = AmountKind.declare(
 """Quebec return summary: TP-1 line 450 "Income tax and contributions", read from the totals form's
 export. One core/record_total (`return.yaml`)."""
 
-TP1_WORK_PREMIUM_TAX_CREDITS_RETURN = AmountKind.declare(
-    CATALOG, "tp1_work_premium_tax_credits_return", non_negative=True
-)
-"""Quebec return summary: TP-1 line 456 "Tax credits respecting the work premium", read from the
-totals form's export. One core/record_total (`return.yaml`)."""
-
-TP1_INCOME_TAX_LESS_WORK_PREMIUM_RETURN = AmountKind.declare(
-    CATALOG, "tp1_income_tax_less_work_premium_return"
-)
-"""Quebec return summary: TP-1 line 450 less line 456, signed (no floor). For a salary-only filer
-only line 456 reduces line 450, because the credits that TP-1 line 468 collects are left out of the
-take-home. One core/subtract (`return.yaml`)."""
-
-TP1_QPIP_OVERPAYMENT_RETURN = AmountKind.declare(
-    CATALOG, "tp1_qpip_overpayment_return", non_negative=True
-)
-"""Quebec return summary: TP-1 line 457 "QPIP overpayment", read from the totals form's export. One
-core/record_total (`return.yaml`)."""
-
 TP1_INCOME_TAX_LESS_CREDITS_RETURN = AmountKind.declare(
     CATALOG, "tp1_income_tax_less_credits_return"
 )
-"""Quebec return summary: TP-1 line 450 less lines 456 and 457, signed (no floor). One core/subtract
+"""Quebec return summary: TP-1 line 470 "Subtract line 468 from line 450", read from the totals
+form's export (signed: negative is a refund, positive a balance due). One core/record_total
 (`return.yaml`)."""
 
 FEDERAL_TOTAL_PAYABLE_RETURN = AmountKind.declare(

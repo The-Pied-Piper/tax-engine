@@ -1,8 +1,8 @@
 """Revenu Quebec Schedule F (TP-1.D.F-V, 2025-12), Part A, line 16, as the Quebec take-home
 manifest wires it. Printed as "Add lines 12 and 14, or subtract line 14 from line 12".
 
-Line 14 (the correction of employment income, TP-1 line 105) is an optional signed input, read as 0
-when left out; line 16 is `core/sum` of lines 12 and 14, rounded half-up to the cent.
+Line 14 (the correction of employment income) is a signed copy of TP-1 line 105, 0 when that is left
+out; line 16 is `core/sum` of lines 12 and 14, rounded half-up to the cent.
 """
 
 from __future__ import annotations
@@ -18,7 +18,7 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_qc.catalog import (
-    TP1_SCHEDULE_F_EMPLOYMENT_INCOME_CORRECTION_LINE_14,
+    TP1_LINE_105,
     TP1_SCHEDULE_F_EMPLOYMENT_INCOME_TOTAL_LINE_16,
 )
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
@@ -57,7 +57,7 @@ PARTS = (
     "tp1_income_line_98_2_input.yaml",
     "tp1_income_line_98_2.yaml",
     "tp1_schedule_f_line_12.yaml",
-    "tp1_schedule_f_line_14_input.yaml",
+    "tp1_schedule_f_line_14.yaml",
     "tp1_schedule_f_line_16.yaml",
 )
 
@@ -105,8 +105,8 @@ def test_a_blank_line_14_is_read_as_zero(
     assert str(value) == expected
 
 
-def test_a_positive_line_14_is_added(take_home_service: TakeHomeService) -> None:
-    given = (TP1_SCHEDULE_F_EMPLOYMENT_INCOME_CORRECTION_LINE_14, "500")
+def test_a_positive_line_105_reaches_line_16(take_home_service: TakeHomeService) -> None:
+    given = (TP1_LINE_105, "500")
     value = (
         schedule_f(take_home_service, "70000", given)
         .get(TP1_SCHEDULE_F_EMPLOYMENT_INCOME_TOTAL_LINE_16)
@@ -114,14 +114,3 @@ def test_a_positive_line_14_is_added(take_home_service: TakeHomeService) -> None
     )
 
     assert str(value) == "70500.00"
-
-
-def test_a_negative_line_14_is_subtracted(take_home_service: TakeHomeService) -> None:
-    given = (TP1_SCHEDULE_F_EMPLOYMENT_INCOME_CORRECTION_LINE_14, "-500")
-    value = (
-        schedule_f(take_home_service, "70000", given)
-        .get(TP1_SCHEDULE_F_EMPLOYMENT_INCOME_TOTAL_LINE_16)
-        .value
-    )
-
-    assert str(value) == "69500.00"
