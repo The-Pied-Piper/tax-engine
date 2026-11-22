@@ -1,4 +1,4 @@
-"""The twenty 2026 datasets carried forward unchanged from 2025 (structure or a rule, not an
+"""The twenty-one 2026 datasets carried forward unchanged from 2025 (structure or a rule, not an
 indexed dollar amount): each equals its 2025 file apart from the year, and its 2026 file opens
 with the provisional and derivation header lines.
 """
@@ -41,6 +41,7 @@ FAMILIES: list[tuple[str, ParameterKind[Any]]] = [
     ("ca/t2204_line_1_conditions", CONDITIONS),
     ("ca/t2204_line_15_conditions", CONDITIONS),
     ("ca/schedule_8_zero", CREDIT),
+    ("ca/donations_and_gifts_line_13_limit", CREDIT),
     ("ca/donation_net_income_rate", RATE),
     ("ca/medical_net_income_rate", RATE),
     ("ca/medical_threshold_ceiling", AMOUNT),

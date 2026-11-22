@@ -1,0 +1,10 @@
+# Schedule 9 line 13 (donations and gifts, 2025 tax year, form 5000-S9): "Enter whichever is less:
+# amount from line 12 or $200." The $200 is the printed figure, claimed whole. A dollars-and-cents
+# figure, so it rounds half-up to the cent, which changes nothing.
+family: ca/donations_and_gifts_line_13_limit
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s9/5000-s9-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "200"
