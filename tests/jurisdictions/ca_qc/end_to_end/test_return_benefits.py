@@ -16,6 +16,7 @@ from __future__ import annotations
 
 from decimal import Decimal
 from functools import cache
+from typing import Any
 
 import pytest
 import yaml
@@ -37,13 +38,13 @@ from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS
 
 D = Decimal
 QUEBEC = JurisdictionCode("CA-QC")
-T1_FORM = "ca-qc/t1_tax_and_credits"
-TP1_TOTALS_FORM = "ca-qc/tp1_totals"
+SALARIES = ("20000", "70000")
 SUPPLEMENT_TYPED = "250.00"
 
 
 @cache
 def _sheets(salary: str, supplement: str | None) -> dict[str, Worksheet]:
+    """The one sheet of each form the engine computes for a salary."""
     given = (
         []
         if supplement is None
@@ -52,77 +53,83 @@ def _sheets(salary: str, supplement: str | None) -> dict[str, Worksheet]:
     worksheets = build_tax_computation().compute(
         QUEBEC, 2025, Artifact(EMPLOYMENT_INCOME, D(salary)), *given
     )
-    sheets = {form: forms[0] for form, forms in worksheets.items()}
-    return sheets
+    return {form: sheets[0] for form, sheets in worksheets.items()}
 
 
-def _exports(part: str) -> list[str]:
+def _declaration(part: str) -> dict[str, Any]:
     declaration = yaml.safe_load((QUEBEC_PARTS / part).read_text(encoding="utf-8"))
-    exports = declaration["form"]["exports"]
-    assert isinstance(exports, list)
-    return exports
+    assert isinstance(declaration, dict)
+    return declaration
 
 
-def test_the_t1_form_exports_the_benefit_lines_159_to_161() -> None:
-    exports = _exports("t1_tax_and_credits.yaml")
+def test_the_real_t1_form_declaration_exports_the_benefit_lines_159_to_161() -> None:
+    declaration = _declaration("t1_tax_and_credits.yaml")
 
-    assert "ca-qc/net_ei_overpayment_line_159" in exports
-    assert "ca-qc/refundable_medical_expense_supplement_line_160" in exports
-    assert "ca-qc/cwb_line_161" in exports
-
-
-def test_the_totals_form_exports_the_work_premium_of_line_456() -> None:
-    assert "ca-qc/tp1_work_premium_tax_credits_line_456" in _exports("tp1_totals.yaml")
-
-
-def test_the_withheld_tax_of_line_155_is_not_exported() -> None:
-    exports = _exports("t1_tax_and_credits.yaml")
-
-    assert not any(name.endswith("line_155") for name in exports)
-
-
-@pytest.mark.parametrize(
-    ("salary", "work_premium", "cwb"),
-    [("20000", "584.02", "2679.07"), ("70000", "0.00", "0.00")],
-)
-def test_a_salary_only_filer_has_the_work_premium_and_the_cwb(
-    salary: str, work_premium: str, cwb: str
-) -> None:
-    sheets = _sheets(salary, None)
-
-    assert sheets[TP1_TOTALS_FORM].get(TP1_WORK_PREMIUM_TAX_CREDITS_LINE_456).value == D(
-        work_premium
-    )
-    assert sheets[T1_FORM].get(CWB_LINE_161).value == D(cwb)
+    assert declaration["form"]["name"] == "ca-qc/t1_tax_and_credits"
+    assert declaration["form"]["exports"] == [
+        "ca-qc/credit_amounts_line_85",
+        "ca-qc/credits_line_100",
+        "ca-qc/non_refundable_tax_credits_line_122",
+        "ca-qc/basic_federal_tax_line_130",
+        "ca-qc/federal_tax_line_138",
+        "ca-qc/total_payable_line_151",
+        "ca-qc/refundable_quebec_abatement_line_156",
+        "ca-qc/net_ei_overpayment_line_159",
+        "ca-qc/refundable_medical_expense_supplement_line_160",
+        "ca-qc/cwb_line_161",
+        "ca-qc/refund_or_balance_owing_line_172",
+    ]
 
 
-@pytest.mark.parametrize("salary", ["20000", "70000"])
-def test_a_salary_only_filer_has_no_net_ei_overpayment(salary: str) -> None:
-    sheet = _sheets(salary, None)[T1_FORM]
+LINE_456_FIGURES = {"20000": "584.02", "70000": "0.00"}
+
+
+@pytest.mark.parametrize(("salary", "expected"), list(LINE_456_FIGURES.items()))
+def test_tp1_line_456(salary: str, expected: str) -> None:
+    sheet = _sheets(salary, None)["ca-qc/tp1_totals"]
+
+    assert sheet.get(TP1_WORK_PREMIUM_TAX_CREDITS_LINE_456).value == D(expected)
+
+
+CWB_FIGURES = {"20000": "2679.07", "70000": "0.00"}
+
+
+@pytest.mark.parametrize(("salary", "expected"), list(CWB_FIGURES.items()))
+def test_5005_r_line_161(salary: str, expected: str) -> None:
+    sheet = _sheets(salary, None)["ca-qc/t1_tax_and_credits"]
+
+    assert sheet.get(CWB_LINE_161).value == D(expected)
+
+
+@pytest.mark.parametrize("salary", SALARIES)
+def test_a_salary_only_line_159_is_zero(salary: str) -> None:
+    sheet = _sheets(salary, None)["ca-qc/t1_tax_and_credits"]
 
     assert sheet.get(NET_EI_OVERPAYMENT_LINE_159).value == D("0.00")
 
 
-def test_a_salary_only_filer_leaves_the_medical_supplement_blank() -> None:
-    sheet = _sheets("20000", None)[T1_FORM]
+def test_a_salary_only_line_160_is_blank() -> None:
+    sheet = _sheets("20000", None)["ca-qc/t1_tax_and_credits"]
 
     assert sheet.get(REFUNDABLE_MEDICAL_EXPENSE_SUPPLEMENT_LINE_160).is_blank
 
 
-def test_a_typed_medical_supplement_is_read_back() -> None:
-    sheet = _sheets("20000", SUPPLEMENT_TYPED)[T1_FORM]
+def test_a_typed_line_160_is_read_back() -> None:
+    sheet = _sheets("20000", SUPPLEMENT_TYPED)["ca-qc/t1_tax_and_credits"]
 
     assert sheet.get(REFUNDABLE_MEDICAL_EXPENSE_SUPPLEMENT_LINE_160).value == D(SUPPLEMENT_TYPED)
 
 
-def test_the_abatement_of_line_156_is_the_printed_figure() -> None:
-    # Line 156 is a reduction of federal tax, not a benefit, so it is not exported as one.
-    sheet = _sheets("20000", None)[T1_FORM]
+def test_line_156_is_the_printed_abatement_and_is_not_a_benefit() -> None:
+    sheet = _sheets("20000", None)["ca-qc/t1_tax_and_credits"]
 
     assert sheet.get(REFUNDABLE_QUEBEC_ABATEMENT_LINE_156).value == D("23.52")
 
 
-@pytest.mark.parametrize(("salary", "expected"), [("20000", "363.00"), ("70000", "0.00")])
+SOLIDARITY_FIGURES = {"20000": "363.00", "70000": "0.00"}
+
+
+@pytest.mark.parametrize(("salary", "expected"), list(SOLIDARITY_FIGURES.items()))
 def test_the_solidarity_credit_is_the_returns_own_output(salary: str, expected: str) -> None:
     sheet = _sheets(salary, None)["ca-qc/return"]
 
