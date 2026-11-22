@@ -1,0 +1,18 @@
+# Form ON428 (Ontario Tax, 2025, 5006-c-25e) line 60 (ca-on/on428), "Line 60 and line 61540: Enter
+# whichever is less: amount from line 58 or line 59.": the lesser of line 58
+# (`ca-on/on428_tax_minus_dividend_tax_credit_line_58`) and line 59
+# (`ca-on/on428_minimum_tax_carryover_limit_line_59`). A salary-only caller has no line 40427, so
+# line 59 is 0 and line 60 is 0.
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/lesser_of
+    title: "Ontario minimum tax carryover"
+    reference: "60"
+    unit: ca/cad
+    consumes:
+      amounts:
+        - ca-on/on428_tax_minus_dividend_tax_credit_line_58
+        - ca-on/on428_minimum_tax_carryover_limit_line_59
+    produces:
+      output: ca-on/on428_minimum_tax_carryover_line_60

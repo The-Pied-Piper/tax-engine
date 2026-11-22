@@ -231,8 +231,9 @@ BC428_ADDITIONAL_MINIMUM_TAX_AMOUNT_LINE_69 = AmountKind.declare(
     CATALOG, "bc428_additional_minimum_tax_amount_line_69"
 )
 """Amount from line 14 of Part 7 of Form T691, BC428 line 69 "Amount from line 14 of Part 7 of Form
-T691 multiplied by 34.9% =": the amount from Form T691, an optional input that a caller with no
-minimum tax leaves out. The multiply is a separate step."""
+T691 multiplied by 34.9% =": the amount from Form T691, box A of the line, a record total of the
+T691's export (`ca/t691_additional_taxes_for_minimum_tax_carryover_line_14`),
+0 for a caller with no minimum tax. The multiply is a separate step."""
 
 BC428_ADDITIONAL_MINIMUM_TAX_LINE_69 = AmountKind.declare(
     CATALOG, "bc428_additional_minimum_tax_line_69", non_negative=True

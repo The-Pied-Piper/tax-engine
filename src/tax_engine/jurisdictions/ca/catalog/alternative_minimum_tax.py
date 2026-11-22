@@ -1150,3 +1150,49 @@ charges for resource property and flow-through shares (included on lines 22100, 
 of your return)", checked: the amount of `amt_resource_expenditures` after the check that it is not
 more than `amt_lines_22100_22400_and_23200` (`core/at_most`). An amount above those lines is an
 input error, not capped. Part 9 line 6 reads it."""
+
+T691_MINIMUM_AMOUNT = AmountKind.declare(CATALOG, "t691_minimum_amount", non_negative=True)
+"""Minimum amount, Form T691 Part 7 line 1 "Minimum amount from line 103 of Part 1": the optional
+input (`t691_line_1_inputs.yaml`), blank when the filer has none. The T691 form owns it; lines 1
+minus 2 and 14 read its cent-rounded line 1."""
+
+T691_BASIC_FEDERAL_TAX = AmountKind.declare(CATALOG, "t691_basic_federal_tax")
+"""Basic federal tax, Form T691 Part 7 line 2 "Basic federal tax from line 7 of Part 2": the
+optional input (`t691_line_2_inputs.yaml`), blank when the filer has none. The form prints no floor
+on line 2, so the kind is signed. Line 1 minus line 2 reads its cent-rounded line 2."""
+
+T691_LINE_8_PLUS_LINE_12 = AmountKind.declare(CATALOG, "t691_line_8_plus_line_12")
+"""Line 8 plus line 12, Form T691 Part 7 line 13 "Line 8 plus line 12": the optional input
+(`t691_line_13_inputs.yaml`), blank when the filer has none. Lines 3 to 12 are not built, so line 13
+is typed and, with no floor printed, signed; line 14 reads its cent-rounded line 13."""
+
+T691_LINE_1_AMOUNT = AmountKind.declare(CATALOG, "t691_line_1_amount", non_negative=True)
+"""Minimum amount as Form T691 Part 7 line 1 prints it (`t691_line_1.yaml`): the optional input
+(`ca/t691_minimum_amount`), read as 0 when blank, rounded to the cent."""
+
+T691_LINE_2_AMOUNT = AmountKind.declare(CATALOG, "t691_line_2_amount")
+"""Basic federal tax as Form T691 Part 7 line 2 prints it (`t691_line_2.yaml`): the optional input
+(`ca/t691_basic_federal_tax`), read as 0 when blank, rounded to the cent. Signed."""
+
+T691_LINE_13_AMOUNT = AmountKind.declare(CATALOG, "t691_line_13_amount")
+"""Line 8 plus line 12 as Form T691 Part 7 line 13 prints it (`t691_line_13.yaml`): the optional
+input (`ca/t691_line_8_plus_line_12`), read as 0 when blank, rounded to the cent. Signed."""
+
+T691_LINE_1_MINUS_LINE_2_OF_PART_7 = AmountKind.declare(
+    CATALOG, "t691_line_1_minus_line_2_of_part_7", non_negative=True
+)
+"""Line 1 minus line 2 of Part 7, Form T691 Part 7 "Form T691: line 1 minus line 2 of Part 7", the
+words AB428 line 67, MB428 line 66 and SK428 line 68 print: line 1 less line 2, each blank read as
+0, rounded to the cent. Not below 0: Part 7 is completed only when minimum tax is payable (Part 5
+"If line 11 is positive, complete parts 6 and 7"), so a negative difference is not a state the form
+reaches. The form prints no floor on the difference; the kind's non-negative check is the form's
+intent, not a printed instruction, and the one place the engine refuses a negative here. Exported by
+the T691 (`t691_line_1_minus_line_2.yaml`)."""
+
+T691_ADDITIONAL_TAXES_FOR_MINIMUM_TAX_CARRYOVER_LINE_14 = AmountKind.declare(
+    CATALOG, "t691_additional_taxes_for_minimum_tax_carryover_line_14", non_negative=True
+)
+"""Additional taxes paid for minimum tax carryover, Form T691 Part 7 line 14 "Line 1 minus line 13
+(if negative, enter "0")": line 1 less line 13, each blank read as 0, not below 0
+(`t691_line_14.yaml`). Exported by the T691; BC428 line 69 and NL428 line 71 print "Amount from line
+14 of Part 7 of Form T691"."""

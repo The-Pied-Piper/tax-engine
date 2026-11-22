@@ -38,11 +38,13 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_parameter_parsers,
     newfoundland_units,
 )
+from tests.t691_support import line_14
 
 D = Decimal
 CODE = JurisdictionCode("CA-NL")
 FORM_NAME = "ca-nl/nl428"
 AMOUNT = "ca-nl/nl428_t691_amount_line_71"
+T691_EXPORT = "ca/t691.t691_additional_taxes_for_minimum_tax_carryover_line_14"
 LINE_71 = "ca-nl/nl428_additional_tax_minimum_tax_line_71"
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
 PART = NL_PARTS / "nl428_line_71.yaml"
@@ -68,12 +70,12 @@ def _sheet(tmp_path: Path, salary: str, amount: str | None) -> Any:
     folder = tmp_path / "manifests" / "2025"
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
-    for part in form_parts("t1_employment_income"):
+    for part in form_parts("t1_employment_income", "t691"):
         (folder / f"00_t1_{part.name}").write_text(
             part.read_text(encoding="utf-8"), encoding="utf-8"
         )
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
-    for number, name in enumerate(["nl428_line_71_input.yaml", PART.name], start=2):
+    for number, name in enumerate([PART.name], start=2):
         text = (NL_PARTS / name).read_text(encoding="utf-8")
         (folder / f"{number:02d}_{name}").write_text(text, encoding="utf-8")
     roots = {**newfoundland_packages().roots(), Namespace("ca-nl"): tmp_path}
@@ -88,7 +90,7 @@ def _sheet(tmp_path: Path, salary: str, amount: str | None) -> Any:
     )
     given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if amount is not None:
-        given.append(Artifact(newfoundland_kinds().kind(AMOUNT), D(amount)))
+        given.extend(line_14(amount))
     (sheet,) = service.compute(CODE, 2025, *given)[FORM_NAME]
     return sheet
 
@@ -112,6 +114,8 @@ def test_a_salary_only_caller_who_leaves_out_the_amount_gets_0(tmp_path: Path) -
     [
         # A Form T691 amount of 1000.00: 60% of 1000.00 is 600.00.
         ("1000.00", "600.00"),
+        # 5,000.00 x 60% = 3,000.00.
+        ("5000.00", "3000.00"),
         # 333.33 x 60% = 199.998, rounded half-up to 200.00.
         ("333.33", "200.00"),
     ],
@@ -130,7 +134,7 @@ def test_the_part_is_one_apply_rate_step_over_the_line_71_amount() -> None:
 
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": FORM_NAME}
-    assert part["capabilities"] == [
+    assert part["capabilities"][1:] == [
         {
             "name": "core/apply_rate",
             "title": "Newfoundland and Labrador additional tax for minimum tax purposes",
@@ -138,17 +142,27 @@ def test_the_part_is_one_apply_rate_step_over_the_line_71_amount() -> None:
             "unit": "ca/cad",
             "params": {"rate": "ca-nl/minimum_tax_rate"},
             "consumes": {"base": AMOUNT},
-            "blank": {"base": "0"},
             "produces": {"output": LINE_71},
         }
     ]
-    assert list(part["capabilities"][0]) == [
+    assert list(part["capabilities"][1]) == [
         "name",
         "title",
         "reference",
         "unit",
         "params",
         "consumes",
-        "blank",
         "produces",
     ]
+
+
+def test_the_amount_is_a_record_total_of_the_t691_export_with_no_input_of_its_own() -> None:
+    part = yaml.safe_load(PART.read_text(encoding="utf-8"))
+
+    assert "inputs" not in part
+    first = part["capabilities"][0]
+    assert first["name"] == "core/record_total"
+    assert first["title"] == "Amount from line 14 of Part 7 of Form T691"
+    assert first["unit"] == "ca/cad"
+    assert first["consumes"] == {"records": T691_EXPORT}
+    assert first["produces"] == {"output": AMOUNT}
