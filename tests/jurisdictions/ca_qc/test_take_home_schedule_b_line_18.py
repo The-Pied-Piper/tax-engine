@@ -36,7 +36,7 @@ PARTS = (
 @pytest.mark.parametrize(
     ("salary", "expected"),
     [
-        # Line 14 is 18,635.00, below line 16: the negative result is entered as 0.
+        # Line 10 is 18,635.00, below line 16: the negative result is entered as 0.
         ("20000", "0.00"),
         ("70000", "25825.00"),
         ("200000", "155416.00"),

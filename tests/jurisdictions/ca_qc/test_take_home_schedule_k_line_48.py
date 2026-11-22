@@ -3,8 +3,7 @@ wires it. Printed as "Subtract line 46 from line 40. If the result is negative, 
 case, you do not have to pay a premium. Income used to calculate the premium".
 
 `core/subtract_not_below_zero` takes line 46 from line 40 (line 36 for a single
-filer), rounded half-up to the cent by
-`ca-qc/cent_rounding`. The real Schedule K chain (lines 36 to 46) is composed under a test-local
+filer), rounded half-up to the cent by `ca-qc/cent_rounding`. The real Schedule K chain (lines 36 to 46) is composed under a test-local
 header and form declaration, and the real form declaration is checked on its own: it exports line
 48. The expected figures are hand-computed from the printed lines, not an official example.
 """
@@ -61,14 +60,14 @@ def test_a_dependent_child_lowers_line_48(
 
 
 def test_a_negative_result_is_entered_as_zero(take_home_service: TakeHomeService) -> None:
-    """At $20,000, line 40 (line 36) is 18,635.00 and line 46 is 19,890.00: the result is -1,255.00,
+    """At $20,000, line 36 is 18,635.00 and line 46 is 19,890.00: the result is -1,255.00,
     so 0."""
     sheet = schedule_k_sheet(take_home_service, "20000", LINE_48, PARTS)
 
     assert str(sheet.get(SCHEDULE_K_PREMIUM_INCOME_LINE_48).value) == "0.00"
 
 
-def test_the_part_is_one_subtraction_of_line_46_from_line_40() -> None:
+def test_the_part_is_one_subtraction_of_line_46_from_line_36() -> None:
     part = yaml.safe_load((QUEBEC_PARTS / "tp1_schedule_k_line_48.yaml").read_text("utf-8"))
 
     assert list(part) == ["form", "capabilities"]

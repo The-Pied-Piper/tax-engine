@@ -1,4 +1,4 @@
-"""Shared helper of the Schedule P family income tests (Part C, lines 52 to 54).
+"""Shared helper of the Schedule P family income tests (Part C, line 52).
 
 Line 52 reads TP-1 line 275 from the TP-1 net income form, which reads TP-1 line 199, Work Chart
 201 and Schedule U. The tests run the real parts of those forms on the salary, with the TP-1 slip
