@@ -179,27 +179,6 @@ ON428_PATIENT_MOVE_ALLOWED_LINE_36 = AmountKind.declare(
 allowable amounts for attendant care, an adapted van, and moving expenses": the patient move
 expenses limited to $3,525."""
 
-ON428_ADAPTED_VAN_EXCESS_LINE_36 = AmountKind.declare(
-    CATALOG, "on428_adapted_van_excess_line_36", non_negative=True
-)
-"""Adapted van excess, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum
-allowable amounts for attendant care, an adapted van, and moving expenses": the adapted van
-expenses less the amount allowed, what the maximum takes off."""
-
-ON428_PATIENT_MOVE_EXCESS_LINE_36 = AmountKind.declare(
-    CATALOG, "on428_patient_move_excess_line_36", non_negative=True
-)
-"""Patient move excess, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum
-allowable amounts for attendant care, an adapted van, and moving expenses": the patient move
-expenses less the amount allowed, what the maximum takes off."""
-
-ON428_MEDICAL_EXPENSES_EXCESS_LINE_36 = AmountKind.declare(
-    CATALOG, "on428_medical_expenses_excess_line_36", non_negative=True
-)
-"""Medical expenses excess, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum
-allowable amounts for attendant care, an adapted van, and moving expenses": the sum of the van and
-patient move excesses."""
-
 ON428_ATTENDANT_CARE_FEDERAL_LIMIT_APPLIED_LINE_36 = CountKind.declare(
     CATALOG, "on428_attendant_care_federal_limit_applied_line_36", non_negative=True
 )
@@ -250,13 +229,52 @@ ON428_ATTENDANT_CARE_INCREASE_LINE_36 = AmountKind.declare(
 allowable amounts for attendant care, an adapted van, and moving expenses": the attendant care
 above the federal claim when the federal claim was limited, else 0."""
 
-ON428_MEDICAL_EXPENSES_PLUS_INCREASE_LINE_36 = AmountKind.declare(
-    CATALOG, "on428_medical_expenses_plus_increase_line_36", non_negative=True
+ON428_ADAPTED_VAN_FEDERAL_INCLUDED_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_adapted_van_federal_included_line_36", non_negative=True
 )
-"""Medical expenses plus the attendant care increase, ON428, line 36 "See line 58689 at
+"""Adapted van included in the federal claim, ON428, line 36 "See line 58689 at
 canada.ca/on-tax-info for maximum allowable amounts for attendant care, an adapted van, and
-moving expenses": the medical claim plus the attendant care increase, a blank claim read as
-0."""
+moving expenses": the adapted van
+expenses limited to the federal figure ($5,000, CRA Guide RC4065 "Medical Expenses")."""
+
+ON428_ADAPTED_VAN_ABOVE_FEDERAL_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_adapted_van_above_federal_line_36", non_negative=True
+)
+"""Adapted van above the federal claim, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for
+maximum allowable amounts for attendant care, an adapted van, and moving expenses": the Ontario
+adapted van figure less the one included in the federal claim."""
+
+ON428_ADAPTED_VAN_INCREASE_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_adapted_van_increase_line_36", non_negative=True
+)
+"""Adapted van increase, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum
+allowable amounts for attendant care, an adapted van, and moving expenses": the adapted van
+above
+the federal claim when the federal claim was limited, else 0."""
+
+ON428_PATIENT_MOVE_FEDERAL_INCLUDED_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_patient_move_federal_included_line_36", non_negative=True
+)
+"""Patient move included in the federal claim, ON428, line 36 "See line 58689 at
+canada.ca/on-tax-info for maximum allowable amounts for attendant care, an adapted van, and
+moving expenses": the patient move
+expenses limited to the federal figure ($2,000, CRA Guide RC4065 "Medical Expenses")."""
+
+ON428_PATIENT_MOVE_ABOVE_FEDERAL_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_patient_move_above_federal_line_36", non_negative=True
+)
+"""Patient move above the federal claim, ON428, line 36 "See line 58689 at canada.ca/on-tax-info
+for maximum allowable amounts for attendant care, an adapted van, and moving expenses": the
+Ontario
+patient move figure less the one included in the federal claim."""
+
+ON428_PATIENT_MOVE_INCREASE_LINE_36 = AmountKind.declare(
+    CATALOG, "on428_patient_move_increase_line_36", non_negative=True
+)
+"""Patient move increase, ON428, line 36 "See line 58689 at canada.ca/on-tax-info for maximum
+allowable amounts for attendant care, an adapted van, and moving expenses": the patient move
+above
+the federal claim when the federal claim was limited, else 0."""
 
 ON428_MEDICAL_EXPENSES_ALLOWED_LINE_36 = AmountKind.declare(
     CATALOG, "on428_medical_expenses_allowed_line_36", non_negative=True
