@@ -12,4 +12,4 @@ capabilities:
     params:
       amount: ca-mb/basic_personal_amount_threshold
     produces:
-      output: ca-mb/worksheet_mb428_basic_personal_amount_line_5
+      output: ca-mb/worksheet_mb428_line_5
