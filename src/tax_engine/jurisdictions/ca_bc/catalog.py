@@ -616,6 +616,12 @@ BC479_RENTERS_MONTHS_LINE_37 = CountKind.declare(
 units (total of column C from the table above)", as the caller gives it; blank when the caller paid
 no rent, and the line 44 gate reads it as 0 months."""
 
+BC479_RENTERS_MONTHS_ENOUGH = CountKind.declare(
+    CATALOG, "bc479_renters_months_enough", non_negative=True
+)
+"""BC renter's tax credit, rent paid for at least six months (British Columbia Tax Information for
+2025, CRA 5010-PC): 1 when the months of line 37 are at least six, 0 otherwise."""
+
 BC479_RENTERS_MAXIMUM_LINE_38 = AmountKind.declare(
     CATALOG, "bc479_renters_maximum_line_38", non_negative=True
 )
@@ -646,13 +652,14 @@ BC479_RENTERS_CREDIT_BEFORE_MONTHS_CHECK = AmountKind.declare(
 (no rent paid) is applied."""
 
 BC479_RENTERS_ZERO = AmountKind.declare(CATALOG, "bc479_renters_zero", non_negative=True)
-"""The printed "0" of the renter's tax credit, the form's own figure when no rent was paid."""
+"""The printed "0" of the renter's tax credit, the form's own figure when rent was not paid for six
+months."""
 
 BC479_RENTERS_CREDIT_LINE_44 = AmountKind.declare(
     CATALOG, "bc479_renters_credit_line_44", non_negative=True
 )
-"""British Columbia renter's tax credit, BC479 line 44 (line 60576): "0" when line 37 is 0 months
-(blank read as 0), else "Line 38 minus line 43 (if negative, enter "0")"."""
+"""British Columbia renter's tax credit, BC479 line 44 (line 60576): "0" when line 37 is under six
+months (blank read as 0), else "Line 38 minus line 43 (if negative, enter "0")"."""
 
 BC479_CREDIT_BEFORE_REDUCTION_LINE_11 = AmountKind.declare(
     CATALOG, "bc479_credit_before_reduction_line_11", non_negative=True
