@@ -58,6 +58,14 @@ def test_a_positive_line_105_is_added(take_home_service: TakeHomeService) -> Non
     assert value == D("71234.56")
 
 
+def test_a_negative_line_105_is_not_taken_off(take_home_service: TakeHomeService) -> None:
+    value = (
+        line_10(take_home_service, "70000", (TP1_LINE_105, "-500")).get(SCHEDULE_P_LINE_10).value
+    )
+
+    assert value == D("70000")
+
+
 def test_box_211_is_subtracted(take_home_service: TakeHomeService) -> None:
     value = (
         line_10(take_home_service, "70000", (RL1_SLIP_BOX_211, "250.25"))

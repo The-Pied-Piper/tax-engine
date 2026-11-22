@@ -116,3 +116,12 @@ def test_a_typed_line_105_is_taken_out_again_by_line_16(
     value = schedule_f(take_home_service, "70000", given).get(TP1_SCHEDULE_F_INCOME_LINE_18).value
 
     assert str(value) == "0.00"
+
+
+def test_a_negative_line_105_is_taken_back_out_by_line_16(
+    take_home_service: TakeHomeService,
+) -> None:
+    given = (TP1_LINE_105, "-500")
+    value = schedule_f(take_home_service, "70000", given).get(TP1_SCHEDULE_F_INCOME_LINE_18).value
+
+    assert str(value) == "0.00"
