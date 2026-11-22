@@ -58,6 +58,7 @@ REAL_FORM = next(TAKE_HOME.rglob("t1_tax_and_credits.yaml")).read_text(encoding=
 # of line 43500, line 48200 and the part under test.
 PARTS = (
     *form_part_names("t1_lines_copied_by_provinces"),
+    *form_part_names("t691"),
     *form_part_names("schedule_8"),
     *form_part_names("schedule_9"),
     *form_part_names("t2204"),

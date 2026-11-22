@@ -1,5 +1,6 @@
 # Ontario minimum tax rate, 2025 tax year (Form ON428 line 59): 24.63%.
-# Line 59 applies it to the amount from line 40427 of the return. The product is a
+# Line 59 applies it to the amount from line 40427 of the return, and Worksheet ON428 line 1 (ON428
+# line 72) to the amount from line 11 of Part 5 of Form T691. The product is a
 # dollars-and-cents box, so it rounds half-up to the cent, the project's choice, as the form
 # states no rounding rule.
 family: ca-on/minimum_tax_rate

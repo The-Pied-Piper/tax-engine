@@ -29,6 +29,8 @@ REGISTERED = frozenset(
         "ca/t691_line_1_amount",
         "ca/t691_line_2_amount",
         "ca/t691_line_13_amount",
+        "ca/t691_line_7_minus_line_10",
+        "ca/t691_part_5_line_11_amount",
         "ca/t691_line_1_minus_line_2_of_part_7",
         "ca/t691_additional_taxes_for_minimum_tax_carryover_line_14",
         "ca/taxable_dividends",

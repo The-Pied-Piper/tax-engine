@@ -1,0 +1,19 @@
+# Worksheet ON428 (2025, CRA 5006-d-25e), "Line 72 - Ontario additional tax for minimum tax purposes",
+# line 6 (ca-on/on428): "Line 6: Line 4 plus line 5 =": the surtax on line 3, the sum of line 4
+# (`ca-on/on428_worksheet_surtax_20_percent_tier_line_4`) and line 5
+# (`ca-on/on428_worksheet_surtax_36_percent_tier_line_5`).
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/sum
+    title: "Line 4 plus line 5"
+    reference: "72 worksheet line 6"
+    unit: ca/cad
+    params:
+      rounding: ca-on/cent_rounding
+    consumes:
+      parts:
+        - ca-on/on428_worksheet_surtax_20_percent_tier_line_4
+        - ca-on/on428_worksheet_surtax_36_percent_tier_line_5
+    produces:
+      output: ca-on/on428_worksheet_surtax_total_line_6
