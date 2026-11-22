@@ -57,6 +57,7 @@ from tests.jurisdictions.ca_ab.support import (
     alberta_units,
 )
 from tests.kinds import non_negative
+from tests.t691_support import line_1_minus_line_2
 
 D = Decimal
 CODE = JurisdictionCode("CA-AB")
@@ -64,8 +65,6 @@ TAX = "ca-ab/ab428"
 LINE_66 = "ca-ab/ab428_tax_after_credits_line_66"
 LINE_67 = "ca-ab/ab428_additional_minimum_tax_line_67"
 LINE_68 = "ca-ab/ab428_tax_line_68"
-AMOUNT = "ca/t691_minimum_amount"
-LINE_2 = "ca/t691_basic_federal_tax"
 ROUNDING = "ca-ab/cent_rounding"
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
 LINE_PART = ALBERTA_PARTS / "ab428_line_68.yaml"
@@ -225,12 +224,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
 def _sheet(tmp_path: Path, salary: str, amount: str | None = None) -> Worksheet:
     given = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if amount is not None:
-        # Line 1 minus line 2 is the amount: a negative one is line 2 with line 1 left blank.
-        given.append(
-            Artifact(_amount_kind(AMOUNT), D(amount))
-            if D(amount) >= 0
-            else Artifact(_amount_kind(LINE_2), -D(amount))
-        )
+        given.extend(line_1_minus_line_2(amount))
     worksheets = _service(tmp_path).compute(CODE, 2025, *given)
     (sheet,) = worksheets[TAX]
     return sheet

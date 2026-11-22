@@ -39,13 +39,12 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_parameter_parsers,
     saskatchewan_units,
 )
+from tests.t691_support import line_1_minus_line_2
 
 D = Decimal
 CODE = JurisdictionCode("CA-SK")
 FORM_NAME = "ca-sk/sk428"
 AMOUNT = "ca-sk/sk428_minimum_tax_t691_amount_line_68"
-LINE_1 = "ca/t691_minimum_amount"
-LINE_2 = "ca/t691_basic_federal_tax"
 T691_EXPORT = "ca/t691.t691_line_1_minus_line_2_of_part_7"
 LINE_68 = "ca-sk/sk428_minimum_tax_additional_line_68"
 SALARY = "ca/employment_income"
@@ -70,15 +69,6 @@ FORM = dedent(f"""\
         - {LINE_68}
     capabilities: []
     """)
-
-
-def _t691(kinds: Any, amount: str) -> list[Artifact[Any]]:
-    """T691 Part 7 line 1 minus line 2 equal to `amount`: line 1 when it is not negative, else
-    line 2 with the absolute value (line 1 left blank)."""
-    value = D(amount)
-    if value >= 0:
-        return [Artifact(kinds.kind(LINE_1), value)]
-    return [Artifact(kinds.kind(LINE_2), -value)]
 
 
 def _service(tmp_path: Path) -> TaxComputationService:
@@ -106,7 +96,7 @@ def _sheet(tmp_path: Path, salary: str, amount: str | None) -> Worksheet:
     kinds = saskatchewan_kinds()
     given = [Artifact(kinds.kind(SALARY), D(salary))]
     if amount is not None:
-        given.extend(_t691(kinds, amount))
+        given.extend(line_1_minus_line_2(amount))
     (sheet,) = _service(tmp_path).compute(CODE, 2025, *given)[FORM_NAME]
     return sheet
 

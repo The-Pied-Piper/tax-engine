@@ -40,12 +40,11 @@ from tests.jurisdictions.ca_ab.support import (
     alberta_parameter_parsers,
     alberta_units,
 )
+from tests.t691_support import line_1_minus_line_2
 
 D = Decimal
 CODE = JurisdictionCode("CA-AB")
 AMOUNT = "ca-ab/ab428_minimum_tax_t691_amount_line_67"
-LINE_1 = "ca/t691_minimum_amount"
-LINE_2 = "ca/t691_basic_federal_tax"
 T691_EXPORT = "ca/t691.t691_line_1_minus_line_2_of_part_7"
 LINE_67 = "ca-ab/ab428_additional_minimum_tax_line_67"
 SALARY = "ca/employment_income"
@@ -67,15 +66,6 @@ FORM = dedent(f"""\
         - {LINE_67}
     capabilities: []
     """)
-
-
-def _t691(kinds: Any, amount: str) -> list[Artifact[Any]]:
-    """T691 Part 7 line 1 minus line 2 equal to `amount`: line 1 when it is not negative, else
-    line 2 with the absolute value (line 1 left blank)."""
-    value = D(amount)
-    if value >= 0:
-        return [Artifact(kinds.kind(LINE_1), value)]
-    return [Artifact(kinds.kind(LINE_2), -value)]
 
 
 def _service(tmp_path: Path) -> TaxComputationService:
@@ -106,7 +96,7 @@ def _line_67(tmp_path: Path, salary: str, amount: str | None) -> Decimal:
     kinds = alberta_kinds()
     given = [Artifact(kinds.kind(SALARY), D(salary))]
     if amount is not None:
-        given.extend(_t691(kinds, amount))
+        given.extend(line_1_minus_line_2(amount))
     (sheet,) = _service(tmp_path).compute(CODE, 2025, *given)["ca-ab/ab428"]
     value = sheet.get(kinds.kind(LINE_67)).value
     assert isinstance(value, Decimal)

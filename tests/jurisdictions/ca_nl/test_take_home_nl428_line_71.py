@@ -38,12 +38,12 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_parameter_parsers,
     newfoundland_units,
 )
+from tests.t691_support import line_14
 
 D = Decimal
 CODE = JurisdictionCode("CA-NL")
 FORM_NAME = "ca-nl/nl428"
 AMOUNT = "ca-nl/nl428_t691_amount_line_71"
-LINE_1 = "ca/t691_minimum_amount"
 T691_EXPORT = "ca/t691.t691_additional_taxes_for_minimum_tax_carryover_line_14"
 LINE_71 = "ca-nl/nl428_additional_tax_minimum_tax_line_71"
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
@@ -64,11 +64,6 @@ FORM = dedent(f"""\
         - {LINE_71}
     capabilities: []
     """)
-
-
-def _t691(kinds: Any, amount: str) -> list[Artifact[Any]]:
-    """T691 Part 7 line 14 equal to `amount`: line 1 given, line 13 left blank."""
-    return [Artifact(kinds.kind(LINE_1), D(amount))]
 
 
 def _sheet(tmp_path: Path, salary: str, amount: str | None) -> Any:
@@ -95,7 +90,7 @@ def _sheet(tmp_path: Path, salary: str, amount: str | None) -> Any:
     )
     given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if amount is not None:
-        given.extend(_t691(newfoundland_kinds(), amount))
+        given.extend(line_14(amount))
     (sheet,) = service.compute(CODE, 2025, *given)[FORM_NAME]
     return sheet
 

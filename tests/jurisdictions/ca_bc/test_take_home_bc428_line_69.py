@@ -43,11 +43,11 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_units,
 )
 from tests.kinds import non_negative
+from tests.t691_support import line_14
 
 D = Decimal
 CODE = JurisdictionCode("CA-BC")
 AMOUNT = "ca-bc/bc428_additional_minimum_tax_amount_line_69"
-LINE_1 = "ca/t691_minimum_amount"
 T691_EXPORT = "ca/t691.t691_additional_taxes_for_minimum_tax_carryover_line_14"
 LINE_69 = "ca-bc/bc428_additional_minimum_tax_line_69"
 SALARY = "ca/employment_income"
@@ -69,11 +69,6 @@ FORM = dedent(f"""\
         - {LINE_69}
     capabilities: []
     """)
-
-
-def _t691(kinds: Any, amount: str) -> list[Artifact[Any]]:
-    """T691 Part 7 line 14 equal to `amount`: line 1 given, line 13 left blank."""
-    return [Artifact(kinds.kind(LINE_1), D(amount))]
 
 
 def _service(tmp_path: Path) -> TaxComputationService:
@@ -107,7 +102,7 @@ def _line_69(tmp_path: Path, salary: str, amount: str | None) -> Decimal:
     kinds = british_columbia_kinds()
     given = [Artifact(kinds.kind(SALARY), D(salary))]
     if amount is not None:
-        given.extend(_t691(kinds, amount))
+        given.extend(line_14(amount))
     (sheet,) = _service(tmp_path).compute(CODE, 2025, *given)["ca-bc/bc428"]
     value = sheet.get(kinds.kind(LINE_69)).value
     assert isinstance(value, Decimal)

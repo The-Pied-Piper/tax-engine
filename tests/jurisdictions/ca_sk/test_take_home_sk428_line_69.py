@@ -54,10 +54,9 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_units,
 )
 from tests.kinds import non_negative
+from tests.t691_support import line_1_minus_line_2
 
 D = Decimal
-LINE_1 = "ca/t691_minimum_amount"
-LINE_2 = "ca/t691_basic_federal_tax"
 CENT = D("0.01")
 ZERO = D(0)
 SK_PARTS = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / "manifests" / "2025"
@@ -154,15 +153,6 @@ CASES = [
     ("20000", "0.00"),
     ("70000", "5092.30"),
 ]
-
-
-def _t691(kinds: Any, amount: str) -> list[Artifact[Any]]:
-    """T691 Part 7 line 1 minus line 2 equal to `amount`: line 1 when it is not negative, else
-    line 2 with the absolute value (line 1 left blank)."""
-    value = D(amount)
-    if value >= 0:
-        return [Artifact(kinds.kind(LINE_1), value)]
-    return [Artifact(kinds.kind(LINE_2), -value)]
 
 
 def _cent(value: Decimal) -> Decimal:
@@ -263,7 +253,7 @@ def _sheet(
     kinds = saskatchewan_kinds()
     given = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if amount is not None:
-        given.extend(_t691(kinds, amount))
+        given.extend(line_1_minus_line_2(amount))
     if line_61 is not None:
         given.append(Artifact(sk_catalog.SK428_TAX_ON_SPLIT_INCOME_LINE_61, D(line_61)))
     if line_64 is not None:

@@ -41,13 +41,13 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_units,
 )
 from tests.kinds import non_negative
+from tests.t691_support import line_14
 
 D = Decimal
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
 LINE_PART = NL_PARTS / "nl428_line_72.yaml"
 LINE_70 = "ca-nl/nl428_tax_line_70"
 LINE_71 = "ca-nl/nl428_additional_tax_minimum_tax_line_71"
-AMOUNT = "ca/t691_minimum_amount"
 IDENTIFIER = "ca-nl/nl428_tax_with_minimum_tax_line_72"
 FORM_NAME = "ca-nl/nl428"
 FEDERAL_PARTS = form_part_names(
@@ -201,12 +201,11 @@ def _sheet(
     tmp_path: Path,
     salary: str,
     form: str,
-    given_lines: dict[str, str] | None = None,
+    t691_amount: str | None = None,
 ) -> Any:
     given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, D(salary))]
-    kinds = newfoundland_kinds()
-    for identifier, amount in (given_lines or {}).items():
-        given.append(Artifact(kinds.kind(identifier), D(amount)))
+    if t691_amount is not None:
+        given.extend(line_14(t691_amount))
     worksheets = _service(tmp_path).compute(JurisdictionCode("CA-NL"), 2025, *given)
     (sheet,) = worksheets[form]
     return sheet
@@ -227,7 +226,7 @@ def test_line_72_is_line_70_when_line_71_is_blank(
 
 
 def test_line_72_adds_line_71_to_line_70(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "70000", FORM_NAME, {AMOUNT: "1000.00"})
+    sheet = _sheet(tmp_path, "70000", FORM_NAME, "1000.00")
 
     # Line 71 is 60% of 1,000.00, so line 72 is 6,147.49 plus 600.00.
     assert _value(sheet, LINE_71) == D("600.00")
