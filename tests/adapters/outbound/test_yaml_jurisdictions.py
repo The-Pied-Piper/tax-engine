@@ -2121,6 +2121,37 @@ def test_an_input_position_must_count_from_one(tmp_path: Path, given: str) -> No
         )
 
 
+def test_an_input_may_be_declared_whole_cents(tmp_path: Path) -> None:
+    manifest = load_parts(
+        tmp_path,
+        {
+            "01-inputs.yaml": (
+                "inputs:\n"
+                "  - {name: ex/income, required: true, whole_cents: true}\n"
+                "  - {name: ex/credit, required: true}\n"
+            )
+        },
+    )
+
+    assert input_named(manifest, "ex/income") == InputDeclaration(
+        "ex/income", True, whole_cents=True
+    )
+    assert input_named(manifest, "ex/credit").whole_cents is False
+
+
+@pytest.mark.parametrize("given", ['"yes"', "null", "5", "[]"])
+def test_an_input_whole_cents_must_be_a_boolean(tmp_path: Path, given: str) -> None:
+    with pytest.raises(InvalidManifestError, match="whole_cents|boolean"):
+        load_parts(
+            tmp_path,
+            {
+                "01-inputs.yaml": (
+                    f"inputs:\n  - {{name: ex/income, required: true, whole_cents: {given}}}\n"
+                )
+            },
+        )
+
+
 @pytest.mark.parametrize("key", ["title", "reference"])
 @pytest.mark.parametrize("given", ['""', '"   "', "null", "5", "[]"])
 def test_an_input_title_or_reference_must_be_a_non_blank_string(

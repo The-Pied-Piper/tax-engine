@@ -22,6 +22,7 @@ from tax_engine.domain.blank import BlankRule
 from tax_engine.domain.errors import (
     InvalidManifestError,
     InvalidRegistrationError,
+    SubCentAmountError,
     UnknownRegistrationError,
 )
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -139,7 +140,8 @@ class InputDeclaration:
     is no default); `basis` is the form's printed sentence justifying it, which nothing checks.
     `title` and `reference` are the figure's printed title and line label (`None` for none); `unit`
     names its unit, as a manifest writes it; `position` is its place on the printed form, counted
-    from 1 (`None` for none).
+    from 1 (`None` for none). A `whole_cents` input is a figure a caller keys in from a slip that
+    prints dollars and cents, so a fraction of a cent is refused, not rounded.
     """
 
     name: str
@@ -150,6 +152,7 @@ class InputDeclaration:
     reference: str | None = None
     unit: str | None = None
     position: int | None = None
+    whole_cents: bool = False
 
     def __post_init__(self) -> None:
         Form.check_identifier("input", self.name)
@@ -165,6 +168,21 @@ class InputDeclaration:
             raise InvalidManifestError(f"input {self.name!r}: an optional input needs a default")
         if not self.basis:
             raise InvalidManifestError(f"input {self.name!r}: an optional input needs a basis")
+
+    def check_given(self, given: Artifact[Any]) -> None:
+        """Refuse `given` if this input is `whole_cents` and it has a fraction of a cent.
+
+        A blank is left to the blank rules.
+        """
+        if not self.whole_cents or given.is_blank:
+            return
+        # Read from the digits, not `quantize`, which raises for a value with many integer digits.
+        _, digits, exponent = given.value.as_tuple()
+        extra = -2 - exponent if isinstance(exponent, int) else 0
+        if extra > 0 and any(digits[-extra:]):
+            raise SubCentAmountError(
+                f"{given.kind.identifier} must be in whole cents, got {given.value}"
+            )
 
     def default_artifact(self, kind: ArtifactKind[Any]) -> Artifact[Any] | None:
         """The artifact of `kind` that a request leaving this input out is read as.
@@ -322,6 +340,11 @@ class Form:
             raise InvalidManifestError(
                 f"form {self.name!r}: fields belong to a form with instances"
             )
+        for field in self.fields:
+            if field.whole_cents:
+                raise InvalidManifestError(
+                    f"form {self.name!r}: field {field.name!r}: whole_cents is for an input"
+                )
         for kind, declarations in (("field", self.fields), ("input", self.inputs)):
             names = [declared.name for declared in declarations]
             for name in names:
