@@ -40,6 +40,7 @@ dev = [
     "import-linter>=2.0",
     "mypy>=1.11",
     "pytest>=8.3",
+    "pytest-xdist>=3.6",
     "ruff>=0.6",
     "types-PyYAML",
 ]
@@ -57,6 +58,10 @@ tax_engine = ["jurisdictions/**/*.yaml"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+# Run in parallel by default, locally and in CI: one worker per usable CPU, and "worksteal" hands
+# idle workers tests from busy ones, so the long sweeps (test_return_rates*.py) spread out
+# instead of pinning a single worker. Pass `-n 0` to run in a single process (for a debugger).
+addopts = "-n auto --dist worksteal"
 
 [tool.ruff]
 line-length = 100
