@@ -1,88 +1,65 @@
-"""The 2026 `ca-bc/renters_credit_conditions` dataset: the six-month minimum of the renter's tax
-credit, carried from the British Columbia Tax Information for 2025 (CRA 5010-PC), provisional.
+"""The 2026 `ca-bc/renters_credit_conditions` dataset, provisional.
 
-The guide's section "British Columbia renter's tax credit": "You rented and occupied a rental unit
-for at least six months in the calendar year in British Columbia" and "You must be an eligible
-renter for at least six months in 2025." The dataset holds one condition on the first count (the
-months of BC479 line 37): more than 5, that is at least six whole months. The count is 1 when it
-applies and 0 when it does not. It is a count, so nothing is rounded.
+Pins the file as shipped: its figures, rounding, sources and tax year, and the two header
+comment lines (the provisional line and the derivation line) that every 2026 file opens with.
 """
 
 from __future__ import annotations
 
-from decimal import Decimal
 from pathlib import Path
+from typing import Any
 
-import pytest
+import yaml
 
-import tax_engine.jurisdictions.ca_bc
-from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.kinds import CountKind
-from tax_engine.domain.parameters.conditions import (
-    CONDITIONS,
-    Condition,
-    ConditionList,
-    ConditionPart,
-    ConditionTest,
-)
-from tax_engine.domain.parameters.rounding import NO_ROUNDING
-from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
-from tests.jurisdictions.ca_bc.support import (
-    british_columbia_packages,
-    british_columbia_parameter_parsers,
-)
+import tax_engine.jurisdictions.ca_bc as ca_bc_package
 
-D = Decimal
-SOURCE = YamlParameterSource(
-    british_columbia_packages().roots(), british_columbia_parameter_parsers()
-)
 FAMILY = "ca-bc/renters_credit_conditions"
-GUIDE = "https://www.canada.ca/content/dam/cra-arc/formspubs/pub/5010-pc/5010-pc-25e.txt"
-
-# Made up for this test and not registered: the months and the count they give.
-MONTHS = CountKind("ex/months")
-ENOUGH = CountKind("ex/months_enough")
-
-
-def test_2026_condition_is_at_least_six_months_of_rent() -> None:
-    data = SOURCE.get(FAMILY, 2026, CONDITIONS)
-
-    assert data.values == ConditionList(
-        1,
-        (
-            Condition(
-                "Rented and occupied a rental unit for at least six months",
-                (ConditionPart((ConditionTest("count", 1, "more_than", D(5), None),)),),
-            ),
-        ),
-    )
-    assert data.values.count_when_none_applies == 0
-
-
-def test_2026_condition_cites_the_guide_and_does_not_round() -> None:
-    data = SOURCE.get(FAMILY, 2026, CONDITIONS)
-
-    assert data.sources == (GUIDE,)
-    assert data.rounding == NO_ROUNDING
-
-
-@pytest.mark.parametrize(("months", "count"), [(0, 0), (1, 0), (5, 0), (6, 1), (7, 1), (12, 1)])
-def test_the_count_is_1_for_at_least_six_months_and_0_for_fewer(months: int, count: int) -> None:
-    capability = CountByConditions(SOURCE.get(FAMILY, 2026, CONDITIONS), (MONTHS,), (), ENOUGH)
-
-    result = capability.compute((Artifact(MONTHS, months),)).outputs
-
-    assert result == (Artifact(ENOUGH, count),)
+PATH = (
+    Path(ca_bc_package.__file__).parent / "parameters" / "renters_credit_conditions" / "2026.yaml"
+)
+PROVISIONAL_HEADER = (
+    "# Provisional: taken from the 2025 form text named in sources; to be "
+    "confirmed against the 2026 form text when CRA publishes it."
+)
+DERIVATION_HEADER = (
+    "# Derivation: carried forward unchanged from the 2025 file; "
+    "the 2026 guide is not yet published."
+)
+EXPECTED: dict[str, Any] = {
+    "family": "ca-bc/renters_credit_conditions",
+    "tax_year": 2026,
+    "kind": "conditions",
+    "sources": ["https://www.canada.ca/content/dam/cra-arc/formspubs/pub/5010-pc/5010-pc-25e.txt"],
+    "rounding": "none",
+    "count_when_any_applies": "1",
+    "conditions": [
+        {
+            "text": "Rented and occupied a rental unit for at least six months",
+            "parts": [
+                {
+                    "tests": [
+                        {"reads": "count", "position": "1", "relation": "more_than", "than": "5"}
+                    ]
+                }
+            ],
+        }
+    ],
+}
 
 
-def test_2026_condition_says_in_its_header_that_it_is_provisional() -> None:
-    text = (
-        Path(tax_engine.jurisdictions.ca_bc.__file__).parent
-        / "parameters"
-        / FAMILY.split("/")[1]
-        / "2026.yaml"
-    ).read_text(encoding="utf-8")
+def test_the_2026_file_holds_the_pinned_figures() -> None:
+    assert yaml.safe_load(PATH.read_text()) == EXPECTED
 
-    assert text.startswith("# Provisional: taken from the 2025 form text")
-    assert "# Derivation: carried forward unchanged from the 2025 file" in text
+
+def test_the_2026_file_is_for_tax_year_2026_of_this_family() -> None:
+    data = yaml.safe_load(PATH.read_text())
+
+    assert data["family"] == FAMILY
+    assert data["tax_year"] == 2026
+
+
+def test_the_2026_file_is_provisional_and_states_its_derivation() -> None:
+    lines = PATH.read_text().splitlines()
+
+    assert lines[0] == PROVISIONAL_HEADER
+    assert lines[1] == DERIVATION_HEADER

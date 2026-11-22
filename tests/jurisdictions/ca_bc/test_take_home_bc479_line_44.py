@@ -24,7 +24,7 @@ from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.kinds import AmountKind
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.trace import ChosenByCountLine
 from tax_engine.domain.worksheet import Worksheet
@@ -265,3 +265,11 @@ def test_the_months_count_is_1_for_at_least_six_months_and_0_otherwise(
 
     assert sheet.get(british_columbia_kinds().kind(ENOUGH)).value == enough
     assert not sheet.get(_kind(LINE_44)).is_blank
+
+
+def test_the_months_count_kind_is_a_registered_non_negative_count() -> None:
+    kind = british_columbia_kinds().kind(ENOUGH)
+
+    assert kind is bc_catalog.BC479_RENTERS_MONTHS_ENOUGH
+    assert isinstance(kind, CountKind)
+    assert non_negative(kind)

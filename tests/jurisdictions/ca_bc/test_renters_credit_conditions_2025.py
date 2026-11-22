@@ -65,6 +65,13 @@ def test_2025_condition_cites_the_guide_and_does_not_round() -> None:
     assert data.rounding == NO_ROUNDING
 
 
+def test_2025_condition_reads_one_count_and_no_amount() -> None:
+    values = SOURCE.get(FAMILY, 2025, CONDITIONS).values
+
+    assert values.count_positions_read == frozenset({1})
+    assert values.amount_positions_read == frozenset()
+
+
 @pytest.mark.parametrize(("months", "count"), [(0, 0), (1, 0), (5, 0), (6, 1), (7, 1), (12, 1)])
 def test_the_count_is_1_for_at_least_six_months_and_0_for_fewer(months: int, count: int) -> None:
     capability = CountByConditions(SOURCE.get(FAMILY, 2025, CONDITIONS), (MONTHS,), (), ENOUGH)
