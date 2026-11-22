@@ -550,7 +550,8 @@ OTHER_DEPENDANTS_MEDICAL_EXPENSES = AmountKind.declare(
 """Allowable amount of medical expenses for other dependants, T1 line 111 and line 33199 "Allowable
 amount of medical expenses for other dependants (use Federal Worksheet)": the optional input
 (`t1_lines_copied_by_provinces_line_33199_inputs.yaml`), blank when the filer has none. The Federal
-Worksheet is not built, so the T1 takes its result as typed in; SK428 line 49 imports line 33199."""
+Worksheet is not built, so the T1 takes its result as typed in; T1 line 111 (into line 112) and
+SK428 line 49 import line 33199."""
 
 OTHER_DEPENDANTS_MEDICAL_EXPENSES_LINE_33199 = AmountKind.declare(
     CATALOG, "other_dependants_medical_expenses_line_33199", non_negative=True
@@ -574,6 +575,14 @@ MEDICAL_EXPENSES_LINE_107 = AmountKind.declare(
 """T1 line 107 "Line 107 and line 33099: Medical expenses for self, spouse or common-law partner and
 your dependent children under 18 years of age": a copy of line 33099, read from the T1 lines copied
 by provinces export (`ca/medical_expenses_line_33099`) into Step 5 Part B, line 110.
+"""
+
+OTHER_DEPENDANTS_MEDICAL_EXPENSES_LINE_111 = AmountKind.declare(
+    CATALOG, "other_dependants_medical_expenses_line_111", non_negative=True
+)
+"""T1 line 111 "Line 111 and line 33199: Allowable amount of medical expenses for other dependants
+(use Federal Worksheet)": a copy of line 33199, read from the T1 lines copied by provinces export
+(`ca/other_dependants_medical_expenses_line_33199`) into Step 5 Part B, line 112.
 """
 
 MEDICAL_NET_INCOME_LINE_108 = AmountKind.declare(

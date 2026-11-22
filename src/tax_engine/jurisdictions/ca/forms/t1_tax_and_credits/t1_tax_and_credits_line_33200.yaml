@@ -1,9 +1,9 @@
 # T1 General 2025 (form 5006-R), Step 5 Part B line 112 / line 33200 "Line 110 plus line 111"
-# (CRA 5006-R-25E). Line 110 is `ca/medical_expenses_over_threshold`. Line 111 (line 33199, the
-# allowable amount of medical expenses for other dependants, which uses a Federal Worksheet) is not
-# built and is left out. The sum is built even with its one part present: core/sum adds line 110 and
-# rounds the total once, half-up to the cent, through the shared `ca/cent_rounding` dataset,
-# producing `ca/medical_claim`.
+# (CRA 5006-R-25E). Line 110 is `ca/medical_expenses_over_threshold` and line 111 (line 33199, the
+# allowable amount of medical expenses for other dependants) is
+# `ca/other_dependants_medical_expenses_line_111`, the T1's copy of the line 33199 the T1 lines
+# copied by provinces form owns. core/sum adds them in line order and rounds the total once,
+# half-up to the cent, through the shared `ca/cent_rounding` dataset, producing `ca/medical_claim`.
 form:
   name: ca/t1_tax_and_credits
 capabilities:
@@ -15,5 +15,6 @@ capabilities:
     consumes:
       parts:
         - ca/medical_expenses_over_threshold
+        - ca/other_dependants_medical_expenses_line_111
     produces:
       output: ca/medical_claim
