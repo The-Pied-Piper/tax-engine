@@ -1,10 +1,10 @@
 # Form BC428 (CRA 5010-C) line 67: "Line 67: Add lines 64 to 66. = ^". One core/sum step over line 64
 # (`ca-bc/bc428_non_refundable_credits_line_60`, a copy of line 60, so it has no step of its own), line
 # 65 (the British Columbia dividend tax credit, `ca-bc/bc428_dividend_tax_credit_line_65`) and line 66
-# (the minimum tax carryover, `ca-bc/bc428_minimum_tax_carryover_line_66`). Line 65 is a blank input a
-# salary-only caller leaves out, so the blank rule below reads it as 0; line 60 is always computed and
-# line 66 is always produced (its input defaults to 0, not blank), so they need no blank rule. The form
-# prints no title for the line, so the step has none.
+# (the minimum tax carryover, `ca-bc/bc428_minimum_tax_carryover_line_66`). Line 65 is the computed
+# dividend tax credit worksheet (0.00 for a caller who gives no dividends), line 60 is always
+# computed and line 66 is always produced (its input defaults to 0, not blank), so the step needs no
+# blank rule. The form prints no title for the line, so the step has none.
 form:
   name: ca-bc/bc428
 capabilities:
@@ -18,7 +18,5 @@ capabilities:
         - ca-bc/bc428_non_refundable_credits_line_60
         - ca-bc/bc428_dividend_tax_credit_line_65
         - ca-bc/bc428_minimum_tax_carryover_line_66
-    blank:
-      ca-bc/bc428_dividend_tax_credit_line_65: "0"
     produces:
       output: ca-bc/bc428_total_line_67

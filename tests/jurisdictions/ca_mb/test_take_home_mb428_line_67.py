@@ -12,7 +12,7 @@ parts, the real parts of Worksheet MB428 lines 1 to 9, Schedule MB428-A lines 1 
 1, 3 to 9, 18, 19, 21, 28, 29, 33, 36, 41, 42 and 51 of `ca-mb/mb428_credits`, the line 31, line 50
 and line 56 input parts, the real `mb428_credits_line_53.yaml`, `mb428_credits_line_57.yaml`,
 `mb428_line_58.yaml`, `mb428_line_59_input.yaml`, `mb428_line_60.yaml`, `mb428_line_61.yaml`,
-`mb428_line_62_input.yaml`, `mb428_line_63_input.yaml`, `mb428_line_63.yaml`,
+`mb428_line_62.yaml`, `mb428_line_63_input.yaml`, `mb428_line_63.yaml`,
 `mb428_line_64.yaml`, `mb428_line_65.yaml`, `mb428_line_66_input.yaml` and `mb428_line_66.yaml`, and
 the new `mb428_line_67.yaml`, and types in only the salary (and, in some tests, the T691 amount of
 line 66). The header and the form declarations are made up here: the credits form exports lines 1,
@@ -67,7 +67,7 @@ LINE_60_PART = MB_PARTS / "mb428_line_60.yaml"
 LINE_59_PART = MB_PARTS / "mb428_line_59_input.yaml"
 LINE_58_PART = MB_PARTS / "mb428_line_58.yaml"
 LINE_61_PART = MB_PARTS / "mb428_line_61.yaml"
-LINE_62_PART = MB_PARTS / "mb428_line_62_input.yaml"
+LINE_62_PART = MB_PARTS / "mb428_line_62.yaml"
 LINE_63_PART = MB_PARTS / "mb428_line_63.yaml"
 LINE_57_PART = MB_PARTS / "mb428_credits_line_57.yaml"
 LINE_53_PART = MB_PARTS / "mb428_credits_line_53.yaml"
@@ -331,15 +331,15 @@ def test_line_67_is_line_66_alone_when_line_65_is_floored_at_10000(tmp_path: Pat
 
 
 def test_line_67_has_no_left_blank_row_of_its_own(tmp_path: Path) -> None:
-    # The composed steps for lines 60 and 64 print one blank row each (line 63's amount is the T1
-    # export, never blank); line 67's step has no
+    # The composed step for line 60 prints one blank row (line 64 has no blank rule now that line 62
+    # is always computed, and line 63's amount is the T1 export, never blank); line 67's step has no
     # blank rule and adds none. A blank T691 amount adds exactly one more, line 66's own.
     (tmp_path / "given").mkdir()
     (tmp_path / "blank").mkdir()
     given = _blank_rows(_sheet(tmp_path / "given", "70000", "1000.00"))
     blank = _blank_rows(_sheet(tmp_path / "blank", "70000"))
 
-    assert len(given) == 2
+    assert len(given) == 1
     assert len(blank) == len(given) + 1
 
 

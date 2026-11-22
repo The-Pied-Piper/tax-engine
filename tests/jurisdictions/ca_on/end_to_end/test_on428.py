@@ -110,6 +110,7 @@ PARTS = (
     *form_part_names("t2204"),
     *form_part_names("t1_employment_income"),
     *form_part_names("t1_taxable_income"),
+    *form_part_names("t1_lines_copied_by_provinces"),
     *(part.name for part in ON428_A),
     *(part.name for part in ON428),
 )

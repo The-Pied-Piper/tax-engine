@@ -9,7 +9,7 @@ so it needs no blank row). The output is `ca-sk/sk428_credits_subtotal_line_66`.
 
 The test composes the T1 employment income form, the real Schedule 8 and T2204 parts, the real
 line parts of `ca-sk/sk428_credits` that line 57 needs, the real `sk428_line_63.yaml`,
-`sk428_line_64_input.yaml`, `sk428_line_65_inputs.yaml` and `sk428_line_65.yaml`, and the new
+`sk428_line_64.yaml`, `sk428_line_65_inputs.yaml` and `sk428_line_65.yaml`, and the new
 `sk428_line_66.yaml`, and types in only the salary (and, in some tests, lines 64 and 65). The two
 form declarations are made up here: the credits form exports line 57 and `ca-sk/sk428` exports only
 line 66.
@@ -87,7 +87,7 @@ CREDITS_PARTS = (
 )
 SK_LINE_PARTS = (
     "sk428_line_63.yaml",
-    "sk428_line_64_input.yaml",
+    "sk428_line_64.yaml",
     "sk428_line_65.yaml",
 )
 FORM_NAME = "ca-sk/sk428"
@@ -196,7 +196,11 @@ def _sheet(
     kinds = saskatchewan_kinds()
     given = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if line_64 is not None:
-        given.append(Artifact(kinds.kind(LINE_64), D(line_64)))
+        # `line_64` is the amount of line 12000, with line 12010 at 40% of it.
+        given.append(Artifact(kinds.kind("ca/taxable_dividends"), D(line_64)))
+        given.append(
+            Artifact(kinds.kind("ca/taxable_dividends_other_than_eligible"), D(line_64) * D("0.4"))
+        )
     if line_65_amount is not None:
         given.append(Artifact(kinds.kind(LINE_65_AMOUNT), D(line_65_amount)))
     worksheets = _service(tmp_path).compute(JurisdictionCode("CA-SK"), 2025, *given)
@@ -229,9 +233,10 @@ def test_line_66_is_line_63_when_lines_64_and_65_are_blank(
 @pytest.mark.parametrize(
     ("salary", "line_64", "line_65_amount", "expected"),
     [
-        # Line 63 at 70,000 is 2,505.32; 2,505.32 + 100.00 + 500.00 (50% of 1,000.00).
-        ("70000", "100.00", "1000.00", "3105.32"),
-        ("70000", "100.00", None, "2605.32"),
+        # Line 63 at 70,000 is 2,505.32; line 12000 of 1,000.00 and line 12010 of 400.00 make
+        # line 64 76.08 (10.08 plus 66.00); line 65 is 500.00 (50% of 1,000.00).
+        ("70000", "1000.00", "1000.00", "3081.40"),
+        ("70000", "1000.00", None, "2581.40"),
         ("70000", None, "1000.00", "3005.32"),
     ],
 )
@@ -246,14 +251,14 @@ def test_line_66_adds_all_three_lines(
 
     assert _line(sheet, IDENTIFIER) == D(expected)
     assert _line(sheet, IDENTIFIER) == _derived(
-        D(salary), D(line_64 or "0"), D(line_65_amount or "0")
+        D(salary), D("76.08") if line_64 else D("0"), D(line_65_amount or "0")
     )
 
 
 def test_the_step_traces_one_sum_line_over_the_three_parts_with_the_cent_rounding(
     tmp_path: Path,
 ) -> None:
-    sheet = _sheet(tmp_path, "70000", "100.00", "1000.00")
+    sheet = _sheet(tmp_path, "70000", "1000.00", "1000.00")
     kinds = saskatchewan_kinds()
     rounding = YamlParameterSource(
         saskatchewan_packages().roots(), saskatchewan_parameter_parsers(), saskatchewan_units()
@@ -266,22 +271,22 @@ def test_the_step_traces_one_sum_line_over_the_three_parts_with_the_cent_roundin
         output=kinds.kind(IDENTIFIER),
         parts=(
             (kinds.kind(LINE_63), D("2505.32")),
-            (kinds.kind(LINE_64), D("100.00")),
+            (kinds.kind(LINE_64), D("76.08")),
             (kinds.kind(LINE_65), D("500.00")),
         ),
         rounding=rounding.rounding,
-        total=D("3105.32"),
+        total=D("3081.40"),
     )
 
 
 def test_the_sum_row_reads_in_english_with_the_total(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "70000", "100.00", "1000.00")
+    sheet = _sheet(tmp_path, "70000", "1000.00", "1000.00")
 
     rows = EnglishTraceRenderer().render_all(sheet.trace)
 
-    (row,) = [row for row in rows if "gives 3105.32" in row]
+    (row,) = [row for row in rows if "gives 3081.40" in row]
     assert "2505.32" in row
-    assert "100.00" in row
+    assert "76.08" in row
     assert "500.00" in row
     assert "rounded to the nearest cent" in row
 
@@ -312,7 +317,6 @@ def test_the_part_names_the_form_and_has_one_untitled_sum_step_over_lines_63_to_
         "unit",
         "params",
         "consumes",
-        "blank",
         "produces",
     ]
     assert step == {
@@ -321,7 +325,6 @@ def test_the_part_names_the_form_and_has_one_untitled_sum_step_over_lines_63_to_
         "unit": "ca/cad",
         "params": {"rounding": ROUNDING},
         "consumes": {"parts": [LINE_63, LINE_64, LINE_65]},
-        "blank": {LINE_64: "0"},
         "produces": {"output": IDENTIFIER},
     }
 

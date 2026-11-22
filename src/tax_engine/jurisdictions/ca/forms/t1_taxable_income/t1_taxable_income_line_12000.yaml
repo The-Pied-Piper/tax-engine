@@ -1,0 +1,20 @@
+# T1 (5006-R, 2025) line 12000: "Line 9 and line 12000: Amount of dividends (eligible and other than eligible)" (5006-R page 3). The optional input
+# (`ca/taxable_dividends`, blank when the filer has none) is read by this step, which is the one line the T1
+# prints for it, and the blank reads as 0. The form exports the line (`ca/taxable_dividends_line_12000`) for the provincial
+# dividend tax credit worksheets that print it again (AB428 line 63, BC428 line 65, MB428 line 62,
+# ON428 line 57 and SK428 line 64). It is added into the total income (line 15000), as the form says.
+form:
+  name: ca/t1_taxable_income
+capabilities:
+  - name: core/sum
+    title: "Dividends"
+    reference: "12000"
+    unit: ca/cad
+    params:
+      rounding: ca/cent_rounding
+    consumes:
+      parts: [ca/taxable_dividends]
+    blank:
+      ca/taxable_dividends: "0"
+    produces:
+      output: ca/taxable_dividends_line_12000

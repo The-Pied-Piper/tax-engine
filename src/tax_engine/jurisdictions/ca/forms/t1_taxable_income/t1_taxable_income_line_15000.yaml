@@ -5,10 +5,11 @@
 # Line 15000, total income, is the sum of line 10100 (employment income) and line 10400 (other
 # employment income) in form line order. Both lines belong to the T1 employment income form
 # (`ca/t1_employment_income`) and are read as its exports (a record list each, totalled by
-# core/record_total). The UCCB (line 7, line 11700) and the RDSP income (line 12, line 12500) are
-# steps of this same form (`t1_taxable_income_line_11700.yaml`, `t1_taxable_income_line_12500.yaml`), each read as 0 when
+# core/record_total). The UCCB (line 7, line 11700), the amount of dividends (line 9, line 12000) and the RDSP
+# income (line 12, line 12500) are steps of this same form (`t1_taxable_income_line_11700.yaml`,
+# `t1_taxable_income_line_12000.yaml`, `t1_taxable_income_line_12500.yaml`), each read as 0 when
 # blank, and are summed after them in form line order. The unnumbered subtotals on lines 21 and 28 fold into this
-# step and nothing else reads them. Lines 10400, 11700 and 12500 read as 0 when the filer has none, so a salary-only filer's total is the salary.
+# step and nothing else reads them. Lines 10400, 11700, 12000 and 12500 read as 0 when the filer has none, so a salary-only filer's total is the salary.
 form:
   name: ca/t1_taxable_income
 capabilities:
@@ -37,6 +38,7 @@ capabilities:
         - ca/total_income_employment_income_line_10100
         - ca/total_income_other_employment_income_line_10400
         - ca/uccb_income_line_11700
+        - ca/taxable_dividends_line_12000
         - ca/rdsp_income_line_12500
     produces:
       output: ca/total_income
