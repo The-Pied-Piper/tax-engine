@@ -43,8 +43,7 @@ LINE_82 = "ca-sk/sk428_saskatchewan_tax_line_82"
 INPUTS = {
     "line_43": "ca-sk/sk428_medical_expenses_line_43",
     "line_49": "ca-sk/sk428_other_dependants_medical_expenses_line_49",
-    "line_54": "ca-sk/sk428_donations_amount_line_54",
-    "line_55": "ca-sk/sk428_donations_amount_line_55",
+    "line_12": "ca/donations_and_gifts_line_12",
     "line_75": "ca-sk/sk428_venture_capital_credit_saskatchewan_line_75",
     "line_76": "ca-sk/sk428_venture_capital_credit_federal_line_76",
 }
@@ -94,8 +93,7 @@ def test_a_medical_donations_and_venture_capital_return_at_70000() -> None:
         "70000",
         line_43="5000",
         line_49="250.50",
-        line_54="1000",
-        line_55="2000",
+        line_12="2200",
         line_75="400.00",
         line_76="300.00",
     )
@@ -105,17 +103,18 @@ def test_a_medical_donations_and_venture_capital_return_at_70000() -> None:
     line_50 = max(D("5000") - line_47, D(0)) + D("250.50")
     assert line_47 == D("2080.05")
     assert line_50 == D("3170.45")
-    # Line 56: 1,000 at 10.5% plus 2,000 at 14.5%.
-    line_56 = _cents(D("1000") * D("0.105")) + _cents(D("2000") * D("0.145"))
-    assert line_56 == D("395.00")
+    # Line 12 is 2,200: line 13 is the printed 200 and line 14 is 2,000. Line 56: 200 at 10.5% plus
+    # 2,000 at 14.5%.
+    line_56 = _cents(D("200") * D("0.105")) + _cents(D("2000") * D("0.145"))
+    assert line_56 == D("311.00")
     # Line 57: line 53 (line 51 at 10.5%) plus line 56.
     line_57 = _cents((LINE_42 + line_50) * D("0.105")) + line_56
-    assert line_57 == D("3233.22")
+    assert line_57 == D("3149.22")
     # Line 77: 400.00 plus 300.00, under the 875 maximum. Tax: 7,597.62 less line 66 (line 57,
     # no line 64 or 65) less line 77.
     line_77 = D("400.00") + D("300.00")
     tax = D("7597.62") - line_57 - line_77
-    assert tax == D("3664.40")
+    assert tax == D("3748.40")
 
     assert _value(credits_sheet, LINE_50) == line_50
     assert _value(credits_sheet, LINE_56) == line_56

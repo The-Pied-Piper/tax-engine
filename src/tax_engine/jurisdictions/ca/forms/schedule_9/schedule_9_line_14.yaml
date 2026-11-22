@@ -1,0 +1,15 @@
+# Schedule 9 (5000-S9, 2025) line 14: "Line 12 minus line 13 =". Line 12 less line 13, rounded to
+# the cent. Exported to the provincial forms.
+form:
+  name: ca/schedule_9
+capabilities:
+  - name: core/subtract
+    reference: "14"
+    unit: ca/cad
+    params:
+      rounding: ca/cent_rounding
+    consumes:
+      amount: ca/donations_and_gifts_amount_line_12
+      less: ca/donations_and_gifts_line_13
+    produces:
+      output: ca/donations_and_gifts_line_14

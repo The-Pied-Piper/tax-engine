@@ -19,6 +19,7 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import DONATIONS_AND_GIFTS_LINE_12
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 
 D = Decimal
@@ -27,8 +28,7 @@ MANITOBA = JurisdictionCode("CA-MB")
 
 def _credits(salary: str, **given: str) -> Worksheet:
     inputs = {
-        "line_54": mb.MB428_DONATIONS_AMOUNT_LINE_54,
-        "line_55": mb.MB428_DONATIONS_AMOUNT_LINE_55,
+        "line_12": DONATIONS_AND_GIFTS_LINE_12,
     }
     artifacts = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     artifacts += [Artifact(inputs[name], D(value)) for name, value in given.items()]
@@ -52,7 +52,7 @@ def test_a_salary_only_caller_has_no_donations_claim() -> None:
 
 
 def test_each_schedule_9_amount_is_at_its_own_rate() -> None:
-    sheet = _credits("70000", line_54="200", line_55="1000")
+    sheet = _credits("70000", line_12="1200")
 
     assert _value(sheet, mb.MB428_DONATIONS_CREDIT_AT_RATE_LINE_54) == D("21.60")
     assert _value(sheet, mb.MB428_DONATIONS_CREDIT_AT_RATE_LINE_55) == D("174.00")
@@ -62,6 +62,6 @@ def test_each_schedule_9_amount_is_at_its_own_rate() -> None:
 
 
 def test_a_half_cent_rounds_up() -> None:
-    sheet = _credits("70000", line_54="0.05")
+    sheet = _credits("70000", line_12="0.05")
 
     assert _value(sheet, mb.MB428_DONATIONS_CREDIT_AT_RATE_LINE_54) == D("0.01")

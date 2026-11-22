@@ -668,6 +668,40 @@ DONATIONS_AND_GIFTS_TOTAL = AmountKind.declare(
 """Donations and gifts, Schedule 9 line 12 "Line 10 plus line 11": the charitable donations claimed
 plus the ecological and cultural gifts."""
 
+DONATIONS_AND_GIFTS_LINE_12 = AmountKind.declare(
+    CATALOG, "donations_and_gifts_line_12", non_negative=True
+)
+"""Donations and gifts, Schedule 9 line 12 "Line 10 plus line 11 =": the optional input
+(`schedule_9_line_12_inputs.yaml`), blank when the filer has none. Lines 1 to 11 feed nothing else
+the engine uses, so Schedule 9 owns line 12 as one typed amount; AB428, MB428, NL428, ON428 and
+SK428 import lines 13 and 14."""
+
+DONATIONS_AND_GIFTS_AMOUNT_LINE_12 = AmountKind.declare(
+    CATALOG, "donations_and_gifts_amount_line_12", non_negative=True
+)
+"""Donations and gifts as Schedule 9 line 12 prints it (`schedule_9_line_12.yaml`): the optional
+input (`ca/donations_and_gifts_line_12`), read as 0 when blank, rounded to the cent."""
+
+DONATIONS_AND_GIFTS_LINE_13_LIMIT = AmountKind.declare(
+    CATALOG, "donations_and_gifts_line_13_limit", non_negative=True
+)
+"""Donations and gifts limit, Schedule 9 line 13 "Enter whichever is less: amount from line 12 or
+$200.": the printed $200, claimed whole (`schedule_9_line_13_limit.yaml`)."""
+
+DONATIONS_AND_GIFTS_LINE_13 = AmountKind.declare(
+    CATALOG, "donations_and_gifts_line_13", non_negative=True
+)
+"""Donations and gifts at the first tier, Schedule 9 line 13 "Enter whichever is less: amount from
+line 12 or $200." (`schedule_9_line_13.yaml`): the lesser of line 12 and the $200, exported by
+Schedule 9 to the provincial forms."""
+
+DONATIONS_AND_GIFTS_LINE_14 = AmountKind.declare(
+    CATALOG, "donations_and_gifts_line_14", non_negative=True
+)
+"""Donations and gifts over the first tier, Schedule 9 line 14 "Line 12 minus line 13 ="
+(`schedule_9_line_14.yaml`): line 12 less line 13, exported by Schedule 9 to the provincial
+forms."""
+
 DONATION_FIRST_TIER_MAXIMUM = AmountKind.declare(
     CATALOG, "donation_first_tier_maximum", non_negative=True
 )

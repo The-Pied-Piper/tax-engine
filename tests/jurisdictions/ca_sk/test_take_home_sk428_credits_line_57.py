@@ -36,11 +36,10 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import DONATIONS_AND_GIFTS_LINE_12
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_sk.catalog import (
     SK428_CREDITS_AT_RATE_LINE_53,
-    SK428_DONATIONS_AMOUNT_LINE_54,
-    SK428_DONATIONS_AMOUNT_LINE_55,
     SK428_DONATIONS_CREDIT_LINE_56,
     SK428_NON_REFUNDABLE_CREDITS_LINE_57,
 )
@@ -121,6 +120,7 @@ def _expected(salary: str, line_54: str = "0", line_55: str = "0") -> Decimal:
 
 def _part_files() -> Iterator[Path]:
     yield from form_parts("schedule_8")
+    yield from form_parts("schedule_9")
     yield from form_parts("t2204")
     yield from form_parts("t1_taxable_income", "t1_employment_income")
     yield SK_PARTS / "sk428_credits_line_9.yaml"
@@ -144,8 +144,6 @@ def _part_files() -> Iterator[Path]:
         "sk428_credits_line_50.yaml",
         "sk428_credits_line_51.yaml",
         "sk428_credits_line_53.yaml",
-        "sk428_credits_line_54_input.yaml",
-        "sk428_credits_line_55_input.yaml",
         "sk428_credits_line_54.yaml",
         "sk428_credits_line_55.yaml",
         "sk428_credits_line_56.yaml",
@@ -201,16 +199,16 @@ def test_line_57_adds_line_56_from_lines_54_and_55(tmp_path: Path) -> None:
     sheet = _sheet(
         tmp_path,
         "70000",
-        Artifact(SK428_DONATIONS_AMOUNT_LINE_54, D("1000")),
-        Artifact(SK428_DONATIONS_AMOUNT_LINE_55, D("2000")),
+        Artifact(DONATIONS_AND_GIFTS_LINE_12, D("2200")),
     )
 
-    # Line 54 is 1,000 at 10.5%, 105.00; line 55 is 2,000 at 14.5%, 290.00; line 56 is 395.00.
-    assert _line_56("1000", "2000") == D("395.00")
-    assert _expected("70000", "1000", "2000") == D("2900.32")
-    assert sheet.get(SK428_DONATIONS_CREDIT_LINE_56).value == D("395.00")
+    # Schedule 9 line 12 is 2,200: line 13 is 200 and line 14 is 2,000. Line 54 is 200 at 10.5%,
+    # 21.00; line 55 is 2,000 at 14.5%, 290.00; line 56 is 311.00.
+    assert _line_56("200", "2000") == D("311.00")
+    assert _expected("70000", "200", "2000") == D("2816.32")
+    assert sheet.get(SK428_DONATIONS_CREDIT_LINE_56).value == D("311.00")
     assert sheet.get(SK428_CREDITS_AT_RATE_LINE_53).value == D("2505.32")
-    assert sheet.get(SK428_NON_REFUNDABLE_CREDITS_LINE_57).value == D("2900.32")
+    assert sheet.get(SK428_NON_REFUNDABLE_CREDITS_LINE_57).value == D("2816.32")
 
 
 def _part() -> dict[str, Any]:

@@ -25,8 +25,8 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import DONATIONS_AND_GIFTS_LINE_12
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tax_engine.jurisdictions.ca_ab import catalog as ab
 from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_ab.support import (
     alberta_capabilities,
@@ -41,10 +41,8 @@ D = Decimal
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
 # The real parts this line needs, beside the salary, Schedule 8 and the T1 taxable income parts.
 LINE_PARTS = (
-    "ab428_credits_line_55_input.yaml",
     "ab428_credits_line_55_box_a.yaml",
     "ab428_credits_line_55.yaml",
-    "ab428_credits_line_56_input.yaml",
     "ab428_credits_line_56_box_a.yaml",
     "ab428_credits_line_56.yaml",
     "ab428_credits_line_57.yaml",
@@ -68,6 +66,7 @@ FORM = dedent("""\
 
 def _part_files() -> Iterator[Path]:
     yield from form_parts("schedule_8")
+    yield from form_parts("schedule_9")
     yield from form_parts("t1_employment_income", "t1_taxable_income")
     for name in LINE_PARTS:
         yield ALBERTA_PARTS / name
@@ -130,10 +129,7 @@ CASES: list[tuple[str, list[Artifact[Decimal]], str]] = [
     ("70000", [], "0.00"),
     (
         "70000",
-        [
-            Artifact(ab.AB428_DONATIONS_AMOUNT_LINE_55, D("200")),
-            Artifact(ab.AB428_DONATIONS_AMOUNT_LINE_56, D("1000")),
-        ],
+        [Artifact(DONATIONS_AND_GIFTS_LINE_12, D("1200"))],
         "330.00",
     ),
 ]

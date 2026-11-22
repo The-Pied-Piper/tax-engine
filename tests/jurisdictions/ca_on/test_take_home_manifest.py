@@ -247,6 +247,7 @@ def test_the_federal_forms_are_imported_in_the_order_the_manifest_lists_them() -
         "ca/t1_tax_and_credits",
         "ca/schedule_6",
         "ca/schedule_8",
+        "ca/schedule_9",
         "ca/t2204",
     ]
     assert names[1 : 1 + len(imported)] == imported

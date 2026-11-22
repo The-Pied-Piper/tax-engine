@@ -22,6 +22,7 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import DONATIONS_AND_GIFTS_LINE_12
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_on import catalog as on
 
@@ -33,8 +34,7 @@ def _on428(salary: str, **given: str) -> Worksheet:
     inputs = {
         "line_36": on.ON428_MEDICAL_EXPENSES_LINE_36,
         "line_42": on.ON428_OTHER_DEPENDANTS_MEDICAL_EXPENSES_LINE_42,
-        "line_47": on.ON428_DONATIONS_AMOUNT_LINE_47,
-        "line_48": on.ON428_DONATIONS_AMOUNT_LINE_48,
+        "line_12": DONATIONS_AND_GIFTS_LINE_12,
     }
     artifacts = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     artifacts += [Artifact(inputs[name], D(value)) for name, value in given.items()]
@@ -87,7 +87,7 @@ def test_line_40_stops_at_the_2885_cap() -> None:
 
 
 def test_a_donations_claim_is_each_schedule_9_amount_at_its_own_rate() -> None:
-    sheet = _on428("70000", line_47="200", line_48="1000")
+    sheet = _on428("70000", line_12="1200")
 
     assert _value(sheet, on.ON428_DONATIONS_CREDIT_AT_RATE_LINE_47) == D("10.10")
     assert _value(sheet, on.ON428_DONATIONS_CREDIT_AT_RATE_LINE_48) == D("111.60")

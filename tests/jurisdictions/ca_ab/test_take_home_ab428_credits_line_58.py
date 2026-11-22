@@ -37,10 +37,10 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import DONATIONS_AND_GIFTS_LINE_12
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_ab.catalog import (
     AB428_CREDITS_AT_RATE_LINE_54,
-    AB428_DONATIONS_AMOUNT_LINE_55,
     AB428_NON_REFUNDABLE_CREDITS_LINE_58,
 )
 from tests.federal_forms import form_parts
@@ -82,6 +82,7 @@ CASES = [("20000", "1877.42"), ("200000", "2140.53")]
 
 def _part_files() -> Iterator[Path]:
     yield from form_parts("schedule_8")
+    yield from form_parts("schedule_9")
     yield from form_parts("t2204")
     yield from form_parts("t1_employment_income", "t1_taxable_income")
     yield ALBERTA_PARTS / "ab428_line_16.yaml"
@@ -109,10 +110,8 @@ def _part_files() -> Iterator[Path]:
     yield ALBERTA_PARTS / "ab428_credits_line_51.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_52.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_54.yaml"
-    yield ALBERTA_PARTS / "ab428_credits_line_55_input.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_55_box_a.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_55.yaml"
-    yield ALBERTA_PARTS / "ab428_credits_line_56_input.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_56_box_a.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_56.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_57.yaml"
@@ -157,7 +156,7 @@ def test_line_58_is_line_54_for_a_salary_only_caller(
 
 
 def test_line_58_adds_line_57_when_line_55_is_given(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "70000", Artifact(AB428_DONATIONS_AMOUNT_LINE_55, D("200.00")))
+    sheet = _sheet(tmp_path, "70000", Artifact(DONATIONS_AND_GIFTS_LINE_12, D("200.00")))
 
     # Line 55 is 60% of 200.00, 120.00, and line 56 is blank, so line 57 is 120.00.
     assert sheet.get(AB428_CREDITS_AT_RATE_LINE_54).value == D("2135.38")
@@ -165,7 +164,7 @@ def test_line_58_adds_line_57_when_line_55_is_given(tmp_path: Path) -> None:
 
 
 def test_line_58_is_rounded_half_up_to_the_cent(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "70000", Artifact(AB428_DONATIONS_AMOUNT_LINE_55, D("0.05")))
+    sheet = _sheet(tmp_path, "70000", Artifact(DONATIONS_AND_GIFTS_LINE_12, D("0.05")))
 
     # Line 55 is 60% of 0.05, 0.03, so line 58 is 2,135.38 plus 0.03.
     assert sheet.get(AB428_NON_REFUNDABLE_CREDITS_LINE_58).value == D("2135.41")

@@ -46,8 +46,7 @@ NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / 
 LINE_PART = NL_PARTS / "nl428_credits_line_62.yaml"
 LINE_58 = "ca-nl/nl428_credits_at_rate_line_58"
 LINE_61 = "ca-nl/nl428_donations_and_gifts_credit_line_61"
-AMOUNT_59 = "ca-nl/nl428_donations_amount_line_59"
-AMOUNT_60 = "ca-nl/nl428_donations_amount_line_60"
+LINE_12 = "ca/donations_and_gifts_line_12"
 IDENTIFIER = "ca-nl/nl428_non_refundable_credits_line_62"
 FORM_NAME = "ca-nl/nl428_credits"
 FEDERAL_PARTS = form_part_names(
@@ -103,9 +102,7 @@ NL_PART_NAMES = (
     "nl428_credits_line_55.yaml",
     "nl428_credits_line_56.yaml",
     "nl428_credits_line_58.yaml",
-    "nl428_credits_line_59_input.yaml",
     "nl428_credits_line_59.yaml",
-    "nl428_credits_line_60_input.yaml",
     "nl428_credits_line_60.yaml",
     "nl428_credits_line_61.yaml",
     "nl428_credits_line_62.yaml",
@@ -144,6 +141,7 @@ CASES = [
 
 def _part_files() -> Iterator[Path]:
     yield from form_parts("schedule_8")
+    yield from form_parts("schedule_9")
     yield from form_parts("t2204")
     for name in FEDERAL_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
@@ -202,10 +200,10 @@ def test_line_62_with_line_61_blank_is_line_58(tmp_path: Path, salary: str, expe
 
 
 def test_line_62_adds_line_61_to_line_58(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "70000", {AMOUNT_59: "1000", AMOUNT_60: "1000"})
+    sheet = _sheet(tmp_path, "70000", {LINE_12: "1200"})
 
     assert _value(sheet, LINE_58) == D("1342.95")
-    assert _value(sheet, IDENTIFIER) == D("1647.95")
+    assert _value(sheet, IDENTIFIER) == D("1578.35")
 
 
 def _part() -> dict[str, Any]:

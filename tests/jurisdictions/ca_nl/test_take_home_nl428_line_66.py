@@ -44,8 +44,7 @@ from tests.kinds import non_negative
 D = Decimal
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
 LINE_PART = NL_PARTS / "nl428_line_66.yaml"
-AMOUNT_59 = "ca-nl/nl428_donations_amount_line_59"
-AMOUNT_60 = "ca-nl/nl428_donations_amount_line_60"
+LINE_12 = "ca/donations_and_gifts_line_12"
 LINE_62 = "ca-nl/nl428_non_refundable_credits_line_62"
 IDENTIFIER = "ca-nl/nl428_non_refundable_credits_line_66"
 FORM_NAME = "ca-nl/nl428"
@@ -102,9 +101,7 @@ NL_PART_NAMES = (
     "nl428_credits_line_55.yaml",
     "nl428_credits_line_56.yaml",
     "nl428_credits_line_58.yaml",
-    "nl428_credits_line_59_input.yaml",
     "nl428_credits_line_59.yaml",
-    "nl428_credits_line_60_input.yaml",
     "nl428_credits_line_60.yaml",
     "nl428_credits_line_61.yaml",
     "nl428_credits_line_62.yaml",
@@ -151,6 +148,7 @@ CASES = [
 
 def _part_files() -> Iterator[Path]:
     yield from form_parts("schedule_8")
+    yield from form_parts("schedule_9")
     yield from form_parts("t2204")
     for name in FEDERAL_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
@@ -212,10 +210,11 @@ def test_line_66_is_line_62_read_across_the_forms(
 
 
 def test_line_66_follows_line_61_through_line_62(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "70000", FORM_NAME, {AMOUNT_59: "1000", AMOUNT_60: "1000"})
+    sheet = _sheet(tmp_path, "70000", FORM_NAME, {LINE_12: "1200"})
 
-    # 1,342.95 plus 87.00 and 218.00 (8.7% and 21.8% of 1,000 each).
-    assert _value(sheet, IDENTIFIER) == D("1647.95")
+    # Line 12 is 1,200: line 13 is 200 and line 14 is 1,000. 1,342.95 plus 17.40 and 218.00 (8.7% of
+    # 200 and 21.8% of 1,000).
+    assert _value(sheet, IDENTIFIER) == D("1578.35")
 
 
 def _part() -> dict[str, Any]:

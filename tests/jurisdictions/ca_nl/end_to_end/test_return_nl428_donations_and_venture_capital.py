@@ -40,8 +40,7 @@ LINE_81 = "ca-nl/nl428_tax_line_81"
 LINE_84 = "ca-nl/nl428_venture_capital_tax_credit_line_84"
 LINE_85 = "ca-nl/nl428_tax_line_85"
 INPUTS = {
-    "line_59": "ca-nl/nl428_donations_amount_line_59",
-    "line_60": "ca-nl/nl428_donations_amount_line_60",
+    "line_12": "ca/donations_and_gifts_line_12",
     "line_82": "ca-nl/nl428_venture_capital_tax_credit_from_certificates_line_82",
     "line_83": "ca-nl/nl428_unused_venture_capital_tax_credit_line_83",
 }
@@ -82,21 +81,20 @@ def test_a_salary_only_caller_has_no_claim_on_lines_61_and_84(name: str) -> None
 
 
 def test_a_donations_and_venture_capital_return_at_70000() -> None:
-    credits_sheet, nl428 = _sheets(
-        "70000", line_59="1000", line_60="2000", line_82="500.00", line_83="250.00"
-    )
+    credits_sheet, nl428 = _sheets("70000", line_12="2200", line_82="500.00", line_83="250.00")
 
-    # Line 61: 1,000 at 8.7% plus 2,000 at 21.8%.
-    line_61 = _cents(D("1000") * D("0.087")) + _cents(D("2000") * D("0.218"))
-    assert line_61 == D("523.00")
+    # Line 12 is 2,200: line 13 is the printed 200 and line 14 is 2,000. Line 61: 200 at 8.7% plus
+    # 2,000 at 21.8%.
+    line_61 = _cents(D("200") * D("0.087")) + _cents(D("2000") * D("0.218"))
+    assert line_61 == D("453.40")
     # Line 62: line 58 (1,342.95) plus line 61, which line 66 takes off the tax.
     line_62 = SALARY_ONLY_LINE_62 + line_61
-    assert line_62 == D("1865.95")
-    # Line 81 falls by the same 523.00; line 84 is 500.00 plus 250.00; line 85 is line 81 less it.
+    assert line_62 == D("1796.35")
+    # Line 81 falls by the same 453.40; line 84 is 500.00 plus 250.00; line 85 is line 81 less it.
     line_81 = SALARY_ONLY_LINE_81 - line_61
     line_84 = D("500.00") + D("250.00")
     line_85 = line_81 - line_84
-    assert (line_81, line_84, line_85) == (D("5624.49"), D("750.00"), D("4874.49"))
+    assert (line_81, line_84, line_85) == (D("5694.09"), D("750.00"), D("4944.09"))
 
     assert _value(credits_sheet, LINE_61) == line_61
     assert _value(credits_sheet, LINE_62) == line_62
