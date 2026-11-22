@@ -548,6 +548,17 @@ insurance plan (PPIP) premiums paid (box 55 of all T4 slips) (maximum $484.12)":
 caller gives, from the T4 slips; blank when the caller does not give it, and line 91 is then
 computed."""
 
+PPIP_PREMIUM_MAXIMUM = AmountKind.declare(CATALOG, "ppip_premium_maximum", non_negative=True)
+"""PPIP premiums maximum, 5005-R line 91 "(maximum $484.12)": the printed maximum, from the
+`ca-qc/ppip_premium_maximum` dataset; the bound a given figure cannot pass."""
+
+PPIP_PREMIUMS_GIVEN_CHECKED = AmountKind.declare(
+    CATALOG, "ppip_premiums_given_checked", non_negative=True
+)
+"""PPIP premiums paid as given, 5005-R line 91, checked against the printed maximum: the given
+figure (a blank passes on as blank) when it is at most `ca-qc/ppip_premium_maximum`; above it, it
+is refused, not capped. Line 91 reads it."""
+
 PPIP_PREMIUM_EMPLOYMENT_INCOME = AmountKind.declare(
     CATALOG, "ppip_premium_employment_income", non_negative=True
 )

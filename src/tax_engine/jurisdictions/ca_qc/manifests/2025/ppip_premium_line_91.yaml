@@ -2,8 +2,10 @@
 # (box 55 of all T4 slips) (maximum $484.12)". The take-home caller has no T4, so a blank
 # `ca-qc/ppip_premiums_given` is computed: 0.494% of the employment income to the $98,000 maximum,
 # at most $484.12, half-up to the cent, from the `ca-qc/ppip_premium` dataset. A given figure is
-# produced unchanged. RL-1 box H (TP-1 line 97) is the same figure. Mirrors T2204 line 4
-# (`ca/forms/t2204/t2204_line_4.yaml`).
+# produced unchanged, but is first checked against the printed maximum (`ca-qc/ppip_premium_maximum`,
+# 484.12): a figure above it is refused, not capped, as the form says line 91 cannot exceed it. The
+# check is its own untitled step, as NL428 line 82's is. RL-1 box H (TP-1 line 97) is the same
+# figure. Mirrors T2204 line 4 (`ca/forms/t2204/t2204_line_4.yaml`).
 form:
   name: ca-qc/ppip_premium
 capabilities:
@@ -14,6 +16,22 @@ capabilities:
       records: ca-qc/t1_employment_income.employment_income_line_10100
     produces:
       output: ca-qc/ppip_premium_employment_income
+  - name: core/credit_amount
+    title: "Most you can enter on line 91"
+    unit: ca/cad
+    params:
+      amount: ca-qc/ppip_premium_maximum
+    produces:
+      output: ca-qc/ppip_premium_maximum
+  - name: core/at_most
+    unit: ca/cad
+    consumes:
+      amount: ca-qc/ppip_premiums_given
+      bound: ca-qc/ppip_premium_maximum
+    blank:
+      amount: pass_on
+    produces:
+      output: ca-qc/ppip_premiums_given_checked
   - name: ca/given_or_contribution_tier
     title: "Provincial parental insurance plan (PPIP) premiums paid"
     reference: "91"
@@ -21,7 +39,7 @@ capabilities:
     params:
       tier: ca-qc/ppip_premium
     consumes:
-      given: ca-qc/ppip_premiums_given
+      given: ca-qc/ppip_premiums_given_checked
       earnings: ca-qc/ppip_premium_employment_income
     blank:
       given: compute

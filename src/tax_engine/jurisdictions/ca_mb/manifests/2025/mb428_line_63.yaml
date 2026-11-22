@@ -15,7 +15,7 @@ capabilities:
     consumes:
       records: ca/t1_lines_copied_by_provinces.minimum_tax_carryover_line_40427
     produces:
-      output: ca-mb/mb428_minimum_tax_carryover_line_63
+      output: ca-mb/mb428_minimum_tax_carryover_amount_line_63
   - name: core/apply_rate
     title: "Manitoba minimum tax carryover"
     reference: "63"
@@ -23,6 +23,6 @@ capabilities:
     params:
       rate: ca-mb/minimum_tax_rate
     consumes:
-      base: ca-mb/mb428_minimum_tax_carryover_line_63
+      base: ca-mb/mb428_minimum_tax_carryover_amount_line_63
     produces:
-      output: ca-mb/mb428_minimum_tax_carryover_credit_line_63
+      output: ca-mb/mb428_minimum_tax_carryover_line_63
