@@ -1202,7 +1202,8 @@ T691_LINE_7_MINUS_LINE_10 = AmountKind.declare(
 )
 """Line 7 minus line 10, Form T691 Part 5 line 11 "Line 7 minus line 10 (if negative, enter "0")":
 the optional input (`t691_part_5_line_11_inputs.yaml`), blank when the filer has none. Lines 1 to 10
-of Part 5 are not built, so line 11 is typed; its printed floor makes the kind non-negative."""
+of Part 5 are not built, so line 11 is typed: the caller enters the form's finished, already
+floored result, so a negative entry is refused and the kind is non-negative."""
 
 T691_PART_5_LINE_11_AMOUNT = AmountKind.declare(
     CATALOG, "t691_part_5_line_11_amount", non_negative=True
