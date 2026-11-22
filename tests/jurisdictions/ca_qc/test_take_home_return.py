@@ -13,7 +13,8 @@ are printed lines, each read from the form that prints it:
   TP-1.D-V (2025-12), page 5);
 - TP-1 line 470 "Subtract line 468 from line 450" (page 5), which already takes the work premium
   (456), the QPIP overpayment (457) and every credit typed on lines 451.2 to 466 off line 450. Tax
-  withheld (line 451) is left out of the take-home by ruling and is not on line 468.
+  withheld has no input (line 451 and 451.1 are left out by ruling); line 451.2 is an optional input
+  that line 468 includes.
 
 The tests run the real return part over the real parts of the three forms it reads, at a salary
 of $20,000, $70,000 and $200,000, and pin the part's shape. The figures are hand-computed from
@@ -44,10 +45,10 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     TOTAL_PAYABLE,
     TP1_FINANCIAL_COMPENSATION_LINE_466,
     TP1_INCOME_TAX_AND_CONTRIBUTIONS_RETURN,
+    TP1_INCOME_TAX_LESS_CREDITS_RETURN,
     TP1_LINE_451_2,
     TP1_LINE_452,
     TP1_LINE_462,
-    TP1_LINE_470_RETURN,
 )
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
 from tests.jurisdictions.ca_qc.return_support import EXPECTED, RETURN_PART, return_sheet
@@ -97,7 +98,7 @@ def test_each_printed_line_is_read_as_the_form_prints_it(
     assert str(sheet.get(FEDERAL_TOTAL_PAYABLE_RETURN).value) == figures["43500"]
     assert str(sheet.get(REFUNDABLE_QUEBEC_ABATEMENT_RETURN).value) == figures["44000"]
     assert str(sheet.get(TP1_INCOME_TAX_AND_CONTRIBUTIONS_RETURN).value) == figures["450"]
-    assert str(sheet.get(TP1_LINE_470_RETURN).value) == figures["470"]
+    assert str(sheet.get(TP1_INCOME_TAX_LESS_CREDITS_RETURN).value) == figures["470"]
 
 
 @pytest.mark.parametrize("salary", SALARIES)
@@ -110,7 +111,7 @@ def test_the_summary_adds_line_172_and_line_470(
     assert str(less_abatement.value) == LESS_ABATEMENT[salary]
     assert sheet.get(REFUND_OR_BALANCE_OWING).value == (
         sheet.get(FEDERAL_REFUND_OR_BALANCE_OWING_RETURN).value
-        + sheet.get(TP1_LINE_470_RETURN).value
+        + sheet.get(TP1_INCOME_TAX_LESS_CREDITS_RETURN).value
     )
     assert sheet.get(TOTAL_PAYABLE).value == (
         sheet.get(FEDERAL_TOTAL_PAYABLE_LESS_ABATEMENT_RETURN).value
@@ -130,7 +131,7 @@ def test_the_qpip_overpayment_reduces_the_refund_or_balance_owing(
     # not reduced by it.
     sheet = return_sheet(take_home_service, salary)
 
-    assert str(sheet.get(TP1_LINE_470_RETURN).value) == line_470
+    assert str(sheet.get(TP1_INCOME_TAX_LESS_CREDITS_RETURN).value) == line_470
     assert str(sheet.get(REFUND_OR_BALANCE_OWING).value) == refund_or_balance
     assert sheet.get(TOTAL_PAYABLE).value == (
         sheet.get(FEDERAL_TOTAL_PAYABLE_LESS_ABATEMENT_RETURN).value
@@ -154,7 +155,7 @@ def test_a_credit_typed_on_lines_451_2_to_466_moves_the_refund_or_balance_owing(
     # the Quebec half of the summary by $500; the federal half and the total payable do not move.
     sheet = return_sheet(take_home_service, "70000", Artifact(kind, D("500")))
 
-    assert str(sheet.get(TP1_LINE_470_RETURN).value) == "7896.16"
+    assert str(sheet.get(TP1_INCOME_TAX_LESS_CREDITS_RETURN).value) == "7896.16"
     assert str(sheet.get(REFUND_OR_BALANCE_OWING).value) == "14178.32"
     assert str(sheet.get(TOTAL_PAYABLE).value) == "14678.32"
 
@@ -260,15 +261,15 @@ STEPS = {
         "ca-qc/tp1_totals.tp1_income_tax_and_contributions_line_450",
         "ca-qc/tp1_income_tax_and_contributions_return",
     ),
-    "ca-qc/tp1_line_470_return": _read(
-        "ca-qc/tp1_totals.tp1_line_470", "ca-qc/tp1_line_470_return"
+    "ca-qc/tp1_income_tax_less_credits_return": _read(
+        "ca-qc/tp1_totals.tp1_line_470", "ca-qc/tp1_income_tax_less_credits_return"
     ),
     "ca/refund_or_balance_owing": _computed(
         "core/sum",
         {
             "parts": [
                 "ca-qc/federal_refund_or_balance_owing_return",
-                "ca-qc/tp1_line_470_return",
+                "ca-qc/tp1_income_tax_less_credits_return",
             ]
         },
         "ca/refund_or_balance_owing",
@@ -332,7 +333,7 @@ def test_the_solidarity_credit_is_in_neither_sum() -> None:
         ("ca-qc/total_payable", False),
         ("ca-qc/solidarity_credit", True),
         ("ca-qc/federal_refund_or_balance_owing_return", False),
-        ("ca-qc/tp1_line_470_return", False),
+        ("ca-qc/tp1_income_tax_less_credits_return", False),
         ("ca-qc/federal_total_payable_less_abatement_return", False),
         ("ca-qc/tp1_income_tax_and_contributions_return", True),
         ("ca-qc/federal_total_payable_return", True),

@@ -2905,7 +2905,9 @@ TP1_INCOME_TAX_AND_CONTRIBUTIONS_RETURN = AmountKind.declare(
 """Quebec return summary: TP-1 line 450 "Income tax and contributions", read from the totals form's
 export. One core/record_total (`return.yaml`)."""
 
-TP1_LINE_470_RETURN = AmountKind.declare(CATALOG, "tp1_line_470_return")
+TP1_INCOME_TAX_LESS_CREDITS_RETURN = AmountKind.declare(
+    CATALOG, "tp1_income_tax_less_credits_return"
+)
 """Quebec return summary: TP-1 line 470 "Subtract line 468 from line 450", read from the totals
 form's export (signed: negative is a refund, positive a balance due). One core/record_total
 (`return.yaml`)."""

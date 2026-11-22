@@ -10,8 +10,9 @@
 # negative is a refund, as T1 line 167 in the other provinces. 5005-R line 172 is the federal
 # figure and TP-1 line 470 (450 less 468) is the Quebec one, added with no floor. Line 468 collects
 # the credits typed on lines 451.2 to 466 and the work premium (456) and QPIP overpayment (457), so
-# the summary follows what the caller types there, as the federal half does through line 172. Tax
-# withheld (line 451) is left out of the take-home by ruling and is not on line 468.
+# the summary follows what the caller types there, as the federal half does through line 172. The
+# engine has no input for tax withheld (line 451) or line 451.1, left out by ruling; line 451.2
+# (451 less 451.1) is an optional input that line 468 includes.
 #
 # Total payable (`ca-qc/total_payable`; `ca/total_payable` is the federal kind the shared forms
 # declare): 5005-R line 43500 less line 44000 (the refundable Quebec abatement) plus TP-1 line 450.
@@ -39,7 +40,7 @@ capabilities:
     consumes:
       records: ca-qc/tp1_totals.tp1_line_470
     produces:
-      output: ca-qc/tp1_line_470_return
+      output: ca-qc/tp1_income_tax_less_credits_return
   - name: core/sum
     unit: ca/cad
     params:
@@ -47,7 +48,7 @@ capabilities:
     consumes:
       parts:
         - ca-qc/federal_refund_or_balance_owing_return
-        - ca-qc/tp1_line_470_return
+        - ca-qc/tp1_income_tax_less_credits_return
     produces:
       output: ca/refund_or_balance_owing
   - name: core/record_total
