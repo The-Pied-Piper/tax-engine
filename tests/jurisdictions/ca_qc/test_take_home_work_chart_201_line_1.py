@@ -85,6 +85,14 @@ def test_lines_107_and_105_are_added_to_the_salary(take_home_service: TakeHomeSe
     assert str(sheet.get(WORK_CHART_201_ELIGIBLE_WORK_INCOME_LINE_1).value) == "71200.75"
 
 
+def test_a_negative_line_105_is_not_taken_off_the_salary(
+    take_home_service: TakeHomeService,
+) -> None:
+    sheet = chart(take_home_service, "70000", line_105="-500")
+
+    assert str(sheet.get(WORK_CHART_201_ELIGIBLE_WORK_INCOME_LINE_1).value) == "70000.00"
+
+
 def test_box_211_is_taken_off(take_home_service: TakeHomeService) -> None:
     sheet = chart(take_home_service, "70000", box_211="2500.10")
 
