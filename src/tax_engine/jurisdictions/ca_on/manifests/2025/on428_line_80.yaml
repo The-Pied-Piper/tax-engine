@@ -11,9 +11,9 @@
 # core/subtract_not_below_zero (`ca-on/on428_tax_reduction_before_conditions_line_80`).
 #
 # Step 2 counts the printed condition: 0 when there is an amount on line 72, else 1
-# (`ca-on/on428_line_80_conditions`). Line 72 is an optional input that a salary-only caller leaves
-# out (`ca-on/on428_additional_tax_for_minimum_tax_line_72`); the `blank` rule reads that blank as
-# "0", so the condition does not apply and the count is 1. The count is
+# (`ca-on/on428_line_80_conditions`). Line 72 is calculated by Worksheet ON428
+# (`ca-on/on428_additional_tax_for_minimum_tax_line_72`) and is 0 for a caller with no T691 Part 5
+# line 11, so the condition does not apply and the count is 1. The count is
 # `ca-on/on428_tax_reduction_conditions_count_line_80`.
 #
 # Step 3 multiplies the box by that count: the box when there is no amount on line 72, "0" when
@@ -40,8 +40,6 @@ capabilities:
       counts: []
       amounts:
         - ca-on/on428_additional_tax_for_minimum_tax_line_72
-    blank:
-      amounts: "0"
     produces:
       output: ca-on/on428_tax_reduction_conditions_count_line_80
   - name: core/times_count

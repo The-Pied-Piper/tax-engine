@@ -54,6 +54,7 @@ REAL_FORM = next(TAKE_HOME.rglob("t1_tax_and_credits.yaml")).read_text(encoding=
 # return reads the T1 form's exports, so the chain up to line 167 is composed, then `return.yaml`.
 PARTS = (
     *form_part_names("t1_lines_copied_by_provinces"),
+    *form_part_names("t691"),
     *form_part_names("schedule_8"),
     *form_part_names("schedule_9"),
     *form_part_names("t2204"),

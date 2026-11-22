@@ -1,0 +1,16 @@
+# T691 (T691 E (25), 2025) Part 5 line 11 input a salary-only caller does not give: "Line 7 minus
+# line 10 (if negative, enter "0")". A salary-only caller has no figure here, so a request that
+# leaves the line out is read as blank; `t691_part_5_line_11.yaml` reads it as 0 and rounds it to the
+# cent. Lines 1 to 10 of Part 5 are not built, so the figure is taken as the form prints it, one
+# input. This form owns the input; Worksheet ON428 (ON428 line 72) imports the T691's export and
+# never asks for it itself.
+form:
+  name: ca/t691
+inputs:
+  - name: ca/t691_line_7_minus_line_10
+    title: "Line 7 minus line 10"
+    reference: "Part 5 line 11"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 7 minus line 10 (if negative, enter "0")'

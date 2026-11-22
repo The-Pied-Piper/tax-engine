@@ -2,6 +2,7 @@
 # Ontario surtax tier, line 67, 2026 tax year (Form ON428): T4127 Table 8.2, row ON, surtax
 # threshold 7,446 at rate 0.36 (above $7,446, "+ (0.36 x (T4 - $7,446))"). Line 66 is its own
 # part. Rounds half-up to the cent before line 68 adds it, the project's choice.
+# Worksheet ON428 line 5 (ON428 line 72) prints the same threshold and rate and reads it too.
 family: ca-on/surtax_line_67
 tax_year: 2026
 kind: surcharge_tiers

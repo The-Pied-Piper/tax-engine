@@ -65,9 +65,7 @@ def chart_sheet(
         Artifact(EMPLOYMENT_INCOME, D(salary)),
     ]
     starting.extend(Artifact(kind, D(value)) for kind, value in given)
-    declaration = (
-        ("tp1_net_income.yaml", "tp1_net_income_line_275_spouse_input.yaml") if form is None else ()
-    )
+    declaration = ("tp1_net_income.yaml",) if form is None else ()
     service = take_home_service(
         HEADER,
         chart_form(*exports) if form is None else form,

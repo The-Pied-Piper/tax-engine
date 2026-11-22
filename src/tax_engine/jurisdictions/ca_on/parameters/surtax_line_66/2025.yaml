@@ -4,6 +4,7 @@
 # dollars-and-cents box, so it rounds half-up to the cent, the project's choice, as the form
 # states no rounding rule. Line 67 (the 36% tier) is its own part, as each tier is a separate
 # line.
+# Worksheet ON428 line 4 (ON428 line 72) prints the same threshold and rate and reads it too.
 family: ca-on/surtax_line_66
 tax_year: 2025
 kind: surcharge_tiers

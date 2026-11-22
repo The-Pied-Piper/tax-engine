@@ -1,4 +1,5 @@
-# TP-1 (2025) line 105, read "if positive" by Work Chart 201 line 1 and Schedule P line 10: an
+# TP-1 (2025) line 105, "Correction of employment income", signed (Work Chart 105: a negative result
+# is entered with a minus sign), read "if positive" by Work Chart 201 line 1 and Schedule P line 10: an
 # optional input a salary-only caller does not give. It is a line of the TP-1 income form, so this
 # form takes it once and exports it; Work Chart 201 and Schedule P read the export
 # (`ca-qc/tp1_income.tp1_line_105`) and read a blank as 0.

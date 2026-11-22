@@ -37,7 +37,6 @@ PART = "solidarity_credit_family_income.yaml"
 IDENTIFIER = "ca-qc/solidarity_family_income"
 NET_INCOME_PARTS = (
     "tp1_net_income.yaml",
-    "tp1_net_income_line_275_spouse_input.yaml",
     "tp1_net_income_line_201.yaml",
     "tp1_net_income_line_248.yaml",
     "tp1_net_income_line_254_inputs.yaml",
