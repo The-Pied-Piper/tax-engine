@@ -19,6 +19,7 @@ from textwrap import dedent
 
 import pytest
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.canada_workers_benefit import CWB_NET_INCOME_LINE_7
@@ -95,7 +96,9 @@ def test_the_chain_of_a_salary_only_filer_ends_in_net_income(
     take_home_service: TakeHomeService, salary: str, line_48: str, line_57: str
 ) -> None:
     worksheets = take_home_service(HEADER, FORM, *PARTS).compute(
-        JurisdictionCode("CA-QC"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
+        TaxCalculationRequest(
+            JurisdictionCode("CA-QC"), 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),)
+        )
     )
     (sheet,) = worksheets["ca-qc/t1_taxable_income"]
 
@@ -114,7 +117,9 @@ def test_the_chain_of_a_salary_only_filer_ends_in_net_income(
 
 def test_schedule_6_line_7_reads_the_signed_net_income(take_home_service: TakeHomeService) -> None:
     worksheets = take_home_service(HEADER, FORM, *PARTS).compute(
-        JurisdictionCode("CA-QC"), 2025, Artifact(EMPLOYMENT_INCOME, D("70000"))
+        TaxCalculationRequest(
+            JurisdictionCode("CA-QC"), 2025, (Artifact(EMPLOYMENT_INCOME, D("70000")),)
+        )
     )
     (schedule_6,) = worksheets["ca/schedule_6"]
     assert schedule_6.get(CWB_NET_INCOME_LINE_7).value == D("69335.00")

@@ -72,6 +72,7 @@ import pytest
 
 from tax_engine import build_tax_computation
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
@@ -145,7 +146,7 @@ TAX_FIGURES = [(s, f, k, t) for s, f, k, _, _, _, t, _ in FIGURES]
 
 def _worksheets(salary: str, year: int = 2026) -> dict[str, tuple[Worksheet, ...]]:
     return build_tax_computation().compute(
-        SASKATCHEWAN, year, Artifact(EMPLOYMENT_INCOME, D(salary))
+        TaxCalculationRequest(SASKATCHEWAN, year, (Artifact(EMPLOYMENT_INCOME, D(salary)),))
     )
 
 
@@ -386,7 +387,9 @@ def test_the_ontario_take_home_anchors_do_not_move(year: int, salary: str, take_
     # Take-home is the salary less CPP, EI and T1 line 167.
     kinds = bundled_kinds()
     ontario = build_tax_computation().compute(
-        JurisdictionCode("CA-ON"), year, Artifact(EMPLOYMENT_INCOME, D(salary))
+        TaxCalculationRequest(
+            JurisdictionCode("CA-ON"), year, (Artifact(EMPLOYMENT_INCOME, D(salary)),)
+        )
     )
     (schedule_8,) = ontario["ca/schedule_8"]
     (t2204,) = ontario["ca/t2204"]

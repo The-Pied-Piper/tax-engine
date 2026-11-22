@@ -11,6 +11,7 @@ from decimal import Decimal
 from textwrap import dedent
 from typing import Any
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
@@ -43,7 +44,9 @@ FORM = dedent("""\
 
 def sheet_of(take_home_service: TakeHomeService, *artifacts: Artifact[Any]) -> Worksheet:
     worksheets = take_home_service(HEADER, FORM, *PARTS).compute(
-        JurisdictionCode("CA-QC"), 2025, Artifact(EMPLOYMENT_INCOME, D("70000")), *artifacts
+        TaxCalculationRequest(
+            JurisdictionCode("CA-QC"), 2025, (Artifact(EMPLOYMENT_INCOME, D("70000")), *artifacts)
+        )
     )
     (sheet,) = worksheets["ca-qc/t1_employment_income"]
     return sheet

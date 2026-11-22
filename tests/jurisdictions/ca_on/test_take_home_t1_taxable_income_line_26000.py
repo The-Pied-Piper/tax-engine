@@ -15,6 +15,7 @@ from decimal import Decimal
 
 import pytest
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.deductions import NET_INCOME
@@ -67,7 +68,9 @@ def line_26000(
     artifacts = [Artifact(NET_INCOME, Decimal(net_income))]
     if deductions is not None:
         artifacts.append(Artifact(T1_LINE_25400, Decimal(deductions)))
-    (worksheet,) = service.compute(ONTARIO, 2025, *artifacts)["ca/t1_taxable_income"]
+    (worksheet,) = service.compute(TaxCalculationRequest(ONTARIO, 2025, tuple(artifacts)))[
+        "ca/t1_taxable_income"
+    ]
     return worksheet.get(TAXABLE_INCOME).value
 
 

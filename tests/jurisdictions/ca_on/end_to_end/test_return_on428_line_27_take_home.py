@@ -14,6 +14,7 @@ from decimal import Decimal
 import pytest
 
 from tax_engine import build_tax_computation
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
@@ -27,7 +28,7 @@ ONTARIO = JurisdictionCode("CA-ON")
 def test_the_70000_salary_only_take_home_is_unchanged(year: int, take_home: str) -> None:
     kinds = bundled_kinds()
     worksheets = build_tax_computation().compute(
-        ONTARIO, year, Artifact(EMPLOYMENT_INCOME, D("70000"))
+        TaxCalculationRequest(ONTARIO, year, (Artifact(EMPLOYMENT_INCOME, D("70000")),))
     )
     (summary,) = worksheets["ca-on/return"]
     (schedule_8,) = worksheets["ca/schedule_8"]

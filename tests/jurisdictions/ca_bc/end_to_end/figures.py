@@ -9,6 +9,7 @@ from __future__ import annotations
 from decimal import Decimal
 
 from tax_engine import build_tax_computation
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
@@ -35,7 +36,9 @@ def sheet(form: str, year: int, medical_expenses: str | None = None, **given: st
     if medical_expenses is not None:
         artifacts.append(medical_support.medical_expenses(medical_expenses))
     artifacts += [Artifact(kind(name), D(amount)) for name, amount in given.items()]
-    worksheets = build_tax_computation().compute(BRITISH_COLUMBIA, year, *artifacts)
+    worksheets = build_tax_computation().compute(
+        TaxCalculationRequest(BRITISH_COLUMBIA, year, tuple(artifacts))
+    )
     (found,) = worksheets[f"ca-bc/{form}"]
     return found
 

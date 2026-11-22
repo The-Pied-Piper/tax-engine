@@ -25,6 +25,7 @@ import yaml
 import tax_engine.jurisdictions.ca_sk
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InputAboveBoundError
@@ -94,7 +95,9 @@ def _sheet(tmp_path: Path, line_75: str | None = None, line_76: str | None = Non
     for name, value in ((LINE_75, line_75), (LINE_76, line_76)):
         if value is not None:
             given.append(Artifact(saskatchewan_kinds().kind(name), D(value)))
-    worksheets = _service(tmp_path).compute(JurisdictionCode("CA-SK"), 2025, *given)
+    worksheets = _service(tmp_path).compute(
+        TaxCalculationRequest(JurisdictionCode("CA-SK"), 2025, tuple(given))
+    )
     (sheet,) = worksheets[FORM_NAME]
     return sheet
 

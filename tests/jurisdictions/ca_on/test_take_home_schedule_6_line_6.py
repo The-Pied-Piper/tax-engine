@@ -20,6 +20,7 @@ from textwrap import dedent
 
 import pytest
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.canada_workers_benefit import CWB_FAMILY_WORKING_INCOME
@@ -59,9 +60,9 @@ def line_6(take_home_service: TakeHomeService, salary: str) -> Decimal:
     worksheets = take_home_service(
         HEADER, FORM, *T1_PARTS, LINE_1_PART, LINE_5_PART, LINE_6_PART
     ).compute(
-        JurisdictionCode("CA-ON"),
-        2025,
-        Artifact(EMPLOYMENT_INCOME, D(salary)),
+        TaxCalculationRequest(
+            JurisdictionCode("CA-ON"), 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),)
+        ),
     )
     (sheet,) = worksheets["ca/schedule_6"]
     return sheet.get(CWB_FAMILY_WORKING_INCOME).value

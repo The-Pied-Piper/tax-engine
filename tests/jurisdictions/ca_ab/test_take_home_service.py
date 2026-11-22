@@ -17,6 +17,7 @@ from textwrap import dedent
 
 import pytest
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
@@ -59,7 +60,9 @@ def test_the_fixture_computes_a_real_alberta_part(
     service = take_home_service(HEADER, FORM, "ab428_credits_line_5.yaml")
 
     worksheets = service.compute(
-        JurisdictionCode("CA-AB"), 2025, Artifact(_amount_kind(LINE_1), D(line_1))
+        TaxCalculationRequest(
+            JurisdictionCode("CA-AB"), 2025, (Artifact(_amount_kind(LINE_1), D(line_1)),)
+        )
     )
 
     (sheet,) = worksheets["ca-ab/ab428_credits"]

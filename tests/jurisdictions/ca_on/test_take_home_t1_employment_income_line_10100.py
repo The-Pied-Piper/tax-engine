@@ -12,6 +12,7 @@ from textwrap import dedent
 
 import pytest
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import SubCentAmountError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -50,7 +51,7 @@ def line_10100(take_home_service: TakeHomeService, salary: str, other: str | Non
     if other is not None:
         artifacts.append(Artifact(OTHER_EMPLOYMENT_INCOME, D(other)))
     worksheets = take_home_service(HEADER, FORM, PART).compute(
-        JurisdictionCode("CA-ON"), 2025, *artifacts
+        TaxCalculationRequest(JurisdictionCode("CA-ON"), 2025, tuple(artifacts))
     )
     (sheet,) = worksheets["ca/t1_employment_income"]
     return sheet.get(EMPLOYMENT_INCOME_LINE_10100).value
@@ -78,7 +79,9 @@ def test_line_10100_is_listed_once_with_its_title_and_reference(
     take_home_service: TakeHomeService,
 ) -> None:
     worksheets = take_home_service(HEADER, FORM, PART).compute(
-        JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, D("70000"))
+        TaxCalculationRequest(
+            JurisdictionCode("CA-ON"), 2025, (Artifact(EMPLOYMENT_INCOME, D("70000")),)
+        )
     )
     (sheet,) = worksheets["ca/t1_employment_income"]
     assert sheet.reference("employment_income_line_10100") == "10100"

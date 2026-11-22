@@ -17,6 +17,7 @@ from textwrap import dedent
 
 import pytest
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.income import RDSP_INCOME_REPAYMENT, UCCB_REPAYMENT
@@ -60,7 +61,7 @@ def test_line_54_is_line_48(
     take_home_service: TakeHomeService, line_48: str, expected: str
 ) -> None:
     worksheets = take_home_service(HEADER, FORM, *REPAYMENT_PARTS, PART).compute(
-        JurisdictionCode("CA-QC"), 2025, Artifact(T1_LINE_48, D(line_48))
+        TaxCalculationRequest(JurisdictionCode("CA-QC"), 2025, (Artifact(T1_LINE_48, D(line_48)),))
     )
     (sheet,) = worksheets["ca-qc/t1_taxable_income"]
     assert sheet.get(T1_LINE_54).value == D(expected)
@@ -71,11 +72,15 @@ def test_line_54_adds_the_uccb_and_rdsp_repayments_to_line_48(
 ) -> None:
     # 40.10 (line 40, line 21300) + 665.00 (line 48) + 9.90 (line 53, line 23200).
     worksheets = take_home_service(HEADER, FORM, *REPAYMENT_PARTS, PART).compute(
-        JurisdictionCode("CA-QC"),
-        2025,
-        Artifact(T1_LINE_48, D("665.00")),
-        Artifact(UCCB_REPAYMENT, D("40.10")),
-        Artifact(RDSP_INCOME_REPAYMENT, D("9.90")),
+        TaxCalculationRequest(
+            JurisdictionCode("CA-QC"),
+            2025,
+            (
+                Artifact(T1_LINE_48, D("665.00")),
+                Artifact(UCCB_REPAYMENT, D("40.10")),
+                Artifact(RDSP_INCOME_REPAYMENT, D("9.90")),
+            ),
+        ),
     )
     (sheet,) = worksheets["ca-qc/t1_taxable_income"]
     assert sheet.get(T1_LINE_54).value == D("715.00")

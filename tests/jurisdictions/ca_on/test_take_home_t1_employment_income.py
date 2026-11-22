@@ -11,6 +11,7 @@ from __future__ import annotations
 from decimal import Decimal
 from textwrap import dedent
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.income import (
@@ -41,7 +42,9 @@ def test_the_form_exports_lines_10100_and_10400_and_holds_them_at_70000(
     (form,) = (f for f in service.compose(code, 2025).forms if f.name == "ca/t1_employment_income")
     assert form.exports == (EMPLOYMENT_INCOME_LINE_10100, OTHER_EMPLOYMENT_INCOME_LINE_10400)
 
-    worksheets = service.compute(code, 2025, Artifact(EMPLOYMENT_INCOME, D("70000")))
+    worksheets = service.compute(
+        TaxCalculationRequest(code, 2025, (Artifact(EMPLOYMENT_INCOME, D("70000")),))
+    )
     (sheet,) = worksheets["ca/t1_employment_income"]
 
     assert [sheet.get(kind).value for kind in form.exports] == [D("70000.00"), D("0.00")]
@@ -51,10 +54,11 @@ def test_line_10400_is_the_amount_given(take_home_service: TakeHomeService) -> N
     service = take_home_service(HEADER, "{}\n", *PARTS)
 
     worksheets = service.compute(
-        JurisdictionCode("CA-ON"),
-        2025,
-        Artifact(EMPLOYMENT_INCOME, D("70000")),
-        Artifact(OTHER_EMPLOYMENT_INCOME, D("1500")),
+        TaxCalculationRequest(
+            JurisdictionCode("CA-ON"),
+            2025,
+            (Artifact(EMPLOYMENT_INCOME, D("70000")), Artifact(OTHER_EMPLOYMENT_INCOME, D("1500"))),
+        ),
     )
     (sheet,) = worksheets["ca/t1_employment_income"]
 

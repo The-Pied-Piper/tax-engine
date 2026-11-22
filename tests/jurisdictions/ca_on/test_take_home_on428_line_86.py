@@ -22,6 +22,7 @@ from textwrap import dedent
 
 import pytest
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
@@ -67,7 +68,9 @@ FORM = dedent(f"""\
 def _on428(take_home_service: TakeHomeService, salary: str, line_83: str) -> Worksheet:
     kinds = bundled_kinds()
     given = [Artifact(EMPLOYMENT_INCOME, D(salary)), Artifact(kinds.kind(LINE_83), D(line_83))]
-    (sheet,) = take_home_service(HEADER, FORM, *PARTS).compute(CODE, 2025, *given)["ca-on/on428"]
+    (sheet,) = take_home_service(HEADER, FORM, *PARTS).compute(
+        TaxCalculationRequest(CODE, 2025, tuple(given))
+    )["ca-on/on428"]
     return sheet
 
 

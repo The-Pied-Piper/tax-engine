@@ -30,6 +30,7 @@ import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_ab
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -116,7 +117,9 @@ def _line_36(tmp_path: Path, salary: str, pension: str | None = None) -> Decimal
     given = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if pension is not None:
         given.append(Artifact(AB428_PENSION_INCOME_AMOUNT, D(pension)))
-    worksheets = _service(tmp_path).compute(JurisdictionCode("CA-AB"), 2025, *given)
+    worksheets = _service(tmp_path).compute(
+        TaxCalculationRequest(JurisdictionCode("CA-AB"), 2025, tuple(given))
+    )
     (sheet,) = worksheets["ca-ab/ab428_credits"]
     return sheet.get(AB428_CREDITS_SUBTOTAL_LINE_36).value
 

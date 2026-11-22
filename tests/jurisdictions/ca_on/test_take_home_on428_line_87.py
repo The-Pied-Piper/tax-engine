@@ -18,6 +18,7 @@ from decimal import Decimal
 
 import pytest
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
@@ -51,9 +52,9 @@ capabilities: []
 def _line_87(take_home_service: TakeHomeService, donations: str | None) -> Decimal:
     kinds = bundled_kinds()
     given = [] if donations is None else [Artifact(kinds.kind(DONATIONS), D(donations))]
-    worksheet = take_home_service(HEADER, FORM, INPUTS_PART, PART).compute(CODE, 2025, *given)[
-        "ca-on/on428"
-    ][0]
+    worksheet = take_home_service(HEADER, FORM, INPUTS_PART, PART).compute(
+        TaxCalculationRequest(CODE, 2025, tuple(given))
+    )["ca-on/on428"][0]
     value = worksheet.get(kinds.kind(LINE_87)).value
     assert isinstance(value, Decimal)
     return value

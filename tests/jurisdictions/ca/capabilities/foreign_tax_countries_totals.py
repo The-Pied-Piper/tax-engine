@@ -16,6 +16,7 @@ import pytest
 
 import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca.capabilities as canada
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError, NotFoundError
@@ -290,7 +291,7 @@ class ForeignTaxCountriesTotalCases:
         rows = (self.own("60000"), self.elsewhere("40000"))
 
         worksheet = service(self.IDENTIFIER).compute(
-            JurisdictionCode("CA-ON"), 2025, countries(*rows)
+            TaxCalculationRequest(JurisdictionCode("CA-ON"), 2025, (countries(*rows),))
         )["ca-on/return"][0]
 
         assert worksheet.get(TOTAL).value == D("60000")
@@ -300,8 +301,8 @@ class ForeignTaxCountriesTotalCases:
         )
 
     def test_a_computation_with_no_countries_gives_zero(self) -> None:
-        worksheet = service(self.IDENTIFIER).compute(JurisdictionCode("CA-ON"), 2025, countries())[
-            "ca-on/return"
-        ][0]
+        worksheet = service(self.IDENTIFIER).compute(
+            TaxCalculationRequest(JurisdictionCode("CA-ON"), 2025, (countries(),))
+        )["ca-on/return"][0]
 
         assert worksheet.get(TOTAL).value == D("0")

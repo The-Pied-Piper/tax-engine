@@ -12,6 +12,7 @@ from decimal import Decimal
 
 import pytest
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
@@ -39,7 +40,9 @@ def _line_1(take_home_service: TakeHomeService, part_5_line_11: str | None) -> D
     given = []
     if part_5_line_11 is not None:
         given.append(Artifact(kinds.kind(PART_5_LINE_11_INPUT), D(part_5_line_11)))
-    (sheet,) = take_home_service(HEADER, FORM, *PARTS).compute(CODE, 2025, *given)["ca-on/on428"]
+    (sheet,) = take_home_service(HEADER, FORM, *PARTS).compute(
+        TaxCalculationRequest(CODE, 2025, tuple(given))
+    )["ca-on/on428"]
     value = sheet.get(kinds.kind(LINE_1)).value
     assert isinstance(value, Decimal)
     return value

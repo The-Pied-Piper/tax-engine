@@ -12,6 +12,7 @@ from __future__ import annotations
 from decimal import Decimal
 from typing import Any
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact, ArtifactKind
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
@@ -57,5 +58,7 @@ def family_income_worksheet(
     ]
     starting.extend(Artifact(kind, kind.value_type(value)) for kind, value in given)
     service = take_home_service(HEADER, form, *NET_INCOME_PARTS, *parts)
-    (sheet,) = service.compute(JurisdictionCode("CA-QC"), 2025, *starting)["ca-qc/schedule_p"]
+    (sheet,) = service.compute(
+        TaxCalculationRequest(JurisdictionCode("CA-QC"), 2025, tuple(starting))
+    )["ca-qc/schedule_p"]
     return sheet

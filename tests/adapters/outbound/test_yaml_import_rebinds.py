@@ -15,6 +15,7 @@ from pathlib import Path
 import pytest
 
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capability import CapabilityRegistry
@@ -204,7 +205,7 @@ def base_amount(directory: Path, code: JurisdictionCode) -> Decimal:
     parameters = YamlParameterSource(package_roots(directory), parameter_parsers())
     service = TaxComputationService(source(directory), parameters, capabilities)
     income = Artifact(AmountKind("ex/income"), D("1000"))
-    (sheet,) = service.compute(code, 2025, income)["ex/benefit"]
+    (sheet,) = service.compute(TaxCalculationRequest(code, 2025, (income,)))["ex/benefit"]
     amount: Decimal = sheet.get(AmountKind("ex/base_amount")).value
     return amount
 

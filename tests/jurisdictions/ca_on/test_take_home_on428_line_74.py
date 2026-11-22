@@ -15,6 +15,7 @@ from textwrap import dedent
 
 import pytest
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca_on.catalog import ON428_BASIC_REDUCTION_LINE_74
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
@@ -39,7 +40,9 @@ FORM = dedent("""\
 
 
 def line_74(take_home_service: TakeHomeService, salary: str) -> Decimal:
-    worksheets = take_home_service(HEADER, FORM, PART).compute(JurisdictionCode("CA-ON"), 2025)
+    worksheets = take_home_service(HEADER, FORM, PART).compute(
+        TaxCalculationRequest(JurisdictionCode("CA-ON"), 2025)
+    )
     (sheet,) = worksheets["ca-on/on428"]
     value = sheet.get(ON428_BASIC_REDUCTION_LINE_74).value
     assert isinstance(value, Decimal)

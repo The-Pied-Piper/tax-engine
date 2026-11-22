@@ -38,6 +38,7 @@ from textwrap import dedent
 import pytest
 
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import NegativeArtifactError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -236,7 +237,9 @@ BRACKET_COLUMN_TRACE: list[tuple[str, str, str, str, str]] = [
 
 def on428(take_home_service: TakeHomeService, salary: str) -> Worksheet:
     worksheets = take_home_service(HEADER, FORM, *PARTS).compute(
-        JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
+        TaxCalculationRequest(
+            JurisdictionCode("CA-ON"), 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),)
+        )
     )
     (sheet,) = worksheets["ca-on/on428"]
     return sheet
@@ -295,7 +298,9 @@ def test_the_form_exports_lines_90_65_5_81_and_80(
         ON428_ONTARIO_TAX_REDUCTION_LINE_80.identifier,
     )
 
-    worksheets = service.compute(code, 2025, Artifact(EMPLOYMENT_INCOME, D("70000")))
+    worksheets = service.compute(
+        TaxCalculationRequest(code, 2025, (Artifact(EMPLOYMENT_INCOME, D("70000")),))
+    )
     (sheet,) = worksheets["ca-on/on428"]
 
     assert [sheet.get(kind).value for kind in form.exports] == [

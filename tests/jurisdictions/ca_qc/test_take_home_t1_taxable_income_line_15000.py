@@ -15,6 +15,7 @@ from __future__ import annotations
 from decimal import Decimal
 from textwrap import dedent
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca_qc.catalog import T1_LINE_28, T1_LINE_32, TOTAL_INCOME
@@ -47,10 +48,11 @@ FORM = dedent("""\
 
 def line_33(take_home_service: TakeHomeService, line_28: str, line_32: str) -> Decimal:
     worksheets = take_home_service(HEADER, FORM, PART).compute(
-        JurisdictionCode("CA-QC"),
-        2025,
-        Artifact(T1_LINE_28, D(line_28)),
-        Artifact(T1_LINE_32, D(line_32)),
+        TaxCalculationRequest(
+            JurisdictionCode("CA-QC"),
+            2025,
+            (Artifact(T1_LINE_28, D(line_28)), Artifact(T1_LINE_32, D(line_32))),
+        ),
     )
     (sheet,) = worksheets["ca-qc/t1_taxable_income"]
     return sheet.get(TOTAL_INCOME).value

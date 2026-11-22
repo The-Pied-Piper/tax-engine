@@ -15,6 +15,7 @@ from typing import Any
 import pytest
 import yaml
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
@@ -50,7 +51,9 @@ form:
 
 def line_25700(take_home_service: TakeHomeService, *given: Artifact[Decimal]) -> Decimal:
     service = take_home_service(HEADER, FORM, *PARTS)
-    (worksheet,) = service.compute(ONTARIO, 2025, *given)["ca/t1_taxable_income"]
+    (worksheet,) = service.compute(TaxCalculationRequest(ONTARIO, 2025, tuple(given)))[
+        "ca/t1_taxable_income"
+    ]
     return worksheet.get(DEDUCTIONS_FROM_NET_INCOME).value
 
 

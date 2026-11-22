@@ -30,6 +30,7 @@ from typing import Any
 import pytest
 
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
@@ -71,7 +72,7 @@ T1_TAX_AND_CREDITS = dedent(f"""\
 def _sheet(take_home_service: TakeHomeService, *artifacts: Artifact[Any]) -> Worksheet:
     """The tax and credits sheet computed from `artifacts`: the salary, and any other input."""
     worksheets = take_home_service(HEADER, T1_TAX_AND_CREDITS, *PARTS).compute(
-        ONTARIO, 2025, *artifacts
+        TaxCalculationRequest(ONTARIO, 2025, tuple(artifacts))
     )
     (sheet,) = worksheets[FORM]
     return sheet

@@ -21,6 +21,7 @@ from decimal import Decimal
 import pytest
 
 from tax_engine import build_tax_computation
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
@@ -35,10 +36,14 @@ LINE_44 = "ca-bc/bc479_renters_credit_line_44"
 
 def _line_44(year: int, salary: str, months: int) -> Decimal:
     worksheets = build_tax_computation().compute(
-        BRITISH_COLUMBIA,
-        year,
-        Artifact(EMPLOYMENT_INCOME, D(salary)),
-        Artifact(BC479_RENTERS_MONTHS_LINE_37, months),
+        TaxCalculationRequest(
+            BRITISH_COLUMBIA,
+            year,
+            (
+                Artifact(EMPLOYMENT_INCOME, D(salary)),
+                Artifact(BC479_RENTERS_MONTHS_LINE_37, months),
+            ),
+        ),
     )
     (bc479,) = worksheets["ca-bc/bc479"]
     kind = artifact_kinds().kind(LINE_44)

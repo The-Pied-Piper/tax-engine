@@ -41,6 +41,7 @@ import pytest
 
 from tax_engine import build_tax_computation
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.trace import QuotientLine
@@ -65,7 +66,7 @@ LINE_167 = "ca/refund_or_balance_owing"
 
 def _return_sheet(take_home_service: TakeHomeService, salary: str) -> Worksheet:
     worksheets = take_home_service(REAL_HEADER, REAL_FORM, *PARTS).compute(
-        ONTARIO, 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
+        TaxCalculationRequest(ONTARIO, 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),))
     )
     (sheet,) = worksheets[RETURN]
     return sheet
@@ -189,7 +190,7 @@ def test_the_70000_take_home_is_still_53468_68() -> None:
     # step must change none of them.
     kinds = bundled_kinds()
     worksheets = build_tax_computation().compute(
-        ONTARIO, 2025, Artifact(EMPLOYMENT_INCOME, D("70000"))
+        TaxCalculationRequest(ONTARIO, 2025, (Artifact(EMPLOYMENT_INCOME, D("70000")),))
     )
     (schedule_8,) = worksheets["ca/schedule_8"]
     (t2204,) = worksheets["ca/t2204"]

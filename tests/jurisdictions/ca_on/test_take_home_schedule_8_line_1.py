@@ -13,6 +13,7 @@ from textwrap import dedent
 
 import pytest
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
@@ -44,7 +45,11 @@ FORM = dedent("""\
 def line_1(take_home_service: TakeHomeService, salary: str) -> Decimal:
     worksheets = take_home_service(
         HEADER, FORM, *form_part_names("t1_employment_income"), PART
-    ).compute(JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary)))
+    ).compute(
+        TaxCalculationRequest(
+            JurisdictionCode("CA-ON"), 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),)
+        )
+    )
     (sheet,) = worksheets["ca/schedule_8"]
     return sheet.get(T4_CPP_PENSIONABLE_EARNINGS_OUTSIDE_QUEBEC).value
 

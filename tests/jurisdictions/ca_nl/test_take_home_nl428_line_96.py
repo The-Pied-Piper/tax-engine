@@ -26,6 +26,7 @@ import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_nl
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InputAboveBoundError
@@ -101,7 +102,9 @@ def _line_96(tmp_path: Path, salary: str, claimed: int | None = None) -> Decimal
         given.append(
             Artifact(NL428_REDUCTION_FOR_SPOUSE_OR_COMMON_LAW_PARTNER_CLAIMED_LINE_96, claimed)
         )
-    worksheets = _service(tmp_path).compute(JurisdictionCode("CA-NL"), 2025, *given)
+    worksheets = _service(tmp_path).compute(
+        TaxCalculationRequest(JurisdictionCode("CA-NL"), 2025, tuple(given))
+    )
     (sheet,) = worksheets[FORM]
     artifact = sheet.get(newfoundland_kinds().kind(LINE_96))
     return None if artifact.is_blank else D(artifact.value)

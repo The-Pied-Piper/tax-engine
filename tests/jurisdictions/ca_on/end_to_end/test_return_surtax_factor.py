@@ -25,6 +25,7 @@ import pytest
 
 from tax_engine import build_tax_computation
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
@@ -60,7 +61,7 @@ FIGURES = [
 
 def _run(take_home_service: TakeHomeService, salary: str) -> dict[str, tuple[Worksheet, ...]]:
     return take_home_service(HEADER, RETURN, *PARTS).compute(
-        CODE, 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
+        TaxCalculationRequest(CODE, 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),))
     )
 
 
@@ -105,7 +106,7 @@ def test_the_return_base_is_line_65_of_on428(
 def test_the_bundled_return_gives_the_factor_1_at_70000() -> None:
     # No fixture: the bundled Ontario manifest, as the calculator loads it.
     worksheets = build_tax_computation().compute(
-        CODE, 2025, Artifact(EMPLOYMENT_INCOME, D("70000"))
+        TaxCalculationRequest(CODE, 2025, (Artifact(EMPLOYMENT_INCOME, D("70000")),))
     )
     (summary,) = worksheets["ca-on/return"]
     kinds = bundled_kinds()
@@ -119,7 +120,7 @@ def test_the_return_steps_for_the_base_and_the_factor_carry_no_title_and_no_line
     None
 ):
     worksheets = build_tax_computation().compute(
-        CODE, 2025, Artifact(EMPLOYMENT_INCOME, D("70000"))
+        TaxCalculationRequest(CODE, 2025, (Artifact(EMPLOYMENT_INCOME, D("70000")),))
     )
     (summary,) = worksheets["ca-on/return"]
     kinds = bundled_kinds()

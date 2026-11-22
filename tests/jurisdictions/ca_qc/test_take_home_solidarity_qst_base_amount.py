@@ -14,6 +14,7 @@ from typing import Any
 
 import yaml
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca_qc.catalog import SOLIDARITY_QST_BASE_AMOUNT
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
@@ -36,7 +37,7 @@ FORM_PART = amounts_form_part()
 def test_the_qst_base_amount_is_the_printed_363(take_home_service: TakeHomeService) -> None:
     service = take_home_service(HEADER, FORM_PART, PART)
 
-    (sheet,) = service.compute(JurisdictionCode("CA-QC"), 2025)[FORM]
+    (sheet,) = service.compute(TaxCalculationRequest(JurisdictionCode("CA-QC"), 2025))[FORM]
 
     assert sheet.get(SOLIDARITY_QST_BASE_AMOUNT).value == D("363.00")
 

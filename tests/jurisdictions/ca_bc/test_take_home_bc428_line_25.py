@@ -22,6 +22,7 @@ import pytest
 import tax_engine.jurisdictions.ca_bc
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.registry import Namespace
@@ -79,7 +80,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
 
 
 def line_25(tmp_path: Path, salary: str) -> Decimal:
-    worksheets = _service(tmp_path).compute(JurisdictionCode("CA-BC"), 2025)
+    worksheets = _service(tmp_path).compute(TaxCalculationRequest(JurisdictionCode("CA-BC"), 2025))
     (sheet,) = worksheets["ca-bc/bc428"]
     return sheet.get(BC428_SUBTOTAL_LINE_25).value
 

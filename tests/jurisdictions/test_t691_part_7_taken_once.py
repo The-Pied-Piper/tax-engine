@@ -26,6 +26,7 @@ import tax_engine.jurisdictions.ca_nl
 import tax_engine.jurisdictions.ca_sk
 from tax_engine import build_tax_computation
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import CapabilityContractError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -77,7 +78,9 @@ def _compute(code: str, amounts: dict[str, str]) -> dict[str, tuple[Worksheet, .
     kinds = artifact_kinds()
     starting = [Artifact(EMPLOYMENT_INCOME, D("70000"))]
     starting += [Artifact(kinds.kind(name), D(value)) for name, value in amounts.items()]
-    return build_tax_computation().compute(JurisdictionCode(code), 2025, *starting)
+    return build_tax_computation().compute(
+        TaxCalculationRequest(JurisdictionCode(code), 2025, tuple(starting))
+    )
 
 
 def _figure(worksheets: dict[str, tuple[Worksheet, ...]], form: str, name: str) -> Decimal:

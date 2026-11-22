@@ -26,6 +26,7 @@ import yaml
 import tax_engine.jurisdictions.ca_ab
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import CapabilityContractError
@@ -98,7 +99,9 @@ def _line_67(tmp_path: Path, salary: str, amount: str | None) -> Decimal:
     given = [Artifact(kinds.kind(SALARY), D(salary))]
     if amount is not None:
         given.extend(line_1_minus_line_2(amount))
-    (sheet,) = _service(tmp_path).compute(CODE, 2025, *given)["ca-ab/ab428"]
+    (sheet,) = _service(tmp_path).compute(TaxCalculationRequest(CODE, 2025, tuple(given)))[
+        "ca-ab/ab428"
+    ]
     value = sheet.get(kinds.kind(LINE_67)).value
     assert isinstance(value, Decimal)
     return value
@@ -152,7 +155,9 @@ def test_a_negative_line_2_alone_still_gives_a_positive_amount(tmp_path: Path) -
         Artifact(kinds.kind("ca/t691_minimum_amount"), D("1000.00")),
         Artifact(kinds.kind("ca/t691_basic_federal_tax"), D("-200.00")),
     ]
-    (sheet,) = _service(tmp_path).compute(CODE, 2025, *given)["ca-ab/ab428"]
+    (sheet,) = _service(tmp_path).compute(TaxCalculationRequest(CODE, 2025, tuple(given)))[
+        "ca-ab/ab428"
+    ]
 
     assert sheet.get(kinds.kind(LINE_67)).value == D("420.00")
 

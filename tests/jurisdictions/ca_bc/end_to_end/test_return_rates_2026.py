@@ -68,6 +68,7 @@ import pytest
 
 from tax_engine import build_tax_computation
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
@@ -176,7 +177,7 @@ REDUCTION_FIGURES = [
 
 def _worksheets(salary: str, year: int = 2026) -> dict[str, tuple[Worksheet, ...]]:
     return build_tax_computation().compute(
-        BRITISH_COLUMBIA, year, Artifact(EMPLOYMENT_INCOME, D(salary))
+        TaxCalculationRequest(BRITISH_COLUMBIA, year, (Artifact(EMPLOYMENT_INCOME, D(salary)),))
     )
 
 
@@ -415,7 +416,9 @@ def test_the_ontario_and_alberta_anchors_do_not_move() -> None:
     kinds = bundled_kinds()
     service = build_tax_computation()
     ontario = service.compute(
-        JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, D("70000"))
+        TaxCalculationRequest(
+            JurisdictionCode("CA-ON"), 2025, (Artifact(EMPLOYMENT_INCOME, D("70000")),)
+        )
     )
     (schedule_8,) = ontario["ca/schedule_8"]
     (t2204,) = ontario["ca/t2204"]
@@ -427,7 +430,9 @@ def test_the_ontario_and_alberta_anchors_do_not_move() -> None:
     ei = t2204.get(kinds.kind("ca/t2204_premiums_deducted")).value
     line_167 = summary.get(kinds.kind("ca/refund_or_balance_owing")).value
     alberta = service.compute(
-        JurisdictionCode("CA-AB"), 2025, Artifact(EMPLOYMENT_INCOME, D("70000"))
+        TaxCalculationRequest(
+            JurisdictionCode("CA-AB"), 2025, (Artifact(EMPLOYMENT_INCOME, D("70000")),)
+        )
     )
     (ab428,) = alberta["ca-ab/ab428"]
 

@@ -41,6 +41,7 @@ import tax_engine.jurisdictions.ca_sk
 import tax_engine.jurisdictions.ca_sk.catalog as sk_catalog
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InputAboveBoundError
@@ -280,7 +281,9 @@ def _sheet(
     for name, value in ((LINE_75, line_75), (LINE_76, line_76)):
         if value is not None:
             given.append(Artifact(_amount_kind(name), D(value)))
-    worksheets = _service(tmp_path).compute(JurisdictionCode("CA-SK"), 2025, *given)
+    worksheets = _service(tmp_path).compute(
+        TaxCalculationRequest(JurisdictionCode("CA-SK"), 2025, tuple(given))
+    )
     (sheet,) = worksheets[FORM_NAME]
     return sheet
 
@@ -343,7 +346,9 @@ def _line_78_through(service: TaxComputationService, line_75: str, line_76: str)
         Artifact(_amount_kind(LINE_75), D(line_75)),
         Artifact(_amount_kind(LINE_76), D(line_76)),
     ]
-    (sheet,) = service.compute(JurisdictionCode("CA-SK"), 2025, *given)[FORM_NAME]
+    (sheet,) = service.compute(
+        TaxCalculationRequest(JurisdictionCode("CA-SK"), 2025, tuple(given))
+    )[FORM_NAME]
     return _line(sheet, IDENTIFIER)
 
 

@@ -6,6 +6,7 @@ from decimal import Decimal
 
 from tax_engine import build_tax_computation
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.trace import DefaultedInputLine
@@ -14,7 +15,9 @@ from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 
 def test_the_worksheets_carry_the_titles_the_manifest_gives() -> None:
     sheets = build_tax_computation().compute(
-        JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, Decimal("70000"))
+        TaxCalculationRequest(
+            JurisdictionCode("CA-ON"), 2025, (Artifact(EMPLOYMENT_INCOME, Decimal("70000")),)
+        )
     )
 
     (on428,) = sheets["ca-on/on428"]
@@ -65,7 +68,9 @@ def test_the_worksheets_carry_the_titles_the_manifest_gives() -> None:
 
 def test_schedule_8_line_a_is_traced_as_the_months_default_with_its_printed_reference() -> None:
     sheets = build_tax_computation().compute(
-        JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, Decimal("70000"))
+        TaxCalculationRequest(
+            JurisdictionCode("CA-ON"), 2025, (Artifact(EMPLOYMENT_INCOME, Decimal("70000")),)
+        )
     )
 
     (schedule_8,) = sheets["ca/schedule_8"]
@@ -84,7 +89,9 @@ def test_schedule_8_line_a_is_traced_as_the_months_default_with_its_printed_refe
 
 def test_schedule_8_line_b_sentence_names_line_a_and_the_line_it_gives() -> None:
     sheets = build_tax_computation().compute(
-        JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, Decimal("70000"))
+        TaxCalculationRequest(
+            JurisdictionCode("CA-ON"), 2025, (Artifact(EMPLOYMENT_INCOME, Decimal("70000")),)
+        )
     )
 
     (schedule_8,) = sheets["ca/schedule_8"]
@@ -129,7 +136,9 @@ UNPRINTED_STEPS = [
 
 def test_an_unprinted_step_a_numbered_line_names_has_a_plain_words_title_and_no_reference() -> None:
     sheets = build_tax_computation().compute(
-        JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, Decimal("70000"))
+        TaxCalculationRequest(
+            JurisdictionCode("CA-ON"), 2025, (Artifact(EMPLOYMENT_INCOME, Decimal("70000")),)
+        )
     )
 
     for form, label, title in UNPRINTED_STEPS:

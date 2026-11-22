@@ -16,6 +16,7 @@ from textwrap import dedent
 
 import pytest
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
@@ -61,9 +62,11 @@ FORM = dedent("""\
 def part_b(take_home_service: TakeHomeService, line_70: str) -> Worksheet:
     """The Schedule F worksheet for a line 70 given straight to Part B."""
     (sheet,) = take_home_service(HEADER, FORM, *PARTS).compute(
-        JurisdictionCode("CA-QC"),
-        2025,
-        Artifact(TP1_SCHEDULE_F_INCOME_SUBJECT_LINE_70, D(line_70)),
+        TaxCalculationRequest(
+            JurisdictionCode("CA-QC"),
+            2025,
+            (Artifact(TP1_SCHEDULE_F_INCOME_SUBJECT_LINE_70, D(line_70)),),
+        ),
     )["ca-qc/tp1_schedule_f"]
     return sheet
 
@@ -173,7 +176,7 @@ def from_salary(
     if forest_averaging is not None:
         starting.append(Artifact(TP1_FOREST_PRODUCER_AVERAGING_LINE_276, D(forest_averaging)))
     (sheet,) = take_home_service(SALARY_HEADER, SALARY_FORM, *SCHEDULE_F_PARTS).compute(
-        JurisdictionCode("CA-QC"), 2025, *starting
+        TaxCalculationRequest(JurisdictionCode("CA-QC"), 2025, tuple(starting))
     )["ca-qc/tp1_schedule_f"]
     return sheet
 

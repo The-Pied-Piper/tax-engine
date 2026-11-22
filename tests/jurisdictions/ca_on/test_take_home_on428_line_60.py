@@ -13,6 +13,7 @@ from typing import Any
 import pytest
 import yaml
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tests.jurisdictions.ca_on.conftest import ONTARIO_PARTS, TakeHomeService
@@ -70,7 +71,9 @@ def test_line_60_is_the_lesser_of_lines_58_and_59(
     kinds = bundled_kinds()
     given = [Artifact(kinds.kind(LINE_58), D(line_58)), Artifact(kinds.kind(LINE_59), D(line_59))]
 
-    (sheet,) = take_home_service(HEADER, FORM, *PARTS).compute(CODE, 2025, *given)["ca-on/on428"]
+    (sheet,) = take_home_service(HEADER, FORM, *PARTS).compute(
+        TaxCalculationRequest(CODE, 2025, tuple(given))
+    )["ca-on/on428"]
 
     assert sheet.get(kinds.kind(LINE_60)).value == D(expected)
 

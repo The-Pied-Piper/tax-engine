@@ -74,7 +74,7 @@ class Case:
 @pytest.mark.parametrize("case", [Case(a) for a in ANSWERS], ids=repr)
 def test_answers_match_what_tax_service_gave(service: TakeHomeService, case: Case) -> None:
     want = case.answer
-    got = service.calculate(
+    got = service.compute(
         TakeHomeRequest(
             JurisdictionCode(want["jurisdiction"]),
             want["year"],
@@ -111,7 +111,7 @@ def test_answers_match_what_tax_service_gave(service: TakeHomeService, case: Cas
 
 
 def test_ontario_2025_at_seventy_thousand(service: TakeHomeService) -> None:
-    got = service.calculate(TakeHomeRequest(JurisdictionCode("CA-ON"), 2025, Decimal(70000)))
+    got = service.compute(TakeHomeRequest(JurisdictionCode("CA-ON"), 2025, Decimal(70000)))
     assert got.take_home == Decimal("53468.68")
     assert got.salary == Decimal("70000.00")
 
@@ -119,7 +119,7 @@ def test_ontario_2025_at_seventy_thousand(service: TakeHomeService) -> None:
 def test_trace_is_left_out_unless_asked_for(service: TakeHomeService) -> None:
     request = TakeHomeRequest(JurisdictionCode("CA-ON"), 2025, Decimal(70000))
     assert request.include_trace is False
-    assert service.calculate(request).trace is None
+    assert service.compute(request).trace is None
 
 
 class _WithoutTakeHome:
@@ -139,7 +139,7 @@ def test_a_jurisdiction_that_declares_no_take_home_figures_is_not_found(
     source = YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds(), units())
     bare = TakeHomeService(_WithoutTakeHome(source), build_tax_computation(), EnglishTakeHomeText())
     with pytest.raises(NotFoundError, match="CA-ON 2025"):
-        bare.calculate(TakeHomeRequest(JurisdictionCode("CA-ON"), 2025, Decimal(70000)))
+        bare.compute(TakeHomeRequest(JurisdictionCode("CA-ON"), 2025, Decimal(70000)))
 
 
 @pytest.mark.parametrize(
@@ -174,7 +174,7 @@ def test_a_jurisdiction_that_declares_no_take_home_figures_is_not_found(
 def test_quebec_takes_off_both_returns_the_pension_plan_ei_and_qpip(
     service: TakeHomeService, year: int, figures: dict[str, str], take_home: str
 ) -> None:
-    got = service.calculate(TakeHomeRequest(JurisdictionCode("CA-QC"), year, Decimal(70000)))
+    got = service.compute(TakeHomeRequest(JurisdictionCode("CA-QC"), year, Decimal(70000)))
     assert {f.name: str(f.amount) for f in got.figures} == figures
     assert str(got.take_home) == take_home
     assert str(got.income_tax) == figures["income_tax"]

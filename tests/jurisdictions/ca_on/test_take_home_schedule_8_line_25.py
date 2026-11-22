@@ -10,6 +10,7 @@ from __future__ import annotations
 
 from decimal import Decimal
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog import (
@@ -40,9 +41,9 @@ inputs:
 
 def line_25(take_home_service: TakeHomeService, line_11: str) -> Decimal:
     artifact = Artifact(CPP_PART_3_LINE_11, Decimal(line_11))
-    (sheet,) = take_home_service(HEADER, FORM, PART).compute(ONTARIO, 2025, artifact)[
-        "ca/schedule_8"
-    ]
+    (sheet,) = take_home_service(HEADER, FORM, PART).compute(
+        TaxCalculationRequest(ONTARIO, 2025, (artifact,))
+    )["ca/schedule_8"]
     return sheet.get(SCHEDULE_8_CPP_BASE_CONTRIBUTIONS_ON_RETURN).value
 
 

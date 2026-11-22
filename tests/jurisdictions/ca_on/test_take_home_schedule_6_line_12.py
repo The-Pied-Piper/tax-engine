@@ -21,6 +21,7 @@ from textwrap import dedent
 
 import pytest
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
@@ -70,7 +71,9 @@ def _schedule_6(
     starting = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if uccb is not None:
         starting.append(Artifact(kinds.kind("ca/uccb_income"), D(uccb)))
-    worksheets = take_home_service(HEADER, SCHEDULE_6, *PARTS).compute(ONTARIO, 2025, *starting)
+    worksheets = take_home_service(HEADER, SCHEDULE_6, *PARTS).compute(
+        TaxCalculationRequest(ONTARIO, 2025, tuple(starting))
+    )
     (sheet,) = worksheets[FORM]
     return sheet
 
@@ -136,11 +139,15 @@ def test_line_12_floors_at_zero_when_line_11_is_more_than_line_10(
     # 1,000 + 100 - 5,000 = -3,900.00 (no CPP deduction under the exemption), line 11 is 100.00.
     kinds = bundled_kinds()
     worksheets = take_home_service(HEADER, SCHEDULE_6, *PARTS).compute(
-        ONTARIO,
-        2025,
-        Artifact(EMPLOYMENT_INCOME, D("1000")),
-        Artifact(kinds.kind("ca/uccb_income"), D("100.00")),
-        Artifact(kinds.kind("ca/social_benefits_repayment"), D("5000")),
+        TaxCalculationRequest(
+            ONTARIO,
+            2025,
+            (
+                Artifact(EMPLOYMENT_INCOME, D("1000")),
+                Artifact(kinds.kind("ca/uccb_income"), D("100.00")),
+                Artifact(kinds.kind("ca/social_benefits_repayment"), D("5000")),
+            ),
+        ),
     )
     (sheet,) = worksheets[FORM]
 

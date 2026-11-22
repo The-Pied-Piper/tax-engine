@@ -16,6 +16,7 @@ import pytest
 import yaml
 
 import tax_engine.jurisdictions.ca_qc
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
@@ -56,7 +57,9 @@ def test_the_salary_is_line_101_unchanged(take_home_service: TakeHomeService, sa
             - ca-qc/tp1_employment_income_line_101
         """)
     (sheet,) = take_home_service(HEADER, form, *SALARY_PARTS).compute(
-        JurisdictionCode("CA-QC"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
+        TaxCalculationRequest(
+            JurisdictionCode("CA-QC"), 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),)
+        )
     )["ca-qc/tp1_income"]
 
     assert sheet.get(TP1_EMPLOYMENT_INCOME_LINE_101).value == D(salary)

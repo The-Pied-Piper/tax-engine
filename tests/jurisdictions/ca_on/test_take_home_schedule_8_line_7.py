@@ -12,6 +12,7 @@ from decimal import Decimal
 
 import pytest
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog import (
@@ -46,10 +47,14 @@ inputs:
 def line_7(take_home_service: TakeHomeService, line_5: str, line_e: str) -> Decimal:
     service = take_home_service(HEADER, FORM, PART)
     (worksheet,) = service.compute(
-        ONTARIO,
-        2025,
-        Artifact(CPP_PART_3_LINE_5, Decimal(line_5)),
-        Artifact(CPP_BASIC_EXEMPTION, Decimal(line_e)),
+        TaxCalculationRequest(
+            ONTARIO,
+            2025,
+            (
+                Artifact(CPP_PART_3_LINE_5, Decimal(line_5)),
+                Artifact(CPP_BASIC_EXEMPTION, Decimal(line_e)),
+            ),
+        ),
     )["ca/schedule_8"]
     return worksheet.get(CPP_PART_3_LINE_7).value
 

@@ -42,7 +42,7 @@ class TakeHomeService:
         self._computation = computation
         self._text = text
 
-    def calculate(self, request: TakeHomeRequest) -> TakeHomeResult:
+    def compute(self, request: TakeHomeRequest) -> TakeHomeResult:
         """The take-home answer for `request`.
 
         Raises NotFoundError when the jurisdiction's manifest for the tax year declares no take-home
@@ -58,7 +58,7 @@ class TakeHomeService:
             raise NotFoundError(f"no take-home figures for jurisdiction {who}")
         kinds = manifest.kinds
         salary = Artifact(kinds.kind(declared.salary), request.salary)
-        sheets = self._computation.calculate(
+        sheets = self._computation.compute(
             TaxCalculationRequest(request.jurisdiction, request.tax_year, (salary,))
         )
         read = [(name, reference.read(sheets, kinds)) for name, reference in declared.figures]

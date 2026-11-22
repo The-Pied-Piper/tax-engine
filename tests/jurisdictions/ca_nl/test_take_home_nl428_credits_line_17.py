@@ -31,6 +31,7 @@ import tax_engine.jurisdictions.ca_nl
 import tax_engine.jurisdictions.ca_nl.catalog as nl_catalog
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InputAboveBoundError
@@ -135,7 +136,9 @@ def _sheet(tmp_path: Path, salary: str, given_lines: dict[str, str] | None = Non
     kinds = newfoundland_kinds()
     for identifier, amount in (given_lines or {}).items():
         given.append(Artifact(kinds.kind(identifier), D(amount)))
-    worksheets = _service(tmp_path).compute(JurisdictionCode("CA-NL"), 2025, *given)
+    worksheets = _service(tmp_path).compute(
+        TaxCalculationRequest(JurisdictionCode("CA-NL"), 2025, tuple(given))
+    )
     (sheet,) = worksheets[FORM_NAME]
     return sheet
 
@@ -149,7 +152,9 @@ def _born(tmp_path: Path, salary: str, born: int) -> Any:
         Artifact(EMPLOYMENT_INCOME, D(salary)),
         Artifact(BORN_IN_1960_OR_EARLIER, born),
     ]
-    worksheets = _service(tmp_path).compute(JurisdictionCode("CA-NL"), 2025, *given)
+    worksheets = _service(tmp_path).compute(
+        TaxCalculationRequest(JurisdictionCode("CA-NL"), 2025, tuple(given))
+    )
     (sheet,) = worksheets[FORM_NAME]
     return sheet
 

@@ -28,6 +28,7 @@ from textwrap import dedent
 import pytest
 
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
@@ -99,7 +100,7 @@ def _sheet(take_home_service: TakeHomeService, salary: str, credit: str | None =
     if credit is not None:
         given.append(Artifact(kinds.kind(LINE_129), D(credit)))
     worksheets = take_home_service(HEADER, T1_TAX_AND_CREDITS, *PARTS).compute(
-        ONTARIO, 2025, *given
+        TaxCalculationRequest(ONTARIO, 2025, tuple(given))
     )
     (sheet,) = worksheets[FORM]
     return sheet

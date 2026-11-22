@@ -20,6 +20,7 @@ from textwrap import dedent
 import pytest
 import yaml
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InputAboveBoundError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -60,7 +61,7 @@ def line_28(
     if pension is not None:
         artifacts.append(Artifact(ON428_PENSION_INCOME_AMOUNT, D(pension)))
     worksheets = take_home_service(HEADER, FORM, PART, INPUTS_PART, LINE_27_PART).compute(
-        JurisdictionCode("CA-ON"), 2025, *artifacts
+        TaxCalculationRequest(JurisdictionCode("CA-ON"), 2025, tuple(artifacts))
     )
     (sheet,) = worksheets["ca-on/on428"]
     return sheet.get(ON428_CREDITS_WITH_PENSION_LINE_28).value

@@ -20,6 +20,7 @@ import pytest
 import tax_engine.jurisdictions.ca_ab
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.registry import Namespace
@@ -75,7 +76,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
 
 
 def line_6(tmp_path: Path, salary: str) -> Decimal:
-    worksheets = _service(tmp_path).compute(JurisdictionCode("CA-AB"), 2025)
+    worksheets = _service(tmp_path).compute(TaxCalculationRequest(JurisdictionCode("CA-AB"), 2025))
     (sheet,) = worksheets["ca-ab/worksheet_ab428"]
     return sheet.get(WORKSHEET_AB428_LINE_6).value
 

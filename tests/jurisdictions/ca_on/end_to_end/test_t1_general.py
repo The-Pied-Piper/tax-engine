@@ -39,6 +39,7 @@ from decimal import ROUND_HALF_UP, Decimal
 import pytest
 
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import NegativeArtifactError, SubCentAmountError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -399,7 +400,7 @@ BRACKET_SALARIES = [
 
 def run(take_home_service: TakeHomeService, salary: str) -> dict[str, tuple[Worksheet, ...]]:
     return take_home_service(HEADER, RETURN, *PARTS).compute(
-        CODE, 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
+        TaxCalculationRequest(CODE, 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),))
     )
 
 
@@ -469,10 +470,14 @@ def test_the_optional_inputs_route_through_the_chain(
         "133": FEDERAL_LOGGING_TAX_CREDIT,
     }
     worksheets = take_home_service(HEADER, RETURN, *PARTS).compute(
-        CODE,
-        2025,
-        Artifact(EMPLOYMENT_INCOME, D("70000")),
-        *(Artifact(kinds_by_line[line], D(value)) for line, value in given.items()),
+        TaxCalculationRequest(
+            CODE,
+            2025,
+            (
+                Artifact(EMPLOYMENT_INCOME, D("70000")),
+                *(Artifact(kinds_by_line[line], D(value)) for line, value in given.items()),
+            ),
+        ),
     )
     t1 = sheet(worksheets, "ca/t1_tax_and_credits")
 

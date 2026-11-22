@@ -32,6 +32,7 @@ import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_nl
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InputAboveBoundError
@@ -136,7 +137,9 @@ def _sheet(
         given.append(Artifact(NL428_ELIGIBLE_DEPENDANT_NET_INCOME_LINE_22, D(dependant_net_income)))
     if spouse_net_income is not None:
         given.append(Artifact(NL428_SPOUSE_NET_INCOME_LINE_19, D(spouse_net_income)))
-    worksheets = _service(tmp_path).compute(JurisdictionCode("CA-NL"), 2025, *given)
+    worksheets = _service(tmp_path).compute(
+        TaxCalculationRequest(JurisdictionCode("CA-NL"), 2025, tuple(given))
+    )
     (sheet,) = worksheets[FORM]
     return sheet
 

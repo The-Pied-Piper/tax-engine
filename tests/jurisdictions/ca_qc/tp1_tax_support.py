@@ -11,6 +11,7 @@ from __future__ import annotations
 from decimal import Decimal
 from typing import Any
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
@@ -97,5 +98,7 @@ def tax_sheet(
         *given,
     ]
     service = take_home_service(HEADER, form or tax_form(*exports), *parts)
-    (sheet,) = service.compute(JurisdictionCode("CA-QC"), 2025, *starting)[FORM]
+    (sheet,) = service.compute(
+        TaxCalculationRequest(JurisdictionCode("CA-QC"), 2025, tuple(starting))
+    )[FORM]
     return sheet
