@@ -7,6 +7,7 @@ form:
   name: ca-qc/schedule_p
 inputs:
   - name: ca-qc/schedule_p_rl5_months_line_57
+    title: "Total number of months in box V of your RL-5 slip"
     reference: "57"
     required: false
     default: null

@@ -9,32 +9,37 @@ form:
   name: ca-qc/tp1_totals
 inputs:
   - name: ca-qc/tp1_line_438
+    title: "Annual registration fee for the enterprise register"
     reference: "438"
     unit: ca/cad
     required: false
     default: null
-    basis: "Add lines 432 through 447."
+    basis: "Annual registration fee for the enterprise register"
   - name: ca-qc/tp1_line_439
+    title: "QPIP premium on income from self-employment or employment outside Québec"
     reference: "439"
     unit: ca/cad
     required: false
     default: null
-    basis: "Add lines 432 through 447."
+    basis: "QPIP premium on income from self-employment or employment outside Québec. Complete Schedule R."
   - name: ca-qc/tp1_line_441
+    title: "Advance payments of tax credits, RL-19 slip, box A, B, C, D, G or H"
     reference: "441"
     unit: ca/cad
     required: false
     default: null
-    basis: "Add lines 432 through 447."
+    basis: "Advance payments of tax credits, RL-19 slip, box A, B, C, D, G or H"
   - name: ca-qc/tp1_line_443
+    title: "Special taxes and tax adjustment"
     reference: "443"
     unit: ca/cad
     required: false
     default: null
-    basis: "Add lines 432 through 447."
+    basis: "Special taxes and tax adjustment. Specify: 442 + 443"
   - name: ca-qc/tp1_line_445
+    title: "QPP contribution on income from self-employment"
     reference: "445"
     unit: ca/cad
     required: false
     default: null
-    basis: "Add lines 432 through 447."
+    basis: "QPP contribution on income from self-employment. Complete Schedule U."

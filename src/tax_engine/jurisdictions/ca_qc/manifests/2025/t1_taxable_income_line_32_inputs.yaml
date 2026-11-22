@@ -6,18 +6,21 @@ form:
   name: ca-qc/t1_taxable_income
 inputs:
   - name: ca-qc/t1_line_14400
+    title: "Workers' compensation benefits"
     reference: "14400"
     unit: ca/cad
     required: false
     default: null
     basis: "Line 29 and line 14400: Workers' compensation benefits (box 10 of the T5007 slip)"
   - name: ca-qc/t1_line_14500
+    title: "Social assistance payments"
     reference: "14500"
     unit: ca/cad
     required: false
     default: null
     basis: "Line 30 and line 14500: Social assistance payments"
   - name: ca-qc/t1_line_14600
+    title: "Net federal supplements paid"
     reference: "14600"
     unit: ca/cad
     required: false
