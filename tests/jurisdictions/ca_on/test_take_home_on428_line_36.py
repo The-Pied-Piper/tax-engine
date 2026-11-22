@@ -169,7 +169,7 @@ def test_the_part_has_the_steps_in_order_and_only_the_last_is_line_36() -> None:
         "core/sum",  # line 36: claim plus the three increases
     ]
     assert [step.get("reference") for step in steps] == [None] * 21 + ["36"]
-    assert [i for i, step in enumerate(steps) if "title" in step] == [21]
+    assert [i for i, step in enumerate(steps) if "title" in step] == [10, 15, 20, 21]
     for index in (0, 11, 16):
         assert steps[index]["blank"] == {"parts": "0"}
         assert len(steps[index]["consumes"]["parts"]) == 1

@@ -23,7 +23,8 @@
 # checked limited answer; neither has a year of death figure. Step 22 is the claim plus the three
 # increases, a blank claim read as 0. Every working step is exact (`ca-on/exact_rounding`) and only
 # step 22, the line, rounds half-up to the cent. Only step 22 has the reference "36"; the others
-# are not lines of the form. Line 41 reads step 22.
+# are not lines of the form (steps 11, 16 and 21 have titles because the sentence of line 36 names
+# them). Line 41 reads step 22.
 form:
   name: ca-on/on428
 capabilities:
@@ -110,6 +111,7 @@ capabilities:
     produces:
       output: ca-on/on428_attendant_care_federal_limit_applied_checked_line_36
   - name: core/times_count
+    title: "Increase for attendant care"
     unit: ca/cad
     params:
       rounding: ca-on/exact_rounding
@@ -155,6 +157,7 @@ capabilities:
     produces:
       output: ca-on/on428_adapted_van_above_federal_line_36
   - name: core/times_count
+    title: "Increase for an adapted van"
     unit: ca/cad
     params:
       rounding: ca-on/exact_rounding
@@ -200,6 +203,7 @@ capabilities:
     produces:
       output: ca-on/on428_patient_move_above_federal_line_36
   - name: core/times_count
+    title: "Increase for a patient's move"
     unit: ca/cad
     params:
       rounding: ca-on/exact_rounding
