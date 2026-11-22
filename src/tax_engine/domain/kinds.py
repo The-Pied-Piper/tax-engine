@@ -76,11 +76,7 @@ class AmountKind(ArtifactKind[Decimal]):
     def check_value(self, value: Decimal) -> None:
         """Refuse a value with a fraction of a cent if this kind is `whole_cents`."""
         if self.whole_cents and value != value.quantize(Decimal("0.01")):
-            raise SubCentAmountError(
-                f"{self.identifier} must be in whole cents, got {value}",
-                identifier=self.identifier,
-                value=value,
-            )
+            raise SubCentAmountError(f"{self.identifier} must be in whole cents, got {value}")
 
     def is_below_floor(self, value: Decimal) -> bool:
         """Whether this kind is non-negative and `value` is below zero."""
