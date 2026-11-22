@@ -55,9 +55,9 @@ class FormComposition:
         The form's own `inputs` are what the caller gives it: each is read as its declared default
         when left out, and an input or field whose default is blank may arrive blank (any other
         blank is refused). The same holds for the `fields` of its `instances`. The
-        `title` and `reference` of an input and of a field print beside the figure. `units` holds
-        the units the manifest names, by identifier: every one an input, a field or a selection
-        uses.
+        `title`, `reference` and `position` of an input and of a field print beside the figure.
+        `units` holds the units the manifest names, by identifier: every one an input, a field or a
+        selection uses.
         """
         name = form.name
         instances = None if form.instances is None else kinds.kind(form.instances)
@@ -101,6 +101,11 @@ class FormComposition:
         )
         self._figure_units = {
             kind.label: unit for kind, _, unit in self._unit_claims if unit is not None
+        }
+        self._figure_positions = {
+            kind.label: found.position for kind, found in printed if found.position is not None
+        } | {
+            kind.label: found.position for kind, found in produced_by if found.position is not None
         }
         self._instances = instances
         self._exports = listed
@@ -175,6 +180,11 @@ class FormComposition:
     def figure_units(self) -> Mapping[str, Unit]:
         """The unit of each figure of the form that has one, by the figure's label."""
         return MappingProxyType(self._figure_units)
+
+    @property
+    def figure_positions(self) -> Mapping[str, int]:
+        """Where the form prints each figure, counted from 1, by the figure's label."""
+        return MappingProxyType(self._figure_positions)
 
     @property
     def unit_claims(self) -> tuple[tuple[ArtifactKind[Any], str, Unit | None], ...]:
@@ -462,6 +472,7 @@ class FormSet:
                 figure_titles=form.figure_titles,
                 figure_references=form.figure_references,
                 figure_units=form.figure_units,
+                figure_positions=form.figure_positions,
                 imported_figures=self._imported_figures(form),
                 defaulted=defaulted,
             )

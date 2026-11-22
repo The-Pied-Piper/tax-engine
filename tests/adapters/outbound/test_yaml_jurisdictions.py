@@ -2099,6 +2099,28 @@ def test_an_input_may_give_the_title_and_reference_the_form_prints(tmp_path: Pat
     assert input_named(manifest, "ex/credit").reference is None
 
 
+def test_an_input_may_give_the_position_the_form_prints_it_at(tmp_path: Path) -> None:
+    manifest = load_parts(
+        tmp_path,
+        {"01-inputs.yaml": "inputs:\n  - {name: ex/income, required: true, position: 2}\n"},
+    )
+
+    assert input_named(manifest, "ex/income") == InputDeclaration("ex/income", True, position=2)
+
+
+@pytest.mark.parametrize("given", ["0", "-1", '"2"', "null", "1.5", "true"])
+def test_an_input_position_must_count_from_one(tmp_path: Path, given: str) -> None:
+    with pytest.raises(InvalidManifestError, match="position"):
+        load_parts(
+            tmp_path,
+            {
+                "01-inputs.yaml": (
+                    f"inputs:\n  - {{name: ex/income, required: true, position: {given}}}\n"
+                )
+            },
+        )
+
+
 @pytest.mark.parametrize("key", ["title", "reference"])
 @pytest.mark.parametrize("given", ['""', '"   "', "null", "5", "[]"])
 def test_an_input_title_or_reference_must_be_a_non_blank_string(
@@ -2534,6 +2556,48 @@ def test_a_selection_may_carry_a_reference(tmp_path: Path) -> None:
     ],
 )
 def test_a_bad_reference_is_rejected(tmp_path: Path, part: str, message: str) -> None:
+    write_parts(tmp_path, {"00-header.yaml": HEADER_PART, "01-bad.yaml": part})
+
+    with pytest.raises(InvalidManifestError, match=message):
+        source(tmp_path).get_jurisdiction(EX_ON)
+
+
+def test_a_selection_may_carry_a_position(tmp_path: Path) -> None:
+    positioned = FORM_RENTAL.replace(
+        "  - {name: ex/a, produces: {output: ex/net_income}}",
+        "  - {name: ex/a, position: 4, produces: {output: ex/net_income}}",
+    )
+    write_parts(tmp_path, {"00-header.yaml": HEADER_PART, "01-rental.yaml": positioned})
+
+    (found,) = others(only_manifest(tmp_path))
+
+    assert found.capabilities[0].position == 4
+
+
+@pytest.mark.parametrize(
+    ("part", "message"),
+    [
+        pytest.param(
+            FORM_RENTAL.replace("{name: ex/a,", "{name: ex/a, position: 0,"),
+            "position counts from 1",
+            id="zero-position",
+        ),
+        pytest.param(
+            FORM_RENTAL.replace("{name: ex/a,", "{name: ex/a, position: '3',"),
+            "must be an integer",
+            id="text-position",
+        ),
+        pytest.param(
+            FORM_RENTAL.replace(
+                "produces: {output: ex/net_income}",
+                "produces: {output: ex/net_income, other: ex/unit_list}",
+            ).replace("{name: ex/a,", "{name: ex/a, position: 3,"),
+            "position belongs to the one figure a selection produces",
+            id="position-with-two-figures",
+        ),
+    ],
+)
+def test_a_bad_selection_position_is_rejected(tmp_path: Path, part: str, message: str) -> None:
     write_parts(tmp_path, {"00-header.yaml": HEADER_PART, "01-bad.yaml": part})
 
     with pytest.raises(InvalidManifestError, match=message):
