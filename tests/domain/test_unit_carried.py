@@ -290,7 +290,6 @@ def test_an_imported_figure_with_no_unit_has_none() -> None:
 # One record list, one field: the consumers and a producer of the field `ex/fee`.
 FEE = AmountKind("ex/fee")
 FEE2 = AmountKind("ex/fee_less")
-AUDITS = RecordListKind("ex/audits", fields=(FEE, FEE2))
 FEE_TOTAL = AmountKind("ex/fee_total")
 OTHER_TOTAL = AmountKind("ex/other_total")
 
@@ -300,7 +299,7 @@ def reader(name: str, total: AmountKind, unit: str | None) -> FormComposition:
         name,
         [Subtract(EXACT, FEE, FEE2, total)],
         exports=[total],
-        instances=AUDITS,
+        instances=RecordListKind("ex/audits_" + name.split("/")[1], fields=(FEE, FEE2)),
         fields=(
             InputDeclaration("ex/fee", True, unit=unit),
             InputDeclaration("ex/fee_less", True),
@@ -332,6 +331,31 @@ def producer(name: str, unit: str | None) -> FormComposition:
 # An input is held by one form, so two forms can no longer both read a field as their own input:
 # the figure's units are compared between the one form that holds or produces it and the form
 # that reads it.
+
+
+def test_forms_reading_a_field_in_one_unit_agree() -> None:
+    first = reader("ex/first", FEE_TOTAL, "ex/crowns")
+    second = reader("ex/second", OTHER_TOTAL, "ex/crowns")
+
+    FormSet([first, second])
+
+
+def test_two_consumers_disagreeing_on_the_unit_of_a_field_are_refused() -> None:
+    first = reader("ex/first", FEE_TOTAL, "ex/crowns")
+    second = reader("ex/second", OTHER_TOTAL, "ex/moons")
+
+    with pytest.raises(
+        InvalidCompositionError, match=r"'fee'.*'ex/crowns'.*'ex/first'.*'ex/moons'.*'ex/second'"
+    ):
+        FormSet([first, second])
+
+
+def test_a_consumer_with_a_unit_and_one_without_disagree() -> None:
+    first = reader("ex/first", FEE_TOTAL, "ex/crowns")
+    second = reader("ex/second", OTHER_TOTAL, None)
+
+    with pytest.raises(InvalidCompositionError, match=r"'fee'.*unit"):
+        FormSet([first, second])
 
 
 def test_a_producer_and_a_consumer_in_one_unit_agree() -> None:

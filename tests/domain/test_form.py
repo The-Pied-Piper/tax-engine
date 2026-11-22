@@ -140,16 +140,23 @@ class Reject(Capability):
         return CapabilityResult(outputs=(Artifact(self._target, value),), trace=())
 
 
-def shop(name: str = "ex/shop", *, default: Artifact[Any] | None = None) -> FormComposition:
+def own_shops(name: str) -> RecordListKind:
+    """A list of shops of its own for a second form: an input is held by one form."""
+    return RecordListKind(f"{name}_list", fields=(SALES, COSTS))
+
+
+def shop(
+    name: str = "ex/shop",
+    *,
+    instances: RecordListKind = SHOPS,
+    default: Artifact[Any] | None = None,
+) -> FormComposition:
     """Profit of each shop: sales less costs; exports the profit. The list of shops is read as
-    `default` when the caller leaves it out. A form of another name holds a list of its own, as an
-    input is held by one form."""
+    `default` when the caller leaves it out."""
     return composition(
         name,
         [Subtract(EXACT_TOTAL, SALES, COSTS, PROFIT)],
-        instances=SHOPS
-        if name == "ex/shop"
-        else RecordListKind(f"{name}_list", fields=(SALES, COSTS)),
+        instances=instances,
         exports=[PROFIT],
         defaults=() if default is None else [default],
     )
@@ -426,7 +433,11 @@ def test_forms_that_do_not_import_each_other_run_in_name_order() -> None:
         [Subtract(EXACT_TOTAL, LEVY, FEE_TOTAL, GRAND)],
         inputs=frozenset({SHOPS, LEVY, FEE_TOTAL}),
         outputs=frozenset({GRAND}),
-        forms=[shop("ex/zebra"), shop("ex/apple"), shop("ex/mango")],
+        forms=[
+            shop("ex/zebra", instances=own_shops("ex/zebra")),
+            shop("ex/apple", instances=own_shops("ex/apple")),
+            shop("ex/mango", instances=own_shops("ex/mango")),
+        ],
     )
 
     assert [found.name for found in forms.forms] == [RETURN, "ex/apple", "ex/mango", "ex/zebra"]
@@ -463,7 +474,9 @@ def test_a_form_outside_the_cycle_is_not_named() -> None:
     )
 
     with pytest.raises(InvalidCompositionError, match="cycle") as caught:
-        form_set(shop_needs_audit, audit(), shop("ex/bystander"))
+        form_set(
+            shop_needs_audit, audit(), shop("ex/bystander", instances=own_shops("ex/bystander"))
+        )
 
     assert "ex/bystander" not in str(caught.value)
 
@@ -1645,14 +1658,13 @@ EARLY_TOTALS = RecordListKind("ex/early.total", fields=(STEP_TOTAL,))
 STEP_RETURN = RecordTotal(STEP_TOTALS, GRAND)
 
 
-def step(name: str = "ex/step") -> FormComposition:
-    """Each step: the amount plus the total carried from the earlier steps' own totals. A form of
-    another name holds a list of its own, as an input is held by one form."""
+def step(name: str = "ex/step", *, instances: RecordListKind = STEPS) -> FormComposition:
+    """Each step: the amount plus the total carried from the earlier steps' own totals."""
     own = derived(name, [STEP_TOTAL])[0]
     return composition(
         name,
         [RecordTotal(own, CARRIED), Sum(EXACT_TOTAL, (AMOUNT, CARRIED), STEP_TOTAL)],
-        instances=STEPS if name == "ex/step" else RecordListKind(f"{name}_list", fields=(AMOUNT,)),
+        instances=instances,
         exports=[STEP_TOTAL],
     )
 
@@ -1731,7 +1743,7 @@ def test_a_form_without_an_instances_list_reading_its_own_export_sees_an_empty_l
 
 
 def test_each_form_sees_only_its_own_earlier_runs() -> None:
-    other = step("ex/zzz")
+    other = step("ex/zzz", instances=RecordListKind("ex/zzz_list", fields=(AMOUNT,)))
     other_list = other.instances
     assert isinstance(other_list, RecordListKind)
     other_steps = Artifact(
@@ -1810,7 +1822,7 @@ def test_a_cycle_between_two_forms_is_still_refused_when_one_reads_its_own_expor
     )
 
     with pytest.raises(InvalidCompositionError, match="cycle") as caught:
-        form_set(reading_shop, audit(), shop("ex/bystander"))
+        form_set(reading_shop, audit(), shop("ex/bystander", instances=own_shops("ex/bystander")))
 
     assert "ex/shop" in str(caught.value) and "ex/audit" in str(caught.value)
     assert "ex/bystander" not in str(caught.value)
