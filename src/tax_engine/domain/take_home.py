@@ -1,28 +1,57 @@
-"""Take-home pay: what a jurisdiction declares, what is asked and what is answered.
+"""Take-home pay: where a jurisdiction's figures are read and the rules that combine them.
 
-A jurisdiction's manifest declares where each take-home figure is read (`TakeHomeFigures`); the
-request and the result carry only what a caller gives and gets. The sum and the rounding to cents
-are the domain's own rule, in `TakeHomeResult.of`.
+A jurisdiction's manifest declares where each take-home figure is read (`TakeHomeFigures`). What a
+caller asks and is answered, and how the answer is worded, belong to the application layer; the
+rules that make the answer right are here: a figure is a decimal read from one worksheet, the
+figures taken off share one unit, and the total and the take-home are sums in whole cents.
 """
 
 from __future__ import annotations
 
-from collections.abc import Iterable
+from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass
 from decimal import Decimal
 
+from tax_engine.domain.artifact import ArtifactRegistry
 from tax_engine.domain.errors import InvalidManifestError
-from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.unit import Unit
+from tax_engine.domain.worksheet import Worksheet
 
 CENTS = Decimal("0.01")
 
 
 @dataclass(frozen=True, slots=True)
+class FigureValue:
+    """A figure as read: its exact amount and its unit, `None` when the figure has none."""
+
+    amount: Decimal
+    unit: Unit | None
+
+
+@dataclass(frozen=True, slots=True)
 class FigureReference:
-    """Where a figure is read: the form that exports it and its kind, by identifier."""
+    """Where a figure is read: the form whose worksheet holds it and its kind, by identifier."""
 
     form: str
     kind: str
+
+    def read(
+        self, sheets: Mapping[str, Sequence[Worksheet]], kinds: ArtifactRegistry
+    ) -> FigureValue:
+        """The figure off the one worksheet of its form.
+
+        Raises InvalidManifestError if the form does not have exactly one worksheet or the figure
+        is not a decimal.
+        """
+        found = sheets[self.form]
+        if len(found) != 1:
+            raise InvalidManifestError(
+                f"take_home: form {self.form!r} has {len(found)} worksheets, not one"
+            )
+        artifact = found[0].get(kinds.kind(self.kind))
+        if not isinstance(artifact.value, Decimal):
+            raise InvalidManifestError(f"take_home: {self.kind!r} is not a decimal")
+        return FigureValue(artifact.value, artifact.unit)
 
 
 @dataclass(frozen=True, slots=True)
@@ -64,102 +93,46 @@ class TakeHomeFigures:
         )
 
 
-@dataclass(frozen=True, slots=True)
-class TakeHomeRequest:
-    """The jurisdiction, tax year and salary to answer for; the trace only when asked."""
+def shared_unit(who: str, values: Iterable[FigureValue]) -> Unit:
+    """The one unit every figure in `values` is in; `who` names the answer in the error.
 
-    jurisdiction: JurisdictionCode
-    tax_year: int
-    salary: Decimal
-    include_trace: bool = False
-
-
-@dataclass(frozen=True, slots=True)
-class UnitDescription:
-    """How a figure is written with its unit, in the answer's language."""
-
-    name: str
-    placement: str
-    singular: str
-    plural: str
-    spaced: bool
-    as_percentage: bool
-
-
-@dataclass(frozen=True, slots=True)
-class Rate:
-    value: Decimal
-    unit: UnitDescription
-
-
-@dataclass(frozen=True, slots=True)
-class DeductionFigure:
-    name: str
-    amount: Decimal
-
-
-@dataclass(frozen=True, slots=True)
-class TraceEntry:
-    """One line of a form's trace, as shown: the figure it is about, its amount and its sentence."""
-
-    label: str | None
-    name: str | None
-    reference: str | None
-    amount: Decimal | None
-    text: str
-    unit: UnitDescription | None
-
-
-@dataclass(frozen=True, slots=True)
-class FormTrace:
-    form: str
-    name: str | None
-    lines: tuple[TraceEntry, ...]
-
-
-@dataclass(frozen=True, slots=True)
-class TakeHomeResult:
-    """The answer: figures exact, the total and the take-home in whole cents.
-
-    `figures` holds the income tax then each deduction, as computed; `income_tax` is the first of
-    them in whole cents. `trace` is `None` unless it was asked for.
+    Raises InvalidManifestError if they are in different units or any has none.
     """
+    units = {value.unit for value in values}
+    if len(units) != 1 or None in units:
+        raise InvalidManifestError(f"{who}: the figures do not share one unit")
+    (unit,) = units
+    assert unit is not None  # `None in units` was refused above
+    return unit
+
+
+def rate_unit(who: str, value: FigureValue) -> Unit:
+    """The unit of a rate; a rate without one is refused as InvalidManifestError."""
+    if value.unit is None:
+        raise InvalidManifestError(f"{who}: the rate has no unit")
+    return value.unit
+
+
+@dataclass(frozen=True, slots=True)
+class Totals:
+    """The salary less the figures taken off it, each sum in whole cents."""
 
     salary: Decimal
-    figures: tuple[DeductionFigure, ...]
-    total_deductions: Decimal
     income_tax: Decimal
+    total_deductions: Decimal
     take_home: Decimal
-    unit: UnitDescription
-    average_income_tax_rate: Rate
-    marginal_income_tax_rate: Rate
-    trace: tuple[FormTrace, ...] | None
 
     @classmethod
-    def of(
-        cls,
-        salary: Decimal,
-        figures: Iterable[DeductionFigure],
-        unit: UnitDescription,
-        average_income_tax_rate: Rate,
-        marginal_income_tax_rate: Rate,
-        trace: tuple[FormTrace, ...] | None,
-    ) -> TakeHomeResult:
+    def of(cls, salary: Decimal, figures: Iterable[tuple[str, Decimal]]) -> Totals:
         """Take-home pay is the salary minus the sum of the figures, in whole cents."""
         kept = tuple(figures)
-        total = sum((figure.amount for figure in kept), Decimal(0))
+        total = sum((amount for _, amount in kept), Decimal(0))
         income_tax = sum(
-            (figure.amount for figure in kept if figure.name == TakeHomeFigures.INCOME_TAX),
-            Decimal(0),
+            (amount for name, amount in kept if name == TakeHomeFigures.INCOME_TAX), Decimal(0)
         )
         return cls(
             salary=salary.quantize(CENTS),
-            figures=kept,
-            total_deductions=total.quantize(CENTS),
             income_tax=income_tax.quantize(CENTS),
+            total_deductions=total.quantize(CENTS),
             take_home=(salary - total).quantize(CENTS),
-            unit=unit,
-            average_income_tax_rate=average_income_tax_rate,
-            marginal_income_tax_rate=marginal_income_tax_rate,
-            trace=trace,
         )

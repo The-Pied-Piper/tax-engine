@@ -165,7 +165,8 @@ def test_manifest_holds_its_inputs_and_its_forms() -> None:
 def test_manifest_fields_in_order() -> None:
     names = [field.name for field in dataclasses.fields(Manifest)]
     assert "units_by_name" in names  # the resolved units, held as `kinds` are
-    assert [name for name in names if name != "units_by_name"] == [
+    assert "take_home" in names
+    assert [name for name in names if name not in ("units_by_name", "take_home")] == [
         "jurisdiction",
         "version",
         "valid_from_tax_year",

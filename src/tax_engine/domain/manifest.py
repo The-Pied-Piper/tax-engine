@@ -425,8 +425,8 @@ class Manifest:
     UnknownRegistrationError. `units_by_name` holds each unit its declarations name, by the full
     identifier they write, already looked up in the unit registry; the loader builds it and refuses
     an unknown identifier. `take_home`, when given, declares where the take-home figures are read:
-    each must be a registered kind exported by a form of the manifest, and the salary a registered
-    amount kind.
+    each must be a registered kind read off the worksheet of a form of the manifest, and the salary
+    a registered amount kind.
     """
 
     jurisdiction: JurisdictionCode

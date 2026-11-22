@@ -17,15 +17,16 @@ from tax_engine.registrations import (
 
 def build_tax_computation() -> TaxComputationService:
     """Build the tax computation engine over the bundled jurisdiction packages."""
-    return _build()[0]
+    return _build()[1]
 
 
 def build_take_home() -> TakeHomeService:
     """Build the take-home service over the bundled jurisdiction packages, in English."""
-    return _build()[1]
+    jurisdictions, computation = _build()
+    return TakeHomeService(jurisdictions, computation, EnglishTakeHomeText())
 
 
-def _build() -> tuple[TaxComputationService, TakeHomeService]:
+def _build() -> tuple[YamlJurisdictionSource, TaxComputationService]:
     kinds = artifact_kinds()
     roots = JURISDICTIONS.roots()
     registered_units = units()
@@ -36,4 +37,4 @@ def _build() -> tuple[TaxComputationService, TakeHomeService]:
         YamlParameterSource(roots, parameter_parsers(), registered_units),
         capabilities(),
     )
-    return computation, TakeHomeService(jurisdictions, computation, EnglishTakeHomeText())
+    return jurisdictions, computation

@@ -272,8 +272,10 @@ application layer names none, the manifest does. It is a mapping with all of the
 | `deductions` | The other figures taken off the salary, each under the name its answer carries (`cpp_base`, `ei`, ...). |
 | `average_income_tax_rate`, `marginal_income_tax_rate` | The two rates, which must have a unit. |
 
-A figure is `{form: <form name>, kind: <artifact identifier>}`: the form that exports it and its
-kind. The form must be one of the manifest's, the kinds registered, and the salary an amount. The
+A figure is `{form: <form name>, kind: <artifact identifier>}`: the form whose worksheet holds it and
+its kind. The form must be one of the manifest's, the kinds registered, and the salary an amount;
+whether the form holds the figure is found when the answer is computed. A form read for a figure
+must have exactly one worksheet. The
 total taken off the salary is the income tax plus every deduction; every one of them must have the
 same unit. The key may be given in one part only. A jurisdiction without it is refused by
 `TakeHomeService` as not found.

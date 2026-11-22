@@ -45,7 +45,6 @@ def test_the_ontario_declaration_is_the_figures_tax_service_reads() -> None:
         ({"income_tax": FigureReference("ca-on/nothing", "ca/total_payable")}, "no form"),
         ({"income_tax": FigureReference("ca/t1_tax_and_credits", "ca/nothing")}, "take_home"),
         ({"salary": "ca/nothing"}, "take_home"),
-        ({"salary": "ca/yes_or_no_answer_does_not_exist"}, "take_home"),
     ],
 )
 def test_a_declaration_naming_what_is_missing_is_refused(

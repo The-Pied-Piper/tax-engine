@@ -89,3 +89,20 @@ def test_the_engine_starts_with_the_bundled_manifests_composing() -> None:
     engine = factory.build_tax_computation()
 
     assert engine.compose(JurisdictionCode("CA-ON"), 2025) is not None
+
+
+def test_the_take_home_service_builds_with_the_bundled_packages() -> None:
+    assert factory.build_take_home() is not None
+
+
+def test_the_take_home_service_refuses_to_build_when_a_unit_has_no_english_text(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    catalog = UnitCatalog(Namespace("ex"))
+    catalog.declare("furlongs")
+    registry = UnitRegistry()
+    registry.register_catalog(catalog)
+    monkeypatch.setattr(factory, "units", lambda: registry)
+
+    with pytest.raises(UnknownRegistrationError, match="ex/furlongs"):
+        factory.build_take_home()
