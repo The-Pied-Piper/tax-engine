@@ -10,8 +10,8 @@ from lines 31000, 31900 and 33099, AB428 line 44, BC428 line 46, MB428 line 43 a
 print "amount from line 33099 of your return", and SK428 line 49 prints the amount from line 33199,
 so each of those is a total of the T1 export and none of them has an input of its own. A caller who
 gives a T1 line once reaches every one of those forms; a caller who gives none reads each as 0.00.
-AB428 line 50, BC428 line 52 and ON428 line 42 (other dependants) and ON428 line 36 are not copies of
-the T1 and keep their own inputs.
+AB428 line 50, BC428 line 52 and ON428 line 42 (other dependants) and ON428 line 36 are not copies
+of the T1 and keep their own inputs.
 
 The real registered engine is run end to end over each province's real 2025 manifest, as the
 provincial end-to-end tests do, with the T1 amounts as inputs. The results are hand-computed from
