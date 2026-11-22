@@ -30,7 +30,7 @@ LINE_36_PARTS = (
     "tp1_schedule_f_line_10_input.yaml",
     "tp1_schedule_f_line_10.yaml",
     "tp1_schedule_f_line_12.yaml",
-    "tp1_schedule_f_line_14_input.yaml",
+    "tp1_schedule_f_line_14.yaml",
     "tp1_schedule_f_line_16.yaml",
     "tp1_schedule_f_line_18.yaml",
     "tp1_schedule_f_line_34_inputs.yaml",
