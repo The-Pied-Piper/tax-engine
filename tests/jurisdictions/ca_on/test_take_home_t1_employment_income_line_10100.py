@@ -41,6 +41,7 @@ FORM = dedent("""\
     inputs:
       - name: ca/employment_income
         required: true
+        whole_cents: true
     """)
 
 

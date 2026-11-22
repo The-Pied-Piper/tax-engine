@@ -43,6 +43,7 @@ from tax_engine.domain.errors import (
     InvalidManifestError,
     MissingArtifactError,
     NotFoundError,
+    SubCentAmountError,
     UnknownRegistrationError,
     ValidationError,
 )
@@ -281,6 +282,41 @@ def test_a_worksheet_carries_the_titles_its_form_and_selections_were_given() -> 
     assert sheet.form_title == "Titled form"
     assert sheet.title(STEP_TOTAL.label) == "Step total"
     assert sheet.title(AMOUNT.label) is None
+
+
+def whole_cents_form(*, whole_cents: bool) -> FormComposition:
+    return composition(
+        "ex/titled",
+        [Sum(EXACT_TOTAL, (AMOUNT,), STEP_TOTAL)],
+        exports=[STEP_TOTAL],
+        starting=frozenset({AMOUNT}),
+        declared=[InputDeclaration(AMOUNT.identifier, True, whole_cents=whole_cents)],
+    )
+
+
+@pytest.mark.parametrize("value", ["0.004", "70000.005", "-0.001", "1" + "0" * 40 + ".001"])
+def test_a_whole_cents_input_with_a_fraction_of_a_cent_is_refused(value: str) -> None:
+    forms = FormSet([whole_cents_form(whole_cents=True)])
+
+    with pytest.raises(SubCentAmountError, match=r"ex/amount must be in whole cents, got "):
+        forms.compute(Artifact(AMOUNT, D(value)))
+
+
+@pytest.mark.parametrize("value", ["0", "70000", "1000.5", "70000.01", "1.230E+2", "0.0000"])
+def test_a_whole_cents_input_to_the_cent_is_accepted(value: str) -> None:
+    (sheet,) = FormSet([whole_cents_form(whole_cents=True)]).compute(Artifact(AMOUNT, D(value)))[
+        "ex/titled"
+    ]
+
+    assert sheet.get(STEP_TOTAL).value == D(value)
+
+
+def test_an_input_is_not_whole_cents_unless_the_form_declares_it() -> None:
+    (sheet,) = FormSet([whole_cents_form(whole_cents=False)]).compute(Artifact(AMOUNT, D("0.004")))[
+        "ex/titled"
+    ]
+
+    assert sheet.get(STEP_TOTAL).value == D("0.004")
 
 
 def test_a_worksheet_carries_the_title_and_reference_of_the_inputs_it_reads() -> None:

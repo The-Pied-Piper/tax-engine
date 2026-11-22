@@ -24,7 +24,7 @@ from tax_engine.domain.errors import (
 )
 from tax_engine.domain.figure_names import ImportedFigure
 from tax_engine.domain.kinds import RecordListKind
-from tax_engine.domain.manifest import Form
+from tax_engine.domain.manifest import Form, InputDeclaration
 from tax_engine.domain.record_list import Record, RecordList
 from tax_engine.domain.trace import FormInstanceLine, TraceLine
 from tax_engine.domain.unit import Unit
@@ -122,6 +122,7 @@ class FormComposition:
         # The caller's list of instances is read by the form set, not by a step.
         self._declared = frozenset(declared)
         self._inputs = fields | (self._declared - {instances})
+        self._whole_cents = {kind: d for kind, d in declared.items() if d.whole_cents}
         self._defaults = tuple(
             found for kind, d in declared.items() if (found := d.default_artifact(kind)) is not None
         )
@@ -227,6 +228,11 @@ class FormComposition:
     def declared(self) -> frozenset[ArtifactKind[Any]]:
         """The kinds of the inputs the form declares, among them its list of instances."""
         return self._declared
+
+    @property
+    def whole_cents(self) -> Mapping[ArtifactKind[Any], InputDeclaration]:
+        """The declaration of each input the form takes in whole cents, by kind."""
+        return self._whole_cents
 
     @property
     def defaults(self) -> tuple[Artifact[Any], ...]:
@@ -471,6 +477,10 @@ class FormSet:
 
     def _check_given(self, given: Mapping[ArtifactKind[Any], Artifact[Any]]) -> None:
         self._check_not_derived(given.keys())
+        for form in self._forms:
+            for kind, declaration in form.whole_cents.items():
+                if kind in given:
+                    declaration.check_given(given[kind])
         Composition.check_starting_kinds(given.keys(), self._inputs)
         # The form set itself reads each instances list, so it cannot take a blank one; any other
         # blank goes on to the composition of each form that reads it, which checks its own.

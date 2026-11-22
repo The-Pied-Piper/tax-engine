@@ -59,7 +59,7 @@ _OPTIONAL_FORM_KEYS = frozenset(
     }
 )
 _IMPORTED_PART_KEYS = frozenset({"form", "capabilities", "inputs"})
-_OPTIONAL_INPUT_KEYS = frozenset({"default", "basis", "title", "reference", "unit"})
+_OPTIONAL_INPUT_KEYS = frozenset({"default", "basis", "title", "reference", "unit", "whole_cents"})
 _DEFAULT_FORM = "return"
 _CAPABILITY_KEYS = frozenset({"name", "produces"})
 _OPTIONAL_CAPABILITY_KEYS = frozenset(
@@ -747,6 +747,7 @@ class YamlJurisdictionSource:
         title = fields.optional_field("title")
         reference = fields.optional_field("reference")
         unit = fields.optional_field("unit")
+        whole_cents = fields.optional_field("whole_cents")
         return InputDeclaration(
             name=name,
             required=required.require_boolean(),
@@ -755,6 +756,7 @@ class YamlJurisdictionSource:
             title=None if title is None else self._title(title),
             reference=None if reference is None else self._title(reference),
             unit=None if unit is None else unit.require_non_empty_string(),
+            whole_cents=False if whole_cents is None else whole_cents.require_boolean(),
         )
 
     @staticmethod
