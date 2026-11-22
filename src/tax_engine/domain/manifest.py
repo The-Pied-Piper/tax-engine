@@ -327,6 +327,11 @@ class Form:
             raise InvalidManifestError(
                 f"form {self.name!r}: fields belong to a form with instances"
             )
+        for field in self.fields:
+            if field.whole_cents:
+                raise InvalidManifestError(
+                    f"form {self.name!r}: field {field.name!r}: whole_cents is for an input"
+                )
         for kind, declarations in (("field", self.fields), ("input", self.inputs)):
             names = [declared.name for declared in declarations]
             for name in names:

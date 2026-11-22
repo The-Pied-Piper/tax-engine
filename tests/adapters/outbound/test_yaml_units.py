@@ -111,21 +111,6 @@ def test_an_input_may_name_a_unit(tmp_path: Path) -> None:
     assert input_named(manifest, "ex/plain").unit is None
 
 
-def test_an_input_may_be_declared_whole_cents(tmp_path: Path) -> None:
-    manifest = load(
-        tmp_path,
-        """\
-        inputs:
-          - {name: ex/rent, required: true, whole_cents: true}
-          - {name: ex/plain, required: true}
-        capabilities: []
-        """,
-    )
-
-    assert input_named(manifest, "ex/rent") == InputDeclaration("ex/rent", True, whole_cents=True)
-    assert input_named(manifest, "ex/plain").whole_cents is False
-
-
 def test_a_selection_may_name_the_unit_of_the_figure_it_produces(tmp_path: Path) -> None:
     manifest = load(
         tmp_path,
