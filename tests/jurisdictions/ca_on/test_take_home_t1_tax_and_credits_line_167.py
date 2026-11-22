@@ -59,6 +59,7 @@ REAL_FORM = next(TAKE_HOME.rglob("t1_tax_and_credits.yaml")).read_text(encoding=
 PARTS = (
     *form_part_names("t1_lines_copied_by_provinces"),
     *form_part_names("schedule_8"),
+    *form_part_names("schedule_9"),
     *form_part_names("t2204"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),
     "t1_tax_and_credits_line_30000.yaml",

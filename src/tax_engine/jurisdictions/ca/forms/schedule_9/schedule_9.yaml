@@ -1,0 +1,17 @@
+# Schedule 9 (Donations and gifts, form 5000-S9) 2025. This part names the form and its exports;
+# each line's capability goes in a part of its own with the same `form.name`.
+# Lines 1 to 11 (the donation chart and the 75% net-income limits) feed nothing else the engine
+# uses, so line 12 is one typed amount (`schedule_9_line_12_inputs.yaml`). Lines 13 and 14 are
+# computed as printed.
+# Exports: line 13 (`ca/donations_and_gifts_line_13`) and line 14 (`ca/donations_and_gifts_line_14`),
+# read by the provincial forms as record lists: AB428 lines 55 and 56, MB428 lines 54 and 55, NL428
+# lines 59 and 60, ON428 lines 47 and 48 and SK428 lines 54 and 55.
+# The form is split from the T1 forms so the provincial forms can import it without a loop.
+form:
+  name: ca/schedule_9
+  title: "Schedule 9: Donations and Gifts"
+  required: true
+  exports:
+    - ca/donations_and_gifts_line_13
+    - ca/donations_and_gifts_line_14
+capabilities: []

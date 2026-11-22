@@ -39,4 +39,5 @@ imports:
       ca/cwb_maximum: ca-ab/cwb_maximum
       ca/cwb_reduction_threshold: ca-ab/cwb_reduction_threshold
   - ca/schedule_8
+  - ca/schedule_9
   - ca/t2204

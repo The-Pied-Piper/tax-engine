@@ -38,6 +38,7 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import DONATIONS_AND_GIFTS_LINE_12
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_mb.support import (
@@ -56,9 +57,7 @@ LINE_53_PART = MB_PARTS / "mb428_credits_line_53.yaml"
 LINE_56_PARTS = tuple(
     MB_PARTS / name
     for name in (
-        "mb428_credits_line_54_inputs.yaml",
         "mb428_credits_line_54.yaml",
-        "mb428_credits_line_55_inputs.yaml",
         "mb428_credits_line_55.yaml",
         "mb428_credits_line_56.yaml",
     )
@@ -169,6 +168,7 @@ CASES = [
 
 def _part_files() -> Iterator[Path]:
     yield from form_parts("schedule_8")
+    yield from form_parts("schedule_9")
     yield from form_parts("t2204")
     for name in T1_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
@@ -229,13 +229,11 @@ def test_line_57_is_line_53_when_line_56_is_zero(
 
 
 def test_line_57_adds_line_56_when_line_54_is_given(tmp_path: Path) -> None:
-    # Line 53 at a 70,000 salary is 2,176.12; a line 54 amount of 1,000.00 makes line 54 108.00 and
-    # line 56 108.00, so line 57 is 2,284.12.
-    sheet = _sheet(
-        tmp_path, "70000", Artifact(mb_catalog.MB428_DONATIONS_AMOUNT_LINE_54, D("1000.00"))
-    )
+    # Line 53 at a 70,000 salary is 2,176.12; a Schedule 9 line 12 of 200.00 makes line 13 200.00,
+    # line 54 21.60 and line 56 21.60 (line 14 is 0), so line 57 is 2,197.72.
+    sheet = _sheet(tmp_path, "70000", Artifact(DONATIONS_AND_GIFTS_LINE_12, D("200.00")))
 
-    assert _line(sheet, IDENTIFIER) == D("2284.12")
+    assert _line(sheet, IDENTIFIER) == D("2197.72")
 
 
 def test_the_sheet_prints_the_title_and_the_reference_of_line_57(tmp_path: Path) -> None:

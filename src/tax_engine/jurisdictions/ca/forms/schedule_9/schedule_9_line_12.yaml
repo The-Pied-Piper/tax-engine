@@ -1,0 +1,18 @@
+# Schedule 9 (5000-S9, 2025) line 12: "Line 12: Line 10 plus line 11 =". The line is an optional input
+# (`ca/donations_and_gifts_line_12`), blank for a salary-only filer. One core/sum step over the
+# input alone reads the blank as 0 and rounds to the cent, because a line written on the form is a
+# whole-cent figure: `ca/donations_and_gifts_amount_line_12`.
+form:
+  name: ca/schedule_9
+capabilities:
+  - name: core/sum
+    reference: "12"
+    unit: ca/cad
+    params:
+      rounding: ca/cent_rounding
+    consumes:
+      parts: [ca/donations_and_gifts_line_12]
+    blank:
+      ca/donations_and_gifts_line_12: "0"
+    produces:
+      output: ca/donations_and_gifts_amount_line_12

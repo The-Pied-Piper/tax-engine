@@ -1,13 +1,21 @@
 # Form ON428 (Ontario Tax, 2025, 5006-c-25e) line 48 (ca-on/on428): "Line 48: Amount from line 14 of your
 # federal Schedule 9 multiplied by 11.16% =". The 11.16% is a printed rate, held in the
 # `ca-on/donations_credit_rate_line_48` dataset, so the step is one calculation: 11.16% of the Schedule 9
-# amount, rounded half-up to the cent. The amount is an optional input (on428_line_48_inputs.yaml),
-# read as 0 when left out. The line has two boxes: the amount (box A, the input) and the multiplied
+# amount, rounded half-up to the cent. The amount (box A) is read from the Schedule 9 export: the first step totals it (a form reads
+# another form's export only as a record list). The line has two boxes: the amount (box A, the first step) and the multiplied
 # result (box B, this step). The form does not name them; "box A" and "box B" are the owner's naming,
 # as on line 87.
 form:
   name: ca-on/on428
 capabilities:
+  - name: core/record_total
+    title: "Amount from line 14 of your federal Schedule 9"
+    reference: "48 box A"
+    unit: ca/cad
+    consumes:
+      records: ca/schedule_9.donations_and_gifts_line_14
+    produces:
+      output: ca-on/on428_donations_amount_line_48
   - name: core/apply_rate
     reference: "48 box B"
     unit: ca/cad

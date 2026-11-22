@@ -1,0 +1,14 @@
+# Schedule 9 (5000-S9, 2025) line 13: "Enter whichever is less: amount from line 12 or $200." The
+# $200 is the printed figure, a dataset figure, so this step claims it whole through
+# core/credit_amount and no donation reaches it. Line 13 takes the lesser of it and line 12.
+form:
+  name: ca/schedule_9
+capabilities:
+  - name: core/credit_amount
+    title: "Maximum amount"
+    reference: "13"
+    unit: ca/cad
+    params:
+      amount: ca/donations_and_gifts_line_13_limit
+    produces:
+      output: ca/donations_and_gifts_line_13_limit

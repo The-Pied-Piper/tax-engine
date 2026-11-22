@@ -97,9 +97,7 @@ NL_PART_NAMES = (
     "nl428_credits_line_55.yaml",
     "nl428_credits_line_56.yaml",
     "nl428_credits_line_58.yaml",
-    "nl428_credits_line_59_input.yaml",
     "nl428_credits_line_59.yaml",
-    "nl428_credits_line_60_input.yaml",
     "nl428_credits_line_60.yaml",
     "nl428_credits_line_61.yaml",
     "nl428_credits_line_62.yaml",
@@ -145,6 +143,7 @@ FORMS = dedent("""\
 
 def _part_files() -> Iterator[Path]:
     yield from form_parts("schedule_8")
+    yield from form_parts("schedule_9")
     yield from form_parts("t2204")
     for name in FEDERAL_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
