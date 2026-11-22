@@ -1,4 +1,4 @@
-"""What a take-home request asks for and its answer holds, in the answer's language.
+"""What a take-home answer holds, in the answer's language.
 
 The figures and sums are the domain's (`tax_engine.domain.take_home`); these are the use case's
 input and output, with the unit text and the trace sentences a `TakeHomeText` port supplies.
@@ -8,18 +8,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from decimal import Decimal
-
-from tax_engine.domain.jurisdiction_code import JurisdictionCode
-
-
-@dataclass(frozen=True, slots=True)
-class TakeHomeRequest:
-    """The jurisdiction, tax year and salary to answer for; the trace only when asked."""
-
-    jurisdiction: JurisdictionCode
-    tax_year: int
-    salary: Decimal
-    include_trace: bool = False
 
 
 @dataclass(frozen=True, slots=True)

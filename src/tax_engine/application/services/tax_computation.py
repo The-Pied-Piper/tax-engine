@@ -9,10 +9,10 @@ from __future__ import annotations
 from threading import Lock
 from typing import Any
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.ports.jurisdiction_source import JurisdictionSource
 from tax_engine.application.ports.parameter_source import ParameterSource
 from tax_engine.domain.artifact import Artifact, ArtifactRegistry
-from tax_engine.domain.calculation_request import TaxCalculationRequest
 from tax_engine.domain.capability import Capability, CapabilityRegistry
 from tax_engine.domain.capability_builder import CapabilityBuilder
 from tax_engine.domain.form import FormComposition, FormSet

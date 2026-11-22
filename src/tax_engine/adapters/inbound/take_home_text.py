@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from tax_engine.adapters.inbound.trace_english.renderer import EnglishTraceRenderer
 from tax_engine.adapters.inbound.trace_english.unit_text import EnglishUnitTextRegistry
-from tax_engine.application.services.take_home_models import UnitDescription
+from tax_engine.application.models.take_home import UnitDescription
 from tax_engine.domain.trace import TraceLine
 from tax_engine.domain.unit import Unit
 from tax_engine.domain.worksheet import Worksheet

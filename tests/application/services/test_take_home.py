@@ -16,12 +16,12 @@ from typing import Any
 import pytest
 
 from tax_engine import build_take_home
-from tax_engine.application.services.take_home import TakeHomeService
-from tax_engine.application.services.take_home_models import (
-    TakeHomeRequest,
+from tax_engine.application.models.take_home import (
     TraceEntry,
     UnitDescription,
 )
+from tax_engine.application.models.take_home_request import TakeHomeRequest
+from tax_engine.application.services.take_home import TakeHomeService
 from tax_engine.domain.errors import NotFoundError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 

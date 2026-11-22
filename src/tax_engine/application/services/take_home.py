@@ -9,19 +9,19 @@ from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
 
-from tax_engine.application.ports.jurisdiction_source import JurisdictionSource
-from tax_engine.application.ports.take_home_text import TakeHomeText
-from tax_engine.application.services.take_home_models import (
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
+from tax_engine.application.models.take_home import (
     DeductionFigure,
     FormTrace,
     Rate,
-    TakeHomeRequest,
     TakeHomeResult,
     TraceEntry,
 )
+from tax_engine.application.models.take_home_request import TakeHomeRequest
+from tax_engine.application.ports.jurisdiction_source import JurisdictionSource
+from tax_engine.application.ports.take_home_text import TakeHomeText
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact, ArtifactRegistry
-from tax_engine.domain.calculation_request import TaxCalculationRequest
 from tax_engine.domain.errors import NotFoundError
 from tax_engine.domain.take_home import FigureReference, Totals, rate_unit, shared_unit
 from tax_engine.domain.trace import TraceLine

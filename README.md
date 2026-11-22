@@ -103,7 +103,7 @@ from decimal import Decimal
 
 from tax_engine import build_take_home
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.take_home import TakeHomeRequest
+from tax_engine.application.models.take_home_request import TakeHomeRequest
 
 answer = build_take_home().compute(
     TakeHomeRequest(JurisdictionCode("CA-ON"), 2025, Decimal(70000), include_trace=False)
