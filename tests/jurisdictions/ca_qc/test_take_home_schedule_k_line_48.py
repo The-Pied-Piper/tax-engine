@@ -3,7 +3,8 @@ wires it. Printed as "Subtract line 46 from line 40. If the result is negative, 
 case, you do not have to pay a premium. Income used to calculate the premium".
 
 `core/subtract_not_below_zero` takes line 46 from line 40 (line 36 for a single
-filer), rounded half-up to the cent by `ca-qc/cent_rounding`. The real Schedule K chain (lines 36 to 46) is composed under a test-local
+filer), rounded half-up to the cent by
+`ca-qc/cent_rounding`. The real Schedule K chain (lines 36 to 46) is composed under a test-local
 header and form declaration, and the real form declaration is checked on its own: it exports line
 48. The expected figures are hand-computed from the printed lines, not an official example.
 """
