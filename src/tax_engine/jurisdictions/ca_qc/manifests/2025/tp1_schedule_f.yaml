@@ -6,7 +6,7 @@
 # contribution, which Part B reads, and line 82, the contribution, which TP-1 line 446 carries.
 form:
   name: ca-qc/tp1_schedule_f
-  title: "Contribution to the Health Services Fund"
+  title: "Schedule F: Contribution to the Health Services Fund"
   required: true
   exports:
     - ca-qc/tp1_schedule_f_income_subject_line_70

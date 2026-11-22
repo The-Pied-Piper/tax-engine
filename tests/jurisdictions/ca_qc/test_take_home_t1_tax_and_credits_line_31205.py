@@ -39,8 +39,9 @@ def test_line_91_is_the_figure_it_copies(
 def test_the_trace_names_the_figure_copied(take_home_service: TakeHomeService) -> None:
     _, sheet = sheets(take_home_service, "70000")
 
-    assert "Line 91 (CA$345.80) gives CA$345.80." in EnglishTraceRenderer().render_all(
-        sheet.trace, sheet
+    assert (
+        "Line 91 of T1 Income Tax and Benefit Return (CA$345.80) gives CA$345.80."
+        in EnglishTraceRenderer().render_all(sheet.trace, sheet)
     )
 
 
