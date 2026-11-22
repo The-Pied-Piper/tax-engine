@@ -71,7 +71,7 @@ def _step() -> dict[str, Any]:
     assert isinstance(part, dict)
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": "ca-qc/ppip_premium"}
-    record_total, maximum, check, step = part["capabilities"]
+    record_total, maximum, check, step, count, zero, choose = part["capabilities"]
     assert record_total == {
         "name": "core/record_total",
         "title": "Employment income, T1 line 10100",
@@ -95,6 +95,32 @@ def _step() -> dict[str, Any]:
         },
         "blank": {"amount": "pass_on"},
         "produces": {"output": "ca-qc/ppip_premiums_given_checked"},
+    }
+    assert count == {
+        "name": "ca/count_by_conditions",
+        "title": "The PPIP insurable earnings are less than $2,000",
+        "params": {"conditions": "ca-qc/ppip_premium_line_91_conditions"},
+        "consumes": {"counts": [], "amounts": ["ca-qc/ppip_premium_employment_income"]},
+        "produces": {"output": "ca-qc/ppip_premium_under_threshold_count"},
+    }
+    assert zero == {
+        "name": "core/credit_amount",
+        "title": "PPIP premiums claimed when the earnings are under $2,000",
+        "unit": "ca/cad",
+        "params": {"amount": "ca-qc/ppip_premium_zero"},
+        "produces": {"output": "ca-qc/ppip_premium_zero"},
+    }
+    assert choose == {
+        "name": "core/choose_by_count",
+        "title": "Provincial parental insurance plan (PPIP) premiums paid",
+        "reference": "91",
+        "unit": "ca/cad",
+        "consumes": {
+            "count": "ca-qc/ppip_premium_under_threshold_count",
+            "when_none": "ca-qc/ppip_premiums_before_earnings_test",
+            "when_any": "ca-qc/ppip_premium_zero",
+        },
+        "produces": {"output": IDENTIFIER},
     }
     assert isinstance(step, dict)
     return step
@@ -157,11 +183,36 @@ def test_a_given_line_91_above_the_maximum_is_refused_whatever_the_salary(
         _line_91(take_home_service, "20000", "484.13")
 
 
-def test_the_part_is_a_record_total_the_maximum_its_check_then_the_given_or_tier_step() -> None:
+@pytest.mark.parametrize(
+    ("salary", "expected"),
+    [
+        # Under $2,000 of PPIP insurable earnings, the guide to line 31205 says to claim nothing
+        # there (the premium goes to TP-1 line 457 instead): 0.494% of 1,500 would be 7.41.
+        ("0", "0.00"),
+        ("1500", "0.00"),
+        ("1999.99", "0.00"),
+        # Exactly $2,000 is not "less than $2,000": 0.494% of 2,000 is 9.88.
+        ("2000", "9.88"),
+        ("2000.01", "9.88"),
+    ],
+)
+def test_line_91_is_nothing_when_the_ppip_insurable_earnings_are_under_2000(
+    take_home_service: TakeHomeService, salary: str, expected: str
+) -> None:
+    assert str(_line_91(take_home_service, salary)) == expected
+
+
+def test_a_given_line_91_is_nothing_when_the_earnings_are_under_2000(
+    take_home_service: TakeHomeService,
+) -> None:
+    # The guide does not let a premium be claimed on line 31205 under $2,000, however it is entered.
+    assert str(_line_91(take_home_service, "1500", "7.41")) == "0.00"
+
+
+def test_the_part_ends_in_the_given_or_tier_step_the_earnings_test_and_the_choice() -> None:
     assert _step() == {
         "name": "ca/given_or_contribution_tier",
-        "title": "Provincial parental insurance plan (PPIP) premiums paid",
-        "reference": "91",
+        "title": "PPIP premiums paid before the earnings test",
         "unit": "ca/cad",
         "params": {"tier": "ca-qc/ppip_premium"},
         "consumes": {
@@ -169,7 +220,7 @@ def test_the_part_is_a_record_total_the_maximum_its_check_then_the_given_or_tier
             "earnings": "ca-qc/ppip_premium_employment_income",
         },
         "blank": {"given": "compute"},
-        "produces": {"output": IDENTIFIER},
+        "produces": {"output": "ca-qc/ppip_premiums_before_earnings_test"},
     }
 
 

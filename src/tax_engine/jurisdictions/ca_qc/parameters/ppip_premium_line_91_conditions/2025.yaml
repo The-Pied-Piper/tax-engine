@@ -1,0 +1,22 @@
+# Condition of 5000-G (2025) line 31205 (5005-R line 91): "If your PPIP insurable earnings are less
+# than $2,000, do not claim any PPIP premiums on line 31205. Instead, claim this amount as an
+# overpayment on your Revenu Québec Income Tax Return." No condition kind reads "less than", so this
+# dataset copies the test as its two complements: the count is 0 when the earnings are equal to or
+# more than $2,000 and 1 when they are less, whatever cents they have. The result is a count, not a
+# dollars-and-cents box, so there is no rounding.
+family: ca-qc/ppip_premium_line_91_conditions
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-g/5000-g-25e.txt
+rounding: none
+count_when_any_applies: "0"
+conditions:
+  - text: The PPIP insurable earnings are equal to $2,000
+    parts:
+      - tests:
+          - {reads: amount, position: "1", relation: equal_to, than: "2000"}
+  - text: The PPIP insurable earnings are more than $2,000
+    parts:
+      - tests:
+          - {reads: amount, position: "1", relation: more_than, than: "2000"}
