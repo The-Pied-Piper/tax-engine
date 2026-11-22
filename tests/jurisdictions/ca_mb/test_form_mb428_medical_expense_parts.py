@@ -2,9 +2,9 @@
 
 Form text (Form MB428, CRA 5007-c-25e.txt), lines 43 to 50: see
 `end_to_end/test_mb428_medical_expenses.py` for the full text and the figures through the engine.
-Each calculated line is one step, one line = one capability; line 43 is an optional input and
-line 49 is the total of Worksheet MB428 line 4
-(see `test_take_home_mb428_credits_line_49.py`).
+Each calculated line is one step, one line = one capability; line 43 totals the T1 line 33099
+export and has no input of its own (see `test_take_home_mb428_credits_line_43.py`), and line 49 is
+the total of Worksheet MB428 line 4 (see `test_take_home_mb428_credits_line_49.py`).
 """
 
 from __future__ import annotations
@@ -74,9 +74,6 @@ STEPS = {
         "produces": {"output": "ca-mb/mb428_medical_expenses_line_50"},
     },
 }
-INPUTS = {
-    "mb428_credits_line_43_inputs.yaml": "ca-mb/mb428_medical_expenses_line_43",
-}
 
 
 def _load(name: str) -> dict[str, Any]:
@@ -92,19 +89,6 @@ def test_each_calculated_line_is_one_step_on_the_credits_form(
     part = _load(name)
 
     assert part == {"form": FORM, "capabilities": [step]}
-
-
-@pytest.mark.parametrize(("name", "identifier"), INPUTS.items())
-def test_each_input_part_declares_only_its_optional_input(name: str, identifier: str) -> None:
-    part = _load(name)
-
-    assert list(part) == ["form", "inputs"]
-    assert part["form"] == FORM
-    (declared,) = part["inputs"]
-    assert declared["name"] == identifier
-    assert declared["required"] is False
-    assert declared["default"] is None
-    assert declared["unit"] == "ca/cad"
 
 
 def test_the_old_line_50_input_part_is_gone() -> None:

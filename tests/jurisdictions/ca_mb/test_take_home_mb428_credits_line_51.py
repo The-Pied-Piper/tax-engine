@@ -70,7 +70,7 @@ CREDIT_PARTS = (
     "mb428_credits_line_36.yaml",
     "mb428_credits_line_41.yaml",
     "mb428_credits_line_42.yaml",
-    "mb428_credits_line_43_inputs.yaml",
+    "mb428_credits_line_43.yaml",
     "mb428_credits_line_44.yaml",
     "mb428_credits_line_46.yaml",
     "mb428_credits_line_47.yaml",
