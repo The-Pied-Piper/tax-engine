@@ -11,7 +11,7 @@
 # figure and TP-1 line 470 (450 less 468) is the Quebec one, added with no floor. Line 468 collects
 # the credits typed on lines 451.2 to 466 and the work premium (456) and QPIP overpayment (457), so
 # the summary follows what the caller types there, as the federal half does through line 172. The
-# engine has no input for tax withheld (line 451) or line 451.1, left out by ruling; line 451.2
+# engine has no input for tax withheld (line 451, left out by ruling) or for line 451.1; line 451.2
 # (451 less 451.1) is an optional input that line 468 includes.
 #
 # Total payable (`ca-qc/total_payable`; `ca/total_payable` is the federal kind the shared forms

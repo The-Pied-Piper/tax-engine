@@ -13,8 +13,8 @@ are printed lines, each read from the form that prints it:
   TP-1.D-V (2025-12), page 5);
 - TP-1 line 470 "Subtract line 468 from line 450" (page 5), which already takes the work premium
   (456), the QPIP overpayment (457) and every credit typed on lines 451.2 to 466 off line 450. Tax
-  withheld has no input (line 451 and 451.1 are left out by ruling); line 451.2 is an optional input
-  that line 468 includes.
+  withheld has no input (line 451 is left out by ruling, and there is none for 451.1); line 451.2
+  is an optional input that line 468 includes.
 
 The tests run the real return part over the real parts of the three forms it reads, at a salary
 of $20,000, $70,000 and $200,000, and pin the part's shape. The figures are hand-computed from
