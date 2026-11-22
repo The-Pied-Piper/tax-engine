@@ -96,7 +96,7 @@ SK_LINE_PARTS = (
     "sk428_line_61_input.yaml",
     "sk428_line_62.yaml",
     "sk428_line_63.yaml",
-    "sk428_line_64_input.yaml",
+    "sk428_line_64.yaml",
     "sk428_line_65.yaml",
     "sk428_line_66.yaml",
     "sk428_line_67.yaml",
@@ -258,7 +258,8 @@ def _sheet(
     if line_61 is not None:
         given.append(Artifact(sk_catalog.SK428_TAX_ON_SPLIT_INCOME_LINE_61, D(line_61)))
     if line_64 is not None:
-        given.append(Artifact(kinds.kind(LINE_64), D(line_64)))
+        # `line_64` is the amount of line 12000 (line 12010 left out), so line 64 is 11% of it.
+        given.append(Artifact(kinds.kind("ca/taxable_dividends"), D(line_64)))
     worksheets = _service(tmp_path).compute(JurisdictionCode("CA-SK"), 2025, *given)
     (sheet,) = worksheets[FORM_NAME]
     return sheet
@@ -337,9 +338,9 @@ def test_a_negative_t691_amount_gives_a_negative_line_68_and_a_signed_line_69(
 
 
 def test_line_69_reads_lines_61_and_64_through_line_67(tmp_path: Path) -> None:
-    # Line 67 at 70,000 with line 61 of 100.00 is 5,192.30; a line 64 of 1,000.00 lowers it to
-    # 4,192.30, and line 68 adds 500.00.
-    sheet = _sheet(tmp_path, "70000", amount="1000.00", line_61="100.00", line_64="1000.00")
+    # Line 67 at 70,000 with line 61 of 100.00 is 5,192.30; line 12000 of 9,090.91 makes line 64
+    # 1,000.00 (11%, rounded), which lowers it to 4,192.30, and line 68 adds 500.00.
+    sheet = _sheet(tmp_path, "70000", amount="1000.00", line_61="100.00", line_64="9090.91")
 
     assert _line(sheet, LINE_67) == D("4192.30")
     assert _line(sheet, IDENTIFIER) == D("4692.30")

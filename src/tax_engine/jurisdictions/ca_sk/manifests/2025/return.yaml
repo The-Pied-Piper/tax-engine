@@ -32,7 +32,7 @@
 # back when filing and are not payroll terms. Line 62 also holds line 59 (farm and small business
 # capital gains tax credit) and line 61 (tax on split income), and line 66 holds line 64 (dividend
 # tax credit) and line 65 (minimum tax carryover): none of those four is a payroll term, and all
-# four are blank for a salary-only filer, so the gate is exact for that filer. Line 77 (the
+# four are zero or blank for a salary-only filer, so the gate is exact for that filer. Line 77 (the
 # labour-sponsored venture capital credit) is the counterpart of T4127's LCP, which payroll does
 # apply, but it needs an investment a salary-only filer does not have. The gate is the counterpart
 # of ON428 line 81, AB428 line 68 and BC428 line 80. Gated through `ca-sk/marginal_rate_gate`, it

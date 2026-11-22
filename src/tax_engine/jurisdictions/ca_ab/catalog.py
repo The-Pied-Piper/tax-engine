@@ -321,7 +321,40 @@ AB428_DIVIDEND_TAX_CREDIT_LINE_63 = AmountKind.declare(
     CATALOG, "ab428_dividend_tax_credit_line_63", non_negative=True
 )
 """Alberta dividend tax credit, AB428 line 63 (line 61520) "Alberta dividend tax credit (use
-Worksheet AB428)": an optional input that a salary-only caller leaves out."""
+Worksheet AB428)": computed from Worksheet AB428 (5009-D), the sum of its line 1 and line 2 over the
+T1 lines 12000 and 12010. A caller who gives neither line has a credit of 0.00."""
+
+AB428_DIVIDEND_TAX_CREDIT_WORKSHEET_LINE_A = AmountKind.declare(
+    CATALOG, "ab428_dividend_tax_credit_worksheet_line_a", non_negative=True
+)
+"""Alberta dividend tax credit worksheet, AB428 line 63 (Worksheet AB428, 5009-D), Line A "Amount
+from line 12000 of your return": the T1 line 12000 total."""
+
+AB428_DIVIDEND_TAX_CREDIT_WORKSHEET_LINE_B = AmountKind.declare(
+    CATALOG, "ab428_dividend_tax_credit_worksheet_line_b", non_negative=True
+)
+"""Alberta dividend tax credit worksheet, AB428 line 63 (Worksheet AB428, 5009-D), Line B "Amount
+from line 12010 of your return": the T1 line 12010 total."""
+
+AB428_DIVIDEND_TAX_CREDIT_WORKSHEET_LINE_1 = AmountKind.declare(
+    CATALOG, "ab428_dividend_tax_credit_worksheet_line_1", non_negative=True
+)
+"""Alberta dividend tax credit worksheet, AB428 line 63 (Worksheet AB428, 5009-D), Line 1 "Amount
+from line 12010 of your return Line B multiplied by 2.18% =": line B at the first printed rate,
+rounded half-up to the cent."""
+
+AB428_DIVIDEND_TAX_CREDIT_WORKSHEET_LINE_C = AmountKind.declare(
+    CATALOG, "ab428_dividend_tax_credit_worksheet_line_c", non_negative=True
+)
+"""Alberta dividend tax credit worksheet, AB428 line 63 (Worksheet AB428, 5009-D), Line C "Amount A
+minus amount B": line A less line B."""
+
+AB428_DIVIDEND_TAX_CREDIT_WORKSHEET_LINE_2 = AmountKind.declare(
+    CATALOG, "ab428_dividend_tax_credit_worksheet_line_2", non_negative=True
+)
+"""Alberta dividend tax credit worksheet, AB428 line 63 (Worksheet AB428, 5009-D), Line 2 "Amount A
+minus amount B Line C = multiplied by 8.12% =": line C at the second printed rate, rounded half-up
+to the cent."""
 
 AB428_PENSION_INCOME_AMOUNT = AmountKind.declare(
     CATALOG, "ab428_pension_income_amount", non_negative=True

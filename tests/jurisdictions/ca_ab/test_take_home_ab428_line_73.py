@@ -131,7 +131,7 @@ ALBERTA_LINE_PARTS = (
     "ab428_credits_line_57.yaml",
     "ab428_credits_line_58.yaml",
     "ab428_line_62.yaml",
-    "ab428_line_63_inputs.yaml",
+    "ab428_line_63.yaml",
     "ab428_line_64.yaml",
     "ab428_line_65.yaml",
     "ab428_line_66.yaml",

@@ -1,0 +1,20 @@
+# T1 (5006-R, 2025) line 12010: "Line 12010: Amount of dividends (other than eligible)" (5006-R page 3). The optional input
+# (`ca/taxable_dividends_other_than_eligible`, blank when the filer has none) is read by this step, which is the one line the T1
+# prints for it, and the blank reads as 0. The form exports the line (`ca/taxable_dividends_other_than_eligible_line_12010`) for the provincial
+# dividend tax credit worksheets that print it again (AB428 line 63, BC428 line 65, MB428 line 62,
+# ON428 line 57 and SK428 line 64).
+form:
+  name: ca/t1_lines_copied_by_provinces
+capabilities:
+  - name: core/sum
+    title: "Amount of dividends (other than eligible)"
+    reference: "12010"
+    unit: ca/cad
+    params:
+      rounding: ca/cent_rounding
+    consumes:
+      parts: [ca/taxable_dividends_other_than_eligible]
+    blank:
+      ca/taxable_dividends_other_than_eligible: "0"
+    produces:
+      output: ca/taxable_dividends_other_than_eligible_line_12010

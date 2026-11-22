@@ -1,0 +1,15 @@
+# T1 (5006-R, 2025) line 12000 input a salary-only caller does not give. "Line 9 and line 12000: Amount of dividends (eligible and other than eligible)" (5006-R
+# page 3). A salary-only caller has no dividends, so a request that leaves the line out is read as
+# blank, and this form's step reads that blank as 0. This form owns the input: the provincial
+# dividend tax credit worksheets (AB428 line 63, BC428 line 65, MB428 line 62, ON428 line 57 and
+# SK428 line 64) import line 12000 from this form's export and never ask for it themselves.
+form:
+  name: ca/t1_lines_copied_by_provinces
+inputs:
+  - name: ca/taxable_dividends
+    title: "Amount of dividends (eligible and other than eligible)"
+    reference: "12000"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 9 and line 12000: Amount of dividends (eligible and other than eligible)'

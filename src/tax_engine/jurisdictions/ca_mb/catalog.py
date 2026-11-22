@@ -269,7 +269,41 @@ MB428_DIVIDEND_TAX_CREDIT_LINE_62 = AmountKind.declare(
     CATALOG, "mb428_dividend_tax_credit_line_62", non_negative=True
 )
 """Manitoba dividend tax credit, MB428 line 62 (line 61520) "Line 62 and line 61520: Manitoba
-dividend tax credit (use Worksheet MB428)": a caller input, read as blank when left out."""
+dividend tax credit (use Worksheet MB428)": computed from Worksheet MB428 (5007-D), the sum of its
+line 1 and line 2 over the T1 lines 12000 and 12010. A caller who gives neither line has a credit of
+0.00."""
+
+MB428_DIVIDEND_TAX_CREDIT_WORKSHEET_LINE_A = AmountKind.declare(
+    CATALOG, "mb428_dividend_tax_credit_worksheet_line_a", non_negative=True
+)
+"""Manitoba dividend tax credit worksheet, MB428 line 62 (Worksheet MB428, 5007-D), Line A "Amount
+from line 12000 of your return": the T1 line 12000 total."""
+
+MB428_DIVIDEND_TAX_CREDIT_WORKSHEET_LINE_B = AmountKind.declare(
+    CATALOG, "mb428_dividend_tax_credit_worksheet_line_b", non_negative=True
+)
+"""Manitoba dividend tax credit worksheet, MB428 line 62 (Worksheet MB428, 5007-D), Line B "Amount
+from line 12010 of your return": the T1 line 12010 total."""
+
+MB428_DIVIDEND_TAX_CREDIT_WORKSHEET_LINE_1 = AmountKind.declare(
+    CATALOG, "mb428_dividend_tax_credit_worksheet_line_1", non_negative=True
+)
+"""Manitoba dividend tax credit worksheet, MB428 line 62 (Worksheet MB428, 5007-D), Line 1 "Amount
+from line 12010 of your return Line B multiplied by 0.7835% =": line B at the first printed rate,
+rounded half-up to the cent."""
+
+MB428_DIVIDEND_TAX_CREDIT_WORKSHEET_LINE_C = AmountKind.declare(
+    CATALOG, "mb428_dividend_tax_credit_worksheet_line_c", non_negative=True
+)
+"""Manitoba dividend tax credit worksheet, MB428 line 62 (Worksheet MB428, 5007-D), Line C "Amount A
+minus amount B": line A less line B."""
+
+MB428_DIVIDEND_TAX_CREDIT_WORKSHEET_LINE_2 = AmountKind.declare(
+    CATALOG, "mb428_dividend_tax_credit_worksheet_line_2", non_negative=True
+)
+"""Manitoba dividend tax credit worksheet, MB428 line 62 (Worksheet MB428, 5007-D), Line 2 "Amount A
+minus amount B Line C = multiplied by 8% =": line C at the second printed rate, rounded half-up to
+the cent."""
 
 MB428_POLITICAL_CONTRIBUTION_TAX_CREDIT_LINE_69 = AmountKind.declare(
     CATALOG, "mb428_political_contribution_tax_credit_line_69", non_negative=True

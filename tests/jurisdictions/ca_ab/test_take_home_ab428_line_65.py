@@ -4,8 +4,9 @@ Form text (Form AB428, CRA 5009-c): "Line 65: Add lines 62 to 64. = ^". One core
 half-up to the cent by `ca-ab/cent_rounding`, over line 62 (the credits from line 58), line 63
 (the Alberta dividend tax credit, an optional input) and line 64 (the minimum tax carryover, the
 35% result, box B). The form prints no title for the line beyond its label, so the step is
-untitled. Line 63 is left blank by a salary-only filer, so the step has a blank rule reading it as
-0 and prints its own "Left blank, taken as 0" row; line 62 and line 64 are always computed (the
+untitled. Line 63 is the computed dividend tax credit worksheet (a blank caller gives 0.00), so
+the step has
+no blank rule; line 62 and line 64 are always computed (the
 line 64 amount, box A, defaults to 0), so they need none. The form prints no floor on line 65, but
 every addend is non-negative, so the kind is non-negative.
 
@@ -45,7 +46,6 @@ from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_ab.catalog import (
     AB428_CREDITS_FROM_LINE_58_LINE_62,
     AB428_CREDITS_SUBTOTAL_LINE_65,
-    AB428_DIVIDEND_TAX_CREDIT_LINE_63,
     AB428_MINIMUM_TAX_CARRYOVER_LINE_64,
 )
 from tests.federal_forms import form_parts
@@ -130,7 +130,7 @@ def _part_files() -> Iterator[Path]:
     yield ALBERTA_PARTS / "ab428_credits_line_57.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_58.yaml"
     yield ALBERTA_PARTS / "ab428_line_62.yaml"
-    yield ALBERTA_PARTS / "ab428_line_63_inputs.yaml"
+    yield ALBERTA_PARTS / "ab428_line_63.yaml"
     yield ALBERTA_PARTS / "ab428_line_64.yaml"
     yield LINE_PART
 
@@ -178,20 +178,14 @@ def test_line_65_adds_lines_63_and_64_when_they_are_given(tmp_path: Path) -> Non
     sheet = _sheet(
         tmp_path,
         "70000",
-        Artifact(AB428_DIVIDEND_TAX_CREDIT_LINE_63, D("100.00")),
+        Artifact(alberta_kinds().kind("ca/taxable_dividends"), D("1000")),
+        Artifact(alberta_kinds().kind("ca/taxable_dividends_other_than_eligible"), D("400")),
         Artifact(MINIMUM_TAX_CARRYOVER, D("1000")),
     )
 
     assert sheet.get(AB428_MINIMUM_TAX_CARRYOVER_LINE_64).value == D("350.00")
-    # 2,135.38 plus 100.00 plus 350.00.
-    assert sheet.get(AB428_CREDITS_SUBTOTAL_LINE_65).value == D("2585.38")
-
-
-def test_line_65_is_rounded_half_up_to_the_cent(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "70000", Artifact(AB428_DIVIDEND_TAX_CREDIT_LINE_63, D("0.005")))
-
-    # 2,135.38 plus 0.005 is 2,135.385, rounded half-up to 2,135.39.
-    assert sheet.get(AB428_CREDITS_SUBTOTAL_LINE_65).value == D("2135.39")
+    # Line 63 is 8.72 plus 48.72, 57.44 (400 at 2.18%, 600 at 8.12%): 2,135.38 + 57.44 + 350.00.
+    assert sheet.get(AB428_CREDITS_SUBTOTAL_LINE_65).value == D("2542.82")
 
 
 def test_the_trace_has_a_row_for_line_65(tmp_path: Path) -> None:
@@ -212,7 +206,7 @@ def test_the_part_names_the_form_and_has_one_untitled_sum_step() -> None:
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": "ca-ab/ab428"}
     (step,) = part["capabilities"]
-    assert list(step) == ["name", "reference", "unit", "params", "consumes", "blank", "produces"]
+    assert list(step) == ["name", "reference", "unit", "params", "consumes", "produces"]
     assert step == {
         "name": "core/sum",
         "reference": "65",
@@ -225,7 +219,6 @@ def test_the_part_names_the_form_and_has_one_untitled_sum_step() -> None:
                 "ca-ab/ab428_minimum_tax_carryover_line_64",
             ]
         },
-        "blank": {"ca-ab/ab428_dividend_tax_credit_line_63": "0"},
         "produces": {"output": IDENTIFIER},
     }
 

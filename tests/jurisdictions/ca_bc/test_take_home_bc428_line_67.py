@@ -43,7 +43,6 @@ from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.credits_against_federal_tax import MINIMUM_TAX_CARRYOVER
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_bc.catalog import (
-    BC428_DIVIDEND_TAX_CREDIT_LINE_65,
     BC428_MINIMUM_TAX_CARRYOVER_LINE_66,
     BC428_NON_REFUNDABLE_CREDITS_LINE_60,
     BC428_TOTAL_LINE_67,
@@ -121,7 +120,7 @@ def _part_files() -> Iterator[Path]:
     yield BC_PARTS / "bc428_line_59_input.yaml"
     yield BC_PARTS / "bc428_line_59.yaml"
     yield BC_PARTS / "bc428_line_60.yaml"
-    yield BC_PARTS / "bc428_line_65_input.yaml"
+    yield BC_PARTS / "bc428_line_65.yaml"
     yield BC_PARTS / "bc428_line_66.yaml"
     yield LINE_PART
 
@@ -166,26 +165,32 @@ def test_line_67_is_line_60_when_lines_65_and_66_are_empty(
     assert sheet.get(BC428_MINIMUM_TAX_CARRYOVER_LINE_66).value == D("0")
 
 
+def _dividends() -> list[Artifact[Decimal]]:
+    kinds = british_columbia_kinds()
+    return [
+        Artifact(kinds.kind("ca/taxable_dividends"), D("1000")),
+        Artifact(kinds.kind("ca/taxable_dividends_other_than_eligible"), D("400")),
+    ]
+
+
 @pytest.mark.parametrize(
-    ("extra", "expected"),
+    ("dividends", "carryover", "expected"),
     [
-        # 875.44 at $70,000 with line 65 of 100.00 alone.
-        ([Artifact(BC428_DIVIDEND_TAX_CREDIT_LINE_65, D("100.00"))], "975.44"),
+        # Line 65 is 7.84 plus 72.00, 79.84 (400 at 1.96%, 600 at 12%): 875.44 plus 79.84.
+        (True, False, "955.28"),
         # Line 66 is 34.9% of 1,000.00, 349.00, so line 67 is 875.44 plus 349.00.
-        ([Artifact(MINIMUM_TAX_CARRYOVER, D("1000"))], "1224.44"),
-        # Both: 875.44 plus 100.00 plus 349.00.
-        (
-            [
-                Artifact(BC428_DIVIDEND_TAX_CREDIT_LINE_65, D("100.00")),
-                Artifact(MINIMUM_TAX_CARRYOVER, D("1000")),
-            ],
-            "1324.44",
-        ),
+        (False, True, "1224.44"),
+        # Both: 875.44 plus 79.84 plus 349.00.
+        (True, True, "1304.28"),
     ],
 )
 def test_line_67_adds_lines_65_and_66_when_they_are_given(
-    tmp_path: Path, extra: list[Artifact[Decimal]], expected: str
+    tmp_path: Path, dividends: bool, carryover: bool, expected: str
 ) -> None:
+    extra = _dividends() if dividends else []
+    if carryover:
+        extra.append(Artifact(MINIMUM_TAX_CARRYOVER, D("1000")))
+
     sheet = _sheet(tmp_path, "70000", *extra)
 
     assert sheet.get(BC428_TOTAL_LINE_67).value == D(expected)
@@ -195,13 +200,6 @@ def test_line_66_is_34_9_percent_of_the_amount_given(tmp_path: Path) -> None:
     sheet = _sheet(tmp_path, "70000", Artifact(MINIMUM_TAX_CARRYOVER, D("1000")))
 
     assert sheet.get(BC428_MINIMUM_TAX_CARRYOVER_LINE_66).value == D("349.00")
-
-
-def test_line_67_is_rounded_half_up_to_the_cent(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "70000", Artifact(BC428_DIVIDEND_TAX_CREDIT_LINE_65, D("0.005")))
-
-    # 875.44 plus 0.005 is 875.445, rounded half-up to 875.45.
-    assert sheet.get(BC428_TOTAL_LINE_67).value == D("875.45")
 
 
 def test_the_trace_has_a_row_for_line_67(tmp_path: Path) -> None:
@@ -222,14 +220,13 @@ def test_the_part_names_the_form_and_has_one_untitled_sum_step() -> None:
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": "ca-bc/bc428"}
     (step,) = part["capabilities"]
-    assert list(step) == ["name", "reference", "unit", "params", "consumes", "blank", "produces"]
+    assert list(step) == ["name", "reference", "unit", "params", "consumes", "produces"]
     assert step == {
         "name": "core/sum",
         "reference": "67",
         "unit": "ca/cad",
         "params": {"rounding": "ca-bc/cent_rounding"},
         "consumes": {"parts": [LINE_60, LINE_65, LINE_66]},
-        "blank": {LINE_65: "0"},
         "produces": {"output": IDENTIFIER},
     }
 

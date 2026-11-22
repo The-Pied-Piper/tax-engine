@@ -11,7 +11,7 @@ The test composes the T1 employment income form, the real Schedule 8, T2204 and 
 parts, the real parts of Worksheet MB428 lines 1 to 9, Schedule MB428-A lines 1 to 12, MB428 lines
 9, 18, 19, 21, 28, 29, 33, 36, 41, 42 and 51 of `ca-mb/mb428_credits`, the line 31, line 50 and line
 56 input parts, the real `mb428_credits_line_53.yaml`, `mb428_credits_line_57.yaml`,
-`mb428_line_61.yaml`, `mb428_line_62_input.yaml`, `mb428_line_63_input.yaml` and
+`mb428_line_61.yaml`, `mb428_line_62.yaml`, `mb428_line_63_input.yaml` and
 `mb428_line_63.yaml`, and the new `mb428_line_64.yaml`, and types in only the salary (and, in some
 tests, line 62 and the line 63 amount). The header and the form declarations are made up here: the
 credits form exports only line 57, and `ca-mb/mb428` exports only line 64. The figures are line 61
@@ -57,7 +57,7 @@ D = Decimal
 MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"
 LINE_PART = MB_PARTS / "mb428_line_64.yaml"
 LINE_61_PART = MB_PARTS / "mb428_line_61.yaml"
-LINE_62_PART = MB_PARTS / "mb428_line_62_input.yaml"
+LINE_62_PART = MB_PARTS / "mb428_line_62.yaml"
 LINE_63_PART = MB_PARTS / "mb428_line_63.yaml"
 LINE_57_PART = MB_PARTS / "mb428_credits_line_57.yaml"
 LINE_53_PART = MB_PARTS / "mb428_credits_line_53.yaml"
@@ -234,7 +234,14 @@ def _sheet(
 ) -> Worksheet:
     given = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if line_62 is not None:
-        given.append(Artifact(mb_catalog.MB428_DIVIDEND_TAX_CREDIT_LINE_62, D(line_62)))
+        # `line_62` is the amount of line 12000, with line 12010 at 40% of it.
+        given.append(Artifact(manitoba_kinds().kind("ca/taxable_dividends"), D(line_62)))
+        given.append(
+            Artifact(
+                manitoba_kinds().kind("ca/taxable_dividends_other_than_eligible"),
+                D(line_62) * D("0.4"),
+            )
+        )
     if line_63_amount is not None:
         given.append(Artifact(manitoba_kinds().kind("ca/minimum_tax_carryover"), D(line_63_amount)))
     worksheets = _service(tmp_path).compute(JurisdictionCode("CA-MB"), 2025, *given)
@@ -263,10 +270,11 @@ def test_line_64_is_line_61_when_lines_62_and_63_are_blank(
 
 
 def test_line_64_adds_line_62_when_it_is_given(tmp_path: Path) -> None:
-    # Line 61 at a 70,000 salary is 2,176.12; line 62 of 100.00 makes 2,276.12.
-    sheet = _sheet(tmp_path, "70000", line_62="100.00")
+    # Line 61 at a 70,000 salary is 2,176.12; line 12000 of 1,000.00 and line 12010 of 400.00 make
+    # line 62 51.13 (3.13 plus 48.00), so 2,227.25.
+    sheet = _sheet(tmp_path, "70000", line_62="1000.00")
 
-    assert _line(sheet, IDENTIFIER) == D("2276.12")
+    assert _line(sheet, IDENTIFIER) == D("2227.25")
 
 
 def test_line_64_adds_line_63_when_its_amount_is_given(tmp_path: Path) -> None:
@@ -278,13 +286,13 @@ def test_line_64_adds_line_63_when_its_amount_is_given(tmp_path: Path) -> None:
 
 
 def test_line_64_adds_lines_61_62_and_63_when_both_optionals_are_given(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "70000", line_62="100.00", line_63_amount="1000.00")
+    sheet = _sheet(tmp_path, "70000", line_62="1000.00", line_63_amount="1000.00")
 
-    assert _line(sheet, IDENTIFIER) == D("2776.12")
+    assert _line(sheet, IDENTIFIER) == D("2727.25")
 
 
 def test_a_given_line_62_prints_no_left_blank_row_from_line_64(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "70000", line_62="100.00", line_63_amount="1000.00")
+    sheet = _sheet(tmp_path, "70000", line_62="1000.00", line_63_amount="1000.00")
 
     assert EnglishTraceRenderer().render_all(sheet.trace, sheet)
     assert not _blank_rows(sheet)
@@ -316,7 +324,6 @@ def test_the_part_names_the_form_and_has_one_untitled_sum_step_over_lines_61_to_
         "unit",
         "params",
         "consumes",
-        "blank",
         "produces",
     ]
     assert step == {
@@ -325,7 +332,6 @@ def test_the_part_names_the_form_and_has_one_untitled_sum_step_over_lines_61_to_
         "unit": "ca/cad",
         "params": {"rounding": "ca-mb/cent_rounding"},
         "consumes": {"parts": [LINE_61, LINE_62, LINE_63]},
-        "blank": {LINE_62: "0"},
         "produces": {"output": IDENTIFIER},
     }
 

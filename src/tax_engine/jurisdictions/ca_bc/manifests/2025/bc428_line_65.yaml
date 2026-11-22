@@ -1,0 +1,66 @@
+# BC428 (2025) line 65 "British Columbia dividend tax credit", from the printed Worksheet BC428 (5010-D,
+# "Line 61520 - British Columbia dividend tax credit") in six steps: "Line A: Amount from line 12000 of your
+# return", "Line 1: Amount from line 12010 of your return Line B multiplied by 1.96% =", "Line 2:
+# Amount A minus amount B Line C = multiplied by 12% =" and the sum of line 1 and line 2, which is
+# line 65 of the form. The two amounts are the T1's lines 12000 and 12010: the T1 owns the inputs and
+# exports the lines, so the first two steps total those exports (a form reads another form's export
+# only as a record list). Each printed rate is held in its own dataset and each product rounds
+# half-up to the cent. A caller who gives neither line has a credit of 0.00.
+form:
+  name: ca-bc/bc428
+capabilities:
+  - name: core/record_total
+    title: "Amount from line 12000 of your return"
+    reference: "65 worksheet line A"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_lines_copied_by_provinces.taxable_dividends_line_12000
+    produces:
+      output: ca-bc/bc428_dividend_tax_credit_worksheet_line_a
+  - name: core/record_total
+    title: "Amount from line 12010 of your return"
+    reference: "65 worksheet line B"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_lines_copied_by_provinces.taxable_dividends_other_than_eligible_line_12010
+    produces:
+      output: ca-bc/bc428_dividend_tax_credit_worksheet_line_b
+  - name: core/apply_rate
+    reference: "65 worksheet line 1"
+    unit: ca/cad
+    params:
+      rate: ca-bc/dividend_tax_credit_worksheet_rate_line_1
+    consumes:
+      base: ca-bc/bc428_dividend_tax_credit_worksheet_line_b
+    produces:
+      output: ca-bc/bc428_dividend_tax_credit_worksheet_line_1
+  - name: core/subtract
+    title: "Amount A minus amount B"
+    reference: "65 worksheet line C"
+    unit: ca/cad
+    params:
+      rounding: ca-bc/cent_rounding
+    consumes:
+      amount: ca-bc/bc428_dividend_tax_credit_worksheet_line_a
+      less: ca-bc/bc428_dividend_tax_credit_worksheet_line_b
+    produces:
+      output: ca-bc/bc428_dividend_tax_credit_worksheet_line_c
+  - name: core/apply_rate
+    reference: "65 worksheet line 2"
+    unit: ca/cad
+    params:
+      rate: ca-bc/dividend_tax_credit_worksheet_rate_line_2
+    consumes:
+      base: ca-bc/bc428_dividend_tax_credit_worksheet_line_c
+    produces:
+      output: ca-bc/bc428_dividend_tax_credit_worksheet_line_2
+  - name: core/sum
+    title: "British Columbia dividend tax credit"
+    reference: "65"
+    unit: ca/cad
+    params:
+      rounding: ca-bc/cent_rounding
+    consumes:
+      parts: [ca-bc/bc428_dividend_tax_credit_worksheet_line_1, ca-bc/bc428_dividend_tax_credit_worksheet_line_2]
+    produces:
+      output: ca-bc/bc428_dividend_tax_credit_line_65
