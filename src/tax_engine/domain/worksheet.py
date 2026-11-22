@@ -32,6 +32,7 @@ class Worksheet:
         form_title: str | None = None,
         figure_titles: Mapping[str, str] | None = None,
         figure_references: Mapping[str, str] | None = None,
+        figure_positions: Mapping[str, int] | None = None,
         figure_units: Mapping[str, Unit] | None = None,
         imported_figures: Mapping[str, ImportedFigure] | None = None,
         defaulted: Iterable[ArtifactKind[Any]] = (),
@@ -44,6 +45,7 @@ class Worksheet:
         self._form_title = form_title
         self._figure_titles = dict(figure_titles or {})
         self._figure_references = dict(figure_references or {})
+        self._figure_positions = dict(figure_positions or {})
         self._figure_units = dict(figure_units or {})
         self._imported_figures = dict(imported_figures or {})
         self._artifacts: dict[ArtifactKind[Any], Artifact[Any]] = {}
@@ -81,6 +83,12 @@ class Worksheet:
         is a step of the engine.
         """
         return self._figure_references.get(label)
+
+    def position(self, label: str) -> int | None:
+        """Where the form prints the figure `label`, counted from 1; `None` if the manifest gives
+        none.
+        """
+        return self._figure_positions.get(label)
 
     def unit(self, label: str) -> Unit | None:
         """The unit of the figure `label`: this form's own, else that of the form it is read from;
