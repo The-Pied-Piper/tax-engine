@@ -24,12 +24,13 @@ from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_qc.catalog import (
     TP1_FOREST_PRODUCER_AVERAGING_LINE_276,
+    TP1_LINE_246,
     TP1_SCHEDULE_F_INCOME_SUBJECT_LINE_70,
-    TP1_SCHEDULE_F_LINE_41,
     TP1_SCHEDULE_F_LINE_62,
 )
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 from tests.jurisdictions.ca_qc.tp1_net_income_support import SALARY_PARTS
+from tests.jurisdictions.ca_qc.tp1_schedule_f_support import LINE_68_COPY_PARTS, NET_INCOME_PARTS
 
 D = Decimal
 
@@ -86,6 +87,8 @@ PARTS = (
     "tp1_schedule_f_line_29.yaml",
     "tp1_schedule_f_line_34.yaml",
     "tp1_schedule_f_line_36.yaml",
+    *NET_INCOME_PARTS,
+    *LINE_68_COPY_PARTS,
     "tp1_schedule_f_line_68_inputs.yaml",
     "tp1_schedule_f_line_68.yaml",
     "tp1_schedule_f_line_70.yaml",
@@ -129,7 +132,7 @@ def test_a_salary_only_line_70_is_zero(take_home_service: TakeHomeService, salar
 def test_line_68_is_taken_off_line_36(take_home_service: TakeHomeService) -> None:
     given = (
         (TP1_FOREST_PRODUCER_AVERAGING_LINE_276, "1000"),
-        (TP1_SCHEDULE_F_LINE_41, "100.25"),
+        (TP1_LINE_246, "100.25"),
         (TP1_SCHEDULE_F_LINE_62, "200.00"),
     )
     value = (

@@ -3,8 +3,10 @@
 # 207, 214, 215, 225, 228, 231, 234, 236, 241, 245, 246, 250 and 252. Each is an optional input, left
 # blank by a salary-only caller and read as 0 by line 254 (`tp1_net_income_line_254.yaml`). The boxes
 # printed beside them that no sum adds are not taken: 206, 224 and 249 ("Specify"), 212 (part of line
-# 214), 233 (the total losses, of which line 234 is the allowable part) and 248.1 ("Specify"). No sign
-# is refused: the form prints none for these lines.
+# 214), 233 (the total losses, of which line 234 is the allowable part) and 248.1 ("Specify"). Lines 225,
+# 231, 234, 245 and 246 are deductions the form has the filer enter as positive amounts, so a
+# negative is refused at entry; the other nine lines stay signed. Those five lines are exported,
+# for Schedule F lines 54, 56, 58, 46 and 41.
 form:
   name: ca-qc/tp1_net_income
 inputs:

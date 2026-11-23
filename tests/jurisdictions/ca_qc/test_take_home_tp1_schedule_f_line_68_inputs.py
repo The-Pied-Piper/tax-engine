@@ -1,6 +1,7 @@
-"""Revenu Quebec Schedule F (TP-1.D.F-V, 2025-12), Part A, lines 41, 42, 43, 43.1, 44, 45, 46, 54,
-56, 58, 60 and 62: the lines that line 68 adds ("Add lines 41 through 62"). Each is an optional
-input a salary-only caller does not give; line 68 reads a blank as 0.
+"""Revenu Quebec Schedule F (TP-1.D.F-V, 2025-12), Part A, lines 42, 43, 43.1, 44, 45, 60 and 62:
+the lines that line 68 adds ("Add lines 41 through 62") and that no other form owns (lines 41, 46,
+54, 56 and 58 copy TP-1 lines 246, 245, 225, 231 and 234). Each is an optional input a salary-only
+caller does not give; line 68 reads a blank as 0.
 
 The real part is loaded under a test-local header and form declaration over the Quebec package list
 of `support.py`."""
@@ -22,7 +23,6 @@ from tests.manifest_support import input_named, inputs_of
 PART = "tp1_schedule_f_line_68_inputs.yaml"
 NAMES = {line: f"ca-qc/tp1_schedule_f_line_{line}" for line in LINE_68_INPUTS}
 BASES = {
-    "41": ("Amounts you repaid in 2025 because you received an overpayment (line 246)"),
     "42": ("Deduction for a repayment of wage loss replacement benefits (line 207, point 12)"),
     "43": ("Amount from line 26 of Schedule R"),
     "43_1": (
@@ -34,10 +34,6 @@ BASES = {
         "(line 250, point 3)"
     ),
     "45": ("Deductions claimed on line 250 (points 4, 5, 6, 11, 13, 14 and 15)"),
-    "46": ("Deduction for retirement income transferred to your spouse on December 31 (line 245)"),
-    "54": ("Support payments made (deductible amount) (line 225)"),
-    "56": ("Carrying charges and interest expenses (line 231)"),
-    "58": ("Business investment loss (line 234)"),
     "60": (
         "Deduction claimed on line 293, unless it was for the amount on line 16, 20, 25 or 28 above"
     ),

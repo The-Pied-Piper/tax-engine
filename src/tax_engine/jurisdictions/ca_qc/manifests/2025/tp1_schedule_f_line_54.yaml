@@ -1,0 +1,18 @@
+# Schedule F (2025) line 54: "Support payments made (deductible amount) (line 225)", a copy of TP-1 line 225.
+# Line 225 is an input of the TP-1 net income form only, which takes it once and exports it; this line
+# reads that export as a record list of one, so the one step is `core/record_total` (as line 22
+# reads line 114). A blank line 225 is read as 0.
+form:
+  name: ca-qc/tp1_schedule_f
+capabilities:
+  - name: core/record_total
+    title: "Support payments made (deductible amount)"
+    reference: "54"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp1_net_income.tp1_line_225
+    blank:
+      records:
+        ca-qc/tp1_line_225: "0"
+    produces:
+      output: ca-qc/tp1_schedule_f_line_54
