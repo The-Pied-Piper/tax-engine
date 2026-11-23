@@ -2015,7 +2015,7 @@
    },
    {
     "form": "ca-nl/nl428_credits",
-    "lines": 78
+    "lines": 70
    },
    {
     "form": "ca/t691",
@@ -2023,7 +2023,7 @@
    },
    {
     "form": "ca-nl/nl428",
-    "lines": 72
+    "lines": 68
    },
    {
     "form": "ca/t1_tax_and_credits",
@@ -2034,7 +2034,7 @@
     "lines": 16
    }
   ],
-  "trace_sha256": "977cf281bffa7928d72dad1570620b480cf938658cbb8894b4ceda05575aef3f"
+  "trace_sha256": "4debe42258a099f9dfbe0d800b7bb1e01d57247442828ef3d2fbbf38a2a04f53"
  },
  {
   "jurisdiction": "CA-NL",
@@ -2205,7 +2205,7 @@
    },
    {
     "form": "ca-nl/nl428_credits",
-    "lines": 78
+    "lines": 70
    },
    {
     "form": "ca/t691",
@@ -2213,7 +2213,7 @@
    },
    {
     "form": "ca-nl/nl428",
-    "lines": 72
+    "lines": 68
    },
    {
     "form": "ca/t1_tax_and_credits",
@@ -2224,7 +2224,7 @@
     "lines": 16
    }
   ],
-  "trace_sha256": "85bb1d6fcdd023204c165cd4cb6a464e42b32f2a64f2cb290dabf34e684941e6"
+  "trace_sha256": "6371bae0a912885642899b0d9723aff2e1c26da3dcc34fabe89fd6793827d316"
  },
  {
   "jurisdiction": "CA-NL",

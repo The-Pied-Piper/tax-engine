@@ -2,10 +2,13 @@
 
 Form text (Form NL428, CRA 5001-C, 5001-c-25e.txt): "Line 99: Amount from line 93" and "Line
 101: Line 99 minus line 100 (if negative, enter "0") =". One core/subtract_not_below_zero step over
-line 93 (line 99 is its copy) and line 100, rounded half-up to the cent by `ca-nl/cent_rounding`.
+line 92 and line 100, rounded half-up to the cent by `ca-nl/cent_rounding`. Line 93 adds line 92 of
+column 2 (your spouse or common-law partner), which the take-home leaves out (single filer, owner
+ruling 23 Nov 2026, as Quebec's spouse lines were in #1925), so lines 93 and 99 are copies of line
+92 of column 1 and have no step.
 The form prints no title for the line, so the step is untitled.
 
-Figures (hand-computed from the printed form, not a CRA example): line 93 is 19,835.00 / 69,335.00
+Figures (hand-computed from the printed form, not a CRA example): line 92 is 19,835.00 / 69,335.00
 and line 100 is 23,928 at salaries of 20,000 / 70,000, so line 101 is 0.00 / 45,407.00. With an
 amount claimed on line 96, line 100 is 40,460 and line 101 at a salary of 70,000 is 28,875.00.
 """
@@ -45,7 +48,7 @@ D = Decimal
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
 LINE_PART = NL_PARTS / "nl428_line_101.yaml"
 LINE_22 = "ca-nl/nl428_eligible_dependant_net_income_line_22"
-LINE_93 = "ca-nl/nl428_adjusted_family_income_line_93"
+LINE_92 = "ca-nl/nl428_family_income_less_uccb_rdsp_line_92"
 LINE_100 = "ca-nl/nl428_low_income_threshold_line_100"
 IDENTIFIER = "ca-nl/nl428_line_101"
 LINE_96 = "ca-nl/nl428_reduction_for_spouse_or_common_law_partner_claimed_line_96"
@@ -65,8 +68,6 @@ NL_PART_NAMES = (
     "worksheet_nl428_58440_line_7.yaml",
     "nl428_credits_line_16.yaml",
     "nl428_credits_line_17.yaml",
-    "nl428_credits_line_19_input.yaml",
-    "nl428_credits_line_20.yaml",
     "nl428_credits_line_22_input.yaml",
     "nl428_credits_line_23.yaml",
     "nl428_credits_line_24_input.yaml",
@@ -116,12 +117,6 @@ NL_PART_NAMES = (
     "nl428_line_90.yaml",
     "nl428_line_91.yaml",
     "nl428_line_92.yaml",
-    "nl428_line_88_column_2_input.yaml",
-    "nl428_line_89_column_2_input.yaml",
-    "nl428_line_90_column_2.yaml",
-    "nl428_line_91_column_2_input.yaml",
-    "nl428_line_92_column_2.yaml",
-    "nl428_line_93.yaml",
     "nl428_line_101.yaml",
 )
 
@@ -153,7 +148,7 @@ FORMS = dedent("""\
       name: ca-nl/nl428
       required: true
       exports:
-        - ca-nl/nl428_adjusted_family_income_line_93
+        - ca-nl/nl428_family_income_less_uccb_rdsp_line_92
         - ca-nl/nl428_low_income_threshold_line_100
         - ca-nl/nl428_line_101
     capabilities: []
@@ -216,12 +211,12 @@ def _value(sheet: Any, identifier: str) -> Decimal:
     return D(sheet.get(newfoundland_kinds().kind(identifier)).value)
 
 
-# salary, line 101: line 99 (line 93) minus line 100, line 96 and line 97 blank.
+# salary, line 101: line 99 (line 92) minus line 100, line 96 and line 97 blank.
 @pytest.mark.parametrize(
     ("salary", "expected"),
     [("20000", "0.00"), ("70000", "45407.00")],
 )
-def test_line_101_is_line_93_minus_line_100_not_below_zero(
+def test_line_101_is_line_92_minus_line_100_not_below_zero(
     tmp_path: Path, salary: str, expected: str
 ) -> None:
     value = _value(_sheet(tmp_path, salary, FORM_NAME), IDENTIFIER)
@@ -233,12 +228,12 @@ def test_line_101_is_line_93_minus_line_100_not_below_zero(
 def test_line_101_takes_the_larger_line_100_when_line_96_is_claimed(tmp_path: Path) -> None:
     sheet = _sheet(tmp_path, "70000", FORM_NAME, {LINE_96: "1"})
 
-    assert _value(sheet, LINE_93) == D("69335.00")
+    assert _value(sheet, LINE_92) == D("69335.00")
     assert _value(sheet, LINE_100) == D("40460")
     assert _value(sheet, IDENTIFIER) == D("28875.00")
 
 
-def test_line_101_is_one_untitled_subtract_step_over_line_93_and_line_100() -> None:
+def test_line_101_is_one_untitled_subtract_step_over_line_92_and_line_100() -> None:
     part: Any = yaml.safe_load(LINE_PART.read_text(encoding="utf-8"))
 
     assert part == {
@@ -249,7 +244,7 @@ def test_line_101_is_one_untitled_subtract_step_over_line_93_and_line_100() -> N
                 "reference": "101",
                 "unit": "ca/cad",
                 "params": {"rounding": "ca-nl/cent_rounding"},
-                "consumes": {"amount": LINE_93, "less": LINE_100},
+                "consumes": {"amount": LINE_92, "less": LINE_100},
                 "produces": {"output": IDENTIFIER},
             }
         ],
