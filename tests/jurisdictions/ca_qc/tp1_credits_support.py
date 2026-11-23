@@ -15,6 +15,7 @@ from decimal import Decimal
 from textwrap import dedent
 from typing import Any
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
@@ -83,7 +84,9 @@ def credits_sheet(
     """The credits worksheet over the real `parts` of lines that read no other form; every optional
     input is left out unless in `given`."""
     service = take_home_service(HEADER, credits_form(*exports), *parts)
-    (sheet,) = service.compute(JurisdictionCode("CA-QC"), 2025, *given)[FORM]
+    (sheet,) = service.compute(
+        TaxCalculationRequest(JurisdictionCode("CA-QC"), 2025, tuple(given))
+    )[FORM]
     return sheet
 
 
@@ -103,5 +106,7 @@ def chain_sheet(
         *given,
     ]
     service = take_home_service(CHAIN_HEADER, form or credits_form(*exports), *CHAIN_PARTS, *parts)
-    (sheet,) = service.compute(JurisdictionCode("CA-QC"), 2025, *starting)[FORM]
+    (sheet,) = service.compute(
+        TaxCalculationRequest(JurisdictionCode("CA-QC"), 2025, tuple(starting))
+    )[FORM]
     return sheet

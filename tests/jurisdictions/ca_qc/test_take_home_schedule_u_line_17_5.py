@@ -15,6 +15,7 @@ from textwrap import dedent
 
 import pytest
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
@@ -71,14 +72,18 @@ def schedule_u(
     """The Schedule U worksheet for a salary, and for line 98 and 98.2 figures other than the
     salary's."""
     (sheet,) = take_home_service(HEADER, FORM, *PARTS).compute(
-        JurisdictionCode("CA-QC"),
-        2025,
-        Artifact(EMPLOYMENT_INCOME, D(salary)),
-        *([Artifact(TP1_QPP_CONTRIBUTION_GIVEN_LINE_98, D(line_98))] if line_98 else []),
-        *(
-            [Artifact(TP1_ADDITIONAL_QPP_CONTRIBUTION_GIVEN_LINE_98_2, D(line_98_2))]
-            if line_98_2
-            else []
+        TaxCalculationRequest(
+            JurisdictionCode("CA-QC"),
+            2025,
+            (
+                Artifact(EMPLOYMENT_INCOME, D(salary)),
+                *([Artifact(TP1_QPP_CONTRIBUTION_GIVEN_LINE_98, D(line_98))] if line_98 else []),
+                *(
+                    [Artifact(TP1_ADDITIONAL_QPP_CONTRIBUTION_GIVEN_LINE_98_2, D(line_98_2))]
+                    if line_98_2
+                    else []
+                ),
+            ),
         ),
     )["ca-qc/tp1_schedule_u"]
     return sheet

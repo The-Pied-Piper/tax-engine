@@ -11,6 +11,7 @@ from typing import Any
 
 import yaml
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tests.jurisdictions.ca_on.conftest import ONTARIO_PARTS, TakeHomeService
@@ -46,7 +47,9 @@ def figure(
     )
     kinds = bundled_kinds()
     starting = [Artifact(kinds.kind(name), Decimal(value)) for name, value in given.items()]
-    (sheet,) = take_home_service(HEADER, form, part).compute(CODE, 2025, *starting)["ca-on/on428"]
+    (sheet,) = take_home_service(HEADER, form, part).compute(
+        TaxCalculationRequest(CODE, 2025, tuple(starting))
+    )["ca-on/on428"]
     value = sheet.get(kinds.kind(output)).value
     assert isinstance(value, Decimal)
     return value

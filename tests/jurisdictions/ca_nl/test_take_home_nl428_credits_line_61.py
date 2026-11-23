@@ -16,6 +16,7 @@ import yaml
 import tax_engine.jurisdictions.ca_nl
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -77,7 +78,9 @@ def _kind(identifier: str) -> AmountKind:
 
 def _compute(tmp_path: Path, given: dict[str, str]) -> Decimal:
     artifacts = [Artifact(_kind(name), D(value)) for name, value in given.items()]
-    (sheet,) = _service(tmp_path).compute(JurisdictionCode("CA-NL"), 2025, *artifacts)[FORM_NAME]
+    (sheet,) = _service(tmp_path).compute(
+        TaxCalculationRequest(JurisdictionCode("CA-NL"), 2025, tuple(artifacts))
+    )[FORM_NAME]
     value = sheet.get(_kind(OUTPUT)).value
     assert isinstance(value, Decimal)
     return value

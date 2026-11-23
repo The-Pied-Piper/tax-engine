@@ -15,6 +15,7 @@ from decimal import Decimal
 
 import pytest
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca_on.catalog import (
@@ -50,9 +51,7 @@ def lift_lines(take_home_service: TakeHomeService, line_3: str) -> tuple[Decimal
     """The figure before the maximum (line 5's first operation) and line 5 itself."""
     service = take_home_service(HEADER, FORM, PART)
     (worksheet,) = service.compute(
-        ONTARIO,
-        2025,
-        Artifact(LIFT_EMPLOYMENT_INCOME, Decimal(line_3)),
+        TaxCalculationRequest(ONTARIO, 2025, (Artifact(LIFT_EMPLOYMENT_INCOME, Decimal(line_3)),)),
     )[FORM_NAME]
     return (
         worksheet.get(LIFT_CREDIT_BEFORE_MAXIMUM).value,

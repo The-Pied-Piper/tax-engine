@@ -23,6 +23,7 @@ from textwrap import dedent
 
 import pytest
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
@@ -79,7 +80,9 @@ def _schedule_6(
     starting = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if exemption is not None:
         starting.append(Artifact(kinds.kind(LINE_14), D(exemption)))
-    worksheets = take_home_service(HEADER, SCHEDULE_6, *PARTS).compute(ONTARIO, 2025, *starting)
+    worksheets = take_home_service(HEADER, SCHEDULE_6, *PARTS).compute(
+        TaxCalculationRequest(ONTARIO, 2025, tuple(starting))
+    )
     (sheet,) = worksheets[FORM]
     return sheet
 

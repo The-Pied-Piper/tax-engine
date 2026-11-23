@@ -20,6 +20,7 @@ from typing import Any
 
 import yaml
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca_qc.catalog import (
@@ -121,7 +122,9 @@ def _forms(take_home_service: TakeHomeService, *runs: tuple[tuple[Any, str], ...
     forms = []
     for given in runs:
         starting = [*slip_artifacts("70000"), *(Artifact(kind, D(value)) for kind, value in given)]
-        sheets = service.compute(JurisdictionCode("CA-QC"), 2025, *starting)
+        sheets = service.compute(
+            TaxCalculationRequest(JurisdictionCode("CA-QC"), 2025, tuple(starting))
+        )
         forms.append({name: found[0] for name, found in sheets.items()})
     return forms
 

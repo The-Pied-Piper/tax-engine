@@ -18,6 +18,7 @@ from textwrap import dedent
 
 import pytest
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.income import (
@@ -83,10 +84,9 @@ def line_21(
         *UCCB_AND_RDSP_PARTS,
         PART,
     ).compute(
-        JurisdictionCode("CA-QC"),
-        2025,
-        Artifact(EMPLOYMENT_INCOME, D(salary)),
-        *given,
+        TaxCalculationRequest(
+            JurisdictionCode("CA-QC"), 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)), *given)
+        ),
     )
     (sheet,) = worksheets["ca-qc/t1_taxable_income"]
     return sheet.get(T1_LINE_21).value

@@ -12,6 +12,7 @@ from __future__ import annotations
 from decimal import Decimal
 from textwrap import dedent
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
@@ -74,7 +75,11 @@ def part_c(
 ) -> Worksheet:
     """The Schedule K worksheet of `parts` for a line 48 given straight to Part C."""
     (sheet,) = take_home_service(HEADER, form_part(export) + LINE_48_INPUT, *parts).compute(
-        JurisdictionCode("CA-QC"), 2025, Artifact(SCHEDULE_K_PREMIUM_INCOME_LINE_48, D(line_48))
+        TaxCalculationRequest(
+            JurisdictionCode("CA-QC"),
+            2025,
+            (Artifact(SCHEDULE_K_PREMIUM_INCOME_LINE_48, D(line_48)),),
+        )
     )[FORM_NAME]
     return sheet
 

@@ -27,6 +27,7 @@ from decimal import Decimal
 import pytest
 
 from tax_engine import build_tax_computation
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import NegativeArtifactError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -51,7 +52,9 @@ def _on428(salary: str, part_5_line_11: str | None) -> dict[str, Decimal]:
     given = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if part_5_line_11 is not None:
         given.append(Artifact(kinds.kind(PART_5_LINE_11), D(part_5_line_11)))
-    (sheet,) = build_tax_computation().compute(ONTARIO, 2025, *given)["ca-on/on428"]
+    (sheet,) = build_tax_computation().compute(TaxCalculationRequest(ONTARIO, 2025, tuple(given)))[
+        "ca-on/on428"
+    ]
     names = [
         *WORKSHEET,
         "on428_additional_tax_for_minimum_tax_line_72",

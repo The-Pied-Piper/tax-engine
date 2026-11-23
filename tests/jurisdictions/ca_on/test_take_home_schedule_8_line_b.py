@@ -12,6 +12,7 @@ from __future__ import annotations
 from decimal import Decimal
 from textwrap import dedent
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.deductions import (
@@ -45,7 +46,7 @@ FORM = dedent("""\
 
 def line_b(take_home_service: TakeHomeService, *artifacts: Artifact[int]) -> Decimal:
     worksheets = take_home_service(HEADER, FORM, PART).compute(
-        JurisdictionCode("CA-ON"), 2025, *artifacts
+        TaxCalculationRequest(JurisdictionCode("CA-ON"), 2025, tuple(artifacts))
     )
     (sheet,) = worksheets["ca/schedule_8"]
     return sheet.get(CPP_MAXIMUM_PENSIONABLE_EARNINGS).value

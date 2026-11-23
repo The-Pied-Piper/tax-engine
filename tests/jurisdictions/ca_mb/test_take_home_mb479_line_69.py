@@ -26,6 +26,7 @@ import tax_engine.jurisdictions.ca_mb
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import NegativeArtifactError
@@ -106,7 +107,9 @@ def _sheet(
         given.append(Artifact(kinds.kind(LINE_67), D(line_67)))
     if cost_68 is not None:
         given.append(Artifact(kinds.kind(COST_68), D(cost_68)))
-    (sheet,) = _service(tmp_path).compute(CODE, 2025, *given)[FORM_NAME]
+    (sheet,) = _service(tmp_path).compute(TaxCalculationRequest(CODE, 2025, tuple(given)))[
+        FORM_NAME
+    ]
     return sheet
 
 

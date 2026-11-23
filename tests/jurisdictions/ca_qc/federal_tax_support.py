@@ -7,6 +7,7 @@ from __future__ import annotations
 from decimal import Decimal
 from textwrap import dedent
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
@@ -74,7 +75,9 @@ def sheets(
         *(part(line) for line in lines),
     )
     worksheets = take_home_service(HEADER, form(export), *parts).compute(
-        JurisdictionCode("CA-QC"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
+        TaxCalculationRequest(
+            JurisdictionCode("CA-QC"), 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),)
+        )
     )
     (t1,) = worksheets[T1_FORM]
     (sheet,) = worksheets[TAX_FORM]

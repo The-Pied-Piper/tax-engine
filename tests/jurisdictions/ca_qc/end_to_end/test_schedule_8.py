@@ -37,6 +37,7 @@ from textwrap import dedent
 
 import pytest
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
@@ -83,7 +84,9 @@ BARE_HEADER = HEADER_TEMPLATE.replace("{schedule_8}", "ca/schedule_8")
 
 def schedule_8(take_home_service: TakeHomeService, salary: str, header: str = HEADER) -> Worksheet:
     worksheets = take_home_service(header, FORM_PART, *T1_EMPLOYMENT_INCOME_PARTS).compute(
-        JurisdictionCode("CA-QC"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
+        TaxCalculationRequest(
+            JurisdictionCode("CA-QC"), 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),)
+        )
     )
     (sheet,) = worksheets["ca/schedule_8"]
     return sheet

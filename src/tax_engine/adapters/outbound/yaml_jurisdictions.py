@@ -35,12 +35,13 @@ from tax_engine.domain.manifest import (
     Manifest,
 )
 from tax_engine.domain.registry import Namespace
+from tax_engine.domain.take_home import FigureReference, TakeHomeFigures
 from tax_engine.domain.unit import Unit, UnitRegistry
 
 _MANIFEST_KEYS = frozenset(
     {"jurisdiction", "version", "valid_from_tax_year", "outputs", "capabilities"}
 )
-_OPTIONAL_MANIFEST_KEYS = frozenset({"title", "imports", "inputs"})
+_OPTIONAL_MANIFEST_KEYS = frozenset({"title", "imports", "inputs", "take_home"})
 _PART_KEYS = _MANIFEST_KEYS | _OPTIONAL_MANIFEST_KEYS | {"form"}
 _FORM_KEYS = frozenset({"name"})
 _OPTIONAL_FORM_KEYS = frozenset(
@@ -67,7 +68,7 @@ _CAPABILITY_KEYS = frozenset({"name", "produces"})
 _OPTIONAL_CAPABILITY_KEYS = frozenset(
     {"params", "consumes", "blank", "optional", "title", "reference", "unit", "position"}
 )
-_SCALAR_KEYS = ("jurisdiction", "version", "valid_from_tax_year", "title")
+_SCALAR_KEYS = ("jurisdiction", "version", "valid_from_tax_year", "title", "take_home")
 _IDENTIFIER_LISTS = ("inputs", "outputs", "imports")
 _PATTERNS = ("*.yaml", "*.yml")
 
@@ -621,6 +622,7 @@ class YamlJurisdictionSource:
         Form.check_exports("outputs", sorted(outputs))
         title = doc.optional_field("title")
         imports = doc.optional_field("imports")
+        take_home = doc.optional_field("take_home")
         forms_imported = () if imports is None else imported(self._import_list(imports))
         forms = (
             Form(
@@ -643,10 +645,41 @@ class YamlJurisdictionSource:
             valid_from_tax_year=doc.field("valid_from_tax_year").require_integer(),
             artifacts=self._kinds,
             units_by_name=self._units_named(forms),
+            take_home=None if take_home is None else self._take_home(take_home),
             forms=forms,
         )
         self._check_supplied(manifest, forms_imported)
         return manifest
+
+    @staticmethod
+    def _take_home(node: YamlNode) -> TakeHomeFigures:
+        """The take-home declaration: the salary kind, the income tax, the other deductions by
+        name, and the two rates, each figure as the form that exports it and its kind."""
+        node.require_mapping(
+            frozenset({"salary", "income_tax", "deductions"}),
+            optional=frozenset({"average_income_tax_rate", "marginal_income_tax_rate"}),
+        )
+
+        def reference(figure: YamlNode) -> FigureReference:
+            figure.require_mapping(frozenset({"form", "kind"}))
+            return FigureReference(
+                figure.field("form").require_non_empty_string(),
+                figure.field("kind").require_non_empty_string(),
+            )
+
+        def optional_reference(key: str) -> FigureReference | None:
+            found = node.optional_field(key)
+            return None if found is None else reference(found)
+
+        return TakeHomeFigures(
+            salary=node.field("salary").require_non_empty_string(),
+            income_tax=reference(node.field("income_tax")),
+            deductions=tuple(
+                (name, reference(figure)) for name, figure in node.field("deductions").fields()
+            ),
+            average_income_tax_rate=optional_reference("average_income_tax_rate"),
+            marginal_income_tax_rate=optional_reference("marginal_income_tax_rate"),
+        )
 
     def _units_named(self, forms: Iterable[Form]) -> dict[str, Unit]:
         """Each unit the declarations name, looked up by its full identifier, keyed as written.

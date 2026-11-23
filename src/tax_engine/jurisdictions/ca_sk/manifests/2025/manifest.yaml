@@ -26,6 +26,18 @@ outputs:
   - ca-sk/average_income_tax_rate
   - ca-sk/marginal_tax_rate
 capabilities: []
+# Where the take-home answer reads its figures (the caller gives the salary and nothing else): the
+# income tax is T1 line 43500, CPP and EI come from their own forms, and the rates are this return's.
+take_home:
+  salary: ca/employment_income
+  income_tax: {form: ca/t1_tax_and_credits, kind: ca/total_payable}
+  deductions:
+    cpp_base: {form: ca/schedule_8, kind: ca/schedule_8_cpp_base_contributions_on_return}
+    cpp_enhanced: {form: ca/schedule_8, kind: ca/cpp_part_3_line_12}
+    cpp2: {form: ca/schedule_8, kind: ca/cpp_part_3_line_22}
+    ei: {form: ca/t2204, kind: ca/t2204_premiums_deducted}
+  average_income_tax_rate: {form: ca-sk/return, kind: ca-sk/average_income_tax_rate}
+  marginal_income_tax_rate: {form: ca-sk/return, kind: ca-sk/marginal_tax_rate}
 imports:
   - ca/t1_employment_income
   - ca/t1_taxable_income

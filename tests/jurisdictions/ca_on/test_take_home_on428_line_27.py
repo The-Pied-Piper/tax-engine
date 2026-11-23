@@ -20,6 +20,7 @@ from typing import Any
 import pytest
 import yaml
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InputAboveBoundError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -57,7 +58,9 @@ def _line_27(take_home_service: TakeHomeService, pension: str | None = None) -> 
     if pension is not None:
         given.append(Artifact(ON428_PENSION_INCOME_AMOUNT, D(pension)))
     service = take_home_service(HEADER, FORM, INPUTS_PART, PART)
-    worksheets = service.compute(JurisdictionCode("CA-ON"), 2025, *given)
+    worksheets = service.compute(
+        TaxCalculationRequest(JurisdictionCode("CA-ON"), 2025, tuple(given))
+    )
     (sheet,) = worksheets[FORM_NAME]
     return D(sheet.get(bundled_kinds().kind(LINE_27)).value)
 

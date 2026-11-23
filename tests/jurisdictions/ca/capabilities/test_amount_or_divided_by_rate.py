@@ -27,6 +27,7 @@ from typing import Any, assert_type, cast
 
 import pytest
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact, ArtifactRegistry
 from tax_engine.domain.errors import (
@@ -525,18 +526,18 @@ def test_a_computation_builds_the_capability_from_the_registry_and_its_dataset()
 
 
 def test_a_computation_passes_the_amount_through_at_or_below_the_threshold() -> None:
-    worksheet = service().compute(JurisdictionCode("CA-ON"), 2025, *inputs("50000", "3321.67"))[
-        "ca-on/return"
-    ][0]
+    worksheet = service().compute(
+        TaxCalculationRequest(JurisdictionCode("CA-ON"), 2025, (*inputs("50000", "3321.67"),))
+    )["ca-on/return"][0]
 
     assert worksheet.get(OUTPUT).value == D("50000")
     assert worksheet.trace == (line_of("50000", "3321.67", "50000.00"),)
 
 
 def test_a_computation_divides_over_the_threshold() -> None:
-    worksheet = service().compute(JurisdictionCode("CA-ON"), 2025, *inputs("60000", "3321.67"))[
-        "ca-on/return"
-    ][0]
+    worksheet = service().compute(
+        TaxCalculationRequest(JurisdictionCode("CA-ON"), 2025, (*inputs("60000", "3321.67"),))
+    )["ca-on/return"][0]
 
     assert worksheet.get(OUTPUT).value == D("65775.64")
     assert isinstance(worksheet.producer_of(OUTPUT), AmountOrDividedByRate)
@@ -547,6 +548,8 @@ def test_a_computation_with_an_inexact_division_and_no_rounding_names_the_capabi
     built = service(limit(rounding=NO_ROUNDING))
 
     with pytest.raises(CapabilityContractError, match=r"AmountOrDividedByRate .*inexact") as raised:
-        built.compute(JurisdictionCode("CA-ON"), 2025, *inputs("60000", "3321.67"))
+        built.compute(
+            TaxCalculationRequest(JurisdictionCode("CA-ON"), 2025, (*inputs("60000", "3321.67"),))
+        )
 
     assert isinstance(raised.value.__cause__, decimal.Inexact)

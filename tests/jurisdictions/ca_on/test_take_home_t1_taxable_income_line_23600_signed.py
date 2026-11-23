@@ -23,6 +23,7 @@ from decimal import Decimal
 
 import pytest
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
@@ -67,7 +68,9 @@ def _sheet(
     starting = [Artifact(kinds.kind(LINE_23400), D(line_23400))]
     if line_23500 is not None:
         starting.append(Artifact(kinds.kind(LINE_23500), D(line_23500)))
-    worksheets = take_home_service(HEADER, FORM_TEXT, *PARTS).compute(CODE, 2025, *starting)
+    worksheets = take_home_service(HEADER, FORM_TEXT, *PARTS).compute(
+        TaxCalculationRequest(CODE, 2025, tuple(starting))
+    )
     (sheet,) = worksheets[FORM]
     return sheet
 

@@ -17,6 +17,7 @@ from textwrap import dedent
 
 import pytest
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca_on.catalog import (
@@ -55,7 +56,7 @@ def line_50(take_home_service: TakeHomeService, line_46: str, line_49: str) -> D
         Artifact(ON428_DONATIONS_CREDIT_LINE_49, D(line_49)),
     ]
     worksheets = take_home_service(HEADER, FORM, PART).compute(
-        JurisdictionCode("CA-ON"), 2025, *artifacts
+        TaxCalculationRequest(JurisdictionCode("CA-ON"), 2025, tuple(artifacts))
     )
     (sheet,) = worksheets["ca-on/on428"]
     return sheet.get(ON428_NON_REFUNDABLE_CREDITS_LINE_50).value

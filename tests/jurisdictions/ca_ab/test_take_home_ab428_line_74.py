@@ -42,6 +42,7 @@ import tax_engine.jurisdictions.ca_ab
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -177,7 +178,9 @@ def _service(tmp_path: Path) -> TaxComputationService:
 
 def _sheets(tmp_path: Path, salary: str, *extra: Artifact[Decimal]) -> dict[str, Worksheet]:
     given = [Artifact(EMPLOYMENT_INCOME, D(salary)), *extra]
-    worksheets = _service(tmp_path).compute(JurisdictionCode("CA-AB"), 2025, *given)
+    worksheets = _service(tmp_path).compute(
+        TaxCalculationRequest(JurisdictionCode("CA-AB"), 2025, tuple(given))
+    )
     (ab428,) = worksheets["ca-ab/ab428"]
     (worksheet,) = worksheets["ca-ab/worksheet_ab428"]
     return {"ab428": ab428, "worksheet": worksheet}

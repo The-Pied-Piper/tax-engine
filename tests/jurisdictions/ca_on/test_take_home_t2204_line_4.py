@@ -20,6 +20,7 @@ from textwrap import dedent
 
 import pytest
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
@@ -80,7 +81,7 @@ def t2204(take_home_service: TakeHomeService, salary: str, given: str | None = N
         *form_part_names("t1_employment_income"),
         LINE_1_PART,
         LINE_4_PART,
-    ).compute(JurisdictionCode("CA-ON"), 2025, *starting)["ca/t2204"]
+    ).compute(TaxCalculationRequest(JurisdictionCode("CA-ON"), 2025, tuple(starting)))["ca/t2204"]
     return sheet
 
 

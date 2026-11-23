@@ -18,6 +18,7 @@ from decimal import Decimal
 import pytest
 
 from tax_engine import build_tax_computation
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
@@ -36,7 +37,9 @@ SALARIES = ["0", "100", "2000", "20000", "70000", "275000"]
 
 def _worksheets(year: int, salary: str) -> dict[str, tuple[Worksheet, ...]]:
     # No fixture: the bundled Ontario manifest, as the calculator loads it, salary the only input.
-    return build_tax_computation().compute(ONTARIO, year, Artifact(EMPLOYMENT_INCOME, D(salary)))
+    return build_tax_computation().compute(
+        TaxCalculationRequest(ONTARIO, year, (Artifact(EMPLOYMENT_INCOME, D(salary)),))
+    )
 
 
 def _take_home(year: int, salary: str) -> Decimal:

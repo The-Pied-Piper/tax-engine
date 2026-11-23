@@ -38,6 +38,7 @@ from textwrap import dedent
 import pytest
 
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
@@ -80,7 +81,7 @@ ON428_A = dedent("""\
 
 def _on428_a(take_home_service: TakeHomeService, salary: str) -> Worksheet:
     worksheets = take_home_service(HEADER, ON428_A, *PARTS).compute(
-        ONTARIO, 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
+        TaxCalculationRequest(ONTARIO, 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),))
     )
     (sheet,) = worksheets[FORM]
     return sheet
@@ -110,10 +111,14 @@ def test_a_negative_net_income_is_line_6_in_brackets_and_line_13_is_zero(
     # enter "0")", so it is 0.
     kinds = bundled_kinds()
     worksheets = take_home_service(HEADER, ON428_A, *PARTS).compute(
-        ONTARIO,
-        2025,
-        Artifact(EMPLOYMENT_INCOME, D("70000")),
-        Artifact(kinds.kind("ca/social_benefits_repayment"), D("75000")),
+        TaxCalculationRequest(
+            ONTARIO,
+            2025,
+            (
+                Artifact(EMPLOYMENT_INCOME, D("70000")),
+                Artifact(kinds.kind("ca/social_benefits_repayment"), D("75000")),
+            ),
+        ),
     )
     (sheet,) = worksheets[FORM]
 

@@ -35,6 +35,7 @@ import tax_engine.jurisdictions.ca_sk.catalog as sk_catalog
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -203,7 +204,9 @@ def _sheet(
         )
     if line_65_amount is not None:
         given.append(Artifact(kinds.kind(LINE_65_AMOUNT), D(line_65_amount)))
-    worksheets = _service(tmp_path).compute(JurisdictionCode("CA-SK"), 2025, *given)
+    worksheets = _service(tmp_path).compute(
+        TaxCalculationRequest(JurisdictionCode("CA-SK"), 2025, tuple(given))
+    )
     (sheet,) = worksheets[FORM_NAME]
     return sheet
 

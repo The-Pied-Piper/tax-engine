@@ -29,6 +29,7 @@ from textwrap import dedent
 
 import pytest
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import NegativeArtifactError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -79,7 +80,9 @@ PARTS = (
 
 def line_22215(take_home_service: TakeHomeService, salary: str) -> Decimal:
     worksheets = take_home_service(HEADER, FORM, *PARTS).compute(
-        JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
+        TaxCalculationRequest(
+            JurisdictionCode("CA-ON"), 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),)
+        )
     )
     (sheet,) = worksheets["ca/schedule_8"]
     return sheet.get(SCHEDULE_8_CPP_ENHANCED_CONTRIBUTIONS_ON_RETURN).value
@@ -103,7 +106,9 @@ def test_line_22215_is_the_schedule_8_enhanced_contributions(
 def compute(take_home_service: TakeHomeService, salary: str) -> dict[str, tuple[Worksheet, ...]]:
     """Every worksheet of the composed parts, computed from the salary alone."""
     return take_home_service(HEADER, FORM, *PARTS_15000).compute(
-        JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
+        TaxCalculationRequest(
+            JurisdictionCode("CA-ON"), 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),)
+        )
     )
 
 
@@ -252,7 +257,9 @@ def test_the_form_exports_the_return_lines_and_the_worksheet_holds_them_at_70000
         "ca/rdsp_income_repayment_line_23200",
     ]
 
-    worksheets = service.compute(code, 2025, Artifact(EMPLOYMENT_INCOME, D("70000")))
+    worksheets = service.compute(
+        TaxCalculationRequest(code, 2025, (Artifact(EMPLOYMENT_INCOME, D("70000")),))
+    )
     (sheet,) = worksheets["ca/t1_taxable_income"]
 
     assert [sheet.get(kind).value for kind in form.exports] == [

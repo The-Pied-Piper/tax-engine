@@ -19,6 +19,7 @@ from decimal import Decimal
 
 import pytest
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.deductions import DEDUCTIONS_FROM_TOTAL_INCOME
@@ -74,7 +75,7 @@ def line_23300(
         if amount is not None
     ]
     worksheets = take_home_service(HEADER, FORM, *PARTS).compute(
-        ONTARIO, 2025, Artifact(EMPLOYMENT_INCOME, D(salary)), *given
+        TaxCalculationRequest(ONTARIO, 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)), *given))
     )
     (sheet,) = worksheets["ca/t1_taxable_income"]
     value = sheet.get(DEDUCTIONS_FROM_TOTAL_INCOME).value

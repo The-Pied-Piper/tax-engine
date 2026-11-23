@@ -16,6 +16,7 @@ import pytest
 from tax_engine import build_tax_computation
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -56,7 +57,7 @@ def test_the_manitoba_manifest_composes_over_the_registered_registries() -> None
 def test_the_started_engine_computes_mb428_line_82(salary: str, expected: str) -> None:
     kinds = artifact_kinds()
     worksheets = build_tax_computation().compute(
-        MANITOBA, 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
+        TaxCalculationRequest(MANITOBA, 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),))
     )
 
     (sheet,) = worksheets["ca-mb/mb428"]

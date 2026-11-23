@@ -24,6 +24,7 @@ import pytest
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import NegativeArtifactError, NoAmountForCountError
@@ -107,7 +108,9 @@ def schedule_8(tmp_path: Path, salary: str, months: int | None = None) -> Worksh
     given: list[Artifact[Decimal] | Artifact[int]] = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if months is not None:
         given.append(Artifact(CPP_MONTHS, months))
-    worksheets = service(tmp_path).compute(JurisdictionCode("CA-ON"), 2025, *given)
+    worksheets = service(tmp_path).compute(
+        TaxCalculationRequest(JurisdictionCode("CA-ON"), 2025, tuple(given))
+    )
     (sheet,) = worksheets["ca/schedule_8"]
     return sheet
 

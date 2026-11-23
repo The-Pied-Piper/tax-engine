@@ -27,6 +27,7 @@ import yaml
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -107,7 +108,7 @@ def _worksheets(
 ) -> dict[str, tuple[Worksheet, ...]]:
     """The worksheets of one run, keyed by form name, from the real header and form."""
     return take_home_service(REAL_HEADER, REAL_FORM, *PARTS).compute(
-        ONTARIO, 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
+        TaxCalculationRequest(ONTARIO, 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),))
     )
 
 
@@ -191,7 +192,9 @@ def test_the_real_ontario_manifest_computes_refund_or_balance_owing_at_70000() -
         YamlParameterSource(JURISDICTIONS.roots(), parameter_parsers(), units()),
         bundled_capabilities(),
     )
-    worksheets = service.compute(ONTARIO, 2025, Artifact(EMPLOYMENT_INCOME, D("70000")))
+    worksheets = service.compute(
+        TaxCalculationRequest(ONTARIO, 2025, (Artifact(EMPLOYMENT_INCOME, D("70000")),))
+    )
     (sheet,) = worksheets[FORM]
 
     assert sheet.get(bundled_kinds().kind(LINE_167)).value == D("11497.09")

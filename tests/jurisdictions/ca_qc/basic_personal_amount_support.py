@@ -7,6 +7,7 @@ from __future__ import annotations
 from decimal import Decimal
 from textwrap import dedent
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
@@ -203,10 +204,14 @@ def sheets(
     """The T1 taxable-income sheet and the tax and credits sheet for `salary`, with the optional
     figures in `given` (a kind and its figure) typed in."""
     worksheets = take_home_service(HEADER, FORM, *PARTS).compute(
-        JurisdictionCode("CA-QC"),
-        2025,
-        Artifact(EMPLOYMENT_INCOME, D(salary)),
-        *(Artifact(kind, D(figure)) for kind, figure in given),
+        TaxCalculationRequest(
+            JurisdictionCode("CA-QC"),
+            2025,
+            (
+                Artifact(EMPLOYMENT_INCOME, D(salary)),
+                *(Artifact(kind, D(figure)) for kind, figure in given),
+            ),
+        ),
     )
     (t1,) = worksheets[T1_FORM]
     (sheet,) = worksheets[TAX_FORM]

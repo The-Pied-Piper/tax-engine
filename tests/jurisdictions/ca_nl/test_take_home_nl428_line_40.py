@@ -32,6 +32,7 @@ import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_nl
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InputAboveBoundError, NegativeArtifactError
@@ -148,7 +149,9 @@ def _sheet(
         given.append(Artifact(UNDER_18_ON_DECEMBER_31, under_18))
     if care_expenses is not None:
         given.append(Artifact(DISABILITY_SELF_CARE_EXPENSES, D(care_expenses)))
-    worksheets = _service(tmp_path).compute(JurisdictionCode("CA-NL"), 2025, *given)
+    worksheets = _service(tmp_path).compute(
+        TaxCalculationRequest(JurisdictionCode("CA-NL"), 2025, tuple(given))
+    )
     (sheet,) = worksheets[FORM]
     return sheet
 

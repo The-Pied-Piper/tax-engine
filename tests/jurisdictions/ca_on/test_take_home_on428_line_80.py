@@ -34,6 +34,7 @@ from decimal import Decimal
 
 import pytest
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
@@ -106,7 +107,9 @@ def _worksheet(
         Artifact(kinds.kind(LINE_73), D(line_73)),
         Artifact(kinds.kind(LINE_72), D(line_72)),
     ]
-    return take_home_service(HEADER, form, PART).compute(CODE, 2025, *given)["ca-on/on428"][0]
+    return take_home_service(HEADER, form, PART).compute(
+        TaxCalculationRequest(CODE, 2025, tuple(given))
+    )["ca-on/on428"][0]
 
 
 def _line_80(

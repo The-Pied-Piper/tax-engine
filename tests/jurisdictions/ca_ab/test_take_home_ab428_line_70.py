@@ -40,6 +40,7 @@ import tax_engine.jurisdictions.ca_ab.catalog as ab_catalog
 import tax_engine.jurisdictions.ca_ab.trace_english  # noqa: F401  (registers the renderers)
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -232,7 +233,7 @@ def _sheet(tmp_path: Path, salary: str, line_69: str | None = None) -> Worksheet
     given = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if line_69 is not None:
         given.append(Artifact(_amount_kind(LINE_69), D(line_69)))
-    worksheets = _service(tmp_path).compute(CODE, 2025, *given)
+    worksheets = _service(tmp_path).compute(TaxCalculationRequest(CODE, 2025, tuple(given)))
     (sheet,) = worksheets[TAX]
     return sheet
 

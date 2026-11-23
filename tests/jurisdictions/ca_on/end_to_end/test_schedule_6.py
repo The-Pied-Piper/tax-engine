@@ -33,6 +33,7 @@ from textwrap import dedent
 
 import pytest
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import NegativeArtifactError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -127,7 +128,9 @@ CASES: list[tuple[str, dict[str, str]]] = [
 
 def schedule_6(take_home_service: TakeHomeService, salary: str) -> Worksheet:
     worksheets = take_home_service(HEADER, FORM, *PARTS).compute(
-        JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
+        TaxCalculationRequest(
+            JurisdictionCode("CA-ON"), 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),)
+        )
     )
     (sheet,) = worksheets["ca/schedule_6"]
     return sheet
@@ -159,7 +162,9 @@ def test_the_form_exports_exactly_line_28(take_home_service: TakeHomeService) ->
     (form,) = (f for f in service.compose(code, 2025).forms if f.name == "ca/schedule_6")
     assert form.exports == (CWB_BENEFIT_LINE_28,)
 
-    worksheets = service.compute(code, 2025, Artifact(EMPLOYMENT_INCOME, D("30000")))
+    worksheets = service.compute(
+        TaxCalculationRequest(code, 2025, (Artifact(EMPLOYMENT_INCOME, D("30000")),))
+    )
     (sheet,) = worksheets["ca/schedule_6"]
 
     assert [sheet.get(kind).value for kind in form.exports] == [D("1201.00")]

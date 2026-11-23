@@ -15,6 +15,7 @@ from textwrap import dedent
 
 import pytest
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
@@ -76,9 +77,9 @@ FORM = dedent("""\
 def schedule_u(take_home_service: TakeHomeService, salary: str) -> Worksheet:
     """The Schedule U worksheet for a salary."""
     (sheet,) = take_home_service(HEADER, FORM, *PARTS).compute(
-        JurisdictionCode("CA-QC"),
-        2025,
-        Artifact(EMPLOYMENT_INCOME, D(salary)),
+        TaxCalculationRequest(
+            JurisdictionCode("CA-QC"), 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),)
+        ),
     )["ca-qc/tp1_schedule_u"]
     return sheet
 

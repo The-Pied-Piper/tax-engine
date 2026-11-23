@@ -49,6 +49,7 @@ import pytest
 
 import tax_engine.jurisdictions.ca_nl
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -120,7 +121,9 @@ BRACKET_FIGURES = [
 
 
 def _worksheets(service: TaxComputationService, salary: str) -> dict[str, tuple[Worksheet, ...]]:
-    return service.compute(NEWFOUNDLAND, 2025, Artifact(EMPLOYMENT_INCOME, D(salary)))
+    return service.compute(
+        TaxCalculationRequest(NEWFOUNDLAND, 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),))
+    )
 
 
 def _summary(service: TaxComputationService, salary: str) -> Worksheet:

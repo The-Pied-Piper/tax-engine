@@ -15,6 +15,7 @@ from typing import Any
 
 import yaml
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
@@ -118,7 +119,9 @@ def solidarity_figure(
     given: list[Artifact[Any]] = [
         Artifact(quebec_kinds().kind(name), values[name]) for name in INPUTS if name in _consumed()
     ]
-    (sheet,) = service.compute(JurisdictionCode("CA-QC"), 2025, *given)[FORM]
+    (sheet,) = service.compute(
+        TaxCalculationRequest(JurisdictionCode("CA-QC"), 2025, tuple(given))
+    )[FORM]
     figure = sheet.get(quebec_kinds().kind(identifier)).value
     assert isinstance(figure, Decimal)
     return figure

@@ -27,6 +27,7 @@ import tax_engine.jurisdictions.ca_sk
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InputAboveBoundError
@@ -94,7 +95,9 @@ def _sheet(tmp_path: Path, credit: str | None = None, salary: str = "70000") -> 
     given: list[Artifact[Any]] = []
     if credit is not None:
         given.append(Artifact(SK428_POLITICAL_CONTRIBUTIONS_CREDIT_LINE_73, D(credit)))
-    worksheets = _service(tmp_path).compute(JurisdictionCode("CA-SK"), 2025, *given)
+    worksheets = _service(tmp_path).compute(
+        TaxCalculationRequest(JurisdictionCode("CA-SK"), 2025, tuple(given))
+    )
     (sheet,) = worksheets[FORM_NAME]
     return sheet
 

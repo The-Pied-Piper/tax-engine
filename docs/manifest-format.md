@@ -65,6 +65,7 @@ capabilities:
 | `capabilities` | yes | List of capability selections (below). |
 | `title` | no | Printed name of the default form. |
 | `imports` | no | List of forms to import, each a form identifier `<namespace>/<snake_case>` or a form with dataset rebinds (see Imported forms). |
+| `take_home` | no | Where the take-home answer reads its figures (see Take-home figures). |
 
 An identifier that is in both `inputs` and `outputs` is an input the default form returns as entered.
 
@@ -258,6 +259,26 @@ manifest is refused naming the form and the figure. Nothing is inferred from the
 figure some form of the manifest does supply ignores the declaration, except that a supplier whose
 field is another kind than the declared one is refused when the manifest is built.
 A capability must list the slot in `BLANK_ALLOWED` for a blank rule to be allowed there.
+
+## Take-home figures
+
+`take_home` lets `TakeHomeService` answer for the jurisdiction without knowing any form: the engine's
+application layer names none, the manifest does. It is a mapping with all of these keys:
+
+| Key | Meaning |
+| --- | --- |
+| `salary` | The identifier of the one amount input the caller gives. |
+| `income_tax` | The figure of the income tax. |
+| `deductions` | The other figures taken off the salary, each under the name its answer carries (`cpp_base`, `ei`, ...). |
+| `average_income_tax_rate`, `marginal_income_tax_rate` | Optional: the two rates, which must have a unit. A jurisdiction whose return does not compute them leaves them out, and its answer has none. |
+
+A figure is `{form: <form name>, kind: <artifact identifier>}`: the form whose worksheet holds it and
+its kind. The form must be one of the manifest's, the kinds registered, and the salary an amount;
+whether the form holds the figure is found when the answer is computed. A form read for a figure
+must have exactly one worksheet. The
+total taken off the salary is the income tax plus every deduction; every one of them must have the
+same unit. The key may be given in one part only. A jurisdiction without it is refused by
+`TakeHomeService` as not found.
 
 ## Titles
 

@@ -16,6 +16,7 @@ from typing import Any
 
 import yaml
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
@@ -90,5 +91,7 @@ def maximum_figure(
     for name, answer in ((ALONE, alone), (TENANT, tenant), (OCCUPANTS, occupants)):
         if answer is not None:
             given.append(Artifact(quebec_kinds().kind(name), answer))
-    (sheet,) = service.compute(JurisdictionCode("CA-QC"), 2025, *given)[FORM]
+    (sheet,) = service.compute(
+        TaxCalculationRequest(JurisdictionCode("CA-QC"), 2025, tuple(given))
+    )[FORM]
     return sheet.get(quebec_kinds().kind(identifier)).value

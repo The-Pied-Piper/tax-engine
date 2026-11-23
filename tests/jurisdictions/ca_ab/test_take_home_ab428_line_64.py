@@ -25,6 +25,7 @@ import yaml
 import tax_engine.jurisdictions.ca_ab
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -96,7 +97,9 @@ def _line_64(tmp_path: Path, salary: str, amount: str | None) -> Decimal:
     given = [Artifact(kinds.kind(SALARY), D(salary))]
     if amount is not None:
         given.append(Artifact(kinds.kind(MINIMUM_TAX_CARRYOVER), D(amount)))
-    (sheet,) = _service(tmp_path).compute(CODE, 2025, *given)["ca-ab/ab428"]
+    (sheet,) = _service(tmp_path).compute(TaxCalculationRequest(CODE, 2025, tuple(given)))[
+        "ca-ab/ab428"
+    ]
     value = sheet.get(kinds.kind(LINE_64)).value
     assert isinstance(value, Decimal)
     return value

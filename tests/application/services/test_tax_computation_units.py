@@ -21,6 +21,7 @@ from tax_engine.adapters.inbound.trace_english.unit_text import (
 )
 from tax_engine.adapters.inbound.unit_text import Placement
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact, ArtifactKind
 from tax_engine.domain.capability import Capability, CapabilityRegistry, CapabilityResult
@@ -141,7 +142,9 @@ capabilities:
 
 
 def computed(directory: Path, manifest: str, *given: Artifact[Any]) -> Any:
-    worksheets = service(directory, manifest).compute(EX_ON, 2025, *given)
+    worksheets = service(directory, manifest).compute(
+        TaxCalculationRequest(EX_ON, 2025, tuple(given))
+    )
     (sheet,) = worksheets["ex-on/return"]
     return sheet
 

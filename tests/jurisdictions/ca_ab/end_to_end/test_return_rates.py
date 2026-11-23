@@ -41,6 +41,7 @@ import pytest
 
 from tax_engine import build_tax_computation
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
@@ -111,7 +112,7 @@ LINE_75_ANCHORS = [
 def _summary(year: int, salary: str) -> Worksheet:
     # No fixture: the bundled Alberta manifest, as the calculator loads it, salary the only input.
     worksheets = build_tax_computation().compute(
-        ALBERTA, year, Artifact(EMPLOYMENT_INCOME, D(salary))
+        TaxCalculationRequest(ALBERTA, year, (Artifact(EMPLOYMENT_INCOME, D(salary)),))
     )
     (summary,) = worksheets[RETURN]
     return summary
@@ -184,7 +185,7 @@ def test_the_2025_average_at_70000_is_15_98_percent() -> None:
 @pytest.mark.parametrize(("year", "salary", "line_75"), LINE_75_ANCHORS)
 def test_the_alberta_tax_anchors_do_not_move(year: int, salary: str, line_75: str) -> None:
     worksheets = build_tax_computation().compute(
-        ALBERTA, year, Artifact(EMPLOYMENT_INCOME, D(salary))
+        TaxCalculationRequest(ALBERTA, year, (Artifact(EMPLOYMENT_INCOME, D(salary)),))
     )
     (ab428,) = worksheets["ca-ab/ab428"]
 

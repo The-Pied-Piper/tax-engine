@@ -33,6 +33,7 @@ import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_bc
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -124,7 +125,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
 
 def _sheet(tmp_path: Path, salary: str, *extra: Artifact[Decimal]) -> Worksheet:
     given = [Artifact(EMPLOYMENT_INCOME, D(salary)), *extra]
-    worksheets = _service(tmp_path).compute(CODE, 2025, *given)
+    worksheets = _service(tmp_path).compute(TaxCalculationRequest(CODE, 2025, tuple(given)))
     (sheet,) = worksheets[FORM]
     return sheet
 

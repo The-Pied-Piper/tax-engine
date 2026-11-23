@@ -18,6 +18,7 @@ from textwrap import dedent
 
 import pytest
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.blank import BLANK
 from tax_engine.domain.errors import BlankNotAllowedError
@@ -60,7 +61,7 @@ FORM = dedent("""\
 def t2204(take_home_service: TakeHomeService, starting: list[Artifact[Decimal]]) -> Worksheet:
     """The T2204 worksheet for the starting artifacts given; line 5 is left out unless given."""
     (sheet,) = take_home_service(HEADER, FORM, PART).compute(
-        JurisdictionCode("CA-ON"), 2025, *starting
+        TaxCalculationRequest(JurisdictionCode("CA-ON"), 2025, tuple(starting))
     )["ca/t2204"]
     return sheet
 

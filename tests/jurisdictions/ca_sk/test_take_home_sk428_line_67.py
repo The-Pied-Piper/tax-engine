@@ -36,6 +36,7 @@ import tax_engine.jurisdictions.ca_sk
 import tax_engine.jurisdictions.ca_sk.catalog as sk_catalog
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -237,7 +238,9 @@ def _sheet(
     if line_64 is not None:
         # `line_64` is the amount of line 12000 (line 12010 left out), so line 64 is 11% of it.
         given.append(Artifact(kinds.kind("ca/taxable_dividends"), D(line_64)))
-    worksheets = _service(tmp_path).compute(JurisdictionCode("CA-SK"), 2025, *given)
+    worksheets = _service(tmp_path).compute(
+        TaxCalculationRequest(JurisdictionCode("CA-SK"), 2025, tuple(given))
+    )
     (sheet,) = worksheets[FORM_NAME]
     return sheet
 

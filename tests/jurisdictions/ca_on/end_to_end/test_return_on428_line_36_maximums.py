@@ -14,6 +14,7 @@ from __future__ import annotations
 from decimal import Decimal
 
 from tax_engine import build_tax_computation
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
@@ -31,9 +32,9 @@ def test_a_limited_attendant_care_claim_raises_line_36_and_line_41() -> None:
         Artifact(kinds.kind("ca-on/on428_attendant_care_expenses_line_36"), D("20000")),
         Artifact(kinds.kind("ca-on/on428_attendant_care_federal_limit_applied_line_36"), 1),
     ]
-    (sheet,) = build_tax_computation().compute(JurisdictionCode("CA-ON"), 2025, *given)[
-        "ca-on/on428"
-    ]
+    (sheet,) = build_tax_computation().compute(
+        TaxCalculationRequest(JurisdictionCode("CA-ON"), 2025, tuple(given))
+    )["ca-on/on428"]
 
     allowed = sheet.get(kinds.kind("ca-on/on428_medical_expenses_allowed_line_36")).value
     assert allowed == D("37627.00")
@@ -50,9 +51,9 @@ def test_an_adapted_van_claim_is_raised_to_the_ontario_maximum() -> None:
         Artifact(on.ON428_MEDICAL_EXPENSES_LINE_36, D("20000")),
         Artifact(kinds.kind("ca-on/on428_adapted_van_expenses_line_36"), D("10000")),
     ]
-    (sheet,) = build_tax_computation().compute(JurisdictionCode("CA-ON"), 2025, *given)[
-        "ca-on/on428"
-    ]
+    (sheet,) = build_tax_computation().compute(
+        TaxCalculationRequest(JurisdictionCode("CA-ON"), 2025, tuple(given))
+    )["ca-on/on428"]
 
     allowed = sheet.get(kinds.kind("ca-on/on428_medical_expenses_allowed_line_36")).value
     assert allowed == D("23813.00")

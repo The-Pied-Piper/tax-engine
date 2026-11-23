@@ -21,6 +21,7 @@ import pytest
 import tax_engine.jurisdictions.ca_sk
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
@@ -78,7 +79,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
 
 
 def line_9(tmp_path: Path, salary: str) -> Decimal:
-    worksheets = _service(tmp_path).compute(JurisdictionCode("CA-SK"), 2025)
+    worksheets = _service(tmp_path).compute(TaxCalculationRequest(JurisdictionCode("CA-SK"), 2025))
     (sheet,) = worksheets["ca-sk/sk428_credits"]
     return sheet.get(BASIC_PERSONAL_AMOUNT).value
 

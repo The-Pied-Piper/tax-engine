@@ -20,6 +20,7 @@ from typing import Any
 import pytest
 import yaml
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InputAboveBoundError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -61,7 +62,7 @@ def _box_61(take_home_service: TakeHomeService, salary: str, answer: int | None 
         given.append(Artifact(SCHEDULE_K_GROUP_PLAN_COVERED_LINE_50, answer))
     worksheets = take_home_service(
         HEADER, FORM_PART, *(part.name for part in (INPUT_PART, LINE_50_PART, LINE_PART))
-    ).compute(JurisdictionCode("CA-QC"), 2025, *given)
+    ).compute(TaxCalculationRequest(JurisdictionCode("CA-QC"), 2025, tuple(given)))
     (sheet,) = worksheets[FORM]
     return sheet.get(SCHEDULE_K_MONTHS_JULY_TO_DECEMBER_BOX_61).value
 

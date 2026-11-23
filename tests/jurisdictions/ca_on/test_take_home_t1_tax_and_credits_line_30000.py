@@ -46,6 +46,7 @@ from textwrap import dedent
 import pytest
 
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
@@ -94,7 +95,7 @@ RANGE = Fraction(75532)
 def _sheets(take_home_service: TakeHomeService, salary: str) -> tuple[Worksheet, Worksheet]:
     """The T1 taxable-income sheet (line 23600 is read from it) and the tax and credits sheet."""
     worksheets = take_home_service(HEADER, T1_TAX_AND_CREDITS, *PARTS).compute(
-        ONTARIO, 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
+        TaxCalculationRequest(ONTARIO, 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),))
     )
     (t1,) = worksheets[T1_FORM]
     (sheet,) = worksheets[FORM]

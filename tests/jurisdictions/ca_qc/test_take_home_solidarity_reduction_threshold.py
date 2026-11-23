@@ -14,6 +14,7 @@ from typing import Any
 
 import yaml
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca_qc.catalog import SOLIDARITY_REDUCTION_THRESHOLD
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
@@ -38,7 +39,7 @@ def test_the_solidarity_reduction_threshold_is_the_printed_43195(
 ) -> None:
     service = take_home_service(HEADER, FORM_PART, PART)
 
-    (sheet,) = service.compute(JurisdictionCode("CA-QC"), 2025)[FORM]
+    (sheet,) = service.compute(TaxCalculationRequest(JurisdictionCode("CA-QC"), 2025))[FORM]
 
     assert sheet.get(SOLIDARITY_REDUCTION_THRESHOLD).value == D("43195.00")
 

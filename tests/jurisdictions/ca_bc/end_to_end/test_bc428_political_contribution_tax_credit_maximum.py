@@ -19,6 +19,7 @@ from decimal import Decimal
 import pytest
 
 from tax_engine import build_tax_computation
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InputAboveBoundError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -54,7 +55,9 @@ def _given(credit: str | None) -> list[Artifact[Decimal]]:
 
 
 def _bc428(year: int, credit: str | None = None) -> Worksheet:
-    worksheets = build_tax_computation().compute(BRITISH_COLUMBIA, year, *_given(credit))
+    worksheets = build_tax_computation().compute(
+        TaxCalculationRequest(BRITISH_COLUMBIA, year, (*_given(credit),))
+    )
     (sheet,) = worksheets[BC428]
     return sheet
 
@@ -126,7 +129,9 @@ def test_the_trace_has_one_at_most_line_and_one_credit_amount_line_for_the_maxim
 
 
 def _take_home(year: int, credit: str | None = None) -> Decimal:
-    worksheets = build_tax_computation().compute(BRITISH_COLUMBIA, year, *_given(credit))
+    worksheets = build_tax_computation().compute(
+        TaxCalculationRequest(BRITISH_COLUMBIA, year, (*_given(credit),))
+    )
     (summary,) = worksheets["ca-bc/return"]
     (schedule_8,) = worksheets["ca/schedule_8"]
     (t2204,) = worksheets["ca/t2204"]

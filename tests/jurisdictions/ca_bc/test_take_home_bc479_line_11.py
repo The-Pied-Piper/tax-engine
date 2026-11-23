@@ -26,6 +26,7 @@ import yaml
 import tax_engine.jurisdictions.ca_bc
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
@@ -91,7 +92,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
 
 
 def _sheet(tmp_path: Path, salary: str) -> Worksheet:
-    worksheets = _service(tmp_path).compute(JurisdictionCode("CA-BC"), 2025)
+    worksheets = _service(tmp_path).compute(TaxCalculationRequest(JurisdictionCode("CA-BC"), 2025))
     (sheet,) = worksheets["ca-bc/bc479"]
     return sheet
 

@@ -30,6 +30,7 @@ import yaml
 import tax_engine.jurisdictions.ca_ab
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -98,7 +99,9 @@ def _service(tmp_path: Path) -> TaxComputationService:
 
 def _line_5(tmp_path: Path, taxable_income: str) -> Artifact[Decimal]:
     given = Artifact(AB428_TAXABLE_INCOME_LINE_1, D(taxable_income))
-    worksheets = _service(tmp_path).compute(JurisdictionCode("CA-AB"), 2025, given)
+    worksheets = _service(tmp_path).compute(
+        TaxCalculationRequest(JurisdictionCode("CA-AB"), 2025, (given,))
+    )
     (sheet,) = worksheets["ca-ab/ab428_credits"]
     return sheet.get(AB428_BRACKET_RATE_LINE_5)
 

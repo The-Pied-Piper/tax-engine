@@ -13,6 +13,7 @@ from typing import Any
 import pytest
 import yaml
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tests.federal_forms import form_part_names
@@ -55,7 +56,9 @@ def _line_59(take_home_service: TakeHomeService, line_40427: str | None) -> Deci
     given = []
     if line_40427 is not None:
         given.append(Artifact(kinds.kind(LINE_40427), D(line_40427)))
-    (sheet,) = take_home_service(HEADER, FORM, *PARTS).compute(CODE, 2025, *given)["ca-on/on428"]
+    (sheet,) = take_home_service(HEADER, FORM, *PARTS).compute(
+        TaxCalculationRequest(CODE, 2025, tuple(given))
+    )["ca-on/on428"]
     value = sheet.get(kinds.kind(LINE_59)).value
     assert isinstance(value, Decimal)
     return value

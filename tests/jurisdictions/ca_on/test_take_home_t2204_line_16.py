@@ -14,6 +14,7 @@ from decimal import Decimal
 
 import pytest
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tests.federal_forms import form_part_names
@@ -56,11 +57,15 @@ capabilities: []
 def _line_16(take_home_service: TakeHomeService, line_7: str, line_4: str, line_10: str) -> Decimal:
     kinds = bundled_kinds()
     worksheet = take_home_service(HEADER, FORM, PART).compute(
-        CODE,
-        2025,
-        Artifact(kinds.kind(LINE_7), D(line_7)),
-        Artifact(kinds.kind(LINE_4), D(line_4)),
-        Artifact(kinds.kind(LINE_10), D(line_10)),
+        TaxCalculationRequest(
+            CODE,
+            2025,
+            (
+                Artifact(kinds.kind(LINE_7), D(line_7)),
+                Artifact(kinds.kind(LINE_4), D(line_4)),
+                Artifact(kinds.kind(LINE_10), D(line_10)),
+            ),
+        ),
     )["ca/t2204"][0]
     value = worksheet.get(kinds.kind(LINE_16)).value
     assert isinstance(value, Decimal)
@@ -139,5 +144,5 @@ def test_line_16_from_the_salary_with_line_4_blank_or_given(
     if line_4_given is not None:
         starting.append(Artifact(kinds.kind(LINE_4_GIVEN), D(line_4_given)))
     service = take_home_service(COMPOSED_HEADER, COMPOSED_FORM, *COMPOSED_PARTS)
-    worksheet = service.compute(CODE, 2025, *starting)["ca/t2204"][0]
+    worksheet = service.compute(TaxCalculationRequest(CODE, 2025, tuple(starting)))["ca/t2204"][0]
     assert worksheet.get(kinds.kind(LINE_16)).value == D(expected)

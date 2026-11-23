@@ -25,6 +25,7 @@ from typing import Any, ClassVar
 import pytest
 
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact, ArtifactKind
 from tax_engine.domain.capability import Capability, CapabilityRegistry, CapabilityResult
@@ -715,7 +716,7 @@ def service(directory: Path) -> TaxComputationService:
 
 def federal_total(directory: Path, code: JurisdictionCode, income: str) -> Decimal:
     worksheets = service(directory).compute(
-        code, 2025, Artifact(AmountKind("ex/income"), D(income))
+        TaxCalculationRequest(code, 2025, (Artifact(AmountKind("ex/income"), D(income)),))
     )
     (sheet,) = worksheets["ex/federal"]
     total: Decimal = sheet.get(AmountKind("ex/federal_total")).value

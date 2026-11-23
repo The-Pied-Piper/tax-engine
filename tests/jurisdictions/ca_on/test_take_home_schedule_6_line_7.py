@@ -32,6 +32,7 @@ from textwrap import dedent
 
 import pytest
 
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
@@ -70,7 +71,7 @@ SCHEDULE_6 = dedent(f"""\
 
 def _schedule_6(take_home_service: TakeHomeService, salary: str) -> Worksheet:
     worksheets = take_home_service(HEADER, SCHEDULE_6, *PARTS).compute(
-        ONTARIO, 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
+        TaxCalculationRequest(ONTARIO, 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),))
     )
     (sheet,) = worksheets[FORM]
     return sheet
@@ -102,10 +103,14 @@ def test_line_7_is_the_negative_net_income_in_brackets_not_floored(
     # keeps it as it is ("show in brackets"), where the floored line 23600 would read "0".
     kinds = bundled_kinds()
     worksheets = take_home_service(HEADER, SCHEDULE_6, *PARTS).compute(
-        ONTARIO,
-        2025,
-        Artifact(EMPLOYMENT_INCOME, D("70000")),
-        Artifact(kinds.kind("ca/social_benefits_repayment"), D("75000")),
+        TaxCalculationRequest(
+            ONTARIO,
+            2025,
+            (
+                Artifact(EMPLOYMENT_INCOME, D("70000")),
+                Artifact(kinds.kind("ca/social_benefits_repayment"), D("75000")),
+            ),
+        ),
     )
     (sheet,) = worksheets[FORM]
 

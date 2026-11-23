@@ -31,6 +31,7 @@ import tax_engine.jurisdictions.ca_mb
 import tax_engine.jurisdictions.ca_mb.catalog as mb_catalog
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -180,7 +181,9 @@ def _line_42(tmp_path: Path, salary: str, pension: str | None = None) -> Decimal
     given = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if pension is not None:
         given.append(Artifact(mb_catalog.MB428_PENSION_INCOME_AMOUNT, D(pension)))
-    worksheets = _service(tmp_path).compute(JurisdictionCode("CA-MB"), 2025, *given)
+    worksheets = _service(tmp_path).compute(
+        TaxCalculationRequest(JurisdictionCode("CA-MB"), 2025, tuple(given))
+    )
     (sheet,) = worksheets[FORM_NAME]
     return D(sheet.get(manitoba_kinds().kind(IDENTIFIER)).value)
 

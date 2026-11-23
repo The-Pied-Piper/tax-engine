@@ -20,6 +20,7 @@ import tax_engine.jurisdictions.ca_qc
 import tax_engine.jurisdictions.core
 from tax_engine.adapters.outbound.jurisdiction_packages import JurisdictionPackages
 from tax_engine.adapters.outbound.parameter_parser import ParameterParserRegistry
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
 from tax_engine.domain.capability import CapabilityRegistry
@@ -124,7 +125,9 @@ def t2204_worksheet(
     starting = [Artifact(EMPLOYMENT_INCOME, Decimal(salary))]
     if given is not None:
         starting.append(Artifact(T2204_PREMIUMS_DEDUCTED_GIVEN, Decimal(given)))
-    (sheet,) = service.compute(JurisdictionCode("CA-QC"), 2025, *starting)["ca/t2204"]
+    (sheet,) = service.compute(
+        TaxCalculationRequest(JurisdictionCode("CA-QC"), 2025, tuple(starting))
+    )["ca/t2204"]
     return sheet
 
 
@@ -224,6 +227,6 @@ def schedule_p_worksheet(
     starting = [Artifact(EMPLOYMENT_INCOME, Decimal(salary))]
     starting += [Artifact(kind, kind.value_type(value)) for kind, value in given]
     (sheet,) = take_home_service(SCHEDULE_P_HEADER, form, *parts).compute(
-        JurisdictionCode("CA-QC"), 2025, *starting
+        TaxCalculationRequest(JurisdictionCode("CA-QC"), 2025, tuple(starting))
     )["ca-qc/schedule_p"]
     return sheet
