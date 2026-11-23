@@ -5,7 +5,8 @@
 # as line 101. Exports: line 101 (read by Work Chart 201), line 199 (the total income), the slip
 # figures of lines 97, 98, 98.1 and 98.2, which Schedule U, the Schedule F and K steps and the net
 # income lines read, the optional inputs lines 105 and 107 and RL-1 box 211, which Work Chart
-# 201 and Schedule P read, and the optional inputs lines 114, 128, 142, 147 and 148, which Schedule F
+# 201 and Schedule P read, the optional input line 164, which Work Chart 201 line 5 reads (floored at
+# 0), and the optional inputs lines 114, 128, 142, 147 and 148, which Schedule F
 # lines 22, 23, 26, 28 and 29 read.
 form:
   name: ca-qc/tp1_income
@@ -26,4 +27,5 @@ form:
     - ca-qc/tp1_line_142
     - ca-qc/tp1_line_147
     - ca-qc/tp1_line_148
+    - ca-qc/tp1_line_164
 capabilities: []

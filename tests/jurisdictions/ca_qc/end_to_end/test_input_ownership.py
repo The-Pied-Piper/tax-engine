@@ -1,11 +1,13 @@
 """Quebec input ownership (2025): a line is an input only on the form it belongs to, and every other
 form imports it from that form's export.
 
-Three groups of figures are read by two forms each:
+Four groups of figures are read by two forms each:
 - TP-1 lines 105 and 107 and RL-1 box 211 belong to the TP-1 income form; Work Chart 201 line 1 and
   Schedule P lines 10 and 12 read them from its exports.
 - TP-1 lines 114, 128, 142, 147 and 148 belong to the TP-1 income form, which adds them into line
   199; Schedule F lines 22, 23, 26, 28 and 29 read them from its exports.
+- TP-1 line 164 belongs to the TP-1 income form, which adds it into line 199; Work Chart 201 line 5
+  reads it from its export, with the printed floor at 0 (`test_take_home_work_chart_201_line_5.py`).
 - The net research grants and the WEPP payments belong to Work Chart 201 lines 3 and 4; Schedule P
   lines 13 and 15 read them from its exports.
 
@@ -64,6 +66,7 @@ SHARED_INPUTS = {
     "ca-qc/tp1_line_142": "tp1_income",
     "ca-qc/tp1_line_147": "tp1_income",
     "ca-qc/tp1_line_148": "tp1_income",
+    "ca-qc/tp1_line_164": "tp1_income",
     "ca-qc/work_chart_201_research_grants_line_3": "work_chart_201",
     "ca-qc/work_chart_201_wepp_payments_line_4": "work_chart_201",
 }
@@ -75,6 +78,7 @@ REMOVED_COPIES = (
     "ca-qc/tp1_schedule_f_line_26",
     "ca-qc/tp1_schedule_f_line_28",
     "ca-qc/tp1_schedule_f_line_29",
+    "ca-qc/work_chart_201_net_business_income_line_5",
 )
 
 

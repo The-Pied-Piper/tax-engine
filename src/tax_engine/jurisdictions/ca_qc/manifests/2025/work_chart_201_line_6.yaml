@@ -1,5 +1,6 @@
 # Work Chart 201 (TP-1.D.GR-V 2025-12), line 6: "Add lines 1 through 5." Line 1 is computed
-# (work_chart_201_line_1.yaml); lines 2 to 5 are optional inputs, read as 0 when blank. The sum is
+# (work_chart_201_line_1.yaml); line 5 is computed from TP-1 line 164 (work_chart_201_line_5.yaml);
+# lines 2 to 4 are optional inputs. A blank is read as 0. The sum is
 # rounded half-up to the cent (`ca-qc/cent_rounding`). The form prints no title for the line.
 form:
   name: ca-qc/work_chart_201

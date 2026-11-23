@@ -2,9 +2,10 @@
 take-home manifest parts wire it.
 
 Form text: "6. Add lines 1 through 5. =". Line 1 is the eligible work income (the salary when
-nothing else is given); lines 2 to 5 are optional inputs, read as 0 when left out. A salary-only
-filer's line 6 is the salary ($20,000, $70,000, $200,000). The sum is `core/sum`, rounded half-up to
-the cent by `ca-qc/cent_rounding`.
+nothing else is given); lines 2 to 4 are optional inputs and line 5 reads TP-1 line 164, each read
+as 0 when left out. A salary-only filer's line 6 is the salary ($20,000, $70,000, $200,000). The sum
+is `core/sum`, rounded half-up to the cent by `ca-qc/cent_rounding`. `line_5` below is given as TP-1
+line 164, which Work Chart 201 line 5 reads (`test_take_home_work_chart_201_line_5.py`).
 """
 
 from __future__ import annotations
@@ -20,7 +21,7 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_qc.catalog import (
-    WORK_CHART_201_NET_BUSINESS_INCOME_LINE_5,
+    TP1_LINE_164,
     WORK_CHART_201_RESEARCH_GRANTS_LINE_3,
     WORK_CHART_201_TOTAL_LINE_6,
     WORK_CHART_201_WEPP_PAYMENTS_LINE_4,
@@ -37,7 +38,7 @@ PARTS = (
     "work_chart_201_line_2_input.yaml",
     "work_chart_201_line_3_input.yaml",
     "work_chart_201_line_4_input.yaml",
-    "work_chart_201_line_5_input.yaml",
+    "work_chart_201_line_5.yaml",
     "work_chart_201_line_6.yaml",
 )
 
@@ -60,7 +61,7 @@ LINES = {
     "line_2": WORK_CHART_201_WORK_INCENTIVE_AMOUNTS_LINE_2,
     "line_3": WORK_CHART_201_RESEARCH_GRANTS_LINE_3,
     "line_4": WORK_CHART_201_WEPP_PAYMENTS_LINE_4,
-    "line_5": WORK_CHART_201_NET_BUSINESS_INCOME_LINE_5,
+    "line_5": TP1_LINE_164,
 }
 
 
