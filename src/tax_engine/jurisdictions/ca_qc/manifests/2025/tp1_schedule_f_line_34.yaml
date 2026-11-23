@@ -1,6 +1,7 @@
 # Schedule F (2025) line 34: "Add lines 20, 22 and 25 through 33." (Revenu Quebec TP-1.D.F-V
 # (2025-12), Part A). One core/sum over the printed lines 20, 22, 25, 26, 28, 29, 30, 31 and 33,
-# rounded half-up to the cent. Each blank line is read as 0. No floor is printed, so the sum is
+# rounded half-up to the cent. Lines 22, 26, 28 and 29 copy TP-1 lines 114, 142, 147 and 148; each
+# blank line is read as 0. No floor is printed, so the sum is
 # signed, as line 25 is. Line 36 reads it. The form prints no label for the line, so the step is
 # untitled.
 form:

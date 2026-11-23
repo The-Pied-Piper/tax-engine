@@ -1,0 +1,18 @@
+# Schedule F (2025) line 22: "Old Age Security pension (line 114)", a copy of TP-1 line 114.
+# Line 114 is an input of the TP-1 income form only, which takes it once and exports it; this line
+# reads that export as a record list of one, so the one step is `core/record_total` (as line 14
+# reads line 105). A blank line 114 is read as 0.
+form:
+  name: ca-qc/tp1_schedule_f
+capabilities:
+  - name: core/record_total
+    title: "Old Age Security pension"
+    reference: "22"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp1_income.tp1_line_114
+    blank:
+      records:
+        ca-qc/tp1_line_114: "0"
+    produces:
+      output: ca-qc/tp1_schedule_f_line_22

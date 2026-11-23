@@ -1,6 +1,7 @@
-"""Revenu Quebec Schedule F (TP-1.D.F-V, 2025-12), Part A, lines 20, 22, 26, 28, 29, 30, 31 and 33:
-the lines that line 34 adds ("Add lines 20, 22 and 25 through 33"), besides line 25, a step. Each
-is an optional input a salary-only caller does not give; line 34 reads a blank as 0.
+"""Revenu Quebec Schedule F (TP-1.D.F-V, 2025-12), Part A, lines 20, 30, 31 and 33:
+the lines that line 34 adds ("Add lines 20, 22 and 25 through 33") and that no other form owns
+(lines 22, 26, 28 and 29 copy TP-1 lines, 25 is a step). Each is an optional input a salary-only
+caller does not give; line 34 reads a blank as 0.
 
 The real part is loaded under a test-local header and form declaration over the Quebec package list
 of `support.py`."""
@@ -23,10 +24,6 @@ PART = "tp1_schedule_f_line_34_inputs.yaml"
 NAMES = {line: f"ca-qc/tp1_schedule_f_line_{line}" for line in LINE_34_INPUTS}
 BASES = {
     "20": "Amounts allocated under a profit-sharing plan (line 107, point 3)",
-    "22": "Old Age Security pension (line 114)",
-    "26": "Support payments received (taxable amount), other than a repayment (line 142)",
-    "28": "Social assistance payments and similar financial assistance (line 147)",
-    "29": "Income replacement indemnities and net federal supplements (line 148)",
     "30": "Scholarships, bursaries or similar financial assistance (line 154, point 1)",
     "31": (
         "Amount reported on line 122 as recovery of a deduction for contributions to a spousal RRSP"
