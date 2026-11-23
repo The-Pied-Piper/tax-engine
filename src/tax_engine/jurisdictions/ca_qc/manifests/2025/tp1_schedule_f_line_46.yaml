@@ -1,0 +1,18 @@
+# Schedule F (2025) line 46: "Deduction for retirement income transferred to your spouse on December 31 (line 245)", a copy of TP-1 line 245.
+# Line 245 is an input of the TP-1 net income form only, which takes it once and exports it; this line
+# reads that export as a record list of one, so the one step is `core/record_total` (as line 22
+# reads line 114). A blank line 245 is read as 0.
+form:
+  name: ca-qc/tp1_schedule_f
+capabilities:
+  - name: core/record_total
+    title: "Deduction for retirement income transferred to your spouse on December 31"
+    reference: "46"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp1_net_income.tp1_line_245
+    blank:
+      records:
+        ca-qc/tp1_line_245: "0"
+    produces:
+      output: ca-qc/tp1_schedule_f_line_46
