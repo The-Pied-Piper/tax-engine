@@ -17,6 +17,8 @@ from tax_engine.domain.errors import InvalidManifestError
 from tax_engine.domain.unit import Unit
 from tax_engine.domain.worksheet import Worksheet
 
+CENTS = Decimal("0.01")
+
 
 @dataclass(frozen=True, slots=True)
 class FigureValue:
@@ -114,7 +116,10 @@ def rate_unit(who: str, value: FigureValue) -> Unit:
 
 @dataclass(frozen=True, slots=True)
 class Totals:
-    """The salary less the figures taken off it: plain sums of printed cent lines."""
+    """The salary less the figures taken off it: plain sums of printed cent lines.
+
+    The salary is written to the cent (a salary is refused below a cent, so nothing is rounded).
+    """
 
     salary: Decimal
     income_tax: Decimal
@@ -123,14 +128,14 @@ class Totals:
 
     @classmethod
     def of(cls, salary: Decimal, figures: Iterable[tuple[str, Decimal]]) -> Totals:
-        """Take-home pay is the salary minus the sum of the figures (no rounding)."""
+        """Take-home is the salary less the sum of the figures; only the salary is set to cents."""
         kept = tuple(figures)
         total = sum((amount for _, amount in kept), Decimal(0))
         income_tax = sum(
             (amount for name, amount in kept if name == TakeHomeFigures.INCOME_TAX), Decimal(0)
         )
         return cls(
-            salary=salary,
+            salary=salary.quantize(CENTS),
             income_tax=income_tax,
             total_deductions=total,
             take_home=salary - total,

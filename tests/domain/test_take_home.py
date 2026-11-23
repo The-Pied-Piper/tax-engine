@@ -29,6 +29,7 @@ PERCENT = Unit("core/percent")
 
 def test_totals_are_plain_sums() -> None:
     got = Totals.of(D("70000"), [("income_tax", D("11497.09")), ("ei", D("1077.48"))])
+    assert str(got.salary) == "70000.00"
     assert got == Totals(
         salary=D("70000.00"),
         income_tax=D("11497.09"),
