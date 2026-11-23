@@ -6,7 +6,7 @@
 # left out. The title is the printed page heading. Lines 276 and 278 are optional inputs, read as 0
 # (page 3, "Taxable income"). Exports: line 275, the net income that the schedules read, line 299,
 # the taxable income that Work Chart 401 reads, and the optional non-negative inputs lines 225, 231,
-# 234, 245 and 246, which Schedule F lines 54, 56, 58, 46 and 41 read.
+# 234 and 245, which Schedule F lines 54, 56, 58 and 46 read.
 form:
   name: ca-qc/tp1_net_income
   title: "Income Tax Return"
@@ -18,5 +18,4 @@ form:
     - ca-qc/tp1_line_231
     - ca-qc/tp1_line_234
     - ca-qc/tp1_line_245
-    - ca-qc/tp1_line_246
 capabilities: []

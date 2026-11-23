@@ -781,9 +781,11 @@ TP1_SCHEDULE_F_INCOME_LINE_36 = AmountKind.declare(CATALOG, "tp1_schedule_f_inco
 negative."""
 
 TP1_SCHEDULE_F_LINE_41 = AmountKind.declare(CATALOG, "tp1_schedule_f_line_41", non_negative=True)
-"""Schedule F line 41, "Amounts you repaid in 2025 because you received an overpayment (line 246)":
-one of the lines that line 68 adds, a record total of the TP-1 net income export of line 246
-(`tp1_schedule_f_line_41.yaml`), read as 0 when TP-1 line 246 is blank."""
+"""Schedule F line 41, "Amounts you repaid in 2025 because you received an overpayment (line
+246)": one of the lines that line 68 adds, an optional input (the line comes from a TP-1 line,
+slip or form the take-home does not build), read as 0 when blank
+(`tp1_schedule_f_line_68_inputs.yaml`). It keeps its own input and does not copy TP-1 line 246:
+the printed line excludes certain repayments that line 246 includes, so it can be smaller."""
 
 TP1_SCHEDULE_F_LINE_42 = AmountKind.declare(CATALOG, "tp1_schedule_f_line_42", non_negative=True)
 """Schedule F line 42, "Deduction for a repayment of wage loss replacement benefits (line 207,
@@ -1123,10 +1125,10 @@ TP1_LINE_245 = AmountKind.declare(CATALOG, "tp1_line_245", non_negative=True)
 and 234 through 252"): an optional non-negative input, exported and read as 0 when blank
 (`tp1_net_income_line_254_inputs.yaml`); Schedule F line 46 reads it."""
 
-TP1_LINE_246 = AmountKind.declare(CATALOG, "tp1_line_246", non_negative=True)
+TP1_LINE_246 = AmountKind.declare(CATALOG, "tp1_line_246")
 """TP-1 line 246, one of the lines that line 254 adds ("Add lines 201 through 207, 214 through 231,
-and 234 through 252"): an optional non-negative input, exported and read as 0 when blank
-(`tp1_net_income_line_254_inputs.yaml`); Schedule F line 41 reads it."""
+and 234 through 252"): an optional input, read as 0 when blank
+(`tp1_net_income_line_254_inputs.yaml`)."""
 
 TP1_LINE_250 = AmountKind.declare(CATALOG, "tp1_line_250")
 """TP-1 line 250, one of the lines that line 254 adds ("Add lines 201 through 207, 214 through 231,

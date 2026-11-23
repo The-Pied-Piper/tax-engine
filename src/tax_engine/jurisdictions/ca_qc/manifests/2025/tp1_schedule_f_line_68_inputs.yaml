@@ -1,13 +1,23 @@
-# Schedule F (2025) lines 42, 43, 43.1, 44, 45, 60 and 62: the lines that line 68 adds ("Add lines
-# 41 through 62."; Revenu Quebec TP-1.D.F-V (2025-12), Part A) besides lines 41, 46, 54, 56 and 58,
-# which copy TP-1 lines 246, 245, 225, 231 and 234 (`tp1_schedule_f_line_<N>.yaml`). Each of the
-# seven comes from a line of the TP-1 return, a schedule or a slip that the take-home does not
+# Schedule F (2025) lines 41, 42, 43, 43.1, 44, 45, 60 and 62: the lines that line 68 adds ("Add
+# lines 41 through 62."; Revenu Quebec TP-1.D.F-V (2025-12), Part A) besides lines 46, 54, 56 and
+# 58, which copy TP-1 lines 245, 225, 231 and 234 (`tp1_schedule_f_line_<N>.yaml`). Each of the
+# eight comes from a line of the TP-1 return, a schedule or a slip that the take-home does not
 # build, so each stays an input, as the form takes it, optional and left blank by a salary-only
-# caller. They are declared here, with the step that consumes them (line 68,
-# `tp1_schedule_f_line_68.yaml`), which reads a blank as 0.
+# caller. Line 41 keeps its own input and does not copy TP-1 line 246: the printed Schedule F line
+# excludes certain repayments (Old Age Security, scholarships and bursaries, social assistance,
+# income replacement indemnities, WEPP payments) that line 246 includes, so it can be smaller. They
+# are declared here, with the step that consumes them (line 68, `tp1_schedule_f_line_68.yaml`),
+# which reads a blank as 0.
 form:
   name: ca-qc/tp1_schedule_f
 inputs:
+  - name: ca-qc/tp1_schedule_f_line_41
+    title: "Amounts you repaid in 2025 because you received an overpayment (line 246)"
+    reference: "41"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Amounts you repaid in 2025 because you received an overpayment (line 246)"
   - name: ca-qc/tp1_schedule_f_line_42
     title: "Deduction for a repayment of wage loss replacement benefits (line 207, point 12)"
     reference: "42"

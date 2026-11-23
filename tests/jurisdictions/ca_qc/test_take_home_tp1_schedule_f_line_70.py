@@ -24,8 +24,8 @@ from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_qc.catalog import (
     TP1_FOREST_PRODUCER_AVERAGING_LINE_276,
-    TP1_LINE_246,
     TP1_SCHEDULE_F_INCOME_SUBJECT_LINE_70,
+    TP1_SCHEDULE_F_LINE_41,
     TP1_SCHEDULE_F_LINE_62,
 )
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
@@ -132,7 +132,7 @@ def test_a_salary_only_line_70_is_zero(take_home_service: TakeHomeService, salar
 def test_line_68_is_taken_off_line_36(take_home_service: TakeHomeService) -> None:
     given = (
         (TP1_FOREST_PRODUCER_AVERAGING_LINE_276, "1000"),
-        (TP1_LINE_246, "100.25"),
+        (TP1_SCHEDULE_F_LINE_41, "100.25"),
         (TP1_SCHEDULE_F_LINE_62, "200.00"),
     )
     value = (

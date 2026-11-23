@@ -45,10 +45,10 @@ LINE_36_PARTS = (
     "tp1_schedule_f_line_34.yaml",
     "tp1_schedule_f_line_36.yaml",
 )
-# The printed lines that line 68 adds; lines 41, 46, 54, 56 and 58 copy TP-1 lines 246, 245, 225,
-# 231 and 234 (given on the TP-1 net income form), the other seven are inputs of Schedule F.
+# The printed lines that line 68 adds; lines 46, 54, 56 and 58 copy TP-1 lines 245, 225, 231
+# and 234 (given on the TP-1 net income form), the other eight are inputs of Schedule F.
 LINE_68_LINES = ("41", "42", "43", "43_1", "44", "45", "46", "54", "56", "58", "60", "62")
-LINE_68_TP1_COPIES = ("41", "46", "54", "56", "58")
+LINE_68_TP1_COPIES = ("46", "54", "56", "58")
 LINE_68_INPUTS = tuple(line for line in LINE_68_LINES if line not in LINE_68_TP1_COPIES)
 # The real TP-1 net income form declaration (it exports lines 275 and 299 and the TP-1 lines the
 # Schedule F lines copy) and its line parts, over the Work Chart 201 and Schedule U parts it reads.

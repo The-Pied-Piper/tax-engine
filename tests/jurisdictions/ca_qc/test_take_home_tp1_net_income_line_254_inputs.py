@@ -1,7 +1,7 @@
 """TP-1 (2025) lines 205, 207, 214, 215, 225, 228, 231, 234, 236, 241, 245, 246, 250 and 252: the
 lines that line 254 adds besides lines 201 and 248. The take-home gives none of them, so each is an
-optional input; a blank is read as 0 by line 254. Lines 225, 231, 234, 245 and 246 are printed as
-deductions the filer enters as positive amounts, so a negative is refused at entry; the other nine
+optional input; a blank is read as 0 by line 254. Lines 225, 231, 234 and 245 are printed as
+deductions the filer enters as positive amounts, so a negative is refused at entry; the other ten
 lines print no sign rule and stay signed.
 
 The real part is loaded under a test-local header and form declaration over the Quebec package list
@@ -42,9 +42,9 @@ LINES = (
 )
 # The deductions the printed form has the filer enter as positive amounts: line 225 "Support
 # payments made (deductible amount)", 231 "Carrying charges and interest expenses", 234 "Business
-# investment loss ... Allowable loss", 245 "Complete Schedule Q" and 246 "Deduction for a repayment
-# of amounts overpaid to you" (TP-1.D-V, 2025-12, page 3); none prints a negative.
-NON_NEGATIVE_LINES = ("225", "231", "234", "245", "246")
+# investment loss ... Allowable loss" and 245 "Complete Schedule Q" (TP-1.D-V, 2025-12, page 3);
+# none prints a negative.
+NON_NEGATIVE_LINES = ("225", "231", "234", "245")
 SIGNED_LINES = tuple(line for line in LINES if line not in NON_NEGATIVE_LINES)
 NAMES = {line: f"ca-qc/tp1_line_{line.replace('.', '_')}" for line in LINES}
 HEADER = """\

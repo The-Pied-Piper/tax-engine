@@ -2,9 +2,9 @@
 Deductions", as the Quebec take-home manifest wires it.
 
 One `core/sum` over the printed lines 41, 42, 43, 43.1, 44, 45, 46, 54, 56, 58, 60 and 62, rounded
-half-up to the cent by `ca-qc/cent_rounding`. Lines 42, 43, 43.1, 44, 45, 60 and 62 are optional
-inputs of Schedule F; lines 41, 46, 54, 56 and 58 are copies of TP-1 lines 246, 245, 225, 231 and
-234 (given on the TP-1 net income form); each is read as 0 when left out. The expected figures are
+half-up to the cent by `ca-qc/cent_rounding`. Lines 41, 42, 43, 43.1, 44, 45, 60 and 62 are optional
+inputs of Schedule F; lines 46, 54, 56 and 58 are copies of TP-1 lines 245, 225, 231 and 234
+(given on the TP-1 net income form); each is read as 0 when left out. The expected figures are
 hand-computed from the printed lines.
 """
 
@@ -23,8 +23,8 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     TP1_LINE_231,
     TP1_LINE_234,
     TP1_LINE_245,
-    TP1_LINE_246,
     TP1_SCHEDULE_F_DEDUCTIONS_LINE_68,
+    TP1_SCHEDULE_F_LINE_41,
     TP1_SCHEDULE_F_LINE_42,
     TP1_SCHEDULE_F_LINE_43,
     TP1_SCHEDULE_F_LINE_43_1,
@@ -49,10 +49,10 @@ PART = (
     / "2025"
     / "tp1_schedule_f_line_68.yaml"
 )
-# One figure per printed line, each different, so a line left out or counted twice shows. Lines 41,
-# 46, 54, 56 and 58 are the TP-1 lines 246, 245, 225, 231 and 234.
+# One figure per printed line, each different, so a line left out or counted twice shows. Lines 46,
+# 54, 56 and 58 are the TP-1 lines 245, 225, 231 and 234.
 GIVEN: tuple[tuple[AmountKind, str], ...] = (
-    (TP1_LINE_246, "100.01"),
+    (TP1_SCHEDULE_F_LINE_41, "100.01"),
     (TP1_SCHEDULE_F_LINE_42, "200.02"),
     (TP1_SCHEDULE_F_LINE_43, "300.03"),
     (TP1_SCHEDULE_F_LINE_43_1, "400.04"),
@@ -97,9 +97,9 @@ def test_line_68_reads_each_blank_line_as_zero(
 def test_line_68_rounds_the_sum_half_up_to_the_cent(
     take_home_service: TakeHomeService, second: str, expected: str
 ) -> None:
-    # 0.004 + 0.001 = 0.005 rounds up; 0.004 + 0.0009 = 0.0049 rounds down. Lines 42 and 43 are
-    # inputs of Schedule F; the lines that copy a TP-1 line are rounded to the cent before the sum.
-    given = ((TP1_SCHEDULE_F_LINE_42, "0.004"), (TP1_SCHEDULE_F_LINE_43, second))
+    # 0.004 + 0.001 = 0.005 rounds up; 0.004 + 0.0009 = 0.0049 rounds down. Lines 41 and 42 are
+    # inputs of Schedule F.
+    given = ((TP1_SCHEDULE_F_LINE_41, "0.004"), (TP1_SCHEDULE_F_LINE_42, second))
 
     assert _line_68(take_home_service, *given) == expected
 

@@ -59,7 +59,6 @@ SCHEDULE_F_PARTS = (
     "tp1_schedule_f_line_29.yaml",
     "tp1_schedule_f_line_34.yaml",
     "tp1_schedule_f_line_36.yaml",
-    "tp1_schedule_f_line_41.yaml",
     "tp1_schedule_f_line_46.yaml",
     "tp1_schedule_f_line_54.yaml",
     "tp1_schedule_f_line_56.yaml",

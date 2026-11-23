@@ -1,9 +1,9 @@
-"""Revenu Quebec Schedule F (TP-1.D.F-V, 2025-12), Part A, lines 41, 46, 54, 56 and 58, as the
+"""Revenu Quebec Schedule F (TP-1.D.F-V, 2025-12), Part A, lines 46, 54, 56 and 58, as the
 Quebec take-home manifest wires them. Each prints the TP-1 line it copies, in the printed words:
-"Amounts you repaid in 2025 because you received an overpayment (line 246)", "Deduction for
-retirement income transferred to your spouse on December 31 (line 245)", "Support payments made
-(deductible amount) (line 225)", "Carrying charges and interest expenses (line 231)" and "Business
-investment loss (line 234)".
+"Deduction for retirement income transferred to your spouse on December 31 (line 245)", "Support
+payments made (deductible amount) (line 225)", "Carrying charges and interest expenses (line 231)"
+and "Business investment loss (line 234)". Line 41 is not among them: the printed line excludes
+certain repayments that TP-1 line 246 includes, so it stays its own input.
 
 Each TP-1 line is an optional, non-negative input of the TP-1 net income form only, which takes it
 once and exports it; the Schedule F line reads that export as a record list of one, so each part is
@@ -24,7 +24,6 @@ import tax_engine.jurisdictions.ca_qc
 PARTS = Path(tax_engine.jurisdictions.ca_qc.__file__).parent / "manifests" / "2025"
 # Schedule F line, TP-1 line, the title (the printed name without its "(line N)" reference).
 COPIES = [
-    ("41", "246", "Amounts you repaid in 2025 because you received an overpayment"),
     (
         "46",
         "245",
