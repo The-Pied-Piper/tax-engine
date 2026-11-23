@@ -1,9 +1,10 @@
-# Schedule F (2025) lines 20, 22, 26, 28, 29, 30, 31 and 33: the printed lines that line 34 adds
+# Schedule F (2025) lines 20, 30, 31 and 33: the printed lines that line 34 adds
 # ("Add lines 20, 22 and 25 through 33."; Revenu Quebec TP-1.D.F-V (2025-12), Part A), besides line
-# 25, which is a step (`tp1_schedule_f_line_25.yaml`). Each comes from a line of the TP-1 return (or
-# its guide) that the take-home does not build, so each stays an input, as the form takes it,
-# optional and left blank by a salary-only caller. They are declared here, with the step that
-# consumes them (`tp1_schedule_f_line_34.yaml`), which reads a blank as 0.
+# 25 (a step, `tp1_schedule_f_line_25.yaml`) and lines 22, 26, 28 and 29, which copy TP-1 lines 114,
+# 142, 147 and 148 (`tp1_schedule_f_line_<N>.yaml`). Each of these four comes from a line of the
+# TP-1 return (or its guide) that the take-home does not build, so each stays an input, as the form
+# takes it, optional and left blank by a salary-only caller. They are declared here, with the step
+# that consumes them (`tp1_schedule_f_line_34.yaml`), which reads a blank as 0.
 form:
   name: ca-qc/tp1_schedule_f
 inputs:
@@ -14,34 +15,6 @@ inputs:
     required: false
     default: null
     basis: "Amounts allocated under a profit-sharing plan (line 107, point 3)"
-  - name: ca-qc/tp1_schedule_f_line_22
-    title: "Old Age Security pension (line 114)"
-    reference: "22"
-    unit: ca/cad
-    required: false
-    default: null
-    basis: "Old Age Security pension (line 114)"
-  - name: ca-qc/tp1_schedule_f_line_26
-    title: "Support payments received (taxable amount), other than a repayment (line 142)"
-    reference: "26"
-    unit: ca/cad
-    required: false
-    default: null
-    basis: "Support payments received (taxable amount), other than a repayment (line 142)"
-  - name: ca-qc/tp1_schedule_f_line_28
-    title: "Social assistance payments and similar financial assistance (line 147)"
-    reference: "28"
-    unit: ca/cad
-    required: false
-    default: null
-    basis: "Social assistance payments and similar financial assistance (line 147)"
-  - name: ca-qc/tp1_schedule_f_line_29
-    title: "Income replacement indemnities and net federal supplements (line 148)"
-    reference: "29"
-    unit: ca/cad
-    required: false
-    default: null
-    basis: "Income replacement indemnities and net federal supplements (line 148)"
   - name: ca-qc/tp1_schedule_f_line_30
     title: "Scholarships, bursaries or similar financial assistance (line 154, point 1)"
     reference: "30"

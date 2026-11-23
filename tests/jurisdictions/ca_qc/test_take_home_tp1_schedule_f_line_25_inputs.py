@@ -1,6 +1,6 @@
-"""Revenu Quebec Schedule F (TP-1.D.F-V, 2025-12), Part A, lines 23 and 24: the two lines that
-line 25 subtracts ("Subtract line 24 from line 23"). Each is an optional input a salary-only caller
-does not give; line 25 reads a blank as 0.
+"""Revenu Quebec Schedule F (TP-1.D.F-V, 2025-12), Part A, line 24: the line that line 25 takes off
+line 23 ("Subtract line 24 from line 23"). It is an optional input a salary-only caller does not
+give; line 25 reads a blank as 0. Line 23 is a copy of TP-1 line 128, so it is not an input here.
 
 The real part is loaded under a test-local header and form declaration over the Quebec package list
 of `support.py`."""
@@ -22,7 +22,6 @@ from tests.manifest_support import input_named, inputs_of
 PART = "tp1_schedule_f_line_25_inputs.yaml"
 NAMES = {line: f"ca-qc/tp1_schedule_f_line_{line}" for line in LINE_25_INPUTS}
 BASES = {
-    "23": "Dividends from taxable Canadian corporations, taxable amount (line 128)",
     "24": (
         "Dividends from taxable Canadian corporations, actual amount (total of lines 166 and 167)"
     ),
