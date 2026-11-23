@@ -24,8 +24,8 @@ FORM = "ca-qc/tp1_schedule_f"
 # The end of a chain: a form cannot hold a produced line that nothing reads or exports.
 LINE_36 = "ca-qc/tp1_schedule_f_income_line_36"
 LINE_70 = "ca-qc/tp1_schedule_f_income_subject_line_70"
-LINE_25_INPUTS = ("23", "24")
-LINE_34_INPUTS = ("20", "22", "26", "28", "29", "30", "31", "33")
+LINE_25_INPUTS = ("24",)
+LINE_34_INPUTS = ("20", "30", "31", "33")
 LINE_36_PARTS = (
     *TP1_INCOME_PARTS,
     "tp1_schedule_f_line_10_input.yaml",
@@ -37,6 +37,11 @@ LINE_36_PARTS = (
     "tp1_schedule_f_line_34_inputs.yaml",
     "tp1_schedule_f_line_25_inputs.yaml",
     "tp1_schedule_f_line_25.yaml",
+    "tp1_schedule_f_line_22.yaml",
+    "tp1_schedule_f_line_23.yaml",
+    "tp1_schedule_f_line_26.yaml",
+    "tp1_schedule_f_line_28.yaml",
+    "tp1_schedule_f_line_29.yaml",
     "tp1_schedule_f_line_34.yaml",
     "tp1_schedule_f_line_36.yaml",
 )

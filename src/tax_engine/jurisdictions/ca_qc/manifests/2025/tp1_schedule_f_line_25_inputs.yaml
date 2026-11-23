@@ -1,19 +1,13 @@
-# Schedule F (2025) lines 23 and 24: the two figures that line 25 subtracts ("Subtract line 24 from
+# Schedule F (2025) line 24: the figure that line 25 subtracts from line 23 ("Subtract line 24 from
 # line 23."; Revenu Quebec TP-1.D.F-V (2025-12), Part A, dividends from taxable Canadian
-# corporations: line 23 the taxable amount, line 24 the actual amount). Each comes from a line of the
-# TP-1 return that the take-home does not build, so each stays an input, as the form takes it,
-# optional and left blank by a salary-only caller. They are declared here, with the step that
-# consumes them (`tp1_schedule_f_line_25.yaml`), which reads a blank as 0.
+# corporations: line 23 the taxable amount, line 24 the actual amount). Line 23 copies TP-1 line 128
+# (`tp1_schedule_f_line_23.yaml`). Line 24 comes from a line of the TP-1 return that the take-home
+# does not build, so it stays an input, as the form takes it, optional and left blank by a
+# salary-only caller. It is declared here, with the step that consumes it
+# (`tp1_schedule_f_line_25.yaml`), which reads a blank as 0.
 form:
   name: ca-qc/tp1_schedule_f
 inputs:
-  - name: ca-qc/tp1_schedule_f_line_23
-    title: "Dividends from taxable Canadian corporations, taxable amount (line 128)"
-    reference: "23"
-    unit: ca/cad
-    required: false
-    default: null
-    basis: "Dividends from taxable Canadian corporations, taxable amount (line 128)"
   - name: ca-qc/tp1_schedule_f_line_24
     title: "Dividends from taxable Canadian corporations, actual amount (total of lines 166 and 167)"
     reference: "24"

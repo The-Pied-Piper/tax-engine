@@ -2,8 +2,10 @@
 "Add lines 20, 22 and 25 through 33", as the Quebec take-home manifest wires it.
 
 One `core/sum` over the printed lines 20, 22, 25, 26, 28, 29, 30, 31 and 33, rounded half-up to the
-cent by `ca-qc/cent_rounding`. The printed lines are optional inputs (line 25 is a step), read as 0
-when left out. The expected figures are hand-computed from the printed lines.
+cent by `ca-qc/cent_rounding`. Lines 20, 24, 30, 31 and 33 are optional inputs of Schedule F; lines
+22, 23, 26, 28 and 29 are copies of TP-1 lines 114, 128, 142, 147 and 148 (given on the TP-1 income
+form) and line 25 is a step; each is read as 0 when left out. The expected figures are
+hand-computed from the printed lines.
 """
 
 from __future__ import annotations
@@ -17,13 +19,13 @@ import yaml
 import tax_engine.jurisdictions.ca_qc
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.jurisdictions.ca_qc.catalog import (
+    TP1_LINE_114,
+    TP1_LINE_128,
+    TP1_LINE_142,
+    TP1_LINE_147,
+    TP1_LINE_148,
     TP1_SCHEDULE_F_LINE_20,
-    TP1_SCHEDULE_F_LINE_22,
-    TP1_SCHEDULE_F_LINE_23,
     TP1_SCHEDULE_F_LINE_24,
-    TP1_SCHEDULE_F_LINE_26,
-    TP1_SCHEDULE_F_LINE_28,
-    TP1_SCHEDULE_F_LINE_29,
     TP1_SCHEDULE_F_LINE_30,
     TP1_SCHEDULE_F_LINE_31,
     TP1_SCHEDULE_F_LINE_33,
@@ -40,15 +42,16 @@ PART = (
     / "2025"
     / "tp1_schedule_f_line_34.yaml"
 )
-# The printed lines that line 34 adds, line 25 coming from lines 23 and 24.
+# The figures behind the printed lines that line 34 adds: lines 22, 23, 26, 28 and 29 are the TP-1
+# lines 114, 128, 142, 147 and 148; line 25 comes from lines 23 and 24.
 GIVEN: tuple[tuple[AmountKind, str], ...] = (
     (TP1_SCHEDULE_F_LINE_20, "100.10"),
-    (TP1_SCHEDULE_F_LINE_22, "200.20"),
-    (TP1_SCHEDULE_F_LINE_23, "1380.50"),
+    (TP1_LINE_114, "200.20"),
+    (TP1_LINE_128, "1380.50"),
     (TP1_SCHEDULE_F_LINE_24, "1000.00"),
-    (TP1_SCHEDULE_F_LINE_26, "400.40"),
-    (TP1_SCHEDULE_F_LINE_28, "500.50"),
-    (TP1_SCHEDULE_F_LINE_29, "600.60"),
+    (TP1_LINE_142, "400.40"),
+    (TP1_LINE_147, "500.50"),
+    (TP1_LINE_148, "600.60"),
     (TP1_SCHEDULE_F_LINE_30, "700.70"),
     (TP1_SCHEDULE_F_LINE_31, "800.80"),
     (TP1_SCHEDULE_F_LINE_33, "900.90"),
@@ -82,7 +85,7 @@ def test_line_34_reads_each_blank_line_as_zero(
     kind, value = GIVEN[left_out]
     # Lines 23 and 24 reach line 34 only as line 25 (the difference).
     contribution = {
-        TP1_SCHEDULE_F_LINE_23: D(value),
+        TP1_LINE_128: D(value),
         TP1_SCHEDULE_F_LINE_24: -D(value),
     }.get(kind, D(value))
 
@@ -98,7 +101,7 @@ def test_line_34_rounds_the_sum_half_up_to_the_cent(
     take_home_service: TakeHomeService, second: str, expected: str
 ) -> None:
     # 0.004 + 0.001 = 0.005 rounds up; 0.004 + 0.0009 = 0.0049 rounds down.
-    given = ((TP1_SCHEDULE_F_LINE_20, "0.004"), (TP1_SCHEDULE_F_LINE_22, second))
+    given = ((TP1_SCHEDULE_F_LINE_20, "0.004"), (TP1_LINE_114, second))
 
     assert _line_34(take_home_service, *given) == expected
 

@@ -1,8 +1,9 @@
 """Revenu Quebec Schedule F (TP-1.D.F-V, 2025-12), Part A, line 25, "Subtract line 24 from line 23",
 as the Quebec take-home manifest wires it.
 
-Line 23 is the taxable amount of the dividends from taxable Canadian corporations and line 24 their
-actual amount, both optional inputs read as 0 when blank. `core/subtract` takes line 24 off line 23,
+Line 23 is the taxable amount of the dividends from taxable Canadian corporations (a copy of TP-1
+line 128, given on the TP-1 income form) and line 24 their actual amount (an optional input), both
+read as 0 when blank. `core/subtract` takes line 24 off line 23,
 rounded half-up to the cent; no floor is printed, so the result is signed. The expected figures are
 hand-computed from the printed lines.
 """
@@ -17,7 +18,7 @@ import yaml
 
 import tax_engine.jurisdictions.ca_qc
 from tax_engine.jurisdictions.ca_qc.catalog import (
-    TP1_SCHEDULE_F_LINE_23,
+    TP1_LINE_128,
     TP1_SCHEDULE_F_LINE_24,
     TP1_SCHEDULE_F_LINE_25,
 )
@@ -43,13 +44,13 @@ def test_line_25_with_both_lines_blank_is_zero(take_home_service: TakeHomeServic
 
 
 def test_line_25_takes_line_24_off_line_23(take_home_service: TakeHomeService) -> None:
-    given = ((TP1_SCHEDULE_F_LINE_23, "1380.00"), (TP1_SCHEDULE_F_LINE_24, "1000.00"))
+    given = ((TP1_LINE_128, "1380.00"), (TP1_SCHEDULE_F_LINE_24, "1000.00"))
 
     assert _line_25(take_home_service, *given) == "380.00"
 
 
 def test_line_25_reads_a_blank_line_24_as_zero(take_home_service: TakeHomeService) -> None:
-    assert _line_25(take_home_service, (TP1_SCHEDULE_F_LINE_23, "1380.00")) == "1380.00"
+    assert _line_25(take_home_service, (TP1_LINE_128, "1380.00")) == "1380.00"
 
 
 def test_line_25_reads_a_blank_line_23_as_zero_and_is_signed(
@@ -63,7 +64,7 @@ def test_line_25_rounds_half_up_to_the_cent(
     take_home_service: TakeHomeService, line_24: str, expected: str
 ) -> None:
     # 0.0059 - 0.001 = 0.0049 rounds down; 0.0059 - 0.0009 = 0.0050 rounds up.
-    given = ((TP1_SCHEDULE_F_LINE_23, "0.0059"), (TP1_SCHEDULE_F_LINE_24, line_24))
+    given = ((TP1_LINE_128, "0.0059"), (TP1_SCHEDULE_F_LINE_24, line_24))
 
     assert _line_25(take_home_service, *given) == expected
 

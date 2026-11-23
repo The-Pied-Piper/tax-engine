@@ -1,9 +1,11 @@
 """Quebec input ownership (2025): a line is an input only on the form it belongs to, and every other
 form imports it from that form's export.
 
-Two groups of figures are read by two forms each:
+Three groups of figures are read by two forms each:
 - TP-1 lines 105 and 107 and RL-1 box 211 belong to the TP-1 income form; Work Chart 201 line 1 and
   Schedule P lines 10 and 12 read them from its exports.
+- TP-1 lines 114, 128, 142, 147 and 148 belong to the TP-1 income form, which adds them into line
+  199; Schedule F lines 22, 23, 26, 28 and 29 read them from its exports.
 - The net research grants and the WEPP payments belong to Work Chart 201 lines 3 and 4; Schedule P
   lines 13 and 15 read them from its exports.
 
@@ -30,6 +32,18 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     SCHEDULE_P_WEPP_PAYMENTS_LINE_15,
     TP1_LINE_105,
     TP1_LINE_107,
+    TP1_LINE_114,
+    TP1_LINE_128,
+    TP1_LINE_142,
+    TP1_LINE_147,
+    TP1_LINE_148,
+    TP1_SCHEDULE_F_LINE_22,
+    TP1_SCHEDULE_F_LINE_23,
+    TP1_SCHEDULE_F_LINE_26,
+    TP1_SCHEDULE_F_LINE_28,
+    TP1_SCHEDULE_F_LINE_29,
+    TP1_SCHEDULE_F_LINES_20_TO_33_TOTAL_LINE_34,
+    TP1_TOTAL_INCOME_LINE_199,
     WORK_CHART_201_ELIGIBLE_WORK_INCOME_LINE_1,
     WORK_CHART_201_RESEARCH_GRANTS_LINE_3,
     WORK_CHART_201_TOTAL_LINE_6,
@@ -45,12 +59,22 @@ SHARED_INPUTS = {
     "ca-qc/tp1_line_105": "tp1_income",
     "ca-qc/tp1_line_107": "tp1_income",
     "ca-qc/rl1_slip_box_211": "tp1_income",
+    "ca-qc/tp1_line_114": "tp1_income",
+    "ca-qc/tp1_line_128": "tp1_income",
+    "ca-qc/tp1_line_142": "tp1_income",
+    "ca-qc/tp1_line_147": "tp1_income",
+    "ca-qc/tp1_line_148": "tp1_income",
     "ca-qc/work_chart_201_research_grants_line_3": "work_chart_201",
     "ca-qc/work_chart_201_wepp_payments_line_4": "work_chart_201",
 }
 REMOVED_COPIES = (
     "ca-qc/schedule_p_research_grants_line_13",
     "ca-qc/schedule_p_wepp_payments_line_15",
+    "ca-qc/tp1_schedule_f_line_22",
+    "ca-qc/tp1_schedule_f_line_23",
+    "ca-qc/tp1_schedule_f_line_26",
+    "ca-qc/tp1_schedule_f_line_28",
+    "ca-qc/tp1_schedule_f_line_29",
 )
 
 
@@ -126,6 +150,33 @@ def test_lines_105_and_107_and_box_211_given_once_reach_work_chart_201_and_sched
     assert schedule_p.get(SCHEDULE_P_LINE_10).value == D("70700.15")
     assert schedule_p.get(SCHEDULE_P_TP1_LINE_107).value == D("2000.50")
     assert schedule_p.get(SCHEDULE_P_LINE_18).value == D("72700.65")
+
+
+def test_lines_114_128_142_147_and_148_given_once_reach_schedule_f_and_tp1_line_199(
+    take_home_service: TakeHomeService,
+) -> None:
+    (sheets,) = _forms(
+        take_home_service,
+        (
+            (TP1_LINE_114, "200.20"),
+            (TP1_LINE_128, "1380.50"),
+            (TP1_LINE_142, "400.40"),
+            (TP1_LINE_147, "500.50"),
+            (TP1_LINE_148, "600.60"),
+        ),
+    )
+
+    # Schedule F lines 22, 23, 26, 28 and 29 are the TP-1 lines; line 24 is blank, so line 25 is
+    # line 23, and line 34 adds 200.20 + 1,380.50 + 400.40 + 500.50 + 600.60.
+    schedule_f = sheets["ca-qc/tp1_schedule_f"]
+    assert schedule_f.get(TP1_SCHEDULE_F_LINE_22).value == D("200.20")
+    assert schedule_f.get(TP1_SCHEDULE_F_LINE_23).value == D("1380.50")
+    assert schedule_f.get(TP1_SCHEDULE_F_LINE_26).value == D("400.40")
+    assert schedule_f.get(TP1_SCHEDULE_F_LINE_28).value == D("500.50")
+    assert schedule_f.get(TP1_SCHEDULE_F_LINE_29).value == D("600.60")
+    assert schedule_f.get(TP1_SCHEDULE_F_LINES_20_TO_33_TOTAL_LINE_34).value == D("3082.20")
+    # TP-1 line 199 adds the same five figures to the salary: 70,000 + 3,082.20.
+    assert sheets["ca-qc/tp1_income"].get(TP1_TOTAL_INCOME_LINE_199).value == D("73082.20")
 
 
 def test_research_grants_and_wepp_payments_given_once_reach_work_chart_201_and_schedule_p(

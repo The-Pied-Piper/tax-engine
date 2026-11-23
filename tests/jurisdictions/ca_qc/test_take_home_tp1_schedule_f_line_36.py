@@ -20,9 +20,9 @@ from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_qc.catalog import (
     TP1_FOREST_PRODUCER_AVERAGING_LINE_276,
+    TP1_LINE_114,
     TP1_SCHEDULE_F_INCOME_LINE_36,
     TP1_SCHEDULE_F_LINE_20,
-    TP1_SCHEDULE_F_LINE_22,
 )
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 from tests.jurisdictions.ca_qc.tp1_net_income_support import SALARY_PARTS
@@ -68,6 +68,11 @@ PARTS = (
     "tp1_schedule_f_line_34_inputs.yaml",
     "tp1_schedule_f_line_25_inputs.yaml",
     "tp1_schedule_f_line_25.yaml",
+    "tp1_schedule_f_line_22.yaml",
+    "tp1_schedule_f_line_23.yaml",
+    "tp1_schedule_f_line_26.yaml",
+    "tp1_schedule_f_line_28.yaml",
+    "tp1_schedule_f_line_29.yaml",
     "tp1_schedule_f_line_34.yaml",
     "tp1_schedule_f_line_36.yaml",
 )
@@ -111,8 +116,10 @@ def test_line_34_is_taken_off_line_18(take_home_service: TakeHomeService) -> Non
     given = (
         (TP1_FOREST_PRODUCER_AVERAGING_LINE_276, "1000"),
         (TP1_SCHEDULE_F_LINE_20, "100.25"),
-        (TP1_SCHEDULE_F_LINE_22, "150.25"),
+        (TP1_LINE_114, "150.25"),
     )
     value = schedule_f(take_home_service, "70000", *given).get(TP1_SCHEDULE_F_INCOME_LINE_36).value
 
-    assert str(value) == "749.50"
+    # TP-1 line 114 is in total income (line 199) and so in line 10, and line 22 copies it:
+    # line 18 = (70,000 + 150.25 + 1,000) - 70,000 = 1,150.25; line 34 = 100.25 + 150.25 = 250.50.
+    assert str(value) == "899.75"
