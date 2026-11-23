@@ -34,9 +34,7 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.jurisdictions.ca.catalog.refund import REFUND_OR_BALANCE_OWING
 from tax_engine.jurisdictions.ca_qc.catalog import (
     FEDERAL_REFUND_OR_BALANCE_OWING_RETURN,
-    FEDERAL_TOTAL_PAYABLE_LESS_ABATEMENT_RETURN,
     FEDERAL_TOTAL_PAYABLE_RETURN,
-    REFUNDABLE_QUEBEC_ABATEMENT_RETURN,
     SCHEDULE_B_LIVED_ALONE_LINE_20,
     SCHEDULE_K_GROUP_PLAN_COVERED_LINE_50,
     SOLIDARITY_CREDIT,
@@ -63,11 +61,10 @@ D = Decimal
 # refund or balance owing, total payable, solidarity credit.
 DEFAULT_FIGURES = [
     ("3000", "-293.40", "0.00", "363.00"),
-    ("20000", "-3135.08", "128.01", "363.00"),
-    ("70000", "14678.32", "14678.32", "0.00"),
-    ("200000", "71643.79", "71643.79", "0.00"),
+    ("20000", "-3135.08", "151.53", "363.00"),
+    ("70000", "14678.32", "15919.71", "0.00"),
+    ("200000", "71643.79", "78142.27", "0.00"),
 ]
-LESS_ABATEMENT = {"20000": "119.05", "70000": "6282.16", "200000": "32886.26"}
 
 
 @pytest.mark.parametrize(
@@ -96,7 +93,6 @@ def test_each_printed_line_is_read_as_the_form_prints_it(
 
     assert str(sheet.get(FEDERAL_REFUND_OR_BALANCE_OWING_RETURN).value) == figures["172"]
     assert str(sheet.get(FEDERAL_TOTAL_PAYABLE_RETURN).value) == figures["43500"]
-    assert str(sheet.get(REFUNDABLE_QUEBEC_ABATEMENT_RETURN).value) == figures["44000"]
     assert str(sheet.get(TP1_INCOME_TAX_AND_CONTRIBUTIONS_RETURN).value) == figures["450"]
     assert str(sheet.get(TP1_INCOME_TAX_LESS_CREDITS_RETURN).value) == figures["470"]
 
@@ -107,14 +103,12 @@ def test_the_summary_adds_line_172_and_line_470(
 ) -> None:
     sheet = return_sheet(take_home_service, salary)
 
-    less_abatement = sheet.get(FEDERAL_TOTAL_PAYABLE_LESS_ABATEMENT_RETURN)
-    assert str(less_abatement.value) == LESS_ABATEMENT[salary]
     assert sheet.get(REFUND_OR_BALANCE_OWING).value == (
         sheet.get(FEDERAL_REFUND_OR_BALANCE_OWING_RETURN).value
         + sheet.get(TP1_INCOME_TAX_LESS_CREDITS_RETURN).value
     )
     assert sheet.get(TOTAL_PAYABLE).value == (
-        sheet.get(FEDERAL_TOTAL_PAYABLE_LESS_ABATEMENT_RETURN).value
+        sheet.get(FEDERAL_TOTAL_PAYABLE_RETURN).value
         + sheet.get(TP1_INCOME_TAX_AND_CONTRIBUTIONS_RETURN).value
     )
 
@@ -127,14 +121,14 @@ def test_the_qpip_overpayment_reduces_the_refund_or_balance_owing(
     take_home_service: TakeHomeService, salary: str, line_470: str, refund_or_balance: str
 ) -> None:
     # Line 457 refunds the premium below $2,000 of work income ($1,000 x 0.494% = $4.94). It is on
-    # TP-1 line 468, so line 470 is lower by it; the total payable (lines 43500, 44000 and 450) is
+    # TP-1 line 468, so line 470 is lower by it; the total payable (lines 43500 and 450) is
     # not reduced by it.
     sheet = return_sheet(take_home_service, salary)
 
     assert str(sheet.get(TP1_INCOME_TAX_LESS_CREDITS_RETURN).value) == line_470
     assert str(sheet.get(REFUND_OR_BALANCE_OWING).value) == refund_or_balance
     assert sheet.get(TOTAL_PAYABLE).value == (
-        sheet.get(FEDERAL_TOTAL_PAYABLE_LESS_ABATEMENT_RETURN).value
+        sheet.get(FEDERAL_TOTAL_PAYABLE_RETURN).value
         + sheet.get(TP1_INCOME_TAX_AND_CONTRIBUTIONS_RETURN).value
     )
 
@@ -157,15 +151,15 @@ def test_a_credit_typed_on_lines_451_2_to_466_moves_the_refund_or_balance_owing(
 
     assert str(sheet.get(TP1_INCOME_TAX_LESS_CREDITS_RETURN).value) == "7896.16"
     assert str(sheet.get(REFUND_OR_BALANCE_OWING).value) == "14178.32"
-    assert str(sheet.get(TOTAL_PAYABLE).value) == "14678.32"
+    assert str(sheet.get(TOTAL_PAYABLE).value) == "15919.71"
 
 
 @pytest.mark.parametrize(
     ("salary", "refund_or_balance", "total_payable"),
     [
-        ("20000", "-3135.08", "128.01"),
-        ("70000", "13923.32", "13923.32"),
-        ("200000", "70888.79", "70888.79"),
+        ("20000", "-3135.08", "151.53"),
+        ("70000", "13923.32", "15164.71"),
+        ("200000", "70888.79", "77387.27"),
     ],
 )
 def test_the_group_plan_case_drops_the_755_premium(
@@ -182,9 +176,9 @@ def test_the_group_plan_case_drops_the_755_premium(
 @pytest.mark.parametrize(
     ("salary", "refund_or_balance", "total_payable", "solidarity"),
     [
-        ("20000", "-3144.04", "119.05", "1281.00"),
-        ("70000", "14678.32", "14678.32", "0.00"),
-        ("200000", "71643.79", "71643.79", "0.00"),
+        ("20000", "-3144.04", "142.57", "1281.00"),
+        ("70000", "14678.32", "15919.71", "0.00"),
+        ("200000", "71643.79", "78142.27", "0.00"),
     ],
 )
 def test_alone_and_a_tenant(
@@ -218,7 +212,7 @@ def test_a_tenant_answer_changes_the_solidarity_credit_only(
     )
 
     assert str(sheet.get(REFUND_OR_BALANCE_OWING).value) == "-3135.08"
-    assert str(sheet.get(TOTAL_PAYABLE).value) == "128.01"
+    assert str(sheet.get(TOTAL_PAYABLE).value) == "151.53"
     assert sheet.get(SOLIDARITY_CREDIT).value > D("363.00")
 
 
@@ -278,23 +272,11 @@ STEPS = {
         "ca-qc/t1_tax_and_credits.total_payable_line_151",
         "ca-qc/federal_total_payable_return",
     ),
-    "ca-qc/refundable_quebec_abatement_return": _read(
-        "ca-qc/t1_tax_and_credits.refundable_quebec_abatement_line_156",
-        "ca-qc/refundable_quebec_abatement_return",
-    ),
-    "ca-qc/federal_total_payable_less_abatement_return": _computed(
-        "core/subtract",
-        {
-            "amount": "ca-qc/federal_total_payable_return",
-            "less": "ca-qc/refundable_quebec_abatement_return",
-        },
-        "ca-qc/federal_total_payable_less_abatement_return",
-    ),
     "ca-qc/total_payable": _computed(
         "core/sum",
         {
             "parts": [
-                "ca-qc/federal_total_payable_less_abatement_return",
+                "ca-qc/federal_total_payable_return",
                 "ca-qc/tp1_income_tax_and_contributions_return",
             ]
         },
@@ -306,10 +288,10 @@ STEPS = {
 }
 
 
-def test_the_part_is_the_nine_steps_and_nothing_else() -> None:
+def test_the_part_is_the_seven_steps_and_nothing_else() -> None:
     steps = {step["produces"]["output"]: step for step in _steps()}
 
-    assert len(_steps()) == len(STEPS) == 9
+    assert len(_steps()) == len(STEPS) == 7
     assert set(steps) == set(STEPS)
 
 
@@ -334,10 +316,8 @@ def test_the_solidarity_credit_is_in_neither_sum() -> None:
         ("ca-qc/solidarity_credit", True),
         ("ca-qc/federal_refund_or_balance_owing_return", False),
         ("ca-qc/tp1_income_tax_less_credits_return", False),
-        ("ca-qc/federal_total_payable_less_abatement_return", False),
         ("ca-qc/tp1_income_tax_and_contributions_return", True),
         ("ca-qc/federal_total_payable_return", True),
-        ("ca-qc/refundable_quebec_abatement_return", True),
     ],
 )
 def test_the_return_kinds_are_registered_amounts_signed_where_the_figure_has_no_floor(

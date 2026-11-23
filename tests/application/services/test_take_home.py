@@ -180,26 +180,26 @@ def test_a_jurisdiction_that_declares_no_take_home_figures_is_not_found(
         (
             2025,
             {
-                "income_tax": "14678.32",
+                "income_tax": "15919.71",
                 "qpp_base": "3591.00",
                 "qpp_enhanced": "665.00",
                 "qpp2": "0.00",
                 "ei": "860.67",
                 "qpip": "345.80",
             },
-            "49859.21",
+            "48617.82",
         ),
         (
             2026,
             {
-                "income_tax": "14346.59",
+                "income_tax": "15540.41",
                 "qpp_base": "3524.50",
                 "qpp_enhanced": "665.00",
                 "qpp2": "0.00",
                 "ei": "895.70",
                 "qpip": "301.00",
             },
-            "50267.21",
+            "49073.39",
         ),
     ],
 )

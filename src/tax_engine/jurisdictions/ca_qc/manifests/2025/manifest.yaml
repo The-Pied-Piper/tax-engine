@@ -24,9 +24,10 @@ outputs:
   - ca-qc/solidarity_credit
 capabilities: []
 # Where the take-home answer reads its figures (the caller gives the salary and nothing else).
-# Quebec has two returns, so the income tax is `ca-qc/total_payable`: 5005-R line 43500 less the
-# refundable Quebec abatement (line 44000) plus TP-1 line 450 (Quebec income tax and contributions,
-# which include the health services fund and the prescription drug insurance premium). The pension
+# Quebec has two returns, so the income tax is `ca-qc/total_payable`: 5005-R line 43500 plus TP-1
+# line 450 (Quebec income tax and contributions, which include the health services fund and the
+# prescription drug insurance premium). The refundable Quebec abatement (line 44000) is a credit paid
+# on filing, so it is not taken off. The pension
 # plan figures are Schedule 8's, read at the Quebec rate; EI is T2204 at the Quebec rate; the QPIP
 # premium is 5005-R line 91. The average and marginal income tax rates are not declared: this
 # manifest does not compute them yet (see `return.yaml`).

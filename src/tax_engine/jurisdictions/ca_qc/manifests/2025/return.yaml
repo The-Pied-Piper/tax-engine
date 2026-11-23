@@ -15,7 +15,8 @@
 # (451 less 451.1) is an optional input that line 468 includes.
 #
 # Total payable (`ca-qc/total_payable`; `ca/total_payable` is the federal kind the shared forms
-# declare): 5005-R line 43500 less line 44000 (the refundable Quebec abatement) plus TP-1 line 450.
+# declare): 5005-R line 43500 plus TP-1 line 450. The refundable Quebec abatement (line 44000) is a
+# credit paid on filing, separate from the tax, so it is not taken off.
 #
 # The solidarity credit (`ca-qc/solidarity_credit`) is the yearly amount of the payment period July
 # 2026 to June 2027; it is its own output, added to neither of the two figures above.
@@ -57,28 +58,13 @@ capabilities:
       records: ca-qc/t1_tax_and_credits.total_payable_line_151
     produces:
       output: ca-qc/federal_total_payable_return
-  - name: core/record_total
-    unit: ca/cad
-    consumes:
-      records: ca-qc/t1_tax_and_credits.refundable_quebec_abatement_line_156
-    produces:
-      output: ca-qc/refundable_quebec_abatement_return
-  - name: core/subtract
-    unit: ca/cad
-    params:
-      rounding: ca-qc/cent_rounding
-    consumes:
-      amount: ca-qc/federal_total_payable_return
-      less: ca-qc/refundable_quebec_abatement_return
-    produces:
-      output: ca-qc/federal_total_payable_less_abatement_return
   - name: core/sum
     unit: ca/cad
     params:
       rounding: ca-qc/cent_rounding
     consumes:
       parts:
-        - ca-qc/federal_total_payable_less_abatement_return
+        - ca-qc/federal_total_payable_return
         - ca-qc/tp1_income_tax_and_contributions_return
     produces:
       output: ca-qc/total_payable

@@ -11,7 +11,7 @@ a group drug plan" (Schedule K line 50).
 Each printed figure of the chain is one test, over the three salaries and the scenarios:
 - the refund or balance owing (positive is owing, negative a refund): 5005-R line 172 plus
   TP-1 line 470 (line 450 less line 468);
-- the total payable: 5005-R line 43500 less line 44000 plus TP-1 line 450;
+- the total payable: 5005-R line 43500 plus TP-1 line 450;
 - 5005-R line 172, "Line 152 minus line 171 ... Refund or balance owing" (CRA 5005-R);
 - TP-1 line 450, "Add lines 432 through 447. Income tax and contributions" (Revenu Quebec TP-1.D-V
   (2025-12));
@@ -43,7 +43,6 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     PPIP_INSURABLE_EARNINGS_GIVEN,
     PPIP_PREMIUMS_LINE_91,
     REFUND_OR_BALANCE_OWING_LINE_172,
-    REFUNDABLE_QUEBEC_ABATEMENT_RETURN,
     SCHEDULE_B_LIVED_ALONE_LINE_20,
     SCHEDULE_K_GROUP_PLAN_COVERED_LINE_50,
     SOLIDARITY_CREDIT,
@@ -113,15 +112,15 @@ def test_the_refund_or_balance_owing(salary: str, scenario: str, expected: str) 
 
 
 TOTAL_PAYABLE_FIGURES = {
-    ("20000", DEFAULT): "128.01",
-    ("70000", DEFAULT): "14678.32",
-    ("200000", DEFAULT): "71643.79",
-    ("20000", GROUP_PLAN): "128.01",
-    ("70000", GROUP_PLAN): "13923.32",
-    ("200000", GROUP_PLAN): "70888.79",
-    ("20000", ALONE_AND_TENANT): "119.05",
-    ("70000", ALONE_AND_TENANT): "14678.32",
-    ("200000", ALONE_AND_TENANT): "71643.79",
+    ("20000", DEFAULT): "151.53",
+    ("70000", DEFAULT): "15919.71",
+    ("200000", DEFAULT): "78142.27",
+    ("20000", GROUP_PLAN): "151.53",
+    ("70000", GROUP_PLAN): "15164.71",
+    ("200000", GROUP_PLAN): "77387.27",
+    ("20000", ALONE_AND_TENANT): "142.57",
+    ("70000", ALONE_AND_TENANT): "15919.71",
+    ("200000", ALONE_AND_TENANT): "78142.27",
 }
 
 
@@ -245,8 +244,7 @@ def test_the_refund_and_the_total_payable_follow_from_the_printed_lines(
 
     assert summary.get(REFUND_OR_BALANCE_OWING).value == line_172 + line_470
     line_43500 = summary.get(FEDERAL_TOTAL_PAYABLE_RETURN).value
-    line_44000 = summary.get(REFUNDABLE_QUEBEC_ABATEMENT_RETURN).value
-    assert summary.get(TOTAL_PAYABLE).value == line_43500 - line_44000 + line_450
+    assert summary.get(TOTAL_PAYABLE).value == line_43500 + line_450
 
 
 # 5000-G, line 31205: under $2,000 of PPIP insurable earnings, "do not claim any PPIP premiums on

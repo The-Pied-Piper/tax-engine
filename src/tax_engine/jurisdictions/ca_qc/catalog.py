@@ -2885,18 +2885,6 @@ FEDERAL_TOTAL_PAYABLE_RETURN = AmountKind.declare(
 """Quebec return summary: 5005-R line 43500 "Total payable", read from the form's export. One
 core/record_total (`return.yaml`)."""
 
-REFUNDABLE_QUEBEC_ABATEMENT_RETURN = AmountKind.declare(
-    CATALOG, "refundable_quebec_abatement_return", non_negative=True
-)
-"""Quebec return summary: 5005-R line 44000 "Refundable Quebec abatement", read from the form's
-export. One core/record_total (`return.yaml`)."""
-
-FEDERAL_TOTAL_PAYABLE_LESS_ABATEMENT_RETURN = AmountKind.declare(
-    CATALOG, "federal_total_payable_less_abatement_return"
-)
-"""Quebec return summary: 5005-R line 43500 less line 44000, signed (no floor). One core/subtract
-(`return.yaml`)."""
-
 TOTAL_PAYABLE = AmountKind.declare(CATALOG, "total_payable")
 """Quebec return summary: the total payable of both returns, 5005-R line 43500 less line 44000 plus
 TP-1 line 450. A `ca-qc` kind, because `ca/total_payable` is the federal kind the shared forms
