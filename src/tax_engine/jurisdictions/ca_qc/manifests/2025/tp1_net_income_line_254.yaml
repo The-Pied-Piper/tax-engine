@@ -1,7 +1,8 @@
 # TP-1 (2025) line 254: "Add lines 201 through 207, 214 through 231, and 234 through 252. Total
 # deductions". One core/sum in form line order, rounded half-up to the cent (`ca-qc/cent_rounding`).
 # Lines 201 and 248 are steps; the other lines are optional inputs, read as 0 when blank
-# (`tp1_net_income_line_254_inputs.yaml`). The sum is signed (the printed lines set no floor).
+# (`tp1_net_income_line_254_inputs.yaml`). The printed total sets no floor of its own; lines 225, 231,
+# 234 and 245 refuse a negative where they are typed, and the other lines may be negative.
 form:
   name: ca-qc/tp1_net_income
 capabilities:

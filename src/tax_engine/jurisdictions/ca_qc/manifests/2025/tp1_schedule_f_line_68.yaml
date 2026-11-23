@@ -1,7 +1,8 @@
 # Schedule F (2025) line 68: "Add lines 41 through 62." (Revenu Quebec TP-1.D.F-V (2025-12), Part A).
 # One core/sum over the printed lines 41, 42, 43, 43.1, 44, 45, 46, 54, 56, 58, 60 and 62, rounded
-# half-up to the cent. Each blank line is read as 0. Line 70 reads it. The printed label "Deductions"
-# is the step's title.
+# half-up to the cent. Each blank line is read as 0. Lines 46, 54, 56 and 58 are copies of TP-1 lines
+# 245, 225, 231 and 234 (record totals of the TP-1 net income exports); the others are inputs. Line 70
+# reads it. The printed label "Deductions" is the step's title.
 form:
   name: ca-qc/tp1_schedule_f
 capabilities:
