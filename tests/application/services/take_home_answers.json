@@ -103,7 +103,7 @@
    },
    {
     "form": "ca/t1_lines_copied_by_provinces",
-    "lines": 10
+    "lines": 12
    },
    {
     "form": "ca/t1_taxable_income",
@@ -131,14 +131,14 @@
    },
    {
     "form": "ca/t1_tax_and_credits",
-    "lines": 53
+    "lines": 54
    },
    {
     "form": "ca-on/return",
     "lines": 22
    }
   ],
-  "trace_sha256": "c909d63b1f7ecde59643b1f8980d7a225008e9da2f299e0a5c2dbac79f10e5c7"
+  "trace_sha256": "549b09f0618834c6b5262e445176476a5e727e15e51c5eac8e08bd06ae0e8d85"
  },
  {
   "jurisdiction": "CA-ON",
@@ -289,7 +289,7 @@
    },
    {
     "form": "ca/t1_lines_copied_by_provinces",
-    "lines": 10
+    "lines": 12
    },
    {
     "form": "ca/t1_taxable_income",
@@ -317,14 +317,14 @@
    },
    {
     "form": "ca/t1_tax_and_credits",
-    "lines": 53
+    "lines": 54
    },
    {
     "form": "ca-on/return",
     "lines": 22
    }
   ],
-  "trace_sha256": "f4b11244f2c1c0f8b38c5941811bdefe73b7d26658bfb9ef7ac5a4f2f162c94b"
+  "trace_sha256": "f65adeaed0fd380f18655b815ebcbdcd66d7c8a15695946437d51e3d24f72aae"
  },
  {
   "jurisdiction": "CA-ON",
@@ -475,7 +475,7 @@
    },
    {
     "form": "ca/t1_lines_copied_by_provinces",
-    "lines": 10
+    "lines": 12
    },
    {
     "form": "ca/t1_taxable_income",
@@ -507,14 +507,14 @@
    },
    {
     "form": "ca/t1_tax_and_credits",
-    "lines": 53
+    "lines": 54
    },
    {
     "form": "ca-ab/return",
     "lines": 16
    }
   ],
-  "trace_sha256": "a901005be82ce65bf914011e697924628ec67a30c4da92708844a5d6d63b5a5b"
+  "trace_sha256": "23807c299f4f2323e9fec1870a52d829c865eef2eff8f964072d9500781ec35d"
  },
  {
   "jurisdiction": "CA-AB",
@@ -665,7 +665,7 @@
    },
    {
     "form": "ca/t1_lines_copied_by_provinces",
-    "lines": 10
+    "lines": 12
    },
    {
     "form": "ca/t1_taxable_income",
@@ -697,14 +697,14 @@
    },
    {
     "form": "ca/t1_tax_and_credits",
-    "lines": 53
+    "lines": 54
    },
    {
     "form": "ca-ab/return",
     "lines": 16
    }
   ],
-  "trace_sha256": "fb7e9a11eca78ba3bac2d196cfa272d947f5eb0c2aa80b157b920ed6c48026c5"
+  "trace_sha256": "d946e92f629c3816d1a1fd34654300df2eb01dd23dc72f10dc6fcaa1611a29d7"
  },
  {
   "jurisdiction": "CA-AB",
@@ -851,7 +851,7 @@
    },
    {
     "form": "ca/t1_lines_copied_by_provinces",
-    "lines": 10
+    "lines": 12
    },
    {
     "form": "ca/t1_taxable_income",
@@ -879,14 +879,14 @@
    },
    {
     "form": "ca/t1_tax_and_credits",
-    "lines": 52
+    "lines": 53
    },
    {
     "form": "ca-bc/return",
     "lines": 22
    }
   ],
-  "trace_sha256": "d17e5c7c61420c07d7991cf9d647e74a2e6187e9e38996c90772973e843b89b3"
+  "trace_sha256": "9f190636bcb3d9ba20e16f4a1cce8b2fb5b0b4c7ddf4d2c164e2a4ba3efb07ac"
  },
  {
   "jurisdiction": "CA-BC",
@@ -1033,7 +1033,7 @@
    },
    {
     "form": "ca/t1_lines_copied_by_provinces",
-    "lines": 10
+    "lines": 12
    },
    {
     "form": "ca/t1_taxable_income",
@@ -1061,14 +1061,14 @@
    },
    {
     "form": "ca/t1_tax_and_credits",
-    "lines": 52
+    "lines": 53
    },
    {
     "form": "ca-bc/return",
     "lines": 22
    }
   ],
-  "trace_sha256": "0a6197359212521bc76d80d91dcf91d8019c9db38770d0edb14086e63c914630"
+  "trace_sha256": "f780b9d19019244a4bed4adafb4bac7dd20bee02f88c0d1a43257509998ba21b"
  },
  {
   "jurisdiction": "CA-BC",
@@ -1223,7 +1223,7 @@
    },
    {
     "form": "ca/t1_lines_copied_by_provinces",
-    "lines": 10
+    "lines": 12
    },
    {
     "form": "ca/t1_taxable_income",
@@ -1263,14 +1263,14 @@
    },
    {
     "form": "ca/t1_tax_and_credits",
-    "lines": 52
+    "lines": 53
    },
    {
     "form": "ca-mb/return",
     "lines": 23
    }
   ],
-  "trace_sha256": "92b9d2e01993c27f650b5926994a15df8fff4fe9621dc60cdb997a269a3a01c2"
+  "trace_sha256": "d2e4dcb2a3b6e171bb17dcb3f04df1867773a69560dd9967808a0dd328ce5f28"
  },
  {
   "jurisdiction": "CA-MB",
@@ -1425,7 +1425,7 @@
    },
    {
     "form": "ca/t1_lines_copied_by_provinces",
-    "lines": 10
+    "lines": 12
    },
    {
     "form": "ca/t1_taxable_income",
@@ -1465,14 +1465,14 @@
    },
    {
     "form": "ca/t1_tax_and_credits",
-    "lines": 52
+    "lines": 53
    },
    {
     "form": "ca-mb/return",
     "lines": 23
    }
   ],
-  "trace_sha256": "b7634cb75af82d2edb5f498c841525c6a2fb331bc5963f247c117331c097b43c"
+  "trace_sha256": "f54a01822d041d81fe54ab03c896f66f7da47d26db15c04daadc4c724ac860a7"
  },
  {
   "jurisdiction": "CA-MB",
@@ -1623,7 +1623,7 @@
    },
    {
     "form": "ca/t1_lines_copied_by_provinces",
-    "lines": 10
+    "lines": 12
    },
    {
     "form": "ca/t1_taxable_income",
@@ -1651,14 +1651,14 @@
    },
    {
     "form": "ca/t1_tax_and_credits",
-    "lines": 53
+    "lines": 54
    },
    {
     "form": "ca-sk/return",
     "lines": 13
    }
   ],
-  "trace_sha256": "6d4eb115f923901ce49d0ea6018d1ed14e3efc8422ac443fb9893ab22a45a6b7"
+  "trace_sha256": "18af824e6c1795630dc7dbc9a09125c520ddaffd0440752360cfab53c53e1a5f"
  },
  {
   "jurisdiction": "CA-SK",
@@ -1809,7 +1809,7 @@
    },
    {
     "form": "ca/t1_lines_copied_by_provinces",
-    "lines": 10
+    "lines": 12
    },
    {
     "form": "ca/t1_taxable_income",
@@ -1837,14 +1837,14 @@
    },
    {
     "form": "ca/t1_tax_and_credits",
-    "lines": 53
+    "lines": 54
    },
    {
     "form": "ca-sk/return",
     "lines": 13
    }
   ],
-  "trace_sha256": "d6c4d5912191c36f7937cea525628754e67e2f4347db997e316d76a8c62cd8d4"
+  "trace_sha256": "65f4347da2b15addd6c32a4c01877a985220be0027480d04d6b387c9f8990926"
  },
  {
   "jurisdiction": "CA-SK",
@@ -1995,7 +1995,7 @@
    },
    {
     "form": "ca/t1_lines_copied_by_provinces",
-    "lines": 10
+    "lines": 12
    },
    {
     "form": "ca/t1_taxable_income",
@@ -2027,14 +2027,14 @@
    },
    {
     "form": "ca/t1_tax_and_credits",
-    "lines": 53
+    "lines": 54
    },
    {
     "form": "ca-nl/return",
     "lines": 16
    }
   ],
-  "trace_sha256": "c79bea14a0b3e92991ac31dd4e957066ac01fb321960f7c8a795d502997ad62e"
+  "trace_sha256": "977cf281bffa7928d72dad1570620b480cf938658cbb8894b4ceda05575aef3f"
  },
  {
   "jurisdiction": "CA-NL",
@@ -2185,7 +2185,7 @@
    },
    {
     "form": "ca/t1_lines_copied_by_provinces",
-    "lines": 10
+    "lines": 12
    },
    {
     "form": "ca/t1_taxable_income",
@@ -2217,14 +2217,14 @@
    },
    {
     "form": "ca/t1_tax_and_credits",
-    "lines": 53
+    "lines": 54
    },
    {
     "form": "ca-nl/return",
     "lines": 16
    }
   ],
-  "trace_sha256": "7708350928ab9abf3a661ee05c6daa6c1a6d3dfc121d3214283056489e03fc0b"
+  "trace_sha256": "85bb1d6fcdd023204c165cd4cb6a464e42b32f2a64f2cb290dabf34e684941e6"
  },
  {
   "jurisdiction": "CA-NL",
