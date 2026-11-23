@@ -105,6 +105,12 @@ EI_PREMIUMS_LINE_88 = AmountKind.declare(CATALOG, "ei_premiums_line_88", non_neg
 export (`ca/t2204.t2204_line_16`) into Step 5 Part B, line 96.
 """
 
+EI_PREMIUMS_LINE_89 = AmountKind.declare(CATALOG, "ei_premiums_line_89", non_negative=True)
+"""T1 line 89 "Line 89 and line 31217: on self-employment and other eligible earnings (complete
+Schedule 13)" (employment insurance premiums): a copy of line 31217, read from the T1 lines copied
+by provinces export (`ca/ei_premiums_on_self_employment_line_31217`) into Step 5 Part B, line 96.
+"""
+
 CREDITS_SUBTOTAL_LINE_96 = AmountKind.declare(
     CATALOG, "credits_subtotal_line_96", non_negative=True
 )
