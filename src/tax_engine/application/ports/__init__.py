@@ -1,1 +1,1 @@
-"""Protocols for tax computation data sources."""
+"""Ports: what the application takes from adapters and what it offers to its callers."""

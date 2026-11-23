@@ -24,12 +24,16 @@ class UnitDescription:
 
 @dataclass(frozen=True, slots=True)
 class Rate:
+    """A rate as read, with the unit it is written in."""
+
     value: Decimal
     unit: UnitDescription
 
 
 @dataclass(frozen=True, slots=True)
 class DeductionFigure:
+    """One named amount taken off the salary."""
+
     name: str
     amount: Decimal
 
@@ -48,6 +52,8 @@ class TraceEntry:
 
 @dataclass(frozen=True, slots=True)
 class FormTrace:
+    """The trace of one form: its title and its lines, in order."""
+
     form: str
     name: str | None
     lines: tuple[TraceEntry, ...]
