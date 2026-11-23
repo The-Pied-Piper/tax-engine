@@ -1,17 +1,22 @@
 """TP-1 (2025) lines 205, 207, 214, 215, 225, 228, 231, 234, 236, 241, 245, 246, 250 and 252: the
 lines that line 254 adds besides lines 201 and 248. The take-home gives none of them, so each is an
-optional input; a blank is read as 0 by line 254.
+optional input; a blank is read as 0 by line 254. Lines 225, 231, 234 and 245 are printed as
+deductions the filer enters as positive amounts, so a negative is refused at entry; the other ten
+lines print no sign rule and stay signed.
 
 The real part is loaded under a test-local header and form declaration over the Quebec package list
 of `support.py`."""
 
 from __future__ import annotations
 
+from decimal import Decimal
 from pathlib import Path
 
 import pytest
 
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
+from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.errors import NegativeArtifactError
 from tax_engine.domain.manifest import Manifest
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 from tests.jurisdictions.ca_qc.support import quebec_kinds, quebec_packages, quebec_units
@@ -35,6 +40,12 @@ LINES = (
     "250",
     "252",
 )
+# The deductions the printed form has the filer enter as positive amounts: line 225 "Support
+# payments made (deductible amount)", 231 "Carrying charges and interest expenses", 234 "Business
+# investment loss ... Allowable loss" and 245 "Complete Schedule Q" (TP-1.D-V, 2025-12, page 3);
+# none prints a negative.
+NON_NEGATIVE_LINES = ("225", "231", "234", "245")
+SIGNED_LINES = tuple(line for line in LINES if line not in NON_NEGATIVE_LINES)
 NAMES = {line: f"ca-qc/tp1_line_{line.replace('.', '_')}" for line in LINES}
 HEADER = """\
 jurisdiction: CA-QC
@@ -79,6 +90,15 @@ def test_a_request_that_leaves_out_the_line_is_read_as_blank(
     assert default is not None and default.is_blank
 
 
-@pytest.mark.parametrize("line", LINES)
+@pytest.mark.parametrize("line", SIGNED_LINES)
 def test_the_input_kind_is_registered_and_signed(line: str) -> None:
     assert non_negative(quebec_kinds().kind(NAMES[line])) is False
+
+
+@pytest.mark.parametrize("line", NON_NEGATIVE_LINES)
+def test_a_negative_amount_is_refused_at_entry(line: str) -> None:
+    kind = quebec_kinds().kind(NAMES[line])
+
+    assert non_negative(kind) is True
+    with pytest.raises(NegativeArtifactError, match=rf"{NAMES[line]}.*-1"):
+        Artifact(kind, Decimal("-1"))

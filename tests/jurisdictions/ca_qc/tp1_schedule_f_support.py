@@ -17,7 +17,7 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
-from tests.jurisdictions.ca_qc.tp1_net_income_support import TP1_INCOME_PARTS
+from tests.jurisdictions.ca_qc.tp1_net_income_support import TP1_INCOME_PARTS, UPSTREAM_PARTS
 
 D = Decimal
 FORM = "ca-qc/tp1_schedule_f"
@@ -45,9 +45,35 @@ LINE_36_PARTS = (
     "tp1_schedule_f_line_34.yaml",
     "tp1_schedule_f_line_36.yaml",
 )
-LINE_68_INPUTS = ("41", "42", "43", "43_1", "44", "45", "46", "54", "56", "58", "60", "62")
+# The printed lines that line 68 adds; lines 46, 54, 56 and 58 copy TP-1 lines 245, 225, 231
+# and 234 (given on the TP-1 net income form), the other eight are inputs of Schedule F.
+LINE_68_LINES = ("41", "42", "43", "43_1", "44", "45", "46", "54", "56", "58", "60", "62")
+LINE_68_TP1_COPIES = ("46", "54", "56", "58")
+LINE_68_INPUTS = tuple(line for line in LINE_68_LINES if line not in LINE_68_TP1_COPIES)
+# The real TP-1 net income form declaration (it exports lines 275 and 299 and the TP-1 lines the
+# Schedule F lines copy) and its line parts, over the Work Chart 201 and Schedule U parts it reads.
+NET_INCOME_PARTS = (
+    *UPSTREAM_PARTS,
+    "tp1_net_income.yaml",
+    "tp1_net_income_line_201.yaml",
+    "tp1_net_income_line_248.yaml",
+    "tp1_net_income_line_254_inputs.yaml",
+    "tp1_net_income_line_254.yaml",
+    "tp1_net_income_line_256.yaml",
+    "tp1_net_income_line_260_input.yaml",
+    "tp1_net_income_line_275.yaml",
+    "tp1_net_income_line_276_input.yaml",
+    "tp1_net_income_line_278_input.yaml",
+    "tp1_net_income_line_279.yaml",
+    "tp1_net_income_line_298_inputs.yaml",
+    "tp1_net_income_line_298.yaml",
+    "tp1_net_income_line_299.yaml",
+)
+LINE_68_COPY_PARTS = tuple(f"tp1_schedule_f_line_{line}.yaml" for line in LINE_68_TP1_COPIES)
 LINE_70_PARTS = (
     *LINE_36_PARTS,
+    *NET_INCOME_PARTS,
+    *LINE_68_COPY_PARTS,
     "tp1_schedule_f_line_68_inputs.yaml",
     "tp1_schedule_f_line_68.yaml",
     "tp1_schedule_f_line_70.yaml",

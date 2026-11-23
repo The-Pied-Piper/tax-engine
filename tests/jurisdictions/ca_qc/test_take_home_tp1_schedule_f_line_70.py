@@ -30,6 +30,7 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
 )
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 from tests.jurisdictions.ca_qc.tp1_net_income_support import SALARY_PARTS
+from tests.jurisdictions.ca_qc.tp1_schedule_f_support import LINE_68_COPY_PARTS, NET_INCOME_PARTS
 
 D = Decimal
 
@@ -86,6 +87,8 @@ PARTS = (
     "tp1_schedule_f_line_29.yaml",
     "tp1_schedule_f_line_34.yaml",
     "tp1_schedule_f_line_36.yaml",
+    *NET_INCOME_PARTS,
+    *LINE_68_COPY_PARTS,
     "tp1_schedule_f_line_68_inputs.yaml",
     "tp1_schedule_f_line_68.yaml",
     "tp1_schedule_f_line_70.yaml",

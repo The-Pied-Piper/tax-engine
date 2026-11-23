@@ -2,8 +2,10 @@
 Deductions", as the Quebec take-home manifest wires it.
 
 One `core/sum` over the printed lines 41, 42, 43, 43.1, 44, 45, 46, 54, 56, 58, 60 and 62, rounded
-half-up to the cent by `ca-qc/cent_rounding`. The printed lines are optional inputs, read as 0 when
-left out. The expected figures are hand-computed from the printed lines.
+half-up to the cent by `ca-qc/cent_rounding`. Lines 41, 42, 43, 43.1, 44, 45, 60 and 62 are optional
+inputs of Schedule F; lines 46, 54, 56 and 58 are copies of TP-1 lines 245, 225, 231 and 234
+(given on the TP-1 net income form); each is read as 0 when left out. The expected figures are
+hand-computed from the printed lines.
 """
 
 from __future__ import annotations
@@ -17,6 +19,10 @@ import yaml
 import tax_engine.jurisdictions.ca_qc
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.jurisdictions.ca_qc.catalog import (
+    TP1_LINE_225,
+    TP1_LINE_231,
+    TP1_LINE_234,
+    TP1_LINE_245,
     TP1_SCHEDULE_F_DEDUCTIONS_LINE_68,
     TP1_SCHEDULE_F_LINE_41,
     TP1_SCHEDULE_F_LINE_42,
@@ -24,16 +30,12 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     TP1_SCHEDULE_F_LINE_43_1,
     TP1_SCHEDULE_F_LINE_44,
     TP1_SCHEDULE_F_LINE_45,
-    TP1_SCHEDULE_F_LINE_46,
-    TP1_SCHEDULE_F_LINE_54,
-    TP1_SCHEDULE_F_LINE_56,
-    TP1_SCHEDULE_F_LINE_58,
     TP1_SCHEDULE_F_LINE_60,
     TP1_SCHEDULE_F_LINE_62,
 )
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
 from tests.jurisdictions.ca_qc.tp1_schedule_f_support import (
-    LINE_68_INPUTS,
+    LINE_68_LINES,
     LINE_70,
     LINE_70_PARTS,
     schedule_f,
@@ -47,7 +49,8 @@ PART = (
     / "2025"
     / "tp1_schedule_f_line_68.yaml"
 )
-# One figure per printed line, each different, so a line left out or counted twice shows.
+# One figure per printed line, each different, so a line left out or counted twice shows. Lines 46,
+# 54, 56 and 58 are the TP-1 lines 245, 225, 231 and 234.
 GIVEN: tuple[tuple[AmountKind, str], ...] = (
     (TP1_SCHEDULE_F_LINE_41, "100.01"),
     (TP1_SCHEDULE_F_LINE_42, "200.02"),
@@ -55,10 +58,10 @@ GIVEN: tuple[tuple[AmountKind, str], ...] = (
     (TP1_SCHEDULE_F_LINE_43_1, "400.04"),
     (TP1_SCHEDULE_F_LINE_44, "500.05"),
     (TP1_SCHEDULE_F_LINE_45, "600.06"),
-    (TP1_SCHEDULE_F_LINE_46, "700.07"),
-    (TP1_SCHEDULE_F_LINE_54, "800.08"),
-    (TP1_SCHEDULE_F_LINE_56, "900.09"),
-    (TP1_SCHEDULE_F_LINE_58, "1000.10"),
+    (TP1_LINE_245, "700.07"),
+    (TP1_LINE_225, "800.08"),
+    (TP1_LINE_231, "900.09"),
+    (TP1_LINE_234, "1000.10"),
     (TP1_SCHEDULE_F_LINE_60, "1100.11"),
     (TP1_SCHEDULE_F_LINE_62, "1200.12"),
 )
@@ -94,8 +97,9 @@ def test_line_68_reads_each_blank_line_as_zero(
 def test_line_68_rounds_the_sum_half_up_to_the_cent(
     take_home_service: TakeHomeService, second: str, expected: str
 ) -> None:
-    # 0.004 + 0.001 = 0.005 rounds up; 0.004 + 0.0009 = 0.0049 rounds down.
-    given = ((GIVEN[0][0], "0.004"), (GIVEN[1][0], second))
+    # 0.004 + 0.001 = 0.005 rounds up; 0.004 + 0.0009 = 0.0049 rounds down. Lines 41 and 42 are
+    # inputs of Schedule F.
+    given = ((TP1_SCHEDULE_F_LINE_41, "0.004"), (TP1_SCHEDULE_F_LINE_42, second))
 
     assert _line_68(take_home_service, *given) == expected
 
@@ -103,7 +107,7 @@ def test_line_68_rounds_the_sum_half_up_to_the_cent(
 def test_the_part_is_one_sum_of_the_printed_lines_with_blanks_read_as_zero() -> None:
     part = yaml.safe_load(PART.read_text(encoding="utf-8"))
     (step,) = part["capabilities"]
-    names = [f"ca-qc/tp1_schedule_f_line_{line}" for line in LINE_68_INPUTS]
+    names = [f"ca-qc/tp1_schedule_f_line_{line}" for line in LINE_68_LINES]
 
     assert step["name"] == "core/sum"
     assert step["reference"] == "68"
