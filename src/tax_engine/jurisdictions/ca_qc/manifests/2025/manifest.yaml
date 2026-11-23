@@ -37,7 +37,7 @@ take_home:
     qpp_base: {form: ca/schedule_8, kind: ca/schedule_8_cpp_base_contributions_on_return}
     qpp_enhanced: {form: ca/schedule_8, kind: ca/cpp_part_3_line_12}
     qpp2: {form: ca/schedule_8, kind: ca/cpp_part_3_line_22}
-    ei: {form: ca/t2204, kind: ca/t2204_premiums_deducted}
+    ei: {form: ca/t2204, kind: ca/t2204_line_16}
     qpip: {form: ca-qc/ppip_premium, kind: ca-qc/ppip_premiums_paid}
 imports:
   # Quebec prints its own Schedule 8 (5005-S8): the shared form reads the Quebec line 11 dataset

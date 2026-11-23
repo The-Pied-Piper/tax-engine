@@ -135,6 +135,17 @@ def test_average_rate_is_total_deductions_over_salary(service: TakeHomeService) 
     assert got.average_income_tax_rate.unit.name == "core/percent"
 
 
+@pytest.mark.parametrize(
+    ("salary", "ei"),
+    [("2000", "0.00"), ("2001", "1.00"), ("2033", "33.00"), ("2100", "34.23")],
+)
+def test_ei_is_the_figure_the_form_uses_for_the_credit(
+    service: TakeHomeService, salary: str, ei: str
+) -> None:
+    got = service.compute(TakeHomeRequest(JurisdictionCode("CA-ON"), 2026, Decimal(salary)))
+    assert {f.name: str(f.amount) for f in got.figures}["ei"] == ei
+
+
 def test_trace_is_left_out_unless_asked_for(service: TakeHomeService) -> None:
     request = TakeHomeRequest(JurisdictionCode("CA-ON"), 2025, Decimal(70000))
     assert request.include_trace is False
