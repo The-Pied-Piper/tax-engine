@@ -1,4 +1,4 @@
-"""The rules of take-home pay: reading a figure, one unit, and the sums in whole cents."""
+"""The rules of take-home pay: reading a figure, one unit, and the plain sums."""
 
 from __future__ import annotations
 
@@ -27,8 +27,8 @@ CAD = Unit("ca/cad")
 PERCENT = Unit("core/percent")
 
 
-def test_totals_are_sums_in_whole_cents() -> None:
-    got = Totals.of(D("70000"), [("income_tax", D("11497.094")), ("ei", D("1077.48"))])
+def test_totals_are_plain_sums() -> None:
+    got = Totals.of(D("70000"), [("income_tax", D("11497.09")), ("ei", D("1077.48"))])
     assert got == Totals(
         salary=D("70000.00"),
         income_tax=D("11497.09"),

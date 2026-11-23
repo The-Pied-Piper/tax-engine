@@ -98,7 +98,7 @@ The example uses Ontario (`CA-ON`) and tax year 2025. Change `CA-ON` to `CA-AB` 
 ### Take-home pay
 
 To get what a salary leaves after income tax, CPP and EI, ask the take-home service. It returns each
-figure exactly, the total and the take-home in whole cents, both average and marginal income tax
+figure exactly, the total and the take-home as plain sums, both average and marginal income tax
 rates and the unit text of the figures, and, only when asked for, the English trace of every form:
 
 ```python

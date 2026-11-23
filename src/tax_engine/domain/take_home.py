@@ -3,7 +3,7 @@
 A jurisdiction's manifest declares where each take-home figure is read (`TakeHomeFigures`). What a
 caller asks and is answered, and how the answer is worded, belong to the application layer; the
 rules that make the answer right are here: a figure is a decimal read from one worksheet, the
-figures taken off share one unit, and the total and the take-home are sums in whole cents.
+figures taken off share one unit, and the total and the take-home are plain sums of them.
 """
 
 from __future__ import annotations
@@ -16,8 +16,6 @@ from tax_engine.domain.artifact import ArtifactRegistry
 from tax_engine.domain.errors import InvalidManifestError
 from tax_engine.domain.unit import Unit
 from tax_engine.domain.worksheet import Worksheet
-
-CENTS = Decimal("0.01")
 
 
 @dataclass(frozen=True, slots=True)
@@ -116,7 +114,7 @@ def rate_unit(who: str, value: FigureValue) -> Unit:
 
 @dataclass(frozen=True, slots=True)
 class Totals:
-    """The salary less the figures taken off it, each sum in whole cents."""
+    """The salary less the figures taken off it: plain sums of printed cent lines."""
 
     salary: Decimal
     income_tax: Decimal
@@ -125,15 +123,15 @@ class Totals:
 
     @classmethod
     def of(cls, salary: Decimal, figures: Iterable[tuple[str, Decimal]]) -> Totals:
-        """Take-home pay is the salary minus the sum of the figures, in whole cents."""
+        """Take-home pay is the salary minus the sum of the figures (no rounding)."""
         kept = tuple(figures)
         total = sum((amount for _, amount in kept), Decimal(0))
         income_tax = sum(
             (amount for name, amount in kept if name == TakeHomeFigures.INCOME_TAX), Decimal(0)
         )
         return cls(
-            salary=salary.quantize(CENTS),
-            income_tax=income_tax.quantize(CENTS),
-            total_deductions=total.quantize(CENTS),
-            take_home=(salary - total).quantize(CENTS),
+            salary=salary,
+            income_tax=income_tax,
+            total_deductions=total,
+            take_home=salary - total,
         )

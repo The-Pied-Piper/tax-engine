@@ -55,10 +55,10 @@ class FormTrace:
 
 @dataclass(frozen=True, slots=True)
 class TakeHomeResult:
-    """The answer: figures exact, the total and the take-home in whole cents.
+    """The answer: figures exact, the total and the take-home plain sums of them.
 
     `figures` holds the income tax then each deduction, as computed; `income_tax` is the first of
-    them in whole cents. A rate is `None` where the jurisdiction declares none; `trace` is `None`
+    them. A rate is `None` where the jurisdiction declares none; `trace` is `None`
     unless it was asked for.
     """
 
