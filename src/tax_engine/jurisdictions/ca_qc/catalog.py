@@ -163,8 +163,8 @@ blank when the caller has none, and line 199 reads it as 0."""
 
 TP1_LINE_164 = AmountKind.declare(CATALOG, "tp1_line_164")
 """TP-1 line 164, "Net business income. Complete Schedule L.": an optional input of the TP-1 income
-form that line 199 adds; blank when the caller has none, and line 199 reads it as 0. Signed: a
-loss is entered as a negative figure and is added."""
+form that line 199 adds and Work Chart 201 line 5 reads through a floor at 0; blank when the caller
+has none, and each reads it as 0. Signed: a loss is entered as a negative figure and is added."""
 
 TP1_TOTAL_INCOME_LINE_199 = AmountKind.declare(CATALOG, "tp1_total_income_line_199")
 """Total income, TP-1 line 199 "Add lines 101 and 105 through 164. Total income": line 101, the
@@ -198,6 +198,10 @@ one, totalled; a blank is read as 0."""
 
 WORK_CHART_201_TP1_LINE_105 = AmountKind.declare(CATALOG, "work_chart_201_tp1_line_105")
 """TP-1 line 105 as Work Chart 201 line 1 reads it: the TP-1 income form's export, a record list of
+one, totalled; a blank is read as 0. Signed."""
+
+WORK_CHART_201_TP1_LINE_164 = AmountKind.declare(CATALOG, "work_chart_201_tp1_line_164")
+"""TP-1 line 164 as Work Chart 201 line 5 reads it: the TP-1 income form's export, a record list of
 one, totalled; a blank is read as 0. Signed."""
 
 WORK_CHART_201_LINE_105_IF_POSITIVE = AmountKind.declare(
@@ -251,8 +255,8 @@ WORK_CHART_201_NET_BUSINESS_INCOME_LINE_5 = AmountKind.declare(
     CATALOG, "work_chart_201_net_business_income_line_5", non_negative=True
 )
 """Work Chart 201 line 5 "Net business income (line 27 of Schedule L). If the result is negative,
-enter 0": an optional input, taken as the form takes it, so never negative; blank when the caller
-has none and read as 0."""
+enter 0": computed from TP-1 line 164 (the same Schedule L figure), floored at 0 as printed, rounded
+half-up to the cent; 0 when the caller gives no line 164."""
 
 WORK_CHART_201_TOTAL_LINE_6 = AmountKind.declare(CATALOG, "work_chart_201_total_line_6")
 """Work Chart 201 line 6 "Add lines 1 through 5": the sum, rounded half-up to the cent. Signed, as

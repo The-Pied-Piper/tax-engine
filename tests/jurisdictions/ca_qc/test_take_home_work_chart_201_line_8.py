@@ -35,7 +35,7 @@ PARTS = (
     "work_chart_201_line_2_input.yaml",
     "work_chart_201_line_3_input.yaml",
     "work_chart_201_line_4_input.yaml",
-    "work_chart_201_line_5_input.yaml",
+    "work_chart_201_line_5.yaml",
     "work_chart_201_line_6.yaml",
     "work_chart_201_line_7_input.yaml",
     "work_chart_201_line_8.yaml",

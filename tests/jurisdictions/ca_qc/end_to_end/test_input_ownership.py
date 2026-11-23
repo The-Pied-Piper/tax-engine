@@ -6,6 +6,8 @@ Four groups of figures are read by two forms each:
   Schedule P lines 10 and 12 read them from its exports.
 - TP-1 lines 114, 128, 142, 147 and 148 belong to the TP-1 income form, which adds them into line
   199; Schedule F lines 22, 23, 26, 28 and 29 read them from its exports.
+- TP-1 line 164 belongs to the TP-1 income form, which adds it into line 199; Work Chart 201 line 5
+  reads it from its export, with the printed floor at 0 (`test_take_home_work_chart_201_line_5.py`).
 - TP-1 lines 225, 231, 234 and 245 belong to the TP-1 net income form, which adds them into
   line 254; Schedule F lines 54, 56, 58 and 46 read them from its exports.
 - The net research grants and the WEPP payments belong to Work Chart 201 lines 3 and 4; Schedule P
@@ -20,6 +22,7 @@ from __future__ import annotations
 from decimal import Decimal
 from typing import Any
 
+import pytest
 import yaml
 
 from tax_engine.application.models.calculation_request import TaxCalculationRequest
@@ -39,6 +42,7 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     TP1_LINE_142,
     TP1_LINE_147,
     TP1_LINE_148,
+    TP1_LINE_164,
     TP1_LINE_225,
     TP1_LINE_231,
     TP1_LINE_234,
@@ -57,6 +61,7 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     TP1_TOTAL_DEDUCTIONS_LINE_254,
     TP1_TOTAL_INCOME_LINE_199,
     WORK_CHART_201_ELIGIBLE_WORK_INCOME_LINE_1,
+    WORK_CHART_201_NET_BUSINESS_INCOME_LINE_5,
     WORK_CHART_201_RESEARCH_GRANTS_LINE_3,
     WORK_CHART_201_TOTAL_LINE_6,
     WORK_CHART_201_WEPP_PAYMENTS_LINE_4,
@@ -76,6 +81,7 @@ SHARED_INPUTS = {
     "ca-qc/tp1_line_142": "tp1_income",
     "ca-qc/tp1_line_147": "tp1_income",
     "ca-qc/tp1_line_148": "tp1_income",
+    "ca-qc/tp1_line_164": "tp1_income",
     "ca-qc/tp1_line_225": "tp1_net_income",
     "ca-qc/tp1_line_231": "tp1_net_income",
     "ca-qc/tp1_line_234": "tp1_net_income",
@@ -91,6 +97,7 @@ REMOVED_COPIES = (
     "ca-qc/tp1_schedule_f_line_26",
     "ca-qc/tp1_schedule_f_line_28",
     "ca-qc/tp1_schedule_f_line_29",
+    "ca-qc/work_chart_201_net_business_income_line_5",
     "ca-qc/tp1_schedule_f_line_46",
     "ca-qc/tp1_schedule_f_line_54",
     "ca-qc/tp1_schedule_f_line_56",
@@ -197,6 +204,25 @@ def test_lines_114_128_142_147_and_148_given_once_reach_schedule_f_and_tp1_line_
     assert schedule_f.get(TP1_SCHEDULE_F_LINES_20_TO_33_TOTAL_LINE_34).value == D("3082.20")
     # TP-1 line 199 adds the same five figures to the salary: 70,000 + 3,082.20.
     assert sheets["ca-qc/tp1_income"].get(TP1_TOTAL_INCOME_LINE_199).value == D("73082.20")
+
+
+@pytest.mark.parametrize(
+    ("line_164", "line_5", "line_199"),
+    [
+        ("-1500.25", "0.00", "68499.75"),
+        ("2500.50", "2500.50", "72500.50"),
+    ],
+)
+def test_line_164_given_once_reaches_work_chart_201_line_5_floored_and_tp1_line_199_as_is(
+    take_home_service: TakeHomeService, line_164: str, line_5: str, line_199: str
+) -> None:
+    (sheets,) = _forms(take_home_service, ((TP1_LINE_164, line_164),))
+
+    # Work Chart 201 line 5 prints "if the result is negative, enter 0"; TP-1 line 199 keeps the
+    # sign, so a loss lowers it: 70,000 - 1,500.25, or 70,000 + 2,500.50.
+    work_chart = sheets["ca-qc/work_chart_201"]
+    assert work_chart.get(WORK_CHART_201_NET_BUSINESS_INCOME_LINE_5).value == D(line_5)
+    assert sheets["ca-qc/tp1_income"].get(TP1_TOTAL_INCOME_LINE_199).value == D(line_199)
 
 
 def test_lines_225_231_234_and_245_given_once_reach_schedule_f_and_tp1_line_254(

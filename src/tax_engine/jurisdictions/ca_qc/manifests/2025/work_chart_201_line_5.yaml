@@ -1,0 +1,30 @@
+# Work Chart 201 (TP-1.D.GR-V 2025-12), line 5: "Net business income (line 27 of Schedule L). If the
+# result is negative, enter 0." (TP-1.D-V line 164: "Net business income. Complete Schedule L.") The
+# same Schedule L figure as TP-1 line 164, an optional input of the TP-1 income form, which takes it
+# once and exports it; it is read as that export (a record list of one, totalled by core/record_total,
+# a blank read as 0). TP-1 line 164 keeps its sign, as line 199 adds a loss; the floor is the printed
+# "enter 0", so core/sum_not_below_zero over that one part gives line 5 as 0 when it is negative, as
+# line 1 takes TP-1 line 105 "if positive". Rounded half-up to the cent (`ca-qc/cent_rounding`).
+form:
+  name: ca-qc/work_chart_201
+capabilities:
+  - name: core/record_total
+    title: "TP-1 line 164"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp1_income.tp1_line_164
+    blank:
+      records:
+        ca-qc/tp1_line_164: "0"
+    produces:
+      output: ca-qc/work_chart_201_tp1_line_164
+  - name: core/sum_not_below_zero
+    title: "Net business income"
+    reference: "5"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts: [ca-qc/work_chart_201_tp1_line_164]
+    produces:
+      output: ca-qc/work_chart_201_net_business_income_line_5
