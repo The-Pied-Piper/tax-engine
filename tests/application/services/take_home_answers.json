@@ -67,7 +67,7 @@
    "as_percentage": false
   },
   "average_income_tax_rate": {
-   "value": "0.1642",
+   "value": "0.2362",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -163,7 +163,7 @@
    "as_percentage": false
   },
   "average_income_tax_rate": {
-   "value": "0.3541",
+   "value": "0.3761",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -253,7 +253,7 @@
    "as_percentage": false
   },
   "average_income_tax_rate": {
-   "value": "0.1591",
+   "value": "0.2316",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -349,7 +349,7 @@
    "as_percentage": false
   },
   "average_income_tax_rate": {
-   "value": "0.3507",
+   "value": "0.3738",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -439,7 +439,7 @@
    "as_percentage": false
   },
   "average_income_tax_rate": {
-   "value": "0.1598",
+   "value": "0.2317",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -539,7 +539,7 @@
    "as_percentage": false
   },
   "average_income_tax_rate": {
-   "value": "0.3135",
+   "value": "0.3355",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -629,7 +629,7 @@
    "as_percentage": false
   },
   "average_income_tax_rate": {
-   "value": "0.1545",
+   "value": "0.2270",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -729,7 +729,7 @@
    "as_percentage": false
   },
   "average_income_tax_rate": {
-   "value": "0.3102",
+   "value": "0.3333",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -819,7 +819,7 @@
    "as_percentage": false
   },
   "average_income_tax_rate": {
-   "value": "0.1535",
+   "value": "0.2255",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -911,7 +911,7 @@
    "as_percentage": false
   },
   "average_income_tax_rate": {
-   "value": "0.3270",
+   "value": "0.3490",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -1001,7 +1001,7 @@
    "as_percentage": false
   },
   "average_income_tax_rate": {
-   "value": "0.1510",
+   "value": "0.2236",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -1093,7 +1093,7 @@
    "as_percentage": false
   },
   "average_income_tax_rate": {
-   "value": "0.3240",
+   "value": "0.3471",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -1183,7 +1183,7 @@
    "as_percentage": false
   },
   "average_income_tax_rate": {
-   "value": "0.1905",
+   "value": "0.2624",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -1295,7 +1295,7 @@
    "as_percentage": false
   },
   "average_income_tax_rate": {
-   "value": "0.3604",
+   "value": "0.3824",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -1385,7 +1385,7 @@
    "as_percentage": false
   },
   "average_income_tax_rate": {
-   "value": "0.1860",
+   "value": "0.2586",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -1497,7 +1497,7 @@
    "as_percentage": false
   },
   "average_income_tax_rate": {
-   "value": "0.3579",
+   "value": "0.3810",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -1587,7 +1587,7 @@
    "as_percentage": false
   },
   "average_income_tax_rate": {
-   "value": "0.1811",
+   "value": "0.2530",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -1683,7 +1683,7 @@
    "as_percentage": false
   },
   "average_income_tax_rate": {
-   "value": "0.3343",
+   "value": "0.3563",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -1773,7 +1773,7 @@
    "as_percentage": false
   },
   "average_income_tax_rate": {
-   "value": "0.1750",
+   "value": "0.2476",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -1869,7 +1869,7 @@
    "as_percentage": false
   },
   "average_income_tax_rate": {
-   "value": "0.3311",
+   "value": "0.3542",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -1959,7 +1959,7 @@
    "as_percentage": false
   },
   "average_income_tax_rate": {
-   "value": "0.1962",
+   "value": "0.2681",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -2059,7 +2059,7 @@
    "as_percentage": false
   },
   "average_income_tax_rate": {
-   "value": "0.3631",
+   "value": "0.3851",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -2149,7 +2149,7 @@
    "as_percentage": false
   },
   "average_income_tax_rate": {
-   "value": "0.1888",
+   "value": "0.2614",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -2249,7 +2249,7 @@
    "as_percentage": false
   },
   "average_income_tax_rate": {
-   "value": "0.3594",
+   "value": "0.3825",
    "unit": {
     "name": "core/percent",
     "placement": "after",

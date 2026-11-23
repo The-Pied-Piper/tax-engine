@@ -28,6 +28,7 @@ from tax_engine.application.services.take_home import TakeHomeService
 from tax_engine.domain.errors import NotFoundError
 from tax_engine.domain.jurisdiction import Jurisdiction
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.jurisdictions.core.units import PERCENT
 from tax_engine.registrations import JURISDICTIONS, artifact_kinds, units
 
 ANSWERS: list[dict[str, Any]] = json.loads(
@@ -79,6 +80,7 @@ def test_answers_match_what_tax_service_gave(service: TakeHomeService, case: Cas
             JurisdictionCode(want["jurisdiction"]),
             want["year"],
             Decimal(want["salary"]),
+            include_rates=True,
             include_trace="trace_sha256" in want,
         )
     )
@@ -116,6 +118,23 @@ def test_ontario_2025_at_seventy_thousand(service: TakeHomeService) -> None:
     assert got.salary == Decimal("70000.00")
 
 
+def test_rates_are_left_out_unless_asked_for(service: TakeHomeService) -> None:
+    request = TakeHomeRequest(JurisdictionCode("CA-ON"), 2025, Decimal(70000))
+    assert request.include_rates is False
+    got = service.compute(request)
+    assert got.average_income_tax_rate is None
+    assert got.marginal_income_tax_rate is None
+
+
+def test_average_rate_is_total_deductions_over_salary(service: TakeHomeService) -> None:
+    got = service.compute(
+        TakeHomeRequest(JurisdictionCode("CA-ON"), 2025, Decimal(70000), include_rates=True)
+    )
+    assert got.average_income_tax_rate is not None
+    assert got.average_income_tax_rate.value == Decimal("0.2362")
+    assert got.average_income_tax_rate.unit.name == "core/percent"
+
+
 def test_trace_is_left_out_unless_asked_for(service: TakeHomeService) -> None:
     request = TakeHomeRequest(JurisdictionCode("CA-ON"), 2025, Decimal(70000))
     assert request.include_trace is False
@@ -137,7 +156,9 @@ def test_a_jurisdiction_that_declares_no_take_home_figures_is_not_found(
     service: TakeHomeService,
 ) -> None:
     source = YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds(), units())
-    bare = TakeHomeService(_WithoutTakeHome(source), build_tax_computation(), EnglishTakeHomeText())
+    bare = TakeHomeService(
+        _WithoutTakeHome(source), build_tax_computation(), EnglishTakeHomeText(), PERCENT
+    )
     with pytest.raises(NotFoundError, match="CA-ON 2025"):
         bare.compute(TakeHomeRequest(JurisdictionCode("CA-ON"), 2025, Decimal(70000)))
 

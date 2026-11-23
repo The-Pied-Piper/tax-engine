@@ -11,6 +11,7 @@ from __future__ import annotations
 from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass
 from decimal import Decimal
+from fractions import Fraction
 
 from tax_engine.domain.artifact import ArtifactRegistry
 from tax_engine.domain.errors import InvalidManifestError
@@ -140,3 +141,18 @@ class Totals:
             total_deductions=total,
             take_home=salary - total,
         )
+
+
+RATE_STEP = Fraction(1, 10000)
+
+
+def average_rate(salary: Decimal, total_deductions: Decimal) -> Decimal:
+    """The share of the salary taken off it: total deductions over salary, half-up to 0.0001.
+
+    A salary of 0 gives 0. The division is exact and rounded once.
+    """
+    if salary == 0:
+        return Decimal("0.0000")
+    exact = Fraction(total_deductions) / Fraction(salary) / RATE_STEP
+    steps = (exact * 2 + 1) // 2  # half-up for the non-negative shares a salary gives
+    return (Decimal(steps) / 10000).quantize(Decimal("0.0001"))

@@ -6,6 +6,7 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.take_home import TakeHomeService
 from tax_engine.application.services.tax_computation import TaxComputationService
+from tax_engine.jurisdictions.core.units import PERCENT
 from tax_engine.registrations import (
     JURISDICTIONS,
     artifact_kinds,
@@ -23,7 +24,7 @@ def build_tax_computation() -> TaxComputationService:
 def build_take_home() -> TakeHomeService:
     """Build the take-home service over the bundled jurisdiction packages, in English."""
     jurisdictions, computation = _build()
-    return TakeHomeService(jurisdictions, computation, EnglishTakeHomeText())
+    return TakeHomeService(jurisdictions, computation, EnglishTakeHomeText(), PERCENT)
 
 
 def _build() -> tuple[YamlJurisdictionSource, TaxComputationService]:

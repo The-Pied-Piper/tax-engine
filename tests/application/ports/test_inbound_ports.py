@@ -14,6 +14,7 @@ from tax_engine.application.ports.take_home_calculation import TakeHomeCalculati
 from tax_engine.application.ports.tax_calculation import TaxCalculation
 from tax_engine.application.services.take_home import TakeHomeService
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.jurisdictions.core.units import PERCENT
 from tax_engine.registrations import JURISDICTIONS, artifact_kinds, units
 
 ON = JurisdictionCode("CA-ON")
@@ -46,6 +47,7 @@ def test_take_home_computes_through_the_calculation_port() -> None:
         YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds(), units()),
         counting,
         EnglishTakeHomeText(),
+        PERCENT,
     )
     service.compute(TakeHomeRequest(ON, 2025, Decimal(70000)))
     (request,) = counting.requests

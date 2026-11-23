@@ -23,8 +23,15 @@ from tax_engine.application.ports.take_home_text import TakeHomeText
 from tax_engine.application.ports.tax_calculation import TaxCalculation
 from tax_engine.domain.artifact import Artifact, ArtifactRegistry
 from tax_engine.domain.errors import NotFoundError
-from tax_engine.domain.take_home import FigureReference, Totals, rate_unit, shared_unit
+from tax_engine.domain.take_home import (
+    FigureReference,
+    Totals,
+    average_rate,
+    rate_unit,
+    shared_unit,
+)
 from tax_engine.domain.trace import TraceLine
+from tax_engine.domain.unit import Unit
 from tax_engine.domain.worksheet import Worksheet
 
 
@@ -39,11 +46,16 @@ class TakeHomeService:
         jurisdictions: JurisdictionSource,
         computation: TaxCalculation,
         text: TakeHomeText,
+        percent: Unit,
     ) -> None:
-        """Find declarations in `jurisdictions`, compute with `computation`, word with `text`."""
+        """Find declarations in `jurisdictions`, compute with `computation`, word with `text`.
+
+        `percent` is the unit of the average rate, which the service works out itself.
+        """
         self._jurisdictions = jurisdictions
         self._computation = computation
         self._text = text
+        self._percent = percent
 
     def compute(self, request: TakeHomeRequest) -> TakeHomeResult:
         """The take-home answer for `request`.
@@ -74,11 +86,18 @@ class TakeHomeService:
             income_tax=totals.income_tax,
             take_home=totals.take_home,
             unit=self._text.unit(unit),
-            average_income_tax_rate=self._rate(
-                who, sheets, kinds, declared.average_income_tax_rate
+            average_income_tax_rate=(
+                Rate(
+                    average_rate(totals.salary, totals.total_deductions),
+                    self._text.unit(self._percent),
+                )
+                if request.include_rates
+                else None
             ),
-            marginal_income_tax_rate=self._rate(
-                who, sheets, kinds, declared.marginal_income_tax_rate
+            marginal_income_tax_rate=(
+                self._rate(who, sheets, kinds, declared.marginal_income_tax_rate)
+                if request.include_rates
+                else None
             ),
             trace=self._trace(sheets) if request.include_trace else None,
         )

@@ -10,9 +10,10 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 
 @dataclass(frozen=True, slots=True)
 class TakeHomeRequest:
-    """The jurisdiction, tax year and salary to answer for; the trace only when asked."""
+    """The jurisdiction, tax year and salary to answer for; rates and trace only when asked."""
 
     jurisdiction: JurisdictionCode
     tax_year: int
     salary: Decimal
+    include_rates: bool = False
     include_trace: bool = False
