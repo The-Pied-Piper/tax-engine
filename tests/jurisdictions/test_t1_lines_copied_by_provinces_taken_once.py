@@ -1,14 +1,16 @@
 """The T1 lines a provincial form copies are asked once, by the T1, and imported from its export.
 
-Five T1 lines are the inputs: line 31000 (line 87, base CPP or QPP contributions on self-employment
-income and other earnings), line 31900 (line 102, student loan interest), line 33099 (line 107,
+Six T1 lines are the inputs: line 31000 (line 87, base CPP or QPP contributions on self-employment
+income and other earnings), line 31217 (line 89, EI premiums on self-employment and other eligible
+earnings), line 31900 (line 102, student loan interest), line 33099 (line 107,
 medical expenses), line 33199 (line 111, allowable medical expenses for other dependants) and line
 40427 (line 124, minimum tax carryover). AB428 line 64, BC428 line 66, MB428 line 63, NL428 line 68
 and SK428 line 65 print "amount from line 40427 of your return", as does ON428 line 59 (whose line
-60 is the lesser of line 58 and that amount at 24.63%), NL428 lines 28, 43 and 48 print the amounts
-from lines 31000, 31900 and 33099, AB428 line 44, BC428 line 46, MB428 line 43 and SK428 line 43
-print "amount from line 33099 of your return", and SK428 line 49 prints the amount from line 33199,
-so each of those is a total of the T1 export and none of them has an input of its own. A caller who
+60 is the lesser of line 58 and that amount at 24.63%), NL428 lines 28, 30, 43 and 48 print the
+amounts from lines 31000, 31217, 31900 and 33099, AB428 line 44, BC428 line 46, MB428 line 43 and
+SK428 line 43 print "amount from line 33099 of your return", and SK428 line 49 prints the amount
+from line 33199, so each of those is a total of the T1 export and none of them has an input of its
+own. A caller who
 gives a T1 line once reaches every one of those forms; a caller who gives none reads each as 0.00.
 AB428 line 50, BC428 line 52 and ON428 line 42 (other dependants) and ON428 line 36 are not copies
 of the T1 and keep their own inputs.
@@ -44,12 +46,14 @@ from tests.manifest_support import inputs_of
 D = Decimal
 MINIMUM_TAX_CARRYOVER = "ca/minimum_tax_carryover"
 CPP_QPP = "ca/self_employment_cpp_qpp_contributions"
+EI_SELF_EMPLOYMENT = "ca/ei_premiums_on_self_employment"
 STUDENT_LOAN_INTEREST = "ca/student_loan_interest"
 MEDICAL_EXPENSES = "ca/medical_expenses"
 OTHER_DEPENDANTS = "ca/other_dependants_medical_expenses"
 T1_INPUTS = {
     MINIMUM_TAX_CARRYOVER,
     CPP_QPP,
+    EI_SELF_EMPLOYMENT,
     STUDENT_LOAN_INTEREST,
     MEDICAL_EXPENSES,
     OTHER_DEPENDANTS,
@@ -67,6 +71,7 @@ CARRYOVER = {
 }
 NL_COPIES = {
     CPP_QPP: "ca-nl/nl428_qpp_contributions_line_28",
+    EI_SELF_EMPLOYMENT: "ca-nl/nl428_ei_premiums_line_30",
     STUDENT_LOAN_INTEREST: "ca-nl/nl428_student_loan_interest_line_43",
     MEDICAL_EXPENSES: "ca-nl/nl428_medical_expenses_line_48",
 }
@@ -100,6 +105,8 @@ MEDICAL = {
         D("2919.96"),
     ),
 }
+NL_LINE_35 = "ca-nl/nl428_cpp_ei_and_other_line_35"
+T1_LINE_96 = "ca/credits_subtotal_line_96"
 SK_LINE_49 = "ca-sk/sk428_other_dependants_medical_expenses_line_49"
 SK_LINE_50 = "ca-sk/sk428_medical_expenses_line_50"
 OLD_INPUTS = (
@@ -148,8 +155,13 @@ def test_a_caller_who_gives_none_reads_the_carryover_as_zero(code: str) -> None:
     assert _figure(_compute(code, {}), form, name) == D("0.00")
 
 
-def test_nl428_lines_28_43_and_48_are_the_amounts_given_on_the_t1_lines() -> None:
-    given = {CPP_QPP: "111.11", STUDENT_LOAN_INTEREST: "222.22", MEDICAL_EXPENSES: "333.33"}
+def test_nl428_lines_28_30_43_and_48_are_the_amounts_given_on_the_t1_lines() -> None:
+    given = {
+        CPP_QPP: "111.11",
+        EI_SELF_EMPLOYMENT: "444.44",
+        STUDENT_LOAN_INTEREST: "222.22",
+        MEDICAL_EXPENSES: "333.33",
+    }
 
     worksheets = _compute("CA-NL", given)
 
@@ -157,7 +169,20 @@ def test_nl428_lines_28_43_and_48_are_the_amounts_given_on_the_t1_lines() -> Non
         assert _figure(worksheets, "ca-nl/nl428_credits", name) == D(given[t1_name]), name
 
 
-def test_a_caller_who_gives_none_reads_nl428_lines_28_43_and_48_as_zero() -> None:
+def test_line_31217_given_once_raises_nl428_line_35_and_t1_line_96_by_that_amount() -> None:
+    # $70,000, 400.00 on line 31217. NL428 line 35 is line 27 (3,291.75) plus line 29 (1,077.48) =
+    # 4,369.23 without it, 4,769.23 with it; T1 line 96 is 5,840.23 without it (3,291.75 + 1,077.48
+    # + 1,471.00), 6,240.23 with it. Both read the one figure the T1 form exports.
+    for given, nl_35, t1_96 in (
+        ({}, "4369.23", "5840.23"),
+        ({EI_SELF_EMPLOYMENT: "400"}, "4769.23", "6240.23"),
+    ):
+        nl = _figure(_compute("CA-NL", given), "ca-nl/nl428_credits", NL_LINE_35)
+        t1 = _figure(_compute("CA-NL", given), "ca/t1_tax_and_credits", T1_LINE_96)
+        assert (nl, t1) == (D(nl_35), D(t1_96))
+
+
+def test_a_caller_who_gives_none_reads_nl428_lines_28_30_43_and_48_as_zero() -> None:
     worksheets = _compute("CA-NL", {})
 
     for name in NL_COPIES.values():

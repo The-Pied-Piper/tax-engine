@@ -1,5 +1,5 @@
-# Form NL428 (CRA 5001-C) line 35: "Line 35: Add lines 27 to 34. = ^". Lines 27, 28 and 29 (the amounts from
-# lines 30800, 31000 and 31200 of your return) are linked record totals; lines 30, 31, 32, 33 and 34 are
+# Form NL428 (CRA 5001-C) line 35: "Line 35: Add lines 27 to 34. = ^". Lines 27, 28, 29 and 30 (the amounts from
+# lines 30800, 31000, 31200 and 31217 of your return) are linked record totals; lines 31, 32, 33 and 34 are
 # optional inputs, left blank by a salary-only filer and read as 0. Step 1 adds them with core/sum.
 form:
   name: ca-nl/nl428_credits
