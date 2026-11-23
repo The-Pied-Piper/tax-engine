@@ -75,8 +75,6 @@ NL_PART_NAMES = (
     "worksheet_nl428_58440_line_7.yaml",
     "nl428_credits_line_16.yaml",
     "nl428_credits_line_17.yaml",
-    "nl428_credits_line_19_input.yaml",
-    "nl428_credits_line_20.yaml",
     "nl428_credits_line_22_input.yaml",
     "nl428_credits_line_23.yaml",
     "nl428_credits_line_24_input.yaml",
@@ -127,12 +125,6 @@ NL_PART_NAMES = (
     "nl428_line_90.yaml",
     "nl428_line_91.yaml",
     "nl428_line_92.yaml",
-    "nl428_line_88_column_2_input.yaml",
-    "nl428_line_89_column_2_input.yaml",
-    "nl428_line_90_column_2.yaml",
-    "nl428_line_91_column_2_input.yaml",
-    "nl428_line_92_column_2.yaml",
-    "nl428_line_93.yaml",
     "nl428_line_101.yaml",
     "nl428_line_103.yaml",
     "nl428_line_95.yaml",
@@ -168,7 +160,7 @@ FORMS = dedent("""\
       name: ca-nl/nl428
       required: true
       exports:
-        - ca-nl/nl428_adjusted_family_income_line_93
+        - ca-nl/nl428_family_income_less_uccb_rdsp_line_92
         - ca-nl/nl428_low_income_threshold_line_100
         - ca-nl/nl428_line_101
         - ca-nl/nl428_low_income_reduction_line_98
