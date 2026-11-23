@@ -116,14 +116,6 @@ NL428_TAX_ON_TAXABLE_INCOME_LINE_15 = AmountKind.declare(
 Newfoundland and Labrador tax on taxable income =": line 13 plus line 14 of the column that line 1
 falls in, read by line 63 on the tax form."""
 
-NL428_SPOUSE_NET_INCOME_LINE_19 = AmountKind.declare(
-    CATALOG, "nl428_spouse_net_income_line_19", non_negative=False
-)
-"""Spouse or common-law partner's net income, NL428 line 19 "Line 19: Your spouse's or common-law
-partner's net income from line 23600 of their return": the amount as the filer gives it, an
-optional input. It is signed because a spouse's net income can be a loss, and the form prints no
-floor; a blank input is read as blank."""
-
 NL428_ELIGIBLE_DEPENDANT_NET_INCOME_LINE_22 = AmountKind.declare(
     CATALOG, "nl428_eligible_dependant_net_income_line_22", non_negative=False
 )
@@ -670,28 +662,6 @@ BASIC_PERSONAL_AMOUNT = AmountKind.declare(CATALOG, "basic_personal_amount", non
 """Basic personal amount, NL428 line 16 "Line 16 and line 58040: Basic personal amount Claim
 $11,067": the printed $11,067, claimed whole and not income-tested."""
 
-SPOUSE_AMOUNT_BASE = AmountKind.declare(CATALOG, "spouse_amount_base", non_negative=True)
-"""Spouse or common-law partner amount, base amount, NL428 line 18 "Base amount 9,948.00": the
-printed figure, from which line 20 takes line 19."""
-
-SPOUSE_AMOUNT_MAXIMUM = AmountKind.declare(CATALOG, "spouse_amount_maximum", non_negative=True)
-"""Spouse or common-law partner amount, maximum, NL428 line 20 "(maximum $9,043)": the printed
-figure, the most line 20 can be."""
-
-NL428_SPOUSE_AMOUNT_BEFORE_MAXIMUM_LINE_20 = AmountKind.declare(
-    CATALOG, "nl428_spouse_amount_before_maximum_line_20", non_negative=True
-)
-"""Spouse or common-law partner amount before the maximum, NL428 line 20 "Line 20 and line 58120:
-Line 18 minus line 19 (if negative, enter "0") (maximum $9,043) =": line 18 less line 19, not below
-0, before the maximum is applied."""
-
-NL428_SPOUSE_AMOUNT_LINE_20 = AmountKind.declare(
-    CATALOG, "nl428_spouse_amount_line_20", non_negative=True
-)
-"""Spouse or common-law partner amount, NL428 line 20 "Line 20 and line 58120: Line 18 minus line 19
-(if negative, enter "0") (maximum $9,043) =": line 18 less line 19, not below 0, at most the printed
-maximum."""
-
 ELIGIBLE_DEPENDANT_AMOUNT_BASE = AmountKind.declare(
     CATALOG, "eligible_dependant_amount_base", non_negative=True
 )
@@ -717,20 +687,6 @@ NL428_ELIGIBLE_DEPENDANT_AMOUNT_LINE_23 = AmountKind.declare(
 """Amount for an eligible dependant, NL428 line 23 "Line 23 and line 58160: Line 21 minus line 22
 (if negative, enter "0") (maximum $9,043) =": line 21 less line 22, not below 0, at most the printed
 maximum."""
-
-NL428_ELIGIBLE_DEPENDANT_AMOUNT_BEFORE_CHECK_LINE_23 = AmountKind.declare(
-    CATALOG, "nl428_eligible_dependant_amount_before_check_line_23", non_negative=True
-)
-"""Amount for an eligible dependant before it is checked against line 20, NL428 line 23 "Line 23 and
-line 58160: Line 21 minus line 22 (if negative, enter "0") (maximum $9,043) =": line 21 less line
-22, not below 0, at most the printed maximum; blank where line 22 is."""
-
-NL428_ELIGIBLE_DEPENDANT_AMOUNT_MOST_LINE_23 = AmountKind.declare(
-    CATALOG, "nl428_eligible_dependant_amount_most_line_23", non_negative=True
-)
-"""The most NL428 line 23 may be: the printed maximum where line 20 is 0 or blank, and 0 where an
-amount is claimed on line 20. The spouse amount and the eligible dependant amount are not both
-allowed (NL Income Tax Act, 2000, s. 9(1)(b))."""
 
 NL428_TAXABLE_INCOME_LINE_1 = AmountKind.declare(
     CATALOG, "nl428_taxable_income_line_1", non_negative=True
@@ -856,31 +812,6 @@ NL428_ADDITIONAL_TAX_MINIMUM_TAX_LINE_71 = AmountKind.declare(
 line 14 of Part 7 of Form T691 multiplied by 60% =": calculated, the Form T691 amount multiplied by
 60%."""
 
-NL428_SPOUSE_NET_INCOME_LINE_88 = AmountKind.declare(
-    CATALOG, "nl428_spouse_net_income_line_88", non_negative=False
-)
-"""Spouse or common-law partner's net income, NL428 line 88 column 2 "Line 88: Net income from line
-23600 of the return (or the amount you would have entered if the instructions on line 23600 said
-"if negative, show in brackets")": the amount as the filer gives it, an optional input. It is
-signed because the line takes the amount as if negative were shown in brackets; a blank input is
-read as blank."""
-
-NL428_SPOUSE_UCCB_AND_RDSP_REPAYMENT_LINE_89 = AmountKind.declare(
-    CATALOG, "nl428_spouse_uccb_and_rdsp_repayment_line_89", non_negative=True
-)
-"""Spouse or common-law partner's UCCB and RDSP repayment, NL428 line 89 column 2 "Line 89: Total of
-the universal child care benefit (UCCB) repayment (line 21300 of the return) and the registered
-disability savings plan (RDSP) income repayment (included on line 23200 of the return)": the amount
-as the filer gives it, an optional input; a blank input is read as blank."""
-
-NL428_SPOUSE_UCCB_RDSP_INCOME_LINE_91 = AmountKind.declare(
-    CATALOG, "nl428_spouse_uccb_rdsp_income_line_91", non_negative=True
-)
-"""Spouse or common-law partner's UCCB and RDSP income, NL428 line 91 column 2 "Line 91: Total of
-the UCCB income (line 11700 of the return) and the RDSP income (line 12500 of the return)": the
-total of the two incomes as the filer gives it, an optional input; a blank input is read as
-blank."""
-
 NL428_NET_INCOME_LINE_88 = AmountKind.declare(
     CATALOG, "nl428_net_income_line_88", non_negative=False
 )
@@ -896,14 +827,6 @@ NL428_FAMILY_INCOME_LINE_90 = AmountKind.declare(
 """Line 88 plus line 89, NL428 line 90 "Line 88 plus line 89", column 1 (you): the net income of
 line 88 plus the UCCB and RDSP repayments of line 89. Line 88 can be negative, so the kind is
 signed."""
-
-NL428_SPOUSE_FAMILY_INCOME_LINE_90 = AmountKind.declare(
-    CATALOG, "nl428_spouse_family_income_line_90", non_negative=False
-)
-"""Line 88 plus line 89, NL428 line 90 "Line 90: Line 88 plus line 89", column 2 (your spouse or
-common-law partner): the spouse's net income of line 88 plus the spouse's UCCB and RDSP repayments
-of line 89. Line 88 can be negative, so the kind is signed; both lines are optional inputs, so the
-result is blank when line 88 is."""
 
 NL428_FAMILY_INCOME_LESS_UCCB_RDSP_LINE_92 = AmountKind.declare(
     CATALOG, "nl428_family_income_less_uccb_rdsp_line_92", non_negative=True
@@ -940,14 +863,6 @@ NL428_LOW_INCOME_REDUCTION_DEPENDANT_MOST_LINE_97 = AmountKind.declare(
 where line 96 is 557. The spouse and the eligible dependant reductions are not both allowed
 (NL Income Tax Act, 2000, s. 9(1)(b) and s. 21.1(2.1)(b))."""
 
-NL428_SPOUSE_FAMILY_INCOME_LESS_UCCB_RDSP_LINE_92 = AmountKind.declare(
-    CATALOG, "nl428_spouse_family_income_less_uccb_rdsp_line_92", non_negative=True
-)
-"""Line 90 minus line 91, NL428 line 92 "Line 92: Line 90 minus line 91 (if negative, enter "0")",
-column 2 (your spouse or common-law partner): the spouse's family income of line 90 less the
-spouse's UCCB and RDSP income of line 91, not below 0, so the kind is non-negative. The result is
-blank when line 90 is."""
-
 LOW_INCOME_THRESHOLD = AmountKind.declare(CATALOG, "low_income_threshold", non_negative=True)
 """Low-income threshold, NL428 line 100 "Line 100: If you claimed an amount on line 96 or line 97,
 enter $40,460; if not, enter $23,928": the printed $23,928, the figure when no amount is claimed on
@@ -973,14 +888,6 @@ NL428_LOW_INCOME_THRESHOLD_LINE_100 = AmountKind.declare(
 enter $40,460; if not, enter $23,928": $40,460 when an amount is claimed on line 96 or line 97,
 else $23,928."""
 
-NL428_ADJUSTED_FAMILY_INCOME_LINE_93 = AmountKind.declare(
-    CATALOG, "nl428_adjusted_family_income_line_93", non_negative=True
-)
-"""Adjusted family income, NL428 line 93 "Line 93: Add the amounts from line 92 of columns 1 and 2.
-Enter this amount on line 99. Adjusted family income": line 92 of column 1 (you) plus line 92 of
-column 2 (your spouse or common-law partner), both not below 0, so the kind is non-negative.
-Column 2 is taken as 0 when left blank."""
-
 NL428_LOW_INCOME_REDUCTION_BEFORE_MAXIMUM_LINE_98 = AmountKind.declare(
     CATALOG, "nl428_low_income_reduction_before_maximum_line_98", non_negative=True
 )
@@ -995,8 +902,8 @@ to 97 added, and not more than the printed $1,554."""
 
 NL428_LINE_101 = AmountKind.declare(CATALOG, "nl428_line_101", non_negative=True)
 """NL428 line 101 "Line 101: Line 99 minus line 100 (if negative, enter "0") =": line 99 (a copy of
-line 93, the adjusted family income) less line 100 (the low-income threshold), floored at 0 as the
-form prints, rounded half-up to the cent."""
+line 93, the adjusted family income, which for a single filer is line 92) less line 100 (the
+low-income threshold), floored at 0 as the form prints, rounded half-up to the cent."""
 
 NL428_LINE_103 = AmountKind.declare(CATALOG, "nl428_line_103", non_negative=True)
 """NL428 line 103 "Line 103: Line 101 multiplied by the percentage from line 102 =": line 101 times

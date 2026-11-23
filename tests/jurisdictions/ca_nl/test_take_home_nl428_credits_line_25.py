@@ -1,4 +1,5 @@
-"""NL428 (2025) line 25, add lines 16, 17, 20, 23 and 24, from the salary alone, real parts.
+"""NL428 (2025) line 25, add lines 16, 17, 23 and 24 (line 20 left out), from the salary alone, real
+parts.
 
 Form text (Form NL428, CRA 5001-c-25e.txt, lines 98 to 115): "Line 16 and line 58040: Basic personal
 amount Claim $11,067 ^", "Line 17 and line 58080: Age amount (if you were born in 1960 or earlier)
@@ -7,15 +8,17 @@ negative, enter "0") (maximum $9,043) =", "Line 23 and line 58160: Line 21 minus
 negative, enter "0") (maximum $9,043) =", "Line 24 and line 58200: Amount for infirm dependants age
 18 or older (use Worksheet NL428) ^" and "Line 25: Add lines 16, 17, 20, 23, and 24. = ^".
 
-Line 25 is one core/sum over those five lines in line order. Line 17 is Worksheet NL428 line 7 read
+Line 25 is one core/sum over lines 16, 17, 23 and 24 in line order: line 20 is the spouse amount,
+which the take-home leaves out (single filer, owner ruling 23 Nov 2026, as Quebec was in #1925), so
+the sum has no line 20. Line 17 is Worksheet NL428 line 7 read
 from its form (core/record_total) and claimed only if the filer was born in 1960 or earlier (the
 shared `ca/born_in_1960_or_earlier` count, checked by ca/yes_or_no_count, then core/times_count, as
-line 40 claims its amount); a salary-only filer leaves the answer out, so line 17 is 0.00. Lines 20
-and 23 are blank for a filer with no spouse or eligible dependant and line 24 is an optional input;
-the sum reads each blank as 0.
+line 40 claims its amount); a salary-only filer leaves the answer out, so line 17 is 0.00. Line 23
+is blank for a filer with no eligible dependant and line 24 is an optional input; the sum reads each
+blank as 0.
 
 The test composes the real federal parts Worksheet NL428 needs, the real worksheet parts, the real
-parts of lines 16, 17, 19, 20, 22, 23, 24 and 25 and types in the salary (and, in some tests, the
+parts of lines 16, 17, 22, 23, 24 and 25 and types in the salary (and, in some tests, the
 optional inputs). The header and the two form declarations are made up here, because the shared
 scaffold owns them. Figures hand-computed (not a CRA example): the basic personal amount is
 11,067.00; the age amount, when claimed, is Worksheet NL428 line 7, 7,064.00 at a 20,000 salary,
@@ -63,12 +66,10 @@ IDENTIFIER = "ca-nl/nl428_credits_subtotal_line_25"
 FORM_NAME = "ca-nl/nl428_credits"
 LINE_16 = "ca-nl/basic_personal_amount"
 LINE_17 = "ca-nl/nl428_age_amount_line_17"
-LINE_20 = "ca-nl/nl428_spouse_amount_line_20"
 LINE_23 = "ca-nl/nl428_eligible_dependant_amount_line_23"
 LINE_24 = "ca-nl/nl428_infirm_dependants_amount_line_24"
-LINES = [LINE_16, LINE_17, LINE_20, LINE_23, LINE_24]
-OPTIONAL_LINES = [LINE_20, LINE_23, LINE_24]
-SPOUSE_NET_INCOME = "ca-nl/nl428_spouse_net_income_line_19"
+LINES = [LINE_16, LINE_17, LINE_23, LINE_24]
+OPTIONAL_LINES = [LINE_23, LINE_24]
 DEPENDANT_NET_INCOME = "ca-nl/nl428_eligible_dependant_net_income_line_22"
 FEDERAL_PARTS = form_part_names(
     "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
@@ -80,8 +81,6 @@ NL_PART_NAMES = (
     "worksheet_nl428_line_58080_input.yaml",
     "nl428_credits_line_16.yaml",
     "nl428_credits_line_17.yaml",
-    "nl428_credits_line_19_input.yaml",
-    "nl428_credits_line_20.yaml",
     "nl428_credits_line_22_input.yaml",
     "nl428_credits_line_23.yaml",
     "nl428_credits_line_24_input.yaml",
@@ -175,14 +174,6 @@ def _born(tmp_path: Path, salary: str, born: int) -> Any:
     return sheet
 
 
-def test_line_25_adds_the_spouse_amount_when_line_19_is_given(tmp_path: Path) -> None:
-    # Line 18 9,948.00 less 5,000.00 is 4,948.00, under the 9,043 maximum.
-    sheet = _sheet(tmp_path, "20000", {SPOUSE_NET_INCOME: "5000"})
-
-    assert _value(sheet, LINE_20) == D("4948.00")
-    assert _value(sheet, IDENTIFIER) == D("16015.00")
-
-
 def test_line_25_adds_the_eligible_dependant_amount_when_line_22_is_given(tmp_path: Path) -> None:
     # Line 21 9,948.00 less 5,000.00 is 4,948.00, under the 9,043 maximum.
     sheet = _sheet(tmp_path, "20000", {DEPENDANT_NET_INCOME: "5000"})
@@ -198,10 +189,10 @@ def test_line_25_adds_the_infirm_dependants_amount_when_line_24_is_given(tmp_pat
 
 
 def test_line_25_adds_every_line_together(tmp_path: Path) -> None:
-    given = {SPOUSE_NET_INCOME: "9948", DEPENDANT_NET_INCOME: "9948", LINE_24: "10.01"}
+    given = {DEPENDANT_NET_INCOME: "9948", LINE_24: "10.01"}
     sheet = _sheet(tmp_path, "20000", given)
 
-    # 11,067.00 plus 0.00 plus 0.00 plus 0.00 plus 10.01.
+    # 11,067.00 plus 0.00 plus 0.00 plus 10.01.
     assert _value(sheet, IDENTIFIER) == D("11077.01")
 
 
@@ -211,7 +202,7 @@ def _part() -> dict[str, Any]:
     return part
 
 
-def test_the_part_names_the_form_and_has_one_sum_step_over_lines_16_17_20_23_and_24() -> None:
+def test_the_part_names_the_form_and_has_one_sum_step_over_lines_16_17_23_and_24() -> None:
     part = _part()
 
     assert list(part) == ["form", "capabilities"]

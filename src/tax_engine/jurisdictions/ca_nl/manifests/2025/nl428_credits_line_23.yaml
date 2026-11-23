@@ -7,19 +7,8 @@
 #
 # Line 23 is for a filer with an eligible dependant: a request that leaves line 22 blank has none,
 # so the line is blank. The difference, not below 0, passes a blank line 22 on, and the lesser of
-# that and the printed maximum passes it on again.
-#
-# The spouse amount and the eligible dependant amount are not both allowed. Guide 5000-G, line 30400
-# (which NL428 line 58160 follows: "You can claim this amount if the rules are met for claiming the
-# amount on line 30400"): "If you did not claim an amount on line 30300 of your return, you may be
-# able to claim this amount for one dependant if, at any time in the year, you met all the following
-# conditions:". NL Income Tax Act, 2000, s. 9(1)(b) says the same of an individual "who does not
-# claim a deduction for the year because of paragraph (a)". So line 23 reads line 20 (same form): core/amount_by_band
-# over line 20 is the unprinted most line 23 may be (the printed maximum where line 20 is 0.00, 0
-# where an amount is claimed on line 20; a blank line 20 has no spouse and is read as 0), and
-# core/at_most is line 23, passing the lesser-of figure on or refusing the return when it is above
-# that most (both claimed). A blank lesser-of figure is passed on blank. The line's number is on
-# the final step only.
+# that and the printed maximum passes it on again. The line's number is on the final step only. The
+# spouse amount (line 20) is not modelled (single filers only), so there is no check against it.
 form:
   name: ca-nl/nl428_credits
 capabilities:
@@ -45,6 +34,7 @@ capabilities:
     produces:
       output: ca-nl/nl428_eligible_dependant_amount_before_maximum_line_23
   - name: core/lesser_of
+    reference: "23"
     unit: ca/cad
     consumes:
       amounts:
@@ -52,25 +42,5 @@ capabilities:
         - ca-nl/eligible_dependant_amount_maximum
     blank:
       amounts: pass_on
-    produces:
-      output: ca-nl/nl428_eligible_dependant_amount_before_check_line_23
-  - name: core/amount_by_band
-    unit: ca/cad
-    params:
-      table: ca-nl/eligible_dependant_spouse_gate
-    consumes:
-      base: ca-nl/nl428_spouse_amount_line_20
-    blank:
-      base: "0"
-    produces:
-      output: ca-nl/nl428_eligible_dependant_amount_most_line_23
-  - name: core/at_most
-    reference: "23"
-    unit: ca/cad
-    consumes:
-      amount: ca-nl/nl428_eligible_dependant_amount_before_check_line_23
-      bound: ca-nl/nl428_eligible_dependant_amount_most_line_23
-    blank:
-      amount: pass_on
     produces:
       output: ca-nl/nl428_eligible_dependant_amount_line_23

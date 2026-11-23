@@ -4,8 +4,8 @@
 # floor (`ca/net_income_signed`), and another form reads an export only as a record list
 # (`ca/t1_taxable_income.net_income_signed`), so the one step is core/record_total over those
 # records, as MB479 line 1 is. The result is signed, because the form asks for a negative net income
-# shown in brackets. Column 2 (your spouse or common-law partner) is an input, in
-# nl428_line_88_column_2_input.yaml.
+# shown in brackets. Column 2 (your spouse or common-law partner) is not modelled: the take-home
+# is a single filer's.
 form:
   name: ca-nl/nl428
 capabilities:
