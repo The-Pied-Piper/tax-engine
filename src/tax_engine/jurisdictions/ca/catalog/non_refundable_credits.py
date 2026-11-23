@@ -71,7 +71,17 @@ self-employment and other eligible earnings (complete Schedule 13)" under "Emplo
 premiums": Schedule 13 line 9 ("Enter the amount from line 9 or line 10, whichever applies, on
 line 31217 and line 42120 of your return."), entered once for each agreement with the Commission
 (1 or 0), a part of the total of the credit amounts on the T1 (ON428 line 22, line 58305, copies
-it)."""
+it). The optional input (`t1_lines_copied_by_provinces_line_31217_inputs.yaml`), blank when the
+filer has none. The T1 lines copied by provinces form owns it; NL428 line 30 and T1 line 89 import
+line 31217."""
+
+EI_PREMIUMS_ON_SELF_EMPLOYMENT_LINE_31217 = AmountKind.declare(
+    CATALOG, "ei_premiums_on_self_employment_line_31217", non_negative=True
+)
+"""EI premiums on self-employment and other eligible earnings as T1 line 31217 prints it
+(`t1_lines_copied_by_provinces_line_31217.yaml`): the optional input
+(`ca/ei_premiums_on_self_employment`), read as 0 when blank, exported by the T1 lines copied by
+provinces form."""
 
 CANADA_EMPLOYMENT_AMOUNT_INCOME = AmountKind.declare(
     CATALOG, "canada_employment_amount_income", non_negative=True

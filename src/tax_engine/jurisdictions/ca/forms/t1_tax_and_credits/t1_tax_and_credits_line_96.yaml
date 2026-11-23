@@ -1,12 +1,14 @@
 # T1 (5006-R, 2025) Step 5 Part B line 96, "Line 96: Add lines 86 to 95." (CRA 5006-R-25E). The
-# filer has four of the lines 86 to 95: line 86 (base CPP through employment, a copy of Schedule 8
+# filer has five of the lines 86 to 95: line 86 (base CPP through employment, a copy of Schedule 8
 # line 25), line 87 (base CPP or QPP on self-employment income and other earnings, a copy of line
-# 31000), line 88 (EI premiums through employment, a copy of T2204 line 16) and line 92 (the Canada
-# employment amount, line 31260, the t1_tax_and_credits_line_31260 part). Lines 89 to 91 and 93 to 95
+# 31000), line 88 (EI premiums through employment, a copy of T2204 line 16), line 89 (EI premiums on
+# self-employment and other eligible earnings, a copy of line 31217) and line 92 (the Canada
+# employment amount, line 31260, the t1_tax_and_credits_line_31260 part). Lines 90, 91 and 93 to 95
 # are not built and are left out.
-# Lines 86, 87 and 88 are pure copies, so each is a core/record_total over the record list its form
-# exports (the engine reads another form's export only as a record list). Line 87 reads the T1 lines
-# copied by provinces form, which owns line 31000 as an input and reads it as 0 when blank. Line 96
+# Lines 86 to 89 are pure copies, so each is a core/record_total over the record list its form
+# exports (the engine reads another form's export only as a record list). Lines 87 and 89 read the
+# T1 lines copied by provinces form, which owns lines 31000 and 31217 as inputs and reads each as 0
+# when blank. Line 96
 # is a core/sum, rounded once, half-up to the cent, through the shared ca/cent_rounding dataset.
 form:
   name: ca/t1_tax_and_credits
@@ -35,6 +37,14 @@ capabilities:
       records: ca/t2204.t2204_line_16
     produces:
       output: ca/ei_premiums_line_88
+  - name: core/record_total
+    title: "Employment insurance premiums on self-employment and other eligible earnings"
+    reference: "31217"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_lines_copied_by_provinces.ei_premiums_on_self_employment_line_31217
+    produces:
+      output: ca/ei_premiums_line_89
   - name: core/sum
     reference: "96"
     unit: ca/cad
@@ -45,6 +55,7 @@ capabilities:
         - ca/cpp_base_contributions_line_86
         - ca/cpp_base_contributions_line_87
         - ca/ei_premiums_line_88
+        - ca/ei_premiums_line_89
         - ca/canada_employment_amount
     produces:
       output: ca/credits_subtotal_line_96

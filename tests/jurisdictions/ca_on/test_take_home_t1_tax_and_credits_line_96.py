@@ -1,19 +1,20 @@
 """T1 General 2025 (5006-R, Ontario) Step 5 Part B line 96, from the salary alone.
 
 Line 96 is "Line 96: Add lines 86 to 95." (T1 General 5006-R, CRA 5006-R-25E, confirmed). The filer
-has four of the lines 86 to 95: line 86 (`ca/cpp_base_contributions_line_86`, the base CPP of
+has five of the lines 86 to 95: line 86 (`ca/cpp_base_contributions_line_86`, the base CPP of
 Schedule 8 for T1 line 30800), line 88 (`ca/ei_premiums_line_88`, the EI premiums of T2204 line 16
 for T1 line 31200), line 87 (`ca/cpp_base_contributions_line_87`, a copy of line 31000 from the T1
-lines copied by provinces form, 0 when blank) and line 92 (`ca/canada_employment_amount`, the
-Canada employment amount of T1 line 31260). Lines 89 to 91 and 93 to 95 are not built and are left
+lines copied by provinces form, 0 when blank), line 89 (`ca/ei_premiums_line_89`, a copy of line
+31217 from the same form, 0 when blank) and line 92 (`ca/canada_employment_amount`, the
+Canada employment amount of T1 line 31260). Lines 90, 91 and 93 to 95 are not built and are left
 out.
 
-The part has four steps. Lines 86, 87 and 88 are pure reads of other forms, so each is a
+The part has five steps. Lines 86, 87, 88 and 89 are pure reads of other forms, so each is a
 `core/record_total` over the record list the other form exports (the engine lets one form read
 another form's exports only as record lists): the Schedule 8 record list
 `ca/schedule_8.schedule_8_cpp_base_contributions_on_return` and the T2204 record list
-`ca/t2204.t2204_line_16`. Line 96 is a `core/sum`, rounded to the cent, of the three new kinds and
-the line 31260 amount. All four new kinds are non-negative amounts.
+`ca/t2204.t2204_line_16`. Line 96 is a `core/sum`, rounded to the cent, of the four new kinds and
+the line 31260 amount. All five new kinds are non-negative amounts.
 
 The real parts are composed beside a test-local header: the salary, the real T1 lines copied by
 provinces form, the real Schedule 8 and T2204 parts (their headers export the read kinds), the real
@@ -52,6 +53,7 @@ CANADA_EMPLOYMENT_AMOUNT = "ca/canada_employment_amount"
 LINE_86 = "ca/cpp_base_contributions_line_86"
 LINE_87 = "ca/cpp_base_contributions_line_87"
 LINE_88 = "ca/ei_premiums_line_88"
+LINE_89 = "ca/ei_premiums_line_89"
 LINE_96 = "ca/credits_subtotal_line_96"
 # The real parts composed beside the test's header: the salary, the real Schedule 8 and T2204 parts
 # (every part of each, so their on-return and line 16 kinds are produced as they are on the return),
@@ -164,7 +166,7 @@ def test_line_96_is_line_86_plus_line_88_plus_the_canada_employment_amount(
     )
 
 
-@pytest.mark.parametrize("kind_identifier", [LINE_86, LINE_87, LINE_88, LINE_96])
+@pytest.mark.parametrize("kind_identifier", [LINE_86, LINE_87, LINE_88, LINE_89, LINE_96])
 def test_the_line_96_kinds_are_registered_and_non_negative(kind_identifier: str) -> None:
     # Non-negative: each is a CPP or EI amount, or the Canada employment amount, that the form
     # adds up, never a negative figure.
@@ -174,14 +176,14 @@ def test_the_line_96_kinds_are_registered_and_non_negative(kind_identifier: str)
     assert non_negative(kind) is True
 
 
-def test_line_96_names_its_four_parts_and_its_rounding_in_the_trace(
+def test_line_96_names_its_five_parts_and_its_rounding_in_the_trace(
     take_home_service: TakeHomeService,
 ) -> None:
     sheet, _, _ = _sheets(take_home_service, "70000")
 
     assert (
         "Line 30800 (CA$3291.75) plus line 31000 (CA$0.00) plus line 31200 (CA$1077.48) "
-        "plus line 31260 (CA$1471.00) gives CA$5840.23 "
+        "plus line 31217 (CA$0.00) plus line 31260 (CA$1471.00) gives CA$5840.23 "
         "(rounded to the nearest cent)."
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
 
@@ -198,5 +200,6 @@ def test_line_96_adds_line_87_the_self_employment_base_cpp(
     assert _value(sheet, LINE_96) == D("6340.23")
     assert (
         "Line 30800 (CA$3291.75) plus line 31000 (CA$500.00) plus line 31200 (CA$1077.48) "
-        "plus line 31260 (CA$1471.00) gives CA$6340.23 (rounded to the nearest cent)."
+        "plus line 31217 (CA$0.00) plus line 31260 (CA$1471.00) gives CA$6340.23 "
+        "(rounded to the nearest cent)."
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)

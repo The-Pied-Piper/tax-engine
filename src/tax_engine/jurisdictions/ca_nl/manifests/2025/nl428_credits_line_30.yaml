@@ -1,0 +1,16 @@
+# Form NL428 (CRA 5001-C) line 30: "Line 30 and line 58305: Amount from line 31217 of your return".
+# A copy of T1 line 31217, which the T1 lines copied by provinces form owns and exports
+# (`ca/ei_premiums_on_self_employment_line_31217`), so the one step is core/record_total over that
+# export (a form reads another form's export only as a record list), as line 28 does. A salary-only
+# caller has no such amount, so the total is 0.
+form:
+  name: ca-nl/nl428_credits
+capabilities:
+  - name: core/record_total
+    title: "Amount from line 31217 of your return"
+    reference: "30"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_lines_copied_by_provinces.ei_premiums_on_self_employment_line_31217
+    produces:
+      output: ca-nl/nl428_ei_premiums_line_30

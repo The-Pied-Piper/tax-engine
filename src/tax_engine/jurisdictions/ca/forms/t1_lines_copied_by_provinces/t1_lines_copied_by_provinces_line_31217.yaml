@@ -1,0 +1,21 @@
+# T1 (5006-R, 2025) line 31217: "Line 89 and line 31217: on self-employment and other eligible
+# earnings (complete Schedule 13)" (5006-R page 6). The optional input
+# (`ca/ei_premiums_on_self_employment`, blank when the filer has none) is read by this step, which
+# is the one line the T1 prints for it, and the blank reads as 0. The form exports the line
+# (`ca/ei_premiums_on_self_employment_line_31217`) for the forms that print it again (NL428 line
+# 30). The T1 reads it as line 89 into line 96.
+form:
+  name: ca/t1_lines_copied_by_provinces
+capabilities:
+  - name: core/sum
+    title: "Employment insurance premiums on self-employment and other eligible earnings"
+    reference: "31217"
+    unit: ca/cad
+    params:
+      rounding: ca/cent_rounding
+    consumes:
+      parts: [ca/ei_premiums_on_self_employment]
+    blank:
+      ca/ei_premiums_on_self_employment: "0"
+    produces:
+      output: ca/ei_premiums_on_self_employment_line_31217

@@ -7,8 +7,8 @@ from line 31217 of your return ^", "Line 31 and line 58315: Volunteer firefighte
 "Line 32 and line 58316: Search and rescue volunteers' amount ^", "Line 33 and line 58320: Child
 care amount ^", "Line 34 and line 58330: Adoption expenses ^" and "Line 35: Add lines 27 to 34. =
 ^". Line 35 is one core/sum over lines 27 to 34 in line order. Lines 27 and 29 are computed from the
-salary; lines 28, 30, 31, 32, 33 and 34 are optional inputs a salary-only caller leaves out, which
-the sum reads as 0, as Manitoba's line 33 does.
+salary; lines 28 and 30 are record totals over the T1 lines copied by provinces exports; lines 31,
+32, 33 and 34 are optional inputs a salary-only caller leaves out, which the sum reads as 0.
 
 The test composes the real Schedule 8 and T2204 parts, the real parts of lines 27, 28, 29, 30, 31,
 32, 33 and 34 and the new `nl428_credits_line_35.yaml`, and types in only the salary (and, in some
@@ -60,6 +60,7 @@ FORM_NAME = "ca-nl/nl428_credits"
 LINE_27 = "ca-nl/nl428_cpp_contributions_line_27"
 LINE_28 = "ca-nl/nl428_qpp_contributions_line_28"
 T1_LINE_31000 = "ca/self_employment_cpp_qpp_contributions"
+T1_LINE_31217 = "ca/ei_premiums_on_self_employment"
 LINE_29 = "ca-nl/nl428_ei_premiums_line_29"
 LINE_30 = "ca-nl/nl428_ei_premiums_line_30"
 LINE_31 = "ca-nl/nl428_volunteer_firefighters_amount_line_31"
@@ -72,7 +73,7 @@ CREDIT_PARTS = (
     "nl428_credits_line_27.yaml",
     "nl428_credits_line_28.yaml",
     "nl428_credits_line_29.yaml",
-    "nl428_credits_line_30_input.yaml",
+    "nl428_credits_line_30.yaml",
     "nl428_credits_line_31_input.yaml",
     "nl428_credits_line_32_input.yaml",
     "nl428_credits_line_33_input.yaml",
@@ -162,7 +163,7 @@ def test_line_35_adds_each_optional_line_when_given(tmp_path: Path, identifier: 
 def test_line_35_adds_all_the_optional_lines_together(tmp_path: Path) -> None:
     given = {
         T1_LINE_31000: "10.01",
-        LINE_30: "20.02",
+        T1_LINE_31217: "20.02",
         LINE_31: "30.03",
         LINE_32: "40.04",
         LINE_33: "50.05",

@@ -156,8 +156,8 @@ NL428_EI_PREMIUMS_LINE_30 = AmountKind.declare(
     CATALOG, "nl428_ei_premiums_line_30", non_negative=True
 )
 """Employment insurance premiums, NL428 line 30 "Line 30 and line 58305: Amount from line 31217
-of your return": the amount as the filer gives it, an optional input; a blank input is read as
-blank."""
+of your return": a record total of the T1's export
+(`ca/ei_premiums_on_self_employment_line_31217`), 0 for a salary-only caller."""
 
 NL428_VOLUNTEER_FIREFIGHTERS_AMOUNT_LINE_31 = AmountKind.declare(
     CATALOG, "nl428_volunteer_firefighters_amount_line_31", non_negative=True
