@@ -1,28 +1,29 @@
-"""The Ontario return summary carries the Ontario marginal rate, through the real engine.
+"""The Ontario return summary carries the Ontario rate with the surtax, through the real engine.
 
-The Ontario marginal rate is the ON428 line 5 bracket rate (`ca-on/ontario_bracket_rate_return`)
-times the Ontario surtax factor (`ca-on/ontario_surtax_factor`, ON428 lines 66 and 67):
-the share of a further dollar of Ontario tax-bearing income that goes to Ontario tax with the
-surtax. No new form text: the printed rates are those of line 5 ("Line 5: Rate 5.05%", "9.15%",
-"11.16%", "12.16%", "13.16%", CRA 5006-c-25e.txt) and the surtax rates those of line 66 "(Line 65
-minus $5,710) multiplied by 20%" and line 67 "(Line 65 minus $7,307) multiplied by 36%". The rate
-times the factor is not a printed line, so the step is untitled and carries no line reference.
+The Ontario rate with the surtax (`ca-on/marginal_ontario_rate_with_surtax`) is the Ontario rate
+after the credits (`ca-on/marginal_ontario_rate_after_credits`: the ON428 line 5 bracket rate times
+the part of a dollar left in the income, less the credit on the CPP base and EI) times the Ontario
+surtax factor (`ca-on/ontario_surtax_factor`, ON428 lines 66 and 67): the Ontario tax on a further
+dollar of salary with the surtax, before the tax reduction, the LIFT credit and the gate. No new
+form text: the printed rates are those of line 5 ("Line 5: Rate 5.05%", "9.15%", "11.16%",
+"12.16%", "13.16%", CRA 5006-c-25e.txt) and the surtax rates those of line 66 "(Line 65 minus
+$5,710) multiplied by 20%" and line 67 "(Line 65 minus $7,307) multiplied by 36%". The product is
+not a printed line, so the step is untitled and carries no line reference.
 
-The return summary has one `core/multiply_by_rate` step in `return.yaml`: base
-`ca-on/ontario_surtax_factor`, rate `ca-on/ontario_bracket_rate_return`, the dataset
-`ca-on/exact_rounding` (`rounding: none`, the product is exact), unit `core/percent`, producing the
-new non-negative Ontario amount kind `ca-on/ontario_bracket_marginal_rate` (named
-`ca-on/ontario_marginal_rate` before the gates, which now gate it). The return's exports are that
-rate and T1 line 167: the bracket rate and the surtax factor are now read inside the return, so
-they are no longer exported.
+The return summary has one `core/multiply_by_rate` step in `return.yaml` for it: base
+`ca-on/ontario_surtax_factor`, rate `ca-on/marginal_ontario_rate_after_credits`, the dataset
+`ca-on/exact_rounding` (`rounding: none`, the product is exact), unit `core/percent`.
 
-Figures (the real bundled manifest, salary the only input), each the exact product of the line 5
-rate and the factor, worked by hand. The factor by salary is the one pinned in
+Figures (the real bundled manifest, salary the only input), each the exact product of the rate after
+the credits and the factor, worked by hand. The factor by salary is the one pinned in
 `end_to_end/test_return_surtax_factor.py` (line 65 is 300.14 at $20,000, 3,311.45 at $70,000,
-6,015.78 at $100,000, 6,994.12 at $110,000, 8,110.12 at $120,000, 11,458.12 at $150,000):
+6,015.78 at $100,000, 6,994.12 at $110,000, 8,110.12 at $120,000, 11,458.12 at $150,000). Above
+the CPP and EI maximums nothing is credited and nothing is deducted, so the rate after the credits
+is the bracket rate; below them it is the bracket rate times 0.99 less 5.05% of the CPP base and EI
+rates:
 
-- $20,000: 0.0505 x 1 = 0.0505 (5.05%)
-- $70,000: 0.0915 x 1 = 0.0915 (9.15%)
+- $20,000: 0.0505 x 0.99 - 0.0505 x 0.0659 = 0.04666705, factor 1
+- $70,000: 0.0915 x 0.99 - 0.0505 x 0.0495 = 0.08808525 (the EI maximum is passed), factor 1
 - $100,000: 0.0915 x 1.20 = 0.1098 (10.98%), in the 20% surtax range
 - $110,000: 0.1116 x 1.20 = 0.13392 (13.392%), in the 20% surtax range
 - $120,000: 0.1116 x 1.56 = 0.174096 (17.4096%), over the 36% threshold
@@ -30,8 +31,7 @@ rate and the factor, worked by hand. The factor by salary is the one pinned in
 - $200,000: 0.1216 x 1.56 = 0.189696 (18.9696%), over the 36% threshold
 - $275,000: 0.1316 x 1.56 = 0.205296 (20.5296%), the top bracket over the 36% threshold
 
-The return's exports and step wiring are pinned in `test_take_home_manifest.py`, and the $70,000
-take-home (53,468.68) in `test_take_home_return_ontario_bracket_rate.py`.
+The return's step wiring is pinned in `test_take_home_manifest.py`.
 """
 
 from __future__ import annotations
@@ -58,10 +58,10 @@ ONTARIO = JurisdictionCode("CA-ON")
 HEADER = header_without_imports()
 RETURN_PART = (TAKE_HOME / "return.yaml").read_text(encoding="utf-8")
 RETURN = "ca-on/return"
-RATE = "ca-on/ontario_bracket_rate_return"
+RATE = "ca-on/marginal_ontario_rate_after_credits"
 FACTOR = "ca-on/ontario_surtax_factor"
-# The pure product; `ca-on/ontario_marginal_rate` is now this product gated by ON428 line 81.
-MARGINAL = "ca-on/ontario_bracket_marginal_rate"
+# The product before the tax reduction, the LIFT credit and the gate.
+MARGINAL = "ca-on/marginal_ontario_rate_with_surtax"
 
 PARTS = (
     *(
@@ -71,10 +71,11 @@ PARTS = (
     ),
 )
 
-# Salary, the line 5 rate, the surtax factor and the marginal rate, from runs of the real parts.
+# Salary, the rate after the credits, the surtax factor and their product, from runs of the real
+# parts.
 FIGURES = [
-    ("20000", "0.0505", "1", "0.0505"),
-    ("70000", "0.0915", "1", "0.0915"),
+    ("20000", "0.04666705", "1", "0.04666705"),
+    ("70000", "0.08808525", "1", "0.08808525"),
     ("100000", "0.0915", "1.20", "0.1098"),
     ("110000", "0.1116", "1.20", "0.13392"),
     ("120000", "0.1116", "1.56", "0.174096"),
@@ -113,7 +114,7 @@ def test_the_marginal_rate_kind_is_a_registered_non_negative_amount() -> None:
 
 
 @pytest.mark.parametrize(("salary", "rate", "factor", "marginal"), FIGURES)
-def test_the_marginal_rate_is_the_bracket_rate_times_the_surtax_factor(
+def test_the_marginal_rate_is_the_rate_after_the_credits_times_the_surtax_factor(
     take_home_service: TakeHomeService, salary: str, rate: str, factor: str, marginal: str
 ) -> None:
     summary = _summary(take_home_service, salary)
@@ -125,14 +126,17 @@ def test_the_marginal_rate_is_the_bracket_rate_times_the_surtax_factor(
     assert D(rate) * D(factor) == D(marginal)
 
 
-def test_the_bundled_return_gives_9_15_percent_at_70000() -> None:
-    # No fixture: the bundled Ontario manifest, as the calculator loads it.
+def test_the_bundled_return_gives_the_ontario_marginal_rate_at_70000() -> None:
+    # No fixture: the bundled Ontario manifest, as the calculator loads it. The gated Ontario
+    # marginal rate is the product here, as the Ontario tax after the LIFT credit is positive.
     worksheets = build_tax_computation().compute(
         TaxCalculationRequest(ONTARIO, 2025, (Artifact(EMPLOYMENT_INCOME, D("70000")),))
     )
     (summary,) = worksheets[RETURN]
+    kinds = bundled_kinds()
 
-    assert summary.get(bundled_kinds().kind(MARGINAL)).value == D("0.0915")
+    assert summary.get(kinds.kind(MARGINAL)).value == D("0.08808525")
+    assert summary.get(kinds.kind("ca-on/ontario_marginal_rate")).value == D("0.08808525")
 
 
 def test_the_marginal_rate_is_not_rounded_to_the_cent() -> None:
@@ -203,7 +207,7 @@ def test_the_marginal_rate_comes_after_the_bracket_rate_and_the_surtax_factor_in
 @pytest.mark.parametrize(
     ("salary", "rate", "factor", "marginal"),
     [
-        ("70000", "9.15%", "1.00", "9.15%"),
+        ("70000", "8.808525%", "1.00", "8.808525%"),
         ("100000", "9.15%", "1.20", "10.98%"),
         ("110000", "11.16%", "1.20", "13.392%"),
         ("275000", "13.16%", "1.56", "20.5296%"),

@@ -1,14 +1,16 @@
-"""Ontario return summary: the federal marginal rate, the bracket rate of the taxable income.
+"""Ontario return summary: the federal marginal rate, the federal rate on a further salary dollar.
 
-5006-R-25E, Step 5 Part A: each column of the federal tax
-chart prints "Line 73: Rate" with 14.5%, 20.5%, 26%, 29% or 33%. The existing step
-`ca/federal_bracket_column_rate_line_73` of `ca/t1_tax_and_credits` is the printed rate of the
-column that line 70 falls in. The return summary reads it as a cross-form read: the T1 form exports
-it, and one `core/record_total` step of `return.yaml` totals the one amount into the return's own
-amount kind `ca/federal_bracket_rate_return`; `ca/federal_marginal_rate` is that rate gated by T1
-line 42900 "Basic federal tax" (0 where no federal tax is paid). The step has no printed title
-and no printed line, and carries the unit `core/percent`, so the summary shows it untitled, with no
-reference, and a trace prints the fraction 0.205 as the form prints it, "20.5%".
+5006-R-25E, Step 5 Part A: each column of the federal tax chart prints "Line 73: Rate" with 14.5%,
+20.5%, 26%, 29% or 33%. The existing step `ca/federal_bracket_column_rate_line_73` of
+`ca/t1_tax_and_credits` is the printed rate of the column that line 70 falls in. The return summary
+reads it as a cross-form read: the T1 form exports it, and one `core/record_total` step of
+`return.yaml` totals the one amount into the return's own amount kind
+`ca/federal_bracket_rate_return`. The federal marginal rate (`ca-on/marginal_federal_rate`) is that
+rate times the part of a dollar left in the income, plus the fall of the basic personal amount,
+less the credit on the CPP base and EI, counted where T1 line 42900 "Basic federal tax" is above 0
+(0 where no federal tax is paid). The step has no printed title and no printed line, and carries
+the unit `core/percent`, so the summary shows it untitled, with no reference, and a trace prints
+the fraction 0.1957725 as "19.57725%".
 
 The test composes the real salary, Schedule 8, T1 taxable income, T2204, Schedule 6, ON428 parts and
 the real T1 parts, as the line 167 test does. The header and the form are the real files:
@@ -43,7 +45,7 @@ ONTARIO = JurisdictionCode("CA-ON")
 T1_FORM = "ca/t1_tax_and_credits"
 RETURN_FORM = "ca-on/return"
 LINE_73 = "ca/federal_bracket_column_rate_line_73"
-MARGINAL_RATE = "ca/federal_marginal_rate"
+MARGINAL_RATE = "ca-on/marginal_federal_rate"
 BRACKET_RATE_RETURN = "ca/federal_bracket_rate_return"
 BASIC_FEDERAL_TAX = "ca/federal_tax_after_credits"
 LINE_167 = "ca/refund_or_balance_owing"
@@ -117,13 +119,15 @@ def _summary(take_home_service: TakeHomeService, salary: str) -> Worksheet:
 @pytest.mark.parametrize(
     ("salary", "rate"),
     [
-        # $70,000: taxable income 69,335.00 falls in the 20.5% column.
-        ("70000", "0.205"),
-        # $20,000: the first bracket's rate, 14.5%.
-        ("20000", "0.145"),
+        # $70,000: the 20.5% column x 0.99 less 14.5% x 0.0495 (CPP base; the EI maximum is passed).
+        ("70000", "0.1957725"),
+        # $20,000: the first bracket's rate, 14.5% x 0.99 less 14.5% x (0.0495 + 0.0164).
+        ("20000", "0.1339945"),
+        # $275,000: the 33% column; no contributions or credits are left to take off.
+        ("275000", "0.33"),
     ],
 )
-def test_the_federal_marginal_rate_is_the_line_73_rate_of_the_column(
+def test_the_federal_marginal_rate_is_the_line_73_rate_less_the_credits_on_the_contributions(
     take_home_service: TakeHomeService, salary: str, rate: str
 ) -> None:
     summary = _summary(take_home_service, salary)
@@ -136,7 +140,7 @@ def test_the_federal_bracket_rate_return_equals_line_73_read_from_the_t1_sheet(
     take_home_service: TakeHomeService, salary: str
 ) -> None:
     # The raw line 73 rate, read into its own kind, whatever the tax: the federal marginal
-    # rate is this rate gated by T1 line 42900, so it differs from it where no tax is paid.
+    # rate counts only where T1 line 42900 is above 0, so it differs from it where no tax is paid.
     worksheets = _worksheets(take_home_service, salary)
     (t1_sheet,) = worksheets[T1_FORM]
     (summary,) = worksheets[RETURN_FORM]
@@ -146,19 +150,6 @@ def test_the_federal_bracket_rate_return_equals_line_73_read_from_the_t1_sheet(
         summary.get(kinds.kind(BRACKET_RATE_RETURN)).value
         == t1_sheet.get(kinds.kind(LINE_73)).value
     )
-
-
-@pytest.mark.parametrize("salary", ["70000", "275000"])
-def test_the_federal_marginal_rate_equals_line_73_where_basic_federal_tax_is_positive(
-    take_home_service: TakeHomeService, salary: str
-) -> None:
-    worksheets = _worksheets(take_home_service, salary)
-    (t1_sheet,) = worksheets[T1_FORM]
-    (summary,) = worksheets[RETURN_FORM]
-    kinds = bundled_kinds()
-
-    assert t1_sheet.get(kinds.kind(BASIC_FEDERAL_TAX)).value > 0
-    assert summary.get(kinds.kind(MARGINAL_RATE)).value == t1_sheet.get(kinds.kind(LINE_73)).value
 
 
 def test_the_federal_marginal_rate_is_zero_at_10000_where_no_federal_tax_is_paid(
@@ -191,14 +182,14 @@ def test_the_federal_marginal_rate_has_no_title_no_reference_and_the_percent_uni
     assert summary.unit(label) == units().get("core/percent")
 
 
-def test_the_federal_marginal_rate_prints_as_the_percentage_the_form_prints(
+def test_the_federal_marginal_rate_prints_as_a_percentage(
     take_home_service: TakeHomeService,
 ) -> None:
     summary = _summary(take_home_service, "70000")
 
     lines = EnglishTraceRenderer().render_all(summary.trace, summary)
 
-    assert any("gives 20.5%" in line for line in lines)
+    assert any("gives 19.57725%" in line for line in lines)
 
 
 def test_the_real_t1_form_exports_include_line_167_the_line_73_rate_and_line_42900() -> None:
@@ -219,7 +210,7 @@ def test_the_real_ontario_manifest_computes_the_federal_marginal_rate_at_70000()
     )
     (sheet,) = worksheets[RETURN_FORM]
 
-    assert sheet.get(bundled_kinds().kind(MARGINAL_RATE)).value == D("0.205")
+    assert sheet.get(bundled_kinds().kind(MARGINAL_RATE)).value == D("0.1957725")
 
 
 def test_the_federal_marginal_rate_kind_is_registered_non_negative_and_an_amount() -> None:

@@ -1,17 +1,16 @@
 """The gated marginal tax rate runs for tax year 2026 as well, through the real engine.
 
 The Ontario manifest is 2025-only but the engine runs 2026 on it, reading each dataset family's
-2026 file, so `ca-on/marginal_rate_gate` needs a 2026 dataset (an absent year is never carried
-forward). Without it every 2026 salary is refused ("no ca-on/marginal_rate_gate dataset for tax
-year 2026").
+2026 file, so every dataset of the marginal rate (the gate, the contribution rates, the credit
+rates, the basic personal amount band and fraction, the LIFT reduction rate) needs a 2026 dataset
+(an absent year is never carried forward).
 
 No new form text is quoted. The 2026 datasets are provisional (the 2026 forms are not published).
-Figures that depend on the 2026 credit amounts (where each tax first turns positive) are not
-derived by hand: each salary pins the structure instead, that the gates are 0 or 1 and open with
-their taxes, each marginal part is its gate times its bracket rate (the Ontario one doubled while
-the Ontario tax reduction is above 0), the total is the exact sum of the three parts, and the
-bracket rates are those of the 2026 bracket datasets (federal 14% to 58,523, then 20.5%; Ontario
-5.05% to 53,891, then 9.15%).
+Where each tax first turns positive (2026, salary only): basic federal tax (T1 line 42900) at
+19,200.18 and ON428 line 86 at 32,577.01 (measured). At 19,200.18 the federal part opens:
+14% x 0.99 - 14% x 0.0658 = 0.129388, and with the contributions (CPP 4.95% + 1%, EI 1.63%) the rate
+is 0.205188; each other salary pins the structure: the gates are 0 or 1 and open with their taxes,
+each marginal part is its gate times its rate, and the total is the exact sum of the four parts.
 """
 
 from __future__ import annotations
@@ -33,19 +32,22 @@ ONTARIO = JurisdictionCode("CA-ON")
 RETURN = "ca-on/return"
 
 BASIC_FEDERAL_TAX = "ca/federal_tax_after_credits_return"
-TAX_AFTER_REDUCTION = "ca-on/ontario_tax_after_reduction_return"
+TAX_AFTER_LIFT = "ca-on/ontario_tax_after_lift_return"
 FEDERAL_GATE = "ca/federal_rate_gate"
 ONTARIO_GATE = "ca-on/ontario_rate_gate"
 REDUCTION_GATE = "ca-on/ontario_reduction_gate"
 TAX_REDUCTION = "ca-on/ontario_tax_reduction_return"
+FEDERAL_AFTER_CREDITS = "ca-on/marginal_federal_rate_after_credits"
+ONTARIO_AFTER_LIFT = "ca-on/marginal_ontario_rate_after_lift"
 FEDERAL_BRACKET = "ca/federal_bracket_rate_return"
-ONTARIO_BRACKET = "ca-on/ontario_bracket_marginal_rate"
-FEDERAL = "ca/federal_marginal_rate"
+ONTARIO_BRACKET = "ca-on/ontario_bracket_rate_return"
+FEDERAL = "ca-on/marginal_federal_rate"
 ONTARIO_RATE = "ca-on/ontario_marginal_rate"
-SLOPE = "ca-on/return_health_premium_slope"
+PREMIUM = "ca-on/marginal_health_premium_rate"
+CONTRIBUTION = "ca-on/marginal_contribution_rate"
 MARGINAL = "ca-on/marginal_tax_rate"
 
-SALARIES = ["0", "100", "2000", "18820.27", "19868.74", "25000", "70000", "275000"]
+SALARIES = ["0", "100", "2000", "19200.18", "20256.98", "25000", "32577.01", "70000", "275000"]
 
 
 def _summary(salary: str) -> Worksheet:
@@ -68,18 +70,15 @@ def test_2026_runs_and_the_total_is_the_exact_sum_of_the_gated_parts(salary: str
     summary = _summary(salary)
     federal = _value(summary, FEDERAL)
     ontario = _value(summary, ONTARIO_RATE)
-    slope = _value(summary, SLOPE)
+    premium = _value(summary, PREMIUM)
+    contribution = _value(summary, CONTRIBUTION)
 
-    assert _value(summary, MARGINAL) == federal + ontario + slope
+    assert _value(summary, MARGINAL) == federal + ontario + premium + contribution
     assert _value(summary, FEDERAL_GATE) in (D("0"), D("1"))
     assert _value(summary, ONTARIO_GATE) in (D("0"), D("1"))
-    assert federal == _value(summary, FEDERAL_GATE) * _value(summary, FEDERAL_BRACKET)
-    # The Ontario tax reduction phase-out doubles the bracket rate while line 80 is above 0.
+    assert federal == _value(summary, FEDERAL_GATE) * _value(summary, FEDERAL_AFTER_CREDITS)
+    assert ontario == _value(summary, ONTARIO_GATE) * _value(summary, ONTARIO_AFTER_LIFT)
     assert _value(summary, REDUCTION_GATE) in (D("0"), D("1"))
-    assert ontario == _value(summary, ONTARIO_GATE) * _value(summary, ONTARIO_BRACKET) * (
-        1 + _value(summary, REDUCTION_GATE)
-    )
-    assert slope in (D("0"), D("0.06"), D("0.25"))
 
 
 @pytest.mark.parametrize("salary", SALARIES)
@@ -90,7 +89,7 @@ def test_2026_each_gate_opens_with_the_tax_it_reads(salary: str) -> None:
         D("1") if _value(summary, BASIC_FEDERAL_TAX) > 0 else D("0")
     )
     assert _value(summary, ONTARIO_GATE) == (
-        D("1") if _value(summary, TAX_AFTER_REDUCTION) > 0 else D("0")
+        D("1") if _value(summary, TAX_AFTER_LIFT) > 0 else D("0")
     )
 
 
@@ -104,16 +103,18 @@ def test_2026_the_reduction_gate_opens_with_the_tax_reduction(salary: str) -> No
 
 
 @pytest.mark.parametrize("salary", ["0", "100", "2000"])
-def test_2026_the_marginal_tax_rate_is_0_where_no_tax_is_paid(salary: str) -> None:
+def test_2026_the_marginal_tax_rate_is_0_where_nothing_is_paid(salary: str) -> None:
+    # No income tax, and no CPP or EI yet (the EI band of T2204 line 16 starts above 2,000).
     summary = _summary(salary)
 
     assert _value(summary, MARGINAL) == D("0")
     assert _value(summary, FEDERAL) == D("0")
     assert _value(summary, ONTARIO_RATE) == D("0")
-    assert _value(summary, SLOPE) == D("0")
+    assert _value(summary, PREMIUM) == D("0")
+    assert _value(summary, CONTRIBUTION) == D("0")
 
 
-@pytest.mark.parametrize("salary", ["0", "100", "2000", "18820.27", "19868.74", "25000"])
+@pytest.mark.parametrize("salary", ["0", "100", "2000", "19200.18", "20256.98", "25000"])
 def test_2026_the_bracket_rates_are_the_first_brackets_of_the_2026_datasets(salary: str) -> None:
     summary = _summary(salary)
 
@@ -121,15 +122,24 @@ def test_2026_the_bracket_rates_are_the_first_brackets_of_the_2026_datasets(sala
     assert _value(summary, ONTARIO_BRACKET) == D("0.0505")
 
 
-def test_2026_the_marginal_tax_rate_at_70000_is_29_65_percent() -> None:
-    # Both taxes are positive: 0.205 + 0.0915 x 1 + 0 (the same rates as 2025 above the first
-    # brackets).
+def test_2026_the_federal_part_opens_at_19200_18_and_the_ontario_part_at_32577_01() -> None:
+    assert _value(_summary("19200.17"), FEDERAL) == D("0")
+    assert _value(_summary("19200.18"), FEDERAL) == D("0.129388")
+    assert _value(_summary("19200.18"), MARGINAL) == D("0.205188")
+    assert _value(_summary("32577.00"), ONTARIO_RATE) == D("0")
+    assert _value(_summary("32577.01"), ONTARIO_RATE) == D("0.0466721")
+
+
+def test_2026_the_marginal_tax_rate_at_70000_is_34_36_percent() -> None:
+    # Both taxes are positive, over the EI maximum of 68,900 and under the CPP2 band:
+    # 0.19602 + 0.08808525 + 0 + 0.0595 (CPP 4.95% + 1%).
     summary = _summary("70000")
 
-    assert _value(summary, FEDERAL) == D("0.205")
-    assert _value(summary, ONTARIO_RATE) == D("0.0915")
-    assert _value(summary, SLOPE) == D("0")
-    assert _value(summary, MARGINAL) == D("0.2965")
+    assert _value(summary, FEDERAL) == D("0.19602")
+    assert _value(summary, ONTARIO_RATE) == D("0.08808525")
+    assert _value(summary, PREMIUM) == D("0")
+    assert _value(summary, CONTRIBUTION) == D("0.0595")
+    assert _value(summary, MARGINAL) == D("0.34360525")
 
 
 def test_2026_both_gates_are_open_at_275000() -> None:

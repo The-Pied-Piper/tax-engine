@@ -78,7 +78,7 @@
    }
   },
   "marginal_income_tax_rate": {
-   "value": "0.2965",
+   "value": "0.34335775",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -135,10 +135,10 @@
    },
    {
     "form": "ca-on/return",
-    "lines": 22
+    "lines": 48
    }
   ],
-  "trace_sha256": "549b09f0618834c6b5262e445176476a5e727e15e51c5eac8e08bd06ae0e8d85"
+  "trace_sha256": "56ae79042ae3e739d2ce2d89bacc04ea225f9e330a51b0a806ca451c135f3bd7"
  },
  {
   "jurisdiction": "CA-ON",
@@ -174,7 +174,7 @@
    }
   },
   "marginal_income_tax_rate": {
-   "value": "0.495296",
+   "value": "0.4983502655",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -264,7 +264,7 @@
    }
   },
   "marginal_income_tax_rate": {
-   "value": "0.2965",
+   "value": "0.34360525",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -321,10 +321,10 @@
    },
    {
     "form": "ca-on/return",
-    "lines": 22
+    "lines": 48
    }
   ],
-  "trace_sha256": "f65adeaed0fd380f18655b815ebcbdcd66d7c8a15695946437d51e3d24f72aae"
+  "trace_sha256": "c1fea067894cd3f6f6e015b9ddc29cff796473b51ff57f5de56e30d475674d6a"
  },
  {
   "jurisdiction": "CA-ON",
@@ -360,7 +360,7 @@
    }
   },
   "marginal_income_tax_rate": {
-   "value": "0.495296",
+   "value": "0.498245296",
    "unit": {
     "name": "core/percent",
     "placement": "after",

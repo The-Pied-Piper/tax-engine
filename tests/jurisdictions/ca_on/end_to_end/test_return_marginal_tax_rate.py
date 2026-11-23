@@ -1,40 +1,44 @@
 """The Ontario return summary carries the marginal tax rate, through the real engine.
 
-The marginal tax rate is the extra income tax on the next dollar of salary: the federal marginal
-rate (`ca/federal_marginal_rate`, the T1 line 73 bracket rate), the Ontario marginal rate
-(`ca-on/ontario_marginal_rate`, the ON428 line 5 bracket rate times the surtax factor of lines 66
-and 67) and the Ontario health premium slope (`ca-on/return_health_premium_slope`, the rate of the
-ON428 line 89 chart row). CPP and EI are not counted. No new form text: the printed rates are those
-of T1 "Line 73: Rate" (14.5%, 20.5%, 26%, 29%, 33%, CRA 5006-r-25e.txt) and ON428 "Line 5: Rate"
-(5.05%, 9.15%, 11.16%, 12.16%, 13.16%, CRA 5006-c-25e.txt), and the chart rows of the line 89 health
-premium (6% and 25%). The sum is not a printed line, so the step is untitled and has no reference.
+The marginal tax rate is the change in the take-home deductions on the next dollar of salary: T1
+line 43500 "Total payable", the CPP contributions (Schedule 8) and the EI premium (T2204 line 16),
+for a salary-only filer. It is the sum of four parts: the federal marginal rate
+(`ca-on/marginal_federal_rate`), the Ontario marginal rate (`ca-on/ontario_marginal_rate`), the
+health premium rate (`ca-on/marginal_health_premium_rate`: the ON428 line 89 chart row's rate times
+the part of a dollar left in the taxable income) and the contribution rate
+(`ca-on/marginal_contribution_rate`: CPP base, first additional and second additional, and EI). No
+new form text: the printed rates are those of T1 "Line 73: Rate" (14.5%, 20.5%, 26%, 29%, 33%, CRA
+5006-r-25e.txt), ON428 "Line 5: Rate" (5.05%, 9.15%, 11.16%, 12.16%, 13.16%, CRA 5006-c-25e.txt),
+the chart rows of the line 89 health premium (6% and 25%), Schedule 8 lines 11, 12 and 22 (4.95%,
+1%, 4%) and T2204 line 10 (1.64%). The sum is not a printed line, so the step is untitled and has
+no reference. The hand-worked figures with their parts are in
+`test_return_marginal_tax_rate_values.py`; the extra-run check is in
+`test_return_marginal_tax_rate_extra_run.py`.
 
-The return summary ends with one `core/sum` step in `return.yaml`: parts the federal marginal
-rate, the Ontario marginal rate and the health premium slope, in that order, the dataset
-`ca-on/exact_rounding` (`rounding: none`, the sum is exact), unit `core/percent`, producing the new
-non-negative Ontario amount kind `ca-on/marginal_tax_rate`. The three parts are now read inside the
-return, so they are no longer exported (pinned in `test_take_home_manifest.py`).
+The return summary ends with one `core/sum` step in `return.yaml`: parts the federal marginal rate,
+the Ontario marginal rate, the health premium rate and the contribution rate, in that order, the
+dataset `ca-on/exact_rounding` (`rounding: none`, the sum is exact), unit `core/percent`, producing
+the non-negative Ontario amount kind `ca-on/marginal_tax_rate`. The four parts are read inside the
+return, so they are not exported (pinned in `test_take_home_manifest.py`).
 
-Figures (the real bundled manifest, salary the only input), each the exact sum of the three parts,
-worked by hand from the printed rates. Taxable income is the T1 figure the line 73 column and the
-line 89 chart row are chosen by:
+Figures (the real bundled manifest, salary the only input), each the exact sum of the four parts,
+worked by hand from the printed rates. Taxable income is the T1 figure the line 89 chart row is
+chosen by (salary less the CPP enhanced deduction):
 
-- $20,000: 0.145 + 0.101 + 0 = 0.246 (24.6%); taxable income 19,835.00 is under the 20,000 row; the
-  Ontario part is twice the 5.05% bracket rate while the Ontario tax reduction (ON428 line 80) is
-  above 0 and takes the tax away at the same rate
-- $22,000: 0.145 + 0.101 + 0.06 = 0.306 (30.6%); taxable income 21,815.00 is in the 6% row
-  (20,000 to 25,000)
-- $48,800: 0.145 + 0.0505 + 0.25 = 0.4455 (44.55%); taxable income 48,347.00 is in the 25% row
-  (48,000 to 48,600)
-- $70,000: 0.205 + 0.0915 + 0 = 0.2965 (29.65%); taxable income 69,335.00
-- $120,000: 0.26 + 0.1116 x 1.56 + 0 = 0.26 + 0.174096 = 0.434096 (43.4096%); line 65 is 8,110.12,
-  over the 7,307 threshold of the 36% surtax
-- $275,000: 0.33 + 0.1316 x 1.56 + 0 = 0.33 + 0.205296 = 0.535296 (53.5296%), the top brackets
+- $20,000: 0.1339945 + 0 + 0 + 0.0759 = 0.2098945; the LIFT credit ($875) takes all the Ontario
+  tax, so the Ontario part is 0; taxable income 19,835.00 is under the 20,000 row
+- $22,000: 0.1339945 + 0 + 0.0594 + 0.0759 = 0.2692945; taxable income 21,815.00 is in the 6% row
+  (20,000 to 25,000), 6% x 0.99
+- $48,800: 0.1339945 + 0.09616705 + 0.2475 + 0.0759 = 0.55356155; taxable income 48,352.00 is in the
+  25% row (48,000 to 48,600), and the LIFT credit falls 5% x 0.99 a dollar of net income
+- $70,000: 0.1957725 + 0.08808525 + 0 + 0.0595 = 0.34335775; taxable income 69,335.00
+- $120,000: 0.26 + 0.1116 x 1.56 + 0 + 0 = 0.26 + 0.174096 = 0.434096; line 65 is 8,110.12, over the
+  7,307 threshold of the 36% surtax
+- $275,000: 0.33 + 0.1316 x 1.56 + 0 + 0 = 0.33 + 0.205296 = 0.535296, the top brackets
 
-Each bracket-rate part counts only where its own tax is above zero: the federal marginal rate
-is the T1 line 73 rate gated by T1 line 42900 "Basic federal tax", the Ontario marginal rate the
-bracket rate times the surtax factor gated by ON428 line 81. The gates and the thresholds are in
-`test_return_marginal_tax_rate_gates.py`.
+Each tax part counts only where its own tax is above zero: the federal marginal rate through T1
+line 42900 "Basic federal tax", the Ontario marginal rate through ON428 line 86. The gates and the
+thresholds are in `test_return_marginal_tax_rate_gates.py`.
 
 The return's step wiring is pinned in `test_take_home_manifest.py`.
 """
@@ -63,9 +67,10 @@ ONTARIO = JurisdictionCode("CA-ON")
 HEADER = header_without_imports()
 RETURN_PART = (TAKE_HOME / "return.yaml").read_text(encoding="utf-8")
 RETURN = "ca-on/return"
-FEDERAL = "ca/federal_marginal_rate"
+FEDERAL = "ca-on/marginal_federal_rate"
 ONTARIO_RATE = "ca-on/ontario_marginal_rate"
-SLOPE = "ca-on/return_health_premium_slope"
+PREMIUM = "ca-on/marginal_health_premium_rate"
+CONTRIBUTION = "ca-on/marginal_contribution_rate"
 MARGINAL = "ca-on/marginal_tax_rate"
 LINE_167 = "ca/refund_or_balance_owing"
 
@@ -77,15 +82,15 @@ PARTS = (
     ),
 )
 
-# Salary, the federal marginal rate, the Ontario marginal rate, the health premium slope and the
-# marginal tax rate, from runs of the real parts.
+# Salary, the federal marginal rate, the Ontario marginal rate, the health premium rate, the
+# contribution rate and the marginal tax rate, from runs of the real parts.
 FIGURES = [
-    ("20000", "0.145", "0.101", "0", "0.246"),
-    ("22000", "0.145", "0.101", "0.06", "0.306"),
-    ("48800", "0.145", "0.0505", "0.25", "0.4455"),
-    ("70000", "0.205", "0.0915", "0", "0.2965"),
-    ("120000", "0.26", "0.174096", "0", "0.434096"),
-    ("275000", "0.33", "0.205296", "0", "0.535296"),
+    ("20000", "0.1339945", "0", "0", "0.0759", "0.2098945"),
+    ("22000", "0.1339945", "0", "0.0594", "0.0759", "0.2692945"),
+    ("48800", "0.1339945", "0.09616705", "0.2475", "0.0759", "0.55356155"),
+    ("70000", "0.1957725", "0.08808525", "0", "0.0595", "0.34335775"),
+    ("120000", "0.26", "0.174096", "0", "0", "0.434096"),
+    ("275000", "0.33", "0.205296", "0", "0", "0.535296"),
 ]
 
 
@@ -120,13 +125,16 @@ def test_the_marginal_tax_rate_kind_is_a_registered_non_negative_amount() -> Non
     assert kind.value_type is Decimal
 
 
-@pytest.mark.parametrize(("salary", "federal", "ontario", "slope", "marginal"), FIGURES)
-def test_the_marginal_tax_rate_is_the_exact_sum_of_the_three_rates(
+@pytest.mark.parametrize(
+    ("salary", "federal", "ontario", "premium", "contribution", "marginal"), FIGURES
+)
+def test_the_marginal_tax_rate_is_the_exact_sum_of_the_four_rates(
     take_home_service: TakeHomeService,
     salary: str,
     federal: str,
     ontario: str,
-    slope: str,
+    premium: str,
+    contribution: str,
     marginal: str,
 ) -> None:
     summary = _summary(take_home_service, salary)
@@ -134,19 +142,20 @@ def test_the_marginal_tax_rate_is_the_exact_sum_of_the_three_rates(
 
     assert summary.get(kinds.kind(FEDERAL)).value == D(federal)
     assert summary.get(kinds.kind(ONTARIO_RATE)).value == D(ontario)
-    assert summary.get(kinds.kind(SLOPE)).value == D(slope)
+    assert summary.get(kinds.kind(PREMIUM)).value == D(premium)
+    assert summary.get(kinds.kind(CONTRIBUTION)).value == D(contribution)
     assert summary.get(kinds.kind(MARGINAL)).value == D(marginal)
-    assert D(federal) + D(ontario) + D(slope) == D(marginal)
+    assert D(federal) + D(ontario) + D(premium) + D(contribution) == D(marginal)
 
 
-def test_the_bundled_return_gives_29_65_percent_at_70000() -> None:
+def test_the_bundled_return_gives_34_34_percent_at_70000() -> None:
     # No fixture: the bundled Ontario manifest, as the calculator loads it.
     worksheets = build_tax_computation().compute(
         TaxCalculationRequest(ONTARIO, 2025, (Artifact(EMPLOYMENT_INCOME, D("70000")),))
     )
     (summary,) = worksheets[RETURN]
 
-    assert summary.get(bundled_kinds().kind(MARGINAL)).value == D("0.2965")
+    assert summary.get(bundled_kinds().kind(MARGINAL)).value == D("0.34335775")
 
 
 def test_the_70000_take_home_stays_53468_68(take_home_service: TakeHomeService) -> None:
@@ -205,13 +214,16 @@ def test_the_marginal_tax_rate_step_has_no_reference_and_no_title(
     assert summary.title(label) is None
 
 
-@pytest.mark.parametrize(("salary", "federal", "ontario", "slope", "marginal"), FIGURES)
+@pytest.mark.parametrize(
+    ("salary", "federal", "ontario", "premium", "contribution", "marginal"), FIGURES
+)
 def test_the_marginal_tax_rate_is_traced_as_one_exact_sum_in_order(
     take_home_service: TakeHomeService,
     salary: str,
     federal: str,
     ontario: str,
-    slope: str,
+    premium: str,
+    contribution: str,
     marginal: str,
 ) -> None:
     sheet = _summary(take_home_service, salary)
@@ -222,7 +234,8 @@ def test_the_marginal_tax_rate_is_traced_as_one_exact_sum_in_order(
     assert [(kind.label, value) for kind, value in line.parts] == [
         (kinds.kind(FEDERAL).label, D(federal)),
         (kinds.kind(ONTARIO_RATE).label, D(ontario)),
-        (kinds.kind(SLOPE).label, D(slope)),
+        (kinds.kind(PREMIUM).label, D(premium)),
+        (kinds.kind(CONTRIBUTION).label, D(contribution)),
     ]
     assert line.rounding == NO_ROUNDING
     assert line.total == D(marginal)
@@ -240,16 +253,28 @@ def test_the_marginal_tax_rate_comes_last_in_the_trace(
 
     assert marginal == len(labels) - 1
     assert labels.count(kinds.kind(MARGINAL).label) == 1
-    for part in (FEDERAL, ONTARIO_RATE, SLOPE):
+    for part in (FEDERAL, ONTARIO_RATE, PREMIUM, CONTRIBUTION):
         assert labels.index(kinds.kind(part).label) < marginal
 
 
 @pytest.mark.parametrize(
     ("salary", "sentence"),
     [
-        ("70000", r"\(20\.5%\) plus .+ \(9\.15%\) plus .+ \(0(\.0+)?%\) gives 29\.65%"),
-        ("22000", r"\(14\.5%\) plus .+ \(10\.1%\) plus .+ \(6(\.0+)?%\) gives 30\.6%"),
-        ("275000", r"\(33(\.0+)?%\) plus .+ \(20\.5296%\) plus .+ \(0(\.0+)?%\) gives 53\.5296%"),
+        (
+            "70000",
+            r"\(19\.57725%\) plus .+ \(8\.808525%\) plus .+ \(0(\.0+)?%\) plus .+ \(5\.95%\)"
+            r" gives 34\.335775%",
+        ),
+        (
+            "22000",
+            r"\(13\.39945%\) plus .+ \(0(\.0+)?%\) plus .+ \(5\.94%\) plus .+ \(7\.59%\)"
+            r" gives 26\.92945%",
+        ),
+        (
+            "275000",
+            r"\(33(\.0+)?%\) plus .+ \(20\.5296%\) plus .+ \(0(\.0+)?%\) plus .+ \(0(\.0+)?%\)"
+            r" gives 53\.5296%",
+        ),
     ],
 )
 def test_the_marginal_tax_rate_is_explained_in_english_as_percentages(

@@ -1,0 +1,15 @@
+# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: the supplement 1,623 and the range 77,042 as printed in T4127 (Jan 2026), Federal Basic Personal Amount (BPAF) Formula.
+# Ontario marginal rate, federal basic personal amount phase-down, 2026 tax year. T4127 (Jan 2026), Federal Basic
+# Personal Amount (BPAF) Formula: "BPAF** = $16,452 - (NI* - $181,440) x ($1,623 / $77,042)": the basic personal
+# amount falls by 1,623 / 77,042 of a dollar for each dollar of net income over the threshold. Kept as the printed
+# whole numbers, as the quotient is not a finite decimal. A marginal rate is not a dollars-and-cents box, so the
+# quotient rounds half-up to 0.0000001 (seven places), the project's choice.
+family: ca-on/federal_bpa_phase_down_fraction
+tax_year: 2026
+kind: fraction
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf
+rounding: {increment: "0.0000001", mode: half_up}
+numerator: "1623"
+denominator: "77042"

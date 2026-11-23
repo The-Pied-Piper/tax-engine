@@ -45,64 +45,234 @@ def test_the_return_exports_line_167_and_the_marginal_and_average_rates() -> Non
     }
 
 
-def test_the_return_ends_with_the_sum_of_the_three_rates_exactly() -> None:
-    # The last step adds the federal marginal rate, the Ontario marginal rate and the health
-    # premium slope, in that order, with the dataset that rounds nothing.
+EXACT = {"rounding": "ca-on/exact_rounding"}
+
+
+def _band(
+    table: str, base: str, output: str
+) -> tuple[str, dict[str, str], dict[str, Any], dict[str, str]]:
+    return ("core/amount_by_band_rate", {"table": table}, {"base": base}, {"output": output})
+
+
+def _record_total(
+    records: str, output: str
+) -> tuple[str, dict[str, str], dict[str, Any], dict[str, str]]:
+    return ("core/record_total", {}, {"records": records}, {"output": output})
+
+
+def _multiply(
+    base: str, rate: str, output: str
+) -> tuple[str, dict[str, str], dict[str, Any], dict[str, str]]:
+    return ("core/multiply_by_rate", EXACT, {"base": base, "rate": rate}, {"output": output})
+
+
+def _subtract(
+    amount: str, less: str, output: str
+) -> tuple[str, dict[str, str], dict[str, Any], dict[str, str]]:
+    return ("core/subtract", EXACT, {"amount": amount, "less": less}, {"output": output})
+
+
+def _sum(
+    parts: tuple[str, ...], output: str
+) -> tuple[str, dict[str, str], dict[str, Any], dict[str, str]]:
+    return ("core/sum", EXACT, {"parts": parts}, {"output": output})
+
+
+# The steps of the return after the federal rate gate (`ca/federal_rate_gate`): the marginal rate on
+# the take-home basis, one capability per line, in order. The steps before them are pinned by their
+# own modules; the last one is the sum the take-home answer reads as the marginal rate.
+MARGINAL_RATE_STEPS = [
+    _band(
+        "ca-on/marginal_cpp_base_rate_rows",
+        "ca/return_employment_income",
+        "ca-on/marginal_cpp_base_rate",
+    ),
+    _band(
+        "ca-on/marginal_cpp_first_additional_rate_rows",
+        "ca/return_employment_income",
+        "ca-on/marginal_cpp_first_additional_rate",
+    ),
+    _band(
+        "ca-on/marginal_cpp_second_additional_rate_rows",
+        "ca/return_employment_income",
+        "ca-on/marginal_cpp_second_additional_rate",
+    ),
+    _band("ca-on/marginal_ei_rate_rows", "ca/return_employment_income", "ca-on/marginal_ei_rate"),
+    _band("ca-on/marginal_rate_gate", "ca/return_employment_income", "ca-on/marginal_salary_gate"),
+    _subtract(
+        "ca-on/marginal_salary_gate",
+        "ca-on/marginal_cpp_first_additional_rate",
+        "ca-on/marginal_net_income_rate_before_cpp2",
+    ),
+    _subtract(
+        "ca-on/marginal_net_income_rate_before_cpp2",
+        "ca-on/marginal_cpp_second_additional_rate",
+        "ca-on/marginal_net_income_rate",
+    ),
+    _sum(
+        ("ca-on/marginal_cpp_base_rate", "ca-on/marginal_ei_rate"),
+        "ca-on/marginal_credit_contribution_rate",
+    ),
+    (
+        "core/apply_rate",
+        {"rate": "ca-on/marginal_federal_credit_rate"},
+        {"base": "ca-on/marginal_credit_contribution_rate"},
+        {"output": "ca-on/marginal_federal_contribution_credit_rate"},
+    ),
+    (
+        "core/apply_rate",
+        {"rate": "ca-on/marginal_ontario_credit_rate"},
+        {"base": "ca-on/marginal_credit_contribution_rate"},
+        {"output": "ca-on/marginal_ontario_contribution_credit_rate"},
+    ),
+    _multiply(
+        "ca/federal_bracket_rate_return",
+        "ca-on/marginal_net_income_rate",
+        "ca-on/marginal_federal_bracket_rate",
+    ),
+    _record_total("ca/t1_taxable_income.net_income_signed", "ca-on/return_net_income"),
+    _band(
+        "ca-on/marginal_federal_bpa_rows",
+        "ca-on/return_net_income",
+        "ca-on/federal_bpa_phase_down_gate",
+    ),
+    _multiply(
+        "ca-on/federal_bpa_phase_down_gate",
+        "ca-on/marginal_net_income_rate",
+        "ca-on/marginal_phase_down_net_income_rate",
+    ),
+    (
+        "core/apply_fraction",
+        {"fraction": "ca-on/federal_bpa_phase_down_fraction"},
+        {"base": "ca-on/marginal_phase_down_net_income_rate"},
+        {"output": "ca-on/marginal_federal_bpa_reduction_rate"},
+    ),
+    (
+        "core/apply_rate",
+        {"rate": "ca-on/marginal_federal_credit_rate"},
+        {"base": "ca-on/marginal_federal_bpa_reduction_rate"},
+        {"output": "ca-on/marginal_federal_bpa_credit_rate"},
+    ),
+    _sum(
+        ("ca-on/marginal_federal_bracket_rate", "ca-on/marginal_federal_bpa_credit_rate"),
+        "ca-on/marginal_federal_rate_before_credits",
+    ),
+    _subtract(
+        "ca-on/marginal_federal_rate_before_credits",
+        "ca-on/marginal_federal_contribution_credit_rate",
+        "ca-on/marginal_federal_rate_after_credits",
+    ),
+    _multiply(
+        "ca-on/marginal_federal_rate_after_credits",
+        "ca/federal_rate_gate",
+        "ca-on/marginal_federal_rate",
+    ),
+    _multiply(
+        "ca-on/ontario_bracket_rate_return",
+        "ca-on/marginal_net_income_rate",
+        "ca-on/marginal_ontario_bracket_rate",
+    ),
+    _subtract(
+        "ca-on/marginal_ontario_bracket_rate",
+        "ca-on/marginal_ontario_contribution_credit_rate",
+        "ca-on/marginal_ontario_rate_after_credits",
+    ),
+    _multiply(
+        "ca-on/ontario_surtax_factor",
+        "ca-on/marginal_ontario_rate_after_credits",
+        "ca-on/marginal_ontario_rate_with_surtax",
+    ),
+    _record_total(
+        "ca-on/on428.on428_ontario_tax_reduction_line_80", "ca-on/ontario_tax_reduction_return"
+    ),
+    _band(
+        "ca-on/marginal_rate_gate",
+        "ca-on/ontario_tax_reduction_return",
+        "ca-on/ontario_reduction_gate",
+    ),
+    _multiply(
+        "ca-on/ontario_reduction_gate",
+        "ca-on/marginal_ontario_rate_with_surtax",
+        "ca-on/ontario_reduction_phase_out_rate",
+    ),
+    _sum(
+        ("ca-on/marginal_ontario_rate_with_surtax", "ca-on/ontario_reduction_phase_out_rate"),
+        "ca-on/marginal_ontario_rate_with_reduction",
+    ),
+    _record_total("ca-on/on428_a.lift_reduction", "ca-on/return_lift_reduction"),
+    _band(
+        "ca-on/marginal_lift_reduction_rows",
+        "ca-on/return_lift_reduction",
+        "ca-on/marginal_lift_reduction_rate",
+    ),
+    _multiply(
+        "ca-on/marginal_lift_reduction_rate",
+        "ca-on/marginal_net_income_rate",
+        "ca-on/marginal_lift_phase_out_rate",
+    ),
+    _sum(
+        ("ca-on/marginal_ontario_rate_with_reduction", "ca-on/marginal_lift_phase_out_rate"),
+        "ca-on/marginal_ontario_rate_after_lift",
+    ),
+    _record_total(
+        "ca-on/on428.on428_tax_after_lift_credit_line_86", "ca-on/ontario_tax_after_lift_return"
+    ),
+    _band(
+        "ca-on/marginal_rate_gate", "ca-on/ontario_tax_after_lift_return", "ca-on/ontario_rate_gate"
+    ),
+    _multiply(
+        "ca-on/marginal_ontario_rate_after_lift",
+        "ca-on/ontario_rate_gate",
+        "ca-on/ontario_marginal_rate",
+    ),
+    _multiply(
+        "ca-on/return_health_premium_slope",
+        "ca-on/marginal_net_income_rate",
+        "ca-on/marginal_health_premium_rate",
+    ),
+    _sum(
+        (
+            "ca-on/marginal_cpp_base_rate",
+            "ca-on/marginal_cpp_first_additional_rate",
+            "ca-on/marginal_cpp_second_additional_rate",
+            "ca-on/marginal_ei_rate",
+        ),
+        "ca-on/marginal_contribution_rate",
+    ),
+    _sum(
+        (
+            "ca-on/marginal_federal_rate",
+            "ca-on/ontario_marginal_rate",
+            "ca-on/marginal_health_premium_rate",
+            "ca-on/marginal_contribution_rate",
+        ),
+        "ca-on/marginal_tax_rate",
+    ),
+]
+
+
+def test_the_return_calculates_the_take_home_marginal_rate_one_capability_per_line() -> None:
+    # Every rate is read from a form figure or a dataset of the forms' rates; nothing runs twice.
+    steps = _return_steps()
+    start = [produces["output"] for *_, produces in steps].index("ca/federal_rate_gate") + 1
+
+    assert steps[start:] == MARGINAL_RATE_STEPS
+
+
+def test_the_return_exports_no_rate_part_but_line_167_and_the_two_rates() -> None:
     (default,) = (form for form in _manifest().forms if form.name == "ca-on/return")
 
-    last = default.capabilities[-1]
-
-    assert (last.name, dict(last.params), dict(last.consumes), dict(last.produces)) == (
-        "core/sum",
-        {"rounding": "ca-on/exact_rounding"},
-        {
-            "parts": (
-                "ca/federal_marginal_rate",
-                "ca-on/ontario_marginal_rate",
-                "ca-on/return_health_premium_slope",
-            )
-        },
-        {"output": "ca-on/marginal_tax_rate"},
-    )
-
-
-def test_the_return_multiplies_the_bracket_rate_by_the_surtax_factor_exactly() -> None:
-    # The factor is the base and the bracket rate the rate, with the dataset that rounds nothing;
-    # the product is the ungated `ca-on/ontario_bracket_marginal_rate` (gated afterwards).
-    assert (
-        "core/multiply_by_rate",
-        {"rounding": "ca-on/exact_rounding"},
-        {"base": "ca-on/ontario_surtax_factor", "rate": "ca-on/ontario_bracket_rate_return"},
-        {"output": "ca-on/ontario_bracket_marginal_rate"},
-    ) in _return_steps()
+    assert set(default.exports) == {
+        "ca-on/average_income_tax_rate",
+        "ca-on/marginal_tax_rate",
+        "ca/refund_or_balance_owing",
+    }
 
 
 def test_the_t1_exports_line_42900_basic_federal_tax_for_the_return() -> None:
     (t1,) = (form for form in _manifest().forms if form.name == "ca/t1_tax_and_credits")
 
     assert "ca/federal_tax_after_credits" in t1.exports
-
-
-def test_the_return_reads_basic_federal_tax_and_the_ontario_tax_after_the_reduction() -> None:
-    # The two gate bases: T1 line 42900 and ON428 line 81 (not line 88 or 90), each totalled with
-    # core/record_total into the return's own kind, in Canadian dollars.
-    on428_line_81 = "ca-on/on428.on428_tax_after_tax_reduction_line_81"
-    steps = [
-        (name, params, consumes, produces)
-        for name, params, consumes, produces in _return_steps()
-        if name == "core/record_total"
-    ]
-
-    assert (
-        {},
-        {"records": "ca/t1_tax_and_credits.federal_tax_after_credits"},
-        {"output": "ca/federal_tax_after_credits_return"},
-    ) in [step[1:] for step in steps]
-    assert (
-        {},
-        {"records": on428_line_81},
-        {"output": "ca-on/ontario_tax_after_reduction_return"},
-    ) in [step[1:] for step in steps]
 
 
 def test_the_return_reads_the_line_73_rate_into_the_federal_bracket_rate_return() -> None:
@@ -114,112 +284,21 @@ def test_the_return_reads_the_line_73_rate_into_the_federal_bracket_rate_return(
     ) in _return_steps()
 
 
-def test_the_return_turns_each_tax_into_a_gate_rate_from_the_marginal_rate_gate_dataset() -> None:
+def test_the_return_gates_the_basic_federal_tax_with_the_marginal_rate_gate_dataset() -> None:
     steps = _return_steps()
 
+    assert (
+        "core/record_total",
+        {},
+        {"records": "ca/t1_tax_and_credits.federal_tax_after_credits"},
+        {"output": "ca/federal_tax_after_credits_return"},
+    ) in steps
     assert (
         "core/amount_by_band_rate",
         {"table": "ca-on/marginal_rate_gate"},
         {"base": "ca/federal_tax_after_credits_return"},
         {"output": "ca/federal_rate_gate"},
     ) in steps
-    assert (
-        "core/amount_by_band_rate",
-        {"table": "ca-on/marginal_rate_gate"},
-        {"base": "ca-on/ontario_tax_after_reduction_return"},
-        {"output": "ca-on/ontario_rate_gate"},
-    ) in steps
-
-
-def test_the_return_gates_the_federal_and_the_ontario_marginal_rates_exactly() -> None:
-    # The gate (0 or 1) is the base and the bracket rate the rate, as the surtax factor is the base
-    # of the product above; the dataset that rounds nothing.
-    steps = _return_steps()
-
-    assert (
-        "core/multiply_by_rate",
-        {"rounding": "ca-on/exact_rounding"},
-        {"base": "ca/federal_rate_gate", "rate": "ca/federal_bracket_rate_return"},
-        {"output": "ca/federal_marginal_rate"},
-    ) in steps
-    assert (
-        "core/multiply_by_rate",
-        {"rounding": "ca-on/exact_rounding"},
-        {"base": "ca-on/ontario_rate_gate", "rate": "ca-on/ontario_bracket_rate_with_reduction"},
-        {"output": "ca-on/ontario_marginal_rate"},
-    ) in steps
-
-
-def test_the_return_reads_on428_line_80_the_tax_reduction_into_its_own_kind() -> None:
-    assert (
-        "core/record_total",
-        {},
-        {"records": "ca-on/on428.on428_ontario_tax_reduction_line_80"},
-        {"output": "ca-on/ontario_tax_reduction_return"},
-    ) in _return_steps()
-
-
-def test_the_return_gates_on_the_tax_reduction_with_the_marginal_rate_gate_dataset() -> None:
-    # 1 while the Ontario tax reduction (line 80) is above 0.
-    assert (
-        "core/amount_by_band_rate",
-        {"table": "ca-on/marginal_rate_gate"},
-        {"base": "ca-on/ontario_tax_reduction_return"},
-        {"output": "ca-on/ontario_reduction_gate"},
-    ) in _return_steps()
-
-
-def test_the_return_adds_the_phase_out_to_the_bracket_rate_exactly() -> None:
-    # While lines 80 and 81 are both above 0, line 81 falls by 2 x the line 73 bracket tax less a
-    # constant, so the rate is the bracket rate (times the surtax factor) twice: the phase-out rate
-    # is the reduction gate times the ungated product, and the sum adds it to that product.
-    steps = _return_steps()
-
-    assert (
-        "core/multiply_by_rate",
-        {"rounding": "ca-on/exact_rounding"},
-        {"base": "ca-on/ontario_reduction_gate", "rate": "ca-on/ontario_bracket_marginal_rate"},
-        {"output": "ca-on/ontario_reduction_phase_out_rate"},
-    ) in steps
-    assert (
-        "core/sum",
-        {"rounding": "ca-on/exact_rounding"},
-        {
-            "parts": (
-                "ca-on/ontario_bracket_marginal_rate",
-                "ca-on/ontario_reduction_phase_out_rate",
-            )
-        },
-        {"output": "ca-on/ontario_bracket_rate_with_reduction"},
-    ) in steps
-
-
-def test_the_gates_come_after_their_tax_and_before_the_gated_rates() -> None:
-    outputs = [produces["output"] for _, _, _, produces in _return_steps()]
-
-    order = [
-        "ca/federal_tax_after_credits_return",
-        "ca/federal_rate_gate",
-        "ca/federal_marginal_rate",
-        "ca-on/ontario_tax_after_reduction_return",
-        "ca-on/ontario_rate_gate",
-        "ca-on/ontario_bracket_marginal_rate",
-        "ca-on/ontario_marginal_rate",
-        "ca-on/marginal_tax_rate",
-        "ca-on/ontario_tax_reduction_return",
-        "ca-on/ontario_reduction_gate",
-        "ca-on/ontario_reduction_phase_out_rate",
-        "ca-on/ontario_bracket_rate_with_reduction",
-    ]
-    positions = [outputs.index(name) for name in order]
-    assert positions[0] < positions[1] < positions[2] < positions[7]
-    assert positions[3] < positions[4] < positions[6] < positions[7]
-    assert positions[5] < positions[6]
-    # The line 80 read, its gate, the phase-out multiply and the sum come after the ungated Ontario
-    # product and before the gated Ontario multiply that reads their sum.
-    assert positions[5] < positions[8] < positions[9] < positions[10] < positions[11] < positions[6]
-    # The unchanged final sum is still the last step.
-    assert outputs[-1] == "ca-on/marginal_tax_rate"
 
 
 def test_schedule_8_is_a_required_form_without_instances() -> None:
@@ -275,16 +354,22 @@ def test_the_ontario_manifest_declares_the_federal_inputs_by_importing_their_for
     } <= set(inputs_of(_manifest()))
 
 
-def test_on428_exports_lines_90_81_and_80_the_surtax_base_line_65_and_the_line_5_rate() -> None:
+def test_on428_exports_lines_90_86_and_80_the_surtax_base_line_65_and_the_line_5_rate() -> None:
     (on428,) = (form for form in _manifest().forms if form.name == "ca-on/on428")
 
     assert set(on428.exports) == {
         "ca-on/on428_ontario_tax_line_90",
         "ca-on/on428_surtax_base_line_65",
         "ca-on/on428_bracket_column_rate_line_5",
-        "ca-on/on428_tax_after_tax_reduction_line_81",
+        "ca-on/on428_tax_after_lift_credit_line_86",
         "ca-on/on428_ontario_tax_reduction_line_80",
     }
+
+
+def test_on428_a_exports_the_line_19_reduction_and_the_line_20_credit() -> None:
+    (on428_a,) = (form for form in _manifest().forms if form.name == "ca-on/on428_a")
+
+    assert set(on428_a.exports) == {"ca-on/lift_credit_single", "ca-on/lift_reduction"}
 
 
 def _return_steps() -> list[tuple[str, dict[str, str], dict[str, Any], dict[str, str]]]:
