@@ -9,7 +9,7 @@ salary and at the salary plus a step, and compares the change in those deduction
 the rate the return calculated at the salary.
 
 The step is $100 (and $10 at $2,020, inside the EI band of T2204 line 16, $2,000 to $2,033). A
-sweep of every $250 from $1,000 to $400,000 in both years (done once, on the finished return)
+sweep of every $250 from $1,000 to $400,000 in both years
 agreed everywhere except at the salaries in `KNOWN_EXCEPTIONS`: there the run of $100 crosses a
 break in the rate, so the forward difference is not the derivative. Each is listed with its break
 and run again with a step that stays inside the band (`SMALLER_STEPS`), at which the rate agrees.

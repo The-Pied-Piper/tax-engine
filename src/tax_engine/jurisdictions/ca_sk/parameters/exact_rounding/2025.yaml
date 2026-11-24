@@ -2,7 +2,8 @@
 # dollars-and-cents box, the Saskatchewan rates on the return summary (the SK428 line 5 rate times
 # the net income rate, the credit rate times the contribution rate, a gate times the rate after the
 # credits, core/multiply_by_rate, their difference, core/subtract, and the sum of the federal,
-# Saskatchewan and contribution marginal rates, core/sum). They are exact and the forms print no rounding rule for them (the project's
+# Saskatchewan and contribution marginal rates, core/sum). They are exact and the forms print no
+# rounding rule for them (the project's
 # choice is no rounding); the form is cited for lines 5 and 67 only. The cent rule of
 # `ca-sk/cent_rounding` does not apply.
 family: ca-sk/exact_rounding
