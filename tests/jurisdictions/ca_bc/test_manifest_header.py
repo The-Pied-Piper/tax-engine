@@ -53,8 +53,8 @@ def test_the_federal_forms_are_imported_in_order() -> None:
         "ca/schedule_8",
         "ca/t2204",
         "ca/take_home_average_rate",
-        "ca/take_home_marginal_rates",
         "ca/t691",
+        "ca/take_home_marginal_rates",
     ]
 
 
