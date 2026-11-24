@@ -39,11 +39,16 @@ from 26,168.37, and ON428 line 86 first positive at 32,318.59 (0.01; 0.00 at 32,
 At 100 and 18,820.26 the rate is the contribution rate only (0 at 100, 0.0759 at 18,820.26, CPP
 4.95% + 1% and EI 1.64%); at 18,820.27 the federal tax part opens: 14.5% x 0.99 - 14.5% x 0.0659 =
 0.1339945.
+
+The engine rounds the marginal tax rate half-up to 0.0001 like the average rate
+(`ca/take_home_average_rate_rounding`), so the marginal column of PARTS is the exact sum of the
+parts, kept in the comments, rounded half-up to four places (e.g. 0.2098945 is 0.2099); the parts
+themselves stay exact.
 """
 
 from __future__ import annotations
 
-from decimal import Decimal
+from decimal import ROUND_HALF_UP, Decimal
 
 import pytest
 
@@ -56,6 +61,7 @@ from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tests.kinds import bundled_kinds
 
 D = Decimal
+ROUNDING = D("0.0001")
 ONTARIO = JurisdictionCode("CA-ON")
 RETURN = "ca-on/return"
 
@@ -86,22 +92,22 @@ PARTS = [
     # Contributions only: CPP 4.95% + 1% and EI 1.64%, no basic federal tax yet.
     ("18820.26", "0", "0", "0", "0.0759", "0.0759"),
     # Basic federal tax is first positive: the federal part opens.
-    ("18820.27", "0.1339945", "0", "0", "0.0759", "0.2098945"),
+    ("18820.27", "0.1339945", "0", "0", "0.0759", "0.2099"),
     # ON428 line 81 is positive from 19,868.74 but the LIFT credit (875.00) takes all of it: the
     # Ontario part stays 0 through the tax reduction band, up to 32,318.58.
-    ("20000", "0.1339945", "0", "0", "0.0759", "0.2098945"),
+    ("20000", "0.1339945", "0", "0", "0.0759", "0.2099"),
     # The health premium rate shows (6% x 0.99 in the 20,000 to 25,000 row).
-    ("22000", "0.1339945", "0", "0.0594", "0.0759", "0.2692945"),
-    ("26168.37", "0.1339945", "0", "0", "0.0759", "0.2098945"),
-    ("32318.58", "0.1339945", "0", "0", "0.0759", "0.2098945"),
+    ("22000", "0.1339945", "0", "0.0594", "0.0759", "0.2693"),
+    ("26168.37", "0.1339945", "0", "0", "0.0759", "0.2099"),
+    ("32318.58", "0.1339945", "0", "0", "0.0759", "0.2099"),
     # ON428 line 86 is first positive: 5.05% x 0.99 - 5.05% x 0.0659 = 0.04666705.
-    ("32318.59", "0.1339945", "0.04666705", "0", "0.0759", "0.25656155"),
+    ("32318.59", "0.1339945", "0.04666705", "0", "0.0759", "0.2566"),
     # In the 25% health premium row (25% x 0.99) and the LIFT credit falling 5% x 0.99 a dollar.
-    ("48800", "0.1339945", "0.09616705", "0.2475", "0.0759", "0.55356155"),
+    ("48800", "0.1339945", "0.09616705", "0.2475", "0.0759", "0.5536"),
     # Above the EI maximum of 65,700: CPP 4.95% + 1% only.
-    ("70000", "0.1957725", "0.08808525", "0", "0.0595", "0.34335775"),
-    ("120000", "0.26", "0.174096", "0", "0", "0.434096"),
-    ("275000", "0.33", "0.205296", "0", "0", "0.535296"),
+    ("70000", "0.1957725", "0.08808525", "0", "0.0595", "0.3434"),
+    ("120000", "0.26", "0.174096", "0", "0", "0.4341"),
+    ("275000", "0.33", "0.205296", "0", "0", "0.5353"),
 ]
 
 
@@ -142,7 +148,9 @@ def test_each_part_and_the_total_of_the_marginal_tax_rate(
     assert _value(summary, PREMIUM) == D(premium)
     assert _value(summary, CONTRIBUTION) == D(contribution)
     assert _value(summary, MARGINAL) == D(marginal)
-    assert D(federal) + D(ontario) + D(premium) + D(contribution) == D(marginal)
+    assert (D(federal) + D(ontario) + D(premium) + D(contribution)).quantize(
+        ROUNDING, rounding=ROUND_HALF_UP
+    ) == D(marginal)
 
 
 @pytest.mark.parametrize(

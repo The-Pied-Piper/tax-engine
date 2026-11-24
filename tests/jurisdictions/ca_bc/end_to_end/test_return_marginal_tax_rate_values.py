@@ -17,8 +17,10 @@ on the CPP base and EI rates (c):
 
 The BC credit rate is 5.06% (5.60% in 2026). The 2026 figures are provisional: the 2026 forms are
 not published, and the 2026 datasets follow the July 2026 payroll rates or are carried forward.
-The extra-run check over a sweep is in `test_return_marginal_tax_rate_extra_run.py`, the gates in
-`test_return_marginal_tax_rate_gates.py`.
+The engine rounds the marginal rate half-up to 0.0001 like the average rate
+(`ca/take_home_average_rate_rounding`), so each expected rate in the test is the exact figure below
+rounded half-up to four decimals. The extra-run check over a sweep is in
+`test_return_marginal_tax_rate_extra_run.py`, the gates in `test_return_marginal_tax_rate_gates.py`.
 
 - 2025, $2,020: only the EI of T2204 line 16 moves, 1 for 1 between $2,000 and $2,033: 1.
 - 2025, $10,000: CPP 4.95% + 1% and EI 1.64% = 0.0759; no income tax.
@@ -72,22 +74,22 @@ BRITISH_COLUMBIA = JurisdictionCode("CA-BC")
         (2025, "0", "0"),
         (2025, "2020", "1"),
         (2025, "10000", "0.0759"),
-        (2025, "20000", "0.2098945"),
-        (2025, "30000", "0.29189796"),
-        (2025, "45000", "0.25665396"),
-        (2025, "70000", "0.3289978"),
-        (2025, "75000", "0.31072"),
+        (2025, "20000", "0.2099"),
+        (2025, "30000", "0.2919"),
+        (2025, "45000", "0.2567"),
+        (2025, "70000", "0.329"),
+        (2025, "75000", "0.3107"),
         (2025, "100000", "0.31"),
         (2025, "120000", "0.3829"),
         (2025, "150000", "0.407"),
-        (2025, "200000", "0.4610542655"),
+        (2025, "200000", "0.4611"),
         (2026, "10000", "0.0758"),
-        (2026, "30000", "0.2921872"),
-        (2026, "70000", "0.328978"),
-        (2026, "250000", "0.460949296"),
+        (2026, "30000", "0.2922"),
+        (2026, "70000", "0.329"),
+        (2026, "250000", "0.4609"),
     ],
 )
-def test_the_marginal_rate_is_the_exact_sum_of_the_rates_that_apply(
+def test_the_marginal_rate_is_the_sum_of_the_rates_that_apply_rounded_to_four_decimals(
     year: int, salary: str, rate: str
 ) -> None:
     worksheets = build_tax_computation().compute(

@@ -5,7 +5,7 @@
 # half-up to 0.0001, so a rate as a fraction such as 0.1598 prints as 15.98%. No form prints this
 # figure or a precision for it, so half-up to four places is the project's choice (the rule the
 # provinces' own average-rate steps used). A figure that needs a different rule gets a dataset of
-# its own.
+# its own. The take-home marginal rate steps of every province use the same rule.
 family: ca/take_home_average_rate_rounding
 tax_year: 2026
 kind: rounding_only

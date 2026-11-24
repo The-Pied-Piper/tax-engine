@@ -6,14 +6,18 @@ the forms' own lines; the extra-run check in `test_return_marginal_tax_rate_extr
 rate agrees with the engine on each side). The federal part reads T1 line 42900 "Basic federal
 tax", which is 0.00 at 18,820.26 and 0.01 at 18,820.27. The British Columbia part reads BC428 line
 80, which is 0.00 at 25,551.24 and 0.01 at 25,551.25, inside the tax reduction's range (BC428
-lines 73 to 79: 562.00 falling by 3.56% of the net income over 25,020.00). The reduction's slope
+lines 73 to 79: 562.00 falling by 3.56% of the net income over 25,020.00).
+The engine rounds the marginal rate
+half-up to 0.0001 like the average rate (`ca/take_home_average_rate_rounding`), so the marginal
+total below is the exact sum of the parts (kept in the comments) rounded half-up to four
+decimals. The reduction's slope
 ends where line 79 reaches 0.00, at a salary of 41,183.21 (net income 40,806.38, line 78 is then
 562.00). The 2026 thresholds are in `test_return_marginal_tax_rate_gates_2026.py`.
 """
 
 from __future__ import annotations
 
-from decimal import Decimal
+from decimal import ROUND_HALF_UP, Decimal
 
 import pytest
 
@@ -26,6 +30,7 @@ from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tests.kinds import bundled_kinds
 
 D = Decimal
+ROUNDING = D("0.0001")
 BRITISH_COLUMBIA = JurisdictionCode("CA-BC")
 RETURN = "ca-bc/return"
 BC428_FORM = "ca-bc/bc428"
@@ -69,19 +74,19 @@ PARTS = [
     # Contributions only: CPP 4.95% + 1% and EI 1.64%, no basic federal tax yet.
     ("18820.26", "0", "0", "0.0759", "0.0759"),
     # Basic federal tax is first positive: the federal part opens.
-    ("18820.27", "0.1339945", "0", "0.0759", "0.2098945"),
+    ("18820.27", "0.1339945", "0", "0.0759", "0.2099"),
     # The tax reduction (562.00) takes all the British Columbia tax at 20,000 and up to 25,551.24.
-    ("20000", "0.1339945", "0", "0.0759", "0.2098945"),
-    ("25551.24", "0.1339945", "0", "0.0759", "0.2098945"),
+    ("20000", "0.1339945", "0", "0.0759", "0.2099"),
+    ("25551.24", "0.1339945", "0", "0.0759", "0.2099"),
     # BC428 line 80 is first positive, inside the reduction's range: 5.06% x 0.9241 + 3.56% x 0.99.
-    ("25551.25", "0.1339945", "0.08200346", "0.0759", "0.29189796"),
-    ("41183.20", "0.1339945", "0.08200346", "0.0759", "0.29189796"),
+    ("25551.25", "0.1339945", "0.08200346", "0.0759", "0.2919"),
+    ("41183.20", "0.1339945", "0.08200346", "0.0759", "0.2919"),
     # The reduction has run out: 5.06% x 0.9241 only.
-    ("41183.21", "0.1339945", "0.04675946", "0.0759", "0.25665396"),
+    ("41183.21", "0.1339945", "0.04675946", "0.0759", "0.2567"),
     # Above the EI maximum of 65,700: CPP 4.95% + 1% only.
-    ("70000", "0.1957725", "0.0737253", "0.0595", "0.3289978"),
+    ("70000", "0.1957725", "0.0737253", "0.0595", "0.329"),
     ("120000", "0.26", "0.1229", "0", "0.3829"),
-    ("200000", "0.2930542655", "0.168", "0", "0.4610542655"),
+    ("200000", "0.2930542655", "0.168", "0", "0.4611"),
 ]
 
 
@@ -97,7 +102,9 @@ def test_each_part_and_the_total_of_the_marginal_tax_rate(
     assert _value(summary, BC_RATE) == D(british_columbia)
     assert _value(summary, CONTRIBUTION) == D(contribution)
     assert _value(summary, MARGINAL) == D(marginal)
-    assert D(federal) + D(british_columbia) + D(contribution) == D(marginal)
+    assert (D(federal) + D(british_columbia) + D(contribution)).quantize(
+        ROUNDING, rounding=ROUND_HALF_UP
+    ) == D(marginal)
 
 
 @pytest.mark.parametrize(

@@ -17,13 +17,16 @@ no reference. The hand-worked figures with their parts are in
 
 The return summary ends with one `core/sum` step in `return.yaml`: parts the federal marginal rate,
 the Ontario marginal rate, the health premium rate and the contribution rate, in that order, the
-dataset `ca-on/exact_rounding` (`rounding: none`, the sum is exact), unit `core/percent`, producing
-the non-negative Ontario amount kind `ca-on/marginal_tax_rate`. The four parts are read inside the
+dataset `ca/take_home_average_rate_rounding` (half-up to 0.0001: the engine rounds the marginal rate
+like the average rate), unit `core/percent`, producing the
+non-negative Ontario amount kind `ca-on/marginal_tax_rate`. The four parts are read inside the
 return, so they are not exported (pinned in `test_take_home_manifest.py`).
 
 Figures (the real bundled manifest, salary the only input), each the exact sum of the four parts,
-worked by hand from the printed rates. Taxable income is the T1 figure the line 89 chart row is
-chosen by (salary less the CPP enhanced deduction):
+worked by hand from the printed rates; the engine rounds the marginal rate half-up to 0.0001 like
+the average rate, so the expected marginal rate in the tests is the exact sum below rounded
+half-up to four decimals (the parts stay exact). Taxable income is the T1 figure the line 89 chart
+row is chosen by (salary less the CPP enhanced deduction):
 
 - $20,000: 0.1339945 + 0 + 0 + 0.0759 = 0.2098945; the LIFT credit ($875) takes all the Ontario
   tax, so the Ontario part is 0; taxable income 19,835.00 is under the 20,000 row
@@ -46,7 +49,7 @@ The return's step wiring is pinned in `test_take_home_manifest.py`.
 from __future__ import annotations
 
 import re
-from decimal import Decimal
+from decimal import ROUND_HALF_UP, Decimal
 
 import pytest
 
@@ -55,7 +58,7 @@ from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.parameters.rounding import NO_ROUNDING
+from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 from tax_engine.domain.trace import SumLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
@@ -73,6 +76,8 @@ PREMIUM = "ca-on/marginal_health_premium_rate"
 CONTRIBUTION = "ca-on/marginal_contribution_rate"
 MARGINAL = "ca-on/marginal_tax_rate"
 LINE_167 = "ca/refund_or_balance_owing"
+ROUNDING = D("0.0001")
+MARGINAL_ROUNDING = RoundTo(ROUNDING, RoundingMode.HALF_UP)
 
 PARTS = (
     *(
@@ -85,12 +90,12 @@ PARTS = (
 # Salary, the federal marginal rate, the Ontario marginal rate, the health premium rate, the
 # contribution rate and the marginal tax rate, from runs of the real parts.
 FIGURES = [
-    ("20000", "0.1339945", "0", "0", "0.0759", "0.2098945"),
-    ("22000", "0.1339945", "0", "0.0594", "0.0759", "0.2692945"),
-    ("48800", "0.1339945", "0.09616705", "0.2475", "0.0759", "0.55356155"),
-    ("70000", "0.1957725", "0.08808525", "0", "0.0595", "0.34335775"),
-    ("120000", "0.26", "0.174096", "0", "0", "0.434096"),
-    ("275000", "0.33", "0.205296", "0", "0", "0.535296"),
+    ("20000", "0.1339945", "0", "0", "0.0759", "0.2099"),
+    ("22000", "0.1339945", "0", "0.0594", "0.0759", "0.2693"),
+    ("48800", "0.1339945", "0.09616705", "0.2475", "0.0759", "0.5536"),
+    ("70000", "0.1957725", "0.08808525", "0", "0.0595", "0.3434"),
+    ("120000", "0.26", "0.174096", "0", "0", "0.4341"),
+    ("275000", "0.33", "0.205296", "0", "0", "0.5353"),
 ]
 
 
@@ -128,7 +133,7 @@ def test_the_marginal_tax_rate_kind_is_a_registered_non_negative_amount() -> Non
 @pytest.mark.parametrize(
     ("salary", "federal", "ontario", "premium", "contribution", "marginal"), FIGURES
 )
-def test_the_marginal_tax_rate_is_the_exact_sum_of_the_four_rates(
+def test_the_marginal_tax_rate_is_the_sum_of_the_four_rates_rounded_to_four_decimals(
     take_home_service: TakeHomeService,
     salary: str,
     federal: str,
@@ -145,7 +150,9 @@ def test_the_marginal_tax_rate_is_the_exact_sum_of_the_four_rates(
     assert summary.get(kinds.kind(PREMIUM)).value == D(premium)
     assert summary.get(kinds.kind(CONTRIBUTION)).value == D(contribution)
     assert summary.get(kinds.kind(MARGINAL)).value == D(marginal)
-    assert D(federal) + D(ontario) + D(premium) + D(contribution) == D(marginal)
+    assert (D(federal) + D(ontario) + D(premium) + D(contribution)).quantize(
+        ROUNDING, rounding=ROUND_HALF_UP
+    ) == D(marginal)
 
 
 def test_the_bundled_return_gives_34_34_percent_at_70000() -> None:
@@ -155,7 +162,7 @@ def test_the_bundled_return_gives_34_34_percent_at_70000() -> None:
     )
     (summary,) = worksheets[RETURN]
 
-    assert summary.get(bundled_kinds().kind(MARGINAL)).value == D("0.34335775")
+    assert summary.get(bundled_kinds().kind(MARGINAL)).value == D("0.3434")
 
 
 def test_the_70000_take_home_stays_53468_68(take_home_service: TakeHomeService) -> None:
@@ -181,16 +188,17 @@ def test_the_70000_take_home_stays_53468_68(take_home_service: TakeHomeService) 
     assert D("70000") - cpp - ei - total_tax == D("53468.68")
 
 
-def test_the_marginal_tax_rate_is_not_rounded_to_the_cent() -> None:
-    # 0.33 + 0.205296 = 0.535296 keeps all its places: no dollars-and-cents rule is applied.
+def test_the_marginal_tax_rate_is_rounded_to_four_places_not_to_the_cent() -> None:
+    # 0.33 + 0.205296 = 0.535296 is rounded half-up to 0.0001 like the average rate: 0.5353 keeps
+    # four places, so no dollars-and-cents rule is applied.
     worksheets = build_tax_computation().compute(
         TaxCalculationRequest(ONTARIO, 2025, (Artifact(EMPLOYMENT_INCOME, D("275000")),))
     )
     (summary,) = worksheets[RETURN]
     value = summary.get(bundled_kinds().kind(MARGINAL)).value
 
-    assert value == D("0.535296")
-    assert value.as_tuple().exponent == -6
+    assert value == D("0.5353")
+    assert value.as_tuple().exponent == -4
 
 
 def test_the_return_prints_the_marginal_tax_rate_as_a_percentage_in_the_core_percent_unit(
@@ -217,7 +225,7 @@ def test_the_marginal_tax_rate_step_has_no_reference_and_no_title(
 @pytest.mark.parametrize(
     ("salary", "federal", "ontario", "premium", "contribution", "marginal"), FIGURES
 )
-def test_the_marginal_tax_rate_is_traced_as_one_exact_sum_in_order(
+def test_the_marginal_tax_rate_is_traced_as_one_sum_rounded_to_four_places_in_order(
     take_home_service: TakeHomeService,
     salary: str,
     federal: str,
@@ -237,7 +245,7 @@ def test_the_marginal_tax_rate_is_traced_as_one_exact_sum_in_order(
         (kinds.kind(PREMIUM).label, D(premium)),
         (kinds.kind(CONTRIBUTION).label, D(contribution)),
     ]
-    assert line.rounding == NO_ROUNDING
+    assert line.rounding == MARGINAL_ROUNDING
     assert line.total == D(marginal)
     assert line.amount == sheet.get(kinds.kind(MARGINAL)).value
 
@@ -263,17 +271,17 @@ def test_the_marginal_tax_rate_comes_last_of_the_marginal_steps_in_the_trace(
         (
             "70000",
             r"\(19\.57725%\) plus .+ \(8\.808525%\) plus .+ \(0(\.0+)?%\) plus .+ \(5\.95%\)"
-            r" gives 34\.335775%",
+            r" gives 34\.34%",
         ),
         (
             "22000",
             r"\(13\.39945%\) plus .+ \(0(\.0+)?%\) plus .+ \(5\.94%\) plus .+ \(7\.59%\)"
-            r" gives 26\.92945%",
+            r" gives 26\.93%",
         ),
         (
             "275000",
             r"\(33(\.0+)?%\) plus .+ \(20\.5296%\) plus .+ \(0(\.0+)?%\) plus .+ \(0(\.0+)?%\)"
-            r" gives 53\.5296%",
+            r" gives 53\.53%",
         ),
     ],
 )
@@ -285,5 +293,5 @@ def test_the_marginal_tax_rate_is_explained_in_english_as_percentages(
     text = EnglishTraceRenderer().render(_sum_line(sheet), sheet)
 
     # Each part is named as the return names it and prints as a percentage; the sum prints as a
-    # percentage and the sentence says it is not rounded.
-    assert re.fullmatch(rf".*{sentence} \(not rounded\)\.?", text)
+    # percentage and the sentence says it is rounded half-up to 0.0001.
+    assert re.fullmatch(rf".*{sentence} \(rounded half-up to 0\.0001\)\.?", text)

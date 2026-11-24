@@ -17,6 +17,9 @@ where it is a cent or more.
 
 The printed rates and the hand-worked figures are in `test_return_marginal_tax_rate_values.py`;
 here the thresholds are measured.
+The engine rounds the marginal rate half-up to 0.0001 like the average rate
+(`ca/take_home_average_rate_rounding`), so each expected marginal rate in the tests is the exact
+figure derived in the comments rounded half-up to four decimals; the parts stay exact.
 Thresholds, salary only, 2025: basic federal tax (T1 line 42900) is first positive at 18,820.27
 (0.00 at 18,820.26) and AB428 line 68 at 23,931.13 (0.01; 0.00 at 23,931.12). Line 68 is not
 monotone just under its boundary because of cent rounding: it is 0.01 from 23,931.13 to 23,931.21,
@@ -25,7 +28,7 @@ monotone just under its boundary because of cent rounding: it is 0.01 from 23,93
 
 from __future__ import annotations
 
-from decimal import Decimal
+from decimal import ROUND_HALF_UP, Decimal
 
 import pytest
 
@@ -38,6 +41,7 @@ from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tests.kinds import bundled_kinds
 
 D = Decimal
+ROUNDING = D("0.0001")
 ALBERTA = JurisdictionCode("CA-AB")
 YEAR = 2025
 RETURN = "ca-ab/return"
@@ -62,17 +66,17 @@ PARTS = [
     # Contributions only: CPP 4.95% + 1% and EI 1.64%, no basic federal tax yet.
     ("18820.26", "0", "0", "0.0759", "0.0759"),
     # Basic federal tax is first positive: 14.5% x 0.99 - 14.5% x 0.0659 = 0.1339945.
-    ("18820.27", "0.1339945", "0", "0.0759", "0.2098945"),
-    ("23931.12", "0.1339945", "0", "0.0759", "0.2098945"),
+    ("18820.27", "0.1339945", "0", "0.0759", "0.2099"),
+    ("23931.12", "0.1339945", "0", "0.0759", "0.2099"),
     # AB428 line 68 is first positive: 8% x 0.99 - 8% x 0.0659 = 0.073928.
-    ("23931.13", "0.1339945", "0.073928", "0.0759", "0.2838225"),
+    ("23931.13", "0.1339945", "0.073928", "0.0759", "0.2838"),
     # Line 68 is 0.00 again for three cents (cent rounding), then positive from 23,931.25.
-    ("23931.22", "0.1339945", "0", "0.0759", "0.2098945"),
-    ("23931.25", "0.1339945", "0.073928", "0.0759", "0.2838225"),
+    ("23931.22", "0.1339945", "0", "0.0759", "0.2099"),
+    ("23931.25", "0.1339945", "0.073928", "0.0759", "0.2838"),
     # Above the EI maximum: CPP 4.95% + 1% only.
-    ("70000", "0.1957725", "0.09504", "0.0595", "0.3503125"),
+    ("70000", "0.1957725", "0.09504", "0.0595", "0.3503"),
     # AB428 line 12 (table 2, taxable income over 181,481): 13%, with no contributions.
-    ("200000", "0.2930542655", "0.13", "0", "0.4230542655"),
+    ("200000", "0.2930542655", "0.13", "0", "0.4231"),
 ]
 
 
@@ -111,6 +115,9 @@ def test_each_part_and_the_total_of_the_marginal_tax_rate(
     assert _value(summary, ALBERTA_RATE) == D(alberta)
     assert _value(summary, CONTRIBUTION) == D(contribution)
     assert _value(summary, MARGINAL) == D(marginal)
+    assert D(marginal) == (D(federal) + D(alberta) + D(contribution)).quantize(
+        ROUNDING, rounding=ROUND_HALF_UP
+    )
 
 
 @pytest.mark.parametrize(

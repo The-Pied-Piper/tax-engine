@@ -11,12 +11,13 @@ federal tax (T1 line 42900) at 19,200.18 (measured). At 17,402.22 the Manitoba p
 0.99 + 9% x 10.8% x 0.99 - 10.8% x 0.0658 = 0.1094364, and with the contributions (CPP 4.95% + 1%,
 EI 1.63%) the rate is 0.1852364; each other salary pins the structure: the gates are 0 or 1 and
 open with their taxes, each marginal part is its gate times its rate, and the total is the exact
-sum of the three parts.
+sum of the three parts rounded half-up to 0.0001: the engine rounds the marginal rate like the
+average rate (`ca/take_home_average_rate_rounding`), so 0.1852364 is 0.1852 in the tests.
 """
 
 from __future__ import annotations
 
-from decimal import Decimal
+from decimal import ROUND_HALF_UP, Decimal
 
 import pytest
 
@@ -29,6 +30,7 @@ from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tests.kinds import bundled_kinds
 
 D = Decimal
+ROUNDING = D("0.0001")
 MANITOBA = JurisdictionCode("CA-MB")
 RETURN = "ca-mb/return"
 
@@ -74,14 +76,18 @@ def _value(sheet: Worksheet, name: str) -> Decimal:
 
 
 @pytest.mark.parametrize("salary", SALARIES)
-def test_2026_runs_and_the_total_is_the_exact_sum_of_the_gated_parts(salary: str) -> None:
+def test_2026_runs_and_the_total_is_the_sum_of_the_gated_parts_rounded_to_four_decimals(
+    salary: str,
+) -> None:
     summary = _summary(salary)
     federal_sheet = _federal(salary)
     federal = _value(summary, FEDERAL)
     manitoba = _value(summary, MANITOBA_RATE)
     contribution = _value(summary, CONTRIBUTION)
 
-    assert _value(summary, MARGINAL) == federal + manitoba + contribution
+    assert _value(summary, MARGINAL) == (federal + manitoba + contribution).quantize(
+        ROUNDING, rounding=ROUND_HALF_UP
+    )
     assert _value(federal_sheet, FEDERAL_GATE) in (D("0"), D("1"))
     assert _value(summary, MANITOBA_GATE) in (D("0"), D("1"))
     assert federal == _value(federal_sheet, FEDERAL_GATE) * _value(
@@ -123,7 +129,7 @@ def test_2026_the_bracket_rates_are_the_first_brackets_of_the_2026_datasets(sala
 def test_2026_the_manitoba_part_opens_at_17402_22_and_the_federal_part_at_19200_18() -> None:
     assert _value(_summary("17402.21"), MANITOBA_RATE) == D("0")
     assert _value(_summary("17402.22"), MANITOBA_RATE) == D("0.1094364")
-    assert _value(_summary("17402.22"), MARGINAL) == D("0.1852364")
+    assert _value(_summary("17402.22"), MARGINAL) == D("0.1852")
     assert _value(_summary("19200.17"), FEDERAL) == D("0")
     assert _value(_summary("19200.18"), FEDERAL) == D("0.129388")
 
@@ -136,7 +142,7 @@ def test_2026_the_marginal_tax_rate_at_70000_is_37_64_percent() -> None:
     assert _value(summary, FEDERAL) == D("0.19602")
     assert _value(summary, MANITOBA_RATE) == D("0.120879")
     assert _value(summary, CONTRIBUTION) == D("0.0595")
-    assert _value(summary, MARGINAL) == D("0.376399")
+    assert _value(summary, MARGINAL) == D("0.3764")
 
 
 def test_2026_both_gates_are_open_at_275000() -> None:

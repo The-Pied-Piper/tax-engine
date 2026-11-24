@@ -26,11 +26,14 @@ below), T1 line 42900 at 18,820.27, and the family tax benefit (MB428-A line 12)
 At 100 every part is 0; one cent below the Manitoba threshold the rate is the contribution rate
 only; once line 65 is positive the Manitoba part is 10.8% x 0.99 + 9% x 10.8% x 0.99 less the
 credit on CPP and EI (0.0659 x 10.8%) while the family tax benefit lasts.
+The engine rounds the marginal rate half-up to 0.0001 like the average rate
+(`ca/take_home_average_rate_rounding`), so each expected marginal rate in the tests is the exact
+figure derived in the comments rounded half-up to four decimals; the parts stay exact.
 """
 
 from __future__ import annotations
 
-from decimal import Decimal
+from decimal import ROUND_HALF_UP, Decimal
 
 import pytest
 
@@ -43,6 +46,7 @@ from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tests.kinds import bundled_kinds
 
 D = Decimal
+ROUNDING = D("0.0001")
 MANITOBA = JurisdictionCode("CA-MB")
 RETURN = "ca-mb/return"
 YEAR = 2025
@@ -64,13 +68,13 @@ MARGINAL = "ca-mb/marginal_tax_rate"
 PARTS = [
     ("100", "0", "0", "0", "0"),
     ("17403.90", "0", "0", "0.0759", "0.0759"),
-    ("17403.91", "0", "0.1094256", "0.0759", "0.1853256"),
-    ("18820.26", "0", "0.1094256", "0.0759", "0.1853256"),
-    ("18820.27", "0.1339945", "0.1094256", "0.0759", "0.3193201"),
-    ("20000", "0.1339945", "0.1094256", "0.0759", "0.3193201"),
-    ("23140.79", "0.1339945", "0.1094256", "0.0759", "0.3193201"),
-    ("23140.80", "0.1339945", "0.0998028", "0.0759", "0.3096973"),
-    ("70000", "0.1957725", "0.120879", "0.0595", "0.3761515"),
+    ("17403.91", "0", "0.1094256", "0.0759", "0.1853"),
+    ("18820.26", "0", "0.1094256", "0.0759", "0.1853"),
+    ("18820.27", "0.1339945", "0.1094256", "0.0759", "0.3193"),
+    ("20000", "0.1339945", "0.1094256", "0.0759", "0.3193"),
+    ("23140.79", "0.1339945", "0.1094256", "0.0759", "0.3193"),
+    ("23140.80", "0.1339945", "0.0998028", "0.0759", "0.3097"),
+    ("70000", "0.1957725", "0.120879", "0.0595", "0.3762"),
 ]
 
 
@@ -108,7 +112,9 @@ def test_each_part_and_the_total_of_the_marginal_tax_rate(
     assert _value(summary, MANITOBA_RATE) == D(manitoba)
     assert _value(summary, CONTRIBUTION) == D(contribution)
     assert _value(summary, MARGINAL) == D(marginal)
-    assert D(federal) + D(manitoba) + D(contribution) == D(marginal)
+    assert (D(federal) + D(manitoba) + D(contribution)).quantize(
+        ROUNDING, rounding=ROUND_HALF_UP
+    ) == D(marginal)
 
 
 @pytest.mark.parametrize(

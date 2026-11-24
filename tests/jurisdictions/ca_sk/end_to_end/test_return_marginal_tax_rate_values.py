@@ -40,6 +40,10 @@ The extra-run check over a sweep is in `test_return_marginal_tax_rate_extra_run.
   Saskatchewan 0.1185525; contributions 0.0595: 0.3740725.
 - 2026, $200,000: 29% + 14% x 1,623 / 77,042 (0.0210664 to seven places) = 0.292949296;
   Saskatchewan 14.5%: 0.437949296.
+
+The engine rounds the marginal rate half-up to 0.0001 like the average rate
+(`ca/take_home_average_rate_rounding`), so the expected values in the parametrization are the exact
+sums derived below rounded half-up to four places (e.g. 0.2098945 is 0.2099).
 """
 
 from __future__ import annotations
@@ -69,24 +73,24 @@ SASKATCHEWAN = JurisdictionCode("CA-SK")
         (2025, "3500", "0.0164"),
         (2025, "3500.01", "0.0759"),
         (2025, "10000", "0.0759"),
-        (2025, "20000", "0.2098945"),
-        (2025, "20866.57", "0.2098945"),
-        (2025, "20866.58", "0.306925"),
-        (2025, "50000", "0.306925"),
-        (2025, "70000", "0.373825"),
+        (2025, "20000", "0.2099"),
+        (2025, "20866.57", "0.2099"),
+        (2025, "20866.58", "0.3069"),
+        (2025, "50000", "0.3069"),
+        (2025, "70000", "0.3738"),
         (2025, "75000", "0.3568"),
         (2025, "120000", "0.385"),
-        (2025, "200000", "0.4380542655"),
+        (2025, "200000", "0.4381"),
         (2026, "2000", "0"),
         (2026, "2000.01", "1"),
         (2026, "3500", "0.0163"),
         (2026, "3500.01", "0.0758"),
         (2026, "10000", "0.0758"),
-        (2026, "70000", "0.3740725"),
-        (2026, "200000", "0.437949296"),
+        (2026, "70000", "0.3741"),
+        (2026, "200000", "0.4379"),
     ],
 )
-def test_the_marginal_rate_is_the_exact_sum_of_the_rates_that_apply(
+def test_the_marginal_rate_is_the_sum_of_the_rates_that_apply_rounded_to_four_decimals(
     year: int, salary: str, rate: str
 ) -> None:
     worksheets = build_tax_computation().compute(

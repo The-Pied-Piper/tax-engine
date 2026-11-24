@@ -271,7 +271,7 @@ application layer names none, the manifest does. It is a mapping with all of the
 | `income_tax` | The figure of the income tax. |
 | `deductions` | The other figures taken off the salary, each under the name its answer carries (`cpp_base`, `ei`, ...). |
 | `average_tax_rate` | Optional: the average rate of the take-home basis, total deductions over salary, which must have a unit. It is a step of the return (a `core/divide` rounded by `ca/take_home_average_rate_rounding`). A jurisdiction whose return does not compute it leaves it out, and its answer has none. |
-| `marginal_tax_rate` | Optional: the marginal rate of the take-home basis (income tax, CPP, CPP2 and EI), which must have a unit. A jurisdiction whose return does not compute it leaves it out, and its answer has none. |
+| `marginal_tax_rate` | Optional: the marginal rate of the take-home basis (income tax, CPP, CPP2 and EI), which must have a unit. It is a step of the return (a `core/sum` of the part rates, rounded by `ca/take_home_average_rate_rounding` like the average rate). A jurisdiction whose return does not compute it leaves it out, and its answer has none. |
 
 A figure is `{form: <form name>, kind: <artifact identifier>}`: the form whose worksheet holds it and
 its kind. The form must be one of the manifest's, the kinds registered, and the salary an amount;

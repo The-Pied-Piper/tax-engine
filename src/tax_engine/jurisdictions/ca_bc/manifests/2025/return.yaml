@@ -63,8 +63,8 @@
 # payroll terms. British Columbia has no surtax and no health premium.
 #
 # The last step adds the federal marginal rate, the British Columbia marginal rate and the
-# contribution rate with core/sum into `ca-bc/marginal_tax_rate`; it is exact, is not printed on
-# the form and has no title or line.
+# contribution rate with core/sum into `ca-bc/marginal_tax_rate`; it is rounded half-up to
+# 0.0001 like the average rate, is not printed on the form and has no title or line.
 capabilities:
   - name: core/record_total
     title: "Refund or balance owing"
@@ -247,7 +247,7 @@ capabilities:
   - name: core/sum
     unit: core/percent
     params:
-      rounding: ca-bc/exact_rounding
+      rounding: ca/take_home_average_rate_rounding
     consumes:
       parts:
         - ca-bc/marginal_federal_rate

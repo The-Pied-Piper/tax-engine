@@ -19,6 +19,11 @@ The printed rates and the hand-worked figures are in `test_return_marginal_tax_r
 here the thresholds are measured. Thresholds, salary only, 2025: basic federal tax (T1 line 42900)
 is first positive at 18,820.27 (0.00 at 18,820.26) and SK428 line 67 at 20,866.58 (0.01; 0.00 at
 20,866.57).
+
+The engine rounds the marginal tax rate half-up to 0.0001 like the average rate
+(`ca/take_home_average_rate_rounding`), so the marginal column of PARTS is the exact sum of the
+parts, kept in the comments, rounded half-up to four places (e.g. 0.2098945 is 0.2099); the parts
+themselves stay exact.
 """
 
 from __future__ import annotations
@@ -60,15 +65,15 @@ PARTS = [
     # Contributions only: CPP 4.95% + 1% and EI 1.64%, no basic federal tax yet.
     ("18820.26", "0", "0", "0.0759", "0.0759"),
     # Basic federal tax is first positive: 14.5% x 0.99 - 14.5% x 0.0659 = 0.1339945.
-    ("18820.27", "0.1339945", "0", "0.0759", "0.2098945"),
-    ("20866.57", "0.1339945", "0", "0.0759", "0.2098945"),
+    ("18820.27", "0.1339945", "0", "0.0759", "0.2099"),
+    ("20866.57", "0.1339945", "0", "0.0759", "0.2099"),
     # SK428 line 67 is first positive: 10.5% x 0.99 - 10.5% x 0.0659 = 0.0970305.
-    ("20866.58", "0.1339945", "0.0970305", "0.0759", "0.306925"),
+    ("20866.58", "0.1339945", "0.0970305", "0.0759", "0.3069"),
     # Above the EI maximum of 65,700: CPP 4.95% + 1% only.
-    ("70000", "0.1957725", "0.1185525", "0.0595", "0.373825"),
+    ("70000", "0.1957725", "0.1185525", "0.0595", "0.3738"),
     # SK428 line 1 is exactly 152,750.00: still column 2 (12.5%); a cent more of salary is column 3.
-    ("153824", "0.26", "0.125", "0", "0.385"),
-    ("153824.01", "0.26", "0.145", "0", "0.405"),
+    ("153824", "0.26", "0.125", "0", "0.3850"),
+    ("153824.01", "0.26", "0.145", "0", "0.4050"),
 ]
 
 

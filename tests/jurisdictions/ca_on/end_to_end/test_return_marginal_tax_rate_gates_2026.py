@@ -11,11 +11,16 @@ Where each tax first turns positive (2026, salary only): basic federal tax (T1 l
 14% x 0.99 - 14% x 0.0658 = 0.129388, and with the contributions (CPP 4.95% + 1%, EI 1.63%) the rate
 is 0.205188; each other salary pins the structure: the gates are 0 or 1 and open with their taxes,
 each marginal part is its gate times its rate, and the total is the exact sum of the four parts.
+
+The engine rounds the marginal tax rate half-up to 0.0001 like the average rate
+(`ca/take_home_average_rate_rounding`): the total is the sum of the parts rounded half-up to four
+places, and the marginal values pinned below are the exact figures in the comments rounded the same
+way; the parts stay exact.
 """
 
 from __future__ import annotations
 
-from decimal import Decimal
+from decimal import ROUND_HALF_UP, Decimal
 
 import pytest
 
@@ -28,6 +33,7 @@ from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tests.kinds import bundled_kinds
 
 D = Decimal
+ROUNDING = D("0.0001")
 ONTARIO = JurisdictionCode("CA-ON")
 RETURN = "ca-on/return"
 
@@ -76,14 +82,18 @@ def _value(summary: Worksheet, name: str) -> Decimal:
 
 
 @pytest.mark.parametrize("salary", SALARIES)
-def test_2026_runs_and_the_total_is_the_exact_sum_of_the_gated_parts(salary: str) -> None:
+def test_2026_runs_and_the_total_is_the_sum_of_the_gated_parts_rounded_to_four_decimals(
+    salary: str,
+) -> None:
     summary = _summary(salary)
     federal = _value(summary, FEDERAL)
     ontario = _value(summary, ONTARIO_RATE)
     premium = _value(summary, PREMIUM)
     contribution = _value(summary, CONTRIBUTION)
 
-    assert _value(summary, MARGINAL) == federal + ontario + premium + contribution
+    assert _value(summary, MARGINAL) == (federal + ontario + premium + contribution).quantize(
+        ROUNDING, rounding=ROUND_HALF_UP
+    )
     assert _value(_federal(salary), FEDERAL_GATE) in (D("0"), D("1"))
     assert _value(summary, ONTARIO_GATE) in (D("0"), D("1"))
     federal_sheet = _federal(salary)
@@ -138,7 +148,7 @@ def test_2026_the_bracket_rates_are_the_first_brackets_of_the_2026_datasets(sala
 def test_2026_the_federal_part_opens_at_19200_18_and_the_ontario_part_at_32577_01() -> None:
     assert _value(_summary("19200.17"), FEDERAL) == D("0")
     assert _value(_summary("19200.18"), FEDERAL) == D("0.129388")
-    assert _value(_summary("19200.18"), MARGINAL) == D("0.205188")
+    assert _value(_summary("19200.18"), MARGINAL) == D("0.2052")
     assert _value(_summary("32577.00"), ONTARIO_RATE) == D("0")
     assert _value(_summary("32577.01"), ONTARIO_RATE) == D("0.0466721")
 
@@ -152,7 +162,7 @@ def test_2026_the_marginal_tax_rate_at_70000_is_34_36_percent() -> None:
     assert _value(summary, ONTARIO_RATE) == D("0.08808525")
     assert _value(summary, PREMIUM) == D("0")
     assert _value(summary, CONTRIBUTION) == D("0.0595")
-    assert _value(summary, MARGINAL) == D("0.34360525")
+    assert _value(summary, MARGINAL) == D("0.3436")
 
 
 def test_2026_both_gates_are_open_at_275000() -> None:

@@ -16,6 +16,10 @@ its $1,420 maximum:
     premium  = Schedule K line 80 rate x T, from a premium income of one cent to the $755 maximum
     marginal = federal + Quebec + premium + QPP base + QPP first additional + QPP2 + EI + QPIP
 
+The engine rounds the marginal rate half-up to 0.0001 like the average rate
+(`ca/take_home_average_rate_rounding`), so each hand-derived exact sum below is stated rounded
+half-up to four decimals in the test table (the exact sum stays in the worked lines).
+
 The extra-run check over a sweep is in `test_return_marginal_tax_rate_extra_run.py`.
 
 - 2025, $10,000: no income tax; QPP 5.4% + 1%, EI 1.31%, QPIP 0.494%: 0.08204.
@@ -55,20 +59,20 @@ QUEBEC = JurisdictionCode("CA-QC")
 @pytest.mark.parametrize(
     ("year", "salary", "rate"),
     [
-        (2025, "10000", "0.08204"),
-        (2025, "22000", "0.4182562"),
-        (2025, "40000", "0.3537442"),
-        (2025, "70000", "0.4514437"),
-        (2025, "75000", "0.4234237"),
-        (2025, "120000", "0.5"),
-        (2025, "200000", "0.5505542655"),
+        (2025, "10000", "0.0820"),
+        (2025, "22000", "0.4183"),
+        (2025, "40000", "0.3537"),
+        (2025, "70000", "0.4514"),
+        (2025, "75000", "0.4234"),
+        (2025, "120000", "0.5000"),
+        (2025, "200000", "0.5506"),
         (2025, "300000", "0.5875"),
         (2026, "10000", "0.0803"),
-        (2026, "70000", "0.450328"),
-        (2026, "200000", "0.550449296"),
+        (2026, "70000", "0.4503"),
+        (2026, "200000", "0.5504"),
     ],
 )
-def test_the_marginal_rate_is_the_exact_sum_of_the_rates_that_apply(
+def test_the_marginal_rate_is_the_sum_of_the_rates_that_apply_rounded_to_four_decimals(
     year: int, salary: str, rate: str
 ) -> None:
     worksheets = build_tax_computation().compute(
