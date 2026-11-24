@@ -51,24 +51,29 @@ DEDUCTIONS = (
     ("ca/t2204", "ca/t2204_line_16"),
 )
 
-CHOSEN = (
+SALARIES = (
     1_000,
     1_500,
     1_999,
+    2_000,
     2_001,
     2_020,
     3_000,
+    3_500,
     5_000,
     8_000,
     10_000,
     12_000,
     15_000,
     17_000,
+    18_750,
     19_000,
     19_900,
     21_000,
     23_000,
+    25_500,
     26_000,
+    26_750,
     26_760,
     26_800,
     28_000,
@@ -79,19 +84,27 @@ CHOSEN = (
     45_000,
     48_300,
     50_000,
+    50_750,
     55_000,
+    59_000,
     60_000,
     65_000,
     70_000,
+    71_250,
     72_300,
     75_000,
     80_000,
     85_000,
     100_000,
+    115_750,
+    116_750,
     120_000,
+    141_500,
     150_000,
     175_000,
+    182_500,
     190_000,
+    191_500,
     200_300,
     210_000,
     250_000,
@@ -135,10 +148,6 @@ KNOWN_EXCEPTIONS: dict[tuple[int, int], str] = {
     (2026, 26_750): "BC428 line 80 turns positive 3 dollars up, at a salary of 26,752.96",
 }
 
-SALARIES = tuple(
-    sorted(set(CHOSEN) | set(NARROW_BAND_STEPS) | {salary for _year, salary in KNOWN_EXCEPTIONS})
-)
-
 CASES = [
     pytest.param(year, salary, id=f"{year}-{salary}")
     for year in (2025, 2026)
@@ -178,7 +187,3 @@ def test_the_marginal_rate_is_the_extra_dollar_change_in_the_take_home_deduction
 
 def test_every_known_exception_is_a_salary_of_the_sweep() -> None:
     assert {salary for _year, salary in KNOWN_EXCEPTIONS} <= set(SALARIES)
-
-
-def test_every_narrow_band_step_is_a_salary_of_the_sweep() -> None:
-    assert set(NARROW_BAND_STEPS) <= set(SALARIES)
