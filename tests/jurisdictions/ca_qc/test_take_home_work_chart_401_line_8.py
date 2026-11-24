@@ -74,4 +74,4 @@ def test_the_real_form_declaration_exports_line_8() -> None:
 
     assert declaration["form"]["name"] == "ca-qc/work_chart_401"
     assert declaration["form"]["required"] is True
-    assert declaration["form"]["exports"] == ["ca-qc/work_chart_401_income_tax_line_8"]
+    assert "ca-qc/work_chart_401_income_tax_line_8" in declaration["form"]["exports"]

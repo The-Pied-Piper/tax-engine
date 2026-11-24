@@ -11,4 +11,5 @@ form:
   required: true
   exports:
     - ca-qc/work_chart_401_income_tax_line_8
+    - ca-qc/work_chart_401_column_rate_line_5
 capabilities: []

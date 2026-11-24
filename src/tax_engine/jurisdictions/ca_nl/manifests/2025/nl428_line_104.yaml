@@ -16,7 +16,8 @@
 # times the gate, so line 104 is "0" where line 86 is claimed and the figure of step 1 otherwise.
 # The step is line 104. The form's own label for the line ("Newfoundland and Labrador tax") is not a
 # title for a reduction amount, so the four titles are plain words, each cleared by the CRA-form
-# reviewer. The output is `ca-nl/nl428_line_104`, which is not exported yet.
+# reviewer. The output is `ca-nl/nl428_line_104`, which NL428 exports for the return summary's
+# marginal rate.
 form:
   name: ca-nl/nl428
 capabilities:

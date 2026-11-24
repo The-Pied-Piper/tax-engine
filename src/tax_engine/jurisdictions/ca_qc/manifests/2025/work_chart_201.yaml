@@ -9,6 +9,7 @@ form:
   required: true
   exports:
     - ca-qc/work_chart_201_deduction_for_workers_line_9
+    - ca-qc/work_chart_201_deduction_before_maximum
     - ca-qc/work_chart_201_research_grants_line_3
     - ca-qc/work_chart_201_wepp_payments_line_4
 capabilities: []

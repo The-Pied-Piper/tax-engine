@@ -4,7 +4,7 @@
 # column 2 for a spouse is not modelled, so line 93 is line 92 and has no step of its own), less
 # line 100 (`ca-nl/nl428_low_income_threshold_line_100`), not below 0. Neither figure is blank, so
 # the step has no blank rule. The form prints no title for the line, so the step has none. The
-# output is `ca-nl/nl428_line_101`, which is not exported yet.
+# output is `ca-nl/nl428_line_101`, which NL428 exports for the return summary's marginal rate.
 form:
   name: ca-nl/nl428
 capabilities:
