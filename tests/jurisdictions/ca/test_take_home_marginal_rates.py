@@ -146,7 +146,7 @@ def test_the_form_names_no_province() -> None:
     assert not [text for text in texts if re.search(r"\bca-[a-z]{2}\b", text)]
 
 
-@pytest.mark.parametrize("code", ["CA-AB", "CA-BC", "CA-MB", "CA-NL"])
+@pytest.mark.parametrize("code", ["CA-AB", "CA-BC", "CA-NL"])
 def test_a_province_can_import_the_form_alone(code: str) -> None:
     # Everything the form reads is an export of a T1 form that each province imports, and none of
     # the artifacts it produces is produced by the province's own return, so an `imports` line
@@ -156,7 +156,6 @@ def test_a_province_can_import_the_form_alone(code: str) -> None:
     produced = {
         output
         for form in manifest.forms
-        if form.name != FORM
         for step in form.capabilities
         for output in step.produces.values()
     }

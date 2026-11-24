@@ -19,7 +19,7 @@ is in `KNOWN_EXCEPTIONS` with the reason: the rate there is the lower band's, so
 dollar over (in the list) is the check.
 
 The list was found by a denser run, every $250 from $1,000 to $410,000, for both years, which
-disagreed only at the salaries below.
+disagreed only at the salaries below (and the 2026 break at $401,100, found separately).
 """
 
 from __future__ import annotations
@@ -53,9 +53,11 @@ SALARIES = (
     1_000,
     1_500,
     1_999,
+    2_000,
     2_001,
     2_020,
     3_000,
+    3_500,
     3_501,
     5_000,
     8_000,
@@ -168,4 +170,4 @@ def test_the_marginal_rate_is_the_extra_dollar_change_in_the_take_home_deduction
 
 
 def test_every_known_exception_is_a_salary_of_the_list() -> None:
-    assert {salary for _year, salary in KNOWN_EXCEPTIONS} <= set(SALARIES) | {2_000, 3_500}
+    assert {salary for _year, salary in KNOWN_EXCEPTIONS} <= set(SALARIES)

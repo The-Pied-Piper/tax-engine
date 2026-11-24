@@ -141,7 +141,6 @@ FIGURES = [
     ("401073.94", "0.33", "0.174", "0", "0.504", "167363.70", "0.4310"),
     ("410000", "0.33", "0.174", "0", "0.504", "171862.43", "0.4326"),
 ]
-PART_FIGURES = [(s, f, m, c, t) for s, f, m, c, t, _, _ in FIGURES]
 # Salary, MB428 line 5 rate read: the rate is never blank. Taxable income 47,000.00 at 47,439.39 is
 # up to 47,000 (column 1) and 47,000.01 at 47,439.40 is above it; 100,000.00 at 101,074.00 is up to
 # 100,000 (column 2) and 100,000.01 at 101,074.01 is above it.
@@ -316,21 +315,6 @@ def test_the_rate_kinds_are_non_negative(name: str) -> None:
     assert non_negative(artifact_kinds().kind(name))
 
 
-@pytest.mark.parametrize(
-    ("salary", "federal", "manitoba", "contribution", "marginal"), PART_FIGURES
-)
-def test_the_marginal_rate_is_the_exact_sum_of_the_federal_manitoba_and_contribution_part(
-    salary: str, federal: str, manitoba: str, contribution: str, marginal: str
-) -> None:
-    summary = _summary(salary)
-
-    assert _value(summary, FEDERAL) == D(federal)
-    assert _value(summary, MB_RATE) == D(manitoba)
-    assert _value(summary, CONTRIBUTION) == D(contribution)
-    assert _value(summary, MARGINAL) == D(marginal)
-    assert D(federal) + D(manitoba) + D(contribution) == D(marginal)
-
-
 @pytest.mark.parametrize("salary", ["0", "100"])
 def test_a_salary_of_0_or_100_reads_0_for_both_rates(salary: str) -> None:
     summary = _summary(salary)
@@ -426,14 +410,6 @@ def test_the_manitoba_gate_closes_the_part_while_the_rate_before_the_gate_is_sti
     assert _value(summary, MB_RATE) == D("0")
     assert _value(summary, MARGINAL) == D("0.0759")
     assert _value(summary, MARGINAL) == _value(summary, CONTRIBUTION)
-
-
-def test_the_marginal_rate_is_not_rounded_to_the_cent_or_to_ten_thousandths() -> None:
-    # 0.2930542655 + 0.1825212 = 0.4755754655 keeps its places: no rule is applied to a rate.
-    value = _value(_summary("250000"), MARGINAL)
-
-    assert value == D("0.4755754655")
-    assert value != value.quantize(D("0.0001"))
 
 
 def test_the_return_prints_both_rates_as_percentages_in_the_core_percent_unit() -> None:

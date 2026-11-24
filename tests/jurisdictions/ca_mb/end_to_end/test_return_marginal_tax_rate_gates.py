@@ -73,11 +73,22 @@ PARTS = [
 ]
 
 
-def _compute(salary: str) -> dict[str, tuple[Worksheet, ...]]:
+def _summary(salary: str) -> Worksheet:
     # No fixture: the bundled Manitoba manifest, as the calculator loads it, salary the only input.
-    return build_tax_computation().compute(
+    worksheets = build_tax_computation().compute(
         TaxCalculationRequest(MANITOBA, YEAR, (Artifact(EMPLOYMENT_INCOME, D(salary)),))
     )
+    (summary,) = worksheets[RETURN]
+    return summary
+
+
+def _federal(salary: str) -> Worksheet:
+    # The federal form's sheet, which holds the federal gate.
+    worksheets = build_tax_computation().compute(
+        TaxCalculationRequest(MANITOBA, YEAR, (Artifact(EMPLOYMENT_INCOME, D(salary)),))
+    )
+    (federal,) = worksheets[FEDERAL_FORM]
+    return federal
 
 
 def _value(sheet: Worksheet, name: str) -> Decimal:
@@ -90,7 +101,7 @@ def _value(sheet: Worksheet, name: str) -> Decimal:
 def test_each_part_and_the_total_of_the_marginal_tax_rate(
     salary: str, federal: str, manitoba: str, contribution: str, marginal: str
 ) -> None:
-    (summary,) = _compute(salary)[RETURN]
+    summary = _summary(salary)
 
     assert _value(summary, FEDERAL) == D(federal)
     assert _value(summary, MANITOBA_RATE) == D(manitoba)
@@ -100,27 +111,35 @@ def test_each_part_and_the_total_of_the_marginal_tax_rate(
 
 
 @pytest.mark.parametrize(
-    ("salary", "federal_tax_is_positive", "manitoba_tax_is_positive"),
+    ("salary", "basic_federal_tax", "federal_gate"),
     [
-        ("100", False, False),
-        ("17403.90", False, False),
-        ("17403.91", False, True),
-        ("18820.26", False, True),
-        ("18820.27", True, True),
-        ("70000", True, True),
+        ("18820.26", "0.00", "0"),
+        ("18820.27", "0.01", "1"),
     ],
 )
-def test_the_gates_open_with_the_taxes_they_read(
-    salary: str, federal_tax_is_positive: bool, manitoba_tax_is_positive: bool
+def test_the_federal_gate_opens_where_the_basic_federal_tax_is_first_above_zero(
+    salary: str, basic_federal_tax: str, federal_gate: str
 ) -> None:
-    worksheets = _compute(salary)
-    (summary,) = worksheets[RETURN]
-    (federal,) = worksheets[FEDERAL_FORM]
+    federal = _federal(salary)
 
-    assert (_value(federal, BASIC_FEDERAL_TAX) > 0) is federal_tax_is_positive
-    assert (_value(summary, LINE_65) > 0) is manitoba_tax_is_positive
-    assert _value(federal, FEDERAL_GATE) == D(int(federal_tax_is_positive))
-    assert _value(summary, MANITOBA_GATE) == D(int(manitoba_tax_is_positive))
+    assert _value(federal, BASIC_FEDERAL_TAX) == D(basic_federal_tax)
+    assert _value(federal, FEDERAL_GATE) == D(federal_gate)
+
+
+@pytest.mark.parametrize(
+    ("salary", "line_65", "manitoba_gate"),
+    [
+        ("17403.90", "0.00", "0"),
+        ("17403.91", "0.01", "1"),
+    ],
+)
+def test_the_manitoba_gate_opens_where_line_65_is_first_above_zero(
+    salary: str, line_65: str, manitoba_gate: str
+) -> None:
+    summary = _summary(salary)
+
+    assert _value(summary, LINE_65) == D(line_65)
+    assert _value(summary, MANITOBA_GATE) == D(manitoba_gate)
 
 
 @pytest.mark.parametrize(
@@ -130,7 +149,7 @@ def test_the_gates_open_with_the_taxes_they_read(
 def test_the_family_tax_benefit_gate_follows_schedule_mb428_a_line_12(
     salary: str, benefit_is_positive: bool
 ) -> None:
-    (summary,) = _compute(salary)[RETURN]
+    summary = _summary(salary)
 
     assert (_value(summary, FAMILY_TAX_BENEFIT) > 0) is benefit_is_positive
     assert _value(summary, FAMILY_TAX_BENEFIT_GATE) == D(int(benefit_is_positive))

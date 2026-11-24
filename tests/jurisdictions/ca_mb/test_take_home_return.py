@@ -46,7 +46,7 @@ from tests.jurisdictions.ca_mb.support import (
     manitoba_parameter_parsers,
     manitoba_units,
 )
-from tests.take_home_stand_ins import STAND_INS
+from tests.take_home_stand_ins import MARGINAL_STAND_INS, STAND_INS
 
 D = Decimal
 MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"
@@ -239,6 +239,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
             for part in form_parts("t1_employment_income")
         ),
         *STAND_INS,
+        *MARGINAL_STAND_INS,
         ("05_return.yaml", RETURN_PART.read_text(encoding="utf-8")),
     ]
     for name, text in texts:
