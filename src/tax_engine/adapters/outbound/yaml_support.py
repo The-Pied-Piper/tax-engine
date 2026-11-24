@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Any
 
 import yaml
-from yaml.constructor import ConstructorError
+from yaml.constructor import ConstructorError, SafeConstructor
 from yaml.nodes import MappingNode
 
 from tax_engine.domain.parameters.rounding import (
@@ -33,8 +33,8 @@ class YamlShapeError(ValueError):
     """A YAML document does not have the expected shape."""
 
 
-class _StrictLoader(yaml.SafeLoader):
-    """SafeLoader that rejects duplicate mapping keys instead of keeping the last one."""
+class _RejectDuplicateKeys(SafeConstructor):
+    """Safe constructor that rejects duplicate mapping keys instead of keeping the last one."""
 
     def construct_mapping(self, node: MappingNode, deep: bool = False) -> dict[Hashable, Any]:
         seen: set[Any] = set()
@@ -44,6 +44,22 @@ class _StrictLoader(yaml.SafeLoader):
                 raise ConstructorError(None, None, f"duplicate key {key!r}", key_node.start_mark)
             seen.add(key)
         return super().construct_mapping(node, deep=deep)
+
+
+class _PureStrictLoader(_RejectDuplicateKeys, yaml.SafeLoader):
+    """The pure-Python loader, used only when PyYAML was built without libyaml."""
+
+
+class _CStrictLoader(_RejectDuplicateKeys, yaml.CSafeLoader):
+    """The libyaml-backed loader: the same reading, several times faster."""
+
+
+# PyYAML's Linux, macOS and Windows wheels bundle libyaml; a source-only install may not, and then
+# the identical pure-Python loader is used. A test fails in that case, so CI cannot lose the
+# speed-up unnoticed.
+_StrictLoader: type[_PureStrictLoader] | type[_CStrictLoader] = (
+    _CStrictLoader if yaml.__with_libyaml__ else _PureStrictLoader
+)
 
 
 class YamlNode:

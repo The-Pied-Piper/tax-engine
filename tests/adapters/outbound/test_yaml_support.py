@@ -42,6 +42,38 @@ def test_load_rejects_duplicate_keys(tmp_path: Path) -> None:
         YamlNode.load(path, "document")
 
 
+@pytest.mark.parametrize(
+    "text",
+    ["outer:\n  a: 1\n  a: 2\n", "items:\n  - b: 1\n  - c: 1\n    c: 2\n"],
+    ids=["nested mapping", "list of mappings"],
+)
+def test_load_rejects_duplicate_keys_below_the_top_level(tmp_path: Path, text: str) -> None:
+    path = tmp_path / "x.yaml"
+    path.write_text(text, encoding="utf-8")
+
+    with pytest.raises(yaml.YAMLError, match="duplicate key '[ac]'"):
+        YamlNode.load(path, "document")
+
+
+def test_load_uses_the_libyaml_c_loader(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    assert yaml.__with_libyaml__, "PyYAML has no libyaml: the C loader cannot be used"
+    used: list[type] = []
+    real_load = yaml.load
+
+    def spy(stream: str, Loader: type) -> object:  # noqa: N803 - mirrors yaml.load
+        used.append(Loader)
+        return real_load(stream, Loader=Loader)
+
+    monkeypatch.setattr(yaml, "load", spy)
+    path = tmp_path / "x.yaml"
+    path.write_text("a: 1\n", encoding="utf-8")
+
+    YamlNode.load(path, "document")
+
+    assert len(used) == 1
+    assert issubclass(used[0], yaml.CSafeLoader)
+
+
 # --- mappings and locations ------------------------------------------------------
 
 
