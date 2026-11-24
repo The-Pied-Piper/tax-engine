@@ -53,41 +53,41 @@ from tests.kinds import bundled_kinds
 
 D = Decimal
 ALBERTA = JurisdictionCode("CA-AB")
-MARGINAL = "ca-ab/marginal_tax_rate"
-
-# Year, salary, marginal rate.
-FIGURES = [
-    (2025, "100", "0"),
-    (2026, "100", "0"),
-    (2025, "2000", "0"),
-    (2025, "2000.01", "1"),
-    (2026, "2000", "0"),
-    (2026, "2000.01", "1"),
-    (2025, "3500", "0.0164"),
-    (2025, "3500.01", "0.0759"),
-    (2025, "71300", "0.305"),
-    (2025, "71300.01", "0.3328"),
-    (2026, "3500", "0.0163"),
-    (2026, "3500.01", "0.0758"),
-    (2025, "20000", "0.2098945"),
-    (2026, "20000", "0.205188"),
-    (2025, "70000", "0.3503125"),
-    (2026, "70000", "0.35056"),
-    (2025, "120000", "0.36"),
-    (2026, "120000", "0.36"),
-    (2025, "160000", "0.38"),
-    (2026, "160000", "0.38"),
-    (2025, "200000", "0.4230542655"),
-    (2026, "200000", "0.422949296"),
-]
 
 
-@pytest.mark.parametrize(("year", "salary", "marginal"), FIGURES)
-def test_the_marginal_rate_at_each_salary(year: int, salary: str, marginal: str) -> None:
+@pytest.mark.parametrize(
+    ("year", "salary", "rate"),
+    [
+        (2025, "100", "0"),
+        (2026, "100", "0"),
+        (2025, "2000", "0"),
+        (2025, "2000.01", "1"),
+        (2026, "2000", "0"),
+        (2026, "2000.01", "1"),
+        (2025, "3500", "0.0164"),
+        (2025, "3500.01", "0.0759"),
+        (2025, "71300", "0.305"),
+        (2025, "71300.01", "0.3328"),
+        (2026, "3500", "0.0163"),
+        (2026, "3500.01", "0.0758"),
+        (2025, "20000", "0.2098945"),
+        (2026, "20000", "0.205188"),
+        (2025, "70000", "0.3503125"),
+        (2026, "70000", "0.35056"),
+        (2025, "120000", "0.36"),
+        (2026, "120000", "0.36"),
+        (2025, "160000", "0.38"),
+        (2026, "160000", "0.38"),
+        (2025, "200000", "0.4230542655"),
+        (2026, "200000", "0.422949296"),
+    ],
+)
+def test_the_marginal_rate_is_the_exact_sum_of_the_rates_that_apply(
+    year: int, salary: str, rate: str
+) -> None:
     worksheets = build_tax_computation().compute(
         TaxCalculationRequest(ALBERTA, year, (Artifact(EMPLOYMENT_INCOME, D(salary)),))
     )
     (summary,) = worksheets["ca-ab/return"]
-    value = summary.get(bundled_kinds().kind(MARGINAL)).value
 
-    assert value == D(marginal)
+    assert summary.get(bundled_kinds().kind("ca-ab/marginal_tax_rate")).value == D(rate)

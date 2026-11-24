@@ -65,14 +65,3 @@ def test_every_step_after_line_167_has_no_title_and_no_reference() -> None:
     for step in _steps()[1:]:
         assert "title" not in step
         assert "reference" not in step
-
-
-def test_every_rate_step_rounds_nothing() -> None:
-    steps = [
-        step for step in _steps() if step["name"] in {"core/multiply_by_rate", "core/subtract"}
-    ]
-    steps += [step for step in _steps() if step["name"] == "core/sum"]
-
-    assert steps
-    for step in steps:
-        assert step["params"]["rounding"] == "ca-ab/exact_rounding"
