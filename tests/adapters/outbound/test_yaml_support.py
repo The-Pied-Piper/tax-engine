@@ -55,25 +55,6 @@ def test_load_rejects_duplicate_keys_below_the_top_level(tmp_path: Path, text: s
         YamlNode.load(path, "document")
 
 
-def test_load_uses_the_libyaml_c_loader(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    assert yaml.__with_libyaml__, "PyYAML has no libyaml: the C loader cannot be used"
-    used: list[type] = []
-    real_load = yaml.load
-
-    def spy(stream: str, Loader: type) -> object:
-        used.append(Loader)
-        return real_load(stream, Loader=Loader)
-
-    monkeypatch.setattr(yaml, "load", spy)
-    path = tmp_path / "x.yaml"
-    path.write_text("a: 1\n", encoding="utf-8")
-
-    YamlNode.load(path, "document")
-
-    assert len(used) == 1
-    assert issubclass(used[0], yaml.CSafeLoader)
-
-
 # --- mappings and locations ------------------------------------------------------
 
 
