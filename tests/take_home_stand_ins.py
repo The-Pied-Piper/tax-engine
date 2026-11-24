@@ -35,3 +35,20 @@ STAND_INS = [
     ("03s_average_rate_form.yaml", AVERAGE_RATE_FORM),
     ("03t_average_rate.yaml", AVERAGE_RATE_STEP),
 ]
+
+MARGINAL_RATES_FORM = dedent("""\
+    form:
+      name: ca/take_home_marginal_rates
+      required: true
+      exports:
+        - ca/marginal_net_income_rate
+        - ca/marginal_credit_contribution_rate
+        - ca/marginal_federal_rate
+        - ca/marginal_contribution_rate
+    capabilities: []
+    """)
+
+
+# The stand-in steps for the four exports are made by the part test itself: each is a rate, so it
+# is read from a gate of an amount (1) rather than the salary.
+MARGINAL_STAND_INS = [("03u_marginal_rates_form.yaml", MARGINAL_RATES_FORM)]

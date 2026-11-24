@@ -478,15 +478,72 @@ SASKATCHEWAN_RATE_GATE = AmountKind.declare(CATALOG, "saskatchewan_rate_gate", n
 and 1 where it is at least one cent, from the `ca-sk/marginal_rate_gate` dataset. A plain figure,
 not printed on the form."""
 
+MARGINAL_NET_INCOME_RATE = AmountKind.declare(
+    CATALOG, "marginal_net_income_rate", non_negative=True
+)
+"""Part of a further dollar of salary left in the net income (T1 line 23600) and the taxable
+income: 1 less the CPP first additional rate and the CPP second additional rate, which T1 line
+22215 takes off the income. The federal form's export `ca/take_home_marginal_rates.marginal_net_
+income_rate`, totalled into the return summary's own artifact. Not printed on the form."""
+
+MARGINAL_CREDIT_CONTRIBUTION_RATE = AmountKind.declare(
+    CATALOG, "marginal_credit_contribution_rate", non_negative=True
+)
+"""Credit-earning contribution rate on a further dollar of salary: the CPP base rate (T1 line
+30800) plus the EI rate (T1 line 31200), the two contributions that earn a non-refundable credit.
+The federal form's export `ca/take_home_marginal_rates.marginal_credit_contribution_rate`, totalled
+into the return summary's own artifact. Not printed on the form."""
+
+MARGINAL_FEDERAL_RATE = AmountKind.declare(CATALOG, "marginal_federal_rate", non_negative=True)
+"""Federal marginal rate on the take-home basis: the federal rate on a further dollar of salary
+after the credits, where the basic federal tax (T1 line 42900) is above zero, and 0 where it is
+not, a fraction (0.2 for 20%). The federal form's export `ca/take_home_marginal_rates.marginal_
+federal_rate`, totalled into the return summary's own artifact. Not printed on the form."""
+
+MARGINAL_CONTRIBUTION_RATE = AmountKind.declare(
+    CATALOG, "marginal_contribution_rate", non_negative=True
+)
+"""Contribution rate on a further dollar of salary: the CPP base, first additional and second
+additional rates plus the EI rate of T2204 line 16. The federal form's export
+`ca/take_home_marginal_rates.marginal_contribution_rate`, totalled into the return summary's own
+artifact. Not printed on the form."""
+
+MARGINAL_SASKATCHEWAN_CREDIT_RATE = AmountKind.declare(
+    CATALOG, "marginal_saskatchewan_credit_rate", non_negative=True
+)
+"""Saskatchewan non-refundable tax credit rate, SK428 line 52: the `ca-sk/credit_rate` dataset as
+it is, with none of the cent rounding the credit box applies. A rate, not printed as its own
+figure."""
+
+MARGINAL_SASKATCHEWAN_CONTRIBUTION_CREDIT_RATE = AmountKind.declare(
+    CATALOG, "marginal_saskatchewan_contribution_credit_rate", non_negative=True
+)
+"""Saskatchewan credit rate on the CPP base and EI of a further dollar of salary: the
+credit-earning contribution rate times the Saskatchewan credit rate (SK428 line 52 "Saskatchewan
+non-refundable tax credit rate"), the Saskatchewan tax the contributions take off. An exact
+product, not printed on the form."""
+
+MARGINAL_SASKATCHEWAN_BRACKET_RATE = AmountKind.declare(
+    CATALOG, "marginal_saskatchewan_bracket_rate", non_negative=True
+)
+"""Saskatchewan bracket rate on a further dollar of salary, SK428 line 5 "Line 5: Rate" times the
+part left in the taxable income. An exact product, not printed on the form."""
+
+MARGINAL_SASKATCHEWAN_RATE_AFTER_CREDITS = AmountKind.declare(
+    CATALOG, "marginal_saskatchewan_rate_after_credits", non_negative=True
+)
+"""Saskatchewan rate on a further dollar of salary after the CPP base and EI credits, before the
+gate. An exact difference, not printed on the form."""
+
 SASKATCHEWAN_MARGINAL_RATE = AmountKind.declare(
     CATALOG, "saskatchewan_marginal_rate", non_negative=True
 )
-"""Saskatchewan marginal rate: the bracket rate (SK428 line 5) where the Saskatchewan tax after the
-credits (SK428 line 67) is above zero, and 0 where it is not: the rate a further dollar of income
-is taxed at in Saskatchewan, on the return summary. Saskatchewan has no tax reduction. Not printed
-on the form."""
+"""Saskatchewan marginal rate on the take-home basis: the Saskatchewan rate on a further dollar of
+salary after the credits, where the Saskatchewan tax after the credits (SK428 line 67) is above
+zero, and 0 where it is not. Saskatchewan has no tax reduction. Not printed on the form."""
 
 MARGINAL_TAX_RATE = AmountKind.declare(CATALOG, "marginal_tax_rate", non_negative=True)
-"""Marginal tax rate: the income tax rate on a further dollar of salary, the sum of the federal
-marginal rate and the Saskatchewan marginal rate (SK428 and T4127 print no surtax or health
-premium), on the return summary. Not printed on the form."""
+"""Marginal tax rate on the take-home basis: the change in the T1 line 43500 income tax, the CPP
+and the EI (T2204 line 16) per further dollar of salary, the sum of the federal marginal rate, the
+Saskatchewan marginal rate and the contribution rate (SK428 and T4127 print no surtax or health
+premium), on the return summary. Calculated from the forms' rates, not printed on the form."""

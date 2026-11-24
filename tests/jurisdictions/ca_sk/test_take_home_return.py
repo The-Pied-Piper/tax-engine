@@ -46,7 +46,7 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_parameter_parsers,
     saskatchewan_units,
 )
-from tests.take_home_stand_ins import STAND_INS
+from tests.take_home_stand_ins import MARGINAL_STAND_INS, STAND_INS
 
 D = Decimal
 SK_PARTS = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / "manifests" / "2025"
@@ -146,7 +146,29 @@ OTHER_STEPS = [
         "ca/other_employment_income",
     ),
     ("ca-sk/sk428", "ca-sk/sk428_tax_after_credits_line_67", "ca/cad", ""),
+    *(
+        (
+            "ca/take_home_marginal_rates",
+            f"ca/marginal_{name}",
+            "core/percent",
+            "ca/other_employment_income",
+        )
+        for name in (
+            "net_income_rate",
+            "credit_contribution_rate",
+            "federal_rate",
+            "contribution_rate",
+        )
+    ),
 ]
+
+# The marginal rate form's exports after the first: they read the salary total the first one
+# makes (a form's steps share its figures), so they make none of their own.
+LATER_MARGINAL_OUTPUTS = {
+    "ca/marginal_credit_contribution_rate",
+    "ca/marginal_federal_rate",
+    "ca/marginal_contribution_rate",
+}
 
 # salary, credits, line 167: a balance owing, a refund and zero.
 CASES = [
@@ -178,7 +200,7 @@ def _other_step(form: str, output: str, unit: str, base: str) -> str:
               output: {output}
         """
         step = dedent(step)
-        if base == "ca/other_employment_income":
+        if base == "ca/other_employment_income" and output not in LATER_MARGINAL_OUTPUTS:
             step = dedent(total.format(records=SALARY_EXPORT, output=base)) + step
     else:
         step = dedent(total.format(records=SALARY_EXPORT, output=output))
@@ -206,6 +228,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
             for part in form_parts("t1_employment_income")
         ),
         *STAND_INS,
+        *MARGINAL_STAND_INS,
         ("05_return.yaml", RETURN_PART.read_text(encoding="utf-8")),
     ]
     for name, text in texts:
