@@ -4,9 +4,9 @@ each other's datasets).
 
 Not a printed form figure: no CRA text is quoted. The Alberta return summary reads AB428 line 68
 through it (a `core/amount_by_band_rate` step), so that the Alberta part of the marginal tax rate
-counts only where its own tax is above zero. A base of
-0.00 gives the rate 0 and a base of 0.01 or more gives the rate 1; a base exactly at the second
-row's `over` (0.005) is in the lower band, so no cent amount but 0.00 is in the first band.
+counts only where its own tax is above zero. A base of 0.00 gives the rate 0 and a base of 0.01
+or more gives the rate 1; a base exactly at the second row's `over` (0.005) is in the lower band,
+so no cent amount but 0.00 is in the first band.
 The 2026 file carries the 2025 rows forward (the Alberta manifest runs 2026 on the same steps,
 and an absent year is never carried forward)."""
 

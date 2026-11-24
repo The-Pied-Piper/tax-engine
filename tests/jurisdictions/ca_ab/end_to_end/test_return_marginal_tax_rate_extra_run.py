@@ -91,17 +91,21 @@ SALARIES = (
     120_000,
     140_000,
     152_250,
+    155_350,
     160_000,
     175_000,
     182_500,
+    186_200,
     190_000,
     200_000,
     230_000,
     243_000,
+    247_900,
     250_000,
     300_000,
     350_000,
     364_000,
+    371_300,
     400_000,
 )
 # A smaller step inside the EI band of T2204 line 16, so the extra run does not cross its ends.
@@ -124,6 +128,10 @@ KNOWN_EXCEPTIONS: dict[tuple[int, int], str] = {
     (2026, 59_000): "federal bracket ends at taxable income $58,523 (salary about $59,050)",
     (2026, 61_750): "taxable income passes $61,200, the end of the Alberta 8% bracket",
     (2026, 182_500): "federal bracket ends at taxable income $181,440 (salary about $182,500)",
+    (2026, 155_350): "taxable income passes $154,259, the end of the Alberta 10% bracket",
+    (2026, 186_200): "taxable income passes $185,111, the end of the Alberta 12% bracket",
+    (2026, 247_900): "taxable income passes $246,813, the end of the Alberta 13% bracket",
+    (2026, 371_300): "taxable income passes $370,220, the end of the Alberta 14% bracket",
 }
 SMALLER_STEPS = {
     (2025, 18_750): 10,
@@ -140,6 +148,10 @@ SMALLER_STEPS = {
     (2026, 59_000): 10,
     (2026, 61_750): 10,
     (2026, 182_500): 10,
+    (2026, 155_350): 10,
+    (2026, 186_200): 10,
+    (2026, 247_900): 10,
+    (2026, 371_300): 10,
 }
 
 CASES = [
