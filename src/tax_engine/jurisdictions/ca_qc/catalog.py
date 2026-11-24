@@ -2921,3 +2921,237 @@ it): the income tax, CPP (Schedule 8 lines 25 and 28), EI (T2204 line 16) and QP
 RETURN_QPIP_PREMIUMS = AmountKind.declare(CATALOG, "return_qpip_premiums", non_negative=True)
 """The return's own copy of the QPIP premium paid (the `ppip_premium` form's export), which the
 average rate adds."""
+
+PPIP_PREMIUM_TIER_RATE = AmountKind.declare(CATALOG, "ppip_premium_tier_rate", non_negative=True)
+"""QPIP rate on a further dollar of employment income: 0.494% from the `ca-qc/ppip_premium` tier
+while the earnings are inside its band, 0 at either end. Not printed on any form."""
+
+PPIP_PREMIUM_ZERO_RATE = AmountKind.declare(CATALOG, "ppip_premium_zero_rate", non_negative=True)
+"""The QPIP rate on a further dollar of employment income while the premium is claimed on the Revenu
+Quebec return instead (insurable earnings under $2,000): 0, from the `ca-qc/ppip_premium_zero`
+dataset. Not printed on any form."""
+
+PPIP_MARGINAL_RATE = AmountKind.declare(CATALOG, "ppip_marginal_rate", non_negative=True)
+"""QPIP rate on the take-home basis: the tier rate, or 0 while the PPIP insurable earnings are under
+$2,000 and 5005-R line 91 is 0. The `ppip_premium` form's export, read by the return summary. Not
+printed on any form."""
+
+MARGINAL_NET_INCOME_RATE = AmountKind.declare(
+    CATALOG, "marginal_net_income_rate", non_negative=True
+)
+"""Part of a further dollar of salary left in the net income and the taxable income: 1 less the QPP
+first additional rate and the QPP second additional rate, which 5005-R line 22215 and TP-1 line 248
+take off the income. The federal form's export
+`ca/take_home_marginal_rates.marginal_net_income_rate`, totalled into the return summary's own
+artifact. Not printed on any form."""
+
+MARGINAL_FEDERAL_RATE_BEFORE_QPIP = AmountKind.declare(
+    CATALOG, "marginal_federal_rate_before_qpip", non_negative=True
+)
+"""Federal rate on a further dollar of salary after the credits on the pension plan and EI, before
+the credit on the QPIP premium. The federal form's export
+`ca/take_home_marginal_rates.marginal_federal_rate`, totalled into the return summary's own
+artifact. Not printed on any form."""
+
+MARGINAL_CONTRIBUTION_RATE_BEFORE_QPIP = AmountKind.declare(
+    CATALOG, "marginal_contribution_rate_before_qpip", non_negative=True
+)
+"""The QPP base, first additional, second additional and EI rates on a further dollar of salary. The
+federal form's export `ca/take_home_marginal_rates.marginal_contribution_rate`, totalled into the
+return summary's own artifact. Not printed on any form."""
+
+MARGINAL_BASIC_FEDERAL_TAX = AmountKind.declare(
+    CATALOG, "marginal_basic_federal_tax", non_negative=True
+)
+"""Basic federal tax, 5005-R line 42900 and line 130, totalled into the return summary's own
+artifact, the base of the federal gate."""
+
+MARGINAL_FEDERAL_GATE = AmountKind.declare(CATALOG, "marginal_federal_gate", non_negative=True)
+"""Federal gate: 0 where the basic federal tax (5005-R line 42900) is 0.00 and 1 where it is at
+least one cent, from the `ca/marginal_rate_gate` dataset. A plain figure, not printed on any
+form."""
+
+MARGINAL_FEDERAL_CREDIT_RATE = AmountKind.declare(
+    CATALOG, "marginal_federal_credit_rate", non_negative=True
+)
+"""The federal non-refundable credit rate (5005-R line 119 and line 33800), as a figure. Not printed
+as a line."""
+
+MARGINAL_FEDERAL_QPIP_CREDIT_RATE = AmountKind.declare(
+    CATALOG, "marginal_federal_qpip_credit_rate", non_negative=True
+)
+"""Federal tax a further dollar of QPIP premium takes off: the QPIP rate times the federal credit
+rate (5005-R line 31205 earns the credit), before the federal gate. An exact product, not printed on
+any form."""
+
+MARGINAL_FEDERAL_QPIP_CREDIT_GATED_RATE = AmountKind.declare(
+    CATALOG, "marginal_federal_qpip_credit_gated_rate", non_negative=True
+)
+"""The federal credit on the QPIP premium of a further dollar of salary, counted only where the
+basic federal tax (line 42900) is above zero. An exact product, not printed on any form."""
+
+MARGINAL_FEDERAL_RATE = AmountKind.declare(CATALOG, "marginal_federal_rate", non_negative=True)
+"""Federal marginal rate on the take-home basis: the federal rate on a further dollar of salary
+after the credits on the QPP, EI and QPIP, where the basic federal tax (5005-R line 42900) is above
+zero, and 0 where it is not. A fraction (0.2 for 20%). Not printed on any form."""
+
+MARGINAL_WORK_DEDUCTION_AMOUNT = AmountKind.declare(
+    CATALOG, "marginal_work_deduction_amount", non_negative=True
+)
+"""TP-1 line 201 (Work Chart 201 line 9), totalled into the return summary's own artifact, the base
+of the deduction for workers gate."""
+
+MARGINAL_WORK_DEDUCTION_BEFORE_MAXIMUM = AmountKind.declare(
+    CATALOG, "marginal_work_deduction_before_maximum", non_negative=True
+)
+"""Work Chart 201 line 9 before the maximum (the 6% of line 8), totalled into the return summary's
+own artifact."""
+
+MARGINAL_WORK_DEDUCTION_EXCESS = AmountKind.declare(
+    CATALOG, "marginal_work_deduction_excess", non_negative=True
+)
+"""What the Work Chart 201 deduction before the maximum is over line 9, not below zero: more than 0
+only once the maximum cuts the deduction. Not printed on any form."""
+
+MARGINAL_WORK_DEDUCTION_CAPPED_GATE = AmountKind.declare(
+    CATALOG, "marginal_work_deduction_capped_gate", non_negative=True
+)
+"""Deduction for workers capped gate: 1 once the maximum cuts the deduction and 0 while it does not,
+from the `ca/marginal_rate_gate` dataset. A plain figure, not printed on any form."""
+
+MARGINAL_SALARY_GATE = AmountKind.declare(CATALOG, "marginal_salary_gate", non_negative=True)
+"""Salary gate: 0 for a salary of 0.00 and 1 from one cent, from the `ca/marginal_rate_gate`
+dataset. A plain figure, not printed on any form."""
+
+MARGINAL_WORK_DEDUCTION_GATE = AmountKind.declare(
+    CATALOG, "marginal_work_deduction_gate", non_negative=True
+)
+"""Deduction for workers gate: 1 while the deduction (Work Chart 201 line 9) is under its maximum
+and 0 once it is not, from the `ca/marginal_rate_gate` dataset. A plain figure, not printed on any
+form."""
+
+MARGINAL_WORK_DEDUCTION_RATE_FIGURE = AmountKind.declare(
+    CATALOG, "marginal_work_deduction_rate_figure", non_negative=True
+)
+"""The Work Chart 201 line 9 rate (6%), as a figure, from the `ca-qc/work_chart_201_rate` dataset.
+Not printed as a line."""
+
+MARGINAL_WORK_DEDUCTION_RATE = AmountKind.declare(
+    CATALOG, "marginal_work_deduction_rate", non_negative=True
+)
+"""The part of a further dollar of salary the deduction for workers (TP-1 line 201) takes off the
+taxable income: the Work Chart 201 rate while the deduction is under its maximum, else 0. An exact
+product, not printed on any form."""
+
+MARGINAL_TAXABLE_INCOME_RATE = AmountKind.declare(
+    CATALOG, "marginal_taxable_income_rate", non_negative=True
+)
+"""Part of a further dollar of salary left in the TP-1 net income and taxable income (lines 275 and
+299): the net income rate less the deduction for workers rate. Not printed on any form."""
+
+MARGINAL_TP1_BRACKET_RATE = AmountKind.declare(
+    CATALOG, "marginal_tp1_bracket_rate", non_negative=True
+)
+"""Quebec bracket rate, Work Chart 401 line 5, totalled into the return summary's own artifact. The
+printed rate of the column that line 1 falls in."""
+
+MARGINAL_TP1_TAX_AFTER_CREDITS = AmountKind.declare(
+    CATALOG, "marginal_tp1_tax_after_credits", non_negative=True
+)
+"""TP-1 line 432, the Quebec income tax after the credits, totalled into the return summary's own
+artifact, the base of the Quebec gate."""
+
+MARGINAL_TP1_GATE = AmountKind.declare(CATALOG, "marginal_tp1_gate", non_negative=True)
+"""Quebec gate: 0 where the income tax after credits (TP-1 line 432) is 0.00 and 1 where it is at
+least one cent, from the `ca/marginal_rate_gate` dataset. A plain figure, not printed on any
+form."""
+
+MARGINAL_TP1_BRACKET_RATE_ON_TAXABLE_INCOME = AmountKind.declare(
+    CATALOG, "marginal_tp1_bracket_rate_on_taxable_income", non_negative=True
+)
+"""The Quebec bracket rate on a further dollar of salary: Work Chart 401 line 5 times the part left
+in the taxable income. An exact product, not printed on any form."""
+
+MARGINAL_TP1_INCOME_TAX_RATE = AmountKind.declare(
+    CATALOG, "marginal_tp1_income_tax_rate", non_negative=True
+)
+"""Quebec income tax rate on a further dollar of salary (TP-1 line 401), counted only where the
+income tax after credits (line 432) is above zero. The credits on the lines of TP-1 that a salary-
+only filer has are fixed amounts, so they add no rate. An exact product, not printed on any form."""
+
+MARGINAL_PREMIUM_INCOME = AmountKind.declare(CATALOG, "marginal_premium_income", non_negative=True)
+"""Schedule K line 48, the income used to calculate the premium, totalled into the return summary's
+own artifact, the base of the premium income gate."""
+
+MARGINAL_PREMIUM_INCOME_GATE = AmountKind.declare(
+    CATALOG, "marginal_premium_income_gate", non_negative=True
+)
+"""Premium income gate: 0 where the income used to calculate the premium (Schedule K line 48) is
+0.00 and 1 where it is at least one cent, from the `ca/marginal_rate_gate` dataset. A plain figure,
+not printed on any form."""
+
+MARGINAL_PREMIUM_COLUMN_RATE = AmountKind.declare(
+    CATALOG, "marginal_premium_column_rate", non_negative=True
+)
+"""Schedule K line 80, the printed rate of the column that line 48 falls in, totalled into the
+return summary's own artifact."""
+
+MARGINAL_PREMIUM_LINE_86 = AmountKind.declare(
+    CATALOG, "marginal_premium_line_86", non_negative=True
+)
+"""Schedule K line 86, totalled into the return summary's own artifact."""
+
+MARGINAL_PREMIUM_LINE_89 = AmountKind.declare(
+    CATALOG, "marginal_premium_line_89", non_negative=True
+)
+"""Schedule K line 89, totalled into the return summary's own artifact."""
+
+MARGINAL_PREMIUM_HEADROOM = AmountKind.declare(
+    CATALOG, "marginal_premium_headroom", non_negative=True
+)
+"""What line 86 is below line 89, not below zero: 0 once the premium is at the maximum. Not printed
+on any form."""
+
+MARGINAL_PREMIUM_MAXIMUM_GATE = AmountKind.declare(
+    CATALOG, "marginal_premium_maximum_gate", non_negative=True
+)
+"""Premium maximum gate: 1 while Schedule K line 86 is under line 89 and 0 once it is not, from the
+`ca/marginal_rate_gate` dataset. A plain figure, not printed on any form."""
+
+MARGINAL_PREMIUM_RATE_ON_INCOME = AmountKind.declare(
+    CATALOG, "marginal_premium_rate_on_income", non_negative=True
+)
+"""Schedule K premium rate on a further dollar of premium income: the column rate (line 80) counted
+only above a line 48 of 0 and below the maximum premium. An exact product, not printed on any
+form."""
+
+MARGINAL_PREMIUM_RATE = AmountKind.declare(CATALOG, "marginal_premium_rate", non_negative=True)
+"""Prescription drug insurance premium (TP-1 line 447) on a further dollar of salary: the premium
+rate on the premium income times the part of a salary dollar left in the net income. An exact
+product, not printed on any form."""
+
+MARGINAL_CONTRIBUTION_RATE = AmountKind.declare(
+    CATALOG, "marginal_contribution_rate", non_negative=True
+)
+"""The QPP base, first additional, second additional, EI and QPIP rates on a further dollar of
+salary (the contributions the take-home subtracts). Not printed on any form."""
+
+MARGINAL_TAX_RATE = AmountKind.declare(CATALOG, "marginal_tax_rate", non_negative=True)
+"""Marginal tax rate on the take-home basis: the change in the 5005-R line 43500 income tax, the
+TP-1 line 450 income tax and contributions, the QPP (Schedule 8 lines 25, 12 and 22), the EI (T2204
+line 16) and the QPIP premium (line 91) per further dollar of salary, the sum of the federal,
+Quebec, drug insurance premium and contribution rates, on the return summary. Calculated from the
+forms' rates, not printed on any form."""
+
+MARGINAL_PREMIUM_RATE_ON_INCOME_BEFORE_MAXIMUM = AmountKind.declare(
+    CATALOG, "marginal_premium_rate_on_income_before_maximum", non_negative=True
+)
+"""Schedule K premium rate on a further dollar of premium income before the maximum premium: the
+column rate (line 80) counted only above a line 48 of 0. An exact product, not printed on any
+form."""
+
+MARGINAL_PPIP_UNDER_THRESHOLD_COUNT = CountKind.declare(
+    CATALOG, "marginal_ppip_under_threshold_count"
+)
+"""The `ppip_premium` form's earnings test (1 while the PPIP insurable earnings are under $2,000),
+read into the return summary's own artifact, so the QPIP rate is 0 where line 91 is 0."""
