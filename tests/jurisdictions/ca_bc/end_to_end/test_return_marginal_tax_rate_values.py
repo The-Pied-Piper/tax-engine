@@ -16,8 +16,8 @@ on the CPP base and EI rates (c):
     marginal = federal + BC + CPP base + CPP enhanced + CPP2 + EI
 
 The BC credit rate is 5.06% (5.60% in 2026). The 2026 figures are provisional: the 2026 forms are
-not published, and the 2026 datasets follow the July 2026 payroll rates or are carried forward. The extra-run check over a sweep is in
-`test_return_marginal_tax_rate_extra_run.py`, the gates in
+not published, and the 2026 datasets follow the July 2026 payroll rates or are carried forward.
+The extra-run check over a sweep is in `test_return_marginal_tax_rate_extra_run.py`, the gates in
 `test_return_marginal_tax_rate_gates.py`.
 
 - 2025, $2,020: only the EI of T2204 line 16 moves, 1 for 1 between $2,000 and $2,033: 1.
