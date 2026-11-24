@@ -146,29 +146,7 @@ OTHER_STEPS = [
         "ca/other_employment_income",
     ),
     ("ca-sk/sk428", "ca-sk/sk428_tax_after_credits_line_67", "ca/cad", ""),
-    *(
-        (
-            "ca/take_home_marginal_rates",
-            f"ca/marginal_{name}",
-            "core/percent",
-            "ca/other_employment_income",
-        )
-        for name in (
-            "net_income_rate",
-            "credit_contribution_rate",
-            "federal_rate",
-            "contribution_rate",
-        )
-    ),
 ]
-
-# The marginal rate form's exports after the first: they read the salary total the first one
-# makes (a form's steps share its figures), so they make none of their own.
-LATER_MARGINAL_OUTPUTS = {
-    "ca/marginal_credit_contribution_rate",
-    "ca/marginal_federal_rate",
-    "ca/marginal_contribution_rate",
-}
 
 # salary, credits, line 167: a balance owing, a refund and zero.
 CASES = [
@@ -200,7 +178,7 @@ def _other_step(form: str, output: str, unit: str, base: str) -> str:
               output: {output}
         """
         step = dedent(step)
-        if base == "ca/other_employment_income" and output not in LATER_MARGINAL_OUTPUTS:
+        if base == "ca/other_employment_income":
             step = dedent(total.format(records=SALARY_EXPORT, output=base)) + step
     else:
         step = dedent(total.format(records=SALARY_EXPORT, output=output))

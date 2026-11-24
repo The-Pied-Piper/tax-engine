@@ -17,6 +17,9 @@ The extra-run check over a sweep is in `test_return_marginal_tax_rate_extra_run.
 
 - 2025, $100: nothing moves (under the CPP exemption and the EI $2,000): 0.
 - 2025, $2,020: only the EI of T2204 line 16 moves, 1 for 1 between $2,000 and $2,033: 1.
+- $2,000 and $3,500, both years (exact band edges): the rate at the edge is the lower band's (the
+  EI rate is 0 at $2,000, the CPP rate 0 at $3,500, so $3,500 has the EI rate only: 1.64% in
+  2025, 1.63% in 2026) and the next cent is in the next band (1; then CPP 4.95% + 1% and EI).
 - 2025, $10,000: CPP 4.95% + 1% and EI 1.64% = 0.0759; no income tax.
 - 2025, $20,000: federal 14.5% x 0.99 - 14.5% x 0.0659 = 0.1339945; Saskatchewan line 67 is 0.00
   (the credits are over the tax), so 0; contributions 0.0759: 0.2098945. At $20,866.58 line 67 is
@@ -54,16 +57,6 @@ from tests.kinds import bundled_kinds
 
 D = Decimal
 SASKATCHEWAN = JurisdictionCode("CA-SK")
-RETURN = "ca-sk/return"
-
-
-def _rate(year: int, salary: str, name: str) -> Decimal:
-    worksheets = build_tax_computation().compute(
-        TaxCalculationRequest(SASKATCHEWAN, year, (Artifact(EMPLOYMENT_INCOME, D(salary)),))
-    )
-    value = worksheets[RETURN][0].get(bundled_kinds().kind(name)).value
-    assert isinstance(value, Decimal)
-    return value
 
 
 @pytest.mark.parametrize(
@@ -71,6 +64,10 @@ def _rate(year: int, salary: str, name: str) -> Decimal:
     [
         (2025, "100", "0"),
         (2025, "2020", "1"),
+        (2025, "2000", "0"),
+        (2025, "2000.01", "1"),
+        (2025, "3500", "0.0164"),
+        (2025, "3500.01", "0.0759"),
         (2025, "10000", "0.0759"),
         (2025, "20000", "0.2098945"),
         (2025, "20866.57", "0.2098945"),
@@ -80,28 +77,21 @@ def _rate(year: int, salary: str, name: str) -> Decimal:
         (2025, "75000", "0.3568"),
         (2025, "120000", "0.385"),
         (2025, "200000", "0.4380542655"),
+        (2026, "2000", "0"),
+        (2026, "2000.01", "1"),
+        (2026, "3500", "0.0163"),
+        (2026, "3500.01", "0.0758"),
         (2026, "10000", "0.0758"),
         (2026, "70000", "0.3740725"),
         (2026, "200000", "0.437949296"),
     ],
 )
-def test_the_marginal_rate_is_the_sum_of_the_printed_rates(
+def test_the_marginal_rate_is_the_exact_sum_of_the_rates_that_apply(
     year: int, salary: str, rate: str
 ) -> None:
-    assert _rate(year, salary, "ca-sk/marginal_tax_rate") == D(rate)
+    worksheets = build_tax_computation().compute(
+        TaxCalculationRequest(SASKATCHEWAN, year, (Artifact(EMPLOYMENT_INCOME, D(salary)),))
+    )
+    (summary,) = worksheets["ca-sk/return"]
 
-
-@pytest.mark.parametrize(
-    ("year", "salary", "saskatchewan_part"),
-    [
-        (2025, "20866.57", "0"),
-        (2025, "20866.58", "0.0970305"),
-        (2025, "70000", "0.1185525"),
-        (2026, "21827.31", "0"),
-        (2026, "21827.32", "0.097041"),
-    ],
-)
-def test_the_saskatchewan_part_counts_only_where_the_tax_after_the_credits_is_above_zero(
-    year: int, salary: str, saskatchewan_part: str
-) -> None:
-    assert _rate(year, salary, "ca-sk/saskatchewan_marginal_rate") == D(saskatchewan_part)
+    assert summary.get(bundled_kinds().kind("ca-sk/marginal_tax_rate")).value == D(rate)

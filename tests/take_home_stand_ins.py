@@ -49,6 +49,54 @@ MARGINAL_RATES_FORM = dedent("""\
     """)
 
 
-# The stand-in steps for the four exports are made by the part test itself: each is a rate, so it
-# is read from a gate of an amount (1) rather than the salary.
-MARGINAL_STAND_INS = [("03u_marginal_rates_form.yaml", MARGINAL_RATES_FORM)]
+MARGINAL_RATES_STEPS = dedent("""\
+    form:
+      name: ca/take_home_marginal_rates
+    capabilities:
+      - name: core/record_total
+        unit: ca/cad
+        consumes:
+          records: ca/t1_employment_income.employment_income_line_10100
+        produces:
+          output: ca/marginal_salary
+      - name: core/amount_by_band_rate
+        unit: core/percent
+        params:
+          table: ca/marginal_rate_gate
+        consumes:
+          base: ca/marginal_salary
+        produces:
+          output: ca/marginal_net_income_rate
+      - name: core/amount_by_band_rate
+        unit: core/percent
+        params:
+          table: ca/marginal_rate_gate
+        consumes:
+          base: ca/marginal_salary
+        produces:
+          output: ca/marginal_credit_contribution_rate
+      - name: core/amount_by_band_rate
+        unit: core/percent
+        params:
+          table: ca/marginal_rate_gate
+        consumes:
+          base: ca/marginal_salary
+        produces:
+          output: ca/marginal_federal_rate
+      - name: core/amount_by_band_rate
+        unit: core/percent
+        params:
+          table: ca/marginal_rate_gate
+        consumes:
+          base: ca/marginal_salary
+        produces:
+          output: ca/marginal_contribution_rate
+    """)
+
+# The form and its steps, for the return-part tests whose return also reads the four exports of the
+# federal marginal rate form. Each export is a rate, so it is a gate of the salary (1), not the
+# salary itself.
+MARGINAL_STAND_INS = [
+    ("03u_marginal_rates_form.yaml", MARGINAL_RATES_FORM),
+    ("03v_marginal_rates.yaml", MARGINAL_RATES_STEPS),
+]
