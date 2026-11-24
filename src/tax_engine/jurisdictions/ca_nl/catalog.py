@@ -990,42 +990,55 @@ additional rates plus the EI rate (T2204 line 16). The federal form's export `ca
 marginal_rates.marginal_contribution_rate`, totalled into the return summary's own artifact. Not
 printed on the form."""
 
-MARGINAL_CREDIT_RATE = AmountKind.declare(CATALOG, "marginal_credit_rate", non_negative=True)
-"""Newfoundland and Labrador non-refundable tax credit rate, NL428 line 56 "Rate": the
+MARGINAL_NEWFOUNDLAND_AND_LABRADOR_CREDIT_RATE = AmountKind.declare(
+    CATALOG, "marginal_newfoundland_and_labrador_credit_rate", non_negative=True
+)
+"""Newfoundland and Labrador non-refundable tax credit rate, NL428 line 57 "Newfoundland and
+Labrador non-refundable tax credit rate 8.7%": the
 `ca-nl/credit_rate` dataset as it is, with none of the cent rounding the credit box applies. A
 rate, not printed as its own figure."""
 
-MARGINAL_CONTRIBUTION_CREDIT_RATE = AmountKind.declare(
-    CATALOG, "marginal_contribution_credit_rate", non_negative=True
+MARGINAL_NEWFOUNDLAND_AND_LABRADOR_CONTRIBUTION_CREDIT_RATE = AmountKind.declare(
+    CATALOG, "marginal_newfoundland_and_labrador_contribution_credit_rate", non_negative=True
 )
 """Newfoundland and Labrador credit rate on the CPP base and EI of a further dollar of salary: the
 credit-earning contribution rate times the credit rate, the provincial tax the contributions take
 off. An exact product, not printed on the form."""
 
-MARGINAL_BRACKET_RATE = AmountKind.declare(CATALOG, "marginal_bracket_rate", non_negative=True)
+MARGINAL_NEWFOUNDLAND_AND_LABRADOR_BRACKET_RATE = AmountKind.declare(
+    CATALOG, "marginal_newfoundland_and_labrador_bracket_rate", non_negative=True
+)
 """Newfoundland and Labrador bracket rate on a further dollar of salary: the bracket rate of NL428
 line 5 or line 12 times the part left in the net income. An exact product, not printed on the
 form."""
 
-MARGINAL_RATE_AFTER_CREDITS = AmountKind.declare(
-    CATALOG, "marginal_rate_after_credits", non_negative=True
+MARGINAL_NEWFOUNDLAND_AND_LABRADOR_RATE_AFTER_CREDITS = AmountKind.declare(
+    CATALOG, "marginal_newfoundland_and_labrador_rate_after_credits", non_negative=True
 )
 """Newfoundland and Labrador rate on a further dollar of salary after the CPP base and EI credits,
 before the low-income tax reduction. An exact difference, not printed on the form."""
 
-RETURN_LINE_101 = AmountKind.declare(CATALOG, "return_line_101", non_negative=True)
+INCOME_OVER_LOW_INCOME_THRESHOLD_RETURN = AmountKind.declare(
+    CATALOG, "income_over_low_income_threshold_return", non_negative=True
+)
 """NL428 line 101 "Line 101: Line 99 minus line 100 (if negative, enter "0")", the income over the
 low-income threshold, read into the return summary. The base of the line 101 gate."""
 
-RETURN_LINE_104 = AmountKind.declare(CATALOG, "return_line_104", non_negative=True)
+LOW_INCOME_TAX_REDUCTION_RETURN = AmountKind.declare(
+    CATALOG, "low_income_tax_reduction_return", non_negative=True
+)
 """NL428 line 104, the Newfoundland and Labrador low-income tax reduction, read into the return
 summary. The base of the line 104 gate."""
 
-LINE_101_GATE = AmountKind.declare(CATALOG, "line_101_gate", non_negative=True)
+INCOME_OVER_LOW_INCOME_THRESHOLD_GATE = AmountKind.declare(
+    CATALOG, "income_over_low_income_threshold_gate", non_negative=True
+)
 """0 where NL428 line 101 is 0.00 and 1 where it is at least one cent, from the
 `ca-nl/marginal_rate_gate` dataset. A plain figure, not printed on the form."""
 
-LINE_104_GATE = AmountKind.declare(CATALOG, "line_104_gate", non_negative=True)
+LOW_INCOME_TAX_REDUCTION_GATE = AmountKind.declare(
+    CATALOG, "low_income_tax_reduction_gate", non_negative=True
+)
 """0 where NL428 line 104 is 0.00 and 1 where it is at least one cent, from the
 `ca-nl/marginal_rate_gate` dataset. A plain figure, not printed on the form."""
 
@@ -1038,14 +1051,15 @@ zero), otherwise 0. The product of the two gates, not printed on the form."""
 LOW_INCOME_REDUCTION_RATE_FIGURE = AmountKind.declare(
     CATALOG, "low_income_reduction_rate_figure", non_negative=True
 )
-"""NL428 line 103 "Rate 16%": the `ca-nl/low_income_reduction_rate` dataset as it is. A rate, not
-printed as its own figure."""
+"""NL428 line 102 "Applicable rate 16%": the `ca-nl/low_income_reduction_rate` dataset as it is. A
+rate, not printed as its own figure."""
 
 MARGINAL_LOW_INCOME_REDUCTION_RATE = AmountKind.declare(
     CATALOG, "marginal_low_income_reduction_rate", non_negative=True
 )
 """Rate at which a further dollar of net income takes off the low-income tax reduction (NL428
-line 103): 16% while the reduction is being phased out, 0 elsewhere. Not printed on the form."""
+line 102 and line 103): 16% while the reduction is being phased out, 0 elsewhere. Not printed on
+the form."""
 
 MARGINAL_LOW_INCOME_PHASE_OUT_RATE = AmountKind.declare(
     CATALOG, "marginal_low_income_phase_out_rate", non_negative=True
@@ -1053,8 +1067,8 @@ MARGINAL_LOW_INCOME_PHASE_OUT_RATE = AmountKind.declare(
 """The low-income reduction rate on a further dollar of salary: the reduction rate times the part
 left in the net income. An exact product, not printed on the form."""
 
-MARGINAL_RATE_BEFORE_GATE = AmountKind.declare(
-    CATALOG, "marginal_rate_before_gate", non_negative=True
+MARGINAL_NEWFOUNDLAND_AND_LABRADOR_RATE_WITH_REDUCTION = AmountKind.declare(
+    CATALOG, "marginal_newfoundland_and_labrador_rate_with_reduction", non_negative=True
 )
 """Newfoundland and Labrador rate on a further dollar of salary after the credits plus the
 low-income reduction phase-out, before the line 105 gate. An exact sum, not printed on the form."""

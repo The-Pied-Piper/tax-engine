@@ -42,6 +42,7 @@ from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca.catalog.refund import REFUND_OR_BALANCE_OWING, TOTAL_CREDITS
 from tests.federal_forms import form_parts
+from tests.jurisdictions.ca_nl.stand_ins import MARGINAL_RATES_STAND_INS
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_capabilities,
     newfoundland_kinds,
@@ -49,7 +50,7 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_parameter_parsers,
     newfoundland_units,
 )
-from tests.take_home_stand_ins import MARGINAL_RATES_STAND_INS, STAND_INS
+from tests.take_home_stand_ins import STAND_INS
 
 D = Decimal
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"

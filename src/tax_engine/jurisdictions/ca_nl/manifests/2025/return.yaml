@@ -36,7 +36,10 @@
 # The whole provincial part is counted only while NL428 line 105 "Line 94 minus line 104 (if
 # negative, enter "0")", the tax that goes to T1 line 42800, is above zero, through the
 # `ca-nl/marginal_rate_gate` dataset (0 where the amount is 0.00, 1 from one cent). Newfoundland
-# and Labrador has no surtax and no health premium.
+# and Labrador has no surtax and no health premium. The rate is the one of a salary-only filer, as
+# the take-home calculator takes only the salary: the optional inputs (the age amount, NL428 line 17,
+# and the medical expenses, lines 49 to 53) are left blank there, so their slopes are not built (the
+# Ontario rate leaves its optional inputs out the same way).
 #
 # The last step adds the federal marginal rate, the Newfoundland and Labrador marginal rate and
 # the contribution rate (CPP base, enhanced and second additional, and EI) with core/sum into
@@ -114,16 +117,16 @@ capabilities:
     params:
       rate: ca-nl/credit_rate
     produces:
-      output: ca-nl/marginal_credit_rate
+      output: ca-nl/marginal_newfoundland_and_labrador_credit_rate
   - name: core/multiply_by_rate
     unit: core/percent
     params:
       rounding: ca-nl/exact_rounding
     consumes:
       base: ca-nl/marginal_credit_contribution_rate
-      rate: ca-nl/marginal_credit_rate
+      rate: ca-nl/marginal_newfoundland_and_labrador_credit_rate
     produces:
-      output: ca-nl/marginal_contribution_credit_rate
+      output: ca-nl/marginal_newfoundland_and_labrador_contribution_credit_rate
   - name: core/multiply_by_rate
     unit: core/percent
     params:
@@ -132,51 +135,51 @@ capabilities:
       base: ca-nl/newfoundland_and_labrador_bracket_rate_return
       rate: ca-nl/marginal_net_income_rate
     produces:
-      output: ca-nl/marginal_bracket_rate
+      output: ca-nl/marginal_newfoundland_and_labrador_bracket_rate
   - name: core/subtract
     unit: core/percent
     params:
       rounding: ca-nl/exact_rounding
     consumes:
-      amount: ca-nl/marginal_bracket_rate
-      less: ca-nl/marginal_contribution_credit_rate
+      amount: ca-nl/marginal_newfoundland_and_labrador_bracket_rate
+      less: ca-nl/marginal_newfoundland_and_labrador_contribution_credit_rate
     produces:
-      output: ca-nl/marginal_rate_after_credits
+      output: ca-nl/marginal_newfoundland_and_labrador_rate_after_credits
   - name: core/record_total
     unit: ca/cad
     consumes:
       records: ca-nl/nl428.nl428_line_101
     produces:
-      output: ca-nl/return_line_101
+      output: ca-nl/income_over_low_income_threshold_return
   - name: core/record_total
     unit: ca/cad
     consumes:
       records: ca-nl/nl428.nl428_line_104
     produces:
-      output: ca-nl/return_line_104
+      output: ca-nl/low_income_tax_reduction_return
   - name: core/amount_by_band_rate
     unit: core/percent
     params:
       table: ca-nl/marginal_rate_gate
     consumes:
-      base: ca-nl/return_line_101
+      base: ca-nl/income_over_low_income_threshold_return
     produces:
-      output: ca-nl/line_101_gate
+      output: ca-nl/income_over_low_income_threshold_gate
   - name: core/amount_by_band_rate
     unit: core/percent
     params:
       table: ca-nl/marginal_rate_gate
     consumes:
-      base: ca-nl/return_line_104
+      base: ca-nl/low_income_tax_reduction_return
     produces:
-      output: ca-nl/line_104_gate
+      output: ca-nl/low_income_tax_reduction_gate
   - name: core/multiply_by_rate
     unit: core/percent
     params:
       rounding: ca-nl/exact_rounding
     consumes:
-      base: ca-nl/line_101_gate
-      rate: ca-nl/line_104_gate
+      base: ca-nl/income_over_low_income_threshold_gate
+      rate: ca-nl/low_income_tax_reduction_gate
     produces:
       output: ca-nl/low_income_reduction_phase_out_gate
   - name: core/rate_figure
@@ -209,10 +212,10 @@ capabilities:
       rounding: ca-nl/exact_rounding
     consumes:
       parts:
-        - ca-nl/marginal_rate_after_credits
+        - ca-nl/marginal_newfoundland_and_labrador_rate_after_credits
         - ca-nl/marginal_low_income_phase_out_rate
     produces:
-      output: ca-nl/marginal_rate_before_gate
+      output: ca-nl/marginal_newfoundland_and_labrador_rate_with_reduction
   - name: core/record_total
     unit: ca/cad
     consumes:
@@ -233,7 +236,7 @@ capabilities:
       rounding: ca-nl/exact_rounding
     consumes:
       base: ca-nl/newfoundland_and_labrador_rate_gate
-      rate: ca-nl/marginal_rate_before_gate
+      rate: ca-nl/marginal_newfoundland_and_labrador_rate_with_reduction
     produces:
       output: ca-nl/newfoundland_and_labrador_marginal_rate
   - name: core/sum
