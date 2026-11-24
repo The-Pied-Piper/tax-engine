@@ -52,6 +52,12 @@ class ContributionTier:
                 f"contribution tier maximum must not be negative, got {self.maximum}"
             )
 
+    def next_dollar_rate(self, earnings: Decimal) -> Decimal:
+        """The rate a further dollar of `earnings` is charged: the tier's rate strictly inside the
+        band, 0 on either bound and outside it (the contribution stops growing at the upper bound
+        and has not started at the lower)."""
+        return self.rate.value if self.lower < earnings < self.upper else Decimal(0)
+
 
 CONTRIBUTION_TIER: ParameterKind[ContributionTier] = ParameterKind(
     "contribution_tier", ContributionTier

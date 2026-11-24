@@ -77,11 +77,15 @@ class TakeHomeService:
             income_tax=totals.income_tax,
             take_home=totals.take_home,
             unit=self._text.unit(unit),
-            average_income_tax_rate=self._rate(
-                who, sheets, kinds, declared.average_income_tax_rate
+            average_tax_rate=(
+                self._rate(who, sheets, kinds, declared.average_tax_rate)
+                if request.include_rates
+                else None
             ),
-            marginal_income_tax_rate=self._rate(
-                who, sheets, kinds, declared.marginal_income_tax_rate
+            marginal_tax_rate=(
+                self._rate(who, sheets, kinds, declared.marginal_tax_rate)
+                if request.include_rates
+                else None
             ),
             trace=self._trace(sheets) if request.include_trace else None,
         )

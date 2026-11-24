@@ -38,7 +38,7 @@ def test_the_return_exports_the_refund_and_the_average_and_marginal_rates_and_no
 
     assert header["outputs"] == [
         "ca/refund_or_balance_owing",
-        "ca-ab/average_income_tax_rate",
+        "ca-ab/average_tax_rate",
         "ca-ab/marginal_tax_rate",
     ]
     assert header["capabilities"] == []
@@ -64,6 +64,7 @@ def test_the_federal_forms_are_imported_in_order_and_schedule_6_reads_the_albert
         "ca/schedule_8",
         "ca/schedule_9",
         "ca/t2204",
+        "ca/take_home_average_rate",
         "ca/t691",
     ]
 

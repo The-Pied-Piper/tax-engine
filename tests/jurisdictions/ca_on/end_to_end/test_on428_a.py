@@ -133,19 +133,20 @@ def test_the_form_exports_line_20_the_figure_on428_line_85_reads(
     assert sheet.get(LIFT_CREDIT_SINGLE).value == D("518.25")
 
 
-def test_the_form_exports_exactly_line_20(take_home_service: TakeHomeService) -> None:
-    # Lines 3, 17 and 19 are read only inside the form, so the form exports line 20 alone.
+def test_the_form_exports_lines_20_and_19(take_home_service: TakeHomeService) -> None:
+    # Lines 3 and 17 are read only inside the form, so the form exports line 20 and line 19 (the
+    # reduction, which the return reads for the LIFT phase-out rate).
     service = take_home_service(HEADER, FORM, *PARTS)
     code = JurisdictionCode("CA-ON")
     (form,) = (f for f in service.compose(code, 2025).forms if f.name == "ca-on/on428_a")
-    assert form.exports == (LIFT_CREDIT_SINGLE,)
+    assert form.exports == (LIFT_CREDIT_SINGLE, LIFT_REDUCTION)
 
     worksheets = service.compute(
         TaxCalculationRequest(code, 2025, (Artifact(EMPLOYMENT_INCOME, D("40000")),))
     )
     (sheet,) = worksheets["ca-on/on428_a"]
 
-    assert [sheet.get(kind).value for kind in form.exports] == [D("518.25")]
+    assert [sheet.get(kind).value for kind in form.exports] == [D("518.25"), D("356.75")]
 
 
 @pytest.mark.parametrize("salary", [case[0] for case in CASES])

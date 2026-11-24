@@ -1,0 +1,163 @@
+# Take-home marginal rates: the contributions. The salary is T1 line 10100, read from the T1
+# employment income form's export into the form's own `ca/marginal_salary`.
+#
+# Each rate reads the figures and datasets the contributions themselves use, so no printed rate is
+# stored a second time. The CPP rates are the `contribution_tier` datasets of Schedule 8 lines 11,
+# 12 and 22 (4.95%, 1% and 4%) while the earnings the line is charged on, read from Schedule 8
+# (line 7 before its maximum, and line 4), are inside the tier's band. Line 7 itself stops at its
+# maximum, which is the tier's upper bound, so it would look inside the band for every higher
+# salary; the line 7 figure before the maximum does not. The EI rate follows T2204 line 16, the
+# least of line 7 and line 10 (line 9, the premiums deducted, is line 10 for a salary-only filer):
+# line 10's rate is the `ei_premium` tier's rate on line 1, and line 7's is 1 while it is above 0.
+# A rate is 0 on either edge of its band, where a further dollar adds nothing.
+#
+# The net income rate is the part of a further dollar that stays in the net income and the taxable
+# income: T1 line 22215 takes the enhanced CPP contributions (line 12 and line 22) off the income,
+# so it is 1 less the first and the second additional rates. The 1 is the salary gate (the salary
+# through `ca/marginal_rate_gate`, 1 for any salary of a cent or more), two core/subtract steps take
+# the rates off it.
+#
+# The credit-earning contribution rate is the CPP base rate plus the EI rate: the CPP base
+# contribution (T1 line 30800) and the EI premium (line 31200) earn a non-refundable credit, which
+# the federal steps and a province's steps apply at their own credit rates.
+#
+# The contribution rate is the four contribution rates added: CPP base, first additional, second
+# additional and EI.
+form:
+  name: ca/take_home_marginal_rates
+capabilities:
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/t1_employment_income.employment_income_line_10100
+    produces:
+      output: ca/marginal_salary
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/schedule_8.cpp_part_3_line_7_difference
+    produces:
+      output: ca/marginal_cpp_line_7_difference
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/schedule_8.cpp_part_3_line_4
+    produces:
+      output: ca/marginal_cpp_line_4
+  - name: ca/contribution_tier_rate
+    unit: core/percent
+    params:
+      tier: ca/cpp_line_11_base_contribution
+    consumes:
+      earnings: ca/marginal_cpp_line_7_difference
+    produces:
+      output: ca/marginal_cpp_base_rate
+  - name: ca/contribution_tier_rate
+    unit: core/percent
+    params:
+      tier: ca/cpp_line_12_first_additional_contribution
+    consumes:
+      earnings: ca/marginal_cpp_line_7_difference
+    produces:
+      output: ca/marginal_cpp_first_additional_rate
+  - name: ca/contribution_tier_rate
+    unit: core/percent
+    params:
+      tier: ca/cpp_line_22_second_additional_contribution
+    consumes:
+      earnings: ca/marginal_cpp_line_4
+    produces:
+      output: ca/marginal_cpp_second_additional_rate
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/t2204.t2204_line_1
+    produces:
+      output: ca/marginal_ei_line_1
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/t2204.t2204_line_7
+    produces:
+      output: ca/marginal_ei_line_7
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/t2204.t2204_line_10
+    produces:
+      output: ca/marginal_ei_line_10
+  - name: ca/contribution_tier_rate
+    unit: core/percent
+    params:
+      tier: ca/ei_premium
+    consumes:
+      earnings: ca/marginal_ei_line_1
+    produces:
+      output: ca/marginal_ei_premium_rate
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca/marginal_rate_gate
+    consumes:
+      base: ca/marginal_ei_line_7
+    produces:
+      output: ca/marginal_ei_line_7_rate
+  - name: core/lesser_of_rate
+    unit: core/percent
+    consumes:
+      amounts:
+        - ca/marginal_ei_line_7
+        - ca/marginal_ei_line_10
+      rates:
+        - ca/marginal_ei_line_7_rate
+        - ca/marginal_ei_premium_rate
+    produces:
+      output: ca/marginal_ei_rate
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca/marginal_rate_gate
+    consumes:
+      base: ca/marginal_salary
+    produces:
+      output: ca/marginal_salary_gate
+  - name: core/subtract
+    unit: core/percent
+    params:
+      rounding: ca/exact_rounding
+    consumes:
+      amount: ca/marginal_salary_gate
+      less: ca/marginal_cpp_first_additional_rate
+    produces:
+      output: ca/marginal_net_income_rate_before_cpp2
+  - name: core/subtract
+    unit: core/percent
+    params:
+      rounding: ca/exact_rounding
+    consumes:
+      amount: ca/marginal_net_income_rate_before_cpp2
+      less: ca/marginal_cpp_second_additional_rate
+    produces:
+      output: ca/marginal_net_income_rate
+  - name: core/sum
+    unit: core/percent
+    params:
+      rounding: ca/exact_rounding
+    consumes:
+      parts:
+        - ca/marginal_cpp_base_rate
+        - ca/marginal_ei_rate
+    produces:
+      output: ca/marginal_credit_contribution_rate
+  - name: core/sum
+    unit: core/percent
+    params:
+      rounding: ca/exact_rounding
+    consumes:
+      parts:
+        - ca/marginal_cpp_base_rate
+        - ca/marginal_cpp_first_additional_rate
+        - ca/marginal_cpp_second_additional_rate
+        - ca/marginal_ei_rate
+    produces:
+      output: ca/marginal_contribution_rate

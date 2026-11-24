@@ -31,13 +31,14 @@ def test_the_return_identity() -> None:
     assert header["title"] == "Return summary"
 
 
-def test_the_return_declares_no_capabilities_and_the_three_outputs() -> None:
+def test_the_return_declares_no_capabilities_and_the_four_outputs() -> None:
     header = _header()
 
     assert header["capabilities"] == []
     assert header["outputs"] == [
         "ca/refund_or_balance_owing",
         "ca-qc/total_payable",
+        "ca-qc/average_tax_rate",
         "ca-qc/solidarity_credit",
     ]
 

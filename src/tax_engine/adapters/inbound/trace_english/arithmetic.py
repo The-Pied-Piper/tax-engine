@@ -22,6 +22,7 @@ from tax_engine.domain.trace.arithmetic import (
     FractionAppliedLine,
     GreaterOfLine,
     LesserOfLine,
+    LesserOfRateLine,
     LesserOfWhenPositiveLine,
     LesserOfWithMaximumLine,
     MoreThanPerUnitLine,
@@ -33,6 +34,7 @@ from tax_engine.domain.trace.arithmetic import (
     ProductLine,
     QuotientLine,
     RateAppliedLine,
+    RateFigureLine,
     RatioAppliedLine,
     RatioTruncatedLine,
     RoundedTotalLine,
@@ -135,6 +137,34 @@ class RateAppliedRenderer:
             f"{EnglishFigures.percent(line.rate.value)}% of "
             f"{names.figure(line.base, line.base_amount)} gives "
             f"{names.shown(line.label, line.amount)} ({EnglishFigures.rounding(line.rounding)})"
+        )
+
+
+@english_renderer
+class RateFigureRenderer:
+    """English text for RateFigureLine."""
+
+    line_class = RateFigureLine
+
+    def render(self, line: RateFigureLine, names: EnglishNames) -> str:
+        """The English sentence for `line`."""
+        return f"The rate is {names.shown(line.label, line.rate.value)}"
+
+
+@english_renderer
+class LesserOfRateRenderer:
+    """English text for LesserOfRateLine."""
+
+    line_class = LesserOfRateLine
+
+    def render(self, line: LesserOfRateLine, names: EnglishNames) -> str:
+        """The English sentence for `line`."""
+        shown = EnglishFigures.listing(
+            [names.figure(kind, amount) for kind, amount, _ in line.parts]
+        )
+        return (
+            f"A further dollar follows the least of {shown}, "
+            f"which gives {names.shown(line.label, line.rate)}"
         )
 
 

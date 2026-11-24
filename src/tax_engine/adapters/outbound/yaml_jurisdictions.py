@@ -657,7 +657,7 @@ class YamlJurisdictionSource:
         name, and the two rates, each figure as the form that exports it and its kind."""
         node.require_mapping(
             frozenset({"salary", "income_tax", "deductions"}),
-            optional=frozenset({"average_income_tax_rate", "marginal_income_tax_rate"}),
+            optional=frozenset({"average_tax_rate", "marginal_tax_rate"}),
         )
 
         def reference(figure: YamlNode) -> FigureReference:
@@ -677,8 +677,8 @@ class YamlJurisdictionSource:
             deductions=tuple(
                 (name, reference(figure)) for name, figure in node.field("deductions").fields()
             ),
-            average_income_tax_rate=optional_reference("average_income_tax_rate"),
-            marginal_income_tax_rate=optional_reference("marginal_income_tax_rate"),
+            average_tax_rate=optional_reference("average_tax_rate"),
+            marginal_tax_rate=optional_reference("marginal_tax_rate"),
         )
 
     def _units_named(self, forms: Iterable[Form]) -> dict[str, Unit]:

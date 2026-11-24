@@ -289,7 +289,9 @@ def test_the_marginal_rate_is_explained_in_english_as_percentages(
     )
 
 
-def test_the_marginal_rate_comes_last_in_the_trace(service: TaxComputationService) -> None:
+def test_the_marginal_rate_comes_last_of_the_marginal_steps_in_the_trace(
+    service: TaxComputationService,
+) -> None:
     sheet = _summary(service, "100000")
     kinds = newfoundland_kinds()
     labels = [line.label for line in sheet.trace]

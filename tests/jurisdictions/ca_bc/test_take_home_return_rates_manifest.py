@@ -25,9 +25,7 @@ PART = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "202
 # The produced kinds, in the order of the steps.
 OUTPUTS = [
     "ca/refund_or_balance_owing",
-    "ca/total_payable",
-    "ca/return_employment_income",
-    "ca-bc/average_income_tax_rate",
+    "ca-bc/average_tax_rate",
     "ca/federal_bracket_rate_return",
     "ca/federal_tax_after_credits_return",
     "ca/federal_rate_gate",
@@ -46,7 +44,6 @@ OUTPUTS = [
     "ca-bc/british_columbia_marginal_rate",
     "ca-bc/marginal_tax_rate",
 ]
-SALARY_RECORD = "ca/return_employment_income"
 EXACT = "ca-bc/exact_rounding"
 GATE = "ca-bc/marginal_rate_gate"
 
@@ -81,30 +78,6 @@ def test_every_step_after_line_167_has_no_title_and_no_reference() -> None:
     for step in _steps()[1:]:
         assert "title" not in step
         assert "reference" not in step
-
-
-def test_the_salary_is_read_as_the_t1_employment_income_export_not_as_an_input() -> None:
-    step = _producing(SALARY_RECORD)
-
-    assert step["name"] == "core/record_total"
-    assert "title" not in step
-    assert step["unit"] == "ca/cad"
-    assert step["consumes"] == {"records": "ca/t1_employment_income.employment_income_line_10100"}
-
-
-def test_the_average_rate_divides_the_total_payable_by_the_salary_rounded_half_up_once() -> None:
-    total = _producing("ca/total_payable")
-    divide = _producing("ca-bc/average_income_tax_rate")
-
-    assert total["name"] == "core/record_total"
-    assert total["consumes"] == {"records": "ca/t1_tax_and_credits.total_payable"}
-    assert divide["name"] == "core/divide"
-    assert divide["unit"] == "core/percent"
-    assert divide["params"] == {"rounding": "ca-bc/rate_rounding"}
-    assert divide["consumes"] == {
-        "dividend": "ca/total_payable",
-        "divisor": SALARY_RECORD,
-    }
 
 
 def test_the_federal_part_is_read_and_gated_as_the_alberta_one_through_the_bc_gate() -> None:

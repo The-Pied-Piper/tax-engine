@@ -46,6 +46,7 @@ from tests.jurisdictions.ca_mb.support import (
     manitoba_parameter_parsers,
     manitoba_units,
 )
+from tests.take_home_stand_ins import STAND_INS
 
 D = Decimal
 MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"
@@ -57,7 +58,7 @@ HEADER = dedent("""\
     valid_from_tax_year: 2025
     outputs:
       - ca/refund_or_balance_owing
-      - ca-mb/average_income_tax_rate
+      - ca-mb/average_tax_rate
       - ca-mb/marginal_tax_rate
     capabilities: []
     """)
@@ -226,6 +227,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
             (f"04_{part.name}", part.read_text(encoding="utf-8"))
             for part in form_parts("t1_employment_income")
         ),
+        *STAND_INS,
         ("05_return.yaml", RETURN_PART.read_text(encoding="utf-8")),
     ]
     for name, text in texts:
@@ -296,5 +298,5 @@ def test_the_return_has_steps_beyond_line_167_for_the_two_rates() -> None:
     outputs = [step["produces"]["output"] for step in _part()["capabilities"]]
 
     assert outputs[0] == "ca/refund_or_balance_owing"
-    assert "ca-mb/average_income_tax_rate" in outputs
+    assert "ca-mb/average_tax_rate" in outputs
     assert outputs[-1] == "ca-mb/marginal_tax_rate"

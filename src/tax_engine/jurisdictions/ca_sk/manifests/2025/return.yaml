@@ -3,13 +3,9 @@
 # the first step is core/record_total over the T1 export, totalling the one amount into the return's
 # own `ca/refund_or_balance_owing`.
 #
-# The return's second output is the average income tax rate, which no form prints (so its step has
-# no title or reference): T1 line 43500 "Total payable" (for the take-home filer, line 143 plus line
-# 147's Saskatchewan tax: the federal and the Saskatchewan income tax) divided by the salary, T1
-# line 10100 (`ca/return_employment_income`, read from the T1 line 10100 export). T1 exports line
-# 43500, so a core/record_total step reads it into the return's own `ca/total_payable`, then
-# core/divide divides it by the salary, rounding once with `ca-sk/rate_rounding` (half-up to
-# 0.0001); a salary of 0 gives 0.
+# The return's second output is the average tax rate on the take-home basis. The federal form
+# `ca/take_home_average_rate` works it out once for every province (income tax, CPP and EI over the
+# salary), and the return reads its export `ca/average_tax_rate` with one core/record_total.
 #
 # The third output is the marginal rate, the income tax rate on a further dollar of salary, built
 # as the Alberta, Ontario and British Columbia returns build it, without a tax reduction. The
@@ -63,26 +59,11 @@ capabilities:
     produces:
       output: ca/refund_or_balance_owing
   - name: core/record_total
-    unit: ca/cad
-    consumes:
-      records: ca/t1_tax_and_credits.total_payable
-    produces:
-      output: ca/total_payable
-  - name: core/record_total
-    unit: ca/cad
-    consumes:
-      records: ca/t1_employment_income.employment_income_line_10100
-    produces:
-      output: ca/return_employment_income
-  - name: core/divide
     unit: core/percent
-    params:
-      rounding: ca-sk/rate_rounding
     consumes:
-      dividend: ca/total_payable
-      divisor: ca/return_employment_income
+      records: ca/take_home_average_rate.average_tax_rate
     produces:
-      output: ca-sk/average_income_tax_rate
+      output: ca-sk/average_tax_rate
   - name: core/record_total
     unit: core/percent
     consumes:

@@ -48,22 +48,6 @@ def test_the_return_still_totals_line_167_first() -> None:
     assert first["produces"] == {"output": "ca/refund_or_balance_owing"}
 
 
-def test_the_average_rate_divides_the_total_payable_by_the_salary_rounded_half_up_once() -> None:
-    (total,) = _record_totals_of("ca/t1_tax_and_credits.total_payable")
-    (divide,) = _by_name("core/divide")
-
-    assert total["produces"] == {"output": "ca/total_payable"}
-    assert divide["params"] == {"rounding": "ca-ab/rate_rounding"}
-    assert divide["consumes"] == {
-        "dividend": "ca/total_payable",
-        "divisor": "ca/return_employment_income",
-    }
-    assert divide["produces"] == {"output": "ca-ab/average_income_tax_rate"}
-    assert divide["unit"] == "core/percent"
-    assert "title" not in divide
-    assert "reference" not in divide
-
-
 def test_the_return_reads_the_federal_line_73_rate_and_line_42900() -> None:
     (rate,) = _record_totals_of("ca/t1_tax_and_credits.federal_bracket_column_rate_line_73")
     (tax,) = _record_totals_of("ca/t1_tax_and_credits.federal_tax_after_credits")

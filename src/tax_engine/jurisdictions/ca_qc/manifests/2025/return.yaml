@@ -15,13 +15,17 @@
 # (451 less 451.1) is an optional input that line 468 includes.
 #
 # Total payable (`ca-qc/total_payable`; `ca/total_payable` is the federal kind the shared forms
-# declare): 5005-R line 43500 less line 44000 (the refundable Quebec abatement) plus TP-1 line 450.
+# declare): 5005-R line 43500 plus TP-1 line 450. The refundable Quebec abatement (line 44000) is a
+# credit paid on filing, separate from the tax, so it is not taken off.
 #
 # The solidarity credit (`ca-qc/solidarity_credit`) is the yearly amount of the payment period July
 # 2026 to June 2027; it is its own output, added to neither of the two figures above.
 #
-# The average and marginal income tax rates the other provinces export are left for a later ticket
-# (owner, 19 Nov 2026).
+# The average tax rate (`ca-qc/average_tax_rate`, no form prints it, so its steps have no title or
+# line): the total payable above, the CPP (Schedule 8 lines 25 and 28, at the Quebec rate), the EI
+# premium (T2204 line 16) and the QPIP premium (the `ppip_premium` form's export) added by core/sum
+# into `ca/return_total_deductions` and divided by the salary, rounded once by
+# `ca/take_home_average_rate_rounding`. The marginal tax rate is left for a later ticket.
 capabilities:
   - name: core/record_total
     unit: ca/cad
@@ -57,31 +61,68 @@ capabilities:
       records: ca-qc/t1_tax_and_credits.total_payable_line_151
     produces:
       output: ca-qc/federal_total_payable_return
-  - name: core/record_total
-    unit: ca/cad
-    consumes:
-      records: ca-qc/t1_tax_and_credits.refundable_quebec_abatement_line_156
-    produces:
-      output: ca-qc/refundable_quebec_abatement_return
-  - name: core/subtract
-    unit: ca/cad
-    params:
-      rounding: ca-qc/cent_rounding
-    consumes:
-      amount: ca-qc/federal_total_payable_return
-      less: ca-qc/refundable_quebec_abatement_return
-    produces:
-      output: ca-qc/federal_total_payable_less_abatement_return
   - name: core/sum
     unit: ca/cad
     params:
       rounding: ca-qc/cent_rounding
     consumes:
       parts:
-        - ca-qc/federal_total_payable_less_abatement_return
+        - ca-qc/federal_total_payable_return
         - ca-qc/tp1_income_tax_and_contributions_return
     produces:
       output: ca-qc/total_payable
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/t1_employment_income.employment_income_line_10100
+    produces:
+      output: ca/return_employment_income
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/schedule_8.schedule_8_cpp_base_contributions_on_return
+    produces:
+      output: ca/return_cpp_base_contributions
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/schedule_8.schedule_8_cpp_enhanced_contributions_on_return
+    produces:
+      output: ca/return_cpp_enhanced_contributions
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/t2204.t2204_line_16
+    produces:
+      output: ca/return_ei_premium
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-qc/ppip_premium.ppip_premiums_paid
+    produces:
+      output: ca-qc/return_qpip_premiums
+  - name: core/sum
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/total_payable
+        - ca/return_cpp_base_contributions
+        - ca/return_cpp_enhanced_contributions
+        - ca/return_ei_premium
+        - ca-qc/return_qpip_premiums
+    produces:
+      output: ca/return_total_deductions
+  - name: core/divide
+    unit: core/percent
+    params:
+      rounding: ca/take_home_average_rate_rounding
+    consumes:
+      dividend: ca/return_total_deductions
+      divisor: ca/return_employment_income
+    produces:
+      output: ca-qc/average_tax_rate
   - name: core/record_total
     unit: ca/cad
     consumes:

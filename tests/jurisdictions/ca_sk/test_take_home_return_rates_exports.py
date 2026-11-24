@@ -46,7 +46,7 @@ def _value(sheet: Worksheet, name: str) -> Decimal:
     "name",
     [
         "ca/refund_or_balance_owing",
-        "ca-sk/average_income_tax_rate",
+        "ca-sk/average_tax_rate",
         "ca-sk/marginal_tax_rate",
     ],
 )

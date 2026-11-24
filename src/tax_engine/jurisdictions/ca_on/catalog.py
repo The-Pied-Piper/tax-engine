@@ -778,12 +778,6 @@ LIFT_INDIVIDUAL_INCOME_THRESHOLD = AmountKind.declare(
 32,500.00" and Part B line 31 "Individual income threshold 32,500.00": a printed amount, taken
 whole."""
 
-AVERAGE_INCOME_TAX_RATE = AmountKind.declare(CATALOG, "average_income_tax_rate", non_negative=True)
-"""Average income tax rate, the Ontario return summary's own figure (no form prints it): T1 line
-43500 "Total payable" (for the take-home filer, line 143 plus line 147: the federal and the Ontario
-income tax) divided by the salary (`ca/return_employment_income`), as a fraction, so 0.1642 is
-16.42%. CPP and EI are not income tax and are not in it. It is 0 when the salary is 0."""
-
 ONTARIO_SURTAX_BASE = AmountKind.declare(CATALOG, "ontario_surtax_base", non_negative=True)
 """Ontario surtax base, ON428 line 65 "Line 65: Line 63 minus line 64 (if negative, enter "0") =":
 the figure on the return summary, the one amount of ON428's export of line 65 totalled into the
@@ -811,23 +805,18 @@ RETURN_HEALTH_PREMIUM_SLOPE = AmountKind.declare(
 """Health premium slope, ON428 line 89 chart: the printed rate of the chart row that the taxable
 income falls in (6% or 25%), 0 for a flat row."""
 
-ONTARIO_TAX_AFTER_REDUCTION_RETURN = AmountKind.declare(
-    CATALOG, "ontario_tax_after_reduction_return", non_negative=True
+ONTARIO_TAX_AFTER_LIFT_RETURN = AmountKind.declare(
+    CATALOG, "ontario_tax_after_lift_return", non_negative=True
 )
-"""Ontario tax after the tax reduction, ON428 line 81: the tax after the personal credits and the
-Ontario tax reduction, before the LIFT credit and the health premium. The one amount of ON428's
-export totalled into the return summary's own artifact, the base of the Ontario rate gate."""
+"""Ontario tax after the LIFT credit, ON428 line 86 "Line 83 minus line 85 (if negative, enter
+"0")": the one amount of ON428's export totalled into the return summary's own artifact, the base
+of the Ontario rate gate."""
 
 ONTARIO_RATE_GATE = AmountKind.declare(CATALOG, "ontario_rate_gate", non_negative=True)
-"""Ontario rate gate: 0 where the Ontario tax after the tax reduction (ON428 line 81) is 0.00 and 1
-where it is at least one cent, from the `ca-on/marginal_rate_gate` dataset. A plain figure, not
+"""Ontario rate gate: 0 where the Ontario tax after the LIFT credit (ON428 line 86) is 0.00 and 1
+where it is at least one cent, from the `ca-on/marginal_rate_gate` dataset. Where the LIFT credit
+takes all the Ontario tax, a further dollar of salary adds no Ontario tax. A plain figure, not
 printed on the form."""
-
-ONTARIO_BRACKET_MARGINAL_RATE = AmountKind.declare(
-    CATALOG, "ontario_bracket_marginal_rate", non_negative=True
-)
-"""Ontario bracket marginal rate, ON428 line 5 "Line 5: Rate" times the surtax factor of lines 66
-and 67, before the gate. An exact product, not printed on the form."""
 
 ONTARIO_TAX_REDUCTION_RETURN = AmountKind.declare(
     CATALOG, "ontario_tax_reduction_return", non_negative=True
@@ -836,30 +825,150 @@ ONTARIO_TAX_REDUCTION_RETURN = AmountKind.declare(
 summary's own artifact, the base of the Ontario reduction gate."""
 
 ONTARIO_REDUCTION_GATE = AmountKind.declare(CATALOG, "ontario_reduction_gate", non_negative=True)
-"""Ontario reduction gate: 0 where the Ontario tax reduction (ON428 line 80) is 0.00 and 1 where it
-is at least one cent, from the `ca-on/marginal_rate_gate` dataset. A plain figure, not printed on
-the form."""
+"""Ontario reduction gate: 0 where the Ontario tax reduction (ON428 line 80) is 0.00 and 1 where
+it is at least one cent, from the `ca-on/marginal_rate_gate` dataset. A plain figure, not printed
+on the form."""
+
+MARGINAL_NET_INCOME_RATE = AmountKind.declare(
+    CATALOG, "marginal_net_income_rate", non_negative=True
+)
+"""Part of a further dollar of salary left in the net income (T1 line 23600) and the taxable
+income: 1 less the CPP first additional rate and the CPP second additional rate, which T1 line
+22215 takes off the income. The federal form's export `ca/take_home_marginal_rates.marginal_net_
+income_rate`, totalled into the return summary's own artifact. Not printed on the form."""
+
+MARGINAL_CREDIT_CONTRIBUTION_RATE = AmountKind.declare(
+    CATALOG, "marginal_credit_contribution_rate", non_negative=True
+)
+"""Credit-earning contribution rate on a further dollar of salary: the CPP base rate (T1 line
+30800) plus the EI rate (T1 line 31200), the two contributions that earn a non-refundable credit.
+The federal form's export `ca/take_home_marginal_rates.marginal_credit_contribution_rate`, totalled
+into the return summary's own artifact. Not printed on the form."""
+
+MARGINAL_ONTARIO_CONTRIBUTION_CREDIT_RATE = AmountKind.declare(
+    CATALOG, "marginal_ontario_contribution_credit_rate", non_negative=True
+)
+"""Ontario credit rate on the CPP base and EI of a further dollar of salary: the credit-earning
+contribution rate times the Ontario credit rate (ON428 line 45 "Ontario non-refundable tax credit
+rate"), the Ontario tax the contributions take off. An exact product, not printed on the form."""
+
+MARGINAL_FEDERAL_RATE = AmountKind.declare(CATALOG, "marginal_federal_rate", non_negative=True)
+"""Federal marginal rate on the take-home basis: the federal rate on a further dollar of salary
+after the credits, where the basic federal tax (T1 line 42900) is above zero, and 0 where it is
+not, a fraction (0.2 for 20%). The federal form's export `ca/take_home_marginal_rates.marginal_
+federal_rate`, totalled into the return summary's own artifact. Not printed on the form."""
+
+MARGINAL_ONTARIO_BRACKET_RATE = AmountKind.declare(
+    CATALOG, "marginal_ontario_bracket_rate", non_negative=True
+)
+"""Ontario bracket rate on a further dollar of salary, ON428 line 5 "Line 5: Rate" times the part
+left in the net income. An exact product, not printed on the form."""
+
+MARGINAL_ONTARIO_RATE_AFTER_CREDITS = AmountKind.declare(
+    CATALOG, "marginal_ontario_rate_after_credits", non_negative=True
+)
+"""Ontario rate on a further dollar of salary after the CPP base and EI credits, before the
+surtax. An exact difference, not printed on the form."""
+
+MARGINAL_ONTARIO_RATE_WITH_SURTAX = AmountKind.declare(
+    CATALOG, "marginal_ontario_rate_with_surtax", non_negative=True
+)
+"""Ontario rate on a further dollar of salary with the surtax: the rate after the credits times
+the surtax factor of ON428 lines 66 and 67. An exact product, not printed on the form."""
 
 ONTARIO_REDUCTION_PHASE_OUT_RATE = AmountKind.declare(
     CATALOG, "ontario_reduction_phase_out_rate", non_negative=True
 )
-"""Ontario reduction phase-out rate: the Ontario bracket marginal rate where the Ontario tax
-reduction is above zero, and 0 where it is not, the extra tax on a further dollar while the
-reduction is phased out. An exact product, not printed on the form."""
+"""Ontario reduction phase-out rate: the Ontario rate with the surtax where the Ontario tax
+reduction (ON428 line 80) is above zero, and 0 where it is not, the extra tax on a further dollar
+while the reduction is phased out. An exact product, not printed on the form."""
 
-ONTARIO_BRACKET_RATE_WITH_REDUCTION = AmountKind.declare(
-    CATALOG, "ontario_bracket_rate_with_reduction", non_negative=True
+MARGINAL_ONTARIO_RATE_WITH_REDUCTION = AmountKind.declare(
+    CATALOG, "marginal_ontario_rate_with_reduction", non_negative=True
 )
-"""Ontario bracket rate with the reduction: the Ontario bracket marginal rate plus the reduction
-phase-out rate, before the Ontario gate. An exact sum, not printed on the form."""
+"""Ontario rate on a further dollar of salary with the surtax and the tax reduction's phase-out,
+before the LIFT credit. An exact sum, not printed on the form."""
+
+RETURN_LIFT_REDUCTION = AmountKind.declare(CATALOG, "return_lift_reduction", non_negative=True)
+"""LIFT reduction, Schedule ON428-A Part A line 19 "Line 17 multiplied by the percentage from line
+18": the one amount of ON428-A's export totalled into the return summary's own artifact, the base
+of the LIFT reduction rate."""
+
+RETURN_LIFT_CREDIT = AmountKind.declare(CATALOG, "return_lift_credit", non_negative=True)
+"""LIFT credit left, Schedule ON428-A Part A line 20: the one amount of ON428-A's export totalled
+into the return summary's own artifact."""
+
+LIFT_REDUCTION_GATE = AmountKind.declare(CATALOG, "lift_reduction_gate", non_negative=True)
+"""1 where the LIFT reduction (line 19) is at least a cent, 0 where it is 0.00, from the
+`ca-on/marginal_rate_gate` dataset. A plain figure, not printed on the form."""
+
+LIFT_CREDIT_GATE = AmountKind.declare(CATALOG, "lift_credit_gate", non_negative=True)
+"""1 where the LIFT credit left (line 20) is at least a cent, 0 where it is 0.00, from the
+`ca-on/marginal_rate_gate` dataset. A plain figure, not printed on the form."""
+
+LIFT_PHASE_OUT_GATE = AmountKind.declare(CATALOG, "lift_phase_out_gate", non_negative=True)
+"""1 where the LIFT reduction and the credit left are both above 0, the two gates multiplied: the
+credit is falling with income. A plain figure, not printed on the form."""
+
+LIFT_SINGLE_RATE_FIGURE = AmountKind.declare(CATALOG, "lift_single_rate_figure", non_negative=True)
+"""LIFT reduction rate, Schedule ON428-A line 18 "Applicable rate 5%": the `ca-on/lift_single_rate`
+dataset as it is, a rate, not printed as a figure of its own."""
+
+MARGINAL_ONTARIO_CREDIT_RATE = AmountKind.declare(
+    CATALOG, "marginal_ontario_credit_rate", non_negative=True
+)
+"""Ontario non-refundable tax credit rate, ON428 line 45: the `ca-on/credit_rate` dataset as it is,
+with none of the cent rounding the credit box applies. A rate, not printed as its own figure."""
+
+MARGINAL_LIFT_REDUCTION_RATE = AmountKind.declare(
+    CATALOG, "marginal_lift_reduction_rate", non_negative=True
+)
+"""LIFT reduction rate on a further dollar of net income, Schedule ON428-A line 18 "Applicable
+rate 5%": 5% while the reduction (line 19) and the credit left (line 20) are both above zero, 0
+elsewhere. Not printed on the form."""
+
+MARGINAL_LIFT_PHASE_OUT_RATE = AmountKind.declare(
+    CATALOG, "marginal_lift_phase_out_rate", non_negative=True
+)
+"""LIFT credit phase-out on a further dollar of salary: the LIFT reduction rate times the part
+left in the net income, the Ontario tax the lost credit adds. An exact product, not printed on the
+form."""
+
+MARGINAL_ONTARIO_RATE_AFTER_LIFT = AmountKind.declare(
+    CATALOG, "marginal_ontario_rate_after_lift", non_negative=True
+)
+"""Ontario rate on a further dollar of salary after the LIFT credit, before the Ontario gate: the
+rate with the surtax and the tax reduction plus the LIFT phase-out. An exact sum, not printed on
+the form."""
 
 ONTARIO_MARGINAL_RATE = AmountKind.declare(CATALOG, "ontario_marginal_rate", non_negative=True)
-"""Ontario marginal rate: the Ontario bracket marginal rate (line 5 rate times the surtax factor of
-lines 66 and 67) where the Ontario tax after the tax reduction is above zero, and 0 where it is
-not: the rate a further dollar of income is taxed at in Ontario with the surtax, on the return
-summary. Not printed on the form."""
+"""Ontario marginal rate on the take-home basis: the Ontario rate on a further dollar of salary
+after the credits and the LIFT phase-out, where the Ontario tax after the LIFT credit (ON428 line
+86) is above zero, and 0 where it is not. Not printed on the form."""
+
+MARGINAL_HEALTH_PREMIUM_RATE = AmountKind.declare(
+    CATALOG, "marginal_health_premium_rate", non_negative=True
+)
+"""Health premium rate on a further dollar of salary, ON428 line 89 chart: the rate of the chart
+row the taxable income falls in (the health premium slope) times the part left in the taxable
+income. An exact product, not printed on the form."""
+
+MARGINAL_CONTRIBUTION_RATE = AmountKind.declare(
+    CATALOG, "marginal_contribution_rate", non_negative=True
+)
+"""Contribution rate on a further dollar of salary: the CPP base, first additional and second
+additional rates plus the EI rate of T2204 line 16. The federal form's export
+`ca/take_home_marginal_rates.marginal_contribution_rate`, totalled into the return summary's own
+artifact. Not printed on the form."""
 
 MARGINAL_TAX_RATE = AmountKind.declare(CATALOG, "marginal_tax_rate", non_negative=True)
-"""Marginal tax rate: the income tax rate on a further dollar of salary, the sum of the federal
-marginal rate, the Ontario marginal rate and the health premium slope, on the return summary. Not
-printed on the form."""
+"""Marginal tax rate on the take-home basis: the change in the T1 line 43500 income tax, the CPP
+and the EI (T2204 line 16) per further dollar of salary, the sum of the federal marginal rate, the
+Ontario marginal rate, the health premium rate and the contribution rate, on the return summary.
+Calculated from the forms' rates, not printed on the form."""
+
+AVERAGE_TAX_RATE = AmountKind.declare(CATALOG, "average_tax_rate", non_negative=True)
+"""Average tax rate on the take-home basis, the Ontario return summary's own figure (no form prints
+it): the income tax, CPP (Schedule 8 lines 25 and 28), EI (T2204 line 16) together divided by the
+salary (`ca/return_employment_income`), as a fraction, so 0.1598 is 15.98%. Paid credits are not
+in it. It is 0 when the salary is 0."""

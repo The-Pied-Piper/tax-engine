@@ -81,6 +81,7 @@ def test_answers_match_what_tax_service_gave(service: TakeHomeService, case: Cas
             JurisdictionCode(want["jurisdiction"]),
             want["year"],
             Decimal(want["salary"]),
+            include_rates=True,
             include_trace="trace_sha256" in want,
         )
     )
@@ -91,8 +92,8 @@ def test_answers_match_what_tax_service_gave(service: TakeHomeService, case: Cas
     assert str(got.take_home) == want["take_home"]
     assert _unit(got.unit) == want["unit"]
     for rate, key in (
-        (got.average_income_tax_rate, "average_income_tax_rate"),
-        (got.marginal_income_tax_rate, "marginal_income_tax_rate"),
+        (got.average_tax_rate, "average_tax_rate"),
+        (got.marginal_tax_rate, "marginal_tax_rate"),
     ):
         assert rate is not None
         assert str(rate.value) == want[key]["value"]
@@ -118,6 +119,44 @@ def test_ontario_2025_at_seventy_thousand(service: TakeHomeService) -> None:
     assert got.salary == Decimal("70000.00")
 
 
+def test_rates_are_left_out_unless_asked_for(service: TakeHomeService) -> None:
+    request = TakeHomeRequest(JurisdictionCode("CA-ON"), 2025, Decimal(70000))
+    assert request.include_rates is False
+    got = service.compute(request)
+    assert got.average_tax_rate is None
+    assert got.marginal_tax_rate is None
+
+
+def test_average_rate_is_total_deductions_over_salary(service: TakeHomeService) -> None:
+    got = service.compute(
+        TakeHomeRequest(JurisdictionCode("CA-ON"), 2025, Decimal(70000), include_rates=True)
+    )
+    assert got.average_tax_rate is not None
+    assert got.average_tax_rate.value == Decimal("0.2362")
+    assert got.average_tax_rate.unit.name == "core/percent"
+
+
+@pytest.mark.parametrize(
+    ("salary", "ei"),
+    [("2000", "0.00"), ("2001", "1.00"), ("2033", "33.00"), ("2100", "34.23")],
+)
+def test_ei_is_the_figure_the_form_uses_for_the_credit(
+    service: TakeHomeService, salary: str, ei: str
+) -> None:
+    got = service.compute(TakeHomeRequest(JurisdictionCode("CA-ON"), 2026, Decimal(salary)))
+    assert {f.name: str(f.amount) for f in got.figures}["ei"] == ei
+
+
+def test_average_rate_is_rounded_by_the_dataset_rule_of_the_tax_year(
+    service: TakeHomeService,
+) -> None:
+    got = service.compute(
+        TakeHomeRequest(JurisdictionCode("CA-ON"), 2026, Decimal(70000), include_rates=True)
+    )
+    assert got.average_tax_rate is not None
+    assert got.average_tax_rate.value == got.average_tax_rate.value.quantize(Decimal("0.0001"))
+
+
 def test_trace_is_left_out_unless_asked_for(service: TakeHomeService) -> None:
     request = TakeHomeRequest(JurisdictionCode("CA-ON"), 2025, Decimal(70000))
     assert request.include_trace is False
@@ -139,7 +178,11 @@ def test_a_jurisdiction_that_declares_no_take_home_figures_is_not_found(
     service: TakeHomeService,
 ) -> None:
     source = YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds(), units())
-    bare = TakeHomeService(_WithoutTakeHome(source), build_tax_computation(), EnglishTakeHomeText())
+    bare = TakeHomeService(
+        _WithoutTakeHome(source),
+        build_tax_computation(),
+        EnglishTakeHomeText(),
+    )
     with pytest.raises(NotFoundError, match="CA-ON 2025"):
         bare.compute(TakeHomeRequest(JurisdictionCode("CA-ON"), 2025, Decimal(70000)))
 
@@ -150,26 +193,26 @@ def test_a_jurisdiction_that_declares_no_take_home_figures_is_not_found(
         (
             2025,
             {
-                "income_tax": "14678.32",
+                "income_tax": "15919.71",
                 "qpp_base": "3591.00",
                 "qpp_enhanced": "665.00",
                 "qpp2": "0.00",
                 "ei": "860.67",
                 "qpip": "345.80",
             },
-            "49859.21",
+            "48617.82",
         ),
         (
             2026,
             {
-                "income_tax": "14346.59",
+                "income_tax": "15540.41",
                 "qpp_base": "3524.50",
                 "qpp_enhanced": "665.00",
                 "qpp2": "0.00",
                 "ei": "895.70",
                 "qpip": "301.00",
             },
-            "50267.21",
+            "49073.39",
         ),
     ],
 )
@@ -180,9 +223,41 @@ def test_quebec_takes_off_both_returns_the_pension_plan_ei_and_qpip(
     assert {f.name: str(f.amount) for f in got.figures} == figures
     assert str(got.take_home) == take_home
     assert str(got.income_tax) == figures["income_tax"]
-    # Quebec's return does not compute the two rates yet, so it declares none.
-    assert got.average_income_tax_rate is None
-    assert got.marginal_income_tax_rate is None
+    assert got.average_tax_rate is None  # rates are left out unless asked for
+    assert got.marginal_tax_rate is None
+
+
+@pytest.mark.parametrize("code", ["CA-ON", "CA-AB", "CA-BC", "CA-MB", "CA-NL", "CA-SK", "CA-QC"])
+@pytest.mark.parametrize("year", [2025, 2026])
+@pytest.mark.parametrize("salary", ["0", "100", "2050", "70000", "250000"])
+def test_the_average_rate_is_the_total_deductions_over_the_salary_in_every_jurisdiction(
+    service: TakeHomeService, code: str, year: int, salary: str
+) -> None:
+    # The return's steps and the take-home block each list the deductions; this keeps them equal.
+    got = service.compute(
+        TakeHomeRequest(JurisdictionCode(code), year, Decimal(salary), include_rates=True)
+    )
+
+    assert got.average_tax_rate is not None
+    expected = (
+        Decimal(0)
+        if got.salary == 0
+        else (got.total_deductions / got.salary).quantize(
+            Decimal("0.0001"), rounding="ROUND_HALF_UP"
+        )
+    )
+    assert got.average_tax_rate.value == expected
+
+
+def test_quebec_has_an_average_rate_with_qpip_in_it_and_no_marginal_rate_yet(
+    service: TakeHomeService,
+) -> None:
+    got = service.compute(
+        TakeHomeRequest(JurisdictionCode("CA-QC"), 2025, Decimal(70000), include_rates=True)
+    )
+    assert got.average_tax_rate is not None
+    assert got.average_tax_rate.value == Decimal("0.3055")
+    assert got.marginal_tax_rate is None
 
 
 class _Counting:

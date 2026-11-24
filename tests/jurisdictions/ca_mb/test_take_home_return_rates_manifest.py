@@ -29,9 +29,7 @@ PART = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "202
 # The produced kinds, in the order of the steps.
 OUTPUTS = [
     "ca/refund_or_balance_owing",
-    "ca/total_payable",
-    "ca/return_employment_income",
-    "ca-mb/average_income_tax_rate",
+    "ca-mb/average_tax_rate",
     "ca/federal_bracket_rate_return",
     "ca/federal_tax_after_credits_return",
     "ca/federal_rate_gate",
@@ -87,24 +85,6 @@ def test_every_step_after_line_167_has_no_title_and_no_reference() -> None:
     for step in _steps()[1:]:
         assert "title" not in step
         assert "reference" not in step
-
-
-def test_the_average_rate_divides_the_total_payable_by_the_salary_rounded_half_up_once() -> None:
-    total = _producing("ca/total_payable")
-    salary = _producing("ca/return_employment_income")
-    divide = _producing("ca-mb/average_income_tax_rate")
-
-    assert total["name"] == "core/record_total"
-    assert total["consumes"] == {"records": "ca/t1_tax_and_credits.total_payable"}
-    assert salary["name"] == "core/record_total"
-    assert salary["consumes"] == {"records": "ca/t1_employment_income.employment_income_line_10100"}
-    assert divide["name"] == "core/divide"
-    assert divide["unit"] == "core/percent"
-    assert divide["params"] == {"rounding": "ca-mb/rate_rounding"}
-    assert divide["consumes"] == {
-        "dividend": "ca/total_payable",
-        "divisor": "ca/return_employment_income",
-    }
 
 
 def test_the_federal_part_is_read_and_gated_as_the_british_columbia_one_through_the_mb_gate() -> (
@@ -286,4 +266,4 @@ def test_every_gate_uses_its_table_and_every_product_and_sum_of_rates_rounds_not
         if step["name"] in {"core/multiply_by_rate", "core/sum"}:
             assert step["params"]["rounding"] == EXACT
     divides = [step for step in _steps() if step["name"] == "core/divide"]
-    assert [step["params"]["rounding"] for step in divides] == ["ca-mb/rate_rounding", EXACT]
+    assert [step["params"]["rounding"] for step in divides] == [EXACT]

@@ -25,6 +25,8 @@ __all__ = [
     "SumLine",
     "SumNotBelowZeroLine",
     "RateAppliedLine",
+    "RateFigureLine",
+    "LesserOfRateLine",
     "DividedByRateLine",
     "SignChosenDifferenceLine",
     "SubtractedLine",
@@ -151,6 +153,44 @@ class RateAppliedLine(TraceLine):
     def amount(self) -> Decimal:
         """The rounded product."""
         return self.result
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
+
+
+@dataclass(frozen=True)
+class RateFigureLine(TraceLine):
+    """The `output`: the rate of the `rate` dataset, as it is, with no rounding."""
+
+    output: Money
+    rate: Rate
+
+    @property
+    def amount(self) -> Decimal:
+        """The dataset's rate."""
+        return self.rate.value
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
+
+
+@dataclass(frozen=True)
+class LesserOfRateLine(TraceLine):
+    """The `rate` produced as `output`: the rate of the least of `parts`, each an amount kind with
+    its value and its rate; of equal least amounts, the smallest of their rates."""
+
+    output: Money
+    parts: tuple[tuple[Money, Decimal, Decimal], ...]
+    rate: Decimal
+
+    @property
+    def amount(self) -> Decimal:
+        """The rate of a further dollar of the least amount."""
+        return self.rate
 
     @property
     def label(self) -> str | None:

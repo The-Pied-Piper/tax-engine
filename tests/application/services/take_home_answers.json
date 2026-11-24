@@ -21,7 +21,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.0000",
    "unit": {
     "name": "core/percent",
@@ -32,7 +32,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0",
    "unit": {
     "name": "core/percent",
@@ -66,8 +66,8 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
-   "value": "0.1642",
+  "average_tax_rate": {
+   "value": "0.2362",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -77,8 +77,8 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
-   "value": "0.2965",
+  "marginal_tax_rate": {
+   "value": "0.34335775",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -134,11 +134,19 @@
     "lines": 54
    },
    {
+    "form": "ca/take_home_average_rate",
+    "lines": 7
+   },
+   {
+    "form": "ca/take_home_marginal_rates",
+    "lines": 30
+   },
+   {
     "form": "ca-on/return",
-    "lines": 22
+    "lines": 34
    }
   ],
-  "trace_sha256": "549b09f0618834c6b5262e445176476a5e727e15e51c5eac8e08bd06ae0e8d85"
+  "trace_sha256": "185db6c8eff32f586b7eb4b6c96140b1c38a3cf191041471727acfb38744e0c3"
  },
  {
   "jurisdiction": "CA-ON",
@@ -162,8 +170,8 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
-   "value": "0.3541",
+  "average_tax_rate": {
+   "value": "0.3761",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -173,8 +181,8 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
-   "value": "0.495296",
+  "marginal_tax_rate": {
+   "value": "0.4983502655",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -207,7 +215,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.0000",
    "unit": {
     "name": "core/percent",
@@ -218,7 +226,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0",
    "unit": {
     "name": "core/percent",
@@ -252,8 +260,8 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
-   "value": "0.1591",
+  "average_tax_rate": {
+   "value": "0.2316",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -263,8 +271,8 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
-   "value": "0.2965",
+  "marginal_tax_rate": {
+   "value": "0.34360525",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -320,11 +328,19 @@
     "lines": 54
    },
    {
+    "form": "ca/take_home_average_rate",
+    "lines": 7
+   },
+   {
+    "form": "ca/take_home_marginal_rates",
+    "lines": 30
+   },
+   {
     "form": "ca-on/return",
-    "lines": 22
+    "lines": 34
    }
   ],
-  "trace_sha256": "f65adeaed0fd380f18655b815ebcbdcd66d7c8a15695946437d51e3d24f72aae"
+  "trace_sha256": "508fd64edb65f30f3f34d318d47460f964731db437f700cc713baa95b9f96cf2"
  },
  {
   "jurisdiction": "CA-ON",
@@ -348,8 +364,8 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
-   "value": "0.3507",
+  "average_tax_rate": {
+   "value": "0.3738",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -359,8 +375,8 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
-   "value": "0.495296",
+  "marginal_tax_rate": {
+   "value": "0.498245296",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -393,7 +409,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.0000",
    "unit": {
     "name": "core/percent",
@@ -404,7 +420,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0",
    "unit": {
     "name": "core/percent",
@@ -438,8 +454,8 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
-   "value": "0.1598",
+  "average_tax_rate": {
+   "value": "0.2317",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -449,7 +465,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.305",
    "unit": {
     "name": "core/percent",
@@ -510,11 +526,15 @@
     "lines": 54
    },
    {
+    "form": "ca/take_home_average_rate",
+    "lines": 7
+   },
+   {
     "form": "ca-ab/return",
-    "lines": 16
+    "lines": 14
    }
   ],
-  "trace_sha256": "23807c299f4f2323e9fec1870a52d829c865eef2eff8f964072d9500781ec35d"
+  "trace_sha256": "bbf7073b9bc757eb36a1274929d1f3c406e81a379771068d8d597f7d4e9e3cf4"
  },
  {
   "jurisdiction": "CA-AB",
@@ -538,8 +558,8 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
-   "value": "0.3135",
+  "average_tax_rate": {
+   "value": "0.3355",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -549,7 +569,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.43",
    "unit": {
     "name": "core/percent",
@@ -583,7 +603,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.0000",
    "unit": {
     "name": "core/percent",
@@ -594,7 +614,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0",
    "unit": {
     "name": "core/percent",
@@ -628,8 +648,8 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
-   "value": "0.1545",
+  "average_tax_rate": {
+   "value": "0.2270",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -639,7 +659,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.305",
    "unit": {
     "name": "core/percent",
@@ -700,11 +720,15 @@
     "lines": 54
    },
    {
+    "form": "ca/take_home_average_rate",
+    "lines": 7
+   },
+   {
     "form": "ca-ab/return",
-    "lines": 16
+    "lines": 14
    }
   ],
-  "trace_sha256": "d946e92f629c3816d1a1fd34654300df2eb01dd23dc72f10dc6fcaa1611a29d7"
+  "trace_sha256": "83b60ca50524ff3764913a0c8939e3be08baa1124a1b25fdd6be23a80276762a"
  },
  {
   "jurisdiction": "CA-AB",
@@ -728,8 +752,8 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
-   "value": "0.3102",
+  "average_tax_rate": {
+   "value": "0.3333",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -739,7 +763,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.43",
    "unit": {
     "name": "core/percent",
@@ -773,7 +797,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.0000",
    "unit": {
     "name": "core/percent",
@@ -784,7 +808,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0",
    "unit": {
     "name": "core/percent",
@@ -818,8 +842,8 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
-   "value": "0.1535",
+  "average_tax_rate": {
+   "value": "0.2255",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -829,7 +853,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.282",
    "unit": {
     "name": "core/percent",
@@ -882,11 +906,15 @@
     "lines": 53
    },
    {
+    "form": "ca/take_home_average_rate",
+    "lines": 7
+   },
+   {
     "form": "ca-bc/return",
-    "lines": 22
+    "lines": 20
    }
   ],
-  "trace_sha256": "9f190636bcb3d9ba20e16f4a1cce8b2fb5b0b4c7ddf4d2c164e2a4ba3efb07ac"
+  "trace_sha256": "3263317df4c784dfd71abf6d612322cc23768c635208d6d940754fa1ef659acc"
  },
  {
   "jurisdiction": "CA-BC",
@@ -910,8 +938,8 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
-   "value": "0.3270",
+  "average_tax_rate": {
+   "value": "0.3490",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -921,7 +949,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.458",
    "unit": {
     "name": "core/percent",
@@ -955,7 +983,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.0000",
    "unit": {
     "name": "core/percent",
@@ -966,7 +994,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0",
    "unit": {
     "name": "core/percent",
@@ -1000,8 +1028,8 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
-   "value": "0.1510",
+  "average_tax_rate": {
+   "value": "0.2236",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -1011,7 +1039,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.282",
    "unit": {
     "name": "core/percent",
@@ -1064,11 +1092,15 @@
     "lines": 53
    },
    {
+    "form": "ca/take_home_average_rate",
+    "lines": 7
+   },
+   {
     "form": "ca-bc/return",
-    "lines": 22
+    "lines": 20
    }
   ],
-  "trace_sha256": "f780b9d19019244a4bed4adafb4bac7dd20bee02f88c0d1a43257509998ba21b"
+  "trace_sha256": "faaffc74b302b7b422a7acd71ef1249b719af3a66497337457401092f2060b3e"
  },
  {
   "jurisdiction": "CA-BC",
@@ -1092,8 +1124,8 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
-   "value": "0.3240",
+  "average_tax_rate": {
+   "value": "0.3471",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -1103,7 +1135,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.458",
    "unit": {
     "name": "core/percent",
@@ -1137,7 +1169,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.0000",
    "unit": {
     "name": "core/percent",
@@ -1148,7 +1180,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0",
    "unit": {
     "name": "core/percent",
@@ -1182,8 +1214,8 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
-   "value": "0.1905",
+  "average_tax_rate": {
+   "value": "0.2624",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -1193,7 +1225,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.3325",
    "unit": {
     "name": "core/percent",
@@ -1266,11 +1298,15 @@
     "lines": 53
    },
    {
+    "form": "ca/take_home_average_rate",
+    "lines": 7
+   },
+   {
     "form": "ca-mb/return",
-    "lines": 23
+    "lines": 21
    }
   ],
-  "trace_sha256": "d2e4dcb2a3b6e171bb17dcb3f04df1867773a69560dd9967808a0dd328ce5f28"
+  "trace_sha256": "083c556cafb2bcdbf071fe3dae13ce19e0508d39e70d13ae4035581f3a7494ec"
  },
  {
   "jurisdiction": "CA-MB",
@@ -1294,8 +1330,8 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
-   "value": "0.3604",
+  "average_tax_rate": {
+   "value": "0.3824",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -1305,7 +1341,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.4725212",
    "unit": {
     "name": "core/percent",
@@ -1339,7 +1375,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.0000",
    "unit": {
     "name": "core/percent",
@@ -1350,7 +1386,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0",
    "unit": {
     "name": "core/percent",
@@ -1384,8 +1420,8 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
-   "value": "0.1860",
+  "average_tax_rate": {
+   "value": "0.2586",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -1395,7 +1431,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.3325",
    "unit": {
     "name": "core/percent",
@@ -1468,11 +1504,15 @@
     "lines": 53
    },
    {
+    "form": "ca/take_home_average_rate",
+    "lines": 7
+   },
+   {
     "form": "ca-mb/return",
-    "lines": 23
+    "lines": 21
    }
   ],
-  "trace_sha256": "f54a01822d041d81fe54ab03c896f66f7da47d26db15c04daadc4c724ac860a7"
+  "trace_sha256": "6f1e1d54729f2c9af29bd1d3301dcd2259932b621f97c74e813b7703a665b630"
  },
  {
   "jurisdiction": "CA-MB",
@@ -1496,8 +1536,8 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
-   "value": "0.3579",
+  "average_tax_rate": {
+   "value": "0.3810",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -1507,7 +1547,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.4725212",
    "unit": {
     "name": "core/percent",
@@ -1541,7 +1581,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.0000",
    "unit": {
     "name": "core/percent",
@@ -1552,7 +1592,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0",
    "unit": {
     "name": "core/percent",
@@ -1586,8 +1626,8 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
-   "value": "0.1811",
+  "average_tax_rate": {
+   "value": "0.2530",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -1597,7 +1637,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.33",
    "unit": {
     "name": "core/percent",
@@ -1654,11 +1694,15 @@
     "lines": 54
    },
    {
+    "form": "ca/take_home_average_rate",
+    "lines": 7
+   },
+   {
     "form": "ca-sk/return",
-    "lines": 13
+    "lines": 11
    }
   ],
-  "trace_sha256": "18af824e6c1795630dc7dbc9a09125c520ddaffd0440752360cfab53c53e1a5f"
+  "trace_sha256": "8152a539b6b8715190acbb64d6d415be129a6756ac3c86d05f92a47f304b8757"
  },
  {
   "jurisdiction": "CA-SK",
@@ -1682,8 +1726,8 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
-   "value": "0.3343",
+  "average_tax_rate": {
+   "value": "0.3563",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -1693,7 +1737,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.435",
    "unit": {
     "name": "core/percent",
@@ -1727,7 +1771,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.0000",
    "unit": {
     "name": "core/percent",
@@ -1738,7 +1782,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0",
    "unit": {
     "name": "core/percent",
@@ -1772,8 +1816,8 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
-   "value": "0.1750",
+  "average_tax_rate": {
+   "value": "0.2476",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -1783,7 +1827,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.33",
    "unit": {
     "name": "core/percent",
@@ -1840,11 +1884,15 @@
     "lines": 54
    },
    {
+    "form": "ca/take_home_average_rate",
+    "lines": 7
+   },
+   {
     "form": "ca-sk/return",
-    "lines": 13
+    "lines": 11
    }
   ],
-  "trace_sha256": "65f4347da2b15addd6c32a4c01877a985220be0027480d04d6b387c9f8990926"
+  "trace_sha256": "29936b938f6a7ea6b6f15459304b72afce59b9df81e55d77bd9daeb99e031d19"
  },
  {
   "jurisdiction": "CA-SK",
@@ -1868,8 +1916,8 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
-   "value": "0.3311",
+  "average_tax_rate": {
+   "value": "0.3542",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -1879,7 +1927,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.435",
    "unit": {
     "name": "core/percent",
@@ -1913,7 +1961,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.0000",
    "unit": {
     "name": "core/percent",
@@ -1924,7 +1972,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0",
    "unit": {
     "name": "core/percent",
@@ -1958,8 +2006,8 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
-   "value": "0.1962",
+  "average_tax_rate": {
+   "value": "0.2681",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -1969,7 +2017,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.35",
    "unit": {
     "name": "core/percent",
@@ -2030,11 +2078,15 @@
     "lines": 54
    },
    {
+    "form": "ca/take_home_average_rate",
+    "lines": 7
+   },
+   {
     "form": "ca-nl/return",
-    "lines": 16
+    "lines": 14
    }
   ],
-  "trace_sha256": "4debe42258a099f9dfbe0d800b7bb1e01d57247442828ef3d2fbbf38a2a04f53"
+  "trace_sha256": "e4e28ea8f7f629a5d45c031f75b45d74df1d2dee4976b5a3124c72d61e4a9080"
  },
  {
   "jurisdiction": "CA-NL",
@@ -2058,8 +2110,8 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
-   "value": "0.3631",
+  "average_tax_rate": {
+   "value": "0.3851",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -2069,7 +2121,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.488",
    "unit": {
     "name": "core/percent",
@@ -2103,7 +2155,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.0000",
    "unit": {
     "name": "core/percent",
@@ -2114,7 +2166,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0",
    "unit": {
     "name": "core/percent",
@@ -2148,8 +2200,8 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
-   "value": "0.1888",
+  "average_tax_rate": {
+   "value": "0.2614",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -2159,7 +2211,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.35",
    "unit": {
     "name": "core/percent",
@@ -2220,11 +2272,15 @@
     "lines": 54
    },
    {
+    "form": "ca/take_home_average_rate",
+    "lines": 7
+   },
+   {
     "form": "ca-nl/return",
-    "lines": 16
+    "lines": 14
    }
   ],
-  "trace_sha256": "6371bae0a912885642899b0d9723aff2e1c26da3dcc34fabe89fd6793827d316"
+  "trace_sha256": "9b0ae91decdad84915df9500328d6241f6744840095e4193bd3c2a48ca9edd23"
  },
  {
   "jurisdiction": "CA-NL",
@@ -2248,8 +2304,8 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
-   "value": "0.3594",
+  "average_tax_rate": {
+   "value": "0.3825",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -2259,7 +2315,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.488",
    "unit": {
     "name": "core/percent",

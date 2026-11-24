@@ -1,0 +1,120 @@
+# Take-home marginal rates: the federal rate. The bracket rate (T1 line 73 "Line 73: Rate", read
+# from the T1 export into `ca/marginal_federal_bracket_column_rate`) times the net income rate,
+# plus the fall of the basic personal amount (T1 line 77, Federal Worksheet 5000-D1): over the net
+# income (T1 line 23600, read into `ca/marginal_net_income`) threshold and under its upper end the
+# amount falls by the supplement over the range for each dollar of net income, the rate the
+# `ca/basic_personal_amount` dataset says, and each dollar of that fall is tax at the federal credit
+# rate (T1 line 114, the `ca/credit_rate` dataset as it is: its cent rounding is for the credit
+# box). Less the federal credit on the contributions: the CPP base and EI premium (T1 lines 30800
+# and 31200) earn the federal credit rate, so the credit-earning contribution rate times it is the
+# tax a further dollar of contributions takes off. Counted only where the basic federal tax (T1
+# line 42900, read into `ca/marginal_basic_federal_tax`) is above zero: the `ca/marginal_rate_gate`
+# dataset gives 0 where that tax is 0.00 and 1 from one cent.
+form:
+  name: ca/take_home_marginal_rates
+capabilities:
+  - name: core/record_total
+    unit: core/percent
+    consumes:
+      records: ca/t1_tax_and_credits.federal_bracket_column_rate_line_73
+    produces:
+      output: ca/marginal_federal_bracket_column_rate
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/t1_tax_and_credits.federal_tax_after_credits
+    produces:
+      output: ca/marginal_basic_federal_tax
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca/marginal_rate_gate
+    consumes:
+      base: ca/marginal_basic_federal_tax
+    produces:
+      output: ca/marginal_federal_gate
+  - name: core/rate_figure
+    unit: core/percent
+    params:
+      rate: ca/credit_rate
+    produces:
+      output: ca/marginal_federal_credit_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca/exact_rounding
+    consumes:
+      base: ca/marginal_credit_contribution_rate
+      rate: ca/marginal_federal_credit_rate
+    produces:
+      output: ca/marginal_federal_contribution_credit_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca/exact_rounding
+    consumes:
+      base: ca/marginal_federal_bracket_column_rate
+      rate: ca/marginal_net_income_rate
+    produces:
+      output: ca/marginal_federal_bracket_rate
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/t1_taxable_income.net_income_signed
+    produces:
+      output: ca/marginal_net_income
+  - name: ca/tapered_amount_rate
+    unit: core/percent
+    params:
+      taper: ca/basic_personal_amount
+      rounding: ca/marginal_rate_rounding
+    consumes:
+      base: ca/marginal_net_income
+    produces:
+      output: ca/marginal_federal_bpa_reduction_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca/exact_rounding
+    consumes:
+      base: ca/marginal_federal_bpa_reduction_rate
+      rate: ca/marginal_net_income_rate
+    produces:
+      output: ca/marginal_phase_down_net_income_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca/exact_rounding
+    consumes:
+      base: ca/marginal_phase_down_net_income_rate
+      rate: ca/marginal_federal_credit_rate
+    produces:
+      output: ca/marginal_federal_bpa_credit_rate
+  - name: core/sum
+    unit: core/percent
+    params:
+      rounding: ca/exact_rounding
+    consumes:
+      parts:
+        - ca/marginal_federal_bracket_rate
+        - ca/marginal_federal_bpa_credit_rate
+    produces:
+      output: ca/marginal_federal_rate_before_credits
+  - name: core/subtract
+    unit: core/percent
+    params:
+      rounding: ca/exact_rounding
+    consumes:
+      amount: ca/marginal_federal_rate_before_credits
+      less: ca/marginal_federal_contribution_credit_rate
+    produces:
+      output: ca/marginal_federal_rate_after_credits
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca/exact_rounding
+    consumes:
+      base: ca/marginal_federal_rate_after_credits
+      rate: ca/marginal_federal_gate
+    produces:
+      output: ca/marginal_federal_rate

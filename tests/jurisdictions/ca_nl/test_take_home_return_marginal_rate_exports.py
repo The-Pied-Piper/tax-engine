@@ -48,7 +48,7 @@ def test_the_return_summary_holds_each_of_its_three_outputs(
 
     for name in (
         "ca/refund_or_balance_owing",
-        "ca-nl/average_income_tax_rate",
+        "ca-nl/average_tax_rate",
         "ca-nl/marginal_tax_rate",
     ):
         assert isinstance(_value(sheet, name), Decimal)

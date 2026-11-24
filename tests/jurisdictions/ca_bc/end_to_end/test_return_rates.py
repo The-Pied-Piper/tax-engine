@@ -71,8 +71,7 @@ RETURN = "ca-bc/return"
 FEDERAL = "ca/federal_marginal_rate"
 BC_RATE = "ca-bc/british_columbia_marginal_rate"
 MARGINAL = "ca-bc/marginal_tax_rate"
-AVERAGE = "ca-bc/average_income_tax_rate"
-TOTAL_PAYABLE = "ca/total_payable"
+AVERAGE = "ca-bc/average_tax_rate"
 LINE_5_RETURN = "ca-bc/british_columbia_bracket_rate_line_5_return"
 LINE_12_RETURN = "ca-bc/british_columbia_bracket_rate_line_12_return"
 BRACKET = "ca-bc/british_columbia_bracket_rate_return"
@@ -103,35 +102,34 @@ NEW_KINDS = [
 FIGURES = [
     # Salaries of 0 and 100: no tax at all, both gates closed, and no division by zero.
     ("0", "0", "0", "0", "0.00", "0"),
-    ("100", "0", "0", "0", "0.00", "0"),
+    ("100", "0", "0", "0", "0.00", "0.0000"),
     # Federal boundary: closed at 18,820.26, open (14.5%) at 18,820.27; British Columbia closed.
-    ("18820.26", "0", "0", "0", "0.00", "0"),
-    ("18820.27", "0.145", "0", "0.145", "0.01", "0"),
+    ("18820.26", "0", "0", "0", "0.00", "0.0648"),
+    ("18820.27", "0.145", "0", "0.145", "0.01", "0.0648"),
     # 20,000 (taxable income 19,835.00): the reduction of 562.00 takes the British Columbia tax of
     # 291.37 to 0.00, so the British Columbia part is 0.
-    ("20000", "0.145", "0", "0.145", "158.09", "0.0079"),
+    ("20000", "0.145", "0", "0.145", "158.09", "0.0734"),
     # British Columbia boundary: closed at 25,551.24, open at 25,551.25 (5.06% + 3.56% = 8.62%).
-    ("25551.24", "0.145", "0", "0.145", "901.93", "0.0353"),
-    ("25551.25", "0.145", "0.0862", "0.2312", "901.94", "0.0353"),
+    ("25551.24", "0.145", "0", "0.145", "901.93", "0.1030"),
+    ("25551.25", "0.145", "0.0862", "0.2312", "901.94", "0.1030"),
     # 30,000 (net income 29,735.00): inside the reduction range, 14.5% + 8.62% = 23.12%.
     # (1,498.04 + 364.81) / 30,000 = 0.062095 -> 0.0621.
-    ("30000", "0.145", "0.0862", "0.2312", "1862.85", "0.0621"),
+    ("30000", "0.145", "0.0862", "0.2312", "1862.85", "0.1311"),
     # 45,000 (net income 44,585.00): past the end of the reduction, 5.06% only.
-    ("45000", "0.145", "0.0506", "0.1956", "4968.30", "0.1104"),
+    ("45000", "0.145", "0.0506", "0.1956", "4968.30", "0.1817"),
     # 70,000 (taxable income 69,335.00): 20.5% federal, 7.7% (49,279 to 98,560). 10,748.03 /
     # 70,000 = 0.153543 -> 0.1535.
-    ("70000", "0.205", "0.077", "0.282", "10748.03", "0.1535"),
+    ("70000", "0.205", "0.077", "0.282", "10748.03", "0.2255"),
     # 120,000 (taxable income 118,926.00): 26% federal, 12.29% (113,158 to 137,407).
-    ("120000", "0.26", "0.1229", "0.3829", "25623.27", "0.2135"),
+    ("120000", "0.26", "0.1229", "0.3829", "25623.27", "0.2594"),
     # 150,000 (taxable income 148,926.00, above the table 1 limit of 137,407): the line 12 rate of
     # 14.7% is read.
-    ("150000", "0.26", "0.147", "0.407", "37387.88", "0.2493"),
+    ("150000", "0.26", "0.147", "0.407", "37387.88", "0.2860"),
     # 200,000 (taxable income 198,926.00): 29% federal (above 177,882), line 12 rate of 16.8%
     # (186,306 to 259,829). 58,698.50 / 200,000 = 0.293493 -> 0.2935.
-    ("200000", "0.29", "0.168", "0.458", "58698.50", "0.2935"),
+    ("200000", "0.29", "0.168", "0.458", "58698.50", "0.3210"),
 ]
 PART_FIGURES = [(s, f, b, m) for s, f, b, m, _, _ in FIGURES]
-AVERAGE_FIGURES = [(s, t, a) for s, _, _, _, t, a in FIGURES]
 # Salary, BC428 line 5 and line 12 rates read (a blank is 0): taxable income 137,407.00 at 138,481
 # is up to 137,407, and 137,447.00 at 138,800 is above it.
 BRACKET_FIGURES = [
@@ -211,20 +209,6 @@ def test_the_marginal_rate_is_the_exact_sum_of_the_federal_and_the_british_colum
     assert D(federal) + D(british_columbia) == D(marginal)
 
 
-@pytest.mark.parametrize(("salary", "total_payable", "average"), AVERAGE_FIGURES)
-def test_the_average_rate_is_the_total_payable_over_the_salary_half_up_to_ten_thousandths(
-    salary: str, total_payable: str, average: str
-) -> None:
-    summary = _summary(salary)
-
-    assert _value(summary, TOTAL_PAYABLE) == D(total_payable)
-    assert _value(summary, AVERAGE) == D(average)
-    if D(salary) > 0:
-        assert (D(total_payable) / D(salary)).quantize(D("0.0001"), rounding="ROUND_HALF_UP") == D(
-            average
-        )
-
-
 @pytest.mark.parametrize("salary", ["0", "100"])
 def test_a_salary_of_0_or_100_reads_0_for_both_rates(salary: str) -> None:
     summary = _summary(salary)
@@ -233,13 +217,6 @@ def test_a_salary_of_0_or_100_reads_0_for_both_rates(salary: str) -> None:
     assert _value(summary, AVERAGE) == D("0")
     assert _value(summary, FEDERAL) == D("0")
     assert _value(summary, BC_RATE) == D("0")
-
-
-def test_the_2025_average_at_70000_is_15_35_percent() -> None:
-    summary = _summary("70000")
-
-    assert _value(summary, TOTAL_PAYABLE) == D("10748.03")
-    assert _value(summary, AVERAGE) == D("0.1535")
 
 
 @pytest.mark.parametrize(("salary", "line_5", "line_12"), BRACKET_FIGURES)
@@ -352,7 +329,7 @@ def test_the_marginal_rate_is_explained_in_english_as_percentages() -> None:
     )
 
 
-def test_the_marginal_rate_comes_last_in_the_trace() -> None:
+def test_the_marginal_rate_comes_last_of_the_marginal_steps_in_the_trace() -> None:
     sheet = _summary("100000")
     kinds = artifact_kinds()
     labels = [line.label for line in sheet.trace]

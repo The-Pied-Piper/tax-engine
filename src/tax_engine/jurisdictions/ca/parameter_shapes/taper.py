@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from decimal import Decimal
+from fractions import Fraction as ExactFraction
 
 from tax_engine.domain.errors import InvalidTaperError
 from tax_engine.domain.parameters.kind import ParameterKind
@@ -43,6 +44,17 @@ class Taper:
             raise InvalidTaperError(f"taper threshold must not be negative, got {self.threshold}")
         if not self.range > 0:
             raise InvalidTaperError(f"taper range must be positive, got {self.range}")
+
+    @property
+    def supplement_per_dollar(self) -> ExactFraction:
+        """How much of the supplement falls for each dollar over the threshold: the supplement over
+        the range, exact."""
+        return ExactFraction(self.supplement) / ExactFraction(self.range)
+
+    def falls_at(self, base: Decimal) -> bool:
+        """Whether the supplement is falling at `base`: strictly over the threshold and under the
+        end of the range."""
+        return self.threshold < base < self.threshold + self.range
 
 
 TAPER: ParameterKind[Taper] = ParameterKind("taper", Taper)

@@ -454,11 +454,11 @@ SK428_TAX_LINE_80 = AmountKind.declare(CATALOG, "sk428_tax_line_80", non_negativ
 minus line 79 (if negative, enter "0") = ^": line 78 less the credit of line 79 (blank read as 0),
 never below zero."""
 
-AVERAGE_INCOME_TAX_RATE = AmountKind.declare(CATALOG, "average_income_tax_rate", non_negative=True)
-"""Average income tax rate, the Saskatchewan return summary's own figure (no form prints it): T1
-line 43500 "Total payable" (for the take-home filer, line 143 plus line 147: the federal and the
-Saskatchewan income tax) divided by the salary (`ca/return_employment_income`), as a fraction, so
-0.1598 is 15.98%. CPP and EI are not income tax and are not in it. It is 0 when the salary is 0."""
+AVERAGE_TAX_RATE = AmountKind.declare(CATALOG, "average_tax_rate", non_negative=True)
+"""Average tax rate on the take-home basis, the Saskatchewan return summary's own figure (no form
+prints it): the income tax, CPP (Schedule 8 lines 25 and 28), EI (T2204 line 16) together divided
+by the salary (`ca/return_employment_income`), as a fraction, so 0.1598 is 15.98%. Paid credits
+are not in it. It is 0 when the salary is 0."""
 
 SASKATCHEWAN_BRACKET_RATE_RETURN = AmountKind.declare(
     CATALOG, "saskatchewan_bracket_rate_return", non_negative=True

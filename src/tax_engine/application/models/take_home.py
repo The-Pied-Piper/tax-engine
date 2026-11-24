@@ -75,6 +75,6 @@ class TakeHomeResult:
     income_tax: Decimal
     take_home: Decimal
     unit: UnitDescription
-    average_income_tax_rate: Rate | None
-    marginal_income_tax_rate: Rate | None
+    average_tax_rate: Rate | None
+    marginal_tax_rate: Rate | None
     trace: tuple[FormTrace, ...] | None

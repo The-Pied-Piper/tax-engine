@@ -12,4 +12,7 @@ form:
     - ca/t2204_premiums_deducted
     - ca/ei_overpayment
     - ca/t2204_line_16
+    - ca/t2204_line_1
+    - ca/t2204_line_7
+    - ca/t2204_line_10
 capabilities: []

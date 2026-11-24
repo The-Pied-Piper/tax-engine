@@ -2885,22 +2885,11 @@ FEDERAL_TOTAL_PAYABLE_RETURN = AmountKind.declare(
 """Quebec return summary: 5005-R line 43500 "Total payable", read from the form's export. One
 core/record_total (`return.yaml`)."""
 
-REFUNDABLE_QUEBEC_ABATEMENT_RETURN = AmountKind.declare(
-    CATALOG, "refundable_quebec_abatement_return", non_negative=True
-)
-"""Quebec return summary: 5005-R line 44000 "Refundable Quebec abatement", read from the form's
-export. One core/record_total (`return.yaml`)."""
-
-FEDERAL_TOTAL_PAYABLE_LESS_ABATEMENT_RETURN = AmountKind.declare(
-    CATALOG, "federal_total_payable_less_abatement_return"
-)
-"""Quebec return summary: 5005-R line 43500 less line 44000, signed (no floor). One core/subtract
-(`return.yaml`)."""
-
 TOTAL_PAYABLE = AmountKind.declare(CATALOG, "total_payable")
-"""Quebec return summary: the total payable of both returns, 5005-R line 43500 less line 44000 plus
-TP-1 line 450. A `ca-qc` kind, because `ca/total_payable` is the federal kind the shared forms
-declare. One core/sum (`return.yaml`); the second output of the return."""
+"""Quebec return summary: the total payable of both returns, 5005-R line 43500 plus TP-1 line 450
+(the refundable Quebec abatement, line 44000, is not taken off). A `ca-qc` kind, because
+`ca/total_payable` is the federal kind the shared forms declare. One core/sum (`return.yaml`); the
+second output of the return."""
 
 SOLIDARITY_CREDIT = AmountKind.declare(CATALOG, "solidarity_credit", non_negative=True)
 """Quebec return summary: the solidarity tax credit for July 2026 to June 2027, read from the
@@ -2922,3 +2911,13 @@ SCHEDULE_P_WEPP_PAYMENTS_LINE_15_TOTAL = AmountKind.declare(
 )
 """The export of the other form that `schedule_p_wepp_payments_line_15` prints, totalled
 before the line rounds it half-up to the cent; a blank is read as 0."""
+
+AVERAGE_TAX_RATE = AmountKind.declare(CATALOG, "average_tax_rate", non_negative=True)
+"""Average tax rate on the take-home basis, the Quebec return summary's own figure (no form prints
+it): the income tax, CPP (Schedule 8 lines 25 and 28), EI (T2204 line 16) and QPIP (5005-R line
+91) together divided by the salary (`ca/return_employment_income`), as a fraction, so 0.1598 is
+15.98%. Paid credits are not in it. It is 0 when the salary is 0."""
+
+RETURN_QPIP_PREMIUMS = AmountKind.declare(CATALOG, "return_qpip_premiums", non_negative=True)
+"""The return's own copy of the QPIP premium paid (the `ppip_premium` form's export), which the
+average rate adds."""

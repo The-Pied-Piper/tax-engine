@@ -1,0 +1,67 @@
+# Take-home average rate: the income tax, the CPP and the EI premium a salary-only filer pays,
+# added and divided by the salary. No form prints it, so the steps have no title or line
+# reference. The income tax is T1 line 43500 "Total payable" (the federal and the province's tax),
+# the CPP is Schedule 8 lines 25 and 28 and the EI premium is T2204 line 16; paid credits are not
+# in it. Each figure is a form's export, totalled by core/record_total into this form's own kind,
+# and core/divide rounds the quotient once with `ca/take_home_average_rate_rounding`. A salary of 0
+# gives 0.
+# Every province but Quebec (which also adds the QPIP premium) reads the export
+# `ca/average_tax_rate` into its return summary. The form reads T1, Schedule 8 and T2204 exports,
+# so a manifest imports it after those forms.
+form:
+  name: ca/take_home_average_rate
+  required: true
+  exports:
+    - ca/average_tax_rate
+capabilities:
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/t1_tax_and_credits.total_payable
+    produces:
+      output: ca/total_payable
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/t1_employment_income.employment_income_line_10100
+    produces:
+      output: ca/return_employment_income
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/schedule_8.schedule_8_cpp_base_contributions_on_return
+    produces:
+      output: ca/return_cpp_base_contributions
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/schedule_8.schedule_8_cpp_enhanced_contributions_on_return
+    produces:
+      output: ca/return_cpp_enhanced_contributions
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/t2204.t2204_line_16
+    produces:
+      output: ca/return_ei_premium
+  - name: core/sum
+    unit: ca/cad
+    params:
+      rounding: ca/exact_rounding
+    consumes:
+      parts:
+        - ca/total_payable
+        - ca/return_cpp_base_contributions
+        - ca/return_cpp_enhanced_contributions
+        - ca/return_ei_premium
+    produces:
+      output: ca/return_total_deductions
+  - name: core/divide
+    unit: core/percent
+    params:
+      rounding: ca/take_home_average_rate_rounding
+    consumes:
+      dividend: ca/return_total_deductions
+      divisor: ca/return_employment_income
+    produces:
+      output: ca/average_tax_rate
