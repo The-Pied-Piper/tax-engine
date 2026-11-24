@@ -8,6 +8,8 @@ from __future__ import annotations
 
 import hashlib
 import json
+import threading
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, replace
 from decimal import Decimal
 from pathlib import Path
@@ -181,3 +183,94 @@ def test_quebec_takes_off_both_returns_the_pension_plan_ei_and_qpip(
     # Quebec's return does not compute the two rates yet, so it declares none.
     assert got.average_income_tax_rate is None
     assert got.marginal_income_tax_rate is None
+
+
+class _Counting:
+    """The real jurisdictions, counting each lookup (and failing the first `fail` of them)."""
+
+    def __init__(self, source: JurisdictionSource, fail: int = 0) -> None:
+        self._source = source
+        self._fail = fail
+        self.calls: list[JurisdictionCode] = []
+        self._lock = threading.Lock()
+
+    def get_jurisdiction(self, code: JurisdictionCode) -> Jurisdiction:
+        with self._lock:
+            self.calls.append(code)
+            failing = len(self.calls) <= self._fail
+        if failing:
+            raise NotFoundError(f"no jurisdiction {code}")
+        return self._source.get_jurisdiction(code)
+
+
+def _counted(fail: int = 0) -> tuple[TakeHomeService, _Counting]:
+    real = YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds(), units())
+    counting = _Counting(real, fail)
+    return TakeHomeService(counting, build_tax_computation(), EnglishTakeHomeText()), counting
+
+
+def _request(code: str = "CA-ON", year: int = 2025, salary: int = 70000) -> TakeHomeRequest:
+    return TakeHomeRequest(JurisdictionCode(code), year, Decimal(salary))
+
+
+def test_the_jurisdiction_is_read_once_per_jurisdiction_and_year() -> None:
+    counted, counting = _counted()
+    counted.compute(_request(salary=70000))
+    counted.compute(_request(salary=90000))
+    assert counting.calls == [JurisdictionCode("CA-ON")]
+
+
+def test_another_year_or_jurisdiction_is_read_separately() -> None:
+    counted, counting = _counted()
+    counted.compute(_request("CA-ON", 2025))
+    counted.compute(_request("CA-ON", 2026))
+    counted.compute(_request("CA-QC", 2025))
+    counted.compute(_request("CA-ON", 2025))
+    counted.compute(_request("CA-ON", 2026))
+    counted.compute(_request("CA-QC", 2025))
+    assert counting.calls == [JurisdictionCode("CA-ON")] * 2 + [JurisdictionCode("CA-QC")]
+
+
+def test_a_failed_lookup_is_not_cached() -> None:
+    counted, counting = _counted(fail=1)
+    with pytest.raises(NotFoundError):
+        counted.compute(_request())
+    assert counted.compute(_request()).take_home == Decimal("53468.68")
+    assert len(counting.calls) == 2
+
+
+def test_a_jurisdiction_without_take_home_figures_raises_on_every_call() -> None:
+    source = YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds(), units())
+    counting = _Counting(_WithoutTakeHome(source))
+    bare = TakeHomeService(counting, build_tax_computation(), EnglishTakeHomeText())
+    for _ in range(2):
+        with pytest.raises(NotFoundError, match="CA-ON 2025"):
+            bare.compute(_request())
+
+
+@pytest.mark.parametrize("case", [Case(a) for a in ANSWERS[:3]], ids=repr)
+def test_a_cached_answer_equals_the_first_one(case: Case) -> None:
+    want = case.answer
+    counted, _ = _counted()
+    request = TakeHomeRequest(
+        JurisdictionCode(want["jurisdiction"]), want["year"], Decimal(want["salary"])
+    )
+    first = counted.compute(request)
+    second = counted.compute(request)
+    assert second == first
+    assert str(second.take_home) == want["take_home"]
+
+
+def test_concurrent_callers_of_a_cold_key_read_once() -> None:
+    counted, counting = _counted()
+    workers = 8
+    barrier = threading.Barrier(workers)
+
+    def run(_: int) -> Decimal:
+        barrier.wait()
+        return counted.compute(_request()).take_home
+
+    with ThreadPoolExecutor(workers) as pool:
+        results = list(pool.map(run, range(workers)))
+    assert results == [Decimal("53468.68")] * workers
+    assert counting.calls == [JurisdictionCode("CA-ON")]
