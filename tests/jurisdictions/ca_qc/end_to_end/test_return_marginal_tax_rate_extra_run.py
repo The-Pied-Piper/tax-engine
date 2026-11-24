@@ -55,9 +55,11 @@ SALARIES = (
     1_500,
     1_750,
     1_999,
+    2_000,
     2_001,
     2_020,
     3_000,
+    3_500,
     5_000,
     8_000,
     10_000,
@@ -65,11 +67,14 @@ SALARIES = (
     15_000,
     17_000,
     19_000,
+    19_250,
     20_000,
+    20_250,
     21_000,
     22_000,
     23_500,
     25_000,
+    26_500,
     27_000,
     29_000,
     31_000,
@@ -80,11 +85,14 @@ SALARIES = (
     50_000,
     52_000,
     55_000,
+    56_250,
     57_000,
+    59_000,
     60_000,
     65_000,
     70_000,
     71_000,
+    71_250,
     75_000,
     80_000,
     85_000,
@@ -92,11 +100,16 @@ SALARIES = (
     97_900,
     100_000,
     110_000,
+    111_250,
     114_000,
+    115_750,
     120_000,
     128_000,
+    132_000,
+    134_750,
     150_000,
     175_000,
+    182_500,
     190_000,
     250_000,
     300_000,
@@ -104,9 +117,31 @@ SALARIES = (
 )
 # A smaller step near a narrow band, so the extra run does not cross the band's end.
 NARROW_BAND_STEPS = {2_001: 10, 2_020: 5}
+# (tax year, salary): a salary with a break in the rate a few dollars to $99 above it, found by a
+# sweep every $250 from $1,000 to $400,000 in both years. The step stays under the break, and the
+# rate then agrees with the extra run. Each entry names its break: the start of a federal, Quebec
+# or Schedule K bracket column, the QPP maximum, or the start of a tax.
+BREAK_STEPS: dict[tuple[int, int], int] = {
+    (2025, 26_500): 20,  # Schedule K line 48 reaches $5,000: column A (7.84%) ends, column B starts
+    (2025, 71_250): 20,  # QPP base ends at the $71,300 maximum
+    (2025, 115_750): 20,  # taxable income reaches the 5005-R $114,750 column
+    (2025, 132_000): 50,  # TP-1 taxable income reaches the $129,590 Quebec column
+    (2026, 19_250): 20,  # the federal tax starts (T1 line 42900 above 0)
+    (2026, 20_250): 20,  # the Quebec tax starts (TP-1 line 432 above 0)
+    (2026, 26_500): 20,  # Schedule K line 48 reaches $5,000
+    (2026, 56_250): 20,  # taxable income reaches the Quebec second column
+    (2026, 59_000): 20,  # taxable income reaches the 5005-R second column
+    (2026, 111_250): 2,  # a break a few dollars above: the Quebec third column
+    (2026, 134_750): 50,  # TP-1 taxable income reaches the Quebec fourth column
+    (2026, 182_500): 20,  # taxable income reaches the 5005-R fourth column
+}
 # (tax year, salary): the forward difference is not the derivative there. Each reason is a break in
 # the rate inside the run.
 KNOWN_EXCEPTIONS: dict[tuple[int, int], str] = {
+    (2025, 2_000): "an exact band edge: the published rate is the lower band's (EI 0%, QPIP 0%)",
+    (2026, 2_000): "an exact band edge: the published rate is the lower band's (EI 0%, QPIP 0%)",
+    (2025, 3_500): "an exact band edge: the published rate is the lower band's (QPP 0%)",
+    (2026, 3_500): "an exact band edge: the published rate is the lower band's (QPP 0%)",
     (
         2025,
         1_999,
@@ -150,7 +185,7 @@ def _marginal_rate(year: int, salary: Decimal) -> Decimal:
 def test_the_marginal_rate_is_the_extra_dollar_change_in_the_take_home_deductions(
     year: int, salary: int
 ) -> None:
-    step = NARROW_BAND_STEPS.get(salary, 100)
+    step = BREAK_STEPS.get((year, salary), NARROW_BAND_STEPS.get(salary, 100))
     extra_run = (_deductions(year, D(salary + step)) - _deductions(year, D(salary))) / step
 
     assert abs(_marginal_rate(year, D(salary)) - extra_run) <= TOLERANCE
