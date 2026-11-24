@@ -50,6 +50,14 @@ DEDUCTIONS = (
 
 SALARIES = (
     1_000,
+    18_750,
+    21_750,
+    55_000,
+    59_000,
+    71_250,
+    115_750,
+    153_750,
+    182_500,
     1_500,
     2_020,
     3_000,
@@ -168,6 +176,10 @@ def test_the_run_of_100_dollars_crosses_the_break_of_each_known_exception(
     run = (_deductions(year, D(salary + 100)) - _deductions(year, D(salary))) / 100
 
     assert abs(_marginal_rate(year, D(salary)) - run) > TOLERANCE
+
+
+def test_every_known_exception_is_a_salary_of_the_sweep() -> None:
+    assert {salary for _year, salary in KNOWN_EXCEPTIONS} <= set(SALARIES)
 
 
 def test_every_known_exception_is_a_salary_with_a_smaller_step() -> None:
