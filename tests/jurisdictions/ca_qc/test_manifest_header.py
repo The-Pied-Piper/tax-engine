@@ -31,7 +31,7 @@ def test_the_return_identity() -> None:
     assert header["title"] == "Return summary"
 
 
-def test_the_return_declares_no_capabilities_and_the_four_outputs() -> None:
+def test_the_return_declares_no_capabilities_and_its_outputs() -> None:
     header = _header()
 
     assert header["capabilities"] == []
@@ -39,6 +39,7 @@ def test_the_return_declares_no_capabilities_and_the_four_outputs() -> None:
         "ca/refund_or_balance_owing",
         "ca-qc/total_payable",
         "ca-qc/average_tax_rate",
+        "ca-qc/marginal_tax_rate",
         "ca-qc/solidarity_credit",
     ]
 
@@ -62,6 +63,13 @@ def test_the_federal_forms_are_imported_in_order_and_read_the_quebec_datasets() 
             },
         },
         {"form": "ca/t2204", "datasets": {"ca/ei_premium": "ca-qc/ei_premium"}},
+        {
+            "form": "ca/take_home_marginal_rates",
+            "datasets": {
+                "ca/cpp_line_11_base_contribution": "ca-qc/qpp_line_11_base_contribution",
+                "ca/ei_premium": "ca-qc/ei_premium",
+            },
+        },
     ]
 
 

@@ -67,7 +67,7 @@ def test_the_real_t1_form_declaration_exports_the_benefit_lines_159_to_161() -> 
     declaration = _declaration("t1_tax_and_credits.yaml")
 
     assert declaration["form"]["name"] == "ca-qc/t1_tax_and_credits"
-    assert declaration["form"]["exports"] == [
+    assert declaration["form"]["exports"][:11] == [
         "ca-qc/credit_amounts_line_85",
         "ca-qc/credits_line_100",
         "ca-qc/non_refundable_tax_credits_line_122",

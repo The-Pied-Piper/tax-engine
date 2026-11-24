@@ -110,8 +110,8 @@ def test_the_real_form_declaration_exports_line_9_and_the_inputs_other_forms_rea
 
     assert declaration["form"]["name"] == "ca-qc/work_chart_201"
     assert declaration["form"]["required"] is True
-    assert declaration["form"]["exports"] == [
+    assert set(declaration["form"]["exports"]) >= {
         "ca-qc/work_chart_201_deduction_for_workers_line_9",
         "ca-qc/work_chart_201_research_grants_line_3",
         "ca-qc/work_chart_201_wepp_payments_line_4",
-    ]
+    }

@@ -249,7 +249,7 @@ def test_the_average_rate_is_the_total_deductions_over_the_salary_in_every_juris
     assert got.average_tax_rate.value == expected
 
 
-def test_quebec_has_an_average_rate_with_qpip_in_it_and_no_marginal_rate_yet(
+def test_quebec_has_an_average_rate_with_qpip_in_it_and_a_marginal_rate(
     service: TakeHomeService,
 ) -> None:
     got = service.compute(
@@ -257,7 +257,9 @@ def test_quebec_has_an_average_rate_with_qpip_in_it_and_no_marginal_rate_yet(
     )
     assert got.average_tax_rate is not None
     assert got.average_tax_rate.value == Decimal("0.3055")
-    assert got.marginal_tax_rate is None
+    assert got.marginal_tax_rate is not None
+    assert got.marginal_tax_rate.value == Decimal("0.4514437")
+    assert got.marginal_tax_rate.unit.name == "core/percent"
 
 
 class _Counting:
