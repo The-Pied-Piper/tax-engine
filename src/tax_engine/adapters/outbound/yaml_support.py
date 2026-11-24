@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Any
 
 import yaml
-from yaml.constructor import ConstructorError, SafeConstructor
+from yaml.constructor import ConstructorError
 from yaml.nodes import MappingNode
 
 from tax_engine.domain.parameters.rounding import (
@@ -33,8 +33,18 @@ class YamlShapeError(ValueError):
     """A YAML document does not have the expected shape."""
 
 
-class _RejectDuplicateKeys(SafeConstructor):
-    """Safe constructor that rejects duplicate mapping keys instead of keeping the last one."""
+# libyaml's loader reads the same documents several times faster than the pure-Python one. PyYAML's
+# Linux, macOS and Windows wheels bundle libyaml; a source-only build may lack it, and then the
+# engine refuses to start rather than run several times slower unnoticed.
+if not yaml.__with_libyaml__:
+    raise ImportError(
+        "PyYAML was built without libyaml, so yaml.CSafeLoader is missing; "
+        "install a PyYAML wheel that bundles libyaml (pip install --only-binary=:all: PyYAML)"
+    )
+
+
+class _StrictLoader(yaml.CSafeLoader):
+    """CSafeLoader that rejects duplicate mapping keys instead of keeping the last one."""
 
     def construct_mapping(self, node: MappingNode, deep: bool = False) -> dict[Hashable, Any]:
         seen: set[Any] = set()
@@ -44,26 +54,6 @@ class _RejectDuplicateKeys(SafeConstructor):
                 raise ConstructorError(None, None, f"duplicate key {key!r}", key_node.start_mark)
             seen.add(key)
         return super().construct_mapping(node, deep=deep)
-
-
-class _PureStrictLoader(_RejectDuplicateKeys, yaml.SafeLoader):
-    """The pure-Python loader, used only when PyYAML was built without libyaml."""
-
-
-# PyYAML's Linux, macOS and Windows wheels bundle libyaml, and its loader reads the same documents
-# several times faster. A source-only install may lack it (PyYAML then has no CSafeLoader at all),
-# and the pure-Python loader is used instead. The two read every bundled file to the same values;
-# they differ only on malformed edge cases (tabs, %directives, byte-order marks). A test fails
-# when libyaml is missing, so CI cannot lose the speed-up unnoticed.
-_StrictLoader: type[_PureStrictLoader] | type[_CStrictLoader]
-if yaml.__with_libyaml__:
-
-    class _CStrictLoader(_RejectDuplicateKeys, yaml.CSafeLoader):
-        """The libyaml-backed loader."""
-
-    _StrictLoader = _CStrictLoader
-else:
-    _StrictLoader = _PureStrictLoader
 
 
 class YamlNode:

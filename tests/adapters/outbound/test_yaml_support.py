@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import subprocess
+import sys
 from decimal import Decimal
 from enum import Enum
 from pathlib import Path
@@ -72,6 +74,19 @@ def test_load_uses_the_libyaml_c_loader(tmp_path: Path, monkeypatch: pytest.Monk
 
     assert len(used) == 1
     assert issubclass(used[0], yaml.CSafeLoader)
+
+
+def test_import_fails_clearly_when_pyyaml_has_no_libyaml() -> None:
+    code = (
+        "import sys\n"
+        "sys.modules['yaml._yaml'] = None\n"
+        "import tax_engine.adapters.outbound.yaml_support\n"
+    )
+
+    result = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True)
+
+    assert result.returncode != 0
+    assert "ImportError: PyYAML was built without libyaml" in result.stderr
 
 
 # --- mappings and locations ------------------------------------------------------
