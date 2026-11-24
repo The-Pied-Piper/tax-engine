@@ -875,8 +875,9 @@ MARGINAL_NET_INCOME_RATE = AmountKind.declare(
 )
 """Part of a further dollar of salary left in the net income (T1 line 23600) and the taxable
 income: 1 less the CPP first additional rate and the CPP second additional rate, which T1 line
-22215 takes off the income. The federal form's export `ca/take_home_marginal_rates.marginal_net_
-income_rate`, totalled into the return summary's own artifact. Not printed on the form."""
+22215 takes off the income. The federal form's export
+`ca/take_home_marginal_rates.marginal_net_income_rate`, totalled into the return summary's own
+artifact. Not printed on the form."""
 
 MARGINAL_CREDIT_CONTRIBUTION_RATE = AmountKind.declare(
     CATALOG, "marginal_credit_contribution_rate", non_negative=True
@@ -889,8 +890,9 @@ into the return summary's own artifact. Not printed on the form."""
 MARGINAL_FEDERAL_RATE = AmountKind.declare(CATALOG, "marginal_federal_rate", non_negative=True)
 """Federal marginal rate on the take-home basis: the federal rate on a further dollar of salary
 after the credits, where the basic federal tax (T1 line 42900) is above zero, and 0 where it is
-not, a fraction (0.2 for 20%). The federal form's export `ca/take_home_marginal_rates.marginal_
-federal_rate`, totalled into the return summary's own artifact. Not printed on the form."""
+not, a fraction (0.2 for 20%). The federal form's export
+`ca/take_home_marginal_rates.marginal_federal_rate`, totalled into the return summary's own
+artifact. Not printed on the form."""
 
 MARGINAL_CONTRIBUTION_RATE = AmountKind.declare(
     CATALOG, "marginal_contribution_rate", non_negative=True
