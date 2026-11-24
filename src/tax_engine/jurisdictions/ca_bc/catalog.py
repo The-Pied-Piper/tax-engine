@@ -861,23 +861,87 @@ BRITISH_COLUMBIA_REDUCTION_PHASE_OUT_RATE = AmountKind.declare(
 )
 """British Columbia reduction phase-out rate: the reduction gate (BC428 line 79 above zero) times
 the reduction slope (line 78 above zero): 3.56% inside the range where the tax reduction falls with
-income, 0 outside it. Exact. Not printed on the form."""
+income, 0 outside it, per further dollar of net income. Exact. Not printed on the form."""
+
+MARGINAL_BRITISH_COLUMBIA_REDUCTION_RATE = AmountKind.declare(
+    CATALOG, "marginal_british_columbia_reduction_rate", non_negative=True
+)
+"""British Columbia reduction rate on a further dollar of salary: the reduction phase-out rate times
+the part of the dollar left in the net income (T1 line 23600), since line 76 follows the net
+income. Exact. Not printed on the form."""
+
+MARGINAL_NET_INCOME_RATE = AmountKind.declare(
+    CATALOG, "marginal_net_income_rate", non_negative=True
+)
+"""Part of a further dollar of salary left in the net income (T1 line 23600) and the taxable
+income: 1 less the CPP first additional rate and the CPP second additional rate, which T1 line
+22215 takes off the income. The federal form's export `ca/take_home_marginal_rates.marginal_net_
+income_rate`, totalled into the return summary's own artifact. Not printed on the form."""
+
+MARGINAL_CREDIT_CONTRIBUTION_RATE = AmountKind.declare(
+    CATALOG, "marginal_credit_contribution_rate", non_negative=True
+)
+"""Credit-earning contribution rate on a further dollar of salary: the CPP base rate (T1 line
+30800) plus the EI rate (T1 line 31200), the two contributions that earn a non-refundable credit.
+The federal form's export `ca/take_home_marginal_rates.marginal_credit_contribution_rate`, totalled
+into the return summary's own artifact. Not printed on the form."""
+
+MARGINAL_FEDERAL_RATE = AmountKind.declare(CATALOG, "marginal_federal_rate", non_negative=True)
+"""Federal marginal rate on the take-home basis: the federal rate on a further dollar of salary
+after the credits, where the basic federal tax (T1 line 42900) is above zero, and 0 where it is
+not, a fraction (0.2 for 20%). The federal form's export `ca/take_home_marginal_rates.marginal_
+federal_rate`, totalled into the return summary's own artifact. Not printed on the form."""
+
+MARGINAL_CONTRIBUTION_RATE = AmountKind.declare(
+    CATALOG, "marginal_contribution_rate", non_negative=True
+)
+"""Contribution rate on a further dollar of salary: the CPP base, first additional and second
+additional rates plus the EI rate of T2204 line 16. The federal form's export
+`ca/take_home_marginal_rates.marginal_contribution_rate`, totalled into the return summary's own
+artifact. Not printed on the form."""
+
+MARGINAL_BRITISH_COLUMBIA_CREDIT_RATE = AmountKind.declare(
+    CATALOG, "marginal_british_columbia_credit_rate", non_negative=True
+)
+"""British Columbia non-refundable tax credit rate as a figure, BC428 line 55 "Rate 5.06%": the
+`ca-bc/credit_rate` dataset's rate, read as a plain figure for the marginal rate. Not printed on
+the form as a line of its own."""
+
+MARGINAL_BRITISH_COLUMBIA_CONTRIBUTION_CREDIT_RATE = AmountKind.declare(
+    CATALOG, "marginal_british_columbia_contribution_credit_rate", non_negative=True
+)
+"""British Columbia credit rate on the CPP base and EI of a further dollar of salary: the
+credit-earning contribution rate times the British Columbia credit rate, the British Columbia tax
+the contributions take off. An exact product, not printed on the form."""
+
+MARGINAL_BRITISH_COLUMBIA_BRACKET_RATE = AmountKind.declare(
+    CATALOG, "marginal_british_columbia_bracket_rate", non_negative=True
+)
+"""British Columbia bracket rate on a further dollar of salary: the bracket rate (BC428 line 5 or
+line 12) times the part left in the taxable income. An exact product, not printed on the form."""
+
+MARGINAL_BRITISH_COLUMBIA_RATE_AFTER_CREDITS = AmountKind.declare(
+    CATALOG, "marginal_british_columbia_rate_after_credits", non_negative=True
+)
+"""British Columbia rate on a further dollar of salary after the CPP base and EI credits, before
+the tax reduction. An exact difference, not printed on the form."""
 
 BRITISH_COLUMBIA_BRACKET_RATE_WITH_REDUCTION = AmountKind.declare(
     CATALOG, "british_columbia_bracket_rate_with_reduction", non_negative=True
 )
-"""British Columbia bracket rate with the tax reduction: the bracket rate plus the reduction
-phase-out rate, since a further dollar of income also takes away the reduction. Exact. Not printed
-on the form."""
+"""British Columbia rate on a further dollar of salary with the tax reduction: the rate after the
+credits plus the reduction phase-out rate (the reduction falls as net income rises, which is more
+tax). Exact. Not printed on the form."""
 
 BRITISH_COLUMBIA_MARGINAL_RATE = AmountKind.declare(
     CATALOG, "british_columbia_marginal_rate", non_negative=True
 )
-"""British Columbia marginal rate: the bracket rate with the reduction where the British Columbia
-tax after the tax reduction (BC428 line 80) is above zero, and 0 where it is not: the rate a further
-dollar of income is taxed at in British Columbia, on the return summary. Not printed on the form."""
+"""British Columbia marginal rate on the take-home basis: the rate with the credits and the tax
+reduction where the British Columbia tax after the tax reduction (BC428 line 80) is above zero, and
+0 where it is not. Not printed on the form."""
 
 MARGINAL_TAX_RATE = AmountKind.declare(CATALOG, "marginal_tax_rate", non_negative=True)
-"""Marginal tax rate: the income tax rate on a further dollar of salary, the sum of the federal
-marginal rate and the British Columbia marginal rate (British Columbia has no surtax or health
-premium), on the return summary. Not printed on the form."""
+"""Marginal tax rate on the take-home basis: the change in the T1 line 43500 income tax, the CPP
+and the EI (T2204 line 16) per further dollar of salary, the sum of the federal marginal rate, the
+British Columbia marginal rate and the contribution rate (British Columbia has no surtax or health
+premium), on the return summary. Calculated from the forms' rates, not printed on the form."""

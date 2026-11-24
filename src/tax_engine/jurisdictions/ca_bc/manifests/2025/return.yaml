@@ -7,43 +7,47 @@
 # `ca/take_home_average_rate` works it out once for every province (income tax, CPP and EI over the
 # salary), and the return reads its export `ca/average_tax_rate` with one core/record_total.
 #
-# The third output is the marginal rate, the income tax rate on a further dollar of salary, built
-# as the Alberta and Ontario returns build it, with Ontario's tax reduction chain (CRA payroll
-# deductions formulas T4127, January 2025 edition, British Columbia: T2 = T4 + V1 + V2 - S - (P x
-# LCP); British Columbia has no V1 or V2, and factor S is the tax reduction payroll applies, the
-# printed BC428 line 79). The federal part is read as in the Alberta return: the T1 form exports
-# line 73's bracket column rate and line 42900 "Basic federal tax", each totalled into the return's
-# own kind, and core/amount_by_band_rate reads line 42900 through the `ca-bc/marginal_rate_gate`
-# dataset (0 where the tax is 0.00, 1 from one cent) so that the rate counts only where its own
-# tax is above zero; the gate multiplies the rate into `ca/federal_marginal_rate`, exact
-# (`ca-bc/exact_rounding`).
+# The third output is the marginal tax rate on the take-home basis: the change in T1 line 43500
+# plus CPP (Schedule 8 lines 25, 12 and 22) plus EI (T2204 line 16) per further dollar of salary,
+# for a salary-only filer with no paid credits. It is calculated with the rates of the forms, not by
+# running the return twice: a sum of the rates that apply at the salary, one capability per line,
+# every figure exact (`ca-bc/exact_rounding` rounds nothing). No form prints any of these figures,
+# so the steps below have no title and no line reference, and only line 167 carries a line
+# reference.
 #
-# The British Columbia bracket rate is printed on BC428 line 5 (table 1, lines 2 to 8, taxable
+# The federal half is the federal form `ca/take_home_marginal_rates` (imported by the manifest,
+# after the T1 forms), which works from the salary alone. This return reads its four exports, each
+# totalled by core/record_total into its own figure: the net income rate (the part of a further
+# dollar left in the net income and the taxable income: 1 less the CPP first additional and second
+# additional rates), the credit-earning contribution rate (the CPP base rate plus the EI rate), the
+# federal marginal rate (the federal tax on a further dollar after its credits, counted only where
+# the basic federal tax is above zero) and the contribution rate (the CPP base, first additional,
+# second additional and EI rates). The rest is British Columbia's own.
+#
+# Credits on the contributions. The CPP base contribution (T1 line 30800) and the EI premium (line
+# 31200) earn the British Columbia non-refundable credit rate (BC428 line 55, the `ca-bc/credit_rate`
+# dataset), so the credit-earning contribution rate times it is the British Columbia tax a further
+# dollar of contributions takes off. The rate is the dataset's as it is: its cent rounding is for
+# the credit boxes.
+#
+# British Columbia. The bracket rate is printed on BC428 line 5 (table 1, lines 2 to 8, taxable
 # income up to 137,407) or on line 12 (table 2, lines 9 to 15, above it); the other is blank. BC428
 # exports both, each is totalled into the return's own kind with a blank read as 0, and core/sum
-# adds them into the British Columbia bracket rate.
+# adds them into the British Columbia bracket rate. It is multiplied by the net income rate (the
+# part of a further dollar left in the taxable income) and the credit on the contributions comes
+# off.
 #
-# The British Columbia gate reads BC428 line 80 "Line 72 minus line 79 (if negative, enter "0")":
-# the British Columbia tax after the credits and the tax reduction that payroll applies, before
-# line 81 (logging tax credit), lines 83 and 84 (political contributions), line 88 (ESOP and EVCC)
-# and line 90 (mining credit), which only come back when filing and are not payroll terms. It is
-# the counterpart of ON428 line 81 and AB428 line 68. Gated through `ca-bc/marginal_rate_gate`, it
-# multiplies the bracket rate (with the reduction, below) into `ca-bc/british_columbia_marginal_rate`.
-#
-# The tax reduction (BC428 lines 73 to 79, T4127 section S for British Columbia) is 562.00 at a net
-# income up to 25,020, falls by 3.56% of the excess over 25,020, and is zero from 40,807. Between
-# those two figures it makes the tax rise 3.56 points faster than the bracket rate alone (the
-# reduction raises the marginal rate, it does not lower it): in that range the British Columbia
-# rate is the bracket rate (5.06%) plus 3.56%. The chain is Ontario's: BC428 line 79 is totalled and
-# gated (the reduction is above zero, so the range ends at a net income of 40,807); BC428 line 78
-# "Line 76 multiplied by the percentage from line 77" is read through the `ca-bc/reduction_slope`
-# dataset (the printed 3.56% where line 78 is above zero, so the range starts above a net income of
-# 25,020, and 0 where it is not); the two multiply into `ca-bc/british_columbia_reduction_phase_out_rate`,
-# exact; and core/sum adds that to the bracket rate into
-# `ca-bc/british_columbia_bracket_rate_with_reduction`, before the line 80 gate multiplies it, so a
-# reduction that has taken the whole of the tax (line 80 is 0.00) adds nothing. Ontario's clawback
-# is the bracket rate itself, so its slope is a multiple of that rate; British Columbia's is the
-# printed 3.56% of line 77, so the slope is that rate.
+# The tax reduction (BC428 lines 73 to 79, T4127 section S for British Columbia: CRA payroll
+# deductions formulas, January 2025 edition) is 562.00 at a net income up to 25,020, falls by 3.56%
+# of the excess over 25,020, and is zero from 40,807. Between those two figures it makes the tax
+# rise 3.56 points faster than the bracket rate alone, per dollar of net income (the reduction
+# raises the marginal rate, it does not lower it). BC428 line 79 is totalled and gated (the
+# reduction is above zero, so the range ends at a net income of 40,807); BC428 line 78 "Line 76
+# multiplied by the percentage from line 77" is read through the `ca-bc/reduction_slope` dataset
+# (the printed 3.56% where line 78 is above zero, so the range starts above a net income of
+# 25,020, and 0 where it is not); the two multiply into the phase-out rate, which is then taken
+# times the net income rate, since line 76 follows the net income, not the salary; core/sum adds
+# that to the rate after the credits.
 #
 # `ca-bc/reduction_slope` is a dataset of its own, apart from `ca-bc/tax_reduction_rate` (BC428
 # line 77 itself, the same 3.56%): that one rounds half-up to the cent, as it feeds a dollars-and-
@@ -51,11 +55,16 @@
 # cent, so it starts at the first cent of line 78, which is within cents of the printed net income
 # of 25,020.
 #
-# The last step adds the federal and the British Columbia marginal rate with core/sum into
-# `ca-bc/marginal_tax_rate`; it is exact too, is not printed on the form and has no title or line.
+# The whole British Columbia rate counts only where BC428 line 80 "Line 72 minus line 79 (if
+# negative, enter "0")" is above zero, through the `ca-bc/marginal_rate_gate` dataset (0 where that
+# tax is 0.00 and 1 from one cent): where the credits and the reduction take all the tax a further
+# dollar adds none. Line 80 is read, not line 91: lines 81 and later (logging tax credit,
+# political contributions, ESOP and EVCC, mining credit) come back only when filing and are not
+# payroll terms. British Columbia has no surtax and no health premium.
 #
-# Only line 167 carries a line reference: the steps below read figures for the rates and are
-# engine-internal, so they carry none. Known limit: the rate ignores the tax effect of CPP and EI.
+# The last step adds the federal marginal rate, the British Columbia marginal rate and the
+# contribution rate with core/sum into `ca-bc/marginal_tax_rate`; it is exact, is not printed on
+# the form and has no title or line.
 capabilities:
   - name: core/record_total
     title: "Refund or balance owing"
@@ -74,32 +83,27 @@ capabilities:
   - name: core/record_total
     unit: core/percent
     consumes:
-      records: ca/t1_tax_and_credits.federal_bracket_column_rate_line_73
+      records: ca/take_home_marginal_rates.marginal_net_income_rate
     produces:
-      output: ca/federal_bracket_rate_return
+      output: ca-bc/marginal_net_income_rate
   - name: core/record_total
-    unit: ca/cad
-    consumes:
-      records: ca/t1_tax_and_credits.federal_tax_after_credits
-    produces:
-      output: ca/federal_tax_after_credits_return
-  - name: core/amount_by_band_rate
     unit: core/percent
-    params:
-      table: ca-bc/marginal_rate_gate
     consumes:
-      base: ca/federal_tax_after_credits_return
+      records: ca/take_home_marginal_rates.marginal_credit_contribution_rate
     produces:
-      output: ca/federal_rate_gate
-  - name: core/multiply_by_rate
+      output: ca-bc/marginal_credit_contribution_rate
+  - name: core/record_total
     unit: core/percent
-    params:
-      rounding: ca-bc/exact_rounding
     consumes:
-      base: ca/federal_rate_gate
-      rate: ca/federal_bracket_rate_return
+      records: ca/take_home_marginal_rates.marginal_federal_rate
     produces:
-      output: ca/federal_marginal_rate
+      output: ca-bc/marginal_federal_rate
+  - name: core/record_total
+    unit: core/percent
+    consumes:
+      records: ca/take_home_marginal_rates.marginal_contribution_rate
+    produces:
+      output: ca-bc/marginal_contribution_rate
   - name: core/record_total
     unit: core/percent
     consumes:
@@ -128,20 +132,39 @@ capabilities:
         - ca-bc/british_columbia_bracket_rate_line_12_return
     produces:
       output: ca-bc/british_columbia_bracket_rate_return
-  - name: core/record_total
-    unit: ca/cad
-    consumes:
-      records: ca-bc/bc428.bc428_tax_after_reduction_line_80
-    produces:
-      output: ca-bc/british_columbia_tax_after_reduction_return
-  - name: core/amount_by_band_rate
+  - name: core/rate_figure
     unit: core/percent
     params:
-      table: ca-bc/marginal_rate_gate
-    consumes:
-      base: ca-bc/british_columbia_tax_after_reduction_return
+      rate: ca-bc/credit_rate
     produces:
-      output: ca-bc/british_columbia_rate_gate
+      output: ca-bc/marginal_british_columbia_credit_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-bc/exact_rounding
+    consumes:
+      base: ca-bc/marginal_credit_contribution_rate
+      rate: ca-bc/marginal_british_columbia_credit_rate
+    produces:
+      output: ca-bc/marginal_british_columbia_contribution_credit_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-bc/exact_rounding
+    consumes:
+      base: ca-bc/british_columbia_bracket_rate_return
+      rate: ca-bc/marginal_net_income_rate
+    produces:
+      output: ca-bc/marginal_british_columbia_bracket_rate
+  - name: core/subtract
+    unit: core/percent
+    params:
+      rounding: ca-bc/exact_rounding
+    consumes:
+      amount: ca-bc/marginal_british_columbia_bracket_rate
+      less: ca-bc/marginal_british_columbia_contribution_credit_rate
+    produces:
+      output: ca-bc/marginal_british_columbia_rate_after_credits
   - name: core/record_total
     unit: ca/cad
     consumes:
@@ -179,16 +202,39 @@ capabilities:
       rate: ca-bc/british_columbia_reduction_slope
     produces:
       output: ca-bc/british_columbia_reduction_phase_out_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-bc/exact_rounding
+    consumes:
+      base: ca-bc/british_columbia_reduction_phase_out_rate
+      rate: ca-bc/marginal_net_income_rate
+    produces:
+      output: ca-bc/marginal_british_columbia_reduction_rate
   - name: core/sum
     unit: core/percent
     params:
       rounding: ca-bc/exact_rounding
     consumes:
       parts:
-        - ca-bc/british_columbia_bracket_rate_return
-        - ca-bc/british_columbia_reduction_phase_out_rate
+        - ca-bc/marginal_british_columbia_rate_after_credits
+        - ca-bc/marginal_british_columbia_reduction_rate
     produces:
       output: ca-bc/british_columbia_bracket_rate_with_reduction
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-bc/bc428.bc428_tax_after_reduction_line_80
+    produces:
+      output: ca-bc/british_columbia_tax_after_reduction_return
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca-bc/marginal_rate_gate
+    consumes:
+      base: ca-bc/british_columbia_tax_after_reduction_return
+    produces:
+      output: ca-bc/british_columbia_rate_gate
   - name: core/multiply_by_rate
     unit: core/percent
     params:
@@ -204,7 +250,8 @@ capabilities:
       rounding: ca-bc/exact_rounding
     consumes:
       parts:
-        - ca/federal_marginal_rate
+        - ca-bc/marginal_federal_rate
         - ca-bc/british_columbia_marginal_rate
+        - ca-bc/marginal_contribution_rate
     produces:
       output: ca-bc/marginal_tax_rate

@@ -69,8 +69,17 @@ T1_FORM = dedent("""\
       exports:
         - ca/refund_or_balance_owing
         - ca/total_payable
-        - ca/federal_bracket_column_rate_line_73
-        - ca/federal_tax_after_credits
+    capabilities: []
+    """)
+MARGINAL_RATES_FORM = dedent("""\
+    form:
+      name: ca/take_home_marginal_rates
+      required: true
+      exports:
+        - ca/marginal_net_income_rate
+        - ca/marginal_credit_contribution_rate
+        - ca/marginal_federal_rate
+        - ca/marginal_contribution_rate
     capabilities: []
     """)
 BC428_FORM = dedent("""\
@@ -130,8 +139,10 @@ T1_STEP = dedent("""\
 # the rates are in `end_to_end/test_return_rates.py`. Form, output kind, unit.
 OTHER_STEPS = [
     ("ca/t1_tax_and_credits", "ca/total_payable", "ca/cad"),
-    ("ca/t1_tax_and_credits", "ca/federal_bracket_column_rate_line_73", "core/percent"),
-    ("ca/t1_tax_and_credits", "ca/federal_tax_after_credits", "ca/cad"),
+    ("ca/take_home_marginal_rates", "ca/marginal_net_income_rate", "core/percent"),
+    ("ca/take_home_marginal_rates", "ca/marginal_credit_contribution_rate", "core/percent"),
+    ("ca/take_home_marginal_rates", "ca/marginal_federal_rate", "core/percent"),
+    ("ca/take_home_marginal_rates", "ca/marginal_contribution_rate", "core/percent"),
     ("ca-bc/bc428", "ca-bc/bc428_bracket_rate_line_5", "core/percent"),
     ("ca-bc/bc428", "ca-bc/bc428_bracket_rate_line_12", "core/percent"),
     ("ca-bc/bc428", "ca-bc/bc428_reduction_clawback_line_78", "ca/cad"),
@@ -148,9 +159,29 @@ CASES = [
 
 def _other_step(form: str, output: str, unit: str) -> str:
     """A stand-in step for a figure the return reads: the gate of the salary for a rate (1, a rate
-    is at most 1; the bracket rates are the difference of two equal amounts, so 0) and the salary
-    itself for an amount."""
-    if output.endswith(("line_5", "line_12")):
+    is at most 1), the difference of two equal amounts, 0, for the bracket rates and the
+    credit-earning contribution rate (a credit rate of 1 would make the rate after the credits
+    negative) and the salary itself for an amount."""
+    if output == "ca/marginal_credit_contribution_rate":
+        # The salary less its own copy, 0: the form has no BC428 line to take the difference of.
+        step = f"""\
+          - name: core/record_total
+            unit: ca/cad
+            consumes:
+              records: ca/t1_employment_income.employment_income_line_10100
+            produces:
+              output: ca/return_employment_income
+          - name: core/subtract
+            unit: {unit}
+            params:
+              rounding: ca/cent_rounding
+            consumes:
+              amount: ca/employment_income_line_10100
+              less: ca/return_employment_income
+            produces:
+              output: {output}
+        """
+    elif output.endswith(("line_5", "line_12")):
         step = f"""\
           - name: core/subtract
             unit: {unit}
@@ -201,9 +232,14 @@ def _service(tmp_path: Path) -> TaxComputationService:
         ),
         ("01b_salary_copy_t1.yaml", SALARY_COPY.format(form="ca/t1_tax_and_credits")),
         ("01c_salary_copy_bc428.yaml", SALARY_COPY.format(form="ca-bc/bc428")),
+        (
+            "01d_salary_copy_marginal_rates.yaml",
+            SALARY_COPY.format(form="ca/take_home_marginal_rates"),
+        ),
         ("02_credits_input.yaml", CREDITS_INPUT),
         ("03_t1_step.yaml", T1_STEP),
         ("03a_bc428_form.yaml", BC428_FORM),
+        ("03a_marginal_rates_form.yaml", MARGINAL_RATES_FORM),
         *[
             (f"03b_{number}.yaml", _other_step(form, out, unit))
             for number, (form, out, unit) in enumerate(OTHER_STEPS)
