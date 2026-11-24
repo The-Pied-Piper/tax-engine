@@ -8,8 +8,7 @@ forms and runs nothing twice. This test is the independent check: it runs the re
 salary and at the salary plus a step, and compares the change in those deductions per dollar with
 the rate the return calculated at the salary.
 
-One sweep runs for each tax year (Umar, 24 Nov 2026: test each province's marginal rate against a
-double run of the engine like Ontario's): a list of chosen salaries (the same list as the Ontario
+One sweep runs for each tax year, as Ontario's does: a list of chosen salaries (the same list as the Ontario
 check, and the salaries around British Columbia's own breaks) together with every $250 from $1,000
 to $400,000.
 
