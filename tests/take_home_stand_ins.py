@@ -36,39 +36,67 @@ STAND_INS = [
     ("03t_average_rate.yaml", AVERAGE_RATE_STEP),
 ]
 
-
-# The federal marginal-rate form a province's return summary also reads: its four exports, each the
-# salary through a gate dataset of the province that is 0 for any salary above 0, so every rate is
-# 0 (made-up figures; the part tests are about line 167). The caller names the gate dataset.
-MARGINAL_RATE_EXPORTS = (
-    "marginal_net_income_rate",
-    "marginal_credit_contribution_rate",
-    "marginal_federal_rate",
-    "marginal_contribution_rate",
-)
-MARGINAL_RATES_FORM = (
-    "form:\n  name: ca/take_home_marginal_rates\n  required: true\n  exports:\n"
-    + "".join(f"    - ca/{name}\n" for name in MARGINAL_RATE_EXPORTS)
-    + "capabilities: []\n"
-)
+MARGINAL_RATES_FORM = dedent("""\
+    form:
+      name: ca/take_home_marginal_rates
+      required: true
+      exports:
+        - ca/marginal_net_income_rate
+        - ca/marginal_credit_contribution_rate
+        - ca/marginal_federal_rate
+        - ca/marginal_contribution_rate
+    capabilities: []
+    """)
 
 
-def marginal_rates_stand_ins(zero_gate: str) -> list[tuple[str, str]]:
-    """File name and text of the marginal-rate stand-in form and its steps, over `zero_gate`."""
-    steps = (
-        "form:\n  name: ca/take_home_marginal_rates\ncapabilities:\n"
-        "  - name: core/record_total\n    unit: ca/cad\n    consumes:\n"
-        "      records: ca/t1_employment_income.employment_income_line_10100\n"
-        "    produces:\n      output: ca/return_employment_income\n"
-        + "".join(
-            "  - name: core/amount_by_band_rate\n    unit: core/percent\n    params:\n"
-            f"      table: {zero_gate}\n    consumes:\n"
-            "      base: ca/return_employment_income\n"
-            f"    produces:\n      output: ca/{name}\n"
-            for name in MARGINAL_RATE_EXPORTS
-        )
-    )
-    return [
-        ("03u_marginal_rates_form.yaml", MARGINAL_RATES_FORM),
-        ("03v_marginal_rates_steps.yaml", steps),
-    ]
+MARGINAL_RATES_STEPS = dedent("""\
+    form:
+      name: ca/take_home_marginal_rates
+    capabilities:
+      - name: core/record_total
+        unit: ca/cad
+        consumes:
+          records: ca/t1_employment_income.employment_income_line_10100
+        produces:
+          output: ca/marginal_salary
+      - name: core/amount_by_band_rate
+        unit: core/percent
+        params:
+          table: ca/marginal_rate_gate
+        consumes:
+          base: ca/marginal_salary
+        produces:
+          output: ca/marginal_net_income_rate
+      - name: core/amount_by_band_rate
+        unit: core/percent
+        params:
+          table: ca/marginal_rate_gate
+        consumes:
+          base: ca/marginal_salary
+        produces:
+          output: ca/marginal_credit_contribution_rate
+      - name: core/amount_by_band_rate
+        unit: core/percent
+        params:
+          table: ca/marginal_rate_gate
+        consumes:
+          base: ca/marginal_salary
+        produces:
+          output: ca/marginal_federal_rate
+      - name: core/amount_by_band_rate
+        unit: core/percent
+        params:
+          table: ca/marginal_rate_gate
+        consumes:
+          base: ca/marginal_salary
+        produces:
+          output: ca/marginal_contribution_rate
+    """)
+
+# The form and its steps, for the return-part tests whose return also reads the four exports of the
+# federal marginal rate form. Each export is a rate, so it is a gate of the salary (1), not the
+# salary itself.
+MARGINAL_STAND_INS = [
+    ("03u_marginal_rates_form.yaml", MARGINAL_RATES_FORM),
+    ("03v_marginal_rates.yaml", MARGINAL_RATES_STEPS),
+]

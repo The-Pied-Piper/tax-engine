@@ -42,7 +42,6 @@ from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca.catalog.refund import REFUND_OR_BALANCE_OWING, TOTAL_CREDITS
 from tests.federal_forms import form_parts
-from tests.jurisdictions.ca_nl.stand_ins import MARGINAL_RATES_STAND_INS
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_capabilities,
     newfoundland_kinds,
@@ -50,9 +49,15 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_parameter_parsers,
     newfoundland_units,
 )
-from tests.take_home_stand_ins import STAND_INS
+from tests.take_home_stand_ins import MARGINAL_STAND_INS, STAND_INS
 
 D = Decimal
+# The shared marginal-rate stand-in with every export a rate of 0 (the salary through the gate that
+# is 0 above 0), so that the sum of the return's rates stays a rate (at most 1).
+ZERO_MARGINAL_STAND_INS = [
+    (name, text.replace("ca/marginal_rate_gate", "ca-nl/low_income_reduction_line_86_gate"))
+    for name, text in MARGINAL_STAND_INS
+]
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
 RETURN_PART = NL_PARTS / "return.yaml"
 
@@ -222,7 +227,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
             for part in form_parts("t1_employment_income")
         ),
         *STAND_INS,
-        *marginal_rates_stand_ins("ca-nl/low_income_reduction_line_86_gate"),
+        *ZERO_MARGINAL_STAND_INS,
         ("05_return.yaml", RETURN_PART.read_text(encoding="utf-8")),
     ]
     for name, text in texts:

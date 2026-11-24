@@ -1,17 +1,15 @@
-"""The Saskatchewan return summary carries the average and the marginal income tax rate (2025),
+"""The Saskatchewan return summary carries the average and the marginal tax rate (2025),
 through the registered engine (`build_tax_computation`, which lists Saskatchewan; salary the only
 input).
 
 Calculated the same way as British Columbia's, without a tax reduction (Saskatchewan has none: Form
 SK428 line 9 prints a flat "Claim $19,491", and the payroll formulas have the one constant K1P):
 
-- The average rate is T1 line 43500 "Total payable" over the salary (T1 line 10100), rounded once
-  half-up to 0.0001 (`ca-sk/rate_rounding`).
-- The marginal rate (`ca-sk/marginal_tax_rate`) is the exact sum of two gated parts: the federal
-  marginal rate (`ca/federal_marginal_rate`, the T1 line 73 bracket rate, counted only where T1
-  line 42900 "Basic federal tax" is above 0) and the Saskatchewan marginal rate
-  (`ca-sk/saskatchewan_marginal_rate`, the SK428 line 5 rate, counted only where SK428 line 67 is
-  above 0). CPP and EI are not counted.
+- The average rate is on the take-home basis (income tax, CPP and EI over the salary).
+- The marginal rate is on the take-home basis (CPP and EI count, credits on them come off); its
+  values are in `test_return_marginal_tax_rate_values.py` and the check against a second run of the
+  engine in `test_return_marginal_tax_rate_extra_run.py`. Here the figures of the parts the rate
+  reads (the columns, line 67 and the gates) are pinned.
 
 Form text (Form SK428, CRA 5008-C): "Column 1: Line 1 is $53,463 or less", "Column 2: Line 1 is more
 than $53,463 but not more than $152,750", "Column 3: Line 1 is more than $152,750"; "Line 5: Rate
@@ -50,17 +48,14 @@ lower column, so the next cent of salary reads the next column's rate.
 
 from __future__ import annotations
 
-import re
 from decimal import Decimal
 
 import pytest
 
 from tax_engine import build_tax_computation
-from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.domain.trace import SumLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
@@ -162,18 +157,6 @@ def test_the_rate_kinds_are_non_negative(name: str) -> None:
     assert non_negative(artifact_kinds().kind(name))
 
 
-@pytest.mark.parametrize(("salary", "federal", "saskatchewan", "marginal"), PART_FIGURES)
-def test_the_marginal_rate_is_the_exact_sum_of_the_federal_and_the_saskatchewan_part(
-    salary: str, federal: str, saskatchewan: str, marginal: str
-) -> None:
-    summary = _summary(salary)
-
-    assert _value(summary, FEDERAL) == D(federal)
-    assert _value(summary, SK_RATE) == D(saskatchewan)
-    assert _value(summary, MARGINAL) == D(marginal)
-    assert D(federal) + D(saskatchewan) == D(marginal)
-
-
 @pytest.mark.parametrize(
     ("salary", "federal_tax", "saskatchewan_tax", "total_payable"), TAX_FIGURES
 )
@@ -190,27 +173,6 @@ def test_the_total_payable_is_the_federal_tax_plus_the_saskatchewan_tax(
     assert _value(sk428, LINE_82) == D(saskatchewan_tax)
     assert _value(summary, LINE_67_RETURN) == D(saskatchewan_tax)
     assert _value(t1, TOTAL_PAYABLE) == D(total_payable)
-
-
-def test_a_salary_of_100_reads_0_for_both_rates_and_both_parts() -> None:
-    summary = _summary("100")
-
-    assert _value(summary, MARGINAL) == D("0")
-    assert _value(summary, AVERAGE) == D("0")
-    assert _value(summary, FEDERAL) == D("0")
-    assert _value(summary, SK_RATE) == D("0")
-    assert _value(summary, RATE_GATE) == D("0")
-
-
-def test_saskatchewan_tax_first_exceeds_zero_at_20866_58_and_the_gate_opens_there() -> None:
-    closed = _summary("20866.57")
-    opened = _summary("20866.58")
-
-    assert _value(closed, LINE_67_RETURN) == D("0.00")
-    assert _value(closed, RATE_GATE) == D("0")
-    assert _value(opened, LINE_67_RETURN) == D("0.01")
-    assert _value(opened, RATE_GATE) == D("1")
-    assert _value(opened, SK_RATE) == D("0.105")
 
 
 @pytest.mark.parametrize(
@@ -236,14 +198,6 @@ def test_the_line_5_rate_is_the_one_of_the_column_that_taxable_income_falls_in(
     assert _value(summary, BRACKET) == D(bracket)
 
 
-def test_the_marginal_rate_is_not_rounded_to_the_cent() -> None:
-    # 0.145 + 0.125 = 0.27 and 0.26 + 0.125 = 0.385 keep their places: no cent rule is applied.
-    value = _value(_summary("153824"), MARGINAL)
-
-    assert value == D("0.385")
-    assert value.as_tuple().exponent == -3
-
-
 def test_the_return_prints_both_rates_as_percentages_in_the_core_percent_unit() -> None:
     summary = _summary("70000")
     kinds = artifact_kinds()
@@ -262,44 +216,6 @@ def test_the_steps_after_line_167_have_no_reference_and_no_title() -> None:
         label = kinds.kind(name).label
         assert summary.reference(label) is None
         assert summary.title(label) is None
-
-
-def test_the_marginal_rate_is_traced_as_one_exact_sum_of_the_federal_then_the_sk_part() -> None:
-    sheet = _summary("200000")
-    kinds = artifact_kinds()
-
-    line = _sum_line(sheet)
-
-    assert [(kind.label, value) for kind, value in line.parts] == [
-        (kinds.kind(FEDERAL).label, D("0.29")),
-        (kinds.kind(SK_RATE).label, D("0.145")),
-    ]
-    assert line.rounding == NO_ROUNDING
-    assert line.total == D("0.435")
-    assert line.amount == sheet.get(kinds.kind(MARGINAL)).value
-
-
-def test_the_marginal_rate_is_explained_in_english_as_percentages() -> None:
-    sheet = _summary("70000")
-
-    text = EnglishTraceRenderer().render(_sum_line(sheet), sheet)
-
-    assert re.fullmatch(
-        r".*\(20\.5(0+)?%\) plus .+ \(12\.5(0+)?%\) gives 33(\.0+)?% \(not rounded\)\.?", text
-    )
-
-
-def test_the_marginal_rate_comes_last_of_the_marginal_steps_in_the_trace() -> None:
-    sheet = _summary("100000")
-    kinds = artifact_kinds()
-    labels = [line.label for line in sheet.trace]
-
-    marginal = labels.index(kinds.kind(MARGINAL).label)
-
-    assert marginal == len(labels) - 1
-    assert labels.count(kinds.kind(MARGINAL).label) == 1
-    for part in (FEDERAL, SK_RATE):
-        assert labels.index(kinds.kind(part).label) < marginal
 
 
 @pytest.mark.parametrize(
