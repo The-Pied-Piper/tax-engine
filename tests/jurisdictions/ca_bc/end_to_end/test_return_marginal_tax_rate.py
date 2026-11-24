@@ -20,7 +20,8 @@ the British Columbia marginal rate and the contribution rate, in that order, the
 non-negative British Columbia amount kind `ca-bc/marginal_tax_rate`. The three parts are read inside
 the return, so they are not exported.
 
-Figures (the real bundled manifest, salary the only input, 2025), each the exact sum of the three
+Figures (the real parts of the take-home folder, salary the only input, 2025), each the exact sum
+of the three
 parts, worked by hand from the printed rates:
 
 - $20,000: 0.1339945 + 0 + 0.0759 = 0.2098945; the tax reduction of 562 takes all the British
@@ -53,16 +54,27 @@ from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.domain.trace import SumLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tests.jurisdictions.ca_bc.conftest import TAKE_HOME, TakeHomeService, header_without_imports
 from tests.kinds import bundled_kinds, non_negative
 
 D = Decimal
 BRITISH_COLUMBIA = JurisdictionCode("CA-BC")
+HEADER = header_without_imports()
+RETURN_PART = (TAKE_HOME / "return.yaml").read_text(encoding="utf-8")
 RETURN = "ca-bc/return"
 FEDERAL = "ca-bc/marginal_federal_rate"
 BC_RATE = "ca-bc/british_columbia_marginal_rate"
 CONTRIBUTION = "ca-bc/marginal_contribution_rate"
 MARGINAL = "ca-bc/marginal_tax_rate"
 LINE_167 = "ca/refund_or_balance_owing"
+
+PARTS = (
+    *(
+        part.name
+        for part in sorted(TAKE_HOME.rglob("*.yaml"))
+        if part.name not in {"manifest.yaml", "return.yaml"}
+    ),
+)
 
 # Salary, the federal marginal rate, the British Columbia marginal rate, the contribution rate and
 # the marginal tax rate, worked by hand from the printed rates.
@@ -75,15 +87,26 @@ FIGURES = [
 ]
 
 
-def _worksheets(salary: str) -> dict[str, tuple[Worksheet, ...]]:
-    # No fixture: the bundled British Columbia manifest, as the calculator loads it.
-    return build_tax_computation().compute(
+def _worksheets(
+    take_home_service: TakeHomeService, salary: str
+) -> dict[str, tuple[Worksheet, ...]]:
+    service = take_home_service(HEADER, RETURN_PART, *PARTS)
+    return service.compute(
         TaxCalculationRequest(BRITISH_COLUMBIA, 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),))
     )
 
 
-def _summary(salary: str) -> Worksheet:
-    (summary,) = _worksheets(salary)[RETURN]
+def _summary(take_home_service: TakeHomeService, salary: str) -> Worksheet:
+    (summary,) = _worksheets(take_home_service, salary)[RETURN]
+    return summary
+
+
+def _bundled_summary(salary: str) -> Worksheet:
+    # No fixture: the bundled British Columbia manifest, as the calculator loads it.
+    worksheets = build_tax_computation().compute(
+        TaxCalculationRequest(BRITISH_COLUMBIA, 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),))
+    )
+    (summary,) = worksheets[RETURN]
     return summary
 
 
@@ -108,9 +131,14 @@ def test_the_marginal_tax_rate_kind_is_a_registered_non_negative_amount() -> Non
     ("salary", "federal", "british_columbia", "contribution", "marginal"), FIGURES
 )
 def test_the_marginal_tax_rate_is_the_exact_sum_of_the_three_rates(
-    salary: str, federal: str, british_columbia: str, contribution: str, marginal: str
+    take_home_service: TakeHomeService,
+    salary: str,
+    federal: str,
+    british_columbia: str,
+    contribution: str,
+    marginal: str,
 ) -> None:
-    summary = _summary(salary)
+    summary = _summary(take_home_service, salary)
     kinds = bundled_kinds()
 
     assert summary.get(kinds.kind(FEDERAL)).value == D(federal)
@@ -121,11 +149,13 @@ def test_the_marginal_tax_rate_is_the_exact_sum_of_the_three_rates(
 
 
 def test_the_bundled_return_gives_32_9_percent_at_70000() -> None:
-    assert _summary("70000").get(bundled_kinds().kind(MARGINAL)).value == D("0.3289978")
+    assert _bundled_summary("70000").get(bundled_kinds().kind(MARGINAL)).value == D("0.3289978")
 
 
-def test_the_70000_take_home_stays_54217_74() -> None:
-    worksheets = _worksheets("70000")
+def test_the_70000_take_home_stays_54217_74(
+    take_home_service: TakeHomeService,
+) -> None:
+    worksheets = _worksheets(take_home_service, "70000")
     kinds = bundled_kinds()
     (summary,) = worksheets[RETURN]
     (schedule_8,) = worksheets["ca/schedule_8"]
@@ -149,21 +179,25 @@ def test_the_70000_take_home_stays_54217_74() -> None:
 
 def test_the_marginal_tax_rate_is_not_rounded_to_the_cent() -> None:
     # 0.2930542655 + 0.168 = 0.4610542655 keeps all its places: no cent rule is applied.
-    value = _summary("200000").get(bundled_kinds().kind(MARGINAL)).value
+    value = _bundled_summary("200000").get(bundled_kinds().kind(MARGINAL)).value
 
     assert value == D("0.4610542655")
     assert value.as_tuple().exponent == -10
 
 
-def test_the_return_prints_the_marginal_tax_rate_as_a_percentage_in_the_core_percent_unit() -> None:
-    unit = _summary("70000").unit(bundled_kinds().kind(MARGINAL).label)
+def test_the_return_prints_the_marginal_tax_rate_as_a_percentage_in_the_core_percent_unit(
+    take_home_service: TakeHomeService,
+) -> None:
+    unit = _summary(take_home_service, "70000").unit(bundled_kinds().kind(MARGINAL).label)
 
     assert unit is not None
     assert unit.identifier == "core/percent"
 
 
-def test_the_marginal_tax_rate_step_has_no_reference_and_no_title() -> None:
-    summary = _summary("70000")
+def test_the_marginal_tax_rate_step_has_no_reference_and_no_title(
+    take_home_service: TakeHomeService,
+) -> None:
+    summary = _summary(take_home_service, "70000")
     label = bundled_kinds().kind(MARGINAL).label
 
     assert summary.reference(label) is None
@@ -174,9 +208,14 @@ def test_the_marginal_tax_rate_step_has_no_reference_and_no_title() -> None:
     ("salary", "federal", "british_columbia", "contribution", "marginal"), FIGURES
 )
 def test_the_marginal_tax_rate_is_traced_as_one_exact_sum_in_order(
-    salary: str, federal: str, british_columbia: str, contribution: str, marginal: str
+    take_home_service: TakeHomeService,
+    salary: str,
+    federal: str,
+    british_columbia: str,
+    contribution: str,
+    marginal: str,
 ) -> None:
-    sheet = _summary(salary)
+    sheet = _summary(take_home_service, salary)
     kinds = bundled_kinds()
 
     line = _sum_line(sheet)
@@ -191,8 +230,10 @@ def test_the_marginal_tax_rate_is_traced_as_one_exact_sum_in_order(
     assert line.amount == sheet.get(kinds.kind(MARGINAL)).value
 
 
-def test_the_marginal_tax_rate_comes_last_of_the_marginal_steps_in_the_trace() -> None:
-    sheet = _summary("100000")
+def test_the_marginal_tax_rate_comes_last_of_the_marginal_steps_in_the_trace(
+    take_home_service: TakeHomeService,
+) -> None:
+    sheet = _summary(take_home_service, "100000")
     kinds = bundled_kinds()
     labels = [line.label for line in sheet.trace]
 
@@ -222,9 +263,9 @@ def test_the_marginal_tax_rate_comes_last_of_the_marginal_steps_in_the_trace() -
     ],
 )
 def test_the_marginal_tax_rate_is_explained_in_english_as_percentages(
-    salary: str, sentence: str
+    take_home_service: TakeHomeService, salary: str, sentence: str
 ) -> None:
-    sheet = _summary(salary)
+    sheet = _summary(take_home_service, salary)
 
     text = EnglishTraceRenderer().render(_sum_line(sheet), sheet)
 

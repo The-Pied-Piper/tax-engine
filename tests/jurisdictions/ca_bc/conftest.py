@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import re
+from collections.abc import Iterator
 from pathlib import Path
 from typing import Protocol
 
@@ -14,9 +16,41 @@ from tax_engine.application.services.tax_computation import TaxComputationServic
 from tax_engine.domain.registry import Namespace
 from tax_engine.registrations import JURISDICTIONS, parameter_parsers, units
 from tests.capabilities import bundled_capabilities
+from tests.federal_forms import FEDERAL_FORMS
 from tests.kinds import bundled_kinds
 
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
+
+
+class TakeHomeFolders:
+    """The part files of the British Columbia take-home return: British Columbia's own, and the
+    federal forms it imports from the `ca` package. `rglob` and `glob` search both; `/` names a
+    file of British Columbia's.
+    """
+
+    def rglob(self, pattern: str) -> Iterator[Path]:
+        yield from BC_PARTS.rglob(pattern)
+        yield from FEDERAL_FORMS.rglob(pattern)
+
+    def glob(self, pattern: str) -> Iterator[Path]:
+        yield from BC_PARTS.glob(pattern)
+        yield from FEDERAL_FORMS.glob(pattern)
+
+    def __truediv__(self, name: str) -> Path:
+        return BC_PARTS / name
+
+
+TAKE_HOME = TakeHomeFolders()
+
+
+def header_without_imports() -> str:
+    """The real British Columbia manifest header with its `imports:` list taken out.
+
+    A test that copies the federal parts beside the header as parts of its own manifest cannot also
+    import them.
+    """
+    header = (BC_PARTS / "manifest.yaml").read_text(encoding="utf-8")
+    return re.sub(r"^imports:\n(?:  - .*\n)+", "", header, flags=re.MULTILINE)
 
 
 class TakeHomeService(Protocol):
@@ -42,8 +76,10 @@ def take_home_service(tmp_path: Path) -> TakeHomeService:
         (folder / "00_header.yaml").write_text(header, encoding="utf-8")
         (folder / "01_form.yaml").write_text(form, encoding="utf-8")
         for number, part in enumerate(parts, start=2):
-            text = (BC_PARTS / part).read_text(encoding="utf-8")
-            (folder / f"{number:02d}_{part}").write_text(text, encoding="utf-8")
+            found = next(TAKE_HOME.rglob(part))
+            (folder / f"{number:02d}_{part}").write_text(
+                found.read_text(encoding="utf-8"), encoding="utf-8"
+            )
         roots = {**JURISDICTIONS.roots(), Namespace("ca-bc"): tmp_path}
         return TaxComputationService(
             YamlJurisdictionSource(roots, bundled_kinds(), units()),
