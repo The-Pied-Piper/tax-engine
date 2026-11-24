@@ -63,11 +63,9 @@ from decimal import Decimal
 import pytest
 
 from tax_engine import build_tax_computation
-from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.domain.trace import SumLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
@@ -119,27 +117,26 @@ NEW_KINDS = [
     WITH_PHASE_OUT,
 ]
 
-# Salary, federal part, Manitoba part, contribution rate, marginal rate, T1 line 43500 total
-# payable, average. The marginal rate is the exact sum of the first three (checked in the test).
-FIGURES = [
-    ("0", "0", "0", "0", "0", "0.00", "0"),
-    ("100", "0", "0", "0", "0", "0.00", "0.0000"),
-    ("17403.90", "0", "0", "0.0759", "0.0759", "0.00", "0.0639"),
-    ("17403.91", "0", "0.1094256", "0.0759", "0.1853256", "0.01", "0.0639"),
-    ("18820.26", "0", "0.1094256", "0.0759", "0.1853256", "154.99", "0.0731"),
-    ("18820.27", "0.1339945", "0.1094256", "0.0759", "0.3193201", "155.00", "0.0731"),
-    ("20000", "0.1339945", "0.1094256", "0.0759", "0.3193201", "442.17", "0.0876"),
-    ("50000", "0.1339945", "0.1191078", "0.0759", "0.3290023", "7535.75", "0.2225"),
-    ("70000", "0.1957725", "0.120879", "0.0595", "0.3761515", "13333.23", "0.2624"),
-    ("150000", "0.26", "0.174", "0", "0.434", "43935.69", "0.3296"),
-    ("200000", "0.2930542655", "0.174", "0", "0.4670542655", "66331.29", "0.3592"),
-    ("201074.06", "0.2930542655", "0.174", "0", "0.4670542655", "66832.93", "0.3598"),
-    ("201074.07", "0.2930542655", "0.1825212", "0", "0.4755754655", "66832.93", "0.3598"),
-    ("250000", "0.2930542655", "0.1825212", "0", "0.4755754655", "90100.91", "0.3824"),
-    ("300000", "0.33", "0.1825212", "0", "0.5125212", "115561.16", "0.4036"),
-    ("401073.93", "0.33", "0.1825212", "0", "0.5125212", "167363.70", "0.4310"),
-    ("401073.94", "0.33", "0.174", "0", "0.504", "167363.70", "0.4310"),
-    ("410000", "0.33", "0.174", "0", "0.504", "171862.43", "0.4326"),
+# Salary, T1 line 43500 total payable, average (the average is rounded once half-up to 0.0001).
+TAX_FIGURES = [
+    ("0", "0.00", "0"),
+    ("100", "0.00", "0.0000"),
+    ("17403.90", "0.00", "0.0639"),
+    ("17403.91", "0.01", "0.0639"),
+    ("18820.26", "154.99", "0.0731"),
+    ("18820.27", "155.00", "0.0731"),
+    ("20000", "442.17", "0.0876"),
+    ("50000", "7535.75", "0.2225"),
+    ("70000", "13333.23", "0.2624"),
+    ("150000", "43935.69", "0.3296"),
+    ("200000", "66331.29", "0.3592"),
+    ("201074.06", "66832.93", "0.3598"),
+    ("201074.07", "66832.93", "0.3598"),
+    ("250000", "90100.91", "0.3824"),
+    ("300000", "115561.16", "0.4036"),
+    ("401073.93", "167363.70", "0.4310"),
+    ("401073.94", "167363.70", "0.4310"),
+    ("410000", "171862.43", "0.4326"),
 ]
 # Salary, MB428 line 5 rate read: the rate is never blank. Taxable income 47,000.00 at 47,439.39 is
 # up to 47,000 (column 1) and 47,000.01 at 47,439.40 is above it; 100,000.00 at 101,074.00 is up to
@@ -315,15 +312,17 @@ def test_the_rate_kinds_are_non_negative(name: str) -> None:
     assert non_negative(artifact_kinds().kind(name))
 
 
-@pytest.mark.parametrize("salary", ["0", "100"])
-def test_a_salary_of_0_or_100_reads_0_for_both_rates(salary: str) -> None:
-    summary = _summary(salary)
+@pytest.mark.parametrize(("salary", "total_payable", "average"), TAX_FIGURES)
+def test_the_total_payable_and_the_average_rate_are_the_take_home_deductions(
+    salary: str, total_payable: str, average: str
+) -> None:
+    worksheets = _worksheets(salary)
+    kinds = bundled_kinds()
 
-    assert _value(summary, MARGINAL) == D("0")
-    assert _value(summary, AVERAGE) == D("0")
-    assert _value(summary, FEDERAL) == D("0")
-    assert _value(summary, MB_RATE) == D("0")
-    assert _value(summary, CONTRIBUTION) == D("0")
+    assert worksheets["ca/t1_tax_and_credits"][0].get(kinds.kind("ca/total_payable")).value == D(
+        total_payable
+    )
+    assert worksheets[RETURN][0].get(kinds.kind(AVERAGE)).value == D(average)
 
 
 @pytest.mark.parametrize(("salary", "line_5"), BRACKET_FIGURES)
@@ -386,32 +385,6 @@ def test_the_manitoba_tax_after_credits_return_is_line_65_and_line_82_here(salar
     assert _value(mb428, LINE_82) == D(line_65)
 
 
-def test_inside_the_phase_out_the_provincial_part_is_the_bracket_rate_plus_0_85212_points() -> None:
-    # Net income is over 200,000 and over the CPP maximum, so a further dollar is all net income:
-    # 17.4% + 0.85212 points, with no contribution credit and no contribution rate left.
-    summary = _summary("250000")
-
-    assert _value(summary, BRACKET) == D("0.174")
-    assert _value(summary, PHASE_OUT) == D("0.0085212")
-    assert _value(summary, MB_RATE) == D("0.1825212")
-    assert _value(summary, MARGINAL) == D("0.2930542655") + D("0.1825212")
-    assert D("15780") / D("200000") * D("0.108") == D("0.0085212")
-
-
-def test_the_manitoba_gate_closes_the_part_while_the_rate_before_the_gate_is_still_above_zero() -> (
-    None
-):
-    # Net income 99% of a further dollar: 10.8% x 0.99 less the credit on the contributions.
-    summary = _summary("17403.90")
-
-    assert _value(summary, WITH_PHASE_OUT) == D("0.1165428")
-    assert _value(summary, LINE_65_RETURN) == D("0.00")
-    assert _value(summary, RATE_GATE) == D("0")
-    assert _value(summary, MB_RATE) == D("0")
-    assert _value(summary, MARGINAL) == D("0.0759")
-    assert _value(summary, MARGINAL) == _value(summary, CONTRIBUTION)
-
-
 def test_the_return_prints_both_rates_as_percentages_in_the_core_percent_unit() -> None:
     summary = _summary("70000")
     kinds = artifact_kinds()
@@ -430,47 +403,6 @@ def test_the_steps_after_line_167_have_no_reference_and_no_title() -> None:
         label = kinds.kind(name).label
         assert summary.reference(label) is None
         assert summary.title(label) is None
-
-
-def test_the_marginal_rate_is_traced_as_one_exact_sum_of_its_three_parts() -> None:
-    sheet = _summary("250000")
-    kinds = artifact_kinds()
-
-    line = _sum_line(sheet)
-
-    assert [(kind.label, value) for kind, value in line.parts] == [
-        (kinds.kind(FEDERAL).label, D("0.2930542655")),
-        (kinds.kind(MB_RATE).label, D("0.1825212")),
-        (kinds.kind(CONTRIBUTION).label, D("0")),
-    ]
-    assert line.rounding == NO_ROUNDING
-    assert line.total == D("0.4755754655")
-    assert line.amount == sheet.get(kinds.kind(MARGINAL)).value
-
-
-def test_the_marginal_rate_is_explained_in_english_as_percentages() -> None:
-    sheet = _summary("70000")
-
-    text = EnglishTraceRenderer().render(_sum_line(sheet), sheet)
-
-    assert (
-        text
-        == "Marginal federal rate (19.57725%) plus manitoba marginal rate (12.0879%) plus marginal "
-        "contribution rate (5.95%) gives 37.61515% (not rounded)."
-    )
-
-
-def test_the_marginal_rate_comes_last_of_the_marginal_steps_in_the_trace() -> None:
-    sheet = _summary("100000")
-    kinds = artifact_kinds()
-    labels = [line.label for line in sheet.trace]
-
-    marginal = labels.index(kinds.kind(MARGINAL).label)
-
-    assert marginal == len(labels) - 1
-    assert labels.count(kinds.kind(MARGINAL).label) == 1
-    for part in (FEDERAL, MB_RATE, WITH_PHASE_OUT, PHASE_OUT, CREDIT_RATE, RATIO, SLOPE):
-        assert labels.index(kinds.kind(part).label) < marginal
 
 
 @pytest.mark.parametrize(

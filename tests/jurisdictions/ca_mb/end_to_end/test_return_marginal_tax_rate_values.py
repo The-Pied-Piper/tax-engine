@@ -112,3 +112,28 @@ def test_the_marginal_rate_is_not_rounded_to_the_cent_or_to_ten_thousandths(
 
     assert value == D(rate)
     assert value != value.quantize(D("0.0001"))
+
+
+@pytest.mark.parametrize(
+    ("year", "salary", "rate"),
+    [
+        (2025, "2000", "0"),
+        (2025, "2000.01", "1"),
+        (2025, "3500", "0.0164"),
+        (2025, "3500.01", "0.0759"),
+        (2026, "2000", "0"),
+        (2026, "2000.01", "1"),
+        (2026, "3500", "0.0163"),
+        (2026, "3500.01", "0.0758"),
+    ],
+)
+def test_at_an_exact_band_edge_the_rate_is_the_lower_bands_and_a_cent_over_is_the_next(
+    year: int, salary: str, rate: str
+) -> None:
+    # The EI rate is 0 at $2,000 and the CPP rate is 0 at $3,500, so $3,500 has the EI rate only.
+    worksheets = build_tax_computation().compute(
+        TaxCalculationRequest(MANITOBA, year, (Artifact(EMPLOYMENT_INCOME, D(salary)),))
+    )
+    (summary,) = worksheets[RETURN]
+
+    assert summary.get(bundled_kinds().kind("ca-mb/marginal_tax_rate")).value == D(rate)

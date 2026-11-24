@@ -49,7 +49,7 @@
 # income rises: line 12 is line 10 (basic amount 2,065.00) less line 11 (9% of the net income),
 # not below 0, so a further dollar of net income takes away 9% of a dollar of the credit amount,
 # and each dollar of it is tax at the credit rate of MB428 line 52. It counts only where line 12
-# is above 0 (`ca-mb/marginal_rate_gate`, up to a net income of 22,944.44): the 9% of the family
+# is above 0 (`ca-mb/marginal_rate_gate`, up to a net income of 22,944.38): the 9% of the family
 # tax benefit rate (`ca-mb/family_tax_benefit_rate`, as it is) times the gate times the credit rate
 # times the net income rate is the extra Manitoba tax, which core/sum adds to the bracket rate
 # beside the basic personal amount's.
@@ -310,8 +310,8 @@ capabilities:
     params:
       rounding: ca-mb/exact_rounding
     consumes:
-      base: ca-mb/manitoba_rate_gate
-      rate: ca-mb/marginal_manitoba_rate_after_credits
+      base: ca-mb/marginal_manitoba_rate_after_credits
+      rate: ca-mb/manitoba_rate_gate
     produces:
       output: ca-mb/manitoba_marginal_rate
   - name: core/sum

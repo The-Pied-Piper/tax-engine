@@ -1,9 +1,10 @@
 # Marginal rate gate, 2025 tax year. Not a CRA figure and not printed on any form: the rows are a
 # switch the Manitoba return summary uses so that a rate counts only where its own tax is above
 # zero. A base of 0.00 gives the rate 0 and a base of one cent or more gives the rate 1; the summary
-# reads T1 line 42900 "Basic federal tax", MB428 line 65 "Line 60 minus line 64 (if negative, enter
-# "0")" and Worksheet MB428 line 9 (the basic personal amount) through it. The forms are listed as
-# sources only because the gated figures, MB428 line 65 and Worksheet MB428 line 9, are on them; the
+# reads MB428 line 65 "Line 60 minus line 64 (if negative, enter "0")", Worksheet MB428 line 9 (the
+# basic personal amount) and Schedule MB428-A line 12 through it (the federal part reads T1 line
+# 42900 through the `ca/marginal_rate_gate` dataset). The forms are listed as
+# sources only because the gated figures, MB428 line 65, Worksheet MB428 line 9 and MB428-A line 12, are on them; the
 # rows are not from them.
 # A base exactly at a row's `over` is in the lower band, so the second row starts above 0.005: no
 # cent amount is in the first band but 0.00, and 0.01 is in the second.
@@ -13,6 +14,7 @@ kind: amount_by_band
 sources:
   - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5007-c/5007-c-25e.txt
   - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5007-d/5007-d-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5007-a/5007-a-25e.txt
 rounding: none
 rows:
   - {over: "0", amount: "0"}
