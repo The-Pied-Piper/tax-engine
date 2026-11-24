@@ -34,7 +34,7 @@ class YamlShapeError(ValueError):
 
 
 class _StrictLoader(yaml.CSafeLoader):
-    """CSafeLoader (libyaml, faster) that rejects duplicate mapping keys instead of keeping the last."""
+    """CSafeLoader that rejects duplicate mapping keys instead of keeping the last one."""
 
     def construct_mapping(self, node: MappingNode, deep: bool = False) -> dict[Hashable, Any]:
         seen: set[Any] = set()
