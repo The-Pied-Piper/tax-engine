@@ -46,7 +46,7 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_parameter_parsers,
     british_columbia_units,
 )
-from tests.take_home_stand_ins import MARGINAL_RATES_STAND_INS, STAND_INS
+from tests.take_home_stand_ins import MARGINAL_STAND_INS, STAND_INS
 
 D = Decimal
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
@@ -144,9 +144,10 @@ CASES = [
 
 def _other_step(form: str, output: str, unit: str) -> str:
     """A stand-in step for a figure the return reads: the gate of the salary for a rate (1, a rate
-    is at most 1; the bracket rates are the difference of two equal amounts, so 0) and the salary
-    itself for an amount."""
-    if output.endswith(("line_5", "line_12")):
+    is at most 1, so the line 5 bracket rate is that 1 and covers the credits that come off it; the
+    line 12 bracket rate is the difference of two equal amounts, so 0) and the salary itself for an
+    amount."""
+    if output.endswith("line_12"):
         step = f"""\
           - name: core/subtract
             unit: {unit}
@@ -205,7 +206,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
             for number, (form, out, unit) in enumerate(OTHER_STEPS)
         ],
         *STAND_INS,
-        *MARGINAL_RATES_STAND_INS,
+        *MARGINAL_STAND_INS,
         ("05_return.yaml", RETURN_PART.read_text(encoding="utf-8")),
     ]
     for name, text in texts:

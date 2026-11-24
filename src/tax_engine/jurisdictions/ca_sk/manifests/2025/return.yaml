@@ -7,18 +7,35 @@
 # `ca/take_home_average_rate` works it out once for every province (income tax, CPP and EI over the
 # salary), and the return reads its export `ca/average_tax_rate` with one core/record_total.
 #
-# The third output is the marginal rate, the income tax rate on a further dollar of salary, built
-# as the Alberta, Ontario and British Columbia returns build it, without a tax reduction. The
-# federal part is read as in those returns: the T1 form exports line 73's bracket column rate and
-# line 42900 "Basic federal tax", each totalled into the return's own kind, and
-# core/amount_by_band_rate reads line 42900 through the `ca-sk/marginal_rate_gate` dataset (0 where
-# the tax is 0.00, 1 from one cent) so that the rate counts only where its own tax is above zero;
-# the gate multiplies the rate into `ca/federal_marginal_rate`, exact (`ca-sk/exact_rounding`).
+# The third output is the marginal tax rate on the take-home basis: the change in T1 line 43500
+# plus CPP (Schedule 8 lines 25, 12 and 22) plus EI (T2204 line 16) per further dollar of salary,
+# for a salary-only filer with no paid credits. It is calculated with the rates of the forms, not by
+# running the return twice: a sum of the rates that apply at the salary, one capability per line,
+# every figure exact (`ca-sk/exact_rounding` rounds nothing). No form prints any of these figures,
+# so the steps below have no title and no line reference, and only line 167 carries a line
+# reference.
 #
-# The Saskatchewan bracket rate is printed on SK428 line 5 only: one table of three columns
+# The federal half is the federal form `ca/take_home_marginal_rates` (imported by the manifest,
+# after the T1 forms), which works from the salary alone. This return reads its four exports, each
+# totalled by core/record_total into its own figure: the net income rate (the part of a further
+# dollar left in the net income and the taxable income: 1 less the CPP first additional and second
+# additional rates), the credit-earning contribution rate (the CPP base rate plus the EI rate), the
+# federal marginal rate (counted only where the basic federal tax is above zero) and the
+# contribution rate (the CPP base, first additional, second additional and EI rates). The rest is
+# Saskatchewan's own.
+#
+# Credits on the contributions. The CPP base contribution (SK428 line 22, T1 line 30800) and the EI
+# premium (line 24, T1 line 31200) earn the Saskatchewan non-refundable credit rate (SK428 line 52,
+# the `ca-sk/credit_rate` dataset), so the credit-earning contribution rate times it is the
+# Saskatchewan tax a further dollar of contributions takes off. The rate is the dataset's as it is:
+# its cent rounding is for the credit box (line 53).
+#
+# Saskatchewan. The bracket rate is printed on SK428 line 5 only: one table of three columns
 # ("Rate 10.5%", "Rate 12.5%" and "Rate 14.5%"), of which the column that line 1 falls in prints
-# its rate. SK428 exports it, and a core/record_total step totals it into the return's own kind;
-# there is a single line, so no core/sum is needed to join lines.
+# its rate. SK428 exports it and a core/record_total step totals it into the return's own kind. It
+# is multiplied by the net income rate (the taxable income falls by the enhanced and second
+# additional CPP that T1 lines 22215 and 22200 take off) and the Saskatchewan credit on the
+# contributions comes off.
 #
 # The Saskatchewan gate reads SK428 line 67 "Line 62 minus line 66 (if negative, enter "0")": the
 # Saskatchewan tax after the credits that payroll applies (CRA payroll deductions formulas T4127,
@@ -28,27 +45,18 @@
 # back when filing and are not payroll terms. Line 62 also holds line 59 (farm and small business
 # capital gains tax credit) and line 61 (tax on split income), and line 66 holds line 64 (dividend
 # tax credit) and line 65 (minimum tax carryover): none of those four is a payroll term, and all
-# four are zero or blank for a salary-only filer, so the gate is exact for that filer. Line 77 (the
-# labour-sponsored venture capital credit) is the counterpart of T4127's LCP, which payroll does
-# apply, but it needs an investment a salary-only filer does not have. The gate is the counterpart
-# of ON428 line 81, AB428 line 68 and BC428 line 80. Gated through `ca-sk/marginal_rate_gate`, it
-# multiplies the bracket rate into `ca-sk/saskatchewan_marginal_rate`.
+# four are zero or blank for a salary-only filer, so the gate is exact for that filer. The gate is
+# the counterpart of ON428 line 86, AB428 line 68 and BC428 line 80. Gated through
+# `ca-sk/marginal_rate_gate` (0 where line 67 is 0.00, 1 from one cent), it multiplies the rate
+# into `ca-sk/saskatchewan_marginal_rate`.
 #
-# Saskatchewan has no tax reduction, clawback or income-tested basic amount: SK428 and T4127 print
-# none (line 9 prints a flat basic personal amount, and the T4127 Saskatchewan section has no S,
-# V1 or V2), so nothing raises the rate beyond the bracket rate and the chain has no reduction
-# steps. SK428 line 9 prints a flat $19,491, so the gate does not depend on the basic amount that
-# the January and July 2025 editions of T4127 print differently. The credit rate is a flat 10.5%,
-# so the credits add nothing to the marginal rate either.
+# Saskatchewan has no tax reduction, clawback, surtax, health premium or income-tested basic
+# amount: SK428 and T4127 print none (line 9 prints a flat basic personal amount), so nothing
+# raises the rate beyond the bracket rate and the chain has no such steps.
 #
-# The last step adds the federal and the Saskatchewan marginal rate with core/sum into
-# `ca-sk/marginal_tax_rate`; it is exact too, is not printed on the form and has no title or line.
-#
-# The federal part ignores the federal basic personal amount phase-down and the Canada workers
-# benefit phase-out, as the Ontario, Alberta and British Columbia returns do.
-#
-# Only line 167 carries a line reference: the steps below read figures for the rates and are
-# engine-internal, so they carry none. Known limit: the rate ignores the tax effect of CPP and EI.
+# The last step adds the federal marginal rate, the Saskatchewan marginal rate and the contribution
+# rate with core/sum into `ca-sk/marginal_tax_rate`; it is exact too, is not printed on the form and
+# has no title or line.
 capabilities:
   - name: core/record_total
     title: "Refund or balance owing"
@@ -67,38 +75,66 @@ capabilities:
   - name: core/record_total
     unit: core/percent
     consumes:
-      records: ca/t1_tax_and_credits.federal_bracket_column_rate_line_73
+      records: ca/take_home_marginal_rates.marginal_net_income_rate
     produces:
-      output: ca/federal_bracket_rate_return
+      output: ca-sk/marginal_net_income_rate
   - name: core/record_total
-    unit: ca/cad
+    unit: core/percent
     consumes:
-      records: ca/t1_tax_and_credits.federal_tax_after_credits
+      records: ca/take_home_marginal_rates.marginal_credit_contribution_rate
     produces:
-      output: ca/federal_tax_after_credits_return
-  - name: core/amount_by_band_rate
+      output: ca-sk/marginal_credit_contribution_rate
+  - name: core/record_total
+    unit: core/percent
+    consumes:
+      records: ca/take_home_marginal_rates.marginal_federal_rate
+    produces:
+      output: ca-sk/marginal_federal_rate
+  - name: core/record_total
+    unit: core/percent
+    consumes:
+      records: ca/take_home_marginal_rates.marginal_contribution_rate
+    produces:
+      output: ca-sk/marginal_contribution_rate
+  - name: core/rate_figure
     unit: core/percent
     params:
-      table: ca-sk/marginal_rate_gate
-    consumes:
-      base: ca/federal_tax_after_credits_return
+      rate: ca-sk/credit_rate
     produces:
-      output: ca/federal_rate_gate
+      output: ca-sk/marginal_saskatchewan_credit_rate
   - name: core/multiply_by_rate
     unit: core/percent
     params:
       rounding: ca-sk/exact_rounding
     consumes:
-      base: ca/federal_rate_gate
-      rate: ca/federal_bracket_rate_return
+      base: ca-sk/marginal_credit_contribution_rate
+      rate: ca-sk/marginal_saskatchewan_credit_rate
     produces:
-      output: ca/federal_marginal_rate
+      output: ca-sk/marginal_saskatchewan_contribution_credit_rate
   - name: core/record_total
     unit: core/percent
     consumes:
       records: ca-sk/sk428_credits.sk428_bracket_rate_line_5
     produces:
       output: ca-sk/saskatchewan_bracket_rate_return
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-sk/exact_rounding
+    consumes:
+      base: ca-sk/saskatchewan_bracket_rate_return
+      rate: ca-sk/marginal_net_income_rate
+    produces:
+      output: ca-sk/marginal_saskatchewan_bracket_rate
+  - name: core/subtract
+    unit: core/percent
+    params:
+      rounding: ca-sk/exact_rounding
+    consumes:
+      amount: ca-sk/marginal_saskatchewan_bracket_rate
+      less: ca-sk/marginal_saskatchewan_contribution_credit_rate
+    produces:
+      output: ca-sk/marginal_saskatchewan_rate_after_credits
   - name: core/record_total
     unit: ca/cad
     consumes:
@@ -118,8 +154,8 @@ capabilities:
     params:
       rounding: ca-sk/exact_rounding
     consumes:
-      base: ca-sk/saskatchewan_rate_gate
-      rate: ca-sk/saskatchewan_bracket_rate_return
+      base: ca-sk/marginal_saskatchewan_rate_after_credits
+      rate: ca-sk/saskatchewan_rate_gate
     produces:
       output: ca-sk/saskatchewan_marginal_rate
   - name: core/sum
@@ -128,7 +164,8 @@ capabilities:
       rounding: ca-sk/exact_rounding
     consumes:
       parts:
-        - ca/federal_marginal_rate
+        - ca-sk/marginal_federal_rate
         - ca-sk/saskatchewan_marginal_rate
+        - ca-sk/marginal_contribution_rate
     produces:
       output: ca-sk/marginal_tax_rate
