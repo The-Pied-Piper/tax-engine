@@ -33,18 +33,8 @@ class YamlShapeError(ValueError):
     """A YAML document does not have the expected shape."""
 
 
-# libyaml's loader reads the same documents several times faster than the pure-Python one. PyYAML's
-# Linux, macOS and Windows wheels bundle libyaml; a source-only build may lack it, and then the
-# engine refuses to start rather than run several times slower unnoticed.
-if not yaml.__with_libyaml__:
-    raise ImportError(
-        "PyYAML was built without libyaml, so yaml.CSafeLoader is missing; "
-        "install a PyYAML wheel that bundles libyaml (pip install --only-binary=:all: PyYAML)"
-    )
-
-
 class _StrictLoader(yaml.CSafeLoader):
-    """CSafeLoader that rejects duplicate mapping keys instead of keeping the last one."""
+    """CSafeLoader (libyaml, faster) that rejects duplicate mapping keys instead of keeping the last."""
 
     def construct_mapping(self, node: MappingNode, deep: bool = False) -> dict[Hashable, Any]:
         seen: set[Any] = set()
