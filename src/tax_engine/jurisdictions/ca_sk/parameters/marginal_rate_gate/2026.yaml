@@ -3,8 +3,9 @@
 # Marginal rate gate, 2026 tax year. Not a CRA figure and not printed on any form: the rows are a
 # switch the Saskatchewan return summary uses so that a rate counts only where its own tax is
 # above zero. A base of 0.00 gives the rate 0 and a base of one cent or more gives the rate 1; the
-# summary reads T1 line 42900 "Basic federal tax" and SK428 line 67 "Line 62 minus line 66 (if
-# negative, enter "0")" through it. The form is listed as a source only because the gated figure,
+# summary reads SK428 line 67 "Line 62 minus line 66 (if negative, enter "0")" through it (the
+# federal part reads T1 line 42900 through the `ca/marginal_rate_gate` dataset). The form is
+# listed as a source only because the gated figure,
 # SK428 line 67, is on it; the rows are not from it.
 # A base exactly at a row's `over` is in the lower band, so the second row starts above 0.005: no
 # cent amount is in the first band but 0.00, and 0.01 is in the second.
