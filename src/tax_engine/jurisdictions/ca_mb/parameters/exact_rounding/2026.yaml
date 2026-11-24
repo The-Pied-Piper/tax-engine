@@ -2,11 +2,12 @@
 # Derivation: carried forward unchanged from the 2025 file; the 2026 form is not yet published.
 # Manitoba exact rounding, 2026 tax year: the rule for a Manitoba figure that is not a
 # dollars-and-cents box: Worksheet MB428 line 6 (line 4 divided by line 5, core/divide) and the
-# Manitoba rates on the return summary (the MB428 line 5 rate times the net income rate, the phase-out
-# and family tax benefit rates, the credit rate times the contribution rate, a gate times the rate
-# after the credits, core/multiply_by_rate, their difference, core/subtract, and the sum of the
-# federal, Manitoba and contribution marginal rates, core/sum). They are exact and the forms print no
-# rounding rule for them (the project's choice is no rounding); the divisor of line 6 is always
+# Manitoba rates on the return summary (the MB428 line 5 rate times the net income rate, the
+# phase-out and family tax benefit rates, the credit rate times the contribution rate, a gate times
+# the rate after the credits, core/multiply_by_rate, their difference, core/subtract, and the sum
+# of the
+# federal, Manitoba and contribution marginal rates, core/sum). They are exact and the forms print
+# no rounding rule for them (the project's choice is no rounding); the divisor of line 6 is always
 # 200,000.00. The cent rule of `ca-mb/cent_rounding` does not apply.
 # The 2026 MB428/MB479 text is not yet published, so the figure is not yet confirmed against it.
 family: ca-mb/exact_rounding

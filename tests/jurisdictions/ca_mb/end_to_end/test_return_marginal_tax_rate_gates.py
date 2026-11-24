@@ -17,10 +17,11 @@ where its own tax is above zero, through a gate (`ca-mb/marginal_rate_gate`): 0 
   gives `ca-mb/family_tax_benefit_gate`: while it is above 0 a further dollar of net income takes
   away 9% of a dollar of it, at the 10.8% credit rate, 0.972 points before the net income rate.
 
-The printed rates and the hand-worked figures are in `test_return_rates.py`; here the
-thresholds are measured. Thresholds, salary only, 2025: MB428 line 65 is first positive at
-17,403.91 (0.00 a cent below), T1 line 42900 at 18,820.27, and the family tax benefit (MB428-A
-line 12) is 0.00 from 23,140.80.
+The printed rates and the hand-worked figures are in
+`test_return_marginal_tax_rate_values.py`; here the thresholds are
+measured. Thresholds, salary only, 2025: MB428 line 65 is first positive at 17,403.91 (0.00 a cent
+below), T1 line 42900 at 18,820.27, and the family tax benefit (MB428-A line 12) is 0.00 from
+23,140.80.
 
 At 100 every part is 0; one cent below the Manitoba threshold the rate is the contribution rate
 only; once line 65 is positive the Manitoba part is 10.8% x 0.99 + 9% x 10.8% x 0.99 less the

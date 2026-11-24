@@ -117,7 +117,17 @@ KNOWN_EXCEPTIONS: dict[tuple[int, int], str] = {
     (2026, 182_500): "the federal 29% column starts above a taxable income of $181,440",
     (2026, 401_100): "the phase-out ends: Worksheet MB428 line 9 is 0.00 from $401,126.94",
 }
-SMALLER_STEPS = {key: 10 for key in KNOWN_EXCEPTIONS}
+SMALLER_STEPS = {
+    (2025, 18_750): 10,
+    (2025, 71_250): 10,
+    (2025, 101_000): 10,
+    (2025, 115_750): 10,
+    (2025, 201_000): 10,
+    (2025, 401_000): 10,
+    (2026, 59_000): 10,
+    (2026, 182_500): 10,
+    (2026, 401_100): 10,
+}
 
 CASES = [
     pytest.param(year, salary, id=f"{year}-{salary}")

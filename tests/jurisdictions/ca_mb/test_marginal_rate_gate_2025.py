@@ -2,13 +2,14 @@
 1 where it is at least one cent, Manitoba's own copy of the British Columbia gate (jurisdictions do
 not read each other's datasets).
 
-Not a printed form figure: no CRA text is quoted. The Manitoba return summary reads T1 line 42900
-"Basic federal tax", MB428 line 65 "Line 60 minus line 64 (if negative, enter "0")" and Worksheet
-MB428 line 9 (the basic personal amount) through it (three `core/amount_by_band_rate` steps), so
-that the bracket-rate part of the marginal tax rate counts only where its own tax is above zero, and
-the phase-out only where the basic personal amount is still above zero. A base of 0.00 gives the
-rate 0 and a base of 0.01 or more gives the rate 1; a base exactly at the second row's `over`
-(0.005) is in the lower band, so no cent amount but 0.00 is in the first band.
+Not a printed form figure: no CRA text is quoted. The Manitoba return summary reads MB428 line 65
+"Line 60 minus line 64 (if negative, enter "0")", Worksheet MB428 line 9 (the basic personal
+amount) and Schedule MB428-A line 12 through it (three `core/amount_by_band_rate` steps), so that
+the bracket-rate part of the marginal tax rate counts only where its own tax is above zero, the
+phase-out only where the basic personal amount is still above zero and the family tax benefit fall
+only where the benefit is. A base of 0.00 gives the rate 0 and a base of 0.01 or more gives the
+rate 1; a base exactly at the second row's `over` (0.005) is in the lower band, so no cent amount
+but 0.00 is in the first band.
 """
 
 from __future__ import annotations
