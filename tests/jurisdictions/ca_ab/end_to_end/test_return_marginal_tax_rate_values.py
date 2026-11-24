@@ -13,6 +13,10 @@ credits at the federal and the Alberta credit rate on the CPP base and EI rates:
                (Alberta has no tax reduction, surtax or health premium)
     marginal = federal + Alberta + CPP base + CPP enhanced + CPP2 + EI
 
+The engine rounds the marginal rate half-up to 0.0001 like the average rate
+(`ca/take_home_average_rate_rounding`), so each expected marginal rate in the tests is the exact
+figure derived in the comments rounded half-up to four decimals; the parts stay exact.
+
 The extra-run check over a sweep is in `test_return_marginal_tax_rate_extra_run.py`.
 
 - $100: nothing moves (under the CPP exemption and the EI $2,000): 0.
@@ -70,16 +74,16 @@ ALBERTA = JurisdictionCode("CA-AB")
         (2025, "71300.01", "0.3328"),
         (2026, "3500", "0.0163"),
         (2026, "3500.01", "0.0758"),
-        (2025, "20000", "0.2098945"),
-        (2026, "20000", "0.205188"),
-        (2025, "70000", "0.3503125"),
-        (2026, "70000", "0.35056"),
+        (2025, "20000", "0.2099"),
+        (2026, "20000", "0.2052"),
+        (2025, "70000", "0.3503"),
+        (2026, "70000", "0.3506"),
         (2025, "120000", "0.36"),
         (2026, "120000", "0.36"),
         (2025, "160000", "0.38"),
         (2026, "160000", "0.38"),
-        (2025, "200000", "0.4230542655"),
-        (2026, "200000", "0.422949296"),
+        (2025, "200000", "0.4231"),
+        (2026, "200000", "0.4229"),
     ],
 )
 def test_the_marginal_rate_is_the_exact_sum_of_the_rates_that_apply(

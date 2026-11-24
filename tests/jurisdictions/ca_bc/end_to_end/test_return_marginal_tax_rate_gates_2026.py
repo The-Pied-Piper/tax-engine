@@ -12,12 +12,14 @@ Where each tax first turns positive (2026, salary only): basic federal tax (T1 l
 14% x 0.0658 = 0.129388, and with the contributions (CPP 4.95% + 1%, EI 1.63%) the rate is
 0.205188; at 26,752.96 the British Columbia part opens: 5.6% x 0.9242 + 3.56% x 0.99 = 0.0869992;
 each other salary pins the structure: the gates are 0 or 1 and open with their taxes, each marginal
-part is its gate times its rate, and the total is the exact sum of the three parts.
+part is its gate times its rate, and the total is the exact sum of the three parts rounded
+half-up to 0.0001: the engine rounds the marginal rate like the average rate
+(`ca/take_home_average_rate_rounding`), so 0.205188 is 0.2052 in the tests.
 """
 
 from __future__ import annotations
 
-from decimal import Decimal
+from decimal import ROUND_HALF_UP, Decimal
 
 import pytest
 
@@ -46,6 +48,11 @@ CONTRIBUTION = "ca-bc/marginal_contribution_rate"
 MARGINAL = "ca-bc/marginal_tax_rate"
 
 
+def _rounded(rate: Decimal) -> Decimal:
+    # The engine rounds the marginal rate half-up to 0.0001 like the average rate.
+    return rate.quantize(D("0.0001"), rounding=ROUND_HALF_UP)
+
+
 def _summary(salary: str) -> Worksheet:
     # No fixture: the bundled British Columbia manifest, as the calculator loads it, salary the
     # only input.
@@ -72,7 +79,7 @@ def test_2026_runs_and_the_total_is_the_exact_sum_of_the_gated_parts(salary: str
     british_columbia = _value(summary, BC_RATE)
     contribution = _value(summary, CONTRIBUTION)
 
-    assert _value(summary, MARGINAL) == federal + british_columbia + contribution
+    assert _value(summary, MARGINAL) == _rounded(federal + british_columbia + contribution)
     assert _value(summary, BC_GATE) in (D("0"), D("1"))
     assert _value(summary, REDUCTION_GATE) in (D("0"), D("1"))
 
@@ -116,7 +123,7 @@ def test_2026_the_federal_part_opens_at_19200_18_and_the_british_columbia_part_a
 ):
     assert _value(_summary("19200.17"), FEDERAL) == D("0")
     assert _value(_summary("19200.18"), FEDERAL) == D("0.129388")
-    assert _value(_summary("19200.18"), MARGINAL) == D("0.205188")
+    assert _value(_summary("19200.18"), MARGINAL) == D("0.2052")
     assert _value(_summary("26752.95"), BC_RATE) == D("0")
     assert _value(_summary("26752.96"), BC_RATE) == D("0.0869992")
 
@@ -135,7 +142,7 @@ def test_2026_the_marginal_tax_rate_at_70000_is_32_90_percent() -> None:
     assert _value(summary, FEDERAL) == D("0.19602")
     assert _value(summary, BC_RATE) == D("0.073458")
     assert _value(summary, CONTRIBUTION) == D("0.0595")
-    assert _value(summary, MARGINAL) == D("0.328978")
+    assert _value(summary, MARGINAL) == D("0.329")
 
 
 def test_2026_both_gates_are_open_at_250000() -> None:
@@ -143,4 +150,4 @@ def test_2026_both_gates_are_open_at_250000() -> None:
 
     assert _value(summary, BC_GATE) == D("1")
     assert _value(summary, FEDERAL) == D("0.292949296")
-    assert _value(summary, MARGINAL) == D("0.460949296")
+    assert _value(summary, MARGINAL) == D("0.4609")

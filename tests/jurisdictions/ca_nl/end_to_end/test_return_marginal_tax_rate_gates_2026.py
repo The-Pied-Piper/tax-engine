@@ -14,11 +14,16 @@ provincial part is its gate times its rate, and the total is the exact sum of th
 - line 105 is 0.00 at a salary of 25,100.03 and 0.01 at 25,100.04; line 104 is 0.01 at 30,763.60
   and 0.00 at 30,763.61; in between the provincial part is 8.7% x 0.99 - 8.7% x 0.0658 + 16% x 0.99
   = 0.2388054, and after it 0.0804054.
+
+The engine rounds the marginal tax rate half-up to 0.0001 like the average rate
+(`ca/take_home_average_rate_rounding`): the total is the sum of the parts rounded half-up to four
+places, and the marginal values pinned below are the exact figures in the comments rounded the same
+way; the parts stay exact.
 """
 
 from __future__ import annotations
 
-from decimal import Decimal
+from decimal import ROUND_HALF_UP, Decimal
 
 import pytest
 
@@ -31,6 +36,7 @@ from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tests.kinds import bundled_kinds
 
 D = Decimal
+ROUNDING = D("0.0001")
 NEWFOUNDLAND = JurisdictionCode("CA-NL")
 RETURN = "ca-nl/return"
 FEDERAL_FORM = "ca/take_home_marginal_rates"
@@ -98,7 +104,7 @@ def test_2026_runs_and_the_total_is_the_exact_sum_of_the_gated_parts(salary: str
 
     assert _value(summary, MARGINAL) == (
         federal + _value(summary, PROVINCIAL) + _value(summary, CONTRIBUTION)
-    )
+    ).quantize(ROUNDING, rounding=ROUND_HALF_UP)
     assert _value(federal_sheet, FEDERAL_GATE) in (D("0"), D("1"))
     assert federal == _value(federal_sheet, FEDERAL_GATE) * _value(
         federal_sheet, FEDERAL_AFTER_CREDITS
@@ -149,7 +155,7 @@ def test_2026_the_bracket_rates_are_the_first_brackets_of_the_2026_datasets(sala
 def test_2026_the_federal_part_opens_at_19200_18() -> None:
     assert _value(_summary("19200.17"), FEDERAL) == D("0")
     assert _value(_summary("19200.18"), FEDERAL) == D("0.129388")
-    assert _value(_summary("19200.18"), MARGINAL) == D("0.205188")
+    assert _value(_summary("19200.18"), MARGINAL) == D("0.2052")
 
 
 def test_2026_the_marginal_tax_rate_at_70000_is_39_48_percent() -> None:
@@ -160,7 +166,7 @@ def test_2026_the_marginal_tax_rate_at_70000_is_39_48_percent() -> None:
     assert _value(summary, FEDERAL) == D("0.19602")
     assert _value(summary, PROVINCIAL) == D("0.1392435")
     assert _value(summary, CONTRIBUTION) == D("0.0595")
-    assert _value(summary, MARGINAL) == D("0.3947635")
+    assert _value(summary, MARGINAL) == D("0.3948")
 
 
 def test_2026_both_gates_are_open_at_275000() -> None:

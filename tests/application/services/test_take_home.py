@@ -258,7 +258,9 @@ def test_quebec_has_an_average_rate_with_qpip_in_it_and_a_marginal_rate(
     assert got.average_tax_rate is not None
     assert got.average_tax_rate.value == Decimal("0.3055")
     assert got.marginal_tax_rate is not None
-    assert got.marginal_tax_rate.value == Decimal("0.4514437")
+    # By hand 0.4514437 (see the Quebec marginal rate values test); the engine rounds the marginal
+    # rate half-up to 0.0001 like the average rate.
+    assert got.marginal_tax_rate.value == Decimal("0.4514")
     assert got.marginal_tax_rate.unit.name == "core/percent"
 
 

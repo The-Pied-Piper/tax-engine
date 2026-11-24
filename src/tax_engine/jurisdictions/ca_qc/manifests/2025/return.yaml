@@ -418,7 +418,7 @@ capabilities:
   - name: core/sum
     unit: core/percent
     params:
-      rounding: ca-qc/exact_rounding
+      rounding: ca/take_home_average_rate_rounding
     consumes:
       parts:
         - ca-qc/marginal_federal_rate

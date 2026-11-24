@@ -34,6 +34,10 @@ The check against an extra run of the engine is in `test_return_marginal_tax_rat
   0.2855934.
 - 2026, $70,000 (over the EI maximum of $68,900): federal 20.5% x 0.99 - 14% x 0.0495 = 0.19602;
   NL 0.1392435; contributions 0.0595: 0.3947635.
+
+The engine rounds the marginal rate half-up to 0.0001 like the average rate
+(`ca/take_home_average_rate_rounding`), so the expected values in the parametrization are the exact
+sums derived below rounded half-up to four places (e.g. 0.2098945 is 0.2099).
 """
 
 from __future__ import annotations
@@ -63,18 +67,18 @@ NEWFOUNDLAND = JurisdictionCode("CA-NL")
         (2025, "3500", "0.0164"),
         (2025, "3500.01", "0.0759"),
         (2025, "10000", "0.0759"),
-        (2025, "20000", "0.2098945"),
-        (2025, "28000", "0.4486912"),
-        (2025, "40000", "0.2902912"),
-        (2025, "70000", "0.394516"),
-        (2025, "200000", "0.4710542655"),
-        (2025, "250000", "0.4910542655"),
+        (2025, "20000", "0.2099"),
+        (2025, "28000", "0.4487"),
+        (2025, "40000", "0.2903"),
+        (2025, "70000", "0.3945"),
+        (2025, "200000", "0.4711"),
+        (2025, "250000", "0.4911"),
         (2026, "2000", "0"),
         (2026, "2000.01", "1"),
         (2026, "3500", "0.0163"),
         (2026, "3500.01", "0.0758"),
-        (2026, "40000", "0.2855934"),
-        (2026, "70000", "0.3947635"),
+        (2026, "40000", "0.2856"),
+        (2026, "70000", "0.3948"),
     ],
 )
 def test_the_marginal_rate_is_the_exact_sum_of_the_rates_that_apply(

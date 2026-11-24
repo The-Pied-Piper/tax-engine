@@ -55,8 +55,8 @@
 # raises the rate beyond the bracket rate and the chain has no such steps.
 #
 # The last step adds the federal marginal rate, the Saskatchewan marginal rate and the contribution
-# rate with core/sum into `ca-sk/marginal_tax_rate`; it is exact too, is not printed on the form and
-# has no title or line.
+# rate with core/sum into `ca-sk/marginal_tax_rate`; it is rounded half-up to 0.0001 like the average rate, is not printed
+# on the form and has no title or line.
 capabilities:
   - name: core/record_total
     title: "Refund or balance owing"
@@ -161,7 +161,7 @@ capabilities:
   - name: core/sum
     unit: core/percent
     params:
-      rounding: ca-sk/exact_rounding
+      rounding: ca/take_home_average_rate_rounding
     consumes:
       parts:
         - ca-sk/marginal_federal_rate

@@ -16,6 +16,11 @@ provincial part is its gate times its rate, and the total is the exact sum of th
   threshold of 23,928); line 104 is 0.01 at 30,428.50 and 0.00 at 30,428.51 (the reduction is used
   up); in between the provincial part is 8.7% x 0.99 - 8.7% x 0.0659 + 16% x 0.99 = 0.2387967, and
   after it 0.0803967.
+
+The engine rounds the marginal tax rate half-up to 0.0001 like the average rate
+(`ca/take_home_average_rate_rounding`), so the marginal column of PARTS is the exact sum of the
+parts, kept in the comments, rounded half-up to four places (e.g. 0.2098945 is 0.2099); the parts
+themselves stay exact.
 """
 
 from __future__ import annotations
@@ -61,17 +66,17 @@ PARTS = [
     # Contributions only: CPP 4.95% + 1% and EI 1.64%, no basic federal tax yet.
     ("18820.26", "0", "0", "0.0759", "0.0759"),
     # Basic federal tax is first positive: 14.5% x 0.99 - 14.5% x 0.0659 = 0.1339945.
-    ("18820.27", "0.1339945", "0", "0.0759", "0.2098945"),
-    ("24140.18", "0.1339945", "0", "0.0759", "0.2098945"),
+    ("18820.27", "0.1339945", "0", "0.0759", "0.2099"),
+    ("24140.18", "0.1339945", "0", "0.0759", "0.2099"),
     # NL428 line 105 is first positive: 8.7% x 0.99 - 8.7% x 0.0659 + 16% x 0.99 = 0.2387967.
-    ("24140.19", "0.1339945", "0.2387967", "0.0759", "0.4486912"),
+    ("24140.19", "0.1339945", "0.2387967", "0.0759", "0.4487"),
     # The reduction is used up (NL428 line 104 is 0.00): 8.7% x 0.99 - 8.7% x 0.0659 = 0.0803967.
-    ("30428.51", "0.1339945", "0.0803967", "0.0759", "0.2902912"),
+    ("30428.51", "0.1339945", "0.0803967", "0.0759", "0.2903"),
     # Above the EI maximum of 65,700: CPP 4.95% + 1% only; 14.5% x 0.99 - 14.5% x 0.0495 (the
     # Newfoundland and Labrador rate is the same 14.5%).
-    ("70000", "0.1957725", "0.1392435", "0.0595", "0.394516"),
+    ("70000", "0.1957725", "0.1392435", "0.0595", "0.3945"),
     # Above the CPP ceilings: the net income rate is 1 and no contribution is left.
-    ("153824", "0.26", "0.158", "0", "0.418"),
+    ("153824", "0.26", "0.158", "0", "0.4180"),
 ]
 
 

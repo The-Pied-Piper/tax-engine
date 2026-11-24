@@ -44,7 +44,8 @@
 # The last step adds the federal marginal rate, the Newfoundland and Labrador marginal rate and
 # the contribution rate (CPP base, enhanced and second additional, and EI) with core/sum into
 # `ca-nl/marginal_tax_rate`. Every step but line 167 is engine-internal, exact
-# (`ca-nl/exact_rounding`), printed on no form, and carries no title or line.
+# (`ca-nl/exact_rounding`; the marginal rate step alone is rounded half-up to 0.0001 like the
+# average rate), printed on no form, and carries no title or line.
 capabilities:
   - name: core/record_total
     title: "Refund or balance owing"
@@ -242,7 +243,7 @@ capabilities:
   - name: core/sum
     unit: core/percent
     params:
-      rounding: ca-nl/exact_rounding
+      rounding: ca/take_home_average_rate_rounding
     consumes:
       parts:
         - ca-nl/marginal_federal_rate

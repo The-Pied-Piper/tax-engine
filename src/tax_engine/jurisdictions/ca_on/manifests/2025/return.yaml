@@ -58,9 +58,10 @@
 #
 # The last step adds the federal marginal rate, the Ontario marginal rate, the health premium rate
 # and the contribution rate (the four contribution rates) with core/sum into
-# `ca-on/marginal_tax_rate`; it is exact, is not printed on the form and has no title or line.
+# `ca-on/marginal_tax_rate`; it is rounded half-up to 0.0001 like the average rate, is not printed
+# on the form and has no title or line.
 # Narrow bands (the Ontario health premium rows, the EI band near $2,000, the Ontario tax reduction)
-# are slopes with a real rate inside each band, so the rate is exact there; the extra-run test steps
+# are slopes with a real rate inside each band, so the rate is a real slope there before rounding; the extra-run test steps
 # a smaller amount near them.
 capabilities:
   - name: core/record_total
@@ -316,7 +317,7 @@ capabilities:
   - name: core/sum
     unit: core/percent
     params:
-      rounding: ca-on/exact_rounding
+      rounding: ca/take_home_average_rate_rounding
     consumes:
       parts:
         - ca-on/marginal_federal_rate

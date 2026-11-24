@@ -15,6 +15,10 @@ and the Ontario credit rate on the CPP base and EI rates:
     premium  = ON428 line 89 chart row rate x N
     marginal = federal + Ontario + premium + CPP base + CPP enhanced + CPP2 + EI
 
+The engine rounds the marginal rate half-up to 0.0001 like the average rate
+(`ca/take_home_average_rate_rounding`), so the expected values in the parametrization are the exact
+sums derived below rounded half-up to four places (e.g. 0.34335775 is 0.3434).
+
 The extra-run check over a sweep is in `test_return_marginal_tax_rate_extra_run.py`.
 
 - 2025, $2,020: only the EI of T2204 line 16 moves, 1 for 1 between $2,000 and $2,033 (a 100%
@@ -66,16 +70,16 @@ ONTARIO = JurisdictionCode("CA-ON")
     [
         (2025, "2020", "1"),
         (2025, "10000", "0.0759"),
-        (2025, "22000", "0.2692945"),
-        (2025, "40000", "0.30606155"),
-        (2025, "70000", "0.34335775"),
-        (2025, "75000", "0.32464"),
-        (2025, "120000", "0.434096"),
-        (2025, "200000", "0.4827502655"),
-        (2025, "275000", "0.535296"),
+        (2025, "22000", "0.2693"),
+        (2025, "40000", "0.3061"),
+        (2025, "70000", "0.3434"),
+        (2025, "75000", "0.3246"),
+        (2025, "120000", "0.4341"),
+        (2025, "200000", "0.4828"),
+        (2025, "275000", "0.5353"),
         (2026, "10000", "0.0758"),
-        (2026, "70000", "0.34360525"),
-        (2026, "200000", "0.482645296"),
+        (2026, "70000", "0.3436"),
+        (2026, "200000", "0.4826"),
     ],
 )
 def test_the_marginal_rate_is_the_exact_sum_of_the_rates_that_apply(

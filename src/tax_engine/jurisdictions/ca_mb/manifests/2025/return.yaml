@@ -73,8 +73,8 @@
 # that has taken the whole of the tax (line 65 is 0.00) adds nothing.
 #
 # The last step adds the federal marginal rate, the Manitoba marginal rate and the contribution
-# rate (the four contribution rates) with core/sum into `ca-mb/marginal_tax_rate`; it is exact too,
-# is not printed on the form and has no title or line. Manitoba has no surtax or health premium.
+# rate (the four contribution rates) with core/sum into `ca-mb/marginal_tax_rate`; it is rounded half-up to
+# 0.0001 like the average rate too, is not printed on the form and has no title or line. Manitoba has no surtax or health premium.
 # Limits: the credits that depend on net income and are claimed only by a filer who gives more
 # than a salary (the age amount, Worksheet MB428 line 58080, and the medical expense rate of 3% of
 # net income, MB428 line 45) are not steps, as a salary-only filer claims neither; the rate would be
@@ -317,7 +317,7 @@ capabilities:
   - name: core/sum
     unit: core/percent
     params:
-      rounding: ca-mb/exact_rounding
+      rounding: ca/take_home_average_rate_rounding
     consumes:
       parts:
         - ca-mb/marginal_federal_rate
