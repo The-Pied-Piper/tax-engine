@@ -26,11 +26,11 @@ The extra-run check over a sweep is in `test_return_marginal_tax_rate_extra_run.
 - 2025, $70,000 (over the EI maximum): federal 20.5% x 0.99 - 14.5% x (0.054 + 0.00494) =
   0.2029500 - 0.0085463 = 0.1944037; Quebec 19% x 0.99 = 0.1881; contributions 0.054 + 0.01 +
   0.00494: 0.45144370.
-- 2025, $75,000 (QPP2 band, no QPP base or EI): N = 0.95; federal 20.5% x 0.95 - 14.5% x 0.00494;
-  Quebec 19% x 0.95; contributions 0.04 + 0.00494: 0.4234237.
+- 2025, $75,000 (QPP2 band, no QPP base or EI): N = 0.96; federal 20.5% x 0.96 - 14.5% x 0.00494;
+  Quebec 19% x 0.96; contributions 0.04 + 0.00494: 0.4234237.
 - 2025, $120,000: over the QPIP maximum, no contributions; federal 26%, Quebec 24%: 0.5.
 - 2025, $200,000: the federal basic personal amount falls over $177,882 to $253,414: 29% + 14.5% x
-  1,591 / 75,532 (0.0210639 to seven places), Quebec 25.75%: 0.5505542655.
+  (1,591 / 75,532, which is 0.0210639 to seven places) = 0.2930543, Quebec 25.75%: 0.5505542655.
 - 2025, $300,000: federal 33%, Quebec 25.75%: 0.5875.
 - 2026, $10,000, $70,000 and $200,000: the same parts with the 2026 datasets (provisional).
 """

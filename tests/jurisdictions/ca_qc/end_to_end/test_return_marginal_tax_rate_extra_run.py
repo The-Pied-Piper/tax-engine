@@ -9,16 +9,17 @@ rates of the forms, and runs nothing twice. This test is the independent check: 
 engine at a salary and at the salary plus a step, and compares the change in those deductions per
 dollar with the rate the return calculated at the salary.
 
-The step is $100. The EI band of T2204 line 16 ($2,000 to $2,033) and the QPIP threshold ($2,000,
-below which line 91 is 0) are narrower than that, so the salaries inside or just under them use a
-smaller step ($10, and $1 at $1,999, where a step of $10 would cross $2,000). A step smaller than
-$10 or $100 is not used elsewhere, since the cent rounding of the forms' lines (about a cent for
-each of the tax lines) moves a forward difference by more than the tolerance when the step is $10
-or less. The other narrow bands (the start of the federal and the Quebec tax, the start and the
-maximum of the prescription drug insurance premium, the maximum of the deduction for workers) are
-in the sweep at salaries just under their start, where $100 does not reach them. A salary whose
-run still crosses a break in the rate is listed in `KNOWN_EXCEPTIONS` with the reason; the list is
-short and each entry is a salary where the forward difference is not the derivative.
+The step is $100. The EI band of T2204 line 16 (line 7, line 3 less $2,000, rises $1 for each $1
+until it meets the premium: $2,026 for Quebec residents, T2204 note 3) and the QPIP threshold
+($2,000, below which line 91 is 0) are narrower than that, so the salaries inside or just under
+them use a smaller step ($10 at $2,001, $5 at $2,020). Elsewhere the step is $100: the cent
+rounding of the forms' lines (about a cent for each of the tax lines) moves a forward difference
+by more than the tolerance when the step is about $5 or less. A salary with a break in the rate a
+few dollars to $99 above it (a bracket column, the QPP maximum, the start of a tax) uses the
+largest step that stays under the break (`BREAK_STEPS`), found by a sweep every $250 from $1,000
+to $400,000 in both years. A salary that is itself a band edge, where the published rate is the
+lower band's, is listed in `KNOWN_EXCEPTIONS` with the reason; the list is short and each entry is
+a salary where the forward difference is not the derivative.
 """
 
 from __future__ import annotations
@@ -138,20 +139,14 @@ BREAK_STEPS: dict[tuple[int, int], int] = {
 # (tax year, salary): the forward difference is not the derivative there. Each reason is a break in
 # the rate inside the run.
 KNOWN_EXCEPTIONS: dict[tuple[int, int], str] = {
-    (2025, 2_000): "an exact band edge: the published rate is the lower band's (EI 0%, QPIP 0%)",
-    (2026, 2_000): "an exact band edge: the published rate is the lower band's (EI 0%, QPIP 0%)",
+    (2025, 1_999): "line 91 is 0 under $2,000 and $9.88 from $2,000: a jump, not a rate",
+    (2025, 2_000): "an exact band edge: the published rate is the lower band's EI rate (0), the "
+    "extra run is in the $1 for $1 band of T2204 line 7",
+    (2026, 1_999): "line 91 is 0 under $2,000 and $8.60 from $2,000: a jump, not a rate",
+    (2026, 2_000): "an exact band edge: the published rate is the lower band's EI rate (0), the "
+    "extra run is in the $1 for $1 band of T2204 line 7",
     (2025, 3_500): "an exact band edge: the published rate is the lower band's (QPP 0%)",
     (2026, 3_500): "an exact band edge: the published rate is the lower band's (QPP 0%)",
-    (
-        2025,
-        1_999,
-    ): "line 91 is 0 under $2,000 of insurable earnings and $9.88 (0.494%) from $2,000: a jump, "
-    "not a rate",
-    (
-        2026,
-        1_999,
-    ): "line 91 is 0 under $2,000 of insurable earnings and $8.60 (0.430%) from $2,000: a jump, "
-    "not a rate",
 }
 
 CASES = [
