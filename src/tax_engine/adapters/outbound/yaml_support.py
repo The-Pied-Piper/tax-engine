@@ -33,8 +33,8 @@ class YamlShapeError(ValueError):
     """A YAML document does not have the expected shape."""
 
 
-class _StrictLoader(yaml.SafeLoader):
-    """SafeLoader that rejects duplicate mapping keys instead of keeping the last one."""
+class _StrictLoader(yaml.CSafeLoader):
+    """CSafeLoader that rejects duplicate mapping keys instead of keeping the last one."""
 
     def construct_mapping(self, node: MappingNode, deep: bool = False) -> dict[Hashable, Any]:
         seen: set[Any] = set()

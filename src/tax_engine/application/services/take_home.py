@@ -8,6 +8,7 @@ come through a port. The rules (one sheet, one unit, the sums) are the domain's.
 from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
+from threading import Lock
 
 from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.models.take_home import (
@@ -23,12 +24,9 @@ from tax_engine.application.ports.take_home_text import TakeHomeText
 from tax_engine.application.ports.tax_calculation import TaxCalculation
 from tax_engine.domain.artifact import Artifact, ArtifactRegistry
 from tax_engine.domain.errors import NotFoundError
-from tax_engine.domain.take_home import (
-    FigureReference,
-    Totals,
-    rate_unit,
-    shared_unit,
-)
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.manifest import Manifest
+from tax_engine.domain.take_home import FigureReference, Totals, rate_unit, shared_unit
 from tax_engine.domain.trace import TraceLine
 from tax_engine.domain.worksheet import Worksheet
 
@@ -49,6 +47,8 @@ class TakeHomeService:
         self._jurisdictions = jurisdictions
         self._computation = computation
         self._text = text
+        self._manifests: dict[tuple[JurisdictionCode, int], Manifest] = {}
+        self._lock = Lock()
 
     def compute(self, request: TakeHomeRequest) -> TakeHomeResult:
         """The take-home answer for `request`.
@@ -58,9 +58,7 @@ class TakeHomeService:
         one worksheet, a rate has no unit or the figures taken off do not share one unit.
         """
         who = f"{request.jurisdiction} {request.tax_year}"
-        manifest = self._jurisdictions.get_jurisdiction(request.jurisdiction).manifest_for(
-            request.tax_year
-        )
+        manifest = self._manifest(request.jurisdiction, request.tax_year)
         declared = manifest.take_home
         if declared is None:
             raise NotFoundError(f"no take-home figures for jurisdiction {who}")
@@ -91,6 +89,19 @@ class TakeHomeService:
             ),
             trace=self._trace(sheets) if request.include_trace else None,
         )
+
+    def _manifest(self, code: JurisdictionCode, tax_year: int) -> Manifest:
+        """The manifest that applies to `tax_year` in `code`, cached per jurisdiction and tax year.
+
+        A lock is held for a whole load, so concurrent callers of a cold key wait.
+        """
+        with self._lock:
+            key = (code, tax_year)
+            if key not in self._manifests:
+                self._manifests[key] = self._jurisdictions.get_jurisdiction(code).manifest_for(
+                    tax_year
+                )
+            return self._manifests[key]
 
     def _rate(
         self,

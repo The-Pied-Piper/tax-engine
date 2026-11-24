@@ -42,6 +42,19 @@ def test_load_rejects_duplicate_keys(tmp_path: Path) -> None:
         YamlNode.load(path, "document")
 
 
+@pytest.mark.parametrize(
+    "text",
+    ["outer:\n  a: 1\n  a: 2\n", "items:\n  - b: 1\n  - c: 1\n    c: 2\n"],
+    ids=["nested mapping", "list of mappings"],
+)
+def test_load_rejects_duplicate_keys_below_the_top_level(tmp_path: Path, text: str) -> None:
+    path = tmp_path / "x.yaml"
+    path.write_text(text, encoding="utf-8")
+
+    with pytest.raises(yaml.YAMLError, match="duplicate key '[ac]'"):
+        YamlNode.load(path, "document")
+
+
 # --- mappings and locations ------------------------------------------------------
 
 
