@@ -530,12 +530,70 @@ ALBERTA_RATE_GATE = AmountKind.declare(CATALOG, "alberta_rate_gate", non_negativ
 it is at least one cent, from the `ca-ab/marginal_rate_gate` dataset. A plain figure, not printed on
 the form."""
 
+MARGINAL_NET_INCOME_RATE = AmountKind.declare(
+    CATALOG, "marginal_net_income_rate", non_negative=True
+)
+"""Part of a further dollar of salary left in the net income (T1 line 23600) and the taxable
+income: 1 less the CPP first additional rate and the CPP second additional rate, which T1 line
+22215 takes off the income. The federal form's export
+`ca/take_home_marginal_rates.marginal_net_income_rate`, totalled into the return summary's own
+artifact. Not printed on the form."""
+
+MARGINAL_CREDIT_CONTRIBUTION_RATE = AmountKind.declare(
+    CATALOG, "marginal_credit_contribution_rate", non_negative=True
+)
+"""Credit-earning contribution rate on a further dollar of salary: the CPP base rate (T1 line
+30800) plus the EI rate (T1 line 31200), the two contributions that earn a non-refundable credit.
+The federal form's export `ca/take_home_marginal_rates.marginal_credit_contribution_rate`, totalled
+into the return summary's own artifact. Not printed on the form."""
+
+MARGINAL_FEDERAL_RATE = AmountKind.declare(CATALOG, "marginal_federal_rate", non_negative=True)
+"""Federal marginal rate on the take-home basis: the federal rate on a further dollar of salary
+after the credits, where the basic federal tax (T1 line 42900) is above zero, and 0 where it is
+not, a fraction (0.2 for 20%). The federal form's export
+`ca/take_home_marginal_rates.marginal_federal_rate`, totalled into the return summary's own
+artifact. Not printed on the form."""
+
+MARGINAL_CONTRIBUTION_RATE = AmountKind.declare(
+    CATALOG, "marginal_contribution_rate", non_negative=True
+)
+"""Contribution rate on a further dollar of salary: the CPP base, first additional and second
+additional rates plus the EI rate of T2204 line 16. The federal form's export
+`ca/take_home_marginal_rates.marginal_contribution_rate`, totalled into the return summary's own
+artifact. Not printed on the form."""
+
+MARGINAL_ALBERTA_CREDIT_RATE = AmountKind.declare(
+    CATALOG, "marginal_alberta_credit_rate", non_negative=True
+)
+"""Alberta non-refundable tax credit rate, AB428 line 53: the `ca-ab/credit_rate` dataset as it is,
+with none of the cent rounding the credit box applies. A rate, not printed as its own figure."""
+
+MARGINAL_ALBERTA_CONTRIBUTION_CREDIT_RATE = AmountKind.declare(
+    CATALOG, "marginal_alberta_contribution_credit_rate", non_negative=True
+)
+"""Alberta credit rate on the CPP base and EI of a further dollar of salary: the credit-earning
+contribution rate times the Alberta credit rate (AB428 line 53), the Alberta tax the contributions
+take off. An exact product, not printed on the form."""
+
+MARGINAL_ALBERTA_BRACKET_RATE = AmountKind.declare(
+    CATALOG, "marginal_alberta_bracket_rate", non_negative=True
+)
+"""Alberta bracket rate on a further dollar of salary, AB428 line 5 or line 12 rate times the part
+left in the taxable income. An exact product, not printed on the form."""
+
+MARGINAL_ALBERTA_RATE_AFTER_CREDITS = AmountKind.declare(
+    CATALOG, "marginal_alberta_rate_after_credits", non_negative=True
+)
+"""Alberta rate on a further dollar of salary after the CPP base and EI credits, before the gate.
+An exact difference, not printed on the form."""
+
 ALBERTA_MARGINAL_RATE = AmountKind.declare(CATALOG, "alberta_marginal_rate", non_negative=True)
-"""Alberta marginal rate: the Alberta bracket rate (AB428 line 5 or line 12) where the Alberta tax
-after the credits (line 68) is above zero, and 0 where it is not: the rate a further dollar of
-income is taxed at in Alberta, on the return summary. Not printed on the form."""
+"""Alberta marginal rate on the take-home basis: the Alberta rate on a further dollar of salary
+after the CPP base and EI credits, where the Alberta tax after the credits (AB428 line 68) is above
+zero, and 0 where it is not. Not printed on the form."""
 
 MARGINAL_TAX_RATE = AmountKind.declare(CATALOG, "marginal_tax_rate", non_negative=True)
-"""Marginal tax rate: the income tax rate on a further dollar of salary, the sum of the federal
-marginal rate and the Alberta marginal rate (Alberta has no surtax or health premium), on the
-return summary. Not printed on the form."""
+"""Marginal tax rate on the take-home basis: the change in the T1 line 43500 income tax, the CPP and
+the EI (T2204 line 16) per further dollar of salary, the sum of the federal marginal rate, the
+Alberta marginal rate and the contribution rate, on the return summary. Calculated from the forms'
+rates, not printed on the form."""

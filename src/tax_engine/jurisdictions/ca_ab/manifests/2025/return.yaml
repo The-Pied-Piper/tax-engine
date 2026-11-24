@@ -3,41 +3,56 @@
 # the one step is core/record_total over the T1 export, totalling the one amount into the return's
 # own `ca/refund_or_balance_owing`.
 #
-# The return's second output is the average tax rate on the take-home basis. The federal form
+# The return's first rate output is the average tax rate on the take-home basis. The federal form
 # `ca/take_home_average_rate` works it out once for every province (income tax, CPP and EI over the
 # salary), and the return reads its export `ca/average_tax_rate` with one core/record_total.
 #
-# The third output is the marginal rate, the income tax rate on a further dollar of salary, as
-# Ontario's but without the surtax, the health premium and the tax reduction, which Alberta does
-# not have (CRA payroll deductions formulas T4127, January 2025 edition: factor S applies only to
-# Ontario and British Columbia, and Alberta has no V1 or V2). The federal part is read as in the
-# Ontario return: the T1 form exports line 73's bracket column rate and line 42900 "Basic federal
-# tax", each totalled into the return's own kind, and core/amount_by_band_rate reads line 42900
-# through the `ca-ab/marginal_rate_gate` dataset (0 where the tax is 0.00, 1 from one cent) so that
-# the rate counts only where its own tax is above zero; the gate multiplies the rate into
-# `ca/federal_marginal_rate`, exact (`ca-ab/exact_rounding`).
+# The second rate output is the marginal tax rate on the take-home basis: the change in T1 line
+# 43500 plus CPP (Schedule 8 lines 25, 12 and 22) plus EI (T2204 line 16) per further dollar of
+# salary, for a salary-only filer with no paid credits. It is calculated with the rates of the
+# forms, not by running the return twice: a sum of the rates that apply at the salary, one
+# capability per line, every figure exact (`ca-ab/exact_rounding` rounds nothing). No form prints
+# any of these figures, so the steps below have no title and no line reference, and only line 167
+# carries a line reference.
 #
-# The Alberta bracket rate is printed on AB428 line 5 (table 1, lines 2 to 8, taxable income up to
+# The federal half is the federal form `ca/take_home_marginal_rates` (imported by the manifest,
+# after the T1 forms), which works from the salary alone. This return reads its four exports, each
+# totalled by core/record_total into its own figure: the net income rate (the part of a further
+# dollar left in the net income and the taxable income), the credit-earning contribution rate (the
+# CPP base rate plus the EI rate), the federal marginal rate (the federal tax on a further dollar
+# after its credits, counted only where the basic federal tax is above zero) and the contribution
+# rate (the CPP base, first additional and second additional rates plus the EI rate). The rest is
+# Alberta's own.
+#
+# Credits on the contributions. The CPP base contribution (T1 line 30800) and the EI premium (line
+# 31200) earn the Alberta non-refundable credit rate (AB428 line 53, the `ca-ab/credit_rate`
+# dataset), so the credit-earning contribution rate times it is the Alberta tax a further dollar of
+# contributions takes off. The rate is the dataset's as it is: its cent rounding is for the credit
+# boxes.
+#
+# Alberta. The bracket rate is printed on AB428 line 5 (table 1, lines 2 to 8, taxable income up to
 # 181,481 for 2025, 185,111 for 2026) or on line 12 (table 2, lines 9 to 15, above it); the other is
 # blank. AB428 exports both, each is totalled into the return's own kind with a blank read as 0, and
-# core/sum adds them into the Alberta bracket rate. The Alberta gate reads AB428 line 68 "Line 66
-# plus line 67", chosen as the counterpart of ON428 line 81: the Alberta tax after the credits and
-# before line 69 (provincial foreign tax credit), line 72 (political contributions) and line 74
-# (supplemental tax credit). Payroll (T4127) applies the personal amounts, CPP and EI and the other
-# credits (K1P to K3P); the dividend credit, the minimum tax carry-over and additional minimum tax
-# in lines 63, 64 and 67 are not payroll terms and are zero or blank for the take-home filer. The July 2025
-# edition adds K5P, the Alberta supplemental tax credit (AB428 line 74), which is
-# ((K1P + K2P) - 3,600) x 0.04/0.06 for 2025 and ((K1P + K2P) - 4,800) x 0.02/0.08 for 2026, not
-# below 0; the January 2025 edition has no such term. For the take-home filer K1P + K2P is below
-# those amounts, so K5P is 0 and gating on line 68 is exact; a filer with higher personal credits
-# is outside the take-home scope.
-# Alberta has no tax reduction, so line 68 is also the figure after it. The gate multiplies the
-# Alberta bracket rate into `ca-ab/alberta_marginal_rate`, exact. The last step adds the federal and
-# the Alberta marginal rate with core/sum into `ca-ab/marginal_tax_rate`; it is exact too, is not
-# printed on the form and has no title or line.
+# core/sum adds them into the Alberta bracket rate, which is multiplied by the net income rate (the
+# taxable income is the net income less the enhanced CPP deduction) and has the credit on the
+# contributions taken off. The Alberta rate counts only where AB428 line 68 "Line 66 plus line 67",
+# the Alberta tax after the credits, is above zero, through the `ca-ab/marginal_rate_gate` dataset
+# (0 where the tax is 0.00 and 1 from one cent); line 68 is chosen as the counterpart of ON428 line
+# 86 (Alberta has no LIFT credit): the Alberta tax after the credits and before line 69 (provincial
+# foreign tax credit), line 72 (political contributions) and line 74 (supplemental tax credit).
+# Payroll (T4127) applies the personal amounts, CPP and EI and the other credits (K1P to K3P); the
+# dividend credit, the minimum tax carry-over and additional minimum tax in lines 63, 64 and 67 are
+# not payroll terms and are zero or blank for the take-home filer. The Alberta supplemental tax
+# credit (AB428 line 74, printed on Worksheet AB428 line 61545 of 5009-D: line 58800 minus line
+# 58560, times 8%, minus the base amount 4,800.00, not below 0, times 25%) is 0 unless those credits
+# exceed $60,000; for the take-home filer they are at most about $27,500, so the credit is 0 and
+# gating on line 68 is exact; the medical expenses of AB428 lines 44 to 49 (line 49 is floored at 0)
+# are 0 for the salary-only filer, so line 49 adds no term; a filer with higher personal credits is
+# outside the take-home scope. Alberta has no surtax, health premium, tax reduction or LIFT credit.
 #
-# Only line 167 carries a line reference: the steps below read figures for the rates and are
-# engine-internal, so they carry none. Known limit: the rate ignores the tax effect of CPP and EI.
+# The last step adds the federal marginal rate, the Alberta marginal rate and the contribution rate
+# (the CPP base, first additional and second additional rates plus EI) with core/sum into
+# `ca-ab/marginal_tax_rate`; it is exact, is not printed on the form and has no title or line.
 capabilities:
   - name: core/record_total
     title: "Refund or balance owing"
@@ -56,32 +71,42 @@ capabilities:
   - name: core/record_total
     unit: core/percent
     consumes:
-      records: ca/t1_tax_and_credits.federal_bracket_column_rate_line_73
+      records: ca/take_home_marginal_rates.marginal_net_income_rate
     produces:
-      output: ca/federal_bracket_rate_return
+      output: ca-ab/marginal_net_income_rate
   - name: core/record_total
-    unit: ca/cad
+    unit: core/percent
     consumes:
-      records: ca/t1_tax_and_credits.federal_tax_after_credits
+      records: ca/take_home_marginal_rates.marginal_credit_contribution_rate
     produces:
-      output: ca/federal_tax_after_credits_return
-  - name: core/amount_by_band_rate
+      output: ca-ab/marginal_credit_contribution_rate
+  - name: core/record_total
+    unit: core/percent
+    consumes:
+      records: ca/take_home_marginal_rates.marginal_federal_rate
+    produces:
+      output: ca-ab/marginal_federal_rate
+  - name: core/record_total
+    unit: core/percent
+    consumes:
+      records: ca/take_home_marginal_rates.marginal_contribution_rate
+    produces:
+      output: ca-ab/marginal_contribution_rate
+  - name: core/rate_figure
     unit: core/percent
     params:
-      table: ca-ab/marginal_rate_gate
-    consumes:
-      base: ca/federal_tax_after_credits_return
+      rate: ca-ab/credit_rate
     produces:
-      output: ca/federal_rate_gate
+      output: ca-ab/marginal_alberta_credit_rate
   - name: core/multiply_by_rate
     unit: core/percent
     params:
       rounding: ca-ab/exact_rounding
     consumes:
-      base: ca/federal_rate_gate
-      rate: ca/federal_bracket_rate_return
+      base: ca-ab/marginal_credit_contribution_rate
+      rate: ca-ab/marginal_alberta_credit_rate
     produces:
-      output: ca/federal_marginal_rate
+      output: ca-ab/marginal_alberta_contribution_credit_rate
   - name: core/record_total
     unit: core/percent
     consumes:
@@ -110,6 +135,24 @@ capabilities:
         - ca-ab/alberta_bracket_rate_line_12_return
     produces:
       output: ca-ab/alberta_bracket_rate_return
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-ab/exact_rounding
+    consumes:
+      base: ca-ab/alberta_bracket_rate_return
+      rate: ca-ab/marginal_net_income_rate
+    produces:
+      output: ca-ab/marginal_alberta_bracket_rate
+  - name: core/subtract
+    unit: core/percent
+    params:
+      rounding: ca-ab/exact_rounding
+    consumes:
+      amount: ca-ab/marginal_alberta_bracket_rate
+      less: ca-ab/marginal_alberta_contribution_credit_rate
+    produces:
+      output: ca-ab/marginal_alberta_rate_after_credits
   - name: core/record_total
     unit: ca/cad
     consumes:
@@ -129,8 +172,8 @@ capabilities:
     params:
       rounding: ca-ab/exact_rounding
     consumes:
-      base: ca-ab/alberta_rate_gate
-      rate: ca-ab/alberta_bracket_rate_return
+      base: ca-ab/marginal_alberta_rate_after_credits
+      rate: ca-ab/alberta_rate_gate
     produces:
       output: ca-ab/alberta_marginal_rate
   - name: core/sum
@@ -139,7 +182,8 @@ capabilities:
       rounding: ca-ab/exact_rounding
     consumes:
       parts:
-        - ca/federal_marginal_rate
+        - ca-ab/marginal_federal_rate
         - ca-ab/alberta_marginal_rate
+        - ca-ab/marginal_contribution_rate
     produces:
       output: ca-ab/marginal_tax_rate
