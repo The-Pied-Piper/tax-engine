@@ -1,8 +1,9 @@
 # Alberta 2025 take-home manifest: the return's identity and its exports (the refund or balance
 # owing, the average tax rate and the marginal tax rate, both on the take-home basis). The caller
-# gives the gross salary and nothing else (the T1 employment income form's line 10100 input). Alberta's own
-# forms are in parts beside this one, so a line ticket adds only its own part file; the federal
-# forms are imported by name below, their parts in the `ca` package (`ca/forms/<name>/`).
+# gives the gross salary and nothing else (the T1 employment income form's line 10100 input).
+# Alberta's own forms are in parts beside this one, so a line ticket adds only its own part file;
+# the federal forms are imported by name below, their parts in the `ca` package
+# (`ca/forms/<name>/`).
 #
 # Alberta builds three forms, split so that no form reads another in a loop (as the federal T1 is
 # split around ON428): `ca-ab/ab428_credits` (AB428 lines 1 to 58), `ca-ab/worksheet_ab428` (the
@@ -27,7 +28,8 @@ outputs:
   - ca-ab/marginal_tax_rate
 capabilities: []
 # Where the take-home answer reads its figures (the caller gives the salary and nothing else): the
-# income tax is T1 line 43500, CPP and EI come from their own forms, and the rates are this return's.
+# income tax is T1 line 43500, CPP and EI come from their own forms, and the rates are this
+# return's.
 take_home:
   salary: ca/employment_income
   income_tax: {form: ca/t1_tax_and_credits, kind: ca/total_payable}

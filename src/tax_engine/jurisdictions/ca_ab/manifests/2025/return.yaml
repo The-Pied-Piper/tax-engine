@@ -8,12 +8,12 @@
 # salary), and the return reads its export `ca/average_tax_rate` with one core/record_total.
 #
 # The second rate output is the marginal tax rate on the take-home basis: the change in T1 line
-# 43500 plus CPP (Schedule 8 lines 25, 12 and 22) plus EI (T2204 line 16) per further dollar of salary,
-# for a salary-only filer with no paid credits. It is calculated with the rates of the forms, not by
-# running the return twice: a sum of the rates that apply at the salary, one capability per line,
-# every figure exact (`ca-ab/exact_rounding` rounds nothing). No form prints any of these figures,
-# so the steps below have no title and no line reference, and only line 167 carries a line
-# reference.
+# 43500 plus CPP (Schedule 8 lines 25, 12 and 22) plus EI (T2204 line 16) per further dollar of
+# salary, for a salary-only filer with no paid credits. It is calculated with the rates of the
+# forms, not by running the return twice: a sum of the rates that apply at the salary, one
+# capability per line, every figure exact (`ca-ab/exact_rounding` rounds nothing). No form prints
+# any of these figures, so the steps below have no title and no line reference, and only line 167
+# carries a line reference.
 #
 # The federal half is the federal form `ca/take_home_marginal_rates` (imported by the manifest,
 # after the T1 forms), which works from the salary alone. This return reads its four exports, each
@@ -45,13 +45,13 @@
 # zero or blank for the take-home filer. The Alberta supplemental tax credit (AB428 line 74, printed
 # on Worksheet AB428 line 61545 of 5009-D: line 58800 minus line 58560, times 8%, minus the base
 # amount 4,800.00, not below 0, times 25%) is 0 unless those credits exceed $60,000; for the
-# take-home filer they are about $27,400 at most, so the credit is 0 and gating on line 68 is exact; a
-# filer with higher personal credits is outside the take-home scope. Alberta has no
-# surtax, health premium, tax reduction or LIFT credit.
+# take-home filer they are below $28,000, so the credit is 0 and gating on line 68 is exact;
+# a filer with higher personal credits is outside the take-home scope. Alberta has no surtax, health
+# premium, tax reduction or LIFT credit.
 #
 # The last step adds the federal marginal rate, the Alberta marginal rate and the contribution rate
-# (the CPP base, first additional and second additional rates plus EI) with core/sum into `ca-ab/marginal_tax_rate`; it is exact, is not
-# printed on the form and has no title or line.
+# (the CPP base, first additional and second additional rates plus EI) with core/sum into
+# `ca-ab/marginal_tax_rate`; it is exact, is not printed on the form and has no title or line.
 capabilities:
   - name: core/record_total
     title: "Refund or balance owing"

@@ -8,16 +8,19 @@ forms, and runs nothing twice. This test is the independent check: it runs the r
 salary and at the salary plus a step, and compares the change in those deductions per dollar with
 the rate the return calculated at the salary.
 
-The step is $100. A salary whose run of $100 crosses a break in the rate (a bracket edge, the CPP
-or EI limits, the zero-tax boundaries) is in `BREAK_STEPS` with a smaller step that stays inside
-one band, and the reason. A rate is a slope with a real value inside each band, so with the smaller
-step the engine and the extra run agree to the same tolerance. At a salary that is exactly the
-start of a band ($2,000 of EI, the $3,500 CPP exemption) the published rate is the
-lower band's, so the step is negative (the change from just below).
-
-The salaries are a list across the range, plus the salaries of `BREAK_STEPS`; a sweep every $250
-from $1,000 to $400,000 for both years, run when the test was written, disagreed with the extra run
-only at salaries that are in `BREAK_STEPS`, and each of those agrees with the step given there.
+The step is $100 (and $1 or $10 at the salaries inside the EI band of T2204 line 16, $2,000 to
+$2,033). A sweep of every $250 from $1,000 to $400,000 in both years agreed everywhere except at the
+salaries in `KNOWN_EXCEPTIONS`: there the run of $100 crosses a break in the rate, so the forward
+difference is not the derivative. Each is listed with its break and run again with a step that stays
+inside the band (`SMALLER_STEPS`), at which the rate agrees. A step below $10 is not used where a
+break is not near: the cent rounding of the forms' lines moves a forward difference by more than the
+tolerance. The salaries that sit exactly on the lower edge of a band ($2,000 and $3,500) are pinned
+by value in `test_return_marginal_tax_rate_values.py` (the rate at the edge and one cent above it):
+at an exact edge the published rate is the lower band's (the EI rate is 0 at $2,000, the CPP rate 0
+at $3,500), and any run goes into the next band. At the end of a band (the EI maximum, the CPP2
+maximum) the published rate is the upper band's. The list is not exhaustive: a sweep from another
+offset meets other band edges (the federal brackets near $57,900, $178,900 and $254,400, the EI
+maximum near $65,700, the CPP2 start near $81,200), each a break of the same kind.
 """
 
 from __future__ import annotations
@@ -57,9 +60,16 @@ SALARIES = (
     8_000,
     10_000,
     15_000,
+    18_750,
     19_000,
+    19_150,
+    19_300,
     21_000,
     23_000,
+    23_900,
+    23_960,
+    24_400,
+    24_430,
     26_000,
     31_000,
     36_000,
@@ -67,61 +77,78 @@ SALARIES = (
     50_000,
     55_000,
     58_000,
+    59_000,
+    60_500,
+    61_750,
     65_000,
     70_000,
+    71_250,
     75_000,
     80_000,
     100_000,
+    115_750,
     120_000,
     140_000,
+    152_250,
     160_000,
     175_000,
+    182_500,
     190_000,
     200_000,
     230_000,
-    19_150,
-    19_300,
-    23_900,
-    23_960,
-    24_400,
-    24_430,
+    243_000,
     250_000,
     300_000,
     350_000,
+    364_000,
     400_000,
 )
-# (tax year, salary): (step, reason). A negative step is the change from just below the salary.
-BREAK_STEPS: dict[tuple[int, int], tuple[int, str]] = {
-    (2025, 1_999): (1, "the EI premium starts above $2,000"),
-    (2026, 1_999): (1, "the EI premium starts above $2,000"),
-    (2025, 2_001): (10, "just above the EI start; a step of $100 would pass the $2,033 maximum"),
-    (2026, 2_001): (10, "just above the EI start; a step of $100 would pass the $2,033 maximum"),
-    (2025, 2_020): (10, "EI reaches its maximum at about $2,033"),
-    (2026, 2_020): (10, "EI reaches its maximum at about $2,033"),
-    (2025, 2_000): (-10, "exactly where the EI premium starts; the rate is the lower band's"),
-    (2026, 2_000): (-10, "exactly where the EI premium starts; the rate is the lower band's"),
-    (2025, 3_500): (-10, "exactly where CPP contributions start (the $3,500 exemption)"),
-    (2026, 3_500): (-10, "exactly where CPP contributions start (the $3,500 exemption)"),
-    (2025, 18_750): (10, "federal tax starts at $18,820.27, inside a step of $100"),
-    (2025, 23_900): (25, "Alberta tax (AB428 line 68) starts at $23,931.13, inside a step of $100"),
-    (2026, 24_400): (10, "Alberta tax (AB428 line 68) starts at $24,411.18, inside a step of $100"),
-    (2026, 19_150): (10, "federal tax starts at $19,200.18, inside a step of $100"),
-    (2025, 60_500): (10, "taxable income passes the $60,000 edge of the Alberta 8% bracket"),
-    (2026, 59_000): (10, "taxable income passes the federal 14% bracket edge of $58,523"),
-    (2026, 61_750): (10, "taxable income passes the $61,200 edge of the Alberta 8% bracket"),
-    (2025, 71_250): (10, "the CPP base stops at the $71,300 maximum pensionable earnings"),
-    (2025, 115_750): (10, "taxable income passes the federal 20.5% bracket edge of $114,750"),
-    (2025, 152_250): (10, "taxable income passes the $151,234 edge of the Alberta 10% bracket"),
-    (2025, 182_500): (10, "taxable income passes the $181,481 edge of the Alberta 12% bracket"),
-    (2026, 182_500): (10, "taxable income passes the federal 26% bracket edge of $181,440"),
-    (2025, 243_000): (10, "taxable income passes the $241,974 edge of the Alberta 13% bracket"),
-    (2025, 364_000): (10, "taxable income passes the $362,961 edge of the Alberta 14% bracket"),
+# A smaller step inside the EI band of T2204 line 16, so the extra run does not cross its ends.
+NARROW_BAND_STEPS = {1_999: 1, 2_001: 10, 2_020: 10}
+# (tax year, salary): the break inside the run of $100, where the forward difference is not the
+# derivative. The same salary has a smaller step in `SMALLER_STEPS`, inside the band, where the rate
+# agrees.
+KNOWN_EXCEPTIONS: dict[tuple[int, int], str] = {
+    (2025, 18_750): "federal tax (T1 line 42900) first above zero, at $18,820.27",
+    (2025, 23_900): "Alberta tax (AB428 line 68) first above zero, at $23,931.13",
+    (2025, 60_500): "taxable income passes $60,000, the end of the Alberta 8% bracket",
+    (2025, 71_250): "the CPP base stops at the maximum pensionable earnings, $71,300",
+    (2025, 115_750): "federal bracket ends at taxable income $114,750 (salary about $115,800)",
+    (2025, 152_250): "taxable income passes $151,234, the end of the Alberta 10% bracket",
+    (2025, 182_500): "taxable income passes $181,481, the end of the Alberta 12% bracket",
+    (2025, 243_000): "taxable income passes $241,974, the end of the Alberta 13% bracket",
+    (2025, 364_000): "taxable income passes $362,961, the end of the Alberta 14% bracket",
+    (2026, 19_150): "federal tax (T1 line 42900) first above zero, at $19,200.18",
+    (2026, 24_400): "Alberta tax (AB428 line 68) first above zero, at $24,411.18",
+    (2026, 59_000): "federal bracket ends at taxable income $58,523 (salary about $59,050)",
+    (2026, 61_750): "taxable income passes $61,200, the end of the Alberta 8% bracket",
+    (2026, 182_500): "federal bracket ends at taxable income $181,440 (salary about $182,500)",
+}
+SMALLER_STEPS = {
+    (2025, 18_750): 10,
+    (2025, 23_900): 25,
+    (2025, 60_500): 10,
+    (2025, 71_250): 10,
+    (2025, 115_750): 10,
+    (2025, 152_250): 10,
+    (2025, 182_500): 10,
+    (2025, 243_000): 10,
+    (2025, 364_000): 10,
+    (2026, 19_150): 10,
+    (2026, 24_400): 10,
+    (2026, 59_000): 10,
+    (2026, 61_750): 10,
+    (2026, 182_500): 10,
 }
 
 CASES = [
     pytest.param(year, salary, id=f"{year}-{salary}")
     for year in (2025, 2026)
-    for salary in sorted({*SALARIES, *(s for y, s in BREAK_STEPS if y == year)})
+    for salary in SALARIES
+    if (year, salary) not in KNOWN_EXCEPTIONS
+]
+EXCEPTION_CASES = [
+    pytest.param(year, salary, id=f"{year}-{salary}") for (year, salary) in KNOWN_EXCEPTIONS
 ]
 
 
@@ -148,14 +175,34 @@ def _marginal_rate(year: int, salary: Decimal) -> Decimal:
 def test_the_marginal_rate_is_the_extra_dollar_change_in_the_take_home_deductions(
     year: int, salary: int
 ) -> None:
-    step, _reason = BREAK_STEPS.get((year, salary), (100, ""))
-    if step > 0:
-        extra_run = (_deductions(year, D(salary + step)) - _deductions(year, D(salary))) / step
-    else:
-        extra_run = (_deductions(year, D(salary)) - _deductions(year, D(salary + step))) / -step
+    step = NARROW_BAND_STEPS.get(salary, 100)
+    extra_run = (_deductions(year, D(salary + step)) - _deductions(year, D(salary))) / step
 
     assert abs(_marginal_rate(year, D(salary)) - extra_run) <= TOLERANCE
 
 
-def test_every_break_step_is_for_a_tax_year_of_the_sweep() -> None:
-    assert {year for year, _salary in BREAK_STEPS} == {2025, 2026}
+@pytest.mark.parametrize(("year", "salary"), EXCEPTION_CASES)
+def test_a_known_exception_agrees_with_a_run_that_stays_inside_the_band(
+    year: int, salary: int
+) -> None:
+    step = SMALLER_STEPS[(year, salary)]
+    extra_run = (_deductions(year, D(salary + step)) - _deductions(year, D(salary))) / step
+
+    assert abs(_marginal_rate(year, D(salary)) - extra_run) <= TOLERANCE
+
+
+@pytest.mark.parametrize(("year", "salary"), EXCEPTION_CASES)
+def test_the_run_of_100_dollars_crosses_the_break_of_each_known_exception(
+    year: int, salary: int
+) -> None:
+    run = (_deductions(year, D(salary + 100)) - _deductions(year, D(salary))) / 100
+
+    assert abs(_marginal_rate(year, D(salary)) - run) > TOLERANCE
+
+
+def test_every_known_exception_is_a_salary_of_the_sweep() -> None:
+    assert {salary for _year, salary in KNOWN_EXCEPTIONS} <= set(SALARIES)
+
+
+def test_every_known_exception_is_a_salary_with_a_smaller_step() -> None:
+    assert set(KNOWN_EXCEPTIONS) == set(SMALLER_STEPS)
