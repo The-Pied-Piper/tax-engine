@@ -14,6 +14,9 @@ form:
   exports:
     - ca-qc/schedule_k_months_total_box_62
     - ca-qc/schedule_k_premium_income_line_48
+    - ca-qc/schedule_k_column_rate_line_80
+    - ca-qc/schedule_k_premium_after_months_line_86
+    - ca-qc/schedule_k_premium_remaining_line_89
     - ca-qc/schedule_k_column_premium_line_83
     - ca-qc/schedule_k_premium_payable_line_98
 capabilities: []

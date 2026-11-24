@@ -22,6 +22,7 @@ outputs:
   - ca/refund_or_balance_owing
   - ca-qc/total_payable
   - ca-qc/average_tax_rate
+  - ca-qc/marginal_tax_rate
   - ca-qc/solidarity_credit
 capabilities: []
 # Where the take-home answer reads its figures (the caller gives the salary and nothing else).
@@ -30,8 +31,7 @@ capabilities: []
 # prescription drug insurance premium). The refundable Quebec abatement (line 44000) is a credit paid
 # on filing, so it is not taken off. The pension
 # plan figures are Schedule 8's, read at the Quebec rate; EI is T2204 at the Quebec rate; the QPIP
-# premium is 5005-R line 91. The marginal tax rate is not declared: this
-# manifest does not compute it yet (see `return.yaml`).
+# premium is 5005-R line 91. The marginal tax rate is the return's own (see `return.yaml`).
 take_home:
   salary: ca/employment_income
   income_tax: {form: ca-qc/return, kind: ca-qc/total_payable}
@@ -42,6 +42,7 @@ take_home:
     ei: {form: ca/t2204, kind: ca/t2204_line_16}
     qpip: {form: ca-qc/ppip_premium, kind: ca-qc/ppip_premiums_paid}
   average_tax_rate: {form: ca-qc/return, kind: ca-qc/average_tax_rate}
+  marginal_tax_rate: {form: ca-qc/return, kind: ca-qc/marginal_tax_rate}
 imports:
   # Quebec prints its own Schedule 8 (5005-S8): the shared form reads the Quebec line 11 dataset
   # (5.4%, maximum $3,661.20) instead of the federal one; every other figure is the same.
@@ -60,4 +61,10 @@ imports:
   # Quebec's EI rate is 1.31% (T2204 line 11, 5005-S10 line 19): the shared T2204 reads the Quebec dataset.
   - form: ca/t2204
     datasets:
+      ca/ei_premium: ca-qc/ei_premium
+  # The shared federal marginal rate form, with the Quebec pension plan and EI rates in place of the
+  # CPP and federal EI ones. It reads the 5005-R figures through the neutral names the Quebec T1 forms supply.
+  - form: ca/take_home_marginal_rates
+    datasets:
+      ca/cpp_line_11_base_contribution: ca-qc/qpp_line_11_base_contribution
       ca/ei_premium: ca-qc/ei_premium

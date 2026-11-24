@@ -25,7 +25,7 @@
 # line): the total payable above, the CPP (Schedule 8 lines 25 and 28, at the Quebec rate), the EI
 # premium (T2204 line 16) and the QPIP premium (the `ppip_premium` form's export) added by core/sum
 # into `ca/return_total_deductions` and divided by the salary, rounded once by
-# `ca/take_home_average_rate_rounding`. The marginal tax rate is left for a later ticket.
+# `ca/take_home_average_rate_rounding`.
 capabilities:
   - name: core/record_total
     unit: ca/cad
@@ -129,3 +129,301 @@ capabilities:
       records: ca-qc/solidarity_credit.solidarity_credit_after_reduction
     produces:
       output: ca-qc/solidarity_credit
+  - name: core/record_total
+    unit: core/percent
+    consumes:
+      records: ca/take_home_marginal_rates.marginal_net_income_rate
+    produces:
+      output: ca-qc/marginal_net_income_rate
+  - name: core/record_total
+    unit: core/percent
+    consumes:
+      records: ca/take_home_marginal_rates.marginal_federal_rate
+    produces:
+      output: ca-qc/marginal_federal_rate_before_qpip
+  - name: core/record_total
+    unit: core/percent
+    consumes:
+      records: ca/take_home_marginal_rates.marginal_contribution_rate
+    produces:
+      output: ca-qc/marginal_contribution_rate_before_qpip
+  - name: core/first_record_count
+    consumes:
+      records: ca-qc/ppip_premium.ppip_premium_under_threshold_count
+    produces:
+      output: ca-qc/marginal_ppip_under_threshold_count
+  - name: ca/contribution_tier_rate
+    unit: core/percent
+    params:
+      tier: ca-qc/ppip_premium
+    consumes:
+      earnings: ca/return_employment_income
+    produces:
+      output: ca-qc/ppip_premium_tier_rate
+  - name: core/credit_amount
+    unit: core/percent
+    params:
+      amount: ca-qc/ppip_premium_zero
+    produces:
+      output: ca-qc/ppip_premium_zero_rate
+  - name: core/choose_by_count
+    unit: core/percent
+    consumes:
+      count: ca-qc/marginal_ppip_under_threshold_count
+      when_none: ca-qc/ppip_premium_tier_rate
+      when_any: ca-qc/ppip_premium_zero_rate
+    produces:
+      output: ca-qc/ppip_marginal_rate
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-qc/t1_tax_and_credits.basic_federal_tax_line_130
+    produces:
+      output: ca-qc/marginal_basic_federal_tax
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca/marginal_rate_gate
+    consumes:
+      base: ca-qc/marginal_basic_federal_tax
+    produces:
+      output: ca-qc/marginal_federal_gate
+  - name: core/rate_figure
+    unit: core/percent
+    params:
+      rate: ca/credit_rate
+    produces:
+      output: ca-qc/marginal_federal_credit_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-qc/exact_rounding
+    consumes:
+      base: ca-qc/ppip_marginal_rate
+      rate: ca-qc/marginal_federal_credit_rate
+    produces:
+      output: ca-qc/marginal_federal_qpip_credit_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-qc/exact_rounding
+    consumes:
+      base: ca-qc/marginal_federal_qpip_credit_rate
+      rate: ca-qc/marginal_federal_gate
+    produces:
+      output: ca-qc/marginal_federal_qpip_credit_gated_rate
+  - name: core/subtract
+    unit: core/percent
+    params:
+      rounding: ca-qc/exact_rounding
+    consumes:
+      amount: ca-qc/marginal_federal_rate_before_qpip
+      less: ca-qc/marginal_federal_qpip_credit_gated_rate
+    produces:
+      output: ca-qc/marginal_federal_rate
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-qc/work_chart_201.work_chart_201_deduction_for_workers_line_9
+    produces:
+      output: ca-qc/marginal_work_deduction_amount
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-qc/work_chart_201.work_chart_201_deduction_before_maximum
+    produces:
+      output: ca-qc/marginal_work_deduction_before_maximum
+  - name: core/subtract_not_below_zero
+    unit: ca/cad
+    params:
+      rounding: ca-qc/exact_rounding
+    consumes:
+      amount: ca-qc/marginal_work_deduction_before_maximum
+      less: ca-qc/marginal_work_deduction_amount
+    produces:
+      output: ca-qc/marginal_work_deduction_excess
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca/marginal_rate_gate
+    consumes:
+      base: ca-qc/marginal_work_deduction_excess
+    produces:
+      output: ca-qc/marginal_work_deduction_capped_gate
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca/marginal_rate_gate
+    consumes:
+      base: ca/return_employment_income
+    produces:
+      output: ca-qc/marginal_salary_gate
+  - name: core/subtract
+    unit: core/percent
+    params:
+      rounding: ca-qc/exact_rounding
+    consumes:
+      amount: ca-qc/marginal_salary_gate
+      less: ca-qc/marginal_work_deduction_capped_gate
+    produces:
+      output: ca-qc/marginal_work_deduction_gate
+  - name: core/rate_figure
+    unit: core/percent
+    params:
+      rate: ca-qc/work_chart_201_rate
+    produces:
+      output: ca-qc/marginal_work_deduction_rate_figure
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-qc/exact_rounding
+    consumes:
+      base: ca-qc/marginal_work_deduction_rate_figure
+      rate: ca-qc/marginal_work_deduction_gate
+    produces:
+      output: ca-qc/marginal_work_deduction_rate
+  - name: core/subtract
+    unit: core/percent
+    params:
+      rounding: ca-qc/exact_rounding
+    consumes:
+      amount: ca-qc/marginal_net_income_rate
+      less: ca-qc/marginal_work_deduction_rate
+    produces:
+      output: ca-qc/marginal_taxable_income_rate
+  - name: core/record_total
+    unit: core/percent
+    consumes:
+      records: ca-qc/work_chart_401.work_chart_401_column_rate_line_5
+    produces:
+      output: ca-qc/marginal_tp1_bracket_rate
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp1_tax.tp1_line_432
+    produces:
+      output: ca-qc/marginal_tp1_tax_after_credits
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca/marginal_rate_gate
+    consumes:
+      base: ca-qc/marginal_tp1_tax_after_credits
+    produces:
+      output: ca-qc/marginal_tp1_gate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-qc/exact_rounding
+    consumes:
+      base: ca-qc/marginal_tp1_bracket_rate
+      rate: ca-qc/marginal_taxable_income_rate
+    produces:
+      output: ca-qc/marginal_tp1_bracket_rate_on_taxable_income
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-qc/exact_rounding
+    consumes:
+      base: ca-qc/marginal_tp1_bracket_rate_on_taxable_income
+      rate: ca-qc/marginal_tp1_gate
+    produces:
+      output: ca-qc/marginal_tp1_income_tax_rate
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp1_schedule_k.schedule_k_premium_income_line_48
+    produces:
+      output: ca-qc/marginal_premium_income
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca/marginal_rate_gate
+    consumes:
+      base: ca-qc/marginal_premium_income
+    produces:
+      output: ca-qc/marginal_premium_income_gate
+  - name: core/record_total
+    unit: core/percent
+    consumes:
+      records: ca-qc/tp1_schedule_k.schedule_k_column_rate_line_80
+    produces:
+      output: ca-qc/marginal_premium_column_rate
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp1_schedule_k.schedule_k_premium_after_months_line_86
+    produces:
+      output: ca-qc/marginal_premium_line_86
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp1_schedule_k.schedule_k_premium_remaining_line_89
+    produces:
+      output: ca-qc/marginal_premium_line_89
+  - name: core/subtract_not_below_zero
+    unit: ca/cad
+    params:
+      rounding: ca-qc/exact_rounding
+    consumes:
+      amount: ca-qc/marginal_premium_line_89
+      less: ca-qc/marginal_premium_line_86
+    produces:
+      output: ca-qc/marginal_premium_headroom
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca/marginal_rate_gate
+    consumes:
+      base: ca-qc/marginal_premium_headroom
+    produces:
+      output: ca-qc/marginal_premium_maximum_gate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-qc/exact_rounding
+    consumes:
+      base: ca-qc/marginal_premium_column_rate
+      rate: ca-qc/marginal_premium_income_gate
+    produces:
+      output: ca-qc/marginal_premium_rate_on_income_before_maximum
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-qc/exact_rounding
+    consumes:
+      base: ca-qc/marginal_premium_rate_on_income_before_maximum
+      rate: ca-qc/marginal_premium_maximum_gate
+    produces:
+      output: ca-qc/marginal_premium_rate_on_income
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-qc/exact_rounding
+    consumes:
+      base: ca-qc/marginal_premium_rate_on_income
+      rate: ca-qc/marginal_taxable_income_rate
+    produces:
+      output: ca-qc/marginal_premium_rate
+  - name: core/sum
+    unit: core/percent
+    params:
+      rounding: ca-qc/exact_rounding
+    consumes:
+      parts:
+        - ca-qc/marginal_contribution_rate_before_qpip
+        - ca-qc/ppip_marginal_rate
+    produces:
+      output: ca-qc/marginal_contribution_rate
+  - name: core/sum
+    unit: core/percent
+    params:
+      rounding: ca-qc/exact_rounding
+    consumes:
+      parts:
+        - ca-qc/marginal_federal_rate
+        - ca-qc/marginal_tp1_income_tax_rate
+        - ca-qc/marginal_premium_rate
+        - ca-qc/marginal_contribution_rate
+    produces:
+      output: ca-qc/marginal_tax_rate

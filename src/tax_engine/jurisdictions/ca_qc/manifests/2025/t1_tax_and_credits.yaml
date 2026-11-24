@@ -21,6 +21,8 @@
 #     to 161 are the benefits of the line 171 sum that a caller can list. Lines 152 and
 #     158 are copies and have no step. Later tickets of Step 5 to Step 9 add the exports the return
 #     summary reads.
+#   - The federal bracket rate of line 74 (`ca-qc/federal_bracket_column_rate_line_74`), which the
+#     shared take-home marginal rate form reads as the T1 line 73 rate through the neutral name below.
 form:
   name: ca-qc/t1_tax_and_credits
   title: "T1 Income Tax and Benefit Return"
@@ -37,4 +39,8 @@ form:
     - ca-qc/refundable_medical_expense_supplement_line_160
     - ca-qc/cwb_line_161
     - ca-qc/refund_or_balance_owing_line_172
+    - ca-qc/federal_bracket_column_rate_line_74
+  supplies:
+    ca/t1_tax_and_credits.federal_bracket_column_rate_line_73: ca-qc/federal_bracket_column_rate_line_74
+    ca/t1_tax_and_credits.federal_tax_after_credits: ca-qc/basic_federal_tax_line_130
 capabilities: []
