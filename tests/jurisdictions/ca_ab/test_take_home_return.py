@@ -134,32 +134,6 @@ OTHER_STEPS = [
     )
 ]
 
-# The stand-in for the federal marginal-rate form the return reads four exports from: each export
-# is the gate of the salary (0 or 1, a rate), because this test is about line 167 only.
-MARGINAL_RATE_EXPORTS = (
-    "ca/marginal_net_income_rate",
-    "ca/marginal_credit_contribution_rate",
-    "ca/marginal_federal_rate",
-    "ca/marginal_contribution_rate",
-)
-MARGINAL_RATES_FORM = (
-    "form:\n  name: ca/take_home_marginal_rates\n  required: true\n  exports:\n"
-    + "".join(f"    - {export}\n" for export in MARGINAL_RATE_EXPORTS)
-    + "capabilities: []\n"
-)
-MARGINAL_RATES_STEPS = (
-    "form:\n  name: ca/take_home_marginal_rates\ncapabilities:\n"
-    "  - name: core/record_total\n    unit: ca/cad\n    consumes:\n"
-    "      records: ca/t1_employment_income.employment_income_line_10100\n"
-    "    produces:\n      output: ca/return_employment_income\n"
-) + "".join(
-    "  - name: core/amount_by_band_rate\n    unit: core/percent\n"
-    "    params:\n      table: ca-ab/marginal_rate_gate\n"
-    "    consumes:\n      base: ca/return_employment_income\n"
-    f"    produces:\n      output: {export}\n"
-    for export in MARGINAL_RATE_EXPORTS
-)
-
 # salary, credits, line 167: a balance owing and a refund.
 CASES = [
     ("70000", "11497.09", "58502.91"),
@@ -232,8 +206,6 @@ def _service(tmp_path: Path) -> TaxComputationService:
             for number, (form, out) in enumerate(OTHER_STEPS)
         ],
         *STAND_INS,
-        ("03w_marginal_rates_form.yaml", MARGINAL_RATES_FORM),
-        ("03x_marginal_rates.yaml", MARGINAL_RATES_STEPS),
         ("05_return.yaml", RETURN_PART.read_text(encoding="utf-8")),
     ]
     for name, text in texts:
