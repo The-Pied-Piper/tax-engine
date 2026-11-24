@@ -1,8 +1,8 @@
 """The Newfoundland and Labrador forms export the lines the return summary's marginal rate reads.
 
 Through the engine over the real manifest folder (the `service` fixture; Newfoundland and Labrador
-is not yet registered): the NL428 form holds the line 85 tax after the credits and the line 105
-tax it exports, the credits form holds the line 5 and line 12 rates, and the return summary holds
+is not yet registered): the NL428 form holds the line 101, line 104 and line 105 figures it
+exports, the credits form holds the line 5 and line 12 rates, and the return summary holds
 the marginal rate. The export lists themselves are pinned in `test_form_nl428.py` and
 `test_form_nl428_credits.py`.
 """
@@ -74,16 +74,17 @@ def test_the_credits_form_exports_the_line_5_and_line_12_rates(
 
 
 @pytest.mark.parametrize(
-    ("salary", "line_85", "line_105"),
+    ("salary", "line_101", "line_104", "line_105"),
     [
-        ("20000", "663.23", "0.00"),
-        ("28000", "1306.40", "921.72"),
+        ("20000", "0.00", "997.00", "0.00"),
+        ("28000", "3827.00", "384.68", "921.72"),
     ],
 )
-def test_the_nl428_form_exports_lines_85_and_105(
-    service: TaxComputationService, salary: str, line_85: str, line_105: str
+def test_the_nl428_form_exports_lines_101_104_and_105(
+    service: TaxComputationService, salary: str, line_101: str, line_104: str, line_105: str
 ) -> None:
     sheet = _sheet(service, salary, "ca-nl/nl428")
 
-    assert _value(sheet, "ca-nl/nl428_tax_line_85") == D(line_85)
+    assert _value(sheet, "ca-nl/nl428_line_101") == D(line_101)
+    assert _value(sheet, "ca-nl/nl428_line_104") == D(line_104)
     assert _value(sheet, "ca-nl/nl428_newfoundland_and_labrador_tax_line_105") == D(line_105)

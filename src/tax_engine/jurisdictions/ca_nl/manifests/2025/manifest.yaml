@@ -61,3 +61,4 @@ imports:
   - ca/t2204
   - ca/take_home_average_rate
   - ca/t691
+  - ca/take_home_marginal_rates

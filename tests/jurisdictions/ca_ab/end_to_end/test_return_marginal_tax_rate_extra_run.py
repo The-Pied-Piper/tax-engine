@@ -21,7 +21,8 @@ published rate leaves out the rate of that band (the EI rate is 0 at $2,000, the
 $3,500, and both the CPP base and the CPP2 rate are 0 at $71,300), and any run goes into the next
 band. The list is not exhaustive: a sweep from another
 offset meets other band edges (the federal brackets near $57,900, $178,900 and $254,400, the EI
-maximum near $65,700, the CPP2 start near $81,200), each a break of the same kind.
+maximum near $65,700, the CPP2 start near $81,200 in 2025 and $85,000 in 2026), each a break of the
+same kind.
 """
 
 from __future__ import annotations

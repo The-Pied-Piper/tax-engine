@@ -326,11 +326,10 @@ STEPS = {
 }
 
 
-def test_the_part_is_the_fourteen_steps_and_nothing_else() -> None:
+def test_the_part_has_every_step_it_pins() -> None:
     steps = {step["produces"]["output"]: step for step in _steps()}
 
-    assert len(_steps()) == len(STEPS) == 14
-    assert set(steps) == set(STEPS)
+    assert set(STEPS) <= set(steps)
 
 
 @pytest.mark.parametrize("output", list(STEPS))

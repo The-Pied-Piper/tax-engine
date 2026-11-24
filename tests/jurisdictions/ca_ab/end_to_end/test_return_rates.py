@@ -119,6 +119,34 @@ def test_the_steps_after_line_167_have_no_reference_and_no_title() -> None:
         assert summary.title(label) is None
 
 
+# Year, salary, federal tax (T1 line 42900), Alberta tax (AB428 line 75), total payable (T1 line
+# 43500), as the engine reads them for a salary-only filer.
+TAX_FIGURES = [
+    (2025, "20000", "158.09", "0.00", "158.09"),
+    (2025, "70000", "7585.64", "3598.12", "11183.76"),
+    (2025, "200000", "39467.74", "17680.36", "57148.10"),
+    (2026, "20000", "103.49", "0.00", "103.49"),
+    (2026, "70000", "7278.19", "3534.79", "10812.98"),
+    (2026, "200000", "38876.54", "17500.28", "56376.82"),
+]
+
+
+@pytest.mark.parametrize(
+    ("year", "salary", "federal_tax", "alberta_tax", "total_payable"), TAX_FIGURES
+)
+def test_the_total_payable_is_the_federal_tax_plus_the_alberta_tax(
+    year: int, salary: str, federal_tax: str, alberta_tax: str, total_payable: str
+) -> None:
+    worksheets = _worksheets(year, salary)
+    (ab428,) = worksheets["ca-ab/ab428"]
+    (t1,) = worksheets["ca/t1_tax_and_credits"]
+
+    assert D(federal_tax) + D(alberta_tax) == D(total_payable)
+    assert _value(t1, "ca/federal_tax_after_credits") == D(federal_tax)
+    assert _value(ab428, LINE_75) == D(alberta_tax)
+    assert _value(t1, "ca/total_payable") == D(total_payable)
+
+
 @pytest.mark.parametrize(("year", "salary", "line_75"), LINE_75_ANCHORS)
 def test_the_alberta_tax_anchors_do_not_move(year: int, salary: str, line_75: str) -> None:
     (ab428,) = _worksheets(year, salary)["ca-ab/ab428"]

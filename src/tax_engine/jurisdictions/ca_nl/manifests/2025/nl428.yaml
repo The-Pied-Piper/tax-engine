@@ -1,18 +1,19 @@
 # Form NL428 Newfoundland and Labrador Tax 2025 (CRA 5001-C), lines 63 to 105 (Part C, tax and the
 # low-income tax reduction). Lines 106 to 108 (the unused amount a spouse or common-law partner can
 # claim) are deferred. This part names the form and its export; the form is one form, so its lines
-# read each other directly. Exports: line 85, the tax after the credits
-# (`ca-nl/nl428_tax_line_85`), which the return summary reads for the marginal tax rate (payroll
-# applies no low-income tax reduction, so the rate reads the tax before it), and line 105, the
-# Newfoundland and Labrador tax (`ca-nl/nl428_newfoundland_and_labrador_tax_line_105`), which line
-# 105 says to enter on line 42800 of the return. The form supplies line 105 as
-# `ca/provincial_tax.amount`, the name the federal T1 reads.
+# read each other directly. Exports: line 101 (`ca-nl/nl428_line_101`) and line 104 (`ca-nl/nl428_
+# line_104`), which tell the return summary's marginal rate whether the low-income tax reduction is
+# being phased out, and line 105, the Newfoundland and Labrador tax
+# (`ca-nl/nl428_newfoundland_and_labrador_tax_line_105`), which line 105 says to enter on line
+# 42800 of the return and which the marginal rate is counted under only while it is above zero.
+# The form supplies line 105 as `ca/provincial_tax.amount`, the name the federal T1 reads.
 form:
   name: ca-nl/nl428
   title: "Form NL428: Newfoundland and Labrador Tax"
   required: true
   exports:
-    - ca-nl/nl428_tax_line_85
+    - ca-nl/nl428_line_101
+    - ca-nl/nl428_line_104
     - ca-nl/nl428_newfoundland_and_labrador_tax_line_105
   supplies:
     ca/provincial_tax.amount: ca-nl/nl428_newfoundland_and_labrador_tax_line_105
