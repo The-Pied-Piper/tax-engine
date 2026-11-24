@@ -17,8 +17,9 @@ CPP2 and EI at their maximum; the credits are earned on the CPP base only):
 - total 0.1957725 + 0.09504 + 0.0595 = 0.3503125.
 At $120,000 and $160,000 every contribution is at its maximum, so the rate is the two bracket rates
 alone: 26% + 10% and 26% + 12%. At $200,000 the federal basic personal amount is phased down
-(0.145 x (16,129 - 14,538) / (253,414 - 177,882) = 0.0030542655 of further federal credit lost),
-and the AB428 line 12 rate of 13% applies: 0.29 + 0.13 + 0.0030542655.
+(0.145 x (16,129 - 14,538) / (253,414 - 177,882) of further federal credit lost; the shared
+federal form rounds the quotient to 7 places, 0.0210639, so the figure is 0.145 x 0.0210639 =
+0.0030542655), and the AB428 line 12 rate of 13% applies: 0.29 + 0.13 + 0.0030542655.
 """
 
 from __future__ import annotations

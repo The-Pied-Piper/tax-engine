@@ -7,16 +7,16 @@
 # `ca/take_home_average_rate` works it out once for every province (income tax, CPP and EI over the
 # salary), and the return reads its export `ca/average_tax_rate` with one core/record_total.
 #
-# The second rate output is the marginal tax rate on the take-home basis: the change in T1 line 43500
-# plus CPP (Schedule 8 lines 25, 12 and 22) plus EI (T2204 line 16) per further dollar of salary,
+# The second rate output is the marginal tax rate on the take-home basis: the change in T1 line
+# 43500 plus CPP (Schedule 8 lines 25, 12 and 22) plus EI (T2204 line 16) per further dollar of salary,
 # for a salary-only filer with no paid credits. It is calculated with the rates of the forms, not by
 # running the return twice: a sum of the rates that apply at the salary, one capability per line,
 # every figure exact (`ca-ab/exact_rounding` rounds nothing). No form prints any of these figures,
 # so the steps below have no title and no line reference, and only line 167 carries a line
 # reference.
 #
-# The federal half is the federal form `ca/take_home_marginal_rates` (imported by the manifest, after
-# the T1 forms), which works from the salary alone. This return reads its four exports, each
+# The federal half is the federal form `ca/take_home_marginal_rates` (imported by the manifest,
+# after the T1 forms), which works from the salary alone. This return reads its four exports, each
 # totalled by core/record_total into its own figure: the net income rate (the part of a further
 # dollar left in the net income and the taxable income), the credit-earning contribution rate (the
 # CPP base rate plus the EI rate), the federal marginal rate (the federal tax on a further dollar
@@ -50,7 +50,7 @@
 # surtax, health premium, tax reduction or LIFT credit.
 #
 # The last step adds the federal marginal rate, the Alberta marginal rate and the contribution rate
-# (the four contribution rates) with core/sum into `ca-ab/marginal_tax_rate`; it is exact, is not
+# (the CPP base, first additional and second additional rates plus EI) with core/sum into `ca-ab/marginal_tax_rate`; it is exact, is not
 # printed on the form and has no title or line.
 capabilities:
   - name: core/record_total
