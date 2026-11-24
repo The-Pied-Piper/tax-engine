@@ -525,6 +525,11 @@ ALBERTA_TAX_AFTER_CREDITS_RETURN = AmountKind.declare(CATALOG, "alberta_tax_afte
 amount of AB428's export totalled into the return summary's own artifact, the base of the Alberta
 rate gate. Signed, as the form prints no floor."""
 
+ALBERTA_RATE_GATE = AmountKind.declare(CATALOG, "alberta_rate_gate", non_negative=True)
+"""Alberta rate gate: 0 where the Alberta tax after the credits (AB428 line 68) is 0.00 and 1 where
+it is at least one cent, from the `ca-ab/marginal_rate_gate` dataset. A plain figure, not printed on
+the form."""
+
 MARGINAL_NET_INCOME_RATE = AmountKind.declare(
     CATALOG, "marginal_net_income_rate", non_negative=True
 )
@@ -581,11 +586,6 @@ MARGINAL_ALBERTA_RATE_AFTER_CREDITS = AmountKind.declare(
 )
 """Alberta rate on a further dollar of salary after the CPP base and EI credits, before the gate.
 An exact difference, not printed on the form."""
-
-ALBERTA_RATE_GATE = AmountKind.declare(CATALOG, "alberta_rate_gate", non_negative=True)
-"""Alberta rate gate: 0 where the Alberta tax after the credits (AB428 line 68) is 0.00 and 1 where
-it is at least one cent, from the `ca-ab/marginal_rate_gate` dataset. A plain figure, not printed on
-the form."""
 
 ALBERTA_MARGINAL_RATE = AmountKind.declare(CATALOG, "alberta_marginal_rate", non_negative=True)
 """Alberta marginal rate on the take-home basis: the Alberta rate on a further dollar of salary

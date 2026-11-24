@@ -119,7 +119,7 @@ T1_STEP = dedent("""\
 
 # Stand-ins for the other figures the return reads (the rates, the total payable, the taxes): each
 # is the salary itself, a made-up figure, because this test is about line 167 only; the rates are in
-# `end_to_end/test_return_marginal_tax_rate_values.py`.
+# `end_to_end/test_return_rates.py`.
 OTHER_STEPS = [
     (form, out)
     for form, out in (

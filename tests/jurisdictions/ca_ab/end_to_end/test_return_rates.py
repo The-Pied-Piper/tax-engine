@@ -6,6 +6,11 @@ The values of the marginal rate, worked by hand, are in
 and `..._gates_2026.py`, and the check against a double run of the engine in
 `test_return_marginal_tax_rate_extra_run.py`. This file holds what is left: the kinds, the units
 and the AB428 anchors that must not move.
+
+Form text (Form AB428, CRA 5009-C): "Line 5: Rate 8%", "10%", "12%" and "Line 12: Rate 13%", "14%",
+"15%"; "Line 53: Alberta non-refundable tax credit rate 8%"; "Line 66: Line 61 minus line 65 (if
+negative, enter "0")"; "Line 68: Line 66 plus line 67". The anchors below are the engine's own
+figures for a salary-only filer, held so that a change of the rates cannot move the tax.
 """
 
 from __future__ import annotations
@@ -28,7 +33,19 @@ RETURN = "ca-ab/return"
 MARGINAL = "ca-ab/marginal_tax_rate"
 AVERAGE = "ca-ab/average_tax_rate"
 ALBERTA_RATE = "ca-ab/alberta_marginal_rate"
+BRACKET = "ca-ab/alberta_bracket_rate_return"
+LINE_68_RETURN = "ca-ab/alberta_tax_after_credits_return"
+RATE_GATE = "ca-ab/alberta_rate_gate"
 LINE_75 = "ca-ab/ab428_alberta_tax_line_75"
+
+NEW_KINDS = [
+    AVERAGE,
+    MARGINAL,
+    ALBERTA_RATE,
+    BRACKET,
+    LINE_68_RETURN,
+    RATE_GATE,
+]
 
 # Year, salary, AB428 line 75 (the anchors that must not move).
 LINE_75_ANCHORS = [
@@ -69,13 +86,17 @@ def test_the_alberta_part_is_the_line_5_rate_below_the_table_1_limit_and_line_12
     assert _value(_summary(year, "200000"), ALBERTA_RATE) == D("0.13")
 
 
-@pytest.mark.parametrize("name", [MARGINAL, AVERAGE, ALBERTA_RATE])
-def test_the_rate_kinds_are_registered_non_negative_amounts(name: str) -> None:
+@pytest.mark.parametrize("name", NEW_KINDS)
+def test_the_new_kinds_are_registered_decimal_amounts(name: str) -> None:
     kind = bundled_kinds().kind(name)
 
     assert kind.identifier == name
-    assert non_negative(kind)
     assert kind.value_type is Decimal
+
+
+@pytest.mark.parametrize("name", [MARGINAL, AVERAGE, ALBERTA_RATE, BRACKET, RATE_GATE])
+def test_the_rate_kinds_are_non_negative(name: str) -> None:
+    assert non_negative(bundled_kinds().kind(name))
 
 
 def test_the_return_prints_both_rates_as_percentages_in_the_core_percent_unit() -> None:
@@ -88,11 +109,11 @@ def test_the_return_prints_both_rates_as_percentages_in_the_core_percent_unit() 
         assert unit.identifier == "core/percent"
 
 
-def test_only_line_167_of_the_return_has_a_reference() -> None:
+def test_the_steps_after_line_167_have_no_reference_and_no_title() -> None:
     summary = _summary(2025, "70000")
     kinds = bundled_kinds()
 
-    for name in (MARGINAL, AVERAGE, ALBERTA_RATE):
+    for name in NEW_KINDS:
         label = kinds.kind(name).label
         assert summary.reference(label) is None
         assert summary.title(label) is None
@@ -103,3 +124,18 @@ def test_the_alberta_tax_anchors_do_not_move(year: int, salary: str, line_75: st
     (ab428,) = _worksheets(year, salary)["ca-ab/ab428"]
 
     assert ab428.get(bundled_kinds().kind(LINE_75)).value == D(line_75)
+
+
+@pytest.mark.parametrize(
+    ("year", "salary", "line_167"),
+    [
+        (2025, "20000", "-1591.91"),
+        (2025, "70000", "11183.76"),
+        (2025, "200000", "57148.10"),
+        (2026, "20000", "-1681.51"),
+        (2026, "70000", "10812.98"),
+        (2026, "200000", "56376.82"),
+    ],
+)
+def test_the_line_167_anchors_do_not_move(year: int, salary: str, line_167: str) -> None:
+    assert _value(_summary(year, salary), "ca/refund_or_balance_owing") == D(line_167)
