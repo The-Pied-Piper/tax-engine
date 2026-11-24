@@ -965,16 +965,17 @@ MARGINAL_NET_INCOME_RATE = AmountKind.declare(
 )
 """Part of a further dollar of salary left in the net income (T1 line 23600) and the taxable
 income: 1 less the CPP first additional rate and the CPP second additional rate, which T1 line
-22215 takes off the income. The federal form's export `ca/take_home_marginal_rates.marginal_net_
-income_rate`, totalled into the return summary's own artifact. Not printed on the form."""
+22215 takes off the income. The federal form's export
+`ca/take_home_marginal_rates.marginal_net_income_rate`, totalled into the return summary's own
+artifact. Not printed on the form."""
 
 MARGINAL_CREDIT_CONTRIBUTION_RATE = AmountKind.declare(
     CATALOG, "marginal_credit_contribution_rate", non_negative=True
 )
 """Credit-earning contribution rate on a further dollar of salary: the CPP base rate (T1 line
-30800) plus the EI rate (T1 line 31200). The federal form's export `ca/take_home_marginal_rates.
-marginal_credit_contribution_rate`, totalled into the return summary's own artifact. Not printed
-on the form."""
+30800) plus the EI rate (T1 line 31200). The federal form's export
+`ca/take_home_marginal_rates.marginal_credit_contribution_rate`, totalled into the return
+summary's own artifact. Not printed on the form."""
 
 MARGINAL_FEDERAL_RATE = AmountKind.declare(CATALOG, "marginal_federal_rate", non_negative=True)
 """Federal marginal rate on the take-home basis: the federal rate on a further dollar of salary
@@ -986,9 +987,9 @@ MARGINAL_CONTRIBUTION_RATE = AmountKind.declare(
     CATALOG, "marginal_contribution_rate", non_negative=True
 )
 """Contribution rate on a further dollar of salary: the CPP base, first additional and second
-additional rates plus the EI rate (T2204 line 16). The federal form's export `ca/take_home_
-marginal_rates.marginal_contribution_rate`, totalled into the return summary's own artifact. Not
-printed on the form."""
+additional rates plus the EI rate (T2204 line 16). The federal form's export
+`ca/take_home_marginal_rates.marginal_contribution_rate`, totalled into the return summary's own
+artifact. Not printed on the form."""
 
 MARGINAL_NEWFOUNDLAND_AND_LABRADOR_CREDIT_RATE = AmountKind.declare(
     CATALOG, "marginal_newfoundland_and_labrador_credit_rate", non_negative=True
