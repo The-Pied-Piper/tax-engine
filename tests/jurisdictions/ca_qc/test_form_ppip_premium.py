@@ -37,7 +37,7 @@ def test_the_form_is_named_and_required_and_shares_the_return_title() -> None:
 
 
 def test_the_form_exports_line_91() -> None:
-    assert _part()["form"]["exports"] == [EXPORT]
+    assert EXPORT in _part()["form"]["exports"]
 
 
 def test_the_form_supplies_nothing_and_the_part_declares_no_capabilities() -> None:

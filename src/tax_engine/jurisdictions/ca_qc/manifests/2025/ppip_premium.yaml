@@ -2,11 +2,13 @@
 # 5005-R return, and split forms share one title, so it carries the return's title. This part names
 # the form and its export; line parts carry capabilities. The export, line 91
 # (`ca-qc/ppip_premiums_paid`), is read by 5005-R line 91 and by TP-1
-# line 97, the same figure.
+# line 97, the same figure, and the count of its earnings test (`ca-qc/ppip_premium_under_threshold_count`,
+# 1 while the insurable earnings are under $2,000), which the return summary's marginal rate reads.
 form:
   name: ca-qc/ppip_premium
   title: "T1 Income Tax and Benefit Return"
   required: true
   exports:
     - ca-qc/ppip_premiums_paid
+    - ca-qc/ppip_premium_under_threshold_count
 capabilities: []
