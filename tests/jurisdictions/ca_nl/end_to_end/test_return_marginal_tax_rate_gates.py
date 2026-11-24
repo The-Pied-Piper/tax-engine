@@ -1,4 +1,4 @@
-"""The gates of the Newfoundland and Labrador marginal rate open at their cent boundaries.
+"""The gates of the Newfoundland and Labrador marginal rate open at their cent boundaries, 2025.
 
 The provincial part of the marginal rate (`ca-nl/newfoundland_and_labrador_marginal_rate`) is
 counted only while NL428 line 105 "Line 94 minus line 104 (if negative, enter "0")" is above zero,
@@ -9,8 +9,7 @@ is the hand-worked rate of `test_return_marginal_tax_rate_values.py`:
 - 2025: line 105 is 0.00 at a salary of 24,140.18 (the low-income reduction absorbs the tax) and
   0.01 at 24,140.19; line 101 is 0.00 at 24,134.34 and 0.01 at 24,134.35 (the net income passes
   the low-income threshold of 23,928); line 104 is 0.01 at 30,428.50 and 0.00 at 30,428.51.
-- 2026: line 105 is 0.00 at 25,100.03 and 0.01 at 25,100.04; line 104 is 0.01 at 30,763.60 and
-  0.00 at 30,763.61.
+- 2026 is in `test_return_marginal_tax_rate_gates_2026.py`.
 
 Below the line 105 boundary the provincial part is 0; from it, while the reduction is phased out,
 it is 8.7% x N - 8.7% x the credit-earning contributions + 16% x N, where N is the net income
@@ -55,10 +54,6 @@ def _value(year: int, salary: str, name: str) -> Decimal:
         (2025, "24140.19", "1", "0.2387967"),
         (2025, "30428.50", "1", "0.2387967"),
         (2025, "30428.51", "1", "0.0803967"),
-        (2026, "25100.03", "0", "0"),
-        (2026, "25100.04", "1", "0.2388054"),
-        (2026, "30763.60", "1", "0.2388054"),
-        (2026, "30763.61", "1", "0.0804054"),
     ],
 )
 def test_the_provincial_part_follows_line_105_and_the_reduction_phase_out(
