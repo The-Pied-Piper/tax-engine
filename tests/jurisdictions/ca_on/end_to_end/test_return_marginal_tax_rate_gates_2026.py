@@ -82,7 +82,9 @@ def _value(summary: Worksheet, name: str) -> Decimal:
 
 
 @pytest.mark.parametrize("salary", SALARIES)
-def test_2026_runs_and_the_total_is_the_exact_sum_of_the_gated_parts(salary: str) -> None:
+def test_2026_runs_and_the_total_is_the_sum_of_the_gated_parts_rounded_to_four_decimals(
+    salary: str,
+) -> None:
     summary = _summary(salary)
     federal = _value(summary, FEDERAL)
     ontario = _value(summary, ONTARIO_RATE)

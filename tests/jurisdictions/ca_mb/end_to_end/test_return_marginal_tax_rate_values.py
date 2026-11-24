@@ -96,7 +96,7 @@ MANITOBA = JurisdictionCode("CA-MB")
         (2026, "410000", "0.504"),
     ],
 )
-def test_the_marginal_rate_is_the_exact_sum_of_the_rates_that_apply(
+def test_the_marginal_rate_is_the_sum_of_the_rates_that_apply_rounded_to_four_decimals(
     year: int, salary: str, rate: str
 ) -> None:
     worksheets = build_tax_computation().compute(

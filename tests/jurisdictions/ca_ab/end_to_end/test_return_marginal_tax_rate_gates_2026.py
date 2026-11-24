@@ -30,6 +30,7 @@ from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tests.kinds import bundled_kinds
 
 D = Decimal
+ROUNDING = D("0.0001")
 ALBERTA = JurisdictionCode("CA-AB")
 RETURN = "ca-ab/return"
 
@@ -76,7 +77,9 @@ def _value(sheet: Worksheet, name: str) -> Decimal:
 
 
 @pytest.mark.parametrize("salary", SALARIES)
-def test_2026_runs_and_the_total_is_the_exact_sum_of_the_gated_parts(salary: str) -> None:
+def test_2026_runs_and_the_total_is_the_sum_of_the_gated_parts_rounded_to_four_decimals(
+    salary: str,
+) -> None:
     summary = _summary(salary)
     federal_sheet = _federal(salary)
     federal = _value(summary, FEDERAL)
@@ -84,7 +87,7 @@ def test_2026_runs_and_the_total_is_the_exact_sum_of_the_gated_parts(salary: str
     contribution = _value(summary, CONTRIBUTION)
 
     assert _value(summary, MARGINAL) == (federal + alberta + contribution).quantize(
-        D("0.0001"), rounding=ROUND_HALF_UP
+        ROUNDING, rounding=ROUND_HALF_UP
     )
     assert _value(federal_sheet, FEDERAL_GATE) in (D("0"), D("1"))
     assert _value(summary, ALBERTA_GATE) in (D("0"), D("1"))

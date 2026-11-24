@@ -41,6 +41,7 @@ from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tests.kinds import bundled_kinds
 
 D = Decimal
+ROUNDING = D("0.0001")
 ALBERTA = JurisdictionCode("CA-AB")
 YEAR = 2025
 RETURN = "ca-ab/return"
@@ -115,7 +116,7 @@ def test_each_part_and_the_total_of_the_marginal_tax_rate(
     assert _value(summary, CONTRIBUTION) == D(contribution)
     assert _value(summary, MARGINAL) == D(marginal)
     assert D(marginal) == (D(federal) + D(alberta) + D(contribution)).quantize(
-        D("0.0001"), rounding=ROUND_HALF_UP
+        ROUNDING, rounding=ROUND_HALF_UP
     )
 
 

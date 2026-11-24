@@ -76,8 +76,8 @@ PREMIUM = "ca-on/marginal_health_premium_rate"
 CONTRIBUTION = "ca-on/marginal_contribution_rate"
 MARGINAL = "ca-on/marginal_tax_rate"
 LINE_167 = "ca/refund_or_balance_owing"
-FOUR_PLACES = D("0.0001")
-MARGINAL_ROUNDING = RoundTo(FOUR_PLACES, RoundingMode.HALF_UP)
+ROUNDING = D("0.0001")
+MARGINAL_ROUNDING = RoundTo(ROUNDING, RoundingMode.HALF_UP)
 
 PARTS = (
     *(
@@ -133,7 +133,7 @@ def test_the_marginal_tax_rate_kind_is_a_registered_non_negative_amount() -> Non
 @pytest.mark.parametrize(
     ("salary", "federal", "ontario", "premium", "contribution", "marginal"), FIGURES
 )
-def test_the_marginal_tax_rate_is_the_exact_sum_of_the_four_rates(
+def test_the_marginal_tax_rate_is_the_sum_of_the_four_rates_rounded_to_four_decimals(
     take_home_service: TakeHomeService,
     salary: str,
     federal: str,
@@ -151,7 +151,7 @@ def test_the_marginal_tax_rate_is_the_exact_sum_of_the_four_rates(
     assert summary.get(kinds.kind(CONTRIBUTION)).value == D(contribution)
     assert summary.get(kinds.kind(MARGINAL)).value == D(marginal)
     assert (D(federal) + D(ontario) + D(premium) + D(contribution)).quantize(
-        FOUR_PLACES, rounding=ROUND_HALF_UP
+        ROUNDING, rounding=ROUND_HALF_UP
     ) == D(marginal)
 
 

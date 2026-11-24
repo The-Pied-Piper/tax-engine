@@ -69,7 +69,9 @@ SALARIES = ["0", "100", "2000", "19200.18", "26752.96", "30000", "45370.60", "70
 
 
 @pytest.mark.parametrize("salary", SALARIES)
-def test_2026_runs_and_the_total_is_the_exact_sum_of_the_gated_parts(salary: str) -> None:
+def test_2026_runs_and_the_total_is_the_sum_of_the_gated_parts_rounded_to_four_decimals(
+    salary: str,
+) -> None:
     summary = _summary(salary)
     federal = _value(summary, FEDERAL)
     british_columbia = _value(summary, BC_RATE)
