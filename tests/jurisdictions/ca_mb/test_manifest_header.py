@@ -38,7 +38,7 @@ def test_the_return_exports_the_refund_and_the_average_and_marginal_rates_and_no
 
     assert header["outputs"] == [
         "ca/refund_or_balance_owing",
-        "ca-mb/average_income_tax_rate",
+        "ca-mb/average_tax_rate",
         "ca-mb/marginal_tax_rate",
     ]
     assert header["capabilities"] == []

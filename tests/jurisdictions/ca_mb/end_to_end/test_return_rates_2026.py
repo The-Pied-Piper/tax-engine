@@ -98,8 +98,14 @@ RETURN = "ca-mb/return"
 FEDERAL = "ca/federal_marginal_rate"
 MB_RATE = "ca-mb/manitoba_marginal_rate"
 MARGINAL = "ca-mb/marginal_tax_rate"
-AVERAGE = "ca-mb/average_income_tax_rate"
+AVERAGE = "ca-mb/average_tax_rate"
 TOTAL_PAYABLE = "ca/total_payable"
+DEDUCTIONS = "ca/return_total_deductions"
+CONTRIBUTIONS = (
+    "ca/return_cpp_base_contributions",
+    "ca/return_cpp_enhanced_contributions",
+    "ca/return_ei_premium",
+)
 BRACKET = "ca-mb/manitoba_bracket_rate_return"
 LINE_65_RETURN = "ca-mb/manitoba_tax_after_credits_return"
 RATE_GATE = "ca-mb/manitoba_rate_gate"
@@ -141,37 +147,37 @@ NEW_KINDS = [
 FIGURES = [
     # Salaries of 0 and 100: no tax at all, both gates closed, and no division by zero.
     ("0", "0", "0", "0", "0.00", "0"),
-    ("100", "0", "0", "0", "0.00", "0"),
+    ("100", "0", "0", "0", "0.00", "0.0000"),
     # Manitoba boundary: closed at 17,402.21, open (10.8%) at 17,402.22; federal closed.
-    ("17402.21", "0", "0", "0", "0.00", "0"),
-    ("17402.22", "0", "0.108", "0.108", "0.01", "0"),
+    ("17402.21", "0", "0", "0", "0.00", "0.0638"),
+    ("17402.22", "0", "0.108", "0.108", "0.01", "0.0638"),
     # Federal boundary: closed at 19,200.17, open (14%) at 19,200.18; Manitoba open.
-    ("19200.17", "0", "0.108", "0.108", "196.77", "0.0102"),
-    ("19200.18", "0.14", "0.108", "0.248", "196.78", "0.0102"),
+    ("19200.17", "0", "0.108", "0.108", "196.77", "0.0752"),
+    ("19200.18", "0.14", "0.108", "0.248", "196.78", "0.0752"),
     # 20,000 (net income 19,835.00): 103.49 + 284.30 = 387.79; 387.79 / 20,000 = 0.0193895 ->
     # 0.0194.
-    ("20000", "0.14", "0.108", "0.248", "387.79", "0.0194"),
+    ("20000", "0.14", "0.108", "0.248", "387.79", "0.0848"),
     # 70,000 (taxable income 69,335.00): 20.5% federal, 12.75%. 7,278.19 + 5,742.67 = 13,020.86;
     # 13,020.86 / 70,000 = 0.186012 -> 0.1860.
-    ("70000", "0.205", "0.1275", "0.3325", "13020.86", "0.186"),
+    ("70000", "0.205", "0.1275", "0.3325", "13020.86", "0.2586"),
     # 150,000 (taxable income 148,873.00): 26% federal, 17.4% (above 100,000). 25,302.14 +
     # 18,131.77 = 43,433.91; 43,433.91 / 150,000 = 0.2895594 -> 0.2896.
-    ("150000", "0.26", "0.174", "0.434", "43433.91", "0.2896"),
+    ("150000", "0.26", "0.174", "0.434", "43433.91", "0.3280"),
     # 200,000 (net income 198,873.00, below 200,000: no phase-out term): 29% federal, 17.4%.
     # 38,876.54 + 26,831.77 = 65,708.31; / 200,000 = 0.32854155 -> 0.3285.
-    ("200000", "0.29", "0.174", "0.464", "65708.31", "0.3285"),
+    ("200000", "0.29", "0.174", "0.464", "65708.31", "0.3574"),
     # The phase-out starts at 201,127.07 (net income 200,000.07, Worksheet MB428 line 8 0.01).
-    ("201127.06", "0.29", "0.174", "0.464", "66234.60", "0.3293"),
-    ("201127.07", "0.29", "0.1825212", "0.4725212", "66234.60", "0.3293"),
+    ("201127.06", "0.29", "0.174", "0.464", "66234.60", "0.3580"),
+    ("201127.07", "0.29", "0.1825212", "0.4725212", "66234.60", "0.3580"),
     # 250,000 and 300,000 (net incomes 248,873.00 and 298,873.00): inside the phase-out, 17.4% +
     # 0.85212 points; federal 29% and 33% (above 258,482). 53,524.01 + 35,948.22 = 89,472.23.
-    ("250000", "0.29", "0.1825212", "0.4725212", "89472.23", "0.3579"),
-    ("300000", "0.33", "0.1825212", "0.5125212", "114742.27", "0.3825"),
+    ("250000", "0.29", "0.1825212", "0.4725212", "89472.23", "0.3810"),
+    ("300000", "0.33", "0.1825212", "0.5125212", "114742.27", "0.4017"),
     # The phase-out ends at 401,126.94 (net income 399,999.94, Worksheet MB428 line 9 0.00).
-    ("401126.93", "0.33", "0.1825212", "0.5125212", "166571.98", "0.4153"),
-    ("401126.94", "0.33", "0.174", "0.504", "166571.98", "0.4153"),
+    ("401126.93", "0.33", "0.1825212", "0.5125212", "166571.98", "0.4296"),
+    ("401126.94", "0.33", "0.174", "0.504", "166571.98", "0.4296"),
     # 410,000 (net income 408,873.00, above 400,000): no phase-out term.
-    ("410000", "0.33", "0.174", "0.504", "171044.00", "0.4172"),
+    ("410000", "0.33", "0.174", "0.504", "171044.00", "0.4313"),
 ]
 PART_FIGURES = [(s, f, m, t) for s, f, m, t, _, _ in FIGURES]
 AVERAGE_FIGURES = [(s, t, a) for s, _, _, _, t, a in FIGURES]
@@ -328,16 +334,23 @@ def test_the_marginal_rate_is_the_exact_sum_of_the_federal_and_the_manitoba_part
     assert D(federal) + D(manitoba) == D(marginal)
 
 
+def _deductions(summary: Worksheet) -> Decimal:
+    """The take-home deductions of a return summary: the income tax plus the CPP and the EI."""
+    return _value(summary, TOTAL_PAYABLE) + sum((_value(summary, n) for n in CONTRIBUTIONS), D(0))
+
+
 @pytest.mark.parametrize(("salary", "total_payable", "average"), AVERAGE_FIGURES)
-def test_the_average_rate_is_the_total_payable_over_the_salary_half_up_to_ten_thousandths(
+def test_the_average_rate_is_the_income_tax_cpp_and_ei_over_the_salary_half_up_to_ten_thousandths(
     salary: str, total_payable: str, average: str
 ) -> None:
     summary = _summary(salary)
 
     assert _value(summary, TOTAL_PAYABLE) == D(total_payable)
+    deductions = _deductions(summary)
+    assert _value(summary, DEDUCTIONS) == deductions
     assert _value(summary, AVERAGE) == D(average)
     if D(salary) > 0:
-        assert (D(total_payable) / D(salary)).quantize(D("0.0001"), rounding="ROUND_HALF_UP") == D(
+        assert (deductions / D(salary)).quantize(D("0.0001"), rounding="ROUND_HALF_UP") == D(
             average
         )
 
@@ -352,18 +365,18 @@ def test_a_salary_of_0_or_100_reads_0_for_both_rates(salary: str) -> None:
     assert _value(summary, MB_RATE) == D("0")
 
 
-def test_the_2026_average_at_70000_is_18_6_percent() -> None:
+def test_the_2026_average_at_70000_is_25_86_percent() -> None:
     summary = _summary("70000")
 
     assert _value(summary, TOTAL_PAYABLE) == D("13020.86")
-    assert _value(summary, AVERAGE) == D("0.1860")
+    assert _value(summary, AVERAGE) == D("0.2586")
 
 
-def test_the_2025_average_at_70000_is_19_05_percent() -> None:
+def test_the_2025_average_at_70000_is_26_24_percent() -> None:
     summary = _summary("70000", 2025)
 
     assert _value(summary, TOTAL_PAYABLE) == D("13333.23")
-    assert _value(summary, AVERAGE) == D("0.1905")
+    assert _value(summary, AVERAGE) == D("0.2624")
 
 
 @pytest.mark.parametrize(("salary", "line_5"), BRACKET_FIGURES)
@@ -507,14 +520,18 @@ def test_the_marginal_rate_is_explained_in_english_as_percentages() -> None:
     )
 
 
-def test_the_marginal_rate_comes_last_in_the_trace() -> None:
+def test_the_marginal_rate_comes_last_of_the_marginal_steps_in_the_trace() -> None:
     sheet = _summary("100000")
     kinds = artifact_kinds()
     labels = [line.label for line in sheet.trace]
 
     marginal = labels.index(kinds.kind(MARGINAL).label)
 
-    assert marginal == len(labels) - 1
+    # Only the two steps of the average rate (the total and the quotient) come after it.
+    assert labels[marginal + 1 :] == [
+        kinds.kind("ca/return_total_deductions").label,
+        kinds.kind(AVERAGE).label,
+    ]
     assert labels.count(kinds.kind(MARGINAL).label) == 1
     for part in (FEDERAL, MB_RATE, WITH_PHASE_OUT, PHASE_OUT, CREDIT_RATE, RATIO, SLOPE):
         assert labels.index(kinds.kind(part).label) < marginal

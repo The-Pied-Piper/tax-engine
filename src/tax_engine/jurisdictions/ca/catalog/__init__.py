@@ -39,5 +39,6 @@ from tax_engine.jurisdictions.ca.catalog.canada_workers_benefit import *  # noqa
 from tax_engine.jurisdictions.ca.catalog.refundable_credits import *  # noqa: F403
 from tax_engine.jurisdictions.ca.catalog.refund import *  # noqa: F403
 from tax_engine.jurisdictions.ca.catalog.rc381_cpp_qpp import *  # noqa: F403
+from tax_engine.jurisdictions.ca.catalog.take_home_average_rate import *  # noqa: F403
 from tax_engine.jurisdictions.ca.catalog.take_home_marginal_rates import *  # noqa: F403
 # isort: on

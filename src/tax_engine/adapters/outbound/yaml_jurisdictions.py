@@ -654,10 +654,10 @@ class YamlJurisdictionSource:
     @staticmethod
     def _take_home(node: YamlNode) -> TakeHomeFigures:
         """The take-home declaration: the salary kind, the income tax, the other deductions by
-        name, and the marginal rate, each figure as the form that exports it and its kind."""
+        name, and the two rates, each figure as the form that exports it and its kind."""
         node.require_mapping(
             frozenset({"salary", "income_tax", "deductions"}),
-            optional=frozenset({"marginal_tax_rate"}),
+            optional=frozenset({"average_tax_rate", "marginal_tax_rate"}),
         )
 
         def reference(figure: YamlNode) -> FigureReference:
@@ -677,6 +677,7 @@ class YamlJurisdictionSource:
             deductions=tuple(
                 (name, reference(figure)) for name, figure in node.field("deductions").fields()
             ),
+            average_tax_rate=optional_reference("average_tax_rate"),
             marginal_tax_rate=optional_reference("marginal_tax_rate"),
         )
 

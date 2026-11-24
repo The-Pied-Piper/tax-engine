@@ -8,7 +8,7 @@ a core/record_total over the T1 form's export `ca/t1_tax_and_credits.refund_or_b
 cross-form read (another form's export is read only as a record list), producing the return's own
 `ca/refund_or_balance_owing`. Positive is a balance owing, negative a refund. The step has no `form`
 key (the return is the default form) and no params. The average rate step is pinned in
-`test_take_home_return_average_income_tax_rate.py`; the marginal rate steps run here over stand-ins
+`test_take_home_return_average_tax_rate.py`; the marginal rate steps run here over stand-ins
 (figures in `end_to_end/test_return_marginal_rates.py`).
 
 The test composes the T1 employment income form and the real `return.yaml`. The
@@ -49,6 +49,7 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_parameter_parsers,
     newfoundland_units,
 )
+from tests.jurisdictions.take_home_stand_ins import STAND_INS
 
 D = Decimal
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
@@ -60,7 +61,7 @@ HEADER = dedent("""\
     valid_from_tax_year: 2025
     outputs:
       - ca/refund_or_balance_owing
-      - ca-nl/average_income_tax_rate
+      - ca-nl/average_tax_rate
       - ca-nl/marginal_tax_rate
     capabilities: []
     """)
@@ -138,7 +139,7 @@ def _salary_total(form: str) -> str:
 
 # Stand-ins for the other figures the return reads (the total payable): each amount is the salary
 # itself, a made-up figure, because this test is about line 167 only; the average rate is in
-# `test_take_home_return_average_income_tax_rate.py`. Form, output kind, unit.
+# `test_take_home_return_average_tax_rate.py`. Form, output kind, unit.
 OTHER_STEPS = [
     ("ca/t1_tax_and_credits", "ca/total_payable", "ca/cad"),
     ("ca/t1_tax_and_credits", "ca/federal_bracket_column_rate_line_73", "core/percent"),
@@ -217,6 +218,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
             (f"04_{part.name}", part.read_text(encoding="utf-8"))
             for part in form_parts("t1_employment_income")
         ),
+        *STAND_INS,
         ("05_return.yaml", RETURN_PART.read_text(encoding="utf-8")),
     ]
     for name, text in texts:
@@ -291,7 +293,7 @@ def test_the_return_has_a_step_beyond_line_167_for_the_average_rate() -> None:
     outputs = [step["produces"]["output"] for step in _part()["capabilities"]]
 
     assert outputs[0] == "ca/refund_or_balance_owing"
-    assert "ca-nl/average_income_tax_rate" in outputs
+    assert "ca-nl/average_tax_rate" in outputs
 
 
 def test_the_return_has_the_marginal_rate_as_its_last_step() -> None:

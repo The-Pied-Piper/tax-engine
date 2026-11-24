@@ -21,6 +21,7 @@ title: Return summary
 outputs:
   - ca/refund_or_balance_owing
   - ca-qc/total_payable
+  - ca-qc/average_tax_rate
   - ca-qc/solidarity_credit
 capabilities: []
 # Where the take-home answer reads its figures (the caller gives the salary and nothing else).
@@ -40,6 +41,7 @@ take_home:
     qpp2: {form: ca/schedule_8, kind: ca/cpp_part_3_line_22}
     ei: {form: ca/t2204, kind: ca/t2204_line_16}
     qpip: {form: ca-qc/ppip_premium, kind: ca-qc/ppip_premiums_paid}
+  average_tax_rate: {form: ca-qc/return, kind: ca-qc/average_tax_rate}
 imports:
   # Quebec prints its own Schedule 8 (5005-S8): the shared form reads the Quebec line 11 dataset
   # (5.4%, maximum $3,661.20) instead of the federal one; every other figure is the same.

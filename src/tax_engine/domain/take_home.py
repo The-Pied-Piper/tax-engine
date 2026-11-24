@@ -11,11 +11,9 @@ from __future__ import annotations
 from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass
 from decimal import Decimal
-from fractions import Fraction
 
 from tax_engine.domain.artifact import ArtifactRegistry
 from tax_engine.domain.errors import InvalidManifestError
-from tax_engine.domain.parameters.rounding import RoundingRule
 from tax_engine.domain.unit import Unit
 from tax_engine.domain.worksheet import Worksheet
 
@@ -63,13 +61,13 @@ class TakeHomeFigures:
     `salary` is the kind of the one input the caller gives. `income_tax` is the figure of that
     name; `deductions` are the other figures taken off the salary, each under the name its answer
     carries. The total taken off the salary is `income_tax` plus every one of them. The marginal
-    rate is declared only where the jurisdiction's return computes it; the average rate is not
-    declared, the service works it out from the total.
+    rates are declared only where the jurisdiction's return computes them.
     """
 
     salary: str
     income_tax: FigureReference
     deductions: tuple[tuple[str, FigureReference], ...]
+    average_tax_rate: FigureReference | None = None
     marginal_tax_rate: FigureReference | None = None
 
     INCOME_TAX = "income_tax"
@@ -88,11 +86,11 @@ class TakeHomeFigures:
 
     @property
     def references(self) -> tuple[FigureReference, ...]:
-        """Every figure that is read, the marginal rate included."""
-        rate = self.marginal_tax_rate
+        """Every figure that is read, the rates included."""
+        rates = (self.average_tax_rate, self.marginal_tax_rate)
         return (
             *(reference for _, reference in self.figures),
-            *(() if rate is None else (rate,)),
+            *(rate for rate in rates if rate is not None),
         )
 
 
@@ -142,14 +140,3 @@ class Totals:
             total_deductions=total,
             take_home=salary - total,
         )
-
-
-def average_rate(salary: Decimal, total_deductions: Decimal, rounding: RoundingRule) -> Decimal:
-    """Total deductions over salary, the share of the salary taken off, rounded once by `rounding`.
-
-    A salary of 0 gives 0. The quotient is formed as an exact fraction; with no rounding an inexact
-    quotient raises `decimal.Inexact`.
-    """
-    if salary == 0:
-        return rounding.apply(Decimal(0))
-    return rounding.apply(Fraction(total_deductions) / Fraction(salary))

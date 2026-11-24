@@ -7,7 +7,6 @@ from decimal import Decimal
 from tax_engine import build_take_home, build_tax_computation
 from tax_engine.adapters.inbound.take_home_text import EnglishTakeHomeText
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.models.calculation_result import TaxCalculationResult
 from tax_engine.application.models.take_home_request import TakeHomeRequest
@@ -15,8 +14,7 @@ from tax_engine.application.ports.take_home_calculation import TakeHomeCalculati
 from tax_engine.application.ports.tax_calculation import TaxCalculation
 from tax_engine.application.services.take_home import TakeHomeService
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.jurisdictions.core.units import PERCENT
-from tax_engine.registrations import JURISDICTIONS, artifact_kinds, parameter_parsers, units
+from tax_engine.registrations import JURISDICTIONS, artifact_kinds, units
 
 ON = JurisdictionCode("CA-ON")
 
@@ -48,9 +46,6 @@ def test_take_home_computes_through_the_calculation_port() -> None:
         YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds(), units()),
         counting,
         EnglishTakeHomeText(),
-        PERCENT,
-        YamlParameterSource(JURISDICTIONS.roots(), parameter_parsers(), units()),
-        "ca/take_home_average_rate_rounding",
     )
     service.compute(TakeHomeRequest(ON, 2025, Decimal(70000)))
     (request,) = counting.requests

@@ -282,16 +282,54 @@ STEPS = {
         },
         "ca-qc/total_payable",
     ),
+    "ca/return_employment_income": _read(
+        "ca/t1_employment_income.employment_income_line_10100", "ca/return_employment_income"
+    ),
+    "ca/return_cpp_base_contributions": _read(
+        "ca/schedule_8.schedule_8_cpp_base_contributions_on_return",
+        "ca/return_cpp_base_contributions",
+    ),
+    "ca/return_cpp_enhanced_contributions": _read(
+        "ca/schedule_8.schedule_8_cpp_enhanced_contributions_on_return",
+        "ca/return_cpp_enhanced_contributions",
+    ),
+    "ca/return_ei_premium": _read("ca/t2204.t2204_line_16", "ca/return_ei_premium"),
+    "ca-qc/return_qpip_premiums": _read(
+        "ca-qc/ppip_premium.ppip_premiums_paid", "ca-qc/return_qpip_premiums"
+    ),
+    "ca/return_total_deductions": _computed(
+        "core/sum",
+        {
+            "parts": [
+                "ca-qc/total_payable",
+                "ca/return_cpp_base_contributions",
+                "ca/return_cpp_enhanced_contributions",
+                "ca/return_ei_premium",
+                "ca-qc/return_qpip_premiums",
+            ]
+        },
+        "ca/return_total_deductions",
+    ),
+    "ca-qc/average_tax_rate": {
+        "name": "core/divide",
+        "unit": "core/percent",
+        "params": {"rounding": "ca/take_home_average_rate_rounding"},
+        "consumes": {
+            "dividend": "ca/return_total_deductions",
+            "divisor": "ca/return_employment_income",
+        },
+        "produces": {"output": "ca-qc/average_tax_rate"},
+    },
     "ca-qc/solidarity_credit": _read(
         "ca-qc/solidarity_credit.solidarity_credit_after_reduction", "ca-qc/solidarity_credit"
     ),
 }
 
 
-def test_the_part_is_the_seven_steps_and_nothing_else() -> None:
+def test_the_part_is_the_fourteen_steps_and_nothing_else() -> None:
     steps = {step["produces"]["output"]: step for step in _steps()}
 
-    assert len(_steps()) == len(STEPS) == 7
+    assert len(_steps()) == len(STEPS) == 14
     assert set(steps) == set(STEPS)
 
 

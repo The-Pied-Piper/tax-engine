@@ -56,45 +56,51 @@ RETURN = "ca-ab/return"
 FEDERAL = "ca/federal_marginal_rate"
 ALBERTA_RATE = "ca-ab/alberta_marginal_rate"
 MARGINAL = "ca-ab/marginal_tax_rate"
-AVERAGE = "ca-ab/average_income_tax_rate"
+AVERAGE = "ca-ab/average_tax_rate"
 TOTAL_PAYABLE = "ca/total_payable"
+DEDUCTIONS = "ca/return_total_deductions"
+CONTRIBUTIONS = (
+    "ca/return_cpp_base_contributions",
+    "ca/return_cpp_enhanced_contributions",
+    "ca/return_ei_premium",
+)
 LINE_75 = "ca-ab/ab428_alberta_tax_line_75"
 
 # Year, salary, federal part, Alberta part, marginal rate, T1 line 43500 total payable, average.
 FIGURES = [
     # Salary 100: no tax at all, both gates closed.
-    (2025, "100", "0", "0", "0", "0.00", "0"),
-    (2026, "100", "0", "0", "0", "0.00", "0"),
+    (2025, "100", "0", "0", "0", "0.00", "0.0000"),
+    (2026, "100", "0", "0", "0", "0.00", "0.0000"),
     # 2025 federal boundary: closed at 18,820.26, open (14.5%) at 18,820.27; Alberta still closed.
-    (2025, "18820.26", "0", "0", "0", "0.00", "0"),
-    (2025, "18820.27", "0.145", "0", "0.145", "0.01", "0"),
+    (2025, "18820.26", "0", "0", "0", "0.00", "0.0648"),
+    (2025, "18820.27", "0.145", "0", "0.145", "0.01", "0.0648"),
     # 2025 Alberta boundary: closed at 23,931.24, open (8%) at 23,931.25.
-    (2025, "23931.24", "0.145", "0", "0.145", "684.85", "0.0286"),
-    (2025, "23931.25", "0.145", "0.08", "0.225", "684.87", "0.0286"),
+    (2025, "23931.24", "0.145", "0", "0.145", "684.85", "0.0958"),
+    (2025, "23931.25", "0.145", "0.08", "0.225", "684.87", "0.0958"),
     # 2026 federal boundary: closed at 19,200.17, open (14%) at 19,200.18; Alberta still closed.
-    (2026, "19200.17", "0", "0", "0", "0.00", "0"),
-    (2026, "19200.18", "0.14", "0", "0.14", "0.01", "0"),
+    (2026, "19200.17", "0", "0", "0", "0.00", "0.0650"),
+    (2026, "19200.18", "0.14", "0", "0.14", "0.01", "0.0650"),
     # 2026 Alberta boundary: closed at 24,411.17, open (8%) at 24,411.18.
-    (2026, "24411.17", "0.14", "0", "0.14", "674.25", "0.0276"),
-    (2026, "24411.18", "0.14", "0.08", "0.22", "674.26", "0.0276"),
+    (2026, "24411.17", "0.14", "0", "0.14", "674.25", "0.0949"),
+    (2026, "24411.18", "0.14", "0.08", "0.22", "674.26", "0.0949"),
     # Salary 20,000 (taxable income 19,835.00): federal only, 14.5% (2025) and 14% (2026).
-    (2025, "20000", "0.145", "0", "0.145", "158.09", "0.0079"),
-    (2026, "20000", "0.14", "0", "0.14", "103.49", "0.0052"),
+    (2025, "20000", "0.145", "0", "0.145", "158.09", "0.0734"),
+    (2026, "20000", "0.14", "0", "0.14", "103.49", "0.0706"),
     # Salary 70,000 (taxable income 69,335.00): 20.5% federal, 10% Alberta (60,000 to 151,234).
     # 11,183.76 / 70,000 = 0.159768 -> 0.1598; 10,812.98 / 70,000 = 0.154471 -> 0.1545.
-    (2025, "70000", "0.205", "0.10", "0.305", "11183.76", "0.1598"),
-    (2026, "70000", "0.205", "0.10", "0.305", "10812.98", "0.1545"),
+    (2025, "70000", "0.205", "0.10", "0.305", "11183.76", "0.2317"),
+    (2026, "70000", "0.205", "0.10", "0.305", "10812.98", "0.2270"),
     # Salary 120,000 (taxable income about 118,900): 26% federal, 10% Alberta.
-    (2025, "120000", "0.26", "0.10", "0.36", "26524.21", "0.2210"),
-    (2026, "120000", "0.26", "0.10", "0.36", "25972.52", "0.2164"),
+    (2025, "120000", "0.26", "0.10", "0.36", "26524.21", "0.2669"),
+    (2026, "120000", "0.26", "0.10", "0.36", "25972.52", "0.2645"),
     # Salary 160,000 (taxable income about 158,900): 26% federal, 12% Alberta (151,234 to 181,481).
-    (2025, "160000", "0.26", "0.12", "0.38", "41078.05", "0.2567"),
-    (2026, "160000", "0.26", "0.12", "0.38", "40464.80", "0.2529"),
+    (2025, "160000", "0.26", "0.12", "0.38", "41078.05", "0.2912"),
+    (2026, "160000", "0.26", "0.12", "0.38", "40464.80", "0.2890"),
     # Salary 200,000 (taxable income about 198,900, above the table 1 limit of 181,481): the
     # AB428 line 12 rate of 13% is read; federal 29% (above 177,882, and 181,440 in 2026).
     # 57,148.10 / 200,000 = 0.285740 -> 0.2857; 56,376.82 / 200,000 = 0.281884 -> 0.2819.
-    (2025, "200000", "0.29", "0.13", "0.42", "57148.10", "0.2857"),
-    (2026, "200000", "0.29", "0.13", "0.42", "56376.82", "0.2819"),
+    (2025, "200000", "0.29", "0.13", "0.42", "57148.10", "0.3133"),
+    (2026, "200000", "0.29", "0.13", "0.42", "56376.82", "0.3107"),
 ]
 PART_FIGURES = [(y, s, f, a, m) for y, s, f, a, m, _, _ in FIGURES]
 AVERAGE_FIGURES = [(y, s, t, r) for y, s, _, _, _, t, r in FIGURES]
@@ -154,17 +160,22 @@ def test_the_marginal_rate_is_the_exact_sum_of_the_federal_and_the_alberta_part(
     assert D(federal) + D(alberta) == D(marginal)
 
 
+def _deductions(summary: Worksheet) -> Decimal:
+    """The take-home deductions of a return summary: the income tax plus the CPP and the EI."""
+    return _value(summary, TOTAL_PAYABLE) + sum((_value(summary, n) for n in CONTRIBUTIONS), D(0))
+
+
 @pytest.mark.parametrize(("year", "salary", "total_payable", "average"), AVERAGE_FIGURES)
-def test_the_average_rate_is_the_total_payable_over_the_salary_half_up_to_ten_thousandths(
+def test_the_average_rate_is_the_income_tax_cpp_and_ei_over_the_salary_half_up_to_ten_thousandths(
     year: int, salary: str, total_payable: str, average: str
 ) -> None:
     summary = _summary(year, salary)
 
     assert _value(summary, TOTAL_PAYABLE) == D(total_payable)
+    deductions = _deductions(summary)
+    assert _value(summary, DEDUCTIONS) == deductions
     assert _value(summary, AVERAGE) == D(average)
-    assert (D(total_payable) / D(salary)).quantize(D("0.0001"), rounding="ROUND_HALF_UP") == D(
-        average
-    )
+    assert (deductions / D(salary)).quantize(D("0.0001"), rounding="ROUND_HALF_UP") == D(average)
 
 
 @pytest.mark.parametrize("year", [2025, 2026])
@@ -175,11 +186,11 @@ def test_a_salary_of_100_reads_0_for_both_rates(year: int) -> None:
     assert _value(summary, AVERAGE) == D("0")
 
 
-def test_the_2025_average_at_70000_is_15_98_percent() -> None:
+def test_the_2025_average_at_70000_is_23_17_percent() -> None:
     summary = _summary(2025, "70000")
 
     assert _value(summary, TOTAL_PAYABLE) == D("11183.76")
-    assert _value(summary, AVERAGE) == D("0.1598")
+    assert _value(summary, AVERAGE) == D("0.2317")
 
 
 @pytest.mark.parametrize(("year", "salary", "line_75"), LINE_75_ANCHORS)
@@ -258,14 +269,18 @@ def test_the_marginal_rate_is_explained_in_english_as_percentages(year: int) -> 
 
 
 @pytest.mark.parametrize("year", [2025, 2026])
-def test_the_marginal_rate_comes_last_in_the_trace(year: int) -> None:
+def test_the_marginal_rate_comes_last_of_the_marginal_steps_in_the_trace(year: int) -> None:
     sheet = _summary(year, "100000")
     kinds = bundled_kinds()
     labels = [line.label for line in sheet.trace]
 
     marginal = labels.index(kinds.kind(MARGINAL).label)
 
-    assert marginal == len(labels) - 1
+    # Only the two steps of the average rate (the total and the quotient) come after it.
+    assert labels[marginal + 1 :] == [
+        kinds.kind("ca/return_total_deductions").label,
+        kinds.kind(AVERAGE).label,
+    ]
     assert labels.count(kinds.kind(MARGINAL).label) == 1
     for part in (FEDERAL, ALBERTA_RATE):
         assert labels.index(kinds.kind(part).label) < marginal

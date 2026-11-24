@@ -39,7 +39,7 @@ def _sheet(year: int, salary: str, form: str) -> Worksheet:
     "name",
     [
         "ca/refund_or_balance_owing",
-        "ca-ab/average_income_tax_rate",
+        "ca-ab/average_tax_rate",
         "ca-ab/marginal_tax_rate",
     ],
 )

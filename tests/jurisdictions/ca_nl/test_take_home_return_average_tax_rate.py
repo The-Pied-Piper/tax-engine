@@ -1,17 +1,19 @@
-"""The Newfoundland and Labrador take-home return summary's average income tax rate (2025).
+"""The Newfoundland and Labrador take-home return summary's average tax rate (2025).
 
-Owner ruling (12 Nov 2026): the average rate is income tax divided by salary, not all deductions
-(CPP and EI are not income tax). Income tax is T1 line 43500 "Total payable" (5006-R-25E: the
+Owner ruling (23 Nov 2026): the average rate is the take-home deductions (income tax, CPP and EI)
+divided by salary. Here every contribution is a stand-in of 0, so the figures are the income tax
+alone. Income tax is T1 line 43500 "Total payable" (5006-R-25E: the
 federal plus the Newfoundland and Labrador income tax, `ca/total_payable`); the salary is
 `ca/employment_income`. The form prints no such figure, so the step has no title and no reference.
 
 `return.yaml` mirrors the Saskatchewan and Manitoba parts. T1 exports `ca/total_payable`, and
 another form's export is read only as a record list, so the return reads it with
 `core/record_total` from `ca/t1_tax_and_credits.total_payable` into the return's own
-`ca/total_payable` (the kind T1 produced, on the return's own sheet, so no new kind is declared for
-it). Then `core/divide` takes `ca/total_payable` divided by `ca/employment_income`, rounded once by
-the `ca-nl/rate_rounding` dataset (half-up to 0.0001), and produces `ca-nl/average_income_tax_rate`
-(unit `core/percent`, non-negative). A salary of 0 gives a rate of 0, not an error.
+`ca/total_payable` (the kind T1 produced, on the return's own sheet). Then `core/sum` adds the CPP
+and EI exports into `ca/return_total_deductions`, and `core/divide` takes it divided by
+`ca/employment_income`, rounded once by the `ca/take_home_average_rate_rounding` dataset (half-up
+to 0.0001), and produces `ca-nl/average_tax_rate` (unit `core/percent`, non-negative). A salary of
+0 gives a rate of 0, not an error.
 
 The test composes the T1 employment income form and the real `return.yaml`; the
 header, the declaration of the T1 tax and credits form and the steps producing its two exports are
@@ -42,10 +44,11 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.trace import QuotientLine
 from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import RETURN_TOTAL_DEDUCTIONS
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME, RETURN_EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca.catalog.net_tax import TOTAL_PAYABLE
 from tax_engine.jurisdictions.ca.catalog.refund import TOTAL_CREDITS
-from tax_engine.jurisdictions.ca_nl.catalog import AVERAGE_INCOME_TAX_RATE
+from tax_engine.jurisdictions.ca_nl.catalog import AVERAGE_TAX_RATE
 from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_capabilities,
@@ -54,6 +57,7 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_parameter_parsers,
     newfoundland_units,
 )
+from tests.jurisdictions.take_home_stand_ins import ZERO_STAND_INS
 from tests.kinds import non_negative
 
 D = Decimal
@@ -66,7 +70,7 @@ HEADER = dedent("""\
     valid_from_tax_year: 2025
     outputs:
       - ca/refund_or_balance_owing
-      - ca-nl/average_income_tax_rate
+      - ca-nl/average_tax_rate
     capabilities: []
     """)
 T1_FORM = dedent("""\
@@ -136,7 +140,11 @@ def _average_part() -> str:
         "ca/refund_or_balance_owing",
         "ca/total_payable",
         "ca/return_employment_income",
-        "ca-nl/average_income_tax_rate",
+        "ca/return_cpp_base_contributions",
+        "ca/return_cpp_enhanced_contributions",
+        "ca/return_ei_premium",
+        "ca/return_total_deductions",
+        "ca-nl/average_tax_rate",
     }
     part["capabilities"] = [
         step for step in part["capabilities"] if step["produces"]["output"] in kept
@@ -158,6 +166,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
             (f"04_{part.name}", part.read_text(encoding="utf-8"))
             for part in form_parts("t1_employment_income")
         ),
+        *ZERO_STAND_INS,
         ("05_return.yaml", _average_part()),
     ]
     for name, text in texts:
@@ -182,13 +191,13 @@ def _sheet(tmp_path: Path, salary: str, credits: str) -> Worksheet:
 
 
 @pytest.mark.parametrize(("salary", "credits", "total_payable", "rate"), CASES)
-def test_the_average_rate_is_total_payable_over_salary_half_up_to_four_places(
+def test_the_average_rate_is_the_deductions_over_salary_half_up_to_four_places(
     tmp_path: Path, salary: str, credits: str, total_payable: str, rate: str
 ) -> None:
     sheet = _sheet(tmp_path, salary, credits)
 
     assert sheet.get(TOTAL_PAYABLE).value == D(total_payable)
-    average = sheet.get(AVERAGE_INCOME_TAX_RATE).value
+    average = sheet.get(AVERAGE_TAX_RATE).value
     assert average == D(rate)
     assert average.as_tuple().exponent == -4
     assert average == (D(total_payable) / D(salary)).quantize(D("0.0001"), rounding="ROUND_HALF_UP")
@@ -199,13 +208,13 @@ def test_a_quotient_on_a_half_rounds_up(tmp_path: Path) -> None:
     sheet = _sheet(tmp_path, "20000", "18999.00")
 
     assert sheet.get(TOTAL_PAYABLE).value == D("1001.00")
-    assert sheet.get(AVERAGE_INCOME_TAX_RATE).value == D("0.0501")
+    assert sheet.get(AVERAGE_TAX_RATE).value == D("0.0501")
 
 
 def test_a_salary_of_zero_gives_a_rate_of_zero_not_an_error(tmp_path: Path) -> None:
     sheet = _sheet(tmp_path, "0", "0.00")
 
-    assert sheet.get(AVERAGE_INCOME_TAX_RATE).value == D("0")
+    assert sheet.get(AVERAGE_TAX_RATE).value == D("0")
 
 
 def test_the_trace_records_one_quotient_line_with_the_rate_rounding(tmp_path: Path) -> None:
@@ -214,17 +223,17 @@ def test_the_trace_records_one_quotient_line_with_the_rate_rounding(tmp_path: Pa
     (line,) = [
         line
         for line in sheet.trace
-        if isinstance(line, QuotientLine) and line.output == AVERAGE_INCOME_TAX_RATE
+        if isinstance(line, QuotientLine) and line.output == AVERAGE_TAX_RATE
     ]
-    assert line.dividend == TOTAL_PAYABLE
+    assert line.dividend == RETURN_TOTAL_DEDUCTIONS
     assert line.dividend_amount == D("11497.09")
     assert line.divisor == RETURN_EMPLOYMENT_INCOME
     assert line.divisor_amount == D("70000")
     assert line.result == D("0.1642")
-    assert line.label == AVERAGE_INCOME_TAX_RATE.label
+    assert line.label == AVERAGE_TAX_RATE.label
 
 
-def test_the_sentence_names_total_payable_over_salary_and_its_rounding(tmp_path: Path) -> None:
+def test_the_sentence_names_the_deductions_over_salary_and_its_rounding(tmp_path: Path) -> None:
     sheet = _sheet(tmp_path, "70000", "58502.91")
 
     text = "\n".join(EnglishTraceRenderer().render_all(sheet.trace, sheet))
@@ -248,13 +257,13 @@ def test_the_sentence_says_the_divisor_is_zero_at_a_salary_of_zero(tmp_path: Pat
 def test_the_step_has_no_title_and_no_reference(tmp_path: Path) -> None:
     sheet = _sheet(tmp_path, "70000", "58502.91")
 
-    assert sheet.title(AVERAGE_INCOME_TAX_RATE.label) is None
-    assert sheet.reference(AVERAGE_INCOME_TAX_RATE.label) is None
+    assert sheet.title(AVERAGE_TAX_RATE.label) is None
+    assert sheet.reference(AVERAGE_TAX_RATE.label) is None
 
 
 def test_the_average_rate_kind_is_registered_and_non_negative() -> None:
-    kind = newfoundland_kinds().kind("ca-nl/average_income_tax_rate")
+    kind = newfoundland_kinds().kind("ca-nl/average_tax_rate")
 
-    assert kind is AVERAGE_INCOME_TAX_RATE
-    assert kind.identifier == "ca-nl/average_income_tax_rate"
+    assert kind is AVERAGE_TAX_RATE
+    assert kind.identifier == "ca-nl/average_tax_rate"
     assert non_negative(kind) is True

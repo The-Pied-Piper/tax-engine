@@ -21,8 +21,11 @@
 # The solidarity credit (`ca-qc/solidarity_credit`) is the yearly amount of the payment period July
 # 2026 to June 2027; it is its own output, added to neither of the two figures above.
 #
-# The average and marginal income tax rates the other provinces export are left for a later ticket
-# (owner, 19 Nov 2026).
+# The average tax rate (`ca-qc/average_tax_rate`, no form prints it, so its steps have no title or
+# line): the total payable above, the CPP (Schedule 8 lines 25 and 28, at the Quebec rate), the EI
+# premium (T2204 line 16) and the QPIP premium (the `ppip_premium` form's export) added by core/sum
+# into `ca/return_total_deductions` and divided by the salary, rounded once by
+# `ca/take_home_average_rate_rounding`. The marginal tax rate is left for a later ticket (#1959).
 capabilities:
   - name: core/record_total
     unit: ca/cad
@@ -68,6 +71,58 @@ capabilities:
         - ca-qc/tp1_income_tax_and_contributions_return
     produces:
       output: ca-qc/total_payable
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/t1_employment_income.employment_income_line_10100
+    produces:
+      output: ca/return_employment_income
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/schedule_8.schedule_8_cpp_base_contributions_on_return
+    produces:
+      output: ca/return_cpp_base_contributions
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/schedule_8.schedule_8_cpp_enhanced_contributions_on_return
+    produces:
+      output: ca/return_cpp_enhanced_contributions
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/t2204.t2204_line_16
+    produces:
+      output: ca/return_ei_premium
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-qc/ppip_premium.ppip_premiums_paid
+    produces:
+      output: ca-qc/return_qpip_premiums
+  - name: core/sum
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      parts:
+        - ca-qc/total_payable
+        - ca/return_cpp_base_contributions
+        - ca/return_cpp_enhanced_contributions
+        - ca/return_ei_premium
+        - ca-qc/return_qpip_premiums
+    produces:
+      output: ca/return_total_deductions
+  - name: core/divide
+    unit: core/percent
+    params:
+      rounding: ca/take_home_average_rate_rounding
+    consumes:
+      dividend: ca/return_total_deductions
+      divisor: ca/return_employment_income
+    produces:
+      output: ca-qc/average_tax_rate
   - name: core/record_total
     unit: ca/cad
     consumes:

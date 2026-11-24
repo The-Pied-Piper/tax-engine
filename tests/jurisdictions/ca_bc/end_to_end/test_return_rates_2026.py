@@ -84,8 +84,14 @@ RETURN = "ca-bc/return"
 FEDERAL = "ca/federal_marginal_rate"
 BC_RATE = "ca-bc/british_columbia_marginal_rate"
 MARGINAL = "ca-bc/marginal_tax_rate"
-AVERAGE = "ca-bc/average_income_tax_rate"
+AVERAGE = "ca-bc/average_tax_rate"
 TOTAL_PAYABLE = "ca/total_payable"
+DEDUCTIONS = "ca/return_total_deductions"
+CONTRIBUTIONS = (
+    "ca/return_cpp_base_contributions",
+    "ca/return_cpp_enhanced_contributions",
+    "ca/return_ei_premium",
+)
 LINE_5_RETURN = "ca-bc/british_columbia_bracket_rate_line_5_return"
 LINE_12_RETURN = "ca-bc/british_columbia_bracket_rate_line_12_return"
 BRACKET = "ca-bc/british_columbia_bracket_rate_return"
@@ -116,37 +122,37 @@ NEW_KINDS = [
 FIGURES = [
     # Salaries of 0 and 100: no tax at all, both gates closed, and no division by zero.
     ("0", "0", "0", "0", "0.00", "0"),
-    ("100", "0", "0", "0", "0.00", "0"),
+    ("100", "0", "0", "0", "0.00", "0.0000"),
     # Federal boundary: closed at 19,200.17, open (14%) at 19,200.18; British Columbia closed.
-    ("19200.17", "0", "0", "0", "0.00", "0"),
-    ("19200.18", "0.14", "0", "0.14", "0.01", "0"),
+    ("19200.17", "0", "0", "0", "0.00", "0.0650"),
+    ("19200.18", "0.14", "0", "0.14", "0.01", "0.0650"),
     # 20,000 (taxable income 19,835.00): the reduction of 690.00 takes the British Columbia tax of
     # 306.67 to 0.00, so the British Columbia part is 0. 103.49 / 20,000 = 0.005175 -> 0.0052.
-    ("20000", "0.14", "0", "0.14", "103.49", "0.0052"),
+    ("20000", "0.14", "0", "0.14", "103.49", "0.0706"),
     # British Columbia boundary: closed at 26,752.95, open at 26,752.96 (5.60% + 3.56% = 9.16%).
-    ("26752.95", "0.14", "0", "0.14", "977.25", "0.0365"),
-    ("26752.96", "0.14", "0.0916", "0.2316", "977.26", "0.0365"),
+    ("26752.95", "0.14", "0", "0.14", "977.25", "0.1045"),
+    ("26752.96", "0.14", "0.0916", "0.2316", "977.26", "0.1045"),
     # 30,000 (net income 29,735.00): inside the reduction range, 14% + 9.16% = 23.16%.
     # (1,397.37 + 282.49) / 30,000 = 0.055995 -> 0.0560.
-    ("30000", "0.14", "0.0916", "0.2316", "1679.86", "0.0560"),
+    ("30000", "0.14", "0.0916", "0.2316", "1679.86", "0.1249"),
     # 40,000 (net income 39,635.00): inside the reduction range, 23.16%.
     # (2,691.25 + 1,152.48) / 40,000 = 0.096093 -> 0.0961.
-    ("40000", "0.14", "0.0916", "0.2316", "3843.73", "0.0961"),
+    ("40000", "0.14", "0.0916", "0.2316", "3843.73", "0.1667"),
     # 45,000 (net income 44,585.00): still inside the range, which ends at 44,951.89.
-    ("45000", "0.14", "0.0916", "0.2316", "4925.67", "0.1095"),
+    ("45000", "0.14", "0.0916", "0.2316", "4925.67", "0.1806"),
     # 46,000 (net income 45,575.00): past the end of the reduction, 5.60% only.
-    ("46000", "0.14", "0.056", "0.196", "5119.89", "0.1113"),
+    ("46000", "0.14", "0.056", "0.196", "5119.89", "0.1826"),
     # 70,000 (taxable income 69,335.00): 20.5% federal, 7.7% (50,363 to 100,728). 10,572.03 /
     # 70,000 = 0.151029 -> 0.1510.
-    ("70000", "0.205", "0.077", "0.282", "10572.03", "0.1510"),
+    ("70000", "0.205", "0.077", "0.282", "10572.03", "0.2236"),
     # 120,000 (taxable income 118,873.00): 26% federal, 12.29% (115,648 to 140,430).
-    ("120000", "0.26", "0.1229", "0.3829", "25163.44", "0.2097"),
+    ("120000", "0.26", "0.1229", "0.3829", "25163.44", "0.2578"),
     # 150,000 (taxable income 148,873.00, above the table 1 limit of 140,430): the line 12 rate of
     # 14.7% is read.
-    ("150000", "0.26", "0.147", "0.407", "36853.92", "0.2457"),
+    ("150000", "0.26", "0.147", "0.407", "36853.92", "0.2842"),
     # 200,000 (taxable income 198,873.00): 29% federal (above 181,440), line 12 rate of 16.8%
     # (190,405 to 265,545). 57,956.15 / 200,000 = 0.289781 -> 0.2898.
-    ("200000", "0.29", "0.168", "0.458", "57956.15", "0.2898"),
+    ("200000", "0.29", "0.168", "0.458", "57956.15", "0.3186"),
 ]
 PART_FIGURES = [(s, f, b, m) for s, f, b, m, _, _ in FIGURES]
 AVERAGE_FIGURES = [(s, t, a) for s, _, _, _, t, a in FIGURES]
@@ -228,16 +234,23 @@ def test_the_marginal_rate_is_the_exact_sum_of_the_federal_and_the_british_colum
     assert D(federal) + D(british_columbia) == D(marginal)
 
 
+def _deductions(summary: Worksheet) -> Decimal:
+    """The take-home deductions of a return summary: the income tax plus the CPP and the EI."""
+    return _value(summary, TOTAL_PAYABLE) + sum((_value(summary, n) for n in CONTRIBUTIONS), D(0))
+
+
 @pytest.mark.parametrize(("salary", "total_payable", "average"), AVERAGE_FIGURES)
-def test_the_average_rate_is_the_total_payable_over_the_salary_half_up_to_ten_thousandths(
+def test_the_average_rate_is_the_income_tax_cpp_and_ei_over_the_salary_half_up_to_ten_thousandths(
     salary: str, total_payable: str, average: str
 ) -> None:
     summary = _summary(salary)
 
     assert _value(summary, TOTAL_PAYABLE) == D(total_payable)
+    deductions = _deductions(summary)
+    assert _value(summary, DEDUCTIONS) == deductions
     assert _value(summary, AVERAGE) == D(average)
     if D(salary) > 0:
-        assert (D(total_payable) / D(salary)).quantize(D("0.0001"), rounding="ROUND_HALF_UP") == D(
+        assert (deductions / D(salary)).quantize(D("0.0001"), rounding="ROUND_HALF_UP") == D(
             average
         )
 
@@ -252,11 +265,11 @@ def test_a_salary_of_0_or_100_reads_0_for_both_rates(salary: str) -> None:
     assert _value(summary, BC_RATE) == D("0")
 
 
-def test_the_2026_average_at_70000_is_15_10_percent_and_the_marginal_28_2_percent() -> None:
+def test_the_2026_average_at_70000_is_22_36_percent_and_the_marginal_28_2_percent() -> None:
     summary = _summary("70000")
 
     assert _value(summary, TOTAL_PAYABLE) == D("10572.03")
-    assert _value(summary, AVERAGE) == D("0.1510")
+    assert _value(summary, AVERAGE) == D("0.2236")
     assert _value(summary, MARGINAL) == D("0.282")
 
 
@@ -397,14 +410,18 @@ def test_the_marginal_rate_is_explained_in_english_as_percentages() -> None:
     )
 
 
-def test_the_marginal_rate_comes_last_in_the_trace() -> None:
+def test_the_marginal_rate_comes_last_of_the_marginal_steps_in_the_trace() -> None:
     sheet = _summary("100000")
     kinds = artifact_kinds()
     labels = [line.label for line in sheet.trace]
 
     marginal = labels.index(kinds.kind(MARGINAL).label)
 
-    assert marginal == len(labels) - 1
+    # Only the two steps of the average rate (the total and the quotient) come after it.
+    assert labels[marginal + 1 :] == [
+        kinds.kind("ca/return_total_deductions").label,
+        kinds.kind(AVERAGE).label,
+    ]
     assert labels.count(kinds.kind(MARGINAL).label) == 1
     for part in (FEDERAL, BC_RATE):
         assert labels.index(kinds.kind(part).label) < marginal

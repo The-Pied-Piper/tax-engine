@@ -89,8 +89,14 @@ SK428 = "ca-sk/sk428"
 FEDERAL = "ca/federal_marginal_rate"
 SK_RATE = "ca-sk/saskatchewan_marginal_rate"
 MARGINAL = "ca-sk/marginal_tax_rate"
-AVERAGE = "ca-sk/average_income_tax_rate"
+AVERAGE = "ca-sk/average_tax_rate"
 TOTAL_PAYABLE = "ca/total_payable"
+DEDUCTIONS = "ca/return_total_deductions"
+CONTRIBUTIONS = (
+    "ca/return_cpp_base_contributions",
+    "ca/return_cpp_enhanced_contributions",
+    "ca/return_ei_premium",
+)
 BRACKET = "ca-sk/saskatchewan_bracket_rate_return"
 LINE_67_RETURN = "ca-sk/saskatchewan_tax_after_credits_return"
 RATE_GATE = "ca-sk/saskatchewan_rate_gate"
@@ -109,35 +115,35 @@ NEW_KINDS = [
 # Saskatchewan part, marginal rate, T1 line 43500 total payable, average.
 FIGURES = [
     # 100 (taxable income 100.00): no tax at all, both gates closed, marginal 0%.
-    ("100", "0.00", "0.00", "0", "0", "0", "0.00", "0"),
+    ("100", "0.00", "0.00", "0", "0", "0", "0.00", "0.0000"),
     # Federal boundary: closed at 19,200.17, open (14%) at 19,200.18; Saskatchewan closed.
-    ("19200.17", "0.00", "0.00", "0", "0", "0", "0.00", "0"),
-    ("19200.18", "0.01", "0.00", "0.14", "0", "0.14", "0.01", "0"),
+    ("19200.17", "0.00", "0.00", "0", "0", "0", "0.00", "0.0650"),
+    ("19200.18", "0.01", "0.00", "0.14", "0", "0.14", "0.01", "0.0650"),
     # 20,000 (taxable income 19,835.00): line 8 2,082.68 is under the credits of 2,259.99, so line
     # 67 is 0.00. 103.49 / 20,000 = 0.005175 -> 0.0052.
-    ("20000", "103.49", "0.00", "0.14", "0", "0.14", "103.49", "0.0052"),
+    ("20000", "103.49", "0.00", "0.14", "0", "0.14", "103.49", "0.0706"),
     # Saskatchewan boundary: closed at 21,827.31, open at 21,827.32 (14% + 10.5% = 24.5%).
-    ("21827.31", "339.93", "0.00", "0.14", "0", "0.14", "339.93", "0.0156"),
-    ("21827.32", "339.93", "0.01", "0.14", "0.105", "0.245", "339.94", "0.0156"),
+    ("21827.31", "339.93", "0.00", "0.14", "0", "0.14", "339.93", "0.0818"),
+    ("21827.32", "339.93", "0.01", "0.14", "0.105", "0.245", "339.94", "0.0818"),
     # 50,000 (taxable income 49,535.00, column 1): 14% + 10.5%. 6,719.05 / 50,000 = 0.134381.
-    ("50000", "3985.13", "2733.92", "0.14", "0.105", "0.245", "6719.05", "0.1344"),
+    ("50000", "3985.13", "2733.92", "0.14", "0.105", "0.245", "6719.05", "0.2060"),
     # Column 1 / column 2 boundary: taxable income 54,532.00 is in column 1, 54,532.01 in column 2.
-    ("55047.47", "4638.22", "3223.72", "0.14", "0.105", "0.245", "7861.94", "0.1428"),
-    ("55047.48", "4638.22", "3223.72", "0.14", "0.125", "0.265", "7861.94", "0.1428"),
+    ("55047.47", "4638.22", "3223.72", "0.14", "0.105", "0.245", "7861.94", "0.2148"),
+    ("55047.48", "4638.22", "3223.72", "0.14", "0.125", "0.265", "7861.94", "0.2148"),
     # 70,000 (taxable income 69,335.00, column 2): 20.5% + 12.5%. 12,250.87 / 70,000 = 0.175012.
-    ("70000", "7278.19", "4972.68", "0.205", "0.125", "0.33", "12250.87", "0.1750"),
+    ("70000", "7278.19", "4972.68", "0.205", "0.125", "0.33", "12250.87", "0.2476"),
     # 120,000 (taxable income 118,873.00, federal bracket 3, Saskatchewan column 2): 26% + 12.5%.
-    ("120000", "17502.14", "11141.02", "0.26", "0.125", "0.385", "28643.16", "0.2387"),
+    ("120000", "17502.14", "11141.02", "0.26", "0.125", "0.385", "28643.16", "0.2868"),
     # Column 2 / column 3 boundary: taxable income 155,805.00 is in column 2, 155,805.01 in
     # column 3.
-    ("156932", "27104.46", "15757.52", "0.26", "0.125", "0.385", "42861.98", "0.2731"),
-    ("156932.01", "27104.46", "15757.52", "0.26", "0.145", "0.405", "42861.98", "0.2731"),
+    ("156932", "27104.46", "15757.52", "0.26", "0.125", "0.385", "42861.98", "0.3099"),
+    ("156932.01", "27104.46", "15757.52", "0.26", "0.145", "0.405", "42861.98", "0.3099"),
     # 200,000 (taxable income 198,873.00, column 3, federal 29%): 14.5% Saskatchewan.
     # 60,878.92 / 200,000 = 0.3043946 -> 0.3044.
-    ("200000", "38876.54", "22002.38", "0.29", "0.145", "0.435", "60878.92", "0.3044"),
+    ("200000", "38876.54", "22002.38", "0.29", "0.145", "0.435", "60878.92", "0.3332"),
     # 300,000 (taxable income 298,873.00, federal 33%, federal supplement fully reduced):
     # 106,170.37 / 300,000 = 0.3539012 -> 0.3539.
-    ("300000", "69667.99", "36502.38", "0.33", "0.145", "0.475", "106170.37", "0.3539"),
+    ("300000", "69667.99", "36502.38", "0.33", "0.145", "0.475", "106170.37", "0.3731"),
 ]
 PART_FIGURES = [(s, f, k, m) for s, _, _, f, k, m, _, _ in FIGURES]
 AVERAGE_FIGURES = [(s, t, a) for s, _, _, _, _, _, t, a in FIGURES]
@@ -211,24 +217,29 @@ def test_the_total_payable_is_the_federal_tax_plus_the_saskatchewan_tax(
     assert _value(summary, TOTAL_PAYABLE) == D(total_payable)
 
 
+def _deductions(summary: Worksheet) -> Decimal:
+    """The take-home deductions of a return summary: the income tax plus the CPP and the EI."""
+    return _value(summary, TOTAL_PAYABLE) + sum((_value(summary, n) for n in CONTRIBUTIONS), D(0))
+
+
 @pytest.mark.parametrize(("salary", "total_payable", "average"), AVERAGE_FIGURES)
-def test_the_average_rate_is_the_total_payable_over_the_salary_half_up_to_ten_thousandths(
+def test_the_average_rate_is_the_income_tax_cpp_and_ei_over_the_salary_half_up_to_ten_thousandths(
     salary: str, total_payable: str, average: str
 ) -> None:
     summary = _summary(salary)
 
     assert _value(summary, TOTAL_PAYABLE) == D(total_payable)
+    deductions = _deductions(summary)
+    assert _value(summary, DEDUCTIONS) == deductions
     assert _value(summary, AVERAGE) == D(average)
-    assert (D(total_payable) / D(salary)).quantize(D("0.0001"), rounding=ROUND_HALF_UP) == D(
-        average
-    )
+    assert (deductions / D(salary)).quantize(D("0.0001"), rounding=ROUND_HALF_UP) == D(average)
 
 
-def test_the_2026_average_at_70000_is_17_50_percent_and_the_marginal_33_percent() -> None:
+def test_the_2026_average_at_70000_is_24_76_percent_and_the_marginal_33_percent() -> None:
     summary = _summary("70000")
 
     assert _value(summary, TOTAL_PAYABLE) == D("12250.87")
-    assert _value(summary, AVERAGE) == D("0.1750")
+    assert _value(summary, AVERAGE) == D("0.2476")
     assert _value(summary, MARGINAL) == D("0.33")
 
 
@@ -329,14 +340,18 @@ def test_the_marginal_rate_is_explained_in_english_as_percentages() -> None:
     )
 
 
-def test_the_marginal_rate_comes_last_in_the_trace() -> None:
+def test_the_marginal_rate_comes_last_of_the_marginal_steps_in_the_trace() -> None:
     sheet = _summary("100000")
     kinds = artifact_kinds()
     labels = [line.label for line in sheet.trace]
 
     marginal = labels.index(kinds.kind(MARGINAL).label)
 
-    assert marginal == len(labels) - 1
+    # Only the two steps of the average rate (the total and the quotient) come after it.
+    assert labels[marginal + 1 :] == [
+        kinds.kind("ca/return_total_deductions").label,
+        kinds.kind(AVERAGE).label,
+    ]
     assert labels.count(kinds.kind(MARGINAL).label) == 1
     for part in (FEDERAL, SK_RATE):
         assert labels.index(kinds.kind(part).label) < marginal

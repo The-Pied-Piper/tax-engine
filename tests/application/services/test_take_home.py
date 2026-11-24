@@ -18,7 +18,6 @@ import pytest
 from tax_engine import build_take_home, build_tax_computation
 from tax_engine.adapters.inbound.take_home_text import EnglishTakeHomeText
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.models.take_home import (
     TraceEntry,
     UnitDescription,
@@ -29,15 +28,7 @@ from tax_engine.application.services.take_home import TakeHomeService
 from tax_engine.domain.errors import NotFoundError
 from tax_engine.domain.jurisdiction import Jurisdiction
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.jurisdictions.core.units import PERCENT
-from tax_engine.registrations import JURISDICTIONS, artifact_kinds, parameter_parsers, units
-
-AVERAGE_RATE_ROUNDING = "ca/take_home_average_rate_rounding"
-
-
-def _parameters() -> YamlParameterSource:
-    return YamlParameterSource(JURISDICTIONS.roots(), parameter_parsers(), units())
-
+from tax_engine.registrations import JURISDICTIONS, artifact_kinds, units
 
 ANSWERS: list[dict[str, Any]] = json.loads(
     (Path(__file__).parent / "take_home_answers.json").read_text()
@@ -189,9 +180,6 @@ def test_a_jurisdiction_that_declares_no_take_home_figures_is_not_found(
         _WithoutTakeHome(source),
         build_tax_computation(),
         EnglishTakeHomeText(),
-        PERCENT,
-        _parameters(),
-        AVERAGE_RATE_ROUNDING,
     )
     with pytest.raises(NotFoundError, match="CA-ON 2025"):
         bare.compute(TakeHomeRequest(JurisdictionCode("CA-ON"), 2025, Decimal(70000)))
@@ -233,6 +221,16 @@ def test_quebec_takes_off_both_returns_the_pension_plan_ei_and_qpip(
     assert {f.name: str(f.amount) for f in got.figures} == figures
     assert str(got.take_home) == take_home
     assert str(got.income_tax) == figures["income_tax"]
-    # Quebec's return does not compute the two rates yet, so it declares none.
-    assert got.average_tax_rate is None
+    assert got.average_tax_rate is None  # rates are left out unless asked for
+    assert got.marginal_tax_rate is None
+
+
+def test_quebec_has_an_average_rate_with_qpip_in_it_and_no_marginal_rate_yet(
+    service: TakeHomeService,
+) -> None:
+    got = service.compute(
+        TakeHomeRequest(JurisdictionCode("CA-QC"), 2025, Decimal(70000), include_rates=True)
+    )
+    assert got.average_tax_rate is not None
+    assert got.average_tax_rate.value == Decimal("0.3055")
     assert got.marginal_tax_rate is None

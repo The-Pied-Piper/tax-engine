@@ -8,13 +8,13 @@
 # development, are claims needing receipts or Form T1129): the T1 form reads it as optional and
 # passes it on blank, so it adds nothing to line 167, as in the Saskatchewan and Alberta returns.
 #
-# The return's second output is the average income tax rate, which no form prints (so its step has
-# no title or reference): T1 line 43500 "Total payable" (for the take-home filer, line 143 plus line
-# 147's Newfoundland and Labrador tax: the federal and the Newfoundland and Labrador income tax)
-# divided by the salary, T1 line 10100 (`ca/return_employment_income`, read from the T1 line 10100
-# export). T1 exports line 43500, so a core/record_total step reads it into the return's own
-# `ca/total_payable`, then core/divide divides it by the salary, rounding once with
-# `ca-nl/rate_rounding` (half-up to 0.0001); a salary of 0 gives 0.
+# The return's second output is the average tax rate on the take-home basis, which no form prints
+# (so its steps have no title or reference): the income tax (T1 line 43500 "Total payable") plus the
+# CPP (Schedule 8 lines 25 and 28) and the EI premium (T2204 line 16), added by core/sum into
+# `ca/return_total_deductions`, divided by the salary, T1 line 10100 (`ca/return_employment_income`).
+# Each figure is a form's export, totalled by core/record_total into the return's own kind; the
+# core/divide rounds once with `ca/take_home_average_rate_rounding` (half-up to 0.0001); a salary of
+# 0 gives 0. Paid credits are not in it.
 #
 # The marginal rate, the income tax rate on a further dollar of salary, is built as the British
 # Columbia return builds it. The federal part is read as there: the T1 form exports line 73's
@@ -73,15 +73,45 @@ capabilities:
       records: ca/t1_employment_income.employment_income_line_10100
     produces:
       output: ca/return_employment_income
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/schedule_8.schedule_8_cpp_base_contributions_on_return
+    produces:
+      output: ca/return_cpp_base_contributions
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/schedule_8.schedule_8_cpp_enhanced_contributions_on_return
+    produces:
+      output: ca/return_cpp_enhanced_contributions
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/t2204.t2204_line_16
+    produces:
+      output: ca/return_ei_premium
+  - name: core/sum
+    unit: ca/cad
+    params:
+      rounding: ca-nl/exact_rounding
+    consumes:
+      parts:
+        - ca/total_payable
+        - ca/return_cpp_base_contributions
+        - ca/return_cpp_enhanced_contributions
+        - ca/return_ei_premium
+    produces:
+      output: ca/return_total_deductions
   - name: core/divide
     unit: core/percent
     params:
-      rounding: ca-nl/rate_rounding
+      rounding: ca/take_home_average_rate_rounding
     consumes:
-      dividend: ca/total_payable
+      dividend: ca/return_total_deductions
       divisor: ca/return_employment_income
     produces:
-      output: ca-nl/average_income_tax_rate
+      output: ca-nl/average_tax_rate
   - name: core/record_total
     unit: core/percent
     consumes:

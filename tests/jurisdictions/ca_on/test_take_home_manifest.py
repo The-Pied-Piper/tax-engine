@@ -39,6 +39,7 @@ def test_the_return_exports_line_167_and_the_marginal_rate() -> None:
     (default,) = (form for form in _manifest().forms if form.name == "ca-on/return")
 
     assert set(default.exports) == {
+        "ca-on/average_tax_rate",
         "ca-on/marginal_tax_rate",
         "ca/refund_or_balance_owing",
     }
@@ -192,6 +193,7 @@ def test_the_return_exports_no_rate_part_but_line_167_and_the_marginal_rate() ->
     (default,) = (form for form in _manifest().forms if form.name == "ca-on/return")
 
     assert set(default.exports) == {
+        "ca-on/average_tax_rate",
         "ca-on/marginal_tax_rate",
         "ca/refund_or_balance_owing",
     }
@@ -211,7 +213,6 @@ def test_the_return_reads_the_federal_marginal_rate_form_instead_of_repeating_it
 
     assert (
         not {
-            "ca/return_employment_income",
             "ca/federal_bracket_rate_return",
             "ca/federal_tax_after_credits_return",
             "ca/federal_rate_gate",

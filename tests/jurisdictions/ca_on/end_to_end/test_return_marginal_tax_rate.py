@@ -242,7 +242,7 @@ def test_the_marginal_tax_rate_is_traced_as_one_exact_sum_in_order(
     assert line.amount == sheet.get(kinds.kind(MARGINAL)).value
 
 
-def test_the_marginal_tax_rate_comes_last_in_the_trace(
+def test_the_marginal_tax_rate_comes_last_of_the_marginal_steps_in_the_trace(
     take_home_service: TakeHomeService,
 ) -> None:
     sheet = _summary(take_home_service, "100000")
@@ -251,7 +251,11 @@ def test_the_marginal_tax_rate_comes_last_in_the_trace(
 
     marginal = labels.index(kinds.kind(MARGINAL).label)
 
-    assert marginal == len(labels) - 1
+    # Only the two steps of the average rate (the total and the quotient) come after it.
+    assert labels[marginal + 1 :] == [
+        kinds.kind("ca/return_total_deductions").label,
+        kinds.kind("ca-on/average_tax_rate").label,
+    ]
     assert labels.count(kinds.kind(MARGINAL).label) == 1
     for part in (FEDERAL, ONTARIO_RATE, PREMIUM, CONTRIBUTION):
         assert labels.index(kinds.kind(part).label) < marginal

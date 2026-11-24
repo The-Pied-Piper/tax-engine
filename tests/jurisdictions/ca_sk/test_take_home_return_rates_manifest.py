@@ -25,7 +25,11 @@ OUTPUTS = [
     "ca/refund_or_balance_owing",
     "ca/total_payable",
     "ca/return_employment_income",
-    "ca-sk/average_income_tax_rate",
+    "ca/return_cpp_base_contributions",
+    "ca/return_cpp_enhanced_contributions",
+    "ca/return_ei_premium",
+    "ca/return_total_deductions",
+    "ca-sk/average_tax_rate",
     "ca/federal_bracket_rate_return",
     "ca/federal_tax_after_credits_return",
     "ca/federal_rate_gate",
@@ -83,19 +87,28 @@ def test_the_salary_record_totals_the_t1_line_10100_export_with_no_title_and_no_
     assert step["consumes"] == {"records": "ca/t1_employment_income.employment_income_line_10100"}
 
 
-def test_the_average_rate_divides_the_total_payable_by_the_salary_rounded_half_up_once() -> None:
+def test_the_average_rate_divides_the_deductions_by_the_salary_rounded_half_up_once() -> None:
     total = _producing("ca/total_payable")
-    divide = _producing("ca-sk/average_income_tax_rate")
+    divide = _producing("ca-sk/average_tax_rate")
+    deductions = _producing("ca/return_total_deductions")
 
-    assert total["name"] == "core/record_total"
     assert total["consumes"] == {"records": "ca/t1_tax_and_credits.total_payable"}
-    assert divide["name"] == "core/divide"
-    assert divide["unit"] == "core/percent"
-    assert divide["params"] == {"rounding": "ca-sk/rate_rounding"}
+    assert deductions["params"] == {"rounding": "ca-sk/exact_rounding"}
+    assert deductions["consumes"]["parts"] == [
+        "ca/total_payable",
+        "ca/return_cpp_base_contributions",
+        "ca/return_cpp_enhanced_contributions",
+        "ca/return_ei_premium",
+    ]
+    assert divide["params"] == {"rounding": "ca/take_home_average_rate_rounding"}
     assert divide["consumes"] == {
-        "dividend": "ca/total_payable",
-        "divisor": SALARY_RECORD,
+        "dividend": "ca/return_total_deductions",
+        "divisor": "ca/return_employment_income",
     }
+    assert divide["produces"] == {"output": "ca-sk/average_tax_rate"}
+    assert divide["unit"] == "core/percent"
+    assert "title" not in divide
+    assert "reference" not in divide
 
 
 def test_the_federal_part_is_read_and_gated_through_the_saskatchewan_gate() -> None:
@@ -125,7 +138,8 @@ def test_the_return_reads_the_sk428_line_5_rate_as_one_record_total_with_no_sum(
     assert step["unit"] == "core/percent"
     assert step["consumes"] == {"records": "ca-sk/sk428_credits.sk428_bracket_rate_line_5"}
     assert [step["produces"]["output"] for step in _steps() if step["name"] == "core/sum"] == [
-        "ca-sk/marginal_tax_rate"
+        "ca/return_total_deductions",
+        "ca-sk/marginal_tax_rate",
     ]
 
 

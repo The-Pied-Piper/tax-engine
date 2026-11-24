@@ -494,11 +494,11 @@ AB428_TAX_LINE_73 = AmountKind.declare(CATALOG, "ab428_tax_line_73", non_negativ
 minus line 72 (the Alberta political contributions tax credit, read as 0 when blank), floored at 0
 as the form prints, rounded to the cent."""
 
-AVERAGE_INCOME_TAX_RATE = AmountKind.declare(CATALOG, "average_income_tax_rate", non_negative=True)
-"""Average income tax rate, the Alberta return summary's own figure (no form prints it): T1 line
-43500 "Total payable" (for the take-home filer, line 143 plus line 147: the federal and the Alberta
-income tax) divided by the salary (`ca/return_employment_income`), as a fraction, so 0.1598 is
-15.98%. CPP and EI are not income tax and are not in it. It is 0 when the salary is 0."""
+AVERAGE_TAX_RATE = AmountKind.declare(CATALOG, "average_tax_rate", non_negative=True)
+"""Average tax rate on the take-home basis, the Alberta return summary's own figure (no form prints
+it): the income tax, CPP (Schedule 8 lines 25 and 28), EI (T2204 line 16) together divided by the
+salary (`ca/return_employment_income`), as a fraction, so 0.1598 is 15.98%. Paid credits are not
+in it. It is 0 when the salary is 0."""
 
 ALBERTA_BRACKET_RATE_LINE_5_RETURN = AmountKind.declare(
     CATALOG, "alberta_bracket_rate_line_5_return", non_negative=True

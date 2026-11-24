@@ -940,3 +940,9 @@ MARGINAL_TAX_RATE = AmountKind.declare(CATALOG, "marginal_tax_rate", non_negativ
 and the EI (T2204 line 16) per further dollar of salary, the sum of the federal marginal rate, the
 Ontario marginal rate, the health premium rate and the contribution rate, on the return summary.
 Calculated from the forms' rates, not printed on the form."""
+
+AVERAGE_TAX_RATE = AmountKind.declare(CATALOG, "average_tax_rate", non_negative=True)
+"""Average tax rate on the take-home basis, the Ontario return summary's own figure (no form prints
+it): the income tax, CPP (Schedule 8 lines 25 and 28), EI (T2204 line 16) together divided by the
+salary (`ca/return_employment_income`), as a fraction, so 0.1598 is 15.98%. Paid credits are not
+in it. It is 0 when the salary is 0."""
