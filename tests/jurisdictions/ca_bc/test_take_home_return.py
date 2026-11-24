@@ -46,7 +46,7 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_parameter_parsers,
     british_columbia_units,
 )
-from tests.jurisdictions.take_home_stand_ins import STAND_INS
+from tests.take_home_stand_ins import STAND_INS
 
 D = Decimal
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"

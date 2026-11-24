@@ -46,7 +46,7 @@ from tests.jurisdictions.ca_mb.support import (
     manitoba_parameter_parsers,
     manitoba_units,
 )
-from tests.jurisdictions.take_home_stand_ins import STAND_INS
+from tests.take_home_stand_ins import STAND_INS
 
 D = Decimal
 MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"

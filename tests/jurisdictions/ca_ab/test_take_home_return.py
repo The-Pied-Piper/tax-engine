@@ -45,7 +45,7 @@ from tests.jurisdictions.ca_ab.support import (
     alberta_parameter_parsers,
     alberta_units,
 )
-from tests.jurisdictions.take_home_stand_ins import STAND_INS
+from tests.take_home_stand_ins import STAND_INS
 
 D = Decimal
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"

@@ -46,7 +46,7 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_parameter_parsers,
     saskatchewan_units,
 )
-from tests.jurisdictions.take_home_stand_ins import STAND_INS
+from tests.take_home_stand_ins import STAND_INS
 
 D = Decimal
 SK_PARTS = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / "manifests" / "2025"

@@ -49,7 +49,7 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_parameter_parsers,
     newfoundland_units,
 )
-from tests.jurisdictions.take_home_stand_ins import STAND_INS
+from tests.take_home_stand_ins import STAND_INS
 
 D = Decimal
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"

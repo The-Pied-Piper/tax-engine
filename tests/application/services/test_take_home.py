@@ -225,6 +225,28 @@ def test_quebec_takes_off_both_returns_the_pension_plan_ei_and_qpip(
     assert got.marginal_tax_rate is None
 
 
+@pytest.mark.parametrize("code", ["CA-ON", "CA-AB", "CA-BC", "CA-MB", "CA-NL", "CA-SK", "CA-QC"])
+@pytest.mark.parametrize("year", [2025, 2026])
+@pytest.mark.parametrize("salary", ["0", "100", "2050", "70000", "250000"])
+def test_the_average_rate_is_the_total_deductions_over_the_salary_in_every_jurisdiction(
+    service: TakeHomeService, code: str, year: int, salary: str
+) -> None:
+    # The return's steps and the take-home block each list the deductions; this keeps them equal.
+    got = service.compute(
+        TakeHomeRequest(JurisdictionCode(code), year, Decimal(salary), include_rates=True)
+    )
+
+    assert got.average_tax_rate is not None
+    expected = (
+        Decimal(0)
+        if got.salary == 0
+        else (got.total_deductions / got.salary).quantize(
+            Decimal("0.0001"), rounding="ROUND_HALF_UP"
+        )
+    )
+    assert got.average_tax_rate.value == expected
+
+
 def test_quebec_has_an_average_rate_with_qpip_in_it_and_no_marginal_rate_yet(
     service: TakeHomeService,
 ) -> None:
