@@ -50,16 +50,21 @@ class _PureStrictLoader(_RejectDuplicateKeys, yaml.SafeLoader):
     """The pure-Python loader, used only when PyYAML was built without libyaml."""
 
 
-class _CStrictLoader(_RejectDuplicateKeys, yaml.CSafeLoader):
-    """The libyaml-backed loader: the same reading, several times faster."""
+# PyYAML's Linux, macOS and Windows wheels bundle libyaml, and its loader reads the same documents
+# several times faster. A source-only install may lack it (PyYAML then has no CSafeLoader at all),
+# and the pure-Python loader is used instead. The two read every bundled file to the same values;
+# they differ only on malformed edge cases (the C loader tolerates a tab after a value, and rejects
+# an unknown %directive and a byte-order mark inside a document). A test fails when libyaml is
+# missing, so CI cannot lose the speed-up unnoticed.
+_StrictLoader: type[_PureStrictLoader] | type[_CStrictLoader]
+if yaml.__with_libyaml__:
 
+    class _CStrictLoader(_RejectDuplicateKeys, yaml.CSafeLoader):
+        """The libyaml-backed loader."""
 
-# PyYAML's Linux, macOS and Windows wheels bundle libyaml; a source-only install may not, and then
-# the identical pure-Python loader is used. A test fails in that case, so CI cannot lose the
-# speed-up unnoticed.
-_StrictLoader: type[_PureStrictLoader] | type[_CStrictLoader] = (
-    _CStrictLoader if yaml.__with_libyaml__ else _PureStrictLoader
-)
+    _StrictLoader = _CStrictLoader
+else:
+    _StrictLoader = _PureStrictLoader
 
 
 class YamlNode:
