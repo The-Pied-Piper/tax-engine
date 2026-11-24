@@ -9,7 +9,7 @@ cross-form read (another form's export is read only as a record list), producing
 `ca/refund_or_balance_owing`. Positive is a balance owing, negative a refund. The step has no `form`
 key (the return is the default form) and no params. The average rate step is pinned in
 `test_take_home_return_average_tax_rate.py`; the marginal rate steps run here over stand-ins
-(figures in `end_to_end/test_return_marginal_rates.py`).
+(figures in `end_to_end/test_return_marginal_tax_rate_values.py`).
 
 The test composes the T1 employment income form and the real `return.yaml`. The
 header, the declaration of the T1 tax and credits form (exporting `ca/refund_or_balance_owing`) and
@@ -49,7 +49,7 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_parameter_parsers,
     newfoundland_units,
 )
-from tests.take_home_stand_ins import STAND_INS
+from tests.take_home_stand_ins import MARGINAL_RATES_STAND_INS, STAND_INS
 
 D = Decimal
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
@@ -90,7 +90,8 @@ NL428_FORM = dedent("""\
       name: ca-nl/nl428
       required: true
       exports:
-        - ca-nl/nl428_tax_line_85
+        - ca-nl/nl428_line_101
+        - ca-nl/nl428_line_104
         - ca-nl/nl428_newfoundland_and_labrador_tax_line_105
     capabilities: []
     """)
@@ -146,7 +147,8 @@ OTHER_STEPS = [
     ("ca/t1_tax_and_credits", "ca/federal_tax_after_credits", "ca/cad"),
     ("ca-nl/nl428_credits", "ca-nl/nl428_bracket_rate_line_5", "core/percent"),
     ("ca-nl/nl428_credits", "ca-nl/nl428_bracket_rate_line_12", "core/percent"),
-    ("ca-nl/nl428", "ca-nl/nl428_tax_line_85", "ca/cad"),
+    ("ca-nl/nl428", "ca-nl/nl428_line_101", "ca/cad"),
+    ("ca-nl/nl428", "ca-nl/nl428_line_104", "ca/cad"),
     ("ca-nl/nl428", "ca-nl/nl428_newfoundland_and_labrador_tax_line_105", "ca/cad"),
 ]
 
@@ -219,6 +221,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
             for part in form_parts("t1_employment_income")
         ),
         *STAND_INS,
+        *MARGINAL_RATES_STAND_INS,
         ("05_return.yaml", RETURN_PART.read_text(encoding="utf-8")),
     ]
     for name, text in texts:

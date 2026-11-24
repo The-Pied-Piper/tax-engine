@@ -960,30 +960,127 @@ NEWFOUNDLAND_AND_LABRADOR_BRACKET_RATE_RETURN = AmountKind.declare(
 """Newfoundland and Labrador bracket rate: NL428 line 5 plus line 12, of which one is always blank,
 so the rate of the bracket the taxable income falls in. Not printed on the form."""
 
-NEWFOUNDLAND_AND_LABRADOR_TAX_AFTER_CREDITS_RETURN = AmountKind.declare(
-    CATALOG, "newfoundland_and_labrador_tax_after_credits_return", non_negative=True
+MARGINAL_NET_INCOME_RATE = AmountKind.declare(
+    CATALOG, "marginal_net_income_rate", non_negative=True
 )
-"""Newfoundland and Labrador tax after the credits, NL428 line 85 "Line 81 minus line 84 (if
-negative, enter "0")": the tax payroll applies, before the low-income tax reduction (T4127 has no
-such reduction). The one amount of NL428's export totalled into the return
-summary's own artifact, the base of the Newfoundland and Labrador rate gate."""
+"""Part of a further dollar of salary left in the net income (T1 line 23600) and the taxable
+income: 1 less the CPP first additional rate and the CPP second additional rate, which T1 line
+22215 takes off the income. The federal form's export `ca/take_home_marginal_rates.marginal_net_
+income_rate`, totalled into the return summary's own artifact. Not printed on the form."""
+
+MARGINAL_CREDIT_CONTRIBUTION_RATE = AmountKind.declare(
+    CATALOG, "marginal_credit_contribution_rate", non_negative=True
+)
+"""Credit-earning contribution rate on a further dollar of salary: the CPP base rate (T1 line
+30800) plus the EI rate (T1 line 31200). The federal form's export `ca/take_home_marginal_rates.
+marginal_credit_contribution_rate`, totalled into the return summary's own artifact. Not printed
+on the form."""
+
+MARGINAL_FEDERAL_RATE = AmountKind.declare(CATALOG, "marginal_federal_rate", non_negative=True)
+"""Federal marginal rate on the take-home basis: the federal rate on a further dollar of salary
+after the credits, where the basic federal tax (T1 line 42900) is above zero, and 0 where it is
+not. The federal form's export `ca/take_home_marginal_rates.marginal_federal_rate`, totalled into
+the return summary's own artifact. Not printed on the form."""
+
+MARGINAL_CONTRIBUTION_RATE = AmountKind.declare(
+    CATALOG, "marginal_contribution_rate", non_negative=True
+)
+"""Contribution rate on a further dollar of salary: the CPP base, first additional and second
+additional rates plus the EI rate (T2204 line 16). The federal form's export `ca/take_home_
+marginal_rates.marginal_contribution_rate`, totalled into the return summary's own artifact. Not
+printed on the form."""
+
+MARGINAL_CREDIT_RATE = AmountKind.declare(CATALOG, "marginal_credit_rate", non_negative=True)
+"""Newfoundland and Labrador non-refundable tax credit rate, NL428 line 56 "Rate": the
+`ca-nl/credit_rate` dataset as it is, with none of the cent rounding the credit box applies. A
+rate, not printed as its own figure."""
+
+MARGINAL_CONTRIBUTION_CREDIT_RATE = AmountKind.declare(
+    CATALOG, "marginal_contribution_credit_rate", non_negative=True
+)
+"""Newfoundland and Labrador credit rate on the CPP base and EI of a further dollar of salary: the
+credit-earning contribution rate times the credit rate, the provincial tax the contributions take
+off. An exact product, not printed on the form."""
+
+MARGINAL_BRACKET_RATE = AmountKind.declare(CATALOG, "marginal_bracket_rate", non_negative=True)
+"""Newfoundland and Labrador bracket rate on a further dollar of salary: the bracket rate of NL428
+line 5 or line 12 times the part left in the net income. An exact product, not printed on the
+form."""
+
+MARGINAL_RATE_AFTER_CREDITS = AmountKind.declare(
+    CATALOG, "marginal_rate_after_credits", non_negative=True
+)
+"""Newfoundland and Labrador rate on a further dollar of salary after the CPP base and EI credits,
+before the low-income tax reduction. An exact difference, not printed on the form."""
+
+RETURN_LINE_101 = AmountKind.declare(CATALOG, "return_line_101", non_negative=True)
+"""NL428 line 101 "Line 101: Line 99 minus line 100 (if negative, enter "0")", the income over the
+low-income threshold, read into the return summary. The base of the line 101 gate."""
+
+RETURN_LINE_104 = AmountKind.declare(CATALOG, "return_line_104", non_negative=True)
+"""NL428 line 104, the Newfoundland and Labrador low-income tax reduction, read into the return
+summary. The base of the line 104 gate."""
+
+LINE_101_GATE = AmountKind.declare(CATALOG, "line_101_gate", non_negative=True)
+"""0 where NL428 line 101 is 0.00 and 1 where it is at least one cent, from the
+`ca-nl/marginal_rate_gate` dataset. A plain figure, not printed on the form."""
+
+LINE_104_GATE = AmountKind.declare(CATALOG, "line_104_gate", non_negative=True)
+"""0 where NL428 line 104 is 0.00 and 1 where it is at least one cent, from the
+`ca-nl/marginal_rate_gate` dataset. A plain figure, not printed on the form."""
+
+LOW_INCOME_REDUCTION_PHASE_OUT_GATE = AmountKind.declare(
+    CATALOG, "low_income_reduction_phase_out_gate", non_negative=True
+)
+"""1 while the low-income tax reduction is being phased out (NL428 lines 101 and 104 both above
+zero), otherwise 0. The product of the two gates, not printed on the form."""
+
+LOW_INCOME_REDUCTION_RATE_FIGURE = AmountKind.declare(
+    CATALOG, "low_income_reduction_rate_figure", non_negative=True
+)
+"""NL428 line 103 "Rate 16%": the `ca-nl/low_income_reduction_rate` dataset as it is. A rate, not
+printed as its own figure."""
+
+MARGINAL_LOW_INCOME_REDUCTION_RATE = AmountKind.declare(
+    CATALOG, "marginal_low_income_reduction_rate", non_negative=True
+)
+"""Rate at which a further dollar of net income takes off the low-income tax reduction (NL428
+line 103): 16% while the reduction is being phased out, 0 elsewhere. Not printed on the form."""
+
+MARGINAL_LOW_INCOME_PHASE_OUT_RATE = AmountKind.declare(
+    CATALOG, "marginal_low_income_phase_out_rate", non_negative=True
+)
+"""The low-income reduction rate on a further dollar of salary: the reduction rate times the part
+left in the net income. An exact product, not printed on the form."""
+
+MARGINAL_RATE_BEFORE_GATE = AmountKind.declare(
+    CATALOG, "marginal_rate_before_gate", non_negative=True
+)
+"""Newfoundland and Labrador rate on a further dollar of salary after the credits plus the
+low-income reduction phase-out, before the line 105 gate. An exact sum, not printed on the form."""
+
+NEWFOUNDLAND_AND_LABRADOR_TAX_RETURN = AmountKind.declare(
+    CATALOG, "newfoundland_and_labrador_tax_return", non_negative=True
+)
+"""NL428 line 105 "Line 94 minus line 104 (if negative, enter "0")", the tax that goes to T1 line
+42800, read into the return summary. The base of the Newfoundland and Labrador rate gate."""
 
 NEWFOUNDLAND_AND_LABRADOR_RATE_GATE = AmountKind.declare(
     CATALOG, "newfoundland_and_labrador_rate_gate", non_negative=True
 )
-"""Newfoundland and Labrador rate gate: 0 where the Newfoundland and Labrador tax after the
-credits (NL428 line 85) is 0.00 and 1 where it is at least one cent, from the
+"""Newfoundland and Labrador rate gate: 0 where the Newfoundland and Labrador tax (NL428 line
+105) is 0.00 and 1 where it is at least one cent, from the
 `ca-nl/marginal_rate_gate` dataset. A plain figure, not printed on the form."""
 
 NEWFOUNDLAND_AND_LABRADOR_MARGINAL_RATE = AmountKind.declare(
     CATALOG, "newfoundland_and_labrador_marginal_rate", non_negative=True
 )
-"""Newfoundland and Labrador marginal rate: the bracket rate where the Newfoundland and Labrador
-tax after the credits (NL428 line 85) is above zero, and 0 where it is not: the rate a further
-dollar of income is taxed at in Newfoundland and Labrador, on the return summary. Not printed
-on the form."""
+"""Newfoundland and Labrador marginal rate on the take-home basis: the bracket rate after the CPP
+base and EI credits, plus the low-income tax reduction phase-out, counted where the Newfoundland
+and Labrador tax (NL428 line 105) is above zero and 0 where it is not. Not printed on the form."""
 
 MARGINAL_TAX_RATE = AmountKind.declare(CATALOG, "marginal_tax_rate", non_negative=True)
-"""Marginal tax rate: the income tax rate on a further dollar of salary, the sum of the federal
-marginal rate and the Newfoundland and Labrador marginal rate (Newfoundland and Labrador has no
-surtax or health premium), on the return summary. Not printed on the form."""
+"""Marginal tax rate on the take-home basis: the change in income tax, CPP, CPP2 and EI on a further
+dollar of salary, with no credit paid on filing: the sum of the federal marginal rate, the
+Newfoundland and Labrador marginal rate (which has no surtax or health premium) and the
+contribution rate, on the return summary. Not printed on the form."""
