@@ -16,7 +16,7 @@ from tax_engine.domain.capability import Capability, CapabilityResult, capabilit
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.parameters.rate import RATE, Rate
-from tax_engine.jurisdictions.ca.trace.marginal_rate import RateFigureLine
+from tax_engine.domain.trace import RateFigureLine
 
 
 @capability(identifier="rate_figure")

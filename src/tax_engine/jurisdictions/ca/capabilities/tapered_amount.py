@@ -44,7 +44,7 @@ class TaperedAmount(Capability):
         over = ExactFraction(base - taper.threshold)
         # Like the floored subtraction: a tie at zero gives a plain 0, never a signed one.
         excess = over if over > 0 else ExactFraction(0)
-        reduction = ExactFraction(taper.supplement) * excess / ExactFraction(taper.range)
+        reduction = taper.supplement_per_dollar * excess
         remaining = ExactFraction(taper.supplement) - reduction
         kept = remaining if remaining > 0 else ExactFraction(0)
         result = rounding.apply(ExactFraction(taper.base) + kept)

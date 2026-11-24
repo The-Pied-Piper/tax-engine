@@ -33,7 +33,7 @@ capabilities:
       base: ca/marginal_basic_federal_tax
     produces:
       output: ca/marginal_federal_gate
-  - name: ca/rate_figure
+  - name: core/rate_figure
     unit: core/percent
     params:
       rate: ca/credit_rate

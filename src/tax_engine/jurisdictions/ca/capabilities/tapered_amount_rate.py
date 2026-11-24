@@ -9,7 +9,6 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from decimal import Decimal
-from fractions import Fraction as ExactFraction
 from typing import Any, ClassVar
 
 from tax_engine.domain.artifact import Artifact, Money
@@ -18,7 +17,7 @@ from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
 from tax_engine.jurisdictions.ca.parameter_shapes.taper import TAPER, Taper
-from tax_engine.jurisdictions.ca.trace.marginal_rate import TaperedAmountRateLine
+from tax_engine.jurisdictions.ca.trace.tapered_amount_rate import TaperedAmountRateLine
 
 
 @capability(identifier="tapered_amount_rate")
@@ -49,12 +48,7 @@ class TaperedAmountRate(Capability):
     def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
         base = self._input(inputs, self._base).value
         taper, rounding = self._taper.values, self._rounding.rounding
-        inside = taper.threshold < base < taper.threshold + taper.range
-        result = (
-            rounding.apply(ExactFraction(taper.supplement) / ExactFraction(taper.range))
-            if inside
-            else Decimal(0)
-        )
+        result = rounding.apply(taper.supplement_per_dollar) if taper.falls_at(base) else Decimal(0)
         return CapabilityResult(
             outputs=(Artifact(self._output, result),),
             trace=(TaperedAmountRateLine(self._output, self._base, base, taper, rounding, result),),

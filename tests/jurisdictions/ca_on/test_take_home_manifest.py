@@ -63,7 +63,7 @@ def _record_total(
 def _rate_figure(
     rate: str, output: str
 ) -> tuple[str, dict[str, str], dict[str, Any], dict[str, str]]:
-    return ("ca/rate_figure", {"rate": rate}, {}, {"output": output})
+    return ("core/rate_figure", {"rate": rate}, {}, {"output": output})
 
 
 def _multiply(

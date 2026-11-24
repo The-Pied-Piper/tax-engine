@@ -14,7 +14,7 @@ from typing import Any, ClassVar
 from tax_engine.domain.artifact import Artifact, Money
 from tax_engine.domain.capability import Capability, CapabilityResult, capability
 from tax_engine.domain.errors import InvalidCapabilityError
-from tax_engine.jurisdictions.ca.trace.marginal_rate import LesserOfRateLine
+from tax_engine.domain.trace import LesserOfRateLine
 
 
 @capability(identifier="lesser_of_rate")

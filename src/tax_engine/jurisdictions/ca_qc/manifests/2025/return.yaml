@@ -25,7 +25,7 @@
 # line): the total payable above, the CPP (Schedule 8 lines 25 and 28, at the Quebec rate), the EI
 # premium (T2204 line 16) and the QPIP premium (the `ppip_premium` form's export) added by core/sum
 # into `ca/return_total_deductions` and divided by the salary, rounded once by
-# `ca/take_home_average_rate_rounding`. The marginal tax rate is left for a later ticket (#1959).
+# `ca/take_home_average_rate_rounding`. The marginal tax rate is left for a later ticket.
 capabilities:
   - name: core/record_total
     unit: ca/cad

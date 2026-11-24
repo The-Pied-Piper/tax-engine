@@ -9,17 +9,19 @@ from __future__ import annotations
 from tax_engine.jurisdictions.ca.trace_english import (
     amount_by_count,
     contribution_tier,
+    contribution_tier_rate,
     given_amount,
-    marginal_rate,
     tapered_amount,
+    tapered_amount_rate,
     units,
 )
 
 __all__ = [
     "amount_by_count",
     "contribution_tier",
+    "contribution_tier_rate",
     "given_amount",
-    "marginal_rate",
     "tapered_amount",
+    "tapered_amount_rate",
     "units",
 ]

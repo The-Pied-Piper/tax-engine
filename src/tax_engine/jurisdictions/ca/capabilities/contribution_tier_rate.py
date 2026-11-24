@@ -20,7 +20,7 @@ from tax_engine.jurisdictions.ca.parameter_shapes.contribution_tier import (
     CONTRIBUTION_TIER,
     ContributionTier,
 )
-from tax_engine.jurisdictions.ca.trace.marginal_rate import ContributionTierRateLine
+from tax_engine.jurisdictions.ca.trace.contribution_tier_rate import ContributionTierRateLine
 
 
 @capability(identifier="contribution_tier_rate")
@@ -46,7 +46,7 @@ class TieredContributionRate(Capability):
     def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
         earnings = self._input(inputs, self._earnings).value
         values = self._tier.values
-        rate = values.rate.value if values.lower < earnings < values.upper else Decimal(0)
+        rate = values.next_dollar_rate(earnings)
         return CapabilityResult(
             outputs=(Artifact(self._output, rate),),
             trace=(ContributionTierRateLine(self._output, self._earnings, earnings, values, rate),),

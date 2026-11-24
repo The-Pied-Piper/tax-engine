@@ -112,7 +112,7 @@ STEPS: list[Step] = [
     _tier_rate("ca/ei_premium", "ca/marginal_ei_line_1", "ca/marginal_ei_premium_rate"),
     _band(GATE, "ca/marginal_ei_line_7", "ca/marginal_ei_line_7_rate"),
     (
-        "ca/lesser_of_rate",
+        "core/lesser_of_rate",
         {},
         {
             "amounts": ("ca/marginal_ei_line_7", "ca/marginal_ei_line_10"),
@@ -153,7 +153,7 @@ STEPS: list[Step] = [
     ),
     _band(GATE, "ca/marginal_basic_federal_tax", "ca/marginal_federal_gate"),
     (
-        "ca/rate_figure",
+        "core/rate_figure",
         {"rate": "ca/credit_rate"},
         {},
         {"output": "ca/marginal_federal_credit_rate"},

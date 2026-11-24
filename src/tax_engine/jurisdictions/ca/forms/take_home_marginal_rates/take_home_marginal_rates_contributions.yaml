@@ -102,7 +102,7 @@ capabilities:
       base: ca/marginal_ei_line_7
     produces:
       output: ca/marginal_ei_line_7_rate
-  - name: ca/lesser_of_rate
+  - name: core/lesser_of_rate
     unit: core/percent
     consumes:
       amounts:

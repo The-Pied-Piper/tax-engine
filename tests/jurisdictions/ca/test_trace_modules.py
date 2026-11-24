@@ -24,14 +24,10 @@ RENDERERS = "tax_engine.jurisdictions.ca.trace_english"
 HOMES: dict[str, tuple[str, ...]] = {
     "amount_by_count": ("AmountByCountLine",),
     "contribution_tier": ("ContributionTierLine",),
+    "contribution_tier_rate": ("ContributionTierRateLine",),
     "given_amount": ("GivenAmountLine",),
-    "marginal_rate": (
-        "ContributionTierRateLine",
-        "LesserOfRateLine",
-        "RateFigureLine",
-        "TaperedAmountRateLine",
-    ),
     "tapered_amount": ("TaperedAmountLine",),
+    "tapered_amount_rate": ("TaperedAmountRateLine",),
 }
 
 PLACED = [(module, name) for module, names in HOMES.items() for name in names]

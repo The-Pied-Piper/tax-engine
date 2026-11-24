@@ -182,7 +182,7 @@ capabilities:
       records: ca/take_home_marginal_rates.marginal_contribution_rate
     produces:
       output: ca-on/marginal_contribution_rate
-  - name: ca/rate_figure
+  - name: core/rate_figure
     unit: core/percent
     params:
       rate: ca-on/credit_rate
@@ -294,7 +294,7 @@ capabilities:
       rate: ca-on/lift_credit_gate
     produces:
       output: ca-on/lift_phase_out_gate
-  - name: ca/rate_figure
+  - name: core/rate_figure
     unit: core/percent
     params:
       rate: ca-on/lift_single_rate
