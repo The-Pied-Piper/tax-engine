@@ -31,6 +31,7 @@ from tax_engine.domain.trace import (
     DividedByRateLine,
     GreaterOfLine,
     LesserOfLine,
+    LesserOfRateLine,
     LesserOfWhenPositiveLine,
     LesserOfWithMaximumLine,
     MoreThanPerUnitLine,
@@ -40,6 +41,7 @@ from tax_engine.domain.trace import (
     PositivePartOfNegationLine,
     ProductLine,
     QuotientLine,
+    RateFigureLine,
     RatioAppliedLine,
     RatioTruncatedLine,
     RoundedTotalLine,
@@ -114,6 +116,21 @@ def test_the_lesser_of_two_and_the_least_of_more() -> None:
 
     assert render(two) == "Lesser of wages (10.00) and bonus (4.50) gives 4.50."
     assert render(three) == "Least of wages (10.00), bonus (4.50) and extra (7.00) gives 4.50."
+
+
+def test_the_rate_of_the_least_of_figures() -> None:
+    parts = ((WAGES, D("10"), D("1")), (BONUS, D("4.5"), D("0.0164")))
+    line = LesserOfRateLine(OUT, parts, D("0.0164"))
+
+    assert render(line) == (
+        "A further dollar follows the least of wages (10.00) and bonus (4.50), which gives 0.0164."
+    )
+
+
+def test_a_rate_taken_as_it_is() -> None:
+    line = RateFigureLine(OUT, Rate(D("0.145")))
+
+    assert render(line) == "The rate is 0.145."
 
 
 def test_the_lesser_of_a_figure_and_a_limit() -> None:

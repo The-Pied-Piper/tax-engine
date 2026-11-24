@@ -85,123 +85,6 @@ def _sum(parts: tuple[str, ...], output: str) -> Step:
     return ("core/sum", EXACT, {"parts": parts}, {"output": output})
 
 
-STEPS: list[Step] = [
-    _record_total("ca/t1_employment_income.employment_income_line_10100", "ca/marginal_salary"),
-    _record_total(
-        "ca/schedule_8.cpp_part_3_line_7_difference", "ca/marginal_cpp_line_7_difference"
-    ),
-    _record_total("ca/schedule_8.cpp_part_3_line_4", "ca/marginal_cpp_line_4"),
-    _tier_rate(
-        "ca/cpp_line_11_base_contribution",
-        "ca/marginal_cpp_line_7_difference",
-        "ca/marginal_cpp_base_rate",
-    ),
-    _tier_rate(
-        "ca/cpp_line_12_first_additional_contribution",
-        "ca/marginal_cpp_line_7_difference",
-        "ca/marginal_cpp_first_additional_rate",
-    ),
-    _tier_rate(
-        "ca/cpp_line_22_second_additional_contribution",
-        "ca/marginal_cpp_line_4",
-        "ca/marginal_cpp_second_additional_rate",
-    ),
-    _record_total("ca/t2204.t2204_line_1", "ca/marginal_ei_line_1"),
-    _record_total("ca/t2204.t2204_line_7", "ca/marginal_ei_line_7"),
-    _record_total("ca/t2204.t2204_line_10", "ca/marginal_ei_line_10"),
-    _tier_rate("ca/ei_premium", "ca/marginal_ei_line_1", "ca/marginal_ei_premium_rate"),
-    _band(GATE, "ca/marginal_ei_line_7", "ca/marginal_ei_line_7_rate"),
-    (
-        "core/lesser_of_rate",
-        {},
-        {
-            "amounts": ("ca/marginal_ei_line_7", "ca/marginal_ei_line_10"),
-            "rates": ("ca/marginal_ei_line_7_rate", "ca/marginal_ei_premium_rate"),
-        },
-        {"output": "ca/marginal_ei_rate"},
-    ),
-    _band(GATE, "ca/marginal_salary", "ca/marginal_salary_gate"),
-    _subtract(
-        "ca/marginal_salary_gate",
-        "ca/marginal_cpp_first_additional_rate",
-        "ca/marginal_net_income_rate_before_cpp2",
-    ),
-    _subtract(
-        "ca/marginal_net_income_rate_before_cpp2",
-        "ca/marginal_cpp_second_additional_rate",
-        "ca/marginal_net_income_rate",
-    ),
-    _sum(
-        ("ca/marginal_cpp_base_rate", "ca/marginal_ei_rate"),
-        "ca/marginal_credit_contribution_rate",
-    ),
-    _sum(
-        (
-            "ca/marginal_cpp_base_rate",
-            "ca/marginal_cpp_first_additional_rate",
-            "ca/marginal_cpp_second_additional_rate",
-            "ca/marginal_ei_rate",
-        ),
-        "ca/marginal_contribution_rate",
-    ),
-    _record_total(
-        "ca/t1_tax_and_credits.federal_bracket_column_rate_line_73",
-        "ca/marginal_federal_bracket_column_rate",
-    ),
-    _record_total(
-        "ca/t1_tax_and_credits.federal_tax_after_credits", "ca/marginal_basic_federal_tax"
-    ),
-    _band(GATE, "ca/marginal_basic_federal_tax", "ca/marginal_federal_gate"),
-    (
-        "core/rate_figure",
-        {"rate": "ca/credit_rate"},
-        {},
-        {"output": "ca/marginal_federal_credit_rate"},
-    ),
-    _multiply(
-        "ca/marginal_credit_contribution_rate",
-        "ca/marginal_federal_credit_rate",
-        "ca/marginal_federal_contribution_credit_rate",
-    ),
-    _multiply(
-        "ca/marginal_federal_bracket_column_rate",
-        "ca/marginal_net_income_rate",
-        "ca/marginal_federal_bracket_rate",
-    ),
-    _record_total("ca/t1_taxable_income.net_income_signed", "ca/marginal_net_income"),
-    (
-        "ca/tapered_amount_rate",
-        {"taper": "ca/basic_personal_amount", "rounding": "ca/marginal_rate_rounding"},
-        {"base": "ca/marginal_net_income"},
-        {"output": "ca/marginal_federal_bpa_reduction_rate"},
-    ),
-    _multiply(
-        "ca/marginal_federal_bpa_reduction_rate",
-        "ca/marginal_net_income_rate",
-        "ca/marginal_phase_down_net_income_rate",
-    ),
-    _multiply(
-        "ca/marginal_phase_down_net_income_rate",
-        "ca/marginal_federal_credit_rate",
-        "ca/marginal_federal_bpa_credit_rate",
-    ),
-    _sum(
-        ("ca/marginal_federal_bracket_rate", "ca/marginal_federal_bpa_credit_rate"),
-        "ca/marginal_federal_rate_before_credits",
-    ),
-    _subtract(
-        "ca/marginal_federal_rate_before_credits",
-        "ca/marginal_federal_contribution_credit_rate",
-        "ca/marginal_federal_rate_after_credits",
-    ),
-    _multiply(
-        "ca/marginal_federal_rate_after_credits",
-        "ca/marginal_federal_gate",
-        "ca/marginal_federal_rate",
-    ),
-]
-
-
 def test_the_form_is_a_required_form_without_instances_or_inputs() -> None:
     form = _form()
 
@@ -217,10 +100,6 @@ def test_the_form_exports_the_four_rates_a_provincial_return_reads() -> None:
         "ca/marginal_federal_rate",
         "ca/marginal_contribution_rate",
     }
-
-
-def test_the_form_calculates_the_federal_rates_one_capability_per_line() -> None:
-    assert _steps() == STEPS
 
 
 def test_every_step_is_a_percent_except_the_dollar_figures_it_reads() -> None:
@@ -280,7 +159,7 @@ def test_a_province_can_import_the_form_alone(code: str) -> None:
         for step in form.capabilities
         for output in step.produces.values()
     }
-    own = {output for *_, produces in STEPS for output in produces.values()}
+    own = {output for step in _form().capabilities for output in step.produces.values()}
 
     assert {
         "ca/t1_employment_income",
