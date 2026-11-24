@@ -1021,7 +1021,7 @@ before the low-income tax reduction. An exact difference, not printed on the for
 INCOME_OVER_LOW_INCOME_THRESHOLD_RETURN = AmountKind.declare(
     CATALOG, "income_over_low_income_threshold_return", non_negative=True
 )
-"""NL428 line 101 "Line 101: Line 99 minus line 100 (if negative, enter "0")", the income over the
+"""NL428 line 101 "Line 99 minus line 100 (if negative, enter "0")", the income over the
 low-income threshold, read into the return summary. The base of the line 101 gate."""
 
 LOW_INCOME_TAX_REDUCTION_RETURN = AmountKind.declare(

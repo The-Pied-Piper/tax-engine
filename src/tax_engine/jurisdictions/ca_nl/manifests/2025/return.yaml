@@ -39,7 +39,7 @@
 # and Labrador has no surtax and no health premium. The rate is the one of a salary-only filer, as
 # the take-home calculator takes only the salary: the optional inputs (the age amount, NL428
 # line 17, and the medical expenses, lines 49 to 53) are left blank there, so their slopes are not
-# built (the Ontario rate leaves its optional inputs out the same way).
+# built.
 #
 # The last step adds the federal marginal rate, the Newfoundland and Labrador marginal rate and
 # the contribution rate (CPP base, enhanced and second additional, and EI) with core/sum into
