@@ -26,13 +26,17 @@ inside that range a further dollar of income is taxed at 15,780 / 200,000 x 10.8
 200,000 and 400,000 (while line 65 is above zero). The printed Worksheet MB428 figure of 15,780
 decides, not the T4127 one.
 
-The rates are pinned from the engine after the figures at 70,000 (2025: 19.57725% + 12.0879% +
-5.95% = 37.61515%), 250,000, 300,000 and 500,000 were derived by hand from the printed rates, and
-after the double run agreed at every salary of its sweep. The total payable and the average were
-derived by hand from the printed form lines and the datasets (exact Decimal), and agree with the
-existing pinned anchors
-(MB428 line 33 of 20,149.23 and line 82 of 5,747.59 at 70,000, 26,863.55 at 200,000 and 35,980.46
-at 250,000, and the federal tax of 7,585.64 at 70,000). The taxable income and the net income are
+The rates at 20,000, 50,000, 70,000, 250,000, 300,000 and 500,000 were derived by hand from the
+printed rates: at 70,000 the federal part is 20.5% x 0.99 - 14.5% x 4.95% = 19.57725%, the
+Manitoba part 12.75% x 0.99 - 10.8% x 4.95% = 12.0879% and the contribution rate 5.95%, 37.61515%
+together; at 250,000 the Manitoba part is 17.4% + 15,780 / 200,000 x 10.8% = 18.25212% and the
+federal part is 29% plus the basic personal amount's fall (1,591 / 75,532 x 14.5%), and so on.
+The other figures were pinned from the engine and the double run of
+`test_return_marginal_tax_rate_extra_run.py` checks every one of them independently. The total
+payable and the average were derived by hand from the printed form lines and the datasets (exact
+Decimal), and agree with the existing pinned anchors (MB428 line 33 of 20,149.23 and line 82 of
+5,747.59 at 70,000, 26,863.55 at 200,000 and 35,980.46 at 250,000, and the federal tax of 7,585.64
+at 70,000). The taxable income and the net income are
 the salary less the CPP enhanced contribution (1% of the salary less 3,500, to the cent, and 4% of
 the salary between 71,300 and 81,200, to the cent; 1,074.00 from a salary of 81,200 up). The total
 payable is the federal tax after credits (T1 line 42900) plus the Manitoba tax (MB428 line 65, equal
