@@ -37,10 +37,8 @@ import pytest
 
 from tax_engine import build_tax_computation
 from tax_engine.application.models.calculation_request import TaxCalculationRequest
-from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tests.kinds import bundled_kinds
 
@@ -72,13 +70,14 @@ SALARIES = (
 )  # fmt: skip
 # Every $250 from $1,000 to $400,000 and the salaries above: the sweep of every year.
 SWEEP = tuple(sorted({*range(1_000, 400_001, 250), *SALARIES}))
+# A smaller step near a narrow band, so the extra run does not cross the band's end: the EI band of
+# T2204 line 16 ($2,000 to $2,033) is narrower than $100.
+NARROW_BAND_STEPS = {2_020: 10}
 # (tax year, salary): why the run of $100 is not the derivative there. Each salary is run again
 # over a smaller step in `SMALLER_STEPS`, from the point the rate is meant for.
 EDGE = "an exact band edge: the published rate is the lower band's"
-EI_BAND = "the EI band of T2204 line 16 ($2,000 to $2,033) is narrower than the $100 step"
 KNOWN_EXCEPTIONS: dict[tuple[int, int], str] = {
     (2025, 2_000): "EI starts above $2,000 (T2204 line 16), " + EDGE,
-    (2025, 2_020): EI_BAND,
     (2025, 3_500): "the CPP starts above $3,500, " + EDGE,
     (2025, 18_750): "federal tax (T1 line 42900) starts at $18,820.27",
     (2025, 30_333): "the low-income tax reduction (NL428 line 104) is used up",
@@ -86,7 +85,6 @@ KNOWN_EXCEPTIONS: dict[tuple[int, int], str] = {
     (2025, 115_750): "the federal bracket at taxable income $114,750",
     (2025, 283_250): "the NL428 bracket at taxable income $282,214",
     (2026, 2_000): "EI starts above $2,000 (T2204 line 16), " + EDGE,
-    (2026, 2_020): EI_BAND,
     (2026, 3_500): "the CPP starts above $3,500, " + EDGE,
     (2026, 30_750): "the low-income tax reduction (NL428 line 104) is used up",
     (2026, 45_000): "the NL428 bracket where table 1 moves to its second row",
@@ -98,7 +96,6 @@ KNOWN_EXCEPTIONS: dict[tuple[int, int], str] = {
 # (tax year, salary): (salary the run starts from, step).
 SMALLER_STEPS = {
     (2025, 2_000): (2_001, 10),
-    (2025, 2_020): (2_020, 10),
     (2025, 3_500): (3_501, 10),
     (2025, 18_750): (18_750, 25),
     (2025, 30_333): (30_430, 25),
@@ -106,7 +103,6 @@ SMALLER_STEPS = {
     (2025, 115_750): (115_750, 25),
     (2025, 283_250): (283_250, 25),
     (2026, 2_000): (2_001, 10),
-    (2026, 2_020): (2_020, 10),
     (2026, 3_500): (3_501, 10),
     (2026, 30_750): (30_750, 10),
     (2026, 45_000): (45_000, 25),
@@ -116,21 +112,21 @@ SMALLER_STEPS = {
     (2026, 182_500): (182_500, 25),
 }
 
+CASES = [
+    pytest.param(year, salary, id=f"{year}-{salary}")
+    for year in YEARS
+    for salary in SALARIES
+    if (year, salary) not in KNOWN_EXCEPTIONS
+]
 EXCEPTION_CASES = [
     pytest.param(year, salary, id=f"{year}-{salary}") for (year, salary) in KNOWN_EXCEPTIONS
 ]
 
 
-def _worksheets(
-    year: int, salary: int, engine: TaxComputationService
-) -> dict[str, tuple[Worksheet, ...]]:
-    return engine.compute(
-        TaxCalculationRequest(NEWFOUNDLAND, year, (Artifact(EMPLOYMENT_INCOME, D(salary)),))
+def _deductions(year: int, salary: Decimal) -> Decimal:
+    worksheets = build_tax_computation().compute(
+        TaxCalculationRequest(NEWFOUNDLAND, year, (Artifact(EMPLOYMENT_INCOME, salary),))
     )
-
-
-def _deductions(year: int, salary: int, engine: TaxComputationService) -> Decimal:
-    worksheets = _worksheets(year, salary, engine)
     kinds = bundled_kinds()
     total = D("0")
     for form, kind in DEDUCTIONS:
@@ -140,41 +136,72 @@ def _deductions(year: int, salary: int, engine: TaxComputationService) -> Decima
     return total
 
 
-def _marginal_rate(year: int, salary: int, engine: TaxComputationService) -> Decimal:
-    value = _worksheets(year, salary, engine)[RETURN][0].get(bundled_kinds().kind(MARGINAL)).value
+def _marginal_rate(year: int, salary: Decimal) -> Decimal:
+    worksheets = build_tax_computation().compute(
+        TaxCalculationRequest(NEWFOUNDLAND, year, (Artifact(EMPLOYMENT_INCOME, salary),))
+    )
+    value = worksheets[RETURN][0].get(bundled_kinds().kind(MARGINAL)).value
     assert isinstance(value, Decimal)
     return value
 
 
-def _extra_run(year: int, salary: int, step: int, engine: TaxComputationService) -> Decimal:
-    return (_deductions(year, salary + step, engine) - _deductions(year, salary, engine)) / step
-
-
-@pytest.mark.parametrize("year", YEARS)
-def test_the_marginal_rate_agrees_with_the_double_run_except_at_the_known_exceptions(
-    year: int,
+@pytest.mark.parametrize(("year", "salary"), CASES)
+def test_the_marginal_rate_is_the_extra_dollar_change_in_the_take_home_deductions(
+    year: int, salary: int
 ) -> None:
-    engine = build_tax_computation()
-    disagreements = {
-        salary
-        for salary in SWEEP
-        if abs(_marginal_rate(year, salary, engine) - _extra_run(year, salary, STEP, engine))
-        > TOLERANCE
-    }
+    step = NARROW_BAND_STEPS.get(salary, STEP)
+    extra_run = (_deductions(year, D(salary + step)) - _deductions(year, D(salary))) / step
 
-    assert disagreements == {salary for (y, salary) in KNOWN_EXCEPTIONS if y == year}
+    assert abs(_marginal_rate(year, D(salary)) - extra_run) <= TOLERANCE
 
 
 @pytest.mark.parametrize(("year", "salary"), EXCEPTION_CASES)
 def test_a_known_exception_agrees_with_a_run_that_stays_inside_the_band(
     year: int, salary: int
 ) -> None:
-    engine = build_tax_computation()
     start, step = SMALLER_STEPS[(year, salary)]
+    extra_run = (_deductions(year, D(start + step)) - _deductions(year, D(start))) / step
 
-    assert abs(_marginal_rate(year, start, engine) - _extra_run(year, start, step, engine)) <= (
-        TOLERANCE
-    )
+    assert abs(_marginal_rate(year, D(start)) - extra_run) <= TOLERANCE
+
+
+@pytest.mark.parametrize(("year", "salary"), EXCEPTION_CASES)
+def test_the_run_of_100_dollars_crosses_the_break_of_each_known_exception(
+    year: int, salary: int
+) -> None:
+    run = (_deductions(year, D(salary + STEP)) - _deductions(year, D(salary))) / STEP
+
+    assert abs(_marginal_rate(year, D(salary)) - run) > TOLERANCE
+
+
+@pytest.mark.parametrize("year", YEARS)
+def test_a_sweep_of_every_250_dollars_disagrees_only_at_the_known_exceptions(year: int) -> None:
+    # Umar's sweep: every $250 from $1,000 to $400,000 and the salaries above, with one engine
+    # built once so that the 3,000 runs finish in reasonable time.
+    engine = build_tax_computation()
+    kinds = bundled_kinds()
+
+    def run(salary: int) -> tuple[Decimal, Decimal]:
+        worksheets = engine.compute(
+            TaxCalculationRequest(NEWFOUNDLAND, year, (Artifact(EMPLOYMENT_INCOME, D(salary)),))
+        )
+        deductions = D("0")
+        for form, kind in DEDUCTIONS:
+            value = worksheets[form][0].get(kinds.kind(kind)).value
+            assert isinstance(value, Decimal)
+            deductions += value
+        marginal = worksheets[RETURN][0].get(kinds.kind(MARGINAL)).value
+        assert isinstance(marginal, Decimal)
+        return deductions, marginal
+
+    disagreements = set()
+    for salary in SWEEP:
+        step = NARROW_BAND_STEPS.get(salary, STEP)
+        deductions, marginal = run(salary)
+        if abs(marginal - (run(salary + step)[0] - deductions) / step) > TOLERANCE:
+            disagreements.add(salary)
+
+    assert disagreements == {salary for (y, salary) in KNOWN_EXCEPTIONS if y == year}
 
 
 def test_every_known_exception_is_a_salary_of_the_sweep() -> None:

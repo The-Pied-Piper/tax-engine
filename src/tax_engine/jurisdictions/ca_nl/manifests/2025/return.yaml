@@ -13,10 +13,11 @@
 # salary), and the return reads its export `ca/average_tax_rate` with one core/record_total.
 #
 # The marginal rate is the rate on the take-home basis: the change in T1 line 43500 plus the CPP,
-# CPP2 and EI per further dollar of salary, with no credit paid on filing. The federal half is the shared federal form `ca/take_home_marginal_rates` (imported by
-# the manifest), whose four exports are each totalled by core/record_total into this return's own
-# figure: the net income rate, the credit-earning contribution rate, the federal marginal rate
-# and the contribution rate. This return adds only Newfoundland and Labrador's own part.
+# CPP2 and EI per further dollar of salary, with no credit paid on filing. The federal half is the
+# shared federal form `ca/take_home_marginal_rates` (imported by the manifest), whose four exports
+# are each totalled by core/record_total into this return's own figure: the net income rate, the
+# credit-earning contribution rate, the federal marginal rate and the contribution rate. This return
+# adds only Newfoundland and Labrador's own part.
 #
 # The Newfoundland and Labrador bracket rate is printed on NL428 line 5 (table 1, lines 2 to 8,
 # taxable income up to 220,910) or on line 12 (table 2, lines 9 to 15, above it); the other is
