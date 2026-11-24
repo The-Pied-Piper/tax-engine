@@ -7,7 +7,7 @@ over the T1 form's export `ca/t1_tax_and_credits.refund_or_balance_owing`, a cro
 (another form's export is read only as a record list), producing the return's own
 `ca/refund_or_balance_owing`. Positive is a balance owing, negative a refund. The step has no `form`
 key (the return is the default form) and no params. The steps after it read the figures of the two
-rates (`end_to_end/test_return_rates.py`); here they run over stand-ins.
+rates (`end_to_end/test_return_marginal_tax_rate.py`); here they run over stand-ins.
 
 The test composes the T1 employment income form and the real `return.yaml` over
 a temporary manifest. The header, the declaration of the T1 tax and credits form (exporting
@@ -46,7 +46,7 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_parameter_parsers,
     british_columbia_units,
 )
-from tests.take_home_stand_ins import STAND_INS
+from tests.take_home_stand_ins import MARGINAL_STAND_INS, STAND_INS
 
 D = Decimal
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
@@ -69,8 +69,6 @@ T1_FORM = dedent("""\
       exports:
         - ca/refund_or_balance_owing
         - ca/total_payable
-        - ca/federal_bracket_column_rate_line_73
-        - ca/federal_tax_after_credits
     capabilities: []
     """)
 BC428_FORM = dedent("""\
@@ -127,11 +125,9 @@ T1_STEP = dedent("""\
 
 # Stand-ins for the other figures the return reads (the total payable, the rates, the taxes and the
 # reduction): each is the salary itself, a made-up figure, because this test is about line 167 only;
-# the rates are in `end_to_end/test_return_rates.py`. Form, output kind, unit.
+# the rates are in `end_to_end/test_return_marginal_tax_rate.py`. Form, output kind, unit.
 OTHER_STEPS = [
     ("ca/t1_tax_and_credits", "ca/total_payable", "ca/cad"),
-    ("ca/t1_tax_and_credits", "ca/federal_bracket_column_rate_line_73", "core/percent"),
-    ("ca/t1_tax_and_credits", "ca/federal_tax_after_credits", "ca/cad"),
     ("ca-bc/bc428", "ca-bc/bc428_bracket_rate_line_5", "core/percent"),
     ("ca-bc/bc428", "ca-bc/bc428_bracket_rate_line_12", "core/percent"),
     ("ca-bc/bc428", "ca-bc/bc428_reduction_clawback_line_78", "ca/cad"),
@@ -148,9 +144,10 @@ CASES = [
 
 def _other_step(form: str, output: str, unit: str) -> str:
     """A stand-in step for a figure the return reads: the gate of the salary for a rate (1, a rate
-    is at most 1; the bracket rates are the difference of two equal amounts, so 0) and the salary
-    itself for an amount."""
-    if output.endswith(("line_5", "line_12")):
+    is at most 1, so the line 5 bracket rate is that 1 and covers the credits that come off it; the
+    line 12 bracket rate is the difference of two equal amounts, so 0) and the salary itself for an
+    amount."""
+    if output.endswith("line_12"):
         step = f"""\
           - name: core/subtract
             unit: {unit}
@@ -209,6 +206,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
             for number, (form, out, unit) in enumerate(OTHER_STEPS)
         ],
         *STAND_INS,
+        *MARGINAL_STAND_INS,
         ("05_return.yaml", RETURN_PART.read_text(encoding="utf-8")),
     ]
     for name, text in texts:
