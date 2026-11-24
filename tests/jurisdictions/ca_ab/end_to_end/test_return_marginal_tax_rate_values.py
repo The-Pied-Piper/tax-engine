@@ -17,9 +17,13 @@ The extra-run check over a sweep is in `test_return_marginal_tax_rate_extra_run.
 
 - $100: nothing moves (under the CPP exemption and the EI $2,000): 0.
 - $2,001: only the EI of T2204 line 16 moves, 1 for 1 between $2,000 and $2,033: 1.
-- $2,000 and $3,500, both years (exact band edges): the rate at the edge is the lower band's (the
-  EI rate is 0 at $2,000, the CPP rate 0 at $3,500, so $3,500 has the EI rate only: 1.64% in 2025,
-  1.63% in 2026) and the next cent is in the next band (1; then CPP 4.95% + 1% and EI).
+- $2,000 and $3,500, both years (exact band edges): a rate is 0 on either edge of its band (the
+  federal form's rule), so the EI rate is 0 at $2,000 and the CPP rate 0 at $3,500 ($3,500 has the
+  EI rate only: 1.64% in 2025, 1.63% in 2026), and the next cent is in the next band (1; then CPP
+  4.95% + 1% and EI).
+- 2025, $71,300 (the CPP maximum pensionable earnings, where the CPP base ends and the CPP2 band
+  starts): both are edges, so neither rate counts: 20.5% + 10% = 0.305; a cent more earns CPP2 at
+  4% and no CPP base: 0.3328 (N = 0.96: 20.5% x 0.96 + 10% x 0.96 + 4%).
 - 2025, $20,000: federal 14.5% x 0.99 - 14.5% x 0.0659 = 0.1339945; Alberta line 68 is 0.00 (the
   credits are over the tax), so 0; contributions 0.0759: 0.2098945. At $23,931.13 line 68 is first
   0.01, and the Alberta part 8% x 0.99 - 8% x 0.0659 = 0.073928 counts.
@@ -61,6 +65,8 @@ FIGURES = [
     (2026, "2000.01", "1"),
     (2025, "3500", "0.0164"),
     (2025, "3500.01", "0.0759"),
+    (2025, "71300", "0.305"),
+    (2025, "71300.01", "0.3328"),
     (2026, "3500", "0.0163"),
     (2026, "3500.01", "0.0758"),
     (2025, "20000", "0.2098945"),
