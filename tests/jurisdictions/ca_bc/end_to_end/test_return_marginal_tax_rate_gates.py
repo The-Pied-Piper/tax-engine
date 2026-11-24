@@ -30,6 +30,7 @@ from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tests.kinds import bundled_kinds
 
 D = Decimal
+ROUNDING = D("0.0001")
 BRITISH_COLUMBIA = JurisdictionCode("CA-BC")
 RETURN = "ca-bc/return"
 BC428_FORM = "ca-bc/bc428"
@@ -45,11 +46,6 @@ BC_RATE = "ca-bc/british_columbia_marginal_rate"
 CONTRIBUTION = "ca-bc/marginal_contribution_rate"
 MARGINAL = "ca-bc/marginal_tax_rate"
 LINE_80 = "ca-bc/bc428_tax_after_reduction_line_80"
-
-
-def _rounded(rate: Decimal) -> Decimal:
-    # The engine rounds the marginal rate half-up to 0.0001 like the average rate.
-    return rate.quantize(D("0.0001"), rounding=ROUND_HALF_UP)
 
 
 def _summary(salary: str) -> Worksheet:
@@ -106,7 +102,9 @@ def test_each_part_and_the_total_of_the_marginal_tax_rate(
     assert _value(summary, BC_RATE) == D(british_columbia)
     assert _value(summary, CONTRIBUTION) == D(contribution)
     assert _value(summary, MARGINAL) == D(marginal)
-    assert _rounded(D(federal) + D(british_columbia) + D(contribution)) == D(marginal)
+    assert (D(federal) + D(british_columbia) + D(contribution)).quantize(
+        ROUNDING, rounding=ROUND_HALF_UP
+    ) == D(marginal)
 
 
 @pytest.mark.parametrize(

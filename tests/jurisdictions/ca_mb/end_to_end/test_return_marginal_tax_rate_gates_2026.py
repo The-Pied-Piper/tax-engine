@@ -30,6 +30,7 @@ from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tests.kinds import bundled_kinds
 
 D = Decimal
+ROUNDING = D("0.0001")
 MANITOBA = JurisdictionCode("CA-MB")
 RETURN = "ca-mb/return"
 
@@ -48,11 +49,6 @@ CONTRIBUTION = "ca-mb/marginal_contribution_rate"
 MARGINAL = "ca-mb/marginal_tax_rate"
 
 SALARIES = ["0", "100", "2000", "17402.22", "19200.18", "25000", "70000", "275000"]
-
-
-def _rounded(rate: Decimal) -> Decimal:
-    # The engine rounds the marginal rate half-up to 0.0001 like the average rate.
-    return rate.quantize(D("0.0001"), rounding=ROUND_HALF_UP)
 
 
 def _summary(salary: str) -> Worksheet:
@@ -87,7 +83,9 @@ def test_2026_runs_and_the_total_is_the_exact_sum_of_the_gated_parts(salary: str
     manitoba = _value(summary, MANITOBA_RATE)
     contribution = _value(summary, CONTRIBUTION)
 
-    assert _value(summary, MARGINAL) == _rounded(federal + manitoba + contribution)
+    assert _value(summary, MARGINAL) == (federal + manitoba + contribution).quantize(
+        ROUNDING, rounding=ROUND_HALF_UP
+    )
     assert _value(federal_sheet, FEDERAL_GATE) in (D("0"), D("1"))
     assert _value(summary, MANITOBA_GATE) in (D("0"), D("1"))
     assert federal == _value(federal_sheet, FEDERAL_GATE) * _value(

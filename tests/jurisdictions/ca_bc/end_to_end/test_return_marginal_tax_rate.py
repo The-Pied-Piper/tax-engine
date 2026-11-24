@@ -70,7 +70,7 @@ CONTRIBUTION = "ca-bc/marginal_contribution_rate"
 MARGINAL = "ca-bc/marginal_tax_rate"
 LINE_167 = "ca/refund_or_balance_owing"
 FOUR_PLACES = D("0.0001")
-ROUNDING = RoundTo(FOUR_PLACES, RoundingMode.HALF_UP)
+MARGINAL_ROUNDING = RoundTo(FOUR_PLACES, RoundingMode.HALF_UP)
 
 PARTS = (
     *(
@@ -233,7 +233,7 @@ def test_the_marginal_tax_rate_is_traced_as_one_sum_rounded_to_four_places_in_or
         (kinds.kind(BC_RATE).label, D(british_columbia)),
         (kinds.kind(CONTRIBUTION).label, D(contribution)),
     ]
-    assert line.rounding == ROUNDING
+    assert line.rounding == MARGINAL_ROUNDING
     assert line.total == D(marginal)
     assert line.amount == sheet.get(kinds.kind(MARGINAL)).value
 

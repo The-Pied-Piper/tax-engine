@@ -61,8 +61,8 @@
 # `ca-on/marginal_tax_rate`; it is rounded half-up to 0.0001 like the average rate, is not printed
 # on the form and has no title or line.
 # Narrow bands (the Ontario health premium rows, the EI band near $2,000, the Ontario tax reduction)
-# are slopes with a real rate inside each band, so the rate is a real slope there before rounding; the extra-run test steps
-# a smaller amount near them.
+# are slopes with a real rate inside each band, so the rate is a real slope there before rounding; the extra-run test
+# steps a smaller amount near them.
 capabilities:
   - name: core/record_total
     title: "Refund or balance owing"
