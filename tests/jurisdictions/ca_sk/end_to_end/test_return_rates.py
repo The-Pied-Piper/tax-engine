@@ -51,7 +51,7 @@ lower column, so the next cent of salary reads the next column's rate.
 from __future__ import annotations
 
 import re
-from decimal import ROUND_HALF_UP, Decimal
+from decimal import Decimal
 
 import pytest
 
@@ -76,12 +76,6 @@ SK_RATE = "ca-sk/saskatchewan_marginal_rate"
 MARGINAL = "ca-sk/marginal_tax_rate"
 AVERAGE = "ca-sk/average_tax_rate"
 TOTAL_PAYABLE = "ca/total_payable"
-DEDUCTIONS = "ca/return_total_deductions"
-CONTRIBUTIONS = (
-    "ca/return_cpp_base_contributions",
-    "ca/return_cpp_enhanced_contributions",
-    "ca/return_ei_premium",
-)
 BRACKET = "ca-sk/saskatchewan_bracket_rate_return"
 LINE_67_RETURN = "ca-sk/saskatchewan_tax_after_credits_return"
 RATE_GATE = "ca-sk/saskatchewan_rate_gate"
@@ -126,7 +120,6 @@ FIGURES = [
     ("200000", "39467.74", "22207.93", "0.29", "0.145", "0.435", "61675.67", "0.3359"),
 ]
 PART_FIGURES = [(s, f, k, m) for s, _, _, f, k, m, _, _ in FIGURES]
-AVERAGE_FIGURES = [(s, t, a) for s, _, _, _, _, _, t, a in FIGURES]
 TAX_FIGURES = [(s, f, k, t) for s, f, k, _, _, _, t, _ in FIGURES]
 
 
@@ -189,31 +182,14 @@ def test_the_total_payable_is_the_federal_tax_plus_the_saskatchewan_tax(
 ) -> None:
     worksheets = _worksheets(salary)
     (sk428,) = worksheets[SK428]
-    summary = _summary(salary)
+    (t1,) = worksheets["ca/t1_tax_and_credits"]
+    (summary,) = worksheets[RETURN]
 
     assert D(federal_tax) + D(saskatchewan_tax) == D(total_payable)
     assert _value(sk428, LINE_67) == D(saskatchewan_tax)
     assert _value(sk428, LINE_82) == D(saskatchewan_tax)
     assert _value(summary, LINE_67_RETURN) == D(saskatchewan_tax)
-    assert _value(summary, TOTAL_PAYABLE) == D(total_payable)
-
-
-def _deductions(summary: Worksheet) -> Decimal:
-    """The take-home deductions of a return summary: the income tax plus the CPP and the EI."""
-    return _value(summary, TOTAL_PAYABLE) + sum((_value(summary, n) for n in CONTRIBUTIONS), D(0))
-
-
-@pytest.mark.parametrize(("salary", "total_payable", "average"), AVERAGE_FIGURES)
-def test_the_average_rate_is_the_income_tax_cpp_and_ei_over_the_salary_half_up_to_ten_thousandths(
-    salary: str, total_payable: str, average: str
-) -> None:
-    summary = _summary(salary)
-
-    assert _value(summary, TOTAL_PAYABLE) == D(total_payable)
-    deductions = _deductions(summary)
-    assert _value(summary, DEDUCTIONS) == deductions
-    assert _value(summary, AVERAGE) == D(average)
-    assert (deductions / D(salary)).quantize(D("0.0001"), rounding=ROUND_HALF_UP) == D(average)
+    assert _value(t1, TOTAL_PAYABLE) == D(total_payable)
 
 
 def test_a_salary_of_100_reads_0_for_both_rates_and_both_parts() -> None:
@@ -320,11 +296,7 @@ def test_the_marginal_rate_comes_last_of_the_marginal_steps_in_the_trace() -> No
 
     marginal = labels.index(kinds.kind(MARGINAL).label)
 
-    # Only the two steps of the average rate (the total and the quotient) come after it.
-    assert labels[marginal + 1 :] == [
-        kinds.kind("ca/return_total_deductions").label,
-        kinds.kind(AVERAGE).label,
-    ]
+    assert marginal == len(labels) - 1
     assert labels.count(kinds.kind(MARGINAL).label) == 1
     for part in (FEDERAL, SK_RATE):
         assert labels.index(kinds.kind(part).label) < marginal

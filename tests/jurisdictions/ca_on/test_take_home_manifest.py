@@ -159,6 +159,7 @@ def test_the_federal_forms_are_imported_in_the_order_the_manifest_lists_them() -
         "ca/schedule_8",
         "ca/schedule_9",
         "ca/t2204",
+        "ca/take_home_average_rate",
         "ca/t691",
         "ca/take_home_marginal_rates",
     ]

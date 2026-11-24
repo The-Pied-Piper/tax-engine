@@ -298,11 +298,7 @@ def test_the_marginal_rate_comes_last_of_the_marginal_steps_in_the_trace(
 
     marginal = labels.index(kinds.kind(MARGINAL).label)
 
-    # Only the two steps of the average rate (the total and the quotient) come after it.
-    assert labels[marginal + 1 :] == [
-        kinds.kind("ca/return_total_deductions").label,
-        kinds.kind("ca-nl/average_tax_rate").label,
-    ]
+    assert marginal == len(labels) - 1
     assert labels.count(kinds.kind(MARGINAL).label) == 1
     for part in (FEDERAL, NL_RATE):
         assert labels.index(kinds.kind(part).label) < marginal

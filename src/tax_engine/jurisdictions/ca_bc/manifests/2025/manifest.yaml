@@ -45,4 +45,5 @@ imports:
   - ca/schedule_6
   - ca/schedule_8
   - ca/t2204
+  - ca/take_home_average_rate
   - ca/t691

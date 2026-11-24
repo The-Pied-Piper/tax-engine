@@ -2188,6 +2188,7 @@ REGISTERED = frozenset(
         "ca/return_cpp_enhanced_contributions",
         "ca/return_ei_premium",
         "ca/return_total_deductions",
+        "ca/average_tax_rate",
         "ca/marginal_salary",
         "ca/marginal_net_income",
         "ca/marginal_federal_bracket_column_rate",

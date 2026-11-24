@@ -134,15 +134,19 @@
     "lines": 54
    },
    {
+    "form": "ca/take_home_average_rate",
+    "lines": 7
+   },
+   {
     "form": "ca/take_home_marginal_rates",
     "lines": 30
    },
    {
     "form": "ca-on/return",
-    "lines": 40
+    "lines": 34
    }
   ],
-  "trace_sha256": "f61d328594db68686ae2f2a260f9bc240cde28ea8ef8f3e9da1dab854b7253a8"
+  "trace_sha256": "185db6c8eff32f586b7eb4b6c96140b1c38a3cf191041471727acfb38744e0c3"
  },
  {
   "jurisdiction": "CA-ON",
@@ -324,15 +328,19 @@
     "lines": 54
    },
    {
+    "form": "ca/take_home_average_rate",
+    "lines": 7
+   },
+   {
     "form": "ca/take_home_marginal_rates",
     "lines": 30
    },
    {
     "form": "ca-on/return",
-    "lines": 40
+    "lines": 34
    }
   ],
-  "trace_sha256": "d06e79e6383e22205fe66bc50d1e604d3b53c307660852ef7a6516e2b5fee570"
+  "trace_sha256": "508fd64edb65f30f3f34d318d47460f964731db437f700cc713baa95b9f96cf2"
  },
  {
   "jurisdiction": "CA-ON",
@@ -518,11 +526,15 @@
     "lines": 54
    },
    {
+    "form": "ca/take_home_average_rate",
+    "lines": 7
+   },
+   {
     "form": "ca-ab/return",
-    "lines": 20
+    "lines": 14
    }
   ],
-  "trace_sha256": "10a2da974e0eb5ffd87f2e758d434d18d41646b71d6fbb12028719002f26d466"
+  "trace_sha256": "bbf7073b9bc757eb36a1274929d1f3c406e81a379771068d8d597f7d4e9e3cf4"
  },
  {
   "jurisdiction": "CA-AB",
@@ -708,11 +720,15 @@
     "lines": 54
    },
    {
+    "form": "ca/take_home_average_rate",
+    "lines": 7
+   },
+   {
     "form": "ca-ab/return",
-    "lines": 20
+    "lines": 14
    }
   ],
-  "trace_sha256": "ecb623c8822cc2f2ba092f7c9679504d315a7c656f5f7d4d3de44fe866243809"
+  "trace_sha256": "83b60ca50524ff3764913a0c8939e3be08baa1124a1b25fdd6be23a80276762a"
  },
  {
   "jurisdiction": "CA-AB",
@@ -890,11 +906,15 @@
     "lines": 53
    },
    {
+    "form": "ca/take_home_average_rate",
+    "lines": 7
+   },
+   {
     "form": "ca-bc/return",
-    "lines": 26
+    "lines": 20
    }
   ],
-  "trace_sha256": "bdce426b2525a5ab8c3eaff75b19e49b11244e85b85ca1563c23b841a82b062c"
+  "trace_sha256": "3263317df4c784dfd71abf6d612322cc23768c635208d6d940754fa1ef659acc"
  },
  {
   "jurisdiction": "CA-BC",
@@ -1072,11 +1092,15 @@
     "lines": 53
    },
    {
+    "form": "ca/take_home_average_rate",
+    "lines": 7
+   },
+   {
     "form": "ca-bc/return",
-    "lines": 26
+    "lines": 20
    }
   ],
-  "trace_sha256": "3bea74a828e7b0c718589f1929438e186fc2be9520d0484a4b7f095b520f7bc4"
+  "trace_sha256": "faaffc74b302b7b422a7acd71ef1249b719af3a66497337457401092f2060b3e"
  },
  {
   "jurisdiction": "CA-BC",
@@ -1274,11 +1298,15 @@
     "lines": 53
    },
    {
+    "form": "ca/take_home_average_rate",
+    "lines": 7
+   },
+   {
     "form": "ca-mb/return",
-    "lines": 27
+    "lines": 21
    }
   ],
-  "trace_sha256": "ff540985b495bd2691a30b42ac61aa237e82d6ba59d6c430b7f0707c39052cb0"
+  "trace_sha256": "083c556cafb2bcdbf071fe3dae13ce19e0508d39e70d13ae4035581f3a7494ec"
  },
  {
   "jurisdiction": "CA-MB",
@@ -1476,11 +1504,15 @@
     "lines": 53
    },
    {
+    "form": "ca/take_home_average_rate",
+    "lines": 7
+   },
+   {
     "form": "ca-mb/return",
-    "lines": 27
+    "lines": 21
    }
   ],
-  "trace_sha256": "90b19a0f7d70d9b7dad14e831a0147dcc93f145f8b9bad6a2cf449f90605e1af"
+  "trace_sha256": "6f1e1d54729f2c9af29bd1d3301dcd2259932b621f97c74e813b7703a665b630"
  },
  {
   "jurisdiction": "CA-MB",
@@ -1662,11 +1694,15 @@
     "lines": 54
    },
    {
+    "form": "ca/take_home_average_rate",
+    "lines": 7
+   },
+   {
     "form": "ca-sk/return",
-    "lines": 17
+    "lines": 11
    }
   ],
-  "trace_sha256": "e0db810d48405ac15512fcf985b9a63f18caf6994cfa62cc3fdeddba67e7cd03"
+  "trace_sha256": "8152a539b6b8715190acbb64d6d415be129a6756ac3c86d05f92a47f304b8757"
  },
  {
   "jurisdiction": "CA-SK",
@@ -1848,11 +1884,15 @@
     "lines": 54
    },
    {
+    "form": "ca/take_home_average_rate",
+    "lines": 7
+   },
+   {
     "form": "ca-sk/return",
-    "lines": 17
+    "lines": 11
    }
   ],
-  "trace_sha256": "ae044c260d4c71a32c1b7d6c50f0d2f23d378ed0e9b62599403b7a822feec29b"
+  "trace_sha256": "29936b938f6a7ea6b6f15459304b72afce59b9df81e55d77bd9daeb99e031d19"
  },
  {
   "jurisdiction": "CA-SK",
@@ -2038,11 +2078,15 @@
     "lines": 54
    },
    {
+    "form": "ca/take_home_average_rate",
+    "lines": 7
+   },
+   {
     "form": "ca-nl/return",
-    "lines": 20
+    "lines": 14
    }
   ],
-  "trace_sha256": "523d2d03a295eba2d0e0eafa03f433f713255644b66eef37c9708811bc6a7cda"
+  "trace_sha256": "e4e28ea8f7f629a5d45c031f75b45d74df1d2dee4976b5a3124c72d61e4a9080"
  },
  {
   "jurisdiction": "CA-NL",
@@ -2228,11 +2272,15 @@
     "lines": 54
    },
    {
+    "form": "ca/take_home_average_rate",
+    "lines": 7
+   },
+   {
     "form": "ca-nl/return",
-    "lines": 20
+    "lines": 14
    }
   ],
-  "trace_sha256": "27e302001b463d1159f8d924d46c4f8ddcb0cc8d3111d66863526cad6ab49ee4"
+  "trace_sha256": "9b0ae91decdad84915df9500328d6241f6744840095e4193bd3c2a48ca9edd23"
  },
  {
   "jurisdiction": "CA-NL",

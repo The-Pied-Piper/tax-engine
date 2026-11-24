@@ -48,34 +48,6 @@ def test_the_return_still_totals_line_167_first() -> None:
     assert first["produces"] == {"output": "ca/refund_or_balance_owing"}
 
 
-def test_the_average_rate_divides_the_deductions_by_the_salary_rounded_half_up_once() -> None:
-    (total,) = _record_totals_of("ca/t1_tax_and_credits.total_payable")
-    (divide,) = _by_name("core/divide")
-    (deductions,) = [
-        step
-        for step in _by_name("core/sum")
-        if step["produces"] == {"output": "ca/return_total_deductions"}
-    ]
-
-    assert total["produces"] == {"output": "ca/total_payable"}
-    assert deductions["params"] == {"rounding": "ca-ab/exact_rounding"}
-    assert deductions["consumes"]["parts"] == [
-        "ca/total_payable",
-        "ca/return_cpp_base_contributions",
-        "ca/return_cpp_enhanced_contributions",
-        "ca/return_ei_premium",
-    ]
-    assert divide["params"] == {"rounding": "ca/take_home_average_rate_rounding"}
-    assert divide["consumes"] == {
-        "dividend": "ca/return_total_deductions",
-        "divisor": "ca/return_employment_income",
-    }
-    assert divide["produces"] == {"output": "ca-ab/average_tax_rate"}
-    assert divide["unit"] == "core/percent"
-    assert "title" not in divide
-    assert "reference" not in divide
-
-
 def test_the_return_reads_the_federal_line_73_rate_and_line_42900() -> None:
     (rate,) = _record_totals_of("ca/t1_tax_and_credits.federal_bracket_column_rate_line_73")
     (tax,) = _record_totals_of("ca/t1_tax_and_credits.federal_tax_after_credits")

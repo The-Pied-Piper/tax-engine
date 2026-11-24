@@ -57,13 +57,6 @@ FEDERAL = "ca/federal_marginal_rate"
 ALBERTA_RATE = "ca-ab/alberta_marginal_rate"
 MARGINAL = "ca-ab/marginal_tax_rate"
 AVERAGE = "ca-ab/average_tax_rate"
-TOTAL_PAYABLE = "ca/total_payable"
-DEDUCTIONS = "ca/return_total_deductions"
-CONTRIBUTIONS = (
-    "ca/return_cpp_base_contributions",
-    "ca/return_cpp_enhanced_contributions",
-    "ca/return_ei_premium",
-)
 LINE_75 = "ca-ab/ab428_alberta_tax_line_75"
 
 # Year, salary, federal part, Alberta part, marginal rate, T1 line 43500 total payable, average.
@@ -103,7 +96,6 @@ FIGURES = [
     (2026, "200000", "0.29", "0.13", "0.42", "56376.82", "0.3107"),
 ]
 PART_FIGURES = [(y, s, f, a, m) for y, s, f, a, m, _, _ in FIGURES]
-AVERAGE_FIGURES = [(y, s, t, r) for y, s, _, _, _, t, r in FIGURES]
 # Year, salary, AB428 line 75 (the anchors that must not move).
 LINE_75_ANCHORS = [
     (2025, "20000", "0.00"),
@@ -160,37 +152,12 @@ def test_the_marginal_rate_is_the_exact_sum_of_the_federal_and_the_alberta_part(
     assert D(federal) + D(alberta) == D(marginal)
 
 
-def _deductions(summary: Worksheet) -> Decimal:
-    """The take-home deductions of a return summary: the income tax plus the CPP and the EI."""
-    return _value(summary, TOTAL_PAYABLE) + sum((_value(summary, n) for n in CONTRIBUTIONS), D(0))
-
-
-@pytest.mark.parametrize(("year", "salary", "total_payable", "average"), AVERAGE_FIGURES)
-def test_the_average_rate_is_the_income_tax_cpp_and_ei_over_the_salary_half_up_to_ten_thousandths(
-    year: int, salary: str, total_payable: str, average: str
-) -> None:
-    summary = _summary(year, salary)
-
-    assert _value(summary, TOTAL_PAYABLE) == D(total_payable)
-    deductions = _deductions(summary)
-    assert _value(summary, DEDUCTIONS) == deductions
-    assert _value(summary, AVERAGE) == D(average)
-    assert (deductions / D(salary)).quantize(D("0.0001"), rounding="ROUND_HALF_UP") == D(average)
-
-
 @pytest.mark.parametrize("year", [2025, 2026])
 def test_a_salary_of_100_reads_0_for_both_rates(year: int) -> None:
     summary = _summary(year, "100")
 
     assert _value(summary, MARGINAL) == D("0")
     assert _value(summary, AVERAGE) == D("0")
-
-
-def test_the_2025_average_at_70000_is_23_17_percent() -> None:
-    summary = _summary(2025, "70000")
-
-    assert _value(summary, TOTAL_PAYABLE) == D("11183.76")
-    assert _value(summary, AVERAGE) == D("0.2317")
 
 
 @pytest.mark.parametrize(("year", "salary", "line_75"), LINE_75_ANCHORS)
@@ -276,11 +243,7 @@ def test_the_marginal_rate_comes_last_of_the_marginal_steps_in_the_trace(year: i
 
     marginal = labels.index(kinds.kind(MARGINAL).label)
 
-    # Only the two steps of the average rate (the total and the quotient) come after it.
-    assert labels[marginal + 1 :] == [
-        kinds.kind("ca/return_total_deductions").label,
-        kinds.kind(AVERAGE).label,
-    ]
+    assert marginal == len(labels) - 1
     assert labels.count(kinds.kind(MARGINAL).label) == 1
     for part in (FEDERAL, ALBERTA_RATE):
         assert labels.index(kinds.kind(part).label) < marginal

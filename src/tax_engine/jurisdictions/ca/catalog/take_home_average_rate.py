@@ -29,3 +29,9 @@ export, which the average rate adds."""
 RETURN_TOTAL_DEDUCTIONS = AmountKind.declare(CATALOG, "return_total_deductions", non_negative=True)
 """The take-home deductions added: the income tax (T1 line 43500), the CPP, the EI premium and, in
 Quebec, the QPIP premium. The average rate divides it by the salary."""
+
+AVERAGE_TAX_RATE = AmountKind.declare(CATALOG, "average_tax_rate", non_negative=True)
+"""Average tax rate on the take-home basis (no form prints it): the income tax, CPP (Schedule 8
+lines 25 and 28) and EI (T2204 line 16) together divided by the salary, as a fraction, so 0.1598
+is 15.98%. The federal form `ca/take_home_average_rate` exports it and each province's return
+summary reads it. Paid credits are not in it. It is 0 when the salary is 0."""

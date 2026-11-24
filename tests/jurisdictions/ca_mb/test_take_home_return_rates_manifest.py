@@ -29,12 +29,6 @@ PART = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "202
 # The produced kinds, in the order of the steps.
 OUTPUTS = [
     "ca/refund_or_balance_owing",
-    "ca/total_payable",
-    "ca/return_employment_income",
-    "ca/return_cpp_base_contributions",
-    "ca/return_cpp_enhanced_contributions",
-    "ca/return_ei_premium",
-    "ca/return_total_deductions",
     "ca-mb/average_tax_rate",
     "ca/federal_bracket_rate_return",
     "ca/federal_tax_after_credits_return",
@@ -93,30 +87,6 @@ def test_every_step_after_line_167_has_no_title_and_no_reference() -> None:
         assert "reference" not in step
 
 
-def test_the_average_rate_divides_the_deductions_by_the_salary_rounded_half_up_once() -> None:
-    total = _producing("ca/total_payable")
-    divide = _producing("ca-mb/average_tax_rate")
-    deductions = _producing("ca/return_total_deductions")
-
-    assert total["consumes"] == {"records": "ca/t1_tax_and_credits.total_payable"}
-    assert deductions["params"] == {"rounding": "ca-mb/exact_rounding"}
-    assert deductions["consumes"]["parts"] == [
-        "ca/total_payable",
-        "ca/return_cpp_base_contributions",
-        "ca/return_cpp_enhanced_contributions",
-        "ca/return_ei_premium",
-    ]
-    assert divide["params"] == {"rounding": "ca/take_home_average_rate_rounding"}
-    assert divide["consumes"] == {
-        "dividend": "ca/return_total_deductions",
-        "divisor": "ca/return_employment_income",
-    }
-    assert divide["produces"] == {"output": "ca-mb/average_tax_rate"}
-    assert divide["unit"] == "core/percent"
-    assert "title" not in divide
-    assert "reference" not in divide
-
-
 def test_the_federal_part_is_read_and_gated_as_the_british_columbia_one_through_the_mb_gate() -> (
     None
 ):
@@ -152,7 +122,6 @@ def test_only_the_phase_out_and_the_two_marginal_parts_are_sums() -> None:
     sums = [step for step in _steps() if step["name"] == "core/sum"]
 
     assert [step["produces"]["output"] for step in sums] == [
-        "ca/return_total_deductions",
         "ca-mb/manitoba_bracket_rate_with_phase_out",
         "ca-mb/marginal_tax_rate",
     ]
@@ -297,7 +266,4 @@ def test_every_gate_uses_its_table_and_every_product_and_sum_of_rates_rounds_not
         if step["name"] in {"core/multiply_by_rate", "core/sum"}:
             assert step["params"]["rounding"] == EXACT
     divides = [step for step in _steps() if step["name"] == "core/divide"]
-    assert [step["params"]["rounding"] for step in divides] == [
-        "ca/take_home_average_rate_rounding",
-        EXACT,
-    ]
+    assert [step["params"]["rounding"] for step in divides] == [EXACT]

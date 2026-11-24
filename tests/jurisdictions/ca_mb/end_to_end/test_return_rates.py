@@ -76,13 +76,6 @@ FEDERAL = "ca/federal_marginal_rate"
 MB_RATE = "ca-mb/manitoba_marginal_rate"
 MARGINAL = "ca-mb/marginal_tax_rate"
 AVERAGE = "ca-mb/average_tax_rate"
-TOTAL_PAYABLE = "ca/total_payable"
-DEDUCTIONS = "ca/return_total_deductions"
-CONTRIBUTIONS = (
-    "ca/return_cpp_base_contributions",
-    "ca/return_cpp_enhanced_contributions",
-    "ca/return_ei_premium",
-)
 BRACKET = "ca-mb/manitoba_bracket_rate_return"
 LINE_65_RETURN = "ca-mb/manitoba_tax_after_credits_return"
 RATE_GATE = "ca-mb/manitoba_rate_gate"
@@ -160,7 +153,6 @@ FIGURES = [
     ("410000", "0.33", "0.174", "0.504", "171862.43", "0.4326"),
 ]
 PART_FIGURES = [(s, f, m, t) for s, f, m, t, _, _ in FIGURES]
-AVERAGE_FIGURES = [(s, t, a) for s, _, _, _, t, a in FIGURES]
 # Salary, MB428 line 5 rate read: the rate is never blank. Taxable income 47,000.00 at 47,439.39 is
 # up to 47,000 (column 1) and 47,000.01 at 47,439.40 is above it; 100,000.00 at 101,074.00 is up to
 # 100,000 (column 2) and 100,000.01 at 101,074.01 is above it.
@@ -314,27 +306,6 @@ def test_the_marginal_rate_is_the_exact_sum_of_the_federal_and_the_manitoba_part
     assert D(federal) + D(manitoba) == D(marginal)
 
 
-def _deductions(summary: Worksheet) -> Decimal:
-    """The take-home deductions of a return summary: the income tax plus the CPP and the EI."""
-    return _value(summary, TOTAL_PAYABLE) + sum((_value(summary, n) for n in CONTRIBUTIONS), D(0))
-
-
-@pytest.mark.parametrize(("salary", "total_payable", "average"), AVERAGE_FIGURES)
-def test_the_average_rate_is_the_income_tax_cpp_and_ei_over_the_salary_half_up_to_ten_thousandths(
-    salary: str, total_payable: str, average: str
-) -> None:
-    summary = _summary(salary)
-
-    assert _value(summary, TOTAL_PAYABLE) == D(total_payable)
-    deductions = _deductions(summary)
-    assert _value(summary, DEDUCTIONS) == deductions
-    assert _value(summary, AVERAGE) == D(average)
-    if D(salary) > 0:
-        assert (deductions / D(salary)).quantize(D("0.0001"), rounding="ROUND_HALF_UP") == D(
-            average
-        )
-
-
 @pytest.mark.parametrize("salary", ["0", "100"])
 def test_a_salary_of_0_or_100_reads_0_for_both_rates(salary: str) -> None:
     summary = _summary(salary)
@@ -343,13 +314,6 @@ def test_a_salary_of_0_or_100_reads_0_for_both_rates(salary: str) -> None:
     assert _value(summary, AVERAGE) == D("0")
     assert _value(summary, FEDERAL) == D("0")
     assert _value(summary, MB_RATE) == D("0")
-
-
-def test_the_2025_average_at_70000_is_26_24_percent() -> None:
-    summary = _summary("70000")
-
-    assert _value(summary, TOTAL_PAYABLE) == D("13333.23")
-    assert _value(summary, AVERAGE) == D("0.2624")
 
 
 @pytest.mark.parametrize(("salary", "line_5"), BRACKET_FIGURES)
@@ -500,11 +464,7 @@ def test_the_marginal_rate_comes_last_of_the_marginal_steps_in_the_trace() -> No
 
     marginal = labels.index(kinds.kind(MARGINAL).label)
 
-    # Only the two steps of the average rate (the total and the quotient) come after it.
-    assert labels[marginal + 1 :] == [
-        kinds.kind("ca/return_total_deductions").label,
-        kinds.kind(AVERAGE).label,
-    ]
+    assert marginal == len(labels) - 1
     assert labels.count(kinds.kind(MARGINAL).label) == 1
     for part in (FEDERAL, MB_RATE, WITH_PHASE_OUT, PHASE_OUT, CREDIT_RATE, RATIO, SLOPE):
         assert labels.index(kinds.kind(part).label) < marginal

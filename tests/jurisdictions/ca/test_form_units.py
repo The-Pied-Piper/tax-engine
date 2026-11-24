@@ -55,6 +55,8 @@ EXCEPTIONS: dict[str, str | None] = {
     "ca/marginal_federal_rate_after_credits": "core/percent",
     "ca/marginal_federal_rate": "core/percent",
     "ca/marginal_contribution_rate": "core/percent",
+    # The take-home average rate form divides the deductions by the salary.
+    "ca/average_tax_rate": "core/percent",
 }
 
 
