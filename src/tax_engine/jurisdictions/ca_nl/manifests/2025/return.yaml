@@ -30,16 +30,16 @@
 # The low-income tax reduction (NL428 lines 95 to 104) is in the rate, because it changes line 105
 # and so T1 line 43500: while NL428 line 101 (the income over the low-income threshold) and line
 # 104 (the reduction left) are both above zero, a further dollar of net income takes 16%
-# (`ca-nl/low_income_reduction_rate`, NL428 line 102 "Applicable rate 16%") off the reduction. The two gates are
-# multiplied, the rate follows, and it is multiplied by the net income rate.
+# (`ca-nl/low_income_reduction_rate`, NL428 line 102 "Applicable rate 16%") off the reduction. The
+# two gates are multiplied, the rate follows, and it is multiplied by the net income rate.
 #
 # The whole provincial part is counted only while NL428 line 105 "Line 94 minus line 104 (if
 # negative, enter "0")", the tax that goes to T1 line 42800, is above zero, through the
 # `ca-nl/marginal_rate_gate` dataset (0 where the amount is 0.00, 1 from one cent). Newfoundland
 # and Labrador has no surtax and no health premium. The rate is the one of a salary-only filer, as
-# the take-home calculator takes only the salary: the optional inputs (the age amount, NL428 line 17,
-# and the medical expenses, lines 49 to 53) are left blank there, so their slopes are not built (the
-# Ontario rate leaves its optional inputs out the same way).
+# the take-home calculator takes only the salary: the optional inputs (the age amount, NL428
+# line 17, and the medical expenses, lines 49 to 53) are left blank there, so their slopes are not
+# built (the Ontario rate leaves its optional inputs out the same way).
 #
 # The last step adds the federal marginal rate, the Newfoundland and Labrador marginal rate and
 # the contribution rate (CPP base, enhanced and second additional, and EI) with core/sum into

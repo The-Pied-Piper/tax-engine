@@ -92,6 +92,12 @@ BREAKS: dict[tuple[int, int], tuple[int, int, str]] = {
     (2026, 59_000): (59_000, 25, "the federal bracket at the second row's start"),
     (2026, 182_500): (182_500, 25, "the federal basic personal amount starts to fall"),
 }
+# The same, for breaks that no $250 grid run starts inside: a $100 run from this salary crosses
+# the break, and the rate is checked from the start after it.
+OFF_GRID_BREAKS: dict[tuple[int, int], tuple[int, int, str]] = {
+    (2025, 30_333): (30_430, 25, "the low-income tax reduction (NL428 line 104) is used up"),
+    (2026, 68_811): (68_901, 25, "the EI maximum yearly insurable earnings is $68,900"),
+}
 
 
 @cache
@@ -147,6 +153,14 @@ def test_the_marginal_rate_agrees_with_the_double_run_every_250_dollars(year: in
 def test_a_break_agrees_with_the_double_run_over_a_smaller_step(year: int, salary: int) -> None:
     start, step, _reason = BREAKS[(year, salary)]
 
+    assert abs(_marginal_rate(year, start) - _extra_run(year, start, step)) <= TOLERANCE
+
+
+@pytest.mark.parametrize(("year", "salary"), sorted(OFF_GRID_BREAKS))
+def test_an_off_grid_break_is_one_the_100_dollar_run_crosses(year: int, salary: int) -> None:
+    start, step, _reason = OFF_GRID_BREAKS[(year, salary)]
+
+    assert abs(_marginal_rate(year, salary) - _extra_run(year, salary, STEP)) > TOLERANCE
     assert abs(_marginal_rate(year, start) - _extra_run(year, start, step)) <= TOLERANCE
 
 
