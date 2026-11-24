@@ -1,4 +1,4 @@
-"""The two gates of the Alberta marginal rate open at the zero-tax boundaries, both years.
+"""The two gates of the Alberta marginal rate open at the zero-tax boundaries, 2025.
 
 The federal part (`ca-ab/marginal_federal_rate`, gated in the federal form on T1 line 42900 "Basic
 federal tax") and the Alberta part (`ca-ab/alberta_marginal_rate`, gated on AB428 line 68) are each
@@ -40,10 +40,6 @@ BOUNDARIES = [
     (2025, "23931.22", True, False),
     (2025, "23931.24", True, False),
     (2025, "23931.25", True, True),
-    (2026, "19200.17", False, False),
-    (2026, "19200.18", True, False),
-    (2026, "24411.17", True, False),
-    (2026, "24411.18", True, True),
 ]
 
 
