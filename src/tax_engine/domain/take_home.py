@@ -61,15 +61,15 @@ class TakeHomeFigures:
 
     `salary` is the kind of the one input the caller gives. `income_tax` is the figure of that
     name; `deductions` are the other figures taken off the salary, each under the name its answer
-    carries. The total taken off the salary is `income_tax` plus every one of them. The two rates
-    are declared only where the jurisdiction's return computes them.
+    carries. The total taken off the salary is `income_tax` plus every one of them. The marginal
+    rate is declared only where the jurisdiction's return computes it; the average rate is not
+    declared, the service works it out from the total.
     """
 
     salary: str
     income_tax: FigureReference
     deductions: tuple[tuple[str, FigureReference], ...]
-    average_income_tax_rate: FigureReference | None = None
-    marginal_income_tax_rate: FigureReference | None = None
+    marginal_tax_rate: FigureReference | None = None
 
     INCOME_TAX = "income_tax"
 
@@ -87,11 +87,11 @@ class TakeHomeFigures:
 
     @property
     def references(self) -> tuple[FigureReference, ...]:
-        """Every figure that is read, rates included."""
-        rates = (self.average_income_tax_rate, self.marginal_income_tax_rate)
+        """Every figure that is read, the marginal rate included."""
+        rate = self.marginal_tax_rate
         return (
             *(reference for _, reference in self.figures),
-            *(rate for rate in rates if rate is not None),
+            *(() if rate is None else (rate,)),
         )
 
 

@@ -33,13 +33,12 @@ def test_the_salary_is_the_only_required_input() -> None:
     assert required == {SALARY}
 
 
-def test_the_return_exports_line_167_and_the_marginal_and_average_rates() -> None:
+def test_the_return_exports_line_167_and_the_marginal_rate() -> None:
     # The federal marginal rate, the Ontario marginal rate and the health premium slope are read
     # inside the return by the final sum, so they are no longer exported (nor are the gates).
     (default,) = (form for form in _manifest().forms if form.name == "ca-on/return")
 
     assert set(default.exports) == {
-        "ca-on/average_income_tax_rate",
         "ca-on/marginal_tax_rate",
         "ca/refund_or_balance_owing",
     }
@@ -259,11 +258,10 @@ def test_the_return_calculates_the_take_home_marginal_rate_one_capability_per_li
     assert steps[start:] == MARGINAL_RATE_STEPS
 
 
-def test_the_return_exports_no_rate_part_but_line_167_and_the_two_rates() -> None:
+def test_the_return_exports_no_rate_part_but_line_167_and_the_marginal_rate() -> None:
     (default,) = (form for form in _manifest().forms if form.name == "ca-on/return")
 
     assert set(default.exports) == {
-        "ca-on/average_income_tax_rate",
         "ca-on/marginal_tax_rate",
         "ca/refund_or_balance_owing",
     }

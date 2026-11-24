@@ -21,7 +21,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.0000",
    "unit": {
     "name": "core/percent",
@@ -32,7 +32,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0",
    "unit": {
     "name": "core/percent",
@@ -66,7 +66,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.2362",
    "unit": {
     "name": "core/percent",
@@ -77,7 +77,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.34335775",
    "unit": {
     "name": "core/percent",
@@ -135,10 +135,10 @@
    },
    {
     "form": "ca-on/return",
-    "lines": 48
+    "lines": 46
    }
   ],
-  "trace_sha256": "56ae79042ae3e739d2ce2d89bacc04ea225f9e330a51b0a806ca451c135f3bd7"
+  "trace_sha256": "12618e2ac12f53a7ffc5ef25c2cb73461b25c8e441c38d07949dfdf453ffff00"
  },
  {
   "jurisdiction": "CA-ON",
@@ -162,7 +162,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.3761",
    "unit": {
     "name": "core/percent",
@@ -173,7 +173,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.4983502655",
    "unit": {
     "name": "core/percent",
@@ -207,7 +207,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.0000",
    "unit": {
     "name": "core/percent",
@@ -218,7 +218,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0",
    "unit": {
     "name": "core/percent",
@@ -252,7 +252,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.2316",
    "unit": {
     "name": "core/percent",
@@ -263,7 +263,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.34360525",
    "unit": {
     "name": "core/percent",
@@ -321,10 +321,10 @@
    },
    {
     "form": "ca-on/return",
-    "lines": 48
+    "lines": 46
    }
   ],
-  "trace_sha256": "c1fea067894cd3f6f6e015b9ddc29cff796473b51ff57f5de56e30d475674d6a"
+  "trace_sha256": "7c8a85efadbc7b8e85254668aaec234c44c07b8d1a69c14e17b6b0a9ee6a5c9b"
  },
  {
   "jurisdiction": "CA-ON",
@@ -348,7 +348,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.3738",
    "unit": {
     "name": "core/percent",
@@ -359,7 +359,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.498245296",
    "unit": {
     "name": "core/percent",
@@ -393,7 +393,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.0000",
    "unit": {
     "name": "core/percent",
@@ -404,7 +404,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0",
    "unit": {
     "name": "core/percent",
@@ -438,7 +438,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.2317",
    "unit": {
     "name": "core/percent",
@@ -449,7 +449,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.305",
    "unit": {
     "name": "core/percent",
@@ -538,7 +538,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.3355",
    "unit": {
     "name": "core/percent",
@@ -549,7 +549,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.43",
    "unit": {
     "name": "core/percent",
@@ -583,7 +583,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.0000",
    "unit": {
     "name": "core/percent",
@@ -594,7 +594,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0",
    "unit": {
     "name": "core/percent",
@@ -628,7 +628,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.2270",
    "unit": {
     "name": "core/percent",
@@ -639,7 +639,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.305",
    "unit": {
     "name": "core/percent",
@@ -728,7 +728,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.3333",
    "unit": {
     "name": "core/percent",
@@ -739,7 +739,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.43",
    "unit": {
     "name": "core/percent",
@@ -773,7 +773,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.0000",
    "unit": {
     "name": "core/percent",
@@ -784,7 +784,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0",
    "unit": {
     "name": "core/percent",
@@ -818,7 +818,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.2255",
    "unit": {
     "name": "core/percent",
@@ -829,7 +829,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.282",
    "unit": {
     "name": "core/percent",
@@ -910,7 +910,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.3490",
    "unit": {
     "name": "core/percent",
@@ -921,7 +921,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.458",
    "unit": {
     "name": "core/percent",
@@ -955,7 +955,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.0000",
    "unit": {
     "name": "core/percent",
@@ -966,7 +966,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0",
    "unit": {
     "name": "core/percent",
@@ -1000,7 +1000,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.2236",
    "unit": {
     "name": "core/percent",
@@ -1011,7 +1011,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.282",
    "unit": {
     "name": "core/percent",
@@ -1092,7 +1092,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.3471",
    "unit": {
     "name": "core/percent",
@@ -1103,7 +1103,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.458",
    "unit": {
     "name": "core/percent",
@@ -1137,7 +1137,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.0000",
    "unit": {
     "name": "core/percent",
@@ -1148,7 +1148,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0",
    "unit": {
     "name": "core/percent",
@@ -1182,7 +1182,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.2624",
    "unit": {
     "name": "core/percent",
@@ -1193,7 +1193,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.3325",
    "unit": {
     "name": "core/percent",
@@ -1294,7 +1294,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.3824",
    "unit": {
     "name": "core/percent",
@@ -1305,7 +1305,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.4725212",
    "unit": {
     "name": "core/percent",
@@ -1339,7 +1339,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.0000",
    "unit": {
     "name": "core/percent",
@@ -1350,7 +1350,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0",
    "unit": {
     "name": "core/percent",
@@ -1384,7 +1384,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.2586",
    "unit": {
     "name": "core/percent",
@@ -1395,7 +1395,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.3325",
    "unit": {
     "name": "core/percent",
@@ -1496,7 +1496,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.3810",
    "unit": {
     "name": "core/percent",
@@ -1507,7 +1507,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.4725212",
    "unit": {
     "name": "core/percent",
@@ -1541,7 +1541,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.0000",
    "unit": {
     "name": "core/percent",
@@ -1552,7 +1552,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0",
    "unit": {
     "name": "core/percent",
@@ -1586,7 +1586,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.2530",
    "unit": {
     "name": "core/percent",
@@ -1597,7 +1597,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.33",
    "unit": {
     "name": "core/percent",
@@ -1682,7 +1682,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.3563",
    "unit": {
     "name": "core/percent",
@@ -1693,7 +1693,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.435",
    "unit": {
     "name": "core/percent",
@@ -1727,7 +1727,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.0000",
    "unit": {
     "name": "core/percent",
@@ -1738,7 +1738,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0",
    "unit": {
     "name": "core/percent",
@@ -1772,7 +1772,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.2476",
    "unit": {
     "name": "core/percent",
@@ -1783,7 +1783,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.33",
    "unit": {
     "name": "core/percent",
@@ -1868,7 +1868,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.3542",
    "unit": {
     "name": "core/percent",
@@ -1879,7 +1879,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.435",
    "unit": {
     "name": "core/percent",
@@ -1913,7 +1913,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.0000",
    "unit": {
     "name": "core/percent",
@@ -1924,7 +1924,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0",
    "unit": {
     "name": "core/percent",
@@ -1958,7 +1958,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.2681",
    "unit": {
     "name": "core/percent",
@@ -1969,7 +1969,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.35",
    "unit": {
     "name": "core/percent",
@@ -2058,7 +2058,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.3851",
    "unit": {
     "name": "core/percent",
@@ -2069,7 +2069,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.488",
    "unit": {
     "name": "core/percent",
@@ -2103,7 +2103,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.0000",
    "unit": {
     "name": "core/percent",
@@ -2114,7 +2114,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0",
    "unit": {
     "name": "core/percent",
@@ -2148,7 +2148,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.2614",
    "unit": {
     "name": "core/percent",
@@ -2159,7 +2159,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.35",
    "unit": {
     "name": "core/percent",
@@ -2248,7 +2248,7 @@
    "spaced": false,
    "as_percentage": false
   },
-  "average_income_tax_rate": {
+  "average_tax_rate": {
    "value": "0.3825",
    "unit": {
     "name": "core/percent",
@@ -2259,7 +2259,7 @@
     "as_percentage": true
    }
   },
-  "marginal_income_tax_rate": {
+  "marginal_tax_rate": {
    "value": "0.488",
    "unit": {
     "name": "core/percent",

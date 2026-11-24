@@ -48,8 +48,7 @@ take_home:
     cpp_enhanced: {form: ca/schedule_8, kind: ca/cpp_part_3_line_12}
     cpp2: {form: ca/schedule_8, kind: ca/cpp_part_3_line_22}
     ei: {form: ca/t2204, kind: ca/t2204_line_16}
-  average_income_tax_rate: {form: ca-nl/return, kind: ca-nl/average_income_tax_rate}
-  marginal_income_tax_rate: {form: ca-nl/return, kind: ca-nl/marginal_tax_rate}
+  marginal_tax_rate: {form: ca-nl/return, kind: ca-nl/marginal_tax_rate}
 imports:
   - ca/t1_employment_income
   - ca/t1_taxable_income

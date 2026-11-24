@@ -86,7 +86,7 @@ class TakeHomeService:
             income_tax=totals.income_tax,
             take_home=totals.take_home,
             unit=self._text.unit(unit),
-            average_income_tax_rate=(
+            average_tax_rate=(
                 Rate(
                     average_rate(totals.salary, totals.total_deductions),
                     self._text.unit(self._percent),
@@ -94,8 +94,8 @@ class TakeHomeService:
                 if request.include_rates
                 else None
             ),
-            marginal_income_tax_rate=(
-                self._rate(who, sheets, kinds, declared.marginal_income_tax_rate)
+            marginal_tax_rate=(
+                self._rate(who, sheets, kinds, declared.marginal_tax_rate)
                 if request.include_rates
                 else None
             ),

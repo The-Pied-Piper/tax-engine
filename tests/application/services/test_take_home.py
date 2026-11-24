@@ -91,8 +91,8 @@ def test_answers_match_what_tax_service_gave(service: TakeHomeService, case: Cas
     assert str(got.take_home) == want["take_home"]
     assert _unit(got.unit) == want["unit"]
     for rate, key in (
-        (got.average_income_tax_rate, "average_income_tax_rate"),
-        (got.marginal_income_tax_rate, "marginal_income_tax_rate"),
+        (got.average_tax_rate, "average_tax_rate"),
+        (got.marginal_tax_rate, "marginal_tax_rate"),
     ):
         assert rate is not None
         assert str(rate.value) == want[key]["value"]
@@ -122,17 +122,17 @@ def test_rates_are_left_out_unless_asked_for(service: TakeHomeService) -> None:
     request = TakeHomeRequest(JurisdictionCode("CA-ON"), 2025, Decimal(70000))
     assert request.include_rates is False
     got = service.compute(request)
-    assert got.average_income_tax_rate is None
-    assert got.marginal_income_tax_rate is None
+    assert got.average_tax_rate is None
+    assert got.marginal_tax_rate is None
 
 
 def test_average_rate_is_total_deductions_over_salary(service: TakeHomeService) -> None:
     got = service.compute(
         TakeHomeRequest(JurisdictionCode("CA-ON"), 2025, Decimal(70000), include_rates=True)
     )
-    assert got.average_income_tax_rate is not None
-    assert got.average_income_tax_rate.value == Decimal("0.2362")
-    assert got.average_income_tax_rate.unit.name == "core/percent"
+    assert got.average_tax_rate is not None
+    assert got.average_tax_rate.value == Decimal("0.2362")
+    assert got.average_tax_rate.unit.name == "core/percent"
 
 
 @pytest.mark.parametrize(
@@ -211,5 +211,5 @@ def test_quebec_takes_off_both_returns_the_pension_plan_ei_and_qpip(
     assert str(got.take_home) == take_home
     assert str(got.income_tax) == figures["income_tax"]
     # Quebec's return does not compute the two rates yet, so it declares none.
-    assert got.average_income_tax_rate is None
-    assert got.marginal_income_tax_rate is None
+    assert got.average_tax_rate is None
+    assert got.marginal_tax_rate is None

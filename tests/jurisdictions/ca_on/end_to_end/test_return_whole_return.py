@@ -28,7 +28,6 @@ from tests.kinds import bundled_kinds
 D = Decimal
 ONTARIO = JurisdictionCode("CA-ON")
 RETURN = "ca-on/return"
-AVERAGE_RATE = "ca-on/average_income_tax_rate"
 MARGINAL_RATE = "ca-on/marginal_tax_rate"
 
 YEARS = [2025, 2026]
@@ -76,17 +75,14 @@ def test_the_validation_take_home_figures(year: int, salary: str, take_home: str
 
 @pytest.mark.parametrize("year", YEARS)
 @pytest.mark.parametrize("salary", SALARIES)
-def test_every_dataset_exists_for_the_year_and_the_return_carries_both_rates(
+def test_every_dataset_exists_for_the_year_and_the_return_carries_the_marginal_rate(
     year: int, salary: str
 ) -> None:
     kinds = bundled_kinds()
     (summary,) = _worksheets(year, salary)[RETURN]
 
-    average = summary.get(kinds.kind(AVERAGE_RATE)).value
     marginal = summary.get(kinds.kind(MARGINAL_RATE)).value
-    assert isinstance(average, Decimal)
     assert isinstance(marginal, Decimal)
-    assert D("0") <= average <= D("1")
     assert D("0") <= marginal <= D("1")
 
 
@@ -95,6 +91,5 @@ def test_no_tax_and_no_rates_at_a_salary_of_0(year: int) -> None:
     kinds = bundled_kinds()
     (summary,) = _worksheets(year, "0")[RETURN]
 
-    assert summary.get(kinds.kind(AVERAGE_RATE)).value == D("0")
     assert summary.get(kinds.kind(MARGINAL_RATE)).value == D("0")
     assert _take_home(year, "0") == D("0")

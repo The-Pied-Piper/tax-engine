@@ -34,7 +34,6 @@ DERIVATION_PREFIX = "# Derivation: carried forward unchanged from the 2025 file;
 FAMILIES: list[tuple[str, ParameterKind[Any]]] = [
     ("ca/cent_rounding", ROUNDING_ONLY),
     ("ca-on/cent_rounding", ROUNDING_ONLY),
-    ("ca-on/rate_rounding", ROUNDING_ONLY),
     ("ca/cwb_rate", RATE),
     ("ca/cwb_reduction_rate", RATE),
     ("ca/t2204_exemption", CREDIT),

@@ -4,9 +4,9 @@
 # forms are imported by name below, their parts in the `ca` package (`ca/forms/<name>/`).
 #
 # The default form's exports are T1 line 167, refund or balance owing (positive is owing, negative
-# is a refund), the average income tax rate (`ca-on/average_income_tax_rate`, total payable over
-# salary) and the marginal tax rate (`ca-on/marginal_tax_rate`, the federal marginal rate plus the
-# Ontario marginal rate plus the health premium slope, which the return reads from their own steps).
+# is a refund) and the marginal tax rate (`ca-on/marginal_tax_rate`, the sum of the federal,
+# Ontario, health premium and contribution (CPP, CPP2, EI) rates, which the return reads from its own
+# steps). The average rate is not exported: the take-home service works it out from the deductions.
 # The CPP and EI figures the calculator also needs are exported by their own forms (Schedule 8 and
 # T2204, both imported); the calculator reads them from their forms.
 jurisdiction: CA-ON
@@ -16,7 +16,6 @@ valid_from_tax_year: 2025
 title: Return summary
 outputs:
   - ca/refund_or_balance_owing
-  - ca-on/average_income_tax_rate
   - ca-on/marginal_tax_rate
 capabilities: []
 # Where the take-home answer reads its figures (the caller gives the salary and nothing else): the
@@ -29,8 +28,7 @@ take_home:
     cpp_enhanced: {form: ca/schedule_8, kind: ca/cpp_part_3_line_12}
     cpp2: {form: ca/schedule_8, kind: ca/cpp_part_3_line_22}
     ei: {form: ca/t2204, kind: ca/t2204_line_16}
-  average_income_tax_rate: {form: ca-on/return, kind: ca-on/average_income_tax_rate}
-  marginal_income_tax_rate: {form: ca-on/return, kind: ca-on/marginal_tax_rate}
+  marginal_tax_rate: {form: ca-on/return, kind: ca-on/marginal_tax_rate}
 imports:
   - ca/t1_employment_income
   - ca/t1_taxable_income
