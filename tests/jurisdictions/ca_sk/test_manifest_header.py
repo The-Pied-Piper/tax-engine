@@ -56,6 +56,7 @@ def test_the_federal_forms_are_imported_in_order() -> None:
         "ca/t2204",
         "ca/take_home_average_rate",
         "ca/t691",
+        "ca/take_home_marginal_rates",
     ]
 
 
