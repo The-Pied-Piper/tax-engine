@@ -110,7 +110,7 @@ SALARIES = (
     250_000,
     300_000,
 )
-# (tax year, salary): a smaller step near a narrow band, so the extra run does not cross the
+# salary: a smaller step near a narrow band, so the extra run does not cross the
 # band's end. Each is followed by the break the $100 run would cross.
 NARROW_BAND_STEPS = {
     # The EI band of T2204 line 16 ($2,000 to $2,033) is narrower than $100.
