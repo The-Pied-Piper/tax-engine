@@ -1,7 +1,7 @@
 # Marginal rate gate, 2025 tax year. Not a CRA figure and not printed on any form: the rows are a
 # switch the British Columbia return summary uses so that a rate counts only where its own tax is
 # above zero. A base of 0.00 gives the rate 0 and a base of one cent or more gives the rate 1; the
-# summary reads T1 line 42900 "Basic federal tax", BC428 line 80 "Line 72 minus line 79" and BC428
+# summary reads BC428 line 80 "Line 72 minus line 79" and BC428
 # line 79 (the British Columbia tax reduction) through it. The form is listed as a source only
 # because the gated figures, BC428 lines 79 and 80, are on it; the rows are not from it.
 # A base exactly at a row's `over` is in the lower band, so the second row starts above 0.005: no

@@ -7,7 +7,7 @@ over the T1 form's export `ca/t1_tax_and_credits.refund_or_balance_owing`, a cro
 (another form's export is read only as a record list), producing the return's own
 `ca/refund_or_balance_owing`. Positive is a balance owing, negative a refund. The step has no `form`
 key (the return is the default form) and no params. The steps after it read the figures of the two
-rates (`end_to_end/test_return_rates.py`); here they run over stand-ins.
+rates (`end_to_end/test_return_marginal_tax_rate.py`); here they run over stand-ins.
 
 The test composes the T1 employment income form and the real `return.yaml` over
 a temporary manifest. The header, the declaration of the T1 tax and credits form (exporting
@@ -125,7 +125,7 @@ T1_STEP = dedent("""\
 
 # Stand-ins for the other figures the return reads (the total payable, the rates, the taxes and the
 # reduction): each is the salary itself, a made-up figure, because this test is about line 167 only;
-# the rates are in `end_to_end/test_return_rates.py`. Form, output kind, unit.
+# the rates are in `end_to_end/test_return_marginal_tax_rate.py`. Form, output kind, unit.
 OTHER_STEPS = [
     ("ca/t1_tax_and_credits", "ca/total_payable", "ca/cad"),
     ("ca-bc/bc428", "ca-bc/bc428_bracket_rate_line_5", "core/percent"),

@@ -101,15 +101,6 @@ def _summary(take_home_service: TakeHomeService, salary: str) -> Worksheet:
     return summary
 
 
-def _bundled_summary(salary: str) -> Worksheet:
-    # No fixture: the bundled British Columbia manifest, as the calculator loads it.
-    worksheets = build_tax_computation().compute(
-        TaxCalculationRequest(BRITISH_COLUMBIA, 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),))
-    )
-    (summary,) = worksheets[RETURN]
-    return summary
-
-
 def _sum_line(sheet: Worksheet) -> SumLine:
     """The one trace line of the marginal tax rate step, found by its output kind."""
     label = bundled_kinds().kind(MARGINAL).label
@@ -149,7 +140,13 @@ def test_the_marginal_tax_rate_is_the_exact_sum_of_the_three_rates(
 
 
 def test_the_bundled_return_gives_32_9_percent_at_70000() -> None:
-    assert _bundled_summary("70000").get(bundled_kinds().kind(MARGINAL)).value == D("0.3289978")
+    # No fixture: the bundled British Columbia manifest, as the calculator loads it.
+    worksheets = build_tax_computation().compute(
+        TaxCalculationRequest(BRITISH_COLUMBIA, 2025, (Artifact(EMPLOYMENT_INCOME, D("70000")),))
+    )
+    (summary,) = worksheets[RETURN]
+
+    assert summary.get(bundled_kinds().kind(MARGINAL)).value == D("0.3289978")
 
 
 def test_the_70000_take_home_stays_54217_74(
@@ -179,7 +176,11 @@ def test_the_70000_take_home_stays_54217_74(
 
 def test_the_marginal_tax_rate_is_not_rounded_to_the_cent() -> None:
     # 0.2930542655 + 0.168 = 0.4610542655 keeps all its places: no cent rule is applied.
-    value = _bundled_summary("200000").get(bundled_kinds().kind(MARGINAL)).value
+    worksheets = build_tax_computation().compute(
+        TaxCalculationRequest(BRITISH_COLUMBIA, 2025, (Artifact(EMPLOYMENT_INCOME, D("200000")),))
+    )
+    (summary,) = worksheets[RETURN]
+    value = summary.get(bundled_kinds().kind(MARGINAL)).value
 
     assert value == D("0.4610542655")
     assert value.as_tuple().exponent == -10

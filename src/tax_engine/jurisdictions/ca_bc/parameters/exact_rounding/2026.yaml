@@ -2,7 +2,7 @@
 # Derivation: carried forward unchanged from the 2025 file; the 2026 form is not yet published.
 # British Columbia exact rounding, 2026 tax year: the rule for a British Columbia figure that is not
 # a dollars-and-cents box, the gated rates and the marginal rates on the return summary (a gate
-# times the T1 line 73 or BC428 line 5 or 12 rate or the reduction's slope, core/multiply_by_rate,
+# times the BC428 line 5 or 12 rate or the reduction's slope, core/multiply_by_rate,
 # and the sums of rates, core/sum). They are exact and the forms print no rounding rule for them
 # (the project's choice is no rounding); the form is cited for lines 5, 12, 78, 79 and 80 only. The
 # cent rule of `ca-bc/cent_rounding` does not apply.
