@@ -5,8 +5,8 @@ Each figure is worked from the printed rates.
 The marginal rate (`ca-nl/marginal_tax_rate`) is the extra take-home deductions on a further dollar
 of salary, for a salary-only filer: the federal and Newfoundland and Labrador income tax rates and
 the CPP, CPP2 and EI rates. Each figure below is the exact sum of its parts, and the parts are the
-printed rates (T1 "Line 73: Rate", NL428 "Line 5: Rate" and "Line 12: Rate", NL428 line 103 "Rate
-16%", Schedule 8 lines 11, 12 and 22, T2204 lines 10 and 16), with the net income rate
+printed rates (T1 "Line 73: Rate", NL428 "Line 5: Rate" and "Line 12: Rate", NL428 line 102
+"Applicable rate 16%", Schedule 8 lines 11, 12 and 22, T2204 lines 10 and 16), with the net income rate
 N = 1 - enhanced CPP rate - CPP2 rate (T1 line 22215 takes the enhanced and the second additional
 contributions off the income) and the credits at the federal and the Newfoundland and Labrador
 credit rate on the CPP base and EI rates:

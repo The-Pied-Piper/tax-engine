@@ -12,7 +12,7 @@
 # `ca/take_home_average_rate` works it out once for every province (income tax, CPP and EI over the
 # salary), and the return reads its export `ca/average_tax_rate` with one core/record_total.
 #
-# The marginal rate is the rate on the take-home basis (Umar, 23 and 24 Nov 2026): the change in
+# The marginal rate is the rate on the take-home basis: the change in
 # T1 line 43500 plus the CPP, CPP2 and EI per further dollar of salary, with no credit paid on
 # filing. The federal half is the shared federal form `ca/take_home_marginal_rates` (imported by
 # the manifest), whose four exports are each totalled by core/record_total into this return's own
@@ -30,7 +30,7 @@
 # The low-income tax reduction (NL428 lines 95 to 104) is in the rate, because it changes line 105
 # and so T1 line 43500: while NL428 line 101 (the income over the low-income threshold) and line
 # 104 (the reduction left) are both above zero, a further dollar of net income takes 16%
-# (`ca-nl/low_income_reduction_rate`, NL428 line 103) off the reduction. The two gates are
+# (`ca-nl/low_income_reduction_rate`, NL428 line 102 "Applicable rate 16%") off the reduction. The two gates are
 # multiplied, the rate follows, and it is multiplied by the net income rate.
 #
 # The whole provincial part is counted only while NL428 line 105 "Line 94 minus line 104 (if

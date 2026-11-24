@@ -2,7 +2,7 @@
 
 The provincial part of the marginal rate (`ca-nl/newfoundland_and_labrador_marginal_rate`) is
 counted only while NL428 line 105 "Line 94 minus line 104 (if negative, enter "0")" is above zero,
-and the low-income tax reduction slope (16%, NL428 line 103) only while NL428 line 101 and line
+and the low-income tax reduction slope (16%, NL428 line 102) only while NL428 line 101 and line
 104 are both above zero. Each boundary below is found cent by cent from the engine, and each figure
 is the hand-worked rate of `test_return_marginal_tax_rate_values.py`:
 
