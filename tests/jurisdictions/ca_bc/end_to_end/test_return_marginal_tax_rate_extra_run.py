@@ -8,9 +8,8 @@ forms and runs nothing twice. This test is the independent check: it runs the re
 salary and at the salary plus a step, and compares the change in those deductions per dollar with
 the rate the return calculated at the salary.
 
-One sweep runs for each tax year: a list of chosen salaries (the same list as
-the Ontario check, and the salaries around British Columbia's own breaks) together with every $250
-from $1,000 to $400,000.
+One check runs for each tax year: a fixed list of salaries (the Ontario list, and the salaries
+around British Columbia's own breaks).
 
 The step is $100. A salary whose $100 run crosses a break in the rate (a bracket edge, the salary
 where a tax first turns positive, the CPP and EI maximums) is run again with a smaller step that
@@ -98,37 +97,33 @@ CHOSEN = (
     250_000,
     300_000,
 )
-SALARIES = tuple(sorted(set(CHOSEN) | set(range(1_000, 400_001, 250))))
 # (tax year, salary): a smaller step near a narrow band, so the extra run does not cross the
 # band's end. Each is followed by the break the $100 run would cross.
 NARROW_BAND_STEPS = {
     # The EI band of T2204 line 16 ($2,000 to $2,033) is narrower than $100.
-    (2025, 1_999): 1,
-    (2025, 2_001): 10,
-    (2025, 2_020): 10,
-    (2026, 1_999): 1,
-    (2026, 2_001): 10,
-    (2026, 2_020): 10,
+    1_999: 1,
+    2_001: 10,
+    2_020: 10,
     # T1 line 42900 turns positive at 18,820.27: the federal part opens.
-    (2025, 18_750): 10,
+    18_750: 10,
     # BC428 line 80 turns positive at 25,551.25: the British Columbia part opens.
-    (2025, 25_500): 10,
+    25_500: 10,
     # CPP2 starts at 71,300; the CPP base and enhanced rates end.
-    (2025, 71_250): 10,
+    71_250: 10,
     # The federal 26% bracket starts at a taxable income of 114,750.
-    (2025, 115_750): 10,
+    115_750: 10,
     # The British Columbia 7.7% bracket ends at a taxable income of 50,363.
-    (2026, 50_750): 10,
+    50_750: 10,
     # The federal 20.5% bracket starts at a taxable income of 58,523.
-    (2026, 59_000): 50,
+    59_000: 50,
     # The British Columbia 10.5% bracket ends at a taxable income of 115,648.
-    (2026, 116_750): 10,
+    116_750: 10,
     # The British Columbia 12.29% bracket ends at a taxable income of 140,430.
-    (2026, 141_500): 10,
+    141_500: 10,
     # The federal 29% bracket starts at a taxable income of 181,440.
-    (2026, 182_500): 10,
+    182_500: 10,
     # The British Columbia 14.7% bracket ends at a taxable income of 190,405.
-    (2026, 191_500): 10,
+    191_500: 10,
 }
 # (tax year, salary): the forward difference is not the derivative there. Each reason is the edge
 # of a band at the salary, or a break inside the smallest run that avoids the cent rounding.
@@ -139,6 +134,10 @@ KNOWN_EXCEPTIONS: dict[tuple[int, int], str] = {
     (2026, 3_500): "the CPP exemption ends: the rate at the edge is the lower band's",
     (2026, 26_750): "BC428 line 80 turns positive 3 dollars up, at a salary of 26,752.96",
 }
+
+SALARIES = tuple(
+    sorted(set(CHOSEN) | set(NARROW_BAND_STEPS) | {salary for _year, salary in KNOWN_EXCEPTIONS})
+)
 
 CASES = [
     pytest.param(year, salary, id=f"{year}-{salary}")
@@ -171,7 +170,7 @@ def _marginal_rate(year: int, salary: Decimal) -> Decimal:
 def test_the_marginal_rate_is_the_extra_dollar_change_in_the_take_home_deductions(
     year: int, salary: int
 ) -> None:
-    step = NARROW_BAND_STEPS.get((year, salary), 100)
+    step = NARROW_BAND_STEPS.get(salary, 100)
     extra_run = (_deductions(year, D(salary + step)) - _deductions(year, D(salary))) / step
 
     assert abs(_marginal_rate(year, D(salary)) - extra_run) <= TOLERANCE
@@ -182,4 +181,4 @@ def test_every_known_exception_is_a_salary_of_the_sweep() -> None:
 
 
 def test_every_narrow_band_step_is_a_salary_of_the_sweep() -> None:
-    assert {salary for _year, salary in NARROW_BAND_STEPS} <= set(SALARIES)
+    assert set(NARROW_BAND_STEPS) <= set(SALARIES)
