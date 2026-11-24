@@ -156,6 +156,7 @@ def test_a_province_can_import_the_form_alone(code: str) -> None:
     produced = {
         output
         for form in manifest.forms
+        if form.name != FORM
         for step in form.capabilities
         for output in step.produces.values()
     }

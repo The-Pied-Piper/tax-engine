@@ -89,6 +89,14 @@ MB428_FORM = dedent("""\
         - ca-mb/mb428_tax_after_credits_line_65
     capabilities: []
     """)
+MB428_A_FORM = dedent("""\
+    form:
+      name: ca-mb/mb428_a
+      required: true
+      exports:
+        - ca-mb/mb428_a_family_tax_benefit_line_12
+    capabilities: []
+    """)
 WORKSHEET_FORM = dedent("""\
     form:
       name: ca-mb/worksheet_mb428
@@ -135,6 +143,7 @@ SALARY_OF = {
     "ca-mb/mb428_credits": "ca/schedule_8_employment_income_line_10100",
     "ca-mb/mb428": "ca/t2204_employment_income_line_10100",
     "ca-mb/worksheet_mb428": "ca/cwb_employment_income_line_10100",
+    "ca-mb/mb428_a": "ca/total_income_employment_income_line_10100",
 }
 
 
@@ -163,6 +172,7 @@ OTHER_STEPS = [
     ("ca/t1_tax_and_credits", "ca/federal_tax_after_credits", "ca/cad"),
     ("ca-mb/mb428_credits", "ca-mb/mb428_bracket_rate_line_5", "core/percent"),
     ("ca-mb/mb428", "ca-mb/mb428_tax_after_credits_line_65", "ca/cad"),
+    ("ca-mb/mb428_a", "ca-mb/mb428_a_family_tax_benefit_line_12", "ca/cad"),
     ("ca-mb/worksheet_mb428", "ca-mb/worksheet_mb428_line_5", "ca/cad"),
     ("ca-mb/worksheet_mb428", "ca-mb/worksheet_mb428_line_7", "ca/cad"),
     ("ca-mb/worksheet_mb428", "ca-mb/worksheet_mb428_line_8", "ca/cad"),
@@ -219,6 +229,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
         ("03a_credits_form.yaml", CREDITS_FORM),
         ("03b_mb428_form.yaml", MB428_FORM),
         ("03c_worksheet_form.yaml", WORKSHEET_FORM),
+        ("03e_mb428_a_form.yaml", MB428_A_FORM),
         *[
             (f"03d_{number}.yaml", _other_step(form, out, unit))
             for number, (form, out, unit) in enumerate(OTHER_STEPS)

@@ -979,6 +979,107 @@ it): the income tax, CPP (Schedule 8 lines 25 and 28), EI (T2204 line 16) togeth
 salary (`ca/return_employment_income`), as a fraction, so 0.1598 is 15.98%. Paid credits are not
 in it. It is 0 when the salary is 0."""
 
+MARGINAL_NET_INCOME_RATE = AmountKind.declare(
+    CATALOG, "marginal_net_income_rate", non_negative=True
+)
+"""Part of a further dollar of salary left in the net income (T1 line 23600) and the taxable
+income: 1 less the CPP first additional rate and the CPP second additional rate, which T1 line
+22215 takes off the income. The federal form's export `ca/take_home_marginal_rates.marginal_net_
+income_rate`, totalled into the return summary's own artifact. Not printed on the form."""
+
+MARGINAL_CREDIT_CONTRIBUTION_RATE = AmountKind.declare(
+    CATALOG, "marginal_credit_contribution_rate", non_negative=True
+)
+"""Credit-earning contribution rate on a further dollar of salary: the CPP base rate (T1 line
+30800) plus the EI rate (T1 line 31200), the two contributions that earn a non-refundable credit.
+The federal form's export `ca/take_home_marginal_rates.marginal_credit_contribution_rate`, totalled
+into the return summary's own artifact. Not printed on the form."""
+
+MARGINAL_FEDERAL_RATE = AmountKind.declare(CATALOG, "marginal_federal_rate", non_negative=True)
+"""Federal marginal rate on the take-home basis: the federal rate on a further dollar of salary
+after the credits, where the basic federal tax (T1 line 42900) is above zero, and 0 where it is
+not, a fraction (0.2 for 20%). The federal form's export `ca/take_home_marginal_rates.marginal_
+federal_rate`, totalled into the return summary's own artifact. Not printed on the form."""
+
+MARGINAL_CONTRIBUTION_RATE = AmountKind.declare(
+    CATALOG, "marginal_contribution_rate", non_negative=True
+)
+"""Contribution rate on a further dollar of salary: the CPP base, first additional and second
+additional rates plus the EI rate of T2204 line 16. The federal form's export
+`ca/take_home_marginal_rates.marginal_contribution_rate`, totalled into the return summary's own
+artifact. Not printed on the form."""
+
+MARGINAL_MANITOBA_BRACKET_RATE = AmountKind.declare(
+    CATALOG, "marginal_manitoba_bracket_rate", non_negative=True
+)
+"""Manitoba bracket rate on a further dollar of salary, MB428 line 5 "Line 5: Rate" times the part
+left in the taxable income. An exact product, not printed on the form."""
+
+MARGINAL_MANITOBA_PHASE_OUT_RATE = AmountKind.declare(
+    CATALOG, "marginal_manitoba_phase_out_rate", non_negative=True
+)
+"""Manitoba phase-out rate on a further dollar of salary: the phase-out rate (per dollar of net
+income) times the part left in the net income. An exact product, not printed on the form."""
+
+MARGINAL_MANITOBA_CREDIT_RATE = AmountKind.declare(
+    CATALOG, "marginal_manitoba_credit_rate", non_negative=True
+)
+"""Manitoba non-refundable tax credit rate, MB428 line 52: the `ca-mb/credit_rate` dataset as it
+is, with none of the cent rounding the credit box applies. A rate, not printed as its own
+figure."""
+
+MARGINAL_MANITOBA_CONTRIBUTION_CREDIT_RATE = AmountKind.declare(
+    CATALOG, "marginal_manitoba_contribution_credit_rate", non_negative=True
+)
+"""Manitoba credit rate on the CPP base and EI of a further dollar of salary: the credit-earning
+contribution rate times the Manitoba credit rate (MB428 lines 19, 21 and 52), the Manitoba tax the
+contributions take off. An exact product, not printed on the form."""
+
+MARGINAL_MANITOBA_RATE_AFTER_CREDITS = AmountKind.declare(
+    CATALOG, "marginal_manitoba_rate_after_credits", non_negative=True
+)
+"""Manitoba rate on a further dollar of salary after the CPP base and EI credits, before the
+gate. An exact difference, not printed on the form."""
+
+FAMILY_TAX_BENEFIT_RETURN = AmountKind.declare(
+    CATALOG, "family_tax_benefit_return", non_negative=True
+)
+"""Family tax benefit, Schedule MB428-A line 12 "Line 10 minus line 11 (if negative, enter "0")":
+the one amount of the schedule's export totalled into the return summary's own artifact, the base
+of the family tax benefit gate."""
+
+FAMILY_TAX_BENEFIT_GATE = AmountKind.declare(CATALOG, "family_tax_benefit_gate", non_negative=True)
+"""Family tax benefit gate: 0 where the family tax benefit (Schedule MB428-A line 12) is 0.00 and 1
+where it is at least one cent, from the `ca-mb/marginal_rate_gate` dataset: the benefit falls with
+income only while it is above zero. A plain figure, not printed on the form."""
+
+MARGINAL_FAMILY_TAX_BENEFIT_RATE = AmountKind.declare(
+    CATALOG, "marginal_family_tax_benefit_rate", non_negative=True
+)
+"""Family tax benefit rate, Schedule MB428-A line 11 "multiplied by 9%": the
+`ca-mb/family_tax_benefit_rate` dataset as it is, with none of the cent rounding the box applies.
+A rate, not printed as its own figure."""
+
+MARGINAL_FAMILY_TAX_BENEFIT_FALL = AmountKind.declare(
+    CATALOG, "marginal_family_tax_benefit_fall", non_negative=True
+)
+"""Fall of the family tax benefit for each further dollar of net income: 9% while the benefit
+(Schedule MB428-A line 12) is above zero, 0 elsewhere. An exact product, not printed on the
+form."""
+
+MARGINAL_FAMILY_TAX_BENEFIT_CREDIT_RATE = AmountKind.declare(
+    CATALOG, "marginal_family_tax_benefit_credit_rate", non_negative=True
+)
+"""Manitoba tax the fall of the family tax benefit adds for each further dollar of net income: the
+fall times the Manitoba credit rate (MB428 line 52). An exact product, not printed on the form."""
+
+MARGINAL_MANITOBA_FAMILY_TAX_BENEFIT_RATE = AmountKind.declare(
+    CATALOG, "marginal_manitoba_family_tax_benefit_rate", non_negative=True
+)
+"""Manitoba tax the fall of the family tax benefit adds for each further dollar of salary: the
+credit rate of the fall times the part of a further dollar left in the net income. An exact
+product, not printed on the form."""
+
 MANITOBA_BRACKET_RATE_RETURN = AmountKind.declare(
     CATALOG, "manitoba_bracket_rate_return", non_negative=True
 )
@@ -1064,16 +1165,18 @@ outside it. Exact. Not printed on the form."""
 MANITOBA_BRACKET_RATE_WITH_PHASE_OUT = AmountKind.declare(
     CATALOG, "manitoba_bracket_rate_with_phase_out", non_negative=True
 )
-"""Manitoba bracket rate with the phase-out: the bracket rate plus the phase-out rate, since a
-further dollar of income also takes away part of the basic personal amount. Exact. Not printed on
-the form."""
+"""Manitoba bracket rate with the phase-outs on a further dollar of salary: the bracket rate plus
+the basic personal amount phase-out rate and the family tax benefit rate, each times the part
+left in the income, since a further dollar of income also takes away part of those credit amounts.
+Exact. Not printed on the form."""
 
 MANITOBA_MARGINAL_RATE = AmountKind.declare(CATALOG, "manitoba_marginal_rate", non_negative=True)
-"""Manitoba marginal rate: the bracket rate with the phase-out where the Manitoba tax after the
-credits (MB428 line 65) is above zero, and 0 where it is not: the rate a further dollar of income
-is taxed at in Manitoba, on the return summary. Not printed on the form."""
+"""Manitoba marginal rate: the bracket rate with the phase-out, less the credit on the CPP base and
+EI, where the Manitoba tax after the credits (MB428 line 65) is above zero, and 0 where it is not:
+the Manitoba tax on a further dollar of salary, on the return summary. Not printed on the form."""
 
 MARGINAL_TAX_RATE = AmountKind.declare(CATALOG, "marginal_tax_rate", non_negative=True)
-"""Marginal tax rate: the income tax rate on a further dollar of salary, the sum of the federal
-marginal rate and the Manitoba marginal rate (Manitoba has no surtax or health premium), on the
-return summary. Not printed on the form."""
+"""Marginal tax rate on the take-home basis: the change in the T1 line 43500 income tax, the CPP
+and the EI (T2204 line 16) per further dollar of salary, the sum of the federal marginal rate, the
+Manitoba marginal rate and the contribution rate (Manitoba has no surtax or health premium), on the
+return summary. Calculated from the forms' rates, not printed on the form."""
