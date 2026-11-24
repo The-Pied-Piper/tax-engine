@@ -4,8 +4,8 @@
 It is a two-band gate that is 0 where a tax is 0.00 and 1
 where it is at least one cent.
 
-Not a printed form figure: no CRA text is quoted. The Ontario return summary reads T1 line 42900
-"Basic federal tax", ON428 line 80 and ON428 line 86 through it (`core/amount_by_band_rate` steps),
+Not a printed form figure: no CRA text is quoted. The Ontario return summary reads ON428 line 80 and
+ON428 line 86 through it (`core/amount_by_band_rate` steps),
 so that each tax part of the marginal tax rate counts only where its own tax is above zero.
 A base of
 0.00 gives the rate 0 and a base of 0.01 or more gives the rate 1. The rate is the band's `rate`,

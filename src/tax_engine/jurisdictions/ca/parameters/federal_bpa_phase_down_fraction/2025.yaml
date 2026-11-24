@@ -1,10 +1,10 @@
-# Ontario marginal rate, federal basic personal amount phase-down, 2025 tax year (Federal Worksheet, form 5000-D1,
+# Take-home marginal rate, federal basic personal amount phase-down, 2025 tax year (Federal Worksheet, form 5000-D1,
 # for T1 line 30000): line 6 "75,532.00", line 7 "Line 5 divided by line 6", line 8 "1,591.00" and line 9 "Line 7
 # multiplied by line 8": the basic personal amount falls by 1,591 / 75,532 of a dollar for each dollar of net income
 # over the threshold. Kept as the printed whole numbers, as the quotient is not a finite decimal. A marginal rate is
 # not a dollars-and-cents box, so the quotient rounds half-up to 0.0000001 (seven places), the project's choice; the
 # worksheet states no rounding.
-family: ca-on/federal_bpa_phase_down_fraction
+family: ca/federal_bpa_phase_down_fraction
 tax_year: 2025
 kind: fraction
 sources:

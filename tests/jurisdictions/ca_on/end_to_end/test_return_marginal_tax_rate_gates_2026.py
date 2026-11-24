@@ -31,15 +31,16 @@ D = Decimal
 ONTARIO = JurisdictionCode("CA-ON")
 RETURN = "ca-on/return"
 
-BASIC_FEDERAL_TAX = "ca/federal_tax_after_credits_return"
+FEDERAL_FORM = "ca/take_home_marginal_rates"
+BASIC_FEDERAL_TAX = "ca/marginal_basic_federal_tax"
 TAX_AFTER_LIFT = "ca-on/ontario_tax_after_lift_return"
-FEDERAL_GATE = "ca/federal_rate_gate"
+FEDERAL_GATE = "ca/marginal_federal_gate"
 ONTARIO_GATE = "ca-on/ontario_rate_gate"
 REDUCTION_GATE = "ca-on/ontario_reduction_gate"
 TAX_REDUCTION = "ca-on/ontario_tax_reduction_return"
-FEDERAL_AFTER_CREDITS = "ca-on/marginal_federal_rate_after_credits"
+FEDERAL_AFTER_CREDITS = "ca/marginal_federal_rate_after_credits"
 ONTARIO_AFTER_LIFT = "ca-on/marginal_ontario_rate_after_lift"
-FEDERAL_BRACKET = "ca/federal_bracket_rate_return"
+FEDERAL_BRACKET = "ca/marginal_federal_bracket_column_rate"
 ONTARIO_BRACKET = "ca-on/ontario_bracket_rate_return"
 FEDERAL = "ca-on/marginal_federal_rate"
 ONTARIO_RATE = "ca-on/ontario_marginal_rate"
@@ -59,6 +60,15 @@ def _summary(salary: str) -> Worksheet:
     return summary
 
 
+def _federal(salary: str) -> Worksheet:
+    # The federal form's sheet, which holds the federal gate and the federal bracket rate.
+    worksheets = build_tax_computation().compute(
+        TaxCalculationRequest(ONTARIO, 2026, (Artifact(EMPLOYMENT_INCOME, D(salary)),))
+    )
+    (federal,) = worksheets[FEDERAL_FORM]
+    return federal
+
+
 def _value(summary: Worksheet, name: str) -> Decimal:
     value = summary.get(bundled_kinds().kind(name)).value
     assert isinstance(value, Decimal)
@@ -74,9 +84,12 @@ def test_2026_runs_and_the_total_is_the_exact_sum_of_the_gated_parts(salary: str
     contribution = _value(summary, CONTRIBUTION)
 
     assert _value(summary, MARGINAL) == federal + ontario + premium + contribution
-    assert _value(summary, FEDERAL_GATE) in (D("0"), D("1"))
+    assert _value(_federal(salary), FEDERAL_GATE) in (D("0"), D("1"))
     assert _value(summary, ONTARIO_GATE) in (D("0"), D("1"))
-    assert federal == _value(summary, FEDERAL_GATE) * _value(summary, FEDERAL_AFTER_CREDITS)
+    federal_sheet = _federal(salary)
+    assert federal == _value(federal_sheet, FEDERAL_GATE) * _value(
+        federal_sheet, FEDERAL_AFTER_CREDITS
+    )
     assert ontario == _value(summary, ONTARIO_GATE) * _value(summary, ONTARIO_AFTER_LIFT)
     assert _value(summary, REDUCTION_GATE) in (D("0"), D("1"))
 
@@ -85,8 +98,8 @@ def test_2026_runs_and_the_total_is_the_exact_sum_of_the_gated_parts(salary: str
 def test_2026_each_gate_opens_with_the_tax_it_reads(salary: str) -> None:
     summary = _summary(salary)
 
-    assert _value(summary, FEDERAL_GATE) == (
-        D("1") if _value(summary, BASIC_FEDERAL_TAX) > 0 else D("0")
+    assert _value(_federal(salary), FEDERAL_GATE) == (
+        D("1") if _value(_federal(salary), BASIC_FEDERAL_TAX) > 0 else D("0")
     )
     assert _value(summary, ONTARIO_GATE) == (
         D("1") if _value(summary, TAX_AFTER_LIFT) > 0 else D("0")
@@ -118,7 +131,7 @@ def test_2026_the_marginal_tax_rate_is_0_where_nothing_is_paid(salary: str) -> N
 def test_2026_the_bracket_rates_are_the_first_brackets_of_the_2026_datasets(salary: str) -> None:
     summary = _summary(salary)
 
-    assert _value(summary, FEDERAL_BRACKET) == D("0.14")
+    assert _value(_federal(salary), FEDERAL_BRACKET) == D("0.14")
     assert _value(summary, ONTARIO_BRACKET) == D("0.0505")
 
 
@@ -145,7 +158,7 @@ def test_2026_the_marginal_tax_rate_at_70000_is_34_36_percent() -> None:
 def test_2026_both_gates_are_open_at_275000() -> None:
     summary = _summary("275000")
 
-    assert _value(summary, FEDERAL_GATE) == D("1")
+    assert _value(_federal("275000"), FEDERAL_GATE) == D("1")
     assert _value(summary, ONTARIO_GATE) == D("1")
     assert _value(summary, FEDERAL) == D("0.33")
     assert _value(summary, MARGINAL) > D("0.33")

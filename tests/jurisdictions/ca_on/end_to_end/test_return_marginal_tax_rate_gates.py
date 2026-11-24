@@ -8,10 +8,12 @@ tax is above zero, through a gate: 0 where the tax is 0.00 and 1 where it is a c
 salary of 100 the rate was 19.55% before the gates, because every part read the bracket rate.
 
 - Federal: T1 line 42900 "Basic federal tax" (`ca/federal_tax_after_credits`, read into
-  `ca/federal_tax_after_credits_return`) gives `ca/federal_rate_gate`; the federal marginal rate
-  (`ca-on/marginal_federal_rate`) is the federal rate after the credits times that gate. Not line
-  42000: the lines between 42900 and 42000 (foreign tax credit, logging credit, political and other
-  credits, ITC recapture, T2203 surtax) are return-only and must not move the gate.
+  `ca/marginal_basic_federal_tax` by the federal form `ca/take_home_marginal_rates`) gives
+  `ca/marginal_federal_gate`; the federal marginal rate (`ca/marginal_federal_rate`, read into the
+  return as `ca-on/marginal_federal_rate`) is the federal rate after the credits times that
+  gate. Not line 42000: the lines between 42900 and 42000 (foreign tax credit, logging credit,
+  political and other credits, ITC recapture, T2203 surtax) are return-only and must not move the
+  gate.
 - Ontario: ON428 line 86 "Ontario tax after the LIFT credit" (`ca-on/on428_tax_after_lift_credit_
   line_86`, read into `ca-on/ontario_tax_after_lift_return`) gives `ca-on/ontario_rate_gate`; the
   Ontario marginal rate (`ca-on/ontario_marginal_rate`) is the Ontario rate after the credits, the
@@ -57,15 +59,16 @@ D = Decimal
 ONTARIO = JurisdictionCode("CA-ON")
 RETURN = "ca-on/return"
 
-BASIC_FEDERAL_TAX = "ca/federal_tax_after_credits_return"
+FEDERAL_FORM = "ca/take_home_marginal_rates"
+BASIC_FEDERAL_TAX = "ca/marginal_basic_federal_tax"
 TAX_AFTER_LIFT = "ca-on/ontario_tax_after_lift_return"
 TAX_REDUCTION = "ca-on/ontario_tax_reduction_return"
 REDUCTION_GATE = "ca-on/ontario_reduction_gate"
 WITH_REDUCTION = "ca-on/marginal_ontario_rate_with_reduction"
 PHASE_OUT = "ca-on/ontario_reduction_phase_out_rate"
-FEDERAL_GATE = "ca/federal_rate_gate"
+FEDERAL_GATE = "ca/marginal_federal_gate"
 ONTARIO_GATE = "ca-on/ontario_rate_gate"
-FEDERAL_BRACKET = "ca/federal_bracket_rate_return"
+FEDERAL_BRACKET = "ca/marginal_federal_bracket_column_rate"
 ONTARIO_BRACKET = "ca-on/ontario_bracket_rate_return"
 FEDERAL = "ca-on/marginal_federal_rate"
 ONTARIO_RATE = "ca-on/ontario_marginal_rate"
@@ -111,6 +114,15 @@ def _summary(salary: str) -> Worksheet:
     return summary
 
 
+def _federal(salary: str) -> Worksheet:
+    # The federal form's sheet, which holds the federal gate and the federal bracket rate.
+    worksheets = build_tax_computation().compute(
+        TaxCalculationRequest(ONTARIO, 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),))
+    )
+    (federal,) = worksheets[FEDERAL_FORM]
+    return federal
+
+
 def _value(summary: Worksheet, name: str) -> Decimal:
     value = summary.get(bundled_kinds().kind(name)).value
     assert isinstance(value, Decimal)
@@ -150,9 +162,9 @@ def test_the_gates_open_with_the_taxes_they_read(
 ) -> None:
     summary = _summary(salary)
 
-    assert (_value(summary, BASIC_FEDERAL_TAX) > 0) is federal_tax_is_positive
+    assert (_value(_federal(salary), BASIC_FEDERAL_TAX) > 0) is federal_tax_is_positive
     assert (_value(summary, TAX_AFTER_LIFT) > 0) is ontario_tax_is_positive
-    assert _value(summary, FEDERAL_GATE) == D(int(federal_tax_is_positive))
+    assert _value(_federal(salary), FEDERAL_GATE) == D(int(federal_tax_is_positive))
     assert _value(summary, ONTARIO_GATE) == D(int(ontario_tax_is_positive))
 
 
@@ -162,7 +174,7 @@ def test_the_bracket_rates_read_by_the_gates_are_ungated(salary: str) -> None:
     # one of these salaries.
     summary = _summary(salary)
 
-    assert _value(summary, FEDERAL_BRACKET) == D("0.145")
+    assert _value(_federal(salary), FEDERAL_BRACKET) == D("0.145")
     assert _value(summary, ONTARIO_BRACKET) == D("0.0505")
 
 

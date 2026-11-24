@@ -23,19 +23,23 @@ def build_tax_computation() -> TaxComputationService:
 
 def build_take_home() -> TakeHomeService:
     """Build the take-home service over the bundled jurisdiction packages, in English."""
-    jurisdictions, computation = _build()
-    return TakeHomeService(jurisdictions, computation, EnglishTakeHomeText(), PERCENT)
+    jurisdictions, computation, parameters = _build()
+    return TakeHomeService(
+        jurisdictions,
+        computation,
+        EnglishTakeHomeText(),
+        PERCENT,
+        parameters,
+        "ca/take_home_average_rate_rounding",
+    )
 
 
-def _build() -> tuple[YamlJurisdictionSource, TaxComputationService]:
+def _build() -> tuple[YamlJurisdictionSource, TaxComputationService, YamlParameterSource]:
     kinds = artifact_kinds()
     roots = JURISDICTIONS.roots()
     registered_units = units()
     EnglishUnitTextRegistry.shared().require(registered_units.units)
     jurisdictions = YamlJurisdictionSource(roots, kinds, registered_units)
-    computation = TaxComputationService(
-        jurisdictions,
-        YamlParameterSource(roots, parameter_parsers(), registered_units),
-        capabilities(),
-    )
-    return jurisdictions, computation
+    parameters = YamlParameterSource(roots, parameter_parsers(), registered_units)
+    computation = TaxComputationService(jurisdictions, parameters, capabilities())
+    return jurisdictions, computation, parameters

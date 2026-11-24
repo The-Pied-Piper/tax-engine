@@ -2,49 +2,30 @@
 # negative is a refund). The T1 form exports it, another form's export is read only as a record
 # list, so core/record_total totals the one amount into the return's own `ca/refund_or_balance_owing`.
 #
-# The salary, T1 line 10100, is read from the T1 line 10100 export into the return's own
-# `ca/return_employment_income`, which the marginal rate steps below take as their base. The average
-# rate is not a step of this return: the take-home service works it out from the total deductions.
-#
 # The second output is the marginal tax rate on the take-home basis: the change in T1 line 43500
 # plus CPP (Schedule 8 lines 25, 12 and 22) plus EI (T2204 line 16) per further dollar of salary,
 # for a salary-only filer with no paid credits. It is calculated with the rates of the forms, not by
 # running the return twice: a sum of the rates that apply at the salary, one capability per line,
-# every figure exact (`ca-on/exact_rounding` rounds nothing; the one inexact quotient, the basic
-# personal amount's, rounds as its own dataset says). No form prints any of these figures, so the
-# steps below have no title and no line reference, and only line 167 carries a line reference.
+# every figure exact (`ca-on/exact_rounding` rounds nothing). No form prints any of these figures,
+# so the steps below have no title and no line reference, and only line 167 carries a line
+# reference.
 #
-# Contributions. Each rate is the band of the salary (T1 line 10100) that the form's contribution
-# line is charged on, from a `ca-on/marginal_*_rate_rows` dataset read by core/amount_by_band_rate:
-# the CPP base rate (Schedule 8 line 11, 4.95%), the first additional rate (line 12, 1%) and the
-# second additional rate (line 22, 4%), each between its printed earnings, and the EI rate of
-# T2204 line 16, the least of line 7, line 9 and line 12: 0 up to $2,000, 1 for 1 to the salary where
-# line 7 equals line 12 ($2,000 / (1 - rate): $2,033.3469 in 2025, $2,033.1402 in 2026), then the
-# premium rate to the maximum insurable earnings.
-#
-# The net income rate is the part of a further dollar that stays in the net income and the taxable
-# income: T1 line 22215 takes the enhanced CPP contributions (line 12 and line 22) off the income, so
-# it is 1 less the first and the second additional rates. The 1 is the salary gate (the salary
-# through `ca-on/marginal_rate_gate`, 1 for any salary of a cent or more), two core/subtract steps
-# take the rates off it.
+# The federal half is the federal form `ca/take_home_marginal_rates` (imported by the manifest,
+# after the T1 forms), which works from the salary alone. This return reads its four exports, each
+# totalled by core/record_total into its own figure: the net income rate (`ca-on/marginal_net_income_
+# rate`, the part of a further dollar left in the net income and the taxable income: 1 less the CPP
+# first additional and second additional rates), the credit-earning contribution rate
+# (`ca-on/marginal_credit_contribution_rate`, the CPP base rate plus the EI rate), the federal
+# marginal rate (`ca-on/marginal_federal_rate`, the federal tax on a further dollar after its
+# credits, counted only where the basic federal tax is above zero) and the contribution rate
+# (`ca-on/marginal_contribution_rate`, the CPP base, first additional, second additional and EI
+# rates). The rest is Ontario's own.
 #
 # Credits on the contributions. The CPP base contribution (T1 line 30800) and the EI premium (line
-# 31200) earn a non-refundable credit at the federal credit rate (T1 line 114, `ca-on/marginal_
-# federal_credit_rate`) and at the Ontario credit rate (ON428 lines 19, 21 and 45, `ca-on/marginal_
-# ontario_credit_rate`), so their summed rate (`ca-on/marginal_credit_contribution_rate`) times each
-# credit rate is the tax a further dollar of contributions takes off. The datasets are exact: the
-# cent rounding of `ca/credit_rate` and `ca-on/credit_rate` is for the credit boxes.
-#
-# Federal. The bracket rate (T1 line 73 "Line 73: Rate", read from the T1 export into
-# `ca/federal_bracket_rate_return`) times the net income rate, plus the fall of the basic personal
-# amount (T1 line 77, Federal Worksheet 5000-D1): over the net income (T1 line 23600, read into
-# `ca-on/return_net_income`) threshold and under its upper end the amount falls by the supplement over
-# the range (`ca-on/federal_bpa_phase_down_fraction`) for each dollar of net income, and each dollar
-# of that fall is tax at the federal credit rate; `ca-on/federal_bpa_phase_down_gate` (the
-# `ca-on/marginal_federal_bpa_rows` band, 1 or 0) says where. Less the federal credit on the
-# contributions. Counted only where the basic federal tax (T1 line 42900, read into
-# `ca/federal_tax_after_credits_return`) is above zero: the `ca-on/marginal_rate_gate` dataset gives
-# 0 where that tax is 0.00 and 1 from one cent.
+# 31200) earn the Ontario non-refundable credit rate (ON428 lines 19, 21 and 45, `ca-on/marginal_
+# ontario_credit_rate`), so the credit-earning contribution rate times it is the Ontario tax a
+# further dollar of contributions takes off. The dataset is exact: the cent rounding of
+# `ca-on/credit_rate` is for the credit boxes.
 #
 # Ontario. The bracket rate (ON428 line 5 "Line 5: Rate", read from the ON428 export into
 # `ca-on/ontario_bracket_rate_return`) times the net income rate, less the Ontario credit on the
@@ -59,8 +40,9 @@
 # band of the line 19 reduction, read into `ca-on/return_lift_reduction`) for each dollar of net
 # income while the reduction is above 0 and the credit is not used up, which is more tax. The whole
 # Ontario rate counts only where the Ontario tax after the LIFT credit (ON428 line 86, read into
-# `ca-on/ontario_tax_after_lift_return`) is above zero, through the same gate dataset: where the LIFT
-# credit takes all the tax a further dollar adds none. The credit's phase-in (line 4 "Applicable rate 5.05%" of the
+# `ca-on/ontario_tax_after_lift_return`) is above zero, through the `ca-on/marginal_rate_gate`
+# dataset (0 where that tax is 0.00 and 1 from one cent): where the LIFT credit takes all the tax a
+# further dollar adds none. The credit's phase-in (line 4 "Applicable rate 5.05%" of the
 # salary, to the line 5 maximum of $875, reached at $17,326.73) is not a step: for a salary-only filer the Ontario tax before the LIFT
 # credit is 0 wherever the credit is below its $875 maximum (checked over the whole range in both
 # years by the extra-run test), so the credit then absorbs all the tax and the gate is 0.
@@ -84,12 +66,6 @@ capabilities:
       records: ca/t1_tax_and_credits.refund_or_balance_owing
     produces:
       output: ca/refund_or_balance_owing
-  - name: core/record_total
-    unit: ca/cad
-    consumes:
-      records: ca/t1_employment_income.employment_income_line_10100
-    produces:
-      output: ca/return_employment_income
   - name: core/record_total
     unit: ca/cad
     consumes:
@@ -127,99 +103,27 @@ capabilities:
   - name: core/record_total
     unit: core/percent
     consumes:
-      records: ca/t1_tax_and_credits.federal_bracket_column_rate_line_73
-    produces:
-      output: ca/federal_bracket_rate_return
-  - name: core/record_total
-    unit: ca/cad
-    consumes:
-      records: ca/t1_tax_and_credits.federal_tax_after_credits
-    produces:
-      output: ca/federal_tax_after_credits_return
-  - name: core/amount_by_band_rate
-    unit: core/percent
-    params:
-      table: ca-on/marginal_rate_gate
-    consumes:
-      base: ca/federal_tax_after_credits_return
-    produces:
-      output: ca/federal_rate_gate
-  - name: core/amount_by_band_rate
-    unit: core/percent
-    params:
-      table: ca-on/marginal_cpp_base_rate_rows
-    consumes:
-      base: ca/return_employment_income
-    produces:
-      output: ca-on/marginal_cpp_base_rate
-  - name: core/amount_by_band_rate
-    unit: core/percent
-    params:
-      table: ca-on/marginal_cpp_first_additional_rate_rows
-    consumes:
-      base: ca/return_employment_income
-    produces:
-      output: ca-on/marginal_cpp_first_additional_rate
-  - name: core/amount_by_band_rate
-    unit: core/percent
-    params:
-      table: ca-on/marginal_cpp_second_additional_rate_rows
-    consumes:
-      base: ca/return_employment_income
-    produces:
-      output: ca-on/marginal_cpp_second_additional_rate
-  - name: core/amount_by_band_rate
-    unit: core/percent
-    params:
-      table: ca-on/marginal_ei_rate_rows
-    consumes:
-      base: ca/return_employment_income
-    produces:
-      output: ca-on/marginal_ei_rate
-  - name: core/amount_by_band_rate
-    unit: core/percent
-    params:
-      table: ca-on/marginal_rate_gate
-    consumes:
-      base: ca/return_employment_income
-    produces:
-      output: ca-on/marginal_salary_gate
-  - name: core/subtract
-    unit: core/percent
-    params:
-      rounding: ca-on/exact_rounding
-    consumes:
-      amount: ca-on/marginal_salary_gate
-      less: ca-on/marginal_cpp_first_additional_rate
-    produces:
-      output: ca-on/marginal_net_income_rate_before_cpp2
-  - name: core/subtract
-    unit: core/percent
-    params:
-      rounding: ca-on/exact_rounding
-    consumes:
-      amount: ca-on/marginal_net_income_rate_before_cpp2
-      less: ca-on/marginal_cpp_second_additional_rate
+      records: ca/take_home_marginal_rates.marginal_net_income_rate
     produces:
       output: ca-on/marginal_net_income_rate
-  - name: core/sum
+  - name: core/record_total
     unit: core/percent
-    params:
-      rounding: ca-on/exact_rounding
     consumes:
-      parts:
-        - ca-on/marginal_cpp_base_rate
-        - ca-on/marginal_ei_rate
+      records: ca/take_home_marginal_rates.marginal_credit_contribution_rate
     produces:
       output: ca-on/marginal_credit_contribution_rate
-  - name: core/apply_rate
+  - name: core/record_total
     unit: core/percent
-    params:
-      rate: ca-on/marginal_federal_credit_rate
     consumes:
-      base: ca-on/marginal_credit_contribution_rate
+      records: ca/take_home_marginal_rates.marginal_federal_rate
     produces:
-      output: ca-on/marginal_federal_contribution_credit_rate
+      output: ca-on/marginal_federal_rate
+  - name: core/record_total
+    unit: core/percent
+    consumes:
+      records: ca/take_home_marginal_rates.marginal_contribution_rate
+    produces:
+      output: ca-on/marginal_contribution_rate
   - name: core/apply_rate
     unit: core/percent
     params:
@@ -228,82 +132,6 @@ capabilities:
       base: ca-on/marginal_credit_contribution_rate
     produces:
       output: ca-on/marginal_ontario_contribution_credit_rate
-  - name: core/multiply_by_rate
-    unit: core/percent
-    params:
-      rounding: ca-on/exact_rounding
-    consumes:
-      base: ca/federal_bracket_rate_return
-      rate: ca-on/marginal_net_income_rate
-    produces:
-      output: ca-on/marginal_federal_bracket_rate
-  - name: core/record_total
-    unit: ca/cad
-    consumes:
-      records: ca/t1_taxable_income.net_income_signed
-    produces:
-      output: ca-on/return_net_income
-  - name: core/amount_by_band_rate
-    unit: core/percent
-    params:
-      table: ca-on/marginal_federal_bpa_rows
-    consumes:
-      base: ca-on/return_net_income
-    produces:
-      output: ca-on/federal_bpa_phase_down_gate
-  - name: core/multiply_by_rate
-    unit: core/percent
-    params:
-      rounding: ca-on/exact_rounding
-    consumes:
-      base: ca-on/federal_bpa_phase_down_gate
-      rate: ca-on/marginal_net_income_rate
-    produces:
-      output: ca-on/marginal_phase_down_net_income_rate
-  - name: core/apply_fraction
-    unit: core/percent
-    params:
-      fraction: ca-on/federal_bpa_phase_down_fraction
-    consumes:
-      base: ca-on/marginal_phase_down_net_income_rate
-    produces:
-      output: ca-on/marginal_federal_bpa_reduction_rate
-  - name: core/apply_rate
-    unit: core/percent
-    params:
-      rate: ca-on/marginal_federal_credit_rate
-    consumes:
-      base: ca-on/marginal_federal_bpa_reduction_rate
-    produces:
-      output: ca-on/marginal_federal_bpa_credit_rate
-  - name: core/sum
-    unit: core/percent
-    params:
-      rounding: ca-on/exact_rounding
-    consumes:
-      parts:
-        - ca-on/marginal_federal_bracket_rate
-        - ca-on/marginal_federal_bpa_credit_rate
-    produces:
-      output: ca-on/marginal_federal_rate_before_credits
-  - name: core/subtract
-    unit: core/percent
-    params:
-      rounding: ca-on/exact_rounding
-    consumes:
-      amount: ca-on/marginal_federal_rate_before_credits
-      less: ca-on/marginal_federal_contribution_credit_rate
-    produces:
-      output: ca-on/marginal_federal_rate_after_credits
-  - name: core/multiply_by_rate
-    unit: core/percent
-    params:
-      rounding: ca-on/exact_rounding
-    consumes:
-      base: ca-on/marginal_federal_rate_after_credits
-      rate: ca/federal_rate_gate
-    produces:
-      output: ca-on/marginal_federal_rate
   - name: core/multiply_by_rate
     unit: core/percent
     params:
@@ -429,18 +257,6 @@ capabilities:
       rate: ca-on/marginal_net_income_rate
     produces:
       output: ca-on/marginal_health_premium_rate
-  - name: core/sum
-    unit: core/percent
-    params:
-      rounding: ca-on/exact_rounding
-    consumes:
-      parts:
-        - ca-on/marginal_cpp_base_rate
-        - ca-on/marginal_cpp_first_additional_rate
-        - ca-on/marginal_cpp_second_additional_rate
-        - ca-on/marginal_ei_rate
-    produces:
-      output: ca-on/marginal_contribution_rate
   - name: core/sum
     unit: core/percent
     params:

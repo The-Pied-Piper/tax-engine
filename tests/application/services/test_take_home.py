@@ -18,6 +18,7 @@ import pytest
 from tax_engine import build_take_home, build_tax_computation
 from tax_engine.adapters.inbound.take_home_text import EnglishTakeHomeText
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.models.take_home import (
     TraceEntry,
     UnitDescription,
@@ -29,7 +30,14 @@ from tax_engine.domain.errors import NotFoundError
 from tax_engine.domain.jurisdiction import Jurisdiction
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.core.units import PERCENT
-from tax_engine.registrations import JURISDICTIONS, artifact_kinds, units
+from tax_engine.registrations import JURISDICTIONS, artifact_kinds, parameter_parsers, units
+
+AVERAGE_RATE_ROUNDING = "ca/take_home_average_rate_rounding"
+
+
+def _parameters() -> YamlParameterSource:
+    return YamlParameterSource(JURISDICTIONS.roots(), parameter_parsers(), units())
+
 
 ANSWERS: list[dict[str, Any]] = json.loads(
     (Path(__file__).parent / "take_home_answers.json").read_text()
@@ -146,6 +154,16 @@ def test_ei_is_the_figure_the_form_uses_for_the_credit(
     assert {f.name: str(f.amount) for f in got.figures}["ei"] == ei
 
 
+def test_average_rate_is_rounded_by_the_dataset_rule_of_the_tax_year(
+    service: TakeHomeService,
+) -> None:
+    got = service.compute(
+        TakeHomeRequest(JurisdictionCode("CA-ON"), 2026, Decimal(70000), include_rates=True)
+    )
+    assert got.average_tax_rate is not None
+    assert got.average_tax_rate.value == got.average_tax_rate.value.quantize(Decimal("0.0001"))
+
+
 def test_trace_is_left_out_unless_asked_for(service: TakeHomeService) -> None:
     request = TakeHomeRequest(JurisdictionCode("CA-ON"), 2025, Decimal(70000))
     assert request.include_trace is False
@@ -168,7 +186,12 @@ def test_a_jurisdiction_that_declares_no_take_home_figures_is_not_found(
 ) -> None:
     source = YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds(), units())
     bare = TakeHomeService(
-        _WithoutTakeHome(source), build_tax_computation(), EnglishTakeHomeText(), PERCENT
+        _WithoutTakeHome(source),
+        build_tax_computation(),
+        EnglishTakeHomeText(),
+        PERCENT,
+        _parameters(),
+        AVERAGE_RATE_ROUNDING,
     )
     with pytest.raises(NotFoundError, match="CA-ON 2025"):
         bare.compute(TakeHomeRequest(JurisdictionCode("CA-ON"), 2025, Decimal(70000)))

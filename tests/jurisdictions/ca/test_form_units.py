@@ -32,6 +32,27 @@ EXCEPTIONS: dict[str, str | None] = {
     # The 0 or 1 flags of T2204 lines 1 and 15 are counts, not money.
     "ca/t2204_line_1_count": None,
     "ca/t2204_line_15_count": None,
+    # The take-home marginal rate form works in rates (a fraction of a dollar per dollar of salary).
+    "ca/marginal_federal_bracket_column_rate": "core/percent",
+    "ca/marginal_federal_gate": "core/percent",
+    "ca/marginal_cpp_base_rate": "core/percent",
+    "ca/marginal_cpp_first_additional_rate": "core/percent",
+    "ca/marginal_cpp_second_additional_rate": "core/percent",
+    "ca/marginal_ei_rate": "core/percent",
+    "ca/marginal_salary_gate": "core/percent",
+    "ca/marginal_net_income_rate_before_cpp2": "core/percent",
+    "ca/marginal_net_income_rate": "core/percent",
+    "ca/marginal_credit_contribution_rate": "core/percent",
+    "ca/marginal_federal_contribution_credit_rate": "core/percent",
+    "ca/marginal_federal_bracket_rate": "core/percent",
+    "ca/marginal_federal_bpa_phase_down_gate": "core/percent",
+    "ca/marginal_phase_down_net_income_rate": "core/percent",
+    "ca/marginal_federal_bpa_reduction_rate": "core/percent",
+    "ca/marginal_federal_bpa_credit_rate": "core/percent",
+    "ca/marginal_federal_rate_before_credits": "core/percent",
+    "ca/marginal_federal_rate_after_credits": "core/percent",
+    "ca/marginal_federal_rate": "core/percent",
+    "ca/marginal_contribution_rate": "core/percent",
 }
 
 

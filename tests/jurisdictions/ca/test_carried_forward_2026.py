@@ -33,6 +33,7 @@ PROVISIONAL_HEADER = (
 DERIVATION_PREFIX = "# Derivation: carried forward unchanged from the 2025 file;"
 FAMILIES: list[tuple[str, ParameterKind[Any]]] = [
     ("ca/cent_rounding", ROUNDING_ONLY),
+    ("ca/take_home_average_rate_rounding", ROUNDING_ONLY),
     ("ca-on/cent_rounding", ROUNDING_ONLY),
     ("ca/cwb_rate", RATE),
     ("ca/cwb_reduction_rate", RATE),
@@ -51,6 +52,7 @@ FAMILIES: list[tuple[str, ParameterKind[Any]]] = [
     ("ca-on/lift_rate", RATE),
     ("ca-on/lift_single_rate", RATE),
     ("ca-on/tax_reduction_multiplier", FRACTION),
+    ("ca/marginal_rate_gate", AMOUNT_BY_BAND),
     ("ca-on/marginal_rate_gate", AMOUNT_BY_BAND),
     ("ca-on/minimum_tax_rate", RATE),
 ]

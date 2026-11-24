@@ -3,12 +3,13 @@
 5006-R-25E, Step 5 Part A: each column of the federal tax chart prints "Line 73: Rate" with 14.5%,
 20.5%, 26%, 29% or 33%. The existing step `ca/federal_bracket_column_rate_line_73` of
 `ca/t1_tax_and_credits` is the printed rate of the column that line 70 falls in. The return summary
-reads it as a cross-form read: the T1 form exports it, and one `core/record_total` step of
-`return.yaml` totals the one amount into the return's own amount kind
-`ca/federal_bracket_rate_return`. The federal marginal rate (`ca-on/marginal_federal_rate`) is that
-rate times the part of a dollar left in the income, plus the fall of the basic personal amount,
-less the credit on the CPP base and EI, counted where T1 line 42900 "Basic federal tax" is above 0
-(0 where no federal tax is paid). The step has no printed title and no printed line, and carries
+reads it as a cross-form read: the T1 form exports it, and one `core/record_total` step of the
+federal form `ca/take_home_marginal_rates` totals the one amount into its own amount kind
+`ca/marginal_federal_bracket_column_rate`. The federal marginal rate (`ca/marginal_federal_rate`,
+read into the return as `ca-on/marginal_federal_rate`) is that rate times the part of a dollar
+left in the income, plus the fall of the basic personal amount, less the credit on the CPP base
+and EI, counted where T1 line 42900 "Basic federal tax" is above 0 (0 where no federal tax is
+paid). The step has no printed title and no printed line, and carries
 the unit `core/percent`, so the summary shows it untitled, with no reference, and a trace prints
 the fraction 0.1957725 as "19.57725%".
 
@@ -44,9 +45,10 @@ D = Decimal
 ONTARIO = JurisdictionCode("CA-ON")
 T1_FORM = "ca/t1_tax_and_credits"
 RETURN_FORM = "ca-on/return"
+FEDERAL_FORM = "ca/take_home_marginal_rates"
 LINE_73 = "ca/federal_bracket_column_rate_line_73"
 MARGINAL_RATE = "ca-on/marginal_federal_rate"
-BRACKET_RATE_RETURN = "ca/federal_bracket_rate_return"
+BRACKET_RATE_RETURN = "ca/marginal_federal_bracket_column_rate"
 BASIC_FEDERAL_TAX = "ca/federal_tax_after_credits"
 LINE_167 = "ca/refund_or_balance_owing"
 # The real header and form, read from the take-home folder, not test-local: the manifest's header
@@ -61,6 +63,7 @@ PARTS = (
     *form_part_names("schedule_8"),
     *form_part_names("schedule_9"),
     *form_part_names("t2204"),
+    *form_part_names("take_home_marginal_rates"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),
     "t1_tax_and_credits_line_30000.yaml",
     "t1_tax_and_credits_line_76.yaml",
@@ -136,18 +139,18 @@ def test_the_federal_marginal_rate_is_the_line_73_rate_less_the_credits_on_the_c
 
 
 @pytest.mark.parametrize("salary", ["10000", "70000"])
-def test_the_federal_bracket_rate_return_equals_line_73_read_from_the_t1_sheet(
+def test_the_federal_bracket_column_rate_equals_line_73_read_from_the_t1_sheet(
     take_home_service: TakeHomeService, salary: str
 ) -> None:
     # The raw line 73 rate, read into its own kind, whatever the tax: the federal marginal
     # rate counts only where T1 line 42900 is above 0, so it differs from it where no tax is paid.
     worksheets = _worksheets(take_home_service, salary)
     (t1_sheet,) = worksheets[T1_FORM]
-    (summary,) = worksheets[RETURN_FORM]
+    (federal,) = worksheets[FEDERAL_FORM]
     kinds = bundled_kinds()
 
     assert (
-        summary.get(kinds.kind(BRACKET_RATE_RETURN)).value
+        federal.get(kinds.kind(BRACKET_RATE_RETURN)).value
         == t1_sheet.get(kinds.kind(LINE_73)).value
     )
 

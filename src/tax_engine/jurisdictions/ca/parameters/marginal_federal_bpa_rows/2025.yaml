@@ -1,9 +1,9 @@
-# Ontario marginal rate, federal basic personal amount band, 2025 tax year (T1 form 5006-R line 77 "Basic personal
+# Take-home marginal rate, federal basic personal amount band, 2025 tax year (T1 form 5006-R line 77 "Basic personal
 # amount"): "If the amount on line 23600 is $177,882 or less, enter $16,129. If the amount on line 23600 is $253,414
 # or more, enter $14,538. Otherwise, use the Federal Worksheet to calculate the amount to enter." Not a rate: the rows
 # are a switch, read through `core/amount_by_band_rate`: 1 for net income (line 23600) above $177,882 and up to
 # $253,414, where the basic personal amount falls with net income, and 0 outside it. No rounding.
-family: ca-on/marginal_federal_bpa_rows
+family: ca/marginal_federal_bpa_rows
 tax_year: 2025
 kind: amount_by_band
 sources:

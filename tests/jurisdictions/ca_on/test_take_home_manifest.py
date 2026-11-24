@@ -77,94 +77,31 @@ def _sum(
     return ("core/sum", EXACT, {"parts": parts}, {"output": output})
 
 
-# The steps of the return after the federal rate gate (`ca/federal_rate_gate`): the marginal rate on
-# the take-home basis, one capability per line, in order. The steps before them are pinned by their
-# own modules; the last one is the sum the take-home answer reads as the marginal rate.
+# The steps of the return after the health premium slope: the four figures read from the federal
+# form `ca/take_home_marginal_rates` (each its export, totalled by core/record_total), then the
+# Ontario part of the marginal rate on the take-home basis, one capability per line, in order. The
+# federal steps are pinned by the federal form's own tests; the last step here is the sum the
+# take-home answer reads as the marginal rate.
 MARGINAL_RATE_STEPS = [
-    _band(
-        "ca-on/marginal_cpp_base_rate_rows",
-        "ca/return_employment_income",
-        "ca-on/marginal_cpp_base_rate",
+    _record_total(
+        "ca/take_home_marginal_rates.marginal_net_income_rate", "ca-on/marginal_net_income_rate"
     ),
-    _band(
-        "ca-on/marginal_cpp_first_additional_rate_rows",
-        "ca/return_employment_income",
-        "ca-on/marginal_cpp_first_additional_rate",
-    ),
-    _band(
-        "ca-on/marginal_cpp_second_additional_rate_rows",
-        "ca/return_employment_income",
-        "ca-on/marginal_cpp_second_additional_rate",
-    ),
-    _band("ca-on/marginal_ei_rate_rows", "ca/return_employment_income", "ca-on/marginal_ei_rate"),
-    _band("ca-on/marginal_rate_gate", "ca/return_employment_income", "ca-on/marginal_salary_gate"),
-    _subtract(
-        "ca-on/marginal_salary_gate",
-        "ca-on/marginal_cpp_first_additional_rate",
-        "ca-on/marginal_net_income_rate_before_cpp2",
-    ),
-    _subtract(
-        "ca-on/marginal_net_income_rate_before_cpp2",
-        "ca-on/marginal_cpp_second_additional_rate",
-        "ca-on/marginal_net_income_rate",
-    ),
-    _sum(
-        ("ca-on/marginal_cpp_base_rate", "ca-on/marginal_ei_rate"),
+    _record_total(
+        "ca/take_home_marginal_rates.marginal_credit_contribution_rate",
         "ca-on/marginal_credit_contribution_rate",
     ),
-    (
-        "core/apply_rate",
-        {"rate": "ca-on/marginal_federal_credit_rate"},
-        {"base": "ca-on/marginal_credit_contribution_rate"},
-        {"output": "ca-on/marginal_federal_contribution_credit_rate"},
+    _record_total(
+        "ca/take_home_marginal_rates.marginal_federal_rate", "ca-on/marginal_federal_rate"
+    ),
+    _record_total(
+        "ca/take_home_marginal_rates.marginal_contribution_rate",
+        "ca-on/marginal_contribution_rate",
     ),
     (
         "core/apply_rate",
         {"rate": "ca-on/marginal_ontario_credit_rate"},
         {"base": "ca-on/marginal_credit_contribution_rate"},
         {"output": "ca-on/marginal_ontario_contribution_credit_rate"},
-    ),
-    _multiply(
-        "ca/federal_bracket_rate_return",
-        "ca-on/marginal_net_income_rate",
-        "ca-on/marginal_federal_bracket_rate",
-    ),
-    _record_total("ca/t1_taxable_income.net_income_signed", "ca-on/return_net_income"),
-    _band(
-        "ca-on/marginal_federal_bpa_rows",
-        "ca-on/return_net_income",
-        "ca-on/federal_bpa_phase_down_gate",
-    ),
-    _multiply(
-        "ca-on/federal_bpa_phase_down_gate",
-        "ca-on/marginal_net_income_rate",
-        "ca-on/marginal_phase_down_net_income_rate",
-    ),
-    (
-        "core/apply_fraction",
-        {"fraction": "ca-on/federal_bpa_phase_down_fraction"},
-        {"base": "ca-on/marginal_phase_down_net_income_rate"},
-        {"output": "ca-on/marginal_federal_bpa_reduction_rate"},
-    ),
-    (
-        "core/apply_rate",
-        {"rate": "ca-on/marginal_federal_credit_rate"},
-        {"base": "ca-on/marginal_federal_bpa_reduction_rate"},
-        {"output": "ca-on/marginal_federal_bpa_credit_rate"},
-    ),
-    _sum(
-        ("ca-on/marginal_federal_bracket_rate", "ca-on/marginal_federal_bpa_credit_rate"),
-        "ca-on/marginal_federal_rate_before_credits",
-    ),
-    _subtract(
-        "ca-on/marginal_federal_rate_before_credits",
-        "ca-on/marginal_federal_contribution_credit_rate",
-        "ca-on/marginal_federal_rate_after_credits",
-    ),
-    _multiply(
-        "ca-on/marginal_federal_rate_after_credits",
-        "ca/federal_rate_gate",
-        "ca-on/marginal_federal_rate",
     ),
     _multiply(
         "ca-on/ontario_bracket_rate_return",
@@ -231,15 +168,6 @@ MARGINAL_RATE_STEPS = [
     ),
     _sum(
         (
-            "ca-on/marginal_cpp_base_rate",
-            "ca-on/marginal_cpp_first_additional_rate",
-            "ca-on/marginal_cpp_second_additional_rate",
-            "ca-on/marginal_ei_rate",
-        ),
-        "ca-on/marginal_contribution_rate",
-    ),
-    _sum(
-        (
             "ca-on/marginal_federal_rate",
             "ca-on/ontario_marginal_rate",
             "ca-on/marginal_health_premium_rate",
@@ -253,7 +181,9 @@ MARGINAL_RATE_STEPS = [
 def test_the_return_calculates_the_take_home_marginal_rate_one_capability_per_line() -> None:
     # Every rate is read from a form figure or a dataset of the forms' rates; nothing runs twice.
     steps = _return_steps()
-    start = [produces["output"] for *_, produces in steps].index("ca/federal_rate_gate") + 1
+    start = [produces["output"] for *_, produces in steps].index(
+        "ca-on/return_health_premium_slope"
+    ) + 1
 
     assert steps[start:] == MARGINAL_RATE_STEPS
 
@@ -273,30 +203,34 @@ def test_the_t1_exports_line_42900_basic_federal_tax_for_the_return() -> None:
     assert "ca/federal_tax_after_credits" in t1.exports
 
 
-def test_the_return_reads_the_line_73_rate_into_the_federal_bracket_rate_return() -> None:
-    assert (
-        "core/record_total",
-        {},
-        {"records": "ca/t1_tax_and_credits.federal_bracket_column_rate_line_73"},
-        {"output": "ca/federal_bracket_rate_return"},
-    ) in _return_steps()
-
-
-def test_the_return_gates_the_basic_federal_tax_with_the_marginal_rate_gate_dataset() -> None:
+def test_the_return_reads_the_federal_marginal_rate_form_instead_of_repeating_its_steps() -> None:
+    # The federal facts (CPP, EI, the line 73 rate, the basic personal amount, the federal gate)
+    # are in the `ca` package's form; the Ontario return holds none of them.
     steps = _return_steps()
+    names = {name for *_, produces in steps for name in produces.values()}
 
     assert (
-        "core/record_total",
-        {},
-        {"records": "ca/t1_tax_and_credits.federal_tax_after_credits"},
-        {"output": "ca/federal_tax_after_credits_return"},
-    ) in steps
-    assert (
-        "core/amount_by_band_rate",
-        {"table": "ca-on/marginal_rate_gate"},
-        {"base": "ca/federal_tax_after_credits_return"},
-        {"output": "ca/federal_rate_gate"},
-    ) in steps
+        not {
+            "ca/return_employment_income",
+            "ca/federal_bracket_rate_return",
+            "ca/federal_tax_after_credits_return",
+            "ca/federal_rate_gate",
+            "ca-on/marginal_cpp_base_rate",
+            "ca-on/marginal_ei_rate",
+            "ca-on/federal_bpa_phase_down_gate",
+        }
+        & names
+    )
+    assert [
+        consumes["records"]
+        for name, _, consumes, _ in steps
+        if name == "core/record_total" and "take_home_marginal_rates" in consumes["records"]
+    ] == [
+        "ca/take_home_marginal_rates.marginal_net_income_rate",
+        "ca/take_home_marginal_rates.marginal_credit_contribution_rate",
+        "ca/take_home_marginal_rates.marginal_federal_rate",
+        "ca/take_home_marginal_rates.marginal_contribution_rate",
+    ]
 
 
 def test_schedule_8_is_a_required_form_without_instances() -> None:
@@ -328,6 +262,7 @@ def test_the_federal_forms_are_imported_in_the_order_the_manifest_lists_them() -
         "ca/schedule_9",
         "ca/t2204",
         "ca/t691",
+        "ca/take_home_marginal_rates",
     ]
     assert names[1 : 1 + len(imported)] == imported
 

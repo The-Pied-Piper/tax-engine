@@ -8,6 +8,7 @@ come through a port. The rules (one sheet, one unit, the sums) are the domain's.
 from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
+from decimal import Decimal
 
 from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.models.take_home import (
@@ -19,10 +20,12 @@ from tax_engine.application.models.take_home import (
 )
 from tax_engine.application.models.take_home_request import TakeHomeRequest
 from tax_engine.application.ports.jurisdiction_source import JurisdictionSource
+from tax_engine.application.ports.parameter_source import ParameterSource
 from tax_engine.application.ports.take_home_text import TakeHomeText
 from tax_engine.application.ports.tax_calculation import TaxCalculation
 from tax_engine.domain.artifact import Artifact, ArtifactRegistry
 from tax_engine.domain.errors import NotFoundError
+from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY
 from tax_engine.domain.take_home import (
     FigureReference,
     Totals,
@@ -47,15 +50,20 @@ class TakeHomeService:
         computation: TaxCalculation,
         text: TakeHomeText,
         percent: Unit,
+        parameters: ParameterSource,
+        average_rate_rounding: str,
     ) -> None:
         """Find declarations in `jurisdictions`, compute with `computation`, word with `text`.
 
-        `percent` is the unit of the average rate, which the service works out itself.
+        `percent` is the unit of the average rate, which the service works out itself, rounded by
+        the rounding dataset family `average_rate_rounding` read from `parameters` for the tax year.
         """
         self._jurisdictions = jurisdictions
         self._computation = computation
         self._text = text
         self._percent = percent
+        self._parameters = parameters
+        self._average_rate_rounding = average_rate_rounding
 
     def compute(self, request: TakeHomeRequest) -> TakeHomeResult:
         """The take-home answer for `request`.
@@ -88,7 +96,7 @@ class TakeHomeService:
             unit=self._text.unit(unit),
             average_tax_rate=(
                 Rate(
-                    average_rate(totals.salary, totals.total_deductions),
+                    self._average_rate(request, totals),
                     self._text.unit(self._percent),
                 )
                 if request.include_rates
@@ -101,6 +109,12 @@ class TakeHomeService:
             ),
             trace=self._trace(sheets) if request.include_trace else None,
         )
+
+    def _average_rate(self, request: TakeHomeRequest, totals: Totals) -> Decimal:
+        rounding = self._parameters.get(
+            self._average_rate_rounding, request.tax_year, ROUNDING_ONLY
+        ).rounding
+        return average_rate(totals.salary, totals.total_deductions, rounding)
 
     def _rate(
         self,

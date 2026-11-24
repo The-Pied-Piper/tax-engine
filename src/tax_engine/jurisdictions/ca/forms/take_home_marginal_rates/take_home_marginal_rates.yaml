@@ -1,0 +1,32 @@
+# The federal part of the take-home marginal rate: what a further dollar of salary adds to the
+# federal income tax, the CPP (Schedule 8 lines 11, 12 and 22) and the EI premium (T2204 line 16),
+# for a salary-only filer with no paid credits. It is the change in the take-home deductions, as
+# the take-home figure reads them (T1 line 43500, Schedule 8 lines 25, 12 and 22, T2204 line 16).
+# No form prints any of these figures, so the steps have no title and no line reference.
+# The form works from the salary (T1 line 10100) alone, and calculates the rates from the forms'
+# printed rates, one capability per line, every figure exact (`ca/exact_rounding` rounds nothing;
+# the one inexact quotient, the basic personal amount's, rounds as its own dataset says). It does
+# not run the return twice.
+# Exports: what a province's return reads, each as a record list totalled into the return's own
+# figure, so every province that has a marginal rate shares the one federal half.
+#   - `ca/marginal_net_income_rate`: 1 less the CPP first additional and second additional rates,
+#     the part of a further dollar that stays in the net income and the taxable income (T1 line
+#     22215 takes the enhanced CPP off the income). A province's bracket rate and its other
+#     slopes on the taxable income are multiplied by it.
+#   - `ca/marginal_credit_contribution_rate`: the CPP base rate plus the EI rate, the two
+#     contributions that earn a non-refundable credit (T1 lines 30800 and 31200). A province
+#     multiplies it by its own credit rate to get the provincial tax the contributions take off.
+#   - `ca/marginal_federal_rate`: the federal tax on a further dollar, after the credits, counted
+#     only where the basic federal tax (T1 line 42900) is above zero.
+#   - `ca/marginal_contribution_rate`: the CPP base, first additional and second additional rates
+#     plus the EI rate, which a province adds into its total marginal rate.
+# The form reads T1 exports, so a manifest imports it after the T1 forms.
+form:
+  name: ca/take_home_marginal_rates
+  required: true
+  exports:
+    - ca/marginal_net_income_rate
+    - ca/marginal_credit_contribution_rate
+    - ca/marginal_federal_rate
+    - ca/marginal_contribution_rate
+capabilities: []

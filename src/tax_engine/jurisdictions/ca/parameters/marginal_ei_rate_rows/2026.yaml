@@ -1,13 +1,13 @@
 # Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text when CRA publishes it.
 # Derivation: the 2025 layout of Form T2204 (lines 7, 10 and 16, note (3)) with the 2026 EI rate 1.63% and maximum insurable earnings $68,900 of T4127 (Jan 2026) Table 8.7; the $2,000 of line 7 is the 2025 figure, as the 2026 form text is not published.
-# Ontario marginal rate, EI rate on the take-home basis, 2026 tax year (Form T2204, Employee Overpayment of
+# Take-home marginal rate, EI rate on the take-home basis, 2026 tax year (Form T2204, Employee Overpayment of
 # Employment Insurance Premiums, 2025 text). The take-home EI is line 16 "Enter whichever amount is the least: line 7,
 # line 9 or line 12", entered on line 31200 of the return. Line 7 is "Amount from line 3 – $2,000 = (if negative, enter
 # "0")", line 3 is "Line 1 plus line 2 (maximum $65,700)" and line 12 is the line 10 amount, "Amount from line 1 × 1.64%
 # = (maximum $1,077.48)". So line 16 is 0 up to a salary of $2,000, rises 1 for 1 with line 7 (a 100% band) until line 12 is
 # the least, then follows line 12: 1.63% of the salary up to the maximum insurable earnings of $68,900, and
 # nothing above. The 100% band ends where line 7 equals line 12, at $2,000 / (1 - 0.0163) = $2033.1402 (the form's own arithmetic; note (3)'s \"less than $2,033\" concerns self-employment earnings on line 2 and is not the band edge). The base is the salary (T1 line 10100); no rounding.
-family: ca-on/marginal_ei_rate_rows
+family: ca/marginal_ei_rate_rows
 tax_year: 2026
 kind: amount_by_band
 sources:

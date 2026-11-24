@@ -15,6 +15,7 @@ from fractions import Fraction
 
 from tax_engine.domain.artifact import ArtifactRegistry
 from tax_engine.domain.errors import InvalidManifestError
+from tax_engine.domain.parameters.rounding import RoundingRule
 from tax_engine.domain.unit import Unit
 from tax_engine.domain.worksheet import Worksheet
 
@@ -143,16 +144,12 @@ class Totals:
         )
 
 
-RATE_STEP = Fraction(1, 10000)
+def average_rate(salary: Decimal, total_deductions: Decimal, rounding: RoundingRule) -> Decimal:
+    """Total deductions over salary, the share of the salary taken off, rounded once by `rounding`.
 
-
-def average_rate(salary: Decimal, total_deductions: Decimal) -> Decimal:
-    """The share of the salary taken off it: total deductions over salary, half-up to 0.0001.
-
-    A salary of 0 gives 0. The division is exact and rounded once.
+    A salary of 0 gives 0. The quotient is formed as an exact fraction; with no rounding an inexact
+    quotient raises `decimal.Inexact`.
     """
     if salary == 0:
-        return Decimal("0.0000")
-    exact = Fraction(total_deductions) / Fraction(salary) / RATE_STEP
-    steps = (exact * 2 + 1) // 2  # half-up for the non-negative shares a salary gives
-    return (Decimal(steps) / 10000).quantize(Decimal("0.0001"))
+        return rounding.apply(Decimal(0))
+    return rounding.apply(Fraction(total_deductions) / Fraction(salary))

@@ -63,6 +63,7 @@ PARTS = (
     *form_part_names("schedule_8"),
     *form_part_names("schedule_9"),
     *form_part_names("t2204"),
+    *form_part_names("take_home_marginal_rates"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),
     "t1_tax_and_credits_line_30000.yaml",
     "t1_tax_and_credits_line_76.yaml",
