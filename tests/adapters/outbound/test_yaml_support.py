@@ -60,7 +60,7 @@ def test_load_uses_the_libyaml_c_loader(tmp_path: Path, monkeypatch: pytest.Monk
     used: list[type] = []
     real_load = yaml.load
 
-    def spy(stream: str, Loader: type) -> object:  # noqa: N803 - mirrors yaml.load
+    def spy(stream: str, Loader: type) -> object:
         used.append(Loader)
         return real_load(stream, Loader=Loader)
 
