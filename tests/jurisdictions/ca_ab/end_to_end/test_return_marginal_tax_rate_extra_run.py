@@ -15,8 +15,9 @@ step the engine and the extra run agree to the same tolerance. At a salary that 
 start of a band ($2,000 of EI, the $3,500 CPP exemption) the published rate is the
 lower band's, so the step is negative (the change from just below).
 
-Every salary of a sweep every $250 from $1,000 to $400,000 for both years agrees with its extra run
-except the salaries listed in `BREAK_STEPS`, and each of those agrees with the step given there.
+The salaries are a list across the range, plus the salaries of `BREAK_STEPS`; a sweep every $250 from
+$1,000 to $400,000 for both years, run when the test was written, disagreed with the extra run only
+at salaries that are in `BREAK_STEPS`, and each of those agrees with the step given there.
 """
 
 from __future__ import annotations
