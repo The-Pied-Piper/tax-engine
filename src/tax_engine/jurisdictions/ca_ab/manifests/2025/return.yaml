@@ -42,11 +42,11 @@
 # (political contributions) and line 74 (supplemental tax credit). Payroll (T4127) applies the
 # personal amounts, CPP and EI and the other credits (K1P to K3P); the dividend credit, the minimum
 # tax carry-over and additional minimum tax in lines 63, 64 and 67 are not payroll terms and are
-# zero or blank for the take-home filer. The July 2025 edition adds K5P, the Alberta supplemental
-# tax credit (AB428 line 74), which is ((K1P + K2P) - 3,600) x 0.04/0.06 for 2025 and
-# ((K1P + K2P) - 4,800) x 0.02/0.08 for 2026, not below 0; the January 2025 edition has no such
-# term. For the take-home filer K1P + K2P is below those amounts, so K5P is 0 and gating on line 68
-# is exact; a filer with higher personal credits is outside the take-home scope. Alberta has no
+# zero or blank for the take-home filer. The Alberta supplemental tax credit (AB428 line 74, printed
+# on Worksheet AB428 line 61545 of 5009-D: line 58800 minus line 58560, times 8%, minus the base
+# amount 4,800.00, not below 0, times 25%) is 0 unless those credits exceed $60,000; for the
+# take-home filer they are below $27,000, so the credit is 0 and gating on line 68 is exact; a
+# filer with higher personal credits is outside the take-home scope. Alberta has no
 # surtax, health premium, tax reduction or LIFT credit.
 #
 # The last step adds the federal marginal rate, the Alberta marginal rate and the contribution rate
