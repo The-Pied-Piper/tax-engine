@@ -15,7 +15,8 @@ on the CPP base and EI rates (c):
                and 0 where BC428 line 80 is 0.00
     marginal = federal + BC + CPP base + CPP enhanced + CPP2 + EI
 
-The BC credit rate is 5.06% (5.60% in 2026, provisional). The extra-run check over a sweep is in
+The BC credit rate is 5.06% (5.60% in 2026). The 2026 figures are provisional: the 2026 forms are
+not published, and the 2026 datasets follow the July 2026 payroll rates or are carried forward. The extra-run check over a sweep is in
 `test_return_marginal_tax_rate_extra_run.py`, the gates in
 `test_return_marginal_tax_rate_gates.py`.
 
@@ -33,6 +34,7 @@ The BC credit rate is 5.06% (5.60% in 2026, provisional). The extra-run check ov
   0.01: 0.3289978.
 - 2025, $75,000 (CPP2 band, no CPP base or EI): N = 0.96; federal 20.5% x 0.96 = 0.1968; British
   Columbia 7.7% x 0.96 = 0.07392; contributions 0.04: 0.31072.
+- 2025, $100,000: no contributions; federal 20.5%; British Columbia 10.5%: 0.31.
 - 2025, $120,000: no contributions; federal 26%; British Columbia 12.29%: 0.3829.
 - 2025, $150,000 (above the table 1 limit of 137,407, so BC428 line 12): 26% + 14.7%: 0.407.
 - 2025, $200,000: the federal basic personal amount falls over $177,882 to $253,414: 29% + 14.5% x
@@ -75,6 +77,7 @@ BRITISH_COLUMBIA = JurisdictionCode("CA-BC")
         (2025, "45000", "0.25665396"),
         (2025, "70000", "0.3289978"),
         (2025, "75000", "0.31072"),
+        (2025, "100000", "0.31"),
         (2025, "120000", "0.3829"),
         (2025, "150000", "0.407"),
         (2025, "200000", "0.4610542655"),
