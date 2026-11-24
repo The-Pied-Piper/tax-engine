@@ -222,7 +222,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
             for part in form_parts("t1_employment_income")
         ),
         *STAND_INS,
-        *MARGINAL_RATES_STAND_INS,
+        *marginal_rates_stand_ins("ca-nl/low_income_reduction_line_86_gate"),
         ("05_return.yaml", RETURN_PART.read_text(encoding="utf-8")),
     ]
     for name, text in texts:
