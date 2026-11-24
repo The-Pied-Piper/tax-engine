@@ -55,7 +55,7 @@ The gates open at the zero-tax boundaries, found cent by cent from the same deri
 0 one cent below and counts at the cent pinned):
 
 - Manitoba: MB428 line 65 is 0.00 at 17,402.21 and 0.01 at 17,402.22 (a net income of 17,263.20;
-  the family tax benefit is already in the credits there, which this return does not count);
+  the family tax benefit is already in the credits there; the marginal rate counts its fall);
 - federal: T1 line 42900 is 0.00 at 19,200.17 and 0.01 at 19,200.18.
 
 The bracket columns change at a taxable income of 47,000.00 (salary 47,439.39) and 47,000.01

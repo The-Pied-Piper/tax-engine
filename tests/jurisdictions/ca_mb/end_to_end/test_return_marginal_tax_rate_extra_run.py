@@ -113,7 +113,7 @@ KNOWN_EXCEPTIONS: dict[tuple[int, int], str] = {
     (2025, 115_750): "the federal 26% column starts above a taxable income of $114,750",
     (2025, 201_000): "the basic personal amount phase-out starts at a net income of $200,000.07",
     (2025, 401_000): "the phase-out ends: Worksheet MB428 line 9 is 0.00 from $401,073.94",
-    (2026, 59_000): "the federal 20.5% column ends above a taxable income of $58,523",
+    (2026, 59_000): "the federal 14% column ends at a taxable income of $58,523",
     (2026, 182_500): "the federal 29% column starts above a taxable income of $181,440",
     (2026, 401_100): "the phase-out ends: Worksheet MB428 line 9 is 0.00 from $401,126.94",
 }

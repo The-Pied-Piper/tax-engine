@@ -46,7 +46,7 @@ The gates open at the zero-tax boundaries, found cent by cent from the same deri
 0 one cent below and counts at the cent pinned):
 
 - Manitoba: MB428 line 65 is 0.00 at 17,403.90 and 0.01 at 17,403.91 (a net income of 17,264.87;
-  the family tax benefit is already in the credits there, which this return does not count);
+  the family tax benefit is already in the credits there; the marginal rate counts its fall);
 - federal: T1 line 42900 is 0.00 at 18,820.26 and 0.01 at 18,820.27.
 
 The phase-out's slope starts at a net income of 200,000.07 (salary 201,074.07) and ends at

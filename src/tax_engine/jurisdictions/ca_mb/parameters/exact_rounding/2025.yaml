@@ -3,9 +3,8 @@
 # Manitoba rates on the return summary (the MB428 line 5 rate times the net income rate, the
 # phase-out and family tax benefit rates, the credit rate times the contribution rate, a gate times
 # the rate after the credits, core/multiply_by_rate, their difference, core/subtract, and the sum
-# of the
-# federal, Manitoba and contribution marginal rates, core/sum). They are exact and the forms print
-# no rounding rule for them (the project's choice is no rounding); the divisor of line 6 is always
+# of the federal, Manitoba and contribution marginal rates, core/sum). They are exact and the forms
+# print no rounding rule for them (the project's choice is no rounding); the divisor of line 6 is always
 # 200,000.00. The cent rule of `ca-mb/cent_rounding` does not apply.
 family: ca-mb/exact_rounding
 tax_year: 2025
