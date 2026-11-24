@@ -466,7 +466,7 @@
    }
   },
   "marginal_tax_rate": {
-   "value": "0.305",
+   "value": "0.3503125",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -530,11 +530,15 @@
     "lines": 7
    },
    {
+    "form": "ca/take_home_marginal_rates",
+    "lines": 30
+   },
+   {
     "form": "ca-ab/return",
-    "lines": 14
+    "lines": 18
    }
   ],
-  "trace_sha256": "bbf7073b9bc757eb36a1274929d1f3c406e81a379771068d8d597f7d4e9e3cf4"
+  "trace_sha256": "b1dfb3b81eb0afcd681b41375974476973e14dc4b81e3f5c7a0c3e5b47d64e1d"
  },
  {
   "jurisdiction": "CA-AB",
@@ -570,7 +574,7 @@
    }
   },
   "marginal_tax_rate": {
-   "value": "0.43",
+   "value": "0.4330542655",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -660,7 +664,7 @@
    }
   },
   "marginal_tax_rate": {
-   "value": "0.305",
+   "value": "0.35056",
    "unit": {
     "name": "core/percent",
     "placement": "after",
@@ -724,11 +728,15 @@
     "lines": 7
    },
    {
+    "form": "ca/take_home_marginal_rates",
+    "lines": 30
+   },
+   {
     "form": "ca-ab/return",
-    "lines": 14
+    "lines": 18
    }
   ],
-  "trace_sha256": "83b60ca50524ff3764913a0c8939e3be08baa1124a1b25fdd6be23a80276762a"
+  "trace_sha256": "67d534e3be5887e878ed63b24929471c6da4b3df31443fefb826dd8f8fa4d24b"
  },
  {
   "jurisdiction": "CA-AB",
@@ -764,7 +772,7 @@
    }
   },
   "marginal_tax_rate": {
-   "value": "0.43",
+   "value": "0.432949296",
    "unit": {
     "name": "core/percent",
     "placement": "after",
