@@ -52,8 +52,17 @@ CONTRIBUTION = "ca-nl/marginal_contribution_rate"
 MARGINAL = "ca-nl/marginal_tax_rate"
 
 SALARIES = [
-    "0", "100", "2000", "11750", "19200.18", "25100.04", "28000", "30763.61", "70000", "275000",
-]  # fmt: skip
+    "0",
+    "100",
+    "2000",
+    "11750",
+    "19200.18",
+    "25100.04",
+    "28000",
+    "30763.61",
+    "70000",
+    "275000",
+]
 
 
 def _summary(salary: str) -> Worksheet:

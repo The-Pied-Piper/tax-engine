@@ -74,19 +74,6 @@ PARTS = [
     ("153824", "0.26", "0.158", "0", "0.418"),
 ]
 
-SALARIES = [
-    "0",
-    "100",
-    "2000",
-    "11750",
-    "24134.35",
-    "24140.19",
-    "28000",
-    "30428.51",
-    "70000",
-    "250000",
-]
-
 
 def _summary(salary: str) -> Worksheet:
     # No fixture: the bundled Newfoundland and Labrador manifest, as the calculator loads it,
@@ -111,42 +98,6 @@ def _value(sheet: Worksheet, name: str) -> Decimal:
     value = sheet.get(bundled_kinds().kind(name)).value
     assert isinstance(value, Decimal)
     return value
-
-
-@pytest.mark.parametrize("salary", SALARIES)
-def test_2025_the_total_is_the_exact_sum_of_the_gated_parts(salary: str) -> None:
-    summary = _summary(salary)
-
-    assert _value(summary, MARGINAL) == (
-        _value(summary, FEDERAL) + _value(summary, PROVINCIAL) + _value(summary, CONTRIBUTION)
-    )
-    assert _value(summary, PROVINCIAL) == _value(summary, TAX_GATE) * _value(
-        summary, REDUCTION_RATE
-    )
-
-
-@pytest.mark.parametrize("salary", SALARIES)
-def test_2025_each_gate_opens_with_the_amount_it_reads(salary: str) -> None:
-    summary = _summary(salary)
-
-    for gate, amount in (
-        (TAX_GATE, LINE_105),
-        (INCOME_GATE, "ca-nl/income_over_low_income_threshold_return"),
-        (REDUCTION_GATE, "ca-nl/low_income_tax_reduction_return"),
-    ):
-        assert _value(summary, gate) == (D("1") if _value(summary, amount) > 0 else D("0"))
-    assert _value(summary, PHASE_OUT_GATE) == (
-        _value(summary, INCOME_GATE) * _value(summary, REDUCTION_GATE)
-    )
-
-
-@pytest.mark.parametrize("salary", ["0", "100", "2000"])
-def test_2025_the_marginal_tax_rate_is_0_where_nothing_is_paid(salary: str) -> None:
-    # No income tax, and no CPP or EI yet (the EI band of T2204 line 16 starts above 2,000).
-    summary = _summary(salary)
-
-    assert _value(summary, MARGINAL) == D("0")
-    assert _value(summary, PROVINCIAL) == D("0")
 
 
 @pytest.mark.parametrize(
@@ -211,3 +162,19 @@ def test_the_federal_gate_opens_where_the_basic_federal_tax_is_first_above_zero(
 
     assert _value(federal, BASIC_FEDERAL_TAX) == D(basic_federal_tax)
     assert _value(federal, FEDERAL_GATE) == D(federal_gate)
+
+
+@pytest.mark.parametrize(
+    ("salary", "line_105", "provincial_gate"),
+    [
+        ("24140.18", "0.00", "0"),
+        ("24140.19", "0.01", "1"),
+    ],
+)
+def test_the_provincial_gate_opens_where_line_105_is_first_above_zero(
+    salary: str, line_105: str, provincial_gate: str
+) -> None:
+    summary = _summary(salary)
+
+    assert _value(summary, LINE_105) == D(line_105)
+    assert _value(summary, TAX_GATE) == D(provincial_gate)

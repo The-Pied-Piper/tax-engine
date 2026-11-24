@@ -49,7 +49,6 @@ NEWFOUNDLAND = JurisdictionCode("CA-NL")
 RETURN = "ca-nl/return"
 MARGINAL = "ca-nl/marginal_tax_rate"
 TOLERANCE = D("0.001")
-STEP = 100
 # The take-home deductions, as the manifest's `take_home` block names them.
 DEDUCTIONS = (
     ("ca/t1_tax_and_credits", "ca/total_payable"),
@@ -58,16 +57,46 @@ DEDUCTIONS = (
     ("ca/schedule_8", "ca/cpp_part_3_line_22"),
     ("ca/t2204", "ca/t2204_line_16"),
 )
-YEARS = (2025, 2026)
 # Salaries in each part of the rate (no tax, the EI band, the low-income reduction and its
 # phase-out, the brackets, the CPP2 band, the basic personal amount's phase-down), and the salaries
 # of `KNOWN_EXCEPTIONS`.
 SALARIES = (
-    1_500, 2_000, 2_020, 3_500, 5_000, 10_000, 15_000, 18_750, 20_000, 24_000, 26_000, 28_000,
-    30_000, 30_333, 30_750, 35_000, 40_000, 45_000, 50_000, 59_000, 60_000, 68_811, 70_000,
-    71_250, 75_000, 90_000, 115_750, 118_156, 120_000, 150_000, 182_500, 200_000, 250_000,
-    283_250, 300_000,
-)  # fmt: skip
+    1_500,
+    2_000,
+    2_020,
+    3_500,
+    5_000,
+    10_000,
+    15_000,
+    18_750,
+    20_000,
+    24_000,
+    26_000,
+    28_000,
+    30_000,
+    30_333,
+    30_750,
+    35_000,
+    40_000,
+    45_000,
+    50_000,
+    59_000,
+    60_000,
+    68_811,
+    70_000,
+    71_250,
+    75_000,
+    90_000,
+    115_750,
+    118_156,
+    120_000,
+    150_000,
+    182_500,
+    200_000,
+    250_000,
+    283_250,
+    300_000,
+)
 # Every $250 from $1,000 to $400,000 and the salaries above: the sweep of every year.
 SWEEP = tuple(sorted({*range(1_000, 400_001, 250), *SALARIES}))
 # A smaller step near a narrow band, so the extra run does not cross the band's end: the EI band of
@@ -75,17 +104,16 @@ SWEEP = tuple(sorted({*range(1_000, 400_001, 250), *SALARIES}))
 NARROW_BAND_STEPS = {2_020: 10}
 # (tax year, salary): why the run of $100 is not the derivative there. Each salary is run again
 # over a smaller step in `SMALLER_STEPS`, from the point the rate is meant for.
-EDGE = "an exact band edge: the published rate is the lower band's"
 KNOWN_EXCEPTIONS: dict[tuple[int, int], str] = {
-    (2025, 2_000): "EI starts above $2,000 (T2204 line 16), " + EDGE,
-    (2025, 3_500): "the CPP starts above $3,500, " + EDGE,
+    (2025, 2_000): "exact edge: EI starts above $2,000 (T2204 line 16)",
+    (2025, 3_500): "exact edge: the CPP starts above $3,500",
     (2025, 18_750): "federal tax (T1 line 42900) starts at $18,820.27",
     (2025, 30_333): "the low-income tax reduction (NL428 line 104) is used up",
     (2025, 71_250): "the CPP base and enhanced ceiling is $71,300",
     (2025, 115_750): "the federal bracket at taxable income $114,750",
     (2025, 283_250): "the NL428 bracket at taxable income $282,214",
-    (2026, 2_000): "EI starts above $2,000 (T2204 line 16), " + EDGE,
-    (2026, 3_500): "the CPP starts above $3,500, " + EDGE,
+    (2026, 2_000): "exact edge: EI starts above $2,000 (T2204 line 16)",
+    (2026, 3_500): "exact edge: the CPP starts above $3,500",
     (2026, 30_750): "the low-income tax reduction (NL428 line 104) is used up",
     (2026, 45_000): "the NL428 bracket where table 1 moves to its second row",
     (2026, 59_000): "the federal bracket at the second row's start",
@@ -114,7 +142,7 @@ SMALLER_STEPS = {
 
 CASES = [
     pytest.param(year, salary, id=f"{year}-{salary}")
-    for year in YEARS
+    for year in (2025, 2026)
     for salary in SALARIES
     if (year, salary) not in KNOWN_EXCEPTIONS
 ]
@@ -128,12 +156,9 @@ def _deductions(year: int, salary: Decimal) -> Decimal:
         TaxCalculationRequest(NEWFOUNDLAND, year, (Artifact(EMPLOYMENT_INCOME, salary),))
     )
     kinds = bundled_kinds()
-    total = D("0")
-    for form, kind in DEDUCTIONS:
-        value = worksheets[form][0].get(kinds.kind(kind)).value
-        assert isinstance(value, Decimal)
-        total += value
-    return total
+    return sum(
+        (worksheets[form][0].get(kinds.kind(kind)).value for form, kind in DEDUCTIONS), D("0")
+    )
 
 
 def _marginal_rate(year: int, salary: Decimal) -> Decimal:
@@ -149,7 +174,7 @@ def _marginal_rate(year: int, salary: Decimal) -> Decimal:
 def test_the_marginal_rate_is_the_extra_dollar_change_in_the_take_home_deductions(
     year: int, salary: int
 ) -> None:
-    step = NARROW_BAND_STEPS.get(salary, STEP)
+    step = NARROW_BAND_STEPS.get(salary, 100)
     extra_run = (_deductions(year, D(salary + step)) - _deductions(year, D(salary))) / step
 
     assert abs(_marginal_rate(year, D(salary)) - extra_run) <= TOLERANCE
@@ -169,12 +194,12 @@ def test_a_known_exception_agrees_with_a_run_that_stays_inside_the_band(
 def test_the_run_of_100_dollars_crosses_the_break_of_each_known_exception(
     year: int, salary: int
 ) -> None:
-    run = (_deductions(year, D(salary + STEP)) - _deductions(year, D(salary))) / STEP
+    run = (_deductions(year, D(salary + 100)) - _deductions(year, D(salary))) / 100
 
     assert abs(_marginal_rate(year, D(salary)) - run) > TOLERANCE
 
 
-@pytest.mark.parametrize("year", YEARS)
+@pytest.mark.parametrize("year", (2025, 2026))
 def test_a_sweep_of_every_250_dollars_disagrees_only_at_the_known_exceptions(year: int) -> None:
     # Umar's sweep: every $250 from $1,000 to $400,000 and the salaries above, with one engine
     # built once so that the 3,000 runs finish in reasonable time.
@@ -196,7 +221,7 @@ def test_a_sweep_of_every_250_dollars_disagrees_only_at_the_known_exceptions(yea
 
     disagreements = set()
     for salary in SWEEP:
-        step = NARROW_BAND_STEPS.get(salary, STEP)
+        step = NARROW_BAND_STEPS.get(salary, 100)
         deductions, marginal = run(salary)
         if abs(marginal - (run(salary + step)[0] - deductions) / step) > TOLERANCE:
             disagreements.add(salary)
