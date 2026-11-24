@@ -1,5 +1,5 @@
 # Alberta 2025 take-home manifest: the return's identity and its exports (the refund or balance
-# owing, the average income tax rate and the marginal tax rate). The caller gives the
+# owing, the average tax rate and the marginal tax rate, both on the take-home basis). The caller gives the
 # gross salary and nothing else (the T1 employment income form's line 10100 input). Alberta's own
 # forms are in parts beside this one, so a line ticket adds only its own part file; the federal
 # forms are imported by name below, their parts in the `ca` package (`ca/forms/<name>/`).
@@ -55,3 +55,4 @@ imports:
   - ca/t2204
   - ca/take_home_average_rate
   - ca/t691
+  - ca/take_home_marginal_rates
