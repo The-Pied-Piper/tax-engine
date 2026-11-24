@@ -28,10 +28,10 @@
 # rates). The rest is Ontario's own.
 #
 # Credits on the contributions. The CPP base contribution (T1 line 30800) and the EI premium (line
-# 31200) earn the Ontario non-refundable credit rate (ON428 lines 19, 21 and 45, `ca-on/marginal_
-# ontario_credit_rate`), so the credit-earning contribution rate times it is the Ontario tax a
-# further dollar of contributions takes off. The dataset is exact: the cent rounding of
-# `ca-on/credit_rate` is for the credit boxes.
+# 31200) earn the Ontario non-refundable credit rate (ON428 lines 19, 21 and 45, the
+# `ca-on/credit_rate` dataset), so the credit-earning contribution rate times it is the Ontario tax a
+# further dollar of contributions takes off. The rate is the dataset's as it is: its cent
+# rounding is for the credit boxes.
 #
 # Ontario. The bracket rate (ON428 line 5 "Line 5: Rate", read from the ON428 export into
 # `ca-on/ontario_bracket_rate_return`) times the net income rate, less the Ontario credit on the
@@ -42,8 +42,9 @@
 # the tax rate counts twice: the reduction gate (`ca-on/ontario_reduction_gate`) times the rate with
 # the surtax is the phase-out rate, which the sum adds. The surtax is charged before the LIFT credit
 # (line 85) comes off at line 86, so the LIFT phase-out is added after the surtax and the reduction:
-# the credit of Schedule ON428-A falls by the line 18 rate (5%, the `ca-on/marginal_lift_reduction_rows`
-# band of the line 19 reduction, read into `ca-on/return_lift_reduction`) for each dollar of net
+# the credit of Schedule ON428-A falls by the line 18 rate (5%, the `ca-on/lift_single_rate` dataset)
+# for each dollar of net income while the reduction (line 19, read into `ca-on/return_lift_reduction`)
+# and the credit left (line 20, read into `ca-on/return_lift_credit`) are both above 0, for each dollar of net
 # income while the reduction is above 0 and the credit is not used up, which is more tax. The whole
 # Ontario rate counts only where the Ontario tax after the LIFT credit (ON428 line 86, read into
 # `ca-on/ontario_tax_after_lift_return`) is above zero, through the `ca-on/marginal_rate_gate`
@@ -181,12 +182,19 @@ capabilities:
       records: ca/take_home_marginal_rates.marginal_contribution_rate
     produces:
       output: ca-on/marginal_contribution_rate
-  - name: core/apply_rate
+  - name: ca/rate_figure
     unit: core/percent
     params:
-      rate: ca-on/marginal_ontario_credit_rate
+      rate: ca-on/credit_rate
+    produces:
+      output: ca-on/marginal_ontario_credit_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-on/exact_rounding
     consumes:
       base: ca-on/marginal_credit_contribution_rate
+      rate: ca-on/marginal_ontario_credit_rate
     produces:
       output: ca-on/marginal_ontario_contribution_credit_rate
   - name: core/multiply_by_rate
@@ -255,12 +263,50 @@ capabilities:
       records: ca-on/on428_a.lift_reduction
     produces:
       output: ca-on/return_lift_reduction
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-on/on428_a.lift_credit_single
+    produces:
+      output: ca-on/return_lift_credit
   - name: core/amount_by_band_rate
     unit: core/percent
     params:
-      table: ca-on/marginal_lift_reduction_rows
+      table: ca-on/marginal_rate_gate
     consumes:
       base: ca-on/return_lift_reduction
+    produces:
+      output: ca-on/lift_reduction_gate
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca-on/marginal_rate_gate
+    consumes:
+      base: ca-on/return_lift_credit
+    produces:
+      output: ca-on/lift_credit_gate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-on/exact_rounding
+    consumes:
+      base: ca-on/lift_reduction_gate
+      rate: ca-on/lift_credit_gate
+    produces:
+      output: ca-on/lift_phase_out_gate
+  - name: ca/rate_figure
+    unit: core/percent
+    params:
+      rate: ca-on/lift_single_rate
+    produces:
+      output: ca-on/lift_single_rate_figure
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-on/exact_rounding
+    consumes:
+      base: ca-on/lift_phase_out_gate
+      rate: ca-on/lift_single_rate_figure
     produces:
       output: ca-on/marginal_lift_reduction_rate
   - name: core/multiply_by_rate

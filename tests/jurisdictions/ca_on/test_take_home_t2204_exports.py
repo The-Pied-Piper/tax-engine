@@ -1,9 +1,10 @@
-"""The Ontario take-home T2204 form part exports exactly three figures, computed through the engine.
+"""The Ontario take-home T2204 form part exports six figures, computed through the engine.
 
 The real `t2204.yaml` form part names the form and its exports. The return reads three figures from
 it: line 4, the total premiums deducted (`ca/t2204_premiums_deducted`), the overpayment refunded on
 T1 line 45000 (`ca/ei_overpayment`) and line 16, the amount entered on T1 line 31200
-(`ca/t2204_line_16`). Lines 15 and its count are no longer exported. The test composes the real form
+(`ca/t2204_line_16`). The marginal rate form also reads lines 1, 7 and 10. Line 15 and its count
+are not exported. The test composes the real form
 part with the real inputs part and the real line parts under a test-local header that declares the
 salary, the one input a salary-only caller gives.
 """
@@ -68,14 +69,21 @@ def _worksheet(
     return kinds, service.compute(TaxCalculationRequest(CODE, 2025, tuple(starting)))["ca/t2204"][0]
 
 
-def test_the_form_exports_exactly_the_three_figures(
+def test_the_form_exports_the_three_figures_and_the_three_the_marginal_rate_reads(
     take_home_service: TakeHomeService, tmp_path: Path
 ) -> None:
     take_home_service(HEADER, FORM, *PARTS)
     folder = tmp_path / "manifests" / "2025"
     manifest = YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds(), units()).load(folder)
     (worksheet,) = [form for form in manifest.forms if form.name == "ca/t2204"]
-    assert worksheet.exports == (LINE_4, OVERPAYMENT, LINE_16)
+    assert worksheet.exports == (
+        LINE_4,
+        OVERPAYMENT,
+        LINE_16,
+        "ca/t2204_line_1",
+        "ca/t2204_line_7",
+        "ca/t2204_line_10",
+    )
 
 
 @pytest.mark.parametrize(

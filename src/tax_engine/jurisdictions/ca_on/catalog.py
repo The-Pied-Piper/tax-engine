@@ -894,12 +894,38 @@ RETURN_LIFT_REDUCTION = AmountKind.declare(CATALOG, "return_lift_reduction", non
 18": the one amount of ON428-A's export totalled into the return summary's own artifact, the base
 of the LIFT reduction rate."""
 
+RETURN_LIFT_CREDIT = AmountKind.declare(CATALOG, "return_lift_credit", non_negative=True)
+"""LIFT credit left, Schedule ON428-A Part A line 20: the one amount of ON428-A's export totalled
+into the return summary's own artifact."""
+
+LIFT_REDUCTION_GATE = AmountKind.declare(CATALOG, "lift_reduction_gate", non_negative=True)
+"""1 where the LIFT reduction (line 19) is at least a cent, 0 where it is 0.00, from the
+`ca-on/marginal_rate_gate` dataset. A plain figure, not printed on the form."""
+
+LIFT_CREDIT_GATE = AmountKind.declare(CATALOG, "lift_credit_gate", non_negative=True)
+"""1 where the LIFT credit left (line 20) is at least a cent, 0 where it is 0.00, from the
+`ca-on/marginal_rate_gate` dataset. A plain figure, not printed on the form."""
+
+LIFT_PHASE_OUT_GATE = AmountKind.declare(CATALOG, "lift_phase_out_gate", non_negative=True)
+"""1 where the LIFT reduction and the credit left are both above 0, the two gates multiplied: the
+credit is falling with income. A plain figure, not printed on the form."""
+
+LIFT_SINGLE_RATE_FIGURE = AmountKind.declare(CATALOG, "lift_single_rate_figure", non_negative=True)
+"""LIFT reduction rate, Schedule ON428-A line 18 "Applicable rate 5%": the `ca-on/lift_single_rate`
+dataset as it is, a rate, not printed as a figure of its own."""
+
+MARGINAL_ONTARIO_CREDIT_RATE = AmountKind.declare(
+    CATALOG, "marginal_ontario_credit_rate", non_negative=True
+)
+"""Ontario non-refundable tax credit rate, ON428 line 45: the `ca-on/credit_rate` dataset as it is,
+with none of the cent rounding the credit box applies. A rate, not printed as its own figure."""
+
 MARGINAL_LIFT_REDUCTION_RATE = AmountKind.declare(
     CATALOG, "marginal_lift_reduction_rate", non_negative=True
 )
 """LIFT reduction rate on a further dollar of net income, Schedule ON428-A line 18 "Applicable
-rate 5%": 5% while the reduction (line 19) is above zero and not over the credit's maximum, 0
-elsewhere, from the `ca-on/marginal_lift_reduction_rows` dataset. Not printed on the form."""
+rate 5%": 5% while the reduction (line 19) and the credit left (line 20) are both above zero, 0
+elsewhere. Not printed on the form."""
 
 MARGINAL_LIFT_PHASE_OUT_RATE = AmountKind.declare(
     CATALOG, "marginal_lift_phase_out_rate", non_negative=True

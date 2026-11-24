@@ -3,8 +3,8 @@
 # for a salary-only filer with no paid credits. It is the change in the take-home deductions, as
 # the take-home figure reads them (T1 line 43500, Schedule 8 lines 25, 12 and 22, T2204 line 16).
 # No form prints any of these figures, so the steps have no title and no line reference.
-# The form works from the salary (T1 line 10100) alone, and calculates the rates from the forms'
-# printed rates, one capability per line, every figure exact (`ca/exact_rounding` rounds nothing;
+# The form works from the salary (T1 line 10100) alone, and reads the rates from the datasets the forms use,
+# one capability per line, every figure exact (`ca/exact_rounding` rounds nothing;
 # the one inexact quotient, the basic personal amount's, rounds as its own dataset says). It does
 # not run the return twice.
 # Exports: what a province's return reads, each as a record list totalled into the return's own

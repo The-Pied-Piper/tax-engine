@@ -65,6 +65,10 @@ def _band(table: str, base: str, output: str) -> Step:
     return ("core/amount_by_band_rate", {"table": table}, {"base": base}, {"output": output})
 
 
+def _tier_rate(tier: str, earnings: str, output: str) -> Step:
+    return ("ca/contribution_tier_rate", {"tier": tier}, {"earnings": earnings}, {"output": output})
+
+
 def _record_total(records: str, output: str) -> Step:
     return ("core/record_total", {}, {"records": records}, {"output": output})
 
@@ -83,18 +87,39 @@ def _sum(parts: tuple[str, ...], output: str) -> Step:
 
 STEPS: list[Step] = [
     _record_total("ca/t1_employment_income.employment_income_line_10100", "ca/marginal_salary"),
-    _band("ca/marginal_cpp_base_rate_rows", "ca/marginal_salary", "ca/marginal_cpp_base_rate"),
-    _band(
-        "ca/marginal_cpp_first_additional_rate_rows",
-        "ca/marginal_salary",
+    _record_total(
+        "ca/schedule_8.cpp_part_3_line_7_difference", "ca/marginal_cpp_line_7_difference"
+    ),
+    _record_total("ca/schedule_8.cpp_part_3_line_4", "ca/marginal_cpp_line_4"),
+    _tier_rate(
+        "ca/cpp_line_11_base_contribution",
+        "ca/marginal_cpp_line_7_difference",
+        "ca/marginal_cpp_base_rate",
+    ),
+    _tier_rate(
+        "ca/cpp_line_12_first_additional_contribution",
+        "ca/marginal_cpp_line_7_difference",
         "ca/marginal_cpp_first_additional_rate",
     ),
-    _band(
-        "ca/marginal_cpp_second_additional_rate_rows",
-        "ca/marginal_salary",
+    _tier_rate(
+        "ca/cpp_line_22_second_additional_contribution",
+        "ca/marginal_cpp_line_4",
         "ca/marginal_cpp_second_additional_rate",
     ),
-    _band("ca/marginal_ei_rate_rows", "ca/marginal_salary", "ca/marginal_ei_rate"),
+    _record_total("ca/t2204.t2204_line_1", "ca/marginal_ei_line_1"),
+    _record_total("ca/t2204.t2204_line_7", "ca/marginal_ei_line_7"),
+    _record_total("ca/t2204.t2204_line_10", "ca/marginal_ei_line_10"),
+    _tier_rate("ca/ei_premium", "ca/marginal_ei_line_1", "ca/marginal_ei_premium_rate"),
+    _band(GATE, "ca/marginal_ei_line_7", "ca/marginal_ei_line_7_rate"),
+    (
+        "ca/lesser_of_rate",
+        {},
+        {
+            "amounts": ("ca/marginal_ei_line_7", "ca/marginal_ei_line_10"),
+            "rates": ("ca/marginal_ei_line_7_rate", "ca/marginal_ei_premium_rate"),
+        },
+        {"output": "ca/marginal_ei_rate"},
+    ),
     _band(GATE, "ca/marginal_salary", "ca/marginal_salary_gate"),
     _subtract(
         "ca/marginal_salary_gate",
@@ -128,10 +153,15 @@ STEPS: list[Step] = [
     ),
     _band(GATE, "ca/marginal_basic_federal_tax", "ca/marginal_federal_gate"),
     (
-        "core/apply_rate",
-        {"rate": "ca/marginal_federal_credit_rate"},
-        {"base": "ca/marginal_credit_contribution_rate"},
-        {"output": "ca/marginal_federal_contribution_credit_rate"},
+        "ca/rate_figure",
+        {"rate": "ca/credit_rate"},
+        {},
+        {"output": "ca/marginal_federal_credit_rate"},
+    ),
+    _multiply(
+        "ca/marginal_credit_contribution_rate",
+        "ca/marginal_federal_credit_rate",
+        "ca/marginal_federal_contribution_credit_rate",
     ),
     _multiply(
         "ca/marginal_federal_bracket_column_rate",
@@ -139,27 +169,21 @@ STEPS: list[Step] = [
         "ca/marginal_federal_bracket_rate",
     ),
     _record_total("ca/t1_taxable_income.net_income_signed", "ca/marginal_net_income"),
-    _band(
-        "ca/marginal_federal_bpa_rows",
-        "ca/marginal_net_income",
-        "ca/marginal_federal_bpa_phase_down_gate",
+    (
+        "ca/tapered_amount_rate",
+        {"taper": "ca/basic_personal_amount", "rounding": "ca/marginal_rate_rounding"},
+        {"base": "ca/marginal_net_income"},
+        {"output": "ca/marginal_federal_bpa_reduction_rate"},
     ),
     _multiply(
-        "ca/marginal_federal_bpa_phase_down_gate",
+        "ca/marginal_federal_bpa_reduction_rate",
         "ca/marginal_net_income_rate",
         "ca/marginal_phase_down_net_income_rate",
     ),
-    (
-        "core/apply_fraction",
-        {"fraction": "ca/federal_bpa_phase_down_fraction"},
-        {"base": "ca/marginal_phase_down_net_income_rate"},
-        {"output": "ca/marginal_federal_bpa_reduction_rate"},
-    ),
-    (
-        "core/apply_rate",
-        {"rate": "ca/marginal_federal_credit_rate"},
-        {"base": "ca/marginal_federal_bpa_reduction_rate"},
-        {"output": "ca/marginal_federal_bpa_credit_rate"},
+    _multiply(
+        "ca/marginal_phase_down_net_income_rate",
+        "ca/marginal_federal_credit_rate",
+        "ca/marginal_federal_bpa_credit_rate",
     ),
     _sum(
         ("ca/marginal_federal_bracket_rate", "ca/marginal_federal_bpa_credit_rate"),
@@ -199,10 +223,17 @@ def test_the_form_calculates_the_federal_rates_one_capability_per_line() -> None
     assert _steps() == STEPS
 
 
-def test_every_step_is_a_percent_except_the_salary_the_net_income_and_the_basic_federal_tax() -> (
-    None
-):
-    dollars = {"ca/marginal_salary", "ca/marginal_net_income", "ca/marginal_basic_federal_tax"}
+def test_every_step_is_a_percent_except_the_dollar_figures_it_reads() -> None:
+    dollars = {
+        "ca/marginal_salary",
+        "ca/marginal_net_income",
+        "ca/marginal_basic_federal_tax",
+        "ca/marginal_cpp_line_7_difference",
+        "ca/marginal_cpp_line_4",
+        "ca/marginal_ei_line_1",
+        "ca/marginal_ei_line_7",
+        "ca/marginal_ei_line_10",
+    }
 
     units = {
         step.produces["output"]: step.unit
@@ -229,16 +260,7 @@ def test_the_form_names_no_province() -> None:
     # The federal package holds federal facts only; a province reads the form, never the reverse.
     texts = [path.read_text(encoding="utf-8") for path in sorted(FOLDER.glob("*.yaml"))]
     ca = Path(FEDERAL_FORMS).parent / "parameters"
-    for family in (
-        "marginal_cpp_base_rate_rows",
-        "marginal_cpp_first_additional_rate_rows",
-        "marginal_cpp_second_additional_rate_rows",
-        "marginal_ei_rate_rows",
-        "marginal_federal_credit_rate",
-        "marginal_federal_bpa_rows",
-        "federal_bpa_phase_down_fraction",
-        "marginal_rate_gate",
-    ):
+    for family in ("marginal_rate_rounding", "marginal_rate_gate"):
         texts.extend(path.read_text(encoding="utf-8") for path in (ca / family).glob("*.yaml"))
 
     assert texts

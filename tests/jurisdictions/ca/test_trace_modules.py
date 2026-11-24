@@ -25,6 +25,12 @@ HOMES: dict[str, tuple[str, ...]] = {
     "amount_by_count": ("AmountByCountLine",),
     "contribution_tier": ("ContributionTierLine",),
     "given_amount": ("GivenAmountLine",),
+    "marginal_rate": (
+        "ContributionTierRateLine",
+        "LesserOfRateLine",
+        "RateFigureLine",
+        "TaperedAmountRateLine",
+    ),
     "tapered_amount": ("TaperedAmountLine",),
 }
 

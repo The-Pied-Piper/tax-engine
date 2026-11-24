@@ -60,6 +60,12 @@ def _record_total(
     return ("core/record_total", {}, {"records": records}, {"output": output})
 
 
+def _rate_figure(
+    rate: str, output: str
+) -> tuple[str, dict[str, str], dict[str, Any], dict[str, str]]:
+    return ("ca/rate_figure", {"rate": rate}, {}, {"output": output})
+
+
 def _multiply(
     base: str, rate: str, output: str
 ) -> tuple[str, dict[str, str], dict[str, Any], dict[str, str]]:
@@ -98,11 +104,11 @@ MARGINAL_RATE_STEPS = [
         "ca/take_home_marginal_rates.marginal_contribution_rate",
         "ca-on/marginal_contribution_rate",
     ),
-    (
-        "core/apply_rate",
-        {"rate": "ca-on/marginal_ontario_credit_rate"},
-        {"base": "ca-on/marginal_credit_contribution_rate"},
-        {"output": "ca-on/marginal_ontario_contribution_credit_rate"},
+    _rate_figure("ca-on/credit_rate", "ca-on/marginal_ontario_credit_rate"),
+    _multiply(
+        "ca-on/marginal_credit_contribution_rate",
+        "ca-on/marginal_ontario_credit_rate",
+        "ca-on/marginal_ontario_contribution_credit_rate",
     ),
     _multiply(
         "ca-on/ontario_bracket_rate_return",
@@ -137,9 +143,14 @@ MARGINAL_RATE_STEPS = [
         "ca-on/marginal_ontario_rate_with_reduction",
     ),
     _record_total("ca-on/on428_a.lift_reduction", "ca-on/return_lift_reduction"),
-    _band(
-        "ca-on/marginal_lift_reduction_rows",
-        "ca-on/return_lift_reduction",
+    _record_total("ca-on/on428_a.lift_credit_single", "ca-on/return_lift_credit"),
+    _band("ca-on/marginal_rate_gate", "ca-on/return_lift_reduction", "ca-on/lift_reduction_gate"),
+    _band("ca-on/marginal_rate_gate", "ca-on/return_lift_credit", "ca-on/lift_credit_gate"),
+    _multiply("ca-on/lift_reduction_gate", "ca-on/lift_credit_gate", "ca-on/lift_phase_out_gate"),
+    _rate_figure("ca-on/lift_single_rate", "ca-on/lift_single_rate_figure"),
+    _multiply(
+        "ca-on/lift_phase_out_gate",
+        "ca-on/lift_single_rate_figure",
         "ca-on/marginal_lift_reduction_rate",
     ),
     _multiply(
@@ -247,6 +258,8 @@ def test_schedule_8_exports_the_cpp_figures_the_t1_and_on428_read() -> None:
     assert set(schedule_8.exports) == {
         "ca/schedule_8_cpp_base_contributions_on_return",
         "ca/schedule_8_cpp_enhanced_contributions_on_return",
+        "ca/cpp_part_3_line_7_difference",
+        "ca/cpp_part_3_line_4",
     }
 
 

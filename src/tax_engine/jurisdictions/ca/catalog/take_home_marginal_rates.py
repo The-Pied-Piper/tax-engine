@@ -15,6 +15,19 @@ MARGINAL_SALARY = AmountKind.declare(CATALOG, "marginal_salary", non_negative=Tr
 """Salary, T1 line 10100: the T1 employment income form's export totalled into the marginal rate
 form's own artifact, the base of the contribution rates."""
 
+MARGINAL_CPP_LINE_7_DIFFERENCE = AmountKind.declare(
+    CATALOG, "marginal_cpp_line_7_difference", non_negative=True
+)
+"""Line 5 less the exemption, not below zero, Schedule 8 Part 3 line 7 before its maximum: the
+schedule's export totalled into the marginal rate form's own artifact. The base and first additional
+rates read it, not line 7, because line 7 stops at its maximum, the tier's upper bound, and would
+look inside the band for every higher salary."""
+
+MARGINAL_CPP_LINE_4 = AmountKind.declare(CATALOG, "marginal_cpp_line_4", non_negative=True)
+"""Earnings subject to second additional contributions, Schedule 8 Part 3 line 4: the schedule's
+export totalled into the marginal rate form's own artifact, which the second additional rate
+reads."""
+
 MARGINAL_NET_INCOME = AmountKind.declare(CATALOG, "marginal_net_income", non_negative=True)
 """Net income, T1 line 23600 (the signed figure): the T1 taxable income form's export totalled into
 the marginal rate form's own artifact, the base of the federal basic personal amount band."""
@@ -46,21 +59,46 @@ MARGINAL_CPP_FIRST_ADDITIONAL_RATE = AmountKind.declare(
 )
 """CPP first additional rate on a further dollar of salary, Schedule 8 Part 3 line 12 "multiplied
 by 1%": 1% over the same earnings as the base rate, 0 outside them, from the
-`ca/marginal_cpp_first_additional_rate_rows` dataset. Not printed on the form."""
+`ca/cpp_line_12_first_additional_contribution` dataset the contribution reads. Not printed on
+the form."""
 
 MARGINAL_CPP_SECOND_ADDITIONAL_RATE = AmountKind.declare(
     CATALOG, "marginal_cpp_second_additional_rate", non_negative=True
 )
 """CPP second additional rate on a further dollar of salary, Schedule 8 Part 3 line 22 "multiplied
 by 4%": 4% from the maximum pensionable earnings up to the additional maximum pensionable
-earnings, 0 outside it, from the `ca/marginal_cpp_second_additional_rate_rows` dataset. Not
-printed on the form."""
+earnings, 0 outside it, from the `ca/cpp_line_22_second_additional_contribution` dataset the
+contribution reads. Not printed on the form."""
+
+MARGINAL_EI_LINE_1 = AmountKind.declare(CATALOG, "marginal_ei_line_1", non_negative=True)
+"""Total EI insurable earnings, T2204 line 1: the form's export totalled into the marginal rate
+form's own artifact, which the premium rate reads."""
+
+MARGINAL_EI_LINE_7 = AmountKind.declare(CATALOG, "marginal_ei_line_7", non_negative=True)
+"""T2204 line 7 "Amount from line 3 - $2,000 = (if negative, enter "0")": the form's export totalled
+into the marginal rate form's own artifact."""
+
+MARGINAL_EI_LINE_10 = AmountKind.declare(CATALOG, "marginal_ei_line_10", non_negative=True)
+"""Required premiums, T2204 line 10: the form's export totalled into the marginal rate form's own
+artifact. The take-home filer's premiums deducted (line 9) are the same figure, so line 16 is the
+lesser of line 7 and this one."""
+
+MARGINAL_EI_PREMIUM_RATE = AmountKind.declare(
+    CATALOG, "marginal_ei_premium_rate", non_negative=True
+)
+"""Premium rate on a further dollar of insurable earnings, T2204 line 10 "Amount from line 1 x
+1.64%": the rate of the `ca/ei_premium` dataset the premium reads, 0 outside its band. Not printed
+on the form."""
+
+MARGINAL_EI_LINE_7_RATE = AmountKind.declare(CATALOG, "marginal_ei_line_7_rate", non_negative=True)
+"""Rate of a further dollar of T2204 line 7: 1 while the line is positive, 0 at zero, from the
+`ca/marginal_rate_gate` dataset. Line 7 only decides line 16 where it is the lesser, far below its
+own maximum. Not printed on the form."""
 
 MARGINAL_EI_RATE = AmountKind.declare(CATALOG, "marginal_ei_rate", non_negative=True)
 """EI rate on a further dollar of salary, T2204 line 16 "Enter whichever amount is the least: line
-7, line 9 or line 12": 0 up to $2,000, 1 (a 100% band) up to the salary where line 12 is the
-least, then the premium rate up to the maximum insurable earnings and 0 above, from the
-`ca/marginal_ei_rate_rows` dataset. Not printed on the form."""
+7, line 9 or line 12": the rate of line 7 or of line 10, whichever of the two is the least. Not
+printed on the form."""
 
 MARGINAL_SALARY_GATE = AmountKind.declare(CATALOG, "marginal_salary_gate", non_negative=True)
 """Salary gate: 0 where the salary (T1 line 10100) is 0.00 and 1 where it is at least one cent,
@@ -90,6 +128,12 @@ MARGINAL_CREDIT_CONTRIBUTION_RATE = AmountKind.declare(
 which a province's return multiplies by its own credit rate. An exact sum, not printed on the form.
 An export of the form."""
 
+MARGINAL_FEDERAL_CREDIT_RATE = AmountKind.declare(
+    CATALOG, "marginal_federal_credit_rate", non_negative=True
+)
+"""Federal non-refundable tax credit rate, T1 line 114: the `ca/credit_rate` dataset as it is, with
+none of the cent rounding the credit box applies. A rate, not printed on the form."""
+
 MARGINAL_FEDERAL_CONTRIBUTION_CREDIT_RATE = AmountKind.declare(
     CATALOG, "marginal_federal_contribution_credit_rate", non_negative=True
 )
@@ -103,26 +147,20 @@ MARGINAL_FEDERAL_BRACKET_RATE = AmountKind.declare(
 """Federal bracket rate on a further dollar of salary, T1 line 73 "Line 73: Rate" times the part
 left in the net income. An exact product, not printed on the form."""
 
-MARGINAL_FEDERAL_BPA_PHASE_DOWN_GATE = AmountKind.declare(
-    CATALOG, "marginal_federal_bpa_phase_down_gate", non_negative=True
-)
-"""Federal basic personal amount gate: 1 where the net income (T1 line 23600) is in the band where
-the basic personal amount falls with net income (T1 line 77), 0 outside it, from the
-`ca/marginal_federal_bpa_rows` dataset. A plain figure, not printed on the form."""
-
 MARGINAL_PHASE_DOWN_NET_INCOME_RATE = AmountKind.declare(
     CATALOG, "marginal_phase_down_net_income_rate", non_negative=True
 )
-"""Part of a further dollar of salary that lowers the basic personal amount: the part left in the
-net income where the basic personal amount is phased down, 0 elsewhere. An exact product, not
-printed on the form."""
+"""Fall of the federal basic personal amount on a further dollar of salary: its fall per dollar of
+net income times the part of the dollar left in the net income. An exact product, not printed on
+the form."""
 
 MARGINAL_FEDERAL_BPA_REDUCTION_RATE = AmountKind.declare(
     CATALOG, "marginal_federal_bpa_reduction_rate", non_negative=True
 )
-"""Fall of the federal basic personal amount on a further dollar of salary: the net income part
-over the phase-down times the Federal Worksheet's supplement over its range. Rounded as the
-`ca/federal_bpa_phase_down_fraction` dataset says, not printed on the form."""
+"""Fall of the federal basic personal amount (T1 line 77) on a further dollar of net income: the
+Federal Worksheet's supplement over its range, from the `ca/basic_personal_amount` dataset the
+amount reads, where the net income (T1 line 23600) is inside the phase-down, 0 outside it. Rounded
+as the `ca/marginal_rate_rounding` dataset says, not printed on the form."""
 
 MARGINAL_FEDERAL_BPA_CREDIT_RATE = AmountKind.declare(
     CATALOG, "marginal_federal_bpa_credit_rate", non_negative=True

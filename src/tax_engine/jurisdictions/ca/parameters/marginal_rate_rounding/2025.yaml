@@ -1,0 +1,11 @@
+# Take-home marginal rate rounding, 2025 tax year: the rule for a rate of a further dollar that is a
+# quotient and not a finite decimal, the federal basic personal amount's fall (Federal Worksheet,
+# form 5000-D1: the supplement 1,591 over the range 75,532 of a dollar for each dollar of net income
+# over the threshold). A marginal rate is not a dollars-and-cents box and no form prints a precision
+# for it, so the quotient rounds once, half-up to 0.0000001 (seven places), the project's choice.
+family: ca/marginal_rate_rounding
+tax_year: 2025
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt
+rounding: {increment: "0.0000001", mode: half_up}

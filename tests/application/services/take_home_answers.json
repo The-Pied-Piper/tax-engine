@@ -135,14 +135,14 @@
    },
    {
     "form": "ca/take_home_marginal_rates",
-    "lines": 23
+    "lines": 30
    },
    {
     "form": "ca-on/return",
-    "lines": 34
+    "lines": 40
    }
   ],
-  "trace_sha256": "d4acec2a5878d75e0cd53a1f8f3e366eaf233b6c2094e58ab45ef2367dad7bb0"
+  "trace_sha256": "33d7b4044c75758950ffb991d357220329e714341d428e7b8f77dbb28a4e9957"
  },
  {
   "jurisdiction": "CA-ON",
@@ -325,14 +325,14 @@
    },
    {
     "form": "ca/take_home_marginal_rates",
-    "lines": 23
+    "lines": 30
    },
    {
     "form": "ca-on/return",
-    "lines": 34
+    "lines": 40
    }
   ],
-  "trace_sha256": "f9d37ed3f95c48f94d49e03985bdc039deacb7c4b28ebfbbd56d228748f8b42f"
+  "trace_sha256": "7c07b8e6e8031e6537ffd6be2c6bc1555a6057e8017e99e019b492109ba5ed88"
  },
  {
   "jurisdiction": "CA-ON",

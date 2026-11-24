@@ -1,0 +1,13 @@
+# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: the supplement 1,623 and the range 77,042 as printed in T4127 (Jan 2026), Federal Basic Personal Amount (BPAF) Formula; the rounding is the project's choice.
+# Take-home marginal rate rounding, 2026 tax year: the rule for a rate of a further dollar that is a
+# quotient and not a finite decimal, the federal basic personal amount's fall (Federal Worksheet,
+# T4127 (Jan 2026) Federal Basic Personal Amount formula: the supplement 1,623 over the range 77,042 of a dollar for each dollar of net income
+# over the threshold). A marginal rate is not a dollars-and-cents box and no form prints a precision
+# for it, so the quotient rounds once, half-up to 0.0000001 (seven places), the project's choice.
+family: ca/marginal_rate_rounding
+tax_year: 2026
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf
+rounding: {increment: "0.0000001", mode: half_up}

@@ -10,8 +10,16 @@ from tax_engine.jurisdictions.ca.trace_english import (
     amount_by_count,
     contribution_tier,
     given_amount,
+    marginal_rate,
     tapered_amount,
     units,
 )
 
-__all__ = ["amount_by_count", "contribution_tier", "given_amount", "tapered_amount", "units"]
+__all__ = [
+    "amount_by_count",
+    "contribution_tier",
+    "given_amount",
+    "marginal_rate",
+    "tapered_amount",
+    "units",
+]
