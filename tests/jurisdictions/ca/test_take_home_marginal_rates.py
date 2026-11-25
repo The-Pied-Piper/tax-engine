@@ -107,8 +107,12 @@ def test_every_step_is_a_percent_except_the_dollar_figures_it_reads() -> None:
         "ca/marginal_salary",
         "ca/marginal_net_income",
         "ca/marginal_basic_federal_tax",
-        "ca/marginal_cpp_line_7_difference",
-        "ca/marginal_cpp_line_4",
+        "ca/marginal_cpp_line_2",
+        "ca/marginal_cpp_line_5",
+        "ca/marginal_cpp_basic_exemption",
+        "ca/marginal_cpp_maximum_pensionable_earnings",
+        "ca/marginal_cpp_line_7_signed",
+        "ca/marginal_cpp_line_4_signed",
         "ca/marginal_ei_line_1",
         "ca/marginal_ei_line_7",
         "ca/marginal_ei_line_10",
@@ -124,6 +128,82 @@ def test_every_step_is_a_percent_except_the_dollar_figures_it_reads() -> None:
     assert {step.unit for step in _form().capabilities if step.produces["output"] in dollars} == {
         "ca/cad"
     }
+
+
+def test_the_cpp_rates_read_the_signed_schedule_8_figures() -> None:
+    # Schedule 8 line 5 less the basic exemption (line 7 before its floor and maximum) and line 2
+    # less the maximum pensionable earnings (line 4 before its floor) are signed, so a rate is 0
+    # below its band and not 0 at the band's start.
+    steps = _steps()
+    cpp = [step for step in steps if step[3]["output"].startswith("ca/marginal_cpp_")]
+
+    assert cpp == [
+        _record_total("ca/schedule_8.cpp_part_3_line_2", "ca/marginal_cpp_line_2"),
+        _record_total("ca/schedule_8.cpp_part_3_line_5", "ca/marginal_cpp_line_5"),
+        _record_total("ca/schedule_8.cpp_basic_exemption", "ca/marginal_cpp_basic_exemption"),
+        _record_total(
+            "ca/schedule_8.cpp_maximum_pensionable_earnings",
+            "ca/marginal_cpp_maximum_pensionable_earnings",
+        ),
+        _subtract(
+            "ca/marginal_cpp_line_5",
+            "ca/marginal_cpp_basic_exemption",
+            "ca/marginal_cpp_line_7_signed",
+        ),
+        _subtract(
+            "ca/marginal_cpp_line_2",
+            "ca/marginal_cpp_maximum_pensionable_earnings",
+            "ca/marginal_cpp_line_4_signed",
+        ),
+        _tier_rate(
+            "ca/cpp_line_11_base_contribution",
+            "ca/marginal_cpp_line_7_signed",
+            "ca/marginal_cpp_base_rate",
+        ),
+        _tier_rate(
+            "ca/cpp_line_12_first_additional_contribution",
+            "ca/marginal_cpp_line_7_signed",
+            "ca/marginal_cpp_first_additional_rate",
+        ),
+        _tier_rate(
+            "ca/cpp_line_22_second_additional_contribution",
+            "ca/marginal_cpp_line_4_signed",
+            "ca/marginal_cpp_second_additional_rate",
+        ),
+    ]
+
+
+def _cpp_rates(year: int, salary: str) -> tuple[Decimal, Decimal]:
+    worksheets = build_tax_computation().compute(
+        TaxCalculationRequest(
+            JurisdictionCode("CA-ON"), year, (Artifact(EMPLOYMENT_INCOME, D(salary)),)
+        )
+    )
+    (sheet,) = worksheets[FORM]
+    kinds = bundled_kinds()
+    base = sheet.get(kinds.kind("ca/marginal_cpp_base_rate")).value
+    second = sheet.get(kinds.kind("ca/marginal_cpp_second_additional_rate")).value
+    assert isinstance(base, Decimal)
+    assert isinstance(second, Decimal)
+    return base, second
+
+
+@pytest.mark.parametrize(
+    ("salary", "base"),
+    [("3000", "0"), ("3499.99", "0"), ("3500", "0.0495")],
+)
+def test_the_cpp_base_rate_starts_at_the_basic_exemption(salary: str, base: str) -> None:
+    assert _cpp_rates(2026, salary)[0] == D(base)
+
+
+@pytest.mark.parametrize(
+    ("salary", "second"),
+    [("74000", "0"), ("74600", "0.04"), ("85000", "0")],
+)
+def test_the_second_additional_rate_starts_at_the_first_ceiling_and_stops_at_the_second(
+    salary: str, second: str
+) -> None:
+    assert _cpp_rates(2026, salary)[1] == D(second)
 
 
 def test_the_exports_are_amount_kinds_that_cannot_be_negative() -> None:

@@ -26,9 +26,9 @@ federal 29% + 14.5% x 1,591 / 75,532 (0.0210639 to seven places) = 0.2930542655;
 `test_return_marginal_tax_rate_extra_run.py`; the gates are in `..._gates.py` and
 `..._gates_2026.py`.
 
-At an exact band edge ($2,000 and $3,500, both years) the rate is the lower band's (the EI rate is
-0 at $2,000, the CPP rate 0 at $3,500, so $3,500 has the EI rate only: 1.64% in 2025, 1.63% in
-2026) and the next cent is in the next band.
+At the exact edge $2,000 the rate is the lower band's (the EI rate is 0). A contribution band reads
+its own rate from its lower bound, so at exactly $3,500 the CPP rate already applies: CPP 4.95% +
+1% and EI, 0.0759 in 2025 and 0.0758 in 2026, the same as the next cent.
 """
 
 from __future__ import annotations
@@ -53,7 +53,7 @@ MANITOBA = JurisdictionCode("CA-MB")
     [
         (2025, "2000", "0"),
         (2025, "2000.01", "1"),
-        (2025, "3500", "0.0164"),
+        (2025, "3500", "0.0759"),
         (2025, "3500.01", "0.0759"),
         (2025, "0", "0"),
         (2025, "100", "0"),
@@ -75,7 +75,7 @@ MANITOBA = JurisdictionCode("CA-MB")
         (2025, "410000", "0.504"),
         (2026, "2000", "0"),
         (2026, "2000.01", "1"),
-        (2026, "3500", "0.0163"),
+        (2026, "3500", "0.0758"),
         (2026, "3500.01", "0.0758"),
         (2026, "0", "0"),
         (2026, "100", "0"),

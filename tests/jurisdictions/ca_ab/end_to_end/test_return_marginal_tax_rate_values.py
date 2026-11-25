@@ -21,13 +21,13 @@ The extra-run check over a sweep is in `test_return_marginal_tax_rate_extra_run.
 
 - $100: nothing moves (under the CPP exemption and the EI $2,000): 0.
 - $2,001: only the EI of T2204 line 16 moves, 1 for 1 between $2,000 and $2,033: 1.
-- $2,000 and $3,500, both years (exact band edges): a rate is 0 on either edge of its band (the
-  federal form's rule), so the EI rate is 0 at $2,000 and the CPP rate 0 at $3,500 ($3,500 has the
-  EI rate only: 1.64% in 2025, 1.63% in 2026), and the next cent is in the next band (1; then CPP
-  4.95% + 1% and EI).
+- $2,000 and $3,500, both years (exact band edges): the EI band reads the lower band at $2,000 (0),
+  but a contribution band reads its own rate from its lower bound, so the CPP starts at exactly
+  $3,500: CPP 4.95% + 1% and EI (1.64% in 2025, 1.63% in 2026) = 0.0759 and 0.0758, the same as
+  the next cent; no income tax at that salary.
 - 2025, $71,300 (the CPP maximum pensionable earnings, where the CPP base ends and the CPP2 band
-  starts): both are edges, so neither rate counts: 20.5% + 10% = 0.305; a cent more earns CPP2 at
-  4% and no CPP base: 0.3328 (N = 0.96: 20.5% x 0.96 + 10% x 0.96 + 4%).
+  starts): the CPP2 band starts at exactly $71,300, so it reads its 4% there, like a cent more:
+  0.3328 (N = 0.96: 20.5% x 0.96 + 10% x 0.96 + 4%), and no CPP base.
 - 2025, $20,000: federal 14.5% x 0.99 - 14.5% x 0.0659 = 0.1339945; Alberta line 68 is 0.00 (the
   credits are over the tax), so 0; contributions 0.0759: 0.2098945. At $23,931.13 line 68 is first
   0.01, and the Alberta part 8% x 0.99 - 8% x 0.0659 = 0.073928 counts.
@@ -68,11 +68,11 @@ ALBERTA = JurisdictionCode("CA-AB")
         (2025, "2000.01", "1"),
         (2026, "2000", "0"),
         (2026, "2000.01", "1"),
-        (2025, "3500", "0.0164"),
+        (2025, "3500", "0.0759"),
         (2025, "3500.01", "0.0759"),
-        (2025, "71300", "0.305"),
+        (2025, "71300", "0.3328"),
         (2025, "71300.01", "0.3328"),
-        (2026, "3500", "0.0163"),
+        (2026, "3500", "0.0758"),
         (2026, "3500.01", "0.0758"),
         (2025, "20000", "0.2099"),
         (2026, "20000", "0.2052"),

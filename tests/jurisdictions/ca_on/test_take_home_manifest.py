@@ -142,8 +142,10 @@ def test_schedule_8_exports_the_cpp_figures_the_t1_and_on428_read() -> None:
     assert set(schedule_8.exports) == {
         "ca/schedule_8_cpp_base_contributions_on_return",
         "ca/schedule_8_cpp_enhanced_contributions_on_return",
-        "ca/cpp_part_3_line_7_difference",
-        "ca/cpp_part_3_line_4",
+        "ca/cpp_part_3_line_2",
+        "ca/cpp_part_3_line_5",
+        "ca/cpp_basic_exemption",
+        "ca/cpp_maximum_pensionable_earnings",
     }
 
 

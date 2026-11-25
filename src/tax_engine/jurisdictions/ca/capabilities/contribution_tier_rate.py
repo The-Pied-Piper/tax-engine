@@ -1,8 +1,9 @@
 """Contribution tier rate: the rate a further dollar of earnings is charged by a contribution tier.
 
-The output is the tier's rate when the earnings are over its lower bound and under its upper bound,
-otherwise 0: the rate of the next dollar, read from the same dataset the contribution reads. A form
-line that stops at its maximum equals the upper bound from there on, so a figure on either bound is
+The output is the tier's rate when the earnings are at least its lower bound and under its upper
+bound, otherwise 0: the rate of the next dollar, read from the same dataset the contribution reads.
+A figure at the lower bound is inside, because the next dollar is the first of the band. A form line
+that stops at its maximum equals the upper bound from there on, so a figure at the upper bound is
 outside: the next dollar adds nothing to the contribution.
 """
 
@@ -25,8 +26,8 @@ from tax_engine.jurisdictions.ca.trace.contribution_tier_rate import Contributio
 
 @capability(identifier="contribution_tier_rate")
 class TieredContributionRate(Capability):
-    """Produces `output`: the `tier` rate when `earnings` is over its lower bound and under its
-    upper bound, otherwise 0."""
+    """Produces `output`: the `tier` rate when `earnings` is at least its lower bound and under
+    its upper bound, otherwise 0."""
 
     PARAMETERS: ClassVar[Mapping[str, ParameterKind[ContributionTier]]] = {
         "tier": CONTRIBUTION_TIER

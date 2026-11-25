@@ -139,14 +139,14 @@
    },
    {
     "form": "ca/take_home_marginal_rates",
-    "lines": 30
+    "lines": 34
    },
    {
     "form": "ca-on/return",
     "lines": 34
    }
   ],
-  "trace_sha256": "ba1d049f1a84637c67771a5763d791edb37088e22e92333894650f27492c1b61"
+  "trace_sha256": "6d7f1f25a419609d266e41ceeec0391e551140b8187b73291c1e8435c1f3f134"
  },
  {
   "jurisdiction": "CA-ON",
@@ -333,14 +333,14 @@
    },
    {
     "form": "ca/take_home_marginal_rates",
-    "lines": 30
+    "lines": 34
    },
    {
     "form": "ca-on/return",
     "lines": 34
    }
   ],
-  "trace_sha256": "c2eb6e9a07cca9f703ef8705f247494326b37fe510d4cd38d4db5eec4413a256"
+  "trace_sha256": "48ad685a717df81b7a8b8234e5bd63b267d27bcb0e99cd372b151e0939bf5e99"
  },
  {
   "jurisdiction": "CA-ON",
@@ -531,14 +531,14 @@
    },
    {
     "form": "ca/take_home_marginal_rates",
-    "lines": 30
+    "lines": 34
    },
    {
     "form": "ca-ab/return",
     "lines": 18
    }
   ],
-  "trace_sha256": "9ec7d9d209f4c2c552d1e6924ac97add5053056056eec128cad47dd1c172e250"
+  "trace_sha256": "c145cd6419c2aaee8f5d98713ac9129570e5c25511e577a58ffffa1555498986"
  },
  {
   "jurisdiction": "CA-AB",
@@ -729,14 +729,14 @@
    },
    {
     "form": "ca/take_home_marginal_rates",
-    "lines": 30
+    "lines": 34
    },
    {
     "form": "ca-ab/return",
     "lines": 18
    }
   ],
-  "trace_sha256": "08c2eedc5c74dc7d0890e35cbeb6a61f1d82c4312577be457d65451744d086de"
+  "trace_sha256": "e00ae23f1f93017bafb0c840c62caa648f83f636bd73ff5ae9b4df03308ac392"
  },
  {
   "jurisdiction": "CA-AB",
@@ -919,14 +919,14 @@
    },
    {
     "form": "ca/take_home_marginal_rates",
-    "lines": 30
+    "lines": 34
    },
    {
     "form": "ca-bc/return",
     "lines": 25
    }
   ],
-  "trace_sha256": "cb6919d6934e57b6e8dba5e5d5cd8cf463207b77104eb32e9307676edfb4bc0e"
+  "trace_sha256": "c50b7e55debafe4e42f0cdb28aec40a5f514dd729e901c8f9c189b3c04b8a1aa"
  },
  {
   "jurisdiction": "CA-BC",
@@ -1109,14 +1109,14 @@
    },
    {
     "form": "ca/take_home_marginal_rates",
-    "lines": 30
+    "lines": 34
    },
    {
     "form": "ca-bc/return",
     "lines": 25
    }
   ],
-  "trace_sha256": "dd263e9c89dea32715e2287d8d31bb058d194476987d15d3e227fab9fc3f3682"
+  "trace_sha256": "cb39e12197e58a2fa50f291093e27fa74414d3459fd5b4c5bb663d0ae2de6065"
  },
  {
   "jurisdiction": "CA-BC",
@@ -1319,14 +1319,14 @@
    },
    {
     "form": "ca/take_home_marginal_rates",
-    "lines": 30
+    "lines": 34
    },
    {
     "form": "ca-mb/return",
     "lines": 32
    }
   ],
-  "trace_sha256": "9aadda19793fe9aeaafcde7df230d26ee72b49c6d002bd7f78ca0adf21dc25dd"
+  "trace_sha256": "22d0badd8f399c8db82170614034f91751ba8ed32f824df4d76d287c6e4efffd"
  },
  {
   "jurisdiction": "CA-MB",
@@ -1529,14 +1529,14 @@
    },
    {
     "form": "ca/take_home_marginal_rates",
-    "lines": 30
+    "lines": 34
    },
    {
     "form": "ca-mb/return",
     "lines": 32
    }
   ],
-  "trace_sha256": "dce0a13006c89c5072b3285bc25861d7adfe6a9b5be0e50a461a1b73b872b714"
+  "trace_sha256": "fc2aa2b39bbc454a249d4ee33553c16e4b61d01bada1683ded13eb9abc8b20f0"
  },
  {
   "jurisdiction": "CA-MB",
@@ -1723,14 +1723,14 @@
    },
    {
     "form": "ca/take_home_marginal_rates",
-    "lines": 30
+    "lines": 34
    },
    {
     "form": "ca-sk/return",
     "lines": 15
    }
   ],
-  "trace_sha256": "aaa9bf1e935981d24bdc9b6de6c66ea0726be169ae32d8a78259d72c5c330860"
+  "trace_sha256": "919272b553b0832f6e6a6b9a54e8814657de709be1d54c3642ce4f3f99ab3919"
  },
  {
   "jurisdiction": "CA-SK",
@@ -1917,14 +1917,14 @@
    },
    {
     "form": "ca/take_home_marginal_rates",
-    "lines": 30
+    "lines": 34
    },
    {
     "form": "ca-sk/return",
     "lines": 15
    }
   ],
-  "trace_sha256": "e219c9b3de8a860aaf9939da02cdd741d00c1efee5265ca06b7b45429a34cf49"
+  "trace_sha256": "8b34fbf735d635c2283a0d37acccd232deb5adb1a8d1f4e98c851276a9ad50b7"
  },
  {
   "jurisdiction": "CA-SK",
@@ -2115,14 +2115,14 @@
    },
    {
     "form": "ca/take_home_marginal_rates",
-    "lines": 30
+    "lines": 34
    },
    {
     "form": "ca-nl/return",
     "lines": 27
    }
   ],
-  "trace_sha256": "d6fa21ce94a72a9a9cb3746de85934d2f9392804da317ab0cc7a9f36c68a794e"
+  "trace_sha256": "1f9323a7af863bb27466bc5ce6cd13df8aae825f4f74af83669ee0fe882da26d"
  },
  {
   "jurisdiction": "CA-NL",
@@ -2313,14 +2313,14 @@
    },
    {
     "form": "ca/take_home_marginal_rates",
-    "lines": 30
+    "lines": 34
    },
    {
     "form": "ca-nl/return",
     "lines": 27
    }
   ],
-  "trace_sha256": "b9b5577a749de74b7a5b6de071796c269543792d2fcd9a112e6a33906c96d09f"
+  "trace_sha256": "b420b2842d1f0a163d46bf44cb90bcd523540a2f4da3a60917cba618d28de589"
  },
  {
   "jurisdiction": "CA-NL",

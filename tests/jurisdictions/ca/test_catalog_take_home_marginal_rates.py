@@ -9,9 +9,13 @@ from tax_engine.jurisdictions.ca.catalog import (
     MARGINAL_BASIC_FEDERAL_TAX,
     MARGINAL_CONTRIBUTION_RATE,
     MARGINAL_CPP_BASE_RATE,
+    MARGINAL_CPP_BASIC_EXEMPTION,
     MARGINAL_CPP_FIRST_ADDITIONAL_RATE,
-    MARGINAL_CPP_LINE_4,
-    MARGINAL_CPP_LINE_7_DIFFERENCE,
+    MARGINAL_CPP_LINE_2,
+    MARGINAL_CPP_LINE_4_SIGNED,
+    MARGINAL_CPP_LINE_5,
+    MARGINAL_CPP_LINE_7_SIGNED,
+    MARGINAL_CPP_MAXIMUM_PENSIONABLE_EARNINGS,
     MARGINAL_CPP_SECOND_ADDITIONAL_RATE,
     MARGINAL_CREDIT_CONTRIBUTION_RATE,
     MARGINAL_EI_LINE_1,
@@ -50,8 +54,10 @@ KINDS = (
     MARGINAL_CPP_BASE_RATE,
     MARGINAL_CPP_FIRST_ADDITIONAL_RATE,
     MARGINAL_CPP_SECOND_ADDITIONAL_RATE,
-    MARGINAL_CPP_LINE_7_DIFFERENCE,
-    MARGINAL_CPP_LINE_4,
+    MARGINAL_CPP_LINE_2,
+    MARGINAL_CPP_LINE_5,
+    MARGINAL_CPP_BASIC_EXEMPTION,
+    MARGINAL_CPP_MAXIMUM_PENSIONABLE_EARNINGS,
     MARGINAL_EI_LINE_1,
     MARGINAL_EI_LINE_7,
     MARGINAL_EI_LINE_10,
@@ -73,6 +79,9 @@ KINDS = (
     MARGINAL_FEDERAL_RATE,
     MARGINAL_CONTRIBUTION_RATE,
 )
+# The two CPP differences are signed: below its band a figure is negative, so a tier rate is 0 below
+# the band and the band's rate from its lower bound.
+SIGNED_KINDS = (MARGINAL_CPP_LINE_7_SIGNED, MARGINAL_CPP_LINE_4_SIGNED)
 
 
 def test_the_marginal_rate_kinds_are_registered_non_negative_money(
@@ -85,5 +94,15 @@ def test_the_marginal_rate_kinds_are_registered_non_negative_money(
         assert registry.get(kind.identifier) is kind
 
 
+def test_the_signed_cpp_kinds_are_registered_and_can_be_negative(
+    registry: ArtifactRegistry,
+) -> None:
+    for kind in SIGNED_KINDS:
+        assert kind.identifier.startswith("ca/marginal_cpp_line_"), kind.identifier
+        assert kind.value_type is Decimal, kind.identifier
+        assert non_negative(kind) is False, kind.identifier
+        assert registry.get(kind.identifier) is kind
+
+
 def test_the_marginal_rate_kinds_are_the_whole_family() -> None:
-    assert len({kind.identifier for kind in KINDS}) == 30
+    assert len({kind.identifier for kind in (*KINDS, *SIGNED_KINDS)}) == 34

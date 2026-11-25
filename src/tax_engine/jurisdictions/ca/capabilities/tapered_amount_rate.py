@@ -1,8 +1,9 @@
 """Tapered amount rate: how fast a tapered amount falls for a further dollar of its base.
 
 The output is the `taper`'s supplement over its range while the base is over the taper's threshold
-and under the end of its range, otherwise 0, rounded once with the `rounding` dataset's rule (the
-quotient is generally inexact). A base on either edge is outside, as in `contribution_tier_rate`.
+and at most the end of its range, otherwise 0, rounded once with the `rounding` dataset's rule (the
+quotient is generally inexact). A base at the threshold is outside, a base at the end of the range
+is inside: a bracket or taper reads the band below at an exact edge.
 """
 
 from __future__ import annotations

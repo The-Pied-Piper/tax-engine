@@ -3,13 +3,18 @@
 #
 # Each rate reads the figures and datasets the contributions themselves use, so no printed rate is
 # stored a second time. The CPP rates are the `contribution_tier` datasets of Schedule 8 lines 11,
-# 12 and 22 (4.95%, 1% and 4%) while the earnings the line is charged on, read from Schedule 8
-# (line 7 before its maximum, and line 4), are inside the tier's band. Line 7 itself stops at its
-# maximum, which is the tier's upper bound, so it would look inside the band for every higher
-# salary; the line 7 figure before the maximum does not. The EI rate follows T2204 line 16, the
-# least of line 7 and line 10 (line 9, the premiums deducted, is line 10 for a salary-only filer):
-# line 10's rate is the `ei_premium` tier's rate on line 1, and line 7's is 1 while it is above 0.
-# A rate is 0 on either edge of its band, where a further dollar adds nothing.
+# 12 and 22 (4.95%, 1% and 4%) while the earnings the line is charged on are inside the tier's
+# band, its lower bound included and its upper bound not: at the lower bound the next dollar is the
+# first of the band, at the upper bound the contribution has stopped growing. The earnings are two
+# signed figures built here from Schedule 8's exports, because the printed lines are floored at 0
+# (line 7 and line 4) or stop at their maximum (line 7), which makes "below the band" and "at its
+# start" the same 0, and "inside" and "above" the same figure. Line 5 less the basic exemption
+# (line 7 before its floor and its maximum) is the base and first additional rates' earnings; line 2
+# less the maximum pensionable earnings (line 4 before its floor) is the second additional rate's.
+# The EI rate follows T2204 line 16, the least of line 7 and line 10 (line 9, the premiums
+# deducted, is line 10 for a salary-only filer): line 10's rate is the `ei_premium` tier's rate on
+# line 1, and line 7's is 1 while it is above 0. A rate is 0 at the upper edge of its band, where a
+# further dollar adds nothing.
 #
 # The net income rate is the part of a further dollar that stays in the net income and the taxable
 # income: T1 line 22215 takes the enhanced CPP contributions (line 12 and line 22) off the income,
@@ -35,21 +40,51 @@ capabilities:
   - name: core/record_total
     unit: ca/cad
     consumes:
-      records: ca/schedule_8.cpp_part_3_line_7_difference
+      records: ca/schedule_8.cpp_part_3_line_2
     produces:
-      output: ca/marginal_cpp_line_7_difference
+      output: ca/marginal_cpp_line_2
   - name: core/record_total
     unit: ca/cad
     consumes:
-      records: ca/schedule_8.cpp_part_3_line_4
+      records: ca/schedule_8.cpp_part_3_line_5
     produces:
-      output: ca/marginal_cpp_line_4
+      output: ca/marginal_cpp_line_5
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/schedule_8.cpp_basic_exemption
+    produces:
+      output: ca/marginal_cpp_basic_exemption
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/schedule_8.cpp_maximum_pensionable_earnings
+    produces:
+      output: ca/marginal_cpp_maximum_pensionable_earnings
+  - name: core/subtract
+    unit: ca/cad
+    params:
+      rounding: ca/exact_rounding
+    consumes:
+      amount: ca/marginal_cpp_line_5
+      less: ca/marginal_cpp_basic_exemption
+    produces:
+      output: ca/marginal_cpp_line_7_signed
+  - name: core/subtract
+    unit: ca/cad
+    params:
+      rounding: ca/exact_rounding
+    consumes:
+      amount: ca/marginal_cpp_line_2
+      less: ca/marginal_cpp_maximum_pensionable_earnings
+    produces:
+      output: ca/marginal_cpp_line_4_signed
   - name: ca/contribution_tier_rate
     unit: core/percent
     params:
       tier: ca/cpp_line_11_base_contribution
     consumes:
-      earnings: ca/marginal_cpp_line_7_difference
+      earnings: ca/marginal_cpp_line_7_signed
     produces:
       output: ca/marginal_cpp_base_rate
   - name: ca/contribution_tier_rate
@@ -57,7 +92,7 @@ capabilities:
     params:
       tier: ca/cpp_line_12_first_additional_contribution
     consumes:
-      earnings: ca/marginal_cpp_line_7_difference
+      earnings: ca/marginal_cpp_line_7_signed
     produces:
       output: ca/marginal_cpp_first_additional_rate
   - name: ca/contribution_tier_rate
@@ -65,7 +100,7 @@ capabilities:
     params:
       tier: ca/cpp_line_22_second_additional_contribution
     consumes:
-      earnings: ca/marginal_cpp_line_4
+      earnings: ca/marginal_cpp_line_4_signed
     produces:
       output: ca/marginal_cpp_second_additional_rate
   - name: core/record_total

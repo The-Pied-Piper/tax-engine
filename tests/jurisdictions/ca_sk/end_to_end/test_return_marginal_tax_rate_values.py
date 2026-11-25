@@ -17,9 +17,10 @@ The extra-run check over a sweep is in `test_return_marginal_tax_rate_extra_run.
 
 - 2025, $100: nothing moves (under the CPP exemption and the EI $2,000): 0.
 - 2025, $2,020: only the EI of T2204 line 16 moves, 1 for 1 between $2,000 and $2,033: 1.
-- $2,000 and $3,500, both years (exact band edges): the rate at the edge is the lower band's (the
-  EI rate is 0 at $2,000, the CPP rate 0 at $3,500, so $3,500 has the EI rate only: 1.64% in
-  2025, 1.63% in 2026) and the next cent is in the next band (1; then CPP 4.95% + 1% and EI).
+- $2,000 and $3,500, both years (exact band edges): the rate at $2,000 is the lower band's (the EI
+  rate is 0), but a contribution band reads its own rate from its lower bound, so at exactly
+  $3,500 the CPP applies: CPP 4.95% + 1% and EI, 0.0759 in 2025 and 0.0758 in 2026, as at the
+  next cent.
 - 2025, $10,000: CPP 4.95% + 1% and EI 1.64% = 0.0759; no income tax.
 - 2025, $20,000: federal 14.5% x 0.99 - 14.5% x 0.0659 = 0.1339945; Saskatchewan line 67 is 0.00
   (the credits are over the tax), so 0; contributions 0.0759: 0.2098945. At $20,866.58 line 67 is
@@ -70,7 +71,7 @@ SASKATCHEWAN = JurisdictionCode("CA-SK")
         (2025, "2020", "1"),
         (2025, "2000", "0"),
         (2025, "2000.01", "1"),
-        (2025, "3500", "0.0164"),
+        (2025, "3500", "0.0759"),
         (2025, "3500.01", "0.0759"),
         (2025, "10000", "0.0759"),
         (2025, "20000", "0.2099"),
@@ -83,7 +84,7 @@ SASKATCHEWAN = JurisdictionCode("CA-SK")
         (2025, "200000", "0.4381"),
         (2026, "2000", "0"),
         (2026, "2000.01", "1"),
-        (2026, "3500", "0.0163"),
+        (2026, "3500", "0.0758"),
         (2026, "3500.01", "0.0758"),
         (2026, "10000", "0.0758"),
         (2026, "70000", "0.3741"),

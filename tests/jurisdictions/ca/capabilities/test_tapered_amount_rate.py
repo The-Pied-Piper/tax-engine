@@ -1,7 +1,7 @@
 """Unit tests for the TaperedAmountRate capability (`ca/tapered_amount_rate`).
 
-The output is the taper's supplement over its range while the base is over the threshold and under
-the end of the range, 0 on either edge and outside, rounded once with the rounding dataset.
+The output is the taper's supplement over its range while the base is over the threshold and at most
+the end of the range, 0 at the threshold and outside, rounded once with the rounding dataset.
 """
 
 from __future__ import annotations
@@ -65,11 +65,14 @@ def test_is_registered_as_ca_tapered_amount_rate() -> None:
         ("177882.01", "0.0210639"),
         ("200000", "0.0210639"),
         ("253413.99", "0.0210639"),
-        ("253414", "0"),
+        ("253414", "0.0210639"),
+        ("253414.01", "0"),
         ("300000", "0"),
     ],
 )
-def test_is_the_supplement_over_the_range_strictly_inside_the_taper(base: str, rate: str) -> None:
+def test_is_the_supplement_over_the_range_above_the_threshold_up_to_the_end(
+    base: str, rate: str
+) -> None:
     result = compute(base)
 
     assert result.outputs == (Artifact(OUT, D(rate)),)
