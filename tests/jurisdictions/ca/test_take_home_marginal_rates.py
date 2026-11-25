@@ -274,3 +274,48 @@ def test_the_federal_rate_is_zero_where_no_federal_tax_is_paid_and_opens_with_th
 
     assert federal("18820.26") == D("0")
     assert federal("18820.27") == D("0.1339945")
+
+
+def _ei_rates(year: int, salary: str) -> tuple[Decimal, Decimal]:
+    worksheets = build_tax_computation().compute(
+        TaxCalculationRequest(
+            JurisdictionCode("CA-ON"), year, (Artifact(EMPLOYMENT_INCOME, D(salary)),)
+        )
+    )
+    (sheet,) = worksheets[FORM]
+    kinds = bundled_kinds()
+    line_7 = sheet.get(kinds.kind("ca/marginal_ei_line_7_rate")).value
+    ei = sheet.get(kinds.kind("ca/marginal_ei_rate")).value
+    assert isinstance(line_7, Decimal)
+    assert isinstance(ei, Decimal)
+    return line_7, ei
+
+
+def test_the_ei_line_7_rate_reads_the_line_7_band_on_line_1() -> None:
+    steps = [step for step in _steps() if step[3]["output"] == "ca/marginal_ei_line_7_rate"]
+
+    assert steps == [
+        _tier_rate(
+            "ca/marginal_ei_line_7_tier", "ca/marginal_ei_line_1", "ca/marginal_ei_line_7_rate"
+        )
+    ]
+
+
+@pytest.mark.parametrize(
+    ("year", "salary", "line_7", "ei"),
+    [
+        (2025, "1999.99", "0", "0"),
+        (2025, "2000", "1", "1"),
+        (2025, "2000.01", "1", "1"),
+        (2025, "65699.99", "1", "0.0164"),
+        (2025, "65700", "0", "0"),
+        (2026, "1999.99", "0", "0"),
+        (2026, "2000", "1", "1"),
+        (2026, "2000.01", "1", "1"),
+        (2026, "68900", "0", "0"),
+    ],
+)
+def test_the_ei_rate_starts_at_the_line_7_exemption_and_the_premium_takes_over_later(
+    year: int, salary: str, line_7: str, ei: str
+) -> None:
+    assert _ei_rates(year, salary) == (D(line_7), D(ei))

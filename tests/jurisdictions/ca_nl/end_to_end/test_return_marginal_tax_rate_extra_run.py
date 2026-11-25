@@ -106,13 +106,13 @@ NARROW_BAND_STEPS = {2_020: 10}
 # (tax year, salary): why the run of $100 is not the derivative there. Each salary is run again
 # over a smaller step in `SMALLER_STEPS`, from the point the rate is meant for.
 KNOWN_EXCEPTIONS: dict[tuple[int, int], str] = {
-    (2025, 2_000): "exact edge: EI starts above $2,000 (T2204 line 16)",
+    (2025, 2_000): "the EI band of T2204 line 16 starts at $2,000 and ends at $2,033",
     (2025, 18_750): "federal tax (T1 line 42900) starts at $18,820.27",
     (2025, 30_333): "the low-income tax reduction (NL428 line 104) is used up",
     (2025, 71_250): "the CPP base and enhanced ceiling is $71,300",
     (2025, 115_750): "the federal bracket at taxable income $114,750",
     (2025, 283_250): "the NL428 bracket at taxable income $282,214",
-    (2026, 2_000): "exact edge: EI starts above $2,000 (T2204 line 16)",
+    (2026, 2_000): "the EI band of T2204 line 16 starts at $2,000 and ends at $2,033",
     (2026, 30_750): "the low-income tax reduction (NL428 line 104) is used up",
     (2026, 45_000): "the NL428 bracket where table 1 moves to its second row",
     (2026, 59_000): "the federal bracket at the second row's start",
