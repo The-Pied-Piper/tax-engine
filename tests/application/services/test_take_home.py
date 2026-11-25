@@ -193,29 +193,31 @@ def test_a_jurisdiction_that_declares_no_take_home_figures_is_not_found(
         (
             2025,
             {
-                "income_tax": "15919.71",
+                "income_tax": "14678.32",
                 "qpp_base": "3591.00",
                 "qpp_enhanced": "665.00",
                 "qpp2": "0.00",
                 "ei": "860.67",
                 "qpip": "345.80",
             },
-            "48617.82",
+            "49859.21",
         ),
         (
             2026,
             {
-                "income_tax": "15540.41",
+                "income_tax": "14346.59",
                 "qpp_base": "3524.50",
                 "qpp_enhanced": "665.00",
                 "qpp2": "0.00",
                 "ei": "895.70",
                 "qpip": "301.00",
             },
-            "49073.39",
+            "50267.21",
         ),
     ],
 )
+# The income tax is both returns' total payable less the refundable Quebec abatement (5005-R line
+# 44000): at $70,000 in 2026 15,540.41 - 1,193.82 = 14,346.59 (Umar, 25 Nov 2026).
 def test_quebec_takes_off_both_returns_the_pension_plan_ei_and_qpip(
     service: TakeHomeService, year: int, figures: dict[str, str], take_home: str
 ) -> None:
@@ -256,11 +258,11 @@ def test_quebec_has_an_average_rate_with_qpip_in_it_and_a_marginal_rate(
         TakeHomeRequest(JurisdictionCode("CA-QC"), 2025, Decimal(70000), include_rates=True)
     )
     assert got.average_tax_rate is not None
-    assert got.average_tax_rate.value == Decimal("0.3055")
+    assert got.average_tax_rate.value == Decimal("0.2877")
     assert got.marginal_tax_rate is not None
-    # By hand 0.4514437 (see the Quebec marginal rate values test); the engine rounds the marginal
+    # By hand 0.4193671 (see the Quebec marginal rate values test); the engine rounds the marginal
     # rate half-up to 0.0001 like the average rate.
-    assert got.marginal_tax_rate.value == Decimal("0.4514")
+    assert got.marginal_tax_rate.value == Decimal("0.4194")
     assert got.marginal_tax_rate.unit.name == "core/percent"
 
 

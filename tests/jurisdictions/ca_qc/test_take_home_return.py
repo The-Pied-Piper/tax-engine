@@ -282,6 +282,18 @@ STEPS = {
         },
         "ca-qc/total_payable",
     ),
+    "ca-qc/refundable_quebec_abatement_return": _read(
+        "ca-qc/t1_tax_and_credits.refundable_quebec_abatement_line_156",
+        "ca-qc/refundable_quebec_abatement_return",
+    ),
+    "ca-qc/income_tax_after_abatement": _computed(
+        "core/subtract",
+        {
+            "amount": "ca-qc/total_payable",
+            "less": "ca-qc/refundable_quebec_abatement_return",
+        },
+        "ca-qc/income_tax_after_abatement",
+    ),
     "ca/return_employment_income": _read(
         "ca/t1_employment_income.employment_income_line_10100", "ca/return_employment_income"
     ),
@@ -301,7 +313,7 @@ STEPS = {
         "core/sum",
         {
             "parts": [
-                "ca-qc/total_payable",
+                "ca-qc/income_tax_after_abatement",
                 "ca/return_cpp_base_contributions",
                 "ca/return_cpp_enhanced_contributions",
                 "ca/return_ei_premium",
