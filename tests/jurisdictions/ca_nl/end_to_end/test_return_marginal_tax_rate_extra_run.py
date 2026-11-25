@@ -17,9 +17,10 @@ repeated from the point the rate is meant for with a smaller step ($25, or $10 w
 within $25), where it agrees.
 A break is one of two kinds:
 
-- an exact band edge ($2,000 where the EI premium starts, $3,500 where the CPP starts): the
-  published rate at an edge is the lower band's, which is 0 or the rate before the band, so the
-  run is checked from one dollar above the edge;
+- an exact band edge where the EI premium starts ($2,000): the published rate at the edge is the
+  lower band's, which is 0, so the run is checked from one dollar above the edge. A contribution
+  band that starts at its lower bound reads its own rate there, so $3,500 where the CPP starts is
+  not a break: the run from $3,500 stays inside the CPP band;
 - a break inside the run: the CPP ceiling, a federal or Newfoundland and Labrador bracket (taxable
   income is the salary less the CPP enhanced and second additional deductions), where the federal
   basic personal amount stops falling, or where the low-income tax reduction (NL428 lines 101 to
@@ -106,14 +107,12 @@ NARROW_BAND_STEPS = {2_020: 10}
 # over a smaller step in `SMALLER_STEPS`, from the point the rate is meant for.
 KNOWN_EXCEPTIONS: dict[tuple[int, int], str] = {
     (2025, 2_000): "exact edge: EI starts above $2,000 (T2204 line 16)",
-    (2025, 3_500): "exact edge: the CPP starts above $3,500",
     (2025, 18_750): "federal tax (T1 line 42900) starts at $18,820.27",
     (2025, 30_333): "the low-income tax reduction (NL428 line 104) is used up",
     (2025, 71_250): "the CPP base and enhanced ceiling is $71,300",
     (2025, 115_750): "the federal bracket at taxable income $114,750",
     (2025, 283_250): "the NL428 bracket at taxable income $282,214",
     (2026, 2_000): "exact edge: EI starts above $2,000 (T2204 line 16)",
-    (2026, 3_500): "exact edge: the CPP starts above $3,500",
     (2026, 30_750): "the low-income tax reduction (NL428 line 104) is used up",
     (2026, 45_000): "the NL428 bracket where table 1 moves to its second row",
     (2026, 59_000): "the federal bracket at the second row's start",
@@ -124,14 +123,12 @@ KNOWN_EXCEPTIONS: dict[tuple[int, int], str] = {
 # (tax year, salary): (salary the run starts from, step).
 SMALLER_STEPS = {
     (2025, 2_000): (2_001, 10),
-    (2025, 3_500): (3_501, 10),
     (2025, 18_750): (18_750, 25),
     (2025, 30_333): (30_430, 25),
     (2025, 71_250): (71_250, 25),
     (2025, 115_750): (115_750, 25),
     (2025, 283_250): (283_250, 25),
     (2026, 2_000): (2_001, 10),
-    (2026, 3_500): (3_501, 10),
     (2026, 30_750): (30_750, 10),
     (2026, 45_000): (45_000, 25),
     (2026, 59_000): (59_000, 25),

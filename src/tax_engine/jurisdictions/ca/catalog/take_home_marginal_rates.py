@@ -15,18 +15,43 @@ MARGINAL_SALARY = AmountKind.declare(CATALOG, "marginal_salary", non_negative=Tr
 """Salary, T1 line 10100: the T1 employment income form's export totalled into the marginal rate
 form's own artifact, the base of the contribution rates."""
 
-MARGINAL_CPP_LINE_7_DIFFERENCE = AmountKind.declare(
-    CATALOG, "marginal_cpp_line_7_difference", non_negative=True
-)
-"""Line 5 less the exemption, not below zero, Schedule 8 Part 3 line 7 before its maximum: the
-schedule's export totalled into the marginal rate form's own artifact. The base and first additional
-rates read it, not line 7, because line 7 stops at its maximum, the tier's upper bound, and would
-look inside the band for every higher salary."""
+MARGINAL_CPP_LINE_2 = AmountKind.declare(CATALOG, "marginal_cpp_line_2", non_negative=True)
+"""Part 3 line 2 "Line 2: Enter whichever is less: amount from line D of Part 2 or line 1.":
+Schedule 8's export totalled into the marginal rate form's own artifact, the figure the signed line
+4 is built from."""
 
-MARGINAL_CPP_LINE_4 = AmountKind.declare(CATALOG, "marginal_cpp_line_4", non_negative=True)
-"""Earnings subject to second additional contributions, Schedule 8 Part 3 line 4: the schedule's
-export totalled into the marginal rate form's own artifact, which the second additional rate
-reads."""
+MARGINAL_CPP_LINE_5 = AmountKind.declare(CATALOG, "marginal_cpp_line_5", non_negative=True)
+"""Part 3 line 5 "Line 5: Line 2 minus line 4 (if negative, enter "0")": Schedule 8's export
+totalled into the marginal rate form's own artifact, the figure the signed line 7 is built from."""
+
+MARGINAL_CPP_BASIC_EXEMPTION = AmountKind.declare(
+    CATALOG, "marginal_cpp_basic_exemption", non_negative=True
+)
+"""Part 2 line E, the maximum basic exemption: Schedule 8's export totalled into the marginal rate
+form's own artifact, the figure taken off line 5 to build the signed line 7."""
+
+MARGINAL_CPP_MAXIMUM_PENSIONABLE_EARNINGS = AmountKind.declare(
+    CATALOG, "marginal_cpp_maximum_pensionable_earnings", non_negative=True
+)
+"""Part 2 line B, the maximum pensionable earnings: Schedule 8's export totalled into the marginal
+rate form's own artifact, the figure taken off line 2 to build the signed line 4."""
+
+MARGINAL_CPP_LINE_7_SIGNED = AmountKind.declare(
+    CATALOG, "marginal_cpp_line_7_signed", non_negative=False
+)
+"""Line 5 less the maximum basic exemption, Schedule 8 Part 3 line 7 "Line 5 minus line 6" before
+its floor at zero and its maximum: a signed figure, negative below the exemption. The base and first
+additional rates read it, not line 7, because line 7 is 0 both below the exemption and at it, which
+hides that a further dollar at the exemption is the first of the band, and stops at its maximum, the
+tier's upper bound, so it would look inside the band for every higher salary."""
+
+MARGINAL_CPP_LINE_4_SIGNED = AmountKind.declare(
+    CATALOG, "marginal_cpp_line_4_signed", non_negative=False
+)
+"""Line 2 less the maximum pensionable earnings, Schedule 8 Part 3 line 4 "Line 2 minus line 3"
+before its floor at zero: a signed figure, negative below the maximum pensionable earnings. The
+second additional rate reads it, not line 4, because line 4 is 0 both below that maximum and at it,
+which hides that a further dollar at it is the first of the band."""
 
 MARGINAL_NET_INCOME = AmountKind.declare(CATALOG, "marginal_net_income", non_negative=True)
 """Net income, T1 line 23600 (the signed figure): the T1 taxable income form's export totalled into
@@ -51,8 +76,9 @@ one cent, from the `ca/marginal_rate_gate` dataset. A plain figure, not printed 
 
 MARGINAL_CPP_BASE_RATE = AmountKind.declare(CATALOG, "marginal_cpp_base_rate", non_negative=True)
 """CPP base rate on a further dollar of salary, Schedule 8 Part 3 line 11 "multiplied by 4.95%":
-4.95% from the maximum basic exemption up to the maximum pensionable earnings, 0 outside it, from
-the `ca/marginal_cpp_base_rate_rows` dataset. Not printed on the form."""
+4.95% from the maximum basic exemption (included) up to the maximum pensionable earnings
+(excluded), 0 outside it, from the `ca/cpp_line_11_base_contribution` dataset the contribution
+reads, applied to the signed line 7. Not printed on the form."""
 
 MARGINAL_CPP_FIRST_ADDITIONAL_RATE = AmountKind.declare(
     CATALOG, "marginal_cpp_first_additional_rate", non_negative=True
@@ -66,9 +92,10 @@ MARGINAL_CPP_SECOND_ADDITIONAL_RATE = AmountKind.declare(
     CATALOG, "marginal_cpp_second_additional_rate", non_negative=True
 )
 """CPP second additional rate on a further dollar of salary, Schedule 8 Part 3 line 22 "multiplied
-by 4%": 4% from the maximum pensionable earnings up to the additional maximum pensionable
-earnings, 0 outside it, from the `ca/cpp_line_22_second_additional_contribution` dataset the
-contribution reads. Not printed on the form."""
+by 4%": 4% from the maximum pensionable earnings (included) up to the additional maximum
+pensionable earnings (excluded), 0 outside it, from the
+`ca/cpp_line_22_second_additional_contribution` dataset the contribution reads, applied to the
+signed line 4. Not printed on the form."""
 
 MARGINAL_EI_LINE_1 = AmountKind.declare(CATALOG, "marginal_ei_line_1", non_negative=True)
 """Total EI insurable earnings, T2204 line 1: the form's export totalled into the marginal rate

@@ -1,8 +1,8 @@
 """Unit tests for the TieredContributionRate capability (`ca/contribution_tier_rate`).
 
-The output is the tier's rate while the earnings are over its lower bound and under its upper
-bound, 0 on either bound and outside: the rate of a further dollar of the earnings. It records one
-`ContributionTierRateLine`, and its English text names the band and the rate.
+The output is the tier's rate while the earnings are at or over its lower bound and under its
+upper bound, 0 at the upper bound and outside: the rate of a further dollar of the earnings. It
+records one `ContributionTierRateLine`, and its English text names the band and the rate.
 """
 
 from __future__ import annotations
@@ -62,7 +62,7 @@ def test_declares_its_slots() -> None:
     [
         ("0", "0"),
         ("2999.99", "0"),
-        ("3000", "0"),
+        ("3000", "0.05"),
         ("3000.01", "0.05"),
         ("23000", "0.05"),
         ("49999.99", "0.05"),
@@ -70,7 +70,9 @@ def test_declares_its_slots() -> None:
         ("90000", "0"),
     ],
 )
-def test_is_the_tier_rate_only_strictly_inside_the_band(earnings: str, rate: str) -> None:
+def test_is_the_tier_rate_from_its_lower_bound_up_to_its_upper_bound(
+    earnings: str, rate: str
+) -> None:
     (output,) = compute(earnings).outputs
 
     assert output == Artifact(RATE_OUT, D(rate))
@@ -84,7 +86,7 @@ def test_records_one_line_and_explains_it_in_english() -> None:
     assert line.amount == D("0.05")
     text = EnglishTraceRenderer().render(line)
     assert "5%" in text
-    assert "over 3000.00 and under 50000.00" in text
+    assert "is at least 3000.00 and under 50000.00" in text
 
 
 # --- the contract -----------------------------------------------------------------------------

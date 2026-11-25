@@ -53,10 +53,10 @@ class ContributionTier:
             )
 
     def next_dollar_rate(self, earnings: Decimal) -> Decimal:
-        """The rate a further dollar of `earnings` is charged: the tier's rate strictly inside the
-        band, 0 on either bound and outside it (the contribution stops growing at the upper bound
-        and has not started at the lower)."""
-        return self.rate.value if self.lower < earnings < self.upper else Decimal(0)
+        """The rate a further dollar of `earnings` is charged: the tier's rate from the lower bound
+        (included, the dollar at the bound is the first of the band) up to the upper bound
+        (excluded), 0 at the upper bound and outside it (the contribution stops growing there)."""
+        return self.rate.value if self.lower <= earnings < self.upper else Decimal(0)
 
 
 CONTRIBUTION_TIER: ParameterKind[ContributionTier] = ParameterKind(

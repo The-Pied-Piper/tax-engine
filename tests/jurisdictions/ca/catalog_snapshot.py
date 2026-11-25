@@ -2197,8 +2197,12 @@ REGISTERED = frozenset(
         "ca/marginal_cpp_base_rate",
         "ca/marginal_cpp_first_additional_rate",
         "ca/marginal_cpp_second_additional_rate",
-        "ca/marginal_cpp_line_7_difference",
-        "ca/marginal_cpp_line_4",
+        "ca/marginal_cpp_line_2",
+        "ca/marginal_cpp_line_5",
+        "ca/marginal_cpp_basic_exemption",
+        "ca/marginal_cpp_maximum_pensionable_earnings",
+        "ca/marginal_cpp_line_7_signed",
+        "ca/marginal_cpp_line_4_signed",
         "ca/marginal_ei_line_1",
         "ca/marginal_ei_line_7",
         "ca/marginal_ei_line_10",
@@ -2224,6 +2228,8 @@ REGISTERED = frozenset(
 
 SIGNED = frozenset(
     {
+        "ca/marginal_cpp_line_7_signed",
+        "ca/marginal_cpp_line_4_signed",
         "ca/t691_basic_federal_tax",
         "ca/t691_line_2_amount",
         "ca/t691_line_8_plus_line_12",

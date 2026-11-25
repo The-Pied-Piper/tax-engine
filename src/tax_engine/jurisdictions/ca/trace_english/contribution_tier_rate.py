@@ -19,7 +19,7 @@ class ContributionTierRateRenderer:
         tier = line.tier
         return (
             f"A further dollar is charged {EnglishFigures.percent(tier.rate.value)}% only when "
-            f"{names.figure(line.earnings, line.earnings_amount)} is over "
+            f"{names.figure(line.earnings, line.earnings_amount)} is at least "
             f"{EnglishFigures.money(tier.lower)} and under {EnglishFigures.money(tier.upper)}, "
             f"which gives {names.shown(line.label, line.rate)}"
         )

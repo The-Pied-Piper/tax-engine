@@ -18,7 +18,8 @@ the cent rounding of the forms' lines (about a cent for each tax line) moves a $
 more than the tolerance, and $1 under the EI band of T2204 line 16 ($2,000 to $2,033). A step of
 $10 or less is used nowhere else, for the same reason. A salary that is itself the edge of a band
 is in `KNOWN_EXCEPTIONS` with the reason: the rate at an exact edge is the lower band's, while a
-forward difference is the upper band's (the CPP exemption of $3,500, the EI band start of $2,000),
+forward difference is the upper band's (the EI band start of $2,000; a CPP band reads the rate of
+the band that starts at its lower edge, so $3,500 is not an exception),
 and a salary three dollars under the salary where BC428 line 80 turns positive (2026, $26,753)
 cannot be stepped without the cent rounding; the salaries around each (the chosen list and
 `test_return_marginal_tax_rate_gates.py`) pin them. Every other salary agrees within the tolerance.
@@ -143,8 +144,6 @@ NARROW_BAND_STEPS = {
 KNOWN_EXCEPTIONS: dict[tuple[int, int], str] = {
     (2025, 2_000): "the EI band starts: the rate at the edge is the lower band's (0)",
     (2026, 2_000): "the EI band starts: the rate at the edge is the lower band's (0)",
-    (2025, 3_500): "the CPP exemption ends: the rate at the edge is the lower band's",
-    (2026, 3_500): "the CPP exemption ends: the rate at the edge is the lower band's",
     (2026, 26_750): "BC428 line 80 turns positive 3 dollars up, at a salary of 26,752.96",
 }
 

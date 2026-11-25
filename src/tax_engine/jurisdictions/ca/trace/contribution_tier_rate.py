@@ -15,7 +15,7 @@ __all__ = ["ContributionTierRateLine"]
 @dataclass(frozen=True)
 class ContributionTierRateLine(TraceLine):
     """The `rate` produced as `output`: `tier`'s rate when `earnings` (worth `earnings_amount`) is
-    over the tier's lower bound and under its upper bound, otherwise 0."""
+    at least the tier's lower bound and under its upper bound, otherwise 0."""
 
     output: Money
     earnings: Money

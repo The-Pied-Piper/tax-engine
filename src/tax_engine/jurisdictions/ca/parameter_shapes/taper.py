@@ -52,9 +52,10 @@ class Taper:
         return ExactFraction(self.supplement) / ExactFraction(self.range)
 
     def falls_at(self, base: Decimal) -> bool:
-        """Whether the supplement is falling at `base`: strictly over the threshold and under the
-        end of the range."""
-        return self.threshold < base < self.threshold + self.range
+        """Whether the supplement is falling at `base`: over the threshold and up to the end of the
+        range, included (the dollar that reaches the end is the last of the taper), so 0 at the
+        threshold and over the end."""
+        return self.threshold < base <= self.threshold + self.range
 
 
 TAPER: ParameterKind[Taper] = ParameterKind("taper", Taper)

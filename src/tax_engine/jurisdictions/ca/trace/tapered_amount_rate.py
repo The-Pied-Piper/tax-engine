@@ -17,7 +17,7 @@ __all__ = ["TaperedAmountRateLine"]
 class TaperedAmountRateLine(TraceLine):
     """The `result` produced as `output`: how fast `taper`'s supplement falls for a further dollar
     of `base` (worth `base_amount`), the supplement over the range between the taper's threshold
-    and the end of its range, otherwise 0, rounded with `rounding`."""
+    (excluded) and the end of its range (included), otherwise 0, rounded with `rounding`."""
 
     output: Money
     base: Money
