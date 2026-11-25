@@ -3,9 +3,8 @@
 The marginal rate (`ca-qc/marginal_tax_rate`) is the change in the take-home deductions per extra
 dollar of salary: 5005-R line 43500 "Total payable" plus TP-1 line 450, less the refundable Quebec
 abatement of line 44000 (together the return's `ca-qc/income_tax_after_abatement`), the QPP base
-contribution (Schedule 8 line 25), the QPP enhanced
-contribution (line 12 of Part 3), the QPP2 contribution (line 22), the EI premium of T2204 line 16
-and the QPIP premium (5005-R line 91), for a salary-only filer. The return calculates it with the
+contribution (Schedule 8 line 25), the QPP enhanced contribution (line 12 of Part 3), the QPP2
+contribution (line 22), the EI premium of T2204 line 16 and the QPIP premium (5005-R line 91), for a salary-only filer. The return calculates it with the
 rates of the forms, and runs nothing twice. This test is the independent check: it runs the real
 engine at a salary and at the salary plus a step, and compares the change in those deductions per
 dollar with the rate the return calculated at the salary.
@@ -133,8 +132,8 @@ BREAK_STEPS: dict[tuple[int, int], int] = {
     (2026, 26_500): 20,  # Schedule K line 48 reaches $5,000
     (2026, 56_250): 20,  # taxable income reaches the Quebec second column
     (2026, 59_000): 20,  # taxable income reaches the 5005-R second column
-    (2026, 111_250): 5,  # a break a few dollars above: the Quebec third column (a $2 step is too
-    # small once the abatement rounds to the cent)
+    (2026, 111_250): 5,  # a break a few dollars above (the Quebec third column); the step is wide
+    # enough that the cent rounding of the abatement stays under the tolerance
     (2026, 134_750): 50,  # TP-1 taxable income reaches the Quebec fourth column
     (2026, 182_500): 20,  # taxable income reaches the 5005-R fourth column
 }

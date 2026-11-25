@@ -30,8 +30,7 @@ capabilities: []
 # (5005-R line 43500 plus TP-1 line 450, which include the health services fund and the prescription
 # drug insurance premium) less the refundable Quebec abatement (line 44000), which counts as reducing
 # the tax (Umar, 25 Nov 2026). The pension plan figures are Schedule 8's, read at the Quebec rate; EI
-# is T2204 at the Quebec rate; the QPIP
-# premium is 5005-R line 91. The marginal tax rate is the return's own (see `return.yaml`).
+# is T2204 at the Quebec rate; the QPIP premium is 5005-R line 91. The marginal tax rate is the return's own (see `return.yaml`).
 take_home:
   salary: ca/employment_income
   income_tax: {form: ca-qc/return, kind: ca-qc/income_tax_after_abatement}

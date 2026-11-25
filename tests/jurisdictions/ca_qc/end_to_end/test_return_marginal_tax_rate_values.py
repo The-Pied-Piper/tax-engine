@@ -24,10 +24,10 @@ half-up to four decimals in the test table (the exact sum stays in the worked li
 The extra-run check over a sweep is in `test_return_marginal_tax_rate_extra_run.py`.
 
 - 2025, $10,000: no income tax; QPP 5.4% + 1%, EI 1.31%, QPIP 0.494%: 0.08204.
-- 2025, $22,000: federal 0.1331042 x 0.835 = 0.1111469; Quebec 14% x 0.93 = 0.1302; the premium
-  row 7.84% x 0.93 = 0.072912; contributions 0.08204: 0.3962989.
-- 2025, $40,000: federal 0.1111469; Quebec 14% x 0.99 (T = 0.99, the deduction for workers is at
-  its maximum) = 0.1386; the premium is at its maximum, 0; contributions 0.08204: 0.3317869.
+- 2025, $22,000: federal 0.1331042 x 0.835 = 0.1111420; Quebec 14% x 0.93 = 0.1302; the premium
+  row 7.84% x 0.93 = 0.072912; contributions 0.08204: 0.3962940.
+- 2025, $40,000: federal 0.1111420; Quebec 14% x 0.99 (T = 0.99, the deduction for workers is at
+  its maximum) = 0.1386; the premium is at its maximum, 0; contributions 0.08204: 0.3317820.
 - 2025, $70,000 (over the EI maximum): federal (20.5% x 0.99 - 14.5% x (0.054 + 0.00494)) x 0.835 =
   0.1944037 x 0.835 = 0.1623271; Quebec 19% x 0.99 = 0.1881; contributions 0.054 + 0.01 +
   0.00494: 0.4193671.
@@ -39,7 +39,7 @@ The extra-run check over a sweep is in `test_return_marginal_tax_rate_extra_run.
 - 2025, $200,000: the federal basic personal amount falls over $177,882 to $253,414: (29% + 14.5% x
   (1,591 / 75,532, which is 0.0210639 to seven places)) x 0.835 = 0.2447004, Quebec 25.75%:
   0.5022004.
-- 2025, $300,000: federal 33% x 0.835 = 0.27555, Quebec 25.75%: 0.5331.
+- 2025, $300,000: federal 33% x 0.835 = 0.27555, Quebec 25.75%: 0.53305, which rounds half-up to 0.5331.
 - 2026, $10,000, $70,000 and $200,000: the same parts with the 2026 datasets (provisional).
 """
 
