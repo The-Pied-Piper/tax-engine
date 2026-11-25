@@ -15,8 +15,13 @@
 # (451 less 451.1) is an optional input that line 468 includes.
 #
 # Total payable (`ca-qc/total_payable`; `ca/total_payable` is the federal kind the shared forms
-# declare): 5005-R line 43500 plus TP-1 line 450. The refundable Quebec abatement (line 44000) is a
-# credit paid on filing, separate from the tax, so it is not taken off.
+# declare): 5005-R line 43500 plus TP-1 line 450, as the forms print it. The refundable Quebec
+# abatement (line 44000) is not taken off here.
+#
+# Income tax after the abatement (`ca-qc/income_tax_after_abatement`): the total payable less the
+# refundable Quebec abatement (line 44000, 16.5% of the basic federal tax). Umar, 25 Nov 2026: the
+# abatement reduces the income tax in the take-home and in all the rates, so the take-home, the
+# average rate and the marginal rate read this figure; every other credit paid on filing stays out.
 #
 # The solidarity credit (`ca-qc/solidarity_credit`) is the yearly amount of the payment period July
 # 2026 to June 2027; it is its own output, added to neither of the two figures above.
@@ -74,6 +79,21 @@ capabilities:
   - name: core/record_total
     unit: ca/cad
     consumes:
+      records: ca-qc/t1_tax_and_credits.refundable_quebec_abatement_line_156
+    produces:
+      output: ca-qc/refundable_quebec_abatement_return
+  - name: core/subtract
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/total_payable
+      less: ca-qc/refundable_quebec_abatement_return
+    produces:
+      output: ca-qc/income_tax_after_abatement
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
       records: ca/t1_employment_income.employment_income_line_10100
     produces:
       output: ca/return_employment_income
@@ -107,7 +127,7 @@ capabilities:
       rounding: ca-qc/cent_rounding
     consumes:
       parts:
-        - ca-qc/total_payable
+        - ca-qc/income_tax_after_abatement
         - ca/return_cpp_base_contributions
         - ca/return_cpp_enhanced_contributions
         - ca/return_ei_premium
@@ -219,6 +239,30 @@ capabilities:
     consumes:
       amount: ca-qc/marginal_federal_rate_before_qpip
       less: ca-qc/marginal_federal_qpip_credit_gated_rate
+    produces:
+      output: ca-qc/marginal_federal_rate_before_abatement
+  - name: core/rate_figure
+    unit: core/percent
+    params:
+      rate: ca-qc/quebec_abatement_rate
+    produces:
+      output: ca-qc/marginal_federal_abatement_rate_figure
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-qc/exact_rounding
+    consumes:
+      base: ca-qc/marginal_federal_rate_before_abatement
+      rate: ca-qc/marginal_federal_abatement_rate_figure
+    produces:
+      output: ca-qc/marginal_federal_abatement_rate
+  - name: core/subtract
+    unit: core/percent
+    params:
+      rounding: ca-qc/exact_rounding
+    consumes:
+      amount: ca-qc/marginal_federal_rate_before_abatement
+      less: ca-qc/marginal_federal_abatement_rate
     produces:
       output: ca-qc/marginal_federal_rate
   - name: core/record_total

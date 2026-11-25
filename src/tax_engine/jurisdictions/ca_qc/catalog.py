@@ -2891,6 +2891,17 @@ TOTAL_PAYABLE = AmountKind.declare(CATALOG, "total_payable")
 `ca/total_payable` is the federal kind the shared forms declare. One core/sum (`return.yaml`); the
 second output of the return."""
 
+REFUNDABLE_QUEBEC_ABATEMENT_RETURN = AmountKind.declare(
+    CATALOG, "refundable_quebec_abatement_return", non_negative=True
+)
+"""Quebec return summary: the refundable Quebec abatement, 5005-R line 156 and line 44000, read from
+the form's export. One core/record_total (`return.yaml`)."""
+
+INCOME_TAX_AFTER_ABATEMENT = AmountKind.declare(CATALOG, "income_tax_after_abatement")
+"""Quebec income tax on the take-home basis: the total payable of both returns less the refundable
+Quebec abatement (5005-R line 44000), which reduces the tax in the take-home and in the rates. The
+total payable output itself stays as the forms print it. One core/subtract (`return.yaml`)."""
+
 SOLIDARITY_CREDIT = AmountKind.declare(CATALOG, "solidarity_credit", non_negative=True)
 """Quebec return summary: the solidarity tax credit for July 2026 to June 2027, read from the
 solidarity form's export and shown as its own yearly amount next to the result, not added to the
@@ -2914,9 +2925,9 @@ before the line rounds it half-up to the cent; a blank is read as 0."""
 
 AVERAGE_TAX_RATE = AmountKind.declare(CATALOG, "average_tax_rate", non_negative=True)
 """Average tax rate on the take-home basis, the Quebec return summary's own figure (no form prints
-it): the income tax, CPP (Schedule 8 lines 25 and 28), EI (T2204 line 16) and QPIP (5005-R line
-91) together divided by the salary (`ca/return_employment_income`), as a fraction, so 0.1598 is
-15.98%. Paid credits are not in it. It is 0 when the salary is 0."""
+it): the income tax (less the refundable Quebec abatement), CPP (Schedule 8 lines 25 and 28), EI
+(T2204 line 16) and QPIP (5005-R line 91) together divided by the salary
+(`ca/return_employment_income`), as a fraction, so 0.1598 is 15.98%. Paid credits are not in it. It is 0 when the salary is 0."""
 
 RETURN_QPIP_PREMIUMS = AmountKind.declare(CATALOG, "return_qpip_premiums", non_negative=True)
 """The return's own copy of the QPIP premium paid (the `ppip_premium` form's export), which the
@@ -2990,10 +3001,31 @@ MARGINAL_FEDERAL_QPIP_CREDIT_GATED_RATE = AmountKind.declare(
 """The federal credit on the QPIP premium of a further dollar of salary, counted only where the
 basic federal tax (line 42900) is above zero. An exact product, not printed on any form."""
 
+MARGINAL_FEDERAL_RATE_BEFORE_ABATEMENT = AmountKind.declare(
+    CATALOG, "marginal_federal_rate_before_abatement", non_negative=True
+)
+"""Federal rate on a further dollar of salary after the credits on the QPP, EI and QPIP, where the
+basic federal tax (5005-R line 42900) is above zero, and 0 where it is not, before the refundable
+Quebec abatement. A fraction (0.2 for 20%). Not printed on any form."""
+
+MARGINAL_FEDERAL_ABATEMENT_RATE_FIGURE = AmountKind.declare(
+    CATALOG, "marginal_federal_abatement_rate_figure", non_negative=True
+)
+"""The refundable Quebec abatement rate (5005-R line 44000, 16.5%), as a figure. Not printed as a
+line."""
+
+MARGINAL_FEDERAL_ABATEMENT_RATE = AmountKind.declare(
+    CATALOG, "marginal_federal_abatement_rate", non_negative=True
+)
+"""Federal tax a further dollar of salary takes off through the refundable Quebec abatement: the
+federal rate before the abatement times the abatement rate (line 44000 is a share of line 42900).
+An exact product, not printed on any form."""
+
 MARGINAL_FEDERAL_RATE = AmountKind.declare(CATALOG, "marginal_federal_rate", non_negative=True)
 """Federal marginal rate on the take-home basis: the federal rate on a further dollar of salary
-after the credits on the QPP, EI and QPIP, where the basic federal tax (5005-R line 42900) is above
-zero, and 0 where it is not. A fraction (0.2 for 20%). Not printed on any form."""
+after the credits on the QPP, EI and QPIP and the refundable Quebec abatement (5005-R line 44000),
+where the basic federal tax (5005-R line 42900) is above zero, and 0 where it is not. A fraction
+(0.2 for 20%). Not printed on any form."""
 
 MARGINAL_WORK_DEDUCTION_AMOUNT = AmountKind.declare(
     CATALOG, "marginal_work_deduction_amount", non_negative=True
