@@ -39,7 +39,8 @@ The extra-run check over a sweep is in `test_return_marginal_tax_rate_extra_run.
 - 2025, $200,000: the federal basic personal amount falls over $177,882 to $253,414: (29% + 14.5% x
   (1,591 / 75,532, which is 0.0210639 to seven places)) x 0.835 = 0.2447004, Quebec 25.75%:
   0.5022004.
-- 2025, $300,000: federal 33% x 0.835 = 0.27555, Quebec 25.75%: 0.53305, which rounds half-up to 0.5331.
+- 2025, $300,000: federal 33% x 0.835 = 0.27555, Quebec 25.75%: 0.53305,
+  which rounds half-up to 0.5331.
 - 2026, $10,000, $70,000 and $200,000: the same parts with the 2026 datasets (provisional).
 """
 
