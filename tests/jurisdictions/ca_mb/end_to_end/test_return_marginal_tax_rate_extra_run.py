@@ -18,8 +18,8 @@ which the rate agrees. A step below $10 is not used where a break is not near: t
 the forms' lines moves a forward difference by more than the tolerance. The salaries that sit
 exactly on the lower edge of a band ($2,000 and $3,500) are pinned by value in
 `test_return_marginal_tax_rate_values.py` (the rate at the edge and one cent above it): at an
-exact edge the published rate is the lower band's (the EI rate is 0 at $2,000, the CPP rate 0 at
-$3,500), and any run goes into the next band.
+exact edge the EI rate is 0 at $2,000, while the CPP rates are on at $3,500 (a CPP band reads its
+own rate from its lower edge), and any run goes into the next band.
 """
 
 from __future__ import annotations

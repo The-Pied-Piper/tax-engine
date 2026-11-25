@@ -15,11 +15,10 @@ difference is not the derivative. Each is listed with its break and run again wi
 inside the band (`SMALLER_STEPS`), at which the rate agrees. A step below $10 is not used where a
 break is not near: the cent rounding of the forms' lines moves a forward difference by more than the
 tolerance. The salaries that sit exactly on the edge of a band ($2,000, $3,500, $71,300, $81,200)
-are pinned by value in `test_return_marginal_tax_rate_values.py`: the federal form states that a
-rate is 0 on either edge of its band, where a further dollar adds nothing, so at an exact edge the
-published rate leaves out the rate of that band (the EI rate is 0 at $2,000, the CPP rate 0 at
-$3,500, and both the CPP base and the CPP2 rate are 0 at $71,300), and any run goes into the next
-band. The list is not exhaustive: a sweep from another
+are pinned by value in `test_return_marginal_tax_rate_values.py`: a CPP band reads its own rate
+from its lower edge and 0 from its upper edge (the CPP rates are on at $3,500, and at $71,300 the
+CPP2 rate is on while the base and first additional rates are 0), the EI rate is 0 at $2,000, and
+any run goes into the next band. The list is not exhaustive: a sweep from another
 offset meets other band edges (the federal brackets near $57,900, $178,900 and $254,400, the EI
 maximum near $65,700, the CPP2 start near $81,200 in 2025 and $85,000 in 2026), each a break of the
 same kind.

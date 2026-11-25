@@ -266,6 +266,37 @@ def test_quebec_has_an_average_rate_with_qpip_in_it_and_a_marginal_rate(
     assert got.marginal_tax_rate.unit.name == "core/percent"
 
 
+@pytest.mark.parametrize(
+    ("code", "salary", "rate"),
+    [
+        # 2026 at the exact edges of the CPP bands ($74,600) and the end of the federal basic
+        # personal amount taper ($259,609): a contribution band reads the band that starts there,
+        # a bracket or taper reads the band below, so the rate matches a cent either side.
+        ("CA-ON", "74599.99", "0.3436"),
+        ("CA-ON", "74600", "0.3246"),
+        ("CA-ON", "74600.01", "0.3246"),
+        ("CA-ON", "259608.99", "0.4982"),
+        ("CA-ON", "259609", "0.4982"),
+        ("CA-ON", "259609.01", "0.5353"),
+        ("CA-QC", "74599.99", "0.4182"),
+        ("CA-QC", "74600", "0.3905"),
+        ("CA-QC", "74600.01", "0.3905"),
+        ("CA-QC", "259608.99", "0.5021"),
+        ("CA-QC", "259609", "0.5021"),
+        ("CA-QC", "259609.01", "0.5331"),
+    ],
+)
+def test_the_marginal_rate_at_an_edge_matches_the_cent_either_side(
+    service: TakeHomeService, code: str, salary: str, rate: str
+) -> None:
+    got = service.compute(
+        TakeHomeRequest(JurisdictionCode(code), 2026, Decimal(salary), include_rates=True)
+    )
+
+    assert got.marginal_tax_rate is not None
+    assert got.marginal_tax_rate.value == Decimal(rate)
+
+
 class _Counting:
     """The real jurisdictions, counting each lookup (and failing the first `fail` of them)."""
 
