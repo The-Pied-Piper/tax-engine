@@ -5,9 +5,10 @@ dollar of salary: 5005-R line 43500 "Total payable" plus TP-1 line 450, less the
 abatement of line 44000 (together the return's `ca-qc/income_tax_after_abatement`), the QPP base
 contribution (Schedule 8 line 25), the QPP enhanced contribution (line 12 of Part 3), the QPP2
 contribution (line 22), the EI premium of T2204 line 16 and the QPIP premium (5005-R line 91), for a
-salary-only filer. The return calculates it with the rates of the forms, and runs nothing twice. This test is the independent check: it runs the real
-engine at a salary and at the salary plus a step, and compares the change in those deductions per
-dollar with the rate the return calculated at the salary.
+salary-only filer. The return calculates it with the rates of the forms, and runs nothing twice.
+This test is the independent check: it runs the real engine at a salary and at the salary plus a
+step, and compares the change in those deductions per dollar with the rate the return calculated at
+the salary.
 
 The step is $100. The EI band of T2204 line 16 (line 7, line 3 less $2,000, rises $1 for each $1
 until it meets the premium: $2,026 for Quebec residents, T2204 note 3) and the QPIP threshold
