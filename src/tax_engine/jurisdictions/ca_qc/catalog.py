@@ -2927,7 +2927,8 @@ AVERAGE_TAX_RATE = AmountKind.declare(CATALOG, "average_tax_rate", non_negative=
 """Average tax rate on the take-home basis, the Quebec return summary's own figure (no form prints
 it): the income tax (less the refundable Quebec abatement), CPP (Schedule 8 lines 25 and 28), EI
 (T2204 line 16) and QPIP (5005-R line 91) together divided by the salary
-(`ca/return_employment_income`), as a fraction, so 0.1598 is 15.98%. Paid credits are not in it. It is 0 when the salary is 0."""
+(`ca/return_employment_income`), as a fraction, so 0.1598 is 15.98%. Paid credits are not in it.
+It is 0 when the salary is 0."""
 
 RETURN_QPIP_PREMIUMS = AmountKind.declare(CATALOG, "return_qpip_premiums", non_negative=True)
 """The return's own copy of the QPIP premium paid (the `ppip_premium` form's export), which the
