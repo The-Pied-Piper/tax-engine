@@ -1,12 +1,15 @@
 # Form NB428 New Brunswick Tax 2025 (CRA 5004-C), lines 1 to 97. This part names the form and its
 # exports; line parts carry capabilities. Line 8 (`ca-nb/nb428_tax_on_taxable_income_line_8`), the
 # New Brunswick tax on taxable income, is exported until line 54 (the tax after credits, built by
-# a later ticket) reads it. Line 97, the New Brunswick tax that goes to T1 line 42800, is exported
-# by the line ticket that builds it, as no other form reads this form's lines.
+# a later ticket) reads it. Line 26 (`ca-nb/nb428_credits_subtotal_line_26`), the credit amounts
+# subtotal, is exported until line 27 and the lines after it (built by a later ticket) read it.
+# Line 97, the New Brunswick tax that goes to T1 line 42800, is exported by the line ticket that
+# builds it, as no other form reads this form's lines.
 form:
   name: ca-nb/nb428
   title: "Form NB428: New Brunswick Tax"
   required: true
   exports:
     - ca-nb/nb428_tax_on_taxable_income_line_8
+    - ca-nb/nb428_credits_subtotal_line_26
 capabilities: []
