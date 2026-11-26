@@ -32,3 +32,10 @@ PE428_SPOUSE_OR_COMMON_LAW_PARTNER_AMOUNT_LINE_13 = AmountKind.declare(
 """Spouse or common-law partner amount, PE428 line 13 "Line 13 and line 58120: Line 11 minus line
 12 (if negative, enter "0") (maximum $12,443)": the amount as the filer gives it, an optional
 input; a blank input is read as blank."""
+
+PE428_ELIGIBLE_DEPENDANT_AMOUNT_LINE_16 = AmountKind.declare(
+    CATALOG, "pe428_eligible_dependant_amount_line_16", non_negative=True
+)
+"""Amount for an eligible dependant, PE428 line 16 "Line 16 and line 58160: Line 14 minus line 15
+(if negative, enter "0") (maximum $12,443)": the amount as the filer gives it, an optional input;
+a blank input is read as blank."""

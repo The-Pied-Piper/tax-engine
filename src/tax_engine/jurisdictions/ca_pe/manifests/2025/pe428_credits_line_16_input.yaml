@@ -1,0 +1,16 @@
+# PE428 (2025) input a salary-only caller does not give.
+# Line 16: "Line 14 minus line 15 (if negative, enter "0") (maximum $12,443)" (Form PE428, CRA
+# 5002-C). Lines 14 and 15 (the base amount and the dependant's net income) feed this line on the
+# paper form. A salary-only filer has no eligible dependant, so the line is taken as one optional
+# input, the claim itself. A request that leaves the line out is read as blank. Line 19 (a later
+# part) reads it.
+form:
+  name: ca-pe/pe428_credits
+inputs:
+  - name: ca-pe/pe428_eligible_dependant_amount_line_16
+    title: "Amount for an eligible dependant"
+    reference: "16"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 16 and line 58160: Line 14 minus line 15 (if negative, enter "0") (maximum $12,443)'
