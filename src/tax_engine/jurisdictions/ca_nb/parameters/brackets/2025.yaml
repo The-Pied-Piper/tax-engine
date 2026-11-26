@@ -1,0 +1,24 @@
+# New Brunswick 2025 brackets, Form NB428 (CRA 5004-C) Part A, lines 2 to 8, columns 1 to 4. Column
+# headings: "Column 1: Line 1 is $51,306 or less"; "Column 2: more than $51,306 but not more than
+# $102,614"; "Column 3: more than $102,614 but not more than $190,060"; "Column 4: more than
+# $190,060". In every column: line 3 the column's lower bound (0.00, 51,306.00, 102,614.00,
+# 190,060.00); line 5 the rate (9.4%, 14%, 16%, 19.5%); line 7 the printed constant (0.00,
+# 4,822.76, 12,005.88, 25,997.24). Lines 3, 5 and 7 are the printed figures; lines 2, 4, 6 and 8
+# are computed.
+# Each bracket's `tax_at_start` is the line 7 constant of its column, taken as printed: the
+# constants are not recomputed from the rates, and not rounded.
+# This dataset has no rounding rule, as the form states none. The take-home build rounds line 6
+# half-up to the cent in its own part (ca-nb/cent_rounding).
+# There is no `up_to`: column 4 is unbounded ("more than $190,060"), and the form prints one set
+# of four columns, so every line 1 falls in a column.
+family: ca-nb/brackets
+tax_year: 2025
+kind: brackets
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5004-c/5004-c-25e.txt
+rounding: none
+brackets:
+  - {from: "0.00", rate: "0.094", tax_at_start: "0.00"}
+  - {from: "51306.00", rate: "0.14", tax_at_start: "4822.76"}
+  - {from: "102614.00", rate: "0.16", tax_at_start: "12005.88"}
+  - {from: "190060.00", rate: "0.195", tax_at_start: "25997.24"}
