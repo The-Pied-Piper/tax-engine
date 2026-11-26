@@ -58,15 +58,13 @@ def test_the_2026_file_is_provisional_and_states_its_derivation() -> None:
 
 
 def test_the_2026_provisional_line_is_the_one_of_the_ontario_2026_files() -> None:
-    british_columbia = nova_scotia_packages().roots()[Namespace("ca-ns")]
+    nova_scotia = nova_scotia_packages().roots()[Namespace("ca-ns")]
     ontario = Path(tax_engine.jurisdictions.ca_on.__file__).parent
-    british_columbia_first = (
-        (british_columbia / "parameters" / "exact_rounding" / "2026.yaml")
-        .read_text()
-        .splitlines()[0]
+    nova_scotia_first = (
+        (nova_scotia / "parameters" / "exact_rounding" / "2026.yaml").read_text().splitlines()[0]
     )
     ontario_first = (
         (ontario / "parameters" / "marginal_rate_gate" / "2026.yaml").read_text().splitlines()[0]
     )
 
-    assert british_columbia_first == ontario_first
+    assert nova_scotia_first == ontario_first

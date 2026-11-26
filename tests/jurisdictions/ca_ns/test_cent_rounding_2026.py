@@ -26,7 +26,7 @@ PROVISIONAL_HEADER = (
 )
 DERIVATION_HEADER = (
     "# Derivation: carried forward unchanged from the 2025 file; T4127 (Jan and Jul 2026)"
-    " does not print this figure and the 2026 form is not yet published, so it is "
+    " prints no rounding rule and the 2026 form is not yet published, so it is "
     "unconfirmed."
 )
 

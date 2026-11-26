@@ -9,6 +9,12 @@
 # Schedules NS(S2) and NS(S11) are not built: for a salary-only filer they are blank or zero. The
 # dividend tax credit, line 57, is one optional input.
 #
+# Stated assumptions, carried once here and not built as inputs: the filer was born in 1961 or
+# later, so the age amount (NS428 line 10) and the age tax credit (line 98) are not built, and a
+# filer born 1960 or earlier would get a lower tax than shown; the filer is a Nova Scotia resident
+# on 31 December, 19 or older, and not confined to prison for more than six months (the guide's
+# eligibility for the low-income tax reduction, lines 65 to 85).
+#
 # The default form's export is T1 line 167, refund or balance owing (positive is owing, negative
 # is a refund). Nova Scotia uses the standard federal CPP and EI (no QPP), so Schedule 8 and T2204
 # are imported unchanged. CRA publishes no Nova Scotia edition of the T1 or of Schedule 6 (the 5003-R
