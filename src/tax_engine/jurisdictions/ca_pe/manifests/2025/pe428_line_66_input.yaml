@@ -4,7 +4,7 @@
 # partner's own Form PE428, so the line is one optional input, as the form takes it. A salary-only
 # single filer has no partner, so a request that leaves the line out is read as blank; the step that
 # reads line 66 (line 67) reads that blank as 0. The form prints no label for the line, so the input
-# has no title. The spouse's value gets its own ticket.
+# has no title. The spouse's value is built separately.
 form:
   name: ca-pe/pe428
 inputs:
