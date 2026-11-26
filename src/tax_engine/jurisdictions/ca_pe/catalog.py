@@ -337,3 +337,9 @@ PE428_MEDICAL_EXPENSES_LIMITED_AMOUNT_LINE_44 = AmountKind.declare(
 )
 """Medical expenses limited amount, PE428 line 44 "Line 44: Enter whichever is less: $1,678 or the
 amount on line 43.": the lesser of the printed $1,678 and line 43."""
+
+PE428_MEDICAL_EXPENSES_OVER_LIMIT_LINE_45 = AmountKind.declare(
+    CATALOG, "pe428_medical_expenses_over_limit_line_45", non_negative=True
+)
+"""Medical expenses over the limit, PE428 line 45 "Line 45: Line 40 minus line 44 (if negative,
+enter "0") = ^": line 40 less line 44, not below zero."""
