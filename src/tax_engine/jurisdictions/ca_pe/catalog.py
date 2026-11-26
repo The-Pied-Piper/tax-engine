@@ -231,3 +231,11 @@ PE428_CREDITS_SUBTOTAL_LINE_30 = AmountKind.declare(
 """Prince Edward Island credits subtotal, PE428 line 30 "Line 30: Add lines 26 to 29. = ^": line 26
 (a copy of line 25) plus the pension income amount, the children's wellness tax credit and the
 caregiver amount, the optional lines read as 0 when blank."""
+
+PE428_DISABILITY_AMOUNT_SELF_LINE_31 = AmountKind.declare(
+    CATALOG, "pe428_disability_amount_self_line_31", non_negative=True
+)
+"""Disability amount for self, PE428 line 31 "Line 31 and line 58440: Disability amount for self
+(claim $6,890 or, if you were under 18 years of age, use Worksheet PE428)": the amount as the
+filer gives it, an optional input; a blank input is read as blank, and the sum that reads it
+reads it as 0."""

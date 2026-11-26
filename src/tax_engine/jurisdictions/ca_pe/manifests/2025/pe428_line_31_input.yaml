@@ -1,0 +1,15 @@
+# PE428 (2025) input a salary-only caller does not give.
+# Line 31: "Disability amount for self (claim $6,890 or, if you were under 18 years of age, use
+# Worksheet PE428)" (Form PE428, CRA 5002-C). The engine does not compute the disability amount
+# for self, so the figure is taken as one optional input the way the form takes it, a dollar
+# amount entered on the line. A request that leaves the line out is read as blank.
+form:
+  name: ca-pe/pe428
+inputs:
+  - name: ca-pe/pe428_disability_amount_self_line_31
+    title: "Disability amount for self (claim $6,890 or, if you were under 18 years of age, use Worksheet PE428)"
+    reference: "31"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 31 and line 58440: Disability amount for self (claim $6,890 or, if you were under 18 years of age, use Worksheet PE428)'
