@@ -1,0 +1,15 @@
+# Form NS428 (CRA 5003-C) line 71 and line 61950, the basic reduction. "Basic reduction Claim $300".
+# The $300 is the `ca-ns/low_income_reduction_basic` dataset, claimed whole through
+# core/credit_amount, so it is the same at every salary. Lines 72 and 73 (spouse, eligible
+# dependant) are #1999.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/credit_amount
+    title: "Basic reduction"
+    reference: "71"
+    unit: ca/cad
+    params:
+      amount: ca-ns/low_income_reduction_basic
+    produces:
+      output: ca-ns/low_income_reduction_basic

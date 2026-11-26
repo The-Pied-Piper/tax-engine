@@ -309,3 +309,91 @@ NS428_TAX_AFTER_CREDITS_LINE_64 = AmountKind.declare(
 )
 """Nova Scotia tax after the foreign tax credit, NS428 line 64 "Line 62 minus line 63 (if negative,
 enter "0")": line 62 less the provincial foreign tax credit, not below zero; line 77 reads it."""
+
+NS428_NET_INCOME_LINE_65 = AmountKind.declare(
+    CATALOG, "ns428_net_income_line_65", non_negative=True
+)
+"""Net income, NS428 line 65 column 1 "Net income from line 23600 of the return": a record total of
+the T1's net income, line 23600 as the T1 floors it. Column 2 (spouse) is #1999."""
+
+NS428_UCCB_REPAYMENT_LINE_21300 = AmountKind.declare(
+    CATALOG, "ns428_uccb_repayment_line_21300", non_negative=True
+)
+"""NS428 line 66, the part from T1 line 21300 (UCCB repayment): a record total of the T1's line."""
+
+NS428_RDSP_INCOME_REPAYMENT_LINE_23200 = AmountKind.declare(
+    CATALOG, "ns428_rdsp_income_repayment_line_23200", non_negative=True
+)
+"""NS428 line 66, the RDSP income repayment included on T1 line 23200: a record total of the T1's
+line."""
+
+NS428_UCCB_RDSP_REPAYMENTS_LINE_66 = AmountKind.declare(
+    CATALOG, "ns428_uccb_rdsp_repayments_line_66", non_negative=True
+)
+"""UCCB and RDSP repayments, NS428 line 66 "Total of the universal child care benefit (UCCB)
+repayment (line 21300 of the return) and the registered disability savings plan (RDSP) income
+repayment (included on line 23200 of the return)": the sum of the two T1 lines, 0 for a salary-only
+filer."""
+
+NS428_FAMILY_INCOME_LINE_67 = AmountKind.declare(
+    CATALOG, "ns428_family_income_line_67", non_negative=True
+)
+"""NS428 line 67 "Line 65 plus line 66": the net income plus the UCCB and RDSP repayments."""
+
+NS428_UCCB_INCOME_LINE_11700 = AmountKind.declare(
+    CATALOG, "ns428_uccb_income_line_11700", non_negative=True
+)
+"""NS428 line 68, the part from T1 line 11700 (UCCB income): a record total of the T1's line."""
+
+NS428_RDSP_INCOME_LINE_12500 = AmountKind.declare(
+    CATALOG, "ns428_rdsp_income_line_12500", non_negative=True
+)
+"""NS428 line 68, the part from T1 line 12500 (RDSP income): a record total of the T1's line."""
+
+NS428_UCCB_RDSP_INCOME_LINE_68 = AmountKind.declare(
+    CATALOG, "ns428_uccb_rdsp_income_line_68", non_negative=True
+)
+"""UCCB and RDSP income, NS428 line 68 "Total of the UCCB income (line 11700 of the return) and the
+RDSP income (line 12500 of the return)": the sum of the two T1 lines, 0 for a salary-only filer."""
+
+NS428_FAMILY_INCOME_LESS_UCCB_RDSP_LINE_69 = AmountKind.declare(
+    CATALOG, "ns428_family_income_less_uccb_rdsp_line_69", non_negative=True
+)
+"""NS428 line 69 "Line 67 minus line 68 (if negative, enter "0")", column 1. Line 70 adds columns 1
+and 2; with the spouse column deferred (#1999) line 70 is this figure and has no step."""
+
+LOW_INCOME_REDUCTION_BASIC = AmountKind.declare(
+    CATALOG, "low_income_reduction_basic", non_negative=True
+)
+"""Basic reduction, NS428 line 71 and line 61950 "Basic reduction Claim $300": the printed $300,
+claimed whole."""
+
+NS428_LOW_INCOME_REDUCTION_LINE_74 = AmountKind.declare(
+    CATALOG, "ns428_low_income_reduction_line_74", non_negative=True
+)
+"""NS428 line 74 "Add lines 71 to 73. (maximum $600)": the basic reduction, not more than the
+printed $600. Lines 72 and 73 (spouse, eligible dependant) and line 75 are #1999, so lines 76 and
+78 are this figure and have no step."""
+
+LOW_INCOME_REDUCTION_BASE_AMOUNT = AmountKind.declare(
+    CATALOG, "low_income_reduction_base_amount", non_negative=True
+)
+"""Base amount, NS428 line 80 "Base amount 15,000.00": the printed figure."""
+
+NS428_LINE_81 = AmountKind.declare(CATALOG, "ns428_line_81", non_negative=True)
+"""NS428 line 81 "Line 79 minus line 80 (if negative, enter "0")": the adjusted family income less
+the base amount, not below 0."""
+
+NS428_LINE_83 = AmountKind.declare(CATALOG, "ns428_line_83", non_negative=True)
+"""NS428 line 83 "Line 81 multiplied by the percentage from line 82": line 81 times the printed 5%,
+rounded to the cent."""
+
+NS428_LOW_INCOME_REDUCTION_LINE_84 = AmountKind.declare(
+    CATALOG, "ns428_low_income_reduction_line_84", non_negative=True
+)
+"""Nova Scotia low-income tax reduction, NS428 line 84 "Line 78 minus line 83 (if negative, enter
+"0")"."""
+
+NS428_TAX_LINE_85 = AmountKind.declare(CATALOG, "ns428_tax_line_85", non_negative=True)
+"""NS428 line 85 "Line 77 minus line 84 (if negative, enter "0")": the tax after the foreign tax
+credit (line 64) less the low-income tax reduction, not below 0."""

@@ -1,0 +1,19 @@
+# Form NS428 (Nova Scotia Tax, CRA 5003-C) line 81 "Line 79 minus line 80 (if negative, enter
+# "0")". One core/subtract_not_below_zero step: line 79 (a copy of line 70, which is line 69 while
+# the spouse column is deferred, `ca-ns/ns428_family_income_less_uccb_rdsp_line_69`; copy lines
+# have no step, owner ruling 18 Nov 2026) less the base amount (line 80,
+# `ca-ns/low_income_reduction_base_amount`), not below 0. Both are always present, so the step has
+# no blank rule. The form prints no title for the line, so the step has none.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "81"
+    unit: ca/cad
+    params:
+      rounding: ca-ns/cent_rounding
+    consumes:
+      amount: ca-ns/ns428_family_income_less_uccb_rdsp_line_69
+      less: ca-ns/low_income_reduction_base_amount
+    produces:
+      output: ca-ns/ns428_line_81

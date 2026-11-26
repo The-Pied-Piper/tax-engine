@@ -1,0 +1,20 @@
+# Form NS428 (Nova Scotia Tax, CRA 5003-C) line 69, column 1 (you): "Line 67 minus line 68 (if
+# negative, enter "0")". One core/subtract_not_below_zero step over line 67 (the net income plus the
+# UCCB and RDSP repayments) and line 68 (the UCCB and RDSP income), rounded half-up to the cent by
+# the dataset's rule. Line 70 "Add the amounts from line 69 of columns 1 and 2" and line 79 "Amount
+# from line 70" are copy lines with no step of their own (owner ruling, 18 Nov 2026): with column 2
+# deferred (#1999) the adjusted family income is this figure, and line 81 reads it. The form prints
+# no title for the line, so the step has none.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "69 (column 1)"
+    unit: ca/cad
+    params:
+      rounding: ca-ns/cent_rounding
+    consumes:
+      amount: ca-ns/ns428_family_income_line_67
+      less: ca-ns/ns428_uccb_rdsp_income_line_68
+    produces:
+      output: ca-ns/ns428_family_income_less_uccb_rdsp_line_69

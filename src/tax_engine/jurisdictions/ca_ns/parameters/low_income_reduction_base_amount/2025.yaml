@@ -1,0 +1,12 @@
+# Nova Scotia low-income tax reduction, base amount, 2025 tax year (Form NS428 line 80): "Base
+# amount 15,000.00". The printed figure is taken as printed, so it is a credit, not a computed
+# amount.
+# The figure is a dollars-and-cents figure, so it rounds half-up to the cent, the project's choice,
+# as the form states no rounding rule.
+family: ca-ns/low_income_reduction_base_amount
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5003-c/5003-c-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "15000"

@@ -53,6 +53,7 @@ LINE_61 = "ca-ns/ns428_minimum_tax_additional_line_61"
 LINE_62 = "ca-ns/ns428_tax_line_62"
 LINE_63 = "ca-ns/ns428_provincial_foreign_tax_credit_line_63"
 LINE_64 = "ca-ns/ns428_tax_after_credits_line_64"
+LINE_85 = "ca-ns/ns428_tax_line_85"
 CARRYOVER = "ca/minimum_tax_carryover"
 RATE = "ca-ns/minimum_tax_rate"
 
@@ -79,11 +80,14 @@ def _form(exports: tuple[str, ...]) -> str:
 
 def service(tmp_path: Path, exports: tuple[str, ...]) -> TaxComputationService:
     """The engine over a temporary Nova Scotia manifest of a test header, a form declaration and
-    every real line part of the form, the other namespaces being the package list's own."""
+    every real line part of the form, the other namespaces being the package list's own. Line 85 is
+    read by a later form, so it is always exported with the requested ones."""
     folder = tmp_path / "manifests" / "2025"
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(base.HEADER, encoding="utf-8")
-    (folder / "01_form.yaml").write_text(_form(exports), encoding="utf-8")
+    (folder / "01_form.yaml").write_text(
+        _form(tuple(dict.fromkeys((*exports, LINE_85)))), encoding="utf-8"
+    )
     parts = [*form_parts(*FEDERAL_FORM_NAMES), *_part_names()]
     for number, part in enumerate(parts, start=2):
         (folder / f"{number:02d}_{part.name}").write_text(

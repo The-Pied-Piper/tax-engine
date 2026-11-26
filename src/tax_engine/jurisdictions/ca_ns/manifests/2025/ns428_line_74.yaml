@@ -1,0 +1,18 @@
+# Form NS428 (Nova Scotia Tax, CRA 5003-C) line 74 "Add lines 71 to 73. (maximum $600)". One
+# core/capped_amount step: the basic reduction (line 71) not above the printed maximum, the
+# `ca-ns/low_income_reduction_maximum` dataset ($600). Lines 72 and 73 are #1999, so the base is
+# line 71 alone. Line 76 "Line 74 plus line 75" (line 75 is #1999) and line 78 "Amount from line 76"
+# are copies of this line and have no step of their own (owner ruling, 18 Nov 2026); line 84 reads
+# this line. The form prints no title for the line, so the step has none.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/capped_amount
+    reference: "74"
+    unit: ca/cad
+    params:
+      cap: ca-ns/low_income_reduction_maximum
+    consumes:
+      base: ca-ns/low_income_reduction_basic
+    produces:
+      output: ca-ns/ns428_low_income_reduction_line_74
