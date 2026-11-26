@@ -37,7 +37,7 @@ def test_the_form_is_named_titled_as_printed_and_required() -> None:
     form = _part()["form"]
 
     assert form["name"] == s.FORM_NAME
-    assert form["title"] == "Form PE428: Prince Edward Island Tax"
+    assert form["title"] == "Form PE428: Prince Edward Island Tax and Credits"
     assert form["required"] is True
 
 
