@@ -1,0 +1,17 @@
+# Form NB428 (CRA 5004-C) line 26: "Line 26: Line 18 plus line 25". The one step adds line 18 and
+# line 25 with core/sum, as ca-sk/sk428_credits line 32 does (sk428_credits_line_32.yaml). The form
+# prints no label.
+form:
+  name: ca-nb/nb428
+capabilities:
+  - name: core/sum
+    reference: "26"
+    unit: ca/cad
+    params:
+      rounding: ca-nb/cent_rounding
+    consumes:
+      parts:
+        - ca-nb/nb428_credits_subtotal_line_18
+        - ca-nb/nb428_cpp_ei_and_other_line_25
+    produces:
+      output: ca-nb/nb428_credits_subtotal_line_26
