@@ -385,3 +385,10 @@ on taxable income (line 55, a copy of line 8) plus the tax on split income."""
 PE428_TAX_LINE_59 = AmountKind.declare(CATALOG, "pe428_tax_line_59", non_negative=True)
 """Prince Edward Island tax after the non-refundable credits, PE428 line 59 "Line 59: Line 57 minus
 line 58 (if negative, enter "0") =": the tax before credits less the credits, not below 0."""
+
+PE428_DIVIDEND_TAX_CREDIT_LINE_60 = AmountKind.declare(
+    CATALOG, "pe428_dividend_tax_credit_line_60", non_negative=True
+)
+"""Prince Edward Island dividend tax credit, PE428 line 60 and line 61520 "Line 60 and line 61520:
+Prince Edward Island dividend tax credit (use Worksheet PE428)": the amount as the filer gives it,
+an optional input; a blank input is read as blank, and the sum that reads it reads it as 0."""
