@@ -49,3 +49,9 @@ NS428_EI_PREMIUMS_LINE_24 = AmountKind.declare(
 """Employment insurance premiums, NS428 line 24 "Amount from line 31217 of your return": a record
 total of the T1's export (`ca/ei_premiums_on_self_employment_line_31217`), 0 for a salary-only
 caller."""
+
+NS428_CPP_EI_AND_OTHER_LINE_25 = AmountKind.declare(
+    CATALOG, "ns428_cpp_ei_and_other_line_25", non_negative=True
+)
+"""CPP or QPP, EI and other credit amounts, NS428 line 25 "Add lines 21 to 24.": the sum of the CPP
+or QPP contributions, the QPP contributions and the EI premiums on lines 21 to 24."""
