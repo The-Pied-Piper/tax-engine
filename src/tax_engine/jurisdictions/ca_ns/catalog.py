@@ -133,3 +133,9 @@ NS428_CREDITS_SUBTOTAL_LINE_29 = AmountKind.declare(
 )
 """Nova Scotia credits subtotal, NS428 line 29 "Add lines 26 to 28.": line 26 plus the checked
 pension income amount of line 27, line 28 (the caregiver amount) not being built."""
+
+NS428_CREDITS_SUBTOTAL_LINE_32 = AmountKind.declare(
+    CATALOG, "ns428_credits_subtotal_line_32", non_negative=True
+)
+"""Nova Scotia credits subtotal, NS428 line 32 "Add lines 29 to 31.": line 29, lines 30 and 31 (the
+disability amounts) not being built."""

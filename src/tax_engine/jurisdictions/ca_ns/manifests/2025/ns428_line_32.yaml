@@ -1,0 +1,16 @@
+# Form NS428 (CRA 5003-C) line 32: "Add lines 29 to 31." Lines 30 and 31 (the disability amounts)
+# are blank claims outside the salary-only scope and are not built: the one step is a core/sum over
+# line 29 alone, as ca-sk/sk428_credits line 38 is. The form prints no label for line 32.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/sum
+    reference: "32"
+    unit: ca/cad
+    params:
+      rounding: ca-ns/cent_rounding
+    consumes:
+      parts:
+        - ca-ns/ns428_credits_subtotal_line_29
+    produces:
+      output: ca-ns/ns428_credits_subtotal_line_32
