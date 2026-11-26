@@ -152,3 +152,9 @@ NS428_CREDITS_SUBTOTAL_LINE_37 = AmountKind.declare(
 )
 """Nova Scotia credits subtotal, NS428 line 37 "Add lines 32 to 36.": line 32 plus line 33, lines 34
 to 36 (tuition and transfers) not being built."""
+
+NS428_MEDICAL_EXPENSES_LINE_38 = AmountKind.declare(
+    CATALOG, "ns428_medical_expenses_line_38", non_negative=True
+)
+"""Medical expenses, NS428 line 38 (line 58689) "Amount from line 33099 of your return": a record
+total of the T1's export (`ca/medical_expenses_line_33099`), 0 for a salary-only caller."""
