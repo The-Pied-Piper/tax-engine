@@ -2,8 +2,8 @@
 
 Form text (Form NB428, CRA 5004-C, on the ticket, read 26 Nov 2026):
 "Line 26: Line 18 plus line 25".
-One core/sum over line 18 and line 25, as Saskatchewan's line 32 is. Figures hand-computed
-(ticket #1984): the basic personal amount 13,396.00 plus lines 19 and 21.
+One core/sum over line 18 and line 25, as Saskatchewan's line 32 is. Figures hand-computed:
+the basic personal amount 13,396.00 plus lines 19 and 21.
 """
 
 from __future__ import annotations
