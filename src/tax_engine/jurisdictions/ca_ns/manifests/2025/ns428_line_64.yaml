@@ -1,0 +1,21 @@
+# Form NS428 (Nova Scotia Tax, CRA 5003-C) line 64, "Line 64: Line 62 minus line 63 (if negative,
+# enter "0")". One core/subtract_not_below_zero step: the tax (line 62, `ca-ns/ns428_tax_line_62`)
+# less the provincial foreign tax credit (line 63,
+# `ca-ns/ns428_provincial_foreign_tax_credit_line_63`), not below 0. Line 63 is an optional input
+# that a caller without foreign tax leaves out, read as blank and then as 0 by the blank rule. The
+# form prints no title for the line, so the step has none. Line 77 reads it.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "64"
+    unit: ca/cad
+    params:
+      rounding: ca-ns/cent_rounding
+    consumes:
+      amount: ca-ns/ns428_tax_line_62
+      less: ca-ns/ns428_provincial_foreign_tax_credit_line_63
+    blank:
+      less: "0"
+    produces:
+      output: ca-ns/ns428_tax_after_credits_line_64

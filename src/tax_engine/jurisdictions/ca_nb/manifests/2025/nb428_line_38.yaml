@@ -1,0 +1,18 @@
+# Form NB428 (CRA 5004-C) line 38: "Line 38: Add lines 33 to 37.". Lines 34 to 37 (student loan
+# interest, tuition and education amounts, tuition transferred from a child or grandchild, amounts
+# transferred from a spouse) are blank claims, zero for a salary-only filer, and are not built: the
+# one step is a core/sum over line 33 alone, as ca-sk/sk428_credits line 42 is
+# (sk428_credits_line_42.yaml). The form prints no label.
+form:
+  name: ca-nb/nb428
+capabilities:
+  - name: core/sum
+    reference: "38"
+    unit: ca/cad
+    params:
+      rounding: ca-nb/cent_rounding
+    consumes:
+      parts:
+        - ca-nb/nb428_credits_subtotal_line_33
+    produces:
+      output: ca-nb/nb428_credits_subtotal_line_38

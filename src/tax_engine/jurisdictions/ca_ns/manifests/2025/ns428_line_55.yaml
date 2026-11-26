@@ -1,0 +1,21 @@
+# Form NS428 (Nova Scotia Tax, CRA 5003-C) line 55, "Line 55: Line 53 plus line 54". Line 53 is a copy
+# of line 8 ("Enter the amount from line 8 on line 53"), which sits on this same form, so the step reads
+# line 8 (`ca-ns/ns428_tax_on_taxable_income_line_8`) directly. Line 54 is the optional input
+# `ca-ns/ns428_tax_on_split_income_line_54`, which a salary-only caller leaves out, read as blank and
+# then as 0 by the blank rule. The form prints no floor on line 55, so core/sum gives the figure as
+# is, rounded to the cent by the ca-ns/cent_rounding dataset. The form prints no title for the line,
+# so the step has none.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/sum
+    reference: "55"
+    unit: ca/cad
+    params:
+      rounding: ca-ns/cent_rounding
+    consumes:
+      parts: [ca-ns/ns428_tax_on_taxable_income_line_8, ca-ns/ns428_tax_on_split_income_line_54]
+    blank:
+      ca-ns/ns428_tax_on_split_income_line_54: "0"
+    produces:
+      output: ca-ns/ns428_tax_line_55

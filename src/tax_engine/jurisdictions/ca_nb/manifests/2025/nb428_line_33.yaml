@@ -1,0 +1,17 @@
+# Form NB428 (CRA 5004-C) line 33: "Line 33: Add lines 30 to 32.". Lines 31 and 32 (the disability
+# amounts) are blank claims, zero for a salary-only filer, and are not built: the one step is a
+# core/sum over line 30 alone, as ca-sk/sk428_credits line 38 is (sk428_credits_line_38.yaml). The
+# form prints no label.
+form:
+  name: ca-nb/nb428
+capabilities:
+  - name: core/sum
+    reference: "33"
+    unit: ca/cad
+    params:
+      rounding: ca-nb/cent_rounding
+    consumes:
+      parts:
+        - ca-nb/nb428_credits_subtotal_line_30
+    produces:
+      output: ca-nb/nb428_credits_subtotal_line_33

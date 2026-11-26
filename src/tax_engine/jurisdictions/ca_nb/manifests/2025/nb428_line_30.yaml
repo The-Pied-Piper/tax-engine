@@ -1,0 +1,18 @@
+# Form NB428 (CRA 5004-C) line 30: "Line 30: Add lines 27 to 29.". Line 27 reads "Amount from line 26
+# of the previous page", a copy of line 26, so it gets no step. Lines 28 and 29 (the pension income
+# amount and the caregiver amount) are blank claims, zero for a salary-only filer, and are not built:
+# the one step is a core/sum over line 26 alone, as ca-sk/sk428_credits line 38 is
+# (sk428_credits_line_38.yaml). The form prints no label.
+form:
+  name: ca-nb/nb428
+capabilities:
+  - name: core/sum
+    reference: "30"
+    unit: ca/cad
+    params:
+      rounding: ca-nb/cent_rounding
+    consumes:
+      parts:
+        - ca-nb/nb428_credits_subtotal_line_26
+    produces:
+      output: ca-nb/nb428_credits_subtotal_line_30

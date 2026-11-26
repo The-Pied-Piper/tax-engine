@@ -1,0 +1,20 @@
+# Form NB428 (CRA 5004-C) line 53 and line 61500: "Line 49 plus line 52 Enter this amount on line
+# 57. New Brunswick non-refundable tax credits". It sums the credits at the printed rate (line 49,
+# nb428_line_49.yaml) and the donations credit (line 52, nb428_line_52.yaml), both always figures
+# (0.00 for a salary-only filer). The form exports the result for line 57, as
+# ca-sk/sk428_credits line 57 does (sk428_credits_line_57.yaml).
+form:
+  name: ca-nb/nb428
+capabilities:
+  - name: core/sum
+    title: "New Brunswick non-refundable tax credits"
+    reference: "53"
+    unit: ca/cad
+    params:
+      rounding: ca-nb/cent_rounding
+    consumes:
+      parts:
+        - ca-nb/nb428_credits_at_rate_line_49
+        - ca-nb/nb428_donations_credit_line_52
+    produces:
+      output: ca-nb/nb428_non_refundable_credits_line_53
