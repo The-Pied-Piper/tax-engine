@@ -38,7 +38,6 @@ PE_PARTS = Path(tax_engine.jurisdictions.ca_pe.__file__).parent / "manifests" / 
 PART_NAME = "pe428_line_65.yaml"
 OUTPUT = "ca-pe/pe428_tax_with_minimum_tax_line_65"
 PARTS = CHAIN_65
-EXTRA_EXPORTS = ()
 CASES = [
     ("20000", {}, {"ca-pe/pe428_tax_with_minimum_tax_line_65": "383.83"}),
     ("30000", {}, {"ca-pe/pe428_tax_with_minimum_tax_line_65": "1261.72"}),
@@ -54,7 +53,7 @@ CASES = [
 def _sheet(
     take_home_service: TakeHomeService, salary: str, given: dict[str, str] | None = None
 ) -> Any:
-    service = take_home_service(HEADER, form(OUTPUT, *EXTRA_EXPORTS), *PARTS)
+    service = take_home_service(HEADER, form(OUTPUT), *PARTS)
     return compute(service, salary, given)
 
 
