@@ -216,3 +216,9 @@ NB428_TAX_WITH_MINIMUM_TAX_LINE_65 = AmountKind.declare(
 )
 """NB428 line 65 "Line 63 plus line 64": the tax after the dividend credit plus the additional tax
 for minimum tax purposes."""
+
+NB428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_66 = AmountKind.declare(
+    CATALOG, "nb428_provincial_foreign_tax_credit_line_66", non_negative=True
+)
+"""NB428 line 66 "Provincial foreign tax credit (complete Form T2036)": the amount as the filer
+gives it, an optional input; a blank input is read as blank."""
