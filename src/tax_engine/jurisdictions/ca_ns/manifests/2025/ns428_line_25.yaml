@@ -1,0 +1,20 @@
+# Form NS428 (CRA 5003-C) line 25: "Add lines 21 to 24." Lines 21 and 23 are the amounts from lines
+# 30800 and 31200 of the return; lines 22 and 24 are the amounts from lines 31000 and 31217, record
+# totals that are 0 for a salary-only caller. The one step adds the four with core/sum, as
+# ca-nl/nl428_credits line 35 does (nl428_credits_line_35.yaml).
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/sum
+    reference: "25"
+    unit: ca/cad
+    params:
+      rounding: ca-ns/cent_rounding
+    consumes:
+      parts:
+        - ca-ns/ns428_cpp_contributions_line_21
+        - ca-ns/ns428_qpp_contributions_line_22
+        - ca-ns/ns428_ei_premiums_line_23
+        - ca-ns/ns428_ei_premiums_line_24
+    produces:
+      output: ca-ns/ns428_cpp_ei_and_other_line_25
