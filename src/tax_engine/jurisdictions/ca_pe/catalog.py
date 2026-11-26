@@ -313,3 +313,9 @@ PE428_CREDITS_SUBTOTAL_LINE_39 = AmountKind.declare(
 plus the student loan interest, the tuition and education amounts, the amounts transferred from
 a child or grandchild and the amounts transferred from a spouse or common-law partner, the
 optional lines read as 0 when blank."""
+
+PE428_MEDICAL_EXPENSES_LINE_40 = AmountKind.declare(
+    CATALOG, "pe428_medical_expenses_line_40", non_negative=True
+)
+"""Medical expenses, PE428 line 40 and line 58689 "Amount from line 33099 of your return": a record
+total of the T1's export (`ca/medical_expenses_line_33099`), 0 for a salary-only caller."""
