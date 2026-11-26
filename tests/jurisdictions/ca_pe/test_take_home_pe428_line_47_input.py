@@ -1,9 +1,9 @@
-"""PE428 (2025) line 46's input, as the Prince Edward Island take-home manifest part declares it.
+"""PE428 (2025) line 47's input, as the Prince Edward Island take-home manifest part declares it.
 
-Form text (Form PE428, CRA 5002-c-25e.txt): "Line 46 and line 58729: Allowable amount of medical
-expenses for other dependants (use Worksheet PE428)". A salary-only caller has none. A request
-that leaves the line out is read as blank. The real part is loaded under a test-local header and
-form, as the take-home header is another part's.
+Form text (Form PE428, CRA 5002-c-25e.txt): "Line 47 and line 58769: Line 45 plus line 46 =". A
+salary-only filer claims no medical expenses. A request that leaves the line out is read as blank.
+The real part is loaded under a test-local header and form, as the take-home header is another
+part's.
 """
 
 from __future__ import annotations
@@ -15,9 +15,7 @@ import tax_engine.jurisdictions.ca_pe
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.manifest import Manifest
-from tax_engine.jurisdictions.ca_pe.catalog import (
-    PE428_ALLOWABLE_MEDICAL_EXPENSES_FOR_OTHER_DEPENDANTS_LINE_46,
-)
+from tax_engine.jurisdictions.ca_pe.catalog import PE428_ALLOWABLE_MEDICAL_EXPENSES_LINE_47
 from tests.jurisdictions.ca_pe.credits_support import HEADER
 from tests.jurisdictions.ca_pe.support import (
     prince_edward_island_kinds,
@@ -27,17 +25,13 @@ from tests.jurisdictions.ca_pe.support import (
 from tests.kinds import non_negative
 from tests.manifest_support import input_named, inputs_of
 
-IDENTIFIER = "ca-pe/pe428_allowable_medical_expenses_for_other_dependants_line_46"
-PRINTED_BASIS = (
-    "Line 46 and line 58729: Allowable amount of medical expenses for other dependants (use "
-    "Worksheet PE428)"
-)
-TITLE = "Allowable amount of medical expenses for other dependants (use Worksheet PE428)"
+IDENTIFIER = "ca-pe/pe428_allowable_medical_expenses_line_47"
+PRINTED_BASIS = "Line 47 and line 58769: Line 45 plus line 46 ="
 PART = (
     Path(tax_engine.jurisdictions.ca_pe.__file__).parent
     / "manifests"
     / "2025"
-    / "pe428_line_46_input.yaml"
+    / "pe428_line_47_input.yaml"
 )
 FORM = """\
 form:
@@ -70,8 +64,8 @@ def test_the_part_declares_the_one_optional_input_as_printed(tmp_path: Path) -> 
     declaration = input_named(manifest, IDENTIFIER)
     assert not declaration.required
     assert declaration.basis == PRINTED_BASIS
-    assert declaration.title == TITLE
-    assert declaration.reference == "46"
+    assert declaration.title is None
+    assert declaration.reference == "47"
     assert declaration.unit == "ca/cad"
 
 
@@ -85,6 +79,6 @@ def test_a_request_that_leaves_the_line_out_is_read_as_blank(tmp_path: Path) -> 
 def test_the_kind_is_a_registered_non_negative_amount_kind() -> None:
     kind = prince_edward_island_kinds().kind(IDENTIFIER)
 
-    assert kind is PE428_ALLOWABLE_MEDICAL_EXPENSES_FOR_OTHER_DEPENDANTS_LINE_46
+    assert kind is PE428_ALLOWABLE_MEDICAL_EXPENSES_LINE_47
     assert isinstance(kind, AmountKind)
     assert non_negative(kind)

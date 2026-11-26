@@ -1,7 +1,7 @@
 # Form PE428 (CRA 5002-C) line 48: "Line 48 and line 58800: Line 39 plus line 47 =". Line 39 is
-# the credits subtotal (pe428_line_39.yaml) and line 47 the allowable medical expenses
-# (pe428_line_47.yaml). Neither is blank, so the step has no blank rule. The form names no label
-# for the line, so the step has no title.
+# the credits subtotal (pe428_line_39.yaml) and line 47 the allowable medical expenses, an optional
+# input (pe428_line_47_input.yaml) that a salary-only filer leaves blank, read as 0. The form
+# names no label for the line, so the step has no title.
 form:
   name: ca-pe/pe428
 capabilities:
@@ -13,6 +13,8 @@ capabilities:
     consumes:
       parts:
         - ca-pe/pe428_credits_subtotal_line_39
-        - ca-pe/pe428_medical_expenses_allowable_line_47
+        - ca-pe/pe428_allowable_medical_expenses_line_47
+    blank:
+      ca-pe/pe428_allowable_medical_expenses_line_47: "0"
     produces:
       output: ca-pe/pe428_credits_total_line_48

@@ -314,51 +314,6 @@ plus the student loan interest, the tuition and education amounts, the amounts t
 a child or grandchild and the amounts transferred from a spouse or common-law partner, the
 optional lines read as 0 when blank."""
 
-PE428_MEDICAL_EXPENSES_LINE_40 = AmountKind.declare(
-    CATALOG, "pe428_medical_expenses_line_40", non_negative=True
-)
-"""Medical expenses, PE428 line 40 and line 58689 "Amount from line 33099 of your return": a record
-total of the T1's export (`ca/medical_expenses_line_33099`), 0 for a salary-only caller."""
-
-PE428_NET_INCOME_LINE_41 = AmountKind.declare(
-    CATALOG, "pe428_net_income_line_41", non_negative=True
-)
-"""Net income, PE428 line 41 "Line 41: Amount from line 23600 of your return": a record total of
-the T1's net income (line 23600, floored)."""
-
-PE428_MEDICAL_EXPENSES_RATE_AMOUNT_LINE_43 = AmountKind.declare(
-    CATALOG, "pe428_medical_expenses_rate_amount_line_43", non_negative=True
-)
-"""Medical expenses rate amount, PE428 line 43 "Line 43: Line 41 multiplied by the percentage from
-line 42 = ^": line 41 times the 3% of line 42, rounded to the cent."""
-
-PE428_MEDICAL_EXPENSES_LIMITED_AMOUNT_LINE_44 = AmountKind.declare(
-    CATALOG, "pe428_medical_expenses_limited_amount_line_44", non_negative=True
-)
-"""Medical expenses limited amount, PE428 line 44 "Line 44: Enter whichever is less: $1,678 or the
-amount on line 43.": the lesser of the printed $1,678 and line 43."""
-
-PE428_MEDICAL_EXPENSES_OVER_LIMIT_LINE_45 = AmountKind.declare(
-    CATALOG, "pe428_medical_expenses_over_limit_line_45", non_negative=True
-)
-"""Medical expenses over the limit, PE428 line 45 "Line 45: Line 40 minus line 44 (if negative,
-enter "0") = ^": line 40 less line 44, not below zero."""
-
-PE428_ALLOWABLE_MEDICAL_EXPENSES_FOR_OTHER_DEPENDANTS_LINE_46 = AmountKind.declare(
-    CATALOG, "pe428_allowable_medical_expenses_for_other_dependants_line_46", non_negative=True
-)
-"""Allowable amount of medical expenses for other dependants, PE428 line 46 "Line 46 and line
-58729: Allowable amount of medical expenses for other dependants (use Worksheet PE428)": the
-amount as the filer gives it, an optional input; a blank input is read as blank, and the sum
-that reads it reads it as 0."""
-
-PE428_MEDICAL_EXPENSES_ALLOWABLE_LINE_47 = AmountKind.declare(
-    CATALOG, "pe428_medical_expenses_allowable_line_47", non_negative=True
-)
-"""Allowable medical expenses, PE428 line 47 "Line 47 and line 58769: Line 45 plus line 46 =": line
-45 plus the allowable amount of medical expenses for other dependants, the optional line 46 read
-as 0 when blank."""
-
 PE428_CREDITS_TOTAL_LINE_48 = AmountKind.declare(
     CATALOG, "pe428_credits_total_line_48", non_negative=True
 )
@@ -408,3 +363,10 @@ PE428_NON_REFUNDABLE_CREDITS_LINE_54 = AmountKind.declare(
 """Prince Edward Island non-refundable tax credits, PE428 line 54 and line 61500 "Line 54 and line
 61500: Line 50 plus line 53 Enter this amount on line 58. Prince Edward Island non-refundable
 tax credits =": the credits at the credit rate plus the donations and gifts credit."""
+
+PE428_ALLOWABLE_MEDICAL_EXPENSES_LINE_47 = AmountKind.declare(
+    CATALOG, "pe428_allowable_medical_expenses_line_47", non_negative=True
+)
+"""Allowable medical expenses, PE428 line 47 and line 58769 "Line 47 and line 58769: Line 45 plus
+line 46 =": the amount as the filer gives it, an optional input; a blank input is read as blank,
+and the sum that reads it reads it as 0."""

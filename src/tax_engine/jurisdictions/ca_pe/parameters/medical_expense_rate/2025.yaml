@@ -1,8 +1,0 @@
-# Line 42: Applicable rate 3%. The printed rate that line 43 multiplies line 41 by.
-family: ca-pe/medical_expense_rate
-tax_year: 2025
-kind: rate
-sources:
-  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5002-c/5002-c-25e.txt
-rounding: {increment: "0.01", mode: half_up}
-rate: "0.03"

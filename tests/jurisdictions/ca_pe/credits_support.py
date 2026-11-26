@@ -111,21 +111,7 @@ CHAIN_39 = (
     "pe428_line_39.yaml",
 )
 
-NET_INCOME_PARTS = form_part_names("t1_taxable_income")
-
-CHAIN_47 = (
-    *CHAIN_39,
-    *NET_INCOME_PARTS,
-    "pe428_line_40.yaml",
-    "pe428_line_41.yaml",
-    "pe428_line_43.yaml",
-    "pe428_line_44.yaml",
-    "pe428_line_45.yaml",
-    "pe428_line_46_input.yaml",
-    "pe428_line_47.yaml",
-)
-
-CHAIN_48 = (*CHAIN_47, "pe428_line_48.yaml")
+CHAIN_48 = (*CHAIN_39, "pe428_line_47_input.yaml", "pe428_line_48.yaml")
 
 CHAIN_50 = (*CHAIN_48, "pe428_line_50.yaml")
 
@@ -142,4 +128,4 @@ CHAIN_53 = (
 CHAIN_54 = (*CHAIN_53, "pe428_line_54.yaml")
 
 PART_A = tuple(f"pe428_line_{number}.yaml" for number in (1, 3, 4, 5, 6, 7, 8))
-ALL_PARTS = (*CHAIN_54, *PART_A)
+ALL_PARTS = (*CHAIN_54, *form_part_names("t1_taxable_income"), *PART_A)

@@ -1,11 +1,11 @@
 """PE428 (2025) line 48, line 39 plus line 47, from the salary alone, real parts.
 
-Form text (Form PE428, CRA 5002-c-25e.txt): "Line 48 and line 58800: Line 39 plus line 47 = ^". A
-salary-only filer has line 47 of 0.00, so line 48 equals line 39 (15,794.75 at $20,000, 16,453.75
-at $30,000, 19,019.23 at $70,000). With tuition and education amounts of 100.00 and medical
-expenses of 5,000.00 on the return at $20,000, line 39 is 15,894.75, line 47 is 4,404.95 and line
-48 is 20,299.70 (hand figures, not a CRA example). The form prints no label for line 48, so the
-step has no title.
+Form text (Form PE428, CRA 5002-c-25e.txt): "Line 48 and line 58800: Line 39 plus line 47 = ^".
+A salary-only filer leaves the allowable medical expenses of line 47 blank (read as 0), so line 48
+equals line 39 (15,794.75 at $20,000, 16,453.75 at $30,000, 19,019.23 at $70,000). With tuition and
+education amounts of 100.00 and an allowable medical expenses figure of 4,404.95 at $20,000, line
+39 is 15,894.75 and line 48 is 20,299.70 (hand figures, not a CRA example). The form prints no
+label for line 48, so the step has no title.
 
 The test builds the engine over the real federal parts and the real parts of lines 9 to 48 through
 the shared `take_home_service` fixture.
@@ -46,10 +46,12 @@ CASES = [
     ("70000", {}, {"ca-pe/pe428_credits_total_line_48": "19019.23"}),
     (
         "20000",
-        {"ca/medical_expenses": "5000", "ca-pe/pe428_tuition_and_education_amounts_line_36": "100"},
+        {
+            "ca-pe/pe428_allowable_medical_expenses_line_47": "4404.95",
+            "ca-pe/pe428_tuition_and_education_amounts_line_36": "100",
+        },
         {
             "ca-pe/pe428_credits_subtotal_line_39": "15894.75",
-            "ca-pe/pe428_medical_expenses_allowable_line_47": "4404.95",
             "ca-pe/pe428_credits_total_line_48": "20299.70",
         },
     ),
@@ -89,7 +91,7 @@ def test_the_trace_is_one_sum_with_the_blank_parts_read_as_0(
     ]
     assert [(kind.identifier, amount) for kind, amount in line.parts] == [
         ("ca-pe/pe428_credits_subtotal_line_39", D("15794.75")),
-        ("ca-pe/pe428_medical_expenses_allowable_line_47", D("0.00")),
+        ("ca-pe/pe428_allowable_medical_expenses_line_47", D("0.00")),
     ]
     assert line.total == D("15794.75")
 
@@ -112,9 +114,10 @@ def test_the_part_is_the_steps_the_form_prints() -> None:
             "consumes": {
                 "parts": [
                     "ca-pe/pe428_credits_subtotal_line_39",
-                    "ca-pe/pe428_medical_expenses_allowable_line_47",
+                    "ca-pe/pe428_allowable_medical_expenses_line_47",
                 ]
             },
+            "blank": {"ca-pe/pe428_allowable_medical_expenses_line_47": "0"},
             "produces": {"output": "ca-pe/pe428_credits_total_line_48"},
         }
     ]
