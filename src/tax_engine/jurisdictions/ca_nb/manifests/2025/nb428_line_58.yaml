@@ -1,0 +1,18 @@
+# Form NB428 (CRA 5004-C) line 58: "Line 58: Line 56 minus line 57 (if negative, enter "0")". Line
+# 57, "New Brunswick non-refundable tax credits from line 53", is a copy of line 53 and has no step,
+# so the one core/subtract_not_below_zero step takes line 56 less line 53, not below 0. Both are
+# always figures, so the step needs no blank rule. The form prints no title for the line, so the
+# step is untitled.
+form:
+  name: ca-nb/nb428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "58"
+    unit: ca/cad
+    params:
+      rounding: ca-nb/cent_rounding
+    consumes:
+      amount: ca-nb/nb428_tax_before_credits_line_56
+      less: ca-nb/nb428_non_refundable_credits_line_53
+    produces:
+      output: ca-nb/nb428_tax_after_non_refundable_credits_line_58

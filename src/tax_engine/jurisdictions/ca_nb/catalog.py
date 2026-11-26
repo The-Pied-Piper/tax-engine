@@ -177,3 +177,9 @@ NB428_TAX_BEFORE_CREDITS_LINE_56 = AmountKind.declare(
 )
 """NB428 line 56 "Line 54 plus line 55": the tax on taxable income plus the tax on split income,
 line 54 being a copy of line 8."""
+
+NB428_TAX_AFTER_NON_REFUNDABLE_CREDITS_LINE_58 = AmountKind.declare(
+    CATALOG, "nb428_tax_after_non_refundable_credits_line_58", non_negative=True
+)
+"""NB428 line 58 "Line 56 minus line 57 (if negative, enter "0")": line 56 less the non-refundable
+credits of line 53, not below zero."""
