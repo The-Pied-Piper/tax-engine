@@ -233,3 +233,10 @@ NS428_DONATIONS_CREDIT_LINE_51 = AmountKind.declare(
 )
 """Donations and gifts credit, NS428 line 51 (58969) "Line 51 and 58969: Line 49 plus line 50 =":
 line 49 plus line 50; line 52 reads it."""
+
+NS428_NON_REFUNDABLE_CREDITS_LINE_52 = AmountKind.declare(
+    CATALOG, "ns428_non_refundable_credits_line_52", non_negative=True
+)
+"""Nova Scotia non-refundable tax credits, NS428 line 52 (line 61500) "Line 48 plus line 51 Enter
+this amount on line 56. Nova Scotia non-refundable tax credits =" (as CRA's PDF prints it; its text
+version misprints the line): line 48 plus line 51, read by line 56."""
