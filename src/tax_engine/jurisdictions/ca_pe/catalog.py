@@ -289,3 +289,11 @@ PE428_TUITION_AND_EDUCATION_AMOUNTS_LINE_36 = AmountKind.declare(
 """Your tuition and education amounts, PE428 line 36 "Line 36 and line 58560: Your tuition and
 education amounts (attach Schedule PE(S11))": the amount as the filer gives it, an optional
 input; a blank input is read as blank, and the sum that reads it reads it as 0."""
+
+PE428_TUITION_TRANSFERRED_FROM_CHILD_OR_GRANDCHILD_LINE_37 = AmountKind.declare(
+    CATALOG, "pe428_tuition_transferred_from_child_or_grandchild_line_37", non_negative=True
+)
+"""Tuition and education amounts transferred from a child or grandchild, PE428 line 37 "Line 37 and
+line 58600: Tuition and education amounts transferred from a child or grandchild": the amount as
+the filer gives it, an optional input; a blank input is read as blank, and the sum that reads it
+reads it as 0."""

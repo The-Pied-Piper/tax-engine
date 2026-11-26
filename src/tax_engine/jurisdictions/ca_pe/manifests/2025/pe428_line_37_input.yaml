@@ -1,0 +1,15 @@
+# PE428 (2025) input a salary-only caller does not give.
+# Line 37: "Tuition and education amounts transferred from a child or grandchild" (Form PE428, CRA
+# 5002-C). The engine does not compute the amount transferred from a child or grandchild, so the
+# figure is taken as one optional input the way the form takes it, a dollar amount entered on the
+# line. A request that leaves the line out is read as blank.
+form:
+  name: ca-pe/pe428
+inputs:
+  - name: ca-pe/pe428_tuition_transferred_from_child_or_grandchild_line_37
+    title: "Tuition and education amounts transferred from a child or grandchild"
+    reference: "37"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 37 and line 58600: Tuition and education amounts transferred from a child or grandchild'
