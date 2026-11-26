@@ -25,3 +25,9 @@ NB428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
 """Lower bound of the column, Form NB428 line 3 "Column 1: Line 1 is $51,306 or less / Line 3: 0.00"
 (51,306.00; 102,614.00; 190,060.00): the printed lower bound of the column of lines 2 to 8 that
 line 1 falls in."""
+
+NB428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_4 = AmountKind.declare(
+    CATALOG, "nb428_taxable_income_over_lower_bound_line_4", non_negative=True
+)
+"""Taxable income over the lower bound, NB428 line 4 "Line 4: Line 2 minus line 3 (cannot be
+negative) =": line 1 minus line 3, not below zero."""
