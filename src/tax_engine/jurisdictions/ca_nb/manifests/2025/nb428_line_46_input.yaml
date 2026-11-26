@@ -3,8 +3,7 @@
 # expenses from line 33099, the 3% of net income and the $2,798 cap, and the other dependants'
 # amount) would be $0 for a salary-only filer, so that block is not built and the line is taken as
 # one optional input, as ca-nl/nl428_credits line 54 is (nl428_credits_line_54_input.yaml). A request
-# that leaves the line out is read as blank. Owner's rulings: salary-only scope (22 Nov 2026), scope
-# rule (21 Nov 2026).
+# that leaves the line out is read as blank.
 form:
   name: ca-nb/nb428
 inputs:
