@@ -319,3 +319,9 @@ PE428_MEDICAL_EXPENSES_LINE_40 = AmountKind.declare(
 )
 """Medical expenses, PE428 line 40 and line 58689 "Amount from line 33099 of your return": a record
 total of the T1's export (`ca/medical_expenses_line_33099`), 0 for a salary-only caller."""
+
+PE428_NET_INCOME_LINE_41 = AmountKind.declare(
+    CATALOG, "pe428_net_income_line_41", non_negative=True
+)
+"""Net income, PE428 line 41 "Line 41: Amount from line 23600 of your return": a record total of
+the T1's net income (line 23600, floored)."""

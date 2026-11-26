@@ -110,3 +110,5 @@ CHAIN_39 = (
     "pe428_line_38_input.yaml",
     "pe428_line_39.yaml",
 )
+
+NET_INCOME_PARTS = form_part_names("t1_taxable_income")
