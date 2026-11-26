@@ -1,0 +1,15 @@
+# Form PE428 (Prince Edward Island Tax, CRA 5002-C) line 1 "Enter your taxable income from line
+# 26000 of your return." is the T1 taxable income. The T1 form exports it as `ca/taxable_income`, and another form
+# reads an export only as a record list (`ca/t1_taxable_income.taxable_income`), so the one step is
+# core/record_total over those records (same as ca-sk/sk428_credits line 1). Line 2 is a copy of
+# line 1 and has no step of its own: lines 3 and 4 read line 1 directly.
+form:
+  name: ca-pe/pe428
+capabilities:
+  - name: core/record_total
+    reference: "1"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_taxable_income.taxable_income
+    produces:
+      output: ca-pe/pe428_taxable_income_line_1
