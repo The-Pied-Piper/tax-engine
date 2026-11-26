@@ -28,3 +28,9 @@ NB428_CPP_CONTRIBUTIONS_LINE_19 = AmountKind.declare(
 )
 """CPP or QPP contributions, NB428 line 19 and line 58240 "Amount from line 30800 of your return": a
 copy of Schedule 8 line 25, the CPP base contributions on the return."""
+
+NB428_EI_PREMIUMS_LINE_21 = AmountKind.declare(
+    CATALOG, "nb428_ei_premiums_line_21", non_negative=True
+)
+"""EI premiums credit amount, NB428 line 21 (line 58300) "Amount from line 31200 of your return": a
+copy of T2204 line 16, the EI premiums credit amount."""

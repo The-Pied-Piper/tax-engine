@@ -43,6 +43,7 @@ def test_the_form_exports_and_the_part_declares_no_capabilities() -> None:
     assert part["form"]["exports"] == [
         "ca-nb/nb428_credits_subtotal_line_18",
         "ca-nb/nb428_cpp_contributions_line_19",
+        "ca-nb/nb428_ei_premiums_line_21",
     ]
     assert "supplies" not in part["form"]
     assert part["capabilities"] == []
