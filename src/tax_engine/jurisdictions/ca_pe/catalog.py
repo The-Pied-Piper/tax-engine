@@ -247,3 +247,24 @@ PE428_DISABILITY_AMOUNT_TRANSFERRED_FROM_A_DEPENDANT_LINE_32 = AmountKind.declar
 Disability amount transferred from a dependant (use Worksheet PE428)": the amount as the filer
 gives it, an optional input; a blank input is read as blank, and the sum that reads it reads it
 as 0."""
+
+PE428_TEACHER_SCHOOL_SUPPLY_AMOUNT_CLAIMED_LINE_33 = AmountKind.declare(
+    CATALOG, "pe428_teacher_school_supply_amount_claimed_line_33", non_negative=True
+)
+"""Teacher school supply amount claimed, PE428 line 33 "Teacher school supply amount (maximum
+$500)": the amount as the filer gives it, an optional input; a blank input is read as blank, and
+the line 33 step checks it against the printed maximum."""
+
+PE428_TEACHER_SCHOOL_SUPPLY_AMOUNT_MAXIMUM = AmountKind.declare(
+    CATALOG, "pe428_teacher_school_supply_amount_maximum", non_negative=True
+)
+"""Teacher school supply amount maximum, printed on PE428 line 33 "Teacher school supply amount
+(maximum $500)": the printed maximum, from the `ca-pe/teacher_school_supply_amount_maximum`
+dataset; the bound line 33 cannot pass."""
+
+PE428_TEACHER_SCHOOL_SUPPLY_AMOUNT_LINE_33 = AmountKind.declare(
+    CATALOG, "pe428_teacher_school_supply_amount_line_33", non_negative=True
+)
+"""Teacher school supply amount, PE428 line 33 "Teacher school supply amount (maximum $500)": the
+claimed amount, passed on unchanged when it is at most the printed maximum, blank when left out;
+above the maximum it is refused, not capped."""
