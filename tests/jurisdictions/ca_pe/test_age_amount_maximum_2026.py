@@ -28,9 +28,9 @@ PROVISIONAL_HEADER = (
 )
 DERIVATION_HEADER = (
     "# Derivation: carried forward unchanged from the 2025 form (line 10, "
-    '"(maximum $6,510)"); T4127 (Jan and Jul 2026) does not print this figure and'
-    ' states "No indexing applies to Prince Edward Island", and the 2026 form is '
-    "not yet published, so it is unconfirmed."
+    '"(maximum $6,510)"); T4127 (Jan 2026) states "No indexing applies to Prince'
+    ' Edward Island" and T4127 (Jul 2026) prints none of these figures, and the '
+    "2026 form is not yet published, so it is unconfirmed."
 )
 
 
