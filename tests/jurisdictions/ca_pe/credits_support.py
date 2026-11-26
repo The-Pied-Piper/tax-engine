@@ -131,3 +131,5 @@ PART_A = tuple(f"pe428_line_{number}.yaml" for number in (1, 3, 4, 5, 6, 7, 8))
 ALL_PARTS = (*CHAIN_54, *form_part_names("t1_taxable_income"), *PART_A)
 
 CHAIN_57 = (*ALL_PARTS, "pe428_line_56_input.yaml", "pe428_line_57.yaml")
+
+CHAIN_59 = (*CHAIN_57, "pe428_line_59.yaml")

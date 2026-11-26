@@ -381,3 +381,7 @@ an optional input; a blank input is read as blank, and the sum that reads it rea
 PE428_TAX_LINE_57 = AmountKind.declare(CATALOG, "pe428_tax_line_57", non_negative=True)
 """Prince Edward Island tax before credits, PE428 line 57 "Line 57: Line 55 plus line 56 =": the tax
 on taxable income (line 55, a copy of line 8) plus the tax on split income."""
+
+PE428_TAX_LINE_59 = AmountKind.declare(CATALOG, "pe428_tax_line_59", non_negative=True)
+"""Prince Edward Island tax after the non-refundable credits, PE428 line 59 "Line 59: Line 57 minus
+line 58 (if negative, enter "0") =": the tax before credits less the credits, not below 0."""
