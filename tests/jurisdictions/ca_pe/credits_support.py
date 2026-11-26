@@ -30,21 +30,17 @@ HEADER = dedent("""\
     """)
 # The T1 employment income form owns the salary input; Schedule 8, T2204 and the T1 lines copied by
 # provinces give the CPP and EI amounts and the self-employed amounts the credits copy.
-FEDERAL_PARTS = form_part_names(
-    "t1_employment_income", "schedule_8", "t2204", "t1_lines_copied_by_provinces"
+SALARY_PARTS = form_part_names("t1_employment_income")
+FEDERAL_PARTS = (
+    *SALARY_PARTS,
+    *form_part_names("schedule_8", "t2204", "t1_lines_copied_by_provinces"),
 )
 
 
 def form(*exports: str) -> str:
     """The test-local declaration of the credits form, exporting the lines a test reads."""
-    lines = "".join(f"\n        - {name}" for name in exports)
-    return dedent(f"""\
-        form:
-          name: {FORM_NAME}
-          required: true
-          exports:{lines}
-        capabilities: []
-        """)
+    listed = "".join(f"    - {name}\n" for name in exports)
+    return f"form:\n  name: {FORM_NAME}\n  required: true\n  exports:\n{listed}capabilities: []\n"
 
 
 def compute(
