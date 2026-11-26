@@ -422,3 +422,11 @@ PE428_TAX_WITH_MINIMUM_TAX_LINE_65 = AmountKind.declare(
 )
 """Prince Edward Island tax with the additional minimum tax, PE428 line 65 "Line 65: Line 63 plus
 line 64 =": line 63 plus the additional tax for minimum tax purposes."""
+
+PE428_AMOUNT_FROM_SPOUSE_OR_PARTNER_FORM_LINE_66 = AmountKind.declare(
+    CATALOG, "pe428_amount_from_spouse_or_partner_form_line_66", non_negative=True
+)
+"""Spouse or partner Form PE428 amount, PE428 line 66 and line 63360 "Line 66 and line 63360: Amount
+from line 101 of your spouse's or common-law partner's Form PE428, if any": the amount as the
+filer gives it, an optional input; a blank input is read as blank, and the subtraction that reads
+it reads it as 0."""
