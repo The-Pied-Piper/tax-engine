@@ -401,3 +401,10 @@ PE428_DONATIONS_AND_GIFTS_CREDIT_LINE_53 = AmountKind.declare(
 )
 """Donations and gifts credit, PE428 line 53 and line 58969 "Line 53 and line 58969: Line 51 plus
 line 52 =": the donations credit at 9.5% plus the donations credit at 19%."""
+
+PE428_NON_REFUNDABLE_CREDITS_LINE_54 = AmountKind.declare(
+    CATALOG, "pe428_non_refundable_credits_line_54", non_negative=True
+)
+"""Prince Edward Island non-refundable tax credits, PE428 line 54 and line 61500 "Line 54 and line
+61500: Line 50 plus line 53 Enter this amount on line 58. Prince Edward Island non-refundable
+tax credits =": the credits at the credit rate plus the donations and gifts credit."""

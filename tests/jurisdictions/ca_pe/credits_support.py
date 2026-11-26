@@ -138,3 +138,8 @@ CHAIN_53 = (
     "pe428_line_52.yaml",
     "pe428_line_53.yaml",
 )
+
+CHAIN_54 = (*CHAIN_53, "pe428_line_54.yaml")
+
+PART_A = tuple(f"pe428_line_{number}.yaml" for number in (1, 3, 4, 5, 6, 7, 8))
+ALL_PARTS = (*CHAIN_54, *PART_A)
