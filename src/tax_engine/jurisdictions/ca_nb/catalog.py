@@ -183,3 +183,9 @@ NB428_TAX_AFTER_NON_REFUNDABLE_CREDITS_LINE_58 = AmountKind.declare(
 )
 """NB428 line 58 "Line 56 minus line 57 (if negative, enter "0")": line 56 less the non-refundable
 credits of line 53, not below zero."""
+
+NB428_DIVIDEND_TAX_CREDIT_LINE_60 = AmountKind.declare(
+    CATALOG, "nb428_dividend_tax_credit_line_60", non_negative=True
+)
+"""NB428 line 60 and line 61520 "New Brunswick dividend tax credit (use Worksheet NB428)": the
+amount as the filer gives it, an optional input; a blank input is read as blank."""
