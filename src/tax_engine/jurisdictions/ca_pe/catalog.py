@@ -364,3 +364,10 @@ PE428_CREDITS_TOTAL_LINE_48 = AmountKind.declare(
 )
 """Credits total, PE428 line 48 and line 58800 "Line 48 and line 58800: Line 39 plus line 47 =":
 the credits subtotal of line 39 plus the allowable medical expenses of line 47."""
+
+PE428_CREDITS_AT_RATE_LINE_50 = AmountKind.declare(
+    CATALOG, "pe428_credits_at_rate_line_50", non_negative=True
+)
+"""Credits at the credit rate, PE428 line 50 and line 58840 "Line 50 and line 58840: Line 48
+multiplied by the percentage from line 49 =": line 48 times the 9.5% of line 49, rounded to the
+cent."""
