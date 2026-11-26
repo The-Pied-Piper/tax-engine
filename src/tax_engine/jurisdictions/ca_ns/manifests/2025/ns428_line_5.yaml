@@ -1,0 +1,16 @@
+# Form NS428 (Nova Scotia Tax, CRA 5003-C) Part A, line 5. Each of the five columns prints "Line 5:"
+# with its rate: 8.79%, 14.95%, 16.67%, 17.5% and 21%. Line 5 is the printed rate of the column that
+# line 1 falls in, and a line 1 exactly at a column's upper bound falls in the lower column. Line 1
+# is read from its producing part (ns428_line_1.yaml), so this part does not produce it again.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/bracket_column_rate
+    title: "Rate"
+    reference: "5"
+    params:
+      schedule: ca-ns/brackets
+    consumes:
+      base: ca-ns/ns428_taxable_income_line_1
+    produces:
+      output: ca-ns/ns428_bracket_rate_line_5
