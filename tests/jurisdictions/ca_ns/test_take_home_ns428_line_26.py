@@ -3,8 +3,8 @@
 Form text (Form NS428, CRA 5003-C, confirmed 26 Nov 2026 from CRA's PDF; its text version matches
 on these lines): "Line 20: Amount from line 19 of the previous page" and "Line 26: Line 20 plus
 line 25". Line 20 is a copy of line 19 and has no step, so line 26 is one core/sum over line 19
-and line 25, as Saskatchewan's line 32 is. Figures hand-computed (two independent computations,
-ticket #1982): 11,744.00 plus lines 21 to 24.
+and line 25, as Saskatchewan's line 32 is. Figures hand-computed (two independent computations):
+11,744.00 plus lines 21 to 24.
 """
 
 from __future__ import annotations
