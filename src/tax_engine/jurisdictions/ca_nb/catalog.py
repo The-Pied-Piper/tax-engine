@@ -195,3 +195,8 @@ NB428_MINIMUM_TAX_CARRYOVER_LINE_61 = AmountKind.declare(
 )
 """NB428 line 61 and line 61540 "Amount from line 40427 of your return multiplied by 57%": the
 amount as the filer gives it, an optional input; a blank input is read as blank."""
+
+NB428_DIVIDEND_CREDIT_AND_CARRYOVER_LINE_62 = AmountKind.declare(
+    CATALOG, "nb428_dividend_credit_and_carryover_line_62", non_negative=True
+)
+"""NB428 line 62 "Line 60 plus line 61": the dividend tax credit plus the minimum tax carryover."""
