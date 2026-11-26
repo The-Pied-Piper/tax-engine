@@ -227,3 +227,9 @@ NS428_DONATIONS_CREDIT_AT_RATE_LINE_50 = AmountKind.declare(
 )
 """Donations credit at 21%, NS428 line 50 box B "Amount from line 14 of your federal Schedule 9
 multiplied by 21% =": the Schedule 9 amount times 21%; a blank amount is read as 0."""
+
+NS428_DONATIONS_CREDIT_LINE_51 = AmountKind.declare(
+    CATALOG, "ns428_donations_credit_line_51", non_negative=True
+)
+"""Donations and gifts credit, NS428 line 51 (58969) "Line 51 and 58969: Line 49 plus line 50 =":
+line 49 plus line 50; line 52 reads it."""

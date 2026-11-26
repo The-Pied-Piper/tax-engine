@@ -1,0 +1,19 @@
+# Form NS428 (CRA 5003-C) line 51 and line 58969: "Line 49 plus line 50 =". It sums line 49
+# (`ca-ns/ns428_donations_credit_at_rate_line_49`) and line 50
+# (`ca-ns/ns428_donations_credit_at_rate_line_50`), each read from its own step and never blank (a
+# blank Schedule 9 amount gives 0.00 there). Line 52 reads it. The form prints no label for line 51.
+# Same as ca-sk/sk428_credits line 56.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/sum
+    reference: "51"
+    unit: ca/cad
+    params:
+      rounding: ca-ns/cent_rounding
+    consumes:
+      parts:
+        - ca-ns/ns428_donations_credit_at_rate_line_49
+        - ca-ns/ns428_donations_credit_at_rate_line_50
+    produces:
+      output: ca-ns/ns428_donations_credit_line_51
