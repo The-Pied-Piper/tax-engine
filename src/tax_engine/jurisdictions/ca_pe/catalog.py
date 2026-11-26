@@ -60,3 +60,9 @@ PE428_CREDITS_SUBTOTAL_LINE_19 = AmountKind.declare(
 """Prince Edward Island credits subtotal, PE428 line 19 "Line 19: Add lines 9, 10, 13, and 16 to
 18. = ^": the sum of the personal amounts claimed, the basic personal amount plus the optional
 lines 10, 13, 16, 17 and 18 read as 0 when blank."""
+
+PE428_CPP_CONTRIBUTIONS_LINE_20 = AmountKind.declare(
+    CATALOG, "pe428_cpp_contributions_line_20", non_negative=True
+)
+"""CPP or QPP contributions, PE428 line 20 and line 58240 "Amount from line 30800 of your return":
+a copy of Schedule 8 line 25, the CPP base contributions on the return."""
