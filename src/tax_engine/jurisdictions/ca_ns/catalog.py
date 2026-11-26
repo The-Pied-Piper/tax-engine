@@ -214,3 +214,16 @@ NS428_DONATIONS_CREDIT_AT_RATE_LINE_49 = AmountKind.declare(
 )
 """Donations credit at 8.79%, NS428 line 49 box B "Amount from line 13 of your federal Schedule 9
 multiplied by 8.79% =": the Schedule 9 amount times 8.79%; a blank amount is read as 0."""
+
+NS428_DONATIONS_AMOUNT_LINE_50 = AmountKind.declare(
+    CATALOG, "ns428_donations_amount_line_50", non_negative=True
+)
+"""Donations amount, NS428 line 50 box A "Amount from line 14 of your federal Schedule 9": the
+amount, a record total of Schedule 9's export (`ca/schedule_9.donations_and_gifts_line_14`), 0 for a
+salary-only caller."""
+
+NS428_DONATIONS_CREDIT_AT_RATE_LINE_50 = AmountKind.declare(
+    CATALOG, "ns428_donations_credit_at_rate_line_50", non_negative=True
+)
+"""Donations credit at 21%, NS428 line 50 box B "Amount from line 14 of your federal Schedule 9
+multiplied by 21% =": the Schedule 9 amount times 21%; a blank amount is read as 0."""
