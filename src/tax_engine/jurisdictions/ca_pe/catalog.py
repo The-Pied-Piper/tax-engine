@@ -331,3 +331,9 @@ PE428_MEDICAL_EXPENSES_RATE_AMOUNT_LINE_43 = AmountKind.declare(
 )
 """Medical expenses rate amount, PE428 line 43 "Line 43: Line 41 multiplied by the percentage from
 line 42 = ^": line 41 times the 3% of line 42, rounded to the cent."""
+
+PE428_MEDICAL_EXPENSES_LIMITED_AMOUNT_LINE_44 = AmountKind.declare(
+    CATALOG, "pe428_medical_expenses_limited_amount_line_44", non_negative=True
+)
+"""Medical expenses limited amount, PE428 line 44 "Line 44: Enter whichever is less: $1,678 or the
+amount on line 43.": the lesser of the printed $1,678 and line 43."""

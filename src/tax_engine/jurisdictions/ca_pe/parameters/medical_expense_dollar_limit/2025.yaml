@@ -1,0 +1,11 @@
+# Line 44: Enter whichever is less: $1,678 or the amount on line 43. The printed ceiling of line
+# 44, a plain cap, not a credit.
+family: ca-pe/medical_expense_dollar_limit
+tax_year: 2025
+kind: amount
+title: "medical expense dollar limit"
+unit: ca/cad
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5002-c/5002-c-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "1678"
