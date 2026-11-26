@@ -8,7 +8,102 @@ Amounts are `Decimal`, non-negative unless the form prints no floor. Federal kin
 from __future__ import annotations
 
 from tax_engine.domain.artifact import ArtifactCatalog
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca_ns import NAMESPACE
 
 CATALOG = ArtifactCatalog(Namespace(NAMESPACE))
+
+NS428_TAXABLE_INCOME_LINE_1 = AmountKind.declare(
+    CATALOG, "ns428_taxable_income_line_1", non_negative=True
+)
+"""Taxable income, Form NS428 Line 1 "Enter your taxable income from line 26000 of your return": the
+T1 taxable income, read directly by lines 3 and 4."""
+
+NS428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
+    CATALOG, "ns428_tax_on_taxable_income_line_8", non_negative=True
+)
+"""Nova Scotia tax on taxable income, NS428 line 8 "Line 6 plus line 7 Nova Scotia tax on taxable
+income =": line 6 plus line 7, copied to line 53 and read by the tax after credits."""
+
+NS428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
+    CATALOG, "ns428_bracket_lower_bound_line_3", non_negative=True
+)
+"""Lower bound of the column, Form NS428 line 3 "Column 1: Line 1 is $30,507 or less / Line 3: 0.00"
+(30,507.00; 61,015.00; 95,883.00; 154,650.00): the printed lower bound of the column of lines 2 to
+8 that line 1 falls in."""
+
+NS428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_4 = AmountKind.declare(
+    CATALOG, "ns428_taxable_income_over_lower_bound_line_4", non_negative=True
+)
+"""Taxable income over the lower bound, NS428 line 4 "Line 4: Line 2 minus line 3 (cannot be
+negative) =": line 1 minus line 3, not below zero."""
+
+NS428_BRACKET_RATE_LINE_5 = AmountKind.declare(
+    CATALOG, "ns428_bracket_rate_line_5", non_negative=True
+)
+"""Rate of the column, Form NS428 line 5 "Column 1: Line 1 is $30,507 or less / Line 5: Rate 8.79%"
+(14.95%; 16.67%; 17.5%; 21%): the printed rate of the column of lines 2 to 8 that line 1 falls
+in."""
+
+NS428_TAX_ON_EXCESS_LINE_6 = AmountKind.declare(
+    CATALOG, "ns428_tax_on_excess_line_6", non_negative=True
+)
+"""Tax on the excess, NS428 line 6 "Line 6: Line 4 multiplied by the percentage from line 5 =":
+line 4 times the rate of line 5, rounded to the cent."""
+
+NS428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
+    CATALOG, "ns428_bracket_tax_at_start_line_7", non_negative=True
+)
+"""Tax at the start of the column of lines 2 to 8 (the engine's description; the form prints no
+title for line 7), Form NS428 line 7 "Column 1: Line 1 is $30,507 or less / Line 7: 0.00"
+(2,681.57; 7,242.51; 13,055.01; 23,339.23): the figure printed on line 7 of the column that line 1
+falls in."""
+
+BASIC_PERSONAL_AMOUNT = AmountKind.declare(CATALOG, "basic_personal_amount", non_negative=True)
+"""Basic personal amount, NS428 line 9 "Line 9 and line 58040: Basic personal amount Claim
+$11,744": the printed $11,744, claimed whole and not income-tested."""
+
+NS428_CREDITS_SUBTOTAL_LINE_19 = AmountKind.declare(
+    CATALOG, "ns428_credits_subtotal_line_19", non_negative=True
+)
+"""Nova Scotia credits subtotal, NS428 line 19 "Add lines 9 to 18.": the sum of the personal amounts
+claimed, here the basic personal amount alone."""
+
+NS428_CPP_CONTRIBUTIONS_LINE_21 = AmountKind.declare(
+    CATALOG, "ns428_cpp_contributions_line_21", non_negative=True
+)
+"""CPP or QPP contributions, NS428 line 21 and line 58240 "Amount from line 30800 of your return": a
+copy of Schedule 8 line 25, the CPP base contributions on the return."""
+
+NS428_QPP_CONTRIBUTIONS_LINE_22 = AmountKind.declare(
+    CATALOG, "ns428_qpp_contributions_line_22", non_negative=True
+)
+"""Quebec Pension Plan contributions, NS428 line 22 "Amount from line 31000 of your return": a
+record total of the T1's export (`ca/self_employment_cpp_qpp_contributions_line_31000`), 0 for a
+salary-only caller."""
+
+NS428_EI_PREMIUMS_LINE_23 = AmountKind.declare(
+    CATALOG, "ns428_ei_premiums_line_23", non_negative=True
+)
+"""EI premiums credit amount, NS428 line 23 (line 58300) "Amount from line 31200 of your return": a
+copy of T2204 line 16, the EI premiums credit amount."""
+
+NS428_EI_PREMIUMS_LINE_24 = AmountKind.declare(
+    CATALOG, "ns428_ei_premiums_line_24", non_negative=True
+)
+"""Employment insurance premiums, NS428 line 24 "Amount from line 31217 of your return": a record
+total of the T1's export (`ca/ei_premiums_on_self_employment_line_31217`), 0 for a salary-only
+caller."""
+
+NS428_CPP_EI_AND_OTHER_LINE_25 = AmountKind.declare(
+    CATALOG, "ns428_cpp_ei_and_other_line_25", non_negative=True
+)
+"""CPP or QPP, EI and other credit amounts, NS428 line 25 "Add lines 21 to 24.": the sum of the CPP
+or QPP contributions, the QPP contributions and the EI premiums on lines 21 to 24."""
+
+NS428_CREDITS_SUBTOTAL_LINE_26 = AmountKind.declare(
+    CATALOG, "ns428_credits_subtotal_line_26", non_negative=True
+)
+"""Nova Scotia credits subtotal, NS428 line 26 "Line 20 plus line 25": line 20, a copy of line 19,
+plus line 25, read by the next line of the credits."""
