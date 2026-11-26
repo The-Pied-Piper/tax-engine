@@ -1,0 +1,24 @@
+# New Brunswick 2025 take-home manifest: the return's identity and the federal forms it imports. The
+# caller gives the gross salary and nothing else. New Brunswick's own forms are parts beside this
+# one, so a line ticket adds only its own part file; the federal forms are imported by name below,
+# their parts in the `ca` package (`ca/forms/<name>/`).
+#
+# New Brunswick builds Form NB428 (CRA 5004-C). There is no New Brunswick NB479, T1 edition or
+# Schedule 6 (CRA publishes none), so the federal T1, Schedule 6, Schedule 8, T2204 and Schedule 9
+# are imported unchanged. Schedule 8 and T2204 carry the standard federal CPP and EI (no QPP).
+#
+# The `outputs` list and the `take_home` block are set by the New Brunswick return summary ticket
+# (`return.yaml`); until then the manifest names no export. New Brunswick is listed in
+# `registrations.JURISDICTIONS`.
+jurisdiction: CA-NB
+version: 1
+valid_from_tax_year: 2025
+# The title is the engine's own wording for the default form, not a printed form heading.
+title: Return summary
+outputs: []
+capabilities: []
+imports:
+  - ca/t1_employment_income
+  - ca/t1_taxable_income
+  - ca/schedule_8
+  - ca/t2204
