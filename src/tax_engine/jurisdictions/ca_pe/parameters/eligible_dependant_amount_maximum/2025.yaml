@@ -1,0 +1,11 @@
+# Prince Edward Island amount for an eligible dependant maximum, 2025 tax year (Form PE428 line 16): the line
+# prints "(maximum $12,443)". It is the bound the claim cannot pass and is claimed whole, so it
+# is a credit dataset, as ca-nl/pension_income_amount_maximum is. The form states no rounding rule,
+# so the amount rounds half-up to the cent, the project's choice.
+family: ca-pe/eligible_dependant_amount_maximum
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5002-c/5002-c-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "12443"

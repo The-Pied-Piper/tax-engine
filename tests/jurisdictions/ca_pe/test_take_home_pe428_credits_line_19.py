@@ -44,12 +44,22 @@ LINES = [
     "ca-pe/pe428_young_children_amount_line_18",
 ]
 OPTIONAL_LINES = LINES[1:]
+# Lines 10, 13 and 16 are checked against their printed maximums, so the amount is typed in as the
+# claim the line step reads.
+CLAIMED_AS = {
+    LINES[1]: "ca-pe/pe428_age_amount_claimed_line_10",
+    LINES[2]: "ca-pe/pe428_spouse_or_common_law_partner_amount_claimed_line_13",
+    LINES[3]: "ca-pe/pe428_eligible_dependant_amount_claimed_line_16",
+}
 PARTS = (
     *SALARY_PARTS,
     "pe428_credits_line_9.yaml",
     "pe428_credits_line_10_input.yaml",
+    "pe428_credits_line_10.yaml",
     "pe428_credits_line_13_input.yaml",
+    "pe428_credits_line_13.yaml",
     "pe428_credits_line_16_input.yaml",
+    "pe428_credits_line_16.yaml",
     "pe428_credits_line_17_input.yaml",
     "pe428_credits_line_18_input.yaml",
     PART_NAME,
@@ -60,7 +70,8 @@ def _sheet(
     take_home_service: TakeHomeService, salary: str, given: dict[str, str] | None = None
 ) -> Any:
     service = take_home_service(HEADER, form(IDENTIFIER), *PARTS)
-    return compute(service, salary, given)
+    typed = {CLAIMED_AS.get(line, line): amount for line, amount in (given or {}).items()}
+    return compute(service, salary, typed)
 
 
 @pytest.mark.parametrize("salary", ["20000", "30000", "70000", "200000"])

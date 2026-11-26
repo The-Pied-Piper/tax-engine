@@ -3,11 +3,13 @@
 # $6,510)" (Form PE428, CRA 5002-C). Age amount, a claim for a filer born in 1960 or earlier that
 # the filer works out on Worksheet PE428 line 7. The worksheet is not built (a salary-only take-
 # home filer has none, owner's scope rule of 22 Nov 2026), so the line is taken as one optional
-# input. A request that leaves the line out is read as blank. Line 19 (a later part) reads it.
+# input. A request that leaves the line out is read as blank. Line 10
+# (pe428_credits_line_10.yaml) checks the claim against the printed maximum and passes a blank on;
+# line 19 reads the checked line.
 form:
   name: ca-pe/pe428_credits
 inputs:
-  - name: ca-pe/pe428_age_amount_line_10
+  - name: ca-pe/pe428_age_amount_claimed_line_10
     title: "Age amount (if you were born in 1960 or earlier) (use Worksheet PE428) (maximum $6,510)"
     reference: "10"
     unit: ca/cad

@@ -15,7 +15,7 @@ import tax_engine.jurisdictions.ca_pe
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.manifest import Manifest
-from tax_engine.jurisdictions.ca_pe.catalog import PE428_AGE_AMOUNT_LINE_10
+from tax_engine.jurisdictions.ca_pe.catalog import PE428_AGE_AMOUNT_CLAIMED_LINE_10
 from tests.jurisdictions.ca_pe.credits_support import HEADER
 from tests.jurisdictions.ca_pe.support import (
     prince_edward_island_kinds,
@@ -25,7 +25,7 @@ from tests.jurisdictions.ca_pe.support import (
 from tests.kinds import non_negative
 from tests.manifest_support import input_named, inputs_of
 
-IDENTIFIER = "ca-pe/pe428_age_amount_line_10"
+IDENTIFIER = "ca-pe/pe428_age_amount_claimed_line_10"
 PRINTED_BASIS = (
     "Line 10 and line 58080: Age amount (if you were born in 1960 or earlier) (use "
     "Worksheet PE428) (maximum $6,510)"
@@ -85,6 +85,6 @@ def test_a_request_that_leaves_the_line_out_is_read_as_blank(tmp_path: Path) -> 
 def test_the_kind_is_a_registered_non_negative_amount_kind() -> None:
     kind = prince_edward_island_kinds().kind(IDENTIFIER)
 
-    assert kind is PE428_AGE_AMOUNT_LINE_10
+    assert kind is PE428_AGE_AMOUNT_CLAIMED_LINE_10
     assert isinstance(kind, AmountKind)
     assert non_negative(kind)
