@@ -343,3 +343,11 @@ PE428_MEDICAL_EXPENSES_OVER_LIMIT_LINE_45 = AmountKind.declare(
 )
 """Medical expenses over the limit, PE428 line 45 "Line 45: Line 40 minus line 44 (if negative,
 enter "0") = ^": line 40 less line 44, not below zero."""
+
+PE428_ALLOWABLE_MEDICAL_EXPENSES_FOR_OTHER_DEPENDANTS_LINE_46 = AmountKind.declare(
+    CATALOG, "pe428_allowable_medical_expenses_for_other_dependants_line_46", non_negative=True
+)
+"""Allowable amount of medical expenses for other dependants, PE428 line 46 "Line 46 and line
+58729: Allowable amount of medical expenses for other dependants (use Worksheet PE428)": the
+amount as the filer gives it, an optional input; a blank input is read as blank, and the sum
+that reads it reads it as 0."""
