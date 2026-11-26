@@ -1,0 +1,17 @@
+# Form PE428 (Prince Edward Island Tax, CRA 5002-C) Part A, line 6, "Line 6: Line 4 multiplied by
+# the percentage from line 5": the tax on the taxable income over the column's lower bound. Line 6 is
+# line 4 times the printed rate of the column from line 5, rounded half-up to the cent by the
+# `ca-pe/cent_rounding` (the form states no rounding rule).
+form:
+  name: ca-pe/pe428
+capabilities:
+  - name: core/multiply_by_rate
+    reference: "6"
+    unit: ca/cad
+    params:
+      rounding: ca-pe/cent_rounding
+    consumes:
+      base: ca-pe/pe428_taxable_income_over_lower_bound_line_4
+      rate: ca-pe/pe428_bracket_rate_line_5
+    produces:
+      output: ca-pe/pe428_tax_on_excess_line_6

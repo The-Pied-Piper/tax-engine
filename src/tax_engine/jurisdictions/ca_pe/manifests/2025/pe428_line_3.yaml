@@ -1,0 +1,20 @@
+# Form PE428 (Prince Edward Island Tax, CRA 5002-C) Part A, line 3. Each of the five columns prints
+# "Line 3:" with its lower bound: 0.00, 33,328.00, 64,656.00, 105,000.00 and 140,000.00, under
+# "Column 1: Line 1 is $33,328.00 or less", "Column 2: Line 1 is more than $33,328 but not more than
+# $64,656", "Column 3: more than $64,656 but not more than $105,000", "Column 4: more than $105,000
+# but not more than $140,000" and "Column 5: more than $140,000". Line 3 is the printed lower bound
+# of the column that line 1 falls in.
+#
+# Line 2 is a copy of line 1 and has no step of its own: line 3 reads line 1 directly.
+form:
+  name: ca-pe/pe428
+capabilities:
+  - name: core/bracket_column_lower_bound
+    reference: "3"
+    unit: ca/cad
+    params:
+      schedule: ca-pe/brackets
+    consumes:
+      base: ca-pe/pe428_taxable_income_line_1
+    produces:
+      output: ca-pe/pe428_bracket_lower_bound_line_3
