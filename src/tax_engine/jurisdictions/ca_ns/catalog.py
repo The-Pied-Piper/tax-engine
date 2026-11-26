@@ -158,3 +158,9 @@ NS428_MEDICAL_EXPENSES_LINE_38 = AmountKind.declare(
 )
 """Medical expenses, NS428 line 38 (line 58689) "Amount from line 33099 of your return": a record
 total of the T1's export (`ca/medical_expenses_line_33099`), 0 for a salary-only caller."""
+
+NS428_NET_INCOME_LINE_39 = AmountKind.declare(
+    CATALOG, "ns428_net_income_line_39", non_negative=True
+)
+"""Net income, NS428 line 39 "Amount from line 23600 of your return": a record total of the T1's
+net income, line 23600 as the T1 floors it."""
