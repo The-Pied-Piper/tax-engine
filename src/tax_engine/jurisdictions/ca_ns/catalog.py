@@ -36,3 +36,9 @@ NS428_QPP_CONTRIBUTIONS_LINE_22 = AmountKind.declare(
 """Quebec Pension Plan contributions, NS428 line 22 "Amount from line 31000 of your return": a
 record total of the T1's export (`ca/self_employment_cpp_qpp_contributions_line_31000`), 0 for a
 salary-only caller."""
+
+NS428_EI_PREMIUMS_LINE_23 = AmountKind.declare(
+    CATALOG, "ns428_ei_premiums_line_23", non_negative=True
+)
+"""EI premiums credit amount, NS428 line 23 (line 58300) "Amount from line 31200 of your return": a
+copy of T2204 line 16, the EI premiums credit amount."""
