@@ -416,3 +416,9 @@ PE428_ADDITIONAL_TAX_MINIMUM_TAX_LINE_64 = AmountKind.declare(
 """Prince Edward Island additional tax for minimum tax purposes, PE428 line 64 "Line 64: Amount from
 Line 14 of Part 7 of Form T691 multiplied by 57.5% =": the amount as the filer gives it, an
 optional input; a blank input is read as blank, and the sum that reads it reads it as 0."""
+
+PE428_TAX_WITH_MINIMUM_TAX_LINE_65 = AmountKind.declare(
+    CATALOG, "pe428_tax_with_minimum_tax_line_65", non_negative=True
+)
+"""Prince Edward Island tax with the additional minimum tax, PE428 line 65 "Line 65: Line 63 plus
+line 64 =": line 63 plus the additional tax for minimum tax purposes."""
