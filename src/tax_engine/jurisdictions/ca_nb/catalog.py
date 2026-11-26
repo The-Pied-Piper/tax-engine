@@ -22,3 +22,9 @@ NB428_CREDITS_SUBTOTAL_LINE_18 = AmountKind.declare(
 )
 """New Brunswick credits subtotal, NB428 line 18 "Add lines 9, 10, 13, 16, and 17.": the sum of the
 personal amounts claimed, here the basic personal amount alone."""
+
+NB428_CPP_CONTRIBUTIONS_LINE_19 = AmountKind.declare(
+    CATALOG, "nb428_cpp_contributions_line_19", non_negative=True
+)
+"""CPP or QPP contributions, NB428 line 19 and line 58240 "Amount from line 30800 of your return": a
+copy of Schedule 8 line 25, the CPP base contributions on the return."""
