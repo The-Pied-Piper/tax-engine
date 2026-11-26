@@ -2,8 +2,8 @@
 test-local form declaration, the figures the form prints, and the form's arithmetic in Decimal.
 
 Each test composes the T1 employment income form, the real Schedule 8 and T1 taxable income parts
-and the real PE428 line parts it needs, and types in only the salary. The real form part does not
-exist yet, so the form declaration is made up here, exporting the lines read.
+and the real PE428 line parts it needs, and types in only the salary. The form declaration is made
+up here, exporting the lines read, unless a test passes the real `pe428.yaml`.
 """
 
 from __future__ import annotations
