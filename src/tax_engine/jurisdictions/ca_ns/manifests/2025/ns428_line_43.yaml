@@ -1,0 +1,22 @@
+# NS428 (2025) line 43 (Form NS428, CRA 5003-C): "Line 43: Line 38 minus line 42 (if negative, enter
+# "0") =". Line 38 is the amount from T1 line 33099 (ns428_line_38.yaml) and line 42 is the lesser
+# of the printed ceiling and line 41 (ns428_line_42.yaml). Line 43 is one
+# core/subtract_not_below_zero step, rounded half-up to the cent by the dataset's rule. A request
+# that leaves line 38 blank has no medical expenses, so a blank line 38 is read as 0 and line 43 is
+# 0.00. The form names no label for the line, so the step has no title. Same as
+# ca-sk/sk428_credits line 48.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "43"
+    unit: ca/cad
+    params:
+      rounding: ca-ns/cent_rounding
+    consumes:
+      amount: ca-ns/ns428_medical_expenses_line_38
+      less: ca-ns/ns428_medical_expenses_limited_amount_line_42
+    blank:
+      amount: "0"
+    produces:
+      output: ca-ns/ns428_medical_expenses_over_limit_line_43
