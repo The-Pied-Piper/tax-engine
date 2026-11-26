@@ -210,3 +210,10 @@ PE428_PENSION_INCOME_AMOUNT_LINE_27 = AmountKind.declare(
 """Pension income amount, PE428 line 27 "Pension income amount (maximum $1,000)": the claimed
 amount, passed on unchanged when it is at most the printed maximum, blank when left out; above
 the maximum it is refused, not capped."""
+
+PE428_CHILDRENS_WELLNESS_TAX_CREDIT_LINE_28 = AmountKind.declare(
+    CATALOG, "pe428_childrens_wellness_tax_credit_line_28", non_negative=True
+)
+"""Children's wellness tax credit, PE428 line 28 "Line 28 and line 58365: Children's wellness tax
+credit": the amount as the filer gives it, an optional input; a blank input is read as blank,
+and the sum that reads it reads it as 0."""
