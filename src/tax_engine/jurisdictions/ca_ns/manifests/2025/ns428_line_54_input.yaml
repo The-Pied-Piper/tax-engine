@@ -1,0 +1,13 @@
+# NS428 (2025) line 54's input, which a salary-only caller does not give.
+# Line 54 and line 61510: Nova Scotia tax on split income (complete Form T1206) (Form NS428, CRA 5003-C).
+# Form T1206 is not built, so a request that leaves the line out is read as blank; the step that reads line 54 (line 55) reads that blank as 0.
+form:
+  name: ca-ns/ns428
+inputs:
+  - name: ca-ns/ns428_tax_on_split_income_line_54
+    title: "Nova Scotia tax on split income"
+    reference: "54"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 54 and line 61510: Nova Scotia tax on split income (complete Form T1206)'

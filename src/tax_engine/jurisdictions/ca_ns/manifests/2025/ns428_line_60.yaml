@@ -1,0 +1,18 @@
+# Form NS428 (Nova Scotia Tax, CRA 5003-C) line 60, "Line 60: Line 55 minus line 59 (if negative,
+# enter "0")". One core/subtract_not_below_zero step over line 55 (`ca-ns/ns428_tax_line_55`) and
+# line 59 (`ca-ns/ns428_credits_subtotal_line_59`), floored at 0. Both lines are always computed, so
+# neither is ever blank and the step has no blank rule. The form prints no title for the line, so
+# the step has none.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "60"
+    unit: ca/cad
+    params:
+      rounding: ca-ns/cent_rounding
+    consumes:
+      amount: ca-ns/ns428_tax_line_55
+      less: ca-ns/ns428_credits_subtotal_line_59
+    produces:
+      output: ca-ns/ns428_tax_line_60
