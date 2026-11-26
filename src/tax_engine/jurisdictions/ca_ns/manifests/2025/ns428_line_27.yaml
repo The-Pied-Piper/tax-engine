@@ -1,0 +1,28 @@
+# NS428 (2025) line 27, the pension income amount. Form NS428 (CRA 5003-C): "Line 27 and line
+# 58360: Pension income amount (maximum $1,173)". No arithmetic is printed, so line 27 is an entry
+# line in two steps. The first, core/credit_amount, supplies the printed maximum from the
+# `ca-ns/pension_income_amount_maximum` dataset; it is not a line of the form, so it has no
+# reference, and its title is plain words, not printed wording, because the sentence of line 27
+# names it. The second, core/at_most, is line 27: the entered amount (ns428_line_27_input.yaml)
+# passed on unchanged, titled "Pension income amount". An entry above the printed maximum is
+# refused, not capped. The input is read as 0 when left out, so the checked amount is never blank
+# and the step has no blank rule. Same as ca-sk/sk428_credits line 33 (sk428_credits_line_33.yaml).
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/credit_amount
+    title: "Most you can claim for pension income"
+    unit: ca/cad
+    params:
+      amount: ca-ns/pension_income_amount_maximum
+    produces:
+      output: ca-ns/ns428_pension_income_amount_maximum
+  - name: core/at_most
+    title: "Pension income amount"
+    reference: "27"
+    unit: ca/cad
+    consumes:
+      amount: ca-ns/ns428_pension_income_amount
+      bound: ca-ns/ns428_pension_income_amount_maximum
+    produces:
+      output: ca-ns/ns428_pension_income_amount_checked_line_27

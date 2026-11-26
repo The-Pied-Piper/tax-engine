@@ -1,0 +1,15 @@
+# Form NB428 line 21 (58300) "Amount from line 31200 of your return" is a copy of T2204 line 16,
+# the EI premiums credit amount. The amount arrives as a record list from T2204, so the one step is
+# core/record_total over those records (same as ca-sk/sk428_credits line 24,
+# sk428_credits_line_24.yaml, and ca-nl/nl428_credits line 29). Form text read from CRA 5004-C.
+form:
+  name: ca-nb/nb428
+capabilities:
+  - name: core/record_total
+    title: "Employment insurance premiums"
+    reference: "21"
+    unit: ca/cad
+    consumes:
+      records: ca/t2204.t2204_line_16
+    produces:
+      output: ca-nb/nb428_ei_premiums_line_21

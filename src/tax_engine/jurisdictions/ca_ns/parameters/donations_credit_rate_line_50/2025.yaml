@@ -1,0 +1,11 @@
+# Nova Scotia donations and gifts credit rate, 2025 tax year (Form NS428 line 50): "Amount from
+# line 14 of your federal Schedule 9 multiplied by 21% =". Line 50 multiplies the Schedule 9
+# amount by it. The product is a dollars-and-cents box, so it rounds half-up to the cent, the
+# project's choice, as the form states no rounding rule.
+family: ca-ns/donations_credit_rate_line_50
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5003-c/5003-c-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.21"

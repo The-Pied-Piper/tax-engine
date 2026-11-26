@@ -107,3 +107,136 @@ NS428_CREDITS_SUBTOTAL_LINE_26 = AmountKind.declare(
 )
 """Nova Scotia credits subtotal, NS428 line 26 "Line 20 plus line 25": line 20, a copy of line 19,
 plus line 25, read by the next line of the credits."""
+
+NS428_PENSION_INCOME_AMOUNT = AmountKind.declare(
+    CATALOG, "ns428_pension_income_amount", non_negative=True
+)
+"""Pension income amount, NS428 line 27 "Line 27 and line 58360: Pension income amount (maximum
+$1,173)": the amount the filer claims, a caller input that is read as 0 when it is left out; the
+line 27 step checks it against the printed maximum."""
+
+NS428_PENSION_INCOME_AMOUNT_MAXIMUM = AmountKind.declare(
+    CATALOG, "ns428_pension_income_amount_maximum", non_negative=True
+)
+"""Pension income amount maximum, printed on NS428 line 27 "(maximum $1,173)": the printed maximum,
+from the `ca-ns/pension_income_amount_maximum` dataset; the bound line 27 cannot pass."""
+
+NS428_PENSION_INCOME_AMOUNT_CHECKED_LINE_27 = AmountKind.declare(
+    CATALOG, "ns428_pension_income_amount_checked_line_27", non_negative=True
+)
+"""Pension income amount, NS428 line 27 "Line 27 and line 58360: Pension income amount (maximum
+$1,173)": the entered amount, passed on unchanged when it is at most the printed maximum, read as 0
+when left out; above the maximum it is refused, not capped."""
+
+NS428_CREDITS_SUBTOTAL_LINE_29 = AmountKind.declare(
+    CATALOG, "ns428_credits_subtotal_line_29", non_negative=True
+)
+"""Nova Scotia credits subtotal, NS428 line 29 "Add lines 26 to 28.": line 26 plus the checked
+pension income amount of line 27, line 28 (the caregiver amount) not being built."""
+
+NS428_CREDITS_SUBTOTAL_LINE_32 = AmountKind.declare(
+    CATALOG, "ns428_credits_subtotal_line_32", non_negative=True
+)
+"""Nova Scotia credits subtotal, NS428 line 32 "Add lines 29 to 31.": line 29, lines 30 and 31 (the
+disability amounts) not being built."""
+
+NS428_STUDENT_LOAN_INTEREST_LINE_33 = AmountKind.declare(
+    CATALOG, "ns428_student_loan_interest_line_33", non_negative=True
+)
+"""Interest paid on student loans, NS428 line 33 (line 58520) "Interest paid on your student loans
+(amount from line 31900 of your return)": a record total of the T1's export
+(`ca/student_loan_interest_line_31900`), 0 for a salary-only caller."""
+
+NS428_CREDITS_SUBTOTAL_LINE_37 = AmountKind.declare(
+    CATALOG, "ns428_credits_subtotal_line_37", non_negative=True
+)
+"""Nova Scotia credits subtotal, NS428 line 37 "Add lines 32 to 36.": line 32 plus line 33, lines 34
+to 36 (tuition and transfers) not being built."""
+
+NS428_MEDICAL_EXPENSES_LINE_38 = AmountKind.declare(
+    CATALOG, "ns428_medical_expenses_line_38", non_negative=True
+)
+"""Medical expenses, NS428 line 38 (line 58689) "Amount from line 33099 of your return": a record
+total of the T1's export (`ca/medical_expenses_line_33099`), 0 for a salary-only caller."""
+
+NS428_NET_INCOME_LINE_39 = AmountKind.declare(
+    CATALOG, "ns428_net_income_line_39", non_negative=True
+)
+"""Net income, NS428 line 39 "Amount from line 23600 of your return": a record total of the T1's
+net income, line 23600 as the T1 floors it."""
+
+NS428_MEDICAL_EXPENSES_RATE_AMOUNT_LINE_41 = AmountKind.declare(
+    CATALOG, "ns428_medical_expenses_rate_amount_line_41", non_negative=True
+)
+"""Medical expenses threshold, NS428 line 41 "Line 39 multiplied by the percentage from line 40 =":
+line 39 times the 3% of line 40."""
+
+NS428_MEDICAL_EXPENSES_LIMITED_AMOUNT_LINE_42 = AmountKind.declare(
+    CATALOG, "ns428_medical_expenses_limited_amount_line_42", non_negative=True
+)
+"""Medical expenses threshold, limited, NS428 line 42 "Enter whichever is less: $1,637 or the amount
+on line 41.": the lesser of the printed ceiling and line 41."""
+
+NS428_MEDICAL_EXPENSES_OVER_LIMIT_LINE_43 = AmountKind.declare(
+    CATALOG, "ns428_medical_expenses_over_limit_line_43", non_negative=True
+)
+"""Medical expenses over the limit, NS428 line 43 "Line 38 minus line 42 (if negative, enter "0")
+=": line 38 minus line 42, never below 0; a blank line 38 is read as 0."""
+
+NS428_MEDICAL_EXPENSES_LINE_45 = AmountKind.declare(
+    CATALOG, "ns428_medical_expenses_line_45", non_negative=True
+)
+"""Medical expenses, NS428 line 45 (line 58769) "Line 43 plus line 44 =": line 43, line 44 (the
+allowable amount for other dependants) not being built."""
+
+NS428_CREDITS_TOTAL_LINE_46 = AmountKind.declare(
+    CATALOG, "ns428_credits_total_line_46", non_negative=True
+)
+"""Nova Scotia credits total, NS428 line 46 (line 58800) "Line 37 plus line 45 =": the credits
+subtotal of line 37 plus the medical expense amount of line 45."""
+
+NS428_CREDITS_AT_RATE_LINE_48 = AmountKind.declare(
+    CATALOG, "ns428_credits_at_rate_line_48", non_negative=True
+)
+"""Nova Scotia credits at the credit rate, NS428 line 48 (line 58840) "Line 46 multiplied by the
+percentage from line 47 =": line 46 multiplied by the 8.79% of line 47, rounded half-up to the
+cent."""
+
+NS428_DONATIONS_AMOUNT_LINE_49 = AmountKind.declare(
+    CATALOG, "ns428_donations_amount_line_49", non_negative=True
+)
+"""Donations amount, NS428 line 49 box A "Amount from line 13 of your federal Schedule 9": the
+amount, a record total of Schedule 9's export (`ca/schedule_9.donations_and_gifts_line_13`), 0 for a
+salary-only caller."""
+
+NS428_DONATIONS_CREDIT_AT_RATE_LINE_49 = AmountKind.declare(
+    CATALOG, "ns428_donations_credit_at_rate_line_49", non_negative=True
+)
+"""Donations credit at 8.79%, NS428 line 49 box B "Amount from line 13 of your federal Schedule 9
+multiplied by 8.79% =": the Schedule 9 amount times 8.79%; a blank amount is read as 0."""
+
+NS428_DONATIONS_AMOUNT_LINE_50 = AmountKind.declare(
+    CATALOG, "ns428_donations_amount_line_50", non_negative=True
+)
+"""Donations amount, NS428 line 50 box A "Amount from line 14 of your federal Schedule 9": the
+amount, a record total of Schedule 9's export (`ca/schedule_9.donations_and_gifts_line_14`), 0 for a
+salary-only caller."""
+
+NS428_DONATIONS_CREDIT_AT_RATE_LINE_50 = AmountKind.declare(
+    CATALOG, "ns428_donations_credit_at_rate_line_50", non_negative=True
+)
+"""Donations credit at 21%, NS428 line 50 box B "Amount from line 14 of your federal Schedule 9
+multiplied by 21% =": the Schedule 9 amount times 21%; a blank amount is read as 0."""
+
+NS428_DONATIONS_CREDIT_LINE_51 = AmountKind.declare(
+    CATALOG, "ns428_donations_credit_line_51", non_negative=True
+)
+"""Donations and gifts credit, NS428 line 51 (58969) "Line 51 and 58969: Line 49 plus line 50 =":
+line 49 plus line 50; line 52 reads it."""
+
+NS428_NON_REFUNDABLE_CREDITS_LINE_52 = AmountKind.declare(
+    CATALOG, "ns428_non_refundable_credits_line_52", non_negative=True
+)
+"""Nova Scotia non-refundable tax credits, NS428 line 52 (line 61500) "Line 48 plus line 51 Enter
+this amount on line 56. Nova Scotia non-refundable tax credits =" (as CRA's PDF prints it; its text
+version misprints the line): line 48 plus line 51, read by line 56."""

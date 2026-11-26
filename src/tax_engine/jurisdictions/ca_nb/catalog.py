@@ -13,6 +13,41 @@ from tax_engine.jurisdictions.ca_nb import NAMESPACE
 
 CATALOG = ArtifactCatalog(Namespace(NAMESPACE))
 
+BASIC_PERSONAL_AMOUNT = AmountKind.declare(CATALOG, "basic_personal_amount", non_negative=True)
+"""Basic personal amount, NB428 line 9 and line 58040 "Basic personal amount Claim $13,396": the
+amount claimed, one of the credit amounts that the New Brunswick credits subtotal is built from."""
+
+NB428_CREDITS_SUBTOTAL_LINE_18 = AmountKind.declare(
+    CATALOG, "nb428_credits_subtotal_line_18", non_negative=True
+)
+"""New Brunswick credits subtotal, NB428 line 18 "Add lines 9, 10, 13, 16, and 17.": the sum of the
+personal amounts claimed, here the basic personal amount alone."""
+
+NB428_CPP_CONTRIBUTIONS_LINE_19 = AmountKind.declare(
+    CATALOG, "nb428_cpp_contributions_line_19", non_negative=True
+)
+"""CPP or QPP contributions, NB428 line 19 and line 58240 "Amount from line 30800 of your return": a
+copy of Schedule 8 line 25, the CPP base contributions on the return."""
+
+NB428_EI_PREMIUMS_LINE_21 = AmountKind.declare(
+    CATALOG, "nb428_ei_premiums_line_21", non_negative=True
+)
+"""EI premiums credit amount, NB428 line 21 (line 58300) "Amount from line 31200 of your return": a
+copy of T2204 line 16, the EI premiums credit amount."""
+
+NB428_CPP_EI_AND_OTHER_LINE_25 = AmountKind.declare(
+    CATALOG, "nb428_cpp_ei_and_other_line_25", non_negative=True
+)
+"""CPP or QPP, EI and other credit amounts, NB428 line 25 "Add lines 19 to 24.": the sum of the CPP
+or QPP contributions on line 19 and the EI premiums on line 21, the other lines being blank
+optional lines."""
+
+NB428_CREDITS_SUBTOTAL_LINE_26 = AmountKind.declare(
+    CATALOG, "nb428_credits_subtotal_line_26", non_negative=True
+)
+"""New Brunswick credit amounts subtotal, NB428 line 26 "Line 26: Line 18 plus line 25": the
+personal amounts plus the CPP or QPP and EI credit amounts, read by the lines that follow."""
+
 NB428_TAXABLE_INCOME_LINE_1 = AmountKind.declare(
     CATALOG, "nb428_taxable_income_line_1", non_negative=True
 )

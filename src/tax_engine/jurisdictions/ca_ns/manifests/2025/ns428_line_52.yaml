@@ -1,0 +1,23 @@
+# Form NS428 (CRA 5003-C) line 52 and line 61500: "Line 48 plus line 51 ... Enter this amount on
+# line 56. Nova Scotia non-refundable tax credits =". Read from CRA's PDF of the form: CRA's text
+# version misprints the line as "Line 49 plus line 51" and "on line 57", which followed literally
+# would give $0 credits. It sums the credits at the printed rate (line 48,
+# `ca-ns/ns428_credits_at_rate_line_48`) and the donations credit (line 51,
+# `ca-ns/ns428_donations_credit_line_51`, ns428_line_51.yaml). Line 51 is always a figure (a
+# salary-only caller has no donations, so it is 0.00), so nothing is blank. Line 56 reads it.
+# Same as ca-sk/sk428_credits line 57.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/sum
+    title: "Nova Scotia non-refundable tax credits"
+    reference: "52"
+    unit: ca/cad
+    params:
+      rounding: ca-ns/cent_rounding
+    consumes:
+      parts:
+        - ca-ns/ns428_credits_at_rate_line_48
+        - ca-ns/ns428_donations_credit_line_51
+    produces:
+      output: ca-ns/ns428_non_refundable_credits_line_52

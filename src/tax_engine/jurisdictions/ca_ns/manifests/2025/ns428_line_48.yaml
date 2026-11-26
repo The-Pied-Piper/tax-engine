@@ -1,0 +1,17 @@
+# Form NS428 (CRA 5003-C) line 48 (ca-ns/ns428): "Line 47: Nova Scotia non-refundable tax credit
+# rate 8.79% / Line 48 and line 58840: Line 46 multiplied by the percentage from line 47 =". Line 47
+# is a printed rate, held in the `ca-ns/credit_rate` dataset, so line 48 is one calculation: 8.79%
+# of line 46, rounded half-up to the cent. Line 46 is read from its source part, not copied. Same
+# as ca-sk/sk428_credits line 53.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/apply_rate
+    reference: "48"
+    unit: ca/cad
+    params:
+      rate: ca-ns/credit_rate
+    consumes:
+      base: ca-ns/ns428_credits_total_line_46
+    produces:
+      output: ca-ns/ns428_credits_at_rate_line_48
