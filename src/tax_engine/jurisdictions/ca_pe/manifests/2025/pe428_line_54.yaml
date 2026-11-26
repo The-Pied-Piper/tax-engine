@@ -1,0 +1,21 @@
+# Form PE428 (CRA 5002-C) line 54: "Line 54 and line 61500: Line 50 plus line 53 Enter this amount
+# on line 58. Prince Edward Island non-refundable tax credits =". Line 50 is the credits at the
+# printed rate (pe428_line_50.yaml) and line 53 the donations and gifts credit
+# (pe428_line_53.yaml), always a figure (0.00 for a salary-only filer), so nothing is blank. Line
+# 54 is the output `ca-pe/pe428_non_refundable_credits_line_54`, which the form exports; the later
+# line 58 copies it.
+form:
+  name: ca-pe/pe428
+capabilities:
+  - name: core/sum
+    title: "Prince Edward Island non-refundable tax credits"
+    reference: "54"
+    unit: ca/cad
+    params:
+      rounding: ca-pe/cent_rounding
+    consumes:
+      parts:
+        - ca-pe/pe428_credits_at_rate_line_50
+        - ca-pe/pe428_donations_and_gifts_credit_line_53
+    produces:
+      output: ca-pe/pe428_non_refundable_credits_line_54

@@ -189,3 +189,184 @@ PE428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
 """Prince Edward Island tax on taxable income, PE428 line 8 "Line 8: Line 6 plus line 7 Prince
 Edward Island tax on taxable income": line 6 plus line 7, copied to line 55 and read by the lines
 after it."""
+
+PE428_PENSION_INCOME_AMOUNT_CLAIMED_LINE_27 = AmountKind.declare(
+    CATALOG, "pe428_pension_income_amount_claimed_line_27", non_negative=True
+)
+"""Pension income amount claimed, PE428 line 27 "Pension income amount (maximum $1,000)": the
+amount as the filer gives it, an optional input; a blank input is read as blank, and the line 27
+step checks it against the printed maximum."""
+
+PE428_PENSION_INCOME_AMOUNT_MAXIMUM = AmountKind.declare(
+    CATALOG, "pe428_pension_income_amount_maximum", non_negative=True
+)
+"""Pension income amount maximum, printed on PE428 line 27 "Pension income amount (maximum
+$1,000)": the printed maximum, from the `ca-pe/pension_income_amount_maximum` dataset; the bound
+line 27 cannot pass."""
+
+PE428_PENSION_INCOME_AMOUNT_LINE_27 = AmountKind.declare(
+    CATALOG, "pe428_pension_income_amount_line_27", non_negative=True
+)
+"""Pension income amount, PE428 line 27 "Pension income amount (maximum $1,000)": the claimed
+amount, passed on unchanged when it is at most the printed maximum, blank when left out; above
+the maximum it is refused, not capped."""
+
+PE428_CHILDRENS_WELLNESS_TAX_CREDIT_LINE_28 = AmountKind.declare(
+    CATALOG, "pe428_childrens_wellness_tax_credit_line_28", non_negative=True
+)
+"""Children's wellness tax credit, PE428 line 28 "Line 28 and line 58365: Children's wellness tax
+credit": the amount as the filer gives it, an optional input; a blank input is read as blank,
+and the sum that reads it reads it as 0."""
+
+PE428_CAREGIVER_AMOUNT_LINE_29 = AmountKind.declare(
+    CATALOG, "pe428_caregiver_amount_line_29", non_negative=True
+)
+"""Caregiver amount (use Worksheet PE428), PE428 line 29 "Line 29 and line 58400: Caregiver amount
+(use Worksheet PE428)": the amount as the filer gives it, an optional input; a blank input is
+read as blank, and the sum that reads it reads it as 0."""
+
+PE428_CREDITS_SUBTOTAL_LINE_30 = AmountKind.declare(
+    CATALOG, "pe428_credits_subtotal_line_30", non_negative=True
+)
+"""Prince Edward Island credits subtotal, PE428 line 30 "Line 30: Add lines 26 to 29. = ^": line 26
+(a copy of line 25) plus the pension income amount, the children's wellness tax credit and the
+caregiver amount, the optional lines read as 0 when blank."""
+
+PE428_DISABILITY_AMOUNT_SELF_LINE_31 = AmountKind.declare(
+    CATALOG, "pe428_disability_amount_self_line_31", non_negative=True
+)
+"""Disability amount for self, PE428 line 31 "Line 31 and line 58440: Disability amount for self
+(claim $6,890 or, if you were under 18 years of age, use Worksheet PE428)": the amount as the
+filer gives it, an optional input; a blank input is read as blank, and the sum that reads it
+reads it as 0."""
+
+PE428_DISABILITY_AMOUNT_TRANSFERRED_FROM_A_DEPENDANT_LINE_32 = AmountKind.declare(
+    CATALOG, "pe428_disability_amount_transferred_from_a_dependant_line_32", non_negative=True
+)
+"""Disability amount transferred from a dependant, PE428 line 32 "Line 32 and line 58480:
+Disability amount transferred from a dependant (use Worksheet PE428)": the amount as the filer
+gives it, an optional input; a blank input is read as blank, and the sum that reads it reads it
+as 0."""
+
+PE428_TEACHER_SCHOOL_SUPPLY_AMOUNT_CLAIMED_LINE_33 = AmountKind.declare(
+    CATALOG, "pe428_teacher_school_supply_amount_claimed_line_33", non_negative=True
+)
+"""Teacher school supply amount claimed, PE428 line 33 "Teacher school supply amount (maximum
+$500)": the amount as the filer gives it, an optional input; a blank input is read as blank, and
+the line 33 step checks it against the printed maximum."""
+
+PE428_TEACHER_SCHOOL_SUPPLY_AMOUNT_MAXIMUM = AmountKind.declare(
+    CATALOG, "pe428_teacher_school_supply_amount_maximum", non_negative=True
+)
+"""Teacher school supply amount maximum, printed on PE428 line 33 "Teacher school supply amount
+(maximum $500)": the printed maximum, from the `ca-pe/teacher_school_supply_amount_maximum`
+dataset; the bound line 33 cannot pass."""
+
+PE428_TEACHER_SCHOOL_SUPPLY_AMOUNT_LINE_33 = AmountKind.declare(
+    CATALOG, "pe428_teacher_school_supply_amount_line_33", non_negative=True
+)
+"""Teacher school supply amount, PE428 line 33 "Teacher school supply amount (maximum $500)": the
+claimed amount, passed on unchanged when it is at most the printed maximum, blank when left out;
+above the maximum it is refused, not capped."""
+
+PE428_CREDITS_SUBTOTAL_LINE_34 = AmountKind.declare(
+    CATALOG, "pe428_credits_subtotal_line_34", non_negative=True
+)
+"""Prince Edward Island credits subtotal, PE428 line 34 "Line 34: Add lines 30 to 33. = ^": line 30
+plus the disability amount for self, the disability amount transferred from a dependant and the
+teacher school supply amount, the optional lines read as 0 when blank."""
+
+PE428_STUDENT_LOAN_INTEREST_LINE_35 = AmountKind.declare(
+    CATALOG, "pe428_student_loan_interest_line_35", non_negative=True
+)
+"""Interest paid on your student loans, PE428 line 35 "Line 35 and line 58520: Interest paid on
+your student loans (amount from line 31900 of your return)": a record total of the T1's export
+(`ca/student_loan_interest_line_31900`), 0 for a salary-only caller."""
+
+PE428_TUITION_AND_EDUCATION_AMOUNTS_LINE_36 = AmountKind.declare(
+    CATALOG, "pe428_tuition_and_education_amounts_line_36", non_negative=True
+)
+"""Your tuition and education amounts, PE428 line 36 "Line 36 and line 58560: Your tuition and
+education amounts (attach Schedule PE(S11))": the amount as the filer gives it, an optional
+input; a blank input is read as blank, and the sum that reads it reads it as 0."""
+
+PE428_TUITION_TRANSFERRED_FROM_CHILD_OR_GRANDCHILD_LINE_37 = AmountKind.declare(
+    CATALOG, "pe428_tuition_transferred_from_child_or_grandchild_line_37", non_negative=True
+)
+"""Tuition and education amounts transferred from a child or grandchild, PE428 line 37 "Line 37 and
+line 58600: Tuition and education amounts transferred from a child or grandchild": the amount as
+the filer gives it, an optional input; a blank input is read as blank, and the sum that reads it
+reads it as 0."""
+
+PE428_AMOUNTS_TRANSFERRED_FROM_SPOUSE_OR_PARTNER_LINE_38 = AmountKind.declare(
+    CATALOG, "pe428_amounts_transferred_from_spouse_or_partner_line_38", non_negative=True
+)
+"""Amounts transferred from your spouse or common-law partner, PE428 line 38 "Line 38 and line
+58640: Amounts transferred from your spouse or common-law partner (attach Schedule PE(S2))": the
+amount as the filer gives it, an optional input; a blank input is read as blank, and the sum
+that reads it reads it as 0."""
+
+PE428_CREDITS_SUBTOTAL_LINE_39 = AmountKind.declare(
+    CATALOG, "pe428_credits_subtotal_line_39", non_negative=True
+)
+"""Prince Edward Island credits subtotal, PE428 line 39 "Line 39: Add lines 34 to 38. = ^": line 34
+plus the student loan interest, the tuition and education amounts, the amounts transferred from
+a child or grandchild and the amounts transferred from a spouse or common-law partner, the
+optional lines read as 0 when blank."""
+
+PE428_CREDITS_TOTAL_LINE_48 = AmountKind.declare(
+    CATALOG, "pe428_credits_total_line_48", non_negative=True
+)
+"""Credits total, PE428 line 48 and line 58800 "Line 48 and line 58800: Line 39 plus line 47 =":
+the credits subtotal of line 39 plus the allowable medical expenses of line 47."""
+
+PE428_CREDITS_AT_RATE_LINE_50 = AmountKind.declare(
+    CATALOG, "pe428_credits_at_rate_line_50", non_negative=True
+)
+"""Credits at the credit rate, PE428 line 50 and line 58840 "Line 50 and line 58840: Line 48
+multiplied by the percentage from line 49 =": line 48 times the 9.5% of line 49, rounded to the
+cent."""
+
+PE428_DONATIONS_AMOUNT_LINE_51 = AmountKind.declare(
+    CATALOG, "pe428_donations_amount_line_51", non_negative=True
+)
+"""Federal Schedule 9 amount, PE428 line 51 box A "Line 51: Amount from line 13 of your federal
+Schedule 9": a record total of the Schedule 9 export, 0 for a salary-only caller."""
+
+PE428_DONATIONS_CREDIT_AT_RATE_LINE_51 = AmountKind.declare(
+    CATALOG, "pe428_donations_credit_at_rate_line_51", non_negative=True
+)
+"""Donations credit at the printed rate, PE428 line 51 box B "Line 51: Amount from line 13 of your
+federal Schedule 9 multiplied by 9.5% =": the Schedule 9 amount times 9.5%, rounded to the cent."""
+
+PE428_DONATIONS_AMOUNT_LINE_52 = AmountKind.declare(
+    CATALOG, "pe428_donations_amount_line_52", non_negative=True
+)
+"""Federal Schedule 9 amount, PE428 line 52 box A "Line 52: Amount from line 14 of your federal
+Schedule 9": a record total of the Schedule 9 export, 0 for a salary-only caller."""
+
+PE428_DONATIONS_CREDIT_AT_RATE_LINE_52 = AmountKind.declare(
+    CATALOG, "pe428_donations_credit_at_rate_line_52", non_negative=True
+)
+"""Donations credit at the printed rate, PE428 line 52 box B "Line 52: Amount from line 14 of your
+federal Schedule 9 multiplied by 19% =": the Schedule 9 amount times 19%, rounded to the cent."""
+
+PE428_DONATIONS_AND_GIFTS_CREDIT_LINE_53 = AmountKind.declare(
+    CATALOG, "pe428_donations_and_gifts_credit_line_53", non_negative=True
+)
+"""Donations and gifts credit, PE428 line 53 and line 58969 "Line 53 and line 58969: Line 51 plus
+line 52 =": the donations credit at 9.5% plus the donations credit at 19%."""
+
+PE428_NON_REFUNDABLE_CREDITS_LINE_54 = AmountKind.declare(
+    CATALOG, "pe428_non_refundable_credits_line_54", non_negative=True
+)
+"""Prince Edward Island non-refundable tax credits, PE428 line 54 and line 61500 "Line 54 and line
+61500: Line 50 plus line 53 Enter this amount on line 58. Prince Edward Island non-refundable
+tax credits =": the credits at the credit rate plus the donations and gifts credit."""
+
+PE428_ALLOWABLE_MEDICAL_EXPENSES_LINE_47 = AmountKind.declare(
+    CATALOG, "pe428_allowable_medical_expenses_line_47", non_negative=True
+)
+"""Allowable medical expenses, PE428 line 47 and line 58769 "Line 47 and line 58769: Line 45 plus
+line 46 =": the amount as the filer gives it, an optional input; a blank input is read as blank,
+and the sum that reads it reads it as 0."""

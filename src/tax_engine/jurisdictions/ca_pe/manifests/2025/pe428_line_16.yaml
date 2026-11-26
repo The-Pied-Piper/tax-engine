@@ -1,0 +1,27 @@
+# Form PE428 (CRA 5002-C) line 16: "Line 14 minus line 15 (if negative, enter "0") (maximum $12,443)". The form prints a maximum
+# on the line, so the line is an entry line in two steps, as ca-nl/nl428_credits line 37
+# (nl428_credits_line_37.yaml) is. The first, core/credit_amount, supplies the printed maximum from
+# the `ca-pe/eligible_dependant_amount_maximum` dataset; it is not a line of the form, so it has no title and no reference.
+# The second, core/at_most, is line 16: the entered amount (pe428_line_16_input.yaml) passed on
+# unchanged. An entry above the printed maximum is refused, not capped. A blank entry passes on as
+# blank, and line 19 reads it as 0. Line 16 is not exported, as no later line reads it outside this form.
+form:
+  name: ca-pe/pe428
+capabilities:
+  - name: core/credit_amount
+    unit: ca/cad
+    params:
+      amount: ca-pe/eligible_dependant_amount_maximum
+    produces:
+      output: ca-pe/pe428_eligible_dependant_amount_maximum
+  - name: core/at_most
+    title: "Amount for an eligible dependant"
+    reference: "16"
+    unit: ca/cad
+    consumes:
+      amount: ca-pe/pe428_eligible_dependant_amount_claimed_line_16
+      bound: ca-pe/pe428_eligible_dependant_amount_maximum
+    blank:
+      amount: pass_on
+    produces:
+      output: ca-pe/pe428_eligible_dependant_amount_line_16

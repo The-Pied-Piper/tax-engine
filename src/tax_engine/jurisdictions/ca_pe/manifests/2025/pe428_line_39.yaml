@@ -1,0 +1,26 @@
+# Form PE428 (CRA 5002-C) line 39: "Line 39: Add lines 34 to 38. =". Line 34 is the running
+# subtotal (pe428_line_34.yaml); line 35 is a linked record total (pe428_line_35.yaml, never
+# blank) and lines 36 to 38 are optional inputs (pe428_line_36_input.yaml to
+# pe428_line_38_input.yaml) that a salary-only filer leaves blank, read as 0. The form prints no
+# label for line 39, so the step has no title.
+form:
+  name: ca-pe/pe428
+capabilities:
+  - name: core/sum
+    reference: "39"
+    unit: ca/cad
+    params:
+      rounding: ca-pe/cent_rounding
+    consumes:
+      parts:
+        - ca-pe/pe428_credits_subtotal_line_34
+        - ca-pe/pe428_student_loan_interest_line_35
+        - ca-pe/pe428_tuition_and_education_amounts_line_36
+        - ca-pe/pe428_tuition_transferred_from_child_or_grandchild_line_37
+        - ca-pe/pe428_amounts_transferred_from_spouse_or_partner_line_38
+    blank:
+      ca-pe/pe428_tuition_and_education_amounts_line_36: "0"
+      ca-pe/pe428_tuition_transferred_from_child_or_grandchild_line_37: "0"
+      ca-pe/pe428_amounts_transferred_from_spouse_or_partner_line_38: "0"
+    produces:
+      output: ca-pe/pe428_credits_subtotal_line_39

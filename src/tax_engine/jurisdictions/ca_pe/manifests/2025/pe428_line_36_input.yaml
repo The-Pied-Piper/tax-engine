@@ -1,0 +1,14 @@
+# PE428 (2025) input a salary-only caller does not give.
+# Line 36: "Your tuition and education amounts (attach Schedule PE(S11))" (Form PE428, CRA
+# 5002-C). Schedule PE(S11) is not built, so its result is taken as one optional input the way the
+# form takes it. A request that leaves the line out is read as blank.
+form:
+  name: ca-pe/pe428
+inputs:
+  - name: ca-pe/pe428_tuition_and_education_amounts_line_36
+    title: "Your tuition and education amounts (attach Schedule PE(S11))"
+    reference: "36"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 36 and line 58560: Your tuition and education amounts (attach Schedule PE(S11))'

@@ -46,6 +46,7 @@ LINE_5 = "ca-pe/pe428_bracket_rate_line_5"
 LINE_6 = "ca-pe/pe428_tax_on_excess_line_6"
 LINE_7 = "ca-pe/pe428_bracket_tax_at_start_line_7"
 LINE_8 = "ca-pe/pe428_tax_on_taxable_income_line_8"
+LINE_54 = "ca-pe/pe428_non_refundable_credits_line_54"
 # The real federal parts the T1 taxable-income form needs, beside the salary and line 1.
 T1_PARTS = form_part_names(
     "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"

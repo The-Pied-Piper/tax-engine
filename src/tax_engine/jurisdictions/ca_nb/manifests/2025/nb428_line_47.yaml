@@ -1,0 +1,21 @@
+# Form NB428 (CRA 5004-C) line 47 and line 58800: "Line 38 plus line 46". Line 38 is the credits
+# subtotal (nb428_line_38.yaml) and line 46 the optional medical expenses input
+# (nb428_line_46_input.yaml), blank for a salary-only filer and read as 0. The one step adds them
+# with core/sum, as ca-nl/nl428_credits line 47 does (nl428_credits_line_47.yaml). The form prints
+# no label.
+form:
+  name: ca-nb/nb428
+capabilities:
+  - name: core/sum
+    reference: "47"
+    unit: ca/cad
+    params:
+      rounding: ca-nb/cent_rounding
+    consumes:
+      parts:
+        - ca-nb/nb428_credits_subtotal_line_38
+        - ca-nb/nb428_medical_expenses_line_46
+    blank:
+      ca-nb/nb428_medical_expenses_line_46: "0"
+    produces:
+      output: ca-nb/nb428_credits_total_line_47

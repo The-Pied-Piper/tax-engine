@@ -1,0 +1,17 @@
+# Form PE428 (CRA 5002-C) line 50: "Line 49: Prince Edward Island non-refundable tax credit rate
+# 9.5% / Line 50 and line 58840: Line 48 multiplied by the percentage from line 49 =". Line 49 is
+# a printed rate, held in the `ca-pe/credit_rate` dataset, so line 50 is one calculation: 9.5% of
+# line 48 (pe428_line_48.yaml), rounded half-up to the cent by the dataset's rule. The form names
+# no label for the line, so the step has no title.
+form:
+  name: ca-pe/pe428
+capabilities:
+  - name: core/apply_rate
+    reference: "50"
+    unit: ca/cad
+    params:
+      rate: ca-pe/credit_rate
+    consumes:
+      base: ca-pe/pe428_credits_total_line_48
+    produces:
+      output: ca-pe/pe428_credits_at_rate_line_50

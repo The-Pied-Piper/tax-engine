@@ -1,0 +1,16 @@
+# NB428 (2025) input a salary-only caller does not give. Line 46 and line 58769: "Line 44 plus line
+# 45" (Form NB428, CRA 5004-C), the medical expenses claim. Lines 39 to 45 behind it (medical
+# expenses from line 33099, the 3% of net income and the $2,798 cap, and the other dependants'
+# amount) would be $0 for a salary-only filer, so that block is not built and the line is taken as
+# one optional input, as ca-nl/nl428_credits line 54 is (nl428_credits_line_54_input.yaml). A request
+# that leaves the line out is read as blank.
+form:
+  name: ca-nb/nb428
+inputs:
+  - name: ca-nb/nb428_medical_expenses_line_46
+    title: "Line 44 plus line 45"
+    reference: "46"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 46 and line 58769: Line 44 plus line 45"

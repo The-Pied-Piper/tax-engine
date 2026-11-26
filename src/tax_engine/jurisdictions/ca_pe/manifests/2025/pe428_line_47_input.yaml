@@ -1,0 +1,16 @@
+# PE428 (2025) input a salary-only caller does not give.
+# Line 47: "Line 47 and line 58769: Line 45 plus line 46 =" (Form PE428, CRA 5002-C). Lines 40 to 46
+# above it are the medical expenses block: the medical expenses from line 33099 of the return, 3%
+# of net income capped at $1,678, and the allowable amount for other dependants (Worksheet PE428).
+# A salary-only filer claims no medical expenses, so the block is not built and its sum, line 47,
+# is taken as one optional input. A request that leaves the line out is read as blank. Line 48
+# reads it, a blank read as 0.
+form:
+  name: ca-pe/pe428
+inputs:
+  - name: ca-pe/pe428_allowable_medical_expenses_line_47
+    reference: "47"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 47 and line 58769: Line 45 plus line 46 ='

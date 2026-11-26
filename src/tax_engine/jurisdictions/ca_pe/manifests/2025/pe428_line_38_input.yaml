@@ -1,0 +1,14 @@
+# PE428 (2025) input a salary-only caller does not give.
+# Line 38: "Amounts transferred from your spouse or common-law partner (attach Schedule PE(S2))"
+# (Form PE428, CRA 5002-C). Schedule PE(S2) is not built, so its result is taken as one optional
+# input the way the form takes it. A request that leaves the line out is read as blank.
+form:
+  name: ca-pe/pe428
+inputs:
+  - name: ca-pe/pe428_amounts_transferred_from_spouse_or_partner_line_38
+    title: "Amounts transferred from your spouse or common-law partner (attach Schedule PE(S2))"
+    reference: "38"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 38 and line 58640: Amounts transferred from your spouse or common-law partner (attach Schedule PE(S2))'

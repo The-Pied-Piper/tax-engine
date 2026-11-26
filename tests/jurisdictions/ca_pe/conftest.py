@@ -52,7 +52,7 @@ def take_home_service(tmp_path: Path) -> TakeHomeService:
     """A builder of services over a temporary Prince Edward Island take-home manifest.
 
     The builder writes `header` and `form` to the temporary folder, copies each named part file
-    (for example "pe428_credits_line_9.yaml") from the package's manifest folder, or from the
+    (for example "pe428_line_9.yaml") from the package's manifest folder, or from the
     federal forms, beside them, and points the Prince Edward Island namespace at that folder. The
     two texts sort ahead of the parts, because the folder is composed in file-name order.
     Prince Edward Island is not yet in the registered engine, so the service is built over the

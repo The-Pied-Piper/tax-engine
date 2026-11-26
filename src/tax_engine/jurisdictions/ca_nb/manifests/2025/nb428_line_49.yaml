@@ -1,0 +1,17 @@
+# Form NB428 (CRA 5004-C) line 49 (ca-nb/nb428): "Line 48: New Brunswick non-refundable tax credit
+# rate 9.4%" and "Line 49 and line 58840: Line 47 multiplied by the percentage from line 48 =".
+# Line 48 is a printed rate, held in the `ca-nb/credit_rate` dataset and with no step of its own, so
+# line 49 is one calculation: 9.4% of line 47, rounded half-up to the cent. Same as
+# ca-sk/sk428_credits line 53 (sk428_credits_line_53.yaml).
+form:
+  name: ca-nb/nb428
+capabilities:
+  - name: core/apply_rate
+    reference: "49"
+    unit: ca/cad
+    params:
+      rate: ca-nb/credit_rate
+    consumes:
+      base: ca-nb/nb428_credits_total_line_47
+    produces:
+      output: ca-nb/nb428_credits_at_rate_line_49

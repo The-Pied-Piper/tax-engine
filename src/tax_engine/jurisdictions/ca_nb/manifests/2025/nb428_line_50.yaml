@@ -1,0 +1,30 @@
+# Form NB428 (CRA 5004-C) line 50 (ca-nb/nb428): "Line 50: Amount from line 13 of your federal
+# Schedule 9 multiplied by 9.4% =". The 9.4% is a printed rate, held in the `ca-
+# nb/donations_credit_rate_line_50` dataset, so the step is one calculation: 9.4% of the Schedule
+# 9 amount, rounded half-up to the cent. The amount (box A) is read from the Schedule 9 export:
+# the first step totals it (a form reads another form's export only as a record list). The line
+# has two boxes: the amount (box A, the first step) and the multiplied result (box B, this step).
+# The form does not name them; "box A" and "box B" are the owner's naming, as on ON428 line 47.
+# Same as ca-sk/sk428_credits line 54 (sk428_credits_line_54.yaml).
+form:
+  name: ca-nb/nb428
+capabilities:
+  - name: core/record_total
+    title: "Amount from line 13 of your federal Schedule 9"
+    reference: "50 box A"
+    unit: ca/cad
+    consumes:
+      records: ca/schedule_9.donations_and_gifts_line_13
+    produces:
+      output: ca-nb/nb428_donations_amount_line_50
+  - name: core/apply_rate
+    reference: "50 box B"
+    unit: ca/cad
+    params:
+      rate: ca-nb/donations_credit_rate_line_50
+    consumes:
+      base: ca-nb/nb428_donations_amount_line_50
+    blank:
+      base: "0"
+    produces:
+      output: ca-nb/nb428_donations_credit_at_rate_line_50
