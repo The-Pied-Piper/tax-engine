@@ -305,3 +305,11 @@ PE428_AMOUNTS_TRANSFERRED_FROM_SPOUSE_OR_PARTNER_LINE_38 = AmountKind.declare(
 58640: Amounts transferred from your spouse or common-law partner (attach Schedule PE(S2))": the
 amount as the filer gives it, an optional input; a blank input is read as blank, and the sum
 that reads it reads it as 0."""
+
+PE428_CREDITS_SUBTOTAL_LINE_39 = AmountKind.declare(
+    CATALOG, "pe428_credits_subtotal_line_39", non_negative=True
+)
+"""Prince Edward Island credits subtotal, PE428 line 39 "Line 39: Add lines 34 to 38. = ^": line 34
+plus the student loan interest, the tuition and education amounts, the amounts transferred from
+a child or grandchild and the amounts transferred from a spouse or common-law partner, the
+optional lines read as 0 when blank."""

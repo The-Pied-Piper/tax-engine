@@ -101,3 +101,12 @@ CHAIN_34 = (
     "pe428_line_33.yaml",
     "pe428_line_34.yaml",
 )
+
+CHAIN_39 = (
+    *CHAIN_34,
+    "pe428_line_35.yaml",
+    "pe428_line_36_input.yaml",
+    "pe428_line_37_input.yaml",
+    "pe428_line_38_input.yaml",
+    "pe428_line_39.yaml",
+)
