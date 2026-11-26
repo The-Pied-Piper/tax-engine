@@ -130,3 +130,11 @@ CHAIN_48 = (*CHAIN_47, "pe428_line_48.yaml")
 CHAIN_50 = (*CHAIN_48, "pe428_line_50.yaml")
 
 DONATION_PARTS = form_part_names("schedule_9")
+
+CHAIN_53 = (
+    *CHAIN_50,
+    *DONATION_PARTS,
+    "pe428_line_51.yaml",
+    "pe428_line_52.yaml",
+    "pe428_line_53.yaml",
+)

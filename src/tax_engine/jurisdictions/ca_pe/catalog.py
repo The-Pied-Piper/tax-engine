@@ -395,3 +395,9 @@ PE428_DONATIONS_CREDIT_AT_RATE_LINE_52 = AmountKind.declare(
 )
 """Donations credit at the printed rate, PE428 line 52 box B "Line 52: Amount from line 14 of your
 federal Schedule 9 multiplied by 19% =": the Schedule 9 amount times 19%, rounded to the cent."""
+
+PE428_DONATIONS_AND_GIFTS_CREDIT_LINE_53 = AmountKind.declare(
+    CATALOG, "pe428_donations_and_gifts_credit_line_53", non_negative=True
+)
+"""Donations and gifts credit, PE428 line 53 and line 58969 "Line 53 and line 58969: Line 51 plus
+line 52 =": the donations credit at 9.5% plus the donations credit at 19%."""
