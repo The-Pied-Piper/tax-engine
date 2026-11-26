@@ -297,3 +297,11 @@ PE428_TUITION_TRANSFERRED_FROM_CHILD_OR_GRANDCHILD_LINE_37 = AmountKind.declare(
 line 58600: Tuition and education amounts transferred from a child or grandchild": the amount as
 the filer gives it, an optional input; a blank input is read as blank, and the sum that reads it
 reads it as 0."""
+
+PE428_AMOUNTS_TRANSFERRED_FROM_SPOUSE_OR_PARTNER_LINE_38 = AmountKind.declare(
+    CATALOG, "pe428_amounts_transferred_from_spouse_or_partner_line_38", non_negative=True
+)
+"""Amounts transferred from your spouse or common-law partner, PE428 line 38 "Line 38 and line
+58640: Amounts transferred from your spouse or common-law partner (attach Schedule PE(S2))": the
+amount as the filer gives it, an optional input; a blank input is read as blank, and the sum
+that reads it reads it as 0."""
