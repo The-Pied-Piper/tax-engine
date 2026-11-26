@@ -2,7 +2,8 @@
 
 Form text: Form NB428, CRA 5004-C (on the ticket, read 26 Nov 2026); the part file's comment
 quotes it.
-One core/subtract_not_below_zero step, as the part declares. Figures hand-computed from the printed form
+One core/subtract_not_below_zero step, as the part declares. Figures hand-computed from the
+printed form
 (line 8 less line 53, the optional lines blank).
 """
 
