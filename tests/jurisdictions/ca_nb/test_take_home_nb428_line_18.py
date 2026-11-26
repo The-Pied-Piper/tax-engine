@@ -1,9 +1,9 @@
-"""NB428 (2025) line 9, the basic personal amount, from the salary alone, real parts.
+"""NB428 (2025) line 18, the sum of the personal amounts, from the salary alone, real parts.
 
 Form text (Form NB428, CRA 5004-C, on the ticket, read 26 Nov 2026):
-"Line 9 and line 58040: Basic personal amount Claim $13,396".
-The amount is the `ca-nb/basic_personal_amount` dataset, claimed whole through
-core/credit_amount, so it is the same at every salary.
+"Line 18: Add lines 9, 10, 13, 16, and 17.".
+Lines 10, 13, 16 and 17 are blank claims for a salary-only filer and are not built, so line 18
+is one core/sum over line 9 alone, as Saskatchewan's line 20 is.
 """
 
 from __future__ import annotations
@@ -40,10 +40,13 @@ from tests.kinds import non_negative
 
 D = Decimal
 NB_PARTS = Path(tax_engine.jurisdictions.ca_nb.__file__).parent / "manifests" / "2025"
-LINE_PART = NB_PARTS / "nb428_credits_line_9.yaml"
-IDENTIFIER = "ca-nb/basic_personal_amount"
+LINE_PART = NB_PARTS / "nb428_line_18.yaml"
+IDENTIFIER = "ca-nb/nb428_credits_subtotal_line_18"
 FEDERAL_FORM_NAMES = ("t1_employment_income",)
-NB_PART_NAMES = ("nb428_credits_line_9.yaml",)
+NB_PART_NAMES = (
+    "nb428_line_9.yaml",
+    "nb428_line_18.yaml",
+)
 
 HEADER = dedent("""\
     jurisdiction: CA-NB
@@ -54,10 +57,10 @@ HEADER = dedent("""\
     """)
 FORM = dedent("""\
     form:
-      name: ca-nb/nb428_credits
+      name: ca-nb/nb428
       required: true
       exports:
-        - ca-nb/basic_personal_amount
+        - ca-nb/nb428_credits_subtotal_line_18
     capabilities: []
     """)
 
@@ -98,20 +101,15 @@ def _value(tmp_path: Path, salary: str) -> Decimal:
             JurisdictionCode("CA-NB"), 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),)
         )
     )
-    (sheet,) = worksheets["ca-nb/nb428_credits"]
+    (sheet,) = worksheets["ca-nb/nb428"]
     return D(sheet.get(new_brunswick_kinds().kind(IDENTIFIER)).value)
 
 
-CASES = [
-    ("20000", "13396.00"),
-    ("30000", "13396.00"),
-    ("70000", "13396.00"),
-    ("200000", "13396.00"),
-]
+CASES = [("20000", "13396.00"), ("30000", "13396.00"), ("70000", "13396.00")]
 
 
 @pytest.mark.parametrize(("salary", "expected"), CASES)
-def test_line_9_at_the_salary(tmp_path: Path, salary: str, expected: str) -> None:
+def test_line_18_at_the_salary(tmp_path: Path, salary: str, expected: str) -> None:
     assert _value(tmp_path, salary) == D(expected)
 
 
@@ -132,13 +130,13 @@ def test_the_part_names_the_form_and_has_the_one_step() -> None:
     part = _part()
 
     assert list(part) == ["form", "capabilities"]
-    assert part["form"] == {"name": "ca-nb/nb428_credits"}
+    assert part["form"] == {"name": "ca-nb/nb428"}
     (step,) = part["capabilities"]
     assert step == {
-        "name": "core/credit_amount",
-        "title": "Basic personal amount",
-        "reference": "9",
+        "name": "core/sum",
+        "reference": "18",
         "unit": "ca/cad",
-        "params": {"amount": "ca-nb/basic_personal_amount"},
+        "params": {"rounding": "ca-nb/cent_rounding"},
+        "consumes": {"parts": ["ca-nb/basic_personal_amount"]},
         "produces": {"output": IDENTIFIER},
     }

@@ -41,13 +41,13 @@ from tests.kinds import non_negative
 
 D = Decimal
 NB_PARTS = Path(tax_engine.jurisdictions.ca_nb.__file__).parent / "manifests" / "2025"
-LINE_PART = NB_PARTS / "nb428_credits_line_25.yaml"
+LINE_PART = NB_PARTS / "nb428_line_25.yaml"
 IDENTIFIER = "ca-nb/nb428_cpp_ei_and_other_line_25"
 FEDERAL_FORM_NAMES = ("schedule_8", "t2204", "t1_employment_income")
 NB_PART_NAMES = (
-    "nb428_credits_line_19.yaml",
-    "nb428_credits_line_21.yaml",
-    "nb428_credits_line_25.yaml",
+    "nb428_line_19.yaml",
+    "nb428_line_21.yaml",
+    "nb428_line_25.yaml",
 )
 
 HEADER = dedent("""\
@@ -59,7 +59,7 @@ HEADER = dedent("""\
     """)
 FORM = dedent("""\
     form:
-      name: ca-nb/nb428_credits
+      name: ca-nb/nb428
       required: true
       exports:
         - ca-nb/nb428_cpp_ei_and_other_line_25
@@ -103,7 +103,7 @@ def _value(tmp_path: Path, salary: str) -> Decimal:
             JurisdictionCode("CA-NB"), 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),)
         )
     )
-    (sheet,) = worksheets["ca-nb/nb428_credits"]
+    (sheet,) = worksheets["ca-nb/nb428"]
     return D(sheet.get(new_brunswick_kinds().kind(IDENTIFIER)).value)
 
 
@@ -132,7 +132,7 @@ def test_the_part_names_the_form_and_has_the_one_step() -> None:
     part = _part()
 
     assert list(part) == ["form", "capabilities"]
-    assert part["form"] == {"name": "ca-nb/nb428_credits"}
+    assert part["form"] == {"name": "ca-nb/nb428"}
     (step,) = part["capabilities"]
     assert step == {
         "name": "core/sum",

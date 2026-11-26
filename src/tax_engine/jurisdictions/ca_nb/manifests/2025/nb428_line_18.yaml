@@ -5,7 +5,7 @@
 # part is still a sum, so the step is built (same as ca-sk/sk428_credits line 20,
 # sk428_credits_line_20.yaml). The form prints no label for line 18, so the step has no title.
 form:
-  name: ca-nb/nb428_credits
+  name: ca-nb/nb428
 capabilities:
   - name: core/sum
     reference: "18"

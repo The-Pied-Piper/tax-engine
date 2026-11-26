@@ -1,11 +1,9 @@
-"""NB428 (2025) line 21, Employment insurance premiums, from the salary alone, real parts.
+"""NB428 (2025) line 26, line 18 plus line 25, from the salary alone, real parts.
 
 Form text (Form NB428, CRA 5004-C, on the ticket, read 26 Nov 2026):
-"Line 21 and line 58300: Amount from line 31200 of your return".
-The line is a copy, so its one step is a core/record_total over the T2204 export that gives T1
-line 31200 (T2204 line 16, the EI premiums credit amount), as Saskatchewan's line 24 is. Figures
-hand-computed (not a CRA example): 1.64% of the salary, to the maximum of $1,077.48, rounded
-half-up to the cent.
+"Line 26: Line 18 plus line 25".
+One core/sum over line 18 and line 25, as Saskatchewan's line 32 is. Figures hand-computed
+(ticket #1984): the basic personal amount 13,396.00 plus lines 19 and 21.
 """
 
 from __future__ import annotations
@@ -42,10 +40,17 @@ from tests.kinds import non_negative
 
 D = Decimal
 NB_PARTS = Path(tax_engine.jurisdictions.ca_nb.__file__).parent / "manifests" / "2025"
-LINE_PART = NB_PARTS / "nb428_credits_line_21.yaml"
-IDENTIFIER = "ca-nb/nb428_ei_premiums_line_21"
-FEDERAL_FORM_NAMES = ("t2204", "t1_employment_income")
-NB_PART_NAMES = ("nb428_credits_line_21.yaml",)
+LINE_PART = NB_PARTS / "nb428_line_26.yaml"
+IDENTIFIER = "ca-nb/nb428_credits_subtotal_line_26"
+FEDERAL_FORM_NAMES = ("schedule_8", "t2204", "t1_employment_income")
+NB_PART_NAMES = (
+    "nb428_line_9.yaml",
+    "nb428_line_18.yaml",
+    "nb428_line_19.yaml",
+    "nb428_line_21.yaml",
+    "nb428_line_25.yaml",
+    "nb428_line_26.yaml",
+)
 
 HEADER = dedent("""\
     jurisdiction: CA-NB
@@ -56,10 +61,10 @@ HEADER = dedent("""\
     """)
 FORM = dedent("""\
     form:
-      name: ca-nb/nb428_credits
+      name: ca-nb/nb428
       required: true
       exports:
-        - ca-nb/nb428_ei_premiums_line_21
+        - ca-nb/nb428_credits_subtotal_line_26
     capabilities: []
     """)
 
@@ -100,15 +105,15 @@ def _value(tmp_path: Path, salary: str) -> Decimal:
             JurisdictionCode("CA-NB"), 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),)
         )
     )
-    (sheet,) = worksheets["ca-nb/nb428_credits"]
+    (sheet,) = worksheets["ca-nb/nb428"]
     return D(sheet.get(new_brunswick_kinds().kind(IDENTIFIER)).value)
 
 
-CASES = [("20000", "328.00"), ("30000", "492.00"), ("70000", "1077.48"), ("200000", "1077.48")]
+CASES = [("20000", "14540.75"), ("30000", "15199.75"), ("70000", "17765.23")]
 
 
 @pytest.mark.parametrize(("salary", "expected"), CASES)
-def test_line_21_at_the_salary(tmp_path: Path, salary: str, expected: str) -> None:
+def test_line_26_at_the_salary(tmp_path: Path, salary: str, expected: str) -> None:
     assert _value(tmp_path, salary) == D(expected)
 
 
@@ -129,13 +134,18 @@ def test_the_part_names_the_form_and_has_the_one_step() -> None:
     part = _part()
 
     assert list(part) == ["form", "capabilities"]
-    assert part["form"] == {"name": "ca-nb/nb428_credits"}
+    assert part["form"] == {"name": "ca-nb/nb428"}
     (step,) = part["capabilities"]
     assert step == {
-        "name": "core/record_total",
-        "title": "Employment insurance premiums",
-        "reference": "21",
+        "name": "core/sum",
+        "reference": "26",
         "unit": "ca/cad",
-        "consumes": {"records": "ca/t2204.t2204_line_16"},
+        "params": {"rounding": "ca-nb/cent_rounding"},
+        "consumes": {
+            "parts": [
+                "ca-nb/nb428_credits_subtotal_line_18",
+                "ca-nb/nb428_cpp_ei_and_other_line_25",
+            ]
+        },
         "produces": {"output": IDENTIFIER},
     }

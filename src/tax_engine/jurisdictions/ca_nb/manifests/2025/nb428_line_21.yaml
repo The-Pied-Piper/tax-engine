@@ -3,7 +3,7 @@
 # core/record_total over those records (same as ca-sk/sk428_credits line 24,
 # sk428_credits_line_24.yaml, and ca-nl/nl428_credits line 29). Form text read from CRA 5004-C.
 form:
-  name: ca-nb/nb428_credits
+  name: ca-nb/nb428
 capabilities:
   - name: core/record_total
     title: "Employment insurance premiums"

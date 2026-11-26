@@ -4,7 +4,7 @@
 # the one step adds lines 19 and 21 with core/sum, as ca-sk/sk428_credits line 31 does
 # (sk428_credits_line_31.yaml). The form prints no label.
 form:
-  name: ca-nb/nb428_credits
+  name: ca-nb/nb428
 capabilities:
   - name: core/sum
     reference: "25"
