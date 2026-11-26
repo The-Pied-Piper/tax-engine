@@ -107,3 +107,23 @@ NS428_CREDITS_SUBTOTAL_LINE_26 = AmountKind.declare(
 )
 """Nova Scotia credits subtotal, NS428 line 26 "Line 20 plus line 25": line 20, a copy of line 19,
 plus line 25, read by the next line of the credits."""
+
+NS428_PENSION_INCOME_AMOUNT = AmountKind.declare(
+    CATALOG, "ns428_pension_income_amount", non_negative=True
+)
+"""Pension income amount, NS428 line 27 "Line 27 and line 58360: Pension income amount (maximum
+$1,173)": the amount the filer claims, a caller input that is read as 0 when it is left out; the
+line 27 step checks it against the printed maximum."""
+
+NS428_PENSION_INCOME_AMOUNT_MAXIMUM = AmountKind.declare(
+    CATALOG, "ns428_pension_income_amount_maximum", non_negative=True
+)
+"""Pension income amount maximum, printed on NS428 line 27 "(maximum $1,173)": the printed maximum,
+from the `ca-ns/pension_income_amount_maximum` dataset; the bound line 27 cannot pass."""
+
+NS428_PENSION_INCOME_AMOUNT_CHECKED_LINE_27 = AmountKind.declare(
+    CATALOG, "ns428_pension_income_amount_checked_line_27", non_negative=True
+)
+"""Pension income amount, NS428 line 27 "Line 27 and line 58360: Pension income amount (maximum
+$1,173)": the entered amount, passed on unchanged when it is at most the printed maximum, read as 0
+when left out; above the maximum it is refused, not capped."""
