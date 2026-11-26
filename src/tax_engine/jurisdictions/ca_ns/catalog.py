@@ -29,3 +29,10 @@ NS428_CPP_CONTRIBUTIONS_LINE_21 = AmountKind.declare(
 )
 """CPP or QPP contributions, NS428 line 21 and line 58240 "Amount from line 30800 of your return": a
 copy of Schedule 8 line 25, the CPP base contributions on the return."""
+
+NS428_QPP_CONTRIBUTIONS_LINE_22 = AmountKind.declare(
+    CATALOG, "ns428_qpp_contributions_line_22", non_negative=True
+)
+"""Quebec Pension Plan contributions, NS428 line 22 "Amount from line 31000 of your return": a
+record total of the T1's export (`ca/self_employment_cpp_qpp_contributions_line_31000`), 0 for a
+salary-only caller."""
