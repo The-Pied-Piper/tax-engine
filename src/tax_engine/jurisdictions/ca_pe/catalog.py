@@ -430,3 +430,8 @@ PE428_AMOUNT_FROM_SPOUSE_OR_PARTNER_FORM_LINE_66 = AmountKind.declare(
 from line 101 of your spouse's or common-law partner's Form PE428, if any": the amount as the
 filer gives it, an optional input; a blank input is read as blank, and the subtraction that reads
 it reads it as 0."""
+
+PE428_TAX_LINE_67 = AmountKind.declare(CATALOG, "pe428_tax_line_67", non_negative=True)
+"""Prince Edward Island tax after credits, PE428 line 67 "Line 67: Line 65 minus line 66 (if
+negative, enter "0") Enter this amount on line 74. =": line 65 less the amount from the spouse or
+common-law partner's form, not below 0."""
