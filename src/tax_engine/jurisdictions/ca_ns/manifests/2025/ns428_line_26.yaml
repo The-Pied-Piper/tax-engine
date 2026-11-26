@@ -1,0 +1,18 @@
+# Form NS428 (CRA 5003-C) line 26: "Line 20 plus line 25". Line 20 reads "Amount from line 19 of the
+# previous page", a copy of line 19, so it gets no step: the one step adds line 19 and line 25 with
+# core/sum, as ca-sk/sk428_credits line 32 does (sk428_credits_line_32.yaml). The form prints no
+# label.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/sum
+    reference: "26"
+    unit: ca/cad
+    params:
+      rounding: ca-ns/cent_rounding
+    consumes:
+      parts:
+        - ca-ns/ns428_credits_subtotal_line_19
+        - ca-ns/ns428_cpp_ei_and_other_line_25
+    produces:
+      output: ca-ns/ns428_credits_subtotal_line_26
