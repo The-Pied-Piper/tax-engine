@@ -39,17 +39,27 @@ DERIVATION_HEADER = (
 )
 
 
-def test_2026_low_income_reduction_maximum_value_and_rounding() -> None:
+def test_2026_low_income_reduction_maximum_value() -> None:
     data = SOURCE.get(FAMILY, 2026, AMOUNT)
 
     assert data.values == Amount(D("1604"))
+
+
+def test_2026_low_income_reduction_maximum_rounding() -> None:
+    data = SOURCE.get(FAMILY, 2026, AMOUNT)
+
     assert data.rounding == RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
 
-def test_2026_low_income_reduction_maximum_sources_and_year() -> None:
+def test_2026_low_income_reduction_maximum_sources() -> None:
     data = SOURCE.get(FAMILY, 2026, AMOUNT)
 
     assert data.sources == SOURCES
+
+
+def test_2026_low_income_reduction_maximum_is_for_tax_year_2026() -> None:
+    data = SOURCE.get(FAMILY, 2026, AMOUNT)
+
     assert data.tax_year == 2026
 
 

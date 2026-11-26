@@ -1,5 +1,5 @@
 # Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
-# Derivation: carried forward unchanged from the 2025 form; T4127 (Jan 2026) does not print this figure and the 2026 form is not yet published, so it is unconfirmed.
+# Derivation: carried forward unchanged from the 2025 file; the form prints no rounding rule, so half-up to the cent is the project's choice, as in 2025, and the 2026 form is not yet published.
 # New Brunswick cent rounding, 2026 tax year.
 family: ca-nb/cent_rounding
 tax_year: 2026

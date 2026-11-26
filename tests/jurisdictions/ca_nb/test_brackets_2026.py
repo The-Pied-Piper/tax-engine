@@ -89,10 +89,15 @@ def test_the_column_is_the_one_t4127_gives_for_the_amount(amount: str, lower: st
     assert column.lower == D(lower)
 
 
-def test_2026_brackets_sources_and_year() -> None:
+def test_2026_brackets_sources() -> None:
     data = SOURCE.get(FAMILY, 2026, BRACKETS)
 
     assert data.sources == SOURCES
+
+
+def test_2026_brackets_is_for_tax_year_2026() -> None:
+    data = SOURCE.get(FAMILY, 2026, BRACKETS)
+
     assert data.tax_year == 2026
 
 

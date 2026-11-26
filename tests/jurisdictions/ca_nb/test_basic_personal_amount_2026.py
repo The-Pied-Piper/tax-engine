@@ -34,10 +34,15 @@ DERIVATION_HEADER = (
 )
 
 
-def test_2026_basic_personal_amount_value_and_rounding() -> None:
+def test_2026_basic_personal_amount_value() -> None:
     data = SOURCE.get(FAMILY, 2026, CREDIT)
 
     assert data.values == Credit(amount=D("13664"))
+
+
+def test_2026_basic_personal_amount_rounding() -> None:
+    data = SOURCE.get(FAMILY, 2026, CREDIT)
+
     assert data.rounding == RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
 

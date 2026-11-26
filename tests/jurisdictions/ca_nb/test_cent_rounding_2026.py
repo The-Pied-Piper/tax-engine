@@ -29,8 +29,9 @@ PROVISIONAL_HEADER = (
     "he 2026 form text when CRA publishes it."
 )
 DERIVATION_HEADER = (
-    "# Derivation: carried forward unchanged from the 2025 form; T4127 (Jan 2026) does not pr"
-    "int this figure and the 2026 form is not yet published, so it is unconfirmed."
+    "# Derivation: carried forward unchanged from the 2025 file; the form prints no rounding "
+    "rule, so half-up to the cent is the project's choice, as in 2025, and the 2026 form is n"
+    "ot yet published."
 )
 
 
@@ -50,10 +51,15 @@ def test_2026_cent_rounding_is_the_2025_rule_carried_forward() -> None:
     assert carried.sources == original.sources
 
 
-def test_2026_cent_rounding_sources_and_year() -> None:
+def test_2026_cent_rounding_sources() -> None:
     data = SOURCE.get(FAMILY, 2026, ROUNDING_ONLY)
 
     assert data.sources == SOURCES
+
+
+def test_2026_cent_rounding_is_for_tax_year_2026() -> None:
+    data = SOURCE.get(FAMILY, 2026, ROUNDING_ONLY)
+
     assert data.tax_year == 2026
 
 

@@ -16,6 +16,8 @@ from tax_engine.adapters.outbound.jurisdiction_packages import JurisdictionPacka
 from tax_engine.adapters.outbound.parameter_parser import ParameterParserRegistry
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.parameters.amount_by_band import AMOUNT_BY_BAND
+from tax_engine.domain.parameters.rate import Rate
+from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.domain.registry import Namespace
 
 D = Decimal
@@ -54,11 +56,31 @@ def test_the_gate_is_0_at_0_00_and_1_from_one_cent(base: str, gate: str) -> None
     assert (band.amount if band.rate is None else band.rate.value) == D(gate)
 
 
-def test_the_gate_names_a_source_and_the_year() -> None:
+def test_the_gate_names_a_source() -> None:
     data = SOURCE.get(FAMILY, 2026, AMOUNT_BY_BAND)
 
     assert data.sources == SOURCES
+
+
+def test_the_gate_is_for_tax_year_2026() -> None:
+    data = SOURCE.get(FAMILY, 2026, AMOUNT_BY_BAND)
+
     assert data.tax_year == 2026
+
+
+def test_the_gate_has_two_rows_a_flat_zero_and_a_slope_of_one() -> None:
+    bands = SOURCE.get(FAMILY, 2026, AMOUNT_BY_BAND).values.bands
+
+    assert [(b.over, b.amount, b.rate, b.minus, b.plus) for b in bands] == [
+        (D("0"), D("0"), None, None, None),
+        (D("0.005"), None, Rate(D("1")), D("0"), D("0")),
+    ]
+
+
+def test_the_gate_has_no_rounding() -> None:
+    data = SOURCE.get(FAMILY, 2026, AMOUNT_BY_BAND)
+
+    assert data.rounding == NO_ROUNDING
 
 
 def test_the_2026_file_is_provisional_and_states_its_derivation() -> None:

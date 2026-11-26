@@ -34,10 +34,15 @@ DERIVATION_HEADER = (
 )
 
 
-def test_2026_low_income_reduction_rate_value_and_rounding() -> None:
+def test_2026_low_income_reduction_rate_value() -> None:
     data = SOURCE.get(FAMILY, 2026, RATE)
 
     assert data.values == Rate(D("0.03"))
+
+
+def test_2026_low_income_reduction_rate_rounding() -> None:
+    data = SOURCE.get(FAMILY, 2026, RATE)
+
     assert data.rounding == RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
 
