@@ -30,7 +30,7 @@ def test_2025_cent_rounding_is_half_up_to_the_cent() -> None:
     assert data.rounding == RoundTo(Decimal("0.01"), RoundingMode.HALF_UP)
 
 
-def test_2025_cent_rounding_cites_the_sk428_text() -> None:
+def test_2025_cent_rounding_cites_the_nb428_text() -> None:
     data = SOURCE.get(FAMILY, 2025, ROUNDING_ONLY)
 
     assert data.sources == (

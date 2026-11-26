@@ -3,9 +3,12 @@
 # one, so a line ticket adds only its own part file; the federal forms are imported by name below,
 # their parts in the `ca` package (`ca/forms/<name>/`).
 #
-# New Brunswick builds Form NB428 (CRA 5004-C). There is no New Brunswick NB479, T1 edition or
-# Schedule 6 (CRA publishes none), so the federal T1, Schedule 6, Schedule 8, T2204 and Schedule 9
-# are imported unchanged. Schedule 8 and T2204 carry the standard federal CPP and EI (no QPP).
+# New Brunswick builds Form NB428 (CRA 5004-C). No New Brunswick NB479, T1 edition or Schedule 6
+# was found (the 5004-tc, 5004-r and 5004-s6 text files are 404 on CRA, tried 2026-11-26), so the
+# federal forms apply unchanged. Schedule 8 and T2204 carry the standard federal CPP and EI (no
+# QPP). Only the federal forms that compose before NB428 exists are imported below; the T1 forms
+# (which need `ca/provincial_tax.amount`), Schedule 6, Schedule 9 and the rate forms are added by
+# the tickets that build NB428 and the return summary.
 #
 # The `outputs` list and the `take_home` block are set by the New Brunswick return summary ticket
 # (`return.yaml`); until then the manifest names no export. New Brunswick is listed in
