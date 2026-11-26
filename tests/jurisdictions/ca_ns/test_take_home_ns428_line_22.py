@@ -29,6 +29,7 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca_ns.catalog import NS428_QPP_CONTRIBUTIONS_LINE_22
 from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_ns.support import (
     nova_scotia_capabilities,
@@ -122,6 +123,8 @@ def test_the_kind_is_a_registered_non_negative_amount_kind() -> None:
 
     assert isinstance(kind, AmountKind)
     assert non_negative(kind)
+    assert kind is NS428_QPP_CONTRIBUTIONS_LINE_22
+    assert IDENTIFIER in nova_scotia_kinds().identifiers()
 
 
 def test_the_part_names_the_form_and_has_the_one_step() -> None:
