@@ -43,3 +43,10 @@ NB428_TAX_ON_EXCESS_LINE_6 = AmountKind.declare(
 )
 """Tax on the excess, NB428 line 6 "Line 6: Line 4 multiplied by the percentage from line 5 =":
 line 4 times the rate of line 5, rounded to the cent."""
+
+NB428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
+    CATALOG, "nb428_bracket_tax_at_start_line_7", non_negative=True
+)
+"""Tax at the start of the column of lines 2 to 8 (the engine's description; the form prints no
+title for line 7), Form NB428 line 7 "Column 1: Line 1 is $51,306 or less / Line 7: 0.00" (4,822.76;
+12,005.88; 25,997.24): the figure printed on line 7 of the column that line 1 falls in."""
