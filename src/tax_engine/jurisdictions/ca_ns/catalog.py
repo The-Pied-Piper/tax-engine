@@ -164,3 +164,9 @@ NS428_NET_INCOME_LINE_39 = AmountKind.declare(
 )
 """Net income, NS428 line 39 "Amount from line 23600 of your return": a record total of the T1's
 net income, line 23600 as the T1 floors it."""
+
+NS428_MEDICAL_EXPENSES_RATE_AMOUNT_LINE_41 = AmountKind.declare(
+    CATALOG, "ns428_medical_expenses_rate_amount_line_41", non_negative=True
+)
+"""Medical expenses threshold, NS428 line 41 "Line 39 multiplied by the percentage from line 40 =":
+line 39 times the 3% of line 40."""
