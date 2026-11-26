@@ -127,3 +127,9 @@ NS428_PENSION_INCOME_AMOUNT_CHECKED_LINE_27 = AmountKind.declare(
 """Pension income amount, NS428 line 27 "Line 27 and line 58360: Pension income amount (maximum
 $1,173)": the entered amount, passed on unchanged when it is at most the printed maximum, read as 0
 when left out; above the maximum it is refused, not capped."""
+
+NS428_CREDITS_SUBTOTAL_LINE_29 = AmountKind.declare(
+    CATALOG, "ns428_credits_subtotal_line_29", non_negative=True
+)
+"""Nova Scotia credits subtotal, NS428 line 29 "Add lines 26 to 28.": line 26 plus the checked
+pension income amount of line 27, line 28 (the caregiver amount) not being built."""

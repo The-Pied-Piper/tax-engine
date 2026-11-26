@@ -1,0 +1,19 @@
+# Form NS428 (CRA 5003-C) line 29: "Add lines 26 to 28." Line 28 (the caregiver amount, Worksheet
+# NS428) is a blank claim outside the salary-only scope and is not built, and line 27 is the pension
+# income amount, read as 0 when left out and checked against its printed maximum by the line 27 step
+# (ns428_line_27.yaml): the one step adds line 26 and the checked line 27 with core/sum, as
+# ca-sk/sk428_credits line 35 does. The form prints no label for line 29.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/sum
+    reference: "29"
+    unit: ca/cad
+    params:
+      rounding: ca-ns/cent_rounding
+    consumes:
+      parts:
+        - ca-ns/ns428_credits_subtotal_line_26
+        - ca-ns/ns428_pension_income_amount_checked_line_27
+    produces:
+      output: ca-ns/ns428_credits_subtotal_line_29
