@@ -1,0 +1,17 @@
+# Form PE428 (CRA 5002-C) line 63: "Line 63: Line 59 minus line 62 (if negative, enter "0") =". Line
+# 59 is `ca-pe/pe428_tax_line_59` and line 62 is `ca-pe/pe428_credits_total_line_62`, which is
+# always a figure (0 for a salary-only caller), so nothing is blank. The form prints no title for
+# the line, so the step has none.
+form:
+  name: ca-pe/pe428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "63"
+    unit: ca/cad
+    params:
+      rounding: ca-pe/cent_rounding
+    consumes:
+      amount: ca-pe/pe428_tax_line_59
+      less: ca-pe/pe428_credits_total_line_62
+    produces:
+      output: ca-pe/pe428_tax_line_63

@@ -1,0 +1,22 @@
+# Form PE428 (CRA 5002-C) line 62: "Line 62: Line 60 plus line 61 =". Line 60 is the optional input
+# `ca-pe/pe428_dividend_tax_credit_line_60` and line 61 the optional input
+# `ca-pe/pe428_minimum_tax_carryover_line_61`; a salary-only caller leaves both out, so both are
+# read as blank and then as 0 by the blank rule. The form prints no title for the line, so the step
+# has none.
+form:
+  name: ca-pe/pe428
+capabilities:
+  - name: core/sum
+    reference: "62"
+    unit: ca/cad
+    params:
+      rounding: ca-pe/cent_rounding
+    consumes:
+      parts:
+        - ca-pe/pe428_dividend_tax_credit_line_60
+        - ca-pe/pe428_minimum_tax_carryover_line_61
+    blank:
+      ca-pe/pe428_dividend_tax_credit_line_60: "0"
+      ca-pe/pe428_minimum_tax_carryover_line_61: "0"
+    produces:
+      output: ca-pe/pe428_credits_total_line_62

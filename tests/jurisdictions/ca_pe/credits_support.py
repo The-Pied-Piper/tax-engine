@@ -128,4 +128,19 @@ CHAIN_53 = (
 CHAIN_54 = (*CHAIN_53, "pe428_line_54.yaml")
 
 PART_A = tuple(f"pe428_line_{number}.yaml" for number in (1, 3, 4, 5, 6, 7, 8))
-ALL_PARTS = (*CHAIN_54, *form_part_names("t1_taxable_income"), *PART_A)
+PARTS_TO_54 = (*CHAIN_54, *form_part_names("t1_taxable_income"), *PART_A)
+
+CHAIN_57 = (*PARTS_TO_54, "pe428_line_56_input.yaml", "pe428_line_57.yaml")
+
+CHAIN_59 = (*CHAIN_57, "pe428_line_59.yaml")
+
+CHAIN_62 = (*CHAIN_59, "pe428_line_60_input.yaml", "pe428_line_61_input.yaml", "pe428_line_62.yaml")
+
+CHAIN_63 = (*CHAIN_62, "pe428_line_63.yaml")
+
+CHAIN_65 = (*CHAIN_63, "pe428_line_64_input.yaml", "pe428_line_65.yaml")
+
+CHAIN_67 = (*CHAIN_65, "pe428_line_66_input.yaml", "pe428_line_67.yaml")
+
+# Every real line part of the form, lines 1 to 67.
+ALL_PARTS = CHAIN_67

@@ -1,0 +1,18 @@
+# Form PE428 (CRA 5002-C) line 59: "Line 59: Line 57 minus line 58 (if negative, enter "0") =". Line
+# 58 ("Prince Edward Island non-refundable tax credits from line 54") is a copy of line 54, so it
+# has no step and this subtraction reads line 54 (`ca-pe/pe428_non_refundable_credits_line_54`)
+# directly. Line 57 is `ca-pe/pe428_tax_line_57`. Both are always figures, so nothing is blank. The
+# form prints no title for the line, so the step has none.
+form:
+  name: ca-pe/pe428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "59"
+    unit: ca/cad
+    params:
+      rounding: ca-pe/cent_rounding
+    consumes:
+      amount: ca-pe/pe428_tax_line_57
+      less: ca-pe/pe428_non_refundable_credits_line_54
+    produces:
+      output: ca-pe/pe428_tax_line_59

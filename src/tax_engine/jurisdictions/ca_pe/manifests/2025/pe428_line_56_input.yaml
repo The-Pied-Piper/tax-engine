@@ -1,0 +1,15 @@
+# PE428 (2025) line 56's input, which a salary-only caller does not give.
+# Line 56: "Line 56 and line 61510: Prince Edward Island tax on split income (complete Form T1206)"
+# (Form PE428, CRA 5002-C). Form T1206 is not built, so the line is taken as one optional input, as
+# the form takes it. A request that leaves the line out is read as blank; the step that reads line
+# 56 (line 57) reads that blank as 0.
+form:
+  name: ca-pe/pe428
+inputs:
+  - name: ca-pe/pe428_tax_on_split_income_line_56
+    title: "Prince Edward Island tax on split income"
+    reference: "56"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 56 and line 61510: Prince Edward Island tax on split income (complete Form T1206)'
