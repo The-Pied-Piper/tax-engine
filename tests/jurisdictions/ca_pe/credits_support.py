@@ -133,3 +133,5 @@ ALL_PARTS = (*CHAIN_54, *form_part_names("t1_taxable_income"), *PART_A)
 CHAIN_57 = (*ALL_PARTS, "pe428_line_56_input.yaml", "pe428_line_57.yaml")
 
 CHAIN_59 = (*CHAIN_57, "pe428_line_59.yaml")
+
+CHAIN_62 = (*CHAIN_59, "pe428_line_60_input.yaml", "pe428_line_61_input.yaml", "pe428_line_62.yaml")

@@ -399,3 +399,9 @@ PE428_MINIMUM_TAX_CARRYOVER_LINE_61 = AmountKind.declare(
 """Prince Edward Island minimum tax carryover, PE428 line 61 and line 61540 "Line 61 and line 61540:
 Amount from line 40427 of your return multiplied by 57.5% =": the amount as the filer gives it, an
 optional input; a blank input is read as blank, and the sum that reads it reads it as 0."""
+
+PE428_CREDITS_TOTAL_LINE_62 = AmountKind.declare(
+    CATALOG, "pe428_credits_total_line_62", non_negative=True
+)
+"""Prince Edward Island dividend and minimum tax credits, PE428 line 62 "Line 62: Line 60 plus
+line 61 =": the dividend tax credit plus the minimum tax carryover."""
