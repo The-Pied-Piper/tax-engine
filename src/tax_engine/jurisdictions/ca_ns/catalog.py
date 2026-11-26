@@ -23,3 +23,9 @@ NS428_CREDITS_SUBTOTAL_LINE_19 = AmountKind.declare(
 )
 """Nova Scotia credits subtotal, NS428 line 19 "Add lines 9 to 18.": the sum of the personal amounts
 claimed, here the basic personal amount alone."""
+
+NS428_CPP_CONTRIBUTIONS_LINE_21 = AmountKind.declare(
+    CATALOG, "ns428_cpp_contributions_line_21", non_negative=True
+)
+"""CPP or QPP contributions, NS428 line 21 and line 58240 "Amount from line 30800 of your return": a
+copy of Schedule 8 line 25, the CPP base contributions on the return."""
