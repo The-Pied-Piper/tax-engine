@@ -217,3 +217,10 @@ PE428_CHILDRENS_WELLNESS_TAX_CREDIT_LINE_28 = AmountKind.declare(
 """Children's wellness tax credit, PE428 line 28 "Line 28 and line 58365: Children's wellness tax
 credit": the amount as the filer gives it, an optional input; a blank input is read as blank,
 and the sum that reads it reads it as 0."""
+
+PE428_CAREGIVER_AMOUNT_LINE_29 = AmountKind.declare(
+    CATALOG, "pe428_caregiver_amount_line_29", non_negative=True
+)
+"""Caregiver amount (use Worksheet PE428), PE428 line 29 "Line 29 and line 58400: Caregiver amount
+(use Worksheet PE428)": the amount as the filer gives it, an optional input; a blank input is
+read as blank, and the sum that reads it reads it as 0."""
