@@ -1,0 +1,19 @@
+# Form PE428 (CRA 5002-C) line 53: "Line 53 and line 58969: Line 51 plus line 52 =". It sums line
+# 51 (`ca-pe/pe428_donations_credit_at_rate_line_51`) and line 52
+# (`ca-pe/pe428_donations_credit_at_rate_line_52`), each read from its own step and never blank (a
+# blank Schedule 9 amount gives 0.00 there). The form names no label for the line, so the step has
+# no title.
+form:
+  name: ca-pe/pe428
+capabilities:
+  - name: core/sum
+    reference: "53"
+    unit: ca/cad
+    params:
+      rounding: ca-pe/cent_rounding
+    consumes:
+      parts:
+        - ca-pe/pe428_donations_credit_at_rate_line_51
+        - ca-pe/pe428_donations_credit_at_rate_line_52
+    produces:
+      output: ca-pe/pe428_donations_and_gifts_credit_line_53

@@ -20,7 +20,7 @@ from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_pe.support import prince_edward_island_kinds
 
 D = Decimal
-FORM_NAME = "ca-pe/pe428_credits"
+FORM_NAME = "ca-pe/pe428"
 HEADER = dedent("""\
     jurisdiction: CA-PE
     version: 1
@@ -38,7 +38,7 @@ FEDERAL_PARTS = (
 
 
 def form(*exports: str) -> str:
-    """The test-local declaration of the credits form, exporting the lines a test reads."""
+    """The test-local declaration of the PE428 form, exporting the lines a test reads."""
     listed = "".join(f"    - {name}\n" for name in exports)
     return f"form:\n  name: {FORM_NAME}\n  required: true\n  exports:\n{listed}capabilities: []\n"
 
@@ -46,7 +46,7 @@ def form(*exports: str) -> str:
 def compute(
     service: TaxComputationService, salary: str, given: dict[str, str] | None = None
 ) -> Any:
-    """The credits form's worksheet for a salary and any optional inputs a test types in."""
+    """The PE428 form's worksheet for a salary and any optional inputs a test types in."""
     kinds = prince_edward_island_kinds()
     inputs: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     for identifier, amount in (given or {}).items():
@@ -61,3 +61,71 @@ def compute(
 def value(sheet: Any, identifier: str) -> Decimal:
     """The amount of the line `identifier` on the worksheet."""
     return D(sheet.get(prince_edward_island_kinds().kind(identifier)).value)
+
+
+# Lines 9 to 25 of the form, composed with the federal parts the CPP and EI lines read.
+BASE_PARTS = (
+    *FEDERAL_PARTS,
+    "pe428_line_9.yaml",
+    "pe428_line_10_input.yaml",
+    "pe428_line_10.yaml",
+    "pe428_line_13_input.yaml",
+    "pe428_line_13.yaml",
+    "pe428_line_16_input.yaml",
+    "pe428_line_16.yaml",
+    "pe428_line_17_input.yaml",
+    "pe428_line_18_input.yaml",
+    "pe428_line_19.yaml",
+    "pe428_line_20.yaml",
+    "pe428_line_21.yaml",
+    "pe428_line_22.yaml",
+    "pe428_line_23.yaml",
+    "pe428_line_24.yaml",
+    "pe428_line_25.yaml",
+)
+
+CHAIN_30 = (
+    *BASE_PARTS,
+    "pe428_line_27_input.yaml",
+    "pe428_line_27.yaml",
+    "pe428_line_28_input.yaml",
+    "pe428_line_29_input.yaml",
+    "pe428_line_30.yaml",
+)
+
+CHAIN_34 = (
+    *CHAIN_30,
+    "pe428_line_31_input.yaml",
+    "pe428_line_32_input.yaml",
+    "pe428_line_33_input.yaml",
+    "pe428_line_33.yaml",
+    "pe428_line_34.yaml",
+)
+
+CHAIN_39 = (
+    *CHAIN_34,
+    "pe428_line_35.yaml",
+    "pe428_line_36_input.yaml",
+    "pe428_line_37_input.yaml",
+    "pe428_line_38_input.yaml",
+    "pe428_line_39.yaml",
+)
+
+CHAIN_48 = (*CHAIN_39, "pe428_line_47_input.yaml", "pe428_line_48.yaml")
+
+CHAIN_50 = (*CHAIN_48, "pe428_line_50.yaml")
+
+DONATION_PARTS = form_part_names("schedule_9")
+
+CHAIN_53 = (
+    *CHAIN_50,
+    *DONATION_PARTS,
+    "pe428_line_51.yaml",
+    "pe428_line_52.yaml",
+    "pe428_line_53.yaml",
+)
+
+CHAIN_54 = (*CHAIN_53, "pe428_line_54.yaml")
+
+PART_A = tuple(f"pe428_line_{number}.yaml" for number in (1, 3, 4, 5, 6, 7, 8))
+ALL_PARTS = (*CHAIN_54, *form_part_names("t1_taxable_income"), *PART_A)

@@ -1,0 +1,14 @@
+# NS428 (2025) line 27 input a salary-only caller does not give.
+# Line 27 and line 58360: "Pension income amount (maximum $1,173)" (Form NS428, CRA 5003-C).
+# A salary-only caller has no pension income amount, so a request that leaves the line out is read
+# as 0, not blank; the line 27 step (ns428_line_27.yaml) checks it against the printed maximum.
+form:
+  name: ca-ns/ns428
+inputs:
+  - name: ca-ns/ns428_pension_income_amount
+    title: "Pension income amount"
+    reference: "27"
+    unit: ca/cad
+    required: false
+    default: "0"
+    basis: 'Line 27 and line 58360: Pension income amount (maximum $1,173)'

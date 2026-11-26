@@ -1,0 +1,17 @@
+# NS428 (2025) line 41 (Form NS428, CRA 5003-C): "Line 40: Applicable rate 3%" and "Line 41: Line 39
+# multiplied by the percentage from line 40 =". Line 40 is the printed 3%, the
+# `ca-ns/medical_expense_rate` dataset, and has no step of its own. Line 41 applies that rate to
+# line 39 (`ca-ns/ns428_net_income_line_39`), rounded half-up to the cent by the dataset's rule. The
+# form names no label for the line, so the step has no title. Same as ca-sk/sk428_credits line 46.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/apply_rate
+    reference: "41"
+    unit: ca/cad
+    params:
+      rate: ca-ns/medical_expense_rate
+    consumes:
+      base: ca-ns/ns428_net_income_line_39
+    produces:
+      output: ca-ns/ns428_medical_expenses_rate_amount_line_41

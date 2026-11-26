@@ -1,0 +1,30 @@
+# Form NS428 (Nova Scotia Tax, 2025, CRA 5003-C) line 49 (ca-ns/ns428): "Line 49: Amount from line
+# 13 of your federal Schedule 9 multiplied by 8.79% =". The 8.79% is a printed rate, held in the
+# `ca-ns/donations_credit_rate_line_49` dataset, so the step is one calculation: 8.79% of the
+# Schedule 9 amount, rounded half-up to the cent. The amount (box A) is read from the Schedule 9
+# export: the first step totals it (a form reads another form's export only as a record list). The
+# line has two boxes: the amount (box A, the first step) and the multiplied result (box B, this
+# step). The form does not name them; "box A" and "box B" are the owner's naming, as on
+# ca-sk/sk428_credits line 54.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/record_total
+    title: "Amount from line 13 of your federal Schedule 9"
+    reference: "49 box A"
+    unit: ca/cad
+    consumes:
+      records: ca/schedule_9.donations_and_gifts_line_13
+    produces:
+      output: ca-ns/ns428_donations_amount_line_49
+  - name: core/apply_rate
+    reference: "49 box B"
+    unit: ca/cad
+    params:
+      rate: ca-ns/donations_credit_rate_line_49
+    consumes:
+      base: ca-ns/ns428_donations_amount_line_49
+    blank:
+      base: "0"
+    produces:
+      output: ca-ns/ns428_donations_credit_at_rate_line_49

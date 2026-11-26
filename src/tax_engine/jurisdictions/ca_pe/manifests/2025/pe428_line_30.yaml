@@ -1,0 +1,25 @@
+# Form PE428 (CRA 5002-C) line 30: "Line 30: Add lines 26 to 29. =". Line 26 is "Amount from line
+# 25 of the previous page", a copy with no step of its own, so the sum reads line 25
+# (pe428_line_25.yaml) directly. Lines 27 to 29 are optional (pe428_line_27.yaml,
+# pe428_line_28_input.yaml, pe428_line_29_input.yaml) and a blank is read as 0. The form prints no
+# label for line 30, so the step has no title.
+form:
+  name: ca-pe/pe428
+capabilities:
+  - name: core/sum
+    reference: "30"
+    unit: ca/cad
+    params:
+      rounding: ca-pe/cent_rounding
+    consumes:
+      parts:
+        - ca-pe/pe428_credits_subtotal_line_25
+        - ca-pe/pe428_pension_income_amount_line_27
+        - ca-pe/pe428_childrens_wellness_tax_credit_line_28
+        - ca-pe/pe428_caregiver_amount_line_29
+    blank:
+      ca-pe/pe428_pension_income_amount_line_27: "0"
+      ca-pe/pe428_childrens_wellness_tax_credit_line_28: "0"
+      ca-pe/pe428_caregiver_amount_line_29: "0"
+    produces:
+      output: ca-pe/pe428_credits_subtotal_line_30

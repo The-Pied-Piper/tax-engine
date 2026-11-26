@@ -1,0 +1,19 @@
+# Form NS428 (CRA 5003-C) line 46 and line 58800: "Line 37 plus line 45 =". It sums the credits
+# subtotal (line 37, `ca-ns/ns428_credits_subtotal_line_37`) and the medical expense amount (line 45,
+# `ca-ns/ns428_medical_expenses_line_45`). Both are always figures (a salary-only caller has no
+# medical expenses, so line 45 is 0.00), so nothing is blank. The form prints no label for line 46.
+# Same as ca-sk/sk428_credits line 51.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/sum
+    reference: "46"
+    unit: ca/cad
+    params:
+      rounding: ca-ns/cent_rounding
+    consumes:
+      parts:
+        - ca-ns/ns428_credits_subtotal_line_37
+        - ca-ns/ns428_medical_expenses_line_45
+    produces:
+      output: ca-ns/ns428_credits_total_line_46

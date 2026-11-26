@@ -1,0 +1,15 @@
+# PE428 (2025) input a salary-only caller does not give.
+# Line 27: "Pension income amount (maximum $1,000)" (Form PE428, CRA 5002-C). A claim a
+# salary-only caller does not give, taken as one optional input the way the form takes it; line 27
+# (pe428_line_27.yaml) checks it against the printed maximum and passes a blank on. A request that
+# leaves the line out is read as blank.
+form:
+  name: ca-pe/pe428
+inputs:
+  - name: ca-pe/pe428_pension_income_amount_claimed_line_27
+    title: "Pension income amount (maximum $1,000)"
+    reference: "27"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 27 and line 58360: Pension income amount (maximum $1,000)'

@@ -1,0 +1,9 @@
+# Line 49: Prince Edward Island non-refundable tax credit rate 9.5%. The printed rate that line 50
+# multiplies line 48 by.
+family: ca-pe/credit_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5002-c/5002-c-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.095"
