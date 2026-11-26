@@ -1,0 +1,18 @@
+# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: thresholds 52,333, 104,666 and 193,861 and rates 9.4%, 14%, 16%, 19.5% as printed in T4127 (Jan 2026) Table 8.1, New Brunswick row; tax_at_start calculated as the cumulative tax on the earlier brackets, rounded half-up to the cent (4,919.30; 12,245.92; 26,517.12; the same method reproduces the 2025 printed line 7 constants 4,822.76, 12,005.88 and 25,997.24 from the 2025 thresholds), because the 2026 line 7 constants are not yet published. T4127 prints the payroll constants KP 0 / 2,407 / 4,501 / 11,286, which agree with these to the dollar.
+# New Brunswick 2026 brackets, Form NB428 Part A, lines 2 to 8, columns 1 to 4. In every column: line 3 the
+# column's lower bound (0.00, 52,333.00, 104,666.00, 193,861.00); line 5 the rate; line 7 the constant. The
+# 2026 NB428 text is not yet published, so the figures are not yet confirmed against it.
+# This dataset has no rounding rule, as the form states none; line 6 rounds half-up to the cent in its
+# own part (ca-nb/cent_rounding). There is no `up_to`: column 4 is unbounded.
+family: ca-nb/brackets
+tax_year: 2026
+kind: brackets
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf
+rounding: none
+brackets:
+  - {from: "0.00", rate: "0.094", tax_at_start: "0.00"}
+  - {from: "52333.00", rate: "0.14", tax_at_start: "4919.30"}
+  - {from: "104666.00", rate: "0.16", tax_at_start: "12245.92"}
+  - {from: "193861.00", rate: "0.195", tax_at_start: "26517.12"}
