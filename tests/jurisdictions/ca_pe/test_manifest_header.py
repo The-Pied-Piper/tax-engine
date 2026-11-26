@@ -12,6 +12,12 @@ from typing import Any
 import yaml
 
 import tax_engine.jurisdictions.ca_pe
+from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
+from tests.jurisdictions.ca_pe.support import (
+    prince_edward_island_kinds,
+    prince_edward_island_packages,
+    prince_edward_island_units,
+)
 
 MANIFEST = (
     Path(tax_engine.jurisdictions.ca_pe.__file__).parent / "manifests" / "2025" / "manifest.yaml"
@@ -61,3 +67,16 @@ def test_schedule_6_is_imported_without_a_dataset_swap() -> None:
 
 def test_the_header_declares_no_inputs() -> None:
     assert "inputs" not in _header()
+
+
+def test_the_manifest_loads_with_the_federal_imports() -> None:
+    source = YamlJurisdictionSource(
+        prince_edward_island_packages().roots(),
+        prince_edward_island_kinds(),
+        prince_edward_island_units(),
+    )
+
+    manifest = source.load(MANIFEST.parent)
+
+    assert manifest.jurisdiction.value == "CA-PE"
+    assert manifest.valid_from_tax_year == 2025
