@@ -1,0 +1,9 @@
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: carried forward unchanged from the 2025 file; T4127 (Jan and Jul 2026) does not print this figure and the 2026 form is not yet published, so it is unconfirmed.
+# Prince Edward Island cent rounding, 2026 tax year.
+family: ca-pe/cent_rounding
+tax_year: 2026
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5002-c/5002-c-25e.txt
+rounding: {increment: "0.01", mode: half_up}

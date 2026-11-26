@@ -1,0 +1,10 @@
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: carried forward unchanged from the 2025 form (line 83, "Base amount 22,650.00"); T4127 (Jan 2026) states "No indexing applies to Prince Edward Island" and T4127 (Jul 2026) prints none of these figures, and the 2026 form is not yet published, so it is unconfirmed.
+# Prince Edward Island low income reduction, base amount, 2026 tax year (Form PE428 line 83).
+family: ca-pe/low_income_reduction_base_amount
+tax_year: 2026
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5002-c/5002-c-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "22650"
