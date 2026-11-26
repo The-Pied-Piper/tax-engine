@@ -1,0 +1,17 @@
+# Form NB428 (New Brunswick Tax, CRA 5004-C) Part A, line 5. Each of the four columns prints "Line 5:"
+# with its rate: "Line 5: Rate 9.4%", "Line 5: 14%", "Line 5: 16%" and "Line 5: 19.5%". Line 5 is the
+# printed rate of the column that line 1 falls in, and a line 1 exactly at a column's upper bound
+# falls in the lower column. Line 1 is read from its producing part (nb428_line_1.yaml), so
+# this part does not produce it again.
+form:
+  name: ca-nb/nb428
+capabilities:
+  - name: core/bracket_column_rate
+    title: "Rate"
+    reference: "5"
+    params:
+      schedule: ca-nb/brackets
+    consumes:
+      base: ca-nb/nb428_taxable_income_line_1
+    produces:
+      output: ca-nb/nb428_bracket_rate_line_5
