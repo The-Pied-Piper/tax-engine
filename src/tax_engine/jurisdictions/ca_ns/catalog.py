@@ -55,3 +55,9 @@ NS428_CPP_EI_AND_OTHER_LINE_25 = AmountKind.declare(
 )
 """CPP or QPP, EI and other credit amounts, NS428 line 25 "Add lines 21 to 24.": the sum of the CPP
 or QPP contributions, the QPP contributions and the EI premiums on lines 21 to 24."""
+
+NS428_CREDITS_SUBTOTAL_LINE_26 = AmountKind.declare(
+    CATALOG, "ns428_credits_subtotal_line_26", non_negative=True
+)
+"""Nova Scotia credits subtotal, NS428 line 26 "Line 20 plus line 25": line 20, a copy of line 19,
+plus line 25, read by the next line of the credits."""
