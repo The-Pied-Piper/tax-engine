@@ -32,3 +32,10 @@ PE428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_4 = AmountKind.declare(
 )
 """Taxable income over the lower bound, PE428 line 4 "Line 4: Line 2 minus line 3 (cannot be
 negative)": line 1 minus line 3, not below zero."""
+
+PE428_BRACKET_RATE_LINE_5 = AmountKind.declare(
+    CATALOG, "pe428_bracket_rate_line_5", non_negative=True
+)
+"""Rate of the column, Form PE428 line 5 "Column 1: Line 1 is $33,328.00 or less / Line 5: Rate
+9.5%" (13.47%; 16.6%; 17.62%; 19%): the printed rate of the column of lines 2 to 8 that line 1
+falls in."""
