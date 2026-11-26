@@ -409,3 +409,10 @@ line 61 =": the dividend tax credit plus the minimum tax carryover."""
 PE428_TAX_LINE_63 = AmountKind.declare(CATALOG, "pe428_tax_line_63", non_negative=True)
 """Prince Edward Island tax after the dividend and minimum tax credits, PE428 line 63 "Line 63: Line
 59 minus line 62 (if negative, enter "0") =": line 59 less line 62, not below 0."""
+
+PE428_ADDITIONAL_TAX_MINIMUM_TAX_LINE_64 = AmountKind.declare(
+    CATALOG, "pe428_additional_tax_minimum_tax_line_64", non_negative=True
+)
+"""Prince Edward Island additional tax for minimum tax purposes, PE428 line 64 "Line 64: Amount from
+Line 14 of Part 7 of Form T691 multiplied by 57.5% =": the amount as the filer gives it, an
+optional input; a blank input is read as blank, and the sum that reads it reads it as 0."""
