@@ -210,3 +210,9 @@ NB428_ADDITIONAL_TAX_MINIMUM_TAX_LINE_64 = AmountKind.declare(
 )
 """NB428 line 64 "Form T691: line 1 minus line 2 of Part 7 multiplied by 57%": the amount as the
 filer gives it, an optional input; a blank input is read as blank."""
+
+NB428_TAX_WITH_MINIMUM_TAX_LINE_65 = AmountKind.declare(
+    CATALOG, "nb428_tax_with_minimum_tax_line_65", non_negative=True
+)
+"""NB428 line 65 "Line 63 plus line 64": the tax after the dividend credit plus the additional tax
+for minimum tax purposes."""

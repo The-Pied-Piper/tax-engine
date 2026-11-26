@@ -1,0 +1,19 @@
+# Form NB428 (CRA 5004-C) line 65: "Line 65: Line 63 plus line 64". Line 63 is always a figure; line
+# 64 is an optional input a salary-only caller leaves out, so the blank rule below reads it as 0.
+# The form prints no title for the line, so the step is untitled.
+form:
+  name: ca-nb/nb428
+capabilities:
+  - name: core/sum
+    reference: "65"
+    unit: ca/cad
+    params:
+      rounding: ca-nb/cent_rounding
+    consumes:
+      parts:
+        - ca-nb/nb428_tax_line_63
+        - ca-nb/nb428_additional_tax_minimum_tax_line_64
+    blank:
+      ca-nb/nb428_additional_tax_minimum_tax_line_64: "0"
+    produces:
+      output: ca-nb/nb428_tax_with_minimum_tax_line_65
