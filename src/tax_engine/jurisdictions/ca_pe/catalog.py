@@ -189,3 +189,24 @@ PE428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
 """Prince Edward Island tax on taxable income, PE428 line 8 "Line 8: Line 6 plus line 7 Prince
 Edward Island tax on taxable income": line 6 plus line 7, copied to line 55 and read by the lines
 after it."""
+
+PE428_PENSION_INCOME_AMOUNT_CLAIMED_LINE_27 = AmountKind.declare(
+    CATALOG, "pe428_pension_income_amount_claimed_line_27", non_negative=True
+)
+"""Pension income amount claimed, PE428 line 27 "Pension income amount (maximum $1,000)": the
+amount as the filer gives it, an optional input; a blank input is read as blank, and the line 27
+step checks it against the printed maximum."""
+
+PE428_PENSION_INCOME_AMOUNT_MAXIMUM = AmountKind.declare(
+    CATALOG, "pe428_pension_income_amount_maximum", non_negative=True
+)
+"""Pension income amount maximum, printed on PE428 line 27 "Pension income amount (maximum
+$1,000)": the printed maximum, from the `ca-pe/pension_income_amount_maximum` dataset; the bound
+line 27 cannot pass."""
+
+PE428_PENSION_INCOME_AMOUNT_LINE_27 = AmountKind.declare(
+    CATALOG, "pe428_pension_income_amount_line_27", non_negative=True
+)
+"""Pension income amount, PE428 line 27 "Pension income amount (maximum $1,000)": the claimed
+amount, passed on unchanged when it is at most the printed maximum, blank when left out; above
+the maximum it is refused, not capped."""
