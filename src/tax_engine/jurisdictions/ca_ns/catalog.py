@@ -201,3 +201,16 @@ NS428_CREDITS_AT_RATE_LINE_48 = AmountKind.declare(
 """Nova Scotia credits at the credit rate, NS428 line 48 (line 58840) "Line 46 multiplied by the
 percentage from line 47 =": line 46 multiplied by the 8.79% of line 47, rounded half-up to the
 cent."""
+
+NS428_DONATIONS_AMOUNT_LINE_49 = AmountKind.declare(
+    CATALOG, "ns428_donations_amount_line_49", non_negative=True
+)
+"""Donations amount, NS428 line 49 box A "Amount from line 13 of your federal Schedule 9": the
+amount, a record total of Schedule 9's export (`ca/schedule_9.donations_and_gifts_line_13`), 0 for a
+salary-only caller."""
+
+NS428_DONATIONS_CREDIT_AT_RATE_LINE_49 = AmountKind.declare(
+    CATALOG, "ns428_donations_credit_at_rate_line_49", non_negative=True
+)
+"""Donations credit at 8.79%, NS428 line 49 box B "Amount from line 13 of your federal Schedule 9
+multiplied by 8.79% =": the Schedule 9 amount times 8.79%; a blank amount is read as 0."""
