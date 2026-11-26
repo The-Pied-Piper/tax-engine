@@ -61,3 +61,34 @@ def compute(
 def value(sheet: Any, identifier: str) -> Decimal:
     """The amount of the line `identifier` on the worksheet."""
     return D(sheet.get(prince_edward_island_kinds().kind(identifier)).value)
+
+
+# Lines 9 to 25 of the form, composed with the federal parts the CPP and EI lines read.
+BASE_PARTS = (
+    *FEDERAL_PARTS,
+    "pe428_line_9.yaml",
+    "pe428_line_10_input.yaml",
+    "pe428_line_10.yaml",
+    "pe428_line_13_input.yaml",
+    "pe428_line_13.yaml",
+    "pe428_line_16_input.yaml",
+    "pe428_line_16.yaml",
+    "pe428_line_17_input.yaml",
+    "pe428_line_18_input.yaml",
+    "pe428_line_19.yaml",
+    "pe428_line_20.yaml",
+    "pe428_line_21.yaml",
+    "pe428_line_22.yaml",
+    "pe428_line_23.yaml",
+    "pe428_line_24.yaml",
+    "pe428_line_25.yaml",
+)
+
+CHAIN_30 = (
+    *BASE_PARTS,
+    "pe428_line_27_input.yaml",
+    "pe428_line_27.yaml",
+    "pe428_line_28_input.yaml",
+    "pe428_line_29_input.yaml",
+    "pe428_line_30.yaml",
+)

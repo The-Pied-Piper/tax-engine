@@ -224,3 +224,10 @@ PE428_CAREGIVER_AMOUNT_LINE_29 = AmountKind.declare(
 """Caregiver amount (use Worksheet PE428), PE428 line 29 "Line 29 and line 58400: Caregiver amount
 (use Worksheet PE428)": the amount as the filer gives it, an optional input; a blank input is
 read as blank, and the sum that reads it reads it as 0."""
+
+PE428_CREDITS_SUBTOTAL_LINE_30 = AmountKind.declare(
+    CATALOG, "pe428_credits_subtotal_line_30", non_negative=True
+)
+"""Prince Edward Island credits subtotal, PE428 line 30 "Line 30: Add lines 26 to 29. = ^": line 26
+(a copy of line 25) plus the pension income amount, the children's wellness tax credit and the
+caregiver amount, the optional lines read as 0 when blank."""
