@@ -97,10 +97,11 @@ CASES = [
     ("70000", "69335.00", "51306.00", "18029.00"),
 ]
 # Salaries whose taxable income sits on a column's edge: line 1 at exactly 51,306.00, 102,614.00 or
-# 190,060.00 is still the lower column. One cent more is the next column, so line 4 restarts at 0.01. The salary is
-# derived below: the deduction is 1% of the earnings over $3,500 to the cent below the $71,300 maximum, so
-# taxable income is 0.99 of the salary plus $35.00 near the first edge and the salary less $1,074.00
-# (the two additional CPP amounts at their maximum) above $81,200.
+# 190,060.00 is still the lower column. One cent more is the next column, so line 4 restarts at
+# 0.01. The salary is derived below: the deduction is 1% of the earnings over $3,500 to the cent
+# below the $71,300 maximum, so taxable income is 0.99 of the salary plus $35.00 near the first
+# edge and the salary less $1,074.00 (the two additional CPP amounts at their maximum) above
+# $81,200.
 EDGES = [
     ("51788.89", "51306.00", "0.00", "51306.00"),
     ("51788.90", "51306.01", "51306.00", "0.01"),
