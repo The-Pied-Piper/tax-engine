@@ -405,3 +405,7 @@ PE428_CREDITS_TOTAL_LINE_62 = AmountKind.declare(
 )
 """Prince Edward Island dividend and minimum tax credits, PE428 line 62 "Line 62: Line 60 plus
 line 61 =": the dividend tax credit plus the minimum tax carryover."""
+
+PE428_TAX_LINE_63 = AmountKind.declare(CATALOG, "pe428_tax_line_63", non_negative=True)
+"""Prince Edward Island tax after the dividend and minimum tax credits, PE428 line 63 "Line 63: Line
+59 minus line 62 (if negative, enter "0") =": line 59 less line 62, not below 0."""
