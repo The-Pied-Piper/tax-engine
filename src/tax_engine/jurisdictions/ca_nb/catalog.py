@@ -41,3 +41,9 @@ NB428_CPP_EI_AND_OTHER_LINE_25 = AmountKind.declare(
 """CPP or QPP, EI and other credit amounts, NB428 line 25 "Add lines 19 to 24.": the sum of the CPP
 or QPP contributions on line 19 and the EI premiums on line 21, the other lines being blank
 optional lines."""
+
+NB428_CREDITS_SUBTOTAL_LINE_26 = AmountKind.declare(
+    CATALOG, "nb428_credits_subtotal_line_26", non_negative=True
+)
+"""New Brunswick credit amounts subtotal, NB428 line 26 "Line 26: Line 18 plus line 25": the
+personal amounts plus the CPP or QPP and EI credit amounts, read by the lines that follow."""

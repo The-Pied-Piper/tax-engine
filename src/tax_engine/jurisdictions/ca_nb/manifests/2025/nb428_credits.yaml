@@ -9,6 +9,5 @@ form:
   title: "Form NB428: New Brunswick Tax"
   required: true
   exports:
-    - ca-nb/nb428_credits_subtotal_line_18
-    - ca-nb/nb428_cpp_ei_and_other_line_25
+    - ca-nb/nb428_credits_subtotal_line_26
 capabilities: []
