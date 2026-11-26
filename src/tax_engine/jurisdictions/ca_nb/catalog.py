@@ -200,3 +200,7 @@ NB428_DIVIDEND_CREDIT_AND_CARRYOVER_LINE_62 = AmountKind.declare(
     CATALOG, "nb428_dividend_credit_and_carryover_line_62", non_negative=True
 )
 """NB428 line 62 "Line 60 plus line 61": the dividend tax credit plus the minimum tax carryover."""
+
+NB428_TAX_LINE_63 = AmountKind.declare(CATALOG, "nb428_tax_line_63", non_negative=True)
+"""NB428 line 63 "Line 59 minus line 62 (if negative, enter "0")": line 59, a copy of line 58,
+less line 62, not below zero."""
