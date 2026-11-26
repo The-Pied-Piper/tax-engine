@@ -297,6 +297,35 @@ def test_the_marginal_rate_at_an_edge_matches_the_cent_either_side(
     assert got.marginal_tax_rate.value == Decimal(rate)
 
 
+@pytest.mark.parametrize(
+    ("code", "year", "salary", "rate"),
+    [
+        # At $2,000 of salary EI starts to charge a dollar for a dollar (T2204 line 7) and, in
+        # Quebec, the QPIP premium applies (Schedule 10), so the rate at the edge matches the cent
+        # above it; the cent below it has neither.
+        ("CA-ON", 2025, "1999.99", "0.0000"),
+        ("CA-ON", 2025, "2000", "1.0000"),
+        ("CA-ON", 2025, "2000.01", "1.0000"),
+        ("CA-ON", 2026, "2000", "1.0000"),
+        ("CA-QC", 2025, "1999.99", "0.0000"),
+        ("CA-QC", 2025, "2000", "1.0049"),
+        ("CA-QC", 2025, "2000.01", "1.0049"),
+        ("CA-QC", 2026, "1999.99", "0.0000"),
+        ("CA-QC", 2026, "2000", "1.0043"),
+        ("CA-QC", 2026, "2000.01", "1.0043"),
+    ],
+)
+def test_the_marginal_rate_at_2000_of_salary_matches_the_cent_above_it(
+    service: TakeHomeService, code: str, year: int, salary: str, rate: str
+) -> None:
+    got = service.compute(
+        TakeHomeRequest(JurisdictionCode(code), year, Decimal(salary), include_rates=True)
+    )
+
+    assert got.marginal_tax_rate is not None
+    assert got.marginal_tax_rate.value == Decimal(rate)
+
+
 class _Counting:
     """The real jurisdictions, counting each lookup (and failing the first `fail` of them)."""
 

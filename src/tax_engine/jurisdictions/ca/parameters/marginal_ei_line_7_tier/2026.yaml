@@ -1,0 +1,20 @@
+# Provisional: taken from T4127 (Jan 2026) and the 2025 Form T2204; to be confirmed against the 2026 form text when CRA publishes it.
+# Not a printed rate. The band over which a further dollar of Form T2204 line 3 is also a further
+# dollar of line 7 ("Amount from line 3 – $2,000 = (if negative, enter "0")"), 2026 tax year: from the
+# $2,000 exemption of line 7 (included, the dollar at $2,000 is the first that line 7 counts) up to
+# the $68900 maximum of line 3 (excluded, line 3 stops growing there). The rate is 1, a dollar for a
+# dollar. The take-home marginal rate reads it so that line 7's rate is 1 at exactly $2,000, which
+# the floored line 7 (0 both below the exemption and at it) cannot show. The two bounds are the
+# `ca/t2204_exemption` and `ca/t2204_maximum_insurable_earnings` figures as printed; `maximum` is
+# the largest line 7 (68900 less $2,000) and is not read by the rate.
+family: ca/marginal_ei_line_7_tier
+tax_year: 2026
+kind: contribution_tier
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2204/t2204-25e.pdf
+rounding: none
+rate: "1"
+lower: "2000"
+upper: "68900"
+maximum: "66900"

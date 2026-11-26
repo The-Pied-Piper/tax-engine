@@ -118,9 +118,10 @@ MARGINAL_EI_PREMIUM_RATE = AmountKind.declare(
 on the form."""
 
 MARGINAL_EI_LINE_7_RATE = AmountKind.declare(CATALOG, "marginal_ei_line_7_rate", non_negative=True)
-"""Rate of a further dollar of T2204 line 7: 1 while the line is positive, 0 at zero, from the
-`ca/marginal_rate_gate` dataset. Line 7 only decides line 16 where it is the lesser, far below its
-own maximum. Not printed on the form."""
+"""Rate of a further dollar of T2204 line 7: 1 from the $2,000 exemption (included, the dollar at
+$2,000 is the first that line 7 counts) up to the maximum insurable earnings (excluded), 0 outside
+it, from the `ca/marginal_ei_line_7_tier` dataset applied to line 1. Line 7 only decides line 16
+where it is the lesser, far below its own maximum. Not printed on the form."""
 
 MARGINAL_EI_RATE = AmountKind.declare(CATALOG, "marginal_ei_rate", non_negative=True)
 """EI rate on a further dollar of salary, T2204 line 16 "Enter whichever amount is the least: line

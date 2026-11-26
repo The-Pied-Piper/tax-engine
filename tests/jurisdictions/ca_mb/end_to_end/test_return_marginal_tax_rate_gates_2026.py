@@ -107,15 +107,26 @@ def test_2026_each_gate_opens_with_the_tax_it_reads(salary: str) -> None:
     assert _value(summary, MANITOBA_GATE) == (D("1") if _value(summary, LINE_65) > 0 else D("0"))
 
 
-@pytest.mark.parametrize("salary", ["0", "100", "2000"])
+@pytest.mark.parametrize("salary", ["0", "100"])
 def test_2026_the_marginal_tax_rate_is_0_where_nothing_is_paid(salary: str) -> None:
-    # No income tax, and no CPP or EI yet (the EI band of T2204 line 16 starts above 2,000).
+    # No income tax, and no CPP or EI yet (the EI band of T2204 line 16 starts at 2,000).
     summary = _summary(salary)
 
     assert _value(summary, MARGINAL) == D("0")
     assert _value(summary, FEDERAL) == D("0")
     assert _value(summary, MANITOBA_RATE) == D("0")
     assert _value(summary, CONTRIBUTION) == D("0")
+
+
+def test_2026_the_marginal_tax_rate_at_2000_is_the_ei_dollar_for_dollar() -> None:
+    # No income tax and no CPP, but the EI band of T2204 line 16 starts at 2,000 (included): the
+    # dollar at 2,000 is the first that line 7 counts, so the rate is 1 there, as a cent above.
+    summary = _summary("2000")
+
+    assert _value(summary, MARGINAL) == D("1")
+    assert _value(summary, FEDERAL) == D("0")
+    assert _value(summary, MANITOBA_RATE) == D("0")
+    assert _value(summary, CONTRIBUTION) == D("1")
 
 
 @pytest.mark.parametrize("salary", ["0", "100", "2000", "17402.22", "19200.18", "25000"])

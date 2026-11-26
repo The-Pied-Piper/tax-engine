@@ -13,8 +13,10 @@
 # less the maximum pensionable earnings (line 4 before its floor) is the second additional rate's.
 # The EI rate follows T2204 line 16, the least of line 7 and line 10 (line 9, the premiums
 # deducted, is line 10 for a salary-only filer): line 10's rate is the `ei_premium` tier's rate on
-# line 1, and line 7's is 1 while it is above 0. A rate is 0 at the upper edge of its band, where a
-# further dollar adds nothing.
+# line 1, and line 7's is 1 from the $2,000 exemption (included, the dollar at $2,000 is the first that
+# line 7 counts) to the maximum insurable earnings, read from the `marginal_ei_line_7_tier` dataset
+# on line 1, because the floored line 7 is 0 both below the exemption and at it. A rate is 0 at the
+# upper edge of its band, where a further dollar adds nothing.
 #
 # The net income rate is the part of a further dollar that stays in the net income and the taxable
 # income: T1 line 22215 takes the enhanced CPP contributions (line 12 and line 22) off the income,
@@ -129,12 +131,12 @@ capabilities:
       earnings: ca/marginal_ei_line_1
     produces:
       output: ca/marginal_ei_premium_rate
-  - name: core/amount_by_band_rate
+  - name: ca/contribution_tier_rate
     unit: core/percent
     params:
-      table: ca/marginal_rate_gate
+      tier: ca/marginal_ei_line_7_tier
     consumes:
-      base: ca/marginal_ei_line_7
+      earnings: ca/marginal_ei_line_1
     produces:
       output: ca/marginal_ei_line_7_rate
   - name: core/lesser_of_rate
