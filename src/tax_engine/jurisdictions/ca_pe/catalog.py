@@ -268,3 +268,10 @@ PE428_TEACHER_SCHOOL_SUPPLY_AMOUNT_LINE_33 = AmountKind.declare(
 """Teacher school supply amount, PE428 line 33 "Teacher school supply amount (maximum $500)": the
 claimed amount, passed on unchanged when it is at most the printed maximum, blank when left out;
 above the maximum it is refused, not capped."""
+
+PE428_CREDITS_SUBTOTAL_LINE_34 = AmountKind.declare(
+    CATALOG, "pe428_credits_subtotal_line_34", non_negative=True
+)
+"""Prince Edward Island credits subtotal, PE428 line 34 "Line 34: Add lines 30 to 33. = ^": line 30
+plus the disability amount for self, the disability amount transferred from a dependant and the
+teacher school supply amount, the optional lines read as 0 when blank."""

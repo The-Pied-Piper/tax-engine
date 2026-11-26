@@ -1,0 +1,24 @@
+# Form PE428 (CRA 5002-C) line 34: "Line 34: Add lines 30 to 33. =". Line 30 is the running
+# subtotal (pe428_line_30.yaml). Lines 31 to 33 are optional (pe428_line_31_input.yaml,
+# pe428_line_32_input.yaml, pe428_line_33.yaml) and a blank is read as 0. The form prints no label
+# for line 34, so the step has no title.
+form:
+  name: ca-pe/pe428
+capabilities:
+  - name: core/sum
+    reference: "34"
+    unit: ca/cad
+    params:
+      rounding: ca-pe/cent_rounding
+    consumes:
+      parts:
+        - ca-pe/pe428_credits_subtotal_line_30
+        - ca-pe/pe428_disability_amount_self_line_31
+        - ca-pe/pe428_disability_amount_transferred_from_a_dependant_line_32
+        - ca-pe/pe428_teacher_school_supply_amount_line_33
+    blank:
+      ca-pe/pe428_disability_amount_self_line_31: "0"
+      ca-pe/pe428_disability_amount_transferred_from_a_dependant_line_32: "0"
+      ca-pe/pe428_teacher_school_supply_amount_line_33: "0"
+    produces:
+      output: ca-pe/pe428_credits_subtotal_line_34
