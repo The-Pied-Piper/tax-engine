@@ -1,0 +1,19 @@
+# Form PE428 (Prince Edward Island Tax, CRA 5002-C) Part A, line 7. Each of the five columns prints
+# "Line 7: <figure>" (0.00, 3,166.16, 7,386.04, 14,083.15 and 20,250.15) under its column heading
+# (the five columns of line 1 are listed in pe428_line_3.yaml). The step takes the figure of the
+# column that line 1 falls in, as printed, and does not compute it from the rates. The form prints
+# no title for line 7.
+#
+# Line 2 is a copy of line 1 and has no step of its own: line 7 reads line 1 directly.
+form:
+  name: ca-pe/pe428
+capabilities:
+  - name: core/bracket_column_tax_at_start
+    reference: "7"
+    unit: ca/cad
+    params:
+      schedule: ca-pe/brackets
+    consumes:
+      base: ca-pe/pe428_taxable_income_line_1
+    produces:
+      output: ca-pe/pe428_bracket_tax_at_start_line_7

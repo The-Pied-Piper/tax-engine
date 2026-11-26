@@ -1,0 +1,20 @@
+# Form PE428 (Prince Edward Island Tax, CRA 5002-C) Part A, line 8, "Line 8: Line 6 plus line 7
+# Prince Edward Island tax on taxable income": the Prince Edward Island tax on taxable income. It
+# sums line 6 (`ca-pe/pe428_tax_on_excess_line_6`) and line 7
+# (`ca-pe/pe428_bracket_tax_at_start_line_7`). Line 6 is already rounded to the cent and line 7 is a
+# printed amount in cents, so the sum adds no rounding of its own. The form says "Enter the amount from line 8 on line 55": line 55 is a copy, with no
+# step of its own, and the tax after credits reads line 8 directly. Line 8 is the output
+# `ca-pe/pe428_tax_on_taxable_income_line_8`.
+form:
+  name: ca-pe/pe428
+capabilities:
+  - name: core/sum
+    title: "Prince Edward Island tax on taxable income"
+    reference: "8"
+    unit: ca/cad
+    params:
+      rounding: ca-pe/cent_rounding
+    consumes:
+      parts: [ca-pe/pe428_tax_on_excess_line_6, ca-pe/pe428_bracket_tax_at_start_line_7]
+    produces:
+      output: ca-pe/pe428_tax_on_taxable_income_line_8
