@@ -1,0 +1,21 @@
+# Form PE428 (CRA 5002-C) line 57: "Line 57: Line 55 plus line 56 =". Line 55 is a copy of line 8
+# ("Prince Edward Island tax on taxable income from line 8"), so it has no step and this sum reads
+# line 8 (`ca-pe/pe428_tax_on_taxable_income_line_8`) directly. Line 56 is the optional input
+# `ca-pe/pe428_tax_on_split_income_line_56`, which a salary-only caller leaves out, read as blank
+# and then as 0 by the blank rule. The form prints no title for the line, so the step has none.
+form:
+  name: ca-pe/pe428
+capabilities:
+  - name: core/sum
+    reference: "57"
+    unit: ca/cad
+    params:
+      rounding: ca-pe/cent_rounding
+    consumes:
+      parts:
+        - ca-pe/pe428_tax_on_taxable_income_line_8
+        - ca-pe/pe428_tax_on_split_income_line_56
+    blank:
+      ca-pe/pe428_tax_on_split_income_line_56: "0"
+    produces:
+      output: ca-pe/pe428_tax_line_57

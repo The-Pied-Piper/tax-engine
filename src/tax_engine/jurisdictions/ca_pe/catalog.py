@@ -377,3 +377,7 @@ PE428_TAX_ON_SPLIT_INCOME_LINE_56 = AmountKind.declare(
 """Prince Edward Island tax on split income, PE428 line 56 and line 61510 "Line 56 and line 61510:
 Prince Edward Island tax on split income (complete Form T1206)": the amount as the filer gives it,
 an optional input; a blank input is read as blank, and the sum that reads it reads it as 0."""
+
+PE428_TAX_LINE_57 = AmountKind.declare(CATALOG, "pe428_tax_line_57", non_negative=True)
+"""Prince Edward Island tax before credits, PE428 line 57 "Line 57: Line 55 plus line 56 =": the tax
+on taxable income (line 55, a copy of line 8) plus the tax on split income."""
