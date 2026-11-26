@@ -1,0 +1,15 @@
+# PE428 (2025) input a salary-only caller does not give.
+# Line 29: "Caregiver amount (use Worksheet PE428)" (Form PE428, CRA 5002-C). The Worksheet PE428
+# section behind this line exists only to compute a claim a salary-only filer leaves empty, so
+# that block is not built and the line is taken as one optional input. A request that leaves the
+# line out is read as blank.
+form:
+  name: ca-pe/pe428
+inputs:
+  - name: ca-pe/pe428_caregiver_amount_line_29
+    title: "Caregiver amount (use Worksheet PE428)"
+    reference: "29"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 29 and line 58400: Caregiver amount (use Worksheet PE428)'

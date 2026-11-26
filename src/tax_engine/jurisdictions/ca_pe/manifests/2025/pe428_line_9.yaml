@@ -1,0 +1,15 @@
+# Form PE428 (CRA 5002-C) line 9 and line 58040, the basic personal amount. "Basic personal amount
+# Claim $14,650". The $14,650 is the `ca-pe/basic_personal_amount` dataset, claimed whole through
+# core/credit_amount, so it is the same at every salary (same as ca-sk/sk428_credits line 9,
+# sk428_credits_line_9.yaml, and ca-nl/nl428_credits line 16).
+form:
+  name: ca-pe/pe428
+capabilities:
+  - name: core/credit_amount
+    title: "Basic personal amount"
+    reference: "9"
+    unit: ca/cad
+    params:
+      amount: ca-pe/basic_personal_amount
+    produces:
+      output: ca-pe/basic_personal_amount

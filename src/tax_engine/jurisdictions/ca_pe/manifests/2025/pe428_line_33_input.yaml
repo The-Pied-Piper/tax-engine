@@ -1,0 +1,15 @@
+# PE428 (2025) input a salary-only caller does not give.
+# Line 33: "Teacher school supply amount (maximum $500)" (Form PE428, CRA 5002-C). A claim a
+# salary-only caller does not give, taken as one optional input the way the form takes it; line 33
+# (pe428_line_33.yaml) checks it against the printed maximum and passes a blank on. A request that
+# leaves the line out is read as blank.
+form:
+  name: ca-pe/pe428
+inputs:
+  - name: ca-pe/pe428_teacher_school_supply_amount_claimed_line_33
+    title: "Teacher school supply amount (maximum $500)"
+    reference: "33"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 33 and line 58500: Teacher school supply amount (maximum $500)'

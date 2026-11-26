@@ -1,0 +1,21 @@
+# Form PE428 (CRA 5002-C) line 24: "Line 24: Add lines 20 to 23. = ^". Lines 20 and 22 are the amounts
+# from lines 30800 and 31200 of the return; lines 21 and 23 are the amounts from lines 31000 and
+# 31217, record totals that are 0 for a salary-only caller. The one step adds the four with
+# core/sum, as ca-nl/nl428_credits line 35 does (nl428_credits_line_35.yaml). The form prints no
+# label for line 24, so the step has no title.
+form:
+  name: ca-pe/pe428
+capabilities:
+  - name: core/sum
+    reference: "24"
+    unit: ca/cad
+    params:
+      rounding: ca-pe/cent_rounding
+    consumes:
+      parts:
+        - ca-pe/pe428_cpp_contributions_line_20
+        - ca-pe/pe428_qpp_contributions_line_21
+        - ca-pe/pe428_ei_premiums_line_22
+        - ca-pe/pe428_ei_premiums_line_23
+    produces:
+      output: ca-pe/pe428_cpp_ei_and_other_line_24
