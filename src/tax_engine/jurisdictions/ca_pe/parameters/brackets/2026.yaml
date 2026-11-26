@@ -1,11 +1,12 @@
 # Provisional: taken from T4127 (Jul 2026); to be confirmed against the 2026 form text when CRA publishes it.
 # Derivation: thresholds 33,928 / 65,820 / 106,890 / 142,520 / 200,000 and rates 9.5% / 13.47% / 16.6% / 17.62% / 19% / 20% as printed in T4127 (Jul 2026) Prince Edward Island change notice and Table 8.1 (the 21% in the July notice is the prorated payroll rate for the second half of 2026; the rate for the year is 20%); tax_at_start calculated as the cumulative tax on the earlier brackets, exact, then rounded half-up to the cent, the way the 2025 printed constants come out (33,928 x 9.5% = 3,223.16; plus 31,892 x 13.47% = 7,519.0124, 7,519.01; plus 41,070 x 16.6% = 14,336.6324, 14,336.63; plus 35,630 x 17.62% = 20,614.6384, 20,614.64; plus 57,480 x 19% = 31,535.8384, 31,535.84), because the 2026 line 7 constants are not yet published.
-# Prince Edward Island 2026 brackets, Form PE428 (CRA 5002-C) Part A, lines 2 to 8, columns 1 to 6. Column
-# headings: "Column 1: Line 1 is $33,928 or less"; "Column 2: Line 1 is more than $33,928 but not
-# more than $65,820"; and so on to "Column 6: Line 1 is more than $200,000". In every column: line 3 the
-# column's lower bound (0.00, 33,928.00, 65,820.00, 106,890.00, 142,520.00, 200,000.00); line 5 the
-# rate; line 7 the constant (0.00, 3,223.16, 7,519.01, 14,336.63, 20,614.64, 31,535.84), derived in the Derivation line because the 2026 form is
-# not published. Lines 3, 5 and 7 are the form's figures; lines 2, 4, 6 and 8 are computed.
+# Prince Edward Island 2026 brackets, Form PE428 (CRA 5002-C) Part A, lines 2 to 8, columns 1 to 6,
+# laid out as the 2025 form does (column 1: line 1 is the first threshold or less; columns 2 to 5:
+# more than one threshold but not more than the next; column 6: more than $200,000). In every
+# column: line 3 the column's lower bound (0.00, 33,928.00, 65,820.00, 106,890.00, 142,520.00,
+# 200,000.00); line 5 the rate; line 7 the constant (0.00, 3,223.16, 7,519.01, 14,336.63, 20,614.64,
+# 31,535.84), derived in the Derivation line. The 2026 form is not published, so none of these is
+# a printed PE428 figure; lines 2, 4, 6 and 8 are computed.
 # Each bracket's `tax_at_start` is the line 7 constant of its column: once the 2026 form prints
 # them they are taken as printed, not recomputed from the rates.
 # This dataset has no rounding rule, as the form states none. The take-home build rounds line 6

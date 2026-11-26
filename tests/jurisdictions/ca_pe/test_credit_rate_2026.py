@@ -26,14 +26,14 @@ SOURCES = (
     "https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jul/t4127-jul-26e.pdf",
 )
 PROVISIONAL_HEADER = (
-    "# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 "
+    "# Provisional: taken from T4127 (Jul 2026); to be confirmed against the 2026 "
     "form text when CRA publishes it."
 )
 DERIVATION_HEADER = (
-    "# Derivation: figure as printed in T4127 (Jan 2026 and Jul 2026) Prince Edward"
-    " Island formula K1P = 0.0950 x TCP, and the lowest bracket rate in Table 8.1 "
-    "(0.0950); the lowest bracket rate is the credit rate; no rounding applied "
-    "here."
+    "# Derivation: figure as printed in T4127 (Jul 2026) Prince Edward Island "
+    "formula K1P = 0.0950 x TCP, and as the lowest bracket rate in T4127 (Jan 2026)"
+    " Table 8.1 (0.0950); the lowest bracket rate is the credit rate; no rounding "
+    "applied here."
 )
 
 
