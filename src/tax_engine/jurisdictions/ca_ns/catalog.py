@@ -170,3 +170,9 @@ NS428_MEDICAL_EXPENSES_RATE_AMOUNT_LINE_41 = AmountKind.declare(
 )
 """Medical expenses threshold, NS428 line 41 "Line 39 multiplied by the percentage from line 40 =":
 line 39 times the 3% of line 40."""
+
+NS428_MEDICAL_EXPENSES_LIMITED_AMOUNT_LINE_42 = AmountKind.declare(
+    CATALOG, "ns428_medical_expenses_limited_amount_line_42", non_negative=True
+)
+"""Medical expenses threshold, limited, NS428 line 42 "Enter whichever is less: $1,637 or the amount
+on line 41.": the lesser of the printed ceiling and line 41."""

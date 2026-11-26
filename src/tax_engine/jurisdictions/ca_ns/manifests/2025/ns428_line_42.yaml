@@ -1,0 +1,18 @@
+# NS428 (2025) line 42 (Form NS428, CRA 5003-C): "Line 42: Enter whichever is less: $1,637 or the
+# amount on line 41." The $1,637 is the printed ceiling, the `ca-ns/medical_expense_dollar_limit`
+# dataset, and has no step of its own. Line 42 is the lesser of that ceiling and line 41
+# (`ca-ns/ns428_medical_expenses_rate_amount_line_41`), one core/capped_amount step, rounded
+# half-up to the cent by the dataset's rule. The form names no label for the line, so the step has
+# no title. Line 41 is always a figure, so nothing is blank. Same as ca-sk/sk428_credits line 47.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/capped_amount
+    reference: "42"
+    unit: ca/cad
+    params:
+      cap: ca-ns/medical_expense_dollar_limit
+    consumes:
+      base: ca-ns/ns428_medical_expenses_rate_amount_line_41
+    produces:
+      output: ca-ns/ns428_medical_expenses_limited_amount_line_42
