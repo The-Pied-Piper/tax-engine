@@ -40,7 +40,7 @@ def test_the_form_is_named_titled_as_printed_and_required() -> None:
 def test_the_form_exports_and_the_part_declares_no_capabilities() -> None:
     part = _part()
 
-    assert part["form"]["exports"] == ["ca-nb/basic_personal_amount"]
+    assert part["form"]["exports"] == ["ca-nb/nb428_credits_subtotal_line_18"]
     assert "supplies" not in part["form"]
     assert part["capabilities"] == []
 
