@@ -1,0 +1,15 @@
+# Form NS428 (CRA 5003-C) line 22: "Amount from line 31000 of your return". A copy of T1 line 31000,
+# which the T1 lines copied by provinces form owns and exports (`ca/self_employment_cpp_qpp_contributions_line_31000`), so the one step is core/record_total over that
+# export (a form reads another form's export only as a record list), as
+# ca-nl/nl428_credits line 28 does. A salary-only caller has no such amount, so the total is 0.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/record_total
+    title: "Amount from line 31000 of your return"
+    reference: "22"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_lines_copied_by_provinces.self_employment_cpp_qpp_contributions_line_31000
+    produces:
+      output: ca-ns/ns428_qpp_contributions_line_22
