@@ -176,3 +176,9 @@ NS428_MEDICAL_EXPENSES_LIMITED_AMOUNT_LINE_42 = AmountKind.declare(
 )
 """Medical expenses threshold, limited, NS428 line 42 "Enter whichever is less: $1,637 or the amount
 on line 41.": the lesser of the printed ceiling and line 41."""
+
+NS428_MEDICAL_EXPENSES_OVER_LIMIT_LINE_43 = AmountKind.declare(
+    CATALOG, "ns428_medical_expenses_over_limit_line_43", non_negative=True
+)
+"""Medical expenses over the limit, NS428 line 43 "Line 38 minus line 42 (if negative, enter "0")
+=": line 38 minus line 42, never below 0; a blank line 38 is read as 0."""
