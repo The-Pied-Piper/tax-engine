@@ -240,3 +240,72 @@ NS428_NON_REFUNDABLE_CREDITS_LINE_52 = AmountKind.declare(
 """Nova Scotia non-refundable tax credits, NS428 line 52 (line 61500) "Line 48 plus line 51 Enter
 this amount on line 56. Nova Scotia non-refundable tax credits =" (as CRA's PDF prints it; its text
 version misprints the line): line 48 plus line 51, read by line 56."""
+
+NS428_TAX_ON_SPLIT_INCOME_LINE_54 = AmountKind.declare(
+    CATALOG, "ns428_tax_on_split_income_line_54", non_negative=True
+)
+"""Nova Scotia tax on split income, NS428 line 54 and line 61510 "Nova Scotia tax on split income
+(complete Form T1206)": an optional input that a salary-only caller leaves out, read as blank."""
+
+NS428_TAX_LINE_55 = AmountKind.declare(CATALOG, "ns428_tax_line_55", non_negative=True)
+"""Nova Scotia tax, NS428 line 55 "Line 53 plus line 54": the tax on taxable income (line 53, a copy
+of line 8) plus the tax on split income, a blank line 54 read as 0."""
+
+NS428_DIVIDEND_TAX_CREDIT_LINE_57 = AmountKind.declare(
+    CATALOG, "ns428_dividend_tax_credit_line_57", non_negative=True
+)
+"""Nova Scotia dividend tax credit, NS428 line 57 and line 61520 "Nova Scotia dividend tax credit
+(use Worksheet NS428)": one optional input, as the filer gives it; Worksheet NS428 is not built."""
+
+NS428_MINIMUM_TAX_CARRYOVER_AMOUNT_LINE_58 = AmountKind.declare(
+    CATALOG, "ns428_minimum_tax_carryover_amount_line_58", non_negative=True
+)
+"""Nova Scotia minimum tax carryover amount, NS428 line 58 (line 61540) "Amount from line 40427 of
+your return": the amount from line 40427 of the T1 return, a record total of the T1's export
+(`ca/minimum_tax_carryover_line_40427`), 0 for a salary-only caller."""
+
+NS428_MINIMUM_TAX_CARRYOVER_LINE_58 = AmountKind.declare(
+    CATALOG, "ns428_minimum_tax_carryover_line_58", non_negative=True
+)
+"""Nova Scotia minimum tax carryover, NS428 line 58 "Amount from line 40427 of your return
+multiplied by 57.5% =": the amount from line 40427 multiplied by 57.5%."""
+
+NS428_CREDITS_SUBTOTAL_LINE_59 = AmountKind.declare(
+    CATALOG, "ns428_credits_subtotal_line_59", non_negative=True
+)
+"""Nova Scotia credits subtotal, NS428 line 59 "Add lines 56 to 58.": line 56 (a copy of line 52)
+plus the dividend tax credit (line 57, a blank read as 0) plus the minimum tax carryover (line
+58)."""
+
+NS428_TAX_LINE_60 = AmountKind.declare(CATALOG, "ns428_tax_line_60", non_negative=True)
+"""Nova Scotia tax after the credits, NS428 line 60 "Line 55 minus line 59 (if negative, enter
+"0")": line 55 less line 59, not below zero."""
+
+NS428_MINIMUM_TAX_T691_AMOUNT_LINE_61 = AmountKind.declare(
+    CATALOG, "ns428_minimum_tax_t691_amount_line_61", non_negative=True
+)
+"""Nova Scotia additional tax amount, NS428 line 61 "Amount from line 14 of Part 7 of Form T691":
+the amount from Form T691, a record total of the T691's export
+(`ca/t691_additional_taxes_for_minimum_tax_carryover_line_14`), 0 for a salary-only caller."""
+
+NS428_MINIMUM_TAX_ADDITIONAL_LINE_61 = AmountKind.declare(
+    CATALOG, "ns428_minimum_tax_additional_line_61", non_negative=True
+)
+"""Nova Scotia additional tax for minimum tax purposes, NS428 line 61 "Amount from line 14 of Part 7
+of Form T691 multiplied by 57.5%": the amount from Form T691 multiplied by 57.5%."""
+
+NS428_TAX_LINE_62 = AmountKind.declare(CATALOG, "ns428_tax_line_62", non_negative=True)
+"""Nova Scotia tax, NS428 line 62 "Line 60 plus line 61": line 60 plus the additional tax for
+minimum tax purposes."""
+
+NS428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_63 = AmountKind.declare(
+    CATALOG, "ns428_provincial_foreign_tax_credit_line_63", non_negative=True
+)
+"""Provincial foreign tax credit, NS428 line 63 "Provincial foreign tax credit (complete Form
+T2036)": an optional input that a salary-only caller leaves out, read as blank."""
+
+NS428_TAX_AFTER_CREDITS_LINE_64 = AmountKind.declare(
+    CATALOG, "ns428_tax_after_credits_line_64", non_negative=True
+)
+"""Nova Scotia tax after the foreign tax credit, NS428 line 64 "Line 62 minus line 63 (if negative,
+enter "0")": line 62 less the provincial foreign tax credit, not below zero; line 77 reads it."""

@@ -1,0 +1,16 @@
+# Form NS428 (Nova Scotia Tax, CRA 5003-C) line 62, "Line 62: Line 60 plus line 61". One core/sum
+# step over line 60 (`ca-ns/ns428_tax_line_60`) and line 61 (the additional tax for minimum tax
+# purposes, `ca-ns/ns428_minimum_tax_additional_line_61`). Both lines are always computed, so the
+# step needs no blank rule. The form prints no title for the line, so the step has none.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/sum
+    reference: "62"
+    unit: ca/cad
+    params:
+      rounding: ca-ns/cent_rounding
+    consumes:
+      parts: [ca-ns/ns428_tax_line_60, ca-ns/ns428_minimum_tax_additional_line_61]
+    produces:
+      output: ca-ns/ns428_tax_line_62

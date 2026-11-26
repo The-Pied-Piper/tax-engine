@@ -1,0 +1,28 @@
+# Form NS428 (Nova Scotia Tax, 2025, CRA 5003-C) line 61. "Nova Scotia additional tax for minimum
+# tax purposes:" / "Line 61: Amount from line 14 of Part 7 of Form T691 multiplied by 57.5% =".
+# The 57.5% is a printed rate, held in the `ca-ns/minimum_tax_rate` dataset, so the line is one
+# calculation: 57.5% of the amount, rounded half-up to the cent. The amount is the T691's line 14:
+# the T691 computes and exports it (`ca/t691_additional_taxes_for_minimum_tax_carryover_line_14`),
+# so the first step totals that export (a form reads another form's export only as a record list)
+# and the second applies the rate.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/record_total
+    title: "Amount from line 14 of Part 7 of Form T691"
+    reference: "61 box A"
+    unit: ca/cad
+    consumes:
+      records: ca/t691.t691_additional_taxes_for_minimum_tax_carryover_line_14
+    produces:
+      output: ca-ns/ns428_minimum_tax_t691_amount_line_61
+  - name: core/apply_rate
+    title: "Nova Scotia additional tax for minimum tax purposes"
+    reference: "61 box B"
+    unit: ca/cad
+    params:
+      rate: ca-ns/minimum_tax_rate
+    consumes:
+      base: ca-ns/ns428_minimum_tax_t691_amount_line_61
+    produces:
+      output: ca-ns/ns428_minimum_tax_additional_line_61

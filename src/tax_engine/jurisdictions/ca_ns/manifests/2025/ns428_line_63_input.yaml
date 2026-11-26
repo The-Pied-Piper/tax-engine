@@ -1,0 +1,13 @@
+# NS428 (2025) line 63's input, which a salary-only caller does not give.
+# Line 63: Provincial foreign tax credit (complete Form T2036) (Form NS428, CRA 5003-C).
+# Form T2036 is not built, so a request that leaves the line out is read as blank; the step that reads line 63 (line 64) reads that blank as 0.
+form:
+  name: ca-ns/ns428
+inputs:
+  - name: ca-ns/ns428_provincial_foreign_tax_credit_line_63
+    title: "Provincial foreign tax credit"
+    reference: "63"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 63: Provincial foreign tax credit (complete Form T2036)'
