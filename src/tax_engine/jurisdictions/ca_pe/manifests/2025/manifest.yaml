@@ -1,0 +1,33 @@
+# Prince Edward Island 2025 take-home manifest: the return's identity. The caller gives the gross
+# salary and nothing else. Prince Edward Island's own forms are in parts beside this one, so a line
+# ticket adds only its own part file; the federal forms are imported by name below, their parts in
+# the `ca` package (`ca/forms/<name>/`).
+#
+# Prince Edward Island builds one form, PE428 (5002-C). CRA publishes no Prince Edward Island
+# Schedule 6, no PE479 and no Prince Edward Island T1 edition (the 5002-s6, 5002-tc and 5002-r
+# files are 404), so the federal Schedule 6, Schedule 8, T2204 and T1 are imported unchanged
+# (standard CPP and EI, no QPP, no Schedule 6 swap).
+#
+# `ca/t1_tax_and_credits` is not imported yet: it needs `ca/provincial_tax.amount`, which PE428
+# line 97 supplies, so the return summary ticket adds that import with the line.
+#
+# This manifest is the scaffold: its outputs and its `take_home` block are set by the return
+# summary ticket, and Prince Edward Island is not yet listed in `registrations.JURISDICTIONS`
+# (the all-years test composes every listed manifest, and this one is complete only when the later
+# tickets merge).
+jurisdiction: CA-PE
+version: 1
+valid_from_tax_year: 2025
+# The title is the engine's own wording for the default form, not a printed form heading.
+title: Return summary
+outputs: []
+capabilities: []
+imports:
+  - ca/t1_employment_income
+  - ca/t1_taxable_income
+  - ca/t1_lines_copied_by_provinces
+  - ca/schedule_6
+  - ca/schedule_8
+  - ca/schedule_9
+  - ca/t2204
+  - ca/t691
