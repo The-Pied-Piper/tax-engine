@@ -1,0 +1,20 @@
+# Form PE428 (CRA 5002-C) line 25: "Line 25: Line 19 plus line 24 = ^". Line 19 is the personal
+# amounts (pe428_credits_line_19.yaml) and line 24 the CPP and EI
+# amounts, both always figures, so nothing is blank. Line 26 is "Amount from line 25 of the
+# previous page", a copy of this figure with no step of its own; the line that reads it reads
+# line 25 directly (same as ca-nl/nl428_credits line 36, nl428_credits_line_36.yaml, which reads
+# line 25). The form prints no label for line 25, so the step has no title.
+form:
+  name: ca-pe/pe428_credits
+capabilities:
+  - name: core/sum
+    reference: "25"
+    unit: ca/cad
+    params:
+      rounding: ca-pe/cent_rounding
+    consumes:
+      parts:
+        - ca-pe/pe428_credits_subtotal_line_19
+        - ca-pe/pe428_cpp_ei_and_other_line_24
+    produces:
+      output: ca-pe/pe428_credits_subtotal_line_25
