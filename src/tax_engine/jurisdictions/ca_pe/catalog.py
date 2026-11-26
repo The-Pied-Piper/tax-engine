@@ -39,3 +39,10 @@ PE428_ELIGIBLE_DEPENDANT_AMOUNT_LINE_16 = AmountKind.declare(
 """Amount for an eligible dependant, PE428 line 16 "Line 16 and line 58160: Line 14 minus line 15
 (if negative, enter "0") (maximum $12,443)": the amount as the filer gives it, an optional input;
 a blank input is read as blank."""
+
+PE428_INFIRM_DEPENDANTS_AMOUNT_LINE_17 = AmountKind.declare(
+    CATALOG, "pe428_infirm_dependants_amount_line_17", non_negative=True
+)
+"""Amount for infirm dependants age 18 or older (use Worksheet PE428), PE428 line 17 "Line 17 and
+line 58200: Amount for infirm dependants age 18 or older (use Worksheet PE428)": the amount as the
+filer gives it, an optional input; a blank input is read as blank."""
