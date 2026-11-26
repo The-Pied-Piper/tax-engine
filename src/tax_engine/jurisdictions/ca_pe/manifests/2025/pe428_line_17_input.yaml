@@ -1,0 +1,15 @@
+# PE428 (2025) input a salary-only caller does not give.
+# Line 17: "Amount for infirm dependants age 18 or older (use Worksheet PE428)" (Form PE428, CRA
+# 5002-C). The Worksheet PE428 section behind this line exists only to compute a claim a salary-
+# only filer leaves empty, so that block is not built and the line is taken as one optional input.
+# A request that leaves the line out is read as blank. Line 19 (a later part) reads it.
+form:
+  name: ca-pe/pe428
+inputs:
+  - name: ca-pe/pe428_infirm_dependants_amount_line_17
+    title: "Amount for infirm dependants age 18 or older (use Worksheet PE428)"
+    reference: "17"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 17 and line 58200: Amount for infirm dependants age 18 or older (use Worksheet PE428)'

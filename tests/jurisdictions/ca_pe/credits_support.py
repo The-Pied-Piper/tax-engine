@@ -20,7 +20,7 @@ from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_pe.support import prince_edward_island_kinds
 
 D = Decimal
-FORM_NAME = "ca-pe/pe428_credits"
+FORM_NAME = "ca-pe/pe428"
 HEADER = dedent("""\
     jurisdiction: CA-PE
     version: 1
@@ -38,7 +38,7 @@ FEDERAL_PARTS = (
 
 
 def form(*exports: str) -> str:
-    """The test-local declaration of the credits form, exporting the lines a test reads."""
+    """The test-local declaration of the PE428 form, exporting the lines a test reads."""
     listed = "".join(f"    - {name}\n" for name in exports)
     return f"form:\n  name: {FORM_NAME}\n  required: true\n  exports:\n{listed}capabilities: []\n"
 
@@ -46,7 +46,7 @@ def form(*exports: str) -> str:
 def compute(
     service: TaxComputationService, salary: str, given: dict[str, str] | None = None
 ) -> Any:
-    """The credits form's worksheet for a salary and any optional inputs a test types in."""
+    """The PE428 form's worksheet for a salary and any optional inputs a test types in."""
     kinds = prince_edward_island_kinds()
     inputs: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     for identifier, amount in (given or {}).items():
