@@ -1,0 +1,20 @@
+# Form NS428 (CRA 5003-C) line 19, the sum of lines 9 to 18. "Add lines 9 to 18." The take-home
+# scope is a salary-only single filer, so only line 9 (basic personal amount,
+# ca-ns/basic_personal_amount) contributes; lines 10 to 18 (age, spouse, eligible dependant,
+# infirm dependants, young children) are blank claims outside that scope and are not built. A
+# single part is still a sum, so the step is built (same as ca-sk/sk428_credits line 20,
+# sk428_credits_line_20.yaml, and ca-nl/nl428_credits line 25). The form prints no label for line
+# 19, so the step has no title. Line 20 reads "Amount from line 19 of the previous page", a copy,
+# and has no step of its own.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/sum
+    reference: "19"
+    unit: ca/cad
+    params:
+      rounding: ca-ns/cent_rounding
+    consumes:
+      parts: [ca-ns/basic_personal_amount]
+    produces:
+      output: ca-ns/ns428_credits_subtotal_line_19

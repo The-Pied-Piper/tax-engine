@@ -1,0 +1,19 @@
+# Form NB428 (New Brunswick Tax, CRA 5004-C) Part A, line 3. Each of the four columns prints "Line
+# 3:" with its lower bound: 0.00, 51,306.00, 102,614.00 and 190,060.00, under "Column 1: Line 1 is
+# $51,306 or less", "Column 2: more than $51,306 but not more than $102,614", "Column 3: more than
+# $102,614 but not more than $190,060" and "Column 4: more than $190,060". Line 3 is the printed
+# lower bound of the column that line 1 falls in.
+#
+# Line 2 is a copy of line 1 and has no step of its own: line 3 reads line 1 directly.
+form:
+  name: ca-nb/nb428
+capabilities:
+  - name: core/bracket_column_lower_bound
+    reference: "3"
+    unit: ca/cad
+    params:
+      schedule: ca-nb/brackets
+    consumes:
+      base: ca-nb/nb428_taxable_income_line_1
+    produces:
+      output: ca-nb/nb428_bracket_lower_bound_line_3

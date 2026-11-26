@@ -1,0 +1,18 @@
+# Form NB428 (New Brunswick Tax, CRA 5004-C) Part A, line 8, "Line 8: Line 6 plus line 7 New Brunswick
+# tax on taxable income =": the New Brunswick tax on taxable income. It sums line 6
+# (`ca-nb/nb428_tax_on_excess_line_6`) and line 7 (`ca-nb/nb428_bracket_tax_at_start_line_7`). Line 6
+# is already rounded to the cent and line 7 is a printed amount in cents, so the sum adds no rounding
+# of its own. Line 8 is the output `ca-nb/nb428_tax_on_taxable_income_line_8`.
+form:
+  name: ca-nb/nb428
+capabilities:
+  - name: core/sum
+    title: "New Brunswick tax on taxable income"
+    reference: "8"
+    unit: ca/cad
+    params:
+      rounding: ca-nb/cent_rounding
+    consumes:
+      parts: [ca-nb/nb428_tax_on_excess_line_6, ca-nb/nb428_bracket_tax_at_start_line_7]
+    produces:
+      output: ca-nb/nb428_tax_on_taxable_income_line_8
