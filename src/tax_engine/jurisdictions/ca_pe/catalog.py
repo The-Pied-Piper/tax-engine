@@ -92,3 +92,10 @@ PE428_CPP_EI_AND_OTHER_LINE_24 = AmountKind.declare(
 )
 """CPP or QPP and EI amounts, PE428 line 24 "Line 24: Add lines 20 to 23. = ^": the sum of the CPP
 or QPP contributions, the self-employment contributions and the EI premiums on lines 20 to 23."""
+
+PE428_CREDITS_SUBTOTAL_LINE_25 = AmountKind.declare(
+    CATALOG, "pe428_credits_subtotal_line_25", non_negative=True
+)
+"""Prince Edward Island credits subtotal, PE428 line 25 "Line 25: Line 19 plus line 24 = ^": line
+19 plus line 24, the amounts of the personal credits and of the CPP and EI credits; line 26 is a
+copy of it."""
