@@ -1,0 +1,11 @@
+# Nova Scotia exact rounding, 2025 tax year: the rule for a Nova Scotia figure that is not a
+# dollars-and-cents box: the rates on the return summary (the average rate, and the marginal
+# rate as a gate times an NS428 line 5 or line 82 rate, and the sums of rates). They are exact and
+# the form prints no rounding rule for them (the project's choice is no rounding). The cent rule
+# of `ca-ns/cent_rounding` does not apply.
+family: ca-ns/exact_rounding
+tax_year: 2025
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5003-c/5003-c-25e.txt
+rounding: none
