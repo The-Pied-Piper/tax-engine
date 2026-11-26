@@ -275,3 +275,10 @@ PE428_CREDITS_SUBTOTAL_LINE_34 = AmountKind.declare(
 """Prince Edward Island credits subtotal, PE428 line 34 "Line 34: Add lines 30 to 33. = ^": line 30
 plus the disability amount for self, the disability amount transferred from a dependant and the
 teacher school supply amount, the optional lines read as 0 when blank."""
+
+PE428_STUDENT_LOAN_INTEREST_LINE_35 = AmountKind.declare(
+    CATALOG, "pe428_student_loan_interest_line_35", non_negative=True
+)
+"""Interest paid on your student loans, PE428 line 35 "Line 35 and line 58520: Interest paid on
+your student loans (amount from line 31900 of your return)": a record total of the T1's export
+(`ca/student_loan_interest_line_31900`), 0 for a salary-only caller."""
