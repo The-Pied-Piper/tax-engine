@@ -79,3 +79,10 @@ PE428_EI_PREMIUMS_LINE_22 = AmountKind.declare(
 )
 """EI premiums credit amount, PE428 line 22 and line 58300 "Amount from line 31200 of your
 return": a copy of T2204 line 16, the EI premiums credit amount."""
+
+PE428_EI_PREMIUMS_LINE_23 = AmountKind.declare(
+    CATALOG, "pe428_ei_premiums_line_23", non_negative=True
+)
+"""Employment insurance premiums, PE428 line 23 and line 58305 "Amount from line 31217 of your
+return": a record total of the T1's export (`ca/ei_premiums_on_self_employment_line_31217`), 0 for
+a salary-only caller."""
