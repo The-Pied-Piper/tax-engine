@@ -194,3 +194,10 @@ NS428_CREDITS_TOTAL_LINE_46 = AmountKind.declare(
 )
 """Nova Scotia credits total, NS428 line 46 (line 58800) "Line 37 plus line 45 =": the credits
 subtotal of line 37 plus the medical expense amount of line 45."""
+
+NS428_CREDITS_AT_RATE_LINE_48 = AmountKind.declare(
+    CATALOG, "ns428_credits_at_rate_line_48", non_negative=True
+)
+"""Nova Scotia credits at the credit rate, NS428 line 48 (line 58840) "Line 46 multiplied by the
+percentage from line 47 =": line 46 multiplied by the 8.79% of line 47, rounded half-up to the
+cent."""
