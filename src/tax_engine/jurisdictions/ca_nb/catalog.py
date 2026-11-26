@@ -204,3 +204,9 @@ NB428_DIVIDEND_CREDIT_AND_CARRYOVER_LINE_62 = AmountKind.declare(
 NB428_TAX_LINE_63 = AmountKind.declare(CATALOG, "nb428_tax_line_63", non_negative=True)
 """NB428 line 63 "Line 59 minus line 62 (if negative, enter "0")": line 59, a copy of line 58,
 less line 62, not below zero."""
+
+NB428_ADDITIONAL_TAX_MINIMUM_TAX_LINE_64 = AmountKind.declare(
+    CATALOG, "nb428_additional_tax_minimum_tax_line_64", non_negative=True
+)
+"""NB428 line 64 "Form T691: line 1 minus line 2 of Part 7 multiplied by 57%": the amount as the
+filer gives it, an optional input; a blank input is read as blank."""
