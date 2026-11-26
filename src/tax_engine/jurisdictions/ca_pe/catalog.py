@@ -86,3 +86,9 @@ PE428_EI_PREMIUMS_LINE_23 = AmountKind.declare(
 """Employment insurance premiums, PE428 line 23 and line 58305 "Amount from line 31217 of your
 return": a record total of the T1's export (`ca/ei_premiums_on_self_employment_line_31217`), 0 for
 a salary-only caller."""
+
+PE428_CPP_EI_AND_OTHER_LINE_24 = AmountKind.declare(
+    CATALOG, "pe428_cpp_ei_and_other_line_24", non_negative=True
+)
+"""CPP or QPP and EI amounts, PE428 line 24 "Line 24: Add lines 20 to 23. = ^": the sum of the CPP
+or QPP contributions, the self-employment contributions and the EI premiums on lines 20 to 23."""
