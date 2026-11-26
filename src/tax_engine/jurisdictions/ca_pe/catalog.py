@@ -46,3 +46,10 @@ PE428_INFIRM_DEPENDANTS_AMOUNT_LINE_17 = AmountKind.declare(
 """Amount for infirm dependants age 18 or older (use Worksheet PE428), PE428 line 17 "Line 17 and
 line 58200: Amount for infirm dependants age 18 or older (use Worksheet PE428)": the amount as the
 filer gives it, an optional input; a blank input is read as blank."""
+
+PE428_YOUNG_CHILDREN_AMOUNT_LINE_18 = AmountKind.declare(
+    CATALOG, "pe428_young_children_amount_line_18", non_negative=True
+)
+"""Amount for young children (complete the chart at the end of page 2), PE428 line 18 "Line 18 and
+line 58230: Amount for young children (complete the chart at the end of page 2)": the amount as
+the filer gives it, an optional input; a blank input is read as blank."""
