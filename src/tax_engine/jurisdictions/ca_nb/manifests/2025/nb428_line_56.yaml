@@ -1,0 +1,21 @@
+# Form NB428 (CRA 5004-C) line 56: "Line 56: Line 54 plus line 55". Line 54, "New Brunswick tax on
+# taxable income from line 8", is a copy of line 8 and has no step, so line 56 adds line 8 (`ca-
+# nb/nb428_tax_on_taxable_income_line_8`) and line 55, the optional input `ca-
+# nb/nb428_tax_on_split_income_line_55`, which a salary-only caller leaves out, read as blank and
+# then as 0 by the blank rule below. The form prints no title for the line, so the step is untitled.
+form:
+  name: ca-nb/nb428
+capabilities:
+  - name: core/sum
+    reference: "56"
+    unit: ca/cad
+    params:
+      rounding: ca-nb/cent_rounding
+    consumes:
+      parts:
+        - ca-nb/nb428_tax_on_taxable_income_line_8
+        - ca-nb/nb428_tax_on_split_income_line_55
+    blank:
+      ca-nb/nb428_tax_on_split_income_line_55: "0"
+    produces:
+      output: ca-nb/nb428_tax_before_credits_line_56

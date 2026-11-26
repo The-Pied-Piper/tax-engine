@@ -171,3 +171,9 @@ NB428_TAX_ON_SPLIT_INCOME_LINE_55 = AmountKind.declare(
 )
 """NB428 line 55 and line 61510 "New Brunswick tax on split income (complete Form T1206)": the
 amount as the filer gives it, an optional input; a blank input is read as blank."""
+
+NB428_TAX_BEFORE_CREDITS_LINE_56 = AmountKind.declare(
+    CATALOG, "nb428_tax_before_credits_line_56", non_negative=True
+)
+"""NB428 line 56 "Line 54 plus line 55": the tax on taxable income plus the tax on split income,
+line 54 being a copy of line 8."""
