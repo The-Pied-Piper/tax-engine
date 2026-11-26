@@ -1,0 +1,13 @@
+# Form NB428 New Brunswick Tax 2025 (CRA 5004-C), the credits part, lines 9 to 53. This part names
+# the form and its exports; line parts carry capabilities. Export: line 26
+# (`ca-nb/nb428_credits_subtotal_line_26`), the credit amounts subtotal, so that the part composes
+# until the ticket that builds the lines which read it (27 to 53) replaces it with line 53, the
+# New Brunswick non-refundable credits that line 58 on the tax form reads. Lines 1 to 8 and 54 to 97
+# are the form `ca-nb/nb428`.
+form:
+  name: ca-nb/nb428_credits
+  title: "Form NB428: New Brunswick Tax"
+  required: true
+  exports:
+    - ca-nb/basic_personal_amount
+capabilities: []
