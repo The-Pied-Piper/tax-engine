@@ -392,3 +392,10 @@ PE428_DIVIDEND_TAX_CREDIT_LINE_60 = AmountKind.declare(
 """Prince Edward Island dividend tax credit, PE428 line 60 and line 61520 "Line 60 and line 61520:
 Prince Edward Island dividend tax credit (use Worksheet PE428)": the amount as the filer gives it,
 an optional input; a blank input is read as blank, and the sum that reads it reads it as 0."""
+
+PE428_MINIMUM_TAX_CARRYOVER_LINE_61 = AmountKind.declare(
+    CATALOG, "pe428_minimum_tax_carryover_line_61", non_negative=True
+)
+"""Prince Edward Island minimum tax carryover, PE428 line 61 and line 61540 "Line 61 and line 61540:
+Amount from line 40427 of your return multiplied by 57.5% =": the amount as the filer gives it, an
+optional input; a blank input is read as blank, and the sum that reads it reads it as 0."""
