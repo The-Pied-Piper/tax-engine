@@ -222,3 +222,7 @@ NB428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_66 = AmountKind.declare(
 )
 """NB428 line 66 "Provincial foreign tax credit (complete Form T2036)": the amount as the filer
 gives it, an optional input; a blank input is read as blank."""
+
+NB428_TAX_LINE_67 = AmountKind.declare(CATALOG, "nb428_tax_line_67", non_negative=True)
+"""NB428 line 67 "Line 65 minus line 66 (if negative, enter "0")": line 65 less the provincial
+foreign tax credit, not below zero; line 69 reads it."""
