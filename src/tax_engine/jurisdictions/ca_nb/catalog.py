@@ -189,3 +189,9 @@ NB428_DIVIDEND_TAX_CREDIT_LINE_60 = AmountKind.declare(
 )
 """NB428 line 60 and line 61520 "New Brunswick dividend tax credit (use Worksheet NB428)": the
 amount as the filer gives it, an optional input; a blank input is read as blank."""
+
+NB428_MINIMUM_TAX_CARRYOVER_LINE_61 = AmountKind.declare(
+    CATALOG, "nb428_minimum_tax_carryover_line_61", non_negative=True
+)
+"""NB428 line 61 and line 61540 "Amount from line 40427 of your return multiplied by 57%": the
+amount as the filer gives it, an optional input; a blank input is read as blank."""

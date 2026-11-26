@@ -1,0 +1,14 @@
+# NB428 (2025) line 61's input, which a salary-only caller does not give.
+# "Line 61 AND Line 61540: Amount from line 40427 of your return multiplied by 57%" (Form NB428, CRA 5004-C). the minimum tax carryover is not built (it is $0 for a salary-only filer), so the
+# line is taken as one optional input, as the form takes it. A request that leaves the line out is
+# read as blank; the step that reads line 61 reads that blank as 0.
+form:
+  name: ca-nb/nb428
+inputs:
+  - name: ca-nb/nb428_minimum_tax_carryover_line_61
+    title: "Amount from line 40427 of your return multiplied by 57%"
+    reference: "61"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 61 AND Line 61540: Amount from line 40427 of your return multiplied by 57%"
