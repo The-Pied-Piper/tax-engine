@@ -1,0 +1,20 @@
+# Form NB428 (New Brunswick Tax, CRA 5004-C) Part A, line 7. Each of the four columns prints "Line
+# 7: <figure>" (0.00, 4,822.76, 12,005.88 and 25,997.24) under its column heading ("Column 1: Line 1
+# is $51,306 or less", "Column 2: more than $51,306 but not more than $102,614", "Column 3: more
+# than $102,614 but not more than $190,060", "Column 4: more than $190,060"). The step takes the
+# figure of the column that line 1 falls in, as printed, and does not compute it from the rates. The
+# form prints no title for line 7.
+#
+# Line 2 is a copy of line 1 and has no step of its own: line 7 reads line 1 directly.
+form:
+  name: ca-nb/nb428
+capabilities:
+  - name: core/bracket_column_tax_at_start
+    reference: "7"
+    unit: ca/cad
+    params:
+      schedule: ca-nb/brackets
+    consumes:
+      base: ca-nb/nb428_taxable_income_line_1
+    produces:
+      output: ca-nb/nb428_bracket_tax_at_start_line_7

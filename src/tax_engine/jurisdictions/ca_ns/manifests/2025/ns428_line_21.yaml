@@ -1,0 +1,15 @@
+# Form NS428 line 21 (58240) "Amount from line 30800 of your return" is a copy; the amount is read
+# from Schedule 8 line 25, which arrives as a record list, so the one step is core/record_total over
+# those records (same as ca-nl/nl428_credits line 27, nl428_credits_line_27.yaml, and
+# ca-sk/sk428_credits line 22). Form text read from CRA's PDF of 5003-C.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/record_total
+    title: "CPP or QPP contributions"
+    reference: "21"
+    unit: ca/cad
+    consumes:
+      records: ca/schedule_8.schedule_8_cpp_base_contributions_on_return
+    produces:
+      output: ca-ns/ns428_cpp_contributions_line_21
