@@ -1,0 +1,21 @@
+# Form PE428 (CRA 5002-C) line 65: "Line 65: Line 63 plus line 64 =". Line 63 is
+# `ca-pe/pe428_tax_line_63` and line 64 is the optional input
+# `ca-pe/pe428_additional_tax_minimum_tax_line_64`, which a salary-only caller leaves out, read as
+# blank and then as 0 by the blank rule. The form prints no title for the line, so the step has
+# none.
+form:
+  name: ca-pe/pe428
+capabilities:
+  - name: core/sum
+    reference: "65"
+    unit: ca/cad
+    params:
+      rounding: ca-pe/cent_rounding
+    consumes:
+      parts:
+        - ca-pe/pe428_tax_line_63
+        - ca-pe/pe428_additional_tax_minimum_tax_line_64
+    blank:
+      ca-pe/pe428_additional_tax_minimum_tax_line_64: "0"
+    produces:
+      output: ca-pe/pe428_tax_with_minimum_tax_line_65

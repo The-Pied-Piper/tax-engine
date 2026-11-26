@@ -1,0 +1,23 @@
+# Form NS428 (Nova Scotia Tax, CRA 5003-C) line 59, "Line 59: Add lines 56 to 58." Line 56 is a copy
+# of line 52 ("Enter this amount on line 56"), on this same form, so the step reads line 52
+# (`ca-ns/ns428_non_refundable_credits_line_52`) directly, with line 57 (the optional dividend tax
+# credit input, `ca-ns/ns428_dividend_tax_credit_line_57`, read as blank and then as 0 by the blank
+# rule) and line 58 (the minimum tax carryover, `ca-ns/ns428_minimum_tax_carryover_line_58`, always
+# computed). The form prints no title for the line, so the step has none.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/sum
+    reference: "59"
+    unit: ca/cad
+    params:
+      rounding: ca-ns/cent_rounding
+    consumes:
+      parts:
+        - ca-ns/ns428_non_refundable_credits_line_52
+        - ca-ns/ns428_dividend_tax_credit_line_57
+        - ca-ns/ns428_minimum_tax_carryover_line_58
+    blank:
+      ca-ns/ns428_dividend_tax_credit_line_57: "0"
+    produces:
+      output: ca-ns/ns428_credits_subtotal_line_59

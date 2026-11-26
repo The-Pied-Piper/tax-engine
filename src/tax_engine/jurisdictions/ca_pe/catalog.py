@@ -370,3 +370,68 @@ PE428_ALLOWABLE_MEDICAL_EXPENSES_LINE_47 = AmountKind.declare(
 """Allowable medical expenses, PE428 line 47 and line 58769 "Line 47 and line 58769: Line 45 plus
 line 46 =": the amount as the filer gives it, an optional input; a blank input is read as blank,
 and the sum that reads it reads it as 0."""
+
+PE428_TAX_ON_SPLIT_INCOME_LINE_56 = AmountKind.declare(
+    CATALOG, "pe428_tax_on_split_income_line_56", non_negative=True
+)
+"""Prince Edward Island tax on split income, PE428 line 56 and line 61510 "Line 56 and line 61510:
+Prince Edward Island tax on split income (complete Form T1206)": the amount as the filer gives it,
+an optional input; a blank input is read as blank, and the sum that reads it reads it as 0."""
+
+PE428_TAX_LINE_57 = AmountKind.declare(CATALOG, "pe428_tax_line_57", non_negative=True)
+"""Prince Edward Island tax before credits, PE428 line 57 "Line 57: Line 55 plus line 56 =": the tax
+on taxable income (line 55, a copy of line 8) plus the tax on split income."""
+
+PE428_TAX_LINE_59 = AmountKind.declare(CATALOG, "pe428_tax_line_59", non_negative=True)
+"""Prince Edward Island tax after the non-refundable credits, PE428 line 59 "Line 59: Line 57 minus
+line 58 (if negative, enter "0") =": the tax before credits less the credits, not below 0."""
+
+PE428_DIVIDEND_TAX_CREDIT_LINE_60 = AmountKind.declare(
+    CATALOG, "pe428_dividend_tax_credit_line_60", non_negative=True
+)
+"""Prince Edward Island dividend tax credit, PE428 line 60 and line 61520 "Line 60 and line 61520:
+Prince Edward Island dividend tax credit (use Worksheet PE428)": the amount as the filer gives it,
+an optional input; a blank input is read as blank, and the sum that reads it reads it as 0."""
+
+PE428_MINIMUM_TAX_CARRYOVER_LINE_61 = AmountKind.declare(
+    CATALOG, "pe428_minimum_tax_carryover_line_61", non_negative=True
+)
+"""Prince Edward Island minimum tax carryover, PE428 line 61 and line 61540 "Line 61 and line 61540:
+Amount from line 40427 of your return multiplied by 57.5% =": the amount as the filer gives it, an
+optional input; a blank input is read as blank, and the sum that reads it reads it as 0."""
+
+PE428_CREDITS_TOTAL_LINE_62 = AmountKind.declare(
+    CATALOG, "pe428_credits_total_line_62", non_negative=True
+)
+"""Prince Edward Island dividend and minimum tax credits, PE428 line 62 "Line 62: Line 60 plus
+line 61 =": the dividend tax credit plus the minimum tax carryover."""
+
+PE428_TAX_LINE_63 = AmountKind.declare(CATALOG, "pe428_tax_line_63", non_negative=True)
+"""Prince Edward Island tax after the dividend and minimum tax credits, PE428 line 63 "Line 63: Line
+59 minus line 62 (if negative, enter "0") =": line 59 less line 62, not below 0."""
+
+PE428_ADDITIONAL_TAX_MINIMUM_TAX_LINE_64 = AmountKind.declare(
+    CATALOG, "pe428_additional_tax_minimum_tax_line_64", non_negative=True
+)
+"""Prince Edward Island additional tax for minimum tax purposes, PE428 line 64 "Line 64: Amount from
+Line 14 of Part 7 of Form T691 multiplied by 57.5% =": the amount as the filer gives it, an
+optional input; a blank input is read as blank, and the sum that reads it reads it as 0."""
+
+PE428_TAX_WITH_MINIMUM_TAX_LINE_65 = AmountKind.declare(
+    CATALOG, "pe428_tax_with_minimum_tax_line_65", non_negative=True
+)
+"""Prince Edward Island tax with the additional minimum tax, PE428 line 65 "Line 65: Line 63 plus
+line 64 =": line 63 plus the additional tax for minimum tax purposes."""
+
+PE428_AMOUNT_FROM_SPOUSE_OR_PARTNER_FORM_LINE_66 = AmountKind.declare(
+    CATALOG, "pe428_amount_from_spouse_or_partner_form_line_66", non_negative=True
+)
+"""Spouse or partner Form PE428 amount, PE428 line 66 and line 63360 "Line 66 and line 63360: Amount
+from line 101 of your spouse's or common-law partner's Form PE428, if any": the amount as the
+filer gives it, an optional input; a blank input is read as blank, and the subtraction that reads
+it reads it as 0."""
+
+PE428_TAX_LINE_67 = AmountKind.declare(CATALOG, "pe428_tax_line_67", non_negative=True)
+"""Prince Edward Island tax after credits, PE428 line 67 "Line 67: Line 65 minus line 66 (if
+negative, enter "0") Enter this amount on line 74. =": line 65 less the amount from the spouse or
+common-law partner's form, not below 0."""

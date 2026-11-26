@@ -1,0 +1,11 @@
+# Nova Scotia minimum tax rate, 2025 tax year (Form NS428 lines 58 and 61): 57.5%.
+# Line 58 applies it to the amount from line 40427 of the return, and line 61 to the amount from
+# line 14 of Part 7 of Form T691. Each product is a dollars-and-cents line, so it rounds half-up to
+# the cent, the project's choice, as the form states no rounding rule.
+family: ca-ns/minimum_tax_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5003-c/5003-c-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.575"

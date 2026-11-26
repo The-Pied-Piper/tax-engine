@@ -1,0 +1,13 @@
+# NS428 (2025) line 57's input, which a salary-only caller does not give.
+# Line 57 and line 61520: Nova Scotia dividend tax credit (use Worksheet NS428) (Form NS428, CRA 5003-C).
+# Worksheet NS428 is not built, so a request that leaves the line out is read as blank; the step that reads line 57 (line 59) reads that blank as 0.
+form:
+  name: ca-ns/ns428
+inputs:
+  - name: ca-ns/ns428_dividend_tax_credit_line_57
+    title: "Nova Scotia dividend tax credit"
+    reference: "57"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 57 and line 61520: Nova Scotia dividend tax credit (use Worksheet NS428)'

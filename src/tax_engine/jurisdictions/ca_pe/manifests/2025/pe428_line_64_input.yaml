@@ -1,0 +1,16 @@
+# PE428 (2025) line 64's input, which a salary-only caller does not give.
+# Line 64: "Line 64: Amount from Line 14 of Part 7 of Form T691 multiplied by 57.5% =" (Form PE428,
+# CRA 5002-C). The line is the additional tax for minimum tax purposes (Form T691, Part 7, line 14)
+# at the printed rate. A salary-only filer has no minimum tax carryover, so the line is taken as one
+# optional input, never hardcoded to 0. A request that leaves the line out is read as blank; the
+# step that reads line 64 (line 65) reads that blank as 0. The form prints no label for the line, so
+# the input has no title.
+form:
+  name: ca-pe/pe428
+inputs:
+  - name: ca-pe/pe428_additional_tax_minimum_tax_line_64
+    reference: "64"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 64: Amount from Line 14 of Part 7 of Form T691 multiplied by 57.5% ='
