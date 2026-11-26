@@ -1,0 +1,14 @@
+# NB428 (2025) line 55's input, which a salary-only caller does not give.
+# "Line 55 and line 61510: New Brunswick tax on split income (complete Form T1206)" (Form NB428, CRA 5004-C). T1206 is not built (it is $0 for a salary-only filer), so the
+# line is taken as one optional input, as the form takes it. A request that leaves the line out is
+# read as blank; the step that reads line 55 reads that blank as 0.
+form:
+  name: ca-nb/nb428
+inputs:
+  - name: ca-nb/nb428_tax_on_split_income_line_55
+    title: "New Brunswick tax on split income"
+    reference: "55"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 55 and line 61510: New Brunswick tax on split income (complete Form T1206)"

@@ -165,3 +165,9 @@ NB428_NON_REFUNDABLE_CREDITS_LINE_53 = AmountKind.declare(
 )
 """New Brunswick non-refundable tax credits, NB428 line 53 and line 61500 "Line 49 plus line 52":
 the credits at the printed rate plus the donations credit; line 57 reads it."""
+
+NB428_TAX_ON_SPLIT_INCOME_LINE_55 = AmountKind.declare(
+    CATALOG, "nb428_tax_on_split_income_line_55", non_negative=True
+)
+"""NB428 line 55 and line 61510 "New Brunswick tax on split income (complete Form T1206)": the
+amount as the filer gives it, an optional input; a blank input is read as blank."""
