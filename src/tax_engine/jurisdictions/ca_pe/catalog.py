@@ -371,3 +371,15 @@ PE428_CREDITS_AT_RATE_LINE_50 = AmountKind.declare(
 """Credits at the credit rate, PE428 line 50 and line 58840 "Line 50 and line 58840: Line 48
 multiplied by the percentage from line 49 =": line 48 times the 9.5% of line 49, rounded to the
 cent."""
+
+PE428_DONATIONS_AMOUNT_LINE_51 = AmountKind.declare(
+    CATALOG, "pe428_donations_amount_line_51", non_negative=True
+)
+"""Federal Schedule 9 amount, PE428 line 51 box A "Line 51: Amount from line 13 of your federal
+Schedule 9": a record total of the Schedule 9 export, 0 for a salary-only caller."""
+
+PE428_DONATIONS_CREDIT_AT_RATE_LINE_51 = AmountKind.declare(
+    CATALOG, "pe428_donations_credit_at_rate_line_51", non_negative=True
+)
+"""Donations credit at the printed rate, PE428 line 51 box B "Line 51: Amount from line 13 of your
+federal Schedule 9 multiplied by 9.5% =": the Schedule 9 amount times 9.5%, rounded to the cent."""
