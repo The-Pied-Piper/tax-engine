@@ -351,3 +351,10 @@ PE428_ALLOWABLE_MEDICAL_EXPENSES_FOR_OTHER_DEPENDANTS_LINE_46 = AmountKind.decla
 58729: Allowable amount of medical expenses for other dependants (use Worksheet PE428)": the
 amount as the filer gives it, an optional input; a blank input is read as blank, and the sum
 that reads it reads it as 0."""
+
+PE428_MEDICAL_EXPENSES_ALLOWABLE_LINE_47 = AmountKind.declare(
+    CATALOG, "pe428_medical_expenses_allowable_line_47", non_negative=True
+)
+"""Allowable medical expenses, PE428 line 47 "Line 47 and line 58769: Line 45 plus line 46 =": line
+45 plus the allowable amount of medical expenses for other dependants, the optional line 46 read
+as 0 when blank."""
