@@ -124,3 +124,5 @@ CHAIN_47 = (
     "pe428_line_46_input.yaml",
     "pe428_line_47.yaml",
 )
+
+CHAIN_48 = (*CHAIN_47, "pe428_line_48.yaml")

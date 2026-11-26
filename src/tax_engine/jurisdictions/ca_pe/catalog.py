@@ -358,3 +358,9 @@ PE428_MEDICAL_EXPENSES_ALLOWABLE_LINE_47 = AmountKind.declare(
 """Allowable medical expenses, PE428 line 47 "Line 47 and line 58769: Line 45 plus line 46 =": line
 45 plus the allowable amount of medical expenses for other dependants, the optional line 46 read
 as 0 when blank."""
+
+PE428_CREDITS_TOTAL_LINE_48 = AmountKind.declare(
+    CATALOG, "pe428_credits_total_line_48", non_negative=True
+)
+"""Credits total, PE428 line 48 and line 58800 "Line 48 and line 58800: Line 39 plus line 47 =":
+the credits subtotal of line 39 plus the allowable medical expenses of line 47."""
