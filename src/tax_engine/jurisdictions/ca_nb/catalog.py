@@ -34,3 +34,10 @@ NB428_EI_PREMIUMS_LINE_21 = AmountKind.declare(
 )
 """EI premiums credit amount, NB428 line 21 (line 58300) "Amount from line 31200 of your return": a
 copy of T2204 line 16, the EI premiums credit amount."""
+
+NB428_CPP_EI_AND_OTHER_LINE_25 = AmountKind.declare(
+    CATALOG, "nb428_cpp_ei_and_other_line_25", non_negative=True
+)
+"""CPP or QPP, EI and other credit amounts, NB428 line 25 "Add lines 19 to 24.": the sum of the CPP
+or QPP contributions on line 19 and the EI premiums on line 21, the other lines being blank
+optional lines."""

@@ -1,0 +1,19 @@
+# Form NB428 (CRA 5004-C) line 25: "Line 25: Add lines 19 to 24." Lines 19 and 21 are the amounts
+# from lines 30800 and 31200 of the return. Lines 20, 22, 23 and 24 (31000, 31217 and the two
+# optional lines after them) are blank claims, zero for a salary-only filer, and are not built, so
+# the one step adds lines 19 and 21 with core/sum, as ca-sk/sk428_credits line 31 does
+# (sk428_credits_line_31.yaml). The form prints no label.
+form:
+  name: ca-nb/nb428_credits
+capabilities:
+  - name: core/sum
+    reference: "25"
+    unit: ca/cad
+    params:
+      rounding: ca-nb/cent_rounding
+    consumes:
+      parts:
+        - ca-nb/nb428_cpp_contributions_line_19
+        - ca-nb/nb428_ei_premiums_line_21
+    produces:
+      output: ca-nb/nb428_cpp_ei_and_other_line_25

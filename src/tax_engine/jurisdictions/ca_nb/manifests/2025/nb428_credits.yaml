@@ -10,6 +10,5 @@ form:
   required: true
   exports:
     - ca-nb/nb428_credits_subtotal_line_18
-    - ca-nb/nb428_cpp_contributions_line_19
-    - ca-nb/nb428_ei_premiums_line_21
+    - ca-nb/nb428_cpp_ei_and_other_line_25
 capabilities: []
