@@ -1,0 +1,20 @@
+# Form NS428 (Nova Scotia Tax, CRA 5003-C) Part A, line 3. Each of the five columns prints "Line 3:"
+# with its lower bound: 0.00, 30,507.00, 61,015.00, 95,883.00 and 154,650.00, under "Column 1: Line 1
+# is $30,507 or less", "Column 2: Line 1 is more than $30,507 but not more than $61,015", "Column 3:
+# Line 1 is more than $61,015 but not more than $95,883", "Column 4: Line 1 is more than $95,883
+# but not more than $154,650" and "Column 5: Line 1 is more than $154,650". Line 3 is the printed
+# lower bound of the column that line 1 falls in.
+#
+# Line 2 is a copy of line 1 and has no step of its own: line 3 reads line 1 directly.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/bracket_column_lower_bound
+    reference: "3"
+    unit: ca/cad
+    params:
+      schedule: ca-ns/brackets
+    consumes:
+      base: ca-ns/ns428_taxable_income_line_1
+    produces:
+      output: ca-ns/ns428_bracket_lower_bound_line_3
