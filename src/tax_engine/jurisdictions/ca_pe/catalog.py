@@ -39,3 +39,9 @@ PE428_BRACKET_RATE_LINE_5 = AmountKind.declare(
 """Rate of the column, Form PE428 line 5 "Column 1: Line 1 is $33,328.00 or less / Line 5: Rate
 9.5%" (13.47%; 16.6%; 17.62%; 19%): the printed rate of the column of lines 2 to 8 that line 1
 falls in."""
+
+PE428_TAX_ON_EXCESS_LINE_6 = AmountKind.declare(
+    CATALOG, "pe428_tax_on_excess_line_6", non_negative=True
+)
+"""Tax on the excess, PE428 line 6 "Line 6: Line 4 multiplied by the percentage from line 5": line 4
+times the rate of line 5, rounded to the cent."""
