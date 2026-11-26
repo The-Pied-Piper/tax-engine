@@ -139,3 +139,10 @@ NS428_CREDITS_SUBTOTAL_LINE_32 = AmountKind.declare(
 )
 """Nova Scotia credits subtotal, NS428 line 32 "Add lines 29 to 31.": line 29, lines 30 and 31 (the
 disability amounts) not being built."""
+
+NS428_STUDENT_LOAN_INTEREST_LINE_33 = AmountKind.declare(
+    CATALOG, "ns428_student_loan_interest_line_33", non_negative=True
+)
+"""Interest paid on student loans, NS428 line 33 (line 58520) "Interest paid on your student loans
+(amount from line 31900 of your return)": a record total of the T1's export
+(`ca/student_loan_interest_line_31900`), 0 for a salary-only caller."""
