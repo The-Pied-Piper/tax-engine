@@ -182,3 +182,9 @@ NS428_MEDICAL_EXPENSES_OVER_LIMIT_LINE_43 = AmountKind.declare(
 )
 """Medical expenses over the limit, NS428 line 43 "Line 38 minus line 42 (if negative, enter "0")
 =": line 38 minus line 42, never below 0; a blank line 38 is read as 0."""
+
+NS428_MEDICAL_EXPENSES_LINE_45 = AmountKind.declare(
+    CATALOG, "ns428_medical_expenses_line_45", non_negative=True
+)
+"""Medical expenses, NS428 line 45 (line 58769) "Line 43 plus line 44 =": line 43, line 44 (the
+allowable amount for other dependants) not being built."""
