@@ -25,3 +25,10 @@ PE428_AGE_AMOUNT_LINE_10 = AmountKind.declare(
 line 10 "Line 10 and line 58080: Age amount (if you were born in 1960 or earlier) (use Worksheet
 PE428) (maximum $6,510)": the amount as the filer gives it, an optional input; a blank input is
 read as blank."""
+
+PE428_SPOUSE_OR_COMMON_LAW_PARTNER_AMOUNT_LINE_13 = AmountKind.declare(
+    CATALOG, "pe428_spouse_or_common_law_partner_amount_line_13", non_negative=True
+)
+"""Spouse or common-law partner amount, PE428 line 13 "Line 13 and line 58120: Line 11 minus line
+12 (if negative, enter "0") (maximum $12,443)": the amount as the filer gives it, an optional
+input; a blank input is read as blank."""
