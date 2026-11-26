@@ -239,3 +239,11 @@ PE428_DISABILITY_AMOUNT_SELF_LINE_31 = AmountKind.declare(
 (claim $6,890 or, if you were under 18 years of age, use Worksheet PE428)": the amount as the
 filer gives it, an optional input; a blank input is read as blank, and the sum that reads it
 reads it as 0."""
+
+PE428_DISABILITY_AMOUNT_TRANSFERRED_FROM_A_DEPENDANT_LINE_32 = AmountKind.declare(
+    CATALOG, "pe428_disability_amount_transferred_from_a_dependant_line_32", non_negative=True
+)
+"""Disability amount transferred from a dependant, PE428 line 32 "Line 32 and line 58480:
+Disability amount transferred from a dependant (use Worksheet PE428)": the amount as the filer
+gives it, an optional input; a blank input is read as blank, and the sum that reads it reads it
+as 0."""
