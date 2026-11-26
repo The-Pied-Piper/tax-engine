@@ -53,3 +53,10 @@ PE428_YOUNG_CHILDREN_AMOUNT_LINE_18 = AmountKind.declare(
 """Amount for young children (complete the chart at the end of page 2), PE428 line 18 "Line 18 and
 line 58230: Amount for young children (complete the chart at the end of page 2)": the amount as
 the filer gives it, an optional input; a blank input is read as blank."""
+
+PE428_CREDITS_SUBTOTAL_LINE_19 = AmountKind.declare(
+    CATALOG, "pe428_credits_subtotal_line_19", non_negative=True
+)
+"""Prince Edward Island credits subtotal, PE428 line 19 "Line 19: Add lines 9, 10, 13, and 16 to
+18. = ^": the sum of the personal amounts claimed, the basic personal amount plus the optional
+lines 10, 13, 16, 17 and 18 read as 0 when blank."""
