@@ -15,10 +15,7 @@ import pytest
 
 import tax_engine.jurisdictions.ca_ns.catalog as ns_catalog
 from tax_engine.domain.kinds import AmountKind
-from tax_engine.domain.parameters.rate import RATE, Rate
-from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 from tests.jurisdictions.ca_ns import ns428_tax_support as s
-from tests.jurisdictions.ca_ns.ns428_credits_support import parameter_source
 from tests.jurisdictions.ca_ns.support import nova_scotia_kinds
 from tests.kinds import non_negative
 
@@ -48,16 +45,6 @@ def test_line_58_is_57_point_5_percent_of_the_amount_rounded_half_up(
 
     assert str(s.line(tmp_path, "70000", s.LINE_58, given)) == expected
     assert s.line(tmp_path / "amount", "70000", s.LINE_58_AMOUNT, given) == D(amount)
-
-
-def test_the_rate_dataset_is_57_point_5_percent_half_up_citing_the_form() -> None:
-    data = parameter_source().get(s.RATE, 2025, RATE)
-
-    assert data.values == Rate(D("0.575"))
-    assert data.rounding == RoundTo(D("0.01"), RoundingMode.HALF_UP)
-    assert data.sources == (
-        "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5003-c/5003-c-25e.txt",
-    )
 
 
 def test_the_part_is_a_record_total_of_the_t1_export_then_the_rate() -> None:

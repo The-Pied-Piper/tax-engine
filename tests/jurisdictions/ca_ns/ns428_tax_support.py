@@ -14,6 +14,8 @@ from decimal import Decimal
 from pathlib import Path
 from typing import Any
 
+import yaml
+
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
@@ -126,8 +128,6 @@ def line(
 
 def part(name: str) -> dict[str, Any]:
     """The real part file `name`, parsed."""
-    import yaml
-
     parsed = yaml.safe_load((NS_PARTS / name).read_text(encoding="utf-8"))
     assert isinstance(parsed, dict)
     return parsed

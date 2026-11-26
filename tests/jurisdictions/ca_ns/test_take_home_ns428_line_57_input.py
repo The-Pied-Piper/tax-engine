@@ -2,7 +2,7 @@
 
 Form text (Form NS428, CRA 5003-C, confirmed 26 Nov 2026 from CRA's PDF):
   "Line 57 and line 61520: Nova Scotia dividend tax credit (use Worksheet NS428)".
-Umar ruled on 26 Nov 2026 that the credit is one optional input; Worksheet NS428 is not built.
+Worksheet NS428 is not built; the credit is one optional input.
 A request that leaves the line out is read as blank; the step that reads it reads that blank as 0.
 """
 
