@@ -325,3 +325,9 @@ PE428_NET_INCOME_LINE_41 = AmountKind.declare(
 )
 """Net income, PE428 line 41 "Line 41: Amount from line 23600 of your return": a record total of
 the T1's net income (line 23600, floored)."""
+
+PE428_MEDICAL_EXPENSES_RATE_AMOUNT_LINE_43 = AmountKind.declare(
+    CATALOG, "pe428_medical_expenses_rate_amount_line_43", non_negative=True
+)
+"""Medical expenses rate amount, PE428 line 43 "Line 43: Line 41 multiplied by the percentage from
+line 42 = ^": line 41 times the 3% of line 42, rounded to the cent."""
