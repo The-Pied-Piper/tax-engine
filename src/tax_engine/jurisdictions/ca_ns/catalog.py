@@ -188,3 +188,9 @@ NS428_MEDICAL_EXPENSES_LINE_45 = AmountKind.declare(
 )
 """Medical expenses, NS428 line 45 (line 58769) "Line 43 plus line 44 =": line 43, line 44 (the
 allowable amount for other dependants) not being built."""
+
+NS428_CREDITS_TOTAL_LINE_46 = AmountKind.declare(
+    CATALOG, "ns428_credits_total_line_46", non_negative=True
+)
+"""Nova Scotia credits total, NS428 line 46 (line 58800) "Line 37 plus line 45 =": the credits
+subtotal of line 37 plus the medical expense amount of line 45."""
