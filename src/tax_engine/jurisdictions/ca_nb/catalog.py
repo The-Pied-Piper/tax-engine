@@ -50,3 +50,9 @@ NB428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
 """Tax at the start of the column of lines 2 to 8 (the engine's description; the form prints no
 title for line 7), Form NB428 line 7 "Column 1: Line 1 is $51,306 or less / Line 7: 0.00" (4,822.76;
 12,005.88; 25,997.24): the figure printed on line 7 of the column that line 1 falls in."""
+
+NB428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
+    CATALOG, "nb428_tax_on_taxable_income_line_8", non_negative=True
+)
+"""New Brunswick tax on taxable income, NB428 line 8 "Line 8: Line 6 plus line 7 New Brunswick tax
+on taxable income =": line 6 plus line 7, read by line 54 on the tax form."""
