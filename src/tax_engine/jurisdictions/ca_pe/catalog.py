@@ -53,3 +53,10 @@ PE428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
 title for line 7), Form PE428 line 7 "Column 1: Line 1 is $33,328.00 or less / Line 7: 0.00"
 (3,166.16; 7,386.04; 14,083.15; 20,250.15): the figure printed on line 7 of the column that line 1
 falls in."""
+
+PE428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
+    CATALOG, "pe428_tax_on_taxable_income_line_8", non_negative=True
+)
+"""Prince Edward Island tax on taxable income, PE428 line 8 "Line 8: Line 6 plus line 7 Prince
+Edward Island tax on taxable income": line 6 plus line 7, copied to line 55 and read by the lines
+after it."""
