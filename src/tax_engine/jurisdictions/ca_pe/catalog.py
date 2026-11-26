@@ -282,3 +282,10 @@ PE428_STUDENT_LOAN_INTEREST_LINE_35 = AmountKind.declare(
 """Interest paid on your student loans, PE428 line 35 "Line 35 and line 58520: Interest paid on
 your student loans (amount from line 31900 of your return)": a record total of the T1's export
 (`ca/student_loan_interest_line_31900`), 0 for a salary-only caller."""
+
+PE428_TUITION_AND_EDUCATION_AMOUNTS_LINE_36 = AmountKind.declare(
+    CATALOG, "pe428_tuition_and_education_amounts_line_36", non_negative=True
+)
+"""Your tuition and education amounts, PE428 line 36 "Line 36 and line 58560: Your tuition and
+education amounts (attach Schedule PE(S11))": the amount as the filer gives it, an optional
+input; a blank input is read as blank, and the sum that reads it reads it as 0."""
