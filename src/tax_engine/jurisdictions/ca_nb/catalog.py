@@ -91,3 +91,77 @@ NB428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
 )
 """New Brunswick tax on taxable income, NB428 line 8 "Line 8: Line 6 plus line 7 New Brunswick tax
 on taxable income =": line 6 plus line 7, read by line 54 on the tax form."""
+
+NB428_CREDITS_SUBTOTAL_LINE_30 = AmountKind.declare(
+    CATALOG, "nb428_credits_subtotal_line_30", non_negative=True
+)
+"""New Brunswick credits subtotal, NB428 line 30 "Add lines 27 to 29.": line 27 (a copy of line 26),
+the pension and caregiver amounts being blank claims."""
+
+NB428_CREDITS_SUBTOTAL_LINE_33 = AmountKind.declare(
+    CATALOG, "nb428_credits_subtotal_line_33", non_negative=True
+)
+"""New Brunswick credits subtotal, NB428 line 33 "Add lines 30 to 32.": line 30, the disability
+amounts being blank claims."""
+
+NB428_CREDITS_SUBTOTAL_LINE_38 = AmountKind.declare(
+    CATALOG, "nb428_credits_subtotal_line_38", non_negative=True
+)
+"""New Brunswick credits subtotal, NB428 line 38 "Add lines 33 to 37.": line 33, lines 34 to 37
+being blank claims."""
+
+NB428_MEDICAL_EXPENSES_LINE_46 = AmountKind.declare(
+    CATALOG, "nb428_medical_expenses_line_46", non_negative=True
+)
+"""Medical expenses, NB428 line 46 and line 58769 "Line 44 plus line 45": the amount as the filer
+gives it, an optional input; a blank input is read as blank."""
+
+NB428_CREDITS_TOTAL_LINE_47 = AmountKind.declare(
+    CATALOG, "nb428_credits_total_line_47", non_negative=True
+)
+"""New Brunswick credits total, NB428 line 47 and line 58800 "Line 38 plus line 46": the credits
+subtotal plus the medical expenses."""
+
+NB428_CREDITS_AT_RATE_LINE_49 = AmountKind.declare(
+    CATALOG, "nb428_credits_at_rate_line_49", non_negative=True
+)
+"""Credits at the credit rate, NB428 line 49 and line 58840 "Line 47 multiplied by the percentage
+from line 48": line 47 times 9.4%."""
+
+NB428_DONATIONS_AMOUNT_LINE_50 = AmountKind.declare(
+    CATALOG, "nb428_donations_amount_line_50", non_negative=True
+)
+"""Donations amount, NB428 line 50 box A "Amount from line 13 of your federal Schedule 9": a record
+total of Schedule 9's export (`ca/schedule_9.donations_and_gifts_line_13`), 0 for a salary-only
+caller."""
+
+NB428_DONATIONS_CREDIT_AT_RATE_LINE_50 = AmountKind.declare(
+    CATALOG, "nb428_donations_credit_at_rate_line_50", non_negative=True
+)
+"""Donations credit at 9.4%, NB428 line 50 box B "Amount from line 13 of your federal Schedule 9
+multiplied by 9.4% =": the Schedule 9 amount times 9.4%; a blank amount is read as 0."""
+
+NB428_DONATIONS_AMOUNT_LINE_51 = AmountKind.declare(
+    CATALOG, "nb428_donations_amount_line_51", non_negative=True
+)
+"""Donations amount, NB428 line 51 box A "Amount from line 14 of your federal Schedule 9": a record
+total of Schedule 9's export (`ca/schedule_9.donations_and_gifts_line_14`), 0 for a salary-only
+caller."""
+
+NB428_DONATIONS_CREDIT_AT_RATE_LINE_51 = AmountKind.declare(
+    CATALOG, "nb428_donations_credit_at_rate_line_51", non_negative=True
+)
+"""Donations credit at 17.95%, NB428 line 51 box B "Amount from line 14 of your federal Schedule 9
+multiplied by 17.95% =": the Schedule 9 amount times 17.95%; a blank amount is read as 0."""
+
+NB428_DONATIONS_CREDIT_LINE_52 = AmountKind.declare(
+    CATALOG, "nb428_donations_credit_line_52", non_negative=True
+)
+"""Donations and gifts credit, NB428 line 52 and line 58969 "Line 50 plus line 51": line 50 plus
+line 51."""
+
+NB428_NON_REFUNDABLE_CREDITS_LINE_53 = AmountKind.declare(
+    CATALOG, "nb428_non_refundable_credits_line_53", non_negative=True
+)
+"""New Brunswick non-refundable tax credits, NB428 line 53 and line 61500 "Line 49 plus line 52":
+the credits at the printed rate plus the donations credit; line 57 reads it."""
