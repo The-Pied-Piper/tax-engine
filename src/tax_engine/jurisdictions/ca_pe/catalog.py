@@ -435,3 +435,138 @@ PE428_TAX_LINE_67 = AmountKind.declare(CATALOG, "pe428_tax_line_67", non_negativ
 """Prince Edward Island tax after credits, PE428 line 67 "Line 67: Line 65 minus line 66 (if
 negative, enter "0") Enter this amount on line 74. =": line 65 less the amount from the spouse or
 common-law partner's form, not below 0."""
+
+PE428_NET_INCOME_LINE_68 = AmountKind.declare(
+    CATALOG, "pe428_net_income_line_68", non_negative=False
+)
+"""Net income, PE428 line 68 column 1 "Line 68: Net income from line 23600 of the return (or the
+amount you would have entered if the instructions on line 23600 said "if negative, show in
+brackets")": the net income of the T1 return before its floor, read from the signed T1 net income
+export (`ca/net_income_signed`). The form shows a negative net income in brackets, so the kind is
+signed."""
+
+PE428_UCCB_REPAYMENT_LINE_69 = AmountKind.declare(
+    CATALOG, "pe428_uccb_repayment_line_69", non_negative=True
+)
+"""UCCB repayment, PE428 line 69 column 1 "Line 69: Amount from line 21300 of the return": the T1's
+line, read as the T1 form's export."""
+
+PE428_FAMILY_INCOME_LINE_70 = AmountKind.declare(
+    CATALOG, "pe428_family_income_line_70", non_negative=False
+)
+"""Line 68 plus line 69, PE428 line 70 "Line 68 plus line 69", column 1 (you): the net income of
+line 68 plus the UCCB repayment of line 69. Line 68 can be negative, so the kind is signed."""
+
+PE428_UCCB_INCOME_LINE_71 = AmountKind.declare(
+    CATALOG, "pe428_uccb_income_line_71", non_negative=True
+)
+"""UCCB income, PE428 line 71 column 1 "Line 71: Amount from line 11700 of the return": the T1's
+line, read as the T1 form's export."""
+
+PE428_ADJUSTED_FAMILY_INCOME_LINE_72 = AmountKind.declare(
+    CATALOG, "pe428_adjusted_family_income_line_72", non_negative=True
+)
+"""Line 70 minus line 71, PE428 line 72 "Line 70 minus line 71 (if negative, enter "0")", column 1
+(you): the family income of line 70 less the UCCB income of line 71, not below 0. Line 73 ("Adjusted
+family income") adds the two columns, and column 2 is not modelled, so this is the adjusted family
+income."""
+
+LOW_INCOME_REDUCTION_BASIC = AmountKind.declare(
+    CATALOG, "low_income_reduction_basic", non_negative=True
+)
+"""Basic reduction, PE428 line 75 "Line 75 and line 63370: Basic reduction Claim $350": the printed
+$350, claimed whole and not income-tested."""
+
+PE428_AGE_REDUCTION_FOR_SELF_LINE_76 = AmountKind.declare(
+    CATALOG, "pe428_age_reduction_for_self_line_76", non_negative=True
+)
+"""Age reduction for self, PE428 line 76 and line 63380 "Age reduction for self (if you were born in
+1960 or earlier) Claim $250": the amount as the filer gives it, an optional input; a blank input is
+read as blank, and the sum that reads it reads it as 0."""
+
+PE428_REDUCTION_FOR_SPOUSE_OR_COMMON_LAW_PARTNER_LINE_77 = AmountKind.declare(
+    CATALOG, "pe428_reduction_for_spouse_or_common_law_partner_line_77", non_negative=True
+)
+"""Reduction for spouse or common-law partner, PE428 line 77 and line 63390 "Reduction for spouse or
+common-law partner (if you had a spouse or common-law partner on December 31, 2025) Claim $350": the
+amount as the filer gives it, an optional input; a blank input is read as blank, and the sum that
+reads it reads it as 0."""
+
+PE428_AGE_REDUCTION_FOR_SPOUSE_OR_COMMON_LAW_PARTNER_LINE_78 = AmountKind.declare(
+    CATALOG, "pe428_age_reduction_for_spouse_or_common_law_partner_line_78", non_negative=True
+)
+"""Age reduction for spouse or common-law partner, PE428 line 78 and line 63400 "Age reduction for
+spouse or common-law partner (if they were born in 1960 or earlier) Claim $250": the amount as the
+filer gives it, an optional input; a blank input is read as blank, and the sum that reads it reads
+it as 0."""
+
+PE428_REDUCTION_FOR_ELIGIBLE_DEPENDANT_LINE_79 = AmountKind.declare(
+    CATALOG, "pe428_reduction_for_eligible_dependant_line_79", non_negative=True
+)
+"""Reduction for an eligible dependant, PE428 line 79 and line 63410 "Reduction for an eligible
+dependant claimed on line 58160 Claim $350": the amount as the filer gives it, an optional input; a
+blank input is read as blank, and the sum that reads it reads it as 0."""
+
+PE428_REDUCTION_FOR_DEPENDENT_CHILDREN_LINE_80 = AmountKind.declare(
+    CATALOG, "pe428_reduction_for_dependent_children_line_80", non_negative=True
+)
+"""Reduction for dependent children born in 2007 or later, PE428 line 80 "Number of dependent
+children (do not include a child on line 63410) Line 60999 multiplied by $300 =": the amount as the
+filer gives it, an optional input; a blank input is read as blank, and the sum that reads it reads
+it as 0."""
+
+PE428_LOW_INCOME_REDUCTIONS_TOTAL_LINE_81 = AmountKind.declare(
+    CATALOG, "pe428_low_income_reductions_total_line_81", non_negative=True
+)
+"""Reductions added, PE428 line 81 "Line 81: Add lines 75 to 80 =": the basic reduction and the
+claims of lines 76 to 80 added."""
+
+LOW_INCOME_REDUCTION_BASE_AMOUNT = AmountKind.declare(
+    CATALOG, "low_income_reduction_base_amount", non_negative=True
+)
+"""Base amount, PE428 line 83 "Line 83: Base amount 22,650.00": the printed $22,650.00, the family
+income above which the reduction fades."""
+
+PE428_INCOME_OVER_BASE_AMOUNT_LINE_84 = AmountKind.declare(
+    CATALOG, "pe428_income_over_base_amount_line_84", non_negative=True
+)
+"""PE428 line 84 "Line 84: Line 82 minus line 83 (if negative, enter "0") =": the adjusted family
+income (line 82, a copy of line 73) less the base amount of line 83, not below 0, rounded half-up
+to the cent."""
+
+PE428_REDUCTION_PHASE_OUT_LINE_86 = AmountKind.declare(
+    CATALOG, "pe428_reduction_phase_out_line_86", non_negative=True
+)
+"""PE428 line 86 "Line 86: Line 84 multiplied by the percentage from line 85 =": line 84 times the
+printed line 85 rate of 5%, rounded half-up to the cent."""
+
+PE428_LOW_INCOME_TAX_REDUCTION_LINE_87 = AmountKind.declare(
+    CATALOG, "pe428_low_income_tax_reduction_line_87", non_negative=True
+)
+"""Prince Edward Island low-income tax reduction, PE428 line 87 "Line 87: Line 81 minus line 86 (if
+negative, enter "0") Prince Edward Island low-income tax reduction =": line 81 less line 86, not
+below 0, rounded half-up to the cent."""
+
+PE428_TAX_LINE_88 = AmountKind.declare(CATALOG, "pe428_tax_line_88", non_negative=True)
+"""PE428 line 88 "Line 88: Line 74 minus line 87 (if negative, enter "0") =": line 74 (a copy of
+line 67, the tax after credits) less the low-income tax reduction of line 87, not below 0, rounded
+half-up to the cent."""
+
+PE428_LOW_INCOME_TAX_REDUCTION_BEFORE_LINE_66_CHECK = AmountKind.declare(
+    CATALOG, "pe428_low_income_tax_reduction_before_line_66_check", non_negative=True
+)
+"""Line 81 less line 86, not below 0, rounded half-up to the cent: the low-income tax reduction
+before the instruction under line 67 ("If you are claiming an amount on line 66, enter "0" on line
+87") is applied. Not printed on the form."""
+
+PE428_AMOUNT_FROM_SPOUSE_FORM_CLAIMED_LINE_66 = AmountKind.declare(
+    CATALOG, "pe428_amount_from_spouse_form_claimed_line_66", non_negative=True
+)
+"""The amount claimed on PE428 line 66, a blank line 66 read as 0.00, so the line 66 gate can read
+it. Not printed on the form."""
+
+PE428_LINE_87_LINE_66_GATE = AmountKind.declare(
+    CATALOG, "pe428_line_87_line_66_gate", non_negative=True
+)
+"""The line 66 gate of PE428 line 87: 1 where line 66 is 0.00 and 0 where an amount is claimed on
+line 66. A switch, not printed on the form."""

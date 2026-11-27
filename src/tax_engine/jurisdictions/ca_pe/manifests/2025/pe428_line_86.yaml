@@ -1,0 +1,17 @@
+# Form PE428 (CRA 5002-C) line 86: "Line 86: Line 84 multiplied by the percentage from line 85 =".
+# Line 85 is the printed 5%, the `ca-pe/low_income_reduction_rate` dataset, and has no step of its
+# own. One core/apply_rate step applies it to line 84 (`ca-pe/pe428_income_over_base_amount_line_84`),
+# rounded half-up to the cent by the dataset's rule (the form states no rounding rule). The form
+# prints no title for the line, so the step has none.
+form:
+  name: ca-pe/pe428
+capabilities:
+  - name: core/apply_rate
+    reference: "86"
+    unit: ca/cad
+    params:
+      rate: ca-pe/low_income_reduction_rate
+    consumes:
+      base: ca-pe/pe428_income_over_base_amount_line_84
+    produces:
+      output: ca-pe/pe428_reduction_phase_out_line_86

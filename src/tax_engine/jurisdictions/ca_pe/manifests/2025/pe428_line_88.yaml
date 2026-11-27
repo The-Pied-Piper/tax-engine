@@ -1,0 +1,19 @@
+# Form PE428 (CRA 5002-C) line 88: "Line 88: Line 74 minus line 87 (if negative, enter "0") =".
+# One core/subtract_not_below_zero step. Line 74 is "Amount from line 67 of the previous page", a
+# copy line with no step of its own, so the step reads line 67 (`ca-pe/pe428_tax_line_67`) directly,
+# less the low-income tax reduction of line 87 (`ca-pe/pe428_low_income_tax_reduction_line_87`),
+# not below 0, rounded half-up to the cent by the dataset's rule. Both lines are always present. The
+# form prints no title for the line, so the step has none.
+form:
+  name: ca-pe/pe428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "88"
+    unit: ca/cad
+    params:
+      rounding: ca-pe/cent_rounding
+    consumes:
+      amount: ca-pe/pe428_tax_line_67
+      less: ca-pe/pe428_low_income_tax_reduction_line_87
+    produces:
+      output: ca-pe/pe428_tax_line_88

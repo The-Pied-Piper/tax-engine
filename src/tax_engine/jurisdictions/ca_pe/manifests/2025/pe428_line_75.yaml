@@ -1,0 +1,14 @@
+# Form PE428 (CRA 5002-C) line 75 and line 63370, the basic reduction: "Line 75 and line 63370:
+# Basic reduction Claim $350". The $350 is the `ca-pe/low_income_reduction_basic` dataset, claimed
+# whole through core/credit_amount, so it is the same at every salary.
+form:
+  name: ca-pe/pe428
+capabilities:
+  - name: core/credit_amount
+    title: "Basic reduction"
+    reference: "75"
+    unit: ca/cad
+    params:
+      amount: ca-pe/low_income_reduction_basic
+    produces:
+      output: ca-pe/low_income_reduction_basic

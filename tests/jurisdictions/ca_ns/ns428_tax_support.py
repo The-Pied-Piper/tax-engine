@@ -55,6 +55,26 @@ LINE_62 = "ca-ns/ns428_tax_line_62"
 LINE_63 = "ca-ns/ns428_provincial_foreign_tax_credit_line_63"
 LINE_64 = "ca-ns/ns428_tax_after_credits_line_64"
 LINE_85 = "ca-ns/ns428_tax_line_85"
+LINE_99 = "ca-ns/ns428_nova_scotia_tax_line_99"
+LINE_86_INPUT = "ca-ns/ns428_political_contributions_line_86"
+LINE_86_AT_RATE = "ca-ns/ns428_political_contributions_credit_at_rate_line_86"
+LINE_86_MAXIMUM = "ca-ns/ns428_political_contribution_credit_maximum"
+LINE_86 = "ca-ns/ns428_political_contributions_credit_line_86"
+LINE_87 = "ca-ns/ns428_tax_line_87"
+LINE_88_INPUT = "ca-ns/ns428_food_bank_donations_line_88"
+LINE_88 = "ca-ns/ns428_food_bank_credit_line_88"
+LINE_89 = "ca-ns/ns428_tax_line_89"
+LINE_90_INPUT = "ca-ns/ns428_labour_sponsored_shares_cost_line_90"
+LINE_90_AT_RATE = "ca-ns/ns428_labour_sponsored_credit_at_rate_line_90"
+LINE_90_MAXIMUM = "ca-ns/ns428_labour_sponsored_credit_maximum"
+LINE_90 = "ca-ns/ns428_labour_sponsored_credit_line_90"
+LINE_91 = "ca-ns/ns428_tax_line_91"
+LINE_92 = "ca-ns/ns428_equity_tax_credit_line_92"
+LINE_93 = "ca-ns/ns428_tax_line_93"
+LINE_94 = "ca-ns/ns428_innovation_equity_tax_credit_line_94"
+LINE_95 = "ca-ns/ns428_tax_line_95"
+LINE_96 = "ca-ns/ns428_venture_capital_tax_credit_line_96"
+LINE_97 = "ca-ns/ns428_tax_line_97"
 _RUNS = count()
 # An optional input that, typed in with a salary of 20,000, takes the net income below 0.
 NEGATIVE_NET_INCOME = "ca/social_benefits_repayment"
@@ -117,13 +137,13 @@ def _form(exports: tuple[str, ...]) -> str:
 
 def service(tmp_path: Path, exports: tuple[str, ...]) -> TaxComputationService:
     """The engine over a temporary Nova Scotia manifest of a test header, a form declaration and
-    every real line part of the form, the other namespaces being the package list's own. Line 85 is
-    read by a later form, so it is always exported with the requested ones."""
+    every real line part of the form, the other namespaces being the package list's own. Line 99 is
+    the form's last line and nothing reads it, so it is always exported with the requested ones."""
     folder = tmp_path / "manifests" / "2025"
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(base.HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(
-        _form(tuple(dict.fromkeys((*exports, LINE_85)))), encoding="utf-8"
+        _form(tuple(dict.fromkeys((*exports, LINE_99)))), encoding="utf-8"
     )
     parts = [*form_parts(*FEDERAL_FORM_NAMES), *_part_names()]
     for number, part in enumerate(parts, start=2):

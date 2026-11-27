@@ -1,0 +1,15 @@
+# PE428 (2025) line 80's input, which a salary-only caller does not give.
+# Line 80: "Line 80: Number of dependent children (do not include a child on line 63410) Line 60999
+# multiplied by $300 =" (Form PE428, CRA 5002-C). A salary-only single filer has no dependent
+# children to claim, so the line is taken as one optional input (the reduction in dollars, as the
+# box on the form), never hardcoded to 0. A request that leaves the line out is read as blank; the
+# step that reads line 80 (line 81) reads that blank as 0.
+form:
+  name: ca-pe/pe428
+inputs:
+  - name: ca-pe/pe428_reduction_for_dependent_children_line_80
+    reference: "80"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 80: Number of dependent children (do not include a child on line 63410) Line 60999 multiplied by $300 ='

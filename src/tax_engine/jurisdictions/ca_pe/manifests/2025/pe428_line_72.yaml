@@ -1,0 +1,21 @@
+# Form PE428 (CRA 5002-C) line 72, column 1 (you): "Line 72: Line 70 minus line 71 (if negative,
+# enter "0")". One core/subtract_not_below_zero step over line 70 (`ca-pe/pe428_family_income_line_70`)
+# and line 71 (`ca-pe/pe428_uccb_income_line_71`), rounded half-up to the cent by the dataset's
+# rule. Line 71 is read from the T1 by the form's own line 71 step, so it is never blank. Line 73
+# adds the amounts of line 72 in columns 1 and 2 ("Adjusted family income"); column 2 (your spouse
+# or common-law partner) is not modelled, so line 73 is this figure and has no step of its own, and
+# line 82 ("Amount from line 73") is a copy of it, so the lines after it read this one. The form
+# prints no title for the line, so the step has none.
+form:
+  name: ca-pe/pe428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "72 (column 1)"
+    unit: ca/cad
+    params:
+      rounding: ca-pe/cent_rounding
+    consumes:
+      amount: ca-pe/pe428_family_income_line_70
+      less: ca-pe/pe428_uccb_income_line_71
+    produces:
+      output: ca-pe/pe428_adjusted_family_income_line_72

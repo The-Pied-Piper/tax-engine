@@ -1,0 +1,13 @@
+# PE428 (2025) line 79's input, which a salary-only caller does not give.
+# Line 79: "Line 79 and line 63410: Reduction for an eligible dependant claimed on line 58160 Claim $350" (Form PE428, CRA 5002-C). A salary-only single filer has no such claim, so the line
+# is taken as one optional input, never hardcoded to 0. A request that leaves the line out is read
+# as blank; the step that reads line 79 (line 81) reads that blank as 0.
+form:
+  name: ca-pe/pe428
+inputs:
+  - name: ca-pe/pe428_reduction_for_eligible_dependant_line_79
+    reference: "79"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 79 and line 63410: Reduction for an eligible dependant claimed on line 58160 Claim $350'

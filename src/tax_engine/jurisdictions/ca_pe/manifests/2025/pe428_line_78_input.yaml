@@ -1,0 +1,13 @@
+# PE428 (2025) line 78's input, which a salary-only caller does not give.
+# Line 78: "Line 78 and line 63400: Age reduction for spouse or common-law partner (if they were born in 1960 or earlier) Claim $250" (Form PE428, CRA 5002-C). A salary-only single filer has no such claim, so the line
+# is taken as one optional input, never hardcoded to 0. A request that leaves the line out is read
+# as blank; the step that reads line 78 (line 81) reads that blank as 0.
+form:
+  name: ca-pe/pe428
+inputs:
+  - name: ca-pe/pe428_age_reduction_for_spouse_or_common_law_partner_line_78
+    reference: "78"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 78 and line 63400: Age reduction for spouse or common-law partner (if they were born in 1960 or earlier) Claim $250'

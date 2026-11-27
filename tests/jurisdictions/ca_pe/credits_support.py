@@ -142,5 +142,37 @@ CHAIN_65 = (*CHAIN_63, "pe428_line_64_input.yaml", "pe428_line_65.yaml")
 
 CHAIN_67 = (*CHAIN_65, "pe428_line_66_input.yaml", "pe428_line_67.yaml")
 
-# Every real line part of the form, lines 1 to 67.
-ALL_PARTS = CHAIN_67
+CHAIN_68 = (*CHAIN_67, "pe428_line_68.yaml")
+
+CHAIN_69 = (*CHAIN_68, "pe428_line_69.yaml")
+
+CHAIN_70 = (*CHAIN_69, "pe428_line_70.yaml")
+
+CHAIN_71 = (*CHAIN_70, "pe428_line_71.yaml")
+
+CHAIN_72 = (*CHAIN_71, "pe428_line_72.yaml")
+
+CHAIN_75 = (*CHAIN_72, "pe428_line_75.yaml")
+
+CHAIN_81 = (
+    *CHAIN_75,
+    "pe428_line_76_input.yaml",
+    "pe428_line_77_input.yaml",
+    "pe428_line_78_input.yaml",
+    "pe428_line_79_input.yaml",
+    "pe428_line_80_input.yaml",
+    "pe428_line_81.yaml",
+)
+
+CHAIN_83 = (*CHAIN_81, "pe428_line_83.yaml")
+
+CHAIN_84 = (*CHAIN_83, "pe428_line_84.yaml")
+
+CHAIN_86 = (*CHAIN_84, "pe428_line_86.yaml")
+
+CHAIN_87 = (*CHAIN_86, "pe428_line_87.yaml")
+
+CHAIN_88 = (*CHAIN_87, "pe428_line_88.yaml")
+
+# Every real line part of the form, lines 1 to 88.
+ALL_PARTS = CHAIN_88

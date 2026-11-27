@@ -1,0 +1,19 @@
+# Form PE428 (CRA 5002-C) line 70, column 1 (you): "Line 70: Line 68 plus line 69". One core/sum
+# step over line 68 (the net income, `ca-pe/pe428_net_income_line_68`) and line 69 (the UCCB
+# repayment, `ca-pe/pe428_uccb_repayment_line_69`). Line 69 is read from the T1 by the form's own
+# line 69 step, so it is never blank. Line 68 can be negative, so the result is signed. The form
+# prints no title for the line, so the step has none.
+form:
+  name: ca-pe/pe428
+capabilities:
+  - name: core/sum
+    reference: "70 (column 1)"
+    unit: ca/cad
+    params:
+      rounding: ca-pe/cent_rounding
+    consumes:
+      parts:
+        - ca-pe/pe428_net_income_line_68
+        - ca-pe/pe428_uccb_repayment_line_69
+    produces:
+      output: ca-pe/pe428_family_income_line_70

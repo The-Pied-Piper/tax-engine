@@ -1,0 +1,14 @@
+# Form PE428 (CRA 5002-C) line 83: "Line 83: Base amount 22,650.00". The printed figure is the
+# `ca-pe/low_income_reduction_base_amount` dataset, taken as printed through core/credit_amount. It
+# is not income-tested.
+form:
+  name: ca-pe/pe428
+capabilities:
+  - name: core/credit_amount
+    title: "Base amount"
+    reference: "83"
+    unit: ca/cad
+    params:
+      amount: ca-pe/low_income_reduction_base_amount
+    produces:
+      output: ca-pe/low_income_reduction_base_amount

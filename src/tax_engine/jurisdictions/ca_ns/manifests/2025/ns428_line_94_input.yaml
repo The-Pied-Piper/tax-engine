@@ -1,0 +1,13 @@
+# NS428 (2025) line 94's input, which a salary-only caller does not give.
+# Line 94: Innovation equity tax credit (complete Form T225) (Form NS428, CRA 5003-C).
+# Form T225 is not built, so the credit is taken as one optional input. A request that leaves the line out is read as blank.
+form:
+  name: ca-ns/ns428
+inputs:
+  - name: ca-ns/ns428_innovation_equity_tax_credit_line_94
+    title: "Innovation equity tax credit"
+    reference: "94"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Innovation equity tax credit (complete Form T225)'
