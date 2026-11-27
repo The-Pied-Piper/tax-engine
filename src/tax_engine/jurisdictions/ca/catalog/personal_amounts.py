@@ -139,6 +139,11 @@ the base amount of line 1 plus the supplement amount of line 2 less its reductio
 over the income threshold of line 4 (line 10 "Line 2 minus line 9 (if negative, enter "0")").
 """
 
+BIRTH_YEAR = CountKind.declare(CATALOG, "birth_year", non_negative=True)
+"""Year of birth, the optional answer from which a form's "if you were born in 19xx or earlier" is
+worked out (Umar, 27 Nov 2026: the engine takes the birth year). A whole year such as 1958; left
+out, it is blank."""
+
 BORN_IN_1960_OR_EARLIER = CountKind.declare(CATALOG, "born_in_1960_or_earlier", non_negative=True)
 """Born in 1960 or earlier, T1 line 78 (line 30100) "Age amount (if you were born in 1960 or
 earlier) (use Federal Worksheet) (maximum $9,028)": a starting count, 0 or 1, from the date of birth
