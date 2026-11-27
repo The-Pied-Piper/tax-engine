@@ -42,6 +42,7 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.deductions import (
+    CPP_MONTHS,
     CPP_PART_3_LINE_2,
     CPP_PART_3_LINE_4,
     CPP_PART_3_LINE_5,
@@ -90,8 +91,11 @@ def schedule_8(
     salary: str,
     header: str = HEADER,
     birth_year: int | None = None,
+    months: int | None = None,
 ) -> Worksheet:
     given: list[Artifact[Decimal] | Artifact[int]] = [Artifact(EMPLOYMENT_INCOME, D(salary))]
+    if months is not None:
+        given.append(Artifact(CPP_MONTHS, months))
     if birth_year is not None:
         given.append(Artifact(BIRTH_YEAR, birth_year))
     worksheets = take_home_service(
@@ -247,5 +251,32 @@ def test_a_filer_under_73_keeps_the_months_even_if_70_or_older(
     # Born in 1953 or 1954 is 71 or 72 at the end of 2025: the federal 70 rule does not apply to
     # the Quebec form, which prints 73.
     sheet = schedule_8(take_home_service, "70000", birth_year=year)
+
+    assert sheet.get(CPP_PART_3_LINE_11).value == D("3591.00")
+
+
+@pytest.mark.parametrize("year", [2008, 2015])
+def test_line_a_is_0_for_a_filer_under_18_all_year(
+    take_home_service: TakeHomeService, year: int
+) -> None:
+    # 5005-S8 Part 1 condition a): only a filer who turned 18 in 2025 gets months; born in 2008 or
+    # later is under 18 for all of 2025, so none.
+    sheet = schedule_8(take_home_service, "70000", birth_year=year)
+
+    assert sheet.get(CPP_PART_3_LINE_11).value == D("0.00")
+
+
+def test_a_filer_born_in_2007_keeps_the_typed_months(take_home_service: TakeHomeService) -> None:
+    # Born in 2007 turns 18 during 2025: the year alone does not give the months, so the typed
+    # ones stay: 6 months halve the line 7 maximum to 33,900.00, and 5.4% of it is 1,830.60.
+    sheet = schedule_8(take_home_service, "70000", birth_year=2007, months=6)
+
+    assert sheet.get(CPP_PART_3_LINE_11).value == D("1830.60")
+
+
+def test_a_blank_birth_year_leaves_the_result_unchanged(
+    take_home_service: TakeHomeService,
+) -> None:
+    sheet = schedule_8(take_home_service, "70000")
 
     assert sheet.get(CPP_PART_3_LINE_11).value == D("3591.00")
