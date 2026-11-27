@@ -5,7 +5,8 @@ return): the return summary holds the average and the marginal income tax rate, 
 holds line 5 "Rate", line 83 "Line 81 minus line 82 (if negative, enter "0")", line 86 (the
 low-income tax reduction) and line 97 "Line 95 minus line 96 (if negative, enter "0")". The 2025
 manifest serves 2026, so the return summary and line 5 checks run for both years; lines 83, 86 and
-97 are pinned for 2025. The export lists themselves are pinned in `test_manifest_header.py`.
+97 are pinned for 2025. The export lists themselves are pinned in
+`test_manifest_header.py` and `test_form_nb428.py`.
 """
 
 from __future__ import annotations

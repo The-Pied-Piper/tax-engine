@@ -38,11 +38,11 @@ NEW_BRUNSWICK = JurisdictionCode("CA-NB")
 LINE_97 = "ca-nb/nb428_new_brunswick_tax_line_97"
 
 
-def test_new_brunswick_and_labrador_is_listed() -> None:
+def test_new_brunswick_is_listed() -> None:
     assert NEW_BRUNSWICK in JURISDICTIONS.jurisdiction_codes()
 
 
-def test_the_new_brunswick_and_labrador_manifest_composes_over_the_registered_registries() -> None:
+def test_the_new_brunswick_manifest_composes_over_the_registered_registries() -> None:
     registered_units = units()
     service = TaxComputationService(
         YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds(), registered_units),

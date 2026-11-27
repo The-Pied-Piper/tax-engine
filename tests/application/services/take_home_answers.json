@@ -2372,11 +2372,11 @@
   "year": 2025,
   "salary": "1000",
   "figures": {
-   "income_tax": "0.00",
    "cpp_base": "0.00",
    "cpp_enhanced": "0.00",
    "cpp2": "0.00",
-   "ei": "0.00"
+   "ei": "0.00",
+   "income_tax": "0.00"
   },
   "income_tax": "0.00",
   "total_deductions": "0.00",
@@ -2417,11 +2417,11 @@
   "year": 2025,
   "salary": "70000",
   "figures": {
-   "income_tax": "13262.53",
    "cpp_base": "3291.75",
    "cpp_enhanced": "665.00",
    "cpp2": "0.00",
-   "ei": "1077.48"
+   "ei": "1077.48",
+   "income_tax": "13262.53"
   },
   "income_tax": "13262.53",
   "total_deductions": "18296.76",
@@ -2517,11 +2517,11 @@
   "year": 2025,
   "salary": "250000",
   "figures": {
-   "income_tax": "89920.58",
    "cpp_base": "3356.10",
    "cpp_enhanced": "678.00",
    "cpp2": "396.00",
-   "ei": "1077.48"
+   "ei": "1077.48",
+   "income_tax": "89920.58"
   },
   "income_tax": "89920.58",
   "total_deductions": "95428.16",
@@ -2562,11 +2562,11 @@
   "year": 2026,
   "salary": "1000",
   "figures": {
-   "income_tax": "0.00",
    "cpp_base": "0.00",
    "cpp_enhanced": "0.00",
    "cpp2": "0.00",
-   "ei": "0.00"
+   "ei": "0.00",
+   "income_tax": "0.00"
   },
   "income_tax": "0.00",
   "total_deductions": "0.00",
@@ -2607,11 +2607,11 @@
   "year": 2026,
   "salary": "70000",
   "figures": {
-   "income_tax": "12878.36",
    "cpp_base": "3291.75",
    "cpp_enhanced": "665.00",
    "cpp2": "0.00",
-   "ei": "1123.07"
+   "ei": "1123.07",
+   "income_tax": "12878.36"
   },
   "income_tax": "12878.36",
   "total_deductions": "17958.18",
@@ -2707,11 +2707,11 @@
   "year": 2026,
   "salary": "250000",
   "figures": {
-   "income_tax": "89047.66",
    "cpp_base": "3519.45",
    "cpp_enhanced": "711.00",
    "cpp2": "416.00",
-   "ei": "1123.07"
+   "ei": "1123.07",
+   "income_tax": "89047.66"
   },
   "income_tax": "89047.66",
   "total_deductions": "94817.18",

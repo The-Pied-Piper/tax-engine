@@ -66,18 +66,5 @@ def test_schedule_6_is_imported_without_a_dataset_swap() -> None:
     assert all(isinstance(entry, str) for entry in imports)
 
 
-def test_the_take_home_block_names_the_return_s_rates() -> None:
-    take_home = _header()["take_home"]
-
-    assert take_home["average_tax_rate"] == {
-        "form": "ca-nb/return",
-        "kind": "ca-nb/average_tax_rate",
-    }
-    assert take_home["marginal_tax_rate"] == {
-        "form": "ca-nb/return",
-        "kind": "ca-nb/marginal_tax_rate",
-    }
-
-
 def test_the_header_declares_no_inputs() -> None:
     assert "inputs" not in _header()

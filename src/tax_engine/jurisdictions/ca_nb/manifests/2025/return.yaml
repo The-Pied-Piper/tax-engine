@@ -19,8 +19,8 @@
 # adds only New Brunswick's own part.
 #
 # The New Brunswick bracket rate is printed on NB428 line 5 (the rate of the column that line 1
-# falls in). NB428 exports it and the return totals it into its own kind. Times the net income rate (T1 line 22215 takes the enhanced CPP off the
-# income) it is the bracket rate on a further dollar of salary. The CPP base and EI contributions
+# falls in). NB428 exports it and the return totals it into its own kind. Times the net income rate (T1 line 22215
+# takes the enhanced CPP off the income) it is the bracket rate on a further dollar of salary. The CPP base and EI contributions
 # earn the NB428 credit (`ca-nb/credit_rate`, NB428 line 48, read as it is by core/rate_figure),
 # which takes that rate times the credit-earning contribution rate off the tax.
 #

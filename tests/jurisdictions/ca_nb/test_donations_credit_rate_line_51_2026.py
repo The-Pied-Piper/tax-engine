@@ -34,11 +34,30 @@ DERIVATION_HEADER = (
 )
 
 
-def test_2026_donations_credit_rate_line_51_is_0_1795() -> None:
+def test_2026_donations_credit_rate_line_51_value() -> None:
     data = SOURCE.get("ca-nb/donations_credit_rate_line_51", 2026, RATE)
 
     assert data.values == Rate(D("0.1795"))
+
+
+def test_2026_donations_credit_rate_line_51_rounding() -> None:
+    data = SOURCE.get("ca-nb/donations_credit_rate_line_51", 2026, RATE)
+
     assert data.rounding == RoundTo(D("0.01"), RoundingMode.HALF_UP)
+
+
+def test_2026_donations_credit_rate_line_51_sources() -> None:
+    data = SOURCE.get("ca-nb/donations_credit_rate_line_51", 2026, RATE)
+
+    assert data.sources == (
+        "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5004-c/5004-c-25e.txt",
+    )
+
+
+def test_2026_donations_credit_rate_line_51_is_for_tax_year_2026() -> None:
+    data = SOURCE.get("ca-nb/donations_credit_rate_line_51", 2026, RATE)
+
+    assert data.tax_year == 2026
 
 
 def test_the_2026_file_is_provisional_and_states_its_derivation() -> None:
