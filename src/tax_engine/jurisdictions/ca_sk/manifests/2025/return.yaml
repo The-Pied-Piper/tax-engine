@@ -61,7 +61,7 @@
 # birth says born in 1960 or earlier, phased out at 15% of net income over $43,066) is not a step
 # in the marginal rate. The marginal-rate steps above are unchanged and still assume no age amount,
 # so the marginal tax rate would be wrong for a filer born in 1960 or earlier with net income
-# between $43,066 and $81,633 (tax-engine #2068).
+# between $43,066 and $81,633.
 capabilities:
   - name: core/record_total
     title: "Refund or balance owing"
