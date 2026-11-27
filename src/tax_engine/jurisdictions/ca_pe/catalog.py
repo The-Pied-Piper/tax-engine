@@ -570,3 +570,10 @@ PE428_LINE_87_LINE_66_GATE = AmountKind.declare(
 )
 """The line 66 gate of PE428 line 87: 1 where line 66 is 0.00 and 0 where an amount is claimed on
 line 66. A switch, not printed on the form."""
+
+PE428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_89 = AmountKind.declare(
+    CATALOG, "pe428_provincial_foreign_tax_credit_line_89", non_negative=True
+)
+"""Provincial foreign tax credit, PE428 line 89 "Provincial foreign tax credit (complete Form
+T2036)": the amount as the filer gives it, an optional input; a blank input is read as blank, and
+the step that reads it reads it as 0."""
