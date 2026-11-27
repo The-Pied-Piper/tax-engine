@@ -613,3 +613,10 @@ PE428_EQUITY_TAX_CREDIT_LINE_94 = AmountKind.declare(
 """Equity tax credit from Certificate PE-ETC, PE428 line 94 and line 63500: the amount as the
 filer gives it, an optional input; a blank input is read as blank, and the sum that reads it
 reads it as 0."""
+
+PE428_UNUSED_EQUITY_TAX_CREDIT_LINE_95 = AmountKind.declare(
+    CATALOG, "pe428_unused_equity_tax_credit_line_95", non_negative=True
+)
+"""Unused Prince Edward Island equity tax credit from the most recent notice of assessment or
+reassessment, PE428 line 95: the amount as the filer gives it, an optional input; a blank input is
+read as blank, and the sum that reads it reads it as 0."""
