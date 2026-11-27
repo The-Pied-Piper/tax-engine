@@ -1,75 +1,33 @@
-# Form NS428 (CRA 5003-C, PDF) line 10 and line 58080: "Age amount (if you were born in 1960 or earlier) (use Worksheet NS428) (maximum $5,734)", and Worksheet NS428 (CRA 5003-D) section "Line 58080 - Age amount", lines 1 to 7, built one step per worksheet line as ca-nl/nl428_credits line 17 and its worksheet do (Umar, 27 Nov 2026: the engine takes the birth year, and this worksheet section is built).
-# The worksheet's two shortcuts ("$30,828 or less, enter $5,734", "$69,055 or more, enter 0") follow from the arithmetic of lines 1 to 7, so only the calculation is built.
-# Not lines of the form (no reference): the born-in-1960-or-earlier check, a ca/yes_or_no_count step (blank read as 0, a count above 1 refused) shared with line 98. Worksheet line 5 is the printed rate, a dataset figure with no step of its own. Line 10 multiplies worksheet line 7 by the checked count, so it is line 7 when born in 1960 or earlier and 0.00 otherwise.
+# Form NS428 (CRA 5003-C, PDF) line 10 and line 58080: "Age amount (if you were born in 1960 or earlier) (use Worksheet NS428) (maximum $5,734)". Built as ca-nl/nl428_credits line 17 and ca-pe/pe428 line 10 are: a ca/yes_or_no_count step (blank read as 0, a count above 1 refused; shared with line 98; not a line of the form), a core/times_count step of worksheet line 7 by that count, and a core/at_most step that checks the printed maximum (worksheet line 1) and is line 10. An amount above the maximum is refused, not capped. Worksheet lines 1 to 7 are in the two parts beside this one.
 form:
   name: ca-ns/ns428
 capabilities:
-  - name: ca/yes_or_no_count
-    title: "Born in 1960 or earlier"
-    consumes:
-      count: ca/born_in_1960_or_earlier
-    blank:
-      count: "0"
-    produces:
-      output: ca/born_in_1960_or_earlier_checked
-  - name: core/credit_amount
-    title: "Worksheet NS428 age amount line 1: maximum amount"
-    unit: ca/cad
-    params:
-      amount: ca-ns/age_maximum
-    produces:
-      output: ca-ns/worksheet_ns428_age_amount_maximum_line_1
-  - name: core/record_total
-    title: "Worksheet NS428 age amount line 2: amount from line 23600"
-    unit: ca/cad
-    consumes:
-      records: ca/t1_taxable_income.net_income
-    produces:
-      output: ca-ns/worksheet_ns428_age_amount_net_income_line_2
-  - name: core/credit_amount
-    title: "Worksheet NS428 age amount line 3: income threshold"
-    unit: ca/cad
-    params:
-      amount: ca-ns/age_income_threshold
-    produces:
-      output: ca-ns/worksheet_ns428_age_amount_income_threshold_line_3
-  - name: core/subtract_not_below_zero
-    title: "Worksheet NS428 age amount line 4"
-    unit: ca/cad
-    params:
-      rounding: ca-ns/cent_rounding
-    consumes:
-      amount: ca-ns/worksheet_ns428_age_amount_net_income_line_2
-      less: ca-ns/worksheet_ns428_age_amount_income_threshold_line_3
-    produces:
-      output: ca-ns/worksheet_ns428_age_amount_line_4
-  - name: core/apply_rate
-    title: "Worksheet NS428 age amount line 6"
-    unit: ca/cad
-    params:
-      rate: ca-ns/age_rate
-    consumes:
-      base: ca-ns/worksheet_ns428_age_amount_line_4
-    produces:
-      output: ca-ns/worksheet_ns428_age_amount_line_6
-  - name: core/subtract_not_below_zero
-    title: "Worksheet NS428 age amount line 7"
-    unit: ca/cad
-    params:
-      rounding: ca-ns/cent_rounding
-    consumes:
-      amount: ca-ns/worksheet_ns428_age_amount_maximum_line_1
-      less: ca-ns/worksheet_ns428_age_amount_line_6
-    produces:
-      output: ca-ns/worksheet_ns428_age_amount_line_7
-  - name: core/times_count
-    title: "Age amount"
-    reference: "10"
-    unit: ca/cad
-    params:
-      rounding: ca-ns/cent_rounding
-    consumes:
-      amount: ca-ns/worksheet_ns428_age_amount_line_7
-      count: ca/born_in_1960_or_earlier_checked
-    produces:
-      output: ca-ns/ns428_age_amount_line_10
+- name: ca/yes_or_no_count
+  title: Born in 1960 or earlier
+  consumes:
+    count: ca/born_in_1960_or_earlier
+  blank:
+    count: '0'
+  produces:
+    output: ca/born_in_1960_or_earlier_checked
+- name: core/times_count
+  title: Age amount before the printed maximum
+  unit: ca/cad
+  params:
+    rounding: ca-ns/cent_rounding
+  consumes:
+    amount: ca-ns/worksheet_ns428_age_amount_line_7
+    count: ca/born_in_1960_or_earlier_checked
+  produces:
+    output: ca-ns/ns428_age_amount_claimed_line_10
+- name: core/at_most
+  title: Age amount
+  reference: '10'
+  unit: ca/cad
+  consumes:
+    amount: ca-ns/ns428_age_amount_claimed_line_10
+    bound: ca-ns/worksheet_ns428_age_amount_maximum_line_1
+  blank:
+    amount: pass_on
+  produces:
+    output: ca-ns/ns428_age_amount_line_10

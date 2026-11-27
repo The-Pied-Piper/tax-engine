@@ -531,6 +531,12 @@ WORKSHEET_NS428_AGE_AMOUNT_LINE_7 = AmountKind.declare(
 """Worksheet NS428 age amount line 7 "Line 1 minus line 6 (if negative, enter \"0\")": the amount
 for NS428 line 10 when the filer was born in 1960 or earlier."""
 
+NS428_AGE_AMOUNT_CLAIMED_LINE_10 = AmountKind.declare(
+    CATALOG, "ns428_age_amount_claimed_line_10", non_negative=True
+)
+"""NS428 line 10: worksheet line 7 when born in 1960 or earlier, 0.00 otherwise, before the check
+against the printed maximum."""
+
 NS428_AGE_AMOUNT_LINE_10 = AmountKind.declare(
     CATALOG, "ns428_age_amount_line_10", non_negative=True
 )
