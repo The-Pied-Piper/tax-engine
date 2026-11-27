@@ -33,7 +33,7 @@ FORM = "ca/t1_tax_and_credits"
 LINE_45000 = "ca/ei_overpayment_line_45000"
 LINE_45300 = "ca/cwb_line_45300"
 LINE_47900 = "ca/provincial_credits_line_47900"
-PROVINCES = ["CA-ON", "CA-AB", "CA-BC", "CA-MB", "CA-NL", "CA-SK"]
+PROVINCES = ["CA-ON", "CA-AB", "CA-BC", "CA-MB", "CA-NB", "CA-NL", "CA-SK"]
 
 
 def _manifest(province: str) -> Manifest:
@@ -71,7 +71,7 @@ def test_ontario_line_45000_and_line_45300(salary: str, ei_overpayment: str, cwb
     assert sheet.get(kinds.kind(LINE_45300)).value == D(cwb)
 
 
-@pytest.mark.parametrize("province", ["CA-ON", "CA-AB", "CA-SK", "CA-NL"])
+@pytest.mark.parametrize("province", ["CA-ON", "CA-AB", "CA-SK", "CA-NL", "CA-NB"])
 def test_line_47900_is_blank_where_no_provincial_credits_form_supplies_it(province: str) -> None:
     assert _t1(province, "20000").get(bundled_kinds().kind(LINE_47900)).is_blank
 
