@@ -23,21 +23,21 @@ SOURCE = YamlParameterSource(
 FAMILY = "ca-pe/low_income_reduction_base_amount"
 SOURCES = ("https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5002-c/5002-c-25e.txt",)
 PROVISIONAL_HEADER = (
-    "# Provisional: taken from the 2025 form text named in sources; to be confirmed"
-    " against the 2026 form text when CRA publishes it."
+    "# Provisional: taken from the province's published 2026 change (Income Tax Act amendment,"
+    " Bill 21 of 2025); to be confirmed against the 2026 form text when CRA publishes it."
 )
 DERIVATION_HEADER = (
-    '# Derivation: carried forward unchanged from the 2025 form (line 83, "Base '
-    'amount 22,650.00"); T4127 (Jan 2026) states "No indexing applies to Prince '
-    'Edward Island" and T4127 (Jul 2026) prints none of these figures, and the '
-    "2026 form is not yet published, so it is unconfirmed."
+    "# Derivation: the province raised the low-income tax reduction income threshold from"
+    ' $22,650 (2025 form, line 83, "Base amount 22,650.00") to $23,000 from January 1, 2026'
+    " (clause 32(2)(g) of the Income Tax Act as amended by Bill 21, and the province's"
+    " personal income tax page); the 2026 form is not yet published, so it is unconfirmed."
 )
 
 
 def test_2026_low_income_reduction_base_amount_value() -> None:
     data = SOURCE.get(FAMILY, 2026, CREDIT)
 
-    assert data.values == Credit(amount=D("22650"))
+    assert data.values == Credit(amount=D("23000"))
 
 
 def test_2026_low_income_reduction_base_amount_rounding() -> None:
