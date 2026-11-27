@@ -47,6 +47,7 @@ __all__ = [
     "TimesCountLine",
     "QuotientLine",
     "ProductLine",
+    "MultiplyCountsLine",
     "ThresholdGateLine",
     "AmountOrDividedByRateLine",
     "CountAtLeastLine",
@@ -682,6 +683,25 @@ class ProductLine(TraceLine):
     def amount(self) -> Decimal:
         """The rounded product."""
         return self.result
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
+
+
+@dataclass(frozen=True)
+class MultiplyCountsLine(TraceLine):
+    """The `result` produced as `output`: the product of `parts`, each a kind and its count."""
+
+    output: ArtifactKind[int]
+    parts: tuple[tuple[ArtifactKind[int], int], ...]
+    result: int
+
+    @property
+    def amount(self) -> Decimal:
+        """The product of the counts."""
+        return Decimal(self.result)
 
     @property
     def label(self) -> str | None:

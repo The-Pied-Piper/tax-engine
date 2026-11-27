@@ -1,10 +1,8 @@
 """MultiplyCounts: the product of a list of count artifacts.
 
-Schedule 8 Part 2 line A, "Enter "12" on line A below unless any of the following conditions apply":
-the months a filer typed in (or the printed 12) are kept for a filer whose age conditions are all
-1, and are 0 when one of them is 0 (born in 1954 or earlier, so 70 or older for all of 2025, or in
-2008 or later, so not yet 18 in 2025). No capability multiplies counts (`core/times_count` takes an
-amount and a count). A blank count takes a fallback or `pass_on`, one rule for each kind.
+The counts version of `core/multiply`, which multiplies two money amounts. The product of whole
+numbers is exact, so nothing is rounded. A blank count takes a fallback or `pass_on`, one rule for
+each kind.
 """
 
 from __future__ import annotations
@@ -16,7 +14,7 @@ from typing import Any, ClassVar
 from tax_engine.domain.artifact import Artifact, ArtifactKind
 from tax_engine.domain.capability import Capability, CapabilityResult, capability
 from tax_engine.domain.errors import InvalidCapabilityError
-from tax_engine.jurisdictions.ca.trace import MultiplyCountsLine
+from tax_engine.domain.trace import MultiplyCountsLine
 
 
 @capability(identifier="multiply_counts")

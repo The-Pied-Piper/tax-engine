@@ -1,4 +1,4 @@
-# Schedule 8 (form 5000-S8, 2025) Part 2 line A: "Enter "12" on line A below unless any of the following conditions apply: ... f) You turned 70 years of age in 2025 and did not elect to stop paying CPP contributions ... g) You were 70 years of age or older for all of 2025. Enter "0" on line A". The months the filer typed in (`ca/cpp_months`, 12 when left out) stay the answer for every condition a year of birth cannot settle (a) and f), the birth-month years, and b), c), d), e) and h)). From the year of birth (the T1's `ca/birth_year`, read from its export; blank passes on) two whole-year conditions are worked out: 70 or older for all of 2025 (condition g), and not yet 18 in any month of 2025 (no CPP months). Each is a `ca/count_by_conditions` count, 0 when it gives no months, and `ca/multiply_counts` multiplies the typed months by both (a blank flag reads 1, so a blank year leaves line A as typed). Steps other than the last are not lines of the form: plain-words titles, no reference.
+# Schedule 8 (form 5000-S8, 2025) Part 2 line A: "Enter "12" on line A below unless any of the following conditions apply: ... f) You turned 70 years of age in 2025 and did not elect to stop paying CPP contributions ... g) You were 70 years of age or older for all of 2025. Enter "0" on line A". The months the filer typed in (`ca/cpp_months`, 12 when left out) stay the answer for every condition a year of birth cannot settle (a) and f), the birth-month years, and b), c), d), e) and h)). From the year of birth (the T1's `ca/birth_year`, read from its export; blank passes on) two whole-year conditions are worked out: 70 or older for all of 2025 (condition g), and not yet 18 in any month of 2025 (no CPP months). Each is a `ca/count_by_conditions` count, 0 when it gives no months, and `core/multiply_counts` multiplies the typed months by both (a blank flag reads 1, so a blank year leaves line A as typed). Steps other than the last are not lines of the form: plain-words titles, no reference.
 form:
   name: ca/schedule_8
 capabilities:
@@ -35,7 +35,7 @@ capabilities:
       counts: pass_on
     produces:
       output: ca/cpp_not_70_or_older_all_year
-  - name: ca/multiply_counts
+  - name: core/multiply_counts
     title: "Number of months that CPP applied"
     reference: "A"
     unit: core/months

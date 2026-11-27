@@ -28,6 +28,7 @@ from tax_engine.domain.trace.arithmetic import (
     MoreThanPerUnitLine,
     MultipleOverLine,
     MultipliedByRateLine,
+    MultiplyCountsLine,
     PercentageAppliedLine,
     PerUnitAmountLine,
     PositivePartOfNegationLine,
@@ -495,6 +496,18 @@ class ProductRenderer:
             f"{multiplicand} multiplied by {multiplier} gives {result} "
             f"({EnglishFigures.rounding(line.rounding)})"
         )
+
+
+@english_renderer
+class MultiplyCountsRenderer:
+    """English text for MultiplyCountsLine."""
+
+    line_class = MultiplyCountsLine
+
+    def render(self, line: MultiplyCountsLine, names: EnglishNames) -> str:
+        """The English sentence for `line`."""
+        terms = EnglishFigures.listing([names.figure(kind, count) for kind, count in line.parts])
+        return f"{terms} multiplied give {names.shown(line.label, line.result)}"
 
 
 @english_renderer

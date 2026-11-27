@@ -1,4 +1,4 @@
-"""Unit tests for the MultiplyCounts capability (`ca/multiply_counts`), with made-up kinds.
+"""Unit tests for the MultiplyCounts capability (`core/multiply_counts`), with made-up kinds.
 
 Schedule 8 Part 2 line A: the months a filer typed in times two 0-or-1 flags from the year of
 birth. Its slots: one consumed list slot `counts` (count kinds, at least one, since there is no
@@ -12,14 +12,13 @@ from typing import Any
 
 import pytest
 
-import tax_engine.jurisdictions.ca.trace_english  # noqa: F401  (registers the renderers)
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.domain.artifact import Artifact, ArtifactKind
 from tax_engine.domain.blank import BLANK, PASS_ON
 from tax_engine.domain.errors import InvalidCapabilityError
 from tax_engine.domain.kinds import CountKind
-from tax_engine.jurisdictions.ca.capabilities.multiply_counts import MultiplyCounts
-from tax_engine.jurisdictions.ca.trace import MultiplyCountsLine
+from tax_engine.domain.trace import MultiplyCountsLine
+from tax_engine.jurisdictions.core.capabilities.multiply_counts import MultiplyCounts
 from tests.capabilities import bundled_capabilities
 
 MONTHS = CountKind("ex/months")
@@ -37,8 +36,8 @@ def product(*values: tuple[ArtifactKind[int], int]) -> Artifact[Any]:
     return output
 
 
-def test_is_registered_as_ca_multiply_counts() -> None:
-    assert bundled_capabilities().get("ca/multiply_counts") is MultiplyCounts
+def test_is_registered_as_core_multiply_counts() -> None:
+    assert bundled_capabilities().get("core/multiply_counts") is MultiplyCounts
 
 
 def test_declares_its_slots() -> None:
