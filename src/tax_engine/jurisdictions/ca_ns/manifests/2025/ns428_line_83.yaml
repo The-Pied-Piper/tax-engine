@@ -1,0 +1,17 @@
+# Form NS428 (Nova Scotia Tax, CRA 5003-C) line 83 "Line 81 multiplied by the percentage from line
+# 82". Line 82 is the printed 5%, the `ca-ns/low_income_reduction_rate` dataset, and has no step of
+# its own. One core/apply_rate step applies it to line 81, rounded half-up to the cent by the
+# dataset's rule (the form states no rounding rule). The form prints no title for the line, so the
+# step has none.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/apply_rate
+    reference: "83"
+    unit: ca/cad
+    params:
+      rate: ca-ns/low_income_reduction_rate
+    consumes:
+      base: ca-ns/ns428_line_81
+    produces:
+      output: ca-ns/ns428_line_83
