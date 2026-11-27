@@ -3,8 +3,9 @@
 The part file names the form; line parts carry the capabilities. The form is one form, so its lines
 read each other directly. It exports line 99, the Nova Scotia tax that line 99 says to enter on
 line 42800 of the return, and supplies it as `ca/provincial_tax.amount`, the name the federal T1
-reads. The Nova Scotia package is not yet listed in the bundled package list, so the part is read as
-YAML.
+reads. It also exports line 5 (the bracket rate) and lines 81 and 84 (the low-income tax reduction's
+income over the base amount, and the reduction left) for the return summary's marginal rate. The
+part is read as YAML.
 """
 
 from __future__ import annotations
@@ -34,10 +35,17 @@ def test_the_form_is_named_titled_as_printed_and_required() -> None:
     assert form["required"] is True
 
 
-def test_the_form_exports_line_99_and_supplies_it_as_the_provincial_tax() -> None:
+def test_the_form_exports_what_the_return_reads_and_supplies_line_99_as_the_provincial_tax() -> (
+    None
+):
     part = _part()
 
-    assert part["form"]["exports"] == [LINE_99]
+    assert part["form"]["exports"] == [
+        "ca-ns/ns428_bracket_rate_line_5",
+        "ca-ns/ns428_line_81",
+        "ca-ns/ns428_low_income_reduction_line_84",
+        LINE_99,
+    ]
     assert part["form"]["supplies"] == {"ca/provincial_tax.amount": LINE_99}
     assert part["capabilities"] == []
 

@@ -21,8 +21,9 @@
 # and 5003-S6 text files were not found: 404 when tried), so the federal T1 and Schedule 6 are
 # imported unchanged.
 #
-# Nova Scotia is not yet listed in `registrations.JURISDICTIONS`; that is done by the return
-# ticket, last, after the 2026 datasets exist.
+# Nova Scotia is listed in `registrations.JURISDICTIONS`: every listed jurisdiction is composed by
+# `tests/application/services/test_every_resolvable_year.py`, and this manifest is complete, NS428
+# line 99 supplying `ca/provincial_tax.amount` for T1. The return's rates are in `return.yaml`.
 jurisdiction: CA-NS
 version: 1
 valid_from_tax_year: 2025
@@ -33,9 +34,27 @@ outputs:
   - ca-ns/average_tax_rate
   - ca-ns/marginal_tax_rate
 capabilities: []
+# Where the take-home answer reads its figures (the caller gives the salary and nothing else): the
+# income tax is T1 line 43500, CPP and EI come from their own forms, and the rates are this return's.
+take_home:
+  salary: ca/employment_income
+  income_tax: {form: ca/t1_tax_and_credits, kind: ca/total_payable}
+  deductions:
+    cpp_base: {form: ca/schedule_8, kind: ca/schedule_8_cpp_base_contributions_on_return}
+    cpp_enhanced: {form: ca/schedule_8, kind: ca/cpp_part_3_line_12}
+    cpp2: {form: ca/schedule_8, kind: ca/cpp_part_3_line_22}
+    ei: {form: ca/t2204, kind: ca/t2204_line_16}
+  average_tax_rate: {form: ca-ns/return, kind: ca-ns/average_tax_rate}
+  marginal_tax_rate: {form: ca-ns/return, kind: ca-ns/marginal_tax_rate}
 imports:
+  - ca/t1_employment_income
   - ca/t1_taxable_income
   - ca/t1_tax_and_credits
+  - ca/t1_lines_copied_by_provinces
   - ca/schedule_6
   - ca/schedule_8
+  - ca/schedule_9
   - ca/t2204
+  - ca/take_home_average_rate
+  - ca/t691
+  - ca/take_home_marginal_rates

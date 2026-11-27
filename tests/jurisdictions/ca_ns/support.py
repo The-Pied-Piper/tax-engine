@@ -1,9 +1,9 @@
 """The Nova Scotia package list and the registries built over it.
 
-Nova Scotia is not yet listed in `tax_engine.registrations.JURISDICTIONS`, so the
-tests of this package build their own package list (core, federal, Nova Scotia)
-here and take their kinds and capabilities from it. Each registry is built once per test process;
-never register into one.
+Nova Scotia is listed in `tax_engine.registrations.JURISDICTIONS`, and a test of the registered
+engine takes the registries of `tax_engine.registrations`. The tests written before the listing
+build their own package list (core, federal, Nova Scotia) here and take their kinds and
+capabilities from it. Each registry is built once per test process; never register into one.
 """
 
 from functools import cache

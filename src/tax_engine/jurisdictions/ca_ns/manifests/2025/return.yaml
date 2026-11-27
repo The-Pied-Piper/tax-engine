@@ -1,0 +1,229 @@
+# The Nova Scotia take-home return: T1 line 167 "Refund or balance owing" (positive is owing,
+# negative is a refund). The T1 form exports it, and another form's export is read only as a record
+# list, so the step is core/record_total over the T1 export, totalling the one amount into the
+# return's own `ca/refund_or_balance_owing`. The provincial tax reaches line 167 through T1 line
+# 42800, which NS428 line 99 supplies (`ca/provincial_tax.amount`); T1 line 47900 "Provincial or
+# territorial credits" has no Nova Scotia source for a salary-only filer (Form NS479 is not built:
+# its volunteer firefighter and children's sports and arts credits are claims, refundable after
+# line 43500): the T1 form reads it as optional and passes it on blank, so it adds nothing to line
+# 167, as in the Newfoundland and Labrador and Saskatchewan returns.
+#
+# The return's second output is the average tax rate on the take-home basis. The federal form
+# `ca/take_home_average_rate` works it out once for every province (income tax, CPP and EI over the
+# salary), and the return reads its export `ca/average_tax_rate` with one core/record_total.
+#
+# The marginal rate is the rate on the take-home basis: the change in T1 line 43500 plus the CPP,
+# CPP2 and EI per further dollar of salary, with no credit paid on filing. The federal half is the
+# shared federal form `ca/take_home_marginal_rates` (imported by the manifest), whose four exports
+# are each totalled by core/record_total into this return's own figure: the net income rate, the
+# credit-earning contribution rate, the federal marginal rate and the contribution rate. This return
+# adds only Nova Scotia's own part.
+#
+# The Nova Scotia bracket rate is printed on NS428 line 5, the rate of the one column that line 1
+# falls in; NS428 exports it and it is totalled into the return's own kind. Times the net income
+# rate (T1 line 22215 takes the enhanced CPP off the income) it is the bracket rate on a further
+# dollar of salary. The CPP base and EI contributions earn the NS428 credit (`ca-ns/credit_rate`,
+# line 47's 8.79%, read as it is by core/rate_figure), which takes that rate times the
+# credit-earning contribution rate off the tax.
+#
+# The low-income tax reduction (NS428 lines 65 to 85) is in the rate, because it changes line 99 and
+# so T1 line 43500: while NS428 line 81 (the income over the base amount) and line 84 (the
+# reduction left) are both above zero, a further dollar of net income takes 5%
+# (`ca-ns/low_income_reduction_rate`, NS428 line 82 "Applicable rate 5%") off the reduction. The two
+# gates are multiplied, the rate follows, and it is multiplied by the net income rate.
+#
+# The whole provincial part is counted only while NS428 line 99 "Line 97 minus line 98 (if negative,
+# enter "0")", the tax that goes to T1 line 42800, is above zero, through the
+# `ca-ns/marginal_rate_gate` dataset (0 where the amount is 0.00, 1 from one cent). Nova Scotia has
+# no surtax, no health premium and no abatement. The rate is the one of a salary-only filer, as the
+# take-home calculator takes only the salary: the optional inputs (the dividend tax credit, line 57,
+# and the rest) are left blank there, so their slopes are not built.
+#
+# The last step adds the federal marginal rate, the Nova Scotia marginal rate and the contribution
+# rate (CPP base, enhanced and second additional, and EI) with core/sum into
+# `ca-ns/marginal_tax_rate`. Every step but line 167 is engine-internal, exact
+# (`ca-ns/exact_rounding`; the marginal rate step alone is rounded half-up to 0.0001 like the
+# average rate), printed on no form, and carries no title or line.
+capabilities:
+  - name: core/record_total
+    title: "Refund or balance owing"
+    reference: "167"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_tax_and_credits.refund_or_balance_owing
+    produces:
+      output: ca/refund_or_balance_owing
+  - name: core/record_total
+    unit: core/percent
+    consumes:
+      records: ca/take_home_average_rate.average_tax_rate
+    produces:
+      output: ca-ns/average_tax_rate
+  - name: core/record_total
+    unit: core/percent
+    consumes:
+      records: ca/take_home_marginal_rates.marginal_net_income_rate
+    produces:
+      output: ca-ns/marginal_net_income_rate
+  - name: core/record_total
+    unit: core/percent
+    consumes:
+      records: ca/take_home_marginal_rates.marginal_credit_contribution_rate
+    produces:
+      output: ca-ns/marginal_credit_contribution_rate
+  - name: core/record_total
+    unit: core/percent
+    consumes:
+      records: ca/take_home_marginal_rates.marginal_federal_rate
+    produces:
+      output: ca-ns/marginal_federal_rate
+  - name: core/record_total
+    unit: core/percent
+    consumes:
+      records: ca/take_home_marginal_rates.marginal_contribution_rate
+    produces:
+      output: ca-ns/marginal_contribution_rate
+  - name: core/record_total
+    unit: core/percent
+    consumes:
+      records: ca-ns/ns428.ns428_bracket_rate_line_5
+    produces:
+      output: ca-ns/nova_scotia_bracket_rate_return
+  - name: core/rate_figure
+    unit: core/percent
+    params:
+      rate: ca-ns/credit_rate
+    produces:
+      output: ca-ns/marginal_nova_scotia_credit_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-ns/exact_rounding
+    consumes:
+      base: ca-ns/marginal_credit_contribution_rate
+      rate: ca-ns/marginal_nova_scotia_credit_rate
+    produces:
+      output: ca-ns/marginal_nova_scotia_contribution_credit_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-ns/exact_rounding
+    consumes:
+      base: ca-ns/nova_scotia_bracket_rate_return
+      rate: ca-ns/marginal_net_income_rate
+    produces:
+      output: ca-ns/marginal_nova_scotia_bracket_rate
+  - name: core/subtract
+    unit: core/percent
+    params:
+      rounding: ca-ns/exact_rounding
+    consumes:
+      amount: ca-ns/marginal_nova_scotia_bracket_rate
+      less: ca-ns/marginal_nova_scotia_contribution_credit_rate
+    produces:
+      output: ca-ns/marginal_nova_scotia_rate_after_credits
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-ns/ns428.ns428_line_81
+    produces:
+      output: ca-ns/income_over_low_income_threshold_return
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-ns/ns428.ns428_low_income_reduction_line_84
+    produces:
+      output: ca-ns/low_income_tax_reduction_return
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca-ns/marginal_rate_gate
+    consumes:
+      base: ca-ns/income_over_low_income_threshold_return
+    produces:
+      output: ca-ns/income_over_low_income_threshold_gate
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca-ns/marginal_rate_gate
+    consumes:
+      base: ca-ns/low_income_tax_reduction_return
+    produces:
+      output: ca-ns/low_income_tax_reduction_gate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-ns/exact_rounding
+    consumes:
+      base: ca-ns/income_over_low_income_threshold_gate
+      rate: ca-ns/low_income_tax_reduction_gate
+    produces:
+      output: ca-ns/low_income_reduction_phase_out_gate
+  - name: core/rate_figure
+    unit: core/percent
+    params:
+      rate: ca-ns/low_income_reduction_rate
+    produces:
+      output: ca-ns/low_income_reduction_rate_figure
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-ns/exact_rounding
+    consumes:
+      base: ca-ns/low_income_reduction_phase_out_gate
+      rate: ca-ns/low_income_reduction_rate_figure
+    produces:
+      output: ca-ns/marginal_low_income_reduction_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-ns/exact_rounding
+    consumes:
+      base: ca-ns/marginal_low_income_reduction_rate
+      rate: ca-ns/marginal_net_income_rate
+    produces:
+      output: ca-ns/marginal_low_income_phase_out_rate
+  - name: core/sum
+    unit: core/percent
+    params:
+      rounding: ca-ns/exact_rounding
+    consumes:
+      parts:
+        - ca-ns/marginal_nova_scotia_rate_after_credits
+        - ca-ns/marginal_low_income_phase_out_rate
+    produces:
+      output: ca-ns/marginal_nova_scotia_rate_with_reduction
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-ns/ns428.ns428_nova_scotia_tax_line_99
+    produces:
+      output: ca-ns/nova_scotia_tax_return
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca-ns/marginal_rate_gate
+    consumes:
+      base: ca-ns/nova_scotia_tax_return
+    produces:
+      output: ca-ns/nova_scotia_rate_gate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-ns/exact_rounding
+    consumes:
+      base: ca-ns/nova_scotia_rate_gate
+      rate: ca-ns/marginal_nova_scotia_rate_with_reduction
+    produces:
+      output: ca-ns/nova_scotia_marginal_rate
+  - name: core/sum
+    unit: core/percent
+    params:
+      rounding: ca/take_home_average_rate_rounding
+    consumes:
+      parts:
+        - ca-ns/marginal_federal_rate
+        - ca-ns/nova_scotia_marginal_rate
+        - ca-ns/marginal_contribution_rate
+    produces:
+      output: ca-ns/marginal_tax_rate
