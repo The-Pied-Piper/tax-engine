@@ -1,0 +1,16 @@
+# T1 (5006-R, 2025) input a salary-only caller does not give: the filer's year of birth.
+# The T1 asks for the date of birth in "Step 1 - Identification and other information" (guide 5000-G,
+# "Line 30100 - Age amount": "Enter your date of birth in the "Step 1 - Identification and other
+# information" area on page 1 of your return."). The engine takes the year (Umar, 27 Nov 2026) and
+# works out each form's "if you were born in 19xx or earlier" from it. The year is the T1's input,
+# so this form owns it and exports it (`ca/birth_year`, one count, blank when left out): the T1
+# forms and every provincial form read the export and never ask again (Umar, 20 Nov 2026: a line is
+# an input only for the form it belongs to).
+form:
+  name: ca/t1_lines_copied_by_provinces
+inputs:
+  - name: ca/birth_year
+    title: "Year of birth"
+    required: false
+    default: null
+    basis: 'Enter your date of birth in the "Step 1 - Identification and other information" area on page 1 of your return.'

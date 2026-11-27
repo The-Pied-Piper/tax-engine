@@ -20,7 +20,6 @@ from tests.jurisdictions.ca_ns import ns428_credits_support as s
 D = Decimal
 LINES_98 = (
     "ns428_line_1.yaml",
-    "ns428_line_10_input.yaml",
     "ns428_line_10_worksheet_lines_1_to_3.yaml",
     "ns428_line_10_worksheet_lines_4_to_7.yaml",
     "ns428_line_10.yaml",

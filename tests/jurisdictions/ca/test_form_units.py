@@ -29,6 +29,8 @@ EXCEPTIONS: dict[str, str | None] = {
     "ca/federal_bracket_column_rate_line_73": None,
     # Schedule 8 line A, the months of CPP contributions.
     "ca/cpp_months": "core/months",
+    # The year of birth, a calendar year the T1 asks for, is a count with no unit.
+    "ca/birth_year": None,
     # The 0 or 1 flags of T2204 lines 1 and 15 are counts, not money.
     "ca/t2204_line_1_count": None,
     "ca/t2204_line_15_count": None,

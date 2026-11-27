@@ -53,7 +53,6 @@ FEDERAL_FORM_NAMES = (
 )
 NS_PART_NAMES = (
     "ns428_line_9.yaml",
-    "ns428_line_10_input.yaml",
     "ns428_line_10_worksheet_lines_1_to_3.yaml",
     "ns428_line_10_worksheet_lines_4_to_7.yaml",
     "ns428_line_10.yaml",
