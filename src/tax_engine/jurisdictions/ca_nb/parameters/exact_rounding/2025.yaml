@@ -1,0 +1,12 @@
+# New Brunswick exact rounding, 2025 tax year: the rule for a New Brunswick figure that is not a
+# dollars-and-cents box, the gated rates and the marginal rates on the return summary (a gate times
+# the T1 line 73 or NB428 line 5 rate or the reduction's rate, core/multiply_by_rate, and the sums
+# of rates, core/sum). They are exact and the forms print no rounding rule for them (the project's
+# choice is no rounding); the form is cited for lines 5, 83, 84, 86 and 97 only. The cent rule of
+# `ca-nb/cent_rounding` does not apply.
+family: ca-nb/exact_rounding
+tax_year: 2025
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5004-c/5004-c-25e.txt
+rounding: none
