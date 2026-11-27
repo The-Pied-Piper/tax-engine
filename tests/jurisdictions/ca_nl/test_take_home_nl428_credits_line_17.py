@@ -7,7 +7,8 @@ Form text (Form NL428, CRA 5001-c-25e.txt): "Line 17 and line 58080: Age amount 
 The part has four steps: `core/first_record_count` reads the T1's year of birth;
 `ca/count_by_conditions` works out 1 or 0 from it (a blank year passes on blank, read as 0 by the
 last step); `core/record_total` reads Worksheet NL428 line 7 from its form; `core/times_count`
-multiplies it by the checked count, rounded through `ca-nl/cent_rounding`, as line 40 does for its claim. A salary-only filer leaves the answer out, so
+multiplies it by the checked count, rounded through
+`ca-nl/cent_rounding`, as line 40 does for its claim. A salary-only filer leaves the answer out, so
 line 17 is 0.00. Worksheet line 7 is 7,064.00 at a 20,000 salary and 0.00 at
 200,000 (hand-computed, not a CRA example).
 
