@@ -93,6 +93,7 @@ LINE_20_PARTS = (
 LINE_22_PARTS = (
     "t1_birth_year.yaml",
     "t1_birth_year_inputs.yaml",
+    "t1_birth_year_age_65_or_older.yaml",
     "schedule_b_line_22.yaml",
 )
 LINE_31_PARTS = (

@@ -42,5 +42,20 @@ def test_the_form_exports_the_birth_year_and_supplies_the_federal_name() -> None
     form = _part("t1_birth_year.yaml")["form"]
 
     assert form["name"] == "ca-qc/t1_birth_year"
-    assert form["exports"] == ["ca/birth_year"]
-    assert form["supplies"] == {"ca/t1_lines_copied_by_provinces.birth_year": "ca/birth_year"}
+    assert form["exports"] == ["ca/birth_year", "ca/age_65_or_older"]
+    assert form["supplies"] == {
+        "ca/t1_lines_copied_by_provinces.birth_year": "ca/birth_year",
+        "ca/t1_lines_copied_by_provinces.age_65_or_older": "ca/age_65_or_older",
+    }
+
+
+def test_the_age_65_part_works_out_the_flag_from_the_year_with_the_tax_year_cutoff() -> None:
+    part = _part("t1_birth_year_age_65_or_older.yaml")
+
+    assert part["form"] == {"name": "ca-qc/t1_birth_year"}
+    (step,) = part["capabilities"]
+    assert step["name"] == "ca/count_by_conditions"
+    assert step["params"] == {"conditions": "ca/age_65_or_older_conditions"}
+    assert step["consumes"] == {"counts": ["ca/birth_year"], "amounts": []}
+    assert step["blank"] == {"counts": "pass_on"}
+    assert step["produces"] == {"output": "ca/age_65_or_older"}

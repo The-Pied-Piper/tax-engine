@@ -26,6 +26,7 @@ def test_the_form_is_required_has_the_t1_title_and_exports_its_lines() -> None:
             "ca/other_dependants_medical_expenses_line_33199",
             "ca/minimum_tax_carryover_line_40427",
             "ca/birth_year",
+            "ca/age_65_or_older",
         ],
     }
     assert part["capabilities"] == []

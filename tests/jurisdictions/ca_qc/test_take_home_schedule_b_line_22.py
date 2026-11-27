@@ -1,5 +1,5 @@
 """Quebec Schedule B (TP-1.D.B-V, 2025-12) Part B line 22, the age amount, as the Quebec take-home
-manifest wires it, in four steps.
+manifest wires it, in three steps.
 
 Line 22: "If you were born before January 1, 1961, enter $3,906." The year of birth is the 5005-R's
 optional input (`ca/birth_year`), read through the T1's export; a caller who gives none is not
@@ -17,9 +17,8 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.jurisdictions.ca.catalog.personal_amounts import BIRTH_YEAR
 from tax_engine.jurisdictions.ca_qc.catalog import (
+    SCHEDULE_B_AGE_65_OR_OLDER_LINE_22,
     SCHEDULE_B_AGE_AMOUNT_LINE_22,
-    SCHEDULE_B_BIRTH_YEAR_LINE_22,
-    SCHEDULE_B_BORN_BEFORE_1961_LINE_22,
     SCHEDULE_B_LINE_22,
 )
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
@@ -70,7 +69,7 @@ def _part() -> dict[str, Any]:
     return part
 
 
-def test_the_part_is_four_steps_and_only_the_last_carries_the_reference() -> None:
+def test_the_part_is_three_steps_and_only_the_last_carries_the_reference() -> None:
     part = _part()
 
     assert list(part) == ["form", "capabilities"]
@@ -78,31 +77,26 @@ def test_the_part_is_four_steps_and_only_the_last_carries_the_reference() -> Non
     steps = part["capabilities"]
     assert [step["name"] for step in steps] == [
         "core/first_record_count",
-        "ca/count_by_conditions",
         "core/credit_amount",
         "core/times_count",
     ]
-    assert [step.get("reference") for step in steps] == [None, None, None, "22"]
+    assert [step.get("reference") for step in steps] == [None, None, "22"]
     assert [step["produces"]["output"] for step in steps] == [
-        "ca-qc/schedule_b_birth_year_line_22",
-        "ca-qc/schedule_b_born_before_1961_line_22",
+        "ca-qc/schedule_b_age_65_or_older_line_22",
         "ca-qc/schedule_b_age_amount_line_22",
         IDENTIFIER,
     ]
-    assert steps[0]["consumes"] == {"records": "ca-qc/t1_birth_year.birth_year"}
-    assert steps[0]["blank"] == {"records": {"ca/birth_year": "pass_on"}}
-    assert steps[1]["params"] == {"conditions": "ca-qc/schedule_b_line_22_conditions"}
-    assert steps[2]["params"] == {"amount": "ca-qc/schedule_b_age_amount_line_22"}
-    assert steps[3]["consumes"] == {
+    assert steps[0]["consumes"] == {"records": "ca-qc/t1_birth_year.age_65_or_older"}
+    assert steps[0]["blank"] == {"records": {"ca/age_65_or_older": "pass_on"}}
+    assert steps[1]["params"] == {"amount": "ca-qc/schedule_b_age_amount_line_22"}
+    assert steps[2]["consumes"] == {
         "amount": "ca-qc/schedule_b_age_amount_line_22",
-        "count": "ca-qc/schedule_b_born_before_1961_line_22",
+        "count": "ca-qc/schedule_b_age_65_or_older_line_22",
     }
-    assert steps[3]["blank"] == {"count": "0"}
+    assert steps[2]["blank"] == {"count": "0"}
 
 
-@pytest.mark.parametrize(
-    "kind", [SCHEDULE_B_BIRTH_YEAR_LINE_22, SCHEDULE_B_BORN_BEFORE_1961_LINE_22]
-)
+@pytest.mark.parametrize("kind", [SCHEDULE_B_AGE_65_OR_OLDER_LINE_22])
 def test_the_count_kinds_are_registered_non_negative_counts(kind: CountKind) -> None:
     assert quebec_kinds().kind(kind.identifier) is kind
     assert isinstance(kind, CountKind)

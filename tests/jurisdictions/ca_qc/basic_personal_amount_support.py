@@ -50,6 +50,7 @@ PPIP_PARTS = (
 LINE_85_INPUT_PARTS = (
     "t1_birth_year.yaml",
     "t1_birth_year_inputs.yaml",
+    "t1_birth_year_age_65_or_older.yaml",
     "t1_tax_and_credits_line_79_worksheet_lines_1_to_3.yaml",
     "t1_tax_and_credits_line_79_worksheet_lines_4_to_7.yaml",
     "t1_tax_and_credits_line_79.yaml",
@@ -208,13 +209,14 @@ def sheets(
     salary: str,
     *given: tuple[AmountKind, str],
     birth_year: int | None = None,
+    tax_year: int = 2025,
 ) -> tuple[Worksheet, Worksheet]:
     """The T1 taxable-income sheet and the tax and credits sheet for `salary`, with the optional
     figures in `given` (a kind and its figure) typed in."""
     worksheets = take_home_service(HEADER, FORM, *PARTS).compute(
         TaxCalculationRequest(
             JurisdictionCode("CA-QC"),
-            2025,
+            tax_year,
             (
                 Artifact(EMPLOYMENT_INCOME, D(salary)),
                 *(Artifact(kind, D(figure)) for kind, figure in given),

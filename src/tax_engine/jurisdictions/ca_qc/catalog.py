@@ -1244,9 +1244,9 @@ the Federal Worksheet to calculate the amount to enter. (maximum $16,129)": Fede
 5000-D1 lines 1 to 11, one ca/tapered_amount step over the dataset `ca/basic_personal_amount`
 (`t1_tax_and_credits_line_30000.yaml`); the credit sums read it."""
 
-BIRTH_YEAR_LINE_79 = CountKind.declare(CATALOG, "birth_year_line_79", non_negative=True)
-"""The year of birth as 5005-R line 79 reads it: the T1 identification form's export of
-`ca/birth_year` (`core/first_record_count`)."""
+AGE_65_OR_OLDER_LINE_79 = CountKind.declare(CATALOG, "age_65_or_older_line_79", non_negative=True)
+"""Aged 65 or older as 5005-R line 79 reads it: the T1 identification form's export of
+`ca/age_65_or_older` (`core/first_record_count`)."""
 
 AGE_AMOUNT_LINE_79 = AmountKind.declare(CATALOG, "age_amount_line_79", non_negative=True)
 """Age amount, 5005-R line 79 and line 30100 "Age amount (if you were born in 1960 or earlier)
@@ -1973,18 +1973,12 @@ SCHEDULE_B_LINE_20 = AmountKind.declare(CATALOG, "schedule_b_line_20", non_negat
 """Schedule B Part B line 20, the amount for a person living alone: $2,128 when the answer is yes
 and the income gate does not apply, else 0, rounded half-up to the cent."""
 
-SCHEDULE_B_BIRTH_YEAR_LINE_22 = CountKind.declare(
-    CATALOG, "schedule_b_birth_year_line_22", non_negative=True
+SCHEDULE_B_AGE_65_OR_OLDER_LINE_22 = CountKind.declare(
+    CATALOG, "schedule_b_age_65_or_older_line_22", non_negative=True
 )
-"""The year of birth as Schedule B line 22 reads it: the T1's export of `ca/birth_year`
-(`core/first_record_count`)."""
-
-SCHEDULE_B_BORN_BEFORE_1961_LINE_22 = CountKind.declare(
-    CATALOG, "schedule_b_born_before_1961_line_22", non_negative=True
-)
-"""Schedule B line 22 "If you were born before January 1, 1961": 1 when the year of birth
-(`ca/birth_year`) is 1960 or earlier, 0 when it is later, blank when no year is given
-(`ca/count_by_conditions`, `schedule_b_line_22.yaml`)."""
+"""Schedule B line 22 "If you were born before January 1, 1961": the T1 identification form's
+`ca/age_65_or_older` (1 or 0, blank when no year of birth is given), read through
+`core/first_record_count` (`schedule_b_line_22.yaml`)."""
 
 SCHEDULE_B_AGE_AMOUNT_LINE_22 = AmountKind.declare(
     CATALOG, "schedule_b_age_amount_line_22", non_negative=True

@@ -85,3 +85,12 @@ def test_line_85_adds_the_age_amount(take_home_service: TakeHomeService) -> None
 
 def test_the_age_amount_kind_is_non_negative() -> None:
     assert non_negative(AGE_AMOUNT_LINE_79) is True
+
+
+@pytest.mark.parametrize(("year", "claimed"), [(1960, True), (1961, True), (1962, False)])
+def test_the_2026_cutoff_is_born_in_1961_or_earlier(
+    take_home_service: TakeHomeService, year: int, claimed: bool
+) -> None:
+    _, sheet = sheets(take_home_service, "20000", birth_year=year, tax_year=2026)
+
+    assert (sheet.get(AGE_AMOUNT_LINE_79).value > 0) is claimed

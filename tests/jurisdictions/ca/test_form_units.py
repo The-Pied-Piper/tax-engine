@@ -31,8 +31,8 @@ EXCEPTIONS: dict[str, str | None] = {
     "ca/cpp_months": "core/months",
     # The year of birth, a calendar year the T1 asks for, is a count with no unit.
     "ca/birth_year": None,
-    "ca/t1_birth_year": None,
-    "ca/born_in_1960_or_earlier_checked": None,
+    "ca/age_65_or_older": None,
+    "ca/t1_age_65_or_older": None,
     # The 0 or 1 flags of T2204 lines 1 and 15 are counts, not money.
     "ca/t2204_line_1_count": None,
     "ca/t2204_line_15_count": None,
