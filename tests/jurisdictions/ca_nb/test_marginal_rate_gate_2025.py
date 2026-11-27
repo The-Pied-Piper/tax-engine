@@ -3,11 +3,11 @@
 (jurisdictions do not read each other's datasets).
 
 Not a printed form figure: no CRA text is quoted. The New Brunswick return summary
-reads NB428 line 83, line 86 and line 97 "Line 94 minus line 104 (if negative, enter "0")"
-through it (`core/amount_by_band_rate` steps), so that the low-income tax reduction slope and the
-provincial part of the marginal tax rate count only where their own amounts are above zero. A
-base of 0.00 gives the rate 0 and a base of 0.01 or more gives the rate 1; a base exactly at the
-second row's `over` (0.005) is in the lower band, so no cent amount but 0.00 is in the first band.
+reads NB428 line 83, line 86 and line 97 through it (`core/amount_by_band_rate` steps), so that
+the low-income tax reduction slope and the provincial part of the marginal tax rate count only
+where their own amounts are above zero. A base of 0.00 gives the rate 0 and a base of 0.01 or more
+gives the rate 1; a base exactly at the second row's `over` (0.005) is in the lower band, so no
+cent amount but 0.00 is in the first band.
 """
 
 from __future__ import annotations
