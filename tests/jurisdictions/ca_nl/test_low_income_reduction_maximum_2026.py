@@ -25,28 +25,26 @@ SOURCE = YamlParameterSource(
 )
 FAMILY = "ca-nl/low_income_reduction_maximum"
 SOURCES = (
+    "https://www.assembly.nl.ca/Legislation/sr/regulations/rc260018.htm",
     "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5001-c/5001-c-25e.txt",
-    "https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf",
 )
 PROVISIONAL_HEADER = (
-    "# Provisional: taken from the 2025 form text named in sources; to be confirmed "
-    "against the 2026 form text when CRA publishes it."
+    "# Confirmed from the regulation named in the next line; the 2026 NL428 is not yet published."
 )
 DERIVATION_HEADER = (
-    "# Derivation: the form's maximum is the sum of the basic reduction and one of "
-    "the spouse or dependant reductions (2025: 997 + 557 = 1,554); the 2026 maximum "
-    "is the sum of those two amounts as indexed in this directory (1,008 + 563 = "
-    "1,571), each the 2025 figure x 1.011 (Newfoundland and Labrador's index rate in "
-    "T4127 (Jan 2026) Table 8.2) rounded to the nearest dollar, a half going up (NL "
-    "Income Tax Act, 2000 s.6.1(3)(c)); unconfirmed, as the 2026 NL428 is not yet "
-    "published."
+    "# Source: the form's maximum is the sum of the basic reduction and one of the spouse "
+    "or dependant reductions (2025: 997 + 557 = 1,554); for 2026 it is 842 + 563 = 1,405, "
+    "both as printed in Newfoundland and Labrador Regulation 18/26, Low Income Tax "
+    "Reduction Regulations for the 2025 and 2026 Taxation Years (filed May 14, 2026; "
+    "https://www.assembly.nl.ca/Legislation/sr/regulations/rc260018.htm), s.3(b), in force "
+    "January 1, 2026 (s.5(2))."
 )
 
 
 def test_2026_low_income_reduction_maximum_value() -> None:
     data = SOURCE.get(FAMILY, 2026, AMOUNT)
 
-    assert data.values == Amount(D("1571"))
+    assert data.values == Amount(D("1405"))
 
 
 def test_2026_low_income_reduction_maximum_rounding() -> None:
