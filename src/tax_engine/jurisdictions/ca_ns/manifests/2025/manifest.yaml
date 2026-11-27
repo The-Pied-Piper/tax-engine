@@ -11,9 +11,9 @@
 #
 # Stated assumptions, carried once here and not built as inputs: the filer is single (no spouse or
 # common-law partner, dependants or children, so the spouse column and lines 70 to 78 beyond the
-# filer's own are not built), was born in 1961 or later, so
-# the age amount (NS428 line 10) and the age tax credit (line 98) are not built, and a
-# filer born 1960 or earlier would get a lower tax than shown; the filer is a Nova Scotia resident
+# filer's own are not built), was born in 1961 or later unless the optional
+# `ca/born_in_1960_or_earlier` answer says otherwise (the age tax credit, NS428 line 98, reads it; the
+# age amount, line 10, is not built yet, so a filer born 1960 or earlier gets no line 10); the filer is a Nova Scotia resident
 # on 31 December, 19 or older, and not confined to prison for more than six months (the guide's
 # eligibility for the low-income tax reduction, lines 65 to 85).
 #

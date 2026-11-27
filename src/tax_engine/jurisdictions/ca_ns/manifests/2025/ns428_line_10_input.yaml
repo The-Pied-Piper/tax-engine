@@ -1,0 +1,13 @@
+# NS428 (2025) input a salary-only caller does not give: whether the filer was born in 1960 or earlier.
+# Line 10 "Age amount (if you were born in 1960 or earlier)" and line 98 "Age tax credit (if you were born in 1960 or earlier and your taxable income is less than $24,000)" (Form NS428, CRA 5003-C, PDF).
+# The return asks for the filer's year of birth; the engine reads it as the existing federal count
+# `ca/born_in_1960_or_earlier`, a shared fact entered once, so no new kind is declared (as ca-nl/nl428_credits line 17). A request that leaves it out is read as blank, and the line steps read a blank as 0 (not born in 1960 or earlier).
+form:
+  name: ca-ns/ns428
+inputs:
+  - name: ca/born_in_1960_or_earlier
+    title: "Born in 1960 or earlier"
+    reference: "10"
+    required: false
+    default: null
+    basis: 'Line 10 and line 98: if you were born in 1960 or earlier'

@@ -500,12 +500,86 @@ it, an optional input; a blank input is read as 0 by the step that reads it."""
 NS428_TAX_LINE_97 = AmountKind.declare(CATALOG, "ns428_tax_line_97", non_negative=True)
 """NS428 line 97 "Line 95 minus line 96 (if negative, enter \"0\")"."""
 
+WORKSHEET_NS428_AGE_AMOUNT_MAXIMUM_LINE_1 = AmountKind.declare(
+    CATALOG, "worksheet_ns428_age_amount_maximum_line_1", non_negative=True
+)
+"""Worksheet NS428 age amount line 1 "Maximum amount 5,734.00"."""
+
+WORKSHEET_NS428_AGE_AMOUNT_NET_INCOME_LINE_2 = AmountKind.declare(
+    CATALOG, "worksheet_ns428_age_amount_net_income_line_2", non_negative=True
+)
+"""Worksheet NS428 age amount line 2 "Amount from line 23600 of your return"."""
+
+WORKSHEET_NS428_AGE_AMOUNT_INCOME_THRESHOLD_LINE_3 = AmountKind.declare(
+    CATALOG, "worksheet_ns428_age_amount_income_threshold_line_3", non_negative=True
+)
+"""Worksheet NS428 age amount line 3 "Income threshold 30,828.00"."""
+
+WORKSHEET_NS428_AGE_AMOUNT_LINE_4 = AmountKind.declare(
+    CATALOG, "worksheet_ns428_age_amount_line_4", non_negative=True
+)
+"""Worksheet NS428 age amount line 4 "Line 2 minus line 3 (if negative, enter \"0\")"."""
+
+WORKSHEET_NS428_AGE_AMOUNT_LINE_6 = AmountKind.declare(
+    CATALOG, "worksheet_ns428_age_amount_line_6", non_negative=True
+)
+"""Worksheet NS428 age amount line 6 "Line 4 multiplied by the percentage from line 5"."""
+
+WORKSHEET_NS428_AGE_AMOUNT_LINE_7 = AmountKind.declare(
+    CATALOG, "worksheet_ns428_age_amount_line_7", non_negative=True
+)
+"""Worksheet NS428 age amount line 7 "Line 1 minus line 6 (if negative, enter \"0\")": the amount
+for NS428 line 10 when the filer was born in 1960 or earlier."""
+
+NS428_AGE_AMOUNT_LINE_10 = AmountKind.declare(
+    CATALOG, "ns428_age_amount_line_10", non_negative=True
+)
+"""NS428 line 10 "Age amount (if you were born in 1960 or earlier) (use Worksheet NS428)
+(maximum $5,734)": worksheet line 7 when born in 1960 or earlier, 0.00 otherwise."""
+
+NS428_AGE_TAX_CREDIT_INCOME_LIMIT = AmountKind.declare(
+    CATALOG, "ns428_age_tax_credit_income_limit", non_negative=True
+)
+"""Taxable income limit of the age tax credit, NS428 line 98 "(... your taxable income is less than
+$24,000)": the printed limit, from the `ca-ns/age_tax_credit_income_limit` dataset."""
+
+NS428_INCOME_UNDER_AGE_TAX_CREDIT_LIMIT = AmountKind.declare(
+    CATALOG, "ns428_income_under_age_tax_credit_limit", non_negative=True
+)
+"""The age tax credit income limit less taxable income (line 1), not below 0: above 0 exactly when
+taxable income is less than the limit. Not a line of the form."""
+
+NS428_AGE_TAX_CREDIT_ELIGIBILITY_GATE = AmountKind.declare(
+    CATALOG, "ns428_age_tax_credit_eligibility_gate", non_negative=True
+)
+"""Switch of the age tax credit's income test, 0 or 1, from the
+`ca-ns/age_tax_credit_eligibility_gate` dataset. Not a CRA figure."""
+
+NS428_AGE_TAX_CREDIT_CLAIM = AmountKind.declare(
+    CATALOG, "ns428_age_tax_credit_claim", non_negative=True
+)
+"""Age tax credit claim, NS428 line 98 "Claim $1,000": the printed figure, from the
+`ca-ns/age_tax_credit` dataset."""
+
+NS428_AGE_TAX_CREDIT_IF_BORN_IN_1960_OR_EARLIER = AmountKind.declare(
+    CATALOG, "ns428_age_tax_credit_if_born_in_1960_or_earlier", non_negative=True
+)
+"""The age tax credit claim when the filer was born in 1960 or earlier, 0.00 otherwise, before the
+income test. Not a line of the form."""
+
+NS428_AGE_TAX_CREDIT_LINE_98 = AmountKind.declare(
+    CATALOG, "ns428_age_tax_credit_line_98", non_negative=True
+)
+"""Age tax credit, NS428 line 98 "Age tax credit (if you were born in 1960 or earlier and your
+taxable income is less than $24,000) Claim $1,000": $1,000.00 when both conditions are met, 0.00
+otherwise."""
+
 NS428_NOVA_SCOTIA_TAX_LINE_99 = AmountKind.declare(
     CATALOG, "ns428_nova_scotia_tax_line_99", non_negative=True
 )
 """Nova Scotia tax, NS428 line 99 "Line 97 minus line 98 (if negative, enter \"0\") Enter this
-amount on line 42800 of your return. Nova Scotia tax": line 97 not below 0 (line 98, the age tax
-credit, is not built)."""
+amount on line 42800 of your return. Nova Scotia tax": line 97 less line 98 (the age tax credit),
+not below 0."""
 
 AVERAGE_TAX_RATE = AmountKind.declare(CATALOG, "average_tax_rate", non_negative=True)
 """Average tax rate on the take-home basis, the Nova Scotia return summary's own figure (no form

@@ -43,8 +43,20 @@ D = Decimal
 NS_PARTS = Path(tax_engine.jurisdictions.ca_ns.__file__).parent / "manifests" / "2025"
 LINE_PART = NS_PARTS / "ns428_line_19.yaml"
 IDENTIFIER = "ca-ns/ns428_credits_subtotal_line_19"
-FEDERAL_FORM_NAMES = ("t1_employment_income",)
-NS_PART_NAMES = ("ns428_line_9.yaml", "ns428_line_19.yaml")
+FEDERAL_FORM_NAMES = (
+    "schedule_8",
+    "t2204",
+    "t1_employment_income",
+    "t1_taxable_income",
+    "t1_lines_copied_by_provinces",
+    "schedule_9",
+)
+NS_PART_NAMES = (
+    "ns428_line_9.yaml",
+    "ns428_line_10_input.yaml",
+    "ns428_line_10.yaml",
+    "ns428_line_19.yaml",
+)
 
 HEADER = dedent("""\
     jurisdiction: CA-NS
@@ -137,6 +149,6 @@ def test_the_part_names_the_form_and_has_the_one_step() -> None:
         "reference": "19",
         "unit": "ca/cad",
         "params": {"rounding": "ca-ns/cent_rounding"},
-        "consumes": {"parts": ["ca-ns/basic_personal_amount"]},
+        "consumes": {"parts": ["ca-ns/basic_personal_amount", "ca-ns/ns428_age_amount_line_10"]},
         "produces": {"output": IDENTIFIER},
     }

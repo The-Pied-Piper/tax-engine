@@ -1,20 +1,21 @@
 # Form NS428 (Nova Scotia Tax, CRA 5003-C) line 99 "Line 99: Line 97 minus line 98 (if negative,
-# enter "0") Enter this amount on line 42800 of your return. Nova Scotia tax". Line 98 is the age
-# tax credit, not built: the filer is assumed born in 1961 or later (the manifest header states it),
-# so line 98 is 0 and line 99 is line 97 not below 0. One core/sum_not_below_zero step with the one
-# part, line 97 (`ca-ns/ns428_tax_line_97`), floors it, rounded half-up to the cent by the
-# dataset's rule. Line 99 is the output `ca-ns/ns428_nova_scotia_tax_line_99`, the tax entered on
-# line 42800, supplied through the form's `ca/provincial_tax.amount` in ns428.yaml.
+# enter "0") Enter this amount on line 42800 of your return. Nova Scotia tax". One
+# core/subtract_not_below_zero step: line 97 (`ca-ns/ns428_tax_line_97`) less line 98, the age tax
+# credit (`ca-ns/ns428_age_tax_credit_line_98`, 0.00 unless born in 1960 or earlier with taxable
+# income under $24,000), not below 0, rounded half-up to the cent by the dataset's rule (as
+# ca-sk/sk428 line 82 and ca-nl/nl428 line 105). Neither figure is ever blank, so the step has no
+# blank rule. Line 99 is the output `ca-ns/ns428_nova_scotia_tax_line_99`, the tax entered on line
+# 42800, supplied through the form's `ca/provincial_tax.amount` in ns428.yaml.
 form:
   name: ca-ns/ns428
 capabilities:
-  - name: core/sum_not_below_zero
+  - name: core/subtract_not_below_zero
     reference: "99"
     unit: ca/cad
     params:
       rounding: ca-ns/cent_rounding
     consumes:
-      parts:
-        - ca-ns/ns428_tax_line_97
+      amount: ca-ns/ns428_tax_line_97
+      less: ca-ns/ns428_age_tax_credit_line_98
     produces:
       output: ca-ns/ns428_nova_scotia_tax_line_99

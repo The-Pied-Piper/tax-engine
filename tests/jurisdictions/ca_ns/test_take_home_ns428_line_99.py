@@ -2,10 +2,10 @@
 
 Form text (Form NS428, CRA 5003-C, confirmed 26 Nov 2026 from CRA's PDF): "Line 99: Line 97 minus
 line 98 (if negative, enter "0") Enter this amount on line 42800 of your return. Nova Scotia tax".
-Line 98, the age tax credit, is not built (the filer is assumed born in 1961 or later, so it is 0),
-so line 99 is line 97 not below 0: one core/sum_not_below_zero step with the one part, line 97,
-rounded half-up to the cent by `ca-ns/cent_rounding`. Line 99 is the form's export and is supplied
-as `ca/provincial_tax.amount` (see `test_form_ns428.py`). Figures are the ticket's: 552.33 /
+Line 99 is line 97 less line 98, the age tax credit (0.00 unless born in 1960 or earlier with
+taxable income under $24,000), not below 0: one core/subtract_not_below_zero step, rounded half-up
+to the cent by `ca-ns/cent_rounding`. Line 99 is the form's export and is supplied as
+`ca/provincial_tax.amount` (see `test_form_ns428.py`). Figures are the ticket's: 552.33 /
 1,422.86 / 7,213.10 at salaries of 20,000 / 30,000 / 70,000.
 """
 
@@ -38,14 +38,17 @@ def test_the_claims_lower_line_99_and_line_99_is_never_negative(tmp_path: Path) 
     assert str(s.line(tmp_path, "20000", s.LINE_99, {s.LINE_96: "600"})) == "0.00"
 
 
-def test_the_part_is_one_untitled_sum_not_below_zero_step_over_line_97() -> None:
+def test_the_part_is_one_untitled_subtract_not_below_zero_step_line_97_less_line_98() -> None:
     assert s.part("ns428_line_99.yaml")["capabilities"] == [
         {
-            "name": "core/sum_not_below_zero",
+            "name": "core/subtract_not_below_zero",
             "reference": "99",
             "unit": "ca/cad",
             "params": {"rounding": "ca-ns/cent_rounding"},
-            "consumes": {"parts": [s.LINE_97]},
+            "consumes": {
+                "amount": s.LINE_97,
+                "less": "ca-ns/ns428_age_tax_credit_line_98",
+            },
             "produces": {"output": s.LINE_99},
         }
     ]
