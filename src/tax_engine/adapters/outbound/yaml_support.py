@@ -33,7 +33,7 @@ class YamlShapeError(ValueError):
     """A YAML document does not have the expected shape."""
 
 
-# libyaml's loader when PyYAML was built with it (about three times faster); otherwise the
+# libyaml's loader when PyYAML was built with it (faster); otherwise the
 # pure-Python SafeLoader, so the engine still imports where PyYAML has no C extension.
 if TYPE_CHECKING:
     _BaseLoader = yaml.CSafeLoader
