@@ -1,0 +1,10 @@
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: carried forward unchanged from the 2025 form (line 92, "(maximum $500)"); it is on the printed 2025 form and not in the 2026 payroll tables, and the 2026 form is not yet published, so it is unconfirmed.
+# Form PE428 line 92: political contribution tax credit, maximum, 2026. The printed maximum, claimed whole: the credit kind, as in 2025.
+family: ca-pe/political_contribution_tax_credit_maximum
+tax_year: 2026
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5002-c/5002-c-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "500"

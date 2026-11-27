@@ -581,3 +581,24 @@ the step that reads it reads it as 0."""
 PE428_TAX_LINE_90 = AmountKind.declare(CATALOG, "pe428_tax_line_90", non_negative=True)
 """PE428 line 90 "Line 90: Line 88 minus line 89 (if negative, enter "0") =": line 88 less the
 provincial foreign tax credit of line 89, not below 0, rounded half-up to the cent."""
+
+PE428_POLITICAL_CONTRIBUTION_TAX_CREDIT_CLAIMED_LINE_92 = AmountKind.declare(
+    CATALOG, "pe428_political_contribution_tax_credit_claimed_line_92", non_negative=True
+)
+"""The political contribution tax credit of PE428 line 92 as the filer gives it, an optional input
+(the worksheet is not built); a blank input is read as blank, and line 92 checks it against the
+printed maximum. Not printed as a separate line."""
+
+PE428_POLITICAL_CONTRIBUTION_TAX_CREDIT_MAXIMUM = AmountKind.declare(
+    CATALOG, "pe428_political_contribution_tax_credit_maximum", non_negative=True
+)
+"""The printed maximum of PE428 line 92 ($500), from the
+`ca-pe/political_contribution_tax_credit_maximum` dataset; the bound line 92 checks against. Not
+printed as a separate line."""
+
+PE428_POLITICAL_CONTRIBUTION_TAX_CREDIT_LINE_92 = AmountKind.declare(
+    CATALOG, "pe428_political_contribution_tax_credit_line_92", non_negative=True
+)
+"""Prince Edward Island political contribution tax credit, PE428 line 92 "(use Worksheet PE428)
+(maximum $500)": the credit as the filer gives it, an optional input (the worksheet is not built);
+a blank input is read as blank, and the step that reads it reads it as 0."""

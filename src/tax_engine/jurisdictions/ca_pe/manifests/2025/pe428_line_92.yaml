@@ -1,0 +1,27 @@
+# Form PE428 (CRA 5002-C) line 92: "Prince Edward Island political contribution tax credit (use
+# Worksheet PE428) (maximum $500)". The worksheet is not built, so the credit is the typed amount
+# (pe428_line_92_input.yaml); the form's printed maximum is applied as the NS428 line 90 maximum is:
+# core/credit_amount supplies the printed maximum (the `ca-pe/political_contribution_tax_credit_maximum`
+# dataset); it is not a line of the form, so it has no title and no reference. core/at_most is line 92:
+# the typed amount passed on unchanged, a blank passed on blank, and an amount above the printed
+# maximum refused, not capped. Line 93 reads a blank line 92 as 0.
+form:
+  name: ca-pe/pe428
+capabilities:
+  - name: core/credit_amount
+    unit: ca/cad
+    params:
+      amount: ca-pe/political_contribution_tax_credit_maximum
+    produces:
+      output: ca-pe/pe428_political_contribution_tax_credit_maximum
+  - name: core/at_most
+    title: "Prince Edward Island political contribution tax credit"
+    reference: "92"
+    unit: ca/cad
+    consumes:
+      amount: ca-pe/pe428_political_contribution_tax_credit_claimed_line_92
+      bound: ca-pe/pe428_political_contribution_tax_credit_maximum
+    blank:
+      amount: pass_on
+    produces:
+      output: ca-pe/pe428_political_contribution_tax_credit_line_92
