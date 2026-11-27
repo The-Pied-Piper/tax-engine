@@ -82,18 +82,21 @@ def _figures(
 FIGURES = [(2025, D("6223"), D("46330")), (2026, D("6341"), D("47210"))]
 
 
-@pytest.mark.parametrize(("year", "maximum", "threshold"), FIGURES)
-@pytest.mark.parametrize("where", ["below", "at_threshold", "far_above"])
+@pytest.mark.parametrize(
+    ("year", "salary", "expected"),
+    [
+        (2025, "20000", "6223.00"),
+        (2025, "46330", "6223.00"),
+        (2025, "100000", "0.00"),
+        (2026, "20000", "6341.00"),
+        (2026, "47210", "6341.00"),
+        (2026, "100000", "0.00"),
+    ],
+)
 def test_line_is_the_maximum_below_the_threshold_and_zero_far_above(
-    take_home_service: TakeHomeService, year: int, maximum: Decimal, threshold: Decimal, where: str
+    take_home_service: TakeHomeService, year: int, salary: str, expected: str
 ) -> None:
-    salary, expected = {
-        "below": (D("20000"), maximum),
-        "at_threshold": (threshold, maximum),
-        "far_above": (D("100000"), D("0")),
-    }[where]
-
-    assert _figures(take_home_service, year, str(salary), 1950)[1] == expected.quantize(D("0.01"))
+    assert _figures(take_home_service, year, salary, 1950)[1] == D(expected)
 
 
 @pytest.mark.parametrize(("year", "maximum", "threshold"), FIGURES)
