@@ -226,3 +226,11 @@ def test_a_blank_count_field_may_take_a_fallback() -> None:
     )
 
     assert result.outputs == (Artifact(FIRST_FLAG, 7),)
+
+
+def test_a_whole_record_list_may_be_blank_and_passed_on() -> None:
+    assert "records" in FirstRecordCount.BLANK_ALLOWED
+
+    result = capability().with_blank_rules({"records": PASS_ON}).run((Artifact(FLAGS, BLANK),))
+
+    assert result.outputs == (Artifact(FIRST_FLAG, BLANK),)
