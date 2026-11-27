@@ -4,7 +4,9 @@
 # the `ca-pe/age_amount_maximum` dataset; it is not a line of the form, so it has no title and no reference.
 # The second, core/at_most, is line 10: the entered amount (pe428_line_10_input.yaml) passed on
 # unchanged. An entry above the printed maximum is refused, not capped. A blank entry passes on as
-# blank, and line 19 reads it as 0. Line 10 is not exported, as no later line reads it outside this form.
+# blank, and line 19 reads it as 0. The title is plain words, not the printed wording (kept on the
+# entry, pe428_line_10_input.yaml), because the sentence of line 19 names it and the printed title
+# would make that sentence longer than 40 words, as in ca-nl/nl428_credits line 17. Line 10 is not exported, as no later line reads it outside this form.
 form:
   name: ca-pe/pe428
 capabilities:
@@ -15,7 +17,7 @@ capabilities:
     produces:
       output: ca-pe/pe428_age_amount_maximum
   - name: core/at_most
-    title: "Age amount (if you were born in 1960 or earlier) (use Worksheet PE428) (maximum $6,510)"
+    title: "Age amount"
     reference: "10"
     unit: ca/cad
     consumes:

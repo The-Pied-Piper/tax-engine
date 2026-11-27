@@ -229,7 +229,9 @@ def test_quebec_takes_off_both_returns_the_pension_plan_ei_and_qpip(
     assert got.marginal_tax_rate is None
 
 
-@pytest.mark.parametrize("code", ["CA-ON", "CA-AB", "CA-BC", "CA-MB", "CA-NL", "CA-SK", "CA-QC"])
+@pytest.mark.parametrize(
+    "code", ["CA-ON", "CA-AB", "CA-BC", "CA-MB", "CA-NL", "CA-PE", "CA-SK", "CA-QC"]
+)
 @pytest.mark.parametrize("year", [2025, 2026])
 @pytest.mark.parametrize("salary", ["0", "100", "2050", "70000", "250000"])
 def test_the_average_rate_is_the_total_deductions_over_the_salary_in_every_jurisdiction(
