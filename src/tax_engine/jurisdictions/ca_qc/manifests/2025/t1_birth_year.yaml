@@ -1,0 +1,10 @@
+# The T1 identification step (5005-R, 2025, Step 1), as far as the engine reads it: the filer's year of birth, the input of `t1_birth_year_inputs.yaml`, exported for the forms that read it (5005-R line 79 and Schedule B line 22). The federal Schedule 8 line A reads it too, through `supplies`, because the Quebec return does not import the federal T1 forms.
+form:
+  name: ca-qc/t1_birth_year
+  title: "T1 Income Tax and Benefit Return"
+  required: true
+  exports:
+    - ca/birth_year
+  supplies:
+    ca/t1_lines_copied_by_provinces.birth_year: ca/birth_year
+capabilities: []

@@ -21,11 +21,7 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
-from tests.jurisdictions.ca_qc.schedule_b_support import (
-    LINE_31_PARTS,
-    NET_INCOME_PARTS,
-    T1_BIRTH_YEAR_DECLARATION,
-)
+from tests.jurisdictions.ca_qc.schedule_b_support import LINE_31_PARTS, NET_INCOME_PARTS
 from tests.jurisdictions.ca_qc.tp1_net_income_support import (
     HEADER as CHAIN_HEADER,
 )
@@ -44,7 +40,6 @@ HEADER = dedent("""\
     """)
 # The real Schedule B form declaration (it exports line 34) and its parts up to line 34.
 SCHEDULE_B_PARTS = (
-    T1_BIRTH_YEAR_DECLARATION,
     "schedule_b.yaml",
     *LINE_31_PARTS,
     "schedule_b_line_32.yaml",

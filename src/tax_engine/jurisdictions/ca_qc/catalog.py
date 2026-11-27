@@ -1244,6 +1244,10 @@ the Federal Worksheet to calculate the amount to enter. (maximum $16,129)": Fede
 5000-D1 lines 1 to 11, one ca/tapered_amount step over the dataset `ca/basic_personal_amount`
 (`t1_tax_and_credits_line_30000.yaml`); the credit sums read it."""
 
+BIRTH_YEAR_LINE_79 = CountKind.declare(CATALOG, "birth_year_line_79", non_negative=True)
+"""The year of birth as 5005-R line 79 reads it: the T1 identification form's export of
+`ca/birth_year` (`core/first_record_count`)."""
+
 AGE_AMOUNT_LINE_79 = AmountKind.declare(CATALOG, "age_amount_line_79", non_negative=True)
 """Age amount, 5005-R line 79 and line 30100: an optional input a salary-only caller does not give;
 the credit sum that adds it reads a blank as 0 (`t1_tax_and_credits_line_30100_inputs.yaml`)."""

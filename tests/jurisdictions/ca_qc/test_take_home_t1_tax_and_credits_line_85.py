@@ -16,7 +16,6 @@ import pytest
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.jurisdictions.ca_qc.catalog import (
-    AGE_AMOUNT_LINE_79,
     BASIC_PERSONAL_AMOUNT,
     CAREGIVER_AMOUNT_INFIRM_CHILDREN_LINE_84,
     CAREGIVER_AMOUNT_INFIRM_DEPENDANTS_LINE_83,
@@ -31,7 +30,6 @@ from tests.kinds import non_negative
 
 D = Decimal
 OPTIONAL_LINES = (
-    AGE_AMOUNT_LINE_79,
     SPOUSE_AMOUNT_LINE_80,
     ELIGIBLE_DEPENDANT_AMOUNT_LINE_81,
     CAREGIVER_AMOUNT_SPOUSE_LINE_82,
@@ -65,7 +63,7 @@ def test_each_optional_line_is_added_to_line_78(
 def test_every_optional_line_is_added_in_one_sum(take_home_service: TakeHomeService) -> None:
     _, sheet = sheets(take_home_service, "70000", *((kind, "100.10") for kind in OPTIONAL_LINES))
 
-    assert sheet.get(CREDIT_AMOUNTS_LINE_85).value == D("16729.60")
+    assert sheet.get(CREDIT_AMOUNTS_LINE_85).value == D("16629.50")
 
 
 def test_the_trace_names_each_line_and_each_blank_read_as_zero(

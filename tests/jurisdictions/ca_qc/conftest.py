@@ -49,12 +49,8 @@ def take_home_service(tmp_path: Path) -> TakeHomeService:
         (folder / "01_form.yaml").write_text(form, encoding="utf-8")
         # A part named twice (a chain that several lists of a test share) is copied once.
         for number, part in enumerate(dict.fromkeys(parts), start=2):
-            inline = "\n" in part
-            (
-                folder / (f"{number:02d}_inline.yaml" if inline else f"{number:02d}_{part}")
-            ).write_text(
-                part if inline else (QUEBEC_PARTS / part).read_text(encoding="utf-8"),
-                encoding="utf-8",
+            (folder / f"{number:02d}_{part}").write_text(
+                (QUEBEC_PARTS / part).read_text(encoding="utf-8"), encoding="utf-8"
             )
         roots = {**quebec_packages().roots(), Namespace("ca-qc"): tmp_path}
         return TaxComputationService(

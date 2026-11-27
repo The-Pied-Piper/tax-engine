@@ -1,15 +1,16 @@
-# Schedule B (TP-1.D.B-V, 2025-12) Part B line 22: "If you were born before January 1, 1961, enter $3,906." Three steps, as ca-ns/ns428 line 98 builds a claim for a filer born in 1960 or earlier:
-# 1. ca/count_by_conditions works out 1 or 0 from the year of birth (`ca/birth_year`, entered once on the T1); a blank year passes on blank, read as 0 by step 3.
-# 2. core/credit_amount produces the printed 3,906.00 from its dataset.
-# 3. core/times_count of that by the count: the amount when born before January 1, 1961, 0.00 otherwise.
+# Schedule B (TP-1.D.B-V, 2025-12) Part B line 22: "If you were born before January 1, 1961, enter $3,906." Four steps, as ca-ns/ns428 line 98 builds a claim for a filer born in 1960 or earlier:
+# 1. core/first_record_count reads the year of birth from the 5005-R's export (`ca/birth_year`, entered once on the T1); a blank year passes on.
+# 2. ca/count_by_conditions works out 1 or 0 from the year; a blank year passes on blank, read as 0 by step 4.
+# 3. core/credit_amount produces the printed 3,906.00 from its dataset.
+# 4. core/times_count of that by the count: the amount when born before January 1, 1961, 0.00 otherwise.
 # The "not entitled" test of Part A (no spouse and line 18 more than $64,699) is not a step here: line 32 subtracts 18.75% of line 18 from line 30, and above $64,699 that is more than $12,131, more than line 20 and line 22 together can add ($2,128 plus $3,906), so line 32 is 0 either way.
-# Steps 1 and 2 are not lines of the form, so they have no reference. The form prints no label for the line, so its step is untitled.
+# Steps 1 to 3 are not lines of the form, so they have no reference. The form prints no label for the line, so its step is untitled.
 form:
   name: ca-qc/schedule_b
 capabilities:
   - name: core/first_record_count
     consumes:
-      records: ca-qc/t1_tax_and_credits.birth_year
+      records: ca-qc/t1_birth_year.birth_year
     blank:
       records:
         ca/birth_year: pass_on

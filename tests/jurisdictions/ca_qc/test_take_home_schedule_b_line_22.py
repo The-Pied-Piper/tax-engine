@@ -1,5 +1,5 @@
 """Quebec Schedule B (TP-1.D.B-V, 2025-12) Part B line 22, the age amount, as the Quebec take-home
-manifest wires it, in three steps.
+manifest wires it, in four steps.
 
 Line 22: "If you were born before January 1, 1961, enter $3,906." The year of birth is the 5005-R's
 optional input (`ca/birth_year`), read through the T1's export; a caller who gives none is not
@@ -89,7 +89,7 @@ def test_the_part_is_four_steps_and_only_the_last_carries_the_reference() -> Non
         "ca-qc/schedule_b_age_amount_line_22",
         IDENTIFIER,
     ]
-    assert steps[0]["consumes"] == {"records": "ca-qc/t1_tax_and_credits.birth_year"}
+    assert steps[0]["consumes"] == {"records": "ca-qc/t1_birth_year.birth_year"}
     assert steps[0]["blank"] == {"records": {"ca/birth_year": "pass_on"}}
     assert steps[1]["params"] == {"conditions": "ca-qc/schedule_b_line_22_conditions"}
     assert steps[2]["params"] == {"amount": "ca-qc/schedule_b_age_amount_line_22"}

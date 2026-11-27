@@ -50,8 +50,6 @@ PARTS = tuple(
         )
     )
 )
-# The real T1 declaration exports the year of birth, so the test-only declaration is left out.
-PARTS = tuple(part for part in PARTS if "\n" not in part)
 
 # The printed lines the return adds, at each salary, default answers (not alone, neither tenant nor
 # owner, not covered by a group drug plan, so the 755.00 premium is on TP-1 line 447 at $70,000 and

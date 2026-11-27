@@ -64,7 +64,6 @@ def schedule_b_sheet(
     """The Schedule B worksheet for a salary, over the real chain up to line 275 and the Schedule B
     `parts` of a test; every optional input is left out unless in `given`. The form declaration is a
     test-local one exporting `exports`, unless `form` is the real declaration."""
-    parts = (T1_BIRTH_YEAR_DECLARATION, *parts) if "schedule_b_line_22.yaml" in parts else parts
     starting: list[Artifact[Any]] = [
         Artifact(EMPLOYMENT_INCOME, D(salary)),
         *given,
@@ -90,14 +89,10 @@ LINE_20_PARTS = (
     "schedule_b_line_20_input.yaml",
     "schedule_b_line_20.yaml",
 )
-# The year of birth is the 5005-R's input, which Schedule B line 22 reads through the T1's export.
-# The real T1 declaration exports lines a Schedule B test does not build, so a test declares a T1
-# that exports the year alone, with the real input part (a part with a line break is written as is).
-T1_BIRTH_YEAR_DECLARATION = (
-    "form:\n  name: ca-qc/t1_tax_and_credits\n  required: true\n  exports:\n    - ca/birth_year\n"
-)
+# Schedule B line 22 reads the year of birth from the T1 identification form's export.
 LINE_22_PARTS = (
-    "t1_tax_and_credits_birth_year_inputs.yaml",
+    "t1_birth_year.yaml",
+    "t1_birth_year_inputs.yaml",
     "schedule_b_line_22.yaml",
 )
 LINE_31_PARTS = (
