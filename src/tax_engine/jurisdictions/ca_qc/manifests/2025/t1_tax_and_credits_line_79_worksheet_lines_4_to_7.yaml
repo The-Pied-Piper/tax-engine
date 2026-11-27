@@ -1,0 +1,33 @@
+# Federal Worksheet 5000-D1 (CRA 5000-D1-25E), "Line 30100 - Age amount", lines 4 to 7, used by 5005-R line 79 and line 30100: line 4 "Line 2 minus line 3 (if negative, enter "0")", line 5 "Applicable rate 15%" (the printed rate, a dataset figure with no step), line 6 "Line 4 multiplied by the percentage from line 5", line 7 "Line 1 minus line 6 (if negative, enter "0")". Rounded half-up to the cent by the datasets' rule (the form states none). The worksheet's two shortcuts ("$45,522 or less, enter $9,028" and "$105,709 or more, enter 0") follow from this arithmetic. Plain-words titles, no reference.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/subtract_not_below_zero
+    title: Federal Worksheet age amount line 4
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca/age_net_income
+      less: ca/age_income_threshold
+    produces:
+      output: ca/age_income_over_threshold
+  - name: core/apply_rate
+    title: Federal Worksheet age amount line 6
+    unit: ca/cad
+    params:
+      rate: ca/age_rate
+    consumes:
+      base: ca/age_income_over_threshold
+    produces:
+      output: ca/age_reduction
+  - name: core/subtract_not_below_zero
+    title: Federal Worksheet age amount line 7
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca/age_maximum
+      less: ca/age_reduction
+    produces:
+      output: ca/age_amount_before_count

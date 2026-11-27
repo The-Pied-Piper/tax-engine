@@ -1244,9 +1244,15 @@ the Federal Worksheet to calculate the amount to enter. (maximum $16,129)": Fede
 5000-D1 lines 1 to 11, one ca/tapered_amount step over the dataset `ca/basic_personal_amount`
 (`t1_tax_and_credits_line_30000.yaml`); the credit sums read it."""
 
+AGE_65_OR_OLDER_LINE_79 = CountKind.declare(CATALOG, "age_65_or_older_line_79", non_negative=True)
+"""Aged 65 or older as 5005-R line 79 reads it: the T1 identification form's export of
+`ca/age_65_or_older` (`core/first_record_count`)."""
+
 AGE_AMOUNT_LINE_79 = AmountKind.declare(CATALOG, "age_amount_line_79", non_negative=True)
-"""Age amount, 5005-R line 79 and line 30100: an optional input a salary-only caller does not give;
-the credit sum that adds it reads a blank as 0 (`t1_tax_and_credits_line_30100_inputs.yaml`)."""
+"""Age amount, 5005-R line 79 and line 30100 "Age amount (if you were born in 1960 or earlier)
+(use Federal Worksheet) (maximum $9,028)": the federal worksheet's line 7 when born in 1960 or
+earlier (1961 for 2026), 0.00 otherwise, checked against the printed maximum
+(`t1_tax_and_credits_line_79.yaml`); the credit sum of line 85 adds it."""
 
 SPOUSE_AMOUNT_LINE_80 = AmountKind.declare(CATALOG, "spouse_amount_line_80", non_negative=True)
 """Spouse or common-law partner amount, 5005-R line 80 and line 30300: an optional input a salary-
@@ -1967,9 +1973,25 @@ SCHEDULE_B_LINE_20 = AmountKind.declare(CATALOG, "schedule_b_line_20", non_negat
 """Schedule B Part B line 20, the amount for a person living alone: $2,128 when the answer is yes
 and the income gate does not apply, else 0, rounded half-up to the cent."""
 
+SCHEDULE_B_AGE_65_OR_OLDER_LINE_22 = CountKind.declare(
+    CATALOG, "schedule_b_age_65_or_older_line_22", non_negative=True
+)
+"""Schedule B line 22 "If you were born before January 1, 1961": the T1 identification form's
+`ca/age_65_or_older` (1 or 0, blank when no year of birth is given), read through
+`core/first_record_count` (`schedule_b_line_22.yaml`)."""
+
+SCHEDULE_B_AGE_AMOUNT_LINE_22 = AmountKind.declare(
+    CATALOG, "schedule_b_age_amount_line_22", non_negative=True
+)
+"""Schedule B line 22, the printed $3,906 for a filer born before January 1, 1961, claimed whole."""
+
+SCHEDULE_B_LINE_22 = AmountKind.declare(CATALOG, "schedule_b_line_22", non_negative=True)
+"""Schedule B Part B line 22, the age amount: $3,906 when born before January 1, 1961, else 0,
+rounded half-up to the cent."""
+
 SCHEDULE_B_LINE_30 = AmountKind.declare(CATALOG, "schedule_b_line_30", non_negative=True)
-"""Schedule B Part B line 30, "Add lines 20 through 28": line 20 alone, the only amount the
-take-home builds (lines 21, 22, 23, 27 and 28 are not built), rounded half-up to the cent. Produced
+"""Schedule B Part B line 30, "Add lines 20 through 28": lines 20 and 22, the amounts the
+take-home builds (lines 21, 23, 27 and 28 are not built), rounded half-up to the cent. Produced
 by one core/sum (`schedule_b_line_30.yaml`)."""
 
 SCHEDULE_B_LINE_31 = AmountKind.declare(CATALOG, "schedule_b_line_31", non_negative=True)
