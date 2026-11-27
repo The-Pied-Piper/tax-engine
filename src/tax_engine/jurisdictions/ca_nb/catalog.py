@@ -352,3 +352,9 @@ NB428_LABOUR_SPONSORED_CREDIT_LINE_94 = AmountKind.declare(
 NB428_TAX_LINE_95 = AmountKind.declare(CATALOG, "nb428_tax_line_95", non_negative=True)
 """NB428 line 95 "Line 93 minus line 94 (if negative, enter "0")": the New Brunswick tax after the
 labour-sponsored venture capital fund tax credit."""
+
+NB428_SMALL_BUSINESS_INVESTOR_CREDIT_LINE_96 = AmountKind.declare(
+    CATALOG, "nb428_small_business_investor_credit_line_96", non_negative=True
+)
+"""NB428 line 96 "Small business investor tax credit (complete Form T1258) (maximum $125,000)": the
+amount as the filer enters it, one optional input; Form T1258 is not built."""
