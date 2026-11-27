@@ -52,7 +52,7 @@ from tax_engine.jurisdictions.ca.catalog.canada_workers_benefit import (
 )
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
-from tests.jurisdictions.ca_qc.support import real_import
+from tests.jurisdictions.ca_qc.support import T1_BIRTH_YEAR_PARTS, real_import
 
 D = Decimal
 HEADER_TEMPLATE = dedent("""\
@@ -83,7 +83,7 @@ AMOUNT_LINES: dict[str, AmountKind] = {
 
 
 def schedule_6(take_home_service: TakeHomeService, salary: str, header: str = HEADER) -> Worksheet:
-    worksheets = take_home_service(header, FORM_PART, *T1_PARTS).compute(
+    worksheets = take_home_service(header, FORM_PART, *T1_PARTS, *T1_BIRTH_YEAR_PARTS).compute(
         TaxCalculationRequest(
             JurisdictionCode("CA-QC"), 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),)
         )

@@ -59,6 +59,7 @@ from tax_engine.jurisdictions.ca.catalog.rc381_cpp_qpp import (
 )
 from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
+from tests.jurisdictions.ca_qc.support import T1_BIRTH_YEAR_PARTS
 
 D = Decimal
 HEADER_TEMPLATE = dedent("""\
@@ -93,9 +94,9 @@ def schedule_8(
     given: list[Artifact[Decimal] | Artifact[int]] = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if birth_year is not None:
         given.append(Artifact(BIRTH_YEAR, birth_year))
-    worksheets = take_home_service(header, FORM_PART, *T1_EMPLOYMENT_INCOME_PARTS).compute(
-        TaxCalculationRequest(JurisdictionCode("CA-QC"), 2025, tuple(given))
-    )
+    worksheets = take_home_service(
+        header, FORM_PART, *T1_EMPLOYMENT_INCOME_PARTS, *T1_BIRTH_YEAR_PARTS
+    ).compute(TaxCalculationRequest(JurisdictionCode("CA-QC"), 2025, tuple(given)))
     (sheet,) = worksheets["ca/schedule_8"]
     return sheet
 

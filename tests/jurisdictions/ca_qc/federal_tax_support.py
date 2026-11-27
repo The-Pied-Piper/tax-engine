@@ -19,7 +19,7 @@ from tests.jurisdictions.ca_qc.basic_personal_amount_support import (
     TAX_FORM,
 )
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
-from tests.jurisdictions.ca_qc.support import real_import
+from tests.jurisdictions.ca_qc.support import T1_BIRTH_YEAR_PARTS, real_import
 
 D = Decimal
 HEADER = (
@@ -72,6 +72,7 @@ def sheets(
         "t1_taxable_income.yaml",
         *STEP_3_PARTS,
         *STEP_4_PARTS,
+        *T1_BIRTH_YEAR_PARTS,
         *(part(line) for line in lines),
     )
     worksheets = take_home_service(HEADER, form(export), *parts).compute(

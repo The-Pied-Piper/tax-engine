@@ -47,18 +47,8 @@ def take_home_service(tmp_path: Path) -> TakeHomeService:
         folder.mkdir(parents=True)
         (folder / "00_header.yaml").write_text(header, encoding="utf-8")
         (folder / "01_form.yaml").write_text(form, encoding="utf-8")
-        # Schedule 8 line A reads the year of birth, which Quebec's T1 birth year form supplies.
-        needed = (
-            (
-                "t1_birth_year.yaml",
-                "t1_birth_year_inputs.yaml",
-                "t1_birth_year_age_65_or_older.yaml",
-            )
-            if "ca/schedule_8" in header
-            else ()
-        )
         # A part named twice (a chain that several lists of a test share) is copied once.
-        for number, part in enumerate(dict.fromkeys((*parts, *needed)), start=2):
+        for number, part in enumerate(dict.fromkeys(parts), start=2):
             (folder / f"{number:02d}_{part}").write_text(
                 (QUEBEC_PARTS / part).read_text(encoding="utf-8"), encoding="utf-8"
             )
