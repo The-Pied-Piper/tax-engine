@@ -1,0 +1,17 @@
+# Form NB428 (CRA 5004-C) line 80: "Add lines 77 to 79 (maximum $1,604)". Lines 78 and 79 are the
+# spouse and eligible dependant reductions, not modelled, so the sum is line 77 alone; the printed
+# maximum is still applied: core/capped_amount takes the lesser of line 77
+# (`ca-nb/low_income_reduction_basic`) and the `ca-nb/low_income_reduction_maximum` dataset
+# ($1,604), as NL428 line 98 does.
+form:
+  name: ca-nb/nb428
+capabilities:
+  - name: core/capped_amount
+    reference: "80"
+    unit: ca/cad
+    params:
+      cap: ca-nb/low_income_reduction_maximum
+    consumes:
+      base: ca-nb/low_income_reduction_basic
+    produces:
+      output: ca-nb/nb428_low_income_reduction_line_80
