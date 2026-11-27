@@ -33,7 +33,7 @@ HEADER = dedent("""\
 SALARY_PARTS = form_part_names("t1_employment_income")
 FEDERAL_PARTS = (
     *SALARY_PARTS,
-    *form_part_names("schedule_8", "t2204", "t1_lines_copied_by_provinces"),
+    *form_part_names("schedule_8", "t2204", "t1_lines_copied_by_provinces", "t1_taxable_income"),
 )
 
 
@@ -68,6 +68,8 @@ BASE_PARTS = (
     *FEDERAL_PARTS,
     "pe428_line_9.yaml",
     "pe428_line_10_input.yaml",
+    "pe428_line_10_worksheet_lines_2_to_3.yaml",
+    "pe428_line_10_worksheet_lines_4_to_7.yaml",
     "pe428_line_10.yaml",
     "pe428_line_13_input.yaml",
     "pe428_line_13.yaml",
@@ -156,7 +158,7 @@ CHAIN_75 = (*CHAIN_72, "pe428_line_75.yaml")
 
 CHAIN_81 = (
     *CHAIN_75,
-    "pe428_line_76_input.yaml",
+    "pe428_line_76.yaml",
     "pe428_line_77_input.yaml",
     "pe428_line_78_input.yaml",
     "pe428_line_79_input.yaml",

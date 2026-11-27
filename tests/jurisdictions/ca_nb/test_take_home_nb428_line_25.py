@@ -43,7 +43,7 @@ D = Decimal
 NB_PARTS = Path(tax_engine.jurisdictions.ca_nb.__file__).parent / "manifests" / "2025"
 LINE_PART = NB_PARTS / "nb428_line_25.yaml"
 IDENTIFIER = "ca-nb/nb428_cpp_ei_and_other_line_25"
-FEDERAL_FORM_NAMES = ("schedule_8", "t2204", "t1_employment_income")
+FEDERAL_FORM_NAMES = ("schedule_8", "t2204", "t1_employment_income", "t1_taxable_income")
 NB_PART_NAMES = (
     "nb428_line_19.yaml",
     "nb428_line_21.yaml",

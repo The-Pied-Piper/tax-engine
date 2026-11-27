@@ -4,8 +4,9 @@ Form text (Form NL428, CRA 5001-c-25e.txt): "Line 17 and line 58080: Age amount 
 1960 or earlier) (use Worksheet NL428) (maximum $7,064) ^". The amount is Worksheet NL428 line 7
 (5001-d-25e.txt), claimed only if the filer was born in 1960 or earlier.
 
-The part has three steps: `ca/yes_or_no_count` reads the shared `ca/born_in_1960_or_earlier` count
-(blank read as 0) and refuses a count above 1; `core/record_total` reads Worksheet NL428 line 7 from
+The part has three steps: `ca/count_by_conditions` works out 1 or 0 from the year of birth
+(`ca/birth_year`, blank passed on and read as 0 by the next step); `core/record_total` reads
+Worksheet NL428 line 7 from
 its form; `core/times_count` multiplies it by the checked count, rounded through
 `ca-nl/cent_rounding`, as line 40 does for its claim. A salary-only filer leaves the answer out, so
 line 17 is 0.00. Worksheet line 7 is 7,064.00 at a 20,000 salary and 0.00 at
@@ -34,14 +35,13 @@ from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.errors import InputAboveBoundError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
-from tax_engine.domain.trace import TimesCountLine, YesOrNoCountLine
+from tax_engine.domain.trace import ConditionsCountLine, TimesCountLine
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca.catalog.personal_amounts import (
-    BORN_IN_1960_OR_EARLIER,
+    BIRTH_YEAR,
     BORN_IN_1960_OR_EARLIER_CHECKED,
 )
 from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
@@ -150,7 +150,7 @@ def _value(sheet: Any, identifier: str) -> Decimal:
 def _born(tmp_path: Path, salary: str, born: int) -> Any:
     given: list[Artifact[Any]] = [
         Artifact(EMPLOYMENT_INCOME, D(salary)),
-        Artifact(BORN_IN_1960_OR_EARLIER, born),
+        Artifact(BIRTH_YEAR, born),
     ]
     worksheets = _service(tmp_path).compute(
         TaxCalculationRequest(JurisdictionCode("CA-NL"), 2025, tuple(given))
@@ -168,33 +168,23 @@ def test_line_17_is_0_for_a_salary_only_filer(tmp_path: Path, salary: str) -> No
 def test_line_17_is_worksheet_line_7_when_born_in_1960_or_earlier(
     tmp_path: Path, salary: str, worksheet: str
 ) -> None:
-    assert _value(_born(tmp_path, salary, 1), IDENTIFIER) == D(worksheet)
+    assert _value(_born(tmp_path, salary, 1960), IDENTIFIER) == D(worksheet)
 
 
-def test_line_17_is_0_when_the_answer_is_0(tmp_path: Path) -> None:
-    assert _value(_born(tmp_path, "20000", 0), IDENTIFIER) == D("0.00")
+def test_line_17_is_0_when_born_after_1960(tmp_path: Path) -> None:
+    assert _value(_born(tmp_path, "20000", 1961), IDENTIFIER) == D("0.00")
 
 
-def test_a_born_in_1960_count_above_1_is_refused(tmp_path: Path) -> None:
-    with pytest.raises(InputAboveBoundError):
-        _born(tmp_path, "20000", 2)
-
-
-def test_a_blank_answer_is_checked_as_0(tmp_path: Path) -> None:
+def test_a_blank_year_is_not_born_in_1960_or_earlier(tmp_path: Path) -> None:
     sheet = _sheet(tmp_path, "20000")
 
-    assert sheet.get(BORN_IN_1960_OR_EARLIER_CHECKED).value == 0
+    assert sheet.get(BORN_IN_1960_OR_EARLIER_CHECKED).is_blank
 
 
 def test_the_trace_records_the_yes_or_no_check_and_the_times_count_step(tmp_path: Path) -> None:
     trace = _born(tmp_path, "20000", 1).trace
 
-    assert (
-        YesOrNoCountLine(
-            output=BORN_IN_1960_OR_EARLIER_CHECKED, count_kind=BORN_IN_1960_OR_EARLIER, count=1
-        )
-        in trace
-    )
+    assert ConditionsCountLine(output=BORN_IN_1960_OR_EARLIER_CHECKED, applied=(), count=1) in trace
     (times,) = [line for line in trace if isinstance(line, TimesCountLine)]
     assert times.output is nl_catalog.NL428_AGE_AMOUNT_LINE_17
     assert times.amount_kind is nl_catalog.NL428_AGE_AMOUNT_WORKSHEET_LINE_17
@@ -217,7 +207,7 @@ def test_the_part_names_the_form_and_has_the_three_steps_in_order() -> None:
     assert part["form"] == {"name": FORM_NAME}
     steps = part["capabilities"]
     assert [step["name"] for step in steps] == [
-        "ca/yes_or_no_count",
+        "ca/count_by_conditions",
         "core/record_total",
         "core/times_count",
     ]

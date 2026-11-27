@@ -17,6 +17,49 @@ BASIC_PERSONAL_AMOUNT = AmountKind.declare(CATALOG, "basic_personal_amount", non
 """Basic personal amount, NB428 line 9 and line 58040 "Basic personal amount Claim $13,396": the
 amount claimed, one of the credit amounts that the New Brunswick credits subtotal is built from."""
 
+WORKSHEET_NB428_AGE_AMOUNT_MAXIMUM_LINE_1 = AmountKind.declare(
+    CATALOG, "worksheet_nb428_age_amount_maximum_line_1", non_negative=True
+)
+"""Worksheet NB428 age amount line 1 "Maximum amount 6,037.00"."""
+
+WORKSHEET_NB428_AGE_AMOUNT_NET_INCOME_LINE_2 = AmountKind.declare(
+    CATALOG, "worksheet_nb428_age_amount_net_income_line_2", non_negative=True
+)
+"""Worksheet NB428 age amount line 2 "Amount from line 23600 of your return"."""
+
+WORKSHEET_NB428_AGE_AMOUNT_INCOME_THRESHOLD_LINE_3 = AmountKind.declare(
+    CATALOG, "worksheet_nb428_age_amount_income_threshold_line_3", non_negative=True
+)
+"""Worksheet NB428 age amount line 3 "Income threshold 44,945.00"."""
+
+WORKSHEET_NB428_AGE_AMOUNT_LINE_4 = AmountKind.declare(
+    CATALOG, "worksheet_nb428_age_amount_line_4", non_negative=True
+)
+"""Worksheet NB428 age amount line 4 "Line 2 minus line 3 (if negative, enter \"0\")"."""
+
+WORKSHEET_NB428_AGE_AMOUNT_LINE_6 = AmountKind.declare(
+    CATALOG, "worksheet_nb428_age_amount_line_6", non_negative=True
+)
+"""Worksheet NB428 age amount line 6 "Line 4 multiplied by the percentage from line 5"."""
+
+WORKSHEET_NB428_AGE_AMOUNT_LINE_7 = AmountKind.declare(
+    CATALOG, "worksheet_nb428_age_amount_line_7", non_negative=True
+)
+"""Worksheet NB428 age amount line 7 "Line 1 minus line 6 (if negative, enter \"0\")": the amount
+for NB428 line 10 when the filer was born in 1960 or earlier."""
+
+NB428_AGE_AMOUNT_CLAIMED_LINE_10 = AmountKind.declare(
+    CATALOG, "nb428_age_amount_claimed_line_10", non_negative=True
+)
+"""NB428 line 10: worksheet line 7 when born in 1960 or earlier, 0.00 otherwise, before the check
+against the printed maximum."""
+
+NB428_AGE_AMOUNT_LINE_10 = AmountKind.declare(
+    CATALOG, "nb428_age_amount_line_10", non_negative=True
+)
+"""NB428 line 10 "Age amount (if you were born in 1960 or earlier) (use Worksheet NB428)
+(maximum $5,734)": worksheet line 7 when born in 1960 or earlier, 0.00 otherwise."""
+
 NB428_CREDITS_SUBTOTAL_LINE_18 = AmountKind.declare(
     CATALOG, "nb428_credits_subtotal_line_18", non_negative=True
 )

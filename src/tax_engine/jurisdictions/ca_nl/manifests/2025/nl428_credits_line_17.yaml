@@ -2,8 +2,9 @@
 # (use Worksheet NL428) (maximum $7,064)". The amount is Worksheet NL428 line 7, claimed only if the
 # filer was born in 1960 or earlier.
 #
-# Step 1 reads the born-in-1960-or-earlier answer, a blank read as 0, and refuses a count above 1
-# through ca/yes_or_no_count. Step 2 reads the worksheet's line 7, which another form exports as a
+# Step 1 works out 1 or 0 from the filer's year of birth (the shared `ca/birth_year`, Umar, 27 Nov
+# 2026) through ca/count_by_conditions: 1 when born in 1960 or earlier, 0 when born later, and a
+# blank year passes on blank, read as 0 by step 3. Step 2 reads the worksheet's line 7, which another form exports as a
 # record list, through core/record_total. Step 3 multiplies that amount by the checked count, so
 # line 17 is the worksheet amount when born in 1960 or earlier and 0.00 otherwise, as line 40 does
 # for its claim. Steps 1 and 2 are not lines of the form, so they have no reference, and their
@@ -11,12 +12,16 @@
 form:
   name: ca-nl/nl428_credits
 capabilities:
-  - name: ca/yes_or_no_count
+  - name: ca/count_by_conditions
     title: "Born in 1960 or earlier"
+    params:
+      conditions: ca-nl/born_in_1960_or_earlier_conditions
     consumes:
-      count: ca/born_in_1960_or_earlier
+      counts:
+        - ca/birth_year
+      amounts: []
     blank:
-      count: "0"
+      counts: pass_on
     produces:
       output: ca/born_in_1960_or_earlier_checked
   - name: core/record_total
@@ -35,5 +40,7 @@ capabilities:
     consumes:
       amount: ca-nl/nl428_age_amount_worksheet_line_17
       count: ca/born_in_1960_or_earlier_checked
+    blank:
+      count: "0"
     produces:
       output: ca-nl/nl428_age_amount_line_17

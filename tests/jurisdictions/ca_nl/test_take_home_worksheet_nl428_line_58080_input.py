@@ -19,7 +19,7 @@ import yaml
 import tax_engine.jurisdictions.ca_nl
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.manifest import Manifest
-from tax_engine.jurisdictions.ca.catalog.personal_amounts import BORN_IN_1960_OR_EARLIER
+from tax_engine.jurisdictions.ca.catalog.personal_amounts import BIRTH_YEAR
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_kinds,
     newfoundland_packages,
@@ -28,7 +28,7 @@ from tests.jurisdictions.ca_nl.support import (
 from tests.manifest_support import input_named
 
 PRINTED_BASIS = "Line 58080 - Age amount (if you were born in 1960 or earlier)"
-PRINTED_TITLE = "Age amount (if you were born in 1960 or earlier)"
+PRINTED_TITLE = "Year of birth"
 PART = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / (
     "manifests/2025/worksheet_nl428_line_58080_input.yaml"
 )
@@ -60,7 +60,7 @@ def _manifest(tmp_path: Path) -> Manifest:
 
 def test_a_request_that_leaves_out_line_58080_is_read_as_blank(tmp_path: Path) -> None:
     kinds = newfoundland_kinds()
-    identifier = BORN_IN_1960_OR_EARLIER.identifier
+    identifier = BIRTH_YEAR.identifier
     declaration = input_named(_manifest(tmp_path), identifier)
     default = declaration.default_artifact(kinds.kind(identifier))
     assert not declaration.required

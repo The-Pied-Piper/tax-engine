@@ -21,10 +21,35 @@ $14,650": the printed $14,650, claimed whole and not income-tested."""
 PE428_AGE_AMOUNT_CLAIMED_LINE_10 = AmountKind.declare(
     CATALOG, "pe428_age_amount_claimed_line_10", non_negative=True
 )
-"""Age amount claimed, PE428 line 10 "Line 10 and line 58080: Age amount (if you were born in 1960
-or earlier) (use Worksheet PE428) (maximum $6,510)": the amount as the filer gives it, an optional
-input; a blank input is read as blank, and the line 10 step checks it against the printed
-maximum."""
+"""PE428 line 10: worksheet line 7 when born in 1960 or earlier, 0.00 otherwise, before the check
+against the printed maximum."""
+
+WORKSHEET_PE428_AGE_AMOUNT_NET_INCOME_LINE_2 = AmountKind.declare(
+    CATALOG, "worksheet_pe428_age_amount_net_income_line_2", non_negative=True
+)
+"""Worksheet PE428 age amount line 2 "Amount from line 23600 of your return"."""
+
+WORKSHEET_PE428_AGE_AMOUNT_INCOME_THRESHOLD_LINE_3 = AmountKind.declare(
+    CATALOG, "worksheet_pe428_age_amount_income_threshold_line_3", non_negative=True
+)
+"""Worksheet PE428 age amount line 3 "Income threshold 36,600.00"."""
+
+WORKSHEET_PE428_AGE_AMOUNT_LINE_4 = AmountKind.declare(
+    CATALOG, "worksheet_pe428_age_amount_line_4", non_negative=True
+)
+"""Worksheet PE428 age amount line 4 "Line 2 minus line 3 (if negative, enter \"0\")"."""
+
+WORKSHEET_PE428_AGE_AMOUNT_LINE_6 = AmountKind.declare(
+    CATALOG, "worksheet_pe428_age_amount_line_6", non_negative=True
+)
+"""Worksheet PE428 age amount line 6 "Line 4 multiplied by the percentage from line 5"."""
+
+WORKSHEET_PE428_AGE_AMOUNT_LINE_7 = AmountKind.declare(
+    CATALOG, "worksheet_pe428_age_amount_line_7", non_negative=True
+)
+"""Worksheet PE428 age amount line 7 "Line 1 minus line 6 (if negative, enter \"0\")", line 1 being
+the printed maximum 6,510.00: the amount for PE428 line 10 when the filer was born in 1960 or
+earlier."""
 
 PE428_AGE_AMOUNT_MAXIMUM = AmountKind.declare(
     CATALOG, "pe428_age_amount_maximum", non_negative=True
@@ -36,8 +61,8 @@ PE428_AGE_AMOUNT_LINE_10 = AmountKind.declare(
     CATALOG, "pe428_age_amount_line_10", non_negative=True
 )
 """Age amount, PE428 line 10 "Line 10 and line 58080: Age amount (if you were born in 1960 or
-earlier) (use Worksheet PE428) (maximum $6,510)": the claimed amount, passed on unchanged when it
-is at most the printed maximum, blank when left out; above the maximum it is refused, not capped."""
+earlier) (use Worksheet PE428) (maximum $6,510)": worksheet line 7 when born in 1960 or earlier,
+0.00 otherwise; above the printed maximum it is refused, not capped."""
 
 PE428_SPOUSE_OR_COMMON_LAW_PARTNER_AMOUNT_CLAIMED_LINE_13 = AmountKind.declare(
     CATALOG, "pe428_spouse_or_common_law_partner_amount_claimed_line_13", non_negative=True
@@ -477,12 +502,17 @@ LOW_INCOME_REDUCTION_BASIC = AmountKind.declare(
 """Basic reduction, PE428 line 75 "Line 75 and line 63370: Basic reduction Claim $350": the printed
 $350, claimed whole and not income-tested."""
 
+PE428_AGE_REDUCTION_FOR_SELF_CLAIM = AmountKind.declare(
+    CATALOG, "pe428_age_reduction_for_self_claim", non_negative=True
+)
+"""Age reduction for self claim, PE428 line 76 "Claim $250": the printed figure, from the
+`ca-pe/age_reduction_for_self` dataset."""
+
 PE428_AGE_REDUCTION_FOR_SELF_LINE_76 = AmountKind.declare(
     CATALOG, "pe428_age_reduction_for_self_line_76", non_negative=True
 )
 """Age reduction for self, PE428 line 76 and line 63380 "Age reduction for self (if you were born in
-1960 or earlier) Claim $250": the amount as the filer gives it, an optional input; a blank input is
-read as blank, and the sum that reads it reads it as 0."""
+1960 or earlier) Claim $250": $250.00 when born in 1960 or earlier, 0.00 otherwise."""
 
 PE428_REDUCTION_FOR_SPOUSE_OR_COMMON_LAW_PARTNER_LINE_77 = AmountKind.declare(
     CATALOG, "pe428_reduction_for_spouse_or_common_law_partner_line_77", non_negative=True

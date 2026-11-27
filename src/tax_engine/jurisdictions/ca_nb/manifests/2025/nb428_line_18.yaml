@@ -1,8 +1,8 @@
 # Form NB428 (CRA 5004-C) line 18, the sum of lines 9, 10, 13, 16 and 17. "Line 18: Add lines 9, 10,
 # 13, 16, and 17." The take-home scope is a salary-only single filer, so only line 9 (basic personal
-# amount, ca-nb/basic_personal_amount) contributes; lines 10, 13, 16 and 17 (age, spouse, eligible
-# dependant, infirm dependants) are blank claims outside that scope and are not built. A single
-# part is still a sum, so the step is built (same as ca-sk/sk428_credits line 20,
+# amount, ca-nb/basic_personal_amount) and line 10 (age amount, 0.00 unless born in 1960 or earlier)
+# contribute; lines 13, 16 and 17 (spouse, eligible dependant, infirm dependants) are blank claims
+# outside that scope and are not built. A sum, so the step is built (same as ca-sk/sk428_credits line 20,
 # sk428_credits_line_20.yaml). The form prints no label for line 18, so the step has no title.
 form:
   name: ca-nb/nb428
@@ -13,6 +13,6 @@ capabilities:
     params:
       rounding: ca-nb/cent_rounding
     consumes:
-      parts: [ca-nb/basic_personal_amount]
+      parts: [ca-nb/basic_personal_amount, ca-nb/nb428_age_amount_line_10]
     produces:
       output: ca-nb/nb428_credits_subtotal_line_18

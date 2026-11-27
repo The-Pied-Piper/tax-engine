@@ -1,13 +1,13 @@
 # Worksheet NL428 (2025) line 58080's input.
 # Line 58080: "Line 58080 - Age amount (if you were born in 1960 or earlier)" (CRA 5001-D 2025).
-# The return asks for the filer's year of birth. A salary-only caller born later leaves it out, and
-# a request that leaves it out is read as blank. The existing federal count
-# `ca/born_in_1960_or_earlier` is used: it is a shared fact, so no new kind is declared.
+# The engine takes the filer's year of birth (Umar, 27 Nov 2026) and works out "born in 1960 or
+# earlier" itself (nl428_credits_line_17.yaml). The year is a shared fact, the federal count
+# `ca/birth_year`, entered once. A request that leaves it out is read as blank, and line 17 is 0.00.
 form:
   name: ca-nl/nl428_credits
 inputs:
-  - name: ca/born_in_1960_or_earlier
-    title: "Age amount (if you were born in 1960 or earlier)"
+  - name: ca/birth_year
+    title: "Year of birth"
     reference: "58080"
     required: false
     default: null

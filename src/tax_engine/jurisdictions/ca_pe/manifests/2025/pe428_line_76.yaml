@@ -1,0 +1,26 @@
+# Form PE428 (CRA 5002-C) line 76 and line 63380: "Age reduction for self (if you were born in 1960 or earlier) Claim $250". Two steps:
+# 1. core/credit_amount: the printed claim $250 (`ca-pe/age_reduction_for_self`), not a line of the form, so plain-words title and no reference.
+# 2. core/times_count: the claim times the born-in-1960-or-earlier count (0 or 1, worked out from the year of birth by line 10's check, a blank read as 0), so line 76 is $250.00 when born in 1960 or earlier and 0.00 otherwise.
+form:
+  name: ca-pe/pe428
+capabilities:
+  - name: core/credit_amount
+    title: Age reduction for self claim
+    unit: ca/cad
+    params:
+      amount: ca-pe/age_reduction_for_self
+    produces:
+      output: ca-pe/pe428_age_reduction_for_self_claim
+  - name: core/times_count
+    title: Age reduction for self
+    reference: "76"
+    unit: ca/cad
+    params:
+      rounding: ca-pe/cent_rounding
+    consumes:
+      amount: ca-pe/pe428_age_reduction_for_self_claim
+      count: ca/born_in_1960_or_earlier_checked
+    blank:
+      count: "0"
+    produces:
+      output: ca-pe/pe428_age_reduction_for_self_line_76

@@ -12,7 +12,7 @@ Line 25 is one core/sum over lines 16, 17, 23 and 24 in line order: line 20 is t
 which the take-home leaves out (single filer, owner ruling 23 Nov 2026, as Quebec was in #1925), so
 the sum has no line 20. Line 17 is Worksheet NL428 line 7 read
 from its form (core/record_total) and claimed only if the filer was born in 1960 or earlier (the
-shared `ca/born_in_1960_or_earlier` count, checked by ca/yes_or_no_count, then core/times_count, as
+year of birth, `ca/birth_year`, worked out by ca/count_by_conditions, then core/times_count, as
 line 40 claims its amount); a salary-only filer leaves the answer out, so line 17 is 0.00. Line 23
 is blank for a filer with no eligible dependant and line 24 is an optional input; the sum reads each
 blank as 0.
@@ -48,7 +48,7 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tax_engine.jurisdictions.ca.catalog.personal_amounts import BORN_IN_1960_OR_EARLIER
+from tax_engine.jurisdictions.ca.catalog.personal_amounts import BIRTH_YEAR
 from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_capabilities,
@@ -165,7 +165,7 @@ def _value(sheet: Any, identifier: str) -> Decimal:
 def _born(tmp_path: Path, salary: str, born: int) -> Any:
     given: list[Artifact[Any]] = [
         Artifact(EMPLOYMENT_INCOME, D(salary)),
-        Artifact(BORN_IN_1960_OR_EARLIER, born),
+        Artifact(BIRTH_YEAR, born),
     ]
     worksheets = _service(tmp_path).compute(
         TaxCalculationRequest(JurisdictionCode("CA-NL"), 2025, tuple(given))
