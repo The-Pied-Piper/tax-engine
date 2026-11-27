@@ -38,7 +38,7 @@ LINE_PART_NAME = "pe428_line_10.yaml"
 CLAIMED = "ca-pe/pe428_age_amount_claimed_line_10"
 MAXIMUM = "ca-pe/pe428_age_amount_maximum"
 LINE = "ca-pe/pe428_age_amount_line_10"
-TITLE = "Age amount (if you were born in 1960 or earlier) (use Worksheet PE428) (maximum $6,510)"
+TITLE = "Age amount"
 PARTS = (*SALARY_PARTS, "pe428_line_10_input.yaml", LINE_PART_NAME)
 
 

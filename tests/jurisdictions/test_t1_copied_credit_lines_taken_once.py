@@ -46,7 +46,7 @@ from tests.kinds import bundled_kinds
 
 D = Decimal
 FORM = "ca/t1_tax_and_credits"
-PROVINCES = ["CA-ON", "CA-AB", "CA-BC", "CA-MB", "CA-NL", "CA-SK"]
+PROVINCES = ["CA-ON", "CA-AB", "CA-BC", "CA-MB", "CA-NL", "CA-PE", "CA-SK"]
 
 
 def _t1(province: str, salary: str, **given: str) -> Worksheet:

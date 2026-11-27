@@ -4,7 +4,8 @@
 # is a copy of line 8 and line 58 a copy of line 54, so they have no step: the lines after them read
 # lines 8 and 54 directly; line 74 is a copy of line 67 and line 82 a copy of line 73, which is
 # line 72 (column 2, the spouse, is not modelled), so the lines after them read those directly.
-# Exports: line 84 (`ca-pe/pe428_income_over_base_amount_line_84`) and line 87
+# Exports: line 5 (`ca-pe/pe428_bracket_rate_line_5`), the bracket rate the return summary reads for the
+# Prince Edward Island marginal rate; line 84 (`ca-pe/pe428_income_over_base_amount_line_84`) and line 87
 # (`ca-pe/pe428_low_income_tax_reduction_line_87`), which tell the return summary's marginal rate
 # whether the low-income tax reduction is being phased out, and line 97
 # (`ca-pe/pe428_prince_edward_island_tax_line_97`), the Prince Edward Island tax that line 97 says
@@ -16,6 +17,7 @@ form:
   title: "Form PE428: Prince Edward Island Tax and Credits"
   required: true
   exports:
+    - ca-pe/pe428_bracket_rate_line_5
     - ca-pe/pe428_income_over_base_amount_line_84
     - ca-pe/pe428_low_income_tax_reduction_line_87
     - ca-pe/pe428_prince_edward_island_tax_line_97
