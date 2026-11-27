@@ -8,14 +8,21 @@ each count in wiring order. The `counts` slot may be blank, with one rule for ea
 
 from __future__ import annotations
 
-from typing import Any
+from collections.abc import Mapping
+from dataclasses import fields
+from types import MappingProxyType
+from typing import Any, assert_type, cast
 
 import pytest
 
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.domain.artifact import Artifact, ArtifactKind
 from tax_engine.domain.blank import BLANK, PASS_ON
-from tax_engine.domain.errors import InvalidCapabilityError
+from tax_engine.domain.errors import (
+    BlankNotAllowedError,
+    InvalidCapabilityError,
+    MissingArtifactError,
+)
 from tax_engine.domain.kinds import CountKind
 from tax_engine.domain.trace import MultiplyCountsLine
 from tax_engine.jurisdictions.core.capabilities.multiply_counts import MultiplyCounts
@@ -38,6 +45,16 @@ def product(*values: tuple[ArtifactKind[int], int]) -> Artifact[Any]:
 
 def test_is_registered_as_core_multiply_counts() -> None:
     assert bundled_capabilities().get("core/multiply_counts") is MultiplyCounts
+
+
+def test_declares_its_contract() -> None:
+    assert capability().consumes == frozenset({MONTHS, FLAG_ONE, FLAG_TWO})
+    assert capability().produces == frozenset({PRODUCT})
+
+
+def test_leaves_its_contract_to_the_base() -> None:
+    assert "consumes" not in vars(MultiplyCounts)
+    assert "produces" not in vars(MultiplyCounts)
 
 
 def test_declares_its_slots() -> None:
@@ -101,3 +118,126 @@ def test_records_one_trace_line_with_each_count_and_the_product() -> None:
     )
     (text,) = EnglishTraceRenderer().render_all(result.trace)
     assert "multiplied give" in text
+
+
+def test_its_slots_are_read_only() -> None:
+    for slots in (MultiplyCounts.CONSUMES, MultiplyCounts.PRODUCES):
+        assert isinstance(slots, MappingProxyType)
+
+
+def test_its_slots_are_typed_as_read_only_mappings() -> None:
+    assert_type(MultiplyCounts.CONSUMES, Mapping[str, type])
+    assert_type(MultiplyCounts.PRODUCES, Mapping[str, type])
+
+
+def test_its_slots_cannot_be_changed() -> None:
+    for slots in (MultiplyCounts.CONSUMES, MultiplyCounts.PRODUCES):
+        with pytest.raises(TypeError):
+            cast(Any, slots)["extra"] = int
+
+
+def test_is_built_from_its_slot_names_as_keywords() -> None:
+    wired = MultiplyCounts(counts=(MONTHS, FLAG_ONE), output=PRODUCT)
+
+    result = wired.compute((Artifact(MONTHS, 6), Artifact(FLAG_ONE, 1)))
+
+    assert result.outputs == (Artifact(PRODUCT, 6),)
+
+
+def test_is_not_generic_over_artifacts() -> None:
+    assert not getattr(MultiplyCounts, "__type_params__", ())
+    assert not getattr(MultiplyCounts, "__parameters__", ())
+
+
+def test_ignores_artifacts_it_does_not_consume() -> None:
+    other = CountKind("ex/other")
+
+    result = capability().compute(
+        (
+            Artifact(other, 9),
+            Artifact(MONTHS, 12),
+            Artifact(FLAG_ONE, 1),
+            Artifact(FLAG_TWO, 1),
+        )
+    )
+
+    assert result.outputs == (Artifact(PRODUCT, 12),)
+
+
+def test_a_missing_count_is_a_missing_artifact() -> None:
+    with pytest.raises(MissingArtifactError, match="flag_two"):
+        capability().compute((Artifact(MONTHS, 12), Artifact(FLAG_ONE, 1)))
+
+
+# --- a blank count ----------------------------------------------------------------------------
+
+
+def with_blank_flag() -> tuple[Artifact[Any], ...]:
+    return (Artifact(MONTHS, 12), Artifact(FLAG_ONE, BLANK), Artifact(FLAG_TWO, 1))
+
+
+def test_without_rules_a_blank_count_is_refused_naming_the_line_and_slot() -> None:
+    with pytest.raises(BlankNotAllowedError, match="'flag_one'.*'counts'"):
+        capability().run(with_blank_flag())
+
+
+def test_a_rule_for_the_slot_covers_every_count() -> None:
+    passing = capability().with_blank_rules({"counts": PASS_ON})
+
+    assert passing.run(with_blank_flag()).outputs == (Artifact(PRODUCT, BLANK),)
+
+
+def test_a_rule_for_one_kind_leaves_the_other_counts_refusing_a_blank() -> None:
+    one = capability().with_blank_rules({}, per_item={FLAG_ONE: 1})
+    blank_months = (Artifact(MONTHS, BLANK), Artifact(FLAG_ONE, 1), Artifact(FLAG_TWO, 1))
+
+    assert one.run(with_blank_flag()).outputs == (Artifact(PRODUCT, 12),)
+    with pytest.raises(BlankNotAllowedError, match="'months'.*'counts'"):
+        one.run(blank_months)
+
+
+def test_a_kind_rule_of_pass_on_beats_a_fallback_for_another_kind() -> None:
+    mixed = capability().with_blank_rules({}, per_item={FLAG_ONE: PASS_ON, FLAG_TWO: 1})
+
+    assert mixed.run(with_blank_flag()).outputs == (Artifact(PRODUCT, BLANK),)
+
+
+def test_a_typed_zero_is_not_a_blank() -> None:
+    zero = (Artifact(MONTHS, 12), Artifact(FLAG_ONE, 0), Artifact(FLAG_TWO, 1))
+
+    assert capability().run(zero).outputs == (Artifact(PRODUCT, 0),)
+
+
+# --- trace ------------------------------------------------------------------------------------
+
+
+def test_trace_amount_is_the_result() -> None:
+    trace = (
+        capability()
+        .compute((Artifact(MONTHS, 7), Artifact(FLAG_ONE, 1), Artifact(FLAG_TWO, 1)))
+        .trace
+    )
+
+    assert [line.amount for line in trace] == [7]
+
+
+def test_trace_result_is_the_output() -> None:
+    result = capability().compute(
+        (Artifact(MONTHS, 7), Artifact(FLAG_ONE, 0), Artifact(FLAG_TWO, 1))
+    )
+
+    (line,) = result.trace
+    (output,) = result.outputs
+    assert isinstance(line, MultiplyCountsLine)
+    assert line.result == output.value
+
+
+def test_trace_holds_no_text() -> None:
+    trace = (
+        capability()
+        .compute((Artifact(MONTHS, 12), Artifact(FLAG_ONE, 1), Artifact(FLAG_TWO, 1)))
+        .trace
+    )
+
+    for line in trace:
+        assert not any(isinstance(getattr(line, f.name), str) for f in fields(line))

@@ -36,6 +36,7 @@ from tax_engine.domain.trace import (
     LesserOfWithMaximumLine,
     MoreThanPerUnitLine,
     MultipleOverLine,
+    MultiplyCountsLine,
     PercentageAppliedLine,
     PerUnitAmountLine,
     PositivePartOfNegationLine,
@@ -265,6 +266,18 @@ def test_a_product_with_a_zero_factor_reads_like_any_other() -> None:
     line = ProductLine(OUT, WAGES, D("0"), BONUS, D("15780"), NO_ROUNDING, D("0"))
 
     assert render(line) == "Wages (0.00) multiplied by bonus (15780.00) gives 0.00 (not rounded)."
+
+
+def test_a_product_of_counts_lists_each_count_and_the_product() -> None:
+    line = MultiplyCountsLine(MINIMUM, ((CHILDREN, 12), (FLAG, 1)), 12)
+
+    assert render(line) == "Children (12) and flag (1) multiplied give 12."
+
+
+def test_a_product_of_counts_with_a_zero_factor() -> None:
+    line = MultiplyCountsLine(MINIMUM, ((CHILDREN, 12), (FLAG, 0), (MINIMUM, 1)), 0)
+
+    assert render(line) == "Children (12), flag (0) and minimum (1) multiplied give 0."
 
 
 def test_a_threshold_gate_that_is_met() -> None:

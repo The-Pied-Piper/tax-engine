@@ -1,7 +1,6 @@
 """The federal Canada trace lines: facts in the vocabulary of Canada's own forms.
 
-Amount by count, contribution tier, given amount, multiply counts and tapered amount; each
-line's English text is in
+Amount by count, contribution tier, given amount and tapered amount; each line's English text is in
 `tax_engine.jurisdictions.ca.trace_english`. The generic lines are in `tax_engine.domain.trace`.
 """
 
