@@ -7,7 +7,7 @@ Amounts are `Decimal`, non-negative unless the form prints no floor. Federal kin
 from __future__ import annotations
 
 from tax_engine.domain.artifact import ArtifactCatalog
-from tax_engine.domain.kinds import AmountKind
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca_sk import NAMESPACE
 
@@ -265,7 +265,67 @@ SK428_CREDITS_SUBTOTAL_LINE_20 = AmountKind.declare(
     CATALOG, "sk428_credits_subtotal_line_20", non_negative=True
 )
 """Saskatchewan credits subtotal, SK428 line 20 "Line 20: Add lines 9, 10, 13, and 16 to 19. =": the
-sum of the personal amounts claimed, here the basic personal amount alone."""
+sum of the personal amounts claimed: the basic personal amount, the age amount and the
+senior supplementary amount."""
+
+SK428_BIRTH_YEAR = CountKind.declare(CATALOG, "sk428_birth_year", non_negative=True)
+"""Year of birth, read from the T1's `ca/birth_year` (entered once there) for SK428 line 10 and
+line 19: blank when the filer left it out."""
+
+WORKSHEET_SK428_AGE_AMOUNT_MAXIMUM_LINE_1 = AmountKind.declare(
+    CATALOG, "worksheet_sk428_age_amount_maximum_line_1", non_negative=True
+)
+"""Worksheet SK428 age amount line 1 "Maximum amount 5,785.00"."""
+
+WORKSHEET_SK428_AGE_AMOUNT_NET_INCOME_LINE_2 = AmountKind.declare(
+    CATALOG, "worksheet_sk428_age_amount_net_income_line_2", non_negative=True
+)
+"""Worksheet SK428 age amount line 2 "Amount from line 23600 of your return"."""
+
+WORKSHEET_SK428_AGE_AMOUNT_INCOME_THRESHOLD_LINE_3 = AmountKind.declare(
+    CATALOG, "worksheet_sk428_age_amount_income_threshold_line_3", non_negative=True
+)
+"""Worksheet SK428 age amount line 3 "Income threshold 43,066.00"."""
+
+WORKSHEET_SK428_AGE_AMOUNT_LINE_4 = AmountKind.declare(
+    CATALOG, "worksheet_sk428_age_amount_line_4", non_negative=True
+)
+"""Worksheet SK428 age amount line 4 "Line 2 minus line 3 (if negative, enter \"0\")"."""
+
+WORKSHEET_SK428_AGE_AMOUNT_LINE_6 = AmountKind.declare(
+    CATALOG, "worksheet_sk428_age_amount_line_6", non_negative=True
+)
+"""Worksheet SK428 age amount line 6 "Line 4 multiplied by the percentage from line 5"."""
+
+WORKSHEET_SK428_AGE_AMOUNT_LINE_7 = AmountKind.declare(
+    CATALOG, "worksheet_sk428_age_amount_line_7", non_negative=True
+)
+"""Worksheet SK428 age amount line 7 "Line 1 minus line 6 (if negative, enter \"0\")": the amount
+for SK428 line 10 when the filer was born in 1960 or earlier."""
+
+SK428_AGE_AMOUNT_CLAIMED_LINE_10 = AmountKind.declare(
+    CATALOG, "sk428_age_amount_claimed_line_10", non_negative=True
+)
+"""SK428 line 10: worksheet line 7 when born in 1960 or earlier, 0.00 otherwise, before the check
+against the printed maximum."""
+
+SK428_AGE_AMOUNT_LINE_10 = AmountKind.declare(
+    CATALOG, "sk428_age_amount_line_10", non_negative=True
+)
+"""SK428 line 10 "Age amount (if you were born in 1960 or earlier) (use Worksheet SK428)
+(maximum $5,785)": worksheet line 7 when born in 1960 or earlier, 0.00 otherwise."""
+
+SK428_SENIOR_SUPPLEMENTARY_CLAIM = AmountKind.declare(
+    CATALOG, "sk428_senior_supplementary_claim", non_negative=True
+)
+"""Senior supplementary amount claim, SK428 line 19 "Claim $2,028": the printed figure, from the
+`ca-sk/senior_supplementary_amount` dataset. Not a line of the form."""
+
+SK428_SENIOR_SUPPLEMENTARY_AMOUNT_LINE_19 = AmountKind.declare(
+    CATALOG, "sk428_senior_supplementary_amount_line_19", non_negative=True
+)
+"""SK428 line 19 "Senior supplementary amount (if you were born in 1960 or earlier) Claim $2,028":
+$2,028.00 when born in 1960 or earlier, 0.00 otherwise."""
 
 SK428_CPP_EI_AND_OTHER_LINE_31 = AmountKind.declare(
     CATALOG, "sk428_cpp_ei_and_other_line_31", non_negative=True

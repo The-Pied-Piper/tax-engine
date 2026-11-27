@@ -1,9 +1,11 @@
 """SK428 (2025) line 20, the credits subtotal, from the salary alone, real parts.
 
 Form text (Form SK428, CRA 5008-c-25e.txt): "Line 20: Add lines 9, 10, 13, and 16 to 19. =". Lines
-10, 13 and 16 to 19 are blank for a salary-only single filer, so only line 9, the basic personal
-amount (19,491.00), contributes, at every salary. The form prints no label for line 20, so the step
-has no title.
+10 and 19 (age amount and senior supplementary amount) are 0.00 unless the filer gives a year of
+birth of 1960 or earlier, and 13 and 16 to 18 are blank, so for a salary-only filer only line 9,
+the basic
+personal amount (19,491.00), contributes, at every salary. The form prints no label for line 20, so
+the step has no title.
 
 The test composes the T1 employment income form, the real line 9 part
 (`sk428_credits_line_9.yaml`) and the real line part (`sk428_credits_line_20.yaml`), and types in
@@ -68,8 +70,30 @@ FORM = dedent("""\
     """)
 # The T1 employment income form owns the salary input: its declaration, its line 10100 step and
 # the input part, as the real parts have them.
-T1_PARTS = (*form_parts("t1_employment_income"),)
-PARTS = [*T1_PARTS, SK_PARTS / "sk428_credits_line_9.yaml", LINE_PART]
+T1_PARTS = (
+    *form_parts(
+        "schedule_8",
+        "t2204",
+        "t1_employment_income",
+        "t1_taxable_income",
+        "t1_lines_copied_by_provinces",
+        "schedule_9",
+    ),
+)
+PARTS = [
+    *T1_PARTS,
+    *(
+        SK_PARTS / name
+        for name in (
+            "sk428_credits_line_9.yaml",
+            "sk428_credits_line_10_worksheet_lines_1_to_3.yaml",
+            "sk428_credits_line_10_worksheet_lines_4_to_7.yaml",
+            "sk428_credits_line_10.yaml",
+            "sk428_credits_line_19.yaml",
+        )
+    ),
+    LINE_PART,
+]
 
 
 def _service(tmp_path: Path) -> TaxComputationService:
@@ -132,13 +156,19 @@ def _step() -> dict[str, Any]:
     return step
 
 
-def test_the_part_is_one_untitled_sum_step_over_the_basic_personal_amount() -> None:
+def test_the_part_is_one_untitled_sum_step_over_lines_9_10_and_19() -> None:
     assert _step() == {
         "name": "core/sum",
         "reference": "20",
         "unit": "ca/cad",
         "params": {"rounding": "ca-sk/cent_rounding"},
-        "consumes": {"parts": ["ca-sk/basic_personal_amount"]},
+        "consumes": {
+            "parts": [
+                "ca-sk/basic_personal_amount",
+                "ca-sk/sk428_age_amount_line_10",
+                "ca-sk/sk428_senior_supplementary_amount_line_19",
+            ]
+        },
         "produces": {"output": KIND},
     }
 

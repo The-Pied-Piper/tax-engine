@@ -1,0 +1,8 @@
+# Form SK428 line 19 and line 58220 (CRA 5008-C): "Senior supplementary amount (if you were born in 1960 or earlier) Claim $2,028". The claim, 2025, claimed whole: the `credit` kind. Rounds half-up to the cent, the project's choice, as the form states no rounding rule.
+family: ca-sk/senior_supplementary_amount
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5008-c/5008-c-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "2028"

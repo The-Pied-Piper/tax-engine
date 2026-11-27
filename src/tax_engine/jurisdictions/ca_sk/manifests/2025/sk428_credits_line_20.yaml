@@ -1,7 +1,8 @@
 # Form SK428 (CRA 5008-c) line 20, the sum of lines 9, 10, 13 and 16 to 19. "Line 20: Add lines 9,
-# 10, 13, and 16 to 19. =" The take-home scope is a salary-only single filer, so only line 9 (basic
-# personal amount, ca-sk/basic_personal_amount) contributes; lines 10, 13 and 16 to 19 are optional
-# claims outside that scope and are not built. A single part is still a sum, so the step is built.
+# 10, 13, and 16 to 19. =" The take-home scope is a salary-only single filer, so line 9 (basic
+# personal amount, ca-sk/basic_personal_amount), line 10 (age amount) and line 19 (senior
+# supplementary amount) contribute, the last two being 0.00 unless the filer was born in 1960 or
+# earlier; lines 13 and 16 to 18 are optional claims outside that scope and are not built.
 # The form prints no label for line 20, so the step has no title.
 form:
   name: ca-sk/sk428_credits
@@ -12,6 +13,9 @@ capabilities:
     params:
       rounding: ca-sk/cent_rounding
     consumes:
-      parts: [ca-sk/basic_personal_amount]
+      parts:
+        - ca-sk/basic_personal_amount
+        - ca-sk/sk428_age_amount_line_10
+        - ca-sk/sk428_senior_supplementary_amount_line_19
     produces:
       output: ca-sk/sk428_credits_subtotal_line_20

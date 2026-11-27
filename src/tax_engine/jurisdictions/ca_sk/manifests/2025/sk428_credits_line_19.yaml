@@ -1,0 +1,26 @@
+# Form SK428 (CRA 5008-C) line 19 and line 58220: "Senior supplementary amount (if you were born in 1960 or earlier) Claim $2,028". A flat claim with no worksheet and no income test, claimed whole when the filer was born in 1960 or earlier:
+# 1. core/credit_amount: the printed claim $2,028 (`ca-sk/senior_supplementary_amount`). Not a line of the form: plain-words title, no reference.
+# 2. core/times_count: the claim times the born-in-1960-or-earlier count (0 or 1, worked out from the year of birth by line 10's check and shared with it, a blank read as 0), so line 19 is $2,028.00 when born in 1960 or earlier and 0.00 otherwise.
+form:
+  name: ca-sk/sk428_credits
+capabilities:
+  - name: core/credit_amount
+    title: "Senior supplementary amount claim"
+    unit: ca/cad
+    params:
+      amount: ca-sk/senior_supplementary_amount
+    produces:
+      output: ca-sk/sk428_senior_supplementary_claim
+  - name: core/times_count
+    title: "Senior supplementary amount"
+    reference: "19"
+    unit: ca/cad
+    params:
+      rounding: ca-sk/cent_rounding
+    consumes:
+      amount: ca-sk/sk428_senior_supplementary_claim
+      count: ca/born_in_1960_or_earlier_checked
+    blank:
+      count: "0"
+    produces:
+      output: ca-sk/sk428_senior_supplementary_amount_line_19
