@@ -639,6 +639,18 @@ NL428_AGE_AMOUNT_WORKSHEET_LINE_17 = AmountKind.declare(
 or earlier) (use Worksheet NL428) (maximum $7,064)": Worksheet NL428 line 7, read from that form,
 before the born-in-1960-or-earlier claim is applied."""
 
+NL428_AGE_AMOUNT_MAXIMUM_LINE_17 = AmountKind.declare(
+    CATALOG, "nl428_age_amount_maximum_line_17", non_negative=True
+)
+"""Maximum amount of Worksheet NL428 line 1, read from the worksheet's form: the bound of NL428
+line 17 "(maximum $7,064)"."""
+
+NL428_AGE_AMOUNT_CLAIMED_LINE_17 = AmountKind.declare(
+    CATALOG, "nl428_age_amount_claimed_line_17", non_negative=True
+)
+"""NL428 line 17: worksheet line 7 when born in 1960 or earlier, 0.00 otherwise, before the check
+against the printed maximum."""
+
 NL428_AGE_AMOUNT_LINE_17 = AmountKind.declare(
     CATALOG, "nl428_age_amount_line_17", non_negative=True
 )
@@ -1099,3 +1111,8 @@ MARGINAL_TAX_RATE = AmountKind.declare(CATALOG, "marginal_tax_rate", non_negativ
 dollar of salary, with no credit paid on filing: the sum of the federal marginal rate, the
 Newfoundland and Labrador marginal rate (which has no surtax or health premium) and the
 contribution rate, on the return summary. Not printed on the form."""
+
+NL428_AGE_65_OR_OLDER = CountKind.declare(CATALOG, "nl428_age_65_or_older", non_negative=True)
+"""Aged 65 or older at the end of the year, read from the T1's `ca/age_65_or_older` (worked out
+once there from the year of birth) for the age lines of NL428: 1 or 0, blank when the year is
+blank."""

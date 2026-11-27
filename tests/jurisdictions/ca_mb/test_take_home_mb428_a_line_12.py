@@ -66,6 +66,7 @@ FORM_NAME = "ca-mb/mb428_a"
 # The real Manitoba parts under line 12, in dependency order.
 LINE_PARTS = (
     "mb428_a_line_1.yaml",
+    "mb428_a_line_4.yaml",
     "mb428_a_line_10.yaml",
     "mb428_a_line_11.yaml",
     "mb428_a_line_11_product.yaml",

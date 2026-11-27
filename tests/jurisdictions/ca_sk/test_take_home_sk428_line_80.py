@@ -72,6 +72,10 @@ LINE_PART = SK_PARTS / "sk428_line_80.yaml"
 TOP_CREDITS_PARTS = tuple(f"sk428_credits_line_{n}.yaml" for n in (1, 3, 4, 5, 6, 7, 8))
 CREDITS_PARTS = (
     "sk428_credits_line_9.yaml",
+    "sk428_credits_line_10_worksheet_lines_1_to_3.yaml",
+    "sk428_credits_line_10_worksheet_lines_4_to_7.yaml",
+    "sk428_credits_line_10.yaml",
+    "sk428_credits_line_19.yaml",
     "sk428_credits_line_20.yaml",
     "sk428_credits_line_22.yaml",
     "sk428_credits_line_24.yaml",

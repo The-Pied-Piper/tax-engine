@@ -2,8 +2,8 @@
 
 Form text (Form NB428, CRA 5004-C, on the ticket, read 26 Nov 2026):
 "Line 18: Add lines 9, 10, 13, 16, and 17.".
-Lines 10, 13, 16 and 17 are blank claims for a salary-only filer and are not built, so line 18
-is one core/sum over line 9 alone, as Saskatchewan's line 20 is.
+Lines 13, 16 and 17 are blank claims for a salary-only filer and are not built, so line 18 is one
+core/sum over line 9 and line 10 (the age amount, 0.00 unless born in 1960 or earlier).
 """
 
 from __future__ import annotations
@@ -28,6 +28,7 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.personal_amounts import BIRTH_YEAR
 from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_nb.support import (
     new_brunswick_capabilities,
@@ -42,9 +43,18 @@ D = Decimal
 NB_PARTS = Path(tax_engine.jurisdictions.ca_nb.__file__).parent / "manifests" / "2025"
 LINE_PART = NB_PARTS / "nb428_line_18.yaml"
 IDENTIFIER = "ca-nb/nb428_credits_subtotal_line_18"
-FEDERAL_FORM_NAMES = ("t1_employment_income",)
+FEDERAL_FORM_NAMES = (
+    "schedule_8",
+    "t2204",
+    "t1_employment_income",
+    "t1_taxable_income",
+    "t1_lines_copied_by_provinces",
+)
 NB_PART_NAMES = (
     "nb428_line_9.yaml",
+    "nb428_line_10_worksheet_lines_1_to_3.yaml",
+    "nb428_line_10_worksheet_lines_4_to_7.yaml",
+    "nb428_line_10.yaml",
     "nb428_line_18.yaml",
 )
 
@@ -95,11 +105,12 @@ def _service(tmp_path: Path) -> TaxComputationService:
     )
 
 
-def _value(tmp_path: Path, salary: str) -> Decimal:
+def _value(tmp_path: Path, salary: str, year: int | None = None) -> Decimal:
+    given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, D(salary))]
+    if year is not None:
+        given.append(Artifact(BIRTH_YEAR, year))
     worksheets = _service(tmp_path).compute(
-        TaxCalculationRequest(
-            JurisdictionCode("CA-NB"), 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),)
-        )
+        TaxCalculationRequest(JurisdictionCode("CA-NB"), 2025, tuple(given))
     )
     (sheet,) = worksheets["ca-nb/nb428"]
     return D(sheet.get(new_brunswick_kinds().kind(IDENTIFIER)).value)
@@ -111,6 +122,12 @@ CASES = [("20000", "13396.00"), ("30000", "13396.00"), ("70000", "13396.00")]
 @pytest.mark.parametrize(("salary", "expected"), CASES)
 def test_line_18_at_the_salary(tmp_path: Path, salary: str, expected: str) -> None:
     assert _value(tmp_path, salary) == D(expected)
+
+
+def test_line_18_adds_the_age_amount_when_born_in_1960_or_earlier(tmp_path: Path) -> None:
+    # 13,396.00 + 6,037.00 at a 20,000 salary (net income is below the 44,945 threshold).
+    assert _value(tmp_path, "20000", 1960) == D("19433.00")
+    assert _value(tmp_path / "later", "20000", 1961) == D("13396.00")
 
 
 def _part() -> dict[str, Any]:
@@ -137,6 +154,6 @@ def test_the_part_names_the_form_and_has_the_one_step() -> None:
         "reference": "18",
         "unit": "ca/cad",
         "params": {"rounding": "ca-nb/cent_rounding"},
-        "consumes": {"parts": ["ca-nb/basic_personal_amount"]},
+        "consumes": {"parts": ["ca-nb/basic_personal_amount", "ca-nb/nb428_age_amount_line_10"]},
         "produces": {"output": IDENTIFIER},
     }

@@ -59,6 +59,10 @@ SK_PARTS = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / "manifests" / 
 LINE_PART = SK_PARTS / "sk428_line_63.yaml"
 CREDITS_PARTS = (
     "sk428_credits_line_9.yaml",
+    "sk428_credits_line_10_worksheet_lines_1_to_3.yaml",
+    "sk428_credits_line_10_worksheet_lines_4_to_7.yaml",
+    "sk428_credits_line_10.yaml",
+    "sk428_credits_line_19.yaml",
     "sk428_credits_line_20.yaml",
     "sk428_credits_line_22.yaml",
     "sk428_credits_line_24.yaml",

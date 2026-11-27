@@ -48,6 +48,7 @@ FEDERAL_FORM_NAMES = (
     "t2204",
     "t1_employment_income",
     "t1_taxable_income",
+    "t1_lines_copied_by_provinces",
 )
 NB_PART_NAMES = (
     "nb428_line_1.yaml",

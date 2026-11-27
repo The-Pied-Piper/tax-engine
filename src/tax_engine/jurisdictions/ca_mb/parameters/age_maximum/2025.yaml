@@ -1,0 +1,8 @@
+# Age amount, maximum, 2025 (Worksheet MB428, CRA 5007-D): "Line 58080 - Age amount (if you were born in 1960 or earlier)", line 1 "Maximum amount 3,728.00". Claimed whole: the credit kind. Rounds half-up to the cent, the project's choice, as the form states no rounding rule.
+family: ca-mb/age_maximum
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5007-d/5007-d-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "3728.00"

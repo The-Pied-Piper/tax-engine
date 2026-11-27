@@ -2,23 +2,27 @@
 # (use Worksheet NL428) (maximum $7,064)". The amount is Worksheet NL428 line 7, claimed only if the
 # filer was born in 1960 or earlier.
 #
-# Step 1 reads the born-in-1960-or-earlier answer, a blank read as 0, and refuses a count above 1
-# through ca/yes_or_no_count. Step 2 reads the worksheet's line 7, which another form exports as a
-# record list, through core/record_total. Step 3 multiplies that amount by the checked count, so
-# line 17 is the worksheet amount when born in 1960 or earlier and 0.00 otherwise, as line 40 does
-# for its claim. Steps 1 and 2 are not lines of the form, so they have no reference, and their
-# titles are plain words, not printed wording, because the sentence of line 17 names them.
+# Step 1 reads the T1's "aged 65 or older" flag (`ca/t1_lines_copied_by_provinces.age_65_or_older`,
+# worked out once from the year of birth, Umar, 27 Nov 2026) through core/first_record_count: 1 when
+# born in 1960 or earlier, 0 when born later, and blank passes on, read as 0 by step 4. Steps 2 and 3
+# read the worksheet's line 7 and line 1, which another form exports as record lists, through
+# core/record_total. Step 4 multiplies line 7 by the flag and step 5 checks it against the printed
+# maximum (worksheet line 1; refused above, not capped), so line 17 is the worksheet amount when
+# born in 1960 or earlier and 0.00 otherwise, as line 40 does for its claim. Steps 1 to 4 are not
+# lines of the form, so they have no reference, and their titles are plain words, not printed
+# wording, because the sentence of line 17 names them.
 form:
   name: ca-nl/nl428_credits
 capabilities:
-  - name: ca/yes_or_no_count
-    title: "Born in 1960 or earlier"
+  - name: core/first_record_count
+    title: Aged 65 or older at the end of the year
     consumes:
-      count: ca/born_in_1960_or_earlier
+      records: ca/t1_lines_copied_by_provinces.age_65_or_older
     blank:
-      count: "0"
+      records:
+        ca/age_65_or_older: pass_on
     produces:
-      output: ca/born_in_1960_or_earlier_checked
+      output: ca-nl/nl428_age_65_or_older
   - name: core/record_total
     title: "Age amount from Worksheet NL428"
     unit: ca/cad
@@ -26,14 +30,31 @@ capabilities:
       records: ca-nl/nl428_worksheet.worksheet_nl428_age_amount_line_7
     produces:
       output: ca-nl/nl428_age_amount_worksheet_line_17
+  - name: core/record_total
+    title: "Age amount maximum from Worksheet NL428"
+    unit: ca/cad
+    consumes:
+      records: ca-nl/nl428_worksheet.worksheet_nl428_age_amount_maximum_line_1
+    produces:
+      output: ca-nl/nl428_age_amount_maximum_line_17
   - name: core/times_count
-    title: "Age amount"
-    reference: "17"
+    title: "Age amount before the printed maximum"
     unit: ca/cad
     params:
       rounding: ca-nl/cent_rounding
     consumes:
       amount: ca-nl/nl428_age_amount_worksheet_line_17
-      count: ca/born_in_1960_or_earlier_checked
+      count: ca-nl/nl428_age_65_or_older
+    blank:
+      count: "0"
+    produces:
+      output: ca-nl/nl428_age_amount_claimed_line_17
+  - name: core/at_most
+    title: "Age amount"
+    reference: "17"
+    unit: ca/cad
+    consumes:
+      amount: ca-nl/nl428_age_amount_claimed_line_17
+      bound: ca-nl/nl428_age_amount_maximum_line_17
     produces:
       output: ca-nl/nl428_age_amount_line_17

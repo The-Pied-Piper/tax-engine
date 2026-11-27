@@ -28,6 +28,53 @@ BC428_SUBTOTAL_LINE_25 = AmountKind.declare(CATALOG, "bc428_subtotal_line_25", n
 """Subtotal of credit amounts, BC428 line 25 "Line 25: Add lines 16, 17, 20, 23 and 24.": the sum of
 those lines, here the basic personal amount (line 16) alone."""
 
+BC428_AGE_65_OR_OLDER = CountKind.declare(CATALOG, "bc428_age_65_or_older", non_negative=True)
+"""Aged 65 or older at the end of the year, read from the T1's `ca/age_65_or_older` (worked out once
+there from the year of birth) for BC428 line 17: 1 or 0, blank when the year is blank."""
+
+WORKSHEET_BC428_AGE_AMOUNT_MAXIMUM_LINE_1 = AmountKind.declare(
+    CATALOG, "worksheet_bc428_age_amount_maximum_line_1", non_negative=True
+)
+"""Worksheet BC428 age amount line 1 "Maximum amount 5,799.00"."""
+
+WORKSHEET_BC428_AGE_AMOUNT_NET_INCOME_LINE_2 = AmountKind.declare(
+    CATALOG, "worksheet_bc428_age_amount_net_income_line_2", non_negative=True
+)
+"""Worksheet BC428 age amount line 2 "Amount from line 23600 of your return"."""
+
+WORKSHEET_BC428_AGE_AMOUNT_INCOME_THRESHOLD_LINE_3 = AmountKind.declare(
+    CATALOG, "worksheet_bc428_age_amount_income_threshold_line_3", non_negative=True
+)
+"""Worksheet BC428 age amount line 3 "Income threshold 43,169.00"."""
+
+WORKSHEET_BC428_AGE_AMOUNT_LINE_4 = AmountKind.declare(
+    CATALOG, "worksheet_bc428_age_amount_line_4", non_negative=True
+)
+"""Worksheet BC428 age amount line 4 "Line 2 minus line 3 (if negative, enter \"0\")"."""
+
+WORKSHEET_BC428_AGE_AMOUNT_LINE_6 = AmountKind.declare(
+    CATALOG, "worksheet_bc428_age_amount_line_6", non_negative=True
+)
+"""Worksheet BC428 age amount line 6 "Line 4 multiplied by the percentage from line 5"."""
+
+WORKSHEET_BC428_AGE_AMOUNT_LINE_7 = AmountKind.declare(
+    CATALOG, "worksheet_bc428_age_amount_line_7", non_negative=True
+)
+"""Worksheet BC428 age amount line 7 "Line 1 minus line 6 (if negative, enter \"0\")": the amount
+for BC428 line 17 when the filer was born in 1960 or earlier."""
+
+BC428_AGE_AMOUNT_CLAIMED_LINE_17 = AmountKind.declare(
+    CATALOG, "bc428_age_amount_claimed_line_17", non_negative=True
+)
+"""BC428 line 17: worksheet line 7 when born in 1960 or earlier, 0.00 otherwise, before the check
+against the printed maximum."""
+
+BC428_AGE_AMOUNT_LINE_17 = AmountKind.declare(
+    CATALOG, "bc428_age_amount_line_17", non_negative=True
+)
+"""BC428 line 17 "Age amount (if you were born in 1960 or earlier) (use Worksheet BC428)
+(maximum $5,799)": worksheet line 7 when born in 1960 or earlier, 0.00 otherwise."""
+
 BC428_BRACKET_LOWER_BOUND_LINE_10 = AmountKind.declare(
     CATALOG, "bc428_bracket_lower_bound_line_10", non_negative=True
 )

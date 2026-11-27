@@ -82,7 +82,11 @@ def _part_files() -> Iterator[Path]:
     yield from form_parts("t1_employment_income")
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
+    yield from form_parts("t1_taxable_income", "t1_lines_copied_by_provinces")
     yield BC_PARTS / "bc428_line_16.yaml"
+    yield BC_PARTS / "bc428_line_17_worksheet_lines_1_to_3.yaml"
+    yield BC_PARTS / "bc428_line_17_worksheet_lines_4_to_7.yaml"
+    yield BC_PARTS / "bc428_line_17.yaml"
     yield BC_PARTS / "bc428_line_25.yaml"
     yield BC_PARTS / "bc428_line_27.yaml"
     yield BC_PARTS / "bc428_line_29.yaml"

@@ -78,6 +78,7 @@ MB479_PARTS = (
     "mb479_line_6.yaml",
     "mb479_line_7.yaml",
     "mb479_line_17_inputs.yaml",
+    "mb479_line_8.yaml",
     "mb479_line_12_inputs.yaml",
     "mb479_line_12.yaml",
     "mb479_line_14_inputs.yaml",

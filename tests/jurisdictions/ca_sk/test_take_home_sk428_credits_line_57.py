@@ -127,6 +127,10 @@ def _part_files() -> Iterator[Path]:
         "t1_taxable_income", "t1_employment_income", "t1_lines_copied_by_provinces"
     )
     yield SK_PARTS / "sk428_credits_line_9.yaml"
+    yield SK_PARTS / "sk428_credits_line_10_worksheet_lines_1_to_3.yaml"
+    yield SK_PARTS / "sk428_credits_line_10_worksheet_lines_4_to_7.yaml"
+    yield SK_PARTS / "sk428_credits_line_10.yaml"
+    yield SK_PARTS / "sk428_credits_line_19.yaml"
     yield SK_PARTS / "sk428_credits_line_20.yaml"
     yield SK_PARTS / "sk428_credits_line_22.yaml"
     yield SK_PARTS / "sk428_credits_line_24.yaml"

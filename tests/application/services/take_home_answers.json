@@ -127,7 +127,7 @@
    },
    {
     "form": "ca-on/on428",
-    "lines": 108
+    "lines": 118
    },
    {
     "form": "ca/t1_tax_and_credits",
@@ -146,7 +146,7 @@
     "lines": 34
    }
   ],
-  "trace_sha256": "51ba128405dc7d961bd7eee4ae81d8aff516ac029f14fefff406c3b9f2b44efd"
+  "trace_sha256": "6068ba8b8b3cb7f4c51edfb9cb3cd01f749008670c28edfdd3cf32570171d389"
  },
  {
   "jurisdiction": "CA-ON",
@@ -321,7 +321,7 @@
    },
    {
     "form": "ca-on/on428",
-    "lines": 108
+    "lines": 118
    },
    {
     "form": "ca/t1_tax_and_credits",
@@ -340,7 +340,7 @@
     "lines": 34
    }
   ],
-  "trace_sha256": "dccb4f0191f5e4a4494278fc5e9ef67825a28caf251898ffdc51f6d81c94b31a"
+  "trace_sha256": "53ef2845f93f2ec03326db11b32213cc93f0b268c3440f416c6d903ac1da2083"
  },
  {
   "jurisdiction": "CA-ON",
@@ -507,7 +507,7 @@
    },
    {
     "form": "ca-ab/ab428_credits",
-    "lines": 46
+    "lines": 56
    },
    {
     "form": "ca-ab/worksheet_ab428",
@@ -538,7 +538,7 @@
     "lines": 18
    }
   ],
-  "trace_sha256": "c89dfff645a637708c0e1f4bc6621205d6a9c2d32b56e2104aa9967ee53d68b4"
+  "trace_sha256": "3645ec122603d2dd55e561db10969e0e9a4f145bd40180e629d24dd97a038c94"
  },
  {
   "jurisdiction": "CA-AB",
@@ -705,7 +705,7 @@
    },
    {
     "form": "ca-ab/ab428_credits",
-    "lines": 46
+    "lines": 56
    },
    {
     "form": "ca-ab/worksheet_ab428",
@@ -736,7 +736,7 @@
     "lines": 18
    }
   ],
-  "trace_sha256": "b8fc754461582015c812d3a01b79d3d83d863ab81309669d0170e3429683eb6a"
+  "trace_sha256": "8dd01589b1a0603bcdc4d90d981366d5679185b23caf9b63a733891e8e9d2a27"
  },
  {
   "jurisdiction": "CA-AB",
@@ -907,7 +907,7 @@
    },
    {
     "form": "ca-bc/bc428",
-    "lines": 77
+    "lines": 87
    },
    {
     "form": "ca/t1_tax_and_credits",
@@ -926,7 +926,7 @@
     "lines": 25
    }
   ],
-  "trace_sha256": "c37ce0b14e5b3bf3ecf593af7dd4c5dfe8054c20e48b0b61151dc5c8d8e36e8b"
+  "trace_sha256": "d8716e4a4a5373ceb1093ba05a6b73d0354dc4c43d0c6fcc3da3534a50959be5"
  },
  {
   "jurisdiction": "CA-BC",
@@ -1097,7 +1097,7 @@
    },
    {
     "form": "ca-bc/bc428",
-    "lines": 77
+    "lines": 87
    },
    {
     "form": "ca/t1_tax_and_credits",
@@ -1116,7 +1116,7 @@
     "lines": 25
    }
   ],
-  "trace_sha256": "b909a886d966c9c54ab1bd6fc886cf84815ed70ea8e22b07712753b8678905ba"
+  "trace_sha256": "f0d3ed1fa4bb89dc92985fd32c18d8a26b87fd62e6479733467134c77cfdc612"
  },
  {
   "jurisdiction": "CA-BC",
@@ -1279,11 +1279,11 @@
    },
    {
     "form": "ca-mb/mb428_a",
-    "lines": 5
+    "lines": 9
    },
    {
     "form": "ca-mb/mb479",
-    "lines": 69
+    "lines": 72
    },
    {
     "form": "ca-mb/worksheet_mb428",
@@ -1299,7 +1299,7 @@
    },
    {
     "form": "ca-mb/mb428_credits",
-    "lines": 35
+    "lines": 49
    },
    {
     "form": "ca/t691",
@@ -1326,7 +1326,7 @@
     "lines": 32
    }
   ],
-  "trace_sha256": "1c4c19cfb278e13bddf2e5981de3b5b4584ec1b9829aa81099dde4fc25c1ab29"
+  "trace_sha256": "5dd1080508b579e7ba2141314c602953a29f4e40deed1c05c38a89fbfdd0675c"
  },
  {
   "jurisdiction": "CA-MB",
@@ -1489,11 +1489,11 @@
    },
    {
     "form": "ca-mb/mb428_a",
-    "lines": 5
+    "lines": 9
    },
    {
     "form": "ca-mb/mb479",
-    "lines": 69
+    "lines": 72
    },
    {
     "form": "ca-mb/worksheet_mb428",
@@ -1509,7 +1509,7 @@
    },
    {
     "form": "ca-mb/mb428_credits",
-    "lines": 35
+    "lines": 49
    },
    {
     "form": "ca/t691",
@@ -1536,7 +1536,7 @@
     "lines": 32
    }
   ],
-  "trace_sha256": "d632ba093b5b34ceb6f8442c33fe5a5682d3140f58b6ec13ac292bc47483a024"
+  "trace_sha256": "da92b428f7c6bb968055f0e46a6b9f7e5d4d7e9023afd7054dab8cea4798d418"
  },
  {
   "jurisdiction": "CA-MB",
@@ -1703,7 +1703,7 @@
    },
    {
     "form": "ca-sk/sk428_credits",
-    "lines": 34
+    "lines": 47
    },
    {
     "form": "ca/t691",
@@ -1730,7 +1730,7 @@
     "lines": 15
    }
   ],
-  "trace_sha256": "f9d6642df41bcc79439b2efb4b3b9b0dd9a6316669403c7173f7a5ec8850b576"
+  "trace_sha256": "68d1be6af5e1c6b30aa8062fd90635d8dfec77f4904b1bde7aa57e0f027d6d40"
  },
  {
   "jurisdiction": "CA-SK",
@@ -1897,7 +1897,7 @@
    },
    {
     "form": "ca-sk/sk428_credits",
-    "lines": 34
+    "lines": 47
    },
    {
     "form": "ca/t691",
@@ -1924,7 +1924,7 @@
     "lines": 15
    }
   ],
-  "trace_sha256": "c7abb201ece3012b5ca9927e9a311c9c95df11383796c41b58e444cf957154e6"
+  "trace_sha256": "d375245016196e7367ac0506ec559775a9bb8893d882944b694af113dd009f1e"
  },
  {
   "jurisdiction": "CA-SK",
@@ -2095,7 +2095,7 @@
    },
    {
     "form": "ca-nl/nl428_credits",
-    "lines": 70
+    "lines": 72
    },
    {
     "form": "ca/t691",
@@ -2122,7 +2122,7 @@
     "lines": 27
    }
   ],
-  "trace_sha256": "c77e322c63be1e0913369c2cab22a3da5552334837e89a8b5b81e3a97aba4e7f"
+  "trace_sha256": "e07d2b77e97822d7e5e38461c5fc9c56e4868e965e87bb2fec7335d899c81e70"
  },
  {
   "jurisdiction": "CA-NL",
@@ -2293,7 +2293,7 @@
    },
    {
     "form": "ca-nl/nl428_credits",
-    "lines": 70
+    "lines": 72
    },
    {
     "form": "ca/t691",
@@ -2320,7 +2320,7 @@
     "lines": 27
    }
   ],
-  "trace_sha256": "9b5da8956e926f25f83887827629764554e863b1816cea15c73d7e285ffbf53c"
+  "trace_sha256": "9459e5ababbcaa56efafa2dbccab113f4f35563383ad727992e104098b9418b4"
  },
  {
   "jurisdiction": "CA-NL",
@@ -2867,7 +2867,7 @@
    },
    {
     "form": "ca-pe/pe428",
-    "lines": 95
+    "lines": 104
    },
    {
     "form": "ca/t1_tax_and_credits",
@@ -2890,7 +2890,7 @@
     "lines": 24
    }
   ],
-  "trace_sha256": "de78b861549ae6a10641a1703b5e45f906b6526e9f103a8a619880974ed52fe5"
+  "trace_sha256": "6ba80166db6dedc7b156939326d1c202e97e51587d97fc99f7dcc66cd91b30b5"
  },
  {
   "jurisdiction": "CA-PE",
@@ -3057,7 +3057,7 @@
    },
    {
     "form": "ca-pe/pe428",
-    "lines": 95
+    "lines": 104
    },
    {
     "form": "ca/t1_tax_and_credits",
@@ -3080,7 +3080,7 @@
     "lines": 24
    }
   ],
-  "trace_sha256": "b68b85dcedab56d2961369a4b96534d0250b31c8a7d21f131c9b23ce3d4bbba9"
+  "trace_sha256": "6432705b0e9df9279fce568bef4df39bb29dbe75192af26cf287042c13393c40"
  },
  {
   "jurisdiction": "CA-PE",
@@ -3247,7 +3247,7 @@
    },
    {
     "form": "ca-nb/nb428",
-    "lines": 68
+    "lines": 78
    },
    {
     "form": "ca/t1_tax_and_credits",
@@ -3270,7 +3270,7 @@
     "lines": 24
    }
   ],
-  "trace_sha256": "a229542ccbe7fa7ac29bc51db407cdbd709ee893738e99b7a88d58330c4c36ad"
+  "trace_sha256": "b77c802e25451847b4fba44dec78990ad7ec76000b85f9d48c029372725229ae"
  },
  {
   "jurisdiction": "CA-NB",
@@ -3437,7 +3437,7 @@
    },
    {
     "form": "ca-nb/nb428",
-    "lines": 68
+    "lines": 78
    },
    {
     "form": "ca/t1_tax_and_credits",
@@ -3460,7 +3460,7 @@
     "lines": 24
    }
   ],
-  "trace_sha256": "a8a93f13f8f0eb61adf62778541c93fd2cfbb46800864029d4d80c21069cc429"
+  "trace_sha256": "2317f8f0c48a34a27bcc70db5a76535ee234d73310bae47be53f45812bee56a8"
  },
  {
   "jurisdiction": "CA-NB",

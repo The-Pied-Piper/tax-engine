@@ -21,14 +21,31 @@ from textwrap import dedent
 import pytest
 
 from tax_engine.application.models.calculation_request import TaxCalculationRequest
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_on.catalog import ON428_PERSONAL_AMOUNTS_SUBTOTAL_LINE_18
+from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
 
 D = Decimal
 PART_LINE_9 = "on428_line_9.yaml"
 PART_LINE_18 = "on428_line_18.yaml"
-PARTS = (PART_LINE_9, PART_LINE_18)
+PARTS = (
+    *form_part_names(
+        "schedule_8",
+        "t2204",
+        "t1_employment_income",
+        "t1_taxable_income",
+        "t1_lines_copied_by_provinces",
+        "schedule_9",
+    ),
+    PART_LINE_9,
+    "on428_line_10_worksheet_lines_1_to_3.yaml",
+    "on428_line_10_worksheet_lines_4_to_7.yaml",
+    "on428_line_10.yaml",
+    PART_LINE_18,
+)
 
 HEADER = dedent("""\
     jurisdiction: CA-ON
@@ -43,13 +60,16 @@ FORM = dedent("""\
       required: true
       exports:
         - ca-on/basic_personal_amount
+        - ca-on/on428_age_amount_line_10
         - ca-on/on428_personal_amounts_subtotal_line_18
     """)
 
 
 def line_18(take_home_service: TakeHomeService, salary: str) -> Decimal:
     worksheets = take_home_service(HEADER, FORM, *PARTS).compute(
-        TaxCalculationRequest(JurisdictionCode("CA-ON"), 2025)
+        TaxCalculationRequest(
+            JurisdictionCode("CA-ON"), 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),)
+        )
     )
     (sheet,) = worksheets["ca-on/on428"]
     return sheet.get(ON428_PERSONAL_AMOUNTS_SUBTOTAL_LINE_18).value

@@ -39,7 +39,8 @@ LINES = ["ca-pe/pe428_credits_subtotal_line_19", "ca-pe/pe428_cpp_ei_and_other_l
 PARTS = (
     *FEDERAL_PARTS,
     "pe428_line_9.yaml",
-    "pe428_line_10_input.yaml",
+    "pe428_line_10_worksheet_lines_2_to_3.yaml",
+    "pe428_line_10_worksheet_lines_4_to_7.yaml",
     "pe428_line_10.yaml",
     "pe428_line_13_input.yaml",
     "pe428_line_13.yaml",
@@ -78,7 +79,7 @@ def test_line_25_adds_an_optional_personal_amount_and_a_self_employment_amount(
     take_home_service: TakeHomeService,
 ) -> None:
     given = {
-        "ca-pe/pe428_age_amount_claimed_line_10": "1000.00",
+        "ca-pe/pe428_spouse_or_common_law_partner_amount_claimed_line_13": "1000.00",
         "ca/self_employment_cpp_qpp_contributions": "100.25",
     }
     sheet = _sheet(take_home_service, "20000", given)

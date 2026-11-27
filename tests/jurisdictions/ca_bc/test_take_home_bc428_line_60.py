@@ -91,6 +91,9 @@ def _part_files() -> Iterator[Path]:
     for name in T1_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
     yield BC_PARTS / "bc428_line_16.yaml"
+    yield BC_PARTS / "bc428_line_17_worksheet_lines_1_to_3.yaml"
+    yield BC_PARTS / "bc428_line_17_worksheet_lines_4_to_7.yaml"
+    yield BC_PARTS / "bc428_line_17.yaml"
     yield BC_PARTS / "bc428_line_25.yaml"
     yield BC_PARTS / "bc428_line_27.yaml"
     yield BC_PARTS / "bc428_line_29.yaml"
