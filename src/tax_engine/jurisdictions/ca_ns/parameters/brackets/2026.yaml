@@ -1,0 +1,28 @@
+# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: thresholds 30,995 / 61,991 / 97,417 / 157,124 and rates 8.79% / 14.95% / 16.67% / 17.5% / 21% as printed in T4127 (Jan 2026) Table 8.1, Nova Scotia row, and in T4127 (Jul 2026) Table 8.1 (no change for Nova Scotia on July 1, 2026); tax_at_start calculated as the cumulative tax on the earlier brackets, exact, then rounded half-up to the cent, the way the 2025 printed constants come out (30,995 x 8.79% = 2,724.4605, 2,724.46; plus 30,996 x 14.95% = 4,633.902, cumulative 7,358.3625, 7,358.36; plus 35,426 x 16.67% = 5,905.5142, cumulative 13,263.8767, 13,263.88; plus 59,707 x 17.5% = 10,448.725, cumulative 23,712.6017, 23,712.60), because the 2026 line 7 constants are not yet published. T4127 prints the payroll constants KP 0 / 1,909 / 2,976 / 3,784 / 9,283, which are a different quantity (the constants of the payroll formula) and are not used here.
+# Nova Scotia 2026 brackets, Form NS428 (CRA 5003-C) Part A, lines 2 to 8, columns 1 to 5, laid
+# out as the 2025 form does (column 1: line 1 is the first threshold or less; columns 2 to 4:
+# more than one threshold but not more than the next; column 5: more than $157,124). In every
+# column: line 3 the column's lower bound (0.00, 30,995.00, 61,991.00, 97,417.00, 157,124.00);
+# line 5 the rate; line 7 the constant (0.00, 2,724.46, 7,358.36, 13,263.88, 23,712.60), derived
+# in the Derivation line. The 2026 form is not published, so none of these is a printed NS428
+# figure; lines 2, 4, 6 and 8 are computed.
+# Each bracket's `tax_at_start` is the line 7 constant of its column: once the 2026 form prints
+# them they are taken as printed, not recomputed from the rates.
+# This dataset has no rounding rule, as the form states none. The take-home build rounds line 6
+# half-up to the cent in its own part (ca-ns/cent_rounding).
+# There is no `up_to`: column 5 is unbounded, so every line 1 falls in a column.
+# The 2026 NS428 text is not yet published, so the figures are not yet confirmed against it.
+family: ca-ns/brackets
+tax_year: 2026
+kind: brackets
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jul/t4127-jul-26e.pdf
+rounding: none
+brackets:
+  - {from: "0.00", rate: "0.0879", tax_at_start: "0.00"}
+  - {from: "30995.00", rate: "0.1495", tax_at_start: "2724.46"}
+  - {from: "61991.00", rate: "0.1667", tax_at_start: "7358.36"}
+  - {from: "97417.00", rate: "0.175", tax_at_start: "13263.88"}
+  - {from: "157124.00", rate: "0.21", tax_at_start: "23712.60"}

@@ -2368,15 +2368,395 @@
   }
  },
  {
+  "jurisdiction": "CA-PE",
+  "year": 2025,
+  "salary": "1000",
+  "figures": {
+   "income_tax": "0.00",
+   "cpp_base": "0.00",
+   "cpp_enhanced": "0.00",
+   "cpp2": "0.00",
+   "ei": "0.00"
+  },
+  "income_tax": "0.00",
+  "total_deductions": "0.00",
+  "take_home": "1000.00",
+  "unit": {
+   "name": "ca/cad",
+   "placement": "before",
+   "singular": "CA$",
+   "plural": "CA$",
+   "spaced": false,
+   "as_percentage": false
+  },
+  "average_tax_rate": {
+   "value": "0.0000",
+   "unit": {
+    "name": "core/percent",
+    "placement": "after",
+    "singular": "%",
+    "plural": "%",
+    "spaced": false,
+    "as_percentage": true
+   }
+  },
+  "marginal_tax_rate": {
+   "value": "0.0000",
+   "unit": {
+    "name": "core/percent",
+    "placement": "after",
+    "singular": "%",
+    "plural": "%",
+    "spaced": false,
+    "as_percentage": true
+   }
+  }
+ },
+ {
+  "jurisdiction": "CA-PE",
+  "year": 2025,
+  "salary": "70000",
+  "figures": {
+   "income_tax": "13941.56",
+   "cpp_base": "3291.75",
+   "cpp_enhanced": "665.00",
+   "cpp2": "0.00",
+   "ei": "1077.48"
+  },
+  "income_tax": "13941.56",
+  "total_deductions": "18975.79",
+  "take_home": "51024.21",
+  "unit": {
+   "name": "ca/cad",
+   "placement": "before",
+   "singular": "CA$",
+   "plural": "CA$",
+   "spaced": false,
+   "as_percentage": false
+  },
+  "average_tax_rate": {
+   "value": "0.2711",
+   "unit": {
+    "name": "core/percent",
+    "placement": "after",
+    "singular": "%",
+    "plural": "%",
+    "spaced": false,
+    "as_percentage": true
+   }
+  },
+  "marginal_tax_rate": {
+   "value": "0.4149",
+   "unit": {
+    "name": "core/percent",
+    "placement": "after",
+    "singular": "%",
+    "plural": "%",
+    "spaced": false,
+    "as_percentage": true
+   }
+  },
+  "trace_forms": [
+   {
+    "form": "ca/schedule_9",
+    "lines": 5
+   },
+   {
+    "form": "ca/t1_employment_income",
+    "lines": 3
+   },
+   {
+    "form": "ca/schedule_8",
+    "lines": 16
+   },
+   {
+    "form": "ca/t1_lines_copied_by_provinces",
+    "lines": 12
+   },
+   {
+    "form": "ca/t1_taxable_income",
+    "lines": 35
+   },
+   {
+    "form": "ca/schedule_6",
+    "lines": 26
+   },
+   {
+    "form": "ca/t2204",
+    "lines": 22
+   },
+   {
+    "form": "ca-pe/pe428",
+    "lines": 95
+   },
+   {
+    "form": "ca/t1_tax_and_credits",
+    "lines": 54
+   },
+   {
+    "form": "ca/t691",
+    "lines": 10
+   },
+   {
+    "form": "ca/take_home_average_rate",
+    "lines": 7
+   },
+   {
+    "form": "ca/take_home_marginal_rates",
+    "lines": 34
+   },
+   {
+    "form": "ca-pe/return",
+    "lines": 24
+   }
+  ],
+  "trace_sha256": "0271eb6ffb6058c13efcb8dc610e80e36ad32f7925f1d4b38c13e03271d94d34"
+ },
+ {
+  "jurisdiction": "CA-PE",
+  "year": 2025,
+  "salary": "250000",
+  "figures": {
+   "income_tax": "93253.60",
+   "cpp_base": "3356.10",
+   "cpp_enhanced": "678.00",
+   "cpp2": "396.00",
+   "ei": "1077.48"
+  },
+  "income_tax": "93253.60",
+  "total_deductions": "98761.18",
+  "take_home": "151238.82",
+  "unit": {
+   "name": "ca/cad",
+   "placement": "before",
+   "singular": "CA$",
+   "plural": "CA$",
+   "spaced": false,
+   "as_percentage": false
+  },
+  "average_tax_rate": {
+   "value": "0.3950",
+   "unit": {
+    "name": "core/percent",
+    "placement": "after",
+    "singular": "%",
+    "plural": "%",
+    "spaced": false,
+    "as_percentage": true
+   }
+  },
+  "marginal_tax_rate": {
+   "value": "0.4831",
+   "unit": {
+    "name": "core/percent",
+    "placement": "after",
+    "singular": "%",
+    "plural": "%",
+    "spaced": false,
+    "as_percentage": true
+   }
+  }
+ },
+ {
+  "jurisdiction": "CA-PE",
+  "year": 2026,
+  "salary": "1000",
+  "figures": {
+   "income_tax": "0.00",
+   "cpp_base": "0.00",
+   "cpp_enhanced": "0.00",
+   "cpp2": "0.00",
+   "ei": "0.00"
+  },
+  "income_tax": "0.00",
+  "total_deductions": "0.00",
+  "take_home": "1000.00",
+  "unit": {
+   "name": "ca/cad",
+   "placement": "before",
+   "singular": "CA$",
+   "plural": "CA$",
+   "spaced": false,
+   "as_percentage": false
+  },
+  "average_tax_rate": {
+   "value": "0.0000",
+   "unit": {
+    "name": "core/percent",
+    "placement": "after",
+    "singular": "%",
+    "plural": "%",
+    "spaced": false,
+    "as_percentage": true
+   }
+  },
+  "marginal_tax_rate": {
+   "value": "0.0000",
+   "unit": {
+    "name": "core/percent",
+    "placement": "after",
+    "singular": "%",
+    "plural": "%",
+    "spaced": false,
+    "as_percentage": true
+   }
+  }
+ },
+ {
+  "jurisdiction": "CA-PE",
+  "year": 2026,
+  "salary": "70000",
+  "figures": {
+   "income_tax": "13536.28",
+   "cpp_base": "3291.75",
+   "cpp_enhanced": "665.00",
+   "cpp2": "0.00",
+   "ei": "1123.07"
+  },
+  "income_tax": "13536.28",
+  "total_deductions": "18616.10",
+  "take_home": "51383.90",
+  "unit": {
+   "name": "ca/cad",
+   "placement": "before",
+   "singular": "CA$",
+   "plural": "CA$",
+   "spaced": false,
+   "as_percentage": false
+  },
+  "average_tax_rate": {
+   "value": "0.2659",
+   "unit": {
+    "name": "core/percent",
+    "placement": "after",
+    "singular": "%",
+    "plural": "%",
+    "spaced": false,
+    "as_percentage": true
+   }
+  },
+  "marginal_tax_rate": {
+   "value": "0.4152",
+   "unit": {
+    "name": "core/percent",
+    "placement": "after",
+    "singular": "%",
+    "plural": "%",
+    "spaced": false,
+    "as_percentage": true
+   }
+  },
+  "trace_forms": [
+   {
+    "form": "ca/schedule_9",
+    "lines": 5
+   },
+   {
+    "form": "ca/t1_employment_income",
+    "lines": 3
+   },
+   {
+    "form": "ca/schedule_8",
+    "lines": 16
+   },
+   {
+    "form": "ca/t1_lines_copied_by_provinces",
+    "lines": 12
+   },
+   {
+    "form": "ca/t1_taxable_income",
+    "lines": 35
+   },
+   {
+    "form": "ca/schedule_6",
+    "lines": 26
+   },
+   {
+    "form": "ca/t2204",
+    "lines": 22
+   },
+   {
+    "form": "ca-pe/pe428",
+    "lines": 95
+   },
+   {
+    "form": "ca/t1_tax_and_credits",
+    "lines": 54
+   },
+   {
+    "form": "ca/t691",
+    "lines": 10
+   },
+   {
+    "form": "ca/take_home_average_rate",
+    "lines": 7
+   },
+   {
+    "form": "ca/take_home_marginal_rates",
+    "lines": 34
+   },
+   {
+    "form": "ca-pe/return",
+    "lines": 24
+   }
+  ],
+  "trace_sha256": "a14e68ccc69f579c19598d8c91d99a63f3b19a7742a84f87a2eb7b09272d772e"
+ },
+ {
+  "jurisdiction": "CA-PE",
+  "year": 2026,
+  "salary": "250000",
+  "figures": {
+   "income_tax": "92968.41",
+   "cpp_base": "3519.45",
+   "cpp_enhanced": "711.00",
+   "cpp2": "416.00",
+   "ei": "1123.07"
+  },
+  "income_tax": "92968.41",
+  "total_deductions": "98737.93",
+  "take_home": "151262.07",
+  "unit": {
+   "name": "ca/cad",
+   "placement": "before",
+   "singular": "CA$",
+   "plural": "CA$",
+   "spaced": false,
+   "as_percentage": false
+  },
+  "average_tax_rate": {
+   "value": "0.3950",
+   "unit": {
+    "name": "core/percent",
+    "placement": "after",
+    "singular": "%",
+    "plural": "%",
+    "spaced": false,
+    "as_percentage": true
+   }
+  },
+  "marginal_tax_rate": {
+   "value": "0.4929",
+   "unit": {
+    "name": "core/percent",
+    "placement": "after",
+    "singular": "%",
+    "plural": "%",
+    "spaced": false,
+    "as_percentage": true
+   }
+  }
+ },
+ {
   "jurisdiction": "CA-NB",
   "year": 2025,
   "salary": "1000",
   "figures": {
+   "income_tax": "0.00",
    "cpp_base": "0.00",
    "cpp_enhanced": "0.00",
    "cpp2": "0.00",
-   "ei": "0.00",
-   "income_tax": "0.00"
+   "ei": "0.00"
   },
   "income_tax": "0.00",
   "total_deductions": "0.00",
@@ -2417,11 +2797,11 @@
   "year": 2025,
   "salary": "70000",
   "figures": {
+   "income_tax": "13262.53",
    "cpp_base": "3291.75",
    "cpp_enhanced": "665.00",
    "cpp2": "0.00",
-   "ei": "1077.48",
-   "income_tax": "13262.53"
+   "ei": "1077.48"
   },
   "income_tax": "13262.53",
   "total_deductions": "18296.76",
@@ -2517,11 +2897,11 @@
   "year": 2025,
   "salary": "250000",
   "figures": {
+   "income_tax": "89920.58",
    "cpp_base": "3356.10",
    "cpp_enhanced": "678.00",
    "cpp2": "396.00",
-   "ei": "1077.48",
-   "income_tax": "89920.58"
+   "ei": "1077.48"
   },
   "income_tax": "89920.58",
   "total_deductions": "95428.16",
@@ -2562,11 +2942,11 @@
   "year": 2026,
   "salary": "1000",
   "figures": {
+   "income_tax": "0.00",
    "cpp_base": "0.00",
    "cpp_enhanced": "0.00",
    "cpp2": "0.00",
-   "ei": "0.00",
-   "income_tax": "0.00"
+   "ei": "0.00"
   },
   "income_tax": "0.00",
   "total_deductions": "0.00",
@@ -2607,11 +2987,11 @@
   "year": 2026,
   "salary": "70000",
   "figures": {
+   "income_tax": "12878.36",
    "cpp_base": "3291.75",
    "cpp_enhanced": "665.00",
    "cpp2": "0.00",
-   "ei": "1123.07",
-   "income_tax": "12878.36"
+   "ei": "1123.07"
   },
   "income_tax": "12878.36",
   "total_deductions": "17958.18",
@@ -2707,11 +3087,11 @@
   "year": 2026,
   "salary": "250000",
   "figures": {
+   "income_tax": "89047.66",
    "cpp_base": "3519.45",
    "cpp_enhanced": "711.00",
    "cpp2": "416.00",
-   "ei": "1123.07",
-   "income_tax": "89047.66"
+   "ei": "1123.07"
   },
   "income_tax": "89047.66",
   "total_deductions": "94817.18",

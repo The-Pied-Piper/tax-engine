@@ -1,0 +1,20 @@
+# Form PE428 (CRA 5002-C) line 90: "Line 90: Line 88 minus line 89 (if negative, enter \"0\") =".
+# One core/subtract_not_below_zero step: line 88 (`ca-pe/pe428_tax_line_88`) less line 89 (`ca-
+# pe/pe428_provincial_foreign_tax_credit_line_89`), not below 0, rounded half-up to the cent by
+# the dataset's rule. Line 89 is an optional input a salary-only caller leaves out, read as blank
+# and then as 0 by the blank rule. The form prints no title for the line, so the step has none.
+form:
+  name: ca-pe/pe428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "90"
+    unit: ca/cad
+    params:
+      rounding: ca-pe/cent_rounding
+    consumes:
+      amount: ca-pe/pe428_tax_line_88
+      less: ca-pe/pe428_provincial_foreign_tax_credit_line_89
+    blank:
+      less: "0"
+    produces:
+      output: ca-pe/pe428_tax_line_90

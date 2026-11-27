@@ -1,8 +1,8 @@
 """The Prince Edward Island package list and the registries built over it.
 
-Prince Edward Island is not yet listed in `tax_engine.registrations.JURISDICTIONS` (the return
-summary ticket lists it), so its tests build their own package list (core, federal, Prince Edward
-Island) here and take their kinds and capabilities from it. Each registry is built once per test
+Prince Edward Island's line tests build their own package list (core, federal, Prince Edward
+Island) here and take their kinds and capabilities from it; the full return is tested over the
+registered list (`tax_engine.registrations.JURISDICTIONS`). Each registry is built once per test
 process; never register into one.
 """
 

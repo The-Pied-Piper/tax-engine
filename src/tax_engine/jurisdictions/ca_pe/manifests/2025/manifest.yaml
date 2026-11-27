@@ -1,33 +1,53 @@
-# Prince Edward Island 2025 take-home manifest: the return's identity. The caller gives the gross
+# Prince Edward Island 2025 take-home manifest: the return's identity and its exports (the refund or
+# balance owing, the average income tax rate and the marginal tax rate). The caller gives the gross
 # salary and nothing else. Prince Edward Island's own forms are in parts beside this one, so a line
 # ticket adds only its own part file; the federal forms are imported by name below, their parts in
 # the `ca` package (`ca/forms/<name>/`).
 #
-# Prince Edward Island builds one form, PE428 (5002-C). CRA publishes no Prince Edward Island
+# Prince Edward Island builds one form, PE428 (5002-C), whose line 97 is the figure that goes to T1
+# line 42800 and supplies `ca/provincial_tax.amount`. CRA publishes no Prince Edward Island
 # Schedule 6, no PE479 and no Prince Edward Island T1 edition (the 5002-s6, 5002-tc and 5002-r
 # files are 404), so the federal Schedule 6, Schedule 8, T2204 and T1 are imported unchanged
-# (standard CPP and EI, no QPP, no Schedule 6 swap).
+# (standard CPP and EI, no QPP, no Schedule 6 swap). PE428 line 98 (the volunteer credit, T1 line
+# 47900) comes after T1 line 43500 and is not built.
 #
-# `ca/t1_tax_and_credits` is not imported yet: it needs `ca/provincial_tax.amount`, which PE428
-# line 97 supplies, so the return summary ticket adds that import with the line.
+# The default form's export is T1 line 167, refund or balance owing (positive is owing, negative
+# is a refund).
 #
-# This manifest is the scaffold: its outputs and its `take_home` block are set by the return
-# summary ticket, and Prince Edward Island is not yet listed in `registrations.JURISDICTIONS`
-# (the all-years test composes every listed manifest, and this one is complete only when the later
-# tickets merge).
+# Prince Edward Island is listed in `registrations.JURISDICTIONS`: every listed jurisdiction is
+# composed by `tests/application/services/test_every_resolvable_year.py`, and this manifest is
+# complete, PE428 line 97 supplying `ca/provincial_tax.amount` for T1.
 jurisdiction: CA-PE
 version: 1
 valid_from_tax_year: 2025
 # The title is the engine's own wording for the default form, not a printed form heading.
 title: Return summary
-outputs: []
+outputs:
+  - ca/refund_or_balance_owing
+  - ca-pe/average_tax_rate
+  - ca-pe/marginal_tax_rate
 capabilities: []
+# Where the take-home answer reads its figures (the caller gives the salary and nothing else): the
+# income tax is T1 line 43500, CPP and EI come from their own forms, and the rates are this return's.
+take_home:
+  salary: ca/employment_income
+  income_tax: {form: ca/t1_tax_and_credits, kind: ca/total_payable}
+  deductions:
+    cpp_base: {form: ca/schedule_8, kind: ca/schedule_8_cpp_base_contributions_on_return}
+    cpp_enhanced: {form: ca/schedule_8, kind: ca/cpp_part_3_line_12}
+    cpp2: {form: ca/schedule_8, kind: ca/cpp_part_3_line_22}
+    ei: {form: ca/t2204, kind: ca/t2204_line_16}
+  average_tax_rate: {form: ca-pe/return, kind: ca-pe/average_tax_rate}
+  marginal_tax_rate: {form: ca-pe/return, kind: ca-pe/marginal_tax_rate}
 imports:
   - ca/t1_employment_income
   - ca/t1_taxable_income
+  - ca/t1_tax_and_credits
   - ca/t1_lines_copied_by_provinces
   - ca/schedule_6
   - ca/schedule_8
   - ca/schedule_9
   - ca/t2204
+  - ca/take_home_average_rate
   - ca/t691
+  - ca/take_home_marginal_rates

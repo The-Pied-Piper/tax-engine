@@ -174,5 +174,20 @@ CHAIN_87 = (*CHAIN_86, "pe428_line_87.yaml")
 
 CHAIN_88 = (*CHAIN_87, "pe428_line_88.yaml")
 
-# Every real line part of the form, lines 1 to 88.
-ALL_PARTS = CHAIN_88
+CHAIN_90 = (*CHAIN_88, "pe428_line_89_input.yaml", "pe428_line_90.yaml")
+
+CHAIN_92 = (*CHAIN_90, "pe428_line_92_input.yaml", "pe428_line_92.yaml")
+
+CHAIN_93 = (*CHAIN_92, "pe428_line_93.yaml")
+
+CHAIN_96 = (
+    *CHAIN_93,
+    "pe428_line_94_input.yaml",
+    "pe428_line_95_input.yaml",
+    "pe428_line_96.yaml",
+)
+
+CHAIN_97 = (*CHAIN_96, "pe428_line_97.yaml")
+
+# Every real line part of the form, lines 1 to 97.
+ALL_PARTS = CHAIN_97

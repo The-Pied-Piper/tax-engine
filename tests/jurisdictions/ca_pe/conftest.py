@@ -55,8 +55,8 @@ def take_home_service(tmp_path: Path) -> TakeHomeService:
     (for example "pe428_line_9.yaml") from the package's manifest folder, or from the
     federal forms, beside them, and points the Prince Edward Island namespace at that folder. The
     two texts sort ahead of the parts, because the folder is composed in file-name order.
-    Prince Edward Island is not yet in the registered engine, so the service is built over the
-    Prince Edward Island package list of `support.py`.
+    The service is built over the Prince Edward Island package list of `support.py`, not the
+    registered engine.
     """
 
     def build(header: str, form: str, *parts: str) -> TaxComputationService:
