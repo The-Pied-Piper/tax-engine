@@ -1,0 +1,9 @@
+# Form NS428 line 98 (PDF 5003-c-25e): "Age tax credit (if you were born in 1960 or earlier and your taxable income is less than $24,000) Claim $1,000". The taxable income limit, 2025, claimed whole: the `credit` kind.
+# The CRA .txt prints "1959 or earlier"; the PDF and the information guide say 1960.
+family: ca-ns/age_tax_credit_income_limit
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5003-c/5003-c-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "24000"

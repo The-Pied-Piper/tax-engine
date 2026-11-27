@@ -1,0 +1,66 @@
+# Form NS428 (Nova Scotia Tax, CRA 5003-C, PDF) line 98: "Age tax credit (if you were born in 1960 or earlier and your taxable income is less than $24,000) Claim $1,000". (CRA's .txt misprints "1959 or earlier"; the PDF and the information guide say 1960.) Two conditions, built as ca-nb/nb428 line 86 gates its income test:
+# 1. core/credit_amount: the printed $24,000 (`ca-ns/age_tax_credit_income_limit`).
+# 2. core/subtract_not_below_zero: that limit less taxable income (line 1), not below 0, so above 0 exactly when taxable income is less than $24,000 ($24,000.00 itself is not "less than").
+# 3. core/amount_by_band: the `ca-ns/age_tax_credit_eligibility_gate` dataset gives 0 where step 2 is 0.00 and 1 where it is a cent or more. A switch, not a CRA figure.
+# 4. core/credit_amount: the printed claim $1,000 (`ca-ns/age_tax_credit`).
+# 5. core/times_count: the claim times the born-in-1960-or-earlier count (0 or 1, worked out from the year of birth by line 10's check, a blank read as 0).
+# 6. core/multiply: step 5 times the gate, so line 98 is $1,000.00 when both conditions are met and 0.00 otherwise. Steps 1 to 5 are not lines of the form: plain-words titles, no reference.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/credit_amount
+    title: "Taxable income limit for the age tax credit"
+    unit: ca/cad
+    params:
+      amount: ca-ns/age_tax_credit_income_limit
+    produces:
+      output: ca-ns/ns428_age_tax_credit_income_limit
+  - name: core/subtract_not_below_zero
+    title: "Age tax credit income limit less taxable income"
+    unit: ca/cad
+    params:
+      rounding: ca-ns/cent_rounding
+    consumes:
+      amount: ca-ns/ns428_age_tax_credit_income_limit
+      less: ca-ns/ns428_taxable_income_line_1
+    produces:
+      output: ca-ns/ns428_income_under_age_tax_credit_limit
+  - name: core/amount_by_band
+    title: "Multiplier that is 0 when taxable income is not less than the age tax credit limit"
+    unit: ca/cad
+    params:
+      table: ca-ns/age_tax_credit_eligibility_gate
+    consumes:
+      base: ca-ns/ns428_income_under_age_tax_credit_limit
+    produces:
+      output: ca-ns/ns428_age_tax_credit_eligibility_gate
+  - name: core/credit_amount
+    title: "Age tax credit claim"
+    unit: ca/cad
+    params:
+      amount: ca-ns/age_tax_credit
+    produces:
+      output: ca-ns/ns428_age_tax_credit_claim
+  - name: core/times_count
+    title: "Age tax credit if born in 1960 or earlier"
+    unit: ca/cad
+    params:
+      rounding: ca-ns/cent_rounding
+    consumes:
+      amount: ca-ns/ns428_age_tax_credit_claim
+      count: ca/born_in_1960_or_earlier_checked
+    blank:
+      count: "0"
+    produces:
+      output: ca-ns/ns428_age_tax_credit_if_born_in_1960_or_earlier
+  - name: core/multiply
+    title: "Age tax credit"
+    reference: "98"
+    unit: ca/cad
+    params:
+      rounding: ca-ns/cent_rounding
+    consumes:
+      multiplicand: ca-ns/ns428_age_tax_credit_if_born_in_1960_or_earlier
+      multiplier: ca-ns/ns428_age_tax_credit_eligibility_gate
+    produces:
+      output: ca-ns/ns428_age_tax_credit_line_98

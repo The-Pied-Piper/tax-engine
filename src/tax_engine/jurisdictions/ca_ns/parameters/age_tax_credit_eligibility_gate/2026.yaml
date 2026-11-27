@@ -1,0 +1,16 @@
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: carried forward unchanged from the 2025 file; T4127 (Jan and Jul 2026) does not print this figure and the 2026 form is not yet published, so it is unconfirmed.
+# Nova Scotia age tax credit eligibility gate, 2026 (Form NS428 line 98: "... your taxable income is less than $24,000").
+# Not a CRA figure and not printed on any form: the rows are a switch that gives 0 where the base is
+# 0.00 and 1 where it is one cent or more. The base is the printed limit minus taxable income
+# (line 1), not below 0, so the gate is 1 exactly when taxable income is less than the limit. A base
+# exactly at a row's `over` is in the lower band, so the second row starts above 0.005.
+family: ca-ns/age_tax_credit_eligibility_gate
+tax_year: 2026
+kind: amount_by_band
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5003-c/5003-c-25e.txt
+rounding: none
+rows:
+  - {over: "0", amount: "0"}
+  - {over: "0.005", amount: "1"}

@@ -44,9 +44,20 @@ D = Decimal
 NS_PARTS = Path(tax_engine.jurisdictions.ca_ns.__file__).parent / "manifests" / "2025"
 LINE_PART = NS_PARTS / "ns428_line_26.yaml"
 IDENTIFIER = "ca-ns/ns428_credits_subtotal_line_26"
-FEDERAL_FORM_NAMES = ("schedule_8", "t2204", "t1_employment_income", "t1_lines_copied_by_provinces")
+FEDERAL_FORM_NAMES = (
+    "schedule_8",
+    "t2204",
+    "t1_employment_income",
+    "t1_taxable_income",
+    "t1_lines_copied_by_provinces",
+    "schedule_9",
+)
 NS_PART_NAMES = (
     "ns428_line_9.yaml",
+    "ns428_line_10_input.yaml",
+    "ns428_line_10_worksheet_lines_1_to_3.yaml",
+    "ns428_line_10_worksheet_lines_4_to_7.yaml",
+    "ns428_line_10.yaml",
     "ns428_line_19.yaml",
     "ns428_line_21.yaml",
     "ns428_line_22.yaml",
