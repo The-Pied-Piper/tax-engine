@@ -2,7 +2,8 @@
 # (ns428_line_90_input.yaml) times the printed rate (the `ca-ns/labour_sponsored_credit_rate` dataset), at most the printed
 # maximum (the `ca-ns/labour_sponsored_credit_maximum` dataset). Three steps, the last of which is line 90. The
 # first, core/credit_amount, supplies the printed maximum; it is not a line of the form, so it has
-# no title and no reference. The second, core/apply_rate, multiplies the amount by the rate, read as
+# no reference, and its title is plain words, not printed wording, because the sentence of line 90
+# names it. The second, core/apply_rate, multiplies the amount by the rate, read as
 # 0 when the line is left blank; it is engine-internal, so it has no reference. The third,
 # core/at_most, is line 90: that product passed on unchanged. A product above the printed maximum
 # is refused, not capped.
@@ -10,6 +11,7 @@ form:
   name: ca-ns/ns428
 capabilities:
   - name: core/credit_amount
+    title: "Most you can claim for labour-sponsored venture capital credits"
     unit: ca/cad
     params:
       amount: ca-ns/labour_sponsored_credit_maximum
