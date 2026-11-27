@@ -1,0 +1,14 @@
+# Form NS428 (CRA 5003-C) line 80, "Base amount 15,000.00". The printed figure is the
+# `ca-ns/low_income_reduction_base_amount` dataset, supplied through core/credit_amount, so it is
+# the same at every salary; line 81 reads it.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/credit_amount
+    title: "Base amount"
+    reference: "80"
+    unit: ca/cad
+    params:
+      amount: ca-ns/low_income_reduction_base_amount
+    produces:
+      output: ca-ns/low_income_reduction_base_amount

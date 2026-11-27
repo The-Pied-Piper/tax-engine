@@ -1,0 +1,16 @@
+# Form NB428 (CRA 5004-C) line 85: "Line 83 multiplied by the percentage from line 84". Line 84 is
+# the printed 3%, the `ca-nb/low_income_reduction_rate` dataset, and has no step of its own. One
+# core/apply_rate step applies it to line 83 (`ca-nb/nb428_line_83`), rounded half-up to the cent
+# by the dataset's rule (the form states no rounding rule). The form prints no title for the line.
+form:
+  name: ca-nb/nb428
+capabilities:
+  - name: core/apply_rate
+    reference: "85"
+    unit: ca/cad
+    params:
+      rate: ca-nb/low_income_reduction_rate
+    consumes:
+      base: ca-nb/nb428_line_83
+    produces:
+      output: ca-nb/nb428_line_85

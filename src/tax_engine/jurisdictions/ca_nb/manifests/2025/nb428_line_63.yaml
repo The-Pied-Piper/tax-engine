@@ -1,0 +1,18 @@
+# Form NB428 (CRA 5004-C) line 63: "Line 63: Line 59 minus line 62 (if negative, enter "0")". Line
+# 59, "Amount from line 58 of the previous page", is a copy of line 58 and has no step, so the one
+# core/subtract_not_below_zero step takes line 58 less line 62, not below 0. Both are always figures
+# (line 62 reads its blank inputs as 0). The form prints no title for the line, so the step is
+# untitled.
+form:
+  name: ca-nb/nb428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "63"
+    unit: ca/cad
+    params:
+      rounding: ca-nb/cent_rounding
+    consumes:
+      amount: ca-nb/nb428_tax_after_non_refundable_credits_line_58
+      less: ca-nb/nb428_dividend_credit_and_carryover_line_62
+    produces:
+      output: ca-nb/nb428_tax_line_63

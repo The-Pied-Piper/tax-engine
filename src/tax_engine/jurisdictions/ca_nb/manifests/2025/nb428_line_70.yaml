@@ -1,0 +1,16 @@
+# Form NB428 (CRA 5004-C) line 70, adjusted family income, column 1 (you): "Net income from line
+# 23600." The T1 form exports its net income (`ca/net_income`, line 23600), and another form reads
+# an export only as a record list (`ca/t1_taxable_income.net_income`), so the one step is
+# core/record_total over those records, as NS428 line 39 is. Column 2 (the spouse or common-law
+# partner) is not modelled: the take-home is a single filer's.
+form:
+  name: ca-nb/nb428
+capabilities:
+  - name: core/record_total
+    title: "Net income from line 23600"
+    reference: "70"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_taxable_income.net_income
+    produces:
+      output: ca-nb/nb428_net_income_line_70

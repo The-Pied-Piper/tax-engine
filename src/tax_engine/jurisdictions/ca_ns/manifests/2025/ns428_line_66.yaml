@@ -1,0 +1,35 @@
+# Form NS428 (CRA 5003-C) line 66, column 1 (you): "Total of the universal child care benefit
+# (UCCB) repayment (line 21300 of the return) and the registered disability savings plan (RDSP)
+# income repayment (included on line 23200 of the return)".
+# Both parts are T1 lines, so this form does not ask for them: the T1 taxable income form owns the
+# inputs and exports lines 21300 and 23200 (`ca/t1_taxable_income`). Another form reads an export
+# only as a record list, so each part is totalled by core/record_total first (as NL428 line 89
+# does), and the printed total adds the two in line order. A salary-only caller has neither, so the
+# total is 0.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/record_total
+    title: "Amount from line 21300 of the return (UCCB repayment)"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_taxable_income.uccb_repayment_line_21300
+    produces:
+      output: ca-ns/ns428_uccb_repayment_line_21300
+  - name: core/record_total
+    title: "Amount from line 23200 of the return (RDSP income repayment)"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_taxable_income.rdsp_income_repayment_line_23200
+    produces:
+      output: ca-ns/ns428_rdsp_income_repayment_line_23200
+  - name: core/sum
+    title: "Total of the universal child care benefit (UCCB) repayment (line 21300 of the return) and the registered disability savings plan (RDSP) income repayment (included on line 23200 of the return)"
+    reference: "66 (column 1)"
+    unit: ca/cad
+    params:
+      rounding: ca-ns/cent_rounding
+    consumes:
+      parts: [ca-ns/ns428_uccb_repayment_line_21300, ca-ns/ns428_rdsp_income_repayment_line_23200]
+    produces:
+      output: ca-ns/ns428_uccb_rdsp_repayments_line_66

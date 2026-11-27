@@ -1,0 +1,65 @@
+# Form NB428 (CRA 5004-C) line 86, the New Brunswick low-income tax reduction: "Line 80 minus line
+# 85 (if negative, enter "0")", and the eligibility test above line 70: "You are single and your
+# net income from line 23600 of your return is less than $48,653 ... If neither of these conditions
+# applies to you, enter "0" on line 86". The second condition (adjusted family income under
+# $75,387, for a filer with a spouse or an eligible dependant) cannot apply to a single filer and
+# is not built. Five steps, as NL428 line 104 does for its own gate.
+# 1. core/subtract_not_below_zero: line 80 less line 85, not below 0, the figure before the test;
+# not printed, so a plain-words title and no reference.
+# 2. core/credit_amount: the printed $48,653 (`ca-nb/low_income_reduction_single_income_limit`).
+# 3. core/subtract_not_below_zero: that limit less line 70, not below 0, so it is above 0 exactly
+# when net income is under the limit (48,653.00 itself is not "less than").
+# 4. core/amount_by_band: the `ca-nb/low_income_reduction_eligibility_gate` dataset gives 0 where
+# step 3 is 0.00 and 1 where it is one cent or more. A switch, not a CRA figure.
+# 5. core/multiply: step 1 times the gate, so line 86 is the figure of step 1 where the test is met
+# and "0" otherwise, as the form prints.
+form:
+  name: ca-nb/nb428
+capabilities:
+  - name: core/subtract_not_below_zero
+    title: "Low-income tax reduction before the eligibility test"
+    unit: ca/cad
+    params:
+      rounding: ca-nb/cent_rounding
+    consumes:
+      amount: ca-nb/nb428_low_income_reduction_line_80
+      less: ca-nb/nb428_line_85
+    produces:
+      output: ca-nb/nb428_line_86_before_eligibility_test
+  - name: core/credit_amount
+    title: "Single income limit for the low-income tax reduction"
+    unit: ca/cad
+    params:
+      amount: ca-nb/low_income_reduction_single_income_limit
+    produces:
+      output: ca-nb/low_income_reduction_single_income_limit
+  - name: core/subtract_not_below_zero
+    title: "Single income limit less net income"
+    unit: ca/cad
+    params:
+      rounding: ca-nb/cent_rounding
+    consumes:
+      amount: ca-nb/low_income_reduction_single_income_limit
+      less: ca-nb/nb428_net_income_line_70
+    produces:
+      output: ca-nb/nb428_income_under_single_limit
+  - name: core/amount_by_band
+    title: "Multiplier that is 0 when your net income is not less than the single income limit"
+    unit: ca/cad
+    params:
+      table: ca-nb/low_income_reduction_eligibility_gate
+    consumes:
+      base: ca-nb/nb428_income_under_single_limit
+    produces:
+      output: ca-nb/nb428_line_86_eligibility_gate
+  - name: core/multiply
+    title: "New Brunswick low-income tax reduction"
+    reference: "86"
+    unit: ca/cad
+    params:
+      rounding: ca-nb/cent_rounding
+    consumes:
+      multiplicand: ca-nb/nb428_line_86_before_eligibility_test
+      multiplier: ca-nb/nb428_line_86_eligibility_gate
+    produces:
+      output: ca-nb/nb428_line_86

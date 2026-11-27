@@ -1,0 +1,14 @@
+# NB428 (2025) line 66's input, which a salary-only caller does not give.
+# "Line 66: Provincial foreign tax credit (complete Form T2036)" (Form NB428, CRA 5004-C). Form T2036 is not built (it is $0 for a salary-only filer), so the
+# line is taken as one optional input, as the form takes it. A request that leaves the line out is
+# read as blank; the step that reads line 66 reads that blank as 0.
+form:
+  name: ca-nb/nb428
+inputs:
+  - name: ca-nb/nb428_provincial_foreign_tax_credit_line_66
+    title: "Provincial foreign tax credit"
+    reference: "66"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 66: Provincial foreign tax credit (complete Form T2036)"

@@ -1,0 +1,19 @@
+# Form NS428 (Nova Scotia Tax, CRA 5003-C) line 84 "Line 78 minus line 83 (if negative, enter "0")
+# Nova Scotia low-income tax reduction". One core/subtract_not_below_zero step: line 78 (a copy of
+# line 76, which is line 74 while the spouse, dependant and children parts are deferred,
+# `ca-ns/ns428_low_income_reduction_line_74`) less line 83, not below 0, rounded half-up to the cent
+# by the dataset's rule. Both are always present, so the step has no blank rule.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/subtract_not_below_zero
+    title: "Nova Scotia low-income tax reduction"
+    reference: "84"
+    unit: ca/cad
+    params:
+      rounding: ca-ns/cent_rounding
+    consumes:
+      amount: ca-ns/ns428_low_income_reduction_line_74
+      less: ca-ns/ns428_line_83
+    produces:
+      output: ca-ns/ns428_low_income_reduction_line_84
