@@ -1,10 +1,10 @@
 # Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
-# Derivation: carried forward unchanged from the 2025 file; T4127 (Jan 2026) does not print this figure and the 2026 form is not yet published, so it is unconfirmed.
-# Age amount, maximum, 2026 (Worksheet NB428, CRA 5004-D): "Line 58080 - Age amount", line 1 "Maximum amount 6,037.00". Claimed whole: the credit kind. Rounds half-up to the cent, the project's choice, as the form states no rounding rule.
+# Derivation: 2025 amount 6,037 x 1.02 (New Brunswick's 2026 indexation factor, as for its 2026 basic personal amount) = 6,157.74, rounded to the nearest dollar, halves up, = 6,158.
+# Age amount, maximum, 2026 (Worksheet NB428, CRA 5004-D): "Line 58080 - Age amount", line 1 "Maximum amount 6,037.00" (2025 text). Claimed whole: the credit kind. Rounds half-up to the cent, the project's choice, as the form states no rounding rule.
 family: ca-nb/age_maximum
 tax_year: 2026
 kind: credit
 sources:
   - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5004-d/5004-d-25e.txt
 rounding: {increment: "0.01", mode: half_up}
-amount: "6037.00"
+amount: "6158.00"

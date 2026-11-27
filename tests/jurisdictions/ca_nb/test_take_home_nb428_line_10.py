@@ -1,11 +1,13 @@
-"""NB428 (2025) line 10, the age amount, over the optional year of birth (`ca/birth_year`).
+"""NB428 (2025 and 2026) line 10, the age amount, over the optional year of birth (`ca/birth_year`).
 
 Form text (Form NB428, CRA 5004-C): "Line 10 and line 58080: Age amount (if you were born in 1960 or
 earlier) (use Worksheet NB428) (maximum $6,037)". Worksheet NB428 (CRA 5004-D), "Line 58080 - Age
-amount": line 1 maximum 6,037.00; line 2 amount from line 23600; line 3 income threshold 44,945.00;
-line 4 line 2 minus line 3 (if negative, enter "0"); line 5 rate 15%; line 6 line 4 times line 5;
-line 7 line 1 minus line 6 (if negative, enter "0"). A request that leaves the year out is not born
-in 1960 or earlier: line 10 is 0.00. Built as Nova Scotia's line 10 is; real parts.
+amount": line 1 maximum 6,037.00 (2025; 6,158.00 for 2026, provisional); line 2 amount from line
+23600; line 3 income threshold 44,945.00 (2025; 45,844.00 for 2026, provisional); line 4 line 2
+minus line 3 (if negative, enter "0"); line 5 rate 15%; line 6 line 4 times line 5; line 7 line 1
+minus line 6 (if negative, enter "0"). A request that leaves the year out is not born in 1960 or
+earlier: line 10 is 0.00. The cutoff year is 1960 for 2025 and 1961 for 2026 (age 65 on 31
+December). Built as Nova Scotia's line 10 is; real parts.
 """
 
 from __future__ import annotations
@@ -40,6 +42,8 @@ from tests.jurisdictions.ca_nb.support import (
 
 D = Decimal
 NB_PARTS = Path(tax_engine.jurisdictions.ca_nb.__file__).parent / "manifests" / "2025"
+MAXIMUMS = {2025: D("6037"), 2026: D("6158")}
+THRESHOLDS = {2025: D("44945"), 2026: D("45844")}
 IDENTIFIER = "ca-nb/nb428_age_amount_line_10"
 LINE_2 = "ca-nb/worksheet_nb428_age_amount_net_income_line_2"
 FEDERAL_FORM_NAMES = (
@@ -102,12 +106,12 @@ def _service(tmp_path: Path) -> TaxComputationService:
     )
 
 
-def _sheet(tmp_path: Path, salary: str, year: int | None = None) -> Any:
+def _sheet(tmp_path: Path, salary: str, year: int | None = None, tax_year: int = 2025) -> Any:
     given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if year is not None:
         given.append(Artifact(BIRTH_YEAR, year))
     worksheets = _service(tmp_path).compute(
-        TaxCalculationRequest(JurisdictionCode("CA-NB"), 2025, tuple(given))
+        TaxCalculationRequest(JurisdictionCode("CA-NB"), tax_year, tuple(given))
     )
     (sheet,) = worksheets["ca-nb/nb428"]
     return sheet
@@ -117,24 +121,45 @@ def _value(sheet: Any, identifier: str) -> Decimal:
     return D(sheet.get(new_brunswick_kinds().kind(identifier)).value)
 
 
-@pytest.mark.parametrize(
-    ("salary", "expected"), [("20000", "6037.00"), ("40000", "6037.00"), ("100000", "0.00")]
-)
-def test_line_10_born_in_1960_or_earlier(tmp_path: Path, salary: str, expected: str) -> None:
-    assert _value(_sheet(tmp_path, salary, 1960), IDENTIFIER) == D(expected)
+@pytest.mark.parametrize("tax_year", [2025, 2026])
+@pytest.mark.parametrize("salary", ["20000", "THRESHOLD", "100000"])
+def test_line_10_is_the_maximum_below_the_threshold_and_zero_far_above(
+    tmp_path: Path, tax_year: int, salary: str
+) -> None:
+    expected = D("0.00") if salary == "100000" else MAXIMUMS[tax_year]
+    given = str(THRESHOLDS[tax_year]) if salary == "THRESHOLD" else salary
 
+    sheet = _sheet(tmp_path, given, 1950, tax_year)
 
-def test_line_10_in_the_reduction_range_is_the_worksheet_arithmetic(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "60000", 1950)
-    net_income = _value(sheet, LINE_2)
-    expected = (D("6037") - D("0.15") * (net_income - D("44945"))).quantize(D("0.01"))
-
-    assert D("44945") < net_income < D("85192")
     assert _value(sheet, IDENTIFIER) == expected
 
 
-@pytest.mark.parametrize("year", [None, 1961, 1990])
-def test_line_10_is_zero_when_the_year_is_left_out_or_after_1960(
-    tmp_path: Path, year: int | None
+@pytest.mark.parametrize(
+    ("tax_year", "year", "expected"),
+    [(2025, 1960, "6037.00"), (2025, 1961, "0.00"), (2026, 1961, "6158.00"), (2026, 1962, "0.00")],
+)
+def test_line_10_cutoff_year_is_65_on_31_december(
+    tmp_path: Path, tax_year: int, year: int, expected: str
 ) -> None:
-    assert _value(_sheet(tmp_path, "20000", year), IDENTIFIER) == D("0.00")
+    assert _value(_sheet(tmp_path, "20000", year, tax_year), IDENTIFIER) == D(expected)
+
+
+@pytest.mark.parametrize("tax_year", [2025, 2026])
+def test_line_10_in_the_reduction_range_is_the_worksheet_arithmetic(
+    tmp_path: Path, tax_year: int
+) -> None:
+    sheet = _sheet(tmp_path, "60000", 1950, tax_year)
+    net_income = _value(sheet, LINE_2)
+    maximum, threshold = MAXIMUMS[tax_year], THRESHOLDS[tax_year]
+    expected = (maximum - D("0.15") * (net_income - threshold)).quantize(D("0.01"))
+
+    assert threshold < net_income < threshold + maximum / D("0.15")
+    assert _value(sheet, IDENTIFIER) == expected
+
+
+@pytest.mark.parametrize("tax_year", [2025, 2026])
+@pytest.mark.parametrize("year", [None, 1990])
+def test_line_10_is_zero_when_the_year_is_left_out_or_far_after_the_cutoff(
+    tmp_path: Path, tax_year: int, year: int | None
+) -> None:
+    assert _value(_sheet(tmp_path, "20000", year, tax_year), IDENTIFIER) == D("0.00")
