@@ -1279,11 +1279,11 @@
    },
    {
     "form": "ca-mb/mb428_a",
-    "lines": 5
+    "lines": 10
    },
    {
     "form": "ca-mb/mb479",
-    "lines": 69
+    "lines": 73
    },
    {
     "form": "ca-mb/worksheet_mb428",
@@ -1299,7 +1299,7 @@
    },
    {
     "form": "ca-mb/mb428_credits",
-    "lines": 35
+    "lines": 46
    },
    {
     "form": "ca/t691",
@@ -1326,7 +1326,7 @@
     "lines": 32
    }
   ],
-  "trace_sha256": "ea8c0f419c5af0cb2f97a963adf6b180f0f5f5ec42a20e724ddc00ad51989fe0"
+  "trace_sha256": "2072f7f01cf25477fef2e983b8d8f4f5e59c6607ea0fe1b15d412085264d1c29"
  },
  {
   "jurisdiction": "CA-MB",
@@ -1489,11 +1489,11 @@
    },
    {
     "form": "ca-mb/mb428_a",
-    "lines": 5
+    "lines": 10
    },
    {
     "form": "ca-mb/mb479",
-    "lines": 69
+    "lines": 73
    },
    {
     "form": "ca-mb/worksheet_mb428",
@@ -1509,7 +1509,7 @@
    },
    {
     "form": "ca-mb/mb428_credits",
-    "lines": 35
+    "lines": 46
    },
    {
     "form": "ca/t691",
@@ -1536,7 +1536,7 @@
     "lines": 32
    }
   ],
-  "trace_sha256": "5d1f392f96193f00915f192da77de17ba83be88dbd7d18199bf5ad03fa809da5"
+  "trace_sha256": "21e6b30a0632207c3220801e5beb0466811c5179bcad414c4bc9eaf7a7bbb4b9"
  },
  {
   "jurisdiction": "CA-MB",
@@ -1703,7 +1703,7 @@
    },
    {
     "form": "ca-sk/sk428_credits",
-    "lines": 34
+    "lines": 48
    },
    {
     "form": "ca/t691",
@@ -1730,7 +1730,7 @@
     "lines": 15
    }
   ],
-  "trace_sha256": "f0ecfe30bf6a56b60dcab1da9f23cb970d1a9484d7372c7807400c5fa103684c"
+  "trace_sha256": "df0bdf167de5bd28713c6ae5088f0beb2317c8ba3211f2850850a3d4eb22dfc2"
  },
  {
   "jurisdiction": "CA-SK",
@@ -1897,7 +1897,7 @@
    },
    {
     "form": "ca-sk/sk428_credits",
-    "lines": 34
+    "lines": 48
    },
    {
     "form": "ca/t691",
@@ -1924,7 +1924,7 @@
     "lines": 15
    }
   ],
-  "trace_sha256": "251ba1b1b5658a042d93a91c86956cf1829e44df52dc204e4267b6700283ee56"
+  "trace_sha256": "fed100c9195bacd238b6a26ec1dcfc502dfb2ec24982c6104be70efa26329e7b"
  },
  {
   "jurisdiction": "CA-SK",
