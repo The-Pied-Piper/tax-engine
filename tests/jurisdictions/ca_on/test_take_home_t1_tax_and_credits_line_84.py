@@ -3,9 +3,10 @@ alone.
 
 Line 84 is "Add lines 77 to 83." (T1 General 5006-R, CRA 5006-R-25E, confirmed). Line 77 is the
 basic personal amount, line 30000
-(`ca/basic_personal_amount`), read directly as a real part. Lines 78 to 83 are 0 for the
-take-home filer (salary the only income, single, basic credits only), so they are left out.
-Line 84 is therefore one `core/sum` over line 77 alone, rounded half-up to the cent with the
+(`ca/basic_personal_amount`), read directly as a real part. Line 78, the age amount, is 0 with no
+year of birth, and lines 79 to 83 are 0 for the take-home filer (salary the only income, single,
+basic credits only), so they are left out.
+Line 84 is therefore one `core/sum` over lines 77 and 78, rounded half-up to the cent with the
 shared `ca/cent_rounding` dataset, and produces
 `ca/credit_amounts_line_84`, a non-negative kind.
 
@@ -48,9 +49,13 @@ LINE_84 = "ca/credit_amounts_line_84"
 # The real parts composed beside the test's header: the salary, the real Schedule 8, the real T1
 # taxable-income lines and inputs, line 30000 and line 84.
 PARTS = (
+    *form_part_names("t1_lines_copied_by_provinces"),
     *form_part_names("schedule_8"),
     *form_part_names("t1_taxable_income", "t1_employment_income"),
     "t1_tax_and_credits_line_30000.yaml",
+    "t1_tax_and_credits_line_78_worksheet_lines_1_to_3.yaml",
+    "t1_tax_and_credits_line_78_worksheet_lines_4_to_7.yaml",
+    "t1_tax_and_credits_line_78.yaml",
     "t1_tax_and_credits_line_84.yaml",
 )
 HEADER = dedent("""\
@@ -125,7 +130,8 @@ def test_line_84_names_line_30000_and_its_rounding_in_the_trace(
     sheet = _sheet(take_home_service, "70000")
 
     assert (
-        "Line 30000 (CA$16129.00) gives CA$16129.00 (rounded to the nearest cent)."
+        "Line 30000 (CA$16129.00) plus line 78 (CA$0.00) gives CA$16129.00 "
+        "(rounded to the nearest cent)."
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
 
 

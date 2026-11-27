@@ -1,0 +1,10 @@
+# Provisional: indexed from the 2025 amount; to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: 2025 threshold 45522.00 x 1.020 (the 2.0% federal indexation factor for 2026, ITA s.117.1) = 46432.44, rounded to the nearest dollar to 46432.00; unconfirmed, as the 2026 Federal Worksheet 5000-D1 is not yet published.
+# Age amount, income threshold, 2026 tax year (Federal Worksheet, form 5000-D1): "Line 30100 - Age amount", line 3 "Income threshold", from which line 4 takes line 2 "Amount from line 23600 of your return". It borrows the credit kind because it is a printed amount taken whole. Rounds half-up to the cent, the project's choice.
+family: ca/age_income_threshold
+tax_year: 2026
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "46432.00"
