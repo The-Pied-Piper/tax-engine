@@ -28,9 +28,9 @@ BC428_SUBTOTAL_LINE_25 = AmountKind.declare(CATALOG, "bc428_subtotal_line_25", n
 """Subtotal of credit amounts, BC428 line 25 "Line 25: Add lines 16, 17, 20, 23 and 24.": the sum of
 those lines, here the basic personal amount (line 16) alone."""
 
-BC428_BIRTH_YEAR = CountKind.declare(CATALOG, "bc428_birth_year", non_negative=True)
-"""Year of birth, read from the T1's `ca/birth_year` (entered once there) for BC428 line 17: blank
-when the filer left it out."""
+BC428_AGE_65_OR_OLDER = CountKind.declare(CATALOG, "bc428_age_65_or_older", non_negative=True)
+"""Aged 65 or older at the end of the year, read from the T1's `ca/age_65_or_older` (worked out once
+there from the year of birth) for BC428 line 17: 1 or 0, blank when the year is blank."""
 
 WORKSHEET_BC428_AGE_AMOUNT_MAXIMUM_LINE_1 = AmountKind.declare(
     CATALOG, "worksheet_bc428_age_amount_maximum_line_1", non_negative=True

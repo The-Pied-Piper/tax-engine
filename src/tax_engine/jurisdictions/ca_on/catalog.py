@@ -71,9 +71,9 @@ ON428_CREDITS_SUBTOTAL_LINE_25 = AmountKind.declare(
 )
 """Credits subtotal, ON428 line 25 "Line 18 plus line 24 =": line 18 plus line 24."""
 
-ON428_BIRTH_YEAR = CountKind.declare(CATALOG, "on428_birth_year", non_negative=True)
-"""Year of birth, read from the T1's `ca/birth_year` (entered once there) for ON428 line 10: blank
-when the filer left it out."""
+ON428_AGE_65_OR_OLDER = CountKind.declare(CATALOG, "on428_age_65_or_older", non_negative=True)
+"""Aged 65 or older at the end of the year, read from the T1's `ca/age_65_or_older` (worked out once
+there from the year of birth) for ON428 line 10: 1 or 0, blank when the year is blank."""
 
 WORKSHEET_ON428_AGE_AMOUNT_MAXIMUM_LINE_1 = AmountKind.declare(
     CATALOG, "worksheet_on428_age_amount_maximum_line_1", non_negative=True
