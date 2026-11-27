@@ -1,0 +1,17 @@
+# Form NB428 (CRA 5004-C) line 72, column 1 (you): "Line 72: Line 70 plus line 71". One core/sum
+# step over line 70 (the net income, `ca-nb/nb428_net_income_line_70`) and line 71 (the UCCB and
+# RDSP repayments, `ca-nb/nb428_uccb_rdsp_repayments_line_71`). Line 71 is the total of the two T1
+# repayment lines (the form's own line 71 step), so it is never blank. The form prints no title
+# for the line, so the step has none.
+form:
+  name: ca-nb/nb428
+capabilities:
+  - name: core/sum
+    reference: "72"
+    unit: ca/cad
+    params:
+      rounding: ca-nb/cent_rounding
+    consumes:
+      parts: [ca-nb/nb428_net_income_line_70, ca-nb/nb428_uccb_rdsp_repayments_line_71]
+    produces:
+      output: ca-nb/nb428_family_income_line_72

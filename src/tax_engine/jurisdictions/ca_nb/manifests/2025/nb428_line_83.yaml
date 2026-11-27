@@ -1,0 +1,19 @@
+# Form NB428 (CRA 5004-C) line 83: "Line 81 minus line 82 (if negative, enter "0")". One
+# core/subtract_not_below_zero step. Line 81 is "Amount from line 75", a copy line, and line 75 is
+# line 74 (column 2 is not modelled), so the step reads line 74
+# (`ca-nb/nb428_adjusted_family_income_line_74`) less the base amount of line 82
+# (`ca-nb/low_income_reduction_base_amount`), not below 0, rounded half-up to the cent by the
+# dataset's rule. Neither figure is ever blank. The form prints no title for the line.
+form:
+  name: ca-nb/nb428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "83"
+    unit: ca/cad
+    params:
+      rounding: ca-nb/cent_rounding
+    consumes:
+      amount: ca-nb/nb428_adjusted_family_income_line_74
+      less: ca-nb/low_income_reduction_base_amount
+    produces:
+      output: ca-nb/nb428_line_83

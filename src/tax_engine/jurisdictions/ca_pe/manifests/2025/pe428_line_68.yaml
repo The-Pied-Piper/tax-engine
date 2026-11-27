@@ -1,0 +1,19 @@
+# Form PE428 (Prince Edward Island Tax, CRA 5002-C) line 68, column 1 (you): "Line 68: Net income
+# from line 23600 of the return (or the amount you would have entered if the instructions on line
+# 23600 said "if negative, show in brackets")". The T1 form exports the net income before its floor
+# (`ca/net_income_signed`), and another form reads an export only as a record list
+# (`ca/t1_taxable_income.net_income_signed`), so the one step is core/record_total over those
+# records, as NL428 line 88 is. The result is signed, because the form asks for a negative net
+# income shown in brackets. Column 2 (your spouse or common-law partner) is not modelled: the
+# take-home is a single filer's.
+form:
+  name: ca-pe/pe428
+capabilities:
+  - name: core/record_total
+    title: "Net income from line 23600 of the return"
+    reference: "68 (column 1)"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_taxable_income.net_income_signed
+    produces:
+      output: ca-pe/pe428_net_income_line_68

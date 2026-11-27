@@ -1,0 +1,15 @@
+# Form NB428 (CRA 5004-C) line 77 and line 61570, the basic reduction. "Basic reduction Claim
+# $802". The $802 is the `ca-nb/low_income_reduction_basic` dataset, claimed whole through
+# core/credit_amount, so it is the same at every salary. Lines 78 and 79 (the reduction for a
+# spouse or common-law partner and for an eligible dependant) are not modelled.
+form:
+  name: ca-nb/nb428
+capabilities:
+  - name: core/credit_amount
+    title: "Basic reduction"
+    reference: "77"
+    unit: ca/cad
+    params:
+      amount: ca-nb/low_income_reduction_basic
+    produces:
+      output: ca-nb/low_income_reduction_basic

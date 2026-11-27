@@ -226,3 +226,109 @@ gives it, an optional input; a blank input is read as blank."""
 NB428_TAX_LINE_67 = AmountKind.declare(CATALOG, "nb428_tax_line_67", non_negative=True)
 """NB428 line 67 "Line 65 minus line 66 (if negative, enter "0")": line 65 less the provincial
 foreign tax credit, not below zero; line 69 reads it."""
+
+NB428_NET_INCOME_LINE_70 = AmountKind.declare(
+    CATALOG, "nb428_net_income_line_70", non_negative=True
+)
+"""Net income, NB428 line 70 "Net income from line 23600": the T1 net income, read for the
+adjusted family income and for the low-income reduction's printed eligibility test."""
+
+NB428_UCCB_REPAYMENT_LINE_21300 = AmountKind.declare(
+    CATALOG, "nb428_uccb_repayment_line_21300", non_negative=True
+)
+"""UCCB repayment, line 21300 of the return, one of the two figures NB428 line 71 totals."""
+
+NB428_RDSP_INCOME_REPAYMENT_LINE_23200 = AmountKind.declare(
+    CATALOG, "nb428_rdsp_income_repayment_line_23200", non_negative=True
+)
+"""RDSP income repayment included on line 23200 of the return, the other figure NB428 line 71
+totals."""
+
+NB428_UCCB_RDSP_REPAYMENTS_LINE_71 = AmountKind.declare(
+    CATALOG, "nb428_uccb_rdsp_repayments_line_71", non_negative=True
+)
+"""NB428 line 71 "UCCB repayment (line 21300) and RDSP income repayment (in line 23200)": the two
+repayments added."""
+
+NB428_FAMILY_INCOME_LINE_72 = AmountKind.declare(
+    CATALOG, "nb428_family_income_line_72", non_negative=True
+)
+"""NB428 line 72 "Line 70 plus line 71": the net income plus the UCCB and RDSP repayments."""
+
+NB428_UCCB_INCOME_LINE_11700 = AmountKind.declare(
+    CATALOG, "nb428_uccb_income_line_11700", non_negative=True
+)
+"""UCCB income, line 11700 of the return, one of the two figures NB428 line 73 totals."""
+
+NB428_RDSP_INCOME_LINE_12500 = AmountKind.declare(
+    CATALOG, "nb428_rdsp_income_line_12500", non_negative=True
+)
+"""RDSP income, line 12500 of the return, the other figure NB428 line 73 totals."""
+
+NB428_UCCB_RDSP_INCOME_LINE_73 = AmountKind.declare(
+    CATALOG, "nb428_uccb_rdsp_income_line_73", non_negative=True
+)
+"""NB428 line 73 "UCCB income (line 11700) and RDSP income (line 12500)": the two incomes added."""
+
+NB428_ADJUSTED_FAMILY_INCOME_LINE_74 = AmountKind.declare(
+    CATALOG, "nb428_adjusted_family_income_line_74", non_negative=True
+)
+"""NB428 line 74 "Line 72 minus line 73 (if negative, enter "0")", column 1: the adjusted family
+income. Column 2 is not modelled, so line 75 (the two columns added) is this figure."""
+
+LOW_INCOME_REDUCTION_BASIC = AmountKind.declare(
+    CATALOG, "low_income_reduction_basic", non_negative=True
+)
+"""Basic reduction, NB428 line 77 and line 61570 "Basic reduction Claim $802": the printed $802,
+claimed whole and not income-tested."""
+
+NB428_LOW_INCOME_REDUCTION_LINE_80 = AmountKind.declare(
+    CATALOG, "nb428_low_income_reduction_line_80", non_negative=True
+)
+"""NB428 line 80 "Add lines 77 to 79 (maximum $1,604)": the basic reduction, not more than the
+printed $1,604. Lines 78 and 79 (the spouse and the eligible dependant) are not modelled."""
+
+LOW_INCOME_REDUCTION_BASE_AMOUNT = AmountKind.declare(
+    CATALOG, "low_income_reduction_base_amount", non_negative=True
+)
+"""Base amount, NB428 line 82 "Base amount 21,920.00": the printed figure, the same at every
+salary."""
+
+NB428_LINE_83 = AmountKind.declare(CATALOG, "nb428_line_83", non_negative=True)
+"""NB428 line 83 "Line 81 minus line 82 (if negative, enter "0")": the adjusted family income over
+the base amount, line 81 being a copy of line 75."""
+
+NB428_LINE_85 = AmountKind.declare(CATALOG, "nb428_line_85", non_negative=True)
+"""NB428 line 85 "Line 83 multiplied by the percentage from line 84": line 83 at the printed 3%."""
+
+NB428_LINE_86_BEFORE_ELIGIBILITY_TEST = AmountKind.declare(
+    CATALOG, "nb428_line_86_before_eligibility_test", non_negative=True
+)
+"""NB428 line 86 "Line 80 minus line 85 (if negative, enter "0")", before the printed eligibility
+test sets it to 0. Not printed as a line of its own."""
+
+LOW_INCOME_REDUCTION_SINGLE_INCOME_LIMIT = AmountKind.declare(
+    CATALOG, "low_income_reduction_single_income_limit", non_negative=True
+)
+"""Single income limit, the NB428 eligibility test "You are single and your net income from line
+23600 of your return is less than $48,653": the printed figure."""
+
+NB428_INCOME_UNDER_SINGLE_LIMIT = AmountKind.declare(
+    CATALOG, "nb428_income_under_single_limit", non_negative=True
+)
+"""The single income limit less the net income of line 70, not below 0: above 0 exactly when the
+net income is under the limit. Not printed on the form."""
+
+NB428_LINE_86_ELIGIBILITY_GATE = AmountKind.declare(
+    CATALOG, "nb428_line_86_eligibility_gate", non_negative=True
+)
+"""1 where the printed eligibility test is met (net income under the single limit), else 0, from
+the `ca-nb/low_income_reduction_eligibility_gate` dataset. A plain figure, not printed."""
+
+NB428_LINE_86 = AmountKind.declare(CATALOG, "nb428_line_86", non_negative=True)
+"""NB428 line 86 "Line 80 minus line 85 (if negative, enter "0")", New Brunswick low-income tax
+reduction: 0 where the eligibility test is not met."""
+
+NB428_TAX_LINE_87 = AmountKind.declare(CATALOG, "nb428_tax_line_87", non_negative=True)
+"""NB428 line 87 "Line 76 minus line 86 (if negative, enter "0")": the New Brunswick tax after the
+low-income tax reduction, line 76 being line 69, which is line 67 (line 68 is not modelled)."""

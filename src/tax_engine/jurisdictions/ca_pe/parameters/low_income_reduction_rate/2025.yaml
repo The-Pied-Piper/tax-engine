@@ -1,0 +1,11 @@
+# Prince Edward Island low income reduction rate, 2025 tax year (Form PE428 line 85): "Line 85:
+# Applicable rate 5%". The printed percentage is a rate of 0.05, read by the line 86
+# multiplication; the product is a dollars-and-cents line, so it rounds half-up to the cent, the
+# project's choice, as the form states no rounding rule.
+family: ca-pe/low_income_reduction_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5002-c/5002-c-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.05"

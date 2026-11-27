@@ -2,7 +2,7 @@
 # Line 67: Line 65 minus line 66 (if negative, enter "0")". One core/subtract_not_below_zero step:
 # line 65 less line 66, not below 0. Line 66 is an optional input a salary-only caller leaves out,
 # read as blank and then as 0 by the blank rule. The form prints no title for the line, so the step
-# is untitled. The output is exported until line 69 (the low-income reduction) reads it.
+# is untitled. Line 87 reads the output (lines 68 and 69 are not modelled, see line 87).
 form:
   name: ca-nb/nb428
 capabilities:

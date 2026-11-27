@@ -1,0 +1,20 @@
+# Form PE428 (CRA 5002-C) line 84: "Line 84: Line 82 minus line 83 (if negative, enter "0") =". One
+# core/subtract_not_below_zero step. Line 82 is "Amount from line 73 of the previous page", and
+# line 73 is line 72 (column 2 is not modelled), both copy lines with no step of their own, so the
+# step reads line 72 (`ca-pe/pe428_adjusted_family_income_line_72`) directly, less line 83 (the
+# base amount, `ca-pe/low_income_reduction_base_amount`), not below 0, rounded half-up to the cent
+# by the dataset's rule. Neither figure is blank. The form prints no title for the line, so the step
+# has none. The output is exported for the return summary's marginal rate.
+form:
+  name: ca-pe/pe428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "84"
+    unit: ca/cad
+    params:
+      rounding: ca-pe/cent_rounding
+    consumes:
+      amount: ca-pe/pe428_adjusted_family_income_line_72
+      less: ca-pe/low_income_reduction_base_amount
+    produces:
+      output: ca-pe/pe428_income_over_base_amount_line_84
