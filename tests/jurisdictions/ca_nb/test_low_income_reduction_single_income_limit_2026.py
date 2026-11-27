@@ -32,15 +32,16 @@ PROVISIONAL_HEADER = (
     "inst the 2026 form text when CRA publishes it."
 )
 DERIVATION_HEADER = (
-    "# Derivation: NB indexes this figure every year (NB428 2016 to 2025); the 2026 index"
-    " factor is 2.0%, the factor T4127 (Jan 2026) Table 8.2 prints for New Brunswick (it "
-    "takes the 2025 basic personal amount 13,396 to the printed 13,664): the indexed base"
-    " amount 22,358 plus the indexed basic reduction 818 divided by the 3% rate (27,266.6"
-    "7) = 49,624.67, rounded to the nearest dollar, a half going up (the project's roundi"
-    "ng for indexed amounts; the forms print none), to 49,625 (the 2025 limit 48,653 is i"
-    "ts 2025 base amount 21,920 plus 802 / 0.03 = 26,733.33, and every year 2016 to 2025 "
-    "matches this to within a dollar); unconfirmed, as no 2026 NB428 is published and T41"
-    "27 (Jan and Jul 2026) does not print it."
+    "# Derivation: NB raised this figure every year (NB428 2016 to 2025), by the index fa"
+    "ctor except that the base amount rose more than the factor in 2021 and 2022 (and the"
+    " limit with it); the 2026 index factor is 2.0%, the factor T4127 (Jan 2026) Table 8."
+    "2 prints for New Brunswick (it takes the 2025 basic personal amount 13,396 to the pr"
+    "inted 13,664): the indexed base amount 22,358 plus the indexed basic reduction 818 d"
+    "ivided by the 3% rate (27,266.67) = 49,624.67, rounded to the nearest dollar, a half"
+    " going up (the project's rounding for indexed amounts; the forms print none), to 49,"
+    "625 (the 2025 limit 48,653 is its 2025 base amount 21,920 plus 802 / 0.03 = 26,733.3"
+    "3, and every year 2016 to 2025 matches this to within a dollar); unconfirmed, as no "
+    "2026 NB428 is published and T4127 (Jan and Jul 2026) does not print it."
 )
 
 
