@@ -144,9 +144,14 @@ BIRTH_YEAR = CountKind.declare(CATALOG, "birth_year", non_negative=True)
 worked out (Umar, 27 Nov 2026: the engine takes the birth year). A whole year such as 1958; left
 out, it is blank."""
 
-T1_BIRTH_YEAR = CountKind.declare(CATALOG, "t1_birth_year", non_negative=True)
-"""Year of birth, read by the T1 tax and credits form from the T1's own input (`ca/birth_year`, held
-by `ca/t1_lines_copied_by_provinces`) for line 78 (line 30100): blank when the filer left it out."""
+AGE_65_OR_OLDER = CountKind.declare(CATALOG, "age_65_or_older", non_negative=True)
+"""Aged 65 or older at the end of the tax year: 1 or 0, worked out once by the T1 form of the lines
+the provinces copy from the year of birth (`ca/birth_year`) and read by every age line that prints
+"if you were born in 1960 or earlier" (the year moves with the tax year). Blank when the year is
+blank."""
+
+T1_AGE_65_OR_OLDER = CountKind.declare(CATALOG, "t1_age_65_or_older", non_negative=True)
+"""The T1's `ca/age_65_or_older` as read by the T1 tax and credits form for line 78 (line 30100)."""
 
 BORN_IN_1960_OR_EARLIER = CountKind.declare(CATALOG, "born_in_1960_or_earlier", non_negative=True)
 """Born in 1960 or earlier, T1 line 78 (line 30100) "Age amount (if you were born in 1960 or
@@ -163,9 +168,7 @@ BORN_IN_1960_OR_EARLIER_CHECKED = CountKind.declare(
 )
 """Born in 1960 or earlier, T1 line 78 (line 30100) "Age amount (if you were born in 1960 or
 earlier)": the answer of `ca/born_in_1960_or_earlier` after the check that it is 0 or 1
-(`ca/yes_or_no_count`), a count of 1 or 0. A count of 2 or more is refused, not capped. A form
-that takes the year of birth (`ca/birth_year`) produces it instead, from the year, through
-`ca/count_by_conditions`."""
+(`ca/yes_or_no_count`), a count of 1 or 0. A count of 2 or more is refused, not capped."""
 
 AGE_MAXIMUM = AmountKind.declare(CATALOG, "age_maximum", non_negative=True)
 """Maximum age amount, Federal Worksheet (form 5000-D1), "Line 30100 - Age amount", line 1 "Maximum
