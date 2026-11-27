@@ -570,3 +570,72 @@ PE428_LINE_87_LINE_66_GATE = AmountKind.declare(
 )
 """The line 66 gate of PE428 line 87: 1 where line 66 is 0.00 and 0 where an amount is claimed on
 line 66. A switch, not printed on the form."""
+
+PE428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_89 = AmountKind.declare(
+    CATALOG, "pe428_provincial_foreign_tax_credit_line_89", non_negative=True
+)
+"""Provincial foreign tax credit, PE428 line 89 "Provincial foreign tax credit (complete Form
+T2036)": the amount as the filer gives it, an optional input; a blank input is read as blank, and
+the step that reads it reads it as 0."""
+
+PE428_TAX_LINE_90 = AmountKind.declare(CATALOG, "pe428_tax_line_90", non_negative=True)
+"""PE428 line 90 "Line 90: Line 88 minus line 89 (if negative, enter "0") =": line 88 less the
+provincial foreign tax credit of line 89, not below 0, rounded half-up to the cent."""
+
+PE428_POLITICAL_CONTRIBUTION_TAX_CREDIT_CLAIMED_LINE_92 = AmountKind.declare(
+    CATALOG, "pe428_political_contribution_tax_credit_claimed_line_92", non_negative=True
+)
+"""The political contribution tax credit of PE428 line 92 as the filer gives it, an optional input
+(the worksheet is not built); a blank input is read as blank, and line 92 checks it against the
+printed maximum. Not printed as a separate line."""
+
+PE428_POLITICAL_CONTRIBUTION_TAX_CREDIT_MAXIMUM = AmountKind.declare(
+    CATALOG, "pe428_political_contribution_tax_credit_maximum", non_negative=True
+)
+"""The printed maximum of PE428 line 92 ($500), from the
+`ca-pe/political_contribution_tax_credit_maximum` dataset; the bound line 92 checks against. Not
+printed as a separate line."""
+
+PE428_POLITICAL_CONTRIBUTION_TAX_CREDIT_LINE_92 = AmountKind.declare(
+    CATALOG, "pe428_political_contribution_tax_credit_line_92", non_negative=True
+)
+"""Prince Edward Island political contribution tax credit, PE428 line 92 "(use Worksheet PE428)
+(maximum $500)": the credit as the filer gives it, an optional input (the worksheet is not built);
+a blank input is read as blank, and the step that reads it reads it as 0."""
+
+PE428_TAX_LINE_93 = AmountKind.declare(CATALOG, "pe428_tax_line_93", non_negative=True)
+"""PE428 line 93 "Line 93: Line 90 minus line 92 (if negative, enter "0") =": line 90 less the
+political contribution tax credit of line 92, not below 0, rounded half-up to the cent."""
+
+PE428_EQUITY_TAX_CREDIT_LINE_94 = AmountKind.declare(
+    CATALOG, "pe428_equity_tax_credit_line_94", non_negative=True
+)
+"""Equity tax credit from Certificate PE-ETC, PE428 line 94 and line 63500: the amount as the
+filer gives it, an optional input; a blank input is read as blank, and the sum that reads it
+reads it as 0."""
+
+PE428_UNUSED_EQUITY_TAX_CREDIT_LINE_95 = AmountKind.declare(
+    CATALOG, "pe428_unused_equity_tax_credit_line_95", non_negative=True
+)
+"""Unused Prince Edward Island equity tax credit from the most recent notice of assessment or
+reassessment, PE428 line 95: the amount as the filer gives it, an optional input; a blank input is
+read as blank, and the sum that reads it reads it as 0."""
+
+PE428_EQUITY_TAX_CREDIT_BEFORE_MAXIMUM_LINE_96 = AmountKind.declare(
+    CATALOG, "pe428_equity_tax_credit_before_maximum_line_96", non_negative=True
+)
+"""Line 94 plus line 95, before the printed maximum of line 96 is applied, rounded half-up to the
+cent. Not printed on the form."""
+
+PE428_EQUITY_TAX_CREDIT_LINE_96 = AmountKind.declare(
+    CATALOG, "pe428_equity_tax_credit_line_96", non_negative=True
+)
+"""PE428 line 96 "Line 94 plus line 95 (maximum $7,000) =": the sum of lines 94 and 95, at most the
+printed maximum of $7,000."""
+
+PE428_PRINCE_EDWARD_ISLAND_TAX_LINE_97 = AmountKind.declare(
+    CATALOG, "pe428_prince_edward_island_tax_line_97", non_negative=True
+)
+"""Prince Edward Island tax, PE428 line 97 "Line 93 minus line 96 (if negative, enter "0") Enter
+this amount on line 42800 of your return. Prince Edward Island tax =": line 93 less the equity tax
+credit of line 96, not below 0, rounded half-up to the cent."""

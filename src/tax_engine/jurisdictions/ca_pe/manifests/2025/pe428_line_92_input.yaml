@@ -1,0 +1,15 @@
+# PE428 (2025) line 92's input, which a salary-only caller does not give. Line 92: Prince Edward
+# Island political contribution tax credit (use Worksheet PE428) (maximum $500) (Form PE428, CRA
+# 5002-C). The worksheet is not built, so the credit is taken as one optional input, which line 92
+# checks against the printed maximum; line 91 (the contributions that feed the worksheet) is
+# therefore not declared, since the engine refuses an input nothing reads. A request that leaves
+# the line out is read as blank; line 93 reads the blank as 0.
+form:
+  name: ca-pe/pe428
+inputs:
+  - name: ca-pe/pe428_political_contribution_tax_credit_claimed_line_92
+    reference: "92"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Prince Edward Island political contribution tax credit (use Worksheet PE428) (maximum $500)'

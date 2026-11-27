@@ -1,0 +1,13 @@
+# PE428 (2025) line 95's input, which a salary-only caller does not give. Line 95: Unused Prince
+# Edward Island equity tax credit from your most recent notice of assessment or reassessment (Form
+# PE428, CRA 5002-C). A request that leaves the line out is read as blank; the sum of line 96
+# reads the blank as 0.
+form:
+  name: ca-pe/pe428
+inputs:
+  - name: ca-pe/pe428_unused_equity_tax_credit_line_95
+    reference: "95"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Unused Prince Edward Island equity tax credit from your most recent notice of assessment or reassessment'
