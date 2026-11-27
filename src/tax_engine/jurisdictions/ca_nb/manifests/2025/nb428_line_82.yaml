@@ -1,0 +1,14 @@
+# Form NB428 (CRA 5004-C) line 82, the base amount. "Base amount 21,920.00". The 21,920.00 is the
+# `ca-nb/low_income_reduction_base_amount` dataset, claimed whole through core/credit_amount, so
+# it is the same at every salary (as BC428 line 75).
+form:
+  name: ca-nb/nb428
+capabilities:
+  - name: core/credit_amount
+    title: "Base amount"
+    reference: "82"
+    unit: ca/cad
+    params:
+      amount: ca-nb/low_income_reduction_base_amount
+    produces:
+      output: ca-nb/low_income_reduction_base_amount

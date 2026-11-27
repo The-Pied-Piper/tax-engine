@@ -1,0 +1,21 @@
+# Form NB428 (CRA 5004-C) line 74, column 1 (you): "Line 74: Line 72 minus line 73 (if negative,
+# enter "0")". One core/subtract_not_below_zero step over line 72
+# (`ca-nb/nb428_family_income_line_72`) and line 73 (`ca-nb/nb428_uccb_rdsp_income_line_73`),
+# rounded half-up to the cent by the dataset's rule. Line 73 is the total of the two T1 income
+# lines (the form's own line 73 step), so it is never blank. Line 75 adds the amounts of line 74
+# for columns 1 and 2; column 2 is not modelled, so line 75 (and line 81, "Amount from line 75")
+# is this figure and has no step of its own. The form prints no title for the line, so the step
+# has none.
+form:
+  name: ca-nb/nb428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "74 (column 1)"
+    unit: ca/cad
+    params:
+      rounding: ca-nb/cent_rounding
+    consumes:
+      amount: ca-nb/nb428_family_income_line_72
+      less: ca-nb/nb428_uccb_rdsp_income_line_73
+    produces:
+      output: ca-nb/nb428_adjusted_family_income_line_74
