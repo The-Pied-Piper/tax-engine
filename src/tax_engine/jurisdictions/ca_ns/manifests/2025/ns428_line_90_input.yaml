@@ -1,0 +1,13 @@
+# NS428 (2025) line 90's input, which a salary-only caller does not give.
+# Line 90: Labour-sponsored venture capital tax credit: Cost of shares from Form NSLSV multiplied by 20% (maximum $2,000) (Form NS428, CRA 5003-C).
+# The cost is taken as the one amount the form asks for; the line 90 steps apply the printed 20% and check the printed maximum. A request that leaves the line out is read as blank.
+form:
+  name: ca-ns/ns428
+inputs:
+  - name: ca-ns/ns428_labour_sponsored_shares_cost_line_90
+    title: "Labour-sponsored venture capital tax credit: cost of shares from Form NSLSV"
+    reference: "90"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Labour-sponsored venture capital tax credit: Cost of shares from Form NSLSV multiplied by 20% (maximum $2,000)'

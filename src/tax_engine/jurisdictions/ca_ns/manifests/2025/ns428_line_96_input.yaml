@@ -1,0 +1,13 @@
+# NS428 (2025) line 96's input, which a salary-only caller does not give.
+# Line 96: Venture capital tax credit (complete Form T224) (Form NS428, CRA 5003-C).
+# Form T224 is not built, so the credit is taken as one optional input. A request that leaves the line out is read as blank.
+form:
+  name: ca-ns/ns428
+inputs:
+  - name: ca-ns/ns428_venture_capital_tax_credit_line_96
+    title: "Venture capital tax credit"
+    reference: "96"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Venture capital tax credit (complete Form T224)'

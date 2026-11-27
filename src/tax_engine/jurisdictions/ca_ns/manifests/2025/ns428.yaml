@@ -1,9 +1,14 @@
 # Form NS428 Nova Scotia Tax 2025 (CRA 5003-C), lines 1 to 99. This part names the form and its
-# exports; line parts carry capabilities. Line 99, the Nova Scotia tax that goes to T1 line 42800,
-# is exported by the line ticket that builds it, as no other form reads this form's lines.
+# exports; line parts carry capabilities. Line 99 (`ca-ns/ns428_nova_scotia_tax_line_99`), the
+# Nova Scotia tax that line 99 says to enter on line 42800 of the return, is exported and supplied
+# as `ca/provincial_tax.amount`, the name the federal T1 reads. No other form reads this form's
+# lines.
 form:
   name: ca-ns/ns428
   title: "Form NS428: Nova Scotia Tax"
   required: true
-  exports: []
+  exports:
+    - ca-ns/ns428_nova_scotia_tax_line_99
+  supplies:
+    ca/provincial_tax.amount: ca-ns/ns428_nova_scotia_tax_line_99
 capabilities: []
