@@ -1,0 +1,14 @@
+# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: figure as printed in T4127 (Jan 2026) Table 8.2, Nova Scotia row (LCP rate 0.200, LCP amount 2,000) and in the Nova Scotia labour-sponsored venture capital credit formula (the lesser of $2,000 and 20% of the amount deducted or withheld), and in T4127 (Jul 2026) Table 8.2 (0.200, 2,000); no rounding applied here.
+# Form NS428 line 90: labour-sponsored venture capital tax credit, maximum, 2026. The line
+# prints a maximum with no cents, so the amount rounds half-up to the cent, the project's choice,
+# as the form states no rounding rule.
+# The 2026 NS428 text is not yet published, so the figure is not yet confirmed against it.
+family: ca-ns/labour_sponsored_credit_maximum
+tax_year: 2026
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jul/t4127-jul-26e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amount: "2000"

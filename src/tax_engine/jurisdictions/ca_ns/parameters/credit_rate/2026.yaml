@@ -1,0 +1,14 @@
+# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: figure as printed in T4127 (Jan 2026) Table 8.1, Nova Scotia row (lowest rate 0.0879), and in T4127 (Jul 2026) Table 8.1 (0.0879); the lowest bracket rate is the credit rate; no rounding applied here.
+# Nova Scotia non-refundable tax credit rate, 2026 tax year (Form NS428 line 47): 8.79%.
+# Line 48 applies it to the amount from line 46. The product is a dollars-and-cents line, so it
+# rounds half-up to the cent, the project's choice, as the form states no rounding rule.
+# The 2026 NS428 text is not yet published, so the figure is not yet confirmed against it.
+family: ca-ns/credit_rate
+tax_year: 2026
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jul/t4127-jul-26e.pdf
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.0879"

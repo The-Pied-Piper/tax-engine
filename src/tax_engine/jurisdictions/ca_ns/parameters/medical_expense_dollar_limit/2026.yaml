@@ -1,0 +1,14 @@
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: carried forward unchanged from the 2025 file; T4127 (Jan and Jul 2026) does not print this figure, the Nova Scotia indexation notice read for 2026 does not list it, and the 2026 form is not yet published, so it is unconfirmed.
+# Nova Scotia medical expenses dollar limit, 2026 tax year (Form NS428 line 42): the lesser of
+# $1,637 (the 2025 figure) and the amount on line 41. A plain cap, not a credit.
+# The 2026 NS428 text is not yet published, so the figure is not yet confirmed against it.
+family: ca-ns/medical_expense_dollar_limit
+tax_year: 2026
+kind: amount
+title: "medical expense dollar limit"
+unit: ca/cad
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5003-c/5003-c-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "1637"
