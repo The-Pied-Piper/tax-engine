@@ -555,8 +555,8 @@ MARGINAL_NOVA_SCOTIA_CREDIT_RATE = AmountKind.declare(
     CATALOG, "marginal_nova_scotia_credit_rate", non_negative=True
 )
 """Nova Scotia non-refundable tax credit rate, NS428 line 47 "Nova Scotia non-refundable tax credit
-rate 8.79%": the `ca-ns/credit_rate` dataset as it is, with none of the cent rounding the credit box applies. A
-rate, not printed as its own figure."""
+rate 8.79%": the `ca-ns/credit_rate` dataset as it is, with none of the cent rounding the credit
+box applies. A rate, not printed as its own figure."""
 
 MARGINAL_NOVA_SCOTIA_CONTRIBUTION_CREDIT_RATE = AmountKind.declare(
     CATALOG, "marginal_nova_scotia_contribution_credit_rate", non_negative=True
