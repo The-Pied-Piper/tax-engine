@@ -1,10 +1,11 @@
 # Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
-# Derivation: the 2025 figure (46,330) indexed by Ontario's 2026 factor 1.019 (46,330 x 1.019 = 47,210.27), rounded to the nearest dollar, halves up; T4127 (Jan and Jul 2026) does not print this figure and the 2026 form is not yet published, so it is unconfirmed.
+# Derivation: the 2025 figure (46,330) indexed by Ontario's index rate 1.019 in T4127 (Jan 2026) (46,330 x 1.019 = 47,210.27), rounded to the nearest dollar, halves up; T4127 (Jan and Jul 2026) does not print this figure and the 2026 form is not yet published, so it is unconfirmed.
 # Age amount income threshold, 2026 (Worksheet ON428, CRA 5006-D): "Line 58080 - Age amount", line 3 "Income threshold 46,330.00". Claimed whole: the credit kind.
 family: ca-on/age_income_threshold
 tax_year: 2026
 kind: credit
 sources:
   - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-d/5006-d-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf
 rounding: {increment: "0.01", mode: half_up}
 amount: "47210.00"

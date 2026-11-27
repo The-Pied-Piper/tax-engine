@@ -61,8 +61,6 @@ FORM = dedent("""\
         - ca-on/worksheet_on428_age_amount_net_income_line_2
         - ca-on/on428_age_amount_line_10
     """)
-MAXIMUMS = {2025: D("6223"), 2026: D("6341")}
-THRESHOLDS = {2025: D("46330"), 2026: D("47210")}
 
 
 def _figures(
@@ -81,25 +79,27 @@ def _figures(
     )
 
 
-@pytest.mark.parametrize("year", [2025, 2026])
-@pytest.mark.parametrize(
-    ("salary", "expected"), [("20000", "max"), ("threshold", "max"), ("100000", "0.00")]
-)
+FIGURES = [(2025, D("6223"), D("46330")), (2026, D("6341"), D("47210"))]
+
+
+@pytest.mark.parametrize(("year", "maximum", "threshold"), FIGURES)
+@pytest.mark.parametrize("where", ["below", "at_threshold", "far_above"])
 def test_line_is_the_maximum_below_the_threshold_and_zero_far_above(
-    take_home_service: TakeHomeService, year: int, salary: str, expected: str
+    take_home_service: TakeHomeService, year: int, maximum: Decimal, threshold: Decimal, where: str
 ) -> None:
-    if salary == "threshold":
-        salary = str(THRESHOLDS[year])
-    if expected == "max":
-        expected = str(MAXIMUMS[year].quantize(D("0.01")))
-    assert _figures(take_home_service, year, salary, 1950)[1] == D(expected)
+    salary, expected = {
+        "below": (D("20000"), maximum),
+        "at_threshold": (threshold, maximum),
+        "far_above": (D("100000"), D("0")),
+    }[where]
+
+    assert _figures(take_home_service, year, str(salary), 1950)[1] == expected.quantize(D("0.01"))
 
 
-@pytest.mark.parametrize("year", [2025, 2026])
+@pytest.mark.parametrize(("year", "maximum", "threshold"), FIGURES)
 def test_line_in_the_reduction_range_is_the_worksheet_arithmetic(
-    take_home_service: TakeHomeService, year: int
+    take_home_service: TakeHomeService, year: int, maximum: Decimal, threshold: Decimal
 ) -> None:
-    maximum, threshold = MAXIMUMS[year], THRESHOLDS[year]
     net_income, line = _figures(take_home_service, year, "60000", 1950)
     expected = (maximum - D("0.15") * (net_income - threshold)).quantize(
         D("0.01"), rounding=ROUND_HALF_UP
