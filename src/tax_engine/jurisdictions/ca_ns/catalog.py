@@ -508,10 +508,9 @@ amount on line 42800 of your return. Nova Scotia tax": line 97 not below 0 (line
 credit, is not built)."""
 
 AVERAGE_TAX_RATE = AmountKind.declare(CATALOG, "average_tax_rate", non_negative=True)
-"""Average tax rate on the take-home basis, the Nova Scotia return
-summary's own figure
-(no form prints it): the income tax, CPP (Schedule 8 lines 25 and 28), EI (T2204 line 16) together
-divided by the salary (`ca/return_employment_income`), as a fraction, so 0.1598 is 15.98%. Paid
+"""Average tax rate on the take-home basis, the Nova Scotia return summary's own figure (no form
+prints it): the income tax, CPP (Schedule 8 lines 25 and 28), EI (T2204 line 16) together divided
+by the salary (`ca/return_employment_income`), as a fraction, so 0.1598 is 15.98%. Paid
 credits are not in it. It is 0 when the salary is 0."""
 
 NOVA_SCOTIA_BRACKET_RATE_RETURN = AmountKind.declare(
@@ -555,9 +554,8 @@ artifact. Not printed on the form."""
 MARGINAL_NOVA_SCOTIA_CREDIT_RATE = AmountKind.declare(
     CATALOG, "marginal_nova_scotia_credit_rate", non_negative=True
 )
-"""Nova Scotia non-refundable tax credit rate, NS428 line 47 "Nova Scotia
-non-refundable tax credit rate 8.79%": the
-`ca-ns/credit_rate` dataset as it is, with none of the cent rounding the credit box applies. A
+"""Nova Scotia non-refundable tax credit rate, NS428 line 47 "Nova Scotia non-refundable tax credit
+rate 8.79%": the `ca-ns/credit_rate` dataset as it is, with none of the cent rounding the credit box applies. A
 rate, not printed as its own figure."""
 
 MARGINAL_NOVA_SCOTIA_CONTRIBUTION_CREDIT_RATE = AmountKind.declare(
@@ -649,7 +647,7 @@ NOVA_SCOTIA_MARGINAL_RATE = AmountKind.declare(
     CATALOG, "nova_scotia_marginal_rate", non_negative=True
 )
 """Nova Scotia marginal rate on the take-home basis: the bracket rate after the CPP
-base and EI credits, plus the low-income tax reduction phase-out, counted where the Newfoundland
+base and EI credits, plus the low-income tax reduction phase-out, counted where the Nova Scotia
 tax (NS428 line 99) is above zero and 0 where it is not. Not printed on the form."""
 
 MARGINAL_TAX_RATE = AmountKind.declare(CATALOG, "marginal_tax_rate", non_negative=True)
