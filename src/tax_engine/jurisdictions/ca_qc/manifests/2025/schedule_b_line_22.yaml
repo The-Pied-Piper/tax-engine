@@ -11,7 +11,8 @@ capabilities:
     consumes:
       records: ca-qc/t1_tax_and_credits.birth_year
     blank:
-      records: pass_on
+      records:
+        ca/birth_year: pass_on
     produces:
       output: ca-qc/schedule_b_birth_year_line_22
   - name: ca/count_by_conditions
@@ -27,6 +28,7 @@ capabilities:
     produces:
       output: ca-qc/schedule_b_born_before_1961_line_22
   - name: core/credit_amount
+    title: "Age amount claim"
     unit: ca/cad
     params:
       amount: ca-qc/schedule_b_age_amount_line_22

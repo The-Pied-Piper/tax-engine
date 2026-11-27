@@ -6,7 +6,6 @@ form:
 inputs:
   - name: ca/birth_year
     title: "Year of birth"
-    reference: "30100"
     required: false
     default: null
     basis: "Line 79 and line 30100: if you were born in 1960 or earlier"
