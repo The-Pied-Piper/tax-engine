@@ -1249,8 +1249,10 @@ BIRTH_YEAR_LINE_79 = CountKind.declare(CATALOG, "birth_year_line_79", non_negati
 `ca/birth_year` (`core/first_record_count`)."""
 
 AGE_AMOUNT_LINE_79 = AmountKind.declare(CATALOG, "age_amount_line_79", non_negative=True)
-"""Age amount, 5005-R line 79 and line 30100: an optional input a salary-only caller does not give;
-the credit sum that adds it reads a blank as 0 (`t1_tax_and_credits_line_30100_inputs.yaml`)."""
+"""Age amount, 5005-R line 79 and line 30100 "Age amount (if you were born in 1960 or earlier)
+(use Federal Worksheet) (maximum $9,028)": the federal worksheet's line 7 when born in 1960 or
+earlier (1961 for 2026), 0.00 otherwise, checked against the printed maximum
+(`t1_tax_and_credits_line_79.yaml`); the credit sum of line 85 adds it."""
 
 SPOUSE_AMOUNT_LINE_80 = AmountKind.declare(CATALOG, "spouse_amount_line_80", non_negative=True)
 """Spouse or common-law partner amount, 5005-R line 80 and line 30300: an optional input a salary-
