@@ -1,7 +1,8 @@
 # Form MB428 (CRA 5007-C) line 18: "Line 18: Add lines 9, 10, 13, 16, and 17." The take-home filer
-# claims no age, spouse, eligible dependant or infirm dependant amounts (lines 10, 13, 16 and 17),
-# so only line 9 (basic personal amount, ca-mb/mb428_basic_personal_amount_line_9) is summed; a
-# single part is still a sum, so the step is built.
+# is single and claims no spouse, eligible dependant or infirm dependant amounts (lines 13, 16 and
+# 17), so line 9 (basic personal amount, ca-mb/mb428_basic_personal_amount_line_9) and line 10 (age
+# amount, ca-mb/mb428_age_amount_line_10, 0.00 unless the optional year of birth says born in 1960
+# or earlier) are summed.
 form:
   name: ca-mb/mb428_credits
 capabilities:
@@ -11,6 +12,6 @@ capabilities:
     params:
       rounding: ca-mb/cent_rounding
     consumes:
-      parts: [ca-mb/mb428_basic_personal_amount_line_9]
+      parts: [ca-mb/mb428_basic_personal_amount_line_9, ca-mb/mb428_age_amount_line_10]
     produces:
       output: ca-mb/mb428_credits_subtotal_line_18

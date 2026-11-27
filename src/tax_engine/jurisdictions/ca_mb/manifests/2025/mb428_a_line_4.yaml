@@ -1,0 +1,45 @@
+# Schedule MB428-A (CRA 5007-A) line 4: "Age amount for self if you were born in 1960 or earlier Claim $2,065". Built as ca-mb/mb479 line 8 and ca-ns/ns428 line 98 are: a core/first_record_count step that reads the T1's year of birth (`ca/t1_lines_copied_by_provinces.birth_year`, entered once on the T1; blank passes on), a ca/count_by_conditions step that works out 1 or 0 from that year (a blank year passes on blank, read as 0 by the step below; not a line of the form; this form's own step, as the form's lines are not read by another form), a core/credit_amount step for the printed claim $2,065 (`ca-mb/family_tax_benefit_age_amount_line_4`), and a core/times_count step of the claim by the count, which is line 4: $2,065.00 when born in 1960 or earlier, 0.00 otherwise.
+form:
+  name: ca-mb/mb428_a
+capabilities:
+- name: core/first_record_count
+  title: Year of birth
+  consumes:
+    records: ca/t1_lines_copied_by_provinces.birth_year
+  blank:
+    records:
+      ca/birth_year: pass_on
+  produces:
+    output: ca-mb/mb428_a_birth_year
+- name: ca/count_by_conditions
+  title: Born in 1960 or earlier
+  params:
+    conditions: ca-mb/born_in_1960_or_earlier_conditions
+  consumes:
+    counts:
+    - ca-mb/mb428_a_birth_year
+    amounts: []
+  blank:
+    counts: pass_on
+  produces:
+    output: ca/born_in_1960_or_earlier_checked
+- name: core/credit_amount
+  title: Age amount for self claim
+  unit: ca/cad
+  params:
+    amount: ca-mb/family_tax_benefit_age_amount_line_4
+  produces:
+    output: ca-mb/mb428_a_age_amount_claim_line_4
+- name: core/times_count
+  title: Age amount for self
+  reference: '4'
+  unit: ca/cad
+  params:
+    rounding: ca-mb/cent_rounding
+  consumes:
+    amount: ca-mb/mb428_a_age_amount_claim_line_4
+    count: ca/born_in_1960_or_earlier_checked
+  blank:
+    count: '0'
+  produces:
+    output: ca-mb/mb428_a_age_amount_line_4

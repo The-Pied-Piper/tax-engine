@@ -1,0 +1,45 @@
+# Form MB479 (CRA 5007-TC) line 8: "Age credit for self (if you were born in 1960 or earlier) Claim $113". A ca/count_by_conditions step works out 1 or 0 from the year of birth (a blank year passes on blank, read as 0 by the step below; not a line of the form), a core/credit_amount step gives the printed claim $113 (`ca-mb/age_credit_amount_line_8`), and a core/times_count step of the claim by the count is line 8: $113.00 when born in 1960 or earlier, 0.00 otherwise, never blank. It replaces the typed-in amount of the same identifier. Line 17 adds it.
+form:
+  name: ca-mb/mb479
+capabilities:
+- name: core/first_record_count
+  title: Year of birth
+  consumes:
+    records: ca/t1_lines_copied_by_provinces.birth_year
+  blank:
+    records:
+      ca/birth_year: pass_on
+  produces:
+    output: ca-mb/mb479_birth_year
+- name: ca/count_by_conditions
+  title: Born in 1960 or earlier
+  params:
+    conditions: ca-mb/born_in_1960_or_earlier_conditions
+  consumes:
+    counts:
+    - ca-mb/mb479_birth_year
+    amounts: []
+  blank:
+    counts: pass_on
+  produces:
+    output: ca/born_in_1960_or_earlier_checked
+- name: core/credit_amount
+  title: Age credit for self claim
+  unit: ca/cad
+  params:
+    amount: ca-mb/age_credit_amount_line_8
+  produces:
+    output: ca-mb/mb479_age_credit_claim_line_8
+- name: core/times_count
+  title: Age credit for self
+  reference: '8'
+  unit: ca/cad
+  params:
+    rounding: ca-mb/cent_rounding
+  consumes:
+    amount: ca-mb/mb479_age_credit_claim_line_8
+    count: ca/born_in_1960_or_earlier_checked
+  blank:
+    count: '0'
+  produces:
+    output: ca-mb/mb479_age_credit_line_8

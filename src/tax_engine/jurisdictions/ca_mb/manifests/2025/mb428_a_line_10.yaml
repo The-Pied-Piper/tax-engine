@@ -1,7 +1,8 @@
 # Schedule MB428-A (CRA 5007-A) 2025, line 10, the sum of lines 1 to 9. Schedule MB428-A: "Line 10:
-# Add lines 1 to 9. = ^". Lines 2 to 9 are a block that exists only for blank optional inputs and
-# is skipped, so only line 1 (the basic amount, ca-mb/mb428_a_basic_amount_line_1) is summed; a
-# single part is still a sum, so the step is built.
+# Add lines 1 to 9. = ^". Line 1 (the basic amount, ca-mb/mb428_a_basic_amount_line_1) and line 4
+# (the age amount for self, ca-mb/mb428_a_age_amount_line_4, 0.00 unless the optional year of birth
+# says born in 1960 or earlier) are summed. The other lines of the block (2, 3 and 5 to 9) are
+# not built: they exist only for blank optional inputs and are skipped.
 form:
   name: ca-mb/mb428_a
 capabilities:
@@ -11,6 +12,6 @@ capabilities:
     params:
       rounding: ca-mb/cent_rounding
     consumes:
-      parts: [ca-mb/mb428_a_basic_amount_line_1]
+      parts: [ca-mb/mb428_a_basic_amount_line_1, ca-mb/mb428_a_age_amount_line_4]
     produces:
       output: ca-mb/mb428_a_line_10

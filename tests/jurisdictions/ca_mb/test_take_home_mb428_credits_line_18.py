@@ -1,16 +1,18 @@
 """MB428 (2025) line 18, the credits subtotal, as the Manitoba take-home manifest parts wire it.
 
 Form text (Form MB428, CRA 5007-C, read 2026-11-14): "Line 18: Add lines 9, 10, 13, 16, and 17."
-Lines 10, 13, 16 and 17 (age, spouse, eligible dependant and infirm dependants amounts) are not
-built: a salary-only single filer has none, so only line 9, the basic personal amount, contributes,
-at every salary. Alberta's line 25 (`ab428_line_25.yaml`) is the analogue. The form does not name
-the line, so the step has no title. The figures are hand-computed from the printed forms (not a CRA
-example): line 9 is 15,780.00 while net income is at most $200,000, and net income is 9,935.00 /
-198,926.00 at salaries of 10,000 / 200,000.
+Lines 13, 16 and 17 (spouse, eligible dependant and infirm dependants amounts) are not built: a
+single filer has none. Line 9, the basic personal amount, and line 10, the age amount (0.00 unless
+the T1's year of birth says born in 1960 or earlier), are summed. Alberta's line 25
+(`ab428_line_25.yaml`) is the analogue. The form does not name the line, so the step has no title.
+The figures are hand-computed from the printed forms (not a CRA example): line 9 is 15,780.00 while
+net income is at most $200,000, and net income is 9,935.00 / 198,926.00 at salaries of 10,000 /
+200,000.
 
 The test composes the T1 employment income form, the real Schedule 8 and T1 taxable income parts,
-the real parts of Worksheet MB428 lines 1 to 9, the real line 9 part (`mb428_credits_line_9.yaml`)
-and the real line part (`mb428_credits_line_18.yaml`), and types in only the salary. The header and
+the real parts of Worksheet MB428 lines 1 to 9, the real line 9 part (`mb428_credits_line_9.yaml`),
+the real parts of line 10 and the real line part (`mb428_credits_line_18.yaml`), and types in only
+the salary (and, in some tests, the year of birth). The header and
 the two form declarations are made up here, exporting the lines read, because the shared scaffold
 owns them.
 """
@@ -41,6 +43,7 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.domain.trace import SumLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.personal_amounts import BIRTH_YEAR
 from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_mb.support import (
     manitoba_capabilities,
@@ -55,9 +58,15 @@ D = Decimal
 CENT = D("0.01")
 MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"
 LINE_9_PART = MB_PARTS / "mb428_credits_line_9.yaml"
+LINE_10_PARTS = (
+    MB_PARTS / "mb428_credits_line_10_worksheet_lines_1_to_3.yaml",
+    MB_PARTS / "mb428_credits_line_10_worksheet_lines_4_to_7.yaml",
+    MB_PARTS / "mb428_credits_line_10.yaml",
+)
 LINE_PART = MB_PARTS / "mb428_credits_line_18.yaml"
 FORM_NAME = "ca-mb/mb428_credits"
 LINE_9 = "ca-mb/mb428_basic_personal_amount_line_9"
+LINE_10 = "ca-mb/mb428_age_amount_line_10"
 KIND = "ca-mb/mb428_credits_subtotal_line_18"
 WORKSHEET_PARTS = (
     "worksheet_mb428_line_1.yaml",
@@ -104,6 +113,7 @@ CREDITS_FORM = dedent("""\
       required: true
       exports:
         - ca-mb/mb428_basic_personal_amount_line_9
+        - ca-mb/mb428_age_amount_line_10
         - ca-mb/mb428_credits_subtotal_line_18
     capabilities: []
     """)
@@ -123,6 +133,7 @@ def _part_files() -> Iterator[Path]:
     for name in WORKSHEET_PARTS:
         yield MB_PARTS / name
     yield LINE_9_PART
+    yield from LINE_10_PARTS
     yield LINE_PART
 
 
@@ -147,11 +158,12 @@ def _service(tmp_path: Path) -> TaxComputationService:
     )
 
 
-def _sheet(tmp_path: Path, salary: str) -> Worksheet:
+def _sheet(tmp_path: Path, salary: str, birth_year: int | None = None) -> Worksheet:
+    artifacts: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, D(salary))]
+    if birth_year is not None:
+        artifacts.append(Artifact(BIRTH_YEAR, birth_year))
     worksheets = _service(tmp_path).compute(
-        TaxCalculationRequest(
-            JurisdictionCode("CA-MB"), 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),)
-        )
+        TaxCalculationRequest(JurisdictionCode("CA-MB"), 2025, tuple(artifacts))
     )
     (sheet,) = worksheets[FORM_NAME]
     return sheet
@@ -170,7 +182,9 @@ def _net_income(salary: Decimal) -> Decimal:
 
 
 @pytest.mark.parametrize("salary", SALARIES)
-def test_line_18_is_line_9_alone_at_every_salary(tmp_path: Path, salary: str) -> None:
+def test_line_18_is_line_9_when_the_year_of_birth_is_blank_at_every_salary(
+    tmp_path: Path, salary: str
+) -> None:
     assert _net_income(D(salary)) == D(NET_INCOMES[salary])
     assert _net_income(D(salary)) <= D("200000")
     sheet = _sheet(tmp_path, salary)
@@ -179,16 +193,31 @@ def test_line_18_is_line_9_alone_at_every_salary(tmp_path: Path, salary: str) ->
     assert D(line_18.value) == D(EXPECTED)
     assert str(D(line_18.value)) == EXPECTED
     assert D(line_18.value) == D(sheet.get(manitoba_kinds().kind(LINE_9)).value)
+    assert D(sheet.get(manitoba_kinds().kind(LINE_10)).value) == D("0.00")
     assert not line_18.is_blank
 
 
+@pytest.mark.parametrize(("salary", "age_amount"), [("10000", "3728.00"), ("200000", "0.00")])
+def test_line_18_adds_line_10_for_a_filer_born_in_1960_or_earlier(
+    tmp_path: Path, salary: str, age_amount: str
+) -> None:
+    sheet = _sheet(tmp_path, salary, 1958)
+    kinds = manitoba_kinds()
+
+    assert D(sheet.get(kinds.kind(LINE_10)).value) == D(age_amount)
+    assert D(sheet.get(kinds.kind(KIND)).value) == D(EXPECTED) + D(age_amount)
+
+
 @pytest.mark.parametrize("salary", SALARIES)
-def test_the_trace_sums_line_9_alone(tmp_path: Path, salary: str) -> None:
+def test_the_trace_sums_lines_9_and_10(tmp_path: Path, salary: str) -> None:
     sheet = _sheet(tmp_path, salary)
     kinds = manitoba_kinds()
 
     (line,) = [t for t in sheet.trace if isinstance(t, SumLine) and t.output == kinds.kind(KIND)]
-    assert [(kind, value) for kind, value in line.parts] == [(kinds.kind(LINE_9), D(EXPECTED))]
+    assert [(kind, value) for kind, value in line.parts] == [
+        (kinds.kind(LINE_9), D(EXPECTED)),
+        (kinds.kind(LINE_10), D("0.00")),
+    ]
     assert line.total == D(EXPECTED)
 
 
@@ -200,7 +229,8 @@ def test_the_sum_is_traced_in_english_with_its_rounding_rule(tmp_path: Path, sal
     (line,) = [t for t in sheet.trace if isinstance(t, SumLine) and t.output == kinds.kind(KIND)]
     assert (
         EnglishTraceRenderer().render(line, sheet)
-        == "Line 9 (CA$15780.00) gives CA$15780.00 (rounded to the nearest cent)."
+        == "Line 9 (CA$15780.00) plus line 10 (CA$0.00) gives CA$15780.00 "
+        "(rounded to the nearest cent)."
     )
 
 
@@ -218,7 +248,7 @@ def test_the_part_names_the_form_and_declares_exactly_one_capability() -> None:
     assert len(part["capabilities"]) == 1
 
 
-def test_the_one_step_is_an_untitled_sum_of_line_9_alone() -> None:
+def test_the_one_step_is_an_untitled_sum_of_lines_9_and_10() -> None:
     (step,) = _line()["capabilities"]
 
     assert list(step) == ["name", "reference", "unit", "params", "consumes", "produces"]
@@ -227,7 +257,7 @@ def test_the_one_step_is_an_untitled_sum_of_line_9_alone() -> None:
         "reference": "18",
         "unit": "ca/cad",
         "params": {"rounding": "ca-mb/cent_rounding"},
-        "consumes": {"parts": [LINE_9]},
+        "consumes": {"parts": [LINE_9, LINE_10]},
         "produces": {"output": KIND},
     }
     assert "title" not in step

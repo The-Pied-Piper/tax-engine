@@ -1,0 +1,33 @@
+# Worksheet MB428 (CRA 5007-D) section "Line 58080 - Age amount (if you were born in 1960 or earlier)", lines 4 to 7: line 4 "Line 2 minus line 3 (if negative, enter 0)", line 5 "Applicable rate 15%" (the printed rate, a dataset figure with no step), line 6 "Line 4 multiplied by the percentage from line 5", line 7 "Line 1 minus line 6 (if negative, enter 0)". Rounded half-up to the cent by the datasets' rule (the form states none). The worksheet's two shortcuts follow from this arithmetic. Plain-words titles, no reference (the numbers are also MB428 line numbers).
+form:
+  name: ca-mb/mb428_credits
+capabilities:
+- name: core/subtract_not_below_zero
+  title: Worksheet MB428 age amount line 4
+  unit: ca/cad
+  params:
+    rounding: ca-mb/cent_rounding
+  consumes:
+    amount: ca-mb/worksheet_mb428_age_amount_net_income_line_2
+    less: ca-mb/worksheet_mb428_age_amount_income_threshold_line_3
+  produces:
+    output: ca-mb/worksheet_mb428_age_amount_line_4
+- name: core/apply_rate
+  title: Worksheet MB428 age amount line 6
+  unit: ca/cad
+  params:
+    rate: ca-mb/age_rate
+  consumes:
+    base: ca-mb/worksheet_mb428_age_amount_line_4
+  produces:
+    output: ca-mb/worksheet_mb428_age_amount_line_6
+- name: core/subtract_not_below_zero
+  title: Worksheet MB428 age amount line 7
+  unit: ca/cad
+  params:
+    rounding: ca-mb/cent_rounding
+  consumes:
+    amount: ca-mb/worksheet_mb428_age_amount_maximum_line_1
+    less: ca-mb/worksheet_mb428_age_amount_line_6
+  produces:
+    output: ca-mb/worksheet_mb428_age_amount_line_7

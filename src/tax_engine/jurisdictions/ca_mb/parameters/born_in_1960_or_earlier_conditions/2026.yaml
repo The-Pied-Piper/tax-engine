@@ -1,0 +1,15 @@
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: the cutoff is age 65 on 31 December of the tax year, so the 2025 year 1960 moves to 1961 for 2026 (a filer born in 1961 turns 65 in 2026); the 2026 forms are not yet published, so it is unconfirmed.
+# Manitoba \"if you were born in 1961 or earlier\", 2026 tax year: MB428 line 10 \"Age amount (if you were born in 1961 or earlier)\", Schedule MB428-A line 4 \"Age amount for self if you were born in 1961 or earlier\" and MB479 line 8 \"Age credit for self (if you were born in 1961 or earlier)\" (CRA 5007-C, 5007-A and 5007-TC). The filer gives a birth year; one condition, in the form's wording turned round because the conditions only test \"more than\": the birth year is more than 1961, in which case the count is 0 (not born in 1961 or earlier), else 1. The result is a count, not a dollars-and-cents box, so there is no rounding.
+family: ca-mb/born_in_1960_or_earlier_conditions
+tax_year: 2026
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5007-c/5007-c-25e.txt
+rounding: none
+count_when_any_applies: "0"
+conditions:
+  - text: You were born after 1961
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1961"}

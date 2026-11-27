@@ -7,7 +7,7 @@ Amounts are `Decimal`, non-negative unless the form prints no floor. Federal kin
 from __future__ import annotations
 
 from tax_engine.domain.artifact import ArtifactCatalog
-from tax_engine.domain.kinds import AmountKind, RecordListKind
+from tax_engine.domain.kinds import AmountKind, CountKind, RecordListKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca_mb import NAMESPACE
 
@@ -28,9 +28,66 @@ the amount of Worksheet MB428 line 9, which says to enter it on line 58040."""
 MB428_CREDITS_SUBTOTAL_LINE_18 = AmountKind.declare(
     CATALOG, "mb428_credits_subtotal_line_18", non_negative=True
 )
-"""Credits subtotal, MB428 line 18 "Line 18: Add lines 9, 10, 13, 16, and 17. = ^": only the basic
-personal amount, line 9, is summed here, because a salary-only single filer has no age, spouse,
-eligible dependant or infirm dependant amount."""
+"""Credits subtotal, MB428 line 18 "Line 18: Add lines 9, 10, 13, 16, and 17. = ^": the basic
+personal amount, line 9, and the age amount, line 10 (0.00 unless the filer was born in 1960 or
+earlier), are summed here; a single filer has no spouse, eligible dependant or infirm dependant
+amount (lines 13, 16 and 17)."""
+
+MB428_BIRTH_YEAR = CountKind.declare(CATALOG, "mb428_birth_year", non_negative=True)
+"""Year of birth as Form MB428 line 10 reads it: the T1's `ca/birth_year`, taken from the export of
+`ca/t1_lines_copied_by_provinces` by `core/first_record_count`, blank when left out."""
+
+MB428_A_BIRTH_YEAR = CountKind.declare(CATALOG, "mb428_a_birth_year", non_negative=True)
+"""Year of birth as Schedule MB428-A line 4 reads it: the T1's `ca/birth_year`, taken from the
+export of
+`ca/t1_lines_copied_by_provinces` by `core/first_record_count`, blank when left out."""
+
+MB479_BIRTH_YEAR = CountKind.declare(CATALOG, "mb479_birth_year", non_negative=True)
+"""Year of birth as Form MB479 line 8 reads it: the T1's `ca/birth_year`, taken from the export of
+`ca/t1_lines_copied_by_provinces` by `core/first_record_count`, blank when left out."""
+
+WORKSHEET_MB428_AGE_AMOUNT_MAXIMUM_LINE_1 = AmountKind.declare(
+    CATALOG, "worksheet_mb428_age_amount_maximum_line_1", non_negative=True
+)
+"""Worksheet MB428 age amount line 1 "Maximum amount 3,728.00"."""
+
+WORKSHEET_MB428_AGE_AMOUNT_NET_INCOME_LINE_2 = AmountKind.declare(
+    CATALOG, "worksheet_mb428_age_amount_net_income_line_2", non_negative=True
+)
+"""Worksheet MB428 age amount line 2 "Amount from line 23600 of your return"."""
+
+WORKSHEET_MB428_AGE_AMOUNT_INCOME_THRESHOLD_LINE_3 = AmountKind.declare(
+    CATALOG, "worksheet_mb428_age_amount_income_threshold_line_3", non_negative=True
+)
+"""Worksheet MB428 age amount line 3 "Income threshold 27,749.00"."""
+
+WORKSHEET_MB428_AGE_AMOUNT_LINE_4 = AmountKind.declare(
+    CATALOG, "worksheet_mb428_age_amount_line_4", non_negative=True
+)
+"""Worksheet MB428 age amount line 4 "Line 2 minus line 3 (if negative, enter \"0\")"."""
+
+WORKSHEET_MB428_AGE_AMOUNT_LINE_6 = AmountKind.declare(
+    CATALOG, "worksheet_mb428_age_amount_line_6", non_negative=True
+)
+"""Worksheet MB428 age amount line 6 "Line 4 multiplied by the percentage from line 5"."""
+
+WORKSHEET_MB428_AGE_AMOUNT_LINE_7 = AmountKind.declare(
+    CATALOG, "worksheet_mb428_age_amount_line_7", non_negative=True
+)
+"""Worksheet MB428 age amount line 7 "Line 1 minus line 6 (if negative, enter \"0\")": the
+amount for MB428 line 10 when the filer was born in 1960 or earlier."""
+
+MB428_AGE_AMOUNT_CLAIMED_LINE_10 = AmountKind.declare(
+    CATALOG, "mb428_age_amount_claimed_line_10", non_negative=True
+)
+"""MB428 line 10: worksheet line 7 when born in 1960 or earlier, 0.00 otherwise, before the check
+against the printed maximum."""
+
+MB428_AGE_AMOUNT_LINE_10 = AmountKind.declare(
+    CATALOG, "mb428_age_amount_line_10", non_negative=True
+)
+"""MB428 line 10 and line 58080 "Age amount (if you were born in 1960 or earlier) (use Worksheet
+MB428) (maximum $3,728)": worksheet line 7 when born in 1960 or earlier, 0.00 otherwise."""
 
 MB428_CPP_CONTRIBUTIONS_LINE_19 = AmountKind.declare(
     CATALOG, "mb428_cpp_contributions_line_19", non_negative=True
@@ -484,9 +541,22 @@ export."""
 WORKSHEET_MB428_LINE_8 = AmountKind.declare(CATALOG, "worksheet_mb428_line_8", non_negative=True)
 """Worksheet MB428 line 8 "Line 8: Line 6 multiplied by line 7 = ^": line 6 times line 7, money."""
 
+MB428_A_AGE_AMOUNT_CLAIM_LINE_4 = AmountKind.declare(
+    CATALOG, "mb428_a_age_amount_claim_line_4", non_negative=True
+)
+"""Age amount for self claim, Schedule MB428-A line 4 "Claim $2,065": the printed figure, from the
+`ca-mb/family_tax_benefit_age_amount_line_4` dataset."""
+
+MB428_A_AGE_AMOUNT_LINE_4 = AmountKind.declare(
+    CATALOG, "mb428_a_age_amount_line_4", non_negative=True
+)
+"""Age amount for self, Schedule MB428-A line 4 "Age amount for self if you were born in 1960 or
+earlier Claim $2,065": $2,065.00 when born in 1960 or earlier, 0.00 otherwise."""
+
 MB428_A_LINE_10 = AmountKind.declare(CATALOG, "mb428_a_line_10", non_negative=True)
 """Sum of lines 1 to 9, Schedule MB428-A line 10 "Line 10: Add lines 1 to 9.": the basic amount of
-the family tax benefit, the only line of the block that is built."""
+the family tax benefit (line 1) and the age amount for self (line 4, 0.00 unless born in 1960 or
+earlier), the lines of the block that are built."""
 
 MB428_A_LINE_11 = AmountKind.declare(CATALOG, "mb428_a_line_11", non_negative=True)
 """Net income multiplied by 9%, Schedule MB428-A (CRA 5007-A) line 11 "Line 11: Net income from line
@@ -636,7 +706,14 @@ percentage from line 5 =": line 4 times the line 5 rate, rounded half-up to the 
 
 MB479_AGE_CREDIT_LINE_8 = AmountKind.declare(CATALOG, "mb479_age_credit_line_8", non_negative=True)
 """Age credit for self, MB479 line 8 "Age credit for self (if you were born in 1960 or earlier)
-Claim $113": the credit of the first box, a caller input that is read as blank when left out."""
+Claim $113": $113.00 when born in 1960 or earlier, 0.00 otherwise, from the year of birth
+(`ca/birth_year`)."""
+
+MB479_AGE_CREDIT_CLAIM_LINE_8 = AmountKind.declare(
+    CATALOG, "mb479_age_credit_claim_line_8", non_negative=True
+)
+"""Age credit for self claim, MB479 line 8 "Claim $113": the printed figure, from the
+`ca-mb/age_credit_amount_line_8` dataset."""
 
 MB479_BASIC_CREDIT_SPOUSE_LINE_9 = AmountKind.declare(
     CATALOG, "mb479_basic_credit_spouse_line_9", non_negative=True
