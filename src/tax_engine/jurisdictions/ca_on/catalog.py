@@ -71,6 +71,53 @@ ON428_CREDITS_SUBTOTAL_LINE_25 = AmountKind.declare(
 )
 """Credits subtotal, ON428 line 25 "Line 18 plus line 24 =": line 18 plus line 24."""
 
+ON428_BIRTH_YEAR = CountKind.declare(CATALOG, "on428_birth_year", non_negative=True)
+"""Year of birth, read from the T1's `ca/birth_year` (entered once there) for ON428 line 10: blank
+when the filer left it out."""
+
+WORKSHEET_ON428_AGE_AMOUNT_MAXIMUM_LINE_1 = AmountKind.declare(
+    CATALOG, "worksheet_on428_age_amount_maximum_line_1", non_negative=True
+)
+"""Worksheet ON428 age amount line 1 "Maximum amount 6,223.00"."""
+
+WORKSHEET_ON428_AGE_AMOUNT_NET_INCOME_LINE_2 = AmountKind.declare(
+    CATALOG, "worksheet_on428_age_amount_net_income_line_2", non_negative=True
+)
+"""Worksheet ON428 age amount line 2 "Amount from line 23600 of your return"."""
+
+WORKSHEET_ON428_AGE_AMOUNT_INCOME_THRESHOLD_LINE_3 = AmountKind.declare(
+    CATALOG, "worksheet_on428_age_amount_income_threshold_line_3", non_negative=True
+)
+"""Worksheet ON428 age amount line 3 "Income threshold 46,330.00"."""
+
+WORKSHEET_ON428_AGE_AMOUNT_LINE_4 = AmountKind.declare(
+    CATALOG, "worksheet_on428_age_amount_line_4", non_negative=True
+)
+"""Worksheet ON428 age amount line 4 "Line 2 minus line 3 (if negative, enter \"0\")"."""
+
+WORKSHEET_ON428_AGE_AMOUNT_LINE_6 = AmountKind.declare(
+    CATALOG, "worksheet_on428_age_amount_line_6", non_negative=True
+)
+"""Worksheet ON428 age amount line 6 "Line 4 multiplied by the percentage from line 5"."""
+
+WORKSHEET_ON428_AGE_AMOUNT_LINE_7 = AmountKind.declare(
+    CATALOG, "worksheet_on428_age_amount_line_7", non_negative=True
+)
+"""Worksheet ON428 age amount line 7 "Line 1 minus line 6 (if negative, enter \"0\")": the amount
+for ON428 line 10 when the filer was born in 1960 or earlier."""
+
+ON428_AGE_AMOUNT_CLAIMED_LINE_10 = AmountKind.declare(
+    CATALOG, "on428_age_amount_claimed_line_10", non_negative=True
+)
+"""ON428 line 10: worksheet line 7 when born in 1960 or earlier, 0.00 otherwise, before the check
+against the printed maximum."""
+
+ON428_AGE_AMOUNT_LINE_10 = AmountKind.declare(
+    CATALOG, "on428_age_amount_line_10", non_negative=True
+)
+"""ON428 line 10 "Age amount (if you were born in 1960 or earlier) (use Worksheet ON428)
+(maximum $6,223)": worksheet line 7 when born in 1960 or earlier, 0.00 otherwise."""
+
 ON428_CREDITS_WITH_TRANSFERS_LINE_35 = AmountKind.declare(
     CATALOG, "on428_credits_with_transfers_line_35", non_negative=True
 )

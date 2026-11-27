@@ -127,7 +127,7 @@
    },
    {
     "form": "ca-on/on428",
-    "lines": 108
+    "lines": 119
    },
    {
     "form": "ca/t1_tax_and_credits",
@@ -146,7 +146,7 @@
     "lines": 34
    }
   ],
-  "trace_sha256": "4b8d1dfc609583fd46b16435c1d1d83f0a8e5f1b87dbb7e777911cdb31e4a7d9"
+  "trace_sha256": "bc4dae536f3aa6e7a11f3d18317f28c49a962c0ffb522143acdb5a5093ee05f2"
  },
  {
   "jurisdiction": "CA-ON",
@@ -321,7 +321,7 @@
    },
    {
     "form": "ca-on/on428",
-    "lines": 108
+    "lines": 119
    },
    {
     "form": "ca/t1_tax_and_credits",
@@ -340,7 +340,7 @@
     "lines": 34
    }
   ],
-  "trace_sha256": "cd6f56a5739b5317c113fb47015fb201820e3272177ec1cf52123390064d2587"
+  "trace_sha256": "4375b3eae26f948c1fd287f5ae61f85232e9b32f49148b6384275a781b591074"
  },
  {
   "jurisdiction": "CA-ON",
@@ -507,7 +507,7 @@
    },
    {
     "form": "ca-ab/ab428_credits",
-    "lines": 46
+    "lines": 57
    },
    {
     "form": "ca-ab/worksheet_ab428",
@@ -538,7 +538,7 @@
     "lines": 18
    }
   ],
-  "trace_sha256": "4d6760e23ff121ee8152a121c03c873368ad6be03e6477b4dee2bdb76aeedae3"
+  "trace_sha256": "b25421eee255a70870ad02e61484f726bd46d7961df689fc9ccafa032884ebf6"
  },
  {
   "jurisdiction": "CA-AB",
@@ -705,7 +705,7 @@
    },
    {
     "form": "ca-ab/ab428_credits",
-    "lines": 46
+    "lines": 57
    },
    {
     "form": "ca-ab/worksheet_ab428",
@@ -736,7 +736,7 @@
     "lines": 18
    }
   ],
-  "trace_sha256": "b3ec577a69a17386cffd3ebcb17301a2e34807814f7373989023f8c6b6f75a58"
+  "trace_sha256": "6aee57c22628c0e9dc53ef916f69e73373bd2624189e5d5b0dffb748c2d59d4f"
  },
  {
   "jurisdiction": "CA-AB",
@@ -907,7 +907,7 @@
    },
    {
     "form": "ca-bc/bc428",
-    "lines": 77
+    "lines": 88
    },
    {
     "form": "ca/t1_tax_and_credits",
@@ -926,7 +926,7 @@
     "lines": 25
    }
   ],
-  "trace_sha256": "da3f32de3c779f712e09959d636e085a7775e91d63a741a49f632ac6a8cefba8"
+  "trace_sha256": "a208a3aa7ac7fd6a6c506b8a272eb772fcccf2ea12e2f1ae73d8cb863e98ce2e"
  },
  {
   "jurisdiction": "CA-BC",
@@ -1097,7 +1097,7 @@
    },
    {
     "form": "ca-bc/bc428",
-    "lines": 77
+    "lines": 88
    },
    {
     "form": "ca/t1_tax_and_credits",
@@ -1116,7 +1116,7 @@
     "lines": 25
    }
   ],
-  "trace_sha256": "1f02a14598174847e3d8b8ad7d439ccf916e62c45f40fb40f49fc7bce3d944db"
+  "trace_sha256": "e747cd0f504309f2cb7a8cd5826a2a34f37aedd04b9305c1aafeb4b0071bdc10"
  },
  {
   "jurisdiction": "CA-BC",
