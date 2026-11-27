@@ -606,3 +606,10 @@ a blank input is read as blank, and the step that reads it reads it as 0."""
 PE428_TAX_LINE_93 = AmountKind.declare(CATALOG, "pe428_tax_line_93", non_negative=True)
 """PE428 line 93 "Line 93: Line 90 minus line 92 (if negative, enter "0") =": line 90 less the
 political contribution tax credit of line 92, not below 0, rounded half-up to the cent."""
+
+PE428_EQUITY_TAX_CREDIT_LINE_94 = AmountKind.declare(
+    CATALOG, "pe428_equity_tax_credit_line_94", non_negative=True
+)
+"""Equity tax credit from Certificate PE-ETC, PE428 line 94 and line 63500: the amount as the
+filer gives it, an optional input; a blank input is read as blank, and the sum that reads it
+reads it as 0."""
