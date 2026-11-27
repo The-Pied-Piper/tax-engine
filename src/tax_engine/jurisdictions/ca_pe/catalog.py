@@ -620,3 +620,15 @@ PE428_UNUSED_EQUITY_TAX_CREDIT_LINE_95 = AmountKind.declare(
 """Unused Prince Edward Island equity tax credit from the most recent notice of assessment or
 reassessment, PE428 line 95: the amount as the filer gives it, an optional input; a blank input is
 read as blank, and the sum that reads it reads it as 0."""
+
+PE428_EQUITY_TAX_CREDIT_BEFORE_MAXIMUM_LINE_96 = AmountKind.declare(
+    CATALOG, "pe428_equity_tax_credit_before_maximum_line_96", non_negative=True
+)
+"""Line 94 plus line 95, before the printed maximum of line 96 is applied, rounded half-up to the
+cent. Not printed on the form."""
+
+PE428_EQUITY_TAX_CREDIT_LINE_96 = AmountKind.declare(
+    CATALOG, "pe428_equity_tax_credit_line_96", non_negative=True
+)
+"""PE428 line 96 "Line 94 plus line 95 (maximum $7,000) =": the sum of lines 94 and 95, at most the
+printed maximum of $7,000."""

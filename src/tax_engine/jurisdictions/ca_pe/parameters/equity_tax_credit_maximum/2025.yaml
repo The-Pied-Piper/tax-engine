@@ -1,0 +1,13 @@
+# Form PE428 line 96: equity tax credit, maximum, 2025 (CRA 5002-C). Line 96 prints "Line 94 plus
+# line 95 (maximum $7,000)", a figure with no cents, so the amount rounds half-up to the cent, the
+# project's choice, as the form states no rounding rule. It is a plain cap on the
+# sum of lines 94 and 95, not a credit: the amount kind.
+family: ca-pe/equity_tax_credit_maximum
+tax_year: 2025
+kind: amount
+title: "equity tax credit maximum"
+unit: ca/cad
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5002-c/5002-c-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "7000"
