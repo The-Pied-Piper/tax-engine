@@ -348,3 +348,7 @@ NB428_LABOUR_SPONSORED_CREDIT_LINE_94 = AmountKind.declare(
 )
 """NB428 line 94 "Labour-sponsored venture capital fund tax credit from NB-LSVC-1 certificate(s)
 (maximum $2,000)": the amount as the filer enters it, one optional input."""
+
+NB428_TAX_LINE_95 = AmountKind.declare(CATALOG, "nb428_tax_line_95", non_negative=True)
+"""NB428 line 95 "Line 93 minus line 94 (if negative, enter "0")": the New Brunswick tax after the
+labour-sponsored venture capital fund tax credit."""
