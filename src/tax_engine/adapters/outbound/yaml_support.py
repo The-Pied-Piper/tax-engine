@@ -11,7 +11,7 @@ from collections.abc import Hashable
 from decimal import Decimal, InvalidOperation
 from enum import Enum
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import yaml
 from yaml.constructor import ConstructorError
@@ -33,8 +33,16 @@ class YamlShapeError(ValueError):
     """A YAML document does not have the expected shape."""
 
 
-class _StrictLoader(yaml.CSafeLoader):
-    """CSafeLoader that rejects duplicate mapping keys instead of keeping the last one."""
+# libyaml's loader when PyYAML was built with it (about three times faster); otherwise the
+# pure-Python SafeLoader, so the engine still imports where PyYAML has no C extension.
+if TYPE_CHECKING:
+    _BaseLoader = yaml.CSafeLoader
+else:
+    _BaseLoader = getattr(yaml, "CSafeLoader", yaml.SafeLoader)
+
+
+class _StrictLoader(_BaseLoader):
+    """Safe loader that rejects duplicate mapping keys instead of keeping the last one."""
 
     def construct_mapping(self, node: MappingNode, deep: bool = False) -> dict[Hashable, Any]:
         seen: set[Any] = set()

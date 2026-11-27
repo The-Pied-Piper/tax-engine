@@ -417,3 +417,26 @@ def test_parse_choice_reads_a_rounding_mode_as_parse_rounding_rule_does() -> Non
     with pytest.raises(YamlShapeError) as by_rule:
         node({"a": {"increment": "1", "mode": "sideways"}}).field("a").parse_rounding_rule()
     assert str(by_rule.value) == str(by_choice.value)
+
+
+def test_load_falls_back_to_the_pure_python_loader_without_libyaml(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import importlib.util
+
+    import tax_engine.adapters.outbound.yaml_support as shared
+
+    monkeypatch.delattr(yaml, "CSafeLoader", raising=False)
+    spec = importlib.util.spec_from_file_location("yaml_support_without_libyaml", shared.__file__)
+    assert spec is not None and spec.loader is not None
+    fallback = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(fallback)
+
+    good = tmp_path / "good.yml"
+    good.write_text("version: 1\nitems: [a, b]\n", encoding="utf-8")
+    duplicated = tmp_path / "dup.yml"
+    duplicated.write_text("a: 1\na: 2\n", encoding="utf-8")
+
+    assert fallback.YamlNode.load(good, "doc").value == {"version": 1, "items": ["a", "b"]}
+    with pytest.raises(yaml.YAMLError, match="duplicate key 'a'"):
+        fallback.YamlNode.load(duplicated, "doc")
