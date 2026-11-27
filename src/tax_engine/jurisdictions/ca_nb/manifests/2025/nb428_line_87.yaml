@@ -1,0 +1,20 @@
+# Form NB428 (CRA 5004-C) line 87: "Line 76 minus line 86 (if negative, enter "0")". Line 76 is
+# "Amount from line 69", and line 69 is line 67 minus line 68; line 68 (the spouse's unused
+# reduction) is not modelled, so line 69 and line 76 are line 67 and have no step of their own. One
+# core/subtract_not_below_zero step: line 67 (`ca-nb/nb428_tax_line_67`) less the low-income tax
+# reduction of line 86 (`ca-nb/nb428_line_86`), not below 0, rounded half-up to the cent. Neither
+# figure is ever blank. The form prints no title for the line. The output is exported until the
+# lines that follow read it.
+form:
+  name: ca-nb/nb428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "87"
+    unit: ca/cad
+    params:
+      rounding: ca-nb/cent_rounding
+    consumes:
+      amount: ca-nb/nb428_tax_line_67
+      less: ca-nb/nb428_line_86
+    produces:
+      output: ca-nb/nb428_tax_line_87
