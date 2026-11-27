@@ -358,3 +358,9 @@ NB428_SMALL_BUSINESS_INVESTOR_CREDIT_LINE_96 = AmountKind.declare(
 )
 """NB428 line 96 "Small business investor tax credit (complete Form T1258) (maximum $125,000)": the
 amount as the filer enters it, one optional input; Form T1258 is not built."""
+
+NB428_NEW_BRUNSWICK_TAX_LINE_97 = AmountKind.declare(
+    CATALOG, "nb428_new_brunswick_tax_line_97", non_negative=True
+)
+"""NB428 line 97 "Line 95 minus line 96 (if negative, enter "0")": the New Brunswick tax, entered on
+line 42800 of the return."""

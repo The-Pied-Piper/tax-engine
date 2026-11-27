@@ -1,0 +1,22 @@
+# Form NB428 (CRA 5004-C) line 97: "Line 97: Line 95 minus line 96 (if negative, enter "0") Enter this
+# amount on line 42800 of your return. New Brunswick tax". One core/subtract_not_below_zero step:
+# line 95 less line 96, not below 0, rounded half-up to the cent. Line 96 is an optional input a
+# salary-only caller leaves out, read as blank and then as 0 by the blank rule. The form prints no
+# title for the line, so the step is untitled. Line 97 is the output
+# `ca-nb/nb428_new_brunswick_tax_line_97`, the New Brunswick tax entered on line 42800, supplied
+# through the form's `ca/provincial_tax.amount`.
+form:
+  name: ca-nb/nb428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "97"
+    unit: ca/cad
+    params:
+      rounding: ca-nb/cent_rounding
+    consumes:
+      amount: ca-nb/nb428_tax_line_95
+      less: ca-nb/nb428_small_business_investor_credit_line_96
+    blank:
+      less: "0"
+    produces:
+      output: ca-nb/nb428_new_brunswick_tax_line_97
