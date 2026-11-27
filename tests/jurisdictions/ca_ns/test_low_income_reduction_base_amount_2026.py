@@ -62,3 +62,9 @@ def test_the_2026_file_is_provisional_and_states_its_derivation() -> None:
 
     assert lines[0] == PROVISIONAL_HEADER
     assert lines[1] == DERIVATION_HEADER
+
+
+def test_2025_low_income_reduction_base_amount_is_unchanged() -> None:
+    data = SOURCE.get(FAMILY, 2025, CREDIT)
+
+    assert data.values == Credit(amount=D("15000"))

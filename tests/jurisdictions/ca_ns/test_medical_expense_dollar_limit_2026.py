@@ -67,10 +67,7 @@ def test_the_2026_file_is_provisional_and_states_its_derivation() -> None:
     assert lines[1] == DERIVATION_HEADER
 
 
-def test_2026_is_carried_forward_unchanged_from_2025() -> None:
-    carried = SOURCE.get(FAMILY, 2026, AMOUNT)
-    original = SOURCE.get(FAMILY, 2025, AMOUNT)
+def test_2025_medical_expense_dollar_limit_is_unchanged() -> None:
+    data = SOURCE.get(FAMILY, 2025, AMOUNT)
 
-    assert carried.values == original.values
-    assert carried.rounding == original.rounding
-    assert carried.sources == original.sources
+    assert data.values == Amount(D("1637"))

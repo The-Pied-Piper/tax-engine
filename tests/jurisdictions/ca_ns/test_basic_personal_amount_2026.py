@@ -72,7 +72,5 @@ def test_the_2026_file_is_provisional_and_states_its_derivation() -> None:
 def test_2025_basic_personal_amount_is_unchanged() -> None:
     data = SOURCE.get(FAMILY, 2025, CREDIT)
 
-    assert data.sources == (
-        "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5003-c/5003-c-25e.txt",
-    )
-    assert data.tax_year == 2025
+    assert data.values == Credit(amount=D("11744"))
+    assert data.sources != SOURCES
