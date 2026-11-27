@@ -424,6 +424,7 @@ def test_figures_are_named_as_lines_when_the_form_prints_references() -> None:
     product = ProductLine(OUT, WAGES, D("10"), BONUS, D("4"), NO_ROUNDING, D("40"))
     at_most = AtMostLine(OUT, WAGES, D("100"), FLOOR, D("150"))
     two = LesserOfLine(OUT, ((WAGES, D("10")), (EXTRA, D("4.5"))), D("4.5"))
+    counts = MultiplyCountsLine(MINIMUM, ((CHILDREN, 12), (FLAG, 1)), 12)
     renderer = EnglishTraceRenderer()
 
     assert (
@@ -436,6 +437,7 @@ def test_figures_are_named_as_lines_when_the_form_prints_references() -> None:
     )
     assert renderer.render(at_most, printed) == "Line 2 (100.00), at most line 5a (150.00)."
     assert renderer.render(two, printed) == "Lesser of line 2 (10.00) and extra (4.50) gives 4.50."
+    assert renderer.render(counts, printed) == "Children (12) and flag (1) multiplied give 12."
 
 
 def test_a_sentence_is_capitalised_whether_it_opens_with_a_fallback_label_or_a_printed_name() -> (

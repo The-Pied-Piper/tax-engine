@@ -23,8 +23,8 @@ from tax_engine.domain.errors import (
     InvalidCapabilityError,
     MissingArtifactError,
 )
-from tax_engine.domain.kinds import CountKind
-from tax_engine.domain.trace import MultiplyCountsLine
+from tax_engine.domain.kinds import AmountKind, CountKind
+from tax_engine.domain.trace import BlankFallbackLine, BlankPassedOnLine, MultiplyCountsLine
 from tax_engine.jurisdictions.core.capabilities.multiply_counts import MultiplyCounts
 from tests.capabilities import bundled_capabilities
 
@@ -81,6 +81,32 @@ def test_one_count_is_its_own_product() -> None:
     wired = MultiplyCounts((MONTHS,), PRODUCT)
 
     assert wired.compute((Artifact(MONTHS, 5),)).outputs == (Artifact(PRODUCT, 5),)
+
+
+def test_rejects_one_kind_as_both_a_count_and_the_output() -> None:
+    with pytest.raises(InvalidCapabilityError, match="MultiplyCounts") as raised:
+        MultiplyCounts((MONTHS, PRODUCT), PRODUCT)
+
+    message = str(raised.value)
+    assert "'counts'" in message
+    assert "'output'" in message
+
+
+def test_rejects_a_count_listed_twice() -> None:
+    with pytest.raises(InvalidCapabilityError, match="MultiplyCounts.*'counts'"):
+        MultiplyCounts((MONTHS, FLAG_ONE, MONTHS), PRODUCT)
+
+
+def test_rejects_a_single_kind_for_its_counts() -> None:
+    with pytest.raises(InvalidCapabilityError, match="MultiplyCounts.*'counts'"):
+        MultiplyCounts(MONTHS, PRODUCT)  # type: ignore[arg-type]
+
+
+def test_rejects_a_count_of_another_value_type() -> None:
+    amount = AmountKind("ex/amount")
+
+    with pytest.raises(InvalidCapabilityError, match="MultiplyCounts.*'counts'"):
+        MultiplyCounts((MONTHS, amount), PRODUCT)  # type: ignore[arg-type]
 
 
 def test_an_empty_list_of_kinds_is_refused() -> None:
@@ -164,6 +190,23 @@ def test_ignores_artifacts_it_does_not_consume() -> None:
     assert result.outputs == (Artifact(PRODUCT, 12),)
 
 
+def test_the_order_of_the_inputs_does_not_matter() -> None:
+    given = (Artifact(MONTHS, 12), Artifact(FLAG_ONE, 0), Artifact(FLAG_TWO, 1))
+
+    result = capability().compute(tuple(reversed(given)))
+
+    assert result.outputs == (Artifact(PRODUCT, 0),)
+
+
+def test_traces_the_counts_in_the_order_they_were_wired() -> None:
+    wired = MultiplyCounts((FLAG_TWO, MONTHS, FLAG_ONE), PRODUCT)
+    given = (Artifact(MONTHS, 12), Artifact(FLAG_ONE, 1), Artifact(FLAG_TWO, 1))
+
+    assert wired.compute(given).trace == (
+        MultiplyCountsLine(PRODUCT, ((FLAG_TWO, 1), (MONTHS, 12), (FLAG_ONE, 1)), 12),
+    )
+
+
 def test_a_missing_count_is_a_missing_artifact() -> None:
     with pytest.raises(MissingArtifactError, match="flag_two"):
         capability().compute((Artifact(MONTHS, 12), Artifact(FLAG_ONE, 1)))
@@ -200,6 +243,49 @@ def test_a_kind_rule_of_pass_on_beats_a_fallback_for_another_kind() -> None:
     mixed = capability().with_blank_rules({}, per_item={FLAG_ONE: PASS_ON, FLAG_TWO: 1})
 
     assert mixed.run(with_blank_flag()).outputs == (Artifact(PRODUCT, BLANK),)
+
+
+def test_a_fallback_for_the_slot_multiplies_in_place_of_each_blank_count() -> None:
+    result = capability().with_blank_rules({"counts": 1}).run(with_blank_flag())
+
+    assert result.outputs == (Artifact(PRODUCT, 12),)
+    assert result.trace[0] == BlankFallbackLine(FLAG_ONE, 1)
+    assert result.trace[1] == MultiplyCountsLine(
+        PRODUCT, ((MONTHS, 12), (FLAG_ONE, 1), (FLAG_TWO, 1)), 12
+    )
+
+
+def test_a_passed_on_blank_leaves_a_pass_on_trace_line() -> None:
+    result = capability().with_blank_rules({"counts": PASS_ON}).run(with_blank_flag())
+
+    assert result.trace == (BlankPassedOnLine(PRODUCT, (FLAG_ONE,)),)
+
+
+def test_a_rule_for_a_kind_replaces_the_slots_rule_for_that_kind_only() -> None:
+    mixed = capability().with_blank_rules({"counts": PASS_ON}, per_item={FLAG_ONE: 1})
+
+    assert mixed.run(with_blank_flag()).outputs == (Artifact(PRODUCT, 12),)
+    blank_two = (Artifact(MONTHS, 12), Artifact(FLAG_ONE, 1), Artifact(FLAG_TWO, BLANK))
+    assert mixed.run(blank_two).outputs == (Artifact(PRODUCT, BLANK),)
+
+
+def test_filled_counts_are_multiplied_as_before_when_rules_are_declared() -> None:
+    mixed = capability().with_blank_rules({"counts": PASS_ON}, per_item={FLAG_ONE: 1})
+    given = (Artifact(MONTHS, 5), Artifact(FLAG_ONE, 1), Artifact(FLAG_TWO, 1))
+
+    assert mixed.run(given).outputs == (Artifact(PRODUCT, 5),)
+
+
+def test_a_rule_for_a_kind_the_capability_does_not_multiply_is_refused() -> None:
+    elsewhere = CountKind("ex/elsewhere")
+
+    with pytest.raises(InvalidCapabilityError, match="'ex/elsewhere' is not consumed"):
+        capability().with_blank_rules({}, per_item={elsewhere: PASS_ON})
+
+
+def test_a_rule_for_a_count_is_checked_against_that_count() -> None:
+    with pytest.raises(InvalidCapabilityError, match="blank rule for slot 'counts'.*'lots'"):
+        capability().with_blank_rules({}, per_item={FLAG_ONE: "lots"})  # type: ignore[dict-item]
 
 
 def test_a_typed_zero_is_not_a_blank() -> None:
