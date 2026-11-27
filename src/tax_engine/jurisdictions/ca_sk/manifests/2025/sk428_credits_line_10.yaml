@@ -1,28 +1,16 @@
-# Form SK428 (CRA 5008-C) line 10 and line 58080: "Age amount (if you were born in 1960 or earlier) (use Worksheet SK428) (maximum $5,785)". Built as ca-ns/ns428 line 10 and ca-nl/nl428_credits line 17 are: a core/first_record_count step that reads the T1's year of birth (`ca/t1_lines_copied_by_provinces.birth_year`, entered once on the T1; blank passes on), a ca/count_by_conditions step that works out 1 or 0 from that year (a blank year passes on blank, read as 0 by the steps below; shared with line 19; not a line of the form), a core/times_count step of worksheet line 7 by that count (blank read as 0), and a core/at_most step that checks the printed maximum (worksheet line 1) and is line 10. An amount above the maximum is refused, not capped. Worksheet lines 1 to 7 are in the two parts beside this one.
+# Form SK428 (CRA 5008-C) line 10 and line 58080: "Age amount (if you were born in 1960 or earlier) (use Worksheet SK428) (maximum $5,785)". Built as ca-ns/ns428 line 10 and ca-nl/nl428_credits line 17 are: a core/first_record_count step that reads the T1's "aged 65 or older" flag (`ca/t1_lines_copied_by_provinces.age_65_or_older`, worked out once on the T1 from the year of birth; blank passes on and is read as 0 by the steps below; shared with line 19; not a line of the form), a core/times_count step of worksheet line 7 by that count (blank read as 0), and a core/at_most step that checks the printed maximum (worksheet line 1) and is line 10. An amount above the maximum is refused, not capped. Worksheet lines 1 to 7 are in the two parts beside this one.
 form:
   name: ca-sk/sk428_credits
 capabilities:
 - name: core/first_record_count
-  title: Year of birth
+  title: Aged 65 or older at the end of the year
   consumes:
-    records: ca/t1_lines_copied_by_provinces.birth_year
+    records: ca/t1_lines_copied_by_provinces.age_65_or_older
   blank:
     records:
-      ca/birth_year: pass_on
+      ca/age_65_or_older: pass_on
   produces:
-    output: ca-sk/sk428_birth_year
-- name: ca/count_by_conditions
-  title: Born in 1960 or earlier
-  params:
-    conditions: ca-sk/born_in_1960_or_earlier_conditions
-  consumes:
-    counts:
-    - ca-sk/sk428_birth_year
-    amounts: []
-  blank:
-    counts: pass_on
-  produces:
-    output: ca/born_in_1960_or_earlier_checked
+    output: ca-sk/sk428_age_65_or_older
 - name: core/times_count
   title: Age amount before the printed maximum
   unit: ca/cad
@@ -30,7 +18,7 @@ capabilities:
     rounding: ca-sk/cent_rounding
   consumes:
     amount: ca-sk/worksheet_sk428_age_amount_line_7
-    count: ca/born_in_1960_or_earlier_checked
+    count: ca-sk/sk428_age_65_or_older
   produces:
     output: ca-sk/sk428_age_amount_claimed_line_10
   blank:

@@ -268,9 +268,10 @@ SK428_CREDITS_SUBTOTAL_LINE_20 = AmountKind.declare(
 sum of the personal amounts claimed: the basic personal amount, the age amount and the
 senior supplementary amount."""
 
-SK428_BIRTH_YEAR = CountKind.declare(CATALOG, "sk428_birth_year", non_negative=True)
-"""Year of birth, read from the T1's `ca/birth_year` (entered once there) for SK428 line 10 and
-line 19: blank when the filer left it out."""
+SK428_AGE_65_OR_OLDER = CountKind.declare(CATALOG, "sk428_age_65_or_older", non_negative=True)
+"""Aged 65 or older at the end of the year, read from the T1's `ca/age_65_or_older` (worked out
+once there from the year of birth) for SK428 line 10 and line 19: 1 or 0, blank when the year is
+blank."""
 
 WORKSHEET_SK428_AGE_AMOUNT_MAXIMUM_LINE_1 = AmountKind.declare(
     CATALOG, "worksheet_sk428_age_amount_maximum_line_1", non_negative=True

@@ -33,18 +33,23 @@ personal amount, line 9, and the age amount, line 10 (0.00 unless the filer was 
 earlier), are summed here; a single filer has no spouse, eligible dependant or infirm dependant
 amount (lines 13, 16 and 17)."""
 
-MB428_BIRTH_YEAR = CountKind.declare(CATALOG, "mb428_birth_year", non_negative=True)
-"""Year of birth as Form MB428 line 10 reads it: the T1's `ca/birth_year`, taken from the export of
-`ca/t1_lines_copied_by_provinces` by `core/first_record_count`, blank when left out."""
+MB428_AGE_65_OR_OLDER = CountKind.declare(CATALOG, "mb428_age_65_or_older", non_negative=True)
+"""Aged 65 or older at the end of the year as Form MB428 line 10 reads it:
+the T1's `ca/age_65_or_older` (worked out once there from the year of birth), taken from the
+export of `ca/t1_lines_copied_by_provinces` by `core/first_record_count`: 1 or 0, blank when the
+year is blank."""
 
-MB428_A_BIRTH_YEAR = CountKind.declare(CATALOG, "mb428_a_birth_year", non_negative=True)
-"""Year of birth as Schedule MB428-A line 4 reads it: the T1's `ca/birth_year`, taken from the
-export of
-`ca/t1_lines_copied_by_provinces` by `core/first_record_count`, blank when left out."""
+MB428_A_AGE_65_OR_OLDER = CountKind.declare(CATALOG, "mb428_a_age_65_or_older", non_negative=True)
+"""Aged 65 or older at the end of the year as Schedule MB428-A line 4 reads it:
+the T1's `ca/age_65_or_older` (worked out once there from the year of birth), taken from the
+export of `ca/t1_lines_copied_by_provinces` by `core/first_record_count`: 1 or 0, blank when the
+year is blank."""
 
-MB479_BIRTH_YEAR = CountKind.declare(CATALOG, "mb479_birth_year", non_negative=True)
-"""Year of birth as Form MB479 line 8 reads it: the T1's `ca/birth_year`, taken from the export of
-`ca/t1_lines_copied_by_provinces` by `core/first_record_count`, blank when left out."""
+MB479_AGE_65_OR_OLDER = CountKind.declare(CATALOG, "mb479_age_65_or_older", non_negative=True)
+"""Aged 65 or older at the end of the year as Form MB479 line 8 reads it:
+the T1's `ca/age_65_or_older` (worked out once there from the year of birth), taken from the
+export of `ca/t1_lines_copied_by_provinces` by `core/first_record_count`: 1 or 0, blank when the
+year is blank."""
 
 WORKSHEET_MB428_AGE_AMOUNT_MAXIMUM_LINE_1 = AmountKind.declare(
     CATALOG, "worksheet_mb428_age_amount_maximum_line_1", non_negative=True
