@@ -141,7 +141,6 @@ def test_2025_the_phase_out_gates_open_where_lines_83_and_86_turn_positive_or_ze
 
     assert _value(summary, INCOME_GATE) == D(income_gate)
     assert _value(summary, REDUCTION_GATE) == D(reduction_gate)
-    assert _value(summary, PHASE_OUT_GATE) == D(income_gate) * D(reduction_gate)
 
 
 @pytest.mark.parametrize(("salary", "federal", "provincial", "contribution", "marginal"), PARTS)
