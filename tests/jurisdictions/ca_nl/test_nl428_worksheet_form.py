@@ -70,8 +70,12 @@ def test_the_part_declares_the_form_name_title_and_required() -> None:
     assert form["required"] is True
 
 
-def test_the_form_exports_only_the_two_line_7_amounts() -> None:
-    assert _part()["form"]["exports"] == [LINE_7, DISABILITY_LINE_7]
+def test_the_form_exports_the_age_maximum_and_the_two_line_7_amounts() -> None:
+    assert _part()["form"]["exports"] == [
+        "ca-nl/worksheet_nl428_age_amount_maximum_line_1",
+        LINE_7,
+        DISABILITY_LINE_7,
+    ]
 
 
 def test_the_part_declares_no_capabilities_and_no_supplies() -> None:

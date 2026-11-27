@@ -1,0 +1,18 @@
+# Worksheet PE428 (CRA 5002-D) section "Line 58080 - Age amount", lines 2 and 3: "Line 2: Amount from line 23600 of your return", "Line 3: Income threshold 36,600.00". Line 1 "Maximum amount 6,510.00" is the step of pe428_line_10.yaml (`ca-pe/pe428_age_amount_maximum`). One step per worksheet line; the worksheet is built inside form ca-pe/pe428 (Umar, 27 Nov 2026), so its steps carry plain-words titles and no reference (the numbers 2 and 3 are also PE428 line numbers). Line 2 reads the T1 net income record list; line 3 is a printed dataset figure.
+form:
+  name: ca-pe/pe428
+capabilities:
+- name: core/record_total
+  title: 'Worksheet PE428 age amount line 2: amount from line 23600'
+  unit: ca/cad
+  consumes:
+    records: ca/t1_taxable_income.net_income
+  produces:
+    output: ca-pe/worksheet_pe428_age_amount_net_income_line_2
+- name: core/credit_amount
+  title: 'Worksheet PE428 age amount line 3: income threshold'
+  unit: ca/cad
+  params:
+    amount: ca-pe/age_income_threshold
+  produces:
+    output: ca-pe/worksheet_pe428_age_amount_income_threshold_line_3
