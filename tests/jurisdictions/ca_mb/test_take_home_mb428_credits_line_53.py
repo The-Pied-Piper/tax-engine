@@ -179,7 +179,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "01_form.yaml").write_text(WORKSHEET_FORM, encoding="utf-8")
     (folder / "02_schedule_form.yaml").write_text(SCHEDULE_FORM, encoding="utf-8")
     (folder / "03_credits_form.yaml").write_text(FORM, encoding="utf-8")
-    for number, part in enumerate(_part_files(), start=4):
+    for number, part in enumerate(dict.fromkeys(_part_files()), start=4):
         (folder / f"{number:02d}_{part.name}").write_text(
             part.read_text(encoding="utf-8"),
             encoding="utf-8",

@@ -170,7 +170,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     forms = FORMS.split("---\n")
     for number, text in enumerate(forms, start=1):
         (folder / f"01_form_{number}.yaml").write_text(text, encoding="utf-8")
-    for number, found in enumerate(_part_files(), start=2):
+    for number, found in enumerate(dict.fromkeys(_part_files()), start=2):
         text = found.read_text(encoding="utf-8")
         (folder / f"{number:02d}_{found.name}").write_text(text, encoding="utf-8")
     roots = {**newfoundland_packages().roots(), Namespace("ca-nl"): tmp_path}

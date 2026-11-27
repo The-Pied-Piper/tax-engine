@@ -244,7 +244,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "01_credits_form.yaml").write_text(CREDITS_FORM, encoding="utf-8")
     (folder / "02_worksheet_form.yaml").write_text(WORKSHEET_FORM, encoding="utf-8")
     (folder / "03_tax_form.yaml").write_text(TAX_FORM, encoding="utf-8")
-    for number, found in enumerate(_part_files(), start=4):
+    for number, found in enumerate(dict.fromkeys(_part_files()), start=4):
         text = found.read_text(encoding="utf-8")
         (folder / f"{number:02d}_{found.name}").write_text(text, encoding="utf-8")
     roots = {**alberta_packages().roots(), Namespace("ca-ab"): tmp_path}

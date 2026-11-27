@@ -1,6 +1,7 @@
 """The federal Canada trace lines: facts in the vocabulary of Canada's own forms.
 
-Amount by count, contribution tier, given amount and tapered amount; each line's English text is in
+Amount by count, contribution tier, given amount, multiply counts and tapered amount; each
+line's English text is in
 `tax_engine.jurisdictions.ca.trace_english`. The generic lines are in `tax_engine.domain.trace`.
 """
 
@@ -13,6 +14,7 @@ from tax_engine.jurisdictions.ca.trace import (
     contribution_tier,
     contribution_tier_rate,
     given_amount,
+    multiply_counts,
     tapered_amount,
     tapered_amount_rate,
 )
@@ -20,6 +22,7 @@ from tax_engine.jurisdictions.ca.trace.amount_by_count import *  # noqa: F403
 from tax_engine.jurisdictions.ca.trace.contribution_tier import *  # noqa: F403
 from tax_engine.jurisdictions.ca.trace.contribution_tier_rate import *  # noqa: F403
 from tax_engine.jurisdictions.ca.trace.given_amount import *  # noqa: F403
+from tax_engine.jurisdictions.ca.trace.multiply_counts import *  # noqa: F403
 from tax_engine.jurisdictions.ca.trace.tapered_amount import *  # noqa: F403
 from tax_engine.jurisdictions.ca.trace.tapered_amount_rate import *  # noqa: F403
 
@@ -28,6 +31,7 @@ __all__ = (
     + contribution_tier.__all__
     + contribution_tier_rate.__all__
     + given_amount.__all__
+    + multiply_counts.__all__
     + tapered_amount.__all__
     + tapered_amount_rate.__all__
 )

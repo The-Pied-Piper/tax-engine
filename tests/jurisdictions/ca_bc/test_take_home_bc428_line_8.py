@@ -168,7 +168,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(FORM_TEXT, encoding="utf-8")
-    for number, (name, text) in enumerate(_part_files(), start=2):
+    for number, (name, text) in enumerate(dict.fromkeys(_part_files()), start=2):
         (folder / f"{number:02d}_{name}").write_text(text, encoding="utf-8")
     roots = {**british_columbia_packages().roots(), Namespace("ca-bc"): tmp_path}
     return TaxComputationService(
@@ -204,7 +204,7 @@ def _direct(tmp_path: Path, taxable_income: str) -> Artifact[Decimal]:
     (folder / "01_form.yaml").write_text(DIRECT_FORM, encoding="utf-8")
     (folder / "01_input.yaml").write_text(DIRECT_INPUT, encoding="utf-8")
     parts = (LINE_3_PART, LINE_4_PART, LINE_5_PART, LINE_6_PART, LINE_7_PART, LINE_8_PART)
-    for number, part in enumerate(parts, start=2):
+    for number, part in enumerate(dict.fromkeys(parts), start=2):
         (folder / f"{number:02d}_{part.name}").write_text(
             part.read_text(encoding="utf-8"), encoding="utf-8"
         )

@@ -5,8 +5,7 @@
 # pensionable earnings for 2025 (maximum $81,200)".
 # The rows are the table's column "Additional maximum pensionable earnings", one for each
 # number of months from 1 to 12, as printed. Part 4 line 4 is "Enter whichever is less:
-# amount from line D of Part 2 or line 3." The table has no row for 0 months, so a count
-# without a row is refused.
+# amount from line D of Part 2 or line 3." The table prints no row for 0 months; the "0" row is 0 of 12 months of the printed amount, added for a filer whose line A is 0 (not a printed figure).
 # The figures are in dollars and cents, so each rounds half-up to the cent, which changes
 # none of them.
 family: ca/cpp_additional_maximum_pensionable_earnings
@@ -17,6 +16,7 @@ sources:
   - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/rc381/rc381-25e.pdf
 rounding: {increment: "0.01", mode: half_up}
 amounts:
+  "0": "0.00"
   "1": "6766.67"
   "2": "13533.33"
   "3": "20300.00"

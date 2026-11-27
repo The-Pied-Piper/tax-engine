@@ -1,0 +1,15 @@
+# Provisional: moved on by one year from 2025; to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: the same age tests applied to 2026 (not yet 18 for all of 2026 is born in 2009 or later; 70 or older for all of 2026 is born in 1955 or earlier); the 2026 Schedule 8 is not yet published, so it is unconfirmed.
+# Schedule 8 Part 2 line A, 2026, condition g): 70 or older for all of 2026, born in 1955 or earlier (born in 1956 turned 70 in 2026 and stays typed in). The year is more than 1955, the count is 1, else 0.
+family: ca/cpp_not_70_or_older_all_year_conditions
+tax_year: 2026
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s8/5000-s8-25e.txt
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: You were born after 1955
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1955"}

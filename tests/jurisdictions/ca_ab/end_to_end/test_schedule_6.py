@@ -58,6 +58,7 @@ HEADER_TEMPLATE = dedent("""\
     imports:
       - ca/t1_employment_income
       - ca/t1_taxable_income
+      - ca/t1_lines_copied_by_provinces
       - {schedule_6}
       - ca/schedule_8
     """)

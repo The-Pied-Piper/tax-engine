@@ -1,0 +1,11 @@
+# 5005-R (2025) input a salary-only caller does not give: the filer's date of birth, as the year of
+# birth. The engine takes the year (Umar, 27 Nov 2026) and works out each form's "if you were born in
+# 19xx or earlier" and Schedule 8 line A from it. A request that leaves it out is read as blank.
+form:
+  name: ca-qc/t1_birth_year
+inputs:
+  - name: ca/birth_year
+    title: "Year of birth"
+    required: false
+    default: null
+    basis: 'Enter your date of birth in the "Step 1 - Identification and other information" area on page 1 of your return.'

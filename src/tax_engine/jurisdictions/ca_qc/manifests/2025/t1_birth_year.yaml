@@ -1,0 +1,14 @@
+# 5005-R (2025), the T1 return for Quebec residents, the date of birth, reduced to the year of birth.
+# A form of its own, as the Quebec T1 employment income form is: the shared Schedule 8 line A reads the
+# year (`ca/t1_lines_copied_by_provinces.birth_year`), which this form supplies, and the Quebec return
+# does not import the federal T1 forms. The year is this form's input (`ca/birth_year`, blank when left
+# out); every other Quebec form reads it from here and never asks again.
+form:
+  name: ca-qc/t1_birth_year
+  title: "T1 Income Tax and Benefit Return"
+  required: true
+  exports:
+    - ca/birth_year
+  supplies:
+    ca/t1_lines_copied_by_provinces.birth_year: ca/birth_year
+capabilities: []

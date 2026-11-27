@@ -68,11 +68,17 @@ PRINTED = {
 
 
 @pytest.mark.parametrize(("column", "family"), list(enumerate(FAMILIES)))
-def test_2025_table_is_the_printed_column_for_months_1_to_12(column: int, family: str) -> None:
+def test_2025_table_is_the_printed_column_for_months_1_to_12_and_a_0_row(
+    column: int, family: str
+) -> None:
     data = SOURCE.get(family, 2025, AMOUNT_BY_COUNT)
 
+    # The 0 row is not printed: 0 of 12 months of the annual figure, for a line A of 0.
     assert data.values == AmountByCount(
-        tuple((months, D(row[column])) for months, row in PRINTED.items())
+        (
+            (0, D("0.00")),
+            *((months, D(row[column])) for months, row in PRINTED.items()),
+        )
     )
 
 
@@ -143,10 +149,10 @@ def test_reads_the_row_for_the_months(months: int, family: str, figure: str) -> 
     assert result.outputs == (Artifact(FIGURE, D(figure)),)
 
 
-@pytest.mark.parametrize("months", [0, 13])
+@pytest.mark.parametrize("months", [13])
 def test_a_number_of_months_with_no_row_is_refused_not_guessed(months: int) -> None:
-    # Part 2's table has rows for 1 to 12 months only; "0" on line A (conditions b, d and g) is
-    # not a row, and is not carried over from the nearest one.
+    # Part 2's table has rows for 0 to 12 months only; 13 is not a row, and is not carried over from
+    # the nearest one.
     capability = AmountForCount(
         SOURCE.get(MAXIMUM_PENSIONABLE_EARNINGS, 2025, AMOUNT_BY_COUNT), MONTHS, FIGURE
     )

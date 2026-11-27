@@ -100,7 +100,8 @@ def test_schedule_8_line_b_sentence_names_line_a_and_the_line_it_gives() -> None
     ]
 
     assert EnglishTraceRenderer().render(line_b, schedule_8) == (
-        "Looking up line A (12 months) in the table gives CA$71300.00 for line B "
+        'Looking up "Number of months that CPP applied" (12 months) in the table gives '
+        "CA$71300.00 for line B "
         "(rounded to the nearest cent)."
     )
 
