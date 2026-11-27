@@ -1,10 +1,11 @@
 # Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
-# Derivation: carried forward unchanged from the 2025 file; the 2026 form is not yet published, so it is unconfirmed.
+# Derivation: 2025 threshold 43066.00 x 1.02 (Saskatchewan's 2026 index factor, 2.0%, T4127 (Jan 2026)) = 43927.32, rounded to the nearest dollar, a half going up, to 43927.00; unconfirmed, as the 2026 SK428 is not yet published.
 # Age amount income threshold, 2026 (Worksheet SK428, CRA 5008-D): "Line 58080 - Age amount", line 3 "Income threshold 43,066.00". Claimed whole: the credit kind.
 family: ca-sk/age_income_threshold
 tax_year: 2026
 kind: credit
 sources:
   - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5008-d/5008-d-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf
 rounding: {increment: "0.01", mode: half_up}
-amount: "43066.00"
+amount: "43927.00"
