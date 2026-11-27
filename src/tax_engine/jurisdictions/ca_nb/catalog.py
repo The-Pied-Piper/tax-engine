@@ -58,7 +58,7 @@ NB428_AGE_AMOUNT_LINE_10 = AmountKind.declare(
     CATALOG, "nb428_age_amount_line_10", non_negative=True
 )
 """NB428 line 10 "Age amount (if you were born in 1960 or earlier) (use Worksheet NB428)
-(maximum $5,734)": worksheet line 7 when born in 1960 or earlier, 0.00 otherwise."""
+(maximum $6,037)": worksheet line 7 when born in 1960 or earlier, 0.00 otherwise."""
 
 NB428_CREDITS_SUBTOTAL_LINE_18 = AmountKind.declare(
     CATALOG, "nb428_credits_subtotal_line_18", non_negative=True

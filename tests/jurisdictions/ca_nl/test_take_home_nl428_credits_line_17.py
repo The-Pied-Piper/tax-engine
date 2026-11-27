@@ -82,6 +82,7 @@ FORMS = dedent("""\
       name: ca-nl/nl428_worksheet
       required: true
       exports:
+        - ca-nl/worksheet_nl428_age_amount_maximum_line_1
         - ca-nl/worksheet_nl428_age_amount_line_7
     capabilities: []
     ---
@@ -91,6 +92,8 @@ FORMS = dedent("""\
       exports:
         - ca-nl/nl428_age_amount_line_17
         - ca-nl/nl428_age_amount_worksheet_line_17
+        - ca-nl/nl428_age_amount_maximum_line_17
+        - ca-nl/nl428_age_amount_claimed_line_17
     capabilities: []
     """)
 
@@ -181,11 +184,11 @@ def test_a_blank_year_is_not_born_in_1960_or_earlier(tmp_path: Path) -> None:
 
 
 def test_the_trace_records_the_yes_or_no_check_and_the_times_count_step(tmp_path: Path) -> None:
-    trace = _born(tmp_path, "20000", 1).trace
+    trace = _born(tmp_path, "20000", 1960).trace
 
     assert ConditionsCountLine(output=BORN_IN_1960_OR_EARLIER_CHECKED, applied=(), count=1) in trace
     (times,) = [line for line in trace if isinstance(line, TimesCountLine)]
-    assert times.output is nl_catalog.NL428_AGE_AMOUNT_LINE_17
+    assert times.output is nl_catalog.NL428_AGE_AMOUNT_CLAIMED_LINE_17
     assert times.amount_kind is nl_catalog.NL428_AGE_AMOUNT_WORKSHEET_LINE_17
     assert times.amount_value == D("7064.00")
     assert times.count_kind is BORN_IN_1960_OR_EARLIER_CHECKED
@@ -199,7 +202,7 @@ def _part() -> dict[str, Any]:
     return part
 
 
-def test_the_part_names_the_form_and_has_the_four_steps_in_order() -> None:
+def test_the_part_names_the_form_and_has_the_six_steps_in_order() -> None:
     part = _part()
 
     assert list(part) == ["form", "capabilities"]
@@ -209,13 +212,18 @@ def test_the_part_names_the_form_and_has_the_four_steps_in_order() -> None:
         "core/first_record_count",
         "ca/count_by_conditions",
         "core/record_total",
+        "core/record_total",
         "core/times_count",
+        "core/at_most",
     ]
-    assert [step.get("reference") for step in steps] == [None, None, None, "17"]
+    assert [step.get("reference") for step in steps] == [None, None, None, None, None, "17"]
     assert steps[2]["consumes"] == {
         "records": "ca-nl/nl428_worksheet.worksheet_nl428_age_amount_line_7"
     }
-    assert steps[3]["title"] == "Age amount"
+    assert steps[3]["consumes"] == {
+        "records": "ca-nl/nl428_worksheet.worksheet_nl428_age_amount_maximum_line_1"
+    }
+    assert steps[5]["title"] == "Age amount"
 
 
 @pytest.mark.parametrize(
@@ -234,3 +242,12 @@ def test_the_new_kinds_are_registered_non_negative_decimal_amount_kinds(
     assert isinstance(kind, AmountKind)
     assert kind.value_type is Decimal
     assert non_negative(kind)
+
+
+def test_line_17_is_the_claimed_amount_checked_against_the_printed_maximum(
+    tmp_path: Path,
+) -> None:
+    sheet = _born(tmp_path, "20000", 1960)
+
+    assert _value(sheet, "ca-nl/nl428_age_amount_maximum_line_17") == D("7064.00")
+    assert _value(sheet, "ca-nl/nl428_age_amount_claimed_line_17") == D("7064.00")

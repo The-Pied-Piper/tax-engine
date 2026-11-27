@@ -5,7 +5,8 @@
 # Step 1 works out 1 or 0 from the filer's year of birth (the shared `ca/birth_year`, Umar, 27 Nov
 # 2026) through ca/count_by_conditions: 1 when born in 1960 or earlier, 0 when born later, and a
 # blank year passes on blank, read as 0 by step 3. Step 2 reads the worksheet's line 7, which another form exports as a
-# record list, through core/record_total. Step 3 multiplies that amount by the checked count, so
+# record list, through core/record_total. Step 3 multiplies that amount by the checked count and step 4 checks it against the printed
+# maximum (worksheet line 1, read from its form like line 7; refused above, not capped), so
 # line 17 is the worksheet amount when born in 1960 or earlier and 0.00 otherwise, as line 40 does
 # for its claim. Steps 1 and 2 are not lines of the form, so they have no reference, and their
 # titles are plain words, not printed wording, because the sentence of line 17 names them.
@@ -40,9 +41,15 @@ capabilities:
       records: ca-nl/nl428_worksheet.worksheet_nl428_age_amount_line_7
     produces:
       output: ca-nl/nl428_age_amount_worksheet_line_17
+  - name: core/record_total
+    title: "Age amount maximum from Worksheet NL428"
+    unit: ca/cad
+    consumes:
+      records: ca-nl/nl428_worksheet.worksheet_nl428_age_amount_maximum_line_1
+    produces:
+      output: ca-nl/nl428_age_amount_maximum_line_17
   - name: core/times_count
-    title: "Age amount"
-    reference: "17"
+    title: "Age amount before the printed maximum"
     unit: ca/cad
     params:
       rounding: ca-nl/cent_rounding
@@ -51,5 +58,14 @@ capabilities:
       count: ca/born_in_1960_or_earlier_checked
     blank:
       count: "0"
+    produces:
+      output: ca-nl/nl428_age_amount_claimed_line_17
+  - name: core/at_most
+    title: "Age amount"
+    reference: "17"
+    unit: ca/cad
+    consumes:
+      amount: ca-nl/nl428_age_amount_claimed_line_17
+      bound: ca-nl/nl428_age_amount_maximum_line_17
     produces:
       output: ca-nl/nl428_age_amount_line_17
