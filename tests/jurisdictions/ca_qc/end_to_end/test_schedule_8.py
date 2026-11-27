@@ -53,11 +53,13 @@ from tax_engine.jurisdictions.ca.catalog.deductions import (
     SCHEDULE_8_CPP_ENHANCED_CONTRIBUTIONS_ON_RETURN,
 )
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.personal_amounts import BIRTH_YEAR
 from tax_engine.jurisdictions.ca.catalog.rc381_cpp_qpp import (
     T4_CPP_PENSIONABLE_EARNINGS_OUTSIDE_QUEBEC,
 )
 from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
+from tests.jurisdictions.ca_qc.support import T1_BIRTH_YEAR_PARTS
 
 D = Decimal
 HEADER_TEMPLATE = dedent("""\
@@ -72,7 +74,8 @@ HEADER_TEMPLATE = dedent("""\
 SWAPPED = (
     "form: ca/schedule_8\n"
     "    datasets:\n"
-    "      ca/cpp_line_11_base_contribution: ca-qc/qpp_line_11_base_contribution"
+    "      ca/cpp_line_11_base_contribution: ca-qc/qpp_line_11_base_contribution\n"
+    "      ca/cpp_not_70_or_older_all_year_conditions: ca-qc/qpp_not_73_or_older_conditions"
 )
 HEADER = HEADER_TEMPLATE.replace("{schedule_8}", SWAPPED)
 # The composed folder needs a form declaration beside the header; Schedule 8 is the imported form.
@@ -82,12 +85,18 @@ T1_EMPLOYMENT_INCOME_PARTS = form_part_names("t1_employment_income")
 BARE_HEADER = HEADER_TEMPLATE.replace("{schedule_8}", "ca/schedule_8")
 
 
-def schedule_8(take_home_service: TakeHomeService, salary: str, header: str = HEADER) -> Worksheet:
-    worksheets = take_home_service(header, FORM_PART, *T1_EMPLOYMENT_INCOME_PARTS).compute(
-        TaxCalculationRequest(
-            JurisdictionCode("CA-QC"), 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),)
-        )
-    )
+def schedule_8(
+    take_home_service: TakeHomeService,
+    salary: str,
+    header: str = HEADER,
+    birth_year: int | None = None,
+) -> Worksheet:
+    given: list[Artifact[Decimal] | Artifact[int]] = [Artifact(EMPLOYMENT_INCOME, D(salary))]
+    if birth_year is not None:
+        given.append(Artifact(BIRTH_YEAR, birth_year))
+    worksheets = take_home_service(
+        header, FORM_PART, *T1_EMPLOYMENT_INCOME_PARTS, *T1_BIRTH_YEAR_PARTS
+    ).compute(TaxCalculationRequest(JurisdictionCode("CA-QC"), 2025, tuple(given)))
     (sheet,) = worksheets["ca/schedule_8"]
     return sheet
 
@@ -218,3 +227,25 @@ def test_line_11_without_the_swap_is_the_federal_figure(take_home_service: TakeH
     sheet = schedule_8(take_home_service, "70000", BARE_HEADER)
 
     assert sheet.get(CPP_PART_3_LINE_11).value == D("3291.75")
+
+
+@pytest.mark.parametrize(("year", "line_11"), [(1952, "0.00"), (1930, "0.00")])
+def test_line_a_is_0_for_a_filer_73_or_older_at_the_end_of_2025(
+    take_home_service: TakeHomeService, year: int, line_11: str
+) -> None:
+    # 5005-S8 Part 1 condition c): "You were 73 years of age or older at the end of 2025 ... enter
+    # "0" on line A". Born in 1952 or earlier.
+    sheet = schedule_8(take_home_service, "70000", birth_year=year)
+
+    assert sheet.get(CPP_PART_3_LINE_11).value == D(line_11)
+
+
+@pytest.mark.parametrize("year", [1953, 1954, 1990])
+def test_a_filer_under_73_keeps_the_months_even_if_70_or_older(
+    take_home_service: TakeHomeService, year: int
+) -> None:
+    # Born in 1953 or 1954 is 71 or 72 at the end of 2025: the federal 70 rule does not apply to
+    # the Quebec form, which prints 73.
+    sheet = schedule_8(take_home_service, "70000", birth_year=year)
+
+    assert sheet.get(CPP_PART_3_LINE_11).value == D("3591.00")

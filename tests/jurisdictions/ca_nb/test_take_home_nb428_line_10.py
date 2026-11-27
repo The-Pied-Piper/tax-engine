@@ -74,8 +74,7 @@ FORM = dedent("""\
 
 
 def _part_files() -> Iterator[Path]:
-    for form in FEDERAL_FORM_NAMES:
-        yield from form_parts(form)
+    yield from form_parts(*FEDERAL_FORM_NAMES)
     for name in NB_PART_NAMES:
         yield NB_PARTS / name
 

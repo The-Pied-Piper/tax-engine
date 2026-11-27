@@ -248,7 +248,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_credits_form.yaml").write_text(CREDITS_FORM, encoding="utf-8")
     (folder / "02_form.yaml").write_text(FORM, encoding="utf-8")
-    for number, part in enumerate(_part_files(), start=3):
+    for number, part in enumerate(dict.fromkeys(_part_files()), start=3):
         (folder / f"{number:02d}_{part.name}").write_text(
             part.read_text(encoding="utf-8"),
             encoding="utf-8",

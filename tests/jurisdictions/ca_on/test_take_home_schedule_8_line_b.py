@@ -17,7 +17,7 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.deductions import (
     CPP_MAXIMUM_PENSIONABLE_EARNINGS,
-    CPP_MONTHS,
+    CPP_MONTHS_LINE_A,
 )
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
 
@@ -37,7 +37,7 @@ FORM = dedent("""\
       exports:
         - ca/cpp_maximum_pensionable_earnings
     inputs:
-      - name: ca/cpp_months
+      - name: ca/cpp_months_line_a
         required: false
         default: "12"
         basis: 'Enter "12" on line A below unless any of the following conditions apply'
@@ -57,8 +57,8 @@ def test_line_b_is_71300_for_the_default_twelve_months(take_home_service: TakeHo
 
 
 def test_line_b_is_71300_for_twelve_months_given(take_home_service: TakeHomeService) -> None:
-    assert line_b(take_home_service, Artifact(CPP_MONTHS, 12)) == D("71300.00")
+    assert line_b(take_home_service, Artifact(CPP_MONTHS_LINE_A, 12)) == D("71300.00")
 
 
 def test_line_b_is_the_printed_row_for_fewer_months(take_home_service: TakeHomeService) -> None:
-    assert line_b(take_home_service, Artifact(CPP_MONTHS, 7)) == D("41591.67")
+    assert line_b(take_home_service, Artifact(CPP_MONTHS_LINE_A, 7)) == D("41591.67")

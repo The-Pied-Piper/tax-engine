@@ -28,7 +28,7 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
 )
 from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
-from tests.jurisdictions.ca_qc.support import real_import
+from tests.jurisdictions.ca_qc.support import T1_BIRTH_YEAR_PARTS, real_import
 
 D = Decimal
 PARTS = (
@@ -88,7 +88,7 @@ FORM = (QUEBEC_PARTS / "t1_taxable_income.yaml").read_text(encoding="utf-8")
 def test_the_chain_of_a_salary_only_filer_ends_in_taxable_income(
     take_home_service: TakeHomeService, salary: str, line_57: str, line_70: str
 ) -> None:
-    worksheets = take_home_service(HEADER, FORM, *PARTS).compute(
+    worksheets = take_home_service(HEADER, FORM, *PARTS, *T1_BIRTH_YEAR_PARTS).compute(
         TaxCalculationRequest(
             JurisdictionCode("CA-QC"), 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),)
         )

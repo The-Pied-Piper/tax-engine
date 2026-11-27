@@ -146,7 +146,7 @@ def service(tmp_path: Path, exports: tuple[str, ...]) -> TaxComputationService:
         _form(tuple(dict.fromkeys((*exports, LINE_99)))), encoding="utf-8"
     )
     parts = [*form_parts(*FEDERAL_FORM_NAMES), *_part_names()]
-    for number, part in enumerate(parts, start=2):
+    for number, part in enumerate(dict.fromkeys(parts), start=2):
         (folder / f"{number:02d}_{part.name}").write_text(
             part.read_text(encoding="utf-8"), encoding="utf-8"
         )

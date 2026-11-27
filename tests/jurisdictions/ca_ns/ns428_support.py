@@ -155,7 +155,7 @@ def service(
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(_form(exports), encoding="utf-8")
-    for number, part in enumerate(_part_files(lines), start=2):
+    for number, part in enumerate(dict.fromkeys(_part_files(lines)), start=2):
         (folder / f"{number:02d}_{part.name}").write_text(
             part.read_text(encoding="utf-8"), encoding="utf-8"
         )

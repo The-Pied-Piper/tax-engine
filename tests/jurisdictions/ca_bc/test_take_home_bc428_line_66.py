@@ -80,7 +80,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
         *form_parts("t1_employment_income", "t1_lines_copied_by_provinces"),
         PART,
     ]
-    for number, found in enumerate(parts, start=2):
+    for number, found in enumerate(dict.fromkeys(parts), start=2):
         (folder / f"{number:02d}_{found.name}").write_text(
             found.read_text(encoding="utf-8"), encoding="utf-8"
         )

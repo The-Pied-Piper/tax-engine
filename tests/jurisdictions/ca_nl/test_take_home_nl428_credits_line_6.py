@@ -140,7 +140,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(FORM_TEXT, encoding="utf-8")
-    for number, (name, text) in enumerate(_part_files(), start=2):
+    for number, (name, text) in enumerate(dict.fromkeys(_part_files()), start=2):
         (folder / f"{number:02d}_{name}").write_text(text, encoding="utf-8")
     roots = {**newfoundland_packages().roots(), Namespace("ca-nl"): tmp_path}
     return TaxComputationService(

@@ -50,6 +50,9 @@ def test_the_federal_forms_are_imported_in_order_and_read_the_quebec_datasets() 
             "form": "ca/schedule_8",
             "datasets": {
                 "ca/cpp_line_11_base_contribution": "ca-qc/qpp_line_11_base_contribution",
+                "ca/cpp_not_70_or_older_all_year_conditions": (
+                    "ca-qc/qpp_not_73_or_older_conditions"
+                ),
             },
         },
         {

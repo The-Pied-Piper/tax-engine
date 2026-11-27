@@ -67,7 +67,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
     parts = [*form_parts("schedule_9"), *(SK_PARTS / name for name in PARTS)]
-    for number, part in enumerate(parts, start=2):
+    for number, part in enumerate(dict.fromkeys(parts), start=2):
         text = part.read_text(encoding="utf-8")
         (folder / f"{number:02d}_{part.name}").write_text(text, encoding="utf-8")
     roots = {**saskatchewan_packages().roots(), Namespace("ca-sk"): tmp_path}

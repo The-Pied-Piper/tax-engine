@@ -30,6 +30,14 @@ from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca.catalog.refund import T2204_PREMIUMS_DEDUCTED_GIVEN
 
+# The Quebec T1 birth year form, which supplies the year of birth to the federal forms that read it
+# (Schedule 8 line A), with the aged 65 or older flag it works out from it.
+T1_BIRTH_YEAR_PARTS = (
+    "t1_birth_year.yaml",
+    "t1_birth_year_inputs.yaml",
+    "t1_birth_year_age_65_or_older.yaml",
+)
+
 
 @cache
 def quebec_packages() -> JurisdictionPackages:

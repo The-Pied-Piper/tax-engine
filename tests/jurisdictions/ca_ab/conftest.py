@@ -75,7 +75,7 @@ def take_home_service(tmp_path: Path) -> TakeHomeService:
         folder.mkdir(parents=True)
         (folder / "00_header.yaml").write_text(header, encoding="utf-8")
         (folder / "01_form.yaml").write_text(form, encoding="utf-8")
-        for number, part in enumerate(parts, start=2):
+        for number, part in enumerate(dict.fromkeys(parts), start=2):
             found = next(TAKE_HOME.rglob(part))
             (folder / f"{number:02d}_{part}").write_text(
                 found.read_text(encoding="utf-8"),

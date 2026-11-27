@@ -1,0 +1,13 @@
+# Schedule 8 (5000-S8) Part 2 line A, 2025, condition g): "You were 70 years of age or older for all of 2025. Enter "0" on line A". A filer born in 1954 or earlier was 70 or older in every month of 2025 (born in 1955 turned 70 in 2025, condition f), which stays typed in). In the form wording turned round: the year is more than 1954, the count is 1 (CPP months kept), else 0.
+family: ca/cpp_not_70_or_older_all_year_conditions
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s8/5000-s8-25e.txt
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: You were born after 1954
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1954"}

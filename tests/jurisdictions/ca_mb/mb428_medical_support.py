@@ -71,7 +71,7 @@ def compute_line(
     (folder / "00_header.yaml").write_text(header, encoding="utf-8")
     (folder / "01_form.yaml").write_text(form, encoding="utf-8")
     parts = [*extra_parts, MB_PARTS / part]
-    for number, path in enumerate(parts, start=2):
+    for number, path in enumerate(dict.fromkeys(parts), start=2):
         (folder / f"{number:02d}_{path.name}").write_text(
             path.read_text(encoding="utf-8"), encoding="utf-8"
         )

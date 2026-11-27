@@ -33,6 +33,10 @@ EXCEPTIONS: dict[str, str | None] = {
     "ca/birth_year": None,
     "ca/age_65_or_older": None,
     "ca/t1_age_65_or_older": None,
+    "ca/schedule_8_birth_year": None,
+    "ca/cpp_not_under_18_all_year": None,
+    "ca/cpp_not_70_or_older_all_year": None,
+    "ca/cpp_months_line_a": "core/months",
     # The 0 or 1 flags of T2204 lines 1 and 15 are counts, not money.
     "ca/t2204_line_1_count": None,
     "ca/t2204_line_15_count": None,
@@ -118,7 +122,7 @@ def test_the_figures_are_found() -> None:
     expected = declared()
 
     assert len(expected) > 90
-    assert list(expected.values()).count("core/months") == 1
+    assert list(expected.values()).count("core/months") == 2
     assert list(expected.values()).count(CAD) > 90
     assert expected["ca/employment_income"] == CAD  # the salary, declared by the T1 income form
 

@@ -14,11 +14,34 @@ CPP_MONTHS = CountKind.declare(CATALOG, "cpp_months", non_negative=True)
 in 2025.": the key of the "Monthly proration for 2025" table, a count the filer enters ("Enter "12"
 on line A below unless any of the following conditions apply", conditions a) to h)).
 
-A starting count, not computed: the conditions are the filer's to apply. The table has a row for 1
-to 12 months only, so "0" (conditions b, d and g) and any other number is refused, not guessed.
-Part 1's election months (lines 50372 and 50374) only inform this count and feed no calculation
-line, so they are not inputs.
+A starting count: the filer's months for conditions the birth year cannot settle (b, c, d, e and h,
+and the birth-month years of a and f). The tables have a row for 0 to 12 months; any other number
+is refused, not guessed. Part 1's election months (lines 50372 and 50374) only inform this count
+and feed no calculation line, so they are not inputs. Line A itself is `ca/cpp_months_line_a`.
 """
+
+SCHEDULE_8_BIRTH_YEAR = CountKind.declare(CATALOG, "schedule_8_birth_year", non_negative=True)
+"""Year of birth, read by Schedule 8 Part 2 line A from the T1's `ca/birth_year`: blank when the
+filer left it out."""
+
+CPP_NOT_UNDER_18_ALL_YEAR = CountKind.declare(
+    CATALOG, "cpp_not_under_18_all_year", non_negative=True
+)
+"""0 when the filer was not yet 18 in any month of the tax year (born after the year that turns 18
+in the year before), else 1: from the year of birth, through `ca/count_by_conditions`. Not a line of
+the form."""
+
+CPP_NOT_70_OR_OLDER_ALL_YEAR = CountKind.declare(
+    CATALOG, "cpp_not_70_or_older_all_year", non_negative=True
+)
+"""0 when the filer was 70 or older for all of the tax year, Schedule 8 Part 2 condition g) "You
+were 70 years of age or older for all of 2025. Enter "0" on line A", else 1: from the year of
+birth, through `ca/count_by_conditions`. Not a line of the form."""
+
+CPP_MONTHS_LINE_A = CountKind.declare(CATALOG, "cpp_months_line_a", non_negative=True)
+"""Months that CPP applied, Schedule 8 Part 2 line A "Enter "12" on line A below unless any of the
+following conditions apply": the months in `ca/cpp_months` (12 unless typed) times the two flags
+above, so 0 when the year of birth shows 0 months and the typed or printed months otherwise."""
 
 
 CPP_MAXIMUM_PENSIONABLE_EARNINGS = AmountKind.declare(

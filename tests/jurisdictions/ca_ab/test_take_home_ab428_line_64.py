@@ -79,7 +79,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
         *form_parts("t1_employment_income", "t1_lines_copied_by_provinces"),
         PART,
     ]
-    for number, part in enumerate(parts, start=2):
+    for number, part in enumerate(dict.fromkeys(parts), start=2):
         text = part.read_text(encoding="utf-8")
         (folder / f"{number:02d}_{part.name}").write_text(text, encoding="utf-8")
     roots = {**alberta_packages().roots(), Namespace("ca-ab"): tmp_path}

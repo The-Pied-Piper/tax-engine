@@ -83,7 +83,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
         (PARTS_PATH / "bc428_line_16.yaml").read_text(encoding="utf-8"), encoding="utf-8"
     )
     extra = [
-        *(found for form in FEDERAL_FORM_NAMES for found in form_parts(form)),
+        *form_parts(*FEDERAL_FORM_NAMES),
         *(PARTS_PATH / name for name in AGE_PARTS),
     ]
     for number, found in enumerate(extra):

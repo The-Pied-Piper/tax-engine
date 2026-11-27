@@ -10,6 +10,6 @@ capabilities:
     params:
       table: ca/cpp_basic_exemption
     consumes:
-      count: ca/cpp_months
+      count: ca/cpp_months_line_a
     produces:
       output: ca/cpp_basic_exemption

@@ -15,7 +15,7 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog import (
     CPP_ADDITIONAL_MAXIMUM_PENSIONABLE_EARNINGS,
-    CPP_MONTHS,
+    CPP_MONTHS_LINE_A,
 )
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
 
@@ -34,7 +34,7 @@ form:
   exports:
     - ca/cpp_additional_maximum_pensionable_earnings
 inputs:
-  - name: ca/cpp_months
+  - name: ca/cpp_months_line_a
     required: false
     default: "12"
     basis: Enter "12" on line A below unless any of the following conditions apply
@@ -56,4 +56,4 @@ def test_line_d_is_the_twelve_month_figure_when_line_a_is_left_out(
 
 
 def test_line_d_is_the_row_for_the_months_on_line_a(take_home_service: TakeHomeService) -> None:
-    assert line_d(take_home_service, Artifact(CPP_MONTHS, 5)) == Decimal("33833.33")
+    assert line_d(take_home_service, Artifact(CPP_MONTHS_LINE_A, 5)) == Decimal("33833.33")

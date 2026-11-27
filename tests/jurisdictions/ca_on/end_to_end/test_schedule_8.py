@@ -47,6 +47,7 @@ from tax_engine.jurisdictions.ca.catalog.deductions import (
     SCHEDULE_8_CPP_ENHANCED_CONTRIBUTIONS_ON_RETURN,
 )
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.personal_amounts import BIRTH_YEAR
 from tax_engine.jurisdictions.ca.catalog.rc381_cpp_qpp import (
     T4_CPP_PENSIONABLE_EARNINGS_OUTSIDE_QUEBEC,
 )
@@ -104,10 +105,14 @@ def service(tmp_path: Path) -> TaxComputationService:
     )
 
 
-def schedule_8(tmp_path: Path, salary: str, months: int | None = None) -> Worksheet:
+def schedule_8(
+    tmp_path: Path, salary: str, months: int | None = None, birth_year: int | None = None
+) -> Worksheet:
     given: list[Artifact[Decimal] | Artifact[int]] = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if months is not None:
         given.append(Artifact(CPP_MONTHS, months))
+    if birth_year is not None:
+        given.append(Artifact(BIRTH_YEAR, birth_year))
     worksheets = service(tmp_path).compute(
         TaxCalculationRequest(JurisdictionCode("CA-ON"), 2025, tuple(given))
     )
@@ -243,11 +248,48 @@ def test_the_cent_lines_have_exactly_two_decimals(tmp_path: Path, salary: str) -
         assert result[line].as_tuple().exponent == -2, line
 
 
-def test_a_zero_month_request_is_refused(tmp_path: Path) -> None:
+def test_a_zero_month_request_gives_no_contributions(tmp_path: Path) -> None:
+    result = figures(schedule_8(tmp_path, "70000", 0))
+
+    assert result["B"] == D("0.00")
+    assert result["25"] == D("0.00")
+    assert result["28"] == D("0.00")
+
+
+def test_a_month_count_over_twelve_is_refused(tmp_path: Path) -> None:
     with pytest.raises(NoAmountForCountError):
-        schedule_8(tmp_path, "70000", 0)
+        schedule_8(tmp_path, "70000", 13)
 
 
 def test_a_negative_salary_is_refused(tmp_path: Path) -> None:
     with pytest.raises(NegativeArtifactError, match="ca/employment_income cannot be negative"):
         schedule_8(tmp_path, "-1")
+
+
+@pytest.mark.parametrize("year", [1954, 1930, 2008, 2015])
+def test_a_birth_year_with_no_cpp_months_all_year_gives_line_a_0(tmp_path: Path, year: int) -> None:
+    # Condition g): 70 or older for all of 2025 (born in 1954 or earlier), and not yet 18 in any
+    # month of 2025 (born in 2008 or later).
+    result = figures(schedule_8(tmp_path, "70000", birth_year=year))
+
+    assert result["B"] == D("0.00")
+    assert result["25"] == D("0.00")
+    assert result["28"] == D("0.00")
+
+
+@pytest.mark.parametrize("year", [1955, 1956, 1990, 2007])
+def test_a_birth_year_with_cpp_months_all_year_leaves_line_a_as_typed(
+    tmp_path: Path, year: int
+) -> None:
+    assert figures(schedule_8(tmp_path / "with", "70000", birth_year=year)) == figures(
+        schedule_8(tmp_path / "without", "70000")
+    )
+
+
+def test_the_typed_months_stay_for_a_birth_month_year(tmp_path: Path) -> None:
+    # Born in 1955 turned 70 in 2025 (condition f): the months are the filer's, here 5.
+    assert figures(schedule_8(tmp_path, "70000", 5, 1955))["B"] == D("29708.33")
+
+
+def test_the_birth_year_decides_the_whole_year_cases_over_typed_months(tmp_path: Path) -> None:
+    assert figures(schedule_8(tmp_path, "70000", 12, 1950))["B"] == D("0.00")

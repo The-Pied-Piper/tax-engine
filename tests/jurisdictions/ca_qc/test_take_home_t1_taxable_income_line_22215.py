@@ -24,7 +24,7 @@ from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_qc.catalog import T1_LINE_48
 from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_qc.conftest import TakeHomeService
-from tests.jurisdictions.ca_qc.support import real_import
+from tests.jurisdictions.ca_qc.support import T1_BIRTH_YEAR_PARTS, real_import
 
 D = Decimal
 PART = "t1_taxable_income_line_22215.yaml"
@@ -50,7 +50,9 @@ FORM = dedent("""\
 
 
 def line_48(take_home_service: TakeHomeService, salary: str) -> Decimal:
-    worksheets = take_home_service(HEADER, FORM, *T1_EMPLOYMENT_INCOME_PARTS, PART).compute(
+    worksheets = take_home_service(
+        HEADER, FORM, *T1_EMPLOYMENT_INCOME_PARTS, *T1_BIRTH_YEAR_PARTS, PART
+    ).compute(
         TaxCalculationRequest(
             JurisdictionCode("CA-QC"), 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),)
         ),

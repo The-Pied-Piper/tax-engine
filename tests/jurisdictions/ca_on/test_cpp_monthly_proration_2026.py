@@ -8,7 +8,8 @@ families is the Schedule 8 "Monthly proration" column for those figures: for n m
 annual figure x n / 12, rounded
 half-up to the cent. CALCULATED, so each file is provisional and its second line states the
 derivation. The same method reproduces every row of the 2025 files (annual figures 71,300, 9,900,
-81,200 and 3,500), and the 2026 files keep the 2025 row layout: keys 1 to 12, no row for 0.
+81,200 and 3,500), and the 2026 files keep the 2025 row layout: keys 0 to 12, the 0 row added
+(0 of 12 months).
 """
 
 from __future__ import annotations
@@ -92,7 +93,10 @@ def test_2026_table_is_the_calculated_column_for_months_1_to_12(column: int, fam
 
     assert data.tax_year == 2026
     assert data.values == AmountByCount(
-        tuple((months, D(row[column])) for months, row in CALCULATED.items())
+        (
+            (0, D("0.00")),
+            *((months, D(row[column])) for months, row in CALCULATED.items()),
+        )
     )
 
 
@@ -107,11 +111,11 @@ def test_2026_table_cites_t4127(family: str) -> None:
 
 
 @pytest.mark.parametrize("family", FAMILIES)
-def test_2026_table_has_the_2025_row_layout_months_1_to_12_and_no_row_for_0(family: str) -> None:
+def test_2026_table_has_the_2025_row_layout_months_0_to_12(family: str) -> None:
     rows_2026 = SOURCE.get(family, 2026, AMOUNT_BY_COUNT).values.rows
     rows_2025 = SOURCE.get(family, 2025, AMOUNT_BY_COUNT).values.rows
 
-    assert [months for months, _ in rows_2026] == list(range(1, 13))
+    assert [months for months, _ in rows_2026] == list(range(0, 13))
     assert [months for months, _ in rows_2026] == [months for months, _ in rows_2025]
 
 
@@ -170,7 +174,7 @@ def test_the_same_method_reproduces_every_row_of_the_2025_files(family: str) -> 
 
     # The check that the method is the one CRA printed: 71,300 x 1 / 12 = 5,941.6666...,
     # printed 5,941.67; 9,900 x 1 / 12 = 825.00; 81,200 x 1 / 12 = 6,766.6666..., printed 6,766.67.
-    assert len(data.values.rows) == 12
+    assert len(data.values.rows) == 13  # months 0 to 12; the 0 row is 0 of 12 months
     for months, amount in data.values.rows:
         assert CENT.apply(ANNUAL_2025[family] * months / 12) == amount
 
