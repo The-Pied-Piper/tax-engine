@@ -98,3 +98,14 @@ def test_a_salary_only_caller_has_the_federal_credits_of_the_listed_provinces() 
     assert _value(sheet, "ca/non_refundable_credit_amounts") == D("21969.23")
     assert _value(sheet, "ca/non_refundable_tax_credits") == D("3185.54")
     assert _value(sheet, "ca/credits_against_basic_federal_tax") == D("3185.54")
+
+
+def test_the_t1_exports_the_three_parts_of_line_48200() -> None:
+    sheet = _sheet("ca/t1_tax_and_credits", "20000")
+
+    for identifier in (
+        "ca/ei_overpayment_line_45000",
+        "ca/cwb_line_45300",
+        "ca/provincial_credits_line_47900",
+    ):
+        assert sheet.get(_kind(identifier)) is not None

@@ -15,7 +15,7 @@ capabilities:
       rounding: ca-nb/cent_rounding
     consumes:
       amount: ca-nb/nb428_tax_line_95
-      less: ca-nb/nb428_small_business_investor_credit_line_96
+      less: ca-nb/nb428_small_business_investor_credit_checked_line_96
     blank:
       less: "0"
     produces:

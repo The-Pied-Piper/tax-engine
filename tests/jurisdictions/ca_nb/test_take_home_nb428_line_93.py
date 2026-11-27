@@ -95,6 +95,7 @@ NB_PART_NAMES = (
     "nb428_line_86.yaml",
     "nb428_line_87.yaml",
     "nb428_line_92_input.yaml",
+    "nb428_line_92.yaml",
     "nb428_line_93.yaml",
 )
 
@@ -192,8 +193,8 @@ CASES: list[tuple[str, dict[str, str], dict[str, str]]] = [
         {"ca-nb/nb428_tax_line_93": "5576.89"},
     ),
     (
-        "30000",
-        {"ca-nb/nb428_political_contribution_credit_line_92": "10000.00"},
+        "20000",
+        {"ca-nb/nb428_political_contribution_credit_line_92": "100.00"},
         {"ca-nb/nb428_tax_line_93": "0.00"},
     ),
 ]
@@ -235,7 +236,7 @@ def test_the_part_names_the_form_and_has_its_steps() -> None:
             "params": {"rounding": "ca-nb/cent_rounding"},
             "consumes": {
                 "amount": "ca-nb/nb428_tax_line_87",
-                "less": "ca-nb/nb428_political_contribution_credit_line_92",
+                "less": "ca-nb/nb428_political_contribution_credit_checked_line_92",
             },
             "blank": {"less": "0"},
             "produces": {"output": "ca-nb/nb428_tax_line_93"},

@@ -95,10 +95,13 @@ NB_PART_NAMES = (
     "nb428_line_86.yaml",
     "nb428_line_87.yaml",
     "nb428_line_92_input.yaml",
+    "nb428_line_92.yaml",
     "nb428_line_93.yaml",
     "nb428_line_94_input.yaml",
+    "nb428_line_94.yaml",
     "nb428_line_95.yaml",
     "nb428_line_96_input.yaml",
+    "nb428_line_96.yaml",
     "nb428_line_97.yaml",
 )
 
@@ -202,8 +205,8 @@ CASES: list[tuple[str, dict[str, str], dict[str, str]]] = [
         {"ca-nb/nb428_new_brunswick_tax_line_97": "5076.89"},
     ),
     (
-        "30000",
-        {"ca-nb/nb428_small_business_investor_credit_line_96": "10000.00"},
+        "20000",
+        {"ca-nb/nb428_small_business_investor_credit_line_96": "300.00"},
         {"ca-nb/nb428_new_brunswick_tax_line_97": "0.00"},
     ),
 ]
@@ -245,7 +248,7 @@ def test_the_part_names_the_form_and_has_its_steps() -> None:
             "params": {"rounding": "ca-nb/cent_rounding"},
             "consumes": {
                 "amount": "ca-nb/nb428_tax_line_95",
-                "less": "ca-nb/nb428_small_business_investor_credit_line_96",
+                "less": "ca-nb/nb428_small_business_investor_credit_checked_line_96",
             },
             "blank": {"less": "0"},
             "produces": {"output": "ca-nb/nb428_new_brunswick_tax_line_97"},

@@ -364,3 +364,42 @@ NB428_NEW_BRUNSWICK_TAX_LINE_97 = AmountKind.declare(
 )
 """NB428 line 97 "Line 95 minus line 96 (if negative, enter "0")": the New Brunswick tax, entered on
 line 42800 of the return."""
+
+NB428_POLITICAL_CONTRIBUTION_CREDIT_MAXIMUM = AmountKind.declare(
+    CATALOG, "nb428_political_contribution_credit_maximum", non_negative=True
+)
+"""NB428 line 92 maximum, printed "(maximum $500)": the printed maximum, from the
+`ca-nb/political_contribution_credit_maximum` dataset; the bound line 92 cannot pass."""
+
+NB428_POLITICAL_CONTRIBUTION_CREDIT_CHECKED_LINE_92 = AmountKind.declare(
+    CATALOG, "nb428_political_contribution_credit_checked_line_92", non_negative=True
+)
+"""NB428 line 92, political contribution tax credit: the entered amount, passed on unchanged
+when it is at most the printed maximum, blank when left out; above the maximum it is refused,
+not capped."""
+
+NB428_LABOUR_SPONSORED_CREDIT_MAXIMUM = AmountKind.declare(
+    CATALOG, "nb428_labour_sponsored_credit_maximum", non_negative=True
+)
+"""NB428 line 94 maximum, printed "(maximum $2,000)": the printed maximum, from the
+`ca-nb/labour_sponsored_credit_maximum` dataset; the bound line 94 cannot pass."""
+
+NB428_LABOUR_SPONSORED_CREDIT_CHECKED_LINE_94 = AmountKind.declare(
+    CATALOG, "nb428_labour_sponsored_credit_checked_line_94", non_negative=True
+)
+"""NB428 line 94, labour-sponsored venture capital fund tax credit: the entered amount, passed on
+unchanged when it is at most the printed maximum, blank when left out; above the maximum it is
+refused, not capped."""
+
+NB428_SMALL_BUSINESS_INVESTOR_CREDIT_MAXIMUM = AmountKind.declare(
+    CATALOG, "nb428_small_business_investor_credit_maximum", non_negative=True
+)
+"""NB428 line 96 maximum, printed "(maximum $125,000)": the printed maximum, from the
+`ca-nb/small_business_investor_credit_maximum` dataset; the bound line 96 cannot pass."""
+
+NB428_SMALL_BUSINESS_INVESTOR_CREDIT_CHECKED_LINE_96 = AmountKind.declare(
+    CATALOG, "nb428_small_business_investor_credit_checked_line_96", non_negative=True
+)
+"""NB428 line 96, small business investor tax credit: the entered amount, passed on unchanged
+when it is at most the printed maximum, blank when left out; above the maximum it is refused,
+not capped."""

@@ -12,7 +12,7 @@ capabilities:
       rounding: ca-nb/cent_rounding
     consumes:
       amount: ca-nb/nb428_tax_line_87
-      less: ca-nb/nb428_political_contribution_credit_line_92
+      less: ca-nb/nb428_political_contribution_credit_checked_line_92
     blank:
       less: "0"
     produces:
