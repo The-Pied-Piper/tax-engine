@@ -1,0 +1,10 @@
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: carried forward unchanged from the 2025 file; the 2026 form is not yet published.
+# Age amount upper income limit, 2026 (Worksheet MB428, CRA 5007-D): "Line 58080 - Age amount (if you were born in 1960 or earlier)": "If the amount from line 23600 of your return is ... $52,602 or more, enter "0" on line 58080 of your Form MB428." The printed limit, claimed whole: the credit kind.
+family: ca-mb/age_amount_upper_limit
+tax_year: 2026
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5007-d/5007-d-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "52602.00"

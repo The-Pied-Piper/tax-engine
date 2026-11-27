@@ -95,9 +95,15 @@ def _expected(salary: str) -> Decimal:
 
 def _part_files() -> Iterator[Path]:
     yield from form_parts("t1_employment_income")
+    yield from form_parts("t1_taxable_income")
+    yield from form_parts("t1_lines_copied_by_provinces")
     yield from form_parts("schedule_8")
     yield from form_parts("t2204")
     yield SK_PARTS / "sk428_credits_line_9.yaml"
+    yield SK_PARTS / "sk428_credits_line_10_worksheet_lines_1_to_3.yaml"
+    yield SK_PARTS / "sk428_credits_line_10_worksheet_lines_4_to_7.yaml"
+    yield SK_PARTS / "sk428_credits_line_10.yaml"
+    yield SK_PARTS / "sk428_credits_line_19.yaml"
     yield SK_PARTS / "sk428_credits_line_20.yaml"
     yield SK_PARTS / "sk428_credits_line_22.yaml"
     yield SK_PARTS / "sk428_credits_line_24.yaml"

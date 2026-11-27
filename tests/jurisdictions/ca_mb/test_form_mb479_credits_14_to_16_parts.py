@@ -110,10 +110,7 @@ def test_the_input_part_declares_only_the_optional_number_defaulting_to_0(line: 
 def test_the_old_product_inputs_are_gone_from_the_line_17_inputs_part() -> None:
     names = [item["name"] for item in _load("mb479_line_17_inputs.yaml")["inputs"]]
 
-    assert names == [
-        "ca-mb/mb479_age_credit_line_8",
-        "ca-mb/mb479_eligible_dependant_credit_line_13",
-    ]
+    assert names == ["ca-mb/mb479_eligible_dependant_credit_line_13"]
 
 
 @pytest.mark.parametrize("line", LINES)

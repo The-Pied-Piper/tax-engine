@@ -61,6 +61,9 @@ LINE_31 = "ca-mb/mb428_pension_income_amount_line_31"
 FORM_NAME = "ca-mb/mb428_credits"
 CREDIT_PARTS = (
     "mb428_credits_line_9.yaml",
+    "mb428_credits_line_10_worksheet_lines_1_to_3.yaml",
+    "mb428_credits_line_10_worksheet_lines_4_to_7.yaml",
+    "mb428_credits_line_10.yaml",
     "mb428_credits_line_19.yaml",
     "mb428_credits_line_21.yaml",
     "mb428_credits_line_28.yaml",

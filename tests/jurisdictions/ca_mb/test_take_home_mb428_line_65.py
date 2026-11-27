@@ -89,6 +89,9 @@ IDENTIFIER = "ca-mb/mb428_tax_after_credits_line_65"
 CREDIT_PARTS = (
     *(f"mb428_credits_line_{n}.yaml" for n in (1, 3, 4, 5, 6, 7, 8)),
     "mb428_credits_line_9.yaml",
+    "mb428_credits_line_10_worksheet_lines_1_to_3.yaml",
+    "mb428_credits_line_10_worksheet_lines_4_to_7.yaml",
+    "mb428_credits_line_10.yaml",
     "mb428_credits_line_19.yaml",
     "mb428_credits_line_21.yaml",
     "mb428_credits_line_28.yaml",
@@ -115,6 +118,7 @@ CREDIT_PARTS = (
 )
 SCHEDULE_PARTS = (
     "mb428_a_line_1.yaml",
+    "mb428_a_line_4.yaml",
     "mb428_a_line_10.yaml",
     "mb428_a_line_11.yaml",
     "mb428_a_line_11_product.yaml",

@@ -6,7 +6,12 @@
 # Saskatchewan builds two forms, split so that no form reads another in a loop:
 # `ca-sk/sk428_credits` (SK428 lines 1 to 57) and `ca-sk/sk428` (SK428 lines 58 to 82), which
 # supplies `ca/provincial_tax.amount` for T1 line 42800. There is no worksheet and no MB479
-# equivalent: neither contributes a line for a salary-only filer.
+# equivalent: neither contributes a line for a salary-only filer. Only the age amount section of
+# Worksheet SK428 (5008-D) is built (SK428 line 10).
+#
+# Stated assumption: the filer was born in 1961 or later unless the optional `ca/birth_year` answer
+# (the T1's, read as an export) says otherwise (SK428 line 10, the age amount, and line 19, the senior supplementary amount, read
+# it); a blank year leaves both at 0.00.
 #
 # The default form's export is T1 line 167, refund or balance owing (positive is owing, negative
 # is a refund). Saskatchewan uses the standard federal CPP and EI (no QPP), so Schedule 8 and T2204
