@@ -1,7 +1,8 @@
 # BC428 (2025) line 25, the sum of lines 16, 17, 20, 23 and 24. Form BC428 (CRA 5010-c-25e): "Line
-# 25: Add lines 16, 17, 20, 23 and 24." The take-home filer claims no age, spouse, eligible
-# dependant or caregiver amounts (lines 17, 20, 23 and 24), so only line 16 (basic personal
-# amount, ca-bc/basic_personal_amount) is summed; a single part is still a sum, so the step is built.
+# 25: Add lines 16, 17, 20, 23 and 24." The take-home filer claims no spouse, eligible
+# dependant or caregiver amounts (lines 20, 23 and 24), so only line 16 (basic personal
+# amount, ca-bc/basic_personal_amount) and line 17 (age amount, 0.00 unless born in 1960 or earlier)
+# are summed.
 form:
   name: ca-bc/bc428
 capabilities:
@@ -11,6 +12,6 @@ capabilities:
     params:
       rounding: ca-bc/cent_rounding
     consumes:
-      parts: [ca-bc/basic_personal_amount]
+      parts: [ca-bc/basic_personal_amount, ca-bc/bc428_age_amount_line_17]
     produces:
       output: ca-bc/bc428_subtotal_line_25
