@@ -1,8 +1,6 @@
-"""The header of the Prince Edward Island 2025 manifest: the return's identity and its federal
-imports. It declares no outputs and no inputs yet (the return summary ticket sets the outputs and
-imports `ca/t1_tax_and_credits` with PE428 line 97, which supplies `ca/provincial_tax.amount`), and
-swaps no dataset on the federal Schedule 6, because the general Schedule 6 applies to Prince Edward
-Island."""
+"""The header of the Prince Edward Island 2025 manifest: the return's identity, its outputs and its
+federal imports. It declares no inputs yet and swaps no dataset on the federal Schedule 6, because
+the general Schedule 6 applies to Prince Edward Island."""
 
 from __future__ import annotations
 
@@ -39,10 +37,16 @@ def test_the_return_identity() -> None:
     assert header["title"] == "Return summary"
 
 
-def test_the_return_exports_nothing_yet_and_has_no_capabilities() -> None:
+def test_the_return_exports_the_refund_and_the_average_and_marginal_rates_and_no_capabilities() -> (
+    None
+):
     header = _header()
 
-    assert header["outputs"] == []
+    assert header["outputs"] == [
+        "ca/refund_or_balance_owing",
+        "ca-pe/average_tax_rate",
+        "ca-pe/marginal_tax_rate",
+    ]
     assert header["capabilities"] == []
 
 
@@ -50,12 +54,15 @@ def test_the_federal_forms_are_imported_in_order() -> None:
     assert _header()["imports"] == [
         "ca/t1_employment_income",
         "ca/t1_taxable_income",
+        "ca/t1_tax_and_credits",
         "ca/t1_lines_copied_by_provinces",
         "ca/schedule_6",
         "ca/schedule_8",
         "ca/schedule_9",
         "ca/t2204",
+        "ca/take_home_average_rate",
         "ca/t691",
+        "ca/take_home_marginal_rates",
     ]
 
 

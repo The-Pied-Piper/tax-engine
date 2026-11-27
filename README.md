@@ -9,7 +9,7 @@
 
 Tax rules live as data taken as printed from the tax authority's own forms. Each form line is one small, tested step. You can follow any figure back to the form line it came from. It powers the live take-home calculator at [aftertaxlens.com](https://aftertaxlens.com).
 
-Supported today: Canada (federal), Ontario, Alberta, British Columbia, Manitoba, Saskatchewan, Newfoundland and Labrador, Nova Scotia and Quebec, tax years 2025 and 2026 (2026 is provisional). More forms, lines, years and jurisdictions are added over time (see [Coverage](#coverage)).
+Supported today: Canada (federal), Ontario, Alberta, British Columbia, Manitoba, Saskatchewan, Newfoundland and Labrador, Nova Scotia, Prince Edward Island and Quebec, tax years 2025 and 2026 (2026 is provisional). More forms, lines, years and jurisdictions are added over time (see [Coverage](#coverage)).
 
 ## Example: a $70,000 salary (tax year 2025)
 
@@ -93,7 +93,7 @@ for form, form_sheets in sheets.items():
             print(sentence if line.label is None else f"{names.of_label(line.label)}: {sentence}")
 ```
 
-The example uses Ontario (`CA-ON`) and tax year 2025. Change `CA-ON` to `CA-AB` for Alberta, `CA-BC` for British Columbia, `CA-MB` for Manitoba, `CA-SK` for Saskatchewan, `CA-NL` for Newfoundland and Labrador, `CA-NS` for Nova Scotia or `CA-QC` for Quebec, and `2025` to `2026` for the provisional 2026 year.
+The example uses Ontario (`CA-ON`) and tax year 2025. Change `CA-ON` to `CA-AB` for Alberta, `CA-BC` for British Columbia, `CA-MB` for Manitoba, `CA-SK` for Saskatchewan, `CA-NL` for Newfoundland and Labrador, `CA-NS` for Nova Scotia, `CA-PE` for Prince Edward Island or `CA-QC` for Quebec, and `2025` to `2026` for the provisional 2026 year.
 
 ### Take-home pay
 
@@ -132,6 +132,7 @@ A jurisdiction's manifest lists the forms that make up a return. Each form is bu
 | Saskatchewan | 2025, 2026 (provisional) | SK428 (Saskatchewan tax) |
 | Newfoundland and Labrador | 2025, 2026 (provisional) | NL428 (Newfoundland and Labrador tax), Worksheet NL428 (age amount and disability amount for self) |
 | Nova Scotia | 2025, 2026 (provisional) | NS428 (Nova Scotia tax) |
+| Prince Edward Island | 2025, 2026 (provisional) | PE428 (Prince Edward Island tax) |
 | Quebec | 2025, 2026 (provisional) | CRA 5005-R (T1 for Quebec residents) with Schedules 6, 8 and T2204, and Revenu Quebec TP-1 with Work Charts 201 and 401 and Schedules B, F, K, P and U, plus the solidarity tax credit |
 
 Roadmap: more forms and lines, and the other provinces and territories. Forms are added one at a time, each built line by line from the CRA's own text.
@@ -140,7 +141,7 @@ Roadmap: more forms and lines, and the other provinces and territories. Forms ar
 
 tax-engine is not tax advice and is not an official CRA or Revenu Quebec product. It comes with no warranty, as the Apache-2.0 license says.
 
-It covers tax years 2025 and 2026 (2026 is provisional), Canada (federal), Ontario, Alberta, British Columbia, Manitoba, Saskatchewan, Newfoundland and Labrador, Nova Scotia and Quebec only, and only the forms and lines listed under Coverage. A return with items the engine does not model will not come out right. The take-home example assumes a single filer with salary as the only income.
+It covers tax years 2025 and 2026 (2026 is provisional), Canada (federal), Ontario, Alberta, British Columbia, Manitoba, Saskatchewan, Newfoundland and Labrador, Nova Scotia, Prince Edward Island and Quebec only, and only the forms and lines listed under Coverage. A return with items the engine does not model will not come out right. The take-home example assumes a single filer with salary as the only income.
 
 Check any result against the CRA's own forms (and Revenu Quebec's for Quebec) or with a professional before relying on it.
 

@@ -12,6 +12,7 @@ import tax_engine.jurisdictions.ca_mb
 import tax_engine.jurisdictions.ca_nl
 import tax_engine.jurisdictions.ca_ns
 import tax_engine.jurisdictions.ca_on
+import tax_engine.jurisdictions.ca_pe
 import tax_engine.jurisdictions.ca_qc
 import tax_engine.jurisdictions.ca_sk
 import tax_engine.jurisdictions.core
@@ -33,6 +34,7 @@ JURISDICTIONS = JurisdictionPackages(
         tax_engine.jurisdictions.ca_mb,
         tax_engine.jurisdictions.ca_nl,
         tax_engine.jurisdictions.ca_ns,
+        tax_engine.jurisdictions.ca_pe,
         tax_engine.jurisdictions.ca_sk,
         tax_engine.jurisdictions.ca_qc,
     )

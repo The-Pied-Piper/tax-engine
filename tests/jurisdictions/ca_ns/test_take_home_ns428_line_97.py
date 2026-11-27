@@ -4,8 +4,8 @@ Form text (Form NS428, CRA 5003-C, confirmed 26 Nov 2026 from CRA's PDF): "Line 
 line 96 (if negative, enter "0")". One core/subtract_not_below_zero step (`ns428_line_97.yaml`),
 rounded half-up to the cent by `ca-ns/cent_rounding`. The form prints the floor, so the result is
 not below 0. Line 96 is an optional input, read as 0 when blank. The form prints no title for
-the line, so the step is untitled. Figures are hand-computed from the printed form (not a CRA example): line
-85 is 552.33 / 7,213.10 at salaries of 20,000 / 70,000.
+the line, so the step is untitled. Figures are hand-computed from the printed form (not a CRA
+example): line 85 is 552.33 / 7,213.10 at salaries of 20,000 / 70,000.
 """
 
 from __future__ import annotations
