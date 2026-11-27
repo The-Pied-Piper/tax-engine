@@ -55,7 +55,7 @@ def test_the_age_65_part_works_out_the_flag_from_the_year_with_the_tax_year_cuto
     assert part["form"] == {"name": "ca-qc/t1_birth_year"}
     (step,) = part["capabilities"]
     assert step["name"] == "ca/count_by_conditions"
-    assert step["params"] == {"conditions": "ca/age_65_or_older_conditions"}
+    assert step["params"] == {"conditions": "ca-qc/age_65_or_older_conditions"}
     assert step["consumes"] == {"counts": ["ca/birth_year"], "amounts": []}
     assert step["blank"] == {"counts": "pass_on"}
     assert step["produces"] == {"output": "ca/age_65_or_older"}

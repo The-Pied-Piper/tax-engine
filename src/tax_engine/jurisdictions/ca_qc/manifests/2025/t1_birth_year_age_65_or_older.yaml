@@ -1,15 +1,11 @@
-# Aged 65 or older at the end of the tax year, worked out once from the T1's year of birth
-# (`ca/birth_year`, this form's input, as the federal T1 form of the lines the provinces copy does). Every age line that prints "if you were born in 1960 or
-# earlier" (T1 line 78 and the provincial age amounts and credits) is the same test, so it is made
-# here, exported as `ca/age_65_or_older` (1 or 0; blank when the year is blank) and read by each of
-# those forms; the cutoff year is the dataset's, 1960 for 2025 and 1961 for 2026. Not a line of the form.
+# Aged 65 or older at the end of the tax year, worked out once from the year of birth (`ca/birth_year`, this form's input). Built as the federal T1 form of the lines the provinces copy builds it, but with Quebec's own conditions dataset: the Quebec return does not use the federal T1 forms. Every Quebec age line that prints "if you were born in 1960 or earlier" (5005-R line 79 and Schedule B line 22) is the same test, so it is made here, exported as `ca/age_65_or_older` (1 or 0; blank when the year is blank) and read by each; the cutoff year is the dataset's, 1960 for 2025 and 1961 for 2026. Not a line of the form.
 form:
   name: ca-qc/t1_birth_year
 capabilities:
   - name: ca/count_by_conditions
     title: Aged 65 or older at the end of the year
     params:
-      conditions: ca/age_65_or_older_conditions
+      conditions: ca-qc/age_65_or_older_conditions
     consumes:
       counts:
         - ca/birth_year
