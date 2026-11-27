@@ -13,12 +13,17 @@ import yaml
 
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.kinds import AmountKind
+from tax_engine.jurisdictions.ca.catalog.personal_amounts import BIRTH_YEAR
 from tax_engine.jurisdictions.ca_qc.catalog import (
     SCHEDULE_B_LINE_30,
     SCHEDULE_B_LIVED_ALONE_LINE_20,
 )
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
-from tests.jurisdictions.ca_qc.schedule_b_support import LINE_20_PARTS, schedule_b_sheet
+from tests.jurisdictions.ca_qc.schedule_b_support import (
+    LINE_20_PARTS,
+    LINE_22_PARTS,
+    schedule_b_sheet,
+)
 from tests.jurisdictions.ca_qc.support import quebec_kinds
 from tests.kinds import non_negative
 
@@ -26,7 +31,7 @@ PART = "schedule_b_line_30.yaml"
 FORM = "ca-qc/schedule_b"
 IDENTIFIER = "ca-qc/schedule_b_line_30"
 EXPORTS = (IDENTIFIER,)
-PARTS = (*LINE_20_PARTS, PART)
+PARTS = (*LINE_20_PARTS, *LINE_22_PARTS, PART)
 
 
 def line_30(take_home_service: TakeHomeService, salary: str, *given: Artifact[Any]) -> str:
@@ -68,7 +73,7 @@ def test_the_part_is_one_sum_of_line_20_alone() -> None:
         "reference": "30",
         "unit": "ca/cad",
         "params": {"rounding": "ca-qc/cent_rounding"},
-        "consumes": {"parts": ["ca-qc/schedule_b_line_20"]},
+        "consumes": {"parts": ["ca-qc/schedule_b_line_20", "ca-qc/schedule_b_line_22"]},
         "produces": {"output": IDENTIFIER},
     }
 
@@ -77,3 +82,17 @@ def test_the_output_kind_is_a_registered_non_negative_amount() -> None:
     assert quebec_kinds().kind(IDENTIFIER) is SCHEDULE_B_LINE_30
     assert isinstance(SCHEDULE_B_LINE_30, AmountKind)
     assert non_negative(SCHEDULE_B_LINE_30)
+
+
+def test_line_30_is_line_22_when_born_in_1960_or_earlier_and_not_alone(
+    take_home_service: TakeHomeService,
+) -> None:
+    assert line_30(take_home_service, "70000", Artifact(BIRTH_YEAR, 1960)) == "3906.00"
+
+
+def test_line_30_adds_lines_20_and_22_when_alone_and_born_in_1960_or_earlier(
+    take_home_service: TakeHomeService,
+) -> None:
+    given = (Artifact(BIRTH_YEAR, 1960), Artifact(SCHEDULE_B_LIVED_ALONE_LINE_20, 1))
+
+    assert line_30(take_home_service, "70000", *given) == "6034.00"

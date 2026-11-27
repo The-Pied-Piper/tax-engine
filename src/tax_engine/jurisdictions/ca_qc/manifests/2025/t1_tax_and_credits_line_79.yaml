@@ -1,0 +1,36 @@
+# 5005-R (2025) line 79 and line 30100: "Age amount (if you were born in 1960 or earlier) (use Federal Worksheet) (maximum $9,028)" (page 5). Built as the federal T1 line 78 is (Umar, 27 Nov 2026): a core/first_record_count step that reads the "aged 65 or older" flag of the T1 identification form (`ca-qc/t1_birth_year.age_65_or_older`, worked out once from the year of birth; blank passes on, read as 0 by the step below; not a line of the form), a core/times_count step of worksheet line 7 by that count (blank read as 0), and a core/at_most step that checks the printed maximum (worksheet line 1) and is line 79. An amount above the maximum is refused, not capped. Worksheet lines 1 to 7 are in the two parts beside this one. The guide 5000-G says "65 years of age or older on December 31, 2025", the form "born in 1960 or earlier": the same filers. Replaces the optional typed-in amount `ca-qc/age_amount_line_79`.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/first_record_count
+    title: Aged 65 or older
+    consumes:
+      records: ca-qc/t1_birth_year.age_65_or_older
+    blank:
+      records:
+        ca/age_65_or_older: pass_on
+    produces:
+      output: ca-qc/age_65_or_older_line_79
+  - name: core/times_count
+    title: Age amount before the printed maximum
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca/age_amount_before_count
+      count: ca-qc/age_65_or_older_line_79
+    produces:
+      output: ca/age_amount_claimed
+    blank:
+      count: "0"
+  - name: core/at_most
+    title: Age amount
+    reference: "30100"
+    unit: ca/cad
+    consumes:
+      amount: ca/age_amount_claimed
+      bound: ca/age_maximum
+    blank:
+      amount: pass_on
+    produces:
+      output: ca-qc/age_amount_line_79

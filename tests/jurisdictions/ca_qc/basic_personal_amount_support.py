@@ -13,6 +13,7 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.personal_amounts import BIRTH_YEAR
 from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
 from tests.jurisdictions.ca_qc.support import real_import
@@ -47,7 +48,12 @@ PPIP_PARTS = (
     "ppip_premium_line_91.yaml",
 )
 LINE_85_INPUT_PARTS = (
-    "t1_tax_and_credits_line_30100_inputs.yaml",
+    "t1_birth_year.yaml",
+    "t1_birth_year_inputs.yaml",
+    "t1_birth_year_age_65_or_older.yaml",
+    "t1_tax_and_credits_line_79_worksheet_lines_1_to_3.yaml",
+    "t1_tax_and_credits_line_79_worksheet_lines_4_to_7.yaml",
+    "t1_tax_and_credits_line_79.yaml",
     "t1_tax_and_credits_line_30300_inputs.yaml",
     "t1_tax_and_credits_line_30400_inputs.yaml",
     "t1_tax_and_credits_line_30425_inputs.yaml",
@@ -199,17 +205,22 @@ FORM = (QUEBEC_PARTS / "t1_tax_and_credits.yaml").read_text(encoding="utf-8")
 
 
 def sheets(
-    take_home_service: TakeHomeService, salary: str, *given: tuple[AmountKind, str]
+    take_home_service: TakeHomeService,
+    salary: str,
+    *given: tuple[AmountKind, str],
+    birth_year: int | None = None,
+    tax_year: int = 2025,
 ) -> tuple[Worksheet, Worksheet]:
     """The T1 taxable-income sheet and the tax and credits sheet for `salary`, with the optional
     figures in `given` (a kind and its figure) typed in."""
     worksheets = take_home_service(HEADER, FORM, *PARTS).compute(
         TaxCalculationRequest(
             JurisdictionCode("CA-QC"),
-            2025,
+            tax_year,
             (
                 Artifact(EMPLOYMENT_INCOME, D(salary)),
                 *(Artifact(kind, D(figure)) for kind, figure in given),
+                *(() if birth_year is None else (Artifact(BIRTH_YEAR, birth_year),)),
             ),
         ),
     )

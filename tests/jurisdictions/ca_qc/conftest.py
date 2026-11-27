@@ -49,7 +49,13 @@ def take_home_service(tmp_path: Path) -> TakeHomeService:
         (folder / "01_form.yaml").write_text(form, encoding="utf-8")
         # Schedule 8 line A reads the year of birth, which Quebec's T1 birth year form supplies.
         needed = (
-            ("t1_birth_year.yaml", "t1_birth_year_inputs.yaml") if "ca/schedule_8" in header else ()
+            (
+                "t1_birth_year.yaml",
+                "t1_birth_year_inputs.yaml",
+                "t1_birth_year_age_65_or_older.yaml",
+            )
+            if "ca/schedule_8" in header
+            else ()
         )
         # A part named twice (a chain that several lists of a test share) is copied once.
         for number, part in enumerate(dict.fromkeys((*parts, *needed)), start=2):

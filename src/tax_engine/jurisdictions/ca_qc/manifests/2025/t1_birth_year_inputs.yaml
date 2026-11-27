@@ -1,6 +1,5 @@
-# 5005-R (2025) input a salary-only caller does not give: the filer's date of birth, as the year of
-# birth. The engine takes the year (Umar, 27 Nov 2026) and works out each form's "if you were born in
-# 19xx or earlier" and Schedule 8 line A from it. A request that leaves it out is read as blank.
+# T1 (5005-R, 2025) input a salary-only caller does not give: the filer's year of birth.
+# The T1 asks for the date of birth in "Step 1 - Identification and other information" (guide 5000-G, "Line 30100 - Age amount": "Enter your date of birth in the "Step 1 - Identification and other information" area on page 1 of your return."). The engine takes the year (Umar, 27 Nov 2026) and works out each form's "if you were born in 19xx or earlier" from it. The Quebec return does not import the federal T1 forms, so this form owns the year and exports it (`ca/birth_year`, one count, blank when left out): 5005-R line 79 and Schedule B line 22 read the export and never ask again (Umar, 20 Nov 2026: a line is an input only for the form it belongs to).
 form:
   name: ca-qc/t1_birth_year
 inputs:

@@ -1,0 +1,25 @@
+# Federal Worksheet 5000-D1 (CRA 5000-D1-25E), "Line 30100 - Age amount", lines 1 to 3, used by 5005-R line 79 and line 30100: "Line 1: Maximum amount 9,028.00", "Line 2: Amount from line 23600 of your return", "Line 3: Income threshold 45,522.00". One step per worksheet line, built as the federal T1 line 78 worksheet and Worksheet NS428 are (Umar, 27 Nov 2026: every age worksheet is built the same way), with the federal printed figures (`ca/age_maximum`, `ca/age_income_threshold`), the same on the Quebec return. The worksheet is built inside form ca-qc/t1_tax_and_credits, so its steps carry plain-words titles and no reference. Line 2 reads the Quebec T1 net income record list; lines 1 and 3 are printed dataset figures.
+form:
+  name: ca-qc/t1_tax_and_credits
+capabilities:
+  - name: core/credit_amount
+    title: 'Federal Worksheet age amount line 1: maximum amount'
+    unit: ca/cad
+    params:
+      amount: ca/age_maximum
+    produces:
+      output: ca/age_maximum
+  - name: core/record_total
+    title: 'Federal Worksheet age amount line 2: amount from line 23600'
+    unit: ca/cad
+    consumes:
+      records: ca-qc/t1_taxable_income.net_income
+    produces:
+      output: ca/age_net_income
+  - name: core/credit_amount
+    title: 'Federal Worksheet age amount line 3: income threshold'
+    unit: ca/cad
+    params:
+      amount: ca/age_income_threshold
+    produces:
+      output: ca/age_income_threshold

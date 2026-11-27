@@ -33,5 +33,8 @@ def test_the_form_exports_the_year_and_supplies_it_to_the_t1_holders_record_list
     form = _load("t1_birth_year.yaml")["form"]
 
     assert form["name"] == "ca-qc/t1_birth_year"
-    assert form["exports"] == ["ca/birth_year"]
-    assert form["supplies"] == {"ca/t1_lines_copied_by_provinces.birth_year": "ca/birth_year"}
+    assert form["exports"] == ["ca/birth_year", "ca/age_65_or_older"]
+    assert form["supplies"] == {
+        "ca/t1_lines_copied_by_provinces.birth_year": "ca/birth_year",
+        "ca/t1_lines_copied_by_provinces.age_65_or_older": "ca/age_65_or_older",
+    }

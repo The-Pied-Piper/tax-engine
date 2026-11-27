@@ -89,4 +89,16 @@ LINE_20_PARTS = (
     "schedule_b_line_20_input.yaml",
     "schedule_b_line_20.yaml",
 )
-LINE_31_PARTS = (*LINE_20_PARTS, "schedule_b_line_30.yaml", "schedule_b_line_31.yaml")
+# Schedule B line 22 reads the year of birth from the T1 identification form's export.
+LINE_22_PARTS = (
+    "t1_birth_year.yaml",
+    "t1_birth_year_inputs.yaml",
+    "t1_birth_year_age_65_or_older.yaml",
+    "schedule_b_line_22.yaml",
+)
+LINE_31_PARTS = (
+    *LINE_20_PARTS,
+    *LINE_22_PARTS,
+    "schedule_b_line_30.yaml",
+    "schedule_b_line_31.yaml",
+)
