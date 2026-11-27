@@ -12,8 +12,8 @@ and each rate is the hand-worked figure of `test_return_marginal_tax_rate_values
 salary pins the structure: the gates are 0 or 1 and open with the amounts they read, the provincial
 part is its gate times its rate, and the total is the exact sum of the three parts.
 
-- line 97 is 0.00 at a salary of 23,361.78 and 0.01 at 23,361.79; line 86 is 0.01 at 49,109.08 and
-  0.00 at 49,109.09; in between the provincial part is 9.4% x 0.99 - 9.4% x 0.0658 + 3% x 0.99 =
+- line 97 is 0.00 at a salary of 23,611.70 and 0.01 at 23,611.71; line 86 is 0.01 at 50,090.39 and
+  0.00 at 50,090.40; in between the provincial part is 9.4% x 0.99 - 9.4% x 0.0658 + 3% x 0.99 =
   0.1165748, and after it 0.0868748.
 
 The engine rounds the marginal tax rate half-up to 0.0001 like the average rate

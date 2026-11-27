@@ -23,16 +23,20 @@ PARAMETER_PARSERS = ParameterParserRegistry()
 JurisdictionPackages((tax_engine.jurisdictions.core,)).register_parameter_parsers(PARAMETER_PARSERS)
 SOURCE = YamlParameterSource({Namespace("ca-nb"): NEW_BRUNSWICK_DIR}, PARAMETER_PARSERS)
 FAMILY = "ca-nb/low_income_reduction_basic"
-SOURCES = ("https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5004-c/5004-c-25e.txt",)
+SOURCES = (
+    "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5004-c/5004-c-25e.txt",
+    "https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf",
+)
 PROVISIONAL_HEADER = (
     "# Provisional: indexed from the 2025 form text named in sources; to be confirmed aga"
     "inst the 2026 form text when CRA publishes it."
 )
 DERIVATION_HEADER = (
     "# Derivation: NB indexes this figure every year (NB428 2016 to 2025); the 2026 index"
-    " factor is 2.0%, the same factor that takes the 2025 basic personal amount 13,396 to"
-    " the 13,664 printed in T4127 (Jan 2026) Table 8.2: 2025 basic reduction 802 x 1.02 ="
-    " 818.04, rounded to the nearest dollar, a half going up, to 818; unconfirmed, as no "
+    " factor is 2.0%, the factor T4127 (Jan 2026) Table 8.2 prints for New Brunswick (it "
+    "takes the 2025 basic personal amount 13,396 to the printed 13,664): 2025 basic reduc"
+    "tion 802 x 1.02 = 818.04, rounded to the nearest dollar, a half going up (the projec"
+    "t's rounding for indexed amounts; the forms print none), to 818; unconfirmed, as no "
     "2026 NB428 is published and T4127 (Jan and Jul 2026) does not print it."
 )
 
