@@ -1,15 +1,13 @@
 # Form NB428 New Brunswick Tax 2025 (CRA 5004-C), lines 1 to 97. This part names the form and its
 # exports; line parts carry capabilities. Lines 54, 57 and 59 are copies (of lines 8, 53 and 58) and
-# have no step, so the lines after them read lines 8, 53 and 58 directly. Line 87
-# (`ca-nb/nb428_tax_line_87`), the New Brunswick tax after the low-income reduction, is exported
-# until the lines that follow read it. Line 97, the New Brunswick tax that goes to T1 line 42800,
-# is exported and supplied as `ca/provincial_tax.amount`, the name the federal T1 reads.
+# have no step, so the lines after them read lines 8, 53 and 58 directly. Line 97, the New
+# Brunswick tax that goes to T1 line 42800, is exported and supplied as `ca/provincial_tax.amount`,
+# the name the federal T1 reads; the lines before it are read by the lines that follow them.
 form:
   name: ca-nb/nb428
   title: "Form NB428: New Brunswick Tax and Credits"
   required: true
   exports:
-    - ca-nb/nb428_tax_line_87
     - ca-nb/nb428_new_brunswick_tax_line_97
   supplies:
     ca/provincial_tax.amount: ca-nb/nb428_new_brunswick_tax_line_97
