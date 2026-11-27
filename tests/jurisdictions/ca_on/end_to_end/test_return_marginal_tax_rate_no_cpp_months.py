@@ -10,8 +10,9 @@ Hand-computed, 2026, salary only, no CPP: $2,000 is the first dollar of EI insur
 the income, so no income tax: 0.0163.
 Born 2010 federal tax is paid on the whole dollar (no CPP is deducted) at 14%, less the credit on
 the EI premium (14% x 1.63%), plus the EI itself: 0.14 - 0.002282 + 0.0163 = 0.1540 (Ontario tax
-has not started). At $70,000 EI has stopped (maximum $68,900):
-federal 20.5% plus Ontario 9.15%, each on the whole dollar since no CPP is deducted: 0.2965.
+has not started). Born 2010 at $70,000 EI has stopped (maximum
+$68,900): federal 20.5% plus Ontario 9.15%, each on the whole dollar since no CPP is deducted:
+0.2965.
 """
 
 from __future__ import annotations
@@ -29,9 +30,17 @@ from tax_engine.jurisdictions.ca.catalog.personal_amounts import BIRTH_YEAR
 from tests.kinds import bundled_kinds
 
 D = Decimal
-SALARIES = ["0", "2000", "2033", "20000", "70000"]
-NO_CPP = {"0": "0", "2000": "1", "2033": "1", "20000": "0.0163", "70000": "0.2965"}
-NO_CPP_2010_AT_20000 = "0.1540"
+# (birth year, salary, rate). Born 1955 at $70,000 is left out: the age amount is still partly
+# allowed there and its phase-out, which the marginal rate does not model yet, adds to the rate.
+CASES = [
+    (year, salary, rate)
+    for year in (1955, 2010)
+    for salary, rate in (("0", "0"), ("2000", "1"), ("2033", "1"))
+] + [
+    (1955, "20000", "0.0163"),
+    (2010, "20000", "0.1540"),
+    (2010, "70000", "0.2965"),
+]
 
 
 def _marginal(birth_year: int, salary: str) -> Decimal:
@@ -48,14 +57,11 @@ def _marginal(birth_year: int, salary: str) -> Decimal:
     return value
 
 
-@pytest.mark.parametrize("birth_year", [1955, 2010])
-@pytest.mark.parametrize("salary", SALARIES)
+@pytest.mark.parametrize(("birth_year", "salary", "rate"), CASES)
 def test_the_marginal_rate_of_a_filer_with_no_cpp_months_has_no_cpp_in_it(
-    birth_year: int, salary: str
+    birth_year: int, salary: str, rate: str
 ) -> None:
-    expected = NO_CPP_2010_AT_20000 if (birth_year, salary) == (2010, "20000") else NO_CPP[salary]
-
-    assert _marginal(birth_year, salary).quantize(D("0.0001")) == D(expected)
+    assert _marginal(birth_year, salary).quantize(D("0.0001")) == D(rate)
 
 
 @pytest.mark.parametrize("salary", ["20000", "70000"])
