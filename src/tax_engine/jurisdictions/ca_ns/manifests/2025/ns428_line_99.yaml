@@ -2,7 +2,7 @@
 # enter "0") Enter this amount on line 42800 of your return. Nova Scotia tax". Line 98 is the age
 # tax credit, not built: the filer is assumed born in 1961 or later (the manifest header states it),
 # so line 98 is 0 and line 99 is line 97 not below 0. One core/sum_not_below_zero step with the one
-# part, line 97 (`ca-ns/ns428_tax_line_97`, signed), floors it, rounded half-up to the cent by the
+# part, line 97 (`ca-ns/ns428_tax_line_97`), floors it, rounded half-up to the cent by the
 # dataset's rule. Line 99 is the output `ca-ns/ns428_nova_scotia_tax_line_99`, the tax entered on
 # line 42800, supplied through the form's `ca/provincial_tax.amount` in ns428.yaml.
 form:

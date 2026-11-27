@@ -230,7 +230,8 @@ def test_quebec_takes_off_both_returns_the_pension_plan_ei_and_qpip(
 
 
 @pytest.mark.parametrize(
-    "code", ["CA-ON", "CA-AB", "CA-BC", "CA-MB", "CA-NL", "CA-PE", "CA-SK", "CA-QC"]
+    "code",
+    ["CA-ON", "CA-AB", "CA-BC", "CA-MB", "CA-NL", "CA-NS", "CA-PE", "CA-SK", "CA-QC"],
 )
 @pytest.mark.parametrize("year", [2025, 2026])
 @pytest.mark.parametrize("salary", ["0", "100", "2050", "70000", "250000"])
