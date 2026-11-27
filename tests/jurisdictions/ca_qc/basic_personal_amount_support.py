@@ -48,7 +48,7 @@ PPIP_PARTS = (
 )
 LINE_85_INPUT_PARTS = (
     "t1_tax_and_credits_line_30100_inputs.yaml",
-    "t1_tax_and_credits_birth_year_input.yaml",
+    "t1_tax_and_credits_birth_year_inputs.yaml",
     "t1_tax_and_credits_line_30300_inputs.yaml",
     "t1_tax_and_credits_line_30400_inputs.yaml",
     "t1_tax_and_credits_line_30425_inputs.yaml",

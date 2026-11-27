@@ -97,7 +97,7 @@ T1_BIRTH_YEAR_DECLARATION = (
     "form:\n  name: ca-qc/t1_tax_and_credits\n  required: true\n  exports:\n    - ca/birth_year\n"
 )
 LINE_22_PARTS = (
-    "t1_tax_and_credits_birth_year_input.yaml",
+    "t1_tax_and_credits_birth_year_inputs.yaml",
     "schedule_b_line_22.yaml",
 )
 LINE_31_PARTS = (

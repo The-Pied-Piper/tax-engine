@@ -13,7 +13,14 @@ import pytest
 import yaml
 
 import tax_engine.jurisdictions.ca_qc as ca_qc_package
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.kinds import CountKind
+from tax_engine.domain.parameters.conditions import CONDITIONS
+from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
+from tests.jurisdictions.ca_qc.support import quebec_packages, quebec_parameter_parsers
 
+SOURCE = YamlParameterSource(quebec_packages().roots(), quebec_parameter_parsers())
 FAMILY = "ca-qc/schedule_b_line_22_conditions"
 PATH = (
     Path(ca_qc_package.__file__).parent
@@ -63,22 +70,14 @@ def test_the_2026_file_is_provisional_and_states_its_derivation() -> None:
     assert lines[1] == DERIVATION_HEADER
 
 
+BIRTH_YEAR = CountKind("ex/birth_year")
+BORN = CountKind("ex/born_before_1962")
+
+
 @pytest.mark.parametrize(("year", "count"), [(1960, 1), (1961, 1), (1962, 0), (1990, 0)])
 def test_the_2026_cutoff_is_65_on_31_december_2026(year: int, count: int) -> None:
-    from decimal import Decimal
+    capability = CountByConditions(SOURCE.get(FAMILY, 2026, CONDITIONS), (BIRTH_YEAR,), (), BORN)
 
-    from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-    from tax_engine.domain.artifact import Artifact
-    from tax_engine.domain.kinds import CountKind
-    from tax_engine.domain.parameters.conditions import CONDITIONS
-    from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
-    from tests.jurisdictions.ca_qc.support import quebec_packages, quebec_parameter_parsers
-
-    assert Decimal(year)
-    source = YamlParameterSource(quebec_packages().roots(), quebec_parameter_parsers())
-    born, given = CountKind("ex/birth_year"), CountKind("ex/born")
-    capability = CountByConditions(source.get(FAMILY, 2026, CONDITIONS), (born,), (), given)
-
-    (output,) = capability.compute((Artifact(born, year),)).outputs
+    (output,) = capability.compute((Artifact(BIRTH_YEAR, year),)).outputs
 
     assert output.value == count
