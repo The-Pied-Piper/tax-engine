@@ -7,14 +7,17 @@ from __future__ import annotations
 
 from decimal import Decimal
 
-import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.parameters.rate import RATE, Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tests.jurisdictions.ca_bc.support import (
+    british_columbia_packages,
+    british_columbia_parameter_parsers,
+)
 
 D = Decimal
 SOURCE = YamlParameterSource(
-    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+    british_columbia_packages().roots(), british_columbia_parameter_parsers()
 )
 FAMILY = "ca-bc/age_rate"
 CRA_FORM_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5010-d/5010-d-25e.txt"

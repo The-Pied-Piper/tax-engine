@@ -1,7 +1,8 @@
 """The 2026 conditions of ON428's "born in 1960 or earlier" count, checked against CRA's ON428 text.
 
-Form ON428 (5006-c-25e.txt) line 10: "if you were born in 1960 or earlier". The dataset
-`ca-on/born_in_1960_or_earlier_conditions` has one condition on the year of birth (count 1), turned
+Form ON428 (5006-c-25e.txt) line 10: "if you were born in 1960 or earlier" (2025; the 2026 cutoff
+1961 is derived: age 65 on 31 December, not printed). The dataset `ca-
+on/born_in_1960_or_earlier_conditions` has one condition on the year of birth (count 1), turned
 round because conditions only test "more than": born after 1961 gives the count 0, anything else 1.
 It is a count, so nothing is rounded.
 """

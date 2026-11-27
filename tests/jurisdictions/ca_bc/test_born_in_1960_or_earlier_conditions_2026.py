@@ -1,7 +1,8 @@
 """The 2026 conditions of BC428's "born in 1960 or earlier" count, checked against CRA's BC428 text.
 
-Form BC428 (5010-c-25e.txt) line 17: "if you were born in 1960 or earlier". The dataset
-`ca-bc/born_in_1960_or_earlier_conditions` has one condition on the year of birth (count 1), turned
+Form BC428 (5010-c-25e.txt) line 17: "if you were born in 1960 or earlier" (2025; the 2026 cutoff
+1961 is derived: age 65 on 31 December, not printed). The dataset `ca-
+bc/born_in_1960_or_earlier_conditions` has one condition on the year of birth (count 1), turned
 round because conditions only test "more than": born after 1961 gives the count 0, anything else 1.
 It is a count, so nothing is rounded.
 """
@@ -12,7 +13,6 @@ from decimal import Decimal
 
 import pytest
 
-import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.kinds import CountKind
@@ -25,10 +25,14 @@ from tax_engine.domain.parameters.conditions import (
 )
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
+from tests.jurisdictions.ca_bc.support import (
+    british_columbia_packages,
+    british_columbia_parameter_parsers,
+)
 
 D = Decimal
 SOURCE = YamlParameterSource(
-    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+    british_columbia_packages().roots(), british_columbia_parameter_parsers()
 )
 FAMILY = "ca-bc/born_in_1960_or_earlier_conditions"
 YEAR = 2026

@@ -8,15 +8,13 @@ from __future__ import annotations
 
 from decimal import Decimal
 
-import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tests.jurisdictions.ca_ab.support import alberta_packages, alberta_parameter_parsers
 
 D = Decimal
-SOURCE = YamlParameterSource(
-    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
-)
+SOURCE = YamlParameterSource(alberta_packages().roots(), alberta_parameter_parsers())
 FAMILY = "ca-ab/age_maximum"
 CRA_FORM_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5009-d/5009-d-25e.txt"
 YEAR = 2025

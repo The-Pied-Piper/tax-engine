@@ -1,6 +1,6 @@
 # Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
 # Derivation: the cutoff is age 65 on 31 December of the tax year, so the 2025 year 1960 moves to 1961 for 2026 (a filer born in 1961 turns 65 in 2026); the 2026 form is not yet published, so it is unconfirmed.
-# British Columbia "if you were born in 1961 or earlier", 2026 tax year: BC428 line 17 "Age amount (if you were born in 1961 or earlier)" (CRA 5010-C, .txt). The filer gives a birth year; one condition, in the form's wording turned round because the conditions only test "more than": the birth year is more than 1961, in which case the count is 0 (not born in 1960 or earlier), else 1. The result is a count, not a dollars-and-cents box, so there is no rounding.
+# British Columbia "if you were born in 1961 or earlier", 2026 tax year: BC428 line 17 "Age amount (if you were born in 1960 or earlier)" as printed for 2025, moved to 1961 for 2026 (CRA 5010-C, .txt). The filer gives a birth year; one condition, in the form's wording turned round because the conditions only test "more than": the birth year is more than 1961, in which case the count is 0 (not born in 1961 or earlier), else 1. The result is a count, not a dollars-and-cents box, so there is no rounding.
 family: ca-bc/born_in_1960_or_earlier_conditions
 tax_year: 2026
 kind: conditions

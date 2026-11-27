@@ -2,9 +2,8 @@
 
 Form NS428 (5003-c-25e.txt) line 10 and line 98: "if you were born in 1960 or earlier". The dataset
 `ca-ns/born_in_1960_or_earlier_conditions` has one condition on the year of birth (count 1), turned
-round because conditions only test "more than": born after 1961 (2026: age 65 on 31 December)
-gives the count 0, anything else 1.
-It is a count, so nothing is rounded.
+round because conditions only test "more than": born after 1961 (2026: age 65 on 31 December) gives
+the count 0, anything else 1. It is a count, so nothing is rounded.
 """
 
 from __future__ import annotations
