@@ -23,10 +23,10 @@ SOURCES = (
     "https://www.assembly.nl.ca/Legislation/sr/regulations/rc260018.htm",
     "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5001-c/5001-c-25e.txt",
 )
-PROVISIONAL_HEADER = (
+CONFIRMED_HEADER = (
     "# Confirmed from the regulation named in the next line; the 2026 NL428 is not yet published."
 )
-DERIVATION_HEADER = (
+SOURCE_HEADER = (
     "# Source: Newfoundland and Labrador Regulation 18/26, Low Income Tax Reduction "
     "Regulations for the 2025 and 2026 Taxation Years (filed May 14, 2026; "
     'https://www.assembly.nl.ca/Legislation/sr/regulations/rc260018.htm), s.3(b)(ii): "the '
@@ -62,13 +62,13 @@ def test_2026_low_income_reduction_dependant_gate_is_for_tax_year_2026() -> None
     assert data.tax_year == 2026
 
 
-def test_the_2026_file_is_provisional_and_states_its_derivation() -> None:
+def test_the_2026_file_is_confirmed_and_states_its_source() -> None:
     root = newfoundland_packages().roots()[Namespace("ca-nl")]
     path = root / "parameters" / "low_income_reduction_dependant_gate" / "2026.yaml"
     lines = path.read_text().splitlines()
 
-    assert lines[0] == PROVISIONAL_HEADER
-    assert lines[1] == DERIVATION_HEADER
+    assert lines[0] == CONFIRMED_HEADER
+    assert lines[1] == SOURCE_HEADER
 
 
 def test_2025_low_income_reduction_dependant_gate_is_unchanged() -> None:
