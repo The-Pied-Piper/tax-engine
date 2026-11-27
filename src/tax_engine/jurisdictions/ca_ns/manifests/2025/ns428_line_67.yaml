@@ -1,0 +1,16 @@
+# Form NS428 (Nova Scotia Tax, CRA 5003-C) line 67, column 1 (you): "Line 65 plus line 66". One
+# core/sum step over line 65 (the net income, `ca-ns/ns428_net_income_line_65`) and line 66 (the
+# UCCB and RDSP repayments, `ca-ns/ns428_uccb_rdsp_repayments_line_66`, the total of the form's own
+# line 66 step, so never blank). The form prints no title for the line, so the step has none.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/sum
+    reference: "67 (column 1)"
+    unit: ca/cad
+    params:
+      rounding: ca-ns/cent_rounding
+    consumes:
+      parts: [ca-ns/ns428_net_income_line_65, ca-ns/ns428_uccb_rdsp_repayments_line_66]
+    produces:
+      output: ca-ns/ns428_family_income_line_67
