@@ -1,9 +1,9 @@
 """The New Brunswick package list and the registries built over it.
 
-New Brunswick is not yet listed in `tax_engine.registrations.JURISDICTIONS` (its 2026 datasets do
-not exist yet), so the tests of this package build their own package list (core, federal, New
-Brunswick) here and take their kinds and capabilities from it. Each registry is built once per test
-process; never register into one.
+New Brunswick is listed in `tax_engine.registrations.JURISDICTIONS`, and a test of the registered
+engine takes the registries of `tax_engine.registrations`. The tests written before the listing
+build their own package list (core, federal, New Brunswick) here and take their kinds and
+capabilities from it. Each registry is built once per test process; never register into one.
 """
 
 from functools import cache

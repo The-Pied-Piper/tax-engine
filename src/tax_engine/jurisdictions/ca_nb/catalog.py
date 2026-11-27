@@ -403,3 +403,151 @@ NB428_SMALL_BUSINESS_INVESTOR_CREDIT_CHECKED_LINE_96 = AmountKind.declare(
 """NB428 line 96, small business investor tax credit: the entered amount, passed on unchanged
 when it is at most the printed maximum, blank when left out; above the maximum it is refused,
 not capped."""
+
+AVERAGE_TAX_RATE = AmountKind.declare(CATALOG, "average_tax_rate", non_negative=True)
+"""Average tax rate on the take-home basis, the New Brunswick return summary's own figure (no form
+prints it): the income tax, CPP (Schedule 8 lines 25 and 28) and EI (T2204 line 16) together divided
+by the salary (`ca/return_employment_income`), as a fraction, so 0.1598 is 15.98%. Paid credits are
+not in it. It is 0 when the salary is 0."""
+
+NEW_BRUNSWICK_BRACKET_RATE_RETURN = AmountKind.declare(
+    CATALOG, "new_brunswick_bracket_rate_return", non_negative=True
+)
+"""New Brunswick bracket rate, NB428 line 5 "Line 5: Rate": the printed rate of the column that line
+1 falls in, read from NB428 into the return summary."""
+
+MARGINAL_NET_INCOME_RATE = AmountKind.declare(
+    CATALOG, "marginal_net_income_rate", non_negative=True
+)
+"""Part of a further dollar of salary left in the net income (T1 line 23600) and the taxable
+income: 1 less the CPP first additional rate and the CPP second additional rate, which T1 line
+22215 takes off the income. The federal form's export
+`ca/take_home_marginal_rates.marginal_net_income_rate`, totalled into the return summary's own
+artifact. Not printed on the form."""
+
+MARGINAL_CREDIT_CONTRIBUTION_RATE = AmountKind.declare(
+    CATALOG, "marginal_credit_contribution_rate", non_negative=True
+)
+"""Credit-earning contribution rate on a further dollar of salary: the CPP base rate (T1 line
+30800) plus the EI rate (T1 line 31200). The federal form's export
+`ca/take_home_marginal_rates.marginal_credit_contribution_rate`, totalled into the return
+summary's own artifact. Not printed on the form."""
+
+MARGINAL_FEDERAL_RATE = AmountKind.declare(CATALOG, "marginal_federal_rate", non_negative=True)
+"""Federal marginal rate on the take-home basis: the federal rate on a further dollar of salary
+after the credits, where the basic federal tax (T1 line 42900) is above zero, and 0 where it is
+not. The federal form's export `ca/take_home_marginal_rates.marginal_federal_rate`, totalled into
+the return summary's own artifact. Not printed on the form."""
+
+MARGINAL_CONTRIBUTION_RATE = AmountKind.declare(
+    CATALOG, "marginal_contribution_rate", non_negative=True
+)
+"""Contribution rate on a further dollar of salary: the CPP base, first additional and second
+additional rates plus the EI rate (T2204 line 16). The federal form's export
+`ca/take_home_marginal_rates.marginal_contribution_rate`, totalled into the return summary's own
+artifact. Not printed on the form."""
+
+MARGINAL_NEW_BRUNSWICK_CREDIT_RATE = AmountKind.declare(
+    CATALOG, "marginal_new_brunswick_credit_rate", non_negative=True
+)
+"""New Brunswick non-refundable tax credit rate, NB428 line 48 "New Brunswick non-refundable tax
+credit rate 9.4%": the `ca-nb/credit_rate` dataset as it is, with none of the cent rounding the
+credit box applies. A rate, not printed as its own figure."""
+
+MARGINAL_NEW_BRUNSWICK_CONTRIBUTION_CREDIT_RATE = AmountKind.declare(
+    CATALOG, "marginal_new_brunswick_contribution_credit_rate", non_negative=True
+)
+"""New Brunswick credit rate on the CPP base and EI of a further dollar of salary: the
+credit-earning contribution rate times the credit rate, the provincial tax the contributions take
+off. An exact product, not printed on the form."""
+
+MARGINAL_NEW_BRUNSWICK_BRACKET_RATE = AmountKind.declare(
+    CATALOG, "marginal_new_brunswick_bracket_rate", non_negative=True
+)
+"""New Brunswick bracket rate on a further dollar of salary: the bracket rate of NB428 line 5 times
+the part left in the net income. An exact product, not printed on the form."""
+
+MARGINAL_NEW_BRUNSWICK_RATE_AFTER_CREDITS = AmountKind.declare(
+    CATALOG, "marginal_new_brunswick_rate_after_credits", non_negative=True
+)
+"""New Brunswick rate on a further dollar of salary after the CPP base and EI credits, before the
+low-income tax reduction. An exact difference, not printed on the form."""
+
+INCOME_OVER_BASE_AMOUNT_RETURN = AmountKind.declare(
+    CATALOG, "income_over_base_amount_return", non_negative=True
+)
+"""NB428 line 83 "Line 81 minus line 82 (if negative, enter "0")", the adjusted family income over
+the base amount, read into the return summary. The base of the line 83 gate."""
+
+LOW_INCOME_TAX_REDUCTION_RETURN = AmountKind.declare(
+    CATALOG, "low_income_tax_reduction_return", non_negative=True
+)
+"""NB428 line 86, the New Brunswick low-income tax reduction, read into the return summary. The
+base of the line 86 gate."""
+
+INCOME_OVER_BASE_AMOUNT_GATE = AmountKind.declare(
+    CATALOG, "income_over_base_amount_gate", non_negative=True
+)
+"""0 where NB428 line 83 is 0.00 and 1 where it is at least one cent, from the
+`ca-nb/marginal_rate_gate` dataset. A plain figure, not printed on the form."""
+
+LOW_INCOME_TAX_REDUCTION_GATE = AmountKind.declare(
+    CATALOG, "low_income_tax_reduction_gate", non_negative=True
+)
+"""0 where NB428 line 86 is 0.00 and 1 where it is at least one cent, from the
+`ca-nb/marginal_rate_gate` dataset. A plain figure, not printed on the form."""
+
+LOW_INCOME_REDUCTION_PHASE_OUT_GATE = AmountKind.declare(
+    CATALOG, "low_income_reduction_phase_out_gate", non_negative=True
+)
+"""1 while the low-income tax reduction is being phased out (NB428 lines 83 and 86 both above
+zero), otherwise 0. The product of the two gates, not printed on the form."""
+
+LOW_INCOME_REDUCTION_RATE_FIGURE = AmountKind.declare(
+    CATALOG, "low_income_reduction_rate_figure", non_negative=True
+)
+"""NB428 line 84, the printed percentage 3%: the `ca-nb/low_income_reduction_rate` dataset as it is.
+A rate, not printed as its own figure."""
+
+MARGINAL_LOW_INCOME_REDUCTION_RATE = AmountKind.declare(
+    CATALOG, "marginal_low_income_reduction_rate", non_negative=True
+)
+"""Rate at which a further dollar of net income takes off the low-income tax reduction (NB428
+line 84 and line 85): 3% while the reduction is being phased out, 0 elsewhere. Not printed on the
+form."""
+
+MARGINAL_LOW_INCOME_PHASE_OUT_RATE = AmountKind.declare(
+    CATALOG, "marginal_low_income_phase_out_rate", non_negative=True
+)
+"""The low-income reduction rate on a further dollar of salary: the reduction rate times the part
+left in the net income. An exact product, not printed on the form."""
+
+MARGINAL_NEW_BRUNSWICK_RATE_WITH_REDUCTION = AmountKind.declare(
+    CATALOG, "marginal_new_brunswick_rate_with_reduction", non_negative=True
+)
+"""New Brunswick rate on a further dollar of salary after the credits plus the low-income reduction
+phase-out, before the line 97 gate. An exact sum, not printed on the form."""
+
+NEW_BRUNSWICK_TAX_RETURN = AmountKind.declare(
+    CATALOG, "new_brunswick_tax_return", non_negative=True
+)
+"""NB428 line 97 "Line 95 minus line 96 (if negative, enter "0")", the tax that goes to T1 line
+42800, read into the return summary. The base of the New Brunswick rate gate."""
+
+NEW_BRUNSWICK_RATE_GATE = AmountKind.declare(CATALOG, "new_brunswick_rate_gate", non_negative=True)
+"""New Brunswick rate gate: 0 where the New Brunswick tax (NB428 line 97) is 0.00 and 1 where it is
+at least one cent, from the `ca-nb/marginal_rate_gate` dataset. A plain figure, not printed on the
+form."""
+
+NEW_BRUNSWICK_MARGINAL_RATE = AmountKind.declare(
+    CATALOG, "new_brunswick_marginal_rate", non_negative=True
+)
+"""New Brunswick marginal rate on the take-home basis: the bracket rate after the CPP base and EI
+credits, plus the low-income tax reduction phase-out, counted where the New Brunswick tax (NB428
+line 97) is above zero and 0 where it is not. Not printed on the form."""
+
+MARGINAL_TAX_RATE = AmountKind.declare(CATALOG, "marginal_tax_rate", non_negative=True)
+"""Marginal tax rate on the take-home basis: the change in income tax, CPP, CPP2 and EI on a further
+dollar of salary, with no credit paid on filing: the sum of the federal marginal rate, the New
+Brunswick marginal rate (which has no surtax or health premium) and the contribution rate, on the
+return summary. Not printed on the form."""
