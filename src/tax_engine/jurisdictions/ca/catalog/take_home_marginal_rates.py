@@ -74,28 +74,54 @@ MARGINAL_FEDERAL_GATE = AmountKind.declare(CATALOG, "marginal_federal_gate", non
 """Federal gate: 0 where the basic federal tax (T1 line 42900) is 0.00 and 1 where it is at least
 one cent, from the `ca/marginal_rate_gate` dataset. A plain figure, not printed on the form."""
 
+MARGINAL_CPP_GATE = AmountKind.declare(CATALOG, "marginal_cpp_gate", non_negative=True)
+"""CPP gate: 0 where the maximum pensionable earnings (Schedule 8 Part 2 line B) are 0.00, which is
+so where line A, the months that CPP applied, is 0, and 1 where they are at least one cent, from
+the `ca/marginal_rate_gate` dataset. A filer with no CPP months pays no CPP, so no further dollar of
+salary is charged it. A plain figure, not printed on the form."""
+
+MARGINAL_CPP_BASE_TIER_RATE = AmountKind.declare(
+    CATALOG, "marginal_cpp_base_tier_rate", non_negative=True
+)
+"""CPP base tier rate, Schedule 8 Part 3 line 11 "multiplied by 4.95%": 4.95% from the maximum basic
+exemption (included) up to the maximum pensionable earnings (excluded), 0 outside it, from the
+`ca/cpp_line_11_base_contribution` dataset the contribution reads, applied to the signed line 7,
+before the CPP gate. Not printed on the form."""
+
+MARGINAL_CPP_FIRST_ADDITIONAL_TIER_RATE = AmountKind.declare(
+    CATALOG, "marginal_cpp_first_additional_tier_rate", non_negative=True
+)
+"""CPP first additional tier rate, Schedule 8 Part 3 line 12 "multiplied by 1%": 1% over the same
+earnings as the base tier rate, 0 outside them, from the
+`ca/cpp_line_12_first_additional_contribution` dataset the contribution reads, before the CPP gate.
+Not printed on the form."""
+
+MARGINAL_CPP_SECOND_ADDITIONAL_TIER_RATE = AmountKind.declare(
+    CATALOG, "marginal_cpp_second_additional_tier_rate", non_negative=True
+)
+"""CPP second additional tier rate, Schedule 8 Part 3 line 22 "multiplied by 4%": 4% from the
+maximum pensionable earnings (included) up to the additional maximum pensionable earnings
+(excluded), 0 outside it, from the `ca/cpp_line_22_second_additional_contribution` dataset the
+contribution reads, applied to the signed line 4, before the CPP gate. Not printed on the form."""
+
 MARGINAL_CPP_BASE_RATE = AmountKind.declare(CATALOG, "marginal_cpp_base_rate", non_negative=True)
 """CPP base rate on a further dollar of salary, Schedule 8 Part 3 line 11 "multiplied by 4.95%":
-4.95% from the maximum basic exemption (included) up to the maximum pensionable earnings
-(excluded), 0 outside it, from the `ca/cpp_line_11_base_contribution` dataset the contribution
-reads, applied to the signed line 7. Not printed on the form."""
+the base tier rate where CPP applies for at least one month (line A), 0 for a filer with no CPP
+months. Not printed on the form."""
 
 MARGINAL_CPP_FIRST_ADDITIONAL_RATE = AmountKind.declare(
     CATALOG, "marginal_cpp_first_additional_rate", non_negative=True
 )
 """CPP first additional rate on a further dollar of salary, Schedule 8 Part 3 line 12 "multiplied
-by 1%": 1% over the same earnings as the base rate, 0 outside them, from the
-`ca/cpp_line_12_first_additional_contribution` dataset the contribution reads. Not printed on
-the form."""
+by 1%": the first additional tier rate where CPP applies for at least one month (line A), 0 for a
+filer with no CPP months. Not printed on the form."""
 
 MARGINAL_CPP_SECOND_ADDITIONAL_RATE = AmountKind.declare(
     CATALOG, "marginal_cpp_second_additional_rate", non_negative=True
 )
 """CPP second additional rate on a further dollar of salary, Schedule 8 Part 3 line 22 "multiplied
-by 4%": 4% from the maximum pensionable earnings (included) up to the additional maximum
-pensionable earnings (excluded), 0 outside it, from the
-`ca/cpp_line_22_second_additional_contribution` dataset the contribution reads, applied to the
-signed line 4. Not printed on the form."""
+by 4%": the second additional tier rate where CPP applies for at least one month (line A), 0 for a
+filer with no CPP months. Not printed on the form."""
 
 MARGINAL_EI_LINE_1 = AmountKind.declare(CATALOG, "marginal_ei_line_1", non_negative=True)
 """Total EI insurable earnings, T2204 line 1: the form's export totalled into the marginal rate

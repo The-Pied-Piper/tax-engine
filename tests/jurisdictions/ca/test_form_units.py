@@ -43,6 +43,10 @@ EXCEPTIONS: dict[str, str | None] = {
     # The take-home marginal rate form works in rates (a fraction of a dollar per dollar of salary).
     "ca/marginal_federal_bracket_column_rate": "core/percent",
     "ca/marginal_federal_gate": "core/percent",
+    "ca/marginal_cpp_gate": "core/percent",
+    "ca/marginal_cpp_base_tier_rate": "core/percent",
+    "ca/marginal_cpp_first_additional_tier_rate": "core/percent",
+    "ca/marginal_cpp_second_additional_tier_rate": "core/percent",
     "ca/marginal_cpp_base_rate": "core/percent",
     "ca/marginal_cpp_first_additional_rate": "core/percent",
     "ca/marginal_cpp_second_additional_rate": "core/percent",

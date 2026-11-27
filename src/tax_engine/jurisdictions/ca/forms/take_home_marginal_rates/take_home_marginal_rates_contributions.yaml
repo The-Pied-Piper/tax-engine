@@ -11,6 +11,11 @@
 # start" the same 0, and "inside" and "above" the same figure. Line 5 less the basic exemption
 # (line 7 before its floor and its maximum) is the base and first additional rates' earnings; line 2
 # less the maximum pensionable earnings (line 4 before its floor) is the second additional rate's.
+# A filer with no CPP months (Schedule 8 Part 2 line A is 0: under 18 all year, or 70 or older all
+# year) pays no CPP, so each of the three CPP rates is its tier rate times a CPP gate: 0 where the
+# maximum pensionable earnings (line B, 0 exactly when line A is 0) are 0.00, 1 otherwise, from the
+# `ca/marginal_rate_gate` dataset. Without it the signed figures are 0 and 0, which the tiers
+# read as the start of their band.
 # The EI rate follows T2204 line 16, the least of line 7 and line 10 (line 9, the premiums
 # deducted, is line 10 for a salary-only filer): line 10's rate is the `ei_premium` tier's rate on
 # line 1, and line 7's is 1 from the $2,000 exemption (included, the dollar at $2,000 is the first that
@@ -81,12 +86,29 @@ capabilities:
       less: ca/marginal_cpp_maximum_pensionable_earnings
     produces:
       output: ca/marginal_cpp_line_4_signed
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca/marginal_rate_gate
+    consumes:
+      base: ca/marginal_cpp_maximum_pensionable_earnings
+    produces:
+      output: ca/marginal_cpp_gate
   - name: ca/contribution_tier_rate
     unit: core/percent
     params:
       tier: ca/cpp_line_11_base_contribution
     consumes:
       earnings: ca/marginal_cpp_line_7_signed
+    produces:
+      output: ca/marginal_cpp_base_tier_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca/exact_rounding
+    consumes:
+      base: ca/marginal_cpp_base_tier_rate
+      rate: ca/marginal_cpp_gate
     produces:
       output: ca/marginal_cpp_base_rate
   - name: ca/contribution_tier_rate
@@ -96,6 +118,15 @@ capabilities:
     consumes:
       earnings: ca/marginal_cpp_line_7_signed
     produces:
+      output: ca/marginal_cpp_first_additional_tier_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca/exact_rounding
+    consumes:
+      base: ca/marginal_cpp_first_additional_tier_rate
+      rate: ca/marginal_cpp_gate
+    produces:
       output: ca/marginal_cpp_first_additional_rate
   - name: ca/contribution_tier_rate
     unit: core/percent
@@ -103,6 +134,15 @@ capabilities:
       tier: ca/cpp_line_22_second_additional_contribution
     consumes:
       earnings: ca/marginal_cpp_line_4_signed
+    produces:
+      output: ca/marginal_cpp_second_additional_tier_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca/exact_rounding
+    consumes:
+      base: ca/marginal_cpp_second_additional_tier_rate
+      rate: ca/marginal_cpp_gate
     produces:
       output: ca/marginal_cpp_second_additional_rate
   - name: core/record_total
