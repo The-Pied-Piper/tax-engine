@@ -400,3 +400,109 @@ NS428_LOW_INCOME_REDUCTION_LINE_84 = AmountKind.declare(
 NS428_TAX_LINE_85 = AmountKind.declare(CATALOG, "ns428_tax_line_85", non_negative=True)
 """NS428 line 85 "Line 77 minus line 84 (if negative, enter "0")": the tax after the foreign tax
 credit (line 64) less the low-income tax reduction, not below 0."""
+
+NS428_POLITICAL_CONTRIBUTIONS_LINE_86 = AmountKind.declare(
+    CATALOG, "ns428_political_contributions_line_86", non_negative=True
+)
+"""NS428 line 86 "Total political contributions made in 2025 ... multiplied by 75% (maximum $750)":
+the amount as the filer gives it, an optional input; a blank input is read as 0 by the step that
+reads it."""
+
+NS428_POLITICAL_CONTRIBUTION_CREDIT_MAXIMUM = AmountKind.declare(
+    CATALOG, "ns428_political_contribution_credit_maximum", non_negative=True
+)
+"""Political contribution tax credit maximum, printed on NS428 line 86 "(maximum $750)": the
+printed maximum, from the `ca-ns/political_contribution_credit_maximum` dataset; the bound line
+86 cannot pass."""
+
+NS428_POLITICAL_CONTRIBUTIONS_CREDIT_AT_RATE_LINE_86 = AmountKind.declare(
+    CATALOG, "ns428_political_contributions_credit_at_rate_line_86", non_negative=True
+)
+"""NS428 line 86: the political contributions times the printed 75%, before the maximum check."""
+
+NS428_POLITICAL_CONTRIBUTIONS_CREDIT_LINE_86 = AmountKind.declare(
+    CATALOG, "ns428_political_contributions_credit_line_86", non_negative=True
+)
+"""Nova Scotia political contribution tax credit, NS428 line 86 "Total political contributions made
+in 2025 ... multiplied by 75% (maximum $750)": the contributions times 75%, passed on unchanged
+when at most the printed maximum; above it is refused, not capped."""
+
+NS428_TAX_LINE_87 = AmountKind.declare(CATALOG, "ns428_tax_line_87", non_negative=True)
+"""NS428 line 87 "Line 85 minus line 86 (if negative, enter \"0\")"."""
+
+NS428_FOOD_BANK_DONATIONS_LINE_88 = AmountKind.declare(
+    CATALOG, "ns428_food_bank_donations_line_88", non_negative=True
+)
+"""NS428 line 88 "Food bank tax credit for farmers ... multiplied by 25%": the amount as the filer
+gives it, an optional input; a blank input is read as 0 by the step that reads it."""
+
+NS428_FOOD_BANK_CREDIT_LINE_88 = AmountKind.declare(
+    CATALOG, "ns428_food_bank_credit_line_88", non_negative=True
+)
+"""Food bank tax credit for farmers, NS428 line 88 "Food bank tax credit for farmers ... multiplied
+by 25%": the entered amount times the printed 25%."""
+
+NS428_TAX_LINE_89 = AmountKind.declare(CATALOG, "ns428_tax_line_89", non_negative=True)
+"""NS428 line 89 "Line 87 minus line 88 (if negative, enter \"0\")"."""
+
+NS428_LABOUR_SPONSORED_SHARES_COST_LINE_90 = AmountKind.declare(
+    CATALOG, "ns428_labour_sponsored_shares_cost_line_90", non_negative=True
+)
+"""NS428 line 90 "Labour-sponsored venture capital tax credit: Cost of shares from Form NSLSV ...
+multiplied by 20% (maximum $2,000)": the amount as the filer gives it, an optional input; a
+blank input is read as 0 by the step that reads it."""
+
+NS428_LABOUR_SPONSORED_CREDIT_MAXIMUM = AmountKind.declare(
+    CATALOG, "ns428_labour_sponsored_credit_maximum", non_negative=True
+)
+"""Labour-sponsored venture capital tax credit maximum, printed on NS428 line 90 "(maximum
+$2,000)": the printed maximum, from the `ca-ns/labour_sponsored_credit_maximum` dataset; the
+bound line 90 cannot pass."""
+
+NS428_LABOUR_SPONSORED_CREDIT_AT_RATE_LINE_90 = AmountKind.declare(
+    CATALOG, "ns428_labour_sponsored_credit_at_rate_line_90", non_negative=True
+)
+"""NS428 line 90: the cost of shares times the printed 20%, before the maximum check."""
+
+NS428_LABOUR_SPONSORED_CREDIT_LINE_90 = AmountKind.declare(
+    CATALOG, "ns428_labour_sponsored_credit_line_90", non_negative=True
+)
+"""Labour-sponsored venture capital tax credit, NS428 line 90: the cost of shares times 20%, passed
+on unchanged when at most the printed maximum; above it is refused, not capped."""
+
+NS428_TAX_LINE_91 = AmountKind.declare(CATALOG, "ns428_tax_line_91", non_negative=True)
+"""NS428 line 91 "Line 89 minus line 90 (if negative, enter \"0\")"."""
+
+NS428_EQUITY_TAX_CREDIT_LINE_92 = AmountKind.declare(
+    CATALOG, "ns428_equity_tax_credit_line_92", non_negative=True
+)
+"""NS428 line 92 "Equity tax credit (complete Form T1285)": the amount as the filer gives it, an
+optional input; a blank input is read as 0 by the step that reads it."""
+
+NS428_TAX_LINE_93 = AmountKind.declare(CATALOG, "ns428_tax_line_93", non_negative=True)
+"""NS428 line 93 "Line 91 minus line 92 (if negative, enter \"0\")"."""
+
+NS428_INNOVATION_EQUITY_TAX_CREDIT_LINE_94 = AmountKind.declare(
+    CATALOG, "ns428_innovation_equity_tax_credit_line_94", non_negative=True
+)
+"""NS428 line 94 "Innovation equity tax credit (complete Form T225)": the amount as the filer gives
+it, an optional input; a blank input is read as 0 by the step that reads it."""
+
+NS428_TAX_LINE_95 = AmountKind.declare(CATALOG, "ns428_tax_line_95", non_negative=False)
+"""NS428 line 95 "Line 93 minus line 94": the form prints no floor, so the amount is signed."""
+
+NS428_VENTURE_CAPITAL_TAX_CREDIT_LINE_96 = AmountKind.declare(
+    CATALOG, "ns428_venture_capital_tax_credit_line_96", non_negative=True
+)
+"""NS428 line 96 "Venture capital tax credit (complete Form T224)": the amount as the filer gives
+it, an optional input; a blank input is read as 0 by the step that reads it."""
+
+NS428_TAX_LINE_97 = AmountKind.declare(CATALOG, "ns428_tax_line_97", non_negative=False)
+"""NS428 line 97 "Line 95 minus line 96": the form prints no floor, so the amount is signed."""
+
+NS428_NOVA_SCOTIA_TAX_LINE_99 = AmountKind.declare(
+    CATALOG, "ns428_nova_scotia_tax_line_99", non_negative=True
+)
+"""Nova Scotia tax, NS428 line 99 "Line 97 minus line 98 (if negative, enter \"0\") Enter this
+amount on line 42800 of your return. Nova Scotia tax": line 97 not below 0 (line 98, the age tax
+credit, is not built)."""

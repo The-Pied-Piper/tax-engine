@@ -1,0 +1,13 @@
+# NS428 (2025) line 86's input, which a salary-only caller does not give.
+# Line 86: Total political contributions made in 2025 multiplied by 75% (maximum $750) (Form NS428, CRA 5003-C).
+# The contributions are taken as the one amount the form asks for; the line 86 steps apply the printed 75% and check the printed maximum. A request that leaves the line out is read as blank.
+form:
+  name: ca-ns/ns428
+inputs:
+  - name: ca-ns/ns428_political_contributions_line_86
+    title: "Total political contributions made in 2025"
+    reference: "86"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Total political contributions made in 2025 multiplied by 75% (maximum $750)'

@@ -1,0 +1,19 @@
+# NS428 (2025) line 88. Form NS428 (CRA 5003-C): "Food bank tax credit for farmers ... multiplied by
+# 25%". One core/apply_rate step: the entered amount (ns428_line_88_input.yaml) times the printed
+# 25% (the `ca-ns/food_bank_credit_rate` dataset), read as 0 when the line is left blank. The line
+# prints no maximum.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/apply_rate
+    title: "Food bank tax credit for farmers"
+    reference: "88"
+    unit: ca/cad
+    params:
+      rate: ca-ns/food_bank_credit_rate
+    consumes:
+      base: ca-ns/ns428_food_bank_donations_line_88
+    blank:
+      base: "0"
+    produces:
+      output: ca-ns/ns428_food_bank_credit_line_88

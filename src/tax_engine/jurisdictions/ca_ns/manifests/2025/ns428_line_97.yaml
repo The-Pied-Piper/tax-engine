@@ -1,0 +1,19 @@
+# Form NS428 (Nova Scotia Tax, CRA 5003-C) line 97 "Line 95 minus line 96". One core/subtract step: line 95
+# (`ca-ns/ns428_tax_line_95`) less line 96 (`ca-ns/ns428_venture_capital_tax_credit_line_96`), rounded half-up to the cent by the dataset's
+# rule. The form prints no floor, so the amount is signed. Line 96 is an optional input read as 0 when blank. The form prints no title for the line, so the step has none. The output is
+# `ca-ns/ns428_tax_line_97`.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/subtract
+    reference: "97"
+    unit: ca/cad
+    params:
+      rounding: ca-ns/cent_rounding
+    consumes:
+      amount: ca-ns/ns428_tax_line_95
+      less: ca-ns/ns428_venture_capital_tax_credit_line_96
+    blank:
+      less: "0"
+    produces:
+      output: ca-ns/ns428_tax_line_97

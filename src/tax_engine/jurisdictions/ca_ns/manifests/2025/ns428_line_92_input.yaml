@@ -1,0 +1,13 @@
+# NS428 (2025) line 92's input, which a salary-only caller does not give.
+# Line 92: Equity tax credit (complete Form T1285) (Form NS428, CRA 5003-C).
+# Form T1285 is not built, so the credit is taken as one optional input. A request that leaves the line out is read as blank.
+form:
+  name: ca-ns/ns428
+inputs:
+  - name: ca-ns/ns428_equity_tax_credit_line_92
+    title: "Equity tax credit"
+    reference: "92"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Equity tax credit (complete Form T1285)'

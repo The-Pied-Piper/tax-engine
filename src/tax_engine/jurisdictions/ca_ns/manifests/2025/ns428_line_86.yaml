@@ -1,0 +1,37 @@
+# NS428 (2025) line 86. Form NS428 (CRA 5003-C): "Total political contributions made in 2025 ... multiplied by 75% (maximum $750)". The credit is the entered amount
+# (ns428_line_86_input.yaml) times the printed rate (the `ca-ns/political_contribution_rate` dataset), at most the printed
+# maximum (the `ca-ns/political_contribution_credit_maximum` dataset). Three steps, the last of which is line 86. The
+# first, core/credit_amount, supplies the printed maximum; it is not a line of the form, so it has
+# no title and no reference. The second, core/apply_rate, multiplies the amount by the rate, read as
+# 0 when the line is left blank; it is engine-internal, so it has no reference. The third,
+# core/at_most, is line 86: that product passed on unchanged. A product above the printed maximum
+# is refused, not capped.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/credit_amount
+    unit: ca/cad
+    params:
+      amount: ca-ns/political_contribution_credit_maximum
+    produces:
+      output: ca-ns/ns428_political_contribution_credit_maximum
+  - name: core/apply_rate
+    title: "Political contributions at 75%"
+    unit: ca/cad
+    params:
+      rate: ca-ns/political_contribution_rate
+    consumes:
+      base: ca-ns/ns428_political_contributions_line_86
+    blank:
+      base: "0"
+    produces:
+      output: ca-ns/ns428_political_contributions_credit_at_rate_line_86
+  - name: core/at_most
+    title: "Nova Scotia political contribution tax credit"
+    reference: "86"
+    unit: ca/cad
+    consumes:
+      amount: ca-ns/ns428_political_contributions_credit_at_rate_line_86
+      bound: ca-ns/ns428_political_contribution_credit_maximum
+    produces:
+      output: ca-ns/ns428_political_contributions_credit_line_86
