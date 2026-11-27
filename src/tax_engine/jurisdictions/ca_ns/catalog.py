@@ -488,8 +488,8 @@ NS428_INNOVATION_EQUITY_TAX_CREDIT_LINE_94 = AmountKind.declare(
 """NS428 line 94 "Innovation equity tax credit (complete Form T225)": the amount as the filer gives
 it, an optional input; a blank input is read as 0 by the step that reads it."""
 
-NS428_TAX_LINE_95 = AmountKind.declare(CATALOG, "ns428_tax_line_95", non_negative=False)
-"""NS428 line 95 "Line 93 minus line 94": the form prints no floor, so the amount is signed."""
+NS428_TAX_LINE_95 = AmountKind.declare(CATALOG, "ns428_tax_line_95", non_negative=True)
+"""NS428 line 95 "Line 93 minus line 94 (if negative, enter \"0\")"."""
 
 NS428_VENTURE_CAPITAL_TAX_CREDIT_LINE_96 = AmountKind.declare(
     CATALOG, "ns428_venture_capital_tax_credit_line_96", non_negative=True
@@ -497,8 +497,8 @@ NS428_VENTURE_CAPITAL_TAX_CREDIT_LINE_96 = AmountKind.declare(
 """NS428 line 96 "Venture capital tax credit (complete Form T224)": the amount as the filer gives
 it, an optional input; a blank input is read as 0 by the step that reads it."""
 
-NS428_TAX_LINE_97 = AmountKind.declare(CATALOG, "ns428_tax_line_97", non_negative=False)
-"""NS428 line 97 "Line 95 minus line 96": the form prints no floor, so the amount is signed."""
+NS428_TAX_LINE_97 = AmountKind.declare(CATALOG, "ns428_tax_line_97", non_negative=True)
+"""NS428 line 97 "Line 95 minus line 96 (if negative, enter \"0\")"."""
 
 NS428_NOVA_SCOTIA_TAX_LINE_99 = AmountKind.declare(
     CATALOG, "ns428_nova_scotia_tax_line_99", non_negative=True
