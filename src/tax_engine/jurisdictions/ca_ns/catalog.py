@@ -8,7 +8,7 @@ Amounts are `Decimal`, non-negative unless the form prints no floor. Federal kin
 from __future__ import annotations
 
 from tax_engine.domain.artifact import ArtifactCatalog
-from tax_engine.domain.kinds import AmountKind
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca_ns import NAMESPACE
 
@@ -499,6 +499,11 @@ it, an optional input; a blank input is read as 0 by the step that reads it."""
 
 NS428_TAX_LINE_97 = AmountKind.declare(CATALOG, "ns428_tax_line_97", non_negative=True)
 """NS428 line 97 "Line 95 minus line 96 (if negative, enter \"0\")"."""
+
+NS428_AGE_65_OR_OLDER = CountKind.declare(CATALOG, "ns428_age_65_or_older", non_negative=True)
+"""Aged 65 or older at the end of the year, read from the T1's `ca/age_65_or_older` (worked out
+once there from the year of birth) for NS428 line 10 and line 98: 1 or 0, blank when the year is
+blank."""
 
 WORKSHEET_NS428_AGE_AMOUNT_MAXIMUM_LINE_1 = AmountKind.declare(
     CATALOG, "worksheet_ns428_age_amount_maximum_line_1", non_negative=True

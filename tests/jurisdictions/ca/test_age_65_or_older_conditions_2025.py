@@ -1,7 +1,7 @@
-"""The 2025 conditions of NS428's "born in 1960 or earlier" count, checked against CRA's NS428 text.
+"""The 2025 conditions of the T1's "born in 1960 or earlier" count, checked against CRA's T1 text.
 
-Form NS428 (5003-c-25e.txt) line 10 and line 98: "if you were born in 1960 or earlier". The dataset
-`ca-ns/born_in_1960_or_earlier_conditions` has one condition on the year of birth (count 1), turned
+T1 (5006-r-25e.txt) line 78 (line 30100): "if you were born in 1960 or earlier". The dataset
+`ca/age_65_or_older_conditions` has one condition on the year of birth (count 1), turned
 round because conditions only test "more than": born after 1960 gives the count 0, anything else 1.
 It is a count, so nothing is rounded.
 """
@@ -12,6 +12,7 @@ from decimal import Decimal
 
 import pytest
 
+import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.kinds import CountKind
@@ -24,13 +25,14 @@ from tax_engine.domain.parameters.conditions import (
 )
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
-from tests.jurisdictions.ca_ns.support import nova_scotia_packages, nova_scotia_parameter_parsers
 
 D = Decimal
-SOURCE = YamlParameterSource(nova_scotia_packages().roots(), nova_scotia_parameter_parsers())
-FAMILY = "ca-ns/born_in_1960_or_earlier_conditions"
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
+FAMILY = "ca/age_65_or_older_conditions"
 YEAR = 2025
-CRA_FORM_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5003-c/5003-c-25e.txt"
+CRA_FORM_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-r/5006-r-25e.txt"
 
 # Made up for this test and not registered: the year of birth and the count it gives.
 BIRTH_YEAR = CountKind("ex/birth_year")

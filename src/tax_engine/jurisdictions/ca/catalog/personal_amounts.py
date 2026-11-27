@@ -144,6 +144,15 @@ BIRTH_YEAR = CountKind.declare(CATALOG, "birth_year", non_negative=True)
 worked out (Umar, 27 Nov 2026: the engine takes the birth year). A whole year such as 1958; left
 out, it is blank."""
 
+AGE_65_OR_OLDER = CountKind.declare(CATALOG, "age_65_or_older", non_negative=True)
+"""Aged 65 or older at the end of the tax year: 1 or 0, worked out once by the T1 form of the lines
+the provinces copy from the year of birth (`ca/birth_year`) and read by every age line that prints
+"if you were born in 1960 or earlier" (the year moves with the tax year). Blank when the year is
+blank."""
+
+T1_AGE_65_OR_OLDER = CountKind.declare(CATALOG, "t1_age_65_or_older", non_negative=True)
+"""The T1's `ca/age_65_or_older` as read by the T1 tax and credits form for line 78 (line 30100)."""
+
 BORN_IN_1960_OR_EARLIER = CountKind.declare(CATALOG, "born_in_1960_or_earlier", non_negative=True)
 """Born in 1960 or earlier, T1 line 78 (line 30100) "Age amount (if you were born in 1960 or
 earlier) (use Federal Worksheet) (maximum $9,028)": a starting count, 0 or 1, from the date of birth
@@ -159,13 +168,15 @@ BORN_IN_1960_OR_EARLIER_CHECKED = CountKind.declare(
 )
 """Born in 1960 or earlier, T1 line 78 (line 30100) "Age amount (if you were born in 1960 or
 earlier)": the answer of `ca/born_in_1960_or_earlier` after the check that it is 0 or 1
-(`ca/yes_or_no_count`), a count of 1 or 0. A count of 2 or more is refused, not capped. A form
-that takes the year of birth (`ca/birth_year`) produces it instead, from the year, through
-`ca/count_by_conditions`."""
+(`ca/yes_or_no_count`), a count of 1 or 0. A count of 2 or more is refused, not capped."""
 
 AGE_MAXIMUM = AmountKind.declare(CATALOG, "age_maximum", non_negative=True)
 """Maximum age amount, Federal Worksheet (form 5000-D1), "Line 30100 - Age amount", line 1 "Maximum
 amount 9,028.00": the dataset as an artifact."""
+
+AGE_NET_INCOME = AmountKind.declare(CATALOG, "age_net_income", non_negative=True)
+"""Net income, Federal Worksheet (form 5000-D1), "Line 30100 - Age amount", line 2 "Amount from line
+23600 of your return"."""
 
 AGE_INCOME_THRESHOLD = AmountKind.declare(CATALOG, "age_income_threshold", non_negative=True)
 """Income threshold of the age amount, Federal Worksheet (form 5000-D1), "Line 30100 - Age amount",
@@ -186,6 +197,10 @@ AGE_AMOUNT_BEFORE_COUNT = AmountKind.declare(CATALOG, "age_amount_before_count",
 """Age amount before it is claimed, Federal Worksheet (form 5000-D1), "Line 30100 - Age amount",
 line 7 "Line 1 minus line 6 (if negative, enter "0") Enter this amount on line 30100 of your
 return.": the maximum amount less the reduction, not below zero."""
+
+AGE_AMOUNT_CLAIMED = AmountKind.declare(CATALOG, "age_amount_claimed", non_negative=True)
+"""Age amount claimed, T1 line 78 (line 30100): worksheet line 7 when the filer was born in 1960 or
+earlier, 0.00 otherwise, before the check against the printed maximum."""
 
 AGE_AMOUNT = AmountKind.declare(CATALOG, "age_amount", non_negative=True)
 """Age amount, T1 line 78 (line 30100) "Age amount (if you were born in 1960 or earlier) (use

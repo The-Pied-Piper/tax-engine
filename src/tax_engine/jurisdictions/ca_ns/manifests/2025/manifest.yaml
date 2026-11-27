@@ -13,7 +13,7 @@
 # Stated assumptions, carried once here and not built as inputs: the filer is single (no spouse or
 # common-law partner, dependants or children, so the spouse column and lines 70 to 78 beyond the
 # filer's own are not built), was born in 1961 or later unless the optional
-# `ca/birth_year` answer says otherwise (the age tax credit, NS428 line 98, reads it; the
+# `ca/birth_year` answer (the T1's, read as an export) says otherwise (the age tax credit, NS428 line 98, reads it; the
 # age amount, line 10, reads it too, through Worksheet NS428's age section); the filer is a Nova Scotia resident
 # on 31 December, 19 or older, and not confined to prison for more than six months (the guide's
 # eligibility for the low-income tax reduction, lines 65 to 85).

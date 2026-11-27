@@ -1,7 +1,8 @@
 """FirstRecordCount: takes the one count in the first record of a record list.
 
 The record-list kind has one count field, and an empty list is refused. It reads a form's export of
-one count (`<form>.<export>`) as that count; the item is named by position 1 in the trace.
+one count (`<form>.<export>`) as that count; the item is named by position 1 in the trace. A blank
+count field takes a fallback or `pass_on` (as in `RecordTotal`; under `compute` it is refused).
 """
 
 from __future__ import annotations
@@ -23,6 +24,8 @@ class FirstRecordCount(Capability):
 
     CONSUMES: ClassVar[Mapping[str, type]] = {"records": RecordList}
     PRODUCES: ClassVar[Mapping[str, type]] = {"output": int}
+    BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"records"})
+    BLANK_RECORD_FIELDS: ClassVar[frozenset[str]] = frozenset({"records"})
 
     def __init__(self, records: RecordListKind, output: ArtifactKind[int]) -> None:
         """Wire the capability: the record-list kind it reads and the kind it produces.

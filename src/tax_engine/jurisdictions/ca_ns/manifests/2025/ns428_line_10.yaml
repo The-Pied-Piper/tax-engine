@@ -1,19 +1,16 @@
-# Form NS428 (CRA 5003-C, PDF) line 10 and line 58080: "Age amount (if you were born in 1960 or earlier) (use Worksheet NS428) (maximum $5,734)". Built as ca-nl/nl428_credits line 17 and ca-pe/pe428 line 10 are: a ca/count_by_conditions step that works out 1 or 0 from the year of birth (a blank year passes on blank, read as 0 by the steps below; shared with line 98; not a line of the form), a core/times_count step of worksheet line 7 by that count (blank read as 0), and a core/at_most step that checks the printed maximum (worksheet line 1) and is line 10. An amount above the maximum is refused, not capped. Worksheet lines 1 to 7 are in the two parts beside this one.
+# Form NS428 (CRA 5003-C, PDF) line 10 and line 58080: "Age amount (if you were born in 1960 or earlier) (use Worksheet NS428) (maximum $5,734)". Built as ca-nl/nl428_credits line 17 and ca-pe/pe428 line 10 are: a core/first_record_count step that reads the T1's "aged 65 or older" flag (`ca/t1_lines_copied_by_provinces.age_65_or_older`, worked out once on the T1 from the year of birth; blank passes on and is read as 0 by the steps below; shared with line 98; not a line of the form), a core/times_count step of worksheet line 7 by that count (blank read as 0), and a core/at_most step that checks the printed maximum (worksheet line 1) and is line 10. An amount above the maximum is refused, not capped. Worksheet lines 1 to 7 are in the two parts beside this one.
 form:
   name: ca-ns/ns428
 capabilities:
-- name: ca/count_by_conditions
-  title: Born in 1960 or earlier
-  params:
-    conditions: ca-ns/born_in_1960_or_earlier_conditions
+- name: core/first_record_count
+  title: Aged 65 or older at the end of the year
   consumes:
-    counts:
-    - ca/birth_year
-    amounts: []
+    records: ca/t1_lines_copied_by_provinces.age_65_or_older
   blank:
-    counts: pass_on
+    records:
+      ca/age_65_or_older: pass_on
   produces:
-    output: ca/born_in_1960_or_earlier_checked
+    output: ca-ns/ns428_age_65_or_older
 - name: core/times_count
   title: Age amount before the printed maximum
   unit: ca/cad
@@ -21,7 +18,7 @@ capabilities:
     rounding: ca-ns/cent_rounding
   consumes:
     amount: ca-ns/worksheet_ns428_age_amount_line_7
-    count: ca/born_in_1960_or_earlier_checked
+    count: ca-ns/ns428_age_65_or_older
   produces:
     output: ca-ns/ns428_age_amount_claimed_line_10
   blank:

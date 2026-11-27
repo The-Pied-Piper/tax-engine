@@ -11,7 +11,7 @@ from tests.federal_forms import FEDERAL_FORMS
 PART = FEDERAL_FORMS / "t1_lines_copied_by_provinces" / "t1_lines_copied_by_provinces.yaml"
 
 
-def test_the_form_is_required_has_the_t1_title_and_exports_the_six_lines() -> None:
+def test_the_form_is_required_has_the_t1_title_and_exports_its_lines() -> None:
     part: Any = yaml.safe_load(PART.read_text(encoding="utf-8"))
 
     assert part["form"] == {
@@ -25,6 +25,8 @@ def test_the_form_is_required_has_the_t1_title_and_exports_the_six_lines() -> No
             "ca/medical_expenses_line_33099",
             "ca/other_dependants_medical_expenses_line_33199",
             "ca/minimum_tax_carryover_line_40427",
+            "ca/birth_year",
+            "ca/age_65_or_older",
         ],
     }
     assert part["capabilities"] == []

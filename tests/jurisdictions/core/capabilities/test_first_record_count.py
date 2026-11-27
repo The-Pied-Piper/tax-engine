@@ -5,7 +5,8 @@ one count field) and one produced slot `output`, a count. It takes the count in 
 of the list (position 0, fixed); an empty list is refused. It records one `FirstRecordCountLine`
 naming the field, the value and how many records the list has. A list kind without exactly one
 count field is refused when the capability is built. It reads a form's export of one count
-(`<form>.<export>`) as that one count.
+(`<form>.<export>`) as that one count. A blank count field takes a fallback or is passed on, as in
+`core/record_total`.
 """
 
 from __future__ import annotations
@@ -19,6 +20,7 @@ import pytest
 
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.blank import BLANK, PASS_ON
 from tax_engine.domain.errors import (
     InvalidCapabilityError,
     MissingArtifactError,
@@ -197,3 +199,38 @@ def test_the_trace_for_one_record_renders_the_count_of_items() -> None:
     assert EnglishTraceRenderer().render_all(result.trace) == (
         "Item count of item 1 (0), of 1 item.",
     )
+
+
+# --- blank ------------------------------------------------------------------------------------
+
+
+def blank_flags() -> Artifact[Any]:
+    return Artifact(FLAGS, RecordList(FLAGS.fields, [{COUNT: BLANK}]))
+
+
+def test_a_blank_count_field_may_be_passed_on() -> None:
+    assert "records" in FirstRecordCount.BLANK_RECORD_FIELDS
+
+    result = (
+        capability()
+        .with_blank_rules({}, per_field={"records": {COUNT: PASS_ON}})
+        .run((blank_flags(),))
+    )
+
+    assert result.outputs == (Artifact(FIRST_FLAG, BLANK),)
+
+
+def test_a_blank_count_field_may_take_a_fallback() -> None:
+    result = (
+        capability().with_blank_rules({}, per_field={"records": {COUNT: 7}}).run((blank_flags(),))
+    )
+
+    assert result.outputs == (Artifact(FIRST_FLAG, 7),)
+
+
+def test_a_whole_record_list_may_be_blank_and_passed_on() -> None:
+    assert "records" in FirstRecordCount.BLANK_ALLOWED
+
+    result = capability().with_blank_rules({"records": PASS_ON}).run((Artifact(FLAGS, BLANK),))
+
+    assert result.outputs == (Artifact(FIRST_FLAG, BLANK),)

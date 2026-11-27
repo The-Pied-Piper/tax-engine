@@ -49,7 +49,6 @@ FEDERAL_FORM_NAMES = (
 # The real NS428 parts that give line 26, which line 29 reads, in line order (the part file names).
 CHAIN = (
     "ns428_line_9.yaml",
-    "ns428_line_10_input.yaml",
     "ns428_line_10_worksheet_lines_1_to_3.yaml",
     "ns428_line_10_worksheet_lines_4_to_7.yaml",
     "ns428_line_10.yaml",
