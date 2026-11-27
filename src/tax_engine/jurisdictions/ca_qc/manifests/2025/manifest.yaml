@@ -44,10 +44,12 @@ take_home:
   marginal_tax_rate: {form: ca-qc/return, kind: ca-qc/marginal_tax_rate}
 imports:
   # Quebec prints its own Schedule 8 (5005-S8): the shared form reads the Quebec line 11 dataset
-  # (5.4%, maximum $3,661.20) instead of the federal one; every other figure is the same.
+  # (5.4%, maximum $3,661.20) instead of the federal one, and the age test of line A condition c)
+  # (73 or older at the end of the year, not the federal 70); every other figure is the same.
   - form: ca/schedule_8
     datasets:
       ca/cpp_line_11_base_contribution: ca-qc/qpp_line_11_base_contribution
+      ca/cpp_not_70_or_older_all_year_conditions: ca-qc/qpp_not_73_or_older_conditions
   # Quebec prints its own Schedule 6 (5005-S6): the shared form reads the Quebec figures of lines 17,
   # 19, 21, 24 and 26 (no eligible spouse or dependant) instead of the federal ones.
   - form: ca/schedule_6

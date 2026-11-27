@@ -4,7 +4,7 @@
 # using the number of months from line A.": line B "Your maximum pensionable earnings for
 # 2025 (maximum $71,300)".
 # The rows are the table's column "Maximum pensionable earnings", one for each number of
-# months from 1 to 12, as printed. Part 4 line 5 is "Amount from line B of Part 2". The
+# months from 1 to 12, as printed. Part 4 line 5 is "Amount from line B of Part 2".
 # The table prints no row for 0 months; the "0" row is 0 of 12 months of the printed amount, added for a filer whose line A is 0 (not a printed figure).
 # The figures are in dollars and cents, so each rounds half-up to the cent, which changes
 # none of them.
