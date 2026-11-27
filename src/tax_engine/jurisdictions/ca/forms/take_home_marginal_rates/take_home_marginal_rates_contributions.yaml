@@ -11,11 +11,14 @@
 # start" the same 0, and "inside" and "above" the same figure. Line 5 less the basic exemption
 # (line 7 before its floor and its maximum) is the base and first additional rates' earnings; line 2
 # less the maximum pensionable earnings (line 4 before its floor) is the second additional rate's.
-# A filer with no CPP months (Schedule 8 Part 2 line A is 0: under 18 all year, or 70 or older all
-# year) pays no CPP, so each of the three CPP rates is its tier rate times a CPP gate: 0 where the
-# maximum pensionable earnings (line B, 0 exactly when line A is 0) are 0.00, 1 otherwise, from the
-# `ca/marginal_rate_gate` dataset. Without it the signed figures are 0 and 0, which the tiers
-# read as the start of their band.
+# The contribution stops at the prorated maximums of Schedule 8 (line B, and line D for the second
+# additional), but a tier's own upper bound is the full-year figure, so once a part-year or no-month
+# filer has reached the prorated maximum the tier would still read a rate. Each CPP rate is
+# therefore its tier rate times a room gate: line B less line 5 (line 5 is line 2 limited to line B)
+# for the base and first additional rates, line D less line 2 for the second additional, each 0
+# where the room is 0.00 and 1 from one cent, from the `ca/marginal_rate_gate` dataset. A filer
+# with no CPP months has lines B and D of 0, so no room and no rate. For a full year the gates
+# change nothing: the room is 0 exactly when the signed figure reaches the tier's upper bound.
 # The EI rate follows T2204 line 16, the least of line 7 and line 10 (line 9, the premiums
 # deducted, is line 10 for a salary-only filer): line 10's rate is the `ei_premium` tier's rate on
 # line 1, and line 7's is 1 from the $2,000 exemption (included, the dollar at $2,000 is the first that
@@ -68,6 +71,12 @@ capabilities:
       records: ca/schedule_8.cpp_maximum_pensionable_earnings
     produces:
       output: ca/marginal_cpp_maximum_pensionable_earnings
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/schedule_8.cpp_additional_maximum_pensionable_earnings
+    produces:
+      output: ca/marginal_cpp_additional_maximum_pensionable_earnings
   - name: core/subtract
     unit: ca/cad
     params:
@@ -86,14 +95,40 @@ capabilities:
       less: ca/marginal_cpp_maximum_pensionable_earnings
     produces:
       output: ca/marginal_cpp_line_4_signed
+  - name: core/subtract
+    unit: ca/cad
+    params:
+      rounding: ca/exact_rounding
+    consumes:
+      amount: ca/marginal_cpp_maximum_pensionable_earnings
+      less: ca/marginal_cpp_line_5
+    produces:
+      output: ca/marginal_cpp_line_5_room
+  - name: core/subtract
+    unit: ca/cad
+    params:
+      rounding: ca/exact_rounding
+    consumes:
+      amount: ca/marginal_cpp_additional_maximum_pensionable_earnings
+      less: ca/marginal_cpp_line_2
+    produces:
+      output: ca/marginal_cpp_line_2_room
   - name: core/amount_by_band_rate
     unit: core/percent
     params:
       table: ca/marginal_rate_gate
     consumes:
-      base: ca/marginal_cpp_maximum_pensionable_earnings
+      base: ca/marginal_cpp_line_5_room
     produces:
-      output: ca/marginal_cpp_gate
+      output: ca/marginal_cpp_line_5_room_gate
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca/marginal_rate_gate
+    consumes:
+      base: ca/marginal_cpp_line_2_room
+    produces:
+      output: ca/marginal_cpp_line_2_room_gate
   - name: ca/contribution_tier_rate
     unit: core/percent
     params:
@@ -108,7 +143,7 @@ capabilities:
       rounding: ca/exact_rounding
     consumes:
       base: ca/marginal_cpp_base_tier_rate
-      rate: ca/marginal_cpp_gate
+      rate: ca/marginal_cpp_line_5_room_gate
     produces:
       output: ca/marginal_cpp_base_rate
   - name: ca/contribution_tier_rate
@@ -125,7 +160,7 @@ capabilities:
       rounding: ca/exact_rounding
     consumes:
       base: ca/marginal_cpp_first_additional_tier_rate
-      rate: ca/marginal_cpp_gate
+      rate: ca/marginal_cpp_line_5_room_gate
     produces:
       output: ca/marginal_cpp_first_additional_rate
   - name: ca/contribution_tier_rate
@@ -142,7 +177,7 @@ capabilities:
       rounding: ca/exact_rounding
     consumes:
       base: ca/marginal_cpp_second_additional_tier_rate
-      rate: ca/marginal_cpp_gate
+      rate: ca/marginal_cpp_line_2_room_gate
     produces:
       output: ca/marginal_cpp_second_additional_rate
   - name: core/record_total
