@@ -1,4 +1,4 @@
-# Form MB428 (CRA 5007-C) line 10 and line 58080: "Age amount (if you were born in 1960 or earlier) (use Worksheet MB428) (maximum $3,728)". Built as ca-ns/ns428 line 10 is: a core/first_record_count step that reads the T1's year of birth (`ca/t1_lines_copied_by_provinces.birth_year`, entered once on the T1; blank passes on), a ca/count_by_conditions step that works out 1 or 0 from that year (a blank year passes on blank, read as 0 by the steps below; not a line of the form), a core/times_count step of worksheet line 7 by that count (blank read as 0), and a core/at_most step that checks the printed maximum (worksheet line 1) and is line 10. An amount above the maximum is refused, not capped. Worksheet lines 1 to 7 are in the two parts beside this one.
+# Form MB428 (CRA 5007-C) line 10 and line 58080: "Age amount (if you were born in 1960 or earlier) (use Worksheet MB428) (maximum $3,728)". Built as ca-ns/ns428 line 10 is: a core/first_record_count step that reads the T1's year of birth (`ca/t1_lines_copied_by_provinces.birth_year`, entered once on the T1; blank passes on), a ca/count_by_conditions step that works out 1 or 0 from that year (a blank year passes on blank, read as 0 by the steps below; not a line of the form), four helper steps for the printed "$52,602 or more, enter 0" (the printed limit, the limit less worksheet line 2 not below 0, a gate that is 0 where that is 0.00 and 1 from one cent, worksheet line 7 times the gate; built as ca-ns/ns428 line 98 builds its income gate; not lines of the form), a core/times_count step of that figure by that count (blank read as 0), and a core/at_most step that checks the printed maximum (worksheet line 1) and is line 10. An amount above the maximum is refused, not capped. Worksheet lines 1 to 7 are in the two parts beside this one.
 form:
   name: ca-mb/mb428_credits
 capabilities:
@@ -23,13 +23,49 @@ capabilities:
     counts: pass_on
   produces:
     output: ca/born_in_1960_or_earlier_checked
+- name: core/credit_amount
+  title: Worksheet MB428 age amount upper income limit
+  unit: ca/cad
+  params:
+    amount: ca-mb/age_amount_upper_limit
+  produces:
+    output: ca-mb/mb428_age_amount_upper_limit
+- name: core/subtract_not_below_zero
+  title: Age amount upper income limit less net income
+  unit: ca/cad
+  params:
+    rounding: ca-mb/cent_rounding
+  consumes:
+    amount: ca-mb/mb428_age_amount_upper_limit
+    less: ca-mb/worksheet_mb428_age_amount_net_income_line_2
+  produces:
+    output: ca-mb/mb428_net_income_under_age_amount_upper_limit
+- name: core/amount_by_band
+  title: Multiplier that is 0 when net income is not less than the age amount upper income limit
+  unit: ca/cad
+  params:
+    table: ca-mb/age_amount_upper_limit_gate
+  consumes:
+    base: ca-mb/mb428_net_income_under_age_amount_upper_limit
+  produces:
+    output: ca-mb/mb428_age_amount_upper_limit_gate
+- name: core/multiply
+  title: Worksheet MB428 age amount line 7 after the upper income limit
+  unit: ca/cad
+  params:
+    rounding: ca-mb/cent_rounding
+  consumes:
+    multiplicand: ca-mb/worksheet_mb428_age_amount_line_7
+    multiplier: ca-mb/mb428_age_amount_upper_limit_gate
+  produces:
+    output: ca-mb/worksheet_mb428_age_amount_gated_line_7
 - name: core/times_count
   title: Age amount before the printed maximum
   unit: ca/cad
   params:
     rounding: ca-mb/cent_rounding
   consumes:
-    amount: ca-mb/worksheet_mb428_age_amount_line_7
+    amount: ca-mb/worksheet_mb428_age_amount_gated_line_7
     count: ca/born_in_1960_or_earlier_checked
   produces:
     output: ca-mb/mb428_age_amount_claimed_line_10

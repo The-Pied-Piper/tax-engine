@@ -67,3 +67,21 @@ def test_line_10_is_claimed_for_any_year_up_to_and_including_1960(tmp_path: Path
     for year in (1960, 1959, 1925):
         given = (Artifact(BIRTH_YEAR, year),)
         assert s.value(_sheet(tmp_path / str(year), "20000", given), LINE_10) == D("3728.00")
+
+
+@pytest.mark.parametrize(
+    ("net_income", "expected"),
+    [("27749", "3728.00"), ("52601", "0.20"), ("52602", "0.00"), ("52603", "0.00")],
+)
+def test_line_10_at_the_printed_limits(tmp_path: Path, net_income: str, expected: str) -> None:
+    # The salary that gives this net income: the salary less the enhanced CPP deduction (1% of the
+    # earnings from $3,500 to $71,300), so net income = salary - (salary - 3500) / 100.
+    salary = _salary_for(D(net_income))
+    sheet = _sheet(tmp_path, str(salary), BORN)
+
+    assert s.value(sheet, LINE_2) == D(net_income)
+    assert s.value(sheet, LINE_10) == D(expected)
+
+
+def _salary_for(net_income: Decimal) -> Decimal:
+    return ((net_income - D("35")) / D("0.99")).quantize(D("0.01"))

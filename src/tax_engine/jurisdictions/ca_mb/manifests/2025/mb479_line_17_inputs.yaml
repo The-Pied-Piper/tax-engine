@@ -1,6 +1,6 @@
 # MB479 (2025) line 17's input, which a salary-only caller does not give: line 13 (Form MB479, CRA
 # 5007-TC), the personal tax credit line that line 17 adds to the basic credit of line 7. Line 8 is
-# computed from the year of birth (mb479_line_8_birth_year.yaml, mb479_line_8.yaml), line 12 from
+# computed from the year of birth (mb479_line_8.yaml), line 12 from
 # lines 9 to 11 (mb479_line_12_inputs.yaml, mb479_line_12.yaml) and lines 14 to 16 from their counts
 # (mb479_line_14_inputs.yaml and its neighbours). A salary-only caller claims none of them, so a
 # request that leaves a line out is read as blank.

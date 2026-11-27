@@ -1299,7 +1299,7 @@
    },
    {
     "form": "ca-mb/mb428_credits",
-    "lines": 46
+    "lines": 50
    },
    {
     "form": "ca/t691",
@@ -1326,7 +1326,7 @@
     "lines": 32
    }
   ],
-  "trace_sha256": "2072f7f01cf25477fef2e983b8d8f4f5e59c6607ea0fe1b15d412085264d1c29"
+  "trace_sha256": "883c4cc1f54e9f052e5cf89918883967177e09418d41e4de89256b5b82991fcc"
  },
  {
   "jurisdiction": "CA-MB",
@@ -1509,7 +1509,7 @@
    },
    {
     "form": "ca-mb/mb428_credits",
-    "lines": 46
+    "lines": 50
    },
    {
     "form": "ca/t691",
@@ -1536,7 +1536,7 @@
     "lines": 32
    }
   ],
-  "trace_sha256": "21e6b30a0632207c3220801e5beb0466811c5179bcad414c4bc9eaf7a7bbb4b9"
+  "trace_sha256": "ac6e8d98bf24b57be2f47209f2185da6408b40c9e0eedad95b26f331dfced1b7"
  },
  {
   "jurisdiction": "CA-MB",

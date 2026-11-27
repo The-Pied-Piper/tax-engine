@@ -77,6 +77,31 @@ WORKSHEET_MB428_AGE_AMOUNT_LINE_7 = AmountKind.declare(
 """Worksheet MB428 age amount line 7 "Line 1 minus line 6 (if negative, enter \"0\")": the
 amount for MB428 line 10 when the filer was born in 1960 or earlier."""
 
+MB428_AGE_AMOUNT_UPPER_LIMIT = AmountKind.declare(
+    CATALOG, "mb428_age_amount_upper_limit", non_negative=True
+)
+"""Upper income limit of the age amount, Worksheet MB428 "Line 58080 - Age amount": "$52,602 or
+more, enter \"0\"", the printed limit, from the `ca-mb/age_amount_upper_limit` dataset. Not a line
+of the form."""
+
+MB428_NET_INCOME_UNDER_AGE_AMOUNT_UPPER_LIMIT = AmountKind.declare(
+    CATALOG, "mb428_net_income_under_age_amount_upper_limit", non_negative=True
+)
+"""The age amount upper income limit less net income (worksheet line 2), not below 0: above 0
+exactly when net income is less than the limit. Not a line of the form."""
+
+MB428_AGE_AMOUNT_UPPER_LIMIT_GATE = AmountKind.declare(
+    CATALOG, "mb428_age_amount_upper_limit_gate", non_negative=True
+)
+"""Switch of the age amount's upper income limit, 0 or 1, from the
+`ca-mb/age_amount_upper_limit_gate` dataset. Not a CRA figure and not a line of the form."""
+
+WORKSHEET_MB428_AGE_AMOUNT_GATED_LINE_7 = AmountKind.declare(
+    CATALOG, "worksheet_mb428_age_amount_gated_line_7", non_negative=True
+)
+"""Worksheet MB428 age amount line 7 after the printed "$52,602 or more, enter \"0\"": line 7 times
+the upper limit gate. Not a line of the form."""
+
 MB428_AGE_AMOUNT_CLAIMED_LINE_10 = AmountKind.declare(
     CATALOG, "mb428_age_amount_claimed_line_10", non_negative=True
 )
