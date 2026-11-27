@@ -1,17 +1,17 @@
-"""BC428 (2025) line 10, the lower bound of the column for lines 9 to 15, from the real parts.
+"""BC428 (2025) line 10, the lower bound of the column for lines 9 to 15.
 
 Form text (Form BC428, CRA 5010-c-25e.txt, read 2026-11-14): "Column 1: Line 1 is more than $137,407
-but not more than $186,306  Line 10: 137,407.00", "Column 2: Line 1 is more than $186,306 but not
-more than $259,829  Line 10: 186,306.00", "Column 3: Line 1 is more than $259,829  Line 10:
+but not more than $186,306 Line 10: 137,407.00", "Column 2: Line 1 is more than $186,306 but not
+more than $259,829 Line 10: 186,306.00", "Column 3: Line 1 is more than $259,829 Line 10:
 259,829.00". Line 9 is a copy of line 1 and has no step. Line 10 is
-`core/bracket_column_lower_bound` over line 1 (`ca-bc/bc428_taxable_income_line_1`) with the
-`ca-bc/brackets_lines_9_to_15` schedule, output `ca-bc/bc428_bracket_lower_bound_line_10`, as
-Alberta's line 10 is.
+`core/bracket_column_lower_bound` over line 1 (`ca-bc/bc428_taxable_income_line_1`) with the `ca-
+bc/brackets_lines_9_to_15` schedule, output `ca-bc/bc428_bracket_lower_bound_line_10`, as Alberta's
+line 10 is.
 
-The table covers only a line 1 above 137,407.00, so line 10 is left blank there: at $17,000
-and $70,000 it is blank, at $200,000 (line 1 is 198,926.00) it is 186,306.00. A
-blank output is read from the Worksheet as an artifact whose `is_blank` is true (its `value`
-raises), and its trace is one `BracketOutsideRangeLine` (output, base, base amount).
+The table covers only a line 1 above 137,407.00, so line 10 is left blank there: at $17,000 and
+$70,000 it is blank, at $200,000 (line 1 is 198,926.00) it is 186,306.00. A blank output is read
+from the Worksheet as an artifact whose `is_blank` is true (its `value` raises), and its trace is
+one `BracketOutsideRangeLine` (output, base, base amount).
 
 Line 1 is a salary's T1 taxable income, so the exact thresholds (137,407.00 and 137,407.01 and the
 others) are tested through the capability and the real dataset directly.

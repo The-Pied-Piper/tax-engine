@@ -6,49 +6,79 @@ Form text (Form ON428, CRA 5006-C, .txt): "Line 10 and line 58080: Age amount (i
 46,330.00; line 4 line 2 minus line 3 (if negative, enter "0"); line 5 rate 15%; line 6 line 4 times
 line 5; line 7 line 1 minus line 6 (if negative, enter "0"). A request that leaves the year out is
 not born in 1960 or earlier: line 10 is 0.00. The cutoff year is 1960 for 2025 and 1961 for 2026
-(age 65 on 31 December). The real Ontario manifest is composed end to end through the registered
-engine.
+(age 65 on 31 December).
+
+The test composes the real worksheet and line parts and the federal parts they read beside a test-
+local header and form declaration, and types in the salary and, in some tests, the year of birth.
 """
 
 from __future__ import annotations
 
 from decimal import ROUND_HALF_UP, Decimal
+from textwrap import dedent
 
 import pytest
 
-from tax_engine import build_tax_computation
 from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.kinds import AmountKind
-from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca.catalog.personal_amounts import BIRTH_YEAR
-from tax_engine.registrations import artifact_kinds
+from tax_engine.jurisdictions.ca_on.catalog import (
+    ON428_AGE_AMOUNT_LINE_10,
+    WORKSHEET_ON428_AGE_AMOUNT_NET_INCOME_LINE_2,
+)
+from tests.federal_forms import form_part_names
+from tests.jurisdictions.ca_on.conftest import TakeHomeService
 
 D = Decimal
-FORM = "ca-on/on428"
-LINE_2 = "ca-on/worksheet_on428_age_amount_net_income_line_2"
-LINE = "ca-on/on428_age_amount_line_10"
+FORM_NAME = "ca-on/on428"
+PARTS = (
+    *form_part_names(
+        "schedule_8",
+        "t2204",
+        "t1_employment_income",
+        "t1_taxable_income",
+        "t1_lines_copied_by_provinces",
+        "schedule_9",
+    ),
+    "on428_line_10_worksheet_lines_1_to_3.yaml",
+    "on428_line_10_worksheet_lines_4_to_7.yaml",
+    "on428_line_10.yaml",
+)
+HEADER = dedent("""\
+    jurisdiction: CA-ON
+    version: 1
+    valid_from_tax_year: 2025
+    outputs: []
+    capabilities: []
+    """)
+FORM = dedent("""\
+    form:
+      name: ca-on/on428
+      required: true
+      exports:
+        - ca-on/worksheet_on428_age_amount_net_income_line_2
+        - ca-on/on428_age_amount_line_10
+    """)
 MAXIMUM = D("6223")
 THRESHOLD = D("46330")
 
 
-def _figure(sheet: Worksheet, name: str) -> Decimal:
-    kind = artifact_kinds().kind(name)
-    assert isinstance(kind, AmountKind)
-    return sheet.get(kind).value
-
-
-def _sheet(year: int, salary: str, birth_year: int | None) -> Worksheet:
+def _figures(
+    take_home_service: TakeHomeService, year: int, salary: str, birth_year: int | None
+) -> tuple[Decimal, Decimal]:
     given: tuple[Artifact[Decimal] | Artifact[int], ...] = (Artifact(EMPLOYMENT_INCOME, D(salary)),)
     if birth_year is not None:
         given = (*given, Artifact(BIRTH_YEAR, birth_year))
-    worksheets = build_tax_computation().compute(
+    worksheets = take_home_service(HEADER, FORM, *PARTS).compute(
         TaxCalculationRequest(JurisdictionCode("CA-ON"), year, given)
     )
-    (sheet,) = worksheets[FORM]
-    return sheet
+    (sheet,) = worksheets[FORM_NAME]
+    return (
+        sheet.get(WORKSHEET_ON428_AGE_AMOUNT_NET_INCOME_LINE_2).value,
+        sheet.get(ON428_AGE_AMOUNT_LINE_10).value,
+    )
 
 
 @pytest.mark.parametrize("year", [2025, 2026])
@@ -56,26 +86,29 @@ def _sheet(year: int, salary: str, birth_year: int | None) -> Worksheet:
     ("salary", "expected"), [("20000", "6223.00"), ("46330", "6223.00"), ("100000", "0.00")]
 )
 def test_line_is_the_maximum_below_the_threshold_and_zero_far_above(
-    year: int, salary: str, expected: str
+    take_home_service: TakeHomeService, year: int, salary: str, expected: str
 ) -> None:
-    assert _figure(_sheet(year, salary, 1950), LINE) == D(expected)
+    assert _figures(take_home_service, year, salary, 1950)[1] == D(expected)
 
 
 @pytest.mark.parametrize("year", [2025, 2026])
-def test_line_in_the_reduction_range_is_the_worksheet_arithmetic(year: int) -> None:
-    sheet = _sheet(year, "60000", 1950)
-    net_income = _figure(sheet, LINE_2)
+def test_line_in_the_reduction_range_is_the_worksheet_arithmetic(
+    take_home_service: TakeHomeService, year: int
+) -> None:
+    net_income, line = _figures(take_home_service, year, "60000", 1950)
     expected = (MAXIMUM - D("0.15") * (net_income - THRESHOLD)).quantize(
         D("0.01"), rounding=ROUND_HALF_UP
     )
 
     assert THRESHOLD < net_income < THRESHOLD + MAXIMUM / D("0.15")
-    assert _figure(sheet, LINE) == expected
+    assert line == expected
 
 
 @pytest.mark.parametrize("year", [2025, 2026])
-def test_line_is_zero_when_the_year_is_left_out(year: int) -> None:
-    assert _figure(_sheet(year, "20000", None), LINE) == D("0.00")
+def test_line_is_zero_when_the_year_is_left_out(
+    take_home_service: TakeHomeService, year: int
+) -> None:
+    assert _figures(take_home_service, year, "20000", None)[1] == D("0.00")
 
 
 @pytest.mark.parametrize(
@@ -87,5 +120,7 @@ def test_line_is_zero_when_the_year_is_left_out(year: int) -> None:
         (2026, 1962, "0.00"),
     ],
 )
-def test_the_cutoff_year_moves_with_the_tax_year(year: int, birth_year: int, expected: str) -> None:
-    assert _figure(_sheet(year, "20000", birth_year), LINE) == D(expected)
+def test_the_cutoff_year_moves_with_the_tax_year(
+    take_home_service: TakeHomeService, year: int, birth_year: int, expected: str
+) -> None:
+    assert _figures(take_home_service, year, "20000", birth_year)[1] == D(expected)
