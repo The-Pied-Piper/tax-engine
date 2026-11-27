@@ -1,5 +1,5 @@
 # Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
-# Derivation: 2025 amount 2028 x 1.02 (Saskatchewan's 2026 index factor, 2.0%, T4127 (Jan 2026)) + 500 (the Saskatchewan Affordability Act's yearly $500 addition, as 2025's figure was itself the indexed 2024 amount plus 500) = 2568.56, rounded to the nearest dollar, a half going up, to 2569; unconfirmed, as the 2026 SK428 is not yet published.
+# Derivation: 2025 amount 2028 x 1.02 (Saskatchewan's 2026 index factor, 2.0%, T4127 (Jan 2026)) + 500 (the Saskatchewan Affordability Act's yearly $500 addition: 2025's figure was the indexed 2024 amount plus 500; the +500 for 2026 is not yet checked against the Act's text) = 2568.56, rounded to the nearest dollar, a half going up, to 2569; unconfirmed, as the 2026 SK428 is not yet published.
 # Form SK428 line 19 and line 58220 (CRA 5008-C): "Senior supplementary amount (if you were born in 1960 or earlier) Claim $2,028". The claim, 2026, claimed whole: the `credit` kind. Rounds half-up to the cent, the project's choice, as the form states no rounding rule.
 family: ca-sk/senior_supplementary_amount
 tax_year: 2026
