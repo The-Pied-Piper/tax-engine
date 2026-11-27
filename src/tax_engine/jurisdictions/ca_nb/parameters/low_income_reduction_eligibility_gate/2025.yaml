@@ -1,0 +1,16 @@
+# New Brunswick low-income reduction eligibility gate, 2025 tax year (Form NB428, the eligibility
+# test above line 70: "If neither of these conditions applies to you, enter "0" on line 86").
+# Not a CRA figure and not printed on any form: the rows are a switch that gives 0 where the base
+# is 0.00 and 1 where it is one cent or more. The base is the single income limit minus net
+# income (line 70), not below 0, so the gate is 1 exactly when net income is less than the limit.
+# A base exactly at a row's `over` is in the lower band, so the second row starts above 0.005: no
+# cent amount is in the first band but 0.00, and 0.01 is in the second.
+family: ca-nb/low_income_reduction_eligibility_gate
+tax_year: 2025
+kind: amount_by_band
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5004-c/5004-c-25e.txt
+rounding: none
+rows:
+  - {over: "0", amount: "0"}
+  - {over: "0.005", amount: "1"}
