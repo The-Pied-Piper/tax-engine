@@ -1,0 +1,32 @@
+# Form PE428 (CRA 5002-C) line 96: "Line 96: Line 94 plus line 95 (maximum $7,000) =". Lines 94 and
+# 95 are optional inputs a salary-only caller leaves out, each read as 0 when blank. Two steps, the
+# last of which is line 96. The first, core/sum, adds lines 94 and 95, rounded half-up to the cent
+# by the dataset's rule; it is not a line of the form, so it has no reference, and its title is
+# plain words, not printed wording. The second, core/capped_amount, is line 96: the lesser of that
+# sum and the printed maximum, the `ca-pe/equity_tax_credit_maximum` dataset ($7,000).
+form:
+  name: ca-pe/pe428
+capabilities:
+  - name: core/sum
+    title: "Equity tax credit before the maximum"
+    unit: ca/cad
+    params:
+      rounding: ca-pe/cent_rounding
+    consumes:
+      parts:
+        - ca-pe/pe428_equity_tax_credit_line_94
+        - ca-pe/pe428_unused_equity_tax_credit_line_95
+    blank:
+      ca-pe/pe428_equity_tax_credit_line_94: "0"
+      ca-pe/pe428_unused_equity_tax_credit_line_95: "0"
+    produces:
+      output: ca-pe/pe428_equity_tax_credit_before_maximum_line_96
+  - name: core/capped_amount
+    reference: "96"
+    unit: ca/cad
+    params:
+      cap: ca-pe/equity_tax_credit_maximum
+    consumes:
+      base: ca-pe/pe428_equity_tax_credit_before_maximum_line_96
+    produces:
+      output: ca-pe/pe428_equity_tax_credit_line_96

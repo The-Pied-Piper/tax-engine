@@ -1,0 +1,13 @@
+# PE428 (2025) line 89's input, which a salary-only caller does not give. Line 89: Provincial
+# foreign tax credit (complete Form T2036) (Form PE428, CRA 5002-C). Form T2036 is not built, so
+# the credit is taken as one optional input, never hardcoded to 0. A request that leaves the line
+# out is read as blank; line 90 reads the blank as 0.
+form:
+  name: ca-pe/pe428
+inputs:
+  - name: ca-pe/pe428_provincial_foreign_tax_credit_line_89
+    reference: "89"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Provincial foreign tax credit (complete Form T2036)'

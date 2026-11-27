@@ -1,8 +1,8 @@
-"""The Prince Edward Island form `ca-pe/pe428` (Form PE428, CRA 5002-C) as declared so far: its
-name, its title as printed, and the exports the return summary's marginal rate reads, line 84
-(the income over the base amount) and line 87 (the low-income tax reduction), and line 88, the
-tax after the reduction, exported until line 90 reads it (the copy lines 55, 58, 73, 74 and 82
-have no step, and the lines after them read the lines they copy directly).
+"""The Prince Edward Island form `ca-pe/pe428` (Form PE428, CRA 5002-C): its name, its title as
+printed, and its exports: line 84 (the income over the base amount) and line 87 (the low-income
+tax reduction), which the return summary's marginal rate reads, and line 97, the Prince Edward
+Island tax, which the form supplies as `ca/provincial_tax.amount` for T1 line 42800 (the copy lines
+55, 58, 73, 74 and 82 have no step, and the lines after them read the lines they copy directly).
 
 The part file names the form and its exports; line parts carry the capabilities. The Prince
 Edward Island package is not yet listed, so the part is read as YAML and composed here with the
@@ -27,8 +27,8 @@ D = Decimal
 PART = s.PE_PARTS / "pe428.yaml"
 LINE_84 = "ca-pe/pe428_income_over_base_amount_line_84"
 LINE_87 = "ca-pe/pe428_low_income_tax_reduction_line_87"
-LINE_88 = "ca-pe/pe428_tax_line_88"
-EXPORTS = [LINE_84, LINE_87, LINE_88]
+LINE_97 = "ca-pe/pe428_prince_edward_island_tax_line_97"
+EXPORTS = [LINE_84, LINE_87, LINE_97]
 ALL_LINES = (1, 3, 4, 5, 6, 7, 8)
 
 
@@ -46,15 +46,15 @@ def test_the_form_is_named_titled_as_printed_and_required() -> None:
     assert form["required"] is True
 
 
-def test_the_form_exports_lines_84_87_and_88() -> None:
+def test_the_form_exports_lines_84_87_and_97() -> None:
     assert _part()["form"]["exports"] == EXPORTS
 
 
-def test_the_form_supplies_nothing_and_the_part_declares_no_capabilities() -> None:
+def test_the_form_supplies_line_97_as_the_provincial_tax_and_declares_no_capabilities() -> None:
     part = _part()
 
-    assert "supplies" not in part["form"]
-    assert list(part["form"]) == ["name", "title", "required", "exports"]
+    assert part["form"]["supplies"] == {"ca/provincial_tax.amount": LINE_97}
+    assert list(part["form"]) == ["name", "title", "required", "exports", "supplies"]
     assert list(part) == ["form", "capabilities"]
     assert part["capabilities"] == []
 
@@ -70,19 +70,19 @@ def test_each_export_is_a_registered_non_negative_amount_kind(identifier: str) -
 
 
 @pytest.mark.parametrize(
-    ("salary", "line_84", "line_87", "line_88"),
+    ("salary", "line_84", "line_87", "line_97"),
     [
         ("20000", "0.00", "350.00", "33.83"),
         ("30000", "7085.00", "0.00", "1261.72"),
         ("70000", "46685.00", "0.00", "6355.92"),
     ],
 )
-def test_the_real_form_part_and_all_line_parts_compose_to_lines_84_87_and_88(
-    take_home_service: TakeHomeService, salary: str, line_84: str, line_87: str, line_88: str
+def test_the_real_form_part_and_all_line_parts_compose_to_lines_84_87_and_97(
+    take_home_service: TakeHomeService, salary: str, line_84: str, line_87: str, line_97: str
 ) -> None:
     service = take_home_service(HEADER, PART.read_text(encoding="utf-8"), *ALL_PARTS)
     sheet = compute(service, salary)
 
     assert value(sheet, LINE_84) == D(line_84)
     assert value(sheet, LINE_87) == D(line_87)
-    assert value(sheet, LINE_88) == D(line_88)
+    assert value(sheet, LINE_97) == D(line_97)
