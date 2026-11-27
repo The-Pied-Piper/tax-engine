@@ -577,3 +577,7 @@ PE428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_89 = AmountKind.declare(
 """Provincial foreign tax credit, PE428 line 89 "Provincial foreign tax credit (complete Form
 T2036)": the amount as the filer gives it, an optional input; a blank input is read as blank, and
 the step that reads it reads it as 0."""
+
+PE428_TAX_LINE_90 = AmountKind.declare(CATALOG, "pe428_tax_line_90", non_negative=True)
+"""PE428 line 90 "Line 90: Line 88 minus line 89 (if negative, enter "0") =": line 88 less the
+provincial foreign tax credit of line 89, not below 0, rounded half-up to the cent."""
