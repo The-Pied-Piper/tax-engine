@@ -1,0 +1,229 @@
+# The New Brunswick take-home return: T1 line 167 "Refund or balance owing" (positive is owing,
+# negative is a refund). The T1 form exports it, and another form's export is read only as a record
+# list, so the step is core/record_total over the T1 export, totalling the one amount into the
+# return's own `ca/refund_or_balance_owing`. The provincial tax reaches line 167 through T1 line
+# 42800, which NB428 line 97 supplies (`ca/provincial_tax.amount`); T1 line 47900 "Provincial or
+# territorial credits" has no New Brunswick source for a salary-only filer (no Form NB479 was
+# found): the T1 form reads it as optional and passes it on blank, so it adds nothing to line 167,
+# as in the Newfoundland and Labrador, Saskatchewan and Alberta returns.
+#
+# The return's second output is the average tax rate on the take-home basis. The federal form
+# `ca/take_home_average_rate` works it out once for every province (income tax, CPP and EI over the
+# salary), and the return reads its export `ca/average_tax_rate` with one core/record_total.
+#
+# The marginal rate is the rate on the take-home basis: the change in T1 line 43500 plus the CPP,
+# CPP2 and EI per further dollar of salary, with no credit paid on filing. The federal half is the
+# shared federal form `ca/take_home_marginal_rates` (imported by the manifest), whose four exports
+# are each totalled by core/record_total into this return's own figure: the net income rate, the
+# credit-earning contribution rate, the federal marginal rate and the contribution rate. This return
+# adds only New Brunswick's own part.
+#
+# The New Brunswick bracket rate is printed on NB428 line 5 (the rate of the column that line 1
+# falls in). NB428 exports it and the return totals it into its own kind. Times the net income rate (T1 line 22215
+# takes the enhanced CPP off the income) it is the bracket rate on a further dollar of salary. The CPP base and EI contributions
+# earn the NB428 credit (`ca-nb/credit_rate`, NB428 line 48, read as it is by core/rate_figure),
+# which takes that rate times the credit-earning contribution rate off the tax.
+#
+# The low-income tax reduction (NB428 lines 77 to 86) is in the rate, because it changes line 87
+# and so line 97 and T1 line 43500: while NB428 line 83 (the adjusted family income over the base
+# amount) and line 86 (the reduction left, 0 once the single income limit is reached) are both
+# above zero, a further dollar of net income takes 3% (`ca-nb/low_income_reduction_rate`, NB428
+# line 84) off the reduction. The two gates are multiplied, the rate follows, and it is multiplied
+# by the net income rate.
+#
+# The whole provincial part is counted only while NB428 line 97 "Line 95 minus line 96 (if
+# negative, enter "0")", the tax that goes to T1 line 42800, is above zero, through the
+# `ca-nb/marginal_rate_gate` dataset (0 where the amount is 0.00, 1 from one cent). New Brunswick
+# has no surtax and no health premium. The rate is the one of a salary-only filer, as the take-home
+# calculator takes only the salary: the optional inputs (the political contribution, labour-
+# sponsored fund and small business investor credits, lines 92, 94 and 96, and the other credit
+# amounts) are left blank there, so their slopes are not built.
+#
+# The last step adds the federal marginal rate, the New Brunswick marginal rate and the
+# contribution rate (CPP base, enhanced and second additional, and EI) with core/sum into
+# `ca-nb/marginal_tax_rate`. Every step but line 167 is engine-internal, exact
+# (`ca-nb/exact_rounding`; the marginal rate step alone is rounded half-up to 0.0001 like the
+# average rate), printed on no form, and carries no title or line.
+capabilities:
+  - name: core/record_total
+    title: "Refund or balance owing"
+    reference: "167"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_tax_and_credits.refund_or_balance_owing
+    produces:
+      output: ca/refund_or_balance_owing
+  - name: core/record_total
+    unit: core/percent
+    consumes:
+      records: ca/take_home_average_rate.average_tax_rate
+    produces:
+      output: ca-nb/average_tax_rate
+  - name: core/record_total
+    unit: core/percent
+    consumes:
+      records: ca/take_home_marginal_rates.marginal_net_income_rate
+    produces:
+      output: ca-nb/marginal_net_income_rate
+  - name: core/record_total
+    unit: core/percent
+    consumes:
+      records: ca/take_home_marginal_rates.marginal_credit_contribution_rate
+    produces:
+      output: ca-nb/marginal_credit_contribution_rate
+  - name: core/record_total
+    unit: core/percent
+    consumes:
+      records: ca/take_home_marginal_rates.marginal_federal_rate
+    produces:
+      output: ca-nb/marginal_federal_rate
+  - name: core/record_total
+    unit: core/percent
+    consumes:
+      records: ca/take_home_marginal_rates.marginal_contribution_rate
+    produces:
+      output: ca-nb/marginal_contribution_rate
+  - name: core/record_total
+    unit: core/percent
+    consumes:
+      records: ca-nb/nb428.nb428_bracket_rate_line_5
+    produces:
+      output: ca-nb/new_brunswick_bracket_rate_return
+  - name: core/rate_figure
+    unit: core/percent
+    params:
+      rate: ca-nb/credit_rate
+    produces:
+      output: ca-nb/marginal_new_brunswick_credit_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-nb/exact_rounding
+    consumes:
+      base: ca-nb/marginal_credit_contribution_rate
+      rate: ca-nb/marginal_new_brunswick_credit_rate
+    produces:
+      output: ca-nb/marginal_new_brunswick_contribution_credit_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-nb/exact_rounding
+    consumes:
+      base: ca-nb/new_brunswick_bracket_rate_return
+      rate: ca-nb/marginal_net_income_rate
+    produces:
+      output: ca-nb/marginal_new_brunswick_bracket_rate
+  - name: core/subtract
+    unit: core/percent
+    params:
+      rounding: ca-nb/exact_rounding
+    consumes:
+      amount: ca-nb/marginal_new_brunswick_bracket_rate
+      less: ca-nb/marginal_new_brunswick_contribution_credit_rate
+    produces:
+      output: ca-nb/marginal_new_brunswick_rate_after_credits
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-nb/nb428.nb428_line_83
+    produces:
+      output: ca-nb/income_over_base_amount_return
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-nb/nb428.nb428_line_86
+    produces:
+      output: ca-nb/low_income_tax_reduction_return
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca-nb/marginal_rate_gate
+    consumes:
+      base: ca-nb/income_over_base_amount_return
+    produces:
+      output: ca-nb/income_over_base_amount_gate
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca-nb/marginal_rate_gate
+    consumes:
+      base: ca-nb/low_income_tax_reduction_return
+    produces:
+      output: ca-nb/low_income_tax_reduction_gate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-nb/exact_rounding
+    consumes:
+      base: ca-nb/income_over_base_amount_gate
+      rate: ca-nb/low_income_tax_reduction_gate
+    produces:
+      output: ca-nb/low_income_reduction_phase_out_gate
+  - name: core/rate_figure
+    unit: core/percent
+    params:
+      rate: ca-nb/low_income_reduction_rate
+    produces:
+      output: ca-nb/low_income_reduction_rate_figure
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-nb/exact_rounding
+    consumes:
+      base: ca-nb/low_income_reduction_phase_out_gate
+      rate: ca-nb/low_income_reduction_rate_figure
+    produces:
+      output: ca-nb/marginal_low_income_reduction_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-nb/exact_rounding
+    consumes:
+      base: ca-nb/marginal_low_income_reduction_rate
+      rate: ca-nb/marginal_net_income_rate
+    produces:
+      output: ca-nb/marginal_low_income_phase_out_rate
+  - name: core/sum
+    unit: core/percent
+    params:
+      rounding: ca-nb/exact_rounding
+    consumes:
+      parts:
+        - ca-nb/marginal_new_brunswick_rate_after_credits
+        - ca-nb/marginal_low_income_phase_out_rate
+    produces:
+      output: ca-nb/marginal_new_brunswick_rate_with_reduction
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-nb/nb428.nb428_new_brunswick_tax_line_97
+    produces:
+      output: ca-nb/new_brunswick_tax_return
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca-nb/marginal_rate_gate
+    consumes:
+      base: ca-nb/new_brunswick_tax_return
+    produces:
+      output: ca-nb/new_brunswick_rate_gate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-nb/exact_rounding
+    consumes:
+      base: ca-nb/new_brunswick_rate_gate
+      rate: ca-nb/marginal_new_brunswick_rate_with_reduction
+    produces:
+      output: ca-nb/new_brunswick_marginal_rate
+  - name: core/sum
+    unit: core/percent
+    params:
+      rounding: ca/take_home_average_rate_rounding
+    consumes:
+      parts:
+        - ca-nb/marginal_federal_rate
+        - ca-nb/new_brunswick_marginal_rate
+        - ca-nb/marginal_contribution_rate
+    produces:
+      output: ca-nb/marginal_tax_rate

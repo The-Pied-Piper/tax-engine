@@ -30,6 +30,7 @@ import pytest
 import tax_engine.jurisdictions.ca_ab
 import tax_engine.jurisdictions.ca_bc
 import tax_engine.jurisdictions.ca_mb
+import tax_engine.jurisdictions.ca_nb
 import tax_engine.jurisdictions.ca_nl
 import tax_engine.jurisdictions.ca_on
 import tax_engine.jurisdictions.ca_sk
@@ -226,6 +227,7 @@ def test_sk428_line_49_is_the_amount_given_on_t1_line_33199() -> None:
         ("CA-AB", tax_engine.jurisdictions.ca_ab),
         ("CA-BC", tax_engine.jurisdictions.ca_bc),
         ("CA-MB", tax_engine.jurisdictions.ca_mb),
+        ("CA-NB", tax_engine.jurisdictions.ca_nb),
         ("CA-NL", tax_engine.jurisdictions.ca_nl),
         ("CA-ON", tax_engine.jurisdictions.ca_on),
         ("CA-SK", tax_engine.jurisdictions.ca_sk),
