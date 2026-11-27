@@ -31,8 +31,10 @@ DERIVATION_HEADER = (
     "# Derivation: figure as printed in T4127 (Jan 2026) Table 8.2, Nova Scotia row (LCP "
     "rate 0.200, LCP amount 2,000) and in the Nova Scotia labour-sponsored venture "
     "capital credit formula (the lesser of $2,000 and 20% of the amount deducted or "
-    "withheld), and in T4127 (Jul 2026) Table 8.2 (0.200, 2,000); no rounding applied "
-    "here."
+    "withheld), and in T4127 (Jul 2026) Table 8.2 (0.200, 2,000), equal to the 2025 NS428"
+    " line 90 maximum ($2,000) and rate (20%); T4127 is a payroll publication and does "
+    "not name the NS428 line, and the 2026 form is not yet published; no rounding applied"
+    " here."
 )
 
 

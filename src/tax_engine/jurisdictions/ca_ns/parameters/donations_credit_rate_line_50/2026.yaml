@@ -1,5 +1,5 @@
 # Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text when CRA publishes it.
-# Derivation: figure as printed in T4127 (Jan 2026) Table 8.1, Nova Scotia row (highest rate 0.2100), and in T4127 (Jul 2026) Table 8.1 (0.2100); the 2025 form applies the highest bracket rate to the Schedule 9 amount on line 50, and the 2026 form text is not yet published; no rounding applied here.
+# Derivation: figure as printed in T4127 (Jan 2026) Table 8.1, Nova Scotia row (highest rate 0.2100), and in T4127 (Jul 2026) Table 8.1 (0.2100); this is the T4127 bracket rate (T4127 does not name the NS428 line), the 2025 NS428 line 50 prints the same 21%, and the 2026 form text is not yet published; no rounding applied here.
 # Nova Scotia donations and gifts credit rate, 2026 tax year (Form NS428 line 50): the amount
 # from line 14 of the federal Schedule 9 multiplied by 21%. The product is a dollars-and-cents
 # box, so it rounds half-up to the cent, the project's choice, as the form states no rounding rule.

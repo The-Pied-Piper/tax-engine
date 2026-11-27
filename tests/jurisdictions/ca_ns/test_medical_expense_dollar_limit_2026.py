@@ -14,10 +14,13 @@ from tax_engine.domain.registry import Namespace
 from tests.jurisdictions.ca_ns.support import (
     nova_scotia_packages,
     nova_scotia_parameter_parsers,
+    nova_scotia_units,
 )
 
 D = Decimal
-SOURCE = YamlParameterSource(nova_scotia_packages().roots(), nova_scotia_parameter_parsers())
+SOURCE = YamlParameterSource(
+    nova_scotia_packages().roots(), nova_scotia_parameter_parsers(), nova_scotia_units()
+)
 FAMILY = "ca-ns/medical_expense_dollar_limit"
 SOURCES = ("https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5003-c/5003-c-25e.txt",)
 PROVISIONAL_HEADER = (

@@ -29,9 +29,9 @@ PROVISIONAL_HEADER = (
 )
 DERIVATION_HEADER = (
     "# Derivation: figure as printed in T4127 (Jan 2026) Table 8.1, Nova Scotia row "
-    "(lowest rate 0.0879), and in T4127 (Jul 2026) Table 8.1 (0.0879); the 2025 form "
-    "applies the lowest bracket rate to the Schedule 9 amount on line 49, and the 2026 "
-    "form text is not yet published; no rounding applied here."
+    "(lowest rate 0.0879), and in T4127 (Jul 2026) Table 8.1 (0.0879); this is the T4127 "
+    "bracket rate (T4127 does not name the NS428 line), the 2025 NS428 line 49 prints the"
+    " same 8.79%, and the 2026 form text is not yet published; no rounding applied here."
 )
 
 

@@ -6,7 +6,7 @@
 family: ca-ns/low_income_reduction_maximum
 tax_year: 2026
 kind: amount
-title: "low income reduction maximum"
+title: "low-income reduction maximum"
 unit: ca/cad
 sources:
   - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5003-c/5003-c-25e.txt

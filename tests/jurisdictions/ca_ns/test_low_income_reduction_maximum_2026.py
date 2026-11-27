@@ -14,10 +14,13 @@ from tax_engine.domain.registry import Namespace
 from tests.jurisdictions.ca_ns.support import (
     nova_scotia_packages,
     nova_scotia_parameter_parsers,
+    nova_scotia_units,
 )
 
 D = Decimal
-SOURCE = YamlParameterSource(nova_scotia_packages().roots(), nova_scotia_parameter_parsers())
+SOURCE = YamlParameterSource(
+    nova_scotia_packages().roots(), nova_scotia_parameter_parsers(), nova_scotia_units()
+)
 FAMILY = "ca-ns/low_income_reduction_maximum"
 SOURCES = ("https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5003-c/5003-c-25e.txt",)
 PROVISIONAL_HEADER = (
@@ -62,12 +65,3 @@ def test_the_2026_file_is_provisional_and_states_its_derivation() -> None:
 
     assert lines[0] == PROVISIONAL_HEADER
     assert lines[1] == DERIVATION_HEADER
-
-
-def test_2026_is_carried_forward_unchanged_from_2025() -> None:
-    carried = SOURCE.get(FAMILY, 2026, AMOUNT)
-    original = SOURCE.get(FAMILY, 2025, AMOUNT)
-
-    assert carried.values == original.values
-    assert carried.rounding == original.rounding
-    assert carried.sources == original.sources

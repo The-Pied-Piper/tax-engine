@@ -30,7 +30,9 @@ PROVISIONAL_HEADER = (
 DERIVATION_HEADER = (
     "# Derivation: figure as printed in T4127 (Jan 2026) Table 8.1, Nova Scotia row "
     "(lowest rate 0.0879), and in T4127 (Jul 2026) Table 8.1 (0.0879); the lowest bracket"
-    " rate is the credit rate; no rounding applied here."
+    " rate is the credit rate, and the 2025 NS428 line 47 prints the same 8.79%; T4127 "
+    "does not itself name the NS428 line, and the 2026 form is not yet published; no "
+    "rounding applied here."
 )
 
 
