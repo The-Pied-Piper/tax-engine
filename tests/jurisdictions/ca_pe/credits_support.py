@@ -142,5 +142,46 @@ CHAIN_65 = (*CHAIN_63, "pe428_line_64_input.yaml", "pe428_line_65.yaml")
 
 CHAIN_67 = (*CHAIN_65, "pe428_line_66_input.yaml", "pe428_line_67.yaml")
 
-# Every real line part of the form, lines 1 to 67.
-ALL_PARTS = CHAIN_67
+# The lines 68 to 88 chains each end at the line a test reads, so no earlier line is left without a
+# reader: lines 68 to 72 read the T1 alone, lines 75 and 83 read nothing, and line 88 reads line 67.
+T1_PARTS = (*FEDERAL_PARTS, *form_part_names("t1_taxable_income"))
+
+
+def _lines(*numbers: int) -> tuple[str, ...]:
+    return tuple(f"pe428_line_{number}.yaml" for number in numbers)
+
+
+LINE_80_INPUTS = tuple(f"pe428_line_{number}_input.yaml" for number in (76, 77, 78, 79, 80))
+
+CHAIN_68 = (*T1_PARTS, *_lines(68))
+
+CHAIN_69 = (*T1_PARTS, *_lines(69))
+
+CHAIN_70 = (*T1_PARTS, *_lines(68, 69, 70))
+
+CHAIN_71 = (*T1_PARTS, *_lines(71))
+
+CHAIN_72 = (*T1_PARTS, *_lines(68, 69, 70, 71, 72))
+
+CHAIN_75 = (*SALARY_PARTS, *_lines(75))
+
+CHAIN_81 = (*SALARY_PARTS, *_lines(75), *LINE_80_INPUTS, *_lines(81))
+
+CHAIN_83 = (*SALARY_PARTS, *_lines(83))
+
+CHAIN_84 = (*CHAIN_72, *_lines(83, 84))
+
+CHAIN_86 = (*CHAIN_84, *_lines(86))
+
+CHAIN_87 = (*CHAIN_86, *_lines(75), *LINE_80_INPUTS, *_lines(81, 87))
+
+# Line 88 reads line 67, so it is composed over the whole form up to line 67.
+CHAIN_88 = (
+    *CHAIN_67,
+    *_lines(68, 69, 70, 71, 72, 75),
+    *LINE_80_INPUTS,
+    *_lines(81, 83, 84, 86, 87, 88),
+)
+
+# Every real line part of the form, lines 1 to 88.
+ALL_PARTS = CHAIN_88
