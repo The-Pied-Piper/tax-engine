@@ -602,3 +602,7 @@ PE428_POLITICAL_CONTRIBUTION_TAX_CREDIT_LINE_92 = AmountKind.declare(
 """Prince Edward Island political contribution tax credit, PE428 line 92 "(use Worksheet PE428)
 (maximum $500)": the credit as the filer gives it, an optional input (the worksheet is not built);
 a blank input is read as blank, and the step that reads it reads it as 0."""
+
+PE428_TAX_LINE_93 = AmountKind.declare(CATALOG, "pe428_tax_line_93", non_negative=True)
+"""PE428 line 93 "Line 93: Line 90 minus line 92 (if negative, enter "0") =": line 90 less the
+political contribution tax credit of line 92, not below 0, rounded half-up to the cent."""
