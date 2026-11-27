@@ -34,9 +34,12 @@ DERIVATION_HEADER = (
     "# Derivation: the 2025 figure (5,734) indexed by Nova Scotia's index rate 1.016 in "
     "T4127 (Jan 2026) (5,734 x 1.016 = 5,825.74), rounded to the nearest dollar, "
     "halves up; T4127 (Jan and Jul 2026) does not print this figure and the 2026 form"
-    " is not yet published, so it is unconfirmed. Risk: Nova Scotia only began indexing "
-    "this amount in 2025 (frozen at 4,141 from 2016 to 2024, then a statute step to 5,734), "
-    "so 2026 indexing follows its other amounts and not its own history."
+    " is not yet published, so it is unconfirmed. Risks: no CRA text in the repo says Nova "
+    "Scotia indexes this amount; the indexing is inferred because the 2025 step (4,141 to "
+    "5,734) matched the basic personal amount step (8,481 to 11,744), after the amount was "
+    "frozen from 2016 to 2024. The income threshold (30,828) is held unchanged, as it was in "
+    "every year from 2016 to 2025; if Nova Scotia indexes it for 2026, the reduction start "
+    "and the zero point both shift."
 )
 YEAR = 2026
 
