@@ -1,7 +1,6 @@
-"""The 2026 `ca-nb/donations_credit_rate_line_51` dataset, provisional (Form NB428 line 51):
-"Line 51: Amount from line 14 of your federal Schedule 9 multiplied by 17.95% ="
+"""The 2026 `ca-nb/donations_credit_rate_line_51` dataset, provisional.
 
-Rounds half-up to the cent, the project's choice, as the form states no rounding rule.
+Pins the 2026 figure, rounding, sources, tax year and the two header comment lines of the file.
 """
 
 from __future__ import annotations
@@ -23,6 +22,8 @@ NEW_BRUNSWICK_DIR = Path(tax_engine.jurisdictions.__path__[0]) / "ca_nb"
 PARAMETER_PARSERS = ParameterParserRegistry()
 JurisdictionPackages((tax_engine.jurisdictions.core,)).register_parameter_parsers(PARAMETER_PARSERS)
 SOURCE = YamlParameterSource({Namespace("ca-nb"): NEW_BRUNSWICK_DIR}, PARAMETER_PARSERS)
+FAMILY = "ca-nb/donations_credit_rate_line_51"
+SOURCES = ("https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5004-c/5004-c-25e.txt",)
 
 PROVISIONAL_HEADER = (
     "# Provisional: taken from the 2025 form text named in sources; to be confirmed against t"
@@ -35,27 +36,25 @@ DERIVATION_HEADER = (
 
 
 def test_2026_donations_credit_rate_line_51_value() -> None:
-    data = SOURCE.get("ca-nb/donations_credit_rate_line_51", 2026, RATE)
+    data = SOURCE.get(FAMILY, 2026, RATE)
 
     assert data.values == Rate(D("0.1795"))
 
 
 def test_2026_donations_credit_rate_line_51_rounding() -> None:
-    data = SOURCE.get("ca-nb/donations_credit_rate_line_51", 2026, RATE)
+    data = SOURCE.get(FAMILY, 2026, RATE)
 
     assert data.rounding == RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
 
 def test_2026_donations_credit_rate_line_51_sources() -> None:
-    data = SOURCE.get("ca-nb/donations_credit_rate_line_51", 2026, RATE)
+    data = SOURCE.get(FAMILY, 2026, RATE)
 
-    assert data.sources == (
-        "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5004-c/5004-c-25e.txt",
-    )
+    assert data.sources == SOURCES
 
 
 def test_2026_donations_credit_rate_line_51_is_for_tax_year_2026() -> None:
-    data = SOURCE.get("ca-nb/donations_credit_rate_line_51", 2026, RATE)
+    data = SOURCE.get(FAMILY, 2026, RATE)
 
     assert data.tax_year == 2026
 
