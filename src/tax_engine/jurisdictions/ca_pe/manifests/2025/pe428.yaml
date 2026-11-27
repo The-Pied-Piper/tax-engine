@@ -1,17 +1,15 @@
 # Form PE428 Prince Edward Island Tax 2025 (CRA 5002-C), lines 1 to 97, one form: Part A (lines 1 to 8), Part B (lines 9 to 54, the
-# credits) and the lines after them, which read each other directly. This part names the form
-# and its exports; line parts carry capabilities. Line 8 (`ca-pe/pe428_tax_on_taxable_income_line_8`),
-# the Prince Edward Island tax on taxable income, is exported until line 55 (a copy of line 8, which
-# has no step) and the lines after it read it. Line 97, the Prince Edward Island tax that goes to T1
-# line 42800, is exported by the line ticket that builds it. Line 54
-# (`ca-pe/pe428_non_refundable_credits_line_54`), the total non-refundable credits, is exported until
-# line 58 (a copy of line 54, which has no step) and the lines after it read it.
+# credits), Part C (lines 55 to 67, the tax after credits) and the lines after them, which read each
+# other directly. This part names the form and its exports; line parts carry capabilities. Line 55
+# is a copy of line 8 and line 58 a copy of line 54, so they have no step: the lines after them read
+# lines 8 and 54 directly. Line 67 (`ca-pe/pe428_tax_line_67`), the tax after credits, is exported
+# until line 74 (which reads it) is built. Line 97, the Prince Edward Island tax that goes to T1
+# line 42800, is exported by the line ticket that builds it.
 # The title is the printed heading: "Form PE428" and, under it, "Prince Edward Island Tax and Credits".
 form:
   name: ca-pe/pe428
   title: "Form PE428: Prince Edward Island Tax and Credits"
   required: true
   exports:
-    - ca-pe/pe428_tax_on_taxable_income_line_8
-    - ca-pe/pe428_non_refundable_credits_line_54
+    - ca-pe/pe428_tax_line_67
 capabilities: []

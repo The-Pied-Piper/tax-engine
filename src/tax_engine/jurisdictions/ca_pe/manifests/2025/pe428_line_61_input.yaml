@@ -1,0 +1,16 @@
+# PE428 (2025) line 61's input, which a salary-only caller does not give.
+# Line 61: "Line 61 and line 61540: Amount from line 40427 of your return multiplied by 57.5% ="
+# (Form PE428, CRA 5002-C). The line is the minimum tax carryover of the return (line 40427) at the
+# printed rate. A salary-only filer has no minimum tax carryover, so the line is taken as one
+# optional input, never hardcoded to 0. A request that leaves the line out is read as blank; the
+# step that reads line 61 (line 62) reads that blank as 0. The form prints no label for the line, so
+# the input has no title.
+form:
+  name: ca-pe/pe428
+inputs:
+  - name: ca-pe/pe428_minimum_tax_carryover_line_61
+    reference: "61"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 61 and line 61540: Amount from line 40427 of your return multiplied by 57.5% ='
