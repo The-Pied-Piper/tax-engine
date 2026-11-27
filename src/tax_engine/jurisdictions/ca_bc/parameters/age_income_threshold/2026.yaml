@@ -1,5 +1,5 @@
 # Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
-# Derivation: the 2025 figure 43,169 indexed by BC's 2026 index rate 1.022 (T4127 Table 8.2; BC's basic personal amount moved 12,932 to 13,216 by the same factor, and BC's age amount moved by its own factor every year 2016 to 2025): 43,169 x 1.022 = 44,118.6, rounded to the nearest dollar, halves up, 44,119. T4127 does not print this figure and the 2026 form is not yet published, so it is unconfirmed.
+# Derivation: the 2025 figure 43,169 indexed by BC's 2026 index rate 1.022 (T4127 Table 8.2; BC's basic personal amount moved 12,932 to 13,216 by the same factor): 43,169 x 1.022 = 44,118.72, rounded to the nearest dollar, halves up, 44,119. T4127 does not print this figure and the 2026 form is not yet published, so it is unconfirmed.
 # Age amount income threshold, 2026 (Worksheet BC428, CRA 5010-D): "Line 58080 - Age amount", line 3 "Income threshold 43,169.00" on the 2025 form, indexed. Claimed whole: the credit kind.
 family: ca-bc/age_income_threshold
 tax_year: 2026

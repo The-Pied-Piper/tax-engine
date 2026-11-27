@@ -32,9 +32,8 @@ PROVISIONAL_HEADER = (
 DERIVATION_HEADER = (
     "# Derivation: the 2025 figure 5,799 indexed by BC's 2026 index rate 1.022 "
     "(T4127 Table 8.2; BC's basic personal amount moved 12,932 to 13,216 by the "
-    "same factor, and BC's age amount moved by its own factor every year 2016 to "
-    "2025): 5,799 x 1.022 = 5,926.58, rounded to the nearest dollar, halves up, "
-    "5,927. T4127 does not print this figure and the 2026 form is not yet "
+    "same factor): 5,799 x 1.022 = 5,926.58, rounded to the nearest dollar, halves "
+    "up, 5,927. T4127 does not print this figure and the 2026 form is not yet "
     "published, so it is unconfirmed."
 )
 
