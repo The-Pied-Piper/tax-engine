@@ -38,6 +38,12 @@ def test_a_foreign_tax_credit_lowers_line_64_and_so_line_85(tmp_path: Path) -> N
     assert s.line(tmp_path, "70000", s.LINE_85, {s.LINE_63: "500.00"}) == D("6713.10")
 
 
+def test_a_negative_net_income_leaves_line_85_at_0(tmp_path: Path) -> None:
+    given = {s.NEGATIVE_NET_INCOME: "30000.00"}
+
+    assert str(s.line(tmp_path, "20000", s.LINE_85, given)) == "0.00"
+
+
 def test_line_85_is_one_untitled_subtract_not_below_zero() -> None:
     assert s.part("ns428_line_85.yaml")["capabilities"] == [
         {

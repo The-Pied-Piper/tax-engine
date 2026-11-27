@@ -56,6 +56,8 @@ LINE_63 = "ca-ns/ns428_provincial_foreign_tax_credit_line_63"
 LINE_64 = "ca-ns/ns428_tax_after_credits_line_64"
 LINE_85 = "ca-ns/ns428_tax_line_85"
 _RUNS = count()
+# An optional input that, typed in with a salary of 20,000, takes the net income below 0.
+NEGATIVE_NET_INCOME = "ca/social_benefits_repayment"
 LINE_65 = "ca-ns/ns428_net_income_line_65"
 LINE_66_A = "ca-ns/ns428_uccb_repayment_line_21300"
 LINE_66_B = "ca-ns/ns428_rdsp_income_repayment_line_23200"

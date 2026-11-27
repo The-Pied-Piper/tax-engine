@@ -50,6 +50,14 @@ def test_line_69_is_one_untitled_subtract_not_below_zero() -> None:
     ]
 
 
+def test_line_69_floors_a_negative_family_income_to_0(tmp_path: Path) -> None:
+    # A social benefits repayment of 30,000 against a salary of 20,000 leaves a net income of
+    # -10,165.00 (the salary less the CPP deduction of 165.00 less 30,000).
+    given = {s.NEGATIVE_NET_INCOME: "30000.00"}
+
+    assert s.line(tmp_path, "20000", s.LINE_69, given) == D("0.00")
+
+
 def test_the_kind_is_a_registered_non_negative_amount_kind() -> None:
     kind = nova_scotia_kinds().kind(s.LINE_69)
 

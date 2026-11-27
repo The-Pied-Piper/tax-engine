@@ -42,7 +42,15 @@ def test_the_part_is_one_titled_record_total_over_the_t1_net_income() -> None:
     ]
 
 
-def test_the_kind_is_a_registered_non_negative_amount_kind() -> None:
+def test_line_65_is_signed_for_a_negative_net_income(tmp_path: Path) -> None:
+    # A social benefits repayment of 30,000 against a salary of 20,000 leaves a net income of
+    # -10,165.00 (the salary less the CPP deduction of 165.00 less 30,000).
+    given = {s.NEGATIVE_NET_INCOME: "30000.00"}
+
+    assert s.line(tmp_path, "20000", s.LINE_65, given) == D("-10165.00")
+
+
+def test_the_kind_is_a_registered_signed_amount_kind() -> None:
     kind = nova_scotia_kinds().kind(s.LINE_65)
 
     assert isinstance(kind, AmountKind)
