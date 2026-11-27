@@ -1,16 +1,17 @@
-"""AB428 (2025) line 10, the lower bound of the column for lines 9 to 15.
+"""AB428 (2025) line 10, the lower bound of the column for lines 9 to 15, from the real parts.
 
-Form text (Form AB428, CRA 5009-c-25e.txt): "Column 1: Line 1 is more than $181,481 but not more
-than $241,974 Line 10: 181,481.00", "Column 2: Line 1 is more than $241,974 but not more than
-$362,961 Line 10: 241,974.00", "Column 3: Line 1 is more than $362,961 Line 10: 362,961.00". Line 9
-is a copy of line 1 and has no step. Line 10 is `core/bracket_column_lower_bound` over line 1 (`ca-
-ab/ab428_taxable_income_line_1`) with the `ca-ab/brackets_lines_9_to_15` schedule, output `ca-
-ab/ab428_bracket_lower_bound_line_10`, as Ontario's line 3 is.
+Form text (Form AB428, CRA 5009-c-25e.txt): "Column 1: Line 1 is more than $181,481 but not
+more than $241,974  Line 10: 181,481.00", "Column 2: Line 1 is more than $241,974 but not
+more than $362,961  Line 10: 241,974.00",
+"Column 3: Line 1 is more than $362,961  Line 10: 362,961.00". Line 9 is a copy of line 1 and has no
+step. Line 10 is `core/bracket_column_lower_bound` over line 1
+(`ca-ab/ab428_taxable_income_line_1`) with the `ca-ab/brackets_lines_9_to_15` schedule, output
+`ca-ab/ab428_bracket_lower_bound_line_10`, as Ontario's line 3 is.
 
-The table covers only a line 1 above 181,481.00 (a line 1 of 181,481 or less is in columns 1 to 3 of
-lines 2 to 8, the low table), so line 10 is left blank there: at $20,000 and $70,000 it is blank, at
-$200,000 (line 1 is 198,926.00) it is 181,481.00. A blank output is read from the Worksheet as an
-artifact whose `is_blank` is true (its `value` raises), and its trace is one
+The table covers only a line 1 above 181,481.00 (a line 1 of 181,481 or less is in columns 1 to 3
+of lines 2 to 8, the low table), so line 10 is left blank there: at $20,000 and $70,000 it is
+blank, at $200,000 (line 1 is 198,926.00) it is 181,481.00. A blank output is read from the
+Worksheet as an artifact whose `is_blank` is true (its `value` raises), and its trace is one
 `BracketOutsideRangeLine` (output, base, base amount)
 
 Line 1 is a salary's T1 taxable income, so the exact thresholds (181,481.00 and 181,481.01) are
@@ -18,8 +19,8 @@ tested through the capability and the real dataset directly, as
 `tests/jurisdictions/core/capabilities/test_bracket_column_figure_range.py` does.
 
 The real parts composed: the Alberta salary, Schedule 8, the T1 taxable-income parts, the line 1
-part (`ab428_credits_line_1.yaml`) and `ab428_line_10.yaml`. The form declaration and header are
-test-local.
+part (`ab428_credits_line_1.yaml`) and `ab428_line_10.yaml`. The form
+declaration and header are test-local.
 """
 
 from __future__ import annotations
