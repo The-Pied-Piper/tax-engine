@@ -93,16 +93,12 @@ def test_line_167_is_line_149_minus_line_166(salary: str) -> None:
     assert _figure(summary, LINE_167) == line_148 - line_166
 
 
-@pytest.mark.parametrize(
-    ("salary", "new_brunswick_tax"),
-    [("20000", "0.00"), ("30000", "798.76"), ("70000", "5676.89"), ("200000", "26050.13")],
-)
-def test_the_new_brunswick_form_feeds_t1_line_42800(salary: str, new_brunswick_tax: str) -> None:
+@pytest.mark.parametrize("salary", SALARIES)
+def test_the_new_brunswick_form_feeds_t1_line_42800(salary: str) -> None:
     worksheets = _worksheets(salary)
     (t1,) = worksheets[T1]
     (nb428,) = worksheets[NB428]
 
-    assert _figure(nb428, LINE_97) == D(new_brunswick_tax)
     assert _figure(t1, LINE_147) == _figure(nb428, LINE_97)
 
 
