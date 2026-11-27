@@ -1,0 +1,25 @@
+# Worksheet MB428 (CRA 5007-D) section "Line 58080 - Age amount (if you were born in 1960 or earlier)", lines 1 to 3: "Line 1: Maximum amount 3,728.00", "Line 2: Amount from line 23600 of your return", "Line 3: Income threshold 27,749.00". One step per worksheet line; the worksheet is built inside form ca-mb/mb428_credits like Worksheet NS428's age section is built inside ca-ns/ns428 (Umar, 27 Nov 2026: "build all age worksheets like NS"), so its steps carry plain-words titles and no reference (the numbers 1 to 3 are also MB428 line numbers). Line 2 reads the T1 net income record list; lines 1 and 3 are printed dataset figures.
+form:
+  name: ca-mb/mb428_credits
+capabilities:
+- name: core/credit_amount
+  title: 'Worksheet MB428 age amount line 1: maximum amount'
+  unit: ca/cad
+  params:
+    amount: ca-mb/age_maximum
+  produces:
+    output: ca-mb/worksheet_mb428_age_amount_maximum_line_1
+- name: core/record_total
+  title: 'Worksheet MB428 age amount line 2: amount from line 23600'
+  unit: ca/cad
+  consumes:
+    records: ca/t1_taxable_income.net_income
+  produces:
+    output: ca-mb/worksheet_mb428_age_amount_net_income_line_2
+- name: core/credit_amount
+  title: 'Worksheet MB428 age amount line 3: income threshold'
+  unit: ca/cad
+  params:
+    amount: ca-mb/age_income_threshold
+  produces:
+    output: ca-mb/worksheet_mb428_age_amount_income_threshold_line_3

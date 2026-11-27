@@ -124,6 +124,7 @@ def _part_files() -> Iterator[Path]:
     yield MB_PARTS / "mb479_line_5_column_2_input.yaml"
     yield MB_PARTS / "mb479_line_6.yaml"
     yield MB_PARTS / "mb479_line_7.yaml"
+    yield MB_PARTS / "mb479_line_8.yaml"
     yield MB_PARTS / "mb479_line_17_inputs.yaml"
     yield MB_PARTS / "mb479_line_12_inputs.yaml"
     yield MB_PARTS / "mb479_line_12.yaml"

@@ -11,6 +11,7 @@
 # line 4), `ca-mb/mb428` (MB428 lines 58 to 82), which supplies `ca/provincial_tax.amount` for T1
 # line 42800, `ca-mb/mb428_a` (Schedule MB428-A) and `ca-mb/mb479` (MB479), which supplies
 # `ca/provincial_credits.amount` for T1 line 47900.
+# The age lines (MB428 line 10, with the age section of Worksheet MB428 built inside `ca-mb/mb428_credits`, Schedule MB428-A line 4 and MB479 line 8) read the year of birth from the T1 form's export (`ca/t1_lines_copied_by_provinces.birth_year`); a blank year leaves them 0.00.
 #
 # The default form's export is T1 line 167, refund or balance owing (positive is owing, negative
 # is a refund). Manitoba uses the standard federal CPP and EI (no QPP), so Schedule 8 and T2204 are

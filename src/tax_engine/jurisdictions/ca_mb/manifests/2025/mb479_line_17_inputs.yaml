@@ -1,18 +1,12 @@
-# MB479 (2025) line 17's inputs, which a salary-only caller does not give: lines 8 and 13 (Form
-# MB479, CRA 5007-TC), the personal tax credit lines that line 17 adds to the basic credit of line
-# 7. Line 12 is computed from lines 9 to 11 (mb479_line_12_inputs.yaml, mb479_line_12.yaml) and
-# lines 14 to 16 from their counts (mb479_line_14_inputs.yaml and its neighbours). A salary-only
-# caller claims none of them, so a request that leaves a line out is read as blank.
+# MB479 (2025) line 17's input, which a salary-only caller does not give: line 13 (Form MB479, CRA
+# 5007-TC), the personal tax credit line that line 17 adds to the basic credit of line 7. Line 8 is
+# computed from the year of birth (mb479_line_8.yaml), line 12 from
+# lines 9 to 11 (mb479_line_12_inputs.yaml, mb479_line_12.yaml) and lines 14 to 16 from their counts
+# (mb479_line_14_inputs.yaml and its neighbours). A salary-only caller claims none of them, so a
+# request that leaves a line out is read as blank.
 form:
   name: ca-mb/mb479
 inputs:
-  - name: ca-mb/mb479_age_credit_line_8
-    title: "Age credit for self (if you were born in 1960 or earlier)"
-    reference: "8"
-    unit: ca/cad
-    required: false
-    default: null
-    basis: 'Line 8: Age credit for self (if you were born in 1960 or earlier)'
   - name: ca-mb/mb479_eligible_dependant_credit_line_13
     title: "Credit for an eligible dependant claimed on line 58160 of your Form MB428"
     reference: "13"
