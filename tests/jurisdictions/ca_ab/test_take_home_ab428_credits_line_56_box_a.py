@@ -63,7 +63,9 @@ FORM = dedent("""\
 def _part_files() -> Iterator[Path]:
     yield from form_parts("schedule_8")
     yield from form_parts("schedule_9")
-    yield from form_parts("t1_employment_income", "t1_taxable_income")
+    yield from form_parts(
+        "t1_employment_income", "t1_taxable_income", "t1_lines_copied_by_provinces"
+    )
     for name in LINE_PARTS:
         yield ALBERTA_PARTS / name
 
