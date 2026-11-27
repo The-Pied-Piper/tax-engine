@@ -1,7 +1,7 @@
-"""The 2026 `ca-sk/senior_supplementary_amount` dataset, Form SK428
-(5008-c-25e.txt), line 19 "Claim $2,028": the printed figure,
-claimed whole (the `credit` kind). Rounds half-up to the cent, the project's choice, as the form
-states no rounding rule.
+"""The 2026 `ca-sk/senior_supplementary_amount` dataset: provisional, the 2025 figure
+2,028 x 1.02 + 500 (SK428 line 19, 5008-c-25e.txt)
+indexed by the 2026 factor (T4127 January 2026), rounded to the nearest dollar,
+a half going up: 2,569. Replace it when the 2026 SK428 is published.
 """
 
 from __future__ import annotations
@@ -22,14 +22,15 @@ SOURCE = YamlParameterSource(
     saskatchewan_parameter_parsers(),
 )
 FAMILY = "ca-sk/senior_supplementary_amount"
+T4127 = "https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf"
 CRA_FORM_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5008-c/5008-c-25e.txt"
 YEAR = 2026
 
 
-def test_2026_senior_supplementary_amount_is_2028() -> None:
+def test_2026_senior_supplementary_amount_is_2569() -> None:
     data = SOURCE.get(FAMILY, YEAR, CREDIT)
 
-    assert data.values == Credit(amount=D("2028"))
+    assert data.values == Credit(amount=D("2569"))
 
 
 def test_2026_senior_supplementary_amount_rounds_half_up_to_the_cent() -> None:
@@ -41,4 +42,4 @@ def test_2026_senior_supplementary_amount_rounds_half_up_to_the_cent() -> None:
 def test_2026_senior_supplementary_amount_cites_the_form() -> None:
     data = SOURCE.get(FAMILY, YEAR, CREDIT)
 
-    assert data.sources == (CRA_FORM_TEXT,)
+    assert data.sources == (CRA_FORM_TEXT, T4127)

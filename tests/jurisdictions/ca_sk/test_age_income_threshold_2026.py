@@ -1,7 +1,7 @@
-"""The 2026 `ca-sk/age_income_threshold` dataset, Worksheet SK428
-(5008-d-25e.txt), Line 3 "Income threshold 43,066.00": the printed figure,
-claimed whole (the `credit` kind). Rounds half-up to the cent, the project's choice, as the form
-states no rounding rule.
+"""The 2026 `ca-sk/age_income_threshold` dataset: provisional, the 2025 figure
+43,066.00 x 1.02 (Worksheet SK428, line 3, 5008-d-25e.txt)
+indexed by the 2026 factor (T4127 January 2026), rounded to the nearest dollar,
+a half going up: 43,927.00. Replace it when the 2026 SK428 is published.
 """
 
 from __future__ import annotations
@@ -22,14 +22,15 @@ SOURCE = YamlParameterSource(
     saskatchewan_parameter_parsers(),
 )
 FAMILY = "ca-sk/age_income_threshold"
+T4127 = "https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf"
 CRA_FORM_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5008-d/5008-d-25e.txt"
 YEAR = 2026
 
 
-def test_2026_age_income_threshold_is_43066_00() -> None:
+def test_2026_age_income_threshold_is_43927_00() -> None:
     data = SOURCE.get(FAMILY, YEAR, CREDIT)
 
-    assert data.values == Credit(amount=D("43066.00"))
+    assert data.values == Credit(amount=D("43927.00"))
 
 
 def test_2026_age_income_threshold_rounds_half_up_to_the_cent() -> None:
@@ -41,4 +42,4 @@ def test_2026_age_income_threshold_rounds_half_up_to_the_cent() -> None:
 def test_2026_age_income_threshold_cites_the_form() -> None:
     data = SOURCE.get(FAMILY, YEAR, CREDIT)
 
-    assert data.sources == (CRA_FORM_TEXT,)
+    assert data.sources == (CRA_FORM_TEXT, T4127)
