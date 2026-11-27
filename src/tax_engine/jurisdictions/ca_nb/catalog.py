@@ -165,3 +165,64 @@ NB428_NON_REFUNDABLE_CREDITS_LINE_53 = AmountKind.declare(
 )
 """New Brunswick non-refundable tax credits, NB428 line 53 and line 61500 "Line 49 plus line 52":
 the credits at the printed rate plus the donations credit; line 57 reads it."""
+
+NB428_TAX_ON_SPLIT_INCOME_LINE_55 = AmountKind.declare(
+    CATALOG, "nb428_tax_on_split_income_line_55", non_negative=True
+)
+"""NB428 line 55 and line 61510 "New Brunswick tax on split income (complete Form T1206)": the
+amount as the filer gives it, an optional input; a blank input is read as blank."""
+
+NB428_TAX_BEFORE_CREDITS_LINE_56 = AmountKind.declare(
+    CATALOG, "nb428_tax_before_credits_line_56", non_negative=True
+)
+"""NB428 line 56 "Line 54 plus line 55": the tax on taxable income plus the tax on split income,
+line 54 being a copy of line 8."""
+
+NB428_TAX_AFTER_NON_REFUNDABLE_CREDITS_LINE_58 = AmountKind.declare(
+    CATALOG, "nb428_tax_after_non_refundable_credits_line_58", non_negative=True
+)
+"""NB428 line 58 "Line 56 minus line 57 (if negative, enter "0")": line 56 less the non-refundable
+credits of line 53, not below zero."""
+
+NB428_DIVIDEND_TAX_CREDIT_LINE_60 = AmountKind.declare(
+    CATALOG, "nb428_dividend_tax_credit_line_60", non_negative=True
+)
+"""NB428 line 60 and line 61520 "New Brunswick dividend tax credit (use Worksheet NB428)": the
+amount as the filer gives it, an optional input; a blank input is read as blank."""
+
+NB428_MINIMUM_TAX_CARRYOVER_LINE_61 = AmountKind.declare(
+    CATALOG, "nb428_minimum_tax_carryover_line_61", non_negative=True
+)
+"""NB428 line 61 and line 61540 "Amount from line 40427 of your return multiplied by 57%": the
+amount as the filer gives it, an optional input; a blank input is read as blank."""
+
+NB428_DIVIDEND_CREDIT_AND_CARRYOVER_LINE_62 = AmountKind.declare(
+    CATALOG, "nb428_dividend_credit_and_carryover_line_62", non_negative=True
+)
+"""NB428 line 62 "Line 60 plus line 61": the dividend tax credit plus the minimum tax carryover."""
+
+NB428_TAX_LINE_63 = AmountKind.declare(CATALOG, "nb428_tax_line_63", non_negative=True)
+"""NB428 line 63 "Line 59 minus line 62 (if negative, enter "0")": line 59, a copy of line 58,
+less line 62, not below zero."""
+
+NB428_ADDITIONAL_TAX_MINIMUM_TAX_LINE_64 = AmountKind.declare(
+    CATALOG, "nb428_additional_tax_minimum_tax_line_64", non_negative=True
+)
+"""NB428 line 64 "Form T691: line 1 minus line 2 of Part 7 multiplied by 57%": the amount as the
+filer gives it, an optional input; a blank input is read as blank."""
+
+NB428_TAX_WITH_MINIMUM_TAX_LINE_65 = AmountKind.declare(
+    CATALOG, "nb428_tax_with_minimum_tax_line_65", non_negative=True
+)
+"""NB428 line 65 "Line 63 plus line 64": the tax after the dividend credit plus the additional tax
+for minimum tax purposes."""
+
+NB428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_66 = AmountKind.declare(
+    CATALOG, "nb428_provincial_foreign_tax_credit_line_66", non_negative=True
+)
+"""NB428 line 66 "Provincial foreign tax credit (complete Form T2036)": the amount as the filer
+gives it, an optional input; a blank input is read as blank."""
+
+NB428_TAX_LINE_67 = AmountKind.declare(CATALOG, "nb428_tax_line_67", non_negative=True)
+"""NB428 line 67 "Line 65 minus line 66 (if negative, enter "0")": line 65 less the provincial
+foreign tax credit, not below zero; line 69 reads it."""
