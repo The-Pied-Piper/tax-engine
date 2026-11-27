@@ -25,19 +25,22 @@ SOURCE = YamlParameterSource({Namespace("ca-nb"): NEW_BRUNSWICK_DIR}, PARAMETER_
 FAMILY = "ca-nb/low_income_reduction_basic"
 SOURCES = ("https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5004-c/5004-c-25e.txt",)
 PROVISIONAL_HEADER = (
-    "# Provisional: taken from the 2025 form text named in sources; to be confirmed against t"
-    "he 2026 form text when CRA publishes it."
+    "# Provisional: indexed from the 2025 form text named in sources; to be confirmed aga"
+    "inst the 2026 form text when CRA publishes it."
 )
 DERIVATION_HEADER = (
-    "# Derivation: carried forward unchanged from the 2025 form; T4127 (Jan 2026) does not pr"
-    "int this figure and the 2026 form is not yet published, so it is unconfirmed."
+    "# Derivation: NB indexes this figure every year (NB428 2016 to 2025); the 2026 index"
+    " factor is 2.0%, the same factor that takes the 2025 basic personal amount 13,396 to"
+    " the 13,664 printed in T4127 (Jan 2026) Table 8.2: 2025 basic reduction 802 x 1.02 ="
+    " 818.04, rounded to the nearest dollar, a half going up, to 818; unconfirmed, as no "
+    "2026 NB428 is published and T4127 (Jan and Jul 2026) does not print it."
 )
 
 
 def test_2026_low_income_reduction_basic_value() -> None:
     data = SOURCE.get(FAMILY, 2026, CREDIT)
 
-    assert data.values == Credit(amount=D("802"))
+    assert data.values == Credit(amount=D("818"))
 
 
 def test_2026_low_income_reduction_basic_rounding() -> None:

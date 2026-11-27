@@ -1,6 +1,6 @@
-# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
-# Derivation: carried forward unchanged from the 2025 form; T4127 (Jan 2026) does not print this figure and the 2026 form is not yet published, so it is unconfirmed.
-# New Brunswick low-income reduction, maximum, 2026 tax year (Form NB428 line 80): "maximum $1,604".
+# Provisional: indexed from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: NB indexes this figure every year (NB428 2016 to 2025); the 2026 index factor is 2.0%, the same factor that takes the 2025 basic personal amount 13,396 to the 13,664 printed in T4127 (Jan 2026) Table 8.2: 2 x the indexed basic reduction 818 (the 2025 maximum 1,604 is 2 x 802 and every year 2016 to 2025 is 2 x the basic reduction) = 1,636; unconfirmed, as no 2026 NB428 is published and T4127 (Jan and Jul 2026) does not print it.
+# New Brunswick low-income reduction, maximum, 2026 tax year (Form NB428 line 80): "maximum $1,636".
 family: ca-nb/low_income_reduction_maximum
 tax_year: 2026
 kind: amount
@@ -9,4 +9,4 @@ unit: ca/cad
 sources:
   - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5004-c/5004-c-25e.txt
 rounding: {increment: "0.01", mode: half_up}
-amount: "1604"
+amount: "1636"
