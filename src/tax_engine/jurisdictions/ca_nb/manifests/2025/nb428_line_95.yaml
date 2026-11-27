@@ -1,0 +1,19 @@
+# Form NB428 (CRA 5004-C) line 95: "Line 95: Line 93 minus line 94 (if negative, enter "0")". One
+# core/subtract_not_below_zero step: line 93 less line 94, not below 0, rounded half-up to the cent.
+# Line 94 is an optional input a salary-only caller leaves out, read as blank and then as 0 by the
+# blank rule. The form prints no title for the line, so the step is untitled. Line 97 reads the output.
+form:
+  name: ca-nb/nb428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "95"
+    unit: ca/cad
+    params:
+      rounding: ca-nb/cent_rounding
+    consumes:
+      amount: ca-nb/nb428_tax_line_93
+      less: ca-nb/nb428_labour_sponsored_credit_checked_line_94
+    blank:
+      less: "0"
+    produces:
+      output: ca-nb/nb428_tax_line_95
