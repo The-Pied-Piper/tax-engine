@@ -1,0 +1,19 @@
+# Form NS428 (Nova Scotia Tax, CRA 5003-C) line 93 "Line 91 minus line 92 (if negative, enter "0")". One core/subtract_not_below_zero step: line 91
+# (`ca-ns/ns428_tax_line_91`) less line 92 (`ca-ns/ns428_equity_tax_credit_line_92`), not below 0, rounded half-up to the cent by the dataset's
+# rule. Line 92 is an optional input a salary-only caller leaves out, read as blank and then as 0 by the blank rule. The form prints no title for the line, so the step has none. The output is
+# `ca-ns/ns428_tax_line_93`.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "93"
+    unit: ca/cad
+    params:
+      rounding: ca-ns/cent_rounding
+    consumes:
+      amount: ca-ns/ns428_tax_line_91
+      less: ca-ns/ns428_equity_tax_credit_line_92
+    blank:
+      less: "0"
+    produces:
+      output: ca-ns/ns428_tax_line_93

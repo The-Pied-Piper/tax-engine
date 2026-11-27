@@ -1,0 +1,17 @@
+# Form NS428 (Nova Scotia Tax, CRA 5003-C) line 89 "Line 87 minus line 88 (if negative, enter "0")". One core/subtract_not_below_zero step: line 87
+# (`ca-ns/ns428_tax_line_87`) less line 88 (`ca-ns/ns428_food_bank_credit_line_88`), not below 0, rounded half-up to the cent by the dataset's
+# rule. Line 88 is always a figure (0.00 when blank), so nothing is blank. The form prints no title for the line, so the step has none. The output is
+# `ca-ns/ns428_tax_line_89`.
+form:
+  name: ca-ns/ns428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "89"
+    unit: ca/cad
+    params:
+      rounding: ca-ns/cent_rounding
+    consumes:
+      amount: ca-ns/ns428_tax_line_87
+      less: ca-ns/ns428_food_bank_credit_line_88
+    produces:
+      output: ca-ns/ns428_tax_line_89

@@ -1,0 +1,13 @@
+# NS428 (2025) line 88's input, which a salary-only caller does not give.
+# Line 88: Food bank tax credit for farmers multiplied by 25% (Form NS428, CRA 5003-C).
+# The amount is taken as the form asks for it; the line 88 step applies the printed 25%. A request that leaves the line out is read as blank.
+form:
+  name: ca-ns/ns428
+inputs:
+  - name: ca-ns/ns428_food_bank_donations_line_88
+    title: "Food bank tax credit for farmers"
+    reference: "88"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Food bank tax credit for farmers multiplied by 25%'
