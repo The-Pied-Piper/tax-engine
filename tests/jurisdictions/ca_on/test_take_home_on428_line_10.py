@@ -61,8 +61,8 @@ FORM = dedent("""\
         - ca-on/worksheet_on428_age_amount_net_income_line_2
         - ca-on/on428_age_amount_line_10
     """)
-MAXIMUM = D("6223")
-THRESHOLD = D("46330")
+MAXIMUMS = {2025: D("6223"), 2026: D("6341")}
+THRESHOLDS = {2025: D("46330"), 2026: D("47210")}
 
 
 def _figures(
@@ -83,11 +83,15 @@ def _figures(
 
 @pytest.mark.parametrize("year", [2025, 2026])
 @pytest.mark.parametrize(
-    ("salary", "expected"), [("20000", "6223.00"), ("46330", "6223.00"), ("100000", "0.00")]
+    ("salary", "expected"), [("20000", "max"), ("threshold", "max"), ("100000", "0.00")]
 )
 def test_line_is_the_maximum_below_the_threshold_and_zero_far_above(
     take_home_service: TakeHomeService, year: int, salary: str, expected: str
 ) -> None:
+    if salary == "threshold":
+        salary = str(THRESHOLDS[year])
+    if expected == "max":
+        expected = str(MAXIMUMS[year].quantize(D("0.01")))
     assert _figures(take_home_service, year, salary, 1950)[1] == D(expected)
 
 
@@ -95,12 +99,13 @@ def test_line_is_the_maximum_below_the_threshold_and_zero_far_above(
 def test_line_in_the_reduction_range_is_the_worksheet_arithmetic(
     take_home_service: TakeHomeService, year: int
 ) -> None:
+    maximum, threshold = MAXIMUMS[year], THRESHOLDS[year]
     net_income, line = _figures(take_home_service, year, "60000", 1950)
-    expected = (MAXIMUM - D("0.15") * (net_income - THRESHOLD)).quantize(
+    expected = (maximum - D("0.15") * (net_income - threshold)).quantize(
         D("0.01"), rounding=ROUND_HALF_UP
     )
 
-    assert THRESHOLD < net_income < THRESHOLD + MAXIMUM / D("0.15")
+    assert threshold < net_income < threshold + maximum / D("0.15")
     assert line == expected
 
 
@@ -116,7 +121,7 @@ def test_line_is_zero_when_the_year_is_left_out(
     [
         (2025, 1960, "6223.00"),
         (2025, 1961, "0.00"),
-        (2026, 1961, "6223.00"),
+        (2026, 1961, "6341.00"),
         (2026, 1962, "0.00"),
     ],
 )
