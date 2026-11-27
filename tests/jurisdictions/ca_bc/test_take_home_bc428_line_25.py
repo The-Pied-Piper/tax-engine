@@ -24,9 +24,12 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.registry import Namespace
+from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_bc.catalog import BC428_SUBTOTAL_LINE_25
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -38,6 +41,20 @@ from tests.jurisdictions.ca_bc.support import (
 D = Decimal
 PARTS_PATH = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
 LINE_PART = PARTS_PATH / "bc428_line_25.yaml"
+
+FEDERAL_FORM_NAMES = (
+    "schedule_8",
+    "t2204",
+    "t1_employment_income",
+    "t1_taxable_income",
+    "t1_lines_copied_by_provinces",
+    "schedule_9",
+)
+AGE_PARTS = (
+    "bc428_line_17_worksheet_lines_1_to_3.yaml",
+    "bc428_line_17_worksheet_lines_4_to_7.yaml",
+    "bc428_line_17.yaml",
+)
 
 HEADER = dedent("""\
     jurisdiction: CA-BC
@@ -52,6 +69,7 @@ FORM = dedent("""\
       required: true
       exports:
         - ca-bc/basic_personal_amount
+        - ca-bc/bc428_age_amount_line_17
         - ca-bc/bc428_subtotal_line_25
     """)
 
@@ -64,6 +82,14 @@ def _service(tmp_path: Path) -> TaxComputationService:
     (folder / "02_bc428_line_16.yaml").write_text(
         (PARTS_PATH / "bc428_line_16.yaml").read_text(encoding="utf-8"), encoding="utf-8"
     )
+    extra = [
+        *(found for form in FEDERAL_FORM_NAMES for found in form_parts(form)),
+        *(PARTS_PATH / name for name in AGE_PARTS),
+    ]
+    for number, found in enumerate(extra):
+        (folder / f"02a_{number:02d}_{found.name}").write_text(
+            found.read_text(encoding="utf-8"), encoding="utf-8"
+        )
     (folder / "03_bc428_line_25.yaml").write_text(
         LINE_PART.read_text(encoding="utf-8"), encoding="utf-8"
     )
@@ -80,7 +106,11 @@ def _service(tmp_path: Path) -> TaxComputationService:
 
 
 def line_25(tmp_path: Path, salary: str) -> Decimal:
-    worksheets = _service(tmp_path).compute(TaxCalculationRequest(JurisdictionCode("CA-BC"), 2025))
+    worksheets = _service(tmp_path).compute(
+        TaxCalculationRequest(
+            JurisdictionCode("CA-BC"), 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),)
+        )
+    )
     (sheet,) = worksheets["ca-bc/bc428"]
     return sheet.get(BC428_SUBTOTAL_LINE_25).value
 

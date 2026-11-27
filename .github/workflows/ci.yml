@@ -16,7 +16,13 @@ concurrency:
 
 jobs:
   check:
+    name: check (py${{ matrix.python-version }})
     runs-on: ubuntu-latest
+    strategy:
+      # Let every version finish, so one failure shows all the versions that fail.
+      fail-fast: false
+      matrix:
+        python-version: ["3.12", "3.13", "3.14", "3.15"]
     steps:
       - uses: actions/checkout@v5
 
@@ -26,22 +32,28 @@ jobs:
           version: "0.13.6"
 
       - name: Install Python
-        run: uv python install 3.12
+        run: uv python install ${{ matrix.python-version }}
 
       - name: Install dependencies
-        run: uv sync --python 3.12 --extra dev --locked
+        run: uv sync --python ${{ matrix.python-version }} --extra dev --locked
 
+      # Static checks do not depend on the interpreter (ruff and mypy target 3.12 in
+      # pyproject.toml), so they run once, on the lowest version.
       - name: Lint
+        if: matrix.python-version == '3.12'
         run: uv run --locked --extra dev ruff check .
 
       - name: Check formatting
+        if: matrix.python-version == '3.12'
         run: uv run --locked --extra dev ruff format --check .
 
       - name: Type check
+        if: matrix.python-version == '3.12'
         run: uv run --locked --extra dev mypy src tests
 
       - name: Check import layers
+        if: matrix.python-version == '3.12'
         run: uv run --locked --extra dev lint-imports
 
       - name: Test
-        run: uv run --locked --extra dev python -m pytest
+        run: uv run --python ${{ matrix.python-version }} --locked --extra dev python -m pytest

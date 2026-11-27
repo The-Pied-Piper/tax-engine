@@ -57,13 +57,12 @@ CASES: list[tuple[str, dict[str, str], dict[str, str]]] = [
     (
         "20000",
         {
-            "ca-pe/pe428_age_reduction_for_self_line_76": "250",
             "ca-pe/pe428_reduction_for_spouse_or_common_law_partner_line_77": "350",
             "ca-pe/pe428_age_reduction_for_spouse_or_common_law_partner_line_78": "250",
             "ca-pe/pe428_reduction_for_eligible_dependant_line_79": "350",
             "ca-pe/pe428_reduction_for_dependent_children_line_80": "300",
         },
-        {"ca-pe/pe428_low_income_reductions_total_line_81": "1850.00"},
+        {"ca-pe/pe428_low_income_reductions_total_line_81": "1600.00"},
     ),
 ]
 
@@ -97,7 +96,7 @@ def test_the_trace_is_one_sum_of_lines_75_to_80_with_the_blank_parts_read_as_0(
     (line,) = [t for t in sheet.trace if isinstance(t, SumLine) and t.output is kinds.kind(OUTPUT)]
     assert [(kind.identifier, amount) for kind, amount in line.parts] == [
         ("ca-pe/low_income_reduction_basic", D("350.00")),
-        ("ca-pe/pe428_age_reduction_for_self_line_76", D("0")),
+        ("ca-pe/pe428_age_reduction_for_self_line_76", D("0.00")),
         ("ca-pe/pe428_reduction_for_spouse_or_common_law_partner_line_77", D("0")),
         ("ca-pe/pe428_age_reduction_for_spouse_or_common_law_partner_line_78", D("0")),
         ("ca-pe/pe428_reduction_for_eligible_dependant_line_79", D("0")),
@@ -132,7 +131,6 @@ def test_the_part_is_the_steps_the_form_prints() -> None:
                 ]
             },
             "blank": {
-                "ca-pe/pe428_age_reduction_for_self_line_76": "0",
                 "ca-pe/pe428_reduction_for_spouse_or_common_law_partner_line_77": "0",
                 "ca-pe/pe428_age_reduction_for_spouse_or_common_law_partner_line_78": "0",
                 "ca-pe/pe428_reduction_for_eligible_dependant_line_79": "0",

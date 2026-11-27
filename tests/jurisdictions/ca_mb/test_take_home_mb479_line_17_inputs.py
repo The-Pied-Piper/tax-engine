@@ -1,9 +1,9 @@
 """MB479 (2025) line 17's inputs, as the Manitoba take-home manifest part declares them.
 
-Form MB479 (CRA 5007-TC, 5007-tc-25e.txt), the personal tax credit lines that line 17 adds and that
-are taken as one figure: line 8 and line 13. Line 12 is computed from lines 9 to 11 and lines 14 to
-16 from their counts; they have their own parts. A salary-only caller claims none of them, so a
-request that leaves one out is read as blank.
+Form MB479 (CRA 5007-TC, 5007-tc-25e.txt), the personal tax credit line that line 17 adds and that
+is taken as one figure: line 13. Line 8 is calculated from the year of birth (`mb479_line_8.yaml`),
+line 12 is computed from lines 9 to 11 and lines 14 to 16 from their counts; they have their own
+parts. A salary-only caller claims none of them, so a request that leaves one out is read as blank.
 
 The real part is loaded under a test-local header over the Manitoba package list of `support.py`.
 """
@@ -20,10 +20,7 @@ import yaml
 import tax_engine.jurisdictions.ca_mb
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.manifest import Manifest
-from tax_engine.jurisdictions.ca_mb.catalog import (
-    MB479_AGE_CREDIT_LINE_8,
-    MB479_ELIGIBLE_DEPENDANT_CREDIT_LINE_13,
-)
+from tax_engine.jurisdictions.ca_mb.catalog import MB479_ELIGIBLE_DEPENDANT_CREDIT_LINE_13
 from tests.jurisdictions.ca_mb.support import (
     manitoba_kinds,
     manitoba_packages,
@@ -44,12 +41,6 @@ capabilities: []
 """
 # (kind, identifier, reference, printed title), in the order of the form.
 LINES = [
-    (
-        MB479_AGE_CREDIT_LINE_8,
-        "ca-mb/mb479_age_credit_line_8",
-        "8",
-        "Age credit for self (if you were born in 1960 or earlier)",
-    ),
     (
         MB479_ELIGIBLE_DEPENDANT_CREDIT_LINE_13,
         "ca-mb/mb479_eligible_dependant_credit_line_13",
@@ -86,7 +77,7 @@ def _part() -> dict[str, Any]:
     return part
 
 
-def test_the_part_declares_only_the_two_credit_inputs() -> None:
+def test_the_part_declares_only_the_line_13_credit_input() -> None:
     part = _part()
 
     assert list(part) == ["form", "inputs"]

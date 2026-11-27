@@ -63,6 +63,7 @@ KIND = "ca-mb/mb428_family_tax_benefit_line_41"
 SCHEDULE_KIND = "ca-mb/mb428_a_family_tax_benefit_line_12"
 SCHEDULE_PARTS = (
     "mb428_a_line_1.yaml",
+    "mb428_a_line_4.yaml",
     "mb428_a_line_10.yaml",
     "mb428_a_line_11.yaml",
     "mb428_a_line_11_product.yaml",

@@ -1,0 +1,10 @@
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: carried forward unchanged from the 2025 file; the 2026 form is not yet published, so it is unconfirmed.
+# Age amount income threshold, 2026 (Worksheet SK428, CRA 5008-D): "Line 58080 - Age amount", line 3 "Income threshold 43,066.00". Claimed whole: the credit kind.
+family: ca-sk/age_income_threshold
+tax_year: 2026
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5008-d/5008-d-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "43066.00"

@@ -22,11 +22,16 @@ import pytest
 import yaml
 
 import tax_engine.jurisdictions.ca_pe
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
+from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.trace import SumLine
+from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.personal_amounts import BIRTH_YEAR
 from tax_engine.jurisdictions.ca_pe.catalog import PE428_CREDITS_SUBTOTAL_LINE_19
 from tests.jurisdictions.ca_pe.conftest import TakeHomeService
-from tests.jurisdictions.ca_pe.credits_support import HEADER, SALARY_PARTS, compute, form, value
+from tests.jurisdictions.ca_pe.credits_support import FEDERAL_PARTS, HEADER, compute, form, value
 from tests.jurisdictions.ca_pe.support import prince_edward_island_kinds
 from tests.kinds import non_negative
 
@@ -43,18 +48,18 @@ LINES = [
     "ca-pe/pe428_infirm_dependants_amount_line_17",
     "ca-pe/pe428_young_children_amount_line_18",
 ]
-OPTIONAL_LINES = LINES[1:]
-# Lines 10, 13 and 16 are checked against their printed maximums, so the amount is typed in as the
+OPTIONAL_LINES = LINES[2:]  # line 10 is worked out from the year of birth, not typed
+# Lines 13 and 16 are checked against their printed maximums, so the amount is typed in as the
 # claim the line step reads.
 CLAIMED_AS = {
-    LINES[1]: "ca-pe/pe428_age_amount_claimed_line_10",
     LINES[2]: "ca-pe/pe428_spouse_or_common_law_partner_amount_claimed_line_13",
     LINES[3]: "ca-pe/pe428_eligible_dependant_amount_claimed_line_16",
 }
 PARTS = (
-    *SALARY_PARTS,
+    *FEDERAL_PARTS,
     "pe428_line_9.yaml",
-    "pe428_line_10_input.yaml",
+    "pe428_line_10_worksheet_lines_2_to_3.yaml",
+    "pe428_line_10_worksheet_lines_4_to_7.yaml",
     "pe428_line_10.yaml",
     "pe428_line_13_input.yaml",
     "pe428_line_13.yaml",
@@ -91,17 +96,29 @@ def test_line_19_adds_each_optional_line_when_it_is_given(
 
 
 def test_line_19_adds_every_line_together(take_home_service: TakeHomeService) -> None:
-    given = dict(
-        zip(OPTIONAL_LINES, ["1000.10", "2000.20", "3000.30", "4000.40", "5000.50"], strict=True)
-    )
+    given = dict(zip(OPTIONAL_LINES, ["2000.20", "3000.30", "4000.40", "5000.50"], strict=True))
 
-    assert value(_sheet(take_home_service, "20000", given), IDENTIFIER) == D("29651.50")
+    assert value(_sheet(take_home_service, "20000", given), IDENTIFIER) == D("28651.40")
+
+
+def test_line_19_adds_line_10_for_a_filer_born_in_1960_or_earlier(
+    take_home_service: TakeHomeService,
+) -> None:
+    service = take_home_service(HEADER, form(IDENTIFIER), *PARTS)
+    request = TaxCalculationRequest(
+        JurisdictionCode("CA-PE"),
+        2025,
+        (Artifact(EMPLOYMENT_INCOME, D("20000")), Artifact(BIRTH_YEAR, 1960)),
+    )
+    (sheet,) = service.compute(request)["ca-pe/pe428"]
+
+    assert value(sheet, IDENTIFIER) == D("21160.00")
 
 
 def test_the_trace_is_one_sum_of_the_six_lines_in_form_order_blanks_read_as_0(
     take_home_service: TakeHomeService,
 ) -> None:
-    sheet = _sheet(take_home_service, "20000", {OPTIONAL_LINES[1]: "100.00"})
+    sheet = _sheet(take_home_service, "20000", {OPTIONAL_LINES[0]: "100.00"})
     kinds = prince_edward_island_kinds()
 
     (line,) = [
@@ -109,7 +126,7 @@ def test_the_trace_is_one_sum_of_the_six_lines_in_form_order_blanks_read_as_0(
     ]
     assert [(kind.identifier, amount) for kind, amount in line.parts] == [
         (LINES[0], D("14650.00")),
-        (LINES[1], D("0")),
+        (LINES[1], D("0.00")),
         (LINES[2], D("100.00")),
         (LINES[3], D("0")),
         (LINES[4], D("0")),
@@ -136,7 +153,7 @@ def test_the_part_is_one_untitled_sum_step_over_lines_9_10_13_and_16_to_18() -> 
         "unit": "ca/cad",
         "params": {"rounding": "ca-pe/cent_rounding"},
         "consumes": {"parts": LINES},
-        "blank": dict.fromkeys(OPTIONAL_LINES, "0"),
+        "blank": dict.fromkeys(LINES[1:], "0"),
         "produces": {"output": IDENTIFIER},
     }
 
