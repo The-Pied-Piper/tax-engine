@@ -1,5 +1,6 @@
 """The 2026 `ca-bc/age_maximum` dataset, Worksheet BC428
-(5010-d-25e.txt), Line 1 "Maximum amount 5,799.00": the printed figure,
+(5010-d-25e.txt), Line 1 "Maximum amount 5,799.00" on the 2025 form:
+that figure indexed by 1.022 to 5,927.00 (provisional),
 claimed whole (the `credit` kind). Rounds half-up to the cent, the project's choice, as the form
 states no rounding rule.
 """
@@ -25,10 +26,10 @@ CRA_FORM_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5010-d/
 YEAR = 2026
 
 
-def test_2026_age_maximum_is_5799_00() -> None:
+def test_2026_age_maximum_is_5927_00() -> None:
     data = SOURCE.get(FAMILY, YEAR, CREDIT)
 
-    assert data.values == Credit(amount=D("5799.00"))
+    assert data.values == Credit(amount=D("5927.00"))
 
 
 def test_2026_age_maximum_rounds_half_up_to_the_cent() -> None:

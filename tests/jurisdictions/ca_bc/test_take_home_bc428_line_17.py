@@ -61,8 +61,8 @@ FORM = dedent("""\
         - ca-bc/worksheet_bc428_age_amount_net_income_line_2
         - ca-bc/bc428_age_amount_line_17
     """)
-MAXIMUM = D("5799")
-THRESHOLD = D("43169")
+MAXIMUMS = {2025: D("5799"), 2026: D("5927")}
+THRESHOLDS = {2025: D("43169"), 2026: D("44119")}
 
 
 def _figures(
@@ -82,13 +82,14 @@ def _figures(
 
 
 @pytest.mark.parametrize("year", [2025, 2026])
-@pytest.mark.parametrize(
-    ("salary", "expected"), [("20000", "5799.00"), ("43169", "5799.00"), ("100000", "0.00")]
-)
+@pytest.mark.parametrize("where", ["below", "at", "far_above"])
 def test_line_is_the_maximum_below_the_threshold_and_zero_far_above(
-    take_home_service: TakeHomeService, year: int, salary: str, expected: str
+    take_home_service: TakeHomeService, year: int, where: str
 ) -> None:
-    assert _figures(take_home_service, year, salary, 1950)[1] == D(expected)
+    salary = {"below": "20000", "at": str(THRESHOLDS[year]), "far_above": "100000"}[where]
+    expected = D("0.00") if where == "far_above" else MAXIMUMS[year]
+
+    assert _figures(take_home_service, year, salary, 1950)[1] == expected
 
 
 @pytest.mark.parametrize("year", [2025, 2026])
@@ -96,11 +97,12 @@ def test_line_in_the_reduction_range_is_the_worksheet_arithmetic(
     take_home_service: TakeHomeService, year: int
 ) -> None:
     net_income, line = _figures(take_home_service, year, "60000", 1950)
-    expected = (MAXIMUM - D("0.15") * (net_income - THRESHOLD)).quantize(
+    maximum, threshold = MAXIMUMS[year], THRESHOLDS[year]
+    expected = (maximum - D("0.15") * (net_income - threshold)).quantize(
         D("0.01"), rounding=ROUND_HALF_UP
     )
 
-    assert THRESHOLD < net_income < THRESHOLD + MAXIMUM / D("0.15")
+    assert threshold < net_income < threshold + maximum / D("0.15")
     assert line == expected
 
 
@@ -116,7 +118,7 @@ def test_line_is_zero_when_the_year_is_left_out(
     [
         (2025, 1960, "5799.00"),
         (2025, 1961, "0.00"),
-        (2026, 1961, "5799.00"),
+        (2026, 1961, "5927.00"),
         (2026, 1962, "0.00"),
     ],
 )
