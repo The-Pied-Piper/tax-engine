@@ -60,7 +60,6 @@ NL_PART_NAMES = (
     "worksheet_nl428_line_4.yaml",
     "worksheet_nl428_line_6.yaml",
     "worksheet_nl428_line_7.yaml",
-    "worksheet_nl428_line_58080_input.yaml",
     "worksheet_nl428_line_58440_input.yaml",
     "worksheet_nl428_line_3_input.yaml",
     "worksheet_nl428_58440_line_5.yaml",
@@ -131,6 +130,7 @@ FORMS = dedent("""\
       name: ca-nl/nl428_worksheet
       required: true
       exports:
+        - ca-nl/worksheet_nl428_age_amount_maximum_line_1
         - ca-nl/worksheet_nl428_age_amount_line_7
         - ca-nl/worksheet_nl428_disability_self_line_7
     capabilities: []
