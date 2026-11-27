@@ -423,19 +423,6 @@ PE428_TAX_WITH_MINIMUM_TAX_LINE_65 = AmountKind.declare(
 """Prince Edward Island tax with the additional minimum tax, PE428 line 65 "Line 65: Line 63 plus
 line 64 =": line 63 plus the additional tax for minimum tax purposes."""
 
-PE428_AMOUNT_FROM_SPOUSE_OR_PARTNER_FORM_LINE_66 = AmountKind.declare(
-    CATALOG, "pe428_amount_from_spouse_or_partner_form_line_66", non_negative=True
-)
-"""Spouse or partner Form PE428 amount, PE428 line 66 and line 63360 "Line 66 and line 63360: Amount
-from line 101 of your spouse's or common-law partner's Form PE428, if any": the amount as the
-filer gives it, an optional input; a blank input is read as blank, and the subtraction that reads
-it reads it as 0."""
-
-PE428_TAX_LINE_67 = AmountKind.declare(CATALOG, "pe428_tax_line_67", non_negative=True)
-"""Prince Edward Island tax after credits, PE428 line 67 "Line 67: Line 65 minus line 66 (if
-negative, enter "0") Enter this amount on line 74. =": line 65 less the amount from the spouse or
-common-law partner's form, not below 0."""
-
 PE428_NET_INCOME_LINE_68 = AmountKind.declare(
     CATALOG, "pe428_net_income_line_68", non_negative=False
 )
@@ -549,5 +536,5 @@ below 0, rounded half-up to the cent."""
 
 PE428_TAX_LINE_88 = AmountKind.declare(CATALOG, "pe428_tax_line_88", non_negative=True)
 """PE428 line 88 "Line 88: Line 74 minus line 87 (if negative, enter "0") =": line 74 (a copy of
-line 67, the tax after credits) less the low-income tax reduction of line 87, not below 0, rounded
-half-up to the cent."""
+line 67, which is line 65 because line 66 is not taken) less the low-income tax reduction of
+line 87, not below 0, rounded half-up to the cent."""

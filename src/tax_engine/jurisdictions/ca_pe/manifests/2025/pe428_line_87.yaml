@@ -3,7 +3,8 @@
 # (`ca-pe/pe428_low_income_reductions_total_line_81`) and line 86
 # (`ca-pe/pe428_reduction_phase_out_line_86`), not below 0, rounded half-up to the cent by the
 # dataset's rule. The form's instruction under line 67 to enter "0" on line 87 when an amount is
-# claimed on line 66 does not apply to a single filer: line 66 is blank, so line 87 is calculated.
+# claimed on line 66 does not apply: line 66 is not taken (a single filer has none), so line 87 is
+# always calculated.
 # The output is exported for the return summary's marginal rate.
 form:
   name: ca-pe/pe428

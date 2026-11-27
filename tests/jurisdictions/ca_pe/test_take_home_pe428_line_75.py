@@ -21,12 +21,14 @@ import yaml
 
 import tax_engine.jurisdictions.ca_pe
 from tax_engine.domain.kinds import AmountKind
+from tax_engine.domain.trace import CreditAmountLine
 from tax_engine.jurisdictions.ca_pe.catalog import LOW_INCOME_REDUCTION_BASIC
 from tests.jurisdictions.ca_pe.conftest import TakeHomeService
 from tests.jurisdictions.ca_pe.credits_support import (
     CHAIN_75,
     HEADER,
     compute,
+    exports_of,
     form,
     value,
 )
@@ -43,13 +45,12 @@ CASES: list[tuple[str, dict[str, str], dict[str, str]]] = [
     ("30000", {}, {"ca-pe/low_income_reduction_basic": "350.00"}),
     ("70000", {}, {"ca-pe/low_income_reduction_basic": "350.00"}),
 ]
-EXPORTS = sorted({OUTPUT, *(name for _, _, expected in CASES for name in expected)})
 
 
 def _sheet(
     take_home_service: TakeHomeService, salary: str, given: dict[str, str] | None = None
 ) -> Any:
-    service = take_home_service(HEADER, form(*EXPORTS), *PARTS)
+    service = take_home_service(HEADER, form(*exports_of(PARTS)), *PARTS)
     return compute(service, salary, given)
 
 
@@ -64,6 +65,18 @@ def test_the_line_figures(
 
     for identifier, amount in expected.items():
         assert value(sheet, identifier) == D(amount)
+
+
+def test_the_trace_is_the_printed_basic_reduction_claimed_whole(
+    take_home_service: TakeHomeService,
+) -> None:
+    sheet = _sheet(take_home_service, "20000")
+    kinds = prince_edward_island_kinds()
+
+    (line,) = [
+        t for t in sheet.trace if isinstance(t, CreditAmountLine) and t.output is kinds.kind(OUTPUT)
+    ]
+    assert line.value == D("350.00")
 
 
 def _part() -> dict[str, Any]:
@@ -87,7 +100,7 @@ def test_the_part_is_the_steps_the_form_prints() -> None:
     ]
 
 
-def test_the_kind_is_a_registered_decimal_amount_kind() -> None:
+def test_the_kind_is_a_registered_non_negative_decimal_amount_kind() -> None:
     kind = prince_edward_island_kinds().kind(OUTPUT)
 
     assert kind is LOW_INCOME_REDUCTION_BASIC

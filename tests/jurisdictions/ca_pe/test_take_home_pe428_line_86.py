@@ -22,12 +22,14 @@ import yaml
 
 import tax_engine.jurisdictions.ca_pe
 from tax_engine.domain.kinds import AmountKind
+from tax_engine.domain.trace import RateAppliedLine
 from tax_engine.jurisdictions.ca_pe.catalog import PE428_REDUCTION_PHASE_OUT_LINE_86
 from tests.jurisdictions.ca_pe.conftest import TakeHomeService
 from tests.jurisdictions.ca_pe.credits_support import (
     CHAIN_86,
     HEADER,
     compute,
+    exports_of,
     form,
     value,
 )
@@ -45,13 +47,12 @@ CASES: list[tuple[str, dict[str, str], dict[str, str]]] = [
     ("70000", {}, {"ca-pe/pe428_reduction_phase_out_line_86": "2334.25"}),
     ("25217.17", {}, {"ca-pe/pe428_reduction_phase_out_line_86": "117.50"}),
 ]
-EXPORTS = sorted({OUTPUT, *(name for _, _, expected in CASES for name in expected)})
 
 
 def _sheet(
     take_home_service: TakeHomeService, salary: str, given: dict[str, str] | None = None
 ) -> Any:
-    service = take_home_service(HEADER, form(*EXPORTS), *PARTS)
+    service = take_home_service(HEADER, form(*exports_of(PARTS)), *PARTS)
     return compute(service, salary, given)
 
 
@@ -66,6 +67,20 @@ def test_the_line_figures(
 
     for identifier, amount in expected.items():
         assert value(sheet, identifier) == D(amount)
+
+
+def test_the_trace_is_line_84_times_the_printed_rate(
+    take_home_service: TakeHomeService,
+) -> None:
+    sheet = _sheet(take_home_service, "30000")
+    kinds = prince_edward_island_kinds()
+
+    (line,) = [
+        t for t in sheet.trace if isinstance(t, RateAppliedLine) and t.output is kinds.kind(OUTPUT)
+    ]
+    assert line.base.identifier == "ca-pe/pe428_income_over_base_amount_line_84"
+    assert line.base_amount == D("7085.00")
+    assert line.result == D("354.25")
 
 
 def _part() -> dict[str, Any]:
@@ -89,7 +104,7 @@ def test_the_part_is_the_steps_the_form_prints() -> None:
     ]
 
 
-def test_the_kind_is_a_registered_decimal_amount_kind() -> None:
+def test_the_kind_is_a_registered_non_negative_decimal_amount_kind() -> None:
     kind = prince_edward_island_kinds().kind(OUTPUT)
 
     assert kind is PE428_REDUCTION_PHASE_OUT_LINE_86

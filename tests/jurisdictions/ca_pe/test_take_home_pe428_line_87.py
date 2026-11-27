@@ -25,12 +25,14 @@ import yaml
 
 import tax_engine.jurisdictions.ca_pe
 from tax_engine.domain.kinds import AmountKind
+from tax_engine.domain.trace import SubtractedNotBelowZeroLine
 from tax_engine.jurisdictions.ca_pe.catalog import PE428_LOW_INCOME_TAX_REDUCTION_LINE_87
 from tests.jurisdictions.ca_pe.conftest import TakeHomeService
 from tests.jurisdictions.ca_pe.credits_support import (
     CHAIN_87,
     HEADER,
     compute,
+    exports_of,
     form,
     value,
 )
@@ -49,13 +51,12 @@ CASES: list[tuple[str, dict[str, str], dict[str, str]]] = [
     ("25217.17", {}, {"ca-pe/pe428_low_income_tax_reduction_line_87": "232.50"}),
     ("22650", {}, {"ca-pe/pe428_low_income_tax_reduction_line_87": "350.00"}),
 ]
-EXPORTS = sorted({OUTPUT, *(name for _, _, expected in CASES for name in expected)})
 
 
 def _sheet(
     take_home_service: TakeHomeService, salary: str, given: dict[str, str] | None = None
 ) -> Any:
-    service = take_home_service(HEADER, form(*EXPORTS), *PARTS)
+    service = take_home_service(HEADER, form(*exports_of(PARTS)), *PARTS)
     return compute(service, salary, given)
 
 
@@ -70,6 +71,24 @@ def test_the_line_figures(
 
     for identifier, amount in expected.items():
         assert value(sheet, identifier) == D(amount)
+
+
+def test_the_trace_is_one_floored_subtraction_of_line_86_from_line_81(
+    take_home_service: TakeHomeService,
+) -> None:
+    sheet = _sheet(take_home_service, "20000")
+    kinds = prince_edward_island_kinds()
+
+    (line,) = [
+        t
+        for t in sheet.trace
+        if isinstance(t, SubtractedNotBelowZeroLine) and t.output is kinds.kind(OUTPUT)
+    ]
+    assert line.minuend.identifier == "ca-pe/pe428_low_income_reductions_total_line_81"
+    assert line.minuend_amount == D("350.00")
+    assert line.subtrahend.identifier == "ca-pe/pe428_reduction_phase_out_line_86"
+    assert line.subtrahend_amount == D("0.00")
+    assert line.result == D("350.00")
 
 
 def _part() -> dict[str, Any]:
@@ -97,7 +116,7 @@ def test_the_part_is_the_steps_the_form_prints() -> None:
     ]
 
 
-def test_the_kind_is_a_registered_decimal_amount_kind() -> None:
+def test_the_kind_is_a_registered_non_negative_decimal_amount_kind() -> None:
     kind = prince_edward_island_kinds().kind(OUTPUT)
 
     assert kind is PE428_LOW_INCOME_TAX_REDUCTION_LINE_87

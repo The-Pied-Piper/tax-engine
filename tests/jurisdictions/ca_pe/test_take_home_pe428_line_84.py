@@ -24,12 +24,14 @@ import yaml
 
 import tax_engine.jurisdictions.ca_pe
 from tax_engine.domain.kinds import AmountKind
+from tax_engine.domain.trace import SubtractedNotBelowZeroLine
 from tax_engine.jurisdictions.ca_pe.catalog import PE428_INCOME_OVER_BASE_AMOUNT_LINE_84
 from tests.jurisdictions.ca_pe.conftest import TakeHomeService
 from tests.jurisdictions.ca_pe.credits_support import (
     CHAIN_84,
     HEADER,
     compute,
+    exports_of,
     form,
     value,
 )
@@ -54,13 +56,12 @@ CASES: list[tuple[str, dict[str, str], dict[str, str]]] = [
         },
     ),
 ]
-EXPORTS = sorted({OUTPUT, *(name for _, _, expected in CASES for name in expected)})
 
 
 def _sheet(
     take_home_service: TakeHomeService, salary: str, given: dict[str, str] | None = None
 ) -> Any:
-    service = take_home_service(HEADER, form(*EXPORTS), *PARTS)
+    service = take_home_service(HEADER, form(*exports_of(PARTS)), *PARTS)
     return compute(service, salary, given)
 
 
@@ -75,6 +76,24 @@ def test_the_line_figures(
 
     for identifier, amount in expected.items():
         assert value(sheet, identifier) == D(amount)
+
+
+def test_the_trace_is_one_floored_subtraction_of_line_83_from_line_72(
+    take_home_service: TakeHomeService,
+) -> None:
+    sheet = _sheet(take_home_service, "30000")
+    kinds = prince_edward_island_kinds()
+
+    (line,) = [
+        t
+        for t in sheet.trace
+        if isinstance(t, SubtractedNotBelowZeroLine) and t.output is kinds.kind(OUTPUT)
+    ]
+    assert line.minuend.identifier == "ca-pe/pe428_adjusted_family_income_line_72"
+    assert line.minuend_amount == D("29735.00")
+    assert line.subtrahend.identifier == "ca-pe/low_income_reduction_base_amount"
+    assert line.subtrahend_amount == D("22650.00")
+    assert line.result == D("7085.00")
 
 
 def _part() -> dict[str, Any]:
@@ -101,7 +120,7 @@ def test_the_part_is_the_steps_the_form_prints() -> None:
     ]
 
 
-def test_the_kind_is_a_registered_decimal_amount_kind() -> None:
+def test_the_kind_is_a_registered_non_negative_decimal_amount_kind() -> None:
     kind = prince_edward_island_kinds().kind(OUTPUT)
 
     assert kind is PE428_INCOME_OVER_BASE_AMOUNT_LINE_84
