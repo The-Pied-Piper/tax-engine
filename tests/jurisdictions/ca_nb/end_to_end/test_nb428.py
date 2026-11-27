@@ -64,21 +64,21 @@ def _cents(amount: Decimal) -> Decimal:
     return amount.quantize(D("0.01"), ROUND_HALF_UP)
 
 
-def _sheet(salary: str) -> Worksheet:
-    worksheets = build_tax_computation().compute(
+def _worksheets(salary: str) -> dict[str, tuple[Worksheet, ...]]:
+    return build_tax_computation().compute(
         TaxCalculationRequest(NEW_BRUNSWICK, 2025, (Artifact(EMPLOYMENT_INCOME, D(salary)),))
     )
-    (nb428,) = worksheets[NB428]
-    return nb428
 
 
 @pytest.mark.parametrize(("salary", "new_brunswick_tax"), SALARIES)
 def test_line_97_is_the_new_brunswick_tax(salary: str, new_brunswick_tax: str) -> None:
-    assert _figure(_sheet(salary), LINE_97) == D(new_brunswick_tax)
+    (nb428,) = _worksheets(salary)[NB428]
+
+    assert _figure(nb428, LINE_97) == D(new_brunswick_tax)
 
 
 def test_line_97_at_20000_follows_from_the_printed_figures() -> None:
-    nb428 = _sheet("20000")
+    (nb428,) = _worksheets("20000")[NB428]
     taxable_income = D("20000") - _cents((D("20000") - D("3500")) * D("0.01"))
     # Column 1 (line 1 of $51,306 or less): rate 9.4%, constant 0.00.
     tax_on_excess = _cents(taxable_income * D("0.094"))
@@ -106,7 +106,7 @@ def test_line_97_at_20000_follows_from_the_printed_figures() -> None:
 
 
 def test_line_97_at_30000_follows_from_the_printed_figures() -> None:
-    nb428 = _sheet("30000")
+    (nb428,) = _worksheets("30000")[NB428]
     taxable_income = D("30000") - _cents((D("30000") - D("3500")) * D("0.01"))
     tax_on_excess = _cents(taxable_income * D("0.094"))
     cpp = (D("30000") - D("3500")) * D("0.0495")
@@ -137,7 +137,7 @@ def test_line_97_at_30000_follows_from_the_printed_figures() -> None:
 
 
 def test_line_97_at_70000_follows_from_the_printed_figures() -> None:
-    nb428 = _sheet("70000")
+    (nb428,) = _worksheets("70000")[NB428]
     taxable_income = D("70000") - _cents((D("70000") - D("3500")) * D("0.01"))
     # Column 2 (line 1 more than $51,306 but not more than $102,614): 14%, constant 4,822.76.
     tax_on_excess = _cents((taxable_income - D("51306")) * D("0.14"))
@@ -165,7 +165,7 @@ def test_line_97_at_70000_follows_from_the_printed_figures() -> None:
 
 
 def test_line_97_at_200000_follows_from_the_printed_figures() -> None:
-    nb428 = _sheet("200000")
+    (nb428,) = _worksheets("200000")[NB428]
     # The CPP enhanced contribution is 1% of 71,300 less 3,500 and 4% of 81,200 less 71,300.
     enhanced = _cents(D("67800") * D("0.01")) + _cents(D("9900") * D("0.04"))
     taxable_income = D("200000") - enhanced
