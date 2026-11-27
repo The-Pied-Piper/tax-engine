@@ -1,28 +1,16 @@
-# Form NB428 (CRA 5004-C) line 10 and line 58080: "Age amount (if you were born in 1960 or earlier) (use Worksheet NB428) (maximum $6,037)". Built as ca-nl/nl428_credits line 17 and ca-pe/pe428 line 10 are: a ca/count_by_conditions step that works out 1 or 0 from the year of birth (a blank year passes on blank, read as 0 by the steps below; not a line of the form), a core/times_count step of worksheet line 7 by that count (blank read as 0), and a core/at_most step that checks the printed maximum (worksheet line 1) and is line 10. An amount above the maximum is refused, not capped. Worksheet lines 1 to 7 are in the two parts beside this one.
+# Form NB428 (CRA 5004-C) line 10 and line 58080: "Age amount (if you were born in 1960 or earlier) (use Worksheet NB428) (maximum $6,037)". Built as ca-nl/nl428_credits line 17 and ca-pe/pe428 line 10 are: a core/first_record_count step that reads the T1's "aged 65 or older" flag (`ca/t1_lines_copied_by_provinces.age_65_or_older`, worked out once from the year of birth; a blank passes on blank, read as 0 by the steps below; not a line of the form), a core/times_count step of worksheet line 7 by that count (blank read as 0), and a core/at_most step that checks the printed maximum (worksheet line 1) and is line 10. An amount above the maximum is refused, not capped. Worksheet lines 1 to 7 are in the two parts beside this one.
 form:
   name: ca-nb/nb428
 capabilities:
 - name: core/first_record_count
-  title: Year of birth
+  title: Aged 65 or older at the end of the year
   consumes:
-    records: ca/t1_lines_copied_by_provinces.birth_year
+    records: ca/t1_lines_copied_by_provinces.age_65_or_older
   blank:
     records:
-      ca/birth_year: pass_on
+      ca/age_65_or_older: pass_on
   produces:
-    output: ca-nb/nb428_birth_year
-- name: ca/count_by_conditions
-  title: Born in 1960 or earlier
-  params:
-    conditions: ca-nb/born_in_1960_or_earlier_conditions
-  consumes:
-    counts:
-    - ca-nb/nb428_birth_year
-    amounts: []
-  blank:
-    counts: pass_on
-  produces:
-    output: ca/born_in_1960_or_earlier_checked
+    output: ca-nb/nb428_age_65_or_older
 - name: core/times_count
   title: Age amount before the printed maximum
   unit: ca/cad
@@ -30,7 +18,7 @@ capabilities:
     rounding: ca-nb/cent_rounding
   consumes:
     amount: ca-nb/worksheet_nb428_age_amount_line_7
-    count: ca/born_in_1960_or_earlier_checked
+    count: ca-nb/nb428_age_65_or_older
   produces:
     output: ca-nb/nb428_age_amount_claimed_line_10
   blank:

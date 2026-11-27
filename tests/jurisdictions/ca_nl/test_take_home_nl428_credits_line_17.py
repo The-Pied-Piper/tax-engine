@@ -4,13 +4,13 @@ Form text (Form NL428, CRA 5001-c-25e.txt): "Line 17 and line 58080: Age amount 
 1960 or earlier) (use Worksheet NL428) (maximum $7,064) ^". The amount is Worksheet NL428 line 7
 (5001-d-25e.txt), claimed only if the filer was born in 1960 or earlier.
 
-The part has four steps: `core/first_record_count` reads the T1's year of birth;
-`ca/count_by_conditions` works out 1 or 0 from it (a blank year passes on blank, read as 0 by the
-last step); `core/record_total` reads Worksheet NL428 line 7 from its form; `core/times_count`
-multiplies it by the checked count, rounded through
-`ca-nl/cent_rounding`, as line 40 does for its claim. A salary-only filer leaves the answer out, so
-line 17 is 0.00. Worksheet line 7 is 7,064.00 at a 20,000 salary and 0.00 at
-200,000 (hand-computed, not a CRA example).
+The part has five steps: `core/first_record_count` reads the T1's age 65 flag (`ca/age_65_or_older`,
+worked out once there from the year of birth; a blank passes on, read as 0 by the times step);
+`core/record_total` reads Worksheet NL428 line 7 and line 1 from its form; `core/times_count`
+multiplies line 7 by the flag, rounded through `ca-nl/cent_rounding`, as line 40 does for its claim;
+`core/at_most` checks it against the printed maximum. A salary-only filer leaves the year out, so
+line 17 is 0.00. Worksheet line 7 is 7,064.00 at a 20,000 salary and 0.00 at 200,000
+(hand-computed, not a CRA example).
 
 The real federal parts Worksheet NL428 needs and the real worksheet parts are loaded under a
 test-local header and form declarations over the package list of `support.py`.
@@ -38,11 +38,10 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
-from tax_engine.domain.trace import ConditionsCountLine, TimesCountLine
+from tax_engine.domain.trace import TimesCountLine
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca.catalog.personal_amounts import (
     BIRTH_YEAR,
-    BORN_IN_1960_OR_EARLIER_CHECKED,
 )
 from tests.federal_forms import FEDERAL_FORMS, form_part_names, form_parts
 from tests.jurisdictions.ca_nl.support import (
@@ -180,18 +179,17 @@ def test_line_17_is_0_when_born_after_1960(tmp_path: Path) -> None:
 def test_a_blank_year_is_not_born_in_1960_or_earlier(tmp_path: Path) -> None:
     sheet = _sheet(tmp_path, "20000")
 
-    assert sheet.get(BORN_IN_1960_OR_EARLIER_CHECKED).is_blank
+    assert sheet.get(nl_catalog.NL428_AGE_65_OR_OLDER).is_blank
 
 
 def test_the_trace_records_the_yes_or_no_check_and_the_times_count_step(tmp_path: Path) -> None:
     trace = _born(tmp_path, "20000", 1960).trace
 
-    assert ConditionsCountLine(output=BORN_IN_1960_OR_EARLIER_CHECKED, applied=(), count=1) in trace
     (times,) = [line for line in trace if isinstance(line, TimesCountLine)]
     assert times.output is nl_catalog.NL428_AGE_AMOUNT_CLAIMED_LINE_17
     assert times.amount_kind is nl_catalog.NL428_AGE_AMOUNT_WORKSHEET_LINE_17
     assert times.amount_value == D("7064.00")
-    assert times.count_kind is BORN_IN_1960_OR_EARLIER_CHECKED
+    assert times.count_kind is nl_catalog.NL428_AGE_65_OR_OLDER
     assert times.count == 1
     assert times.result == D("7064.00")
 
@@ -202,7 +200,7 @@ def _part() -> dict[str, Any]:
     return part
 
 
-def test_the_part_names_the_form_and_has_the_six_steps_in_order() -> None:
+def test_the_part_names_the_form_and_has_the_five_steps_in_order() -> None:
     part = _part()
 
     assert list(part) == ["form", "capabilities"]
@@ -210,20 +208,19 @@ def test_the_part_names_the_form_and_has_the_six_steps_in_order() -> None:
     steps = part["capabilities"]
     assert [step["name"] for step in steps] == [
         "core/first_record_count",
-        "ca/count_by_conditions",
         "core/record_total",
         "core/record_total",
         "core/times_count",
         "core/at_most",
     ]
-    assert [step.get("reference") for step in steps] == [None, None, None, None, None, "17"]
-    assert steps[2]["consumes"] == {
+    assert [step.get("reference") for step in steps] == [None, None, None, None, "17"]
+    assert steps[1]["consumes"] == {
         "records": "ca-nl/nl428_worksheet.worksheet_nl428_age_amount_line_7"
     }
-    assert steps[3]["consumes"] == {
+    assert steps[2]["consumes"] == {
         "records": "ca-nl/nl428_worksheet.worksheet_nl428_age_amount_maximum_line_1"
     }
-    assert steps[5]["title"] == "Age amount"
+    assert steps[4]["title"] == "Age amount"
 
 
 @pytest.mark.parametrize(

@@ -12,7 +12,7 @@ Line 25 is one core/sum over lines 16, 17, 23 and 24 in line order: line 20 is t
 which the take-home leaves out (single filer, owner ruling 23 Nov 2026, as Quebec was in #1925), so
 the sum has no line 20. Line 17 is Worksheet NL428 line 7 read
 from its form (core/record_total) and claimed only if the filer was born in 1960 or earlier (the
-year of birth, `ca/birth_year`, worked out by ca/count_by_conditions, then core/times_count, as
+age 65 flag of the T1 (worked out from `ca/birth_year`), then core/times_count, as
 line 40 claims its amount); a salary-only filer leaves the answer out, so line 17 is 0.00. Line 23
 is blank for a filer with no eligible dependant and line 24 is an optional input; the sum reads each
 blank as 0.

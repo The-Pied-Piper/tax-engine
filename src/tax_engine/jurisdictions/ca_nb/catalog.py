@@ -595,6 +595,7 @@ dollar of salary, with no credit paid on filing: the sum of the federal marginal
 Brunswick marginal rate (which has no surtax or health premium) and the contribution rate, on the
 return summary. Not printed on the form."""
 
-NB428_BIRTH_YEAR = CountKind.declare(CATALOG, "nb428_birth_year", non_negative=True)
-"""Year of birth, read from the T1's `ca/birth_year` (entered once there) for the age lines of
-NB428: blank when the filer left it out."""
+NB428_AGE_65_OR_OLDER = CountKind.declare(CATALOG, "nb428_age_65_or_older", non_negative=True)
+"""Aged 65 or older at the end of the year, read from the T1's `ca/age_65_or_older` (worked out
+once there from the year of birth) for the age lines of NB428: 1 or 0, blank when the year is
+blank."""
