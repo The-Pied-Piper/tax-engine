@@ -332,3 +332,9 @@ reduction: 0 where the eligibility test is not met."""
 NB428_TAX_LINE_87 = AmountKind.declare(CATALOG, "nb428_tax_line_87", non_negative=True)
 """NB428 line 87 "Line 76 minus line 86 (if negative, enter "0")": the New Brunswick tax after the
 low-income tax reduction, line 76 being line 69, which is line 67 (line 68 is not modelled)."""
+
+NB428_POLITICAL_CONTRIBUTION_CREDIT_LINE_92 = AmountKind.declare(
+    CATALOG, "nb428_political_contribution_credit_line_92", non_negative=True
+)
+"""NB428 line 92 "New Brunswick political contribution tax credit (use Worksheet NB428) (maximum
+$500)": the amount as the filer enters it, one optional input; the worksheet is not built."""
