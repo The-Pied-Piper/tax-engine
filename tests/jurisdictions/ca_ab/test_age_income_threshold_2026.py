@@ -1,7 +1,7 @@
-"""The 2026 `ca-ab/age_income_threshold` dataset, Worksheet AB428
-(5009-d-25e.txt), Line 3 "Income threshold 46,308.00": the printed figure,
-claimed whole (the `credit` kind). Rounds half-up to the cent, the project's choice, as the form
-states no rounding rule.
+"""The 2026 `ca-ab/age_income_threshold` dataset, Worksheet AB428 (5009-d-25e.txt), Line 3 "Income
+threshold 46,308.00" (2025 text) indexed by Alberta's 2026 factor 1.02 (47,234.16, nearest dollar,
+halves up: 47,234.00), provisional, claimed whole (the `credit` kind). Rounds half-up to the cent,
+the project's choice, as the form states no rounding rule.
 """
 
 from __future__ import annotations
@@ -20,10 +20,10 @@ CRA_FORM_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5009-d/
 YEAR = 2026
 
 
-def test_2026_age_income_threshold_is_46308_00() -> None:
+def test_2026_age_income_threshold_is_47234_00() -> None:
     data = SOURCE.get(FAMILY, YEAR, CREDIT)
 
-    assert data.values == Credit(amount=D("46308.00"))
+    assert data.values == Credit(amount=D("47234.00"))
 
 
 def test_2026_age_income_threshold_rounds_half_up_to_the_cent() -> None:

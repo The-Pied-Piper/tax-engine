@@ -1,7 +1,7 @@
-"""The 2026 `ca-ab/age_maximum` dataset, Worksheet AB428
-(5009-d-25e.txt), Line 1 "Maximum amount 6,221.00": the printed figure,
-claimed whole (the `credit` kind). Rounds half-up to the cent, the project's choice, as the form
-states no rounding rule.
+"""The 2026 `ca-ab/age_maximum` dataset, Worksheet AB428 (5009-d-25e.txt), Line 1 "Maximum amount
+6,221.00" (2025 text) indexed by Alberta's 2026 factor 1.02 (6,345.42, nearest dollar, halves up:
+6,345.00), provisional, claimed whole (the `credit` kind). Rounds half-up to the cent, the
+project's choice, as the form states no rounding rule.
 """
 
 from __future__ import annotations
@@ -20,10 +20,10 @@ CRA_FORM_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5009-d/
 YEAR = 2026
 
 
-def test_2026_age_maximum_is_6221_00() -> None:
+def test_2026_age_maximum_is_6345_00() -> None:
     data = SOURCE.get(FAMILY, YEAR, CREDIT)
 
-    assert data.values == Credit(amount=D("6221.00"))
+    assert data.values == Credit(amount=D("6345.00"))
 
 
 def test_2026_age_maximum_rounds_half_up_to_the_cent() -> None:
