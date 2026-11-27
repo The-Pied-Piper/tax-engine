@@ -1,0 +1,26 @@
+# NB428 (2025) line 96, the small business investor tax credit. Form NB428 (CRA 5004-C): "Line 96: Small business investor tax credit (complete Form T1258) (maximum $125,000)".
+# No arithmetic is printed, so line 96 is an entry line in two steps. The first,
+# core/credit_amount, supplies the printed maximum from the `ca-nb/small_business_investor_credit_maximum` dataset; it
+# is not a line of the form, so it has no title and no reference. The second, core/at_most, is line
+# 96: the entered amount (nb428_line_96_input.yaml) passed on unchanged, titled "Small business investor tax credit". An
+# entry above the printed maximum is refused, not capped. A blank entry passes on as blank.
+form:
+  name: ca-nb/nb428
+capabilities:
+  - name: core/credit_amount
+    unit: ca/cad
+    params:
+      amount: ca-nb/small_business_investor_credit_maximum
+    produces:
+      output: ca-nb/nb428_small_business_investor_credit_maximum
+  - name: core/at_most
+    title: "Small business investor tax credit"
+    reference: "96"
+    unit: ca/cad
+    consumes:
+      amount: ca-nb/nb428_small_business_investor_credit_line_96
+      bound: ca-nb/nb428_small_business_investor_credit_maximum
+    blank:
+      amount: pass_on
+    produces:
+      output: ca-nb/nb428_small_business_investor_credit_checked_line_96

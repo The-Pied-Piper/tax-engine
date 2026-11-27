@@ -6,9 +6,9 @@
 # New Brunswick builds Form NB428 (CRA 5004-C). No New Brunswick NB479, T1 edition or Schedule 6
 # was found (the 5004-tc, 5004-r and 5004-s6 text files are 404 on CRA, tried 2026-11-26), so the
 # federal forms apply unchanged. Schedule 8 and T2204 carry the standard federal CPP and EI (no
-# QPP). Only the federal forms that compose before NB428 exists are imported below; the T1 forms
-# (which need `ca/provincial_tax.amount`), Schedule 6 and the rate forms are added by the tickets
-# that build NB428 and the return summary. Schedule 9 is imported for NB428 lines 50 and 51.
+# QPP). NB428 line 97 supplies `ca/provincial_tax.amount`, so the T1 forms are imported below with
+# Schedule 6 and T691; the rate forms are added by the return summary ticket. Schedule 9 is
+# imported for NB428 lines 50 and 51.
 #
 # The `outputs` list and the `take_home` block are set by the New Brunswick return summary ticket
 # (`return.yaml`); until then the manifest names no export. New Brunswick is listed in
@@ -23,6 +23,10 @@ capabilities: []
 imports:
   - ca/t1_employment_income
   - ca/t1_taxable_income
+  - ca/t1_tax_and_credits
+  - ca/t1_lines_copied_by_provinces
+  - ca/schedule_6
   - ca/schedule_8
   - ca/schedule_9
   - ca/t2204
+  - ca/t691

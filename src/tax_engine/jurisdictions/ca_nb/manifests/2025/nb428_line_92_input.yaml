@@ -1,0 +1,15 @@
+# NB428 (2025) line 92's input, which a salary-only caller does not give.
+# "Line 92: New Brunswick political contribution tax credit (use Worksheet NB428) (maximum $500)"
+# (Form NB428, CRA 5004-C). Worksheet NB428 is not built. A salary-only filer has no such claim, so the line is taken
+# as one optional input, as the form takes it. A request that leaves the line out is read as blank;
+# the step that reads line 92 reads that blank as 0.
+form:
+  name: ca-nb/nb428
+inputs:
+  - name: ca-nb/nb428_political_contribution_credit_line_92
+    title: "New Brunswick political contribution tax credit"
+    reference: "92"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 92: New Brunswick political contribution tax credit (use Worksheet NB428) (maximum $500)"
