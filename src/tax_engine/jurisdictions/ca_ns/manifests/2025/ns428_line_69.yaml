@@ -3,7 +3,7 @@
 # UCCB and RDSP repayments) and line 68 (the UCCB and RDSP income), rounded half-up to the cent by
 # the dataset's rule. Line 70 "Add the amounts from line 69 of columns 1 and 2" and line 79 "Amount
 # from line 70" are copy lines with no step of their own (owner ruling, 18 Nov 2026): with column 2
-# deferred (#1999) the adjusted family income is this figure, and line 81 reads it. The form prints
+# deferred the adjusted family income is this figure, and line 81 reads it. The form prints
 # no title for the line, so the step has none.
 form:
   name: ca-ns/ns428

@@ -11,29 +11,30 @@ from pathlib import Path
 
 import tax_engine.jurisdictions.ca_ns.catalog as ns_catalog
 from tax_engine.domain.kinds import AmountKind
-from tests.jurisdictions.ca_ns import ns428_reduction_support as r
+from tests.jurisdictions.ca_ns import ns428_tax_support as s
+from tests.jurisdictions.ca_ns.support import nova_scotia_kinds
 from tests.kinds import non_negative
 
 
 def test_line_80_is_15000(tmp_path: Path) -> None:
-    assert str(r.line(tmp_path, "20000", r.LINE_80)) == "15000.00"
+    assert str(s.line(tmp_path, "20000", s.LINE_80)) == "15000.00"
 
 
 def test_the_part_is_one_credit_amount_step() -> None:
-    assert r.part("ns428_line_80.yaml")["capabilities"] == [
+    assert s.part("ns428_line_80.yaml")["capabilities"] == [
         {
             "name": "core/credit_amount",
             "title": "Base amount",
             "reference": "80",
             "unit": "ca/cad",
             "params": {"amount": "ca-ns/low_income_reduction_base_amount"},
-            "produces": {"output": r.LINE_80},
+            "produces": {"output": s.LINE_80},
         }
     ]
 
 
 def test_the_kind_is_a_registered_non_negative_amount_kind() -> None:
-    kind = r.kinds().kind(r.LINE_80)
+    kind = nova_scotia_kinds().kind(s.LINE_80)
 
     assert isinstance(kind, AmountKind)
     assert non_negative(kind)

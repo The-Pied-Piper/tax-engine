@@ -16,7 +16,8 @@ import pytest
 
 import tax_engine.jurisdictions.ca_ns.catalog as ns_catalog
 from tax_engine.domain.kinds import AmountKind
-from tests.jurisdictions.ca_ns import ns428_reduction_support as r
+from tests.jurisdictions.ca_ns import ns428_tax_support as s
+from tests.jurisdictions.ca_ns.support import nova_scotia_kinds
 from tests.kinds import non_negative
 
 D = Decimal
@@ -24,24 +25,24 @@ D = Decimal
 
 @pytest.mark.parametrize("salary", ["20000", "70000"])
 def test_a_salary_only_filer_has_no_repayments(tmp_path: Path, salary: str) -> None:
-    assert str(r.line(tmp_path, salary, r.LINE_66)) == "0.00"
+    assert str(s.line(tmp_path, salary, s.LINE_66)) == "0.00"
 
 
 def test_a_uccb_repayment_is_read_from_t1_line_21300(tmp_path: Path) -> None:
-    given = {r.INPUTS["uccb_repayment"]: "120.00"}
+    given = {s.INPUTS["uccb_repayment"]: "120.00"}
 
-    assert r.line(tmp_path, "20000", r.LINE_66_A, given) == D("120.00")
-    assert r.line(tmp_path, "20000", r.LINE_66, given) == D("120.00")
+    assert s.line(tmp_path, "20000", s.LINE_66_A, given) == D("120.00")
+    assert s.line(tmp_path, "20000", s.LINE_66, given) == D("120.00")
 
 
 def test_the_total_adds_both_lines(tmp_path: Path) -> None:
-    given = {r.INPUTS["uccb_repayment"]: "120.00", r.INPUTS["rdsp_income_repayment"]: "80.50"}
+    given = {s.INPUTS["uccb_repayment"]: "120.00", s.INPUTS["rdsp_income_repayment"]: "80.50"}
 
-    assert r.line(tmp_path, "20000", r.LINE_66, given) == D("200.50")
+    assert s.line(tmp_path, "20000", s.LINE_66, given) == D("200.50")
 
 
 def test_the_part_is_two_record_totals_and_a_sum_with_no_input_of_its_own() -> None:
-    first, second, total = r.part("ns428_line_66.yaml")["capabilities"]
+    first, second, total = s.part("ns428_line_66.yaml")["capabilities"]
 
     assert [each["name"] for each in (first, second, total)] == [
         "core/record_total",
@@ -54,23 +55,23 @@ def test_the_part_is_two_record_totals_and_a_sum_with_no_input_of_its_own() -> N
     )
     assert total["reference"] == "66 (column 1)"
     assert total["params"] == {"rounding": "ca-ns/cent_rounding"}
-    assert total["consumes"]["parts"] == [r.LINE_66_A, r.LINE_66_B]
+    assert total["consumes"]["parts"] == [s.LINE_66_A, s.LINE_66_B]
     assert "blank" not in total
-    assert total["produces"] == {"output": r.LINE_66}
+    assert total["produces"] == {"output": s.LINE_66}
 
 
 @pytest.mark.parametrize(
     ("identifier", "constant"),
     [
-        (r.LINE_66_A, ns_catalog.NS428_UCCB_REPAYMENT_LINE_21300),
-        (r.LINE_66_B, ns_catalog.NS428_RDSP_INCOME_REPAYMENT_LINE_23200),
-        (r.LINE_66, ns_catalog.NS428_UCCB_RDSP_REPAYMENTS_LINE_66),
+        (s.LINE_66_A, ns_catalog.NS428_UCCB_REPAYMENT_LINE_21300),
+        (s.LINE_66_B, ns_catalog.NS428_RDSP_INCOME_REPAYMENT_LINE_23200),
+        (s.LINE_66, ns_catalog.NS428_UCCB_RDSP_REPAYMENTS_LINE_66),
     ],
 )
 def test_the_kinds_are_registered_non_negative_amount_kinds(
     identifier: str, constant: AmountKind
 ) -> None:
-    kind = r.kinds().kind(identifier)
+    kind = nova_scotia_kinds().kind(identifier)
 
     assert isinstance(kind, AmountKind)
     assert non_negative(kind)

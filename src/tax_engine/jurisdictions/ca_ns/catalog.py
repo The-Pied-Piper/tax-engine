@@ -311,10 +311,12 @@ NS428_TAX_AFTER_CREDITS_LINE_64 = AmountKind.declare(
 enter "0")": line 62 less the provincial foreign tax credit, not below zero; line 77 reads it."""
 
 NS428_NET_INCOME_LINE_65 = AmountKind.declare(
-    CATALOG, "ns428_net_income_line_65", non_negative=True
+    CATALOG, "ns428_net_income_line_65", non_negative=False
 )
-"""Net income, NS428 line 65 column 1 "Net income from line 23600 of the return": a record total of
-the T1's net income, line 23600 as the T1 floors it. Column 2 (spouse) is #1999."""
+"""Net income, NS428 line 65 column 1 "Net income from line 23600 of the return (or the amount you
+would have entered if the instructions on line 23600 said "if negative, show in brackets")": a
+record total of the T1's net income before its floor, so it can be negative. Column 2 (spouse) is
+deferred."""
 
 NS428_UCCB_REPAYMENT_LINE_21300 = AmountKind.declare(
     CATALOG, "ns428_uccb_repayment_line_21300", non_negative=True
@@ -336,9 +338,10 @@ repayment (included on line 23200 of the return)": the sum of the two T1 lines, 
 filer."""
 
 NS428_FAMILY_INCOME_LINE_67 = AmountKind.declare(
-    CATALOG, "ns428_family_income_line_67", non_negative=True
+    CATALOG, "ns428_family_income_line_67", non_negative=False
 )
-"""NS428 line 67 "Line 65 plus line 66": the net income plus the UCCB and RDSP repayments."""
+"""NS428 line 67 "Line 65 plus line 66": the net income plus the UCCB and RDSP repayments. Line 65
+can be negative, so the kind is signed."""
 
 NS428_UCCB_INCOME_LINE_11700 = AmountKind.declare(
     CATALOG, "ns428_uccb_income_line_11700", non_negative=True
@@ -360,7 +363,7 @@ NS428_FAMILY_INCOME_LESS_UCCB_RDSP_LINE_69 = AmountKind.declare(
     CATALOG, "ns428_family_income_less_uccb_rdsp_line_69", non_negative=True
 )
 """NS428 line 69 "Line 67 minus line 68 (if negative, enter "0")", column 1. Line 70 adds columns 1
-and 2; with the spouse column deferred (#1999) line 70 is this figure and has no step."""
+and 2; with the spouse column deferred line 70 is this figure and has no step."""
 
 LOW_INCOME_REDUCTION_BASIC = AmountKind.declare(
     CATALOG, "low_income_reduction_basic", non_negative=True
@@ -372,7 +375,7 @@ NS428_LOW_INCOME_REDUCTION_LINE_74 = AmountKind.declare(
     CATALOG, "ns428_low_income_reduction_line_74", non_negative=True
 )
 """NS428 line 74 "Add lines 71 to 73. (maximum $600)": the basic reduction, not more than the
-printed $600. Lines 72 and 73 (spouse, eligible dependant) and line 75 are #1999, so lines 76 and
+printed $600. Lines 72 and 73 (spouse, eligible dependant) and line 75 are deferred, so lines 76 and
 78 are this figure and have no step."""
 
 LOW_INCOME_REDUCTION_BASE_AMOUNT = AmountKind.declare(
