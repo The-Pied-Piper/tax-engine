@@ -64,3 +64,13 @@ def test_line_10_is_claimed_for_any_year_up_to_and_including_1960(tmp_path: Path
     for year in (1960, 1959, 1925):
         given = (Artifact(BIRTH_YEAR, year),)
         assert _line_10(tmp_path / str(year), "20000", given) == D("5734.00")
+
+
+def test_2026_line_10_is_the_indexed_maximum_and_the_worksheet_arithmetic(tmp_path: Path) -> None:
+    """2026 (provisional): maximum 5,826 (5,734 indexed by 1.016); the threshold stays 30,828."""
+    low = s.sheet(tmp_path / "low", "20000", LINES_10, (LINE_10,), BORN, 2026)
+    assert s.value(low, LINE_10) == D("5826.00")
+
+    sheet = s.sheet(tmp_path / "mid", "40000", LINES_10, (LINE_2, LINE_10), BORN, 2026)
+    net_income = s.value(sheet, LINE_2)
+    assert s.value(sheet, LINE_10) == s.cent(D("5826") - D("0.15") * (net_income - D("30828")))
