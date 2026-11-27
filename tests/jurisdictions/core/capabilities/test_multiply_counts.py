@@ -239,10 +239,27 @@ def test_a_rule_for_one_kind_leaves_the_other_counts_refusing_a_blank() -> None:
         one.run(blank_months)
 
 
-def test_a_kind_rule_of_pass_on_beats_a_fallback_for_another_kind() -> None:
+def test_a_count_can_pass_a_blank_on_while_another_counts_as_one() -> None:
     mixed = capability().with_blank_rules({}, per_item={FLAG_ONE: PASS_ON, FLAG_TWO: 1})
+    blank_two = (Artifact(MONTHS, 12), Artifact(FLAG_ONE, 1), Artifact(FLAG_TWO, BLANK))
 
-    assert mixed.run(with_blank_flag()).outputs == (Artifact(PRODUCT, BLANK),)
+    passed = mixed.run(with_blank_flag())
+    filled = mixed.run(blank_two)
+
+    assert passed.outputs == (Artifact(PRODUCT, BLANK),)
+    assert passed.trace == (BlankPassedOnLine(PRODUCT, (FLAG_ONE,)),)
+    assert filled.outputs == (Artifact(PRODUCT, 12),)
+    assert filled.trace[0] == BlankFallbackLine(FLAG_TWO, 1)
+
+
+def test_pass_on_wins_over_a_fallback_when_both_counts_are_blank() -> None:
+    mixed = capability().with_blank_rules({}, per_item={FLAG_ONE: PASS_ON, FLAG_TWO: 1})
+    both = (Artifact(MONTHS, 12), Artifact(FLAG_ONE, BLANK), Artifact(FLAG_TWO, BLANK))
+
+    result = mixed.run(both)
+
+    assert result.outputs == (Artifact(PRODUCT, BLANK),)
+    assert result.trace == (BlankPassedOnLine(PRODUCT, (FLAG_ONE,)),)
 
 
 def test_a_fallback_for_the_slot_multiplies_in_place_of_each_blank_count() -> None:
