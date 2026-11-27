@@ -62,7 +62,6 @@ NL_PART_NAMES = (
     "worksheet_nl428_line_4.yaml",
     "worksheet_nl428_line_6.yaml",
     "worksheet_nl428_line_7.yaml",
-    "worksheet_nl428_line_58080_input.yaml",
     "nl428_credits_line_16.yaml",
     "nl428_credits_line_17.yaml",
     "nl428_credits_line_22_input.yaml",

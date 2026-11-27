@@ -28,7 +28,6 @@ from tests.jurisdictions.ca_pe.support import prince_edward_island_kinds
 D = Decimal
 PARTS = (
     *FEDERAL_PARTS,
-    "pe428_line_10_input.yaml",
     "pe428_line_10_worksheet_lines_2_to_3.yaml",
     "pe428_line_10_worksheet_lines_4_to_7.yaml",
     "pe428_line_10.yaml",

@@ -1,7 +1,7 @@
 """PE428 (2025) line 76, the age reduction for self, over the optional year of birth.
 
-Form text (Form PE428, CRA 5002-C): "Line 76 and line 63380: Age reduction for self (if you were born
-in 1960 or earlier) Claim $250". Line 76 is $250.00 when born in 1960 or earlier and 0.00
+Form text (Form PE428, CRA 5002-C): "Line 76 and line 63380: Age reduction for self (if you were
+born in 1960 or earlier) Claim $250". Line 76 is $250.00 when born in 1960 or earlier and 0.00
 otherwise (a blank year is not born in 1960 or earlier); line 81 adds it.
 """
 

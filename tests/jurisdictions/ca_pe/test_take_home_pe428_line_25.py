@@ -39,7 +39,6 @@ LINES = ["ca-pe/pe428_credits_subtotal_line_19", "ca-pe/pe428_cpp_ei_and_other_l
 PARTS = (
     *FEDERAL_PARTS,
     "pe428_line_9.yaml",
-    "pe428_line_10_input.yaml",
     "pe428_line_10_worksheet_lines_2_to_3.yaml",
     "pe428_line_10_worksheet_lines_4_to_7.yaml",
     "pe428_line_10.yaml",

@@ -67,7 +67,6 @@ def value(sheet: Any, identifier: str) -> Decimal:
 BASE_PARTS = (
     *FEDERAL_PARTS,
     "pe428_line_9.yaml",
-    "pe428_line_10_input.yaml",
     "pe428_line_10_worksheet_lines_2_to_3.yaml",
     "pe428_line_10_worksheet_lines_4_to_7.yaml",
     "pe428_line_10.yaml",

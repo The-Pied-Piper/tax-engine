@@ -7,7 +7,7 @@ Amounts are `Decimal`, non-negative unless the form prints no floor. Federal kin
 from __future__ import annotations
 
 from tax_engine.domain.artifact import ArtifactCatalog
-from tax_engine.domain.kinds import AmountKind
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca_nb import NAMESPACE
 
@@ -594,3 +594,7 @@ MARGINAL_TAX_RATE = AmountKind.declare(CATALOG, "marginal_tax_rate", non_negativ
 dollar of salary, with no credit paid on filing: the sum of the federal marginal rate, the New
 Brunswick marginal rate (which has no surtax or health premium) and the contribution rate, on the
 return summary. Not printed on the form."""
+
+NB428_BIRTH_YEAR = CountKind.declare(CATALOG, "nb428_birth_year", non_negative=True)
+"""Year of birth, read from the T1's `ca/birth_year` (entered once there) for the age lines of
+NB428: blank when the filer left it out."""

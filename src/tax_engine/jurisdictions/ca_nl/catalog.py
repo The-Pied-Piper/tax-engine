@@ -1099,3 +1099,7 @@ MARGINAL_TAX_RATE = AmountKind.declare(CATALOG, "marginal_tax_rate", non_negativ
 dollar of salary, with no credit paid on filing: the sum of the federal marginal rate, the
 Newfoundland and Labrador marginal rate (which has no surtax or health premium) and the
 contribution rate, on the return summary. Not printed on the form."""
+
+NL428_BIRTH_YEAR = CountKind.declare(CATALOG, "nl428_birth_year", non_negative=True)
+"""Year of birth, read from the T1's `ca/birth_year` (entered once there) for the age lines of
+NL428: blank when the filer left it out."""

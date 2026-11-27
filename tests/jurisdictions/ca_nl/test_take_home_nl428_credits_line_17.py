@@ -4,11 +4,10 @@ Form text (Form NL428, CRA 5001-c-25e.txt): "Line 17 and line 58080: Age amount 
 1960 or earlier) (use Worksheet NL428) (maximum $7,064) ^". The amount is Worksheet NL428 line 7
 (5001-d-25e.txt), claimed only if the filer was born in 1960 or earlier.
 
-The part has three steps: `ca/count_by_conditions` works out 1 or 0 from the year of birth
-(`ca/birth_year`, blank passed on and read as 0 by the next step); `core/record_total` reads
-Worksheet NL428 line 7 from
-its form; `core/times_count` multiplies it by the checked count, rounded through
-`ca-nl/cent_rounding`, as line 40 does for its claim. A salary-only filer leaves the answer out, so
+The part has four steps: `core/first_record_count` reads the T1's year of birth;
+`ca/count_by_conditions` works out 1 or 0 from it (a blank year passes on blank, read as 0 by the
+last step); `core/record_total` reads Worksheet NL428 line 7 from its form; `core/times_count`
+multiplies it by the checked count, rounded through `ca-nl/cent_rounding`, as line 40 does for its claim. A salary-only filer leaves the answer out, so
 line 17 is 0.00. Worksheet line 7 is 7,064.00 at a 20,000 salary and 0.00 at
 200,000 (hand-computed, not a CRA example).
 
@@ -67,7 +66,6 @@ NL_PART_NAMES = (
     "worksheet_nl428_line_4.yaml",
     "worksheet_nl428_line_6.yaml",
     "worksheet_nl428_line_7.yaml",
-    "worksheet_nl428_line_58080_input.yaml",
     "nl428_credits_line_17.yaml",
 )
 
@@ -200,22 +198,23 @@ def _part() -> dict[str, Any]:
     return part
 
 
-def test_the_part_names_the_form_and_has_the_three_steps_in_order() -> None:
+def test_the_part_names_the_form_and_has_the_four_steps_in_order() -> None:
     part = _part()
 
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": FORM_NAME}
     steps = part["capabilities"]
     assert [step["name"] for step in steps] == [
+        "core/first_record_count",
         "ca/count_by_conditions",
         "core/record_total",
         "core/times_count",
     ]
-    assert [step.get("reference") for step in steps] == [None, None, "17"]
-    assert steps[1]["consumes"] == {
+    assert [step.get("reference") for step in steps] == [None, None, None, "17"]
+    assert steps[2]["consumes"] == {
         "records": "ca-nl/nl428_worksheet.worksheet_nl428_age_amount_line_7"
     }
-    assert steps[2]["title"] == "Age amount"
+    assert steps[3]["title"] == "Age amount"
 
 
 @pytest.mark.parametrize(

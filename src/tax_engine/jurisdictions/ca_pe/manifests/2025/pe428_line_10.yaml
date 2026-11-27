@@ -6,13 +6,22 @@
 form:
   name: ca-pe/pe428
 capabilities:
+  - name: core/first_record_count
+    title: Year of birth
+    consumes:
+      records: ca/t1_lines_copied_by_provinces.birth_year
+    blank:
+      records:
+        ca/birth_year: pass_on
+    produces:
+      output: ca-pe/pe428_birth_year
   - name: ca/count_by_conditions
     title: Born in 1960 or earlier
     params:
       conditions: ca-pe/born_in_1960_or_earlier_conditions
     consumes:
       counts:
-        - ca/birth_year
+        - ca-pe/pe428_birth_year
       amounts: []
     blank:
       counts: pass_on
