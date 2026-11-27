@@ -632,3 +632,10 @@ PE428_EQUITY_TAX_CREDIT_LINE_96 = AmountKind.declare(
 )
 """PE428 line 96 "Line 94 plus line 95 (maximum $7,000) =": the sum of lines 94 and 95, at most the
 printed maximum of $7,000."""
+
+PE428_PRINCE_EDWARD_ISLAND_TAX_LINE_97 = AmountKind.declare(
+    CATALOG, "pe428_prince_edward_island_tax_line_97", non_negative=True
+)
+"""Prince Edward Island tax, PE428 line 97 "Line 93 minus line 96 (if negative, enter "0") Enter
+this amount on line 42800 of your return. Prince Edward Island tax =": line 93 less the equity tax
+credit of line 96, not below 0, rounded half-up to the cent."""

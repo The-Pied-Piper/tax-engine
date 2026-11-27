@@ -1,0 +1,21 @@
+# Form PE428 (Prince Edward Island Tax and Credits, CRA 5002-C) line 97 "Line 97: Line 93 minus
+# line 96 (if negative, enter "0") Enter this amount on line 42800 of your return. Prince Edward
+# Island tax =". One core/subtract_not_below_zero step: line 93 (`ca-pe/pe428_tax_line_93`) less the
+# equity tax credit of line 96 (`ca-pe/pe428_equity_tax_credit_line_96`), not below 0, rounded
+# half-up to the cent by the dataset's rule. Both lines are always present, so the step has no blank
+# rule. The form prints no title for the line, so the step has none. Line 97 is the output
+# `ca-pe/pe428_prince_edward_island_tax_line_97`, the tax entered on line 42800, supplied through the
+# form's `ca/provincial_tax.amount` in pe428.yaml.
+form:
+  name: ca-pe/pe428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "97"
+    unit: ca/cad
+    params:
+      rounding: ca-pe/cent_rounding
+    consumes:
+      amount: ca-pe/pe428_tax_line_93
+      less: ca-pe/pe428_equity_tax_credit_line_96
+    produces:
+      output: ca-pe/pe428_prince_edward_island_tax_line_97
