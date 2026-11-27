@@ -90,8 +90,8 @@ def schedule_8(
     take_home_service: TakeHomeService,
     salary: str,
     header: str = HEADER,
-    birth_year: int | None = None,
     months: int | None = None,
+    birth_year: int | None = None,
 ) -> Worksheet:
     given: list[Artifact[Decimal] | Artifact[int]] = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if months is not None:
@@ -274,9 +274,21 @@ def test_a_filer_born_in_2007_keeps_the_typed_months(take_home_service: TakeHome
     assert sheet.get(CPP_PART_3_LINE_11).value == D("1830.60")
 
 
-def test_a_blank_birth_year_leaves_the_result_unchanged(
-    take_home_service: TakeHomeService,
+@pytest.mark.parametrize("year", [None, 1953, 2007])
+def test_a_blank_or_whole_year_free_birth_year_leaves_line_a_as_typed(
+    take_home_service: TakeHomeService, year: int | None
 ) -> None:
-    sheet = schedule_8(take_home_service, "70000")
+    # No year, or a year with no whole-year case (born 1953 is 72, born 2007 turns 18 in 2025):
+    # line A stays the default 12 and line 11 is the full-year figure.
+    sheet = schedule_8(take_home_service, "70000", birth_year=year)
 
     assert sheet.get(CPP_PART_3_LINE_11).value == D("3591.00")
+
+
+def test_the_birth_year_decides_the_whole_year_cases_over_typed_months(
+    take_home_service: TakeHomeService,
+) -> None:
+    # Born in 1952 is 73 at the end of 2025 (condition c): 0 whatever months are typed in.
+    sheet = schedule_8(take_home_service, "70000", months=12, birth_year=1952)
+
+    assert sheet.get(CPP_PART_3_LINE_11).value == D("0.00")
