@@ -1,0 +1,12 @@
+# 5005-R (2025) input a salary-only caller does not give: the filer's year of birth.
+# Line 79 and line 30100 "Age amount (if you were born in 1960 or earlier) (use Federal Worksheet) (maximum $9,028)" (page 5), and Schedule B line 22 of the TP-1 (Revenu Quebec TP-1.D.B-V (2025-12)) "If you were born before January 1, 1961, enter $3,906."
+# The engine takes the year of birth (Umar, 27 Nov 2026) and each form works out its own "born in 1960 or earlier" from it. The year is a shared fact, the federal count `ca/birth_year`, entered once, here on the T1 that prints the date of birth; every other Quebec form reads it from here. A request that leaves it out is read as blank, and the lines that depend on it are 0.00.
+form:
+  name: ca-qc/t1_tax_and_credits
+inputs:
+  - name: ca/birth_year
+    title: "Year of birth"
+    reference: "30100"
+    required: false
+    default: null
+    basis: "Line 79 and line 30100: if you were born in 1960 or earlier"

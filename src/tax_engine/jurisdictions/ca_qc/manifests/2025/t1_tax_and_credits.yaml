@@ -40,6 +40,7 @@ form:
     - ca-qc/cwb_line_161
     - ca-qc/refund_or_balance_owing_line_172
     - ca-qc/federal_bracket_column_rate_line_74
+    - ca/birth_year
   supplies:
     ca/t1_tax_and_credits.federal_bracket_column_rate_line_73: ca-qc/federal_bracket_column_rate_line_74
     ca/t1_tax_and_credits.federal_tax_after_credits: ca-qc/basic_federal_tax_line_130

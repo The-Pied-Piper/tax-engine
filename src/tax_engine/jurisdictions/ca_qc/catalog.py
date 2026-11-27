@@ -1967,9 +1967,31 @@ SCHEDULE_B_LINE_20 = AmountKind.declare(CATALOG, "schedule_b_line_20", non_negat
 """Schedule B Part B line 20, the amount for a person living alone: $2,128 when the answer is yes
 and the income gate does not apply, else 0, rounded half-up to the cent."""
 
+SCHEDULE_B_BIRTH_YEAR_LINE_22 = CountKind.declare(
+    CATALOG, "schedule_b_birth_year_line_22", non_negative=True
+)
+"""The year of birth as Schedule B line 22 reads it: the T1's export of `ca/birth_year`
+(`core/first_record_count`)."""
+
+SCHEDULE_B_BORN_BEFORE_1961_LINE_22 = CountKind.declare(
+    CATALOG, "schedule_b_born_before_1961_line_22", non_negative=True
+)
+"""Schedule B line 22 "If you were born before January 1, 1961": 1 when the year of birth
+(`ca/birth_year`) is 1960 or earlier, 0 when it is later, blank when no year is given
+(`ca/count_by_conditions`, `schedule_b_line_22.yaml`)."""
+
+SCHEDULE_B_AGE_AMOUNT_LINE_22 = AmountKind.declare(
+    CATALOG, "schedule_b_age_amount_line_22", non_negative=True
+)
+"""Schedule B line 22, the printed $3,906 for a filer born before January 1, 1961, claimed whole."""
+
+SCHEDULE_B_LINE_22 = AmountKind.declare(CATALOG, "schedule_b_line_22", non_negative=True)
+"""Schedule B Part B line 22, the age amount: $3,906 when born before January 1, 1961, else 0,
+rounded half-up to the cent."""
+
 SCHEDULE_B_LINE_30 = AmountKind.declare(CATALOG, "schedule_b_line_30", non_negative=True)
-"""Schedule B Part B line 30, "Add lines 20 through 28": line 20 alone, the only amount the
-take-home builds (lines 21, 22, 23, 27 and 28 are not built), rounded half-up to the cent. Produced
+"""Schedule B Part B line 30, "Add lines 20 through 28": lines 20 and 22, the amounts the
+take-home builds (lines 21, 23, 27 and 28 are not built), rounded half-up to the cent. Produced
 by one core/sum (`schedule_b_line_30.yaml`)."""
 
 SCHEDULE_B_LINE_31 = AmountKind.declare(CATALOG, "schedule_b_line_31", non_negative=True)

@@ -1,0 +1,46 @@
+# Schedule B (TP-1.D.B-V, 2025-12) Part B line 22: "If you were born before January 1, 1961, enter $3,906." Three steps, as ca-ns/ns428 line 98 builds a claim for a filer born in 1960 or earlier:
+# 1. ca/count_by_conditions works out 1 or 0 from the year of birth (`ca/birth_year`, entered once on the T1); a blank year passes on blank, read as 0 by step 3.
+# 2. core/credit_amount produces the printed 3,906.00 from its dataset.
+# 3. core/times_count of that by the count: the amount when born before January 1, 1961, 0.00 otherwise.
+# The "not entitled" test of Part A (no spouse and line 18 more than $64,699) is not a step here: line 32 subtracts 18.75% of line 18 from line 30, and above $64,699 that is more than $12,131, more than line 20 and line 22 together can add ($2,128 plus $3,906), so line 32 is 0 either way.
+# Steps 1 and 2 are not lines of the form, so they have no reference. The form prints no label for the line, so its step is untitled.
+form:
+  name: ca-qc/schedule_b
+capabilities:
+  - name: core/first_record_count
+    consumes:
+      records: ca-qc/t1_tax_and_credits.birth_year
+    blank:
+      records: pass_on
+    produces:
+      output: ca-qc/schedule_b_birth_year_line_22
+  - name: ca/count_by_conditions
+    title: "Born before January 1, 1961"
+    params:
+      conditions: ca-qc/schedule_b_line_22_conditions
+    consumes:
+      counts:
+        - ca-qc/schedule_b_birth_year_line_22
+      amounts: []
+    blank:
+      counts: pass_on
+    produces:
+      output: ca-qc/schedule_b_born_before_1961_line_22
+  - name: core/credit_amount
+    unit: ca/cad
+    params:
+      amount: ca-qc/schedule_b_age_amount_line_22
+    produces:
+      output: ca-qc/schedule_b_age_amount_line_22
+  - name: core/times_count
+    reference: "22"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/schedule_b_age_amount_line_22
+      count: ca-qc/schedule_b_born_before_1961_line_22
+    blank:
+      count: "0"
+    produces:
+      output: ca-qc/schedule_b_line_22

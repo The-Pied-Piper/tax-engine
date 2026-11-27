@@ -1,8 +1,8 @@
 # Schedule B (TP-1.D.B-V, 2025-12) Part B line 30: "Add lines 20 through 28." The take-home builds
-# line 20 only (lines 21, 22, 23, 27 and 28 are the age, retirement-income and spouse-related
-# amounts, left out of scope), so one part is summed; a single part is still a sum, so the step is
-# built, as AB428 line 25 does. Rounded half-up to the cent through ca-qc/cent_rounding. The form
-# prints no label for the line, so the step is untitled.
+# lines 20 and 22 (lines 21, 23, 27 and 28 are the single-parent child, spouse age and
+# retirement-income amounts, left out of scope), so two parts are summed, in form line order.
+# Rounded half-up to the cent through ca-qc/cent_rounding. The form prints no label for the line, so
+# the step is untitled.
 form:
   name: ca-qc/schedule_b
 capabilities:
@@ -12,6 +12,8 @@ capabilities:
     params:
       rounding: ca-qc/cent_rounding
     consumes:
-      parts: [ca-qc/schedule_b_line_20]
+      parts:
+        - ca-qc/schedule_b_line_20
+        - ca-qc/schedule_b_line_22
     produces:
       output: ca-qc/schedule_b_line_30
