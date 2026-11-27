@@ -1,0 +1,61 @@
+"""5005-R (2025) Step 1 year of birth input, as the Quebec take-home manifest part declares it:
+the filer's year of birth, the federal count `ca/birth_year` (a shared fact), entered once on
+the T1 and exported from there. A request that leaves it out is read as blank; the lines that
+depend on it read that blank as 0.
+"""
+
+from __future__ import annotations
+
+from typing import Any
+
+import yaml
+
+from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS
+
+
+def _part(name: str) -> dict[str, Any]:
+    part = yaml.safe_load((QUEBEC_PARTS / name).read_text(encoding="utf-8"))
+    assert isinstance(part, dict)
+    return part
+
+
+def test_the_part_declares_only_the_birth_year_input() -> None:
+    part = _part("t1_birth_year_inputs.yaml")
+
+    assert list(part) == ["form", "inputs"]
+    assert part["form"] == {"name": "ca-qc/t1_birth_year"}
+    assert part["inputs"] == [
+        {
+            "name": "ca/birth_year",
+            "title": "Year of birth",
+            "required": False,
+            "default": None,
+            "basis": (
+                'Enter your date of birth in the "Step 1 - Identification and other information" '
+                "area on page 1 of your return."
+            ),
+        }
+    ]
+
+
+def test_the_form_exports_the_birth_year_and_supplies_the_federal_name() -> None:
+    form = _part("t1_birth_year.yaml")["form"]
+
+    assert form["name"] == "ca-qc/t1_birth_year"
+    assert form["exports"] == ["ca/birth_year", "ca/age_65_or_older"]
+    assert form["supplies"] == {
+        "ca/t1_lines_copied_by_provinces.birth_year": "ca/birth_year",
+        "ca/t1_lines_copied_by_provinces.age_65_or_older": "ca/age_65_or_older",
+    }
+
+
+def test_the_age_65_part_works_out_the_flag_from_the_year_with_the_tax_year_cutoff() -> None:
+    part = _part("t1_birth_year_age_65_or_older.yaml")
+
+    assert part["form"] == {"name": "ca-qc/t1_birth_year"}
+    (step,) = part["capabilities"]
+    assert step["name"] == "ca/count_by_conditions"
+    assert step["params"] == {"conditions": "ca-qc/age_65_or_older_conditions"}
+    assert step["consumes"] == {"counts": ["ca/birth_year"], "amounts": []}
+    assert step["blank"] == {"counts": "pass_on"}
+    assert step["produces"] == {"output": "ca/age_65_or_older"}
