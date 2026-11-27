@@ -11,10 +11,10 @@ Form text (Form NB428, CRA 5004-C): line 97 "Line 95 minus line 96 (if negative,
 Enter this amount on line 42800 of your return.".
 
 The line 97 figures are 0.00 / 798.76 / 5,676.89 / 26,050.13. Each is derived apart from the engine
-in `test_line_97_follows_from_the_printed_figures`, from the printed form alone: the column of
-lines 2 to 8 that the taxable income falls in (printed rate and constant), the credits base (the
-basic personal amount $13,396 plus the CPP and EI amounts of lines 19 and 21) at the printed 9.4%,
-and the low-income tax reduction of lines 77 to 86 ($802 less 3% of the adjusted family income
+in the `test_line_97_at_..._follows_from_the_printed_figures` tests, from the printed form alone:
+the column of lines 2 to 8 that the taxable income falls in (printed rate and constant), the
+credits base (the basic personal amount $13,396 plus the CPP and EI amounts of lines 19 and 21) at
+the printed 9.4%, and the low-income tax reduction of lines 77 to 86 ($802 less 3% of the adjusted family income
 above $21,920, nothing from a net income of $48,653). The taxable income is the salary less the CPP
 enhanced contribution (1% of the salary up to $71,300 less $3,500, and 4% from $71,300 to $81,200).
 The figures are not a CRA example.
