@@ -2,14 +2,20 @@
 # credits), Part C (lines 55 to 67, the tax after credits) and the lines after them, which read each
 # other directly. This part names the form and its exports; line parts carry capabilities. Line 55
 # is a copy of line 8 and line 58 a copy of line 54, so they have no step: the lines after them read
-# lines 8 and 54 directly. Line 67 (`ca-pe/pe428_tax_line_67`), the tax after credits, is exported
-# until line 74 (which reads it) is built. Line 97, the Prince Edward Island tax that goes to T1
-# line 42800, is exported by the line ticket that builds it.
+# lines 8 and 54 directly; line 74 is a copy of line 67 and line 82 a copy of line 73, which is
+# line 72 (column 2, the spouse, is not modelled), so the lines after them read those directly.
+# Exports: line 84 (`ca-pe/pe428_income_over_base_amount_line_84`) and line 87
+# (`ca-pe/pe428_low_income_tax_reduction_line_87`), which tell the return summary's marginal rate
+# whether the low-income tax reduction is being phased out, and line 88 (`ca-pe/pe428_tax_line_88`),
+# exported until line 90 (which reads it) is built. Line 97, the Prince Edward Island tax
+# that goes to T1 line 42800, is exported by the line ticket that builds it.
 # The title is the printed heading: "Form PE428" and, under it, "Prince Edward Island Tax and Credits".
 form:
   name: ca-pe/pe428
   title: "Form PE428: Prince Edward Island Tax and Credits"
   required: true
   exports:
-    - ca-pe/pe428_tax_line_67
+    - ca-pe/pe428_income_over_base_amount_line_84
+    - ca-pe/pe428_low_income_tax_reduction_line_87
+    - ca-pe/pe428_tax_line_88
 capabilities: []

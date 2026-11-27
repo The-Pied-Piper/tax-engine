@@ -1,0 +1,17 @@
+# Form PE428 (CRA 5002-C) line 69, column 1 (you), under the heading "Universal child care benefit
+# (UCCB) repayment:": "Line 69: Amount from line 21300 of the return". The amount is a T1 line, so
+# this form does not ask for it: the T1 taxable income form owns the input and exports line 21300
+# (`ca/t1_taxable_income`). Another form reads an export only as a record list, so the one step is
+# core/record_total over those records (as NL428 line 89 reads line 21300). A salary-only caller
+# has no repayment, so it is 0. Column 2 is not modelled: the take-home is a single filer's.
+form:
+  name: ca-pe/pe428
+capabilities:
+  - name: core/record_total
+    title: "Amount from line 21300 of the return"
+    reference: "69 (column 1)"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_taxable_income.uccb_repayment_line_21300
+    produces:
+      output: ca-pe/pe428_uccb_repayment_line_69
