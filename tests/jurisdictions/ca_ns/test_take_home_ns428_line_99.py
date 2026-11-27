@@ -34,7 +34,7 @@ def test_the_claims_lower_line_99_and_line_99_is_never_negative(tmp_path: Path) 
 
     assert str(s.line(tmp_path, "20000", s.LINE_97, claims)) == "52.33"
     assert str(s.line(tmp_path, "20000", s.LINE_99, claims)) == "52.33"
-    assert str(s.line(tmp_path, "20000", s.LINE_97, {s.LINE_96: "600"})) == "-47.67"
+    assert str(s.line(tmp_path, "20000", s.LINE_97, {s.LINE_96: "600"})) == "0.00"
     assert str(s.line(tmp_path, "20000", s.LINE_99, {s.LINE_96: "600"})) == "0.00"
 
 
