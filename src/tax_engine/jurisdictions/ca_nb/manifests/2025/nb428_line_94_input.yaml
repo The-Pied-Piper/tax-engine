@@ -1,0 +1,15 @@
+# NB428 (2025) line 94's input, which a salary-only caller does not give.
+# "Line 94 and line 61670: Labour-sponsored venture capital fund tax credit from NB-LSVC-1 certificate(s) (maximum $2,000)"
+# (Form NB428, CRA 5004-C). The NB-LSVC-1 certificates are not modelled. A salary-only filer has no such claim, so the line is taken
+# as one optional input, as the form takes it. A request that leaves the line out is read as blank;
+# the step that reads line 94 reads that blank as 0.
+form:
+  name: ca-nb/nb428
+inputs:
+  - name: ca-nb/nb428_labour_sponsored_credit_line_94
+    title: "Labour-sponsored venture capital fund tax credit"
+    reference: "94"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 94 and line 61670: Labour-sponsored venture capital fund tax credit from NB-LSVC-1 certificate(s) (maximum $2,000)"
