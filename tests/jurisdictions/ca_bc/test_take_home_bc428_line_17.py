@@ -81,15 +81,21 @@ def _figures(
     )
 
 
-@pytest.mark.parametrize("year", [2025, 2026])
-@pytest.mark.parametrize("where", ["below", "at", "far_above"])
+@pytest.mark.parametrize(
+    ("year", "salary", "expected"),
+    [
+        (2025, "20000", "5799.00"),
+        (2025, "43169", "5799.00"),
+        (2025, "100000", "0.00"),
+        (2026, "20000", "5927.00"),
+        (2026, "44119", "5927.00"),
+        (2026, "100000", "0.00"),
+    ],
+)
 def test_line_is_the_maximum_below_the_threshold_and_zero_far_above(
-    take_home_service: TakeHomeService, year: int, where: str
+    take_home_service: TakeHomeService, year: int, salary: str, expected: str
 ) -> None:
-    salary = {"below": "20000", "at": str(THRESHOLDS[year]), "far_above": "100000"}[where]
-    expected = D("0.00") if where == "far_above" else MAXIMUMS[year]
-
-    assert _figures(take_home_service, year, salary, 1950)[1] == expected
+    assert _figures(take_home_service, year, salary, 1950)[1] == D(expected)
 
 
 @pytest.mark.parametrize("year", [2025, 2026])
