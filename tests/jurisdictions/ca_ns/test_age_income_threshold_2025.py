@@ -1,4 +1,4 @@
-"""The 2025 `ca-ns/age_income_threshold` dataset, Form NS428
+"""The 2025 `ca-ns/age_income_threshold` dataset, Worksheet NS428
 (5003-d-25e.txt), Line 3 "Income threshold 30,828.00": the printed figure,
 claimed whole (the `credit` kind). Rounds half-up to the cent, the project's choice, as the form
 states no rounding rule.

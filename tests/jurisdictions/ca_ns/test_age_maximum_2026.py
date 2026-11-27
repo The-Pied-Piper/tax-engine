@@ -1,4 +1,4 @@
-"""The 2026 `ca-ns/age_maximum` dataset, Form NS428
+"""The 2026 `ca-ns/age_maximum` dataset, Worksheet NS428
 (5003-d-25e.txt), Line 1 "Maximum amount 5,734.00": the printed figure,
 claimed whole (the `credit` kind). Rounds half-up to the cent, the project's choice, as the form
 states no rounding rule.

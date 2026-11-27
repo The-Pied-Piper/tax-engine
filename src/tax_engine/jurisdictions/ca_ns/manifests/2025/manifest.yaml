@@ -5,8 +5,9 @@
 # (`ca/forms/<name>/`).
 #
 # Nova Scotia builds one form, NS428 (5003-C): `ca-ns/ns428`, whose line 99 supplies
-# `ca/provincial_tax.amount` for T1 line 42800. Worksheet NS428 (5003-D), Form NS479 (5003-TC) and
-# Schedules NS(S2) and NS(S11) are not built: for a salary-only filer they are blank or zero. The
+# `ca/provincial_tax.amount` for T1 line 42800. Only the age amount section of Worksheet NS428 (5003-D) is built (line 10); the rest
+# of that worksheet, Form NS479 (5003-TC) and Schedules NS(S2) and NS(S11) are not built: for a
+# salary-only filer they are blank or zero. The
 # dividend tax credit, line 57, is one optional input.
 #
 # Stated assumptions, carried once here and not built as inputs: the filer is single (no spouse or
