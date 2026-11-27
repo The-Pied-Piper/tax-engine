@@ -31,7 +31,6 @@ from tests.jurisdictions.ca_pe.credits_support import (
     CHAIN_84,
     HEADER,
     compute,
-    exports_of,
     form,
     value,
 )
@@ -43,6 +42,18 @@ PE_PARTS = Path(tax_engine.jurisdictions.ca_pe.__file__).parent / "manifests" / 
 PART_NAME = "pe428_line_84.yaml"
 OUTPUT = "ca-pe/pe428_income_over_base_amount_line_84"
 PARTS = CHAIN_84
+EXPORTS = (
+    "ca-pe/pe428_tax_line_67",
+    "ca-pe/pe428_net_income_line_68",
+    "ca-pe/pe428_uccb_repayment_line_69",
+    "ca-pe/pe428_family_income_line_70",
+    "ca-pe/pe428_uccb_income_line_71",
+    "ca-pe/pe428_adjusted_family_income_line_72",
+    "ca-pe/low_income_reduction_basic",
+    "ca-pe/pe428_low_income_reductions_total_line_81",
+    "ca-pe/low_income_reduction_base_amount",
+    "ca-pe/pe428_income_over_base_amount_line_84",
+)
 CASES: list[tuple[str, dict[str, str], dict[str, str]]] = [
     ("20000", {}, {"ca-pe/pe428_income_over_base_amount_line_84": "0.00"}),
     ("30000", {}, {"ca-pe/pe428_income_over_base_amount_line_84": "7085.00"}),
@@ -61,7 +72,7 @@ CASES: list[tuple[str, dict[str, str], dict[str, str]]] = [
 def _sheet(
     take_home_service: TakeHomeService, salary: str, given: dict[str, str] | None = None
 ) -> Any:
-    service = take_home_service(HEADER, form(*exports_of(PARTS)), *PARTS)
+    service = take_home_service(HEADER, form(*EXPORTS), *PARTS)
     return compute(service, salary, given)
 
 

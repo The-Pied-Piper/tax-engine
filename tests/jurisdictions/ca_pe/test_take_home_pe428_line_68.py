@@ -30,7 +30,6 @@ from tests.jurisdictions.ca_pe.credits_support import (
     CHAIN_68,
     HEADER,
     compute,
-    exports_of,
     form,
     value,
 )
@@ -42,6 +41,10 @@ PE_PARTS = Path(tax_engine.jurisdictions.ca_pe.__file__).parent / "manifests" / 
 PART_NAME = "pe428_line_68.yaml"
 OUTPUT = "ca-pe/pe428_net_income_line_68"
 PARTS = CHAIN_68
+EXPORTS = (
+    "ca-pe/pe428_tax_line_67",
+    "ca-pe/pe428_net_income_line_68",
+)
 CASES: list[tuple[str, dict[str, str], dict[str, str]]] = [
     ("20000", {}, {"ca-pe/pe428_net_income_line_68": "19835.00"}),
     ("30000", {}, {"ca-pe/pe428_net_income_line_68": "29735.00"}),
@@ -52,7 +55,7 @@ CASES: list[tuple[str, dict[str, str], dict[str, str]]] = [
 def _sheet(
     take_home_service: TakeHomeService, salary: str, given: dict[str, str] | None = None
 ) -> Any:
-    service = take_home_service(HEADER, form(*exports_of(PARTS)), *PARTS)
+    service = take_home_service(HEADER, form(*EXPORTS), *PARTS)
     return compute(service, salary, given)
 
 

@@ -8,13 +8,9 @@ real ones. The salary is typed in; the federal parts the CPP and EI lines read a
 from __future__ import annotations
 
 from decimal import Decimal
-from pathlib import Path
 from textwrap import dedent
 from typing import Any
 
-import yaml
-
-import tax_engine.jurisdictions.ca_pe
 from tax_engine.application.models.calculation_request import TaxCalculationRequest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
@@ -24,7 +20,6 @@ from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_pe.support import prince_edward_island_kinds
 
 D = Decimal
-PE_PARTS = Path(tax_engine.jurisdictions.ca_pe.__file__).parent / "manifests" / "2025"
 FORM_NAME = "ca-pe/pe428"
 HEADER = dedent("""\
     jurisdiction: CA-PE
@@ -145,7 +140,9 @@ CHAIN_63 = (*CHAIN_62, "pe428_line_63.yaml")
 
 CHAIN_65 = (*CHAIN_63, "pe428_line_64_input.yaml", "pe428_line_65.yaml")
 
-CHAIN_68 = (*CHAIN_65, "pe428_line_68.yaml")
+CHAIN_67 = (*CHAIN_65, "pe428_line_66_input.yaml", "pe428_line_67.yaml")
+
+CHAIN_68 = (*CHAIN_67, "pe428_line_68.yaml")
 
 CHAIN_69 = (*CHAIN_68, "pe428_line_69.yaml")
 
@@ -179,20 +176,3 @@ CHAIN_88 = (*CHAIN_87, "pe428_line_88.yaml")
 
 # Every real line part of the form, lines 1 to 88.
 ALL_PARTS = CHAIN_88
-
-
-def exports_of(parts: tuple[str, ...]) -> list[str]:
-    """The outputs of every Prince Edward Island line step in `parts`.
-
-    The lines 68 to 72 and 75 to 87 do not all feed the line a test reads (the line 69 test has no
-    reader for line 68, for example), and a composition refuses an output nothing reads and the
-    form does not export, so the test-local form exports them all.
-    """
-    names: list[str] = []
-    for part in parts:
-        path = PE_PARTS / part
-        if not path.is_file():
-            continue
-        document = yaml.safe_load(path.read_text(encoding="utf-8"))
-        names.extend(step["produces"]["output"] for step in document.get("capabilities", []))
-    return names

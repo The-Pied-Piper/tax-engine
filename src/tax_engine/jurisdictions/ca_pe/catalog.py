@@ -423,6 +423,19 @@ PE428_TAX_WITH_MINIMUM_TAX_LINE_65 = AmountKind.declare(
 """Prince Edward Island tax with the additional minimum tax, PE428 line 65 "Line 65: Line 63 plus
 line 64 =": line 63 plus the additional tax for minimum tax purposes."""
 
+PE428_AMOUNT_FROM_SPOUSE_OR_PARTNER_FORM_LINE_66 = AmountKind.declare(
+    CATALOG, "pe428_amount_from_spouse_or_partner_form_line_66", non_negative=True
+)
+"""Spouse or partner Form PE428 amount, PE428 line 66 and line 63360 "Line 66 and line 63360: Amount
+from line 101 of your spouse's or common-law partner's Form PE428, if any": the amount as the
+filer gives it, an optional input; a blank input is read as blank, and the subtraction that reads
+it reads it as 0."""
+
+PE428_TAX_LINE_67 = AmountKind.declare(CATALOG, "pe428_tax_line_67", non_negative=True)
+"""Prince Edward Island tax after credits, PE428 line 67 "Line 67: Line 65 minus line 66 (if
+negative, enter "0") Enter this amount on line 74. =": line 65 less the amount from the spouse or
+common-law partner's form, not below 0."""
+
 PE428_NET_INCOME_LINE_68 = AmountKind.declare(
     CATALOG, "pe428_net_income_line_68", non_negative=False
 )
@@ -536,5 +549,24 @@ below 0, rounded half-up to the cent."""
 
 PE428_TAX_LINE_88 = AmountKind.declare(CATALOG, "pe428_tax_line_88", non_negative=True)
 """PE428 line 88 "Line 88: Line 74 minus line 87 (if negative, enter "0") =": line 74 (a copy of
-line 67, which is line 65 because line 66 is not taken) less the low-income tax reduction of
-line 87, not below 0, rounded half-up to the cent."""
+line 67, the tax after credits) less the low-income tax reduction of line 87, not below 0, rounded
+half-up to the cent."""
+
+PE428_LOW_INCOME_TAX_REDUCTION_BEFORE_LINE_66_CHECK = AmountKind.declare(
+    CATALOG, "pe428_low_income_tax_reduction_before_line_66_check", non_negative=True
+)
+"""Line 81 less line 86, not below 0, rounded half-up to the cent: the low-income tax reduction
+before the instruction under line 67 ("If you are claiming an amount on line 66, enter "0" on line
+87") is applied. Not printed on the form."""
+
+PE428_AMOUNT_FROM_SPOUSE_FORM_CLAIMED_LINE_66 = AmountKind.declare(
+    CATALOG, "pe428_amount_from_spouse_form_claimed_line_66", non_negative=True
+)
+"""The amount claimed on PE428 line 66, a blank line 66 read as 0.00, so the line 66 gate can read
+it. Not printed on the form."""
+
+PE428_LINE_87_LINE_66_GATE = AmountKind.declare(
+    CATALOG, "pe428_line_87_line_66_gate", non_negative=True
+)
+"""The line 66 gate of PE428 line 87: 1 where line 66 is 0.00 and 0 where an amount is claimed on
+line 66. A switch, not printed on the form."""

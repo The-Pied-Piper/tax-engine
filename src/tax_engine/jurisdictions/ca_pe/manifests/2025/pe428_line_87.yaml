@@ -1,22 +1,62 @@
 # Form PE428 (CRA 5002-C) line 87: "Line 87: Line 81 minus line 86 (if negative, enter "0") Prince
-# Edward Island low-income tax reduction =". One core/subtract_not_below_zero step over line 81
-# (`ca-pe/pe428_low_income_reductions_total_line_81`) and line 86
-# (`ca-pe/pe428_reduction_phase_out_line_86`), not below 0, rounded half-up to the cent by the
-# dataset's rule. The form's instruction under line 67 to enter "0" on line 87 when an amount is
-# claimed on line 66 does not apply: line 66 is not taken (a single filer has none), so line 87 is
-# always calculated.
-# The output is exported for the return summary's marginal rate.
+# Edward Island low-income tax reduction =", and the instruction under line 67: "If you are
+# claiming an amount on line 66, enter "0" on line 87 and continue on line 88. If not, continue on
+# line 68." Four steps, as NL428 line 104 does for its line 86 rule.
+# 1. core/subtract_not_below_zero: line 81 (`ca-pe/pe428_low_income_reductions_total_line_81`) less
+# line 86 (`ca-pe/pe428_reduction_phase_out_line_86`), not below 0, rounded half-up to the cent by
+# the dataset's rule. It is the figure before the line 66 check, not printed, so it has a
+# plain-words title and no reference.
+# 2. core/sum over line 66 alone: line 66 is an optional input that a salary-only caller leaves
+# blank, and the band step cannot take a blank, so a blank is read as 0 here, as line 67 reads it.
+# 3. core/amount_by_band over that figure: the `ca-pe/low_income_reduction_line_66_gate` dataset
+# gives 0 where an amount is claimed on line 66 (above 0) and 1 where line 66 is 0.00. It is a
+# switch, not a printed figure, and not a line of the form. 4. core/multiply: the figure of step 1
+# times the gate, so line 87 is "0" where line 66 is claimed and the figure of step 1 otherwise.
+# The step is line 87, whose own printed label is "Prince Edward Island low-income tax reduction".
+# The titles of steps 1 to 3 are plain words. The output is `ca-pe/pe428_low_income_tax_reduction_line_87`,
+# which PE428 exports for the return summary's marginal rate.
 form:
   name: ca-pe/pe428
 capabilities:
   - name: core/subtract_not_below_zero
-    title: "Prince Edward Island low-income tax reduction"
-    reference: "87"
+    title: "Low-income tax reduction before the line 66 rule"
     unit: ca/cad
     params:
       rounding: ca-pe/cent_rounding
     consumes:
       amount: ca-pe/pe428_low_income_reductions_total_line_81
       less: ca-pe/pe428_reduction_phase_out_line_86
+    produces:
+      output: ca-pe/pe428_low_income_tax_reduction_before_line_66_check
+  - name: core/sum
+    title: "Amount from your spouse or common-law partner's Form PE428, with a blank counted as 0"
+    unit: ca/cad
+    params:
+      rounding: ca-pe/cent_rounding
+    consumes:
+      parts:
+        - ca-pe/pe428_amount_from_spouse_or_partner_form_line_66
+    blank:
+      parts: "0"
+    produces:
+      output: ca-pe/pe428_amount_from_spouse_form_claimed_line_66
+  - name: core/amount_by_band
+    title: "Multiplier that is 0 when you claim an amount from your spouse or common-law partner's Form PE428"
+    unit: ca/cad
+    params:
+      table: ca-pe/low_income_reduction_line_66_gate
+    consumes:
+      base: ca-pe/pe428_amount_from_spouse_form_claimed_line_66
+    produces:
+      output: ca-pe/pe428_line_87_line_66_gate
+  - name: core/multiply
+    title: "Prince Edward Island low-income tax reduction"
+    reference: "87"
+    unit: ca/cad
+    params:
+      rounding: ca-pe/cent_rounding
+    consumes:
+      multiplicand: ca-pe/pe428_low_income_tax_reduction_before_line_66_check
+      multiplier: ca-pe/pe428_line_87_line_66_gate
     produces:
       output: ca-pe/pe428_low_income_tax_reduction_line_87
