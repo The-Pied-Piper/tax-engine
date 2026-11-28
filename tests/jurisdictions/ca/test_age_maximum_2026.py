@@ -22,10 +22,10 @@ CRA_FORM_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1
 YEAR = 2026
 
 
-def test_2026_age_maximum_is_9209_00() -> None:
+def test_2026_age_maximum_is_9208_00() -> None:
     data = SOURCE.get(FAMILY, YEAR, CREDIT)
 
-    assert data.values == Credit(amount=D("9209.00"))
+    assert data.values == Credit(amount=D("9208.00"))
 
 
 def test_2026_age_maximum_rounds_half_up_to_the_cent() -> None:
