@@ -66,3 +66,28 @@ def test_every_step_after_line_167_has_no_title_and_no_reference() -> None:
     for step in _steps()[1:]:
         assert "title" not in step
         assert "reference" not in step
+
+
+def test_the_age_amount_fall_is_added_to_the_bracket_rate_before_the_contribution_credit() -> None:
+    steps = _steps()
+    produced = [step["produces"]["output"] for step in steps]
+    by_output = {step["produces"]["output"]: step for step in steps}
+
+    assert by_output["ca-ns/marginal_age_rate"]["params"] == {"rate": "ca-ns/age_rate"}
+    assert by_output["ca-ns/marginal_nova_scotia_rate_before_credits"]["consumes"] == {
+        "parts": [
+            "ca-ns/marginal_nova_scotia_bracket_rate",
+            "ca-ns/marginal_nova_scotia_age_credit_rate",
+        ]
+    }
+    assert by_output["ca-ns/marginal_nova_scotia_rate_after_credits"]["consumes"] == {
+        "amount": "ca-ns/marginal_nova_scotia_rate_before_credits",
+        "less": "ca-ns/marginal_nova_scotia_contribution_credit_rate",
+    }
+    assert by_output["ca-ns/marginal_nova_scotia_age_credit_rate"]["consumes"] == {
+        "base": "ca-ns/marginal_age_phase_down_net_income_rate",
+        "rate": "ca-ns/marginal_nova_scotia_credit_rate",
+    }
+    assert produced.index("ca-ns/marginal_nova_scotia_age_credit_rate") < produced.index(
+        "ca-ns/marginal_nova_scotia_rate_before_credits"
+    )

@@ -3,7 +3,9 @@
 # Nova Scotia tax that line 99 says to enter on line 42800 of the return, is exported and supplied
 # as `ca/provincial_tax.amount`, the name the federal T1 reads. Lines 5, 81 and 84 are exported for
 # the return summary's marginal rate: the bracket rate, and the two amounts that tell whether the
-# low-income tax reduction is being phased out. No other form reads this form's lines.
+# low-income tax reduction is being phased out. So are the age amount worksheet's line 4 and the age
+# amount claimed (line 10 before the printed maximum check), which tell whether the age amount is
+# falling. No other form reads this form's lines.
 form:
   name: ca-ns/ns428
   title: "Form NS428: Nova Scotia Tax"
@@ -12,6 +14,8 @@ form:
     - ca-ns/ns428_bracket_rate_line_5
     - ca-ns/ns428_line_81
     - ca-ns/ns428_low_income_reduction_line_84
+    - ca-ns/worksheet_ns428_age_amount_line_4
+    - ca-ns/ns428_age_amount_claimed_line_10
     - ca-ns/ns428_nova_scotia_tax_line_99
   supplies:
     ca/provincial_tax.amount: ca-ns/ns428_nova_scotia_tax_line_99

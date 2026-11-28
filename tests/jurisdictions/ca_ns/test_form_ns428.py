@@ -4,8 +4,9 @@ The part file names the form; line parts carry the capabilities. The form is one
 read each other directly. It exports line 99, the Nova Scotia tax that line 99 says to enter on
 line 42800 of the return, and supplies it as `ca/provincial_tax.amount`, the name the federal T1
 reads. It also exports line 5 (the bracket rate) and lines 81 and 84 (the low-income tax reduction's
-income over the base amount, and the reduction left) for the return summary's marginal rate. The
-part is read as YAML.
+income over the base amount, and the reduction left) for the return summary's marginal rate, and
+the age amount worksheet's line 4 and the age amount claimed (line 10 before the printed maximum
+check). The part is read as YAML.
 """
 
 from __future__ import annotations
@@ -44,6 +45,8 @@ def test_the_form_exports_what_the_return_reads_and_supplies_line_99_as_the_prov
         "ca-ns/ns428_bracket_rate_line_5",
         "ca-ns/ns428_line_81",
         "ca-ns/ns428_low_income_reduction_line_84",
+        "ca-ns/worksheet_ns428_age_amount_line_4",
+        "ca-ns/ns428_age_amount_claimed_line_10",
         LINE_99,
     ]
     assert part["form"]["supplies"] == {"ca/provincial_tax.amount": LINE_99}
