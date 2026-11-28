@@ -13,11 +13,34 @@ total below is the exact sum of the parts (kept in the comments) rounded half-up
 decimals. The reduction's slope
 ends where line 79 reaches 0.00, at a salary of 41,183.21 (net income 40,806.38, line 78 is then
 562.00). The 2026 thresholds are in `test_return_marginal_tax_rate_gates_2026.py`.
+
+The net income is the salary less the CPP enhanced contribution (T1 line 22215): 1% of the salary
+over 3,500 up to the year's maximum pensionable earnings (71,300 in 2025), and the CPP2 contribution
+of 4% of the salary over it, up to the second ceiling (81,200). A filer born in 1955 pays CPP in
+2025 (turning 70 in the year) but not in 2026, so in 2026 her net income is her salary, N = 1 and
+the contributions are the EI rate alone (1.63% up to 68,900); a filer born in 1980 pays CPP in
+both years.
+
+2025, born 1955 (N = 0.99 up to 71,300, 1 above 81,200):
+- Salary 43,569.70: CPP enhanced 400.697 -> 400.70, net income 43,169.00 = the BC threshold, line 4
+  = 0.00: no effect. Salary 43,570.71: CPP enhanced 400.71, net income 43,170.00, line 4 = 1.00,
+  line 6 = 0.15, line 7 = 5,798.85: the full British Columbia rate applies at once (the federal
+  threshold is further up).
+- Salary 47,000: net income 47,000 - 435.00 = 46,565.00 (over both thresholds), line 4 = 3,396.00,
+  line 6 = 509.40, line 7 = 5,289.60. Salary 60,000: net income 59,435.00, line 4 = 16,266.00,
+  line 6 = 2,439.90, line 7 = 3,359.10.
+- Salary 82,902.96: net income = salary - 678.00 - 396.00 = 81,828.96, line 4 = 38,659.96, line 6 =
+  5,798.994 -> 5,798.99, line 7 = 0.01: the last cent of the British Columbia credit. Salary
+  82,902.97: net income 81,828.97, line 6 = 5,798.9955 -> 5,799.00, line 7 = 0: the credit is gone.
+
+British Columbia's gate on BC428 line 80 stays on the age term, but a filer over the age threshold
+always owes British Columbia tax, so the gate is open at every salary here.
 """
 
 from __future__ import annotations
 
 from decimal import ROUND_HALF_UP, Decimal
+from typing import Any
 
 import pytest
 
@@ -27,6 +50,7 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.personal_amounts import BIRTH_YEAR
 from tests.kinds import bundled_kinds
 
 D = Decimal
@@ -46,6 +70,12 @@ BC_RATE = "ca-bc/british_columbia_marginal_rate"
 CONTRIBUTION = "ca-bc/marginal_contribution_rate"
 MARGINAL = "ca-bc/marginal_tax_rate"
 LINE_80 = "ca-bc/bc428_tax_after_reduction_line_80"
+AGE_FORM = "ca-bc/bc428"
+AGE_CREDIT_RATE = "ca-bc/marginal_british_columbia_age_credit_rate"
+AGE_THRESHOLD_GATE = "ca-bc/british_columbia_age_threshold_gate"
+AGE_AMOUNT_GATE = "ca-bc/british_columbia_age_amount_gate"
+AGE_LINE_4 = "ca-bc/worksheet_bc428_age_amount_line_4"
+AGE_LINE_7 = "ca-bc/worksheet_bc428_age_amount_line_7"
 
 
 def _summary(salary: str) -> Worksheet:
@@ -187,3 +217,65 @@ def test_the_reduction_adds_its_slope_while_line_78_and_line_79_are_positive(
     salary: str, phase_out: str
 ) -> None:
     assert _value(_summary(salary), PHASE_OUT) == D(phase_out)
+
+
+def _age_sheets(salary: str, birth_year: int | None) -> dict[str, Worksheet]:
+    given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, D(salary))]
+    if birth_year is not None:
+        given.append(Artifact(BIRTH_YEAR, birth_year))
+    worksheets = build_tax_computation().compute(
+        TaxCalculationRequest(BRITISH_COLUMBIA, 2025, tuple(given))
+    )
+    return {form: sheet for form, (sheet, *_) in worksheets.items()}
+
+
+# 2025: (salary, worksheet line 4, line 7, British Columbia age credit rate), hand-worked in the
+# module text.
+AGE_RANGE = [
+    ("0", "0", "5799", "0"),
+    ("43569.70", "0", "5799", "0"),
+    ("43570.71", "1", "5798.85", "0.0075141"),
+    ("47000", "3396", "5289.6", "0.0075141"),
+    ("60000", "16266", "3359.1", "0.0075141"),
+    ("82902.96", "38659.96", "0.01", "0.00759"),
+    ("82902.97", "38659.97", "0", "0"),
+]
+
+
+@pytest.mark.parametrize(("salary", "line_4", "line_7", "age_credit"), AGE_RANGE)
+def test_2025_a_filer_born_1955_has_the_age_amount_worksheet_and_credit_rate(
+    salary: str, line_4: str, line_7: str, age_credit: str
+) -> None:
+    sheets = _age_sheets(salary, 1955)
+
+    assert _value(sheets[AGE_FORM], AGE_LINE_4) == D(line_4)
+    assert _value(sheets[AGE_FORM], AGE_LINE_7) == D(line_7)
+    assert _value(sheets[RETURN], AGE_CREDIT_RATE) == D(age_credit)
+
+
+@pytest.mark.parametrize("birth_year", [1980, None])
+@pytest.mark.parametrize(("salary", "_line_4", "_line_7", "_age_credit"), AGE_RANGE)
+def test_2025_a_filer_born_1980_or_with_no_birth_year_has_no_age_credit_rate(
+    salary: str, _line_4: str, _line_7: str, _age_credit: str, birth_year: int | None
+) -> None:
+    assert _value(_age_sheets(salary, birth_year)[RETURN], AGE_CREDIT_RATE) == D("0")
+
+
+@pytest.mark.parametrize(
+    ("salary", "threshold_gate", "amount_gate"),
+    [
+        ("43569.70", "0", "1"),
+        ("43570.71", "1", "1"),
+        ("82902.96", "1", "1"),
+        ("82902.97", "1", "0"),
+    ],
+)
+def test_2025_the_two_age_gates_open_at_the_threshold_and_close_when_the_amount_is_gone(
+    salary: str, threshold_gate: str, amount_gate: str
+) -> None:
+    # The threshold gate follows worksheet line 4 (0.00 up to the threshold), the amount gate the
+    # amount still claimed (line 7 reaches 0.00 at the salaries below, to the cent).
+    sheets = _age_sheets(salary, 1955)
+
+    assert _value(sheets[RETURN], AGE_THRESHOLD_GATE) == D(threshold_gate)
+    assert _value(sheets[RETURN], AGE_AMOUNT_GATE) == D(amount_gate)

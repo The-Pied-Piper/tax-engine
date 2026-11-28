@@ -63,9 +63,10 @@
 # printed maximum check) are totalled; each is gated through `ca-bc/marginal_rate_gate` (the net
 # income is over the threshold, an age amount is still claimed: 0 for a filer under 65 or with no
 # birth year); the printed rate times both gates, times the net income rate (line 2 follows the
-# net income), times the British Columbia credit rate is the extra rate, which core/sum adds to the
-# rate with the reduction, so the British Columbia gate on line 80 governs it like the other
-# credits.
+# net income), times the British Columbia credit rate is the extra rate. It is added to the other
+# credit-type terms of the British Columbia rate (its position in the sum is immaterial, because a
+# sum commutes), so the British Columbia gate on line 80 governs it like the other credits. It stops
+# when the claimed amount reaches 0.00 (the dollar that reaches 0.00 is not counted).
 #
 # The whole British Columbia rate counts only where BC428 line 80 "Line 72 minus line 79 (if
 # negative, enter "0")" is above zero, through the `ca-bc/marginal_rate_gate` dataset (0 where that
