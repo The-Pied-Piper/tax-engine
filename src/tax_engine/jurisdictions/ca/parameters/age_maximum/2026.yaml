@@ -1,4 +1,4 @@
-# Provisional: indexed from the 2025 amount; to be confirmed against the 2026 form text when CRA publishes it.
+# Provisional: indexed from the unrounded chain; to be confirmed against the 2026 form text when CRA publishes it.
 # Derivation: the 2026 TD1 (td1-26e, page 1, item 3) prints "$46,432 or less, enter $9,208". Indexing the unrounded chain from 2021 (7,713 x 1.024 x 1.063 x 1.047 x 1.027 x 1.020) gives 9,208.18, which rounds to the printed 9,208 and reproduces every printed figure 2022 to 2025; 2025's rounded 9,028 x 1.020 = 9,208.56 is not the CRA method. The 2026 Federal Worksheet 5000-D1 is not yet published, so this stays provisional until it is.
 # Age amount, maximum, 2026 tax year (Federal Worksheet, form 5000-D1): "Line 30100 - Age amount", line 1 "Maximum amount". Claimed whole: the credit kind. Rounds half-up to the cent, the project's choice, as the form states no rounding rule.
 family: ca/age_maximum
