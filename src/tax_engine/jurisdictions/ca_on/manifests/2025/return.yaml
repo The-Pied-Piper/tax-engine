@@ -60,8 +60,11 @@
 # the threshold and an age amount is still claimed (0 for a filer under 65, with no birth year, or
 # whose amount is used up). A further dollar of net income takes the age amount down by the rate
 # times the net income rate, and the Ontario credit rate (ON428 line 45) on that is the Ontario tax it
-# adds, placed beside the credit on the contributions, before the surtax factor, the tax reduction
-# gate, the LIFT phase-out and the Ontario gate, which govern it as they govern the rest.
+# adds. That age term is added to the other credit-type terms (the bracket rate and the credit on the
+# contributions; its position in the sum is immaterial because a sum commutes), before the surtax
+# factor, the tax reduction gate, the LIFT phase-out and the Ontario gate, which govern it as they
+# govern the rest. It stops when the claimed amount reaches 0.00 (the dollar that reaches 0.00 is
+# not counted).
 #
 # Health premium. The rate of the ON428 line 89 chart row that the taxable income (T1 line 26000)
 # falls in is read from `ca-on/health_premium_rows`: 0 for a flat row, 6% or 25% on a ramp; it is
