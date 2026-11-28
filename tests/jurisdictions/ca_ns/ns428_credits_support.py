@@ -158,11 +158,12 @@ def sheet(
     lines: tuple[str, ...],
     exports: tuple[str, ...],
     given: tuple[Artifact[Any], ...] = (),
+    year: int = 2025,
 ) -> Worksheet:
     worksheets = service(tmp_path, lines, exports).compute(
         TaxCalculationRequest(
             JurisdictionCode("CA-NS"),
-            2025,
+            year,
             (Artifact(EMPLOYMENT_INCOME, D(salary)), *given),
         )
     )

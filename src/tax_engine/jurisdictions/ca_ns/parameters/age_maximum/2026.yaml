@@ -1,10 +1,11 @@
 # Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
-# Derivation: carried forward unchanged from the 2025 file; T4127 (Jan and Jul 2026) does not print this figure and the 2026 form is not yet published, so it is unconfirmed.
+# Derivation: the 2025 figure (5,734) indexed by Nova Scotia's index rate 1.016 in T4127 (Jan 2026) (5,734 x 1.016 = 5,825.74), rounded to the nearest dollar, halves up; T4127 (Jan and Jul 2026) does not print this figure and the 2026 form is not yet published, so it is unconfirmed. Risks: no CRA text in the repo says Nova Scotia indexes this amount; the indexing is inferred from Nova Scotia's other amounts, which it indexes by 1.016 for 2026 (T4127 Table 8.2), after this amount was held at 4,141 from 2016 to 2024 and raised to 5,734 in 2025. The income threshold (30,828) is held unchanged, as it was in every year from 2016 to 2025; if Nova Scotia indexes it for 2026, the reduction start and the zero point both shift.
 # Age amount, maximum, 2026 (Worksheet NS428, CRA 5003-D): "Line 58080 - Age amount", line 1 "Maximum amount 5,734.00". Claimed whole: the credit kind. Rounds half-up to the cent, the project's choice, as the form states no rounding rule.
 family: ca-ns/age_maximum
 tax_year: 2026
 kind: credit
 sources:
   - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5003-d/5003-d-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf
 rounding: {increment: "0.01", mode: half_up}
-amount: "5734.00"
+amount: "5826.00"

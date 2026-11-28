@@ -1924,7 +1924,7 @@
     "lines": 15
    }
   ],
-  "trace_sha256": "dbf50fe2c9f512881627a0c3f8b9793fa86d0243560f5d0d1b7a942bc8731e7f"
+  "trace_sha256": "0c33df39822caf87c46af3500105bfa7a097c9caf03319811f9dd31be9901782"
  },
  {
   "jurisdiction": "CA-SK",
@@ -2320,7 +2320,7 @@
     "lines": 27
    }
   ],
-  "trace_sha256": "056c1281c525a7b72f295788ecbfb8cad86647d030229ac60cea7211227f69d9"
+  "trace_sha256": "79e1fa87ce1c5472014e93e4619a8e2545ec01038c9666aac0bd2ef393cacace"
  },
  {
   "jurisdiction": "CA-NL",
@@ -2700,7 +2700,7 @@
     "lines": 24
    }
   ],
-  "trace_sha256": "85769c86b17f590ebee8117d736a083325075ef6a3336e064973b4cbafcddd14"
+  "trace_sha256": "1c188e46d4e396149ee08c4c2d45ac30e63629dbbd24280e59414f122b8dd5f1"
  },
  {
   "jurisdiction": "CA-NS",
@@ -3080,7 +3080,7 @@
     "lines": 24
    }
   ],
-  "trace_sha256": "37fe56c65118feb44ee6d3e10c8d4894d35c89a5cf2faec85c7ca9e83568d351"
+  "trace_sha256": "c62932d1cfebf1098d66370af21b692c09b6cbd56cc299e842bdff8b85109f16"
  },
  {
   "jurisdiction": "CA-PE",
@@ -3460,7 +3460,7 @@
     "lines": 24
    }
   ],
-  "trace_sha256": "f29a66f1d191f93da06e4802c642b7e113a5fbfe69addb5262e493336ef6cd84"
+  "trace_sha256": "b00be81b925d655933172cc4ee5f501f6b42ab7e9a69aeeeeb8d1e5415cbe551"
  },
  {
   "jurisdiction": "CA-NB",
