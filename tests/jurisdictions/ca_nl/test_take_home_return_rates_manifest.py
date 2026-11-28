@@ -74,7 +74,7 @@ def test_the_age_amount_fall_is_read_from_the_forms_that_export_it() -> None:
         for step in _steps()
         if step["name"] == "core/record_total"
         and step["produces"]["output"]
-        in {"ca-nl/age_income_over_threshold_return", "ca-nl/age_amount_claimed_return"}
+        in {"ca-nl/marginal_age_income_over_threshold", "ca-nl/marginal_age_amount_claimed"}
     ]
 
     assert reads == [
@@ -106,14 +106,14 @@ def test_the_age_term_is_the_fall_rate_times_the_part_left_times_the_credit_rate
     by_output = {step["produces"]["output"]: step for step in _steps()}
     term = "ca-nl/marginal_newfoundland_and_labrador_age_credit_rate"
 
-    assert by_output["ca-nl/age_reduction_phase_out_gate"]["consumes"] == {
-        "base": "ca-nl/age_income_over_threshold_gate",
-        "rate": "ca-nl/age_amount_gate",
+    assert by_output["ca-nl/marginal_age_rate"]["params"] == {"rate": "ca-nl/age_rate"}
+    assert by_output["ca-nl/marginal_age_reduction_rate_over_threshold"]["consumes"] == {
+        "base": "ca-nl/marginal_age_rate",
+        "rate": "ca-nl/marginal_age_threshold_gate",
     }
-    assert by_output["ca-nl/age_rate_figure"]["params"] == {"rate": "ca-nl/age_rate"}
     assert by_output["ca-nl/marginal_age_reduction_rate"]["consumes"] == {
-        "base": "ca-nl/age_reduction_phase_out_gate",
-        "rate": "ca-nl/age_rate_figure",
+        "base": "ca-nl/marginal_age_reduction_rate_over_threshold",
+        "rate": "ca-nl/marginal_age_amount_gate",
     }
     assert by_output["ca-nl/marginal_age_phase_down_net_income_rate"]["consumes"] == {
         "base": "ca-nl/marginal_age_reduction_rate",
@@ -123,5 +123,5 @@ def test_the_age_term_is_the_fall_rate_times_the_part_left_times_the_credit_rate
         "base": "ca-nl/marginal_age_phase_down_net_income_rate",
         "rate": "ca-nl/marginal_newfoundland_and_labrador_credit_rate",
     }
-    for gate in ("ca-nl/age_income_over_threshold_gate", "ca-nl/age_amount_gate"):
+    for gate in ("ca-nl/marginal_age_threshold_gate", "ca-nl/marginal_age_amount_gate"):
         assert by_output[gate]["params"] == {"table": "ca-nl/marginal_rate_gate"}

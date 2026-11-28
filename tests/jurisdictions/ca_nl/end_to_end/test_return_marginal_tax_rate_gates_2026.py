@@ -15,6 +15,25 @@ provincial part is its gate times its rate, and the total is the exact sum of th
   and 0.00 at 29,715.63; in between the provincial part is 8.7% x 0.99 - 8.7% x 0.0658 + 16% x 0.99
   = 0.2388054, and after it 0.0804054.
 
+The age amount (NL428 line 17, Worksheet NL428 "Line 58080 - Age amount") of a filer born in 1960 or
+earlier falls by 15% (worksheet line 5 "Applicable rate 15%") of the net income over the threshold
+(worksheet line 3 "Income threshold") until it is 0, and each dollar of that fall is taxed at the
+NL428 credit rate (line 57, 8.7%). The term is counted while worksheet line 4 is above 0 and an age
+amount is still claimed: a further dollar of salary adds 15% x (the part left in the net income) x
+8.7% to the provincial rate, and the federal rate adds its own term the same way (15% x the part
+left x the federal credit rate). Each figure is worked by hand from the printed rates; the
+boundaries are found cent by cent from the engine and checked against the worksheet's arithmetic.
+
+2026, born 1955 (71 in 2026, so no CPP; EI 1.63% only, N = 1, net income = salary): the net income
+is the threshold of 39,138 at a salary of 39,138.00 (line 4 0.00) and passes it at 39,138.01. The
+provincial rate at 40,000 is 8.7% - 8.7% x 0.0163 + 0.15 x 0.087 = 0.0986319 and the total 0.14 -
+0.14 x 0.0163 = 0.137718 federal + 0.0986319 + 0.0163 = 0.2526499. The amount reaches 0 at line 4
+of 47,613.30 (15% is 7,141.995, rounded up to 7,142.00), so a salary of 86,751.29 still claims 0.01
+and 86,751.30 does not.
+
+A filer born in 1980, or with no birth year, claims no age amount: the age gate is 0 and the rate is
+the one without the term (the figures of `test_return_marginal_tax_rate_values.py`).
+
 The engine rounds the marginal tax rate half-up to 0.0001 like the average rate
 (`ca/take_home_average_rate_rounding`): the total is the sum of the parts rounded half-up to four
 places, and the marginal values pinned below are the exact figures in the comments rounded the same
@@ -24,6 +43,7 @@ way; the parts stay exact.
 from __future__ import annotations
 
 from decimal import ROUND_HALF_UP, Decimal
+from typing import Any
 
 import pytest
 
@@ -33,6 +53,7 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.personal_amounts import BIRTH_YEAR
 from tests.kinds import bundled_kinds
 
 D = Decimal
@@ -52,6 +73,11 @@ REDUCTION_RATE = "ca-nl/marginal_newfoundland_and_labrador_rate_with_reduction"
 INCOME_GATE = "ca-nl/income_over_low_income_threshold_gate"
 REDUCTION_GATE = "ca-nl/low_income_tax_reduction_gate"
 PHASE_OUT_GATE = "ca-nl/low_income_reduction_phase_out_gate"
+AGE_LINE_4 = "ca-nl/marginal_age_income_over_threshold"
+AGE_CLAIMED = "ca-nl/marginal_age_amount_claimed"
+AGE_THRESHOLD_GATE = "ca-nl/marginal_age_threshold_gate"
+AGE_AMOUNT_GATE = "ca-nl/marginal_age_amount_gate"
+AGE_TERM = "ca-nl/marginal_newfoundland_and_labrador_age_credit_rate"
 FEDERAL = "ca-nl/marginal_federal_rate"
 PROVINCIAL = "ca-nl/newfoundland_and_labrador_marginal_rate"
 CONTRIBUTION = "ca-nl/marginal_contribution_rate"
@@ -206,4 +232,51 @@ def test_2026_the_provincial_part_follows_line_105_and_the_reduction_phase_out(
     summary = _summary(salary)
 
     assert _value(summary, TAX_GATE) == D(gate)
+    assert _value(summary, PROVINCIAL) == D(provincial)
+
+
+# Salary, year of birth, then NL428 worksheet line 4, the age amount claimed, the age threshold
+# gate, the age amount gate, the age term and the provincial marginal rate, worked by hand as the
+# docstring says (the marginal tax rate of each is in `test_return_marginal_tax_rate_values.py`).
+AGE_CASES = [
+    ("0", 1955, "0.00", "7142.00", "0", "1", "0", "0"),
+    ("39138.00", 1955, "0.00", "7142.00", "0", "1", "0", "0.0855819"),
+    ("39138.01", 1955, "0.01", "7142.00", "1", "1", "0.01305", "0.0986319"),
+    ("40000", 1955, "862.00", "7012.70", "1", "1", "0.01305", "0.0986319"),
+    ("60000", 1955, "20862.00", "4012.70", "1", "1", "0.01305", "0.1566319"),
+    ("86751.29", 1955, "47613.29", "0.01", "1", "1", "0.01305", "0.15805"),
+    ("86751.30", 1955, "47613.30", "0.00", "1", "0", "0", "0.145"),
+    ("40000", 1980, "497.00", "0.00", "1", "0", "0", "0.0804054"),
+    ("40000", None, "497.00", "0.00", "1", "0", "0", "0.0804054"),
+    ("60000", 1980, "20297.00", "0.00", "1", "0", "0", "0.1378254"),
+]
+
+
+@pytest.mark.parametrize(
+    ("salary", "born", "line_4", "claimed", "threshold_gate", "amount_gate", "term", "provincial"),
+    AGE_CASES,
+)
+def test_2026_the_age_amount_fall_and_its_gates_in_the_marginal_rate(
+    salary: str,
+    born: int | None,
+    line_4: str,
+    claimed: str,
+    threshold_gate: str,
+    amount_gate: str,
+    term: str,
+    provincial: str,
+) -> None:
+    given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, D(salary))]
+    if born is not None:
+        given.append(Artifact(BIRTH_YEAR, born))
+    worksheets = build_tax_computation().compute(
+        TaxCalculationRequest(NEWFOUNDLAND, 2026, tuple(given))
+    )
+    (summary,) = worksheets[RETURN]
+
+    assert _value(summary, AGE_LINE_4) == D(line_4)
+    assert _value(summary, AGE_CLAIMED) == D(claimed)
+    assert _value(summary, AGE_THRESHOLD_GATE) == D(threshold_gate)
+    assert _value(summary, AGE_AMOUNT_GATE) == D(amount_gate)
+    assert _value(summary, AGE_TERM) == D(term)
     assert _value(summary, PROVINCIAL) == D(provincial)

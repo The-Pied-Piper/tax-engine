@@ -1025,48 +1025,51 @@ MARGINAL_NEWFOUNDLAND_AND_LABRADOR_BRACKET_RATE = AmountKind.declare(
 line 5 or line 12 times the part left in the net income. An exact product, not printed on the
 form."""
 
-AGE_INCOME_OVER_THRESHOLD_RETURN = AmountKind.declare(
-    CATALOG, "age_income_over_threshold_return", non_negative=True
+MARGINAL_AGE_INCOME_OVER_THRESHOLD = AmountKind.declare(
+    CATALOG, "marginal_age_income_over_threshold", non_negative=True
 )
-"""Worksheet NL428 "Line 58080 - Age amount" line 4 "Line 2 minus line 3 (if negative, enter 0)",
-the net income over the age threshold, read into the return summary. The base of the age threshold
-gate."""
+"""Worksheet NL428 "Line 58080 - Age amount" line 4 "Line 2 minus line 3 (if negative, enter 0)":
+NL428's export totalled into the return summary's own artifact, the net income over the age
+threshold, the base of the age threshold gate."""
 
-AGE_AMOUNT_CLAIMED_RETURN = AmountKind.declare(
-    CATALOG, "age_amount_claimed_return", non_negative=True
+MARGINAL_AGE_AMOUNT_CLAIMED = AmountKind.declare(
+    CATALOG, "marginal_age_amount_claimed", non_negative=True
 )
 """The age amount the filer claims before the printed maximum check (NL428 line 17: Worksheet NL428
-line 7 times the aged 65 or older count; 0 for a filer under 65 or with no birth year), read into
-the return summary. The base of the age amount gate."""
+line 7 times the aged 65 or older count; 0 for a filer under 65 or with no birth year): NL428's
+export totalled into the return summary's own artifact, the base of the age amount gate."""
 
-AGE_INCOME_OVER_THRESHOLD_GATE = AmountKind.declare(
-    CATALOG, "age_income_over_threshold_gate", non_negative=True
+MARGINAL_AGE_THRESHOLD_GATE = AmountKind.declare(
+    CATALOG, "marginal_age_threshold_gate", non_negative=True
 )
-"""0 where Worksheet NL428 line 4 of the age amount is 0.00 and 1 where it is at least one cent,
-from the `ca-nl/marginal_rate_gate` dataset: the age amount is falling only over its threshold. A
-plain figure, not printed on the form."""
+"""Age threshold gate: 0 where the net income over the age threshold is 0.00 and 1 where it is at
+least one cent, from the `ca-nl/marginal_rate_gate` dataset: the age amount is falling only over
+its threshold. A plain figure, not printed on the form."""
 
-AGE_AMOUNT_GATE = AmountKind.declare(CATALOG, "age_amount_gate", non_negative=True)
-"""0 where the age amount claimed is 0.00 (a filer under 65, no birth year, or an amount already
-reduced to nothing) and 1 where it is at least one cent, from the `ca-nl/marginal_rate_gate`
-dataset. A plain figure, not printed on the form."""
-
-AGE_REDUCTION_PHASE_OUT_GATE = AmountKind.declare(
-    CATALOG, "age_reduction_phase_out_gate", non_negative=True
+MARGINAL_AGE_AMOUNT_GATE = AmountKind.declare(
+    CATALOG, "marginal_age_amount_gate", non_negative=True
 )
-"""1 while the age amount is being reduced (the net income over the age threshold and the age amount
-claimed both above zero), otherwise 0. The product of the two gates, not printed on the form."""
+"""Age amount gate: 0 where the age amount claimed is 0.00 (a filer under 65, no birth year, or an
+amount already reduced to nothing) and 1 where it is at least one cent, from the
+`ca-nl/marginal_rate_gate` dataset. A plain figure, not printed on the form."""
 
-AGE_RATE_FIGURE = AmountKind.declare(CATALOG, "age_rate_figure", non_negative=True)
-"""Worksheet NL428 "Line 58080 - Age amount" line 5 "Applicable rate 15%": the `ca-nl/age_rate`
-dataset as it is, with the cent rounding of the worksheet's line 6 box left off. A rate, not printed
-as its own figure."""
+MARGINAL_AGE_RATE = AmountKind.declare(CATALOG, "marginal_age_rate", non_negative=True)
+"""Age amount reduction rate, Worksheet NL428 "Line 58080 - Age amount" line 5 "Applicable rate
+15%": the `ca-nl/age_rate` dataset as it is, the fall of the age amount per dollar of net income
+over the threshold. A rate, with the cent rounding of the worksheet's line 6 box left off."""
+
+MARGINAL_AGE_REDUCTION_RATE_OVER_THRESHOLD = AmountKind.declare(
+    CATALOG, "marginal_age_reduction_rate_over_threshold", non_negative=True
+)
+"""The age amount reduction rate where the net income is over the age threshold, 0 at or under it.
+An exact product, not printed on the form."""
 
 MARGINAL_AGE_REDUCTION_RATE = AmountKind.declare(
     CATALOG, "marginal_age_reduction_rate", non_negative=True
 )
-"""Fall of the age amount (NL428 line 17) on a further dollar of net income: the age rate while the
-age amount is being reduced, 0 elsewhere. An exact product, not printed on the form."""
+"""Fall of the age amount (NL428 line 17) on a further dollar of net income: the reduction rate
+where net income is over the threshold and an age amount is still claimed, 0 otherwise. An exact
+product, not printed on the form."""
 
 MARGINAL_AGE_PHASE_DOWN_NET_INCOME_RATE = AmountKind.declare(
     CATALOG, "marginal_age_phase_down_net_income_rate", non_negative=True
