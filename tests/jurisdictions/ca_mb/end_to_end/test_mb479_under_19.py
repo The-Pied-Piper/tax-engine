@@ -78,3 +78,11 @@ def test_a_filer_born_in_1980_is_unchanged(year: int, salary: str, credits: str)
 @pytest.mark.parametrize("salary", ["10000", "17500"])
 def test_a_filer_born_in_1955_still_has_the_basic_line(year: int, salary: str) -> None:
     assert _figure(_mb479(year, salary, 1955), LINE_7) == D("195.00")
+
+
+@pytest.mark.parametrize(
+    ("year", "birth_year", "expected"),
+    [(2025, 2006, "195.00"), (2025, 2007, "0.00"), (2026, 2007, "195.00"), (2026, 2008, "0.00")],
+)
+def test_the_cutoff_year_moves_with_the_tax_year(year: int, birth_year: int, expected: str) -> None:
+    assert _figure(_mb479(year, "10000", birth_year), LINE_7) == D(expected)

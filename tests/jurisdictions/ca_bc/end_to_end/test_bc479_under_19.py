@@ -9,8 +9,8 @@ You had a spouse or common-law partner / You were a parent of a child". The engi
 with no spouse or child, so a filer under 19 has no sales tax credit and line 45 (the British
 Columbia credits) is 0.00. A filer 19 or older (born 1980) is unchanged, and one born in 1955
 still has the basic line: the basic credit of 75.00 less 2% of the net income over 15,000.00, which
-is 75.00 at a salary of $10,000, 27.80 at $17,500 (the net income is the salary less the CPP and EI
-the filer pays) and 0.00 at $20,000. The 2026 datasets are
+is 75.00 at a salary of $10,000, 27.80 at $17,500 (the net income is the salary less the enhanced
+CPP contributions the filer pays) and 0.00 at $20,000. The 2026 datasets are
 provisional (the 2026 guide is not yet published)."""
 
 from __future__ import annotations
@@ -80,3 +80,11 @@ def test_a_filer_born_in_1980_is_unchanged(year: int, salary: str, credits: str)
 @pytest.mark.parametrize("salary", ["10000", "17500"])
 def test_a_filer_born_in_1955_still_has_the_basic_line(year: int, salary: str) -> None:
     assert _figure(_bc479(year, salary, 1955), LINE_9) == D("75.00")
+
+
+@pytest.mark.parametrize(
+    ("year", "birth_year", "expected"),
+    [(2025, 2006, "75.00"), (2025, 2007, "0.00"), (2026, 2007, "75.00"), (2026, 2008, "0.00")],
+)
+def test_the_cutoff_year_moves_with_the_tax_year(year: int, birth_year: int, expected: str) -> None:
+    assert _figure(_bc479(year, "10000", birth_year), LINE_9) == D(expected)
