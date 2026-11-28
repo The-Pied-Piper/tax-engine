@@ -150,6 +150,12 @@ the provinces copy from the year of birth (`ca/birth_year`) and read by every ag
 "if you were born in 1960 or earlier" (the year moves with the tax year). Blank when the year is
 blank."""
 
+AGE_19_OR_OLDER = CountKind.declare(CATALOG, "age_19_or_older", non_negative=True)
+"""Aged 19 or older at the end of the tax year: 1 or 0, worked out once by the T1 form of the lines
+the provinces copy from the year of birth (`ca/birth_year`) and read by the BC sales tax credit
+(BC479 line 9) and the Manitoba personal tax credit (MB479 line 7), which a filer under 19 with no
+spouse, common-law partner or child cannot claim. Blank when the year is blank."""
+
 T1_AGE_65_OR_OLDER = CountKind.declare(CATALOG, "t1_age_65_or_older", non_negative=True)
 """The T1's `ca/age_65_or_older` as read by the T1 tax and credits form for line 78 (line 30100)."""
 

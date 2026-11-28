@@ -1,0 +1,16 @@
+# Provisional: moved on by one year from 2025; to be confirmed against the 2026 guides (BC 5010-PC, Manitoba 5007-PC) when CRA publishes them.
+# Derivation: the cutoff is age 19 on 31 December of the tax year, so the 2025 year 2006 moves to 2007 for 2026 (a filer born in 2007 turns 19 in 2026); the 2026 guides are not yet published, so it is unconfirmed.
+# Aged 19 or older on 31 December 2026, the age test of the BC sales tax credit and the Manitoba personal tax credit for a filer with no spouse, common-law partner or child (2025 wording: BC "You were 19 years of age or older"; Manitoba "If you were under 19 years of age at the end of the year, you can only claim this credit if ..."). The filer gives a birth year; one condition, in the guides' wording turned round because the conditions only test "more than": the birth year is more than 2007, in which case the count is 0, else 1. The result is a count, not a dollars-and-cents box, so there is no rounding.
+family: ca/age_19_or_older_conditions
+tax_year: 2026
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5010-pc/5010-pc-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/5007-pc/5007-pc-25e.txt
+rounding: none
+count_when_any_applies: "0"
+conditions:
+  - text: You were born after 2007
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "2007"}

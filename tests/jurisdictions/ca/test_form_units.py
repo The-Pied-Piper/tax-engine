@@ -32,6 +32,7 @@ EXCEPTIONS: dict[str, str | None] = {
     # The year of birth, a calendar year the T1 asks for, is a count with no unit.
     "ca/birth_year": None,
     "ca/age_65_or_older": None,
+    "ca/age_19_or_older": None,
     "ca/t1_age_65_or_older": None,
     "ca/schedule_8_birth_year": None,
     "ca/cpp_not_under_18_all_year": None,
