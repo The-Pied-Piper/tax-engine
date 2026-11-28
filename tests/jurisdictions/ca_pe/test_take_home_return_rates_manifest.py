@@ -66,3 +66,38 @@ def test_every_step_after_line_167_has_no_title_and_no_reference() -> None:
     for step in _steps()[1:]:
         assert "title" not in step
         assert "reference" not in step
+
+
+def test_the_age_amount_term_reads_the_two_pe428_exports_and_enters_the_rate_after_credits() -> (
+    None
+):
+    steps = _steps()
+    outputs = [step["produces"]["output"] for step in steps]
+    by_output = {step["produces"]["output"]: step for step in steps}
+
+    assert by_output["ca-pe/marginal_age_income_over_threshold"]["consumes"] == {
+        "records": "ca-pe/pe428.worksheet_pe428_age_amount_line_4"
+    }
+    assert by_output["ca-pe/marginal_age_amount_claimed"]["consumes"] == {
+        "records": "ca-pe/pe428.pe428_age_amount_claimed_line_10"
+    }
+    assert by_output["ca-pe/marginal_age_rate"]["params"] == {"rate": "ca-pe/age_rate"}
+    assert by_output["ca-pe/marginal_prince_edward_island_age_credit_rate"]["consumes"] == {
+        "base": "ca-pe/marginal_age_phase_down_net_income_rate",
+        "rate": "ca-pe/marginal_prince_edward_island_credit_rate",
+    }
+    assert by_output["ca-pe/marginal_prince_edward_island_rate_with_reduction"]["consumes"] == {
+        "parts": [
+            "ca-pe/marginal_prince_edward_island_rate_after_credits",
+            "ca-pe/marginal_prince_edward_island_age_credit_rate",
+            "ca-pe/marginal_low_income_phase_out_rate",
+        ]
+    }
+    # The age term comes before the sum it is a part of, and the line 97 gate multiplies the sum.
+    assert outputs.index("ca-pe/marginal_prince_edward_island_age_credit_rate") < outputs.index(
+        "ca-pe/marginal_prince_edward_island_rate_with_reduction"
+    )
+    assert by_output["ca-pe/prince_edward_island_marginal_rate"]["consumes"] == {
+        "base": "ca-pe/prince_edward_island_rate_gate",
+        "rate": "ca-pe/marginal_prince_edward_island_rate_with_reduction",
+    }

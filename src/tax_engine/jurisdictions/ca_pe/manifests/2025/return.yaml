@@ -39,8 +39,18 @@
 # filer, who has no equity tax credit on line 96), is above zero, through the
 # `ca-pe/marginal_rate_gate` dataset (0 where the amount is 0.00, 1 from one cent). Prince Edward
 # Island has no surtax and no health premium. The rate is the one of a salary-only filer, as the
-# take-home calculator takes only the salary: the optional inputs (the age amount, the medical
-# expenses and the like) are left blank there, so their slopes are not built.
+# take-home calculator takes only the salary and, for the age amount, the year of birth: the other
+# optional inputs (the medical expenses and the like) are left blank there, so their slopes are not
+# built.
+#
+# The age amount (PE428 line 10, Worksheet PE428 "Line 58080 - Age amount") falls by the worksheet's
+# line 5 rate (`ca-pe/age_rate`, 15%) of each dollar of net income over its line 3 threshold, until
+# it is 0, and each dollar of that fall is tax at the credit rate. The term is counted only where
+# worksheet line 4 is above zero and the age amount claimed (line 10 before the printed maximum
+# check, 0 for a filer under 65 or with no year of birth) is above zero, through the two gates of
+# the `ca-pe/marginal_rate_gate` dataset; the 15% times the gates is multiplied by the net income
+# rate and then by the credit rate (`ca-pe/marginal_prince_edward_island_credit_rate`), as the CPP
+# and EI credit is. It is added to the rate after credits, so the line 97 gate governs it.
 #
 # The last step adds the federal marginal rate, the Prince Edward Island marginal rate and the
 # contribution rate (CPP base, enhanced and second additional, and EI) with core/sum into
@@ -128,6 +138,76 @@ capabilities:
   - name: core/record_total
     unit: ca/cad
     consumes:
+      records: ca-pe/pe428.worksheet_pe428_age_amount_line_4
+    produces:
+      output: ca-pe/marginal_age_income_over_threshold
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-pe/pe428.pe428_age_amount_claimed_line_10
+    produces:
+      output: ca-pe/marginal_age_amount_claimed
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca-pe/marginal_rate_gate
+    consumes:
+      base: ca-pe/marginal_age_income_over_threshold
+    produces:
+      output: ca-pe/marginal_age_threshold_gate
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca-pe/marginal_rate_gate
+    consumes:
+      base: ca-pe/marginal_age_amount_claimed
+    produces:
+      output: ca-pe/marginal_age_amount_gate
+  - name: core/rate_figure
+    unit: core/percent
+    params:
+      rate: ca-pe/age_rate
+    produces:
+      output: ca-pe/marginal_age_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-pe/exact_rounding
+    consumes:
+      base: ca-pe/marginal_age_rate
+      rate: ca-pe/marginal_age_threshold_gate
+    produces:
+      output: ca-pe/marginal_age_reduction_rate_over_threshold
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-pe/exact_rounding
+    consumes:
+      base: ca-pe/marginal_age_reduction_rate_over_threshold
+      rate: ca-pe/marginal_age_amount_gate
+    produces:
+      output: ca-pe/marginal_age_reduction_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-pe/exact_rounding
+    consumes:
+      base: ca-pe/marginal_age_reduction_rate
+      rate: ca-pe/marginal_net_income_rate
+    produces:
+      output: ca-pe/marginal_age_phase_down_net_income_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-pe/exact_rounding
+    consumes:
+      base: ca-pe/marginal_age_phase_down_net_income_rate
+      rate: ca-pe/marginal_prince_edward_island_credit_rate
+    produces:
+      output: ca-pe/marginal_prince_edward_island_age_credit_rate
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
       records: ca-pe/pe428.pe428_income_over_base_amount_line_84
     produces:
       output: ca-pe/income_over_base_amount_return
@@ -193,6 +273,7 @@ capabilities:
     consumes:
       parts:
         - ca-pe/marginal_prince_edward_island_rate_after_credits
+        - ca-pe/marginal_prince_edward_island_age_credit_rate
         - ca-pe/marginal_low_income_phase_out_rate
     produces:
       output: ca-pe/marginal_prince_edward_island_rate_with_reduction

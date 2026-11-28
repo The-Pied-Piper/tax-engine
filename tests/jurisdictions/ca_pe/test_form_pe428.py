@@ -1,5 +1,7 @@
 """The Prince Edward Island form `ca-pe/pe428` (Form PE428, CRA 5002-C): its name, its title as
-printed, and its exports: line 5 (the bracket rate), line 84 (the income over the base amount) and
+printed, and its exports: line 5 (the bracket rate), worksheet line 4 of the age amount and line 10
+before the printed maximum check (which tell the marginal rate whether the age amount is falling),
+line 84 (the income over the base amount) and
 line 87 (the low-income tax reduction), which the return summary's marginal rate reads, and
 line 97, the Prince Edward Island tax, which the form supplies as `ca/provincial_tax.amount` for
 T1 line 42800 (the copy lines 55, 58, 73, 74 and 82 have no step, and the lines after them read
@@ -30,7 +32,9 @@ LINE_5 = "ca-pe/pe428_bracket_rate_line_5"
 LINE_84 = "ca-pe/pe428_income_over_base_amount_line_84"
 LINE_87 = "ca-pe/pe428_low_income_tax_reduction_line_87"
 LINE_97 = "ca-pe/pe428_prince_edward_island_tax_line_97"
-EXPORTS = [LINE_5, LINE_84, LINE_87, LINE_97]
+AGE_LINE_4 = "ca-pe/worksheet_pe428_age_amount_line_4"
+AGE_CLAIMED = "ca-pe/pe428_age_amount_claimed_line_10"
+EXPORTS = [LINE_5, AGE_LINE_4, AGE_CLAIMED, LINE_84, LINE_87, LINE_97]
 ALL_LINES = (1, 3, 4, 5, 6, 7, 8)
 
 
@@ -48,7 +52,7 @@ def test_the_form_is_named_titled_as_printed_and_required() -> None:
     assert form["required"] is True
 
 
-def test_the_form_exports_lines_5_84_87_and_97() -> None:
+def test_the_form_exports_the_line_5_age_amount_84_87_and_97_figures() -> None:
     assert _part()["form"]["exports"] == EXPORTS
 
 

@@ -88,6 +88,8 @@ PE428_FORM = dedent("""\
       required: true
       exports:
         - ca-pe/pe428_bracket_rate_line_5
+        - ca-pe/worksheet_pe428_age_amount_line_4
+        - ca-pe/pe428_age_amount_claimed_line_10
         - ca-pe/pe428_income_over_base_amount_line_84
         - ca-pe/pe428_low_income_tax_reduction_line_87
         - ca-pe/pe428_prince_edward_island_tax_line_97
@@ -144,6 +146,8 @@ OTHER_STEPS = [
     ("ca/t1_tax_and_credits", "ca/federal_bracket_column_rate_line_73", "core/percent"),
     ("ca/t1_tax_and_credits", "ca/federal_tax_after_credits", "ca/cad"),
     ("ca-pe/pe428", "ca-pe/pe428_bracket_rate_line_5", "core/percent"),
+    ("ca-pe/pe428", "ca-pe/worksheet_pe428_age_amount_line_4", "ca/cad"),
+    ("ca-pe/pe428", "ca-pe/pe428_age_amount_claimed_line_10", "ca/cad"),
     ("ca-pe/pe428", "ca-pe/pe428_income_over_base_amount_line_84", "ca/cad"),
     ("ca-pe/pe428", "ca-pe/pe428_low_income_tax_reduction_line_87", "ca/cad"),
     ("ca-pe/pe428", "ca-pe/pe428_prince_edward_island_tax_line_97", "ca/cad"),

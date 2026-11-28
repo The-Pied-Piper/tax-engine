@@ -5,7 +5,9 @@
 # lines 8 and 54 directly; line 74 is a copy of line 67 and line 82 a copy of line 73, which is
 # line 72 (column 2, the spouse, is not modelled), so the lines after them read those directly.
 # Exports: line 5 (`ca-pe/pe428_bracket_rate_line_5`), the bracket rate the return summary reads for the
-# Prince Edward Island marginal rate; line 84 (`ca-pe/pe428_income_over_base_amount_line_84`) and line 87
+# Prince Edward Island marginal rate; worksheet line 4 (`ca-pe/worksheet_pe428_age_amount_line_4`) and
+# line 10 before the printed maximum check (`ca-pe/pe428_age_amount_claimed_line_10`), which tell the
+# return summary's marginal rate whether the age amount is being phased out; line 84 (`ca-pe/pe428_income_over_base_amount_line_84`) and line 87
 # (`ca-pe/pe428_low_income_tax_reduction_line_87`), which tell the return summary's marginal rate
 # whether the low-income tax reduction is being phased out, and line 97
 # (`ca-pe/pe428_prince_edward_island_tax_line_97`), the Prince Edward Island tax that line 97 says
@@ -18,6 +20,8 @@ form:
   required: true
   exports:
     - ca-pe/pe428_bracket_rate_line_5
+    - ca-pe/worksheet_pe428_age_amount_line_4
+    - ca-pe/pe428_age_amount_claimed_line_10
     - ca-pe/pe428_income_over_base_amount_line_84
     - ca-pe/pe428_low_income_tax_reduction_line_87
     - ca-pe/pe428_prince_edward_island_tax_line_97
