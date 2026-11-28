@@ -3268,12 +3268,141 @@ MARGINAL_TP1_BRACKET_RATE_ON_TAXABLE_INCOME = AmountKind.declare(
 """The Quebec bracket rate on a further dollar of salary: Work Chart 401 line 5 times the part left
 in the taxable income. An exact product, not printed on any form."""
 
+MARGINAL_SCHEDULE_B_LINE_18 = AmountKind.declare(
+    CATALOG, "marginal_schedule_b_line_18", non_negative=True
+)
+"""Schedule B line 18 "Line 10 minus line 16", the net income over the threshold, totalled into the
+return summary's own artifact, the base of the age threshold gate."""
+
+MARGINAL_SCHEDULE_B_LINE_34 = AmountKind.declare(CATALOG, "marginal_schedule_b_line_34")
+"""Schedule B line 34, the age amount (and living-alone amount) still claimed after the reduction
+and after the spouse's line 33, totalled into the return summary's own artifact. Signed: line 34
+prints no floor."""
+
+MARGINAL_SCHEDULE_B_AMOUNT_CLAIMED = AmountKind.declare(
+    CATALOG, "marginal_schedule_b_amount_claimed", non_negative=True
+)
+"""Schedule B line 34 with a negative read as 0.00 (the spouse's line 33 can be more than line 32,
+and line 34 prints no floor), the base of the age amount gate. A plain figure, not printed on any
+form."""
+
+MARGINAL_SCHEDULE_B_THRESHOLD_GATE = AmountKind.declare(
+    CATALOG, "marginal_schedule_b_threshold_gate", non_negative=True
+)
+"""Age threshold gate: 0 where Schedule B line 18 is 0.00 and 1 where it is at least one cent, from
+the `ca/marginal_rate_gate` dataset. A plain figure, not printed on any form."""
+
+MARGINAL_SCHEDULE_B_AMOUNT_GATE = AmountKind.declare(
+    CATALOG, "marginal_schedule_b_amount_gate", non_negative=True
+)
+"""Age amount gate: 0 where Schedule B line 34 is 0.00 and 1 where it is at least one cent, from
+the `ca/marginal_rate_gate` dataset. A plain figure, not printed on any form."""
+
+MARGINAL_SCHEDULE_B_RATE = AmountKind.declare(
+    CATALOG, "marginal_schedule_b_rate", non_negative=True
+)
+"""Schedule B line 31 "18.75%", the `ca-qc/schedule_b_line_31_rate` dataset as it is: the fall of
+line 32 per dollar of net income over the threshold. A rate, with the cent rounding of the printed
+box left off."""
+
+MARGINAL_SCHEDULE_B_REDUCTION_RATE_OVER_THRESHOLD = AmountKind.declare(
+    CATALOG, "marginal_schedule_b_reduction_rate_over_threshold", non_negative=True
+)
+"""The Schedule B reduction rate where the net income is over the threshold, 0 at or under it. An
+exact product, not printed on any form."""
+
+MARGINAL_SCHEDULE_B_REDUCTION_RATE = AmountKind.declare(
+    CATALOG, "marginal_schedule_b_reduction_rate", non_negative=True
+)
+"""Fall of Schedule B line 32 on a further dollar of net income: the reduction rate where net
+income is over the threshold and an amount is still claimed, 0 otherwise. An exact product, not
+printed on any form."""
+
+MARGINAL_SCHEDULE_B_NET_INCOME_RATE = AmountKind.declare(
+    CATALOG, "marginal_schedule_b_net_income_rate", non_negative=True
+)
+"""Fall of Schedule B line 32 on a further dollar of salary: its fall per dollar of net income
+times the part of the dollar left in the net income. An exact product, not printed on any form."""
+
+MARGINAL_TP1_CREDIT_RATE = AmountKind.declare(
+    CATALOG, "marginal_tp1_credit_rate", non_negative=True
+)
+"""TP-1 line 377.1 "14%", the `ca-qc/tp1_line_377_1_rate` dataset as it is: the rate at which the
+Quebec age amount is a credit. A rate, with the cent rounding of the printed box left off."""
+
+MARGINAL_TP1_AGE_CREDIT_RATE = AmountKind.declare(
+    CATALOG, "marginal_tp1_age_credit_rate", non_negative=True
+)
+"""Quebec tax a further dollar of salary adds through the Schedule B age amount: the fall of line
+32 times the Quebec credit rate (TP-1 line 377.1). An exact product, not printed on any form."""
+
+MARGINAL_CAREER_EXTENSION_LINE_38 = AmountKind.declare(
+    CATALOG, "marginal_career_extension_line_38", non_negative=True
+)
+"""TP-752.PC-V line 38 "Subtract $57,660 from line 36", the net income over the threshold, totalled
+into the return summary's own artifact, the base of the career extension threshold gate."""
+
+MARGINAL_CAREER_EXTENSION_LINE_40 = AmountKind.declare(
+    CATALOG, "marginal_career_extension_line_40", non_negative=True
+)
+"""TP-752.PC-V line 40 "Subtract line 39 from line 35", the credit after the reduction and before
+the tax limit of line 49, totalled into the return summary's own artifact, the base of the career
+extension amount gate."""
+
+MARGINAL_CAREER_EXTENSION_THRESHOLD_GATE = AmountKind.declare(
+    CATALOG, "marginal_career_extension_threshold_gate", non_negative=True
+)
+"""Career extension threshold gate: 0 where TP-752.PC-V line 38 is 0.00 and 1 where it is at least
+one cent, from the `ca/marginal_rate_gate` dataset. A plain figure, not printed on any form."""
+
+MARGINAL_CAREER_EXTENSION_AMOUNT_GATE = AmountKind.declare(
+    CATALOG, "marginal_career_extension_amount_gate", non_negative=True
+)
+"""Career extension amount gate: 0 where TP-752.PC-V line 40 is 0.00 and 1 where it is at least one
+cent, from the `ca/marginal_rate_gate` dataset. A plain figure, not printed on any form."""
+
+MARGINAL_CAREER_EXTENSION_RATE = AmountKind.declare(
+    CATALOG, "marginal_career_extension_rate", non_negative=True
+)
+"""TP-752.PC-V line 39 "7%", the `ca-qc/tp752_pc_line_39_rate` dataset as it is: the fall of line
+40 per dollar of net income over the threshold. A rate, with the cent rounding of the printed box
+left off."""
+
+MARGINAL_CAREER_EXTENSION_REDUCTION_RATE_OVER_THRESHOLD = AmountKind.declare(
+    CATALOG, "marginal_career_extension_reduction_rate_over_threshold", non_negative=True
+)
+"""The career extension reduction rate where the net income is over the threshold, 0 at or under
+it. An exact product, not printed on any form."""
+
+MARGINAL_CAREER_EXTENSION_REDUCTION_RATE = AmountKind.declare(
+    CATALOG, "marginal_career_extension_reduction_rate", non_negative=True
+)
+"""Fall of the career extension credit on a further dollar of net income: the reduction rate where
+net income is over the threshold and a credit is still left (line 40 above 0), 0 otherwise. An
+exact product, not printed on any form."""
+
+MARGINAL_TP1_CAREER_EXTENSION_CREDIT_RATE = AmountKind.declare(
+    CATALOG, "marginal_tp1_career_extension_credit_rate", non_negative=True
+)
+"""Quebec tax a further dollar of salary adds through the career extension credit: its fall per
+dollar of net income times the part of the dollar left in the net income (the credit reduces TP-1
+line 399 dollar for dollar, so no credit rate applies). An exact product, not printed on any
+form."""
+
+MARGINAL_TP1_RATE_BEFORE_GATE = AmountKind.declare(
+    CATALOG, "marginal_tp1_rate_before_gate", non_negative=True
+)
+"""Quebec tax rate on a further dollar of salary before the line 432 gate: the Work Chart 401 rate
+on the taxable income plus the two terms for the credits that fall as net income rises. An exact
+sum, not printed on any form."""
+
 MARGINAL_TP1_INCOME_TAX_RATE = AmountKind.declare(
     CATALOG, "marginal_tp1_income_tax_rate", non_negative=True
 )
-"""Quebec income tax rate on a further dollar of salary (TP-1 line 401), counted only where the
-income tax after credits (line 432) is above zero. The credits on the lines of TP-1 that a salary-
-only filer has are fixed amounts, so they add no rate. An exact product, not printed on any form."""
+"""Quebec income tax rate on a further dollar of salary (TP-1 line 401, with the fall of the
+Schedule B age amount and of the career extension credit added), counted only where the income tax
+after credits (line 432) is above zero. The other credits on the lines of TP-1 that a salary-only
+filer has are fixed amounts, so they add no rate. An exact product, not printed on any form."""
 
 MARGINAL_PREMIUM_INCOME = AmountKind.declare(CATALOG, "marginal_premium_income", non_negative=True)
 """Schedule K line 48, the income used to calculate the premium, totalled into the return summary's

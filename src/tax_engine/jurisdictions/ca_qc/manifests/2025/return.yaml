@@ -26,6 +26,21 @@
 # The solidarity credit (`ca-qc/solidarity_credit`) is the yearly amount of the payment period July
 # 2026 to June 2027; it is its own output, added to neither of the two figures above.
 #
+# The Quebec part of the marginal rate (`ca-qc/marginal_tp1_income_tax_rate`) adds the two TP-1
+# credits that fall as net income rises, each counted only where the Quebec tax after credits (line
+# 432) is above zero (the existing gate governs both). The Schedule B age amount: line 32 is line
+# 30 less the printed rate (line 31, 18.75%, `ca-qc/schedule_b_line_31_rate`) of line 18, the net
+# income over the threshold, so while line 18 is above 0 and line 34 (line 32 less the spouse's
+# line 33) is still above 0 (the dollar
+# that reaches 0.00 is not counted; a filer under 65 who does not live alone has line 30 of 0) each
+# dollar of net income costs that rate times the Quebec credit rate (line 377.1, 14%). The career
+# extension credit (TP-752.PC-V): line 40 is line 35 less 7% (line 39) of the net income over the
+# threshold (line 38), so while line 38 and line 40 are above 0 each dollar costs the 7%, which is
+# the credit itself with no rate on it (it reduces TP-1 line 399 dollar for dollar); where the tax
+# limit of line 49 binds the Quebec tax is 0 and the gate shuts the term off. Each is the printed
+# rate x two `ca/marginal_rate_gate` gates x the part of a further dollar left in net income. The
+# two terms and the bracket rate are summed before the line 432 gate.
+#
 # The average tax rate (`ca-qc/average_tax_rate`, no form prints it, so its steps have no title or
 # line): the total payable above, the CPP (Schedule 8 lines 25 and 28, at the Quebec rate), the EI
 # premium (T2204 line 16) and the QPIP premium (the `ppip_premium` form's export) added by core/sum
@@ -364,12 +379,169 @@ capabilities:
       rate: ca-qc/marginal_taxable_income_rate
     produces:
       output: ca-qc/marginal_tp1_bracket_rate_on_taxable_income
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-qc/schedule_b.schedule_b_line_18
+    produces:
+      output: ca-qc/marginal_schedule_b_line_18
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-qc/schedule_b.schedule_b_line_34
+    produces:
+      output: ca-qc/marginal_schedule_b_line_34
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca/marginal_rate_gate
+    consumes:
+      base: ca-qc/marginal_schedule_b_line_18
+    produces:
+      output: ca-qc/marginal_schedule_b_threshold_gate
+  - name: core/sum_not_below_zero
+    unit: ca/cad
+    params:
+      rounding: ca-qc/exact_rounding
+    consumes:
+      parts:
+        - ca-qc/marginal_schedule_b_line_34
+    produces:
+      output: ca-qc/marginal_schedule_b_amount_claimed
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca/marginal_rate_gate
+    consumes:
+      base: ca-qc/marginal_schedule_b_amount_claimed
+    produces:
+      output: ca-qc/marginal_schedule_b_amount_gate
+  - name: core/rate_figure
+    unit: core/percent
+    params:
+      rate: ca-qc/schedule_b_line_31_rate
+    produces:
+      output: ca-qc/marginal_schedule_b_rate
   - name: core/multiply_by_rate
     unit: core/percent
     params:
       rounding: ca-qc/exact_rounding
     consumes:
-      base: ca-qc/marginal_tp1_bracket_rate_on_taxable_income
+      base: ca-qc/marginal_schedule_b_rate
+      rate: ca-qc/marginal_schedule_b_threshold_gate
+    produces:
+      output: ca-qc/marginal_schedule_b_reduction_rate_over_threshold
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-qc/exact_rounding
+    consumes:
+      base: ca-qc/marginal_schedule_b_reduction_rate_over_threshold
+      rate: ca-qc/marginal_schedule_b_amount_gate
+    produces:
+      output: ca-qc/marginal_schedule_b_reduction_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-qc/exact_rounding
+    consumes:
+      base: ca-qc/marginal_schedule_b_reduction_rate
+      rate: ca-qc/marginal_net_income_rate
+    produces:
+      output: ca-qc/marginal_schedule_b_net_income_rate
+  - name: core/rate_figure
+    unit: core/percent
+    params:
+      rate: ca-qc/tp1_line_377_1_rate
+    produces:
+      output: ca-qc/marginal_tp1_credit_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-qc/exact_rounding
+    consumes:
+      base: ca-qc/marginal_schedule_b_net_income_rate
+      rate: ca-qc/marginal_tp1_credit_rate
+    produces:
+      output: ca-qc/marginal_tp1_age_credit_rate
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp752_pc.tp752_pc_line_38
+    produces:
+      output: ca-qc/marginal_career_extension_line_38
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp752_pc.tp752_pc_line_40
+    produces:
+      output: ca-qc/marginal_career_extension_line_40
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca/marginal_rate_gate
+    consumes:
+      base: ca-qc/marginal_career_extension_line_38
+    produces:
+      output: ca-qc/marginal_career_extension_threshold_gate
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca/marginal_rate_gate
+    consumes:
+      base: ca-qc/marginal_career_extension_line_40
+    produces:
+      output: ca-qc/marginal_career_extension_amount_gate
+  - name: core/rate_figure
+    unit: core/percent
+    params:
+      rate: ca-qc/tp752_pc_line_39_rate
+    produces:
+      output: ca-qc/marginal_career_extension_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-qc/exact_rounding
+    consumes:
+      base: ca-qc/marginal_career_extension_rate
+      rate: ca-qc/marginal_career_extension_threshold_gate
+    produces:
+      output: ca-qc/marginal_career_extension_reduction_rate_over_threshold
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-qc/exact_rounding
+    consumes:
+      base: ca-qc/marginal_career_extension_reduction_rate_over_threshold
+      rate: ca-qc/marginal_career_extension_amount_gate
+    produces:
+      output: ca-qc/marginal_career_extension_reduction_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-qc/exact_rounding
+    consumes:
+      base: ca-qc/marginal_career_extension_reduction_rate
+      rate: ca-qc/marginal_net_income_rate
+    produces:
+      output: ca-qc/marginal_tp1_career_extension_credit_rate
+  - name: core/sum
+    unit: core/percent
+    params:
+      rounding: ca-qc/exact_rounding
+    consumes:
+      parts:
+        - ca-qc/marginal_tp1_bracket_rate_on_taxable_income
+        - ca-qc/marginal_tp1_age_credit_rate
+        - ca-qc/marginal_tp1_career_extension_credit_rate
+    produces:
+      output: ca-qc/marginal_tp1_rate_before_gate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-qc/exact_rounding
+    consumes:
+      base: ca-qc/marginal_tp1_rate_before_gate
       rate: ca-qc/marginal_tp1_gate
     produces:
       output: ca-qc/marginal_tp1_income_tax_rate
