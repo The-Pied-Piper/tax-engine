@@ -1,0 +1,10 @@
+# Revenu Quebec TP-752.PC-V (2026-10 and 2025-10), "Tax Credit for Career Extension": the form of the credit TP-1 line 391 claims ("Complete form TP-752.PC-V"). Its own form, so that TP-1 line 391 can read its line 50 while line 48 reads TP-1 lines 359 and 361 (the split part `ca-qc/tp1_credits_lines_350_to_361`) and line 47 reads Work Chart 401 line 8 without a loop through TP-1. Each printed line is a part of its own with the same `form.name`.
+# The form is for a filer "resident in Québec and 65 or over on December 31" (the T1 birth year form's `ca/age_65_or_older`); line 10 is multiplied by that flag. Not built: the extra income of elected municipal and legislative office holders (page 2, assumed already in line 101) and the deceased-person filing.
+# Export: line 50, the credit TP-1 line 391 reads.
+form:
+  name: ca-qc/tp752_pc
+  title: "Tax Credit for Career Extension"
+  required: true
+  exports:
+    - ca-qc/tp752_pc_line_50
+capabilities: []

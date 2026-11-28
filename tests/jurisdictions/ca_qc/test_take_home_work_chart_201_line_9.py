@@ -112,6 +112,7 @@ def test_the_real_form_declaration_exports_line_9_and_the_inputs_other_forms_rea
     assert declaration["form"]["required"] is True
     assert set(declaration["form"]["exports"]) >= {
         "ca-qc/work_chart_201_deduction_for_workers_line_9",
+        "ca-qc/work_chart_201_total_line_6",
         "ca-qc/work_chart_201_research_grants_line_3",
         "ca-qc/work_chart_201_wepp_payments_line_4",
     }

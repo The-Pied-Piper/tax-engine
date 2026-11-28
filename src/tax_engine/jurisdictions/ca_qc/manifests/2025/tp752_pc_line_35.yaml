@@ -1,0 +1,13 @@
+# TP-752.PC-V (2026-10), line 35 "x 14% Multiply line 16 by 14%. = 35". The printed 14% is the `ca-qc/tp752_pc_line_35_rate` dataset, so the line is one core/apply_rate, rounded half-up to the cent by the dataset's rule.
+form:
+  name: ca-qc/tp752_pc
+capabilities:
+  - name: core/apply_rate
+    reference: "35"
+    unit: ca/cad
+    params:
+      rate: ca-qc/tp752_pc_line_35_rate
+    consumes:
+      base: ca-qc/tp752_pc_line_16
+    produces:
+      output: ca-qc/tp752_pc_line_35

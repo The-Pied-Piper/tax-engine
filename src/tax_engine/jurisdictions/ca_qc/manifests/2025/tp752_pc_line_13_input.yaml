@@ -1,0 +1,11 @@
+# TP-752.PC-V (2026-10), line 13 "Portion of the income on line 12 that relates to a previous year (retroactive amount) - 13". A salary-only filer has no such amount, so it is an optional input left blank; line 14 reads a blank as 0.
+form:
+  name: ca-qc/tp752_pc
+inputs:
+  - name: ca-qc/tp752_pc_line_13
+    title: "Retroactive amount"
+    reference: "13"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Portion of the income on line 12 that relates to a previous year (retroactive amount)"

@@ -22,9 +22,9 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
 )
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
 from tests.jurisdictions.ca_qc.support import quebec_kinds
-from tests.jurisdictions.ca_qc.tp1_credits_support import chain_sheet
+from tests.jurisdictions.ca_qc.tp1_credits_support import PART_A_FORM, chain_sheet
 
-FORM = "ca-qc/tp1_credits"
+FORM = PART_A_FORM  # a split part of the TP-1 credits form, read by TP-752.PC-V
 PART = "tp1_credits_line_361.yaml"
 IDENTIFIER = "ca-qc/tp1_age_living_alone_retirement_amount_line_361"
 EXPORTS = (IDENTIFIER,)
@@ -34,7 +34,7 @@ EXPORTS = (IDENTIFIER,)
 def test_line_361_is_zero_when_the_filer_does_not_live_alone(
     take_home_service: TakeHomeService, salary: str
 ) -> None:
-    sheet = chain_sheet(take_home_service, salary, EXPORTS, (PART,))
+    sheet = chain_sheet(take_home_service, salary, EXPORTS, (PART,), name=FORM)
 
     assert str(sheet.get(TP1_AGE_LIVING_ALONE_RETIREMENT_AMOUNT_LINE_361).value) == "0.00"
 
@@ -46,7 +46,7 @@ def test_line_361_is_schedule_b_line_34_for_a_person_living_alone(
     take_home_service: TakeHomeService, salary: str, expected: str
 ) -> None:
     given = Artifact(SCHEDULE_B_LIVED_ALONE_LINE_20, 1)
-    sheet = chain_sheet(take_home_service, salary, EXPORTS, (PART,), given)
+    sheet = chain_sheet(take_home_service, salary, EXPORTS, (PART,), given, name=FORM)
 
     assert str(sheet.get(TP1_AGE_LIVING_ALONE_RETIREMENT_AMOUNT_LINE_361).value) == expected
 

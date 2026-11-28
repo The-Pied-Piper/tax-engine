@@ -1,0 +1,10 @@
+# Revenu Quebec TP-1.D-V (2025-12), page 4, "Non-refundable tax credits": lines 350, 358, 359 and 361, a second part of the same printed form. TP-752.PC-V line 48 reads lines 359 and 361, and TP-1 line 391 reads TP-752.PC-V, so these lines cannot sit in `ca-qc/tp1_credits` (a form cycle): they are a form of their own with the same printed title, and `ca-qc/tp1_credits` reads 359 and 361 from its exports (line 377).
+# Line 361 reads Schedule B (line 34) as that form's export; line 358 is an optional input, read as 0 when left out.
+form:
+  name: ca-qc/tp1_credits_lines_350_to_361
+  title: "Income Tax Return"
+  required: true
+  exports:
+    - ca-qc/tp1_line_359
+    - ca-qc/tp1_age_living_alone_retirement_amount_line_361
+capabilities: []

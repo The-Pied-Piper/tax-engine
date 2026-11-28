@@ -1,0 +1,14 @@
+# TP-752.PC-V (2026-10), line 50 "Enter the amount from line 40 or line 49, whichever is less. Carry this amount to line 391 of your return. Tax credit for career extension 50". One step, core/lesser_of of lines 40 and 49, both already rounded to the cent. The form exports it for TP-1 line 391.
+form:
+  name: ca-qc/tp752_pc
+capabilities:
+  - name: core/lesser_of
+    title: "Tax credit for career extension"
+    reference: "50"
+    unit: ca/cad
+    consumes:
+      amounts:
+        - ca-qc/tp752_pc_line_40
+        - ca-qc/tp752_pc_line_49
+    produces:
+      output: ca-qc/tp752_pc_line_50

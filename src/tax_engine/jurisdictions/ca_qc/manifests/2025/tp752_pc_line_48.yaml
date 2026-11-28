@@ -1,0 +1,42 @@
+# TP-752.PC-V (2026-10), line 48 "Add lines 359 through 367 of your return. x 14% - 48". Four steps:
+# 1. and 2. core/record_total of TP-1 lines 359 and 361, read from the split part of the TP-1 credits form (`ca-qc/tp1_credits_lines_350_to_361`), as record lists.
+# 3. core/sum of the two, exact (not a printed line). Line 367 (dependants) is left out (owner decision on the TP-1 credits ticket, 19 Nov 2026), as TP-1 line 377 leaves it out; lines 360 to 366 and 368 to 376 are not built.
+# 4. core/apply_rate at the printed 14% (`ca-qc/tp752_pc_line_48_rate`), rounded half-up to the cent by the dataset's rule.
+# Steps 1 to 3 are not lines of the form, so they have no reference.
+form:
+  name: ca-qc/tp752_pc
+capabilities:
+  - name: core/record_total
+    title: "Line 359 of your return"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp1_credits_lines_350_to_361.tp1_line_359
+    produces:
+      output: ca-qc/tp752_pc_tp1_line_359
+  - name: core/record_total
+    title: "Line 361 of your return"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp1_credits_lines_350_to_361.tp1_age_living_alone_retirement_amount_line_361
+    produces:
+      output: ca-qc/tp752_pc_tp1_line_361
+  - name: core/sum
+    title: "Lines 359 through 367 of your return"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/exact_rounding
+    consumes:
+      parts:
+        - ca-qc/tp752_pc_tp1_line_359
+        - ca-qc/tp752_pc_tp1_line_361
+    produces:
+      output: ca-qc/tp752_pc_lines_359_to_367
+  - name: core/apply_rate
+    reference: "48"
+    unit: ca/cad
+    params:
+      rate: ca-qc/tp752_pc_line_48_rate
+    consumes:
+      base: ca-qc/tp752_pc_lines_359_to_367
+    produces:
+      output: ca-qc/tp752_pc_line_48

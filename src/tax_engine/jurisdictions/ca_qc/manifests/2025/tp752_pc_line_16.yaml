@@ -1,0 +1,25 @@
+# TP-752.PC-V (2026-10), line 16 "Subtract $7,655 from line 14 (maximum $12,755). = 16". Two steps:
+# 1. core/subtract_not_below_zero of line 15 from line 14, exact. The form prints no floor here, but line 12 says "If the result is $7,655 or less, you are not entitled to the tax credit", so a line 14 at or below line 15 gives 0 (not entitled). Not a printed line, so no reference.
+# 2. core/capped_amount at the printed maximum (`ca-qc/tp752_pc_line_16_maximum`, 12,755 for 2026 and 12,500 for 2025), rounded half-up to the cent once by the dataset's rule.
+form:
+  name: ca-qc/tp752_pc
+capabilities:
+  - name: core/subtract_not_below_zero
+    title: "Line 14 less line 15"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/exact_rounding
+    consumes:
+      amount: ca-qc/tp752_pc_line_14
+      less: ca-qc/tp752_pc_line_15
+    produces:
+      output: ca-qc/tp752_pc_line_14_less_line_15
+  - name: core/capped_amount
+    reference: "16"
+    unit: ca/cad
+    params:
+      cap: ca-qc/tp752_pc_line_16_maximum
+    consumes:
+      base: ca-qc/tp752_pc_line_14_less_line_15
+    produces:
+      output: ca-qc/tp752_pc_line_16

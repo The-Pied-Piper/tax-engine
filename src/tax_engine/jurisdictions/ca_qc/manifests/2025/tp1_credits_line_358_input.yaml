@@ -2,7 +2,7 @@
 # tax credits). A salary-only filer has no such adjustment, so it is an optional input left blank;
 # line 359 reads a blank as 0.
 form:
-  name: ca-qc/tp1_credits
+  name: ca-qc/tp1_credits_lines_350_to_361
 inputs:
   - name: ca-qc/tp1_income_replacement_adjustment_line_358
     title: "Adjustment for income replacement indemnities"

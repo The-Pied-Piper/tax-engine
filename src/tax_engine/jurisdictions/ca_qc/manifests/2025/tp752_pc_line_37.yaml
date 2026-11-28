@@ -1,0 +1,11 @@
+# TP-752.PC-V (2026-10), line 37 "- 37 57,660 00" (56,500 00 on the 2025-10 edition): the printed figure, the `ca-qc/tp752_pc_line_37` dataset, claimed whole through core/credit_amount, so it is the same at every salary.
+form:
+  name: ca-qc/tp752_pc
+capabilities:
+  - name: core/credit_amount
+    reference: "37"
+    unit: ca/cad
+    params:
+      amount: ca-qc/tp752_pc_line_37
+    produces:
+      output: ca-qc/tp752_pc_line_37

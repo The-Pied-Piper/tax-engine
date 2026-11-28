@@ -1,0 +1,8 @@
+# TP-752.PC-V (2026-10), line 35 "x 14% Multiply line 16 by 14%.": the printed 14% is a rate of 0.14, taken as printed. The product is a dollars-and-cents line, so it rounds half-up to the cent, the project's choice, as the form states no rounding rule.
+family: ca-qc/tp752_pc_line_35_rate
+tax_year: 2026
+kind: rate
+sources:
+  - Revenu Quebec TP-752.PC-V (2026-10)
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.14"
