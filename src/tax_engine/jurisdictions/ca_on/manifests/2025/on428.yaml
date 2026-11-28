@@ -7,7 +7,9 @@
 # after the LIFT credit (`ca-on/on428_tax_after_lift_credit_line_86`), which the return reads to
 # count the Ontario rates only where it is above zero, and line 80, the Ontario tax reduction
 # (`ca-on/on428_ontario_tax_reduction_line_80`), which the return reads to count the reduction's
-# phase-out. The form also supplies line 90 as
+# phase-out, and the age amount worksheet's line 4 (`ca-on/worksheet_on428_age_amount_line_4`) and the
+# age amount claimed before the printed maximum (`ca-on/on428_age_amount_claimed_line_10`), which the
+# return reads for the fall of the age amount. The form also supplies line 90 as
 # `ca/provincial_tax.amount`, the name the federal T1 reads.
 form:
   name: ca-on/on428
@@ -19,6 +21,8 @@ form:
     - ca-on/on428_bracket_column_rate_line_5
     - ca-on/on428_tax_after_lift_credit_line_86
     - ca-on/on428_ontario_tax_reduction_line_80
+    - ca-on/worksheet_on428_age_amount_line_4
+    - ca-on/on428_age_amount_claimed_line_10
   supplies:
     ca/provincial_tax.amount: ca-on/on428_ontario_tax_line_90
 capabilities: []

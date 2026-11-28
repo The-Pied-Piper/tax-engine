@@ -32,8 +32,8 @@
 # rounding is for the credit boxes.
 #
 # Ontario. The bracket rate (ON428 line 5 "Line 5: Rate", read from the ON428 export into
-# `ca-on/ontario_bracket_rate_return`) times the net income rate, less the Ontario credit on the
-# contributions, times the surtax factor (ON428 lines 66 and 67: `ca-on/surtax_factor` gives 1 plus
+# `ca-on/ontario_bracket_rate_return`) times the net income rate, plus the Ontario tax the falling age
+# amount adds, less the Ontario credit on the contributions, times the surtax factor (ON428 lines 66 and 67: `ca-on/surtax_factor` gives 1 plus
 # the rate of each tier line 65 is over, line 65 read into `ca-on/ontario_surtax_base`). The Ontario
 # tax reduction (ON428 lines 74 to 81, line 80 read into `ca-on/ontario_tax_reduction_return`) is
 # phased out as income rises: while line 80 and line 81 are above 0, line 81 is 2 x line 73 - 588, so
@@ -51,6 +51,17 @@
 # salary, to the line 5 maximum of $875, reached at $17,326.73) is not a step: for a salary-only filer the Ontario tax before the LIFT
 # credit is 0 wherever the credit is below its $875 maximum (checked over the whole range in both
 # years by the extra-run test), so the credit then absorbs all the tax and the gate is 0.
+#
+# Age amount. For a filer born 1960 or earlier the age amount (ON428 line 10) falls by 15% of the net
+# income over the threshold (Worksheet ON428 "Line 58080 - Age amount", lines 3 to 6, the
+# `ca-on/age_rate` dataset), until the amount is 0. The return reads the worksheet's line 4 (net
+# income over the threshold) and the age amount claimed before the printed maximum from the ON428
+# export, and two `ca-on/marginal_rate_gate` gates count the fall only while the net income is over
+# the threshold and an age amount is still claimed (0 for a filer under 65, with no birth year, or
+# whose amount is used up). A further dollar of net income takes the age amount down by the rate
+# times the net income rate, and the Ontario credit rate (ON428 line 45) on that is the Ontario tax it
+# adds, placed beside the credit on the contributions, before the surtax factor, the tax reduction
+# gate, the LIFT phase-out and the Ontario gate, which govern it as they govern the rest.
 #
 # Health premium. The rate of the ON428 line 89 chart row that the taxable income (T1 line 26000)
 # falls in is read from `ca-on/health_premium_rows`: 0 for a flat row, 6% or 25% on a ramp; it is
@@ -160,12 +171,92 @@ capabilities:
       rate: ca-on/marginal_net_income_rate
     produces:
       output: ca-on/marginal_ontario_bracket_rate
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-on/on428.worksheet_on428_age_amount_line_4
+    produces:
+      output: ca-on/marginal_age_income_over_threshold
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-on/on428.on428_age_amount_claimed_line_10
+    produces:
+      output: ca-on/marginal_age_amount_claimed
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca-on/marginal_rate_gate
+    consumes:
+      base: ca-on/marginal_age_income_over_threshold
+    produces:
+      output: ca-on/marginal_age_threshold_gate
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca-on/marginal_rate_gate
+    consumes:
+      base: ca-on/marginal_age_amount_claimed
+    produces:
+      output: ca-on/marginal_age_amount_gate
+  - name: core/rate_figure
+    unit: core/percent
+    params:
+      rate: ca-on/age_rate
+    produces:
+      output: ca-on/marginal_age_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-on/exact_rounding
+    consumes:
+      base: ca-on/marginal_age_rate
+      rate: ca-on/marginal_age_threshold_gate
+    produces:
+      output: ca-on/marginal_age_reduction_rate_over_threshold
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-on/exact_rounding
+    consumes:
+      base: ca-on/marginal_age_reduction_rate_over_threshold
+      rate: ca-on/marginal_age_amount_gate
+    produces:
+      output: ca-on/marginal_age_reduction_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-on/exact_rounding
+    consumes:
+      base: ca-on/marginal_age_reduction_rate
+      rate: ca-on/marginal_net_income_rate
+    produces:
+      output: ca-on/marginal_age_phase_down_net_income_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-on/exact_rounding
+    consumes:
+      base: ca-on/marginal_age_phase_down_net_income_rate
+      rate: ca-on/marginal_ontario_credit_rate
+    produces:
+      output: ca-on/marginal_ontario_age_credit_rate
+  - name: core/sum
+    unit: core/percent
+    params:
+      rounding: ca-on/exact_rounding
+    consumes:
+      parts:
+        - ca-on/marginal_ontario_bracket_rate
+        - ca-on/marginal_ontario_age_credit_rate
+    produces:
+      output: ca-on/marginal_ontario_rate_before_credits
   - name: core/subtract
     unit: core/percent
     params:
       rounding: ca-on/exact_rounding
     consumes:
-      amount: ca-on/marginal_ontario_bracket_rate
+      amount: ca-on/marginal_ontario_rate_before_credits
       less: ca-on/marginal_ontario_contribution_credit_rate
     produces:
       output: ca-on/marginal_ontario_rate_after_credits
