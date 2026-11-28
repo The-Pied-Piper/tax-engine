@@ -1,4 +1,4 @@
-"""The Quebec return charges no QPP to a filer with no QPP months (ticket #2090).
+"""The Quebec return charges no QPP to a filer with no QPP months.
 
 TP-1 lines 98, 98.1 and 98.2 (the slip figures a salary-only caller leaves blank) are computed on
 Schedule 8 lines 7, 2 and 4, which hold the months of line A. A filer under 18 all year has no QPP
