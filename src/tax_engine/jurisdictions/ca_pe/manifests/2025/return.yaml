@@ -50,7 +50,9 @@
 # check, 0 for a filer under 65 or with no year of birth) is above zero, through the two gates of
 # the `ca-pe/marginal_rate_gate` dataset; the 15% times the gates is multiplied by the net income
 # rate and then by the credit rate (`ca-pe/marginal_prince_edward_island_credit_rate`), as the CPP
-# and EI credit is. It is added to the rate after credits, so the line 97 gate governs it.
+# and EI credit is. It is added to the province's other credit-type terms (its position in the sum
+# is immaterial because a sum commutes) and stops when the claimed amount reaches 0.00 (the dollar
+# that reaches 0.00 is not counted).
 #
 # The last step adds the federal marginal rate, the Prince Edward Island marginal rate and the
 # contribution rate (CPP base, enhanced and second additional, and EI) with core/sum into
