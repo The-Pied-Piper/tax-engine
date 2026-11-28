@@ -1,4 +1,4 @@
-"""Form MB479 (2025 (2025) line 7, the basic credit, over the optional year of birth.
+"""Form MB479 (2025) line 7, the basic credit, over the optional year of birth.
 
 Form text (CRA 5007-tc-25e.txt): "Line 7: Basic credit 195.00". The amount is the
 `ca-mb/personal_tax_credit_basic` dataset, claimed through core/credit_amount.
