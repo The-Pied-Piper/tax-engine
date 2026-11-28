@@ -20,16 +20,21 @@ import pytest
 from tax_engine import build_take_home, build_tax_computation
 from tax_engine.adapters.inbound.take_home_text import EnglishTakeHomeText
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
+from tax_engine.application.models.calculation_request import TaxCalculationRequest
+from tax_engine.application.models.calculation_result import TaxCalculationResult
 from tax_engine.application.models.take_home import (
     TraceEntry,
     UnitDescription,
 )
 from tax_engine.application.models.take_home_request import TakeHomeRequest
 from tax_engine.application.ports.jurisdiction_source import JurisdictionSource
+from tax_engine.application.ports.tax_calculation import TaxCalculation
 from tax_engine.application.services.take_home import TakeHomeService
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import NotFoundError
 from tax_engine.domain.jurisdiction import Jurisdiction
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.jurisdictions.ca.catalog.personal_amounts import BIRTH_YEAR
 from tax_engine.registrations import JURISDICTIONS, artifact_kinds, units
 
 ANSWERS: list[dict[str, Any]] = json.loads(
@@ -296,6 +301,62 @@ def test_the_marginal_rate_at_an_edge_matches_the_cent_either_side(
         TakeHomeRequest(JurisdictionCode(code), 2026, Decimal(salary), include_rates=True)
     )
 
+    assert got.marginal_tax_rate is not None
+    assert got.marginal_tax_rate.value == Decimal(rate)
+
+
+class _WithBirthYear:
+    """A computation that gives every request a year of birth, as a caller that gives one does."""
+
+    def __init__(self, inner: TaxCalculation, born: int) -> None:
+        self._inner = inner
+        self._born = born
+
+    def compute(self, request: TaxCalculationRequest) -> TaxCalculationResult:
+        return self._inner.compute(
+            TaxCalculationRequest(
+                request.jurisdiction,
+                request.tax_year,
+                (*request.artifacts, Artifact(BIRTH_YEAR, self._born)),
+            )
+        )
+
+
+@pytest.mark.parametrize(
+    ("code", "born", "salary", "rate"),
+    [
+        # No CPP (QPP in Quebec) months: under 18 all year, or 70 (73 in Quebec) or older all year
+        # (Schedule 8 line A is 0). No contribution is charged, none is in the rate, and the
+        # take-home answers at $0 and across $2,000 to $2,033 without an error.
+        ("CA-ON", 2010, "0", "0.0000"),
+        ("CA-ON", 2010, "2000", "1.0000"),
+        ("CA-ON", 2010, "2033", "1.0000"),
+        ("CA-ON", 2010, "20000", "0.1540"),
+        ("CA-ON", 1955, "0", "0.0000"),
+        ("CA-ON", 1955, "2033", "1.0000"),
+        ("CA-ON", 1955, "20000", "0.0163"),
+        ("CA-QC", 2010, "0", "0.0000"),
+        ("CA-QC", 2010, "2033", "0.0173"),
+        ("CA-QC", 2010, "20000", "0.1322"),
+        ("CA-QC", 1952, "2033", "0.0173"),
+        ("CA-QC", 1952, "20000", "0.0173"),
+    ],
+)
+def test_a_filer_with_no_contribution_months_pays_no_contribution_and_has_none_in_the_rate(
+    code: str, born: int, salary: str, rate: str
+) -> None:
+    source = YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds(), units())
+    service = TakeHomeService(
+        source, _WithBirthYear(build_tax_computation(), born), EnglishTakeHomeText()
+    )
+
+    got = service.compute(
+        TakeHomeRequest(JurisdictionCode(code), 2026, Decimal(salary), include_rates=True)
+    )
+
+    contributions = [f for f in got.figures if "pp" in f.name]
+    assert contributions
+    assert all(f.amount == Decimal("0.00") for f in contributions)
     assert got.marginal_tax_rate is not None
     assert got.marginal_tax_rate.value == Decimal(rate)
 
