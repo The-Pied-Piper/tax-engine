@@ -33,6 +33,8 @@ form:
     - ca/total_payable
     - ca/federal_bracket_column_rate_line_73
     - ca/federal_tax_after_credits
+    - ca/age_income_over_threshold
+    - ca/age_amount_claimed
     - ca/ei_overpayment_line_45000
     - ca/cwb_line_45300
     - ca/provincial_credits_line_47900
