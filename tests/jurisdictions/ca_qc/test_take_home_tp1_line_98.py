@@ -1,15 +1,12 @@
 """Revenu Quebec TP-1 (2025) line 98, "QPP contribution. RL-1 slip, box B.A", as the Quebec take-
-home manifest part
-wires it: the amount given when the filer has it, else computed from line 101, the salary.
+home manifest part wires it: the amount given when the filer has it, else Schedule 8 line 11 plus
+line 12, each to the cent, as the form's own lines are (the same lines the take-home deductions
+read, so a filer with no QPP months has 0).
 
 The form prints no rate or ceiling for the slip box. The caller has no RL-1 slip, so the input
-`ca-qc/tp1_qpp_contribution_given_line_98` is optional: a request that gives it has that figure as
-line 98,
-unchanged; a request that leaves it out has line 98 computed by
-`ca/given_or_contribution_tier` from the salary with the `ca-qc/tp1_line_98_qpp_contribution`
-dataset
-(6.40% from $3,500 to $71,300, at most $4,339.20; the figures are a listed check from a Revenu
-Quebec web page).
+`ca-qc/tp1_qpp_contribution_given_line_98` is optional: a request that leaves it out has line 98
+as Schedule 8 line 11 (5.4% of line 7, at most $3,661.20) plus line 12 (1% of line 7, at most
+$678.00).
 """
 
 from __future__ import annotations
@@ -51,6 +48,7 @@ FORM = dedent("""\
       name: ca-qc/tp1_income
       required: true
       exports:
+        - ca-qc/tp1_employment_income_line_101
         - ca-qc/tp1_qpp_contribution_line_98
     """)
 
@@ -76,6 +74,18 @@ def tp1(take_home_service: TakeHomeService, salary: str, given: str | None = Non
     ],
 )
 def test_a_blank_line_98_is_computed_from_the_salary(
+    take_home_service: TakeHomeService, salary: str, expected: str
+) -> None:
+    assert tp1(take_home_service, salary).get(TP1_QPP_CONTRIBUTION_LINE_98).value == D(expected)
+
+
+@pytest.mark.parametrize(
+    ("salary", "expected"),
+    # Line 7 is the salary less 3,500: 50,000.08 gives 2,700.00 (5.4%) + 500.00 (1%) = 3,200.00,
+    # where one 6.4% rounding would give 3,200.01; 50,000.24 gives 2,700.01 + 500.00 = 3,200.01.
+    [("53500.08", "3200.00"), ("53500.24", "3200.01")],
+)
+def test_a_blank_line_98_adds_the_two_schedule_8_lines_each_rounded_to_the_cent(
     take_home_service: TakeHomeService, salary: str, expected: str
 ) -> None:
     assert tp1(take_home_service, salary).get(TP1_QPP_CONTRIBUTION_LINE_98).value == D(expected)

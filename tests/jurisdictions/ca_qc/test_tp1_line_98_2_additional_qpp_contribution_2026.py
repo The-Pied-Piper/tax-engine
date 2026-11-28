@@ -42,8 +42,8 @@ EXPECTED: dict[str, Any] = {
     ],
     "rounding": {"increment": "0.01", "mode": "half_up"},
     "rate": "0.04",
-    "lower": "74600",
-    "upper": "85000",
+    "lower": "0",
+    "upper": "10400",
     "maximum": "416",
 }
 
