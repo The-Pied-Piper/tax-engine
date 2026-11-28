@@ -41,6 +41,7 @@ from tax_engine.application.models.calculation_request import TaxCalculationRequ
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.personal_amounts import BIRTH_YEAR
 from tests.kinds import bundled_kinds
 
 D = Decimal
@@ -238,3 +239,46 @@ def test_every_known_exception_is_a_salary_of_the_sweep() -> None:
 
 def test_every_known_exception_is_a_salary_with_a_smaller_step() -> None:
     assert set(KNOWN_EXCEPTIONS) == set(SMALLER_STEPS)
+
+
+# A filer born in 1955 also loses the age amount (NS428 line 10) over the threshold of 30,828 of net
+# income; in 2026 such a filer is past 70 and pays no CPP. Salaries over the threshold where the
+# amount is still claimed (the zero point is at about $69,717 in 2025 and $69,668 in 2026), away
+# from every break of the sweep above.
+BORN_1955_SALARIES = (
+    (2025, 35_000),
+    (2025, 40_000),
+    (2025, 50_000),
+    (2025, 60_000),
+    (2026, 35_000),
+    (2026, 40_000),
+    (2026, 50_000),
+    (2026, 60_000),
+)
+
+
+def _born_1955_run(year: int, salary: Decimal) -> tuple[Decimal, Decimal]:
+    worksheets = build_tax_computation().compute(
+        TaxCalculationRequest(
+            NOVA_SCOTIA, year, (Artifact(EMPLOYMENT_INCOME, salary), Artifact(BIRTH_YEAR, 1955))
+        )
+    )
+    kinds = bundled_kinds()
+    deductions = D("0")
+    for form, kind in DEDUCTIONS:
+        value = worksheets[form][0].get(kinds.kind(kind)).value
+        assert isinstance(value, Decimal)
+        deductions += value
+    marginal = worksheets[RETURN][0].get(kinds.kind(MARGINAL)).value
+    assert isinstance(marginal, Decimal)
+    return deductions, marginal
+
+
+@pytest.mark.parametrize(("year", "salary"), BORN_1955_SALARIES)
+def test_born_1955_the_marginal_rate_is_the_extra_dollar_change_in_the_take_home_deductions(
+    year: int, salary: int
+) -> None:
+    deductions, marginal = _born_1955_run(year, D(salary))
+    extra_run = (_born_1955_run(year, D(salary + 100))[0] - deductions) / 100
+
+    assert abs(marginal - extra_run) <= TOLERANCE

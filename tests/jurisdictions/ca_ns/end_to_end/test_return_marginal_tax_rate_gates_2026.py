@@ -33,6 +33,7 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.personal_amounts import BIRTH_YEAR
 from tests.kinds import bundled_kinds
 
 D = Decimal
@@ -207,3 +208,63 @@ def test_2026_the_provincial_part_follows_line_99_and_the_reduction_phase_out(
 
     assert _value(summary, TAX_GATE) == D(gate)
     assert _value(summary, PROVINCIAL) == D(provincial)
+
+
+# Salary, over the threshold (worksheet line 4), age amount claimed (before the printed maximum
+# check), the two age gates and the age term, for a filer born in 1955 (the Nova Scotia part and
+# the age term are the hand-worked figures of `test_return_marginal_tax_rate_values.py`).
+BORN_1955_GATES = [
+    # 2026: no CPP, so net income = salary. The maximum 5,826 is reached at line 4 = 38,839.97
+    # (5,825.9955); line 4 = 38,839.96 (5,825.994) is the last cent with 0.01 left.
+    ("0", "0.00", "5826.00", "0", "1", "0"),
+    ("30828", "0.00", "5826.00", "0", "1", "0"),
+    ("30828.01", "0.01", "5826.00", "1", "1", "0.013185"),
+    ("30829", "1.00", "5825.85", "1", "1", "0.013185"),
+    ("40000", "9172.00", "4450.20", "1", "1", "0.013185"),
+    ("60000", "29172.00", "1450.20", "1", "1", "0.013185"),
+    ("69667.96", "38839.96", "0.01", "1", "1", "0.013185"),
+    ("69667.97", "38839.97", "0.00", "1", "0", "0"),
+]
+
+
+def _born_1955(salary: str) -> Worksheet:
+    worksheets = build_tax_computation().compute(
+        TaxCalculationRequest(
+            NOVA_SCOTIA,
+            2026,
+            (Artifact(EMPLOYMENT_INCOME, D(salary)), Artifact(BIRTH_YEAR, 1955)),
+        )
+    )
+    (summary,) = worksheets[RETURN]
+    return summary
+
+
+@pytest.mark.parametrize(
+    ("salary", "over", "claimed", "threshold_gate", "amount_gate", "term"), BORN_1955_GATES
+)
+def test_2026_born_1955_the_age_amount_falls_only_over_the_threshold_and_while_some_is_left(
+    salary: str,
+    over: str,
+    claimed: str,
+    threshold_gate: str,
+    amount_gate: str,
+    term: str,
+) -> None:
+    summary = _born_1955(salary)
+
+    assert _value(summary, "ca-ns/marginal_age_income_over_threshold") == D(over)
+    assert _value(summary, "ca-ns/marginal_age_amount_claimed") == D(claimed)
+    assert _value(summary, "ca-ns/marginal_age_threshold_gate") == D(threshold_gate)
+    assert _value(summary, "ca-ns/marginal_age_amount_gate") == D(amount_gate)
+    assert _value(summary, "ca-ns/marginal_nova_scotia_age_credit_rate") == D(term)
+
+
+@pytest.mark.parametrize("salary", ["31104.05", "40000", "69716.80", "69716.81"])
+def test_2026_born_1955_the_line_99_gate_still_governs_the_age_term(salary: str) -> None:
+    # The age term is inside the provincial part, which is the line 99 gate times the rate.
+    summary = _born_1955(salary)
+
+    assert _value(summary, TAX_GATE) == D("1")
+    assert _value(summary, PROVINCIAL) == _value(summary, TAX_GATE) * _value(
+        summary, REDUCTION_RATE
+    )

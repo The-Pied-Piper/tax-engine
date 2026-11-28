@@ -32,10 +32,11 @@
 # net income over the threshold, while an age amount is still claimed (line 10 before the printed
 # maximum check), adds that rate times the net income rate times the credit rate to the tax. The two
 # gates (`ca-ns/marginal_rate_gate`) switch it off at or under the threshold and once the amount is
-# used up, and it is zero for a filer under 65 or with no birth year. It is added to the bracket rate
-# before the contribution credit comes off, as the credits are taken off the tax, and the line 99
-# gate below governs it as it does the rest of the provincial part. Nova Scotia's basic personal
-# amount is not income-tested from 2025, so it has no slope here.
+# used up, and it is zero for a filer under 65 or with no birth year. The age term is added to the
+# province's other credit-type terms (its position in the sum is immaterial because a sum commutes)
+# and it stops when the claimed amount reaches 0.00 (the dollar that reaches 0.00 is not counted).
+# The line 99 gate below governs it as it does the rest of the provincial part. Nova Scotia's basic
+# personal amount is not income-tested from 2025, so it has no slope here.
 #
 # The low-income tax reduction (NS428 lines 65 to 85) is in the rate, because it changes line 99 and
 # so T1 line 43500: while NS428 line 81 (the income over the base amount) and line 84 (the
