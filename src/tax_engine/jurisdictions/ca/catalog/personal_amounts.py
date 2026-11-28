@@ -159,23 +159,6 @@ spouse, common-law partner or child cannot claim. Blank when the year is blank."
 T1_AGE_65_OR_OLDER = CountKind.declare(CATALOG, "t1_age_65_or_older", non_negative=True)
 """The T1's `ca/age_65_or_older` as read by the T1 tax and credits form for line 78 (line 30100)."""
 
-BORN_IN_1960_OR_EARLIER = CountKind.declare(CATALOG, "born_in_1960_or_earlier", non_negative=True)
-"""Born in 1960 or earlier, T1 line 78 (line 30100) "Age amount (if you were born in 1960 or
-earlier) (use Federal Worksheet) (maximum $9,028)": a starting count, 0 or 1, from the date of birth
-the return asks for.
-
-The age amount is claimed only if the filer was born in 1960 or earlier; a count is only declared
-non-negative, so that condition is the return's to keep. It multiplies the age amount, as the form
-takes it.
-"""
-
-BORN_IN_1960_OR_EARLIER_CHECKED = CountKind.declare(
-    CATALOG, "born_in_1960_or_earlier_checked", non_negative=True
-)
-"""Born in 1960 or earlier, T1 line 78 (line 30100) "Age amount (if you were born in 1960 or
-earlier)": the answer of `ca/born_in_1960_or_earlier` after the check that it is 0 or 1
-(`ca/yes_or_no_count`), a count of 1 or 0. A count of 2 or more is refused, not capped."""
-
 AGE_MAXIMUM = AmountKind.declare(CATALOG, "age_maximum", non_negative=True)
 """Maximum age amount, Federal Worksheet (form 5000-D1), "Line 30100 - Age amount", line 1 "Maximum
 amount 9,028.00": the dataset as an artifact."""
@@ -733,7 +716,7 @@ UNDER_18_AND_BORN_IN_1960_OR_EARLIER = CountKind.declare(
 )
 """Entered as both under 18 and born in 1960 or earlier, Worksheet ON428 line 58440 "if you were
 under 18 years of age on December 31, 2025" and Form ON428 line 10 "Age amount (if you were born in
-1960 or earlier)": 1 when `ca/under_18_on_december_31` and `ca/born_in_1960_or_earlier` are each
+1960 or earlier)": 1 when `ca/under_18_on_december_31` and `ca/age_65_or_older` are each
 more than 0, else 0, a starting count. Born in 1960 or earlier means 65 or older, so a count of 1 is
 refused (see `ca/under_18_and_born_in_1960_or_earlier_checked`)."""
 
