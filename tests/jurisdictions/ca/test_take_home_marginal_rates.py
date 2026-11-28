@@ -35,7 +35,9 @@ from tax_engine.application.models.calculation_request import TaxCalculationRequ
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.manifest import Form
+from tax_engine.jurisdictions.ca.catalog.deductions import CPP_MONTHS
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.personal_amounts import BIRTH_YEAR
 from tests.federal_forms import FEDERAL_FORMS
 from tests.kinds import bundled_kinds
 from tests.manifest_support import real_manifest
@@ -111,6 +113,9 @@ def test_every_step_is_a_percent_except_the_dollar_figures_it_reads() -> None:
         "ca/marginal_cpp_line_5",
         "ca/marginal_cpp_basic_exemption",
         "ca/marginal_cpp_maximum_pensionable_earnings",
+        "ca/marginal_cpp_additional_maximum_pensionable_earnings",
+        "ca/marginal_cpp_line_5_room",
+        "ca/marginal_cpp_line_2_room",
         "ca/marginal_cpp_line_7_signed",
         "ca/marginal_cpp_line_4_signed",
         "ca/marginal_ei_line_1",
@@ -145,6 +150,10 @@ def test_the_cpp_rates_read_the_signed_schedule_8_figures() -> None:
             "ca/schedule_8.cpp_maximum_pensionable_earnings",
             "ca/marginal_cpp_maximum_pensionable_earnings",
         ),
+        _record_total(
+            "ca/schedule_8.cpp_additional_maximum_pensionable_earnings",
+            "ca/marginal_cpp_additional_maximum_pensionable_earnings",
+        ),
         _subtract(
             "ca/marginal_cpp_line_5",
             "ca/marginal_cpp_basic_exemption",
@@ -155,19 +164,46 @@ def test_the_cpp_rates_read_the_signed_schedule_8_figures() -> None:
             "ca/marginal_cpp_maximum_pensionable_earnings",
             "ca/marginal_cpp_line_4_signed",
         ),
+        _subtract(
+            "ca/marginal_cpp_maximum_pensionable_earnings",
+            "ca/marginal_cpp_line_5",
+            "ca/marginal_cpp_line_5_room",
+        ),
+        _subtract(
+            "ca/marginal_cpp_additional_maximum_pensionable_earnings",
+            "ca/marginal_cpp_line_2",
+            "ca/marginal_cpp_line_2_room",
+        ),
+        _band(GATE, "ca/marginal_cpp_line_5_room", "ca/marginal_cpp_line_5_room_gate"),
+        _band(GATE, "ca/marginal_cpp_line_2_room", "ca/marginal_cpp_line_2_room_gate"),
         _tier_rate(
             "ca/cpp_line_11_base_contribution",
             "ca/marginal_cpp_line_7_signed",
+            "ca/marginal_cpp_base_tier_rate",
+        ),
+        _multiply(
+            "ca/marginal_cpp_base_tier_rate",
+            "ca/marginal_cpp_line_5_room_gate",
             "ca/marginal_cpp_base_rate",
         ),
         _tier_rate(
             "ca/cpp_line_12_first_additional_contribution",
             "ca/marginal_cpp_line_7_signed",
+            "ca/marginal_cpp_first_additional_tier_rate",
+        ),
+        _multiply(
+            "ca/marginal_cpp_first_additional_tier_rate",
+            "ca/marginal_cpp_line_5_room_gate",
             "ca/marginal_cpp_first_additional_rate",
         ),
         _tier_rate(
             "ca/cpp_line_22_second_additional_contribution",
             "ca/marginal_cpp_line_4_signed",
+            "ca/marginal_cpp_second_additional_tier_rate",
+        ),
+        _multiply(
+            "ca/marginal_cpp_second_additional_tier_rate",
+            "ca/marginal_cpp_line_2_room_gate",
             "ca/marginal_cpp_second_additional_rate",
         ),
     ]
@@ -319,3 +355,71 @@ def test_the_ei_rate_starts_at_the_line_7_exemption_and_the_premium_takes_over_l
     year: int, salary: str, line_7: str, ei: str
 ) -> None:
     assert _ei_rates(year, salary) == (D(line_7), D(ei))
+
+
+def _contribution_rate(
+    code: str, birth_year: int, salary: str, months: int | None = None
+) -> Decimal:
+    given: list[Artifact[Any]] = [
+        Artifact(EMPLOYMENT_INCOME, D(salary)),
+        Artifact(BIRTH_YEAR, birth_year),
+    ]
+    if months is not None:
+        given.append(Artifact(CPP_MONTHS, months))
+    worksheets = build_tax_computation().compute(
+        TaxCalculationRequest(JurisdictionCode(code), 2026, tuple(given))
+    )
+    (sheet,) = worksheets[FORM]
+    figure = sheet.get(bundled_kinds().kind("ca/marginal_contribution_rate")).value
+    assert isinstance(figure, Decimal)
+    return figure
+
+
+@pytest.mark.parametrize("birth_year", [1955, 2010])
+@pytest.mark.parametrize("salary", ["0", "2000", "2033", "20000", "70000"])
+def test_a_filer_with_no_cpp_months_is_charged_no_cpp_on_a_further_dollar(
+    birth_year: int, salary: str
+) -> None:
+    # Schedule 8 line A is 0 (70 or older all of 2026; not yet 18 in any month of 2026), so the
+    # contribution is 0 and a further dollar of salary adds no CPP: only the EI rate of T2204
+    # line 16 is left (1 for the $2,000 exemption band, 1.63% to the maximum, then 0), and the
+    # form no longer raises a negative rate at $0 and $2,000.
+    ei_rate = {"0": "0", "2000": "1", "2033": "1", "20000": "0.0163", "70000": "0"}[salary]
+
+    assert _contribution_rate("CA-ON", birth_year, salary) == D(ei_rate)
+
+
+@pytest.mark.parametrize("salary", ["0", "2000", "2033", "20000", "70000"])
+def test_a_quebec_filer_born_in_2010_is_charged_no_pension_plan_on_a_further_dollar(
+    salary: str,
+) -> None:
+    # Not yet 18 in any month of 2026: no QPP months. The Quebec EI rate is 1.30%; the form's
+    # CPP rates are 0 in the same way.
+    ei_rate = {"0": "0", "2000": "1", "2033": "0.013", "20000": "0.013", "70000": "0"}[salary]
+
+    assert _contribution_rate("CA-QC", 2010, salary) == D(ei_rate)
+
+
+def test_a_filer_with_cpp_months_is_still_charged_cpp() -> None:
+    assert _contribution_rate("CA-ON", 1980, "20000") == D("0.0759") - D("0.0164") + D("0.0163")
+
+
+@pytest.mark.parametrize(
+    ("months", "salary", "rate"),
+    [
+        # Line A = 6: line E 1,750, line B 37,300, line D 42,500 (the proration table, 2026). Below
+        # line B the base 4.95% and first additional 1% are charged with the EI 1.63%.
+        (6, "20000", "0.0758"),
+        # Between line B and line D only the second additional 4% (and no EI over $68,900 yet).
+        (6, "40000", "0.0563"),
+        # Over line D no CPP is charged any more; only the EI is left.
+        (6, "50000", "0.0163"),
+        (6, "90000", "0"),
+        # Line A = 1: line B 6,216.67, line D 7,083.33.
+        (1, "20000", "0.0163"),
+    ],
+)
+def test_a_part_year_filer_is_charged_no_cpp_over_the_prorated_maximums(
+    months: int, salary: str, rate: str
+) -> None:
+    assert _contribution_rate("CA-ON", 1980, salary, months) == D(rate)

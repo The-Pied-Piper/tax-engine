@@ -74,28 +74,81 @@ MARGINAL_FEDERAL_GATE = AmountKind.declare(CATALOG, "marginal_federal_gate", non
 """Federal gate: 0 where the basic federal tax (T1 line 42900) is 0.00 and 1 where it is at least
 one cent, from the `ca/marginal_rate_gate` dataset. A plain figure, not printed on the form."""
 
+MARGINAL_CPP_ADDITIONAL_MAXIMUM_PENSIONABLE_EARNINGS = AmountKind.declare(
+    CATALOG, "marginal_cpp_additional_maximum_pensionable_earnings", non_negative=True
+)
+"""Part 2 line D, the additional maximum pensionable earnings: Schedule 8's export totalled into the
+marginal rate form's own artifact, the figure taken off line 2 to build the room under it."""
+
+MARGINAL_CPP_LINE_5_ROOM = AmountKind.declare(
+    CATALOG, "marginal_cpp_line_5_room", non_negative=True
+)
+"""Room left under the maximum pensionable earnings: Part 2 line B less Part 3 line 5. Line 5 is
+line 2 limited to line B, so the room is 0 once the salary has reached line B (and for a filer with
+no CPP months, whose line B is 0) and positive below it. Not printed on the form."""
+
+MARGINAL_CPP_LINE_2_ROOM = AmountKind.declare(
+    CATALOG, "marginal_cpp_line_2_room", non_negative=True
+)
+"""Room left under the additional maximum pensionable earnings: Part 2 line D less Part 3 line 2,
+0 once the salary has reached line D and positive below it. Not printed on the form."""
+
+MARGINAL_CPP_LINE_5_ROOM_GATE = AmountKind.declare(
+    CATALOG, "marginal_cpp_line_5_room_gate", non_negative=True
+)
+"""Gate on the room under the maximum pensionable earnings: 0 where it is 0.00 and 1 where it is at
+least one cent, from the `ca/marginal_rate_gate` dataset. The base and first additional
+contributions stop growing when it is 0. A plain figure, not printed on the form."""
+
+MARGINAL_CPP_LINE_2_ROOM_GATE = AmountKind.declare(
+    CATALOG, "marginal_cpp_line_2_room_gate", non_negative=True
+)
+"""Gate on the room under the additional maximum pensionable earnings: 0 where it is 0.00 and 1
+where it is at least one cent, from the `ca/marginal_rate_gate` dataset. The second additional
+contribution stops growing when it is 0. A plain figure, not printed on the form."""
+
+MARGINAL_CPP_BASE_TIER_RATE = AmountKind.declare(
+    CATALOG, "marginal_cpp_base_tier_rate", non_negative=True
+)
+"""CPP base tier rate, Schedule 8 Part 3 line 11 "multiplied by 4.95%": 4.95% from the maximum basic
+exemption (included) up to the maximum pensionable earnings (excluded), 0 outside it, from the
+`ca/cpp_line_11_base_contribution` dataset the contribution reads, applied to the signed line 7,
+before its room gate. Not printed on the form."""
+
+MARGINAL_CPP_FIRST_ADDITIONAL_TIER_RATE = AmountKind.declare(
+    CATALOG, "marginal_cpp_first_additional_tier_rate", non_negative=True
+)
+"""CPP first additional tier rate, Schedule 8 Part 3 line 12 "multiplied by 1%": 1% over the same
+earnings as the base tier rate, 0 outside them, from the
+`ca/cpp_line_12_first_additional_contribution` dataset the contribution reads, before its room gate.
+Not printed on the form."""
+
+MARGINAL_CPP_SECOND_ADDITIONAL_TIER_RATE = AmountKind.declare(
+    CATALOG, "marginal_cpp_second_additional_tier_rate", non_negative=True
+)
+"""CPP second additional tier rate, Schedule 8 Part 3 line 22 "multiplied by 4%": 4% from the
+maximum pensionable earnings (included) up to the additional maximum pensionable earnings
+(excluded), 0 outside it, from the `ca/cpp_line_22_second_additional_contribution` dataset the
+contribution reads, applied to the signed line 4, before its room gate. Not printed on the form."""
+
 MARGINAL_CPP_BASE_RATE = AmountKind.declare(CATALOG, "marginal_cpp_base_rate", non_negative=True)
 """CPP base rate on a further dollar of salary, Schedule 8 Part 3 line 11 "multiplied by 4.95%":
-4.95% from the maximum basic exemption (included) up to the maximum pensionable earnings
-(excluded), 0 outside it, from the `ca/cpp_line_11_base_contribution` dataset the contribution
-reads, applied to the signed line 7. Not printed on the form."""
+the base tier rate while there is room under the maximum pensionable earnings, 0 once the
+contribution has stopped growing (a filer with no CPP months has none). Not printed on the form."""
 
 MARGINAL_CPP_FIRST_ADDITIONAL_RATE = AmountKind.declare(
     CATALOG, "marginal_cpp_first_additional_rate", non_negative=True
 )
 """CPP first additional rate on a further dollar of salary, Schedule 8 Part 3 line 12 "multiplied
-by 1%": 1% over the same earnings as the base rate, 0 outside them, from the
-`ca/cpp_line_12_first_additional_contribution` dataset the contribution reads. Not printed on
-the form."""
+by 1%": the first additional tier rate while there is room under the maximum pensionable earnings,
+0 once the contribution has stopped growing. Not printed on the form."""
 
 MARGINAL_CPP_SECOND_ADDITIONAL_RATE = AmountKind.declare(
     CATALOG, "marginal_cpp_second_additional_rate", non_negative=True
 )
 """CPP second additional rate on a further dollar of salary, Schedule 8 Part 3 line 22 "multiplied
-by 4%": 4% from the maximum pensionable earnings (included) up to the additional maximum
-pensionable earnings (excluded), 0 outside it, from the
-`ca/cpp_line_22_second_additional_contribution` dataset the contribution reads, applied to the
-signed line 4. Not printed on the form."""
+by 4%": the second additional tier rate while there is room under the additional maximum
+pensionable earnings, 0 once the contribution has stopped growing. Not printed on the form."""
 
 MARGINAL_EI_LINE_1 = AmountKind.declare(CATALOG, "marginal_ei_line_1", non_negative=True)
 """Total EI insurable earnings, T2204 line 1: the form's export totalled into the marginal rate
