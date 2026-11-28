@@ -174,13 +174,14 @@ def test_line_50_is_line_49_when_the_tax_is_the_lesser(take_home_service: TakeHo
     assert actual[50] == D("0.00")
 
 
-def test_the_form_is_the_career_extension_form_that_exports_line_50() -> None:
+def test_the_form_is_the_career_extension_form_that_exports_lines_50_38_and_40() -> None:
     declared = part("tp752_pc.yaml")
 
     assert declared["form"] == {
         "name": FORM,
         "title": "Tax Credit for Career Extension",
         "required": True,
-        "exports": ["ca-qc/tp752_pc_line_50"],
+        # Line 50 for TP-1 line 391; lines 38 and 40 for the credit's fall in the marginal rate.
+        "exports": ["ca-qc/tp752_pc_line_50", "ca-qc/tp752_pc_line_38", "ca-qc/tp752_pc_line_40"],
     }
     assert declared["capabilities"] == []

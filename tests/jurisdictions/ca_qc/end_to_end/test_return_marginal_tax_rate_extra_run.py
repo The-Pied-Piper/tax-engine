@@ -21,11 +21,17 @@ largest step that stays under the break (`BREAK_STEPS`), found by a sweep every 
 to $400,000 in both years. A salary that is itself a band edge, where the published rate is the
 lower band's, is listed in `KNOWN_EXCEPTIONS` with the reason; the list is short and each entry is
 a salary where the forward difference is not the derivative.
+
+For a filer 65 or over (born in 1955) the same check also runs at salaries (`AGE_SALARIES`) under
+the Schedule B age threshold, where the age amount and then the career extension credit fall, past
+the end of each, and in the band where the second additional QPP rate applies; none is within $100
+of a gate or of a bracket column.
 """
 
 from __future__ import annotations
 
 from decimal import Decimal
+from typing import Any
 
 import pytest
 
@@ -34,6 +40,7 @@ from tax_engine.application.models.calculation_request import TaxCalculationRequ
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.personal_amounts import BIRTH_YEAR
 from tests.kinds import bundled_kinds
 
 D = Decimal
@@ -159,20 +166,23 @@ CASES = [
 ]
 
 
-def _deductions(year: int, salary: Decimal) -> Decimal:
-    worksheets = build_tax_computation().compute(
-        TaxCalculationRequest(QUEBEC, year, (Artifact(EMPLOYMENT_INCOME, salary),))
-    )
+def _request(year: int, salary: Decimal, birth_year: int | None) -> TaxCalculationRequest:
+    given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, salary)]
+    if birth_year is not None:
+        given.append(Artifact(BIRTH_YEAR, birth_year))
+    return TaxCalculationRequest(QUEBEC, year, tuple(given))
+
+
+def _deductions(year: int, salary: Decimal, birth_year: int | None = None) -> Decimal:
+    worksheets = build_tax_computation().compute(_request(year, salary, birth_year))
     kinds = bundled_kinds()
     return sum(
         (worksheets[form][0].get(kinds.kind(kind)).value for form, kind in DEDUCTIONS), D("0")
     )
 
 
-def _marginal_rate(year: int, salary: Decimal) -> Decimal:
-    worksheets = build_tax_computation().compute(
-        TaxCalculationRequest(QUEBEC, year, (Artifact(EMPLOYMENT_INCOME, salary),))
-    )
+def _marginal_rate(year: int, salary: Decimal, birth_year: int | None = None) -> Decimal:
+    worksheets = build_tax_computation().compute(_request(year, salary, birth_year))
     value = worksheets[RETURN][0].get(bundled_kinds().kind(MARGINAL)).value
     assert isinstance(value, Decimal)
     return value
@@ -186,6 +196,38 @@ def test_the_marginal_rate_is_the_extra_dollar_change_in_the_take_home_deduction
     extra_run = (_deductions(year, D(salary + step)) - _deductions(year, D(salary))) / step
 
     assert abs(_marginal_rate(year, D(salary)) - extra_run) <= TOLERANCE
+
+
+# (tax year, salary) of a filer born in 1955: under the age threshold (43,914 in 2025, 44,818 in
+# 2026), where the age amount falls, where it and the career extension credit fall together (from
+# 58,470 in 2025 and 59,672 in 2026), where only the credit falls, in the second additional QPP
+# band, and past the end of the credit (83,994 in 2025, 85,747 in 2026).
+AGE_SALARIES = [
+    (2025, 40_000),
+    (2025, 48_000),
+    (2025, 62_000),
+    (2025, 70_000),
+    (2025, 75_000),
+    (2025, 80_000),
+    (2025, 95_000),
+    (2026, 40_000),
+    (2026, 48_000),
+    (2026, 64_000),
+    (2026, 70_000),
+    (2026, 80_000),
+    (2026, 95_000),
+]
+
+
+@pytest.mark.parametrize(("year", "salary"), AGE_SALARIES)
+def test_the_marginal_rate_of_a_filer_65_or_over_is_the_extra_dollar_change(
+    year: int, salary: int
+) -> None:
+    extra_run = (
+        _deductions(year, D(salary + 100), 1955) - _deductions(year, D(salary), 1955)
+    ) / 100
+
+    assert abs(_marginal_rate(year, D(salary), 1955) - extra_run) <= TOLERANCE
 
 
 def test_every_known_exception_is_a_salary_of_the_sweep() -> None:
