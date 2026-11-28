@@ -13,11 +13,23 @@ EI 1.63%) the rate is 0.1852364; each other salary pins the structure: the gates
 open with their taxes, each marginal part is its gate times its rate, and the total is the exact
 sum of the three parts rounded half-up to 0.0001: the engine rounds the marginal rate like the
 average rate (`ca/take_home_average_rate_rounding`), so 0.1852364 is 0.1852 in the tests.
+
+The fall of the age amount (Worksheet MB428 "Line 58080 - Age amount", MB428 line 10) is a term of
+the Manitoba rate for a filer born in 1960 or earlier: 15% x 10.8% x N = 0.0162 x N from a net
+income of 27,749.01 to 52,601.99; a filer born in 1955 pays no CPP in 2026 (N = 1, credit-earning
+rate 0.0163 EI), born in 1980 N = 0.99 and the rate 0.0658. Exact Manitoba terms with the credit
+on the contributions taken off: born 1955, 10.8% bracket 0.108 - 0.0017604 = 0.1062396, 12.75%
+bracket 0.1275 - 0.0017604 = 0.1257396, family tax benefit 0.00972, age 0.0162; born 1980, 10.8%
+bracket 0.10692 - 0.0071064 = 0.0998136, 12.75% bracket 0.126225 - 0.0071064 = 0.1191186. The
+salaries 27,749 and 27,749.01 are a net income of exactly that for a filer born in 1955 (no CPP),
+and 52,601.99 and 52,602 the end of the amount (the printed "$52,602 or more, enter 0"). The
+marginal totals are in `test_return_marginal_tax_rate_values.py`.
 """
 
 from __future__ import annotations
 
 from decimal import ROUND_HALF_UP, Decimal
+from typing import Any
 
 import pytest
 
@@ -27,12 +39,14 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.personal_amounts import BIRTH_YEAR
 from tests.kinds import bundled_kinds
 
 D = Decimal
 ROUNDING = D("0.0001")
 MANITOBA = JurisdictionCode("CA-MB")
 RETURN = "ca-mb/return"
+YEAR = 2026
 
 FEDERAL_FORM = "ca/take_home_marginal_rates"
 BASIC_FEDERAL_TAX = "ca/marginal_basic_federal_tax"
@@ -45,6 +59,7 @@ FEDERAL_BRACKET = "ca/marginal_federal_bracket_column_rate"
 MANITOBA_BRACKET = "ca-mb/manitoba_bracket_rate_return"
 FEDERAL = "ca-mb/marginal_federal_rate"
 MANITOBA_RATE = "ca-mb/manitoba_marginal_rate"
+AGE_RATE = "ca-mb/marginal_manitoba_age_credit_rate"
 CONTRIBUTION = "ca-mb/marginal_contribution_rate"
 MARGINAL = "ca-mb/marginal_tax_rate"
 
@@ -163,3 +178,52 @@ def test_2026_both_gates_are_open_at_275000() -> None:
     assert _value(summary, MANITOBA_GATE) == D("1")
     assert _value(summary, FEDERAL) == D("0.33")
     assert _value(summary, MARGINAL) > D("0.33")
+
+
+# Born 1955: salary, age term, Manitoba marginal rate (no CPP, so a net income equal to the salary).
+BORN_1955 = [
+    ("0", "0", "0"),
+    ("27749", "0", "0.1159596"),
+    ("27749.01", "0.0162", "0.1321596"),
+    ("40000", "0.0162", "0.1321596"),
+    ("46000", "0.0162", "0.1224396"),
+    ("50000", "0.0162", "0.1419396"),
+    ("52601.99", "0.0162", "0.1419396"),
+    ("52602", "0", "0.1257396"),
+    ("60000", "0", "0.1257396"),
+]
+# Born 1980 or no year of birth: no age amount, so no age term at any salary.
+UNDER_65 = [
+    ("0", "0", "0"),
+    ("27993.94", "0", "0.0998136"),
+    ("27993.95", "0", "0.0998136"),
+    ("40000", "0", "0.0998136"),
+    ("50000", "0", "0.1191186"),
+    ("53097.97", "0", "0.1191186"),
+    ("53097.98", "0", "0.1191186"),
+    ("60000", "0", "0.1191186"),
+]
+AGE_CASES = [(born, *row) for born in (1955,) for row in BORN_1955] + [
+    (born, *row) for born in (1980, None) for row in UNDER_65
+]
+
+
+def _aged_summary(salary: str, born: int | None) -> Worksheet:
+    given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, D(salary))]
+    if born is not None:
+        given.append(Artifact(BIRTH_YEAR, born))
+    worksheets = build_tax_computation().compute(
+        TaxCalculationRequest(MANITOBA, YEAR, tuple(given))
+    )
+    (summary,) = worksheets[RETURN]
+    return summary
+
+
+@pytest.mark.parametrize(("born", "salary", "age", "manitoba"), AGE_CASES)
+def test_the_age_term_and_the_manitoba_marginal_rate(
+    born: int | None, salary: str, age: str, manitoba: str
+) -> None:
+    summary = _aged_summary(salary, born)
+
+    assert _value(summary, AGE_RATE) == D(age)
+    assert _value(summary, MANITOBA_RATE) == D(manitoba)

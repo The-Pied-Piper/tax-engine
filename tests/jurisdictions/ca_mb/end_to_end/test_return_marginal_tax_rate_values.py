@@ -26,6 +26,24 @@ federal 29% + 14.5% x 1,591 / 75,532 (0.0210639 to seven places) = 0.2930542655;
 `test_return_marginal_tax_rate_extra_run.py`; the gates are in `..._gates.py` and
 `..._gates_2026.py`.
 
+The fall of the Manitoba age amount. For a filer born in 1960 or earlier, Worksheet MB428 "Line
+58080 - Age amount" line 4 is the net income over the threshold of 27,749.00, line 5 is the printed
+rate of 15%, and line 7 is the maximum of 3,728.00 less 15% of line 4, claimed up to a net income of
+52,601.99 (the printed "$52,602 or more, enter 0"). A further dollar of net income takes 15% of a
+dollar off the amount, and each dollar of it is tax at the MB428 line 52 rate of 10.8%. With N the
+part of a dollar of salary left in the net income (1 - enhanced CPP rate, 0.99, or 1 where no CPP
+is paid):
+
+    age term = 15% x 10.8% x N = 0.0162 x N, from 0.01 over the threshold to 52,601.99 of net income
+
+The Manitoba marginal rate adds it to the bracket rate beside the family tax benefit's fall, and the
+federal age amount falls the same way from its own threshold (T1: 15% x N x the federal credit
+rate, 0.0215325 in 2025 and 0.021 in 2026 from a net income of 45,522.00 in 2025 and 46,432.00 in
+2026), which the federal half carries. The marginal tax rate of a filer born in 1955 is the sum
+worked in the comments of `AGE_TOTALS`; the Manitoba parts are in `..._gates.py` (2025) and
+`..._gates_2026.py` (2026). A filer born in 1955 is 70 and still pays CPP in 2025 and pays none in
+2026 (N = 1, the contribution rate 0.0163, the EI rate only).
+
 At the exact edge $2,000 the rate is the lower band's (the EI rate is 0). A contribution band reads
 its own rate from its lower bound, so at exactly $3,500 the CPP rate already applies: CPP 4.95% +
 1% and EI, 0.0759 in 2025 and 0.0758 in 2026, the same as the next cent.
@@ -34,6 +52,7 @@ its own rate from its lower bound, so at exactly $3,500 the CPP rate already app
 from __future__ import annotations
 
 from decimal import Decimal
+from typing import Any
 
 import pytest
 
@@ -42,6 +61,7 @@ from tax_engine.application.models.calculation_request import TaxCalculationRequ
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.personal_amounts import BIRTH_YEAR
 from tests.kinds import bundled_kinds
 
 D = Decimal
@@ -101,6 +121,43 @@ def test_the_marginal_rate_is_the_sum_of_the_rates_that_apply_rounded_to_four_de
 ) -> None:
     worksheets = build_tax_computation().compute(
         TaxCalculationRequest(MANITOBA, year, (Artifact(EMPLOYMENT_INCOME, D(salary)),))
+    )
+    (summary,) = worksheets["ca-mb/return"]
+
+    assert summary.get(bundled_kinds().kind("ca-mb/marginal_tax_rate")).value == D(rate)
+
+
+# Year, year of birth, salary, marginal tax rate: federal + Manitoba + contribution rates, each
+# worked below (the age term is in the Manitoba rate, the federal age term in the federal one).
+AGE_TOTALS = [
+    (2025, 1955, "40000", "0.3354"),  # 0.1339945 + 0.1254636 + 0.0759 = 0.3353581
+    (2025, 1955, "46000", "0.3569"),  # 0.155527 + 0.1254636 + 0.0759 = 0.3568906
+    (2025, 1955, "50000", "0.3666"),  # 0.155527 + 0.1351458 + 0.0759 = 0.3665728
+    (2025, 1955, "53097.97", "0.3666"),
+    (2025, 1955, "53097.98", "0.3505"),  # 0.155527 + 0.1191078 + 0.0759 = 0.3505348
+    (2025, 1955, "60000", "0.4099"),  # 0.214927 + 0.1191078 + 0.0759 = 0.4099348
+    (2025, 1980, "40000", "0.3097"),  # 0.1339945 + 0.0998028 + 0.0759 = 0.3096973
+    (2025, 1980, "53097.97", "0.3290"),  # 0.1339945 + 0.1191078 + 0.0759 = 0.3290023
+    (2025, None, "53097.98", "0.3290"),
+    (2026, 1955, "40000", "0.2862"),  # 0.137718 + 0.1321596 + 0.0163 = 0.2861776
+    (2026, 1955, "46000", "0.2765"),  # 0.137718 + 0.1224396 + 0.0163 = 0.2764576
+    (2026, 1955, "50000", "0.3170"),  # 0.158718 + 0.1419396 + 0.0163 = 0.3169576
+    (2026, 1955, "52601.99", "0.3170"),
+    (2026, 1955, "52602", "0.3008"),  # 0.158718 + 0.1257396 + 0.0163 = 0.3007576
+    (2026, 1980, "40000", "0.3050"),  # 0.129388 + 0.0998136 + 0.0758 = 0.3050016
+    (2026, None, "50000", "0.3243"),  # 0.129388 + 0.1191186 + 0.0758 = 0.3243066
+]
+
+
+@pytest.mark.parametrize(("year", "born", "salary", "rate"), AGE_TOTALS)
+def test_the_marginal_rate_with_the_fall_of_the_age_amount(
+    year: int, born: int | None, salary: str, rate: str
+) -> None:
+    given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, D(salary))]
+    if born is not None:
+        given.append(Artifact(BIRTH_YEAR, born))
+    worksheets = build_tax_computation().compute(
+        TaxCalculationRequest(MANITOBA, year, tuple(given))
     )
     (summary,) = worksheets["ca-mb/return"]
 

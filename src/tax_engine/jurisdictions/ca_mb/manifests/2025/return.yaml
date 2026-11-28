@@ -67,12 +67,15 @@
 # 3,728.00, so a further dollar of net income takes away 15% of a dollar of the credit amount, and
 # each dollar of it is tax at the credit rate of MB428 line 52. It counts only where line 4 is above
 # 0 and only while an amount is still claimed (the age amount claimed on MB428 line 10 before the
-# printed maximum check, which is 0.00 for a filer born after 1960 or with no year of birth, from a
-# net income of 52,602.00, the printed "$52,602 or more, enter 0", and where line 7 is 0.00): the
-# printed rate of Worksheet MB428 line 5 (`ca-mb/age_rate`, as it is) times the two gates
-# (`ca-mb/marginal_rate_gate`) times the credit rate times the net income rate is the extra Manitoba
-# tax, which core/sum adds to the bracket rate beside the basic personal amount's and the family tax
-# benefit's, so the Manitoba rate gate counts it as it counts them.
+# printed maximum check, which is 0.00 for a filer born after 1960 or with no year of birth, and
+# where line 7 is 0.00): the printed rate of Worksheet MB428 line 5 (`ca-mb/age_rate`, as it is)
+# times the two gates (`ca-mb/marginal_rate_gate`) times the net income rate times the credit rate
+# is the extra Manitoba tax. The age term is added to the other credit-type terms (the basic
+# personal amount's and the family tax benefit's) by the same core/sum into the bracket rate; its
+# position in the sum is immaterial because a sum commutes, and the Manitoba rate gate counts it as
+# it counts them. It stops when the claimed amount reaches 0.00 (the dollar that reaches 0.00 is
+# not counted). The end of the amount at a net income of 52,602.00 is the form's printed "$52,602
+# or more, enter 0" shortcut that MB428 line 10 applies, not only worksheet arithmetic.
 #
 # Credits on the contributions. The CPP base contribution (T1 line 30800, MB428 line 19) and the EI
 # premium (line 31200, MB428 line 21) earn the Manitoba non-refundable credit rate (MB428 line 52,
@@ -286,29 +289,29 @@ capabilities:
     consumes:
       records: ca-mb/mb428_credits.worksheet_mb428_age_amount_line_4
     produces:
-      output: ca-mb/age_income_over_threshold_return
+      output: ca-mb/marginal_age_income_over_threshold
   - name: core/record_total
     unit: ca/cad
     consumes:
       records: ca-mb/mb428_credits.mb428_age_amount_claimed_line_10
     produces:
-      output: ca-mb/age_amount_claimed_return
+      output: ca-mb/marginal_age_amount_claimed
   - name: core/amount_by_band_rate
     unit: core/percent
     params:
       table: ca-mb/marginal_rate_gate
     consumes:
-      base: ca-mb/age_income_over_threshold_return
+      base: ca-mb/marginal_age_income_over_threshold
     produces:
-      output: ca-mb/age_threshold_gate
+      output: ca-mb/marginal_age_threshold_gate
   - name: core/amount_by_band_rate
     unit: core/percent
     params:
       table: ca-mb/marginal_rate_gate
     consumes:
-      base: ca-mb/age_amount_claimed_return
+      base: ca-mb/marginal_age_amount_claimed
     produces:
-      output: ca-mb/age_amount_gate
+      output: ca-mb/marginal_age_amount_gate
   - name: core/rate_figure
     unit: core/percent
     params:
@@ -321,36 +324,36 @@ capabilities:
       rounding: ca-mb/exact_rounding
     consumes:
       base: ca-mb/marginal_age_rate
-      rate: ca-mb/age_threshold_gate
+      rate: ca-mb/marginal_age_threshold_gate
     produces:
-      output: ca-mb/marginal_age_rate_over_threshold
+      output: ca-mb/marginal_age_reduction_rate_over_threshold
   - name: core/multiply_by_rate
     unit: core/percent
     params:
       rounding: ca-mb/exact_rounding
     consumes:
-      base: ca-mb/marginal_age_rate_over_threshold
-      rate: ca-mb/age_amount_gate
+      base: ca-mb/marginal_age_reduction_rate_over_threshold
+      rate: ca-mb/marginal_age_amount_gate
     produces:
-      output: ca-mb/marginal_age_fall
+      output: ca-mb/marginal_age_reduction_rate
   - name: core/multiply_by_rate
     unit: core/percent
     params:
       rounding: ca-mb/exact_rounding
     consumes:
-      base: ca-mb/marginal_age_fall
-      rate: ca-mb/marginal_manitoba_credit_rate
-    produces:
-      output: ca-mb/marginal_age_credit_rate
-  - name: core/multiply_by_rate
-    unit: core/percent
-    params:
-      rounding: ca-mb/exact_rounding
-    consumes:
-      base: ca-mb/marginal_age_credit_rate
+      base: ca-mb/marginal_age_reduction_rate
       rate: ca-mb/marginal_net_income_rate
     produces:
-      output: ca-mb/marginal_manitoba_age_rate
+      output: ca-mb/marginal_age_phase_down_net_income_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-mb/exact_rounding
+    consumes:
+      base: ca-mb/marginal_age_phase_down_net_income_rate
+      rate: ca-mb/marginal_manitoba_credit_rate
+    produces:
+      output: ca-mb/marginal_manitoba_age_credit_rate
   - name: core/multiply_by_rate
     unit: core/percent
     params:
@@ -369,7 +372,7 @@ capabilities:
         - ca-mb/marginal_manitoba_bracket_rate
         - ca-mb/marginal_manitoba_phase_out_rate
         - ca-mb/marginal_manitoba_family_tax_benefit_rate
-        - ca-mb/marginal_manitoba_age_rate
+        - ca-mb/marginal_manitoba_age_credit_rate
     produces:
       output: ca-mb/manitoba_bracket_rate_with_phase_out
   - name: core/multiply_by_rate

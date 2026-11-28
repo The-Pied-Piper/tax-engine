@@ -1202,26 +1202,30 @@ MARGINAL_MANITOBA_FAMILY_TAX_BENEFIT_RATE = AmountKind.declare(
 credit rate of the fall times the part of a further dollar left in the net income. An exact
 product, not printed on the form."""
 
-AGE_INCOME_OVER_THRESHOLD_RETURN = AmountKind.declare(
-    CATALOG, "age_income_over_threshold_return", non_negative=True
+MARGINAL_AGE_INCOME_OVER_THRESHOLD = AmountKind.declare(
+    CATALOG, "marginal_age_income_over_threshold", non_negative=True
 )
 """Worksheet MB428 age amount line 4 "Line 2 minus line 3 (if negative, enter \"0\")": the net
 income over the age threshold, the one amount of MB428's export totalled into the return
 summary's own artifact, the base of the age threshold gate."""
 
-AGE_AMOUNT_CLAIMED_RETURN = AmountKind.declare(
-    CATALOG, "age_amount_claimed_return", non_negative=True
+MARGINAL_AGE_AMOUNT_CLAIMED = AmountKind.declare(
+    CATALOG, "marginal_age_amount_claimed", non_negative=True
 )
 """MB428 line 10 before the check against the printed maximum (0.00 for a filer born after 1960,
 with no year of birth, or at a net income of 52,602.00 or more): the one amount of MB428's export
 totalled into the return summary's own artifact, the base of the age amount gate."""
 
-AGE_THRESHOLD_GATE = AmountKind.declare(CATALOG, "age_threshold_gate", non_negative=True)
+MARGINAL_AGE_THRESHOLD_GATE = AmountKind.declare(
+    CATALOG, "marginal_age_threshold_gate", non_negative=True
+)
 """Age threshold gate: 0 where the net income over the age threshold (Worksheet MB428 line 4) is
 0.00 and 1 where it is at least one cent, from the `ca-mb/marginal_rate_gate` dataset: the age
 amount is falling only over its threshold. A plain figure, not printed on the form."""
 
-AGE_AMOUNT_GATE = AmountKind.declare(CATALOG, "age_amount_gate", non_negative=True)
+MARGINAL_AGE_AMOUNT_GATE = AmountKind.declare(
+    CATALOG, "marginal_age_amount_gate", non_negative=True
+)
 """Age amount gate: 0 where the age amount claimed (MB428 line 10 before the maximum check) is 0.00
 and 1 where it is at least one cent, from the `ca-mb/marginal_rate_gate` dataset: the age amount
 falls only while an amount is claimed. A plain figure, not printed on the form."""
@@ -1231,29 +1235,32 @@ MARGINAL_AGE_RATE = AmountKind.declare(CATALOG, "marginal_age_rate", non_negativ
 `ca-mb/age_rate` dataset as it is, with none of the cent rounding the line 6 box applies. A rate,
 not printed as its own figure."""
 
-MARGINAL_AGE_RATE_OVER_THRESHOLD = AmountKind.declare(
-    CATALOG, "marginal_age_rate_over_threshold", non_negative=True
+MARGINAL_AGE_REDUCTION_RATE_OVER_THRESHOLD = AmountKind.declare(
+    CATALOG, "marginal_age_reduction_rate_over_threshold", non_negative=True
 )
 """The age amount reduction rate where the net income is over the age threshold, 0 at or under it.
 An exact product, not printed on the form."""
 
-MARGINAL_AGE_FALL = AmountKind.declare(CATALOG, "marginal_age_fall", non_negative=True)
+MARGINAL_AGE_REDUCTION_RATE = AmountKind.declare(
+    CATALOG, "marginal_age_reduction_rate", non_negative=True
+)
 """Fall of the age amount (MB428 line 10) for each further dollar of net income: 15% where the net
 income is over the threshold and an age amount is still claimed, 0 elsewhere. An exact product,
 not printed on the form."""
 
-MARGINAL_AGE_CREDIT_RATE = AmountKind.declare(
-    CATALOG, "marginal_age_credit_rate", non_negative=True
+MARGINAL_AGE_PHASE_DOWN_NET_INCOME_RATE = AmountKind.declare(
+    CATALOG, "marginal_age_phase_down_net_income_rate", non_negative=True
 )
-"""Manitoba tax the fall of the age amount adds for each further dollar of net income: the fall
-times the Manitoba credit rate (MB428 line 52). An exact product, not printed on the form."""
+"""Fall of the age amount for each further dollar of salary: its fall per dollar of net income
+times the part of a further dollar left in the net income. An exact product, not printed on the
+form."""
 
-MARGINAL_MANITOBA_AGE_RATE = AmountKind.declare(
-    CATALOG, "marginal_manitoba_age_rate", non_negative=True
+MARGINAL_MANITOBA_AGE_CREDIT_RATE = AmountKind.declare(
+    CATALOG, "marginal_manitoba_age_credit_rate", non_negative=True
 )
-"""Manitoba tax the fall of the age amount adds for each further dollar of salary: the credit rate
-of the fall times the part of a further dollar left in the net income. An exact product, not
-printed on the form."""
+"""Manitoba tax the fall of the age amount adds for each further dollar of salary: the fall of the
+age amount times the Manitoba credit rate (MB428 line 52). An exact product, not printed on the
+form."""
 
 MANITOBA_BRACKET_RATE_RETURN = AmountKind.declare(
     CATALOG, "manitoba_bracket_rate_return", non_negative=True

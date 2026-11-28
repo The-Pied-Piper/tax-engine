@@ -29,11 +29,22 @@ credit on CPP and EI (0.0659 x 10.8%) while the family tax benefit lasts.
 The engine rounds the marginal rate half-up to 0.0001 like the average rate
 (`ca/take_home_average_rate_rounding`), so each expected marginal rate in the tests is the exact
 figure derived in the comments rounded half-up to four decimals; the parts stay exact.
+
+The fall of the age amount (Worksheet MB428 "Line 58080 - Age amount", MB428 line 10) is a term of
+the Manitoba rate for a filer born in 1960 or earlier: 15% x 10.8% x N = 0.0162 x N from a net
+income of 27,749.01 to 52,601.99, N = 0.99 in 2025 (a filer born in 1955 is 70 and still pays CPP),
+so 0.016038. 27,993.94 and 27,993.95 are a net income of 27,749.00 and 27,749.01; 53,097.97 and
+53,097.98 are 52,601.99 and 52,602.00 (the printed "$52,602 or more, enter 0"). Exact Manitoba
+terms with the credit on the CPP base and EI (10.8% x 0.0659 = 0.0071172) taken off:
+10.8% bracket 0.10692 - 0.0071172 = 0.0998028; 12.75% bracket 0.126225 - 0.0071172 = 0.1191078;
+family tax benefit 0.00972 x 0.99 = 0.0096228. The marginal totals are in
+`test_return_marginal_tax_rate_values.py`.
 """
 
 from __future__ import annotations
 
 from decimal import ROUND_HALF_UP, Decimal
+from typing import Any
 
 import pytest
 
@@ -43,6 +54,7 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.personal_amounts import BIRTH_YEAR
 from tests.kinds import bundled_kinds
 
 D = Decimal
@@ -60,6 +72,7 @@ FAMILY_TAX_BENEFIT = "ca-mb/family_tax_benefit_return"
 FAMILY_TAX_BENEFIT_GATE = "ca-mb/family_tax_benefit_gate"
 FEDERAL = "ca-mb/marginal_federal_rate"
 MANITOBA_RATE = "ca-mb/manitoba_marginal_rate"
+AGE_RATE = "ca-mb/marginal_manitoba_age_credit_rate"
 CONTRIBUTION = "ca-mb/marginal_contribution_rate"
 MARGINAL = "ca-mb/marginal_tax_rate"
 
@@ -160,3 +173,58 @@ def test_the_family_tax_benefit_gate_follows_schedule_mb428_a_line_12(
 
     assert (_value(summary, FAMILY_TAX_BENEFIT) > 0) is benefit_is_positive
     assert _value(summary, FAMILY_TAX_BENEFIT_GATE) == D(int(benefit_is_positive))
+
+
+# Born 1955: salary, age term, Manitoba marginal rate. 27,993.94 is a net income of exactly
+# the threshold (line 4 is 0.00, no effect); the family tax benefit's fall is still counted.
+BORN_1955 = [
+    ("0", "0", "0"),
+    ("27993.94", "0", "0.1094256"),
+    ("27993.95", "0.016038", "0.1254636"),
+    ("40000", "0.016038", "0.1254636"),
+    ("46000", "0.016038", "0.1254636"),
+    ("50000", "0.016038", "0.1351458"),
+    ("53097.97", "0.016038", "0.1351458"),
+    ("53097.98", "0", "0.1191078"),
+    ("60000", "0", "0.1191078"),
+]
+# Born 1980 or no year of birth: no age amount, so no age term at any salary.
+UNDER_65 = [
+    ("0", "0", "0"),
+    ("27993.94", "0", "0.0998028"),
+    ("27993.95", "0", "0.0998028"),
+    ("40000", "0", "0.0998028"),
+    ("50000", "0", "0.1191078"),
+    ("53097.97", "0", "0.1191078"),
+    ("53097.98", "0", "0.1191078"),
+    ("60000", "0", "0.1191078"),
+]
+AGE_CASES = [(born, *row) for born in (1955,) for row in BORN_1955] + [
+    (born, *row) for born in (1980, None) for row in UNDER_65
+]
+
+
+def _aged_summary(salary: str, born: int | None) -> Worksheet:
+    given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, D(salary))]
+    if born is not None:
+        given.append(Artifact(BIRTH_YEAR, born))
+    worksheets = build_tax_computation().compute(
+        TaxCalculationRequest(MANITOBA, YEAR, tuple(given))
+    )
+    (summary,) = worksheets[RETURN]
+    return summary
+
+
+@pytest.mark.parametrize(("born", "salary", "age", "manitoba"), AGE_CASES)
+def test_the_age_term_and_the_manitoba_marginal_rate(
+    born: int | None, salary: str, age: str, manitoba: str
+) -> None:
+    summary = _aged_summary(salary, born)
+
+    assert _value(summary, AGE_RATE) == D(age)
+    assert _value(summary, MANITOBA_RATE) == D(manitoba)
+
+
+def test_the_age_term_is_the_printed_rate_times_the_credit_rate_times_the_net_income_rate() -> None:
+    # 15% x 10.8% x 0.99, exact, the credit rate not rounded to the cent.
+    assert _value(_aged_summary("40000", 1955), AGE_RATE) == D("0.15") * D("0.108") * D("0.99")
