@@ -72,7 +72,9 @@
 # are all at the one rate, so the term is added to the bracket rate beside the contributions'
 # credit (which comes off in the step after it) into the rate before the credits, and the
 # Saskatchewan gate on line 67 governs it like the rest: where the tax after the credits is 0 the
-# age amount falling costs no tax. Saskatchewan has no basic personal amount term, its basic
+# age amount falling costs no tax. The age term is added to the province's other credit-type terms
+# (its position in the sum is immaterial because a sum commutes) and it stops when the claimed
+# amount reaches 0.00 (the dollar that reaches 0.00 is not counted). Saskatchewan has no basic personal amount term, its basic
 # personal amount (SK428 line 9) being a flat figure.
 capabilities:
   - name: core/record_total

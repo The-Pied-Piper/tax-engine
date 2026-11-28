@@ -65,3 +65,34 @@ def test_every_step_after_line_167_has_no_title_and_no_reference() -> None:
     for step in _steps()[1:]:
         assert "title" not in step
         assert "reference" not in step
+
+
+def test_the_age_amount_fall_is_added_to_the_bracket_rate_before_the_contribution_credit() -> None:
+    steps = _steps()
+    produced = [step["produces"]["output"] for step in steps]
+    by_output = {step["produces"]["output"]: step for step in steps}
+
+    assert by_output["ca-sk/marginal_age_income_over_threshold"]["consumes"] == {
+        "records": "ca-sk/sk428_credits.worksheet_sk428_age_amount_line_4"
+    }
+    assert by_output["ca-sk/marginal_age_amount_claimed"]["consumes"] == {
+        "records": "ca-sk/sk428_credits.sk428_age_amount_claimed_line_10"
+    }
+    assert by_output["ca-sk/marginal_age_rate"]["params"] == {"rate": "ca-sk/age_rate"}
+    assert by_output["ca-sk/marginal_saskatchewan_age_credit_rate"]["consumes"] == {
+        "base": "ca-sk/marginal_age_phase_down_net_income_rate",
+        "rate": "ca-sk/marginal_saskatchewan_credit_rate",
+    }
+    assert by_output["ca-sk/marginal_saskatchewan_rate_before_credits"]["consumes"] == {
+        "parts": [
+            "ca-sk/marginal_saskatchewan_bracket_rate",
+            "ca-sk/marginal_saskatchewan_age_credit_rate",
+        ]
+    }
+    assert by_output["ca-sk/marginal_saskatchewan_rate_after_credits"]["consumes"] == {
+        "amount": "ca-sk/marginal_saskatchewan_rate_before_credits",
+        "less": "ca-sk/marginal_saskatchewan_contribution_credit_rate",
+    }
+    assert produced.index("ca-sk/marginal_saskatchewan_age_credit_rate") < produced.index(
+        "ca-sk/marginal_saskatchewan_rate_before_credits"
+    )
