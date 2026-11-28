@@ -63,9 +63,9 @@ ALBERTA = JurisdictionCode("CA-AB")
 BORN = {2025: 1955, 2026: 1956}
 RETURN = "ca-ab/return"
 
-# Year, salary, then for a filer without the age amount and for one born in 1955 (1956 for 2026): the Alberta
-# marginal rate, the federal marginal rate and the marginal tax rate; the contribution rate, the
-# age threshold gate and the age amount gate of the filer born in 1955 or 1956.
+# Year, salary, then for a filer without the age amount and for one born in 1955 (1956 for 2026):
+# the Alberta marginal rate, the federal marginal rate and the marginal tax rate; the contribution
+# rate, the age threshold gate and the age amount gate of the filer born in 1955 or 1956.
 ROWS = [
     (2025, "0", ("0", "0", "0"), ("0", "0", "0"), "0", "0", "1"),
     (
