@@ -2,12 +2,22 @@
 # The line is an input of the form, copied from the RL-1 slip. A take-home caller gives only the
 # salary, so `ca-qc/tp1_qpp_contribution_given_line_98` is optional.
 # A request that gives it has that figure as line 98, unchanged. A request that leaves it out
-# has line 98 computed from line 101, the salary: 6.40% from $3,500 to $71,300, at most $4,339.20,
-# half-up to the
-# cent, from the `ca-qc/tp1_line_98_qpp_contribution` dataset, as T2204 line 4 does.
+# has line 98 computed as 6.40% of Schedule 8 line 7 (the salary above the basic exemption, up to the
+# maximum pensionable earnings, both prorated by the months of line A), at most $4,339.20, half-up
+# to the cent, from the `ca-qc/tp1_line_98_qpp_contribution` dataset, as T2204 line 4 does. A filer
+# with no QPP months (under 18 all year, or 73 or older all year) has line 7 of 0, so line 98 is 0.
+# Schedule 8 is its own form, so line 7 arrives as that form's export, a record list of one amount;
+# the first step is `core/record_total` over it, as Schedule U line 10 reads line 98.
 form:
   name: ca-qc/tp1_income
 capabilities:
+  - name: core/record_total
+    title: "QPP earnings"
+    unit: ca/cad
+    consumes:
+      records: ca/schedule_8.cpp_part_3_line_7
+    produces:
+      output: ca-qc/tp1_qpp_earnings_for_line_98
   - name: ca/given_or_contribution_tier
     title: "QPP contribution"
     reference: "98"
@@ -16,7 +26,7 @@ capabilities:
       tier: ca-qc/tp1_line_98_qpp_contribution
     consumes:
       given: ca-qc/tp1_qpp_contribution_given_line_98
-      earnings: ca-qc/tp1_employment_income_line_101
+      earnings: ca-qc/tp1_qpp_earnings_for_line_98
     blank:
       given: compute
     produces:

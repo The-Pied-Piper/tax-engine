@@ -38,7 +38,7 @@ CONTRIBUTION = AmountKind("ex/contribution")
 def test_2025_tier_is_98_2_figures_as_printed() -> None:
     data = SOURCE.get(FAMILY, 2025, CONTRIBUTION_TIER)
 
-    assert data.values == ContributionTier(Rate(D("0.04")), D("71300"), D("81200"), D("396.00"))
+    assert data.values == ContributionTier(Rate(D("0.04")), D("0"), D("9900"), D("396.00"))
     assert data.rounding == RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
 
@@ -61,8 +61,8 @@ def test_2025_tier_cites_the_form_and_the_revenu_quebec_page() -> None:
 @pytest.mark.parametrize(
     ("earnings", "contribution"),
     [
-        ("71300", "0.00"),
-        ("81200", "396.00"),
+        ("0", "0.00"),
+        ("9900", "396.00"),
         ("1000000", "396.00"),
     ],
 )

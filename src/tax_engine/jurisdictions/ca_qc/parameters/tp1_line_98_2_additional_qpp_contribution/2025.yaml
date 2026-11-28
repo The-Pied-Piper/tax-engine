@@ -5,6 +5,9 @@
 # listed check): 4% of the earnings from the $71,300 maximum pensionable earnings to the $81,200
 # additional maximum pensionable earnings, at most $396.00 (4% of $9,900, exactly). Dollars and
 # cents, half-up to the cent.
+# The tier is read on Schedule 8 line 4 (the earnings above the maximum pensionable earnings, prorated
+# by the months of line A), so it starts at 0 and its upper bound is line 4's maximum ($9,900: the
+# additional maximum less the maximum); a filer with no QPP months has a line 4 of 0.
 family: ca-qc/tp1_line_98_2_additional_qpp_contribution
 tax_year: 2025
 kind: contribution_tier
@@ -13,6 +16,6 @@ sources:
   - Revenu Quebec, Maximum Pensionable Earnings and Quebec Pension Plan Contribution Rate (web page)
 rounding: {increment: "0.01", mode: half_up}
 rate: "0.04"
-lower: "71300"
-upper: "81200"
+lower: "0"
+upper: "9900"
 maximum: "396.00"

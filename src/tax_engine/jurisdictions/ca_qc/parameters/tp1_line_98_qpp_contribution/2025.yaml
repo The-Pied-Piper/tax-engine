@@ -4,6 +4,9 @@
 # Earnings and Quebec Pension Plan Contribution Rate" (a web page: a listed check): 6.40% of the
 # earnings from the $3,500 basic exemption to the $71,300 maximum pensionable earnings, at most
 # $4,339.20 (6.40% of $67,800, exactly). Dollars and cents, half-up to the cent.
+# The tier is read on Schedule 8 line 7 (the earnings above the basic exemption, up to the maximum
+# pensionable earnings, prorated by the months of line A), so it starts at 0 and its upper bound is
+# line 7's maximum ($67,800), the finite top the tier needs; a filer with no QPP months has a line 7 of 0.
 family: ca-qc/tp1_line_98_qpp_contribution
 tax_year: 2025
 kind: contribution_tier
@@ -12,6 +15,6 @@ sources:
   - Revenu Quebec, Maximum Pensionable Earnings and Quebec Pension Plan Contribution Rate (web page)
 rounding: {increment: "0.01", mode: half_up}
 rate: "0.064"
-lower: "3500"
-upper: "71300"
+lower: "0"
+upper: "67800"
 maximum: "4339.20"

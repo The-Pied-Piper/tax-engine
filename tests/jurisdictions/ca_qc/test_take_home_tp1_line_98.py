@@ -51,6 +51,7 @@ FORM = dedent("""\
       name: ca-qc/tp1_income
       required: true
       exports:
+        - ca-qc/tp1_employment_income_line_101
         - ca-qc/tp1_qpp_contribution_line_98
     """)
 
