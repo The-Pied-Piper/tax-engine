@@ -79,6 +79,8 @@ CREDITS_FORM = dedent("""\
       required: true
       exports:
         - ca-mb/mb428_bracket_rate_line_5
+        - ca-mb/worksheet_mb428_age_amount_line_4
+        - ca-mb/mb428_age_amount_claimed_line_10
     capabilities: []
     """)
 MB428_FORM = dedent("""\
@@ -171,6 +173,8 @@ OTHER_STEPS = [
     ("ca/t1_tax_and_credits", "ca/federal_bracket_column_rate_line_73", "core/percent"),
     ("ca/t1_tax_and_credits", "ca/federal_tax_after_credits", "ca/cad"),
     ("ca-mb/mb428_credits", "ca-mb/mb428_bracket_rate_line_5", "core/percent"),
+    ("ca-mb/mb428_credits", "ca-mb/worksheet_mb428_age_amount_line_4", "ca/cad"),
+    ("ca-mb/mb428_credits", "ca-mb/mb428_age_amount_claimed_line_10", "ca/cad"),
     ("ca-mb/mb428", "ca-mb/mb428_tax_after_credits_line_65", "ca/cad"),
     ("ca-mb/mb428_a", "ca-mb/mb428_a_family_tax_benefit_line_12", "ca/cad"),
     ("ca-mb/worksheet_mb428", "ca-mb/worksheet_mb428_line_5", "ca/cad"),

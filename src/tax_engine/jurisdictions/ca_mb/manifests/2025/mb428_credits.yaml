@@ -2,7 +2,10 @@
 # exports; line parts carry capabilities. Exports: line 5 (`ca-mb/mb428_bracket_rate_line_5`), the
 # rate of the column line 1 falls in, which the return summary reads for the marginal tax rate;
 # line 8 (`ca-mb/mb428_tax_on_taxable_income_line_8`), which line 58 on the tax form reads; and line
-# 57 (`ca-mb/mb428_non_refundable_credits_line_57`), which line 61 on the tax form reads.
+# 57 (`ca-mb/mb428_non_refundable_credits_line_57`), which line 61 on the tax form reads; and Worksheet
+# MB428's age amount line 4 (`ca-mb/worksheet_mb428_age_amount_line_4`) with the age amount claimed on
+# line 10 before the printed maximum check (`ca-mb/mb428_age_amount_claimed_line_10`), which the return
+# summary reads for the fall of the age amount in the marginal tax rate.
 form:
   name: ca-mb/mb428_credits
   title: "Form MB428: Manitoba Tax"
@@ -11,4 +14,6 @@ form:
     - ca-mb/mb428_bracket_rate_line_5
     - ca-mb/mb428_tax_on_taxable_income_line_8
     - ca-mb/mb428_non_refundable_credits_line_57
+    - ca-mb/worksheet_mb428_age_amount_line_4
+    - ca-mb/mb428_age_amount_claimed_line_10
 capabilities: []
