@@ -57,11 +57,23 @@
 # The last step adds the federal marginal rate, the Saskatchewan marginal rate and the contribution
 # rate with core/sum into `ca-sk/marginal_tax_rate`; it is rounded half-up to
 # 0.0001 like the average rate, is not printed on the form and has no title or line.
-# Limits: the age amount (SK428 line 10, Worksheet SK428, now worked out when the optional year of
-# birth says born in 1960 or earlier, phased out at 15% of net income over $43,066) is not a step
-# in the marginal rate. The marginal-rate steps above are unchanged and still assume no age amount,
-# so the marginal tax rate would be wrong for a filer born in 1960 or earlier with net income
-# between $43,066 and $81,633.
+#
+# The age amount (SK428 line 10, Worksheet SK428 5008-D "Line 58080 - Age amount", for a filer born
+# in 1960 or earlier) falls by the worksheet's line 5 rate, 15% (`ca-sk/age_rate`, the province's
+# own printed rate), of the net income over the line 3 threshold until it reaches 0, and each
+# dollar of that fall is Saskatchewan tax at the non-refundable credit rate (SK428 line 52), so a
+# further dollar of salary adds fall x credit rate x net income rate. SK428 exports the
+# worksheet's line 4 "Line 2 minus line 3 (if negative, enter 0)" and the age amount claimed before
+# the printed maximum check (the `sk428_age_amount_claimed_line_10` step, 0 for a filer born in
+# 1961 or later or with no year of birth), and this return totals each into its own figure. Two
+# `ca-sk/marginal_rate_gate` steps turn them into 0 or 1 (net income over the threshold, an age
+# amount still claimed), the printed 15% is multiplied by both gates, by the net income rate and by
+# the credit rate into `ca-sk/marginal_saskatchewan_age_credit_rate`. Saskatchewan's credits
+# are all at the one rate, so the term is added to the bracket rate beside the contributions'
+# credit (which comes off in the step after it) into the rate before the credits, and the
+# Saskatchewan gate on line 67 governs it like the rest: where the tax after the credits is 0 the
+# age amount falling costs no tax. Saskatchewan has no basic personal amount term, its basic
+# personal amount (SK428 line 9) being a flat figure.
 capabilities:
   - name: core/record_total
     title: "Refund or balance owing"
@@ -131,12 +143,92 @@ capabilities:
       rate: ca-sk/marginal_net_income_rate
     produces:
       output: ca-sk/marginal_saskatchewan_bracket_rate
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-sk/sk428_credits.worksheet_sk428_age_amount_line_4
+    produces:
+      output: ca-sk/marginal_age_income_over_threshold
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-sk/sk428_credits.sk428_age_amount_claimed_line_10
+    produces:
+      output: ca-sk/marginal_age_amount_claimed
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca-sk/marginal_rate_gate
+    consumes:
+      base: ca-sk/marginal_age_income_over_threshold
+    produces:
+      output: ca-sk/marginal_age_threshold_gate
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca-sk/marginal_rate_gate
+    consumes:
+      base: ca-sk/marginal_age_amount_claimed
+    produces:
+      output: ca-sk/marginal_age_amount_gate
+  - name: core/rate_figure
+    unit: core/percent
+    params:
+      rate: ca-sk/age_rate
+    produces:
+      output: ca-sk/marginal_age_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-sk/exact_rounding
+    consumes:
+      base: ca-sk/marginal_age_rate
+      rate: ca-sk/marginal_age_threshold_gate
+    produces:
+      output: ca-sk/marginal_age_reduction_rate_over_threshold
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-sk/exact_rounding
+    consumes:
+      base: ca-sk/marginal_age_reduction_rate_over_threshold
+      rate: ca-sk/marginal_age_amount_gate
+    produces:
+      output: ca-sk/marginal_age_reduction_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-sk/exact_rounding
+    consumes:
+      base: ca-sk/marginal_age_reduction_rate
+      rate: ca-sk/marginal_net_income_rate
+    produces:
+      output: ca-sk/marginal_age_phase_down_net_income_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-sk/exact_rounding
+    consumes:
+      base: ca-sk/marginal_age_phase_down_net_income_rate
+      rate: ca-sk/marginal_saskatchewan_credit_rate
+    produces:
+      output: ca-sk/marginal_saskatchewan_age_credit_rate
+  - name: core/sum
+    unit: core/percent
+    params:
+      rounding: ca-sk/exact_rounding
+    consumes:
+      parts:
+        - ca-sk/marginal_saskatchewan_bracket_rate
+        - ca-sk/marginal_saskatchewan_age_credit_rate
+    produces:
+      output: ca-sk/marginal_saskatchewan_rate_before_credits
   - name: core/subtract
     unit: core/percent
     params:
       rounding: ca-sk/exact_rounding
     consumes:
-      amount: ca-sk/marginal_saskatchewan_bracket_rate
+      amount: ca-sk/marginal_saskatchewan_rate_before_credits
       less: ca-sk/marginal_saskatchewan_contribution_credit_rate
     produces:
       output: ca-sk/marginal_saskatchewan_rate_after_credits

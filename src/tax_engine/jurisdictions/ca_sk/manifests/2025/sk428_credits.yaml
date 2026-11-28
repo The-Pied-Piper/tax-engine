@@ -1,8 +1,11 @@
 # Form SK428 Saskatchewan Tax 2025 (CRA 5008-c), lines 1 to 57. This part names the form and its
 # exports; line parts carry capabilities. Exports: line 5 (`ca-sk/sk428_bracket_rate_line_5`), the
 # bracket rate the return summary reads for the marginal tax rate; line 8
-# (`ca-sk/sk428_tax_on_taxable_income_line_8`), which line 58 on the tax form reads; and line 57
-# (`ca-sk/sk428_non_refundable_credits_line_57`), which line 63 on the tax form reads.
+# (`ca-sk/sk428_tax_on_taxable_income_line_8`), which line 58 on the tax form reads; line 57
+# (`ca-sk/sk428_non_refundable_credits_line_57`), which line 63 on the tax form reads; and the age
+# amount worksheet's line 4 (`ca-sk/worksheet_sk428_age_amount_line_4`) and the age amount claimed
+# before the printed maximum check (`ca-sk/sk428_age_amount_claimed_line_10`), which the return
+# summary reads for the fall of the age amount in the marginal tax rate.
 form:
   name: ca-sk/sk428_credits
   title: "Form SK428: Saskatchewan Tax"
@@ -11,4 +14,6 @@ form:
     - ca-sk/sk428_bracket_rate_line_5
     - ca-sk/sk428_tax_on_taxable_income_line_8
     - ca-sk/sk428_non_refundable_credits_line_57
+    - ca-sk/worksheet_sk428_age_amount_line_4
+    - ca-sk/sk428_age_amount_claimed_line_10
 capabilities: []
