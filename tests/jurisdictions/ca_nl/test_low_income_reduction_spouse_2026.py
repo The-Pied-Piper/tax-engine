@@ -20,19 +20,18 @@ D = Decimal
 SOURCE = YamlParameterSource(newfoundland_packages().roots(), newfoundland_parameter_parsers())
 FAMILY = "ca-nl/low_income_reduction_spouse"
 SOURCES = (
+    "https://www.assembly.nl.ca/Legislation/sr/regulations/rc260018.htm",
     "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5001-c/5001-c-25e.txt",
-    "https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf",
 )
-PROVISIONAL_HEADER = (
-    "# Provisional: taken from the 2025 form text named in sources; to be confirmed "
-    "against the 2026 form text when CRA publishes it."
+CONFIRMED_HEADER = (
+    "# Confirmed from the regulation named in the next line; the 2026 NL428 is not yet published."
 )
-DERIVATION_HEADER = (
-    "# Derivation: 2025 amount 557 x 1.011 (Newfoundland and Labrador's index rate in"
-    " T4127 (Jan 2026) Table 8.2; applied to the 2025 basic amount 11,067 it gives "
-    "the printed 11,188) = 563.127, rounded to the nearest dollar, a half going up, "
-    "to 563 (NL Income Tax Act, 2000 s.6.1(3)(c)); unconfirmed, as the 2026 NL428 is "
-    "not yet published."
+SOURCE_HEADER = (
+    "# Source: Newfoundland and Labrador Regulation 18/26, Low Income Tax Reduction "
+    "Regulations for the 2025 and 2026 Taxation Years (filed May 14, 2026; "
+    'https://www.assembly.nl.ca/Legislation/sr/regulations/rc260018.htm), s.3(b)(ii): "the '
+    'amount referred to in paragraph 21.1(2.1)(b) of the Act is $563" for the 2026 taxation '
+    "year, in force January 1, 2026 (s.5(2)); taken as printed, not indexed."
 )
 
 
@@ -60,13 +59,13 @@ def test_2026_low_income_reduction_spouse_is_for_tax_year_2026() -> None:
     assert data.tax_year == 2026
 
 
-def test_the_2026_file_is_provisional_and_states_its_derivation() -> None:
+def test_the_2026_file_is_confirmed_and_states_its_source() -> None:
     root = newfoundland_packages().roots()[Namespace("ca-nl")]
     path = root / "parameters" / "low_income_reduction_spouse" / "2026.yaml"
     lines = path.read_text().splitlines()
 
-    assert lines[0] == PROVISIONAL_HEADER
-    assert lines[1] == DERIVATION_HEADER
+    assert lines[0] == CONFIRMED_HEADER
+    assert lines[1] == SOURCE_HEADER
 
 
 def test_2025_low_income_reduction_spouse_is_unchanged() -> None:

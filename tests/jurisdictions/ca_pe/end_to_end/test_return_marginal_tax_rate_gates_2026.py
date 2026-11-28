@@ -11,8 +11,8 @@ engine, and each rate is the hand-worked figure of `test_return_marginal_tax_rat
 other salary pins the structure: the gates are 0 or 1 and open with the amounts they read, the
 provincial part is its gate times its rate, and the total is the exact sum of the three parts.
 
-- line 97 is 0.00 at a salary of 19,991.38 and 0.01 at 19,991.39; line 84 is 0.00 at 22,843.43 and
-  0.01 at 22,843.44; line 87 is 0.01 at 29,914.03 and 0.00 at 29,914.04; between line 97 opening
+- line 97 is 0.00 at a salary of 19,991.38 and 0.01 at 19,991.39; line 84 is 0.00 at 23,196.97 and
+  0.01 at 23,196.98; line 87 is 0.01 at 30,267.57 and 0.00 at 30,267.58; between line 97 opening
   and line 84 opening, and after line 87 is used up, the provincial part is 9.5% x 0.99 - 9.5% x
   0.0658 = 0.087799; in between it is that plus 5% x 0.99 = 0.137299.
 
@@ -65,9 +65,9 @@ SALARIES = [
     "11750",
     "19200.18",
     "19991.39",
-    "22843.44",
+    "23196.98",
     "28000",
-    "29914.04",
+    "30267.58",
     "70000",
     "275000",
 ]
@@ -198,10 +198,10 @@ def test_2026_both_gates_are_open_at_275000() -> None:
     [
         ("19991.38", "0", "0"),
         ("19991.39", "1", "0.087799"),
-        ("22843.43", "1", "0.087799"),
-        ("22843.44", "1", "0.137299"),
-        ("29914.03", "1", "0.137299"),
-        ("29914.04", "1", "0.087799"),
+        ("23196.97", "1", "0.087799"),
+        ("23196.98", "1", "0.137299"),
+        ("30267.57", "1", "0.137299"),
+        ("30267.58", "1", "0.087799"),
     ],
 )
 def test_2026_the_provincial_part_follows_line_97_and_the_reduction_phase_out(
