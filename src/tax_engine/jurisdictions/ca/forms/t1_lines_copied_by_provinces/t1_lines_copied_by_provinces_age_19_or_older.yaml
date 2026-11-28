@@ -1,0 +1,21 @@
+# Aged 19 or older at the end of the tax year, worked out once from the T1's year of birth
+# (`ca/birth_year`, this form's input). The BC sales tax credit (BC479 line 9) and the Manitoba
+# personal tax credit (MB479 line 7) are not claimable by a filer under 19 unless they had a spouse
+# or common-law partner or a child (BC guide 5010-PC; Manitoba guide 5007-PC), so the test is made
+# here, exported as `ca/age_19_or_older` (1 or 0; blank when the year is blank) and read by each of
+# those forms; the cutoff year is the dataset's, 2006 for 2025 and 2007 for 2026. Not a line of the form.
+form:
+  name: ca/t1_lines_copied_by_provinces
+capabilities:
+  - name: ca/count_by_conditions
+    title: Aged 19 or older at the end of the year
+    params:
+      conditions: ca/age_19_or_older_conditions
+    consumes:
+      counts:
+        - ca/birth_year
+      amounts: []
+    blank:
+      counts: pass_on
+    produces:
+      output: ca/age_19_or_older

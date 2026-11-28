@@ -601,7 +601,21 @@ BC479_BASIC_SALES_TAX_CREDIT_LINE_9 = AmountKind.declare(
     CATALOG, "bc479_basic_sales_tax_credit_line_9", non_negative=True
 )
 """Basic sales tax credit, BC479 line 9 (line 60330) "Basic sales tax credit Claim $75": the amount
-claimed, the same at every income."""
+claimed, the same at every income, or 0.00 for a filer under 19 at the end of the year (from the
+year of birth, `ca/birth_year`; see `BC479_AGE_19_OR_OLDER`)."""
+
+BC479_BASIC_SALES_TAX_CREDIT_CLAIM_LINE_9 = AmountKind.declare(
+    CATALOG, "bc479_basic_sales_tax_credit_claim_line_9", non_negative=True
+)
+"""Basic sales tax credit claim, BC479 line 9 "Claim $75": the printed figure, from the
+`ca-bc/sales_tax_credit_basic` dataset."""
+
+BC479_AGE_19_OR_OLDER = CountKind.declare(CATALOG, "bc479_age_19_or_older", non_negative=True)
+"""Aged 19 or older at the end of the year as Form BC479 line 9 reads it: the T1's
+`ca/age_19_or_older` (worked out once there from the year of birth), taken from the export of
+`ca/t1_lines_copied_by_provinces` by `core/first_record_count`: 1 or 0, blank when the year is
+blank. The BC guide 5010-PC: the sales tax credit is for a filer who was 19 or older, had a spouse
+or common-law partner, or was a parent of a child."""
 
 BC428_BRITISH_COLUMBIA_TAX_ON_TAXABLE_INCOME_LINE_61 = AmountKind.declare(
     CATALOG, "bc428_british_columbia_tax_on_taxable_income_line_61", non_negative=True
