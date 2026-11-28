@@ -5,9 +5,10 @@ Only the sections "Line 58080 - Age amount" and "Line 58440 - Disability amount 
 built. The age amount's line 7 reads (CRA 5001-D-25e.txt): "Line 7: Line 1 minus line 6 (if
 negative, enter "0") Enter this amount on line 58080 of your Form NL428." The disability amount's
 line 7 reads: "Line 7: Line 1 plus line 6 Enter this amount on line 58440 of your Form NL428.
-(maximum $10,981)". The part file declares the form and those two exports; it has no capabilities,
-no dataset and no supplies. The other sections are skipped blocks whose NL428 lines are optional
-inputs.
+(maximum $10,981)". The part file declares the form and its exports: those two amounts and the age
+section's line 1 and line 4 (which the return summary's marginal rate reads); it has no
+capabilities, no dataset and no supplies. The other sections are skipped blocks whose NL428 lines
+are optional inputs.
 """
 
 from __future__ import annotations
@@ -70,9 +71,10 @@ def test_the_part_declares_the_form_name_title_and_required() -> None:
     assert form["required"] is True
 
 
-def test_the_form_exports_the_age_maximum_and_the_two_line_7_amounts() -> None:
+def test_the_form_exports_the_age_maximum_line_4_and_the_two_line_7_amounts() -> None:
     assert _part()["form"]["exports"] == [
         "ca-nl/worksheet_nl428_age_amount_maximum_line_1",
+        "ca-nl/worksheet_nl428_age_amount_line_4",
         LINE_7,
         DISABILITY_LINE_7,
     ]

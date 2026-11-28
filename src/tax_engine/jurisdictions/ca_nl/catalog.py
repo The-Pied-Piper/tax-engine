@@ -1025,6 +1025,68 @@ MARGINAL_NEWFOUNDLAND_AND_LABRADOR_BRACKET_RATE = AmountKind.declare(
 line 5 or line 12 times the part left in the net income. An exact product, not printed on the
 form."""
 
+AGE_INCOME_OVER_THRESHOLD_RETURN = AmountKind.declare(
+    CATALOG, "age_income_over_threshold_return", non_negative=True
+)
+"""Worksheet NL428 "Line 58080 - Age amount" line 4 "Line 2 minus line 3 (if negative, enter 0)",
+the net income over the age threshold, read into the return summary. The base of the age threshold
+gate."""
+
+AGE_AMOUNT_CLAIMED_RETURN = AmountKind.declare(
+    CATALOG, "age_amount_claimed_return", non_negative=True
+)
+"""The age amount the filer claims before the printed maximum check (NL428 line 17: Worksheet NL428
+line 7 times the aged 65 or older count; 0 for a filer under 65 or with no birth year), read into
+the return summary. The base of the age amount gate."""
+
+AGE_INCOME_OVER_THRESHOLD_GATE = AmountKind.declare(
+    CATALOG, "age_income_over_threshold_gate", non_negative=True
+)
+"""0 where Worksheet NL428 line 4 of the age amount is 0.00 and 1 where it is at least one cent,
+from the `ca-nl/marginal_rate_gate` dataset: the age amount is falling only over its threshold. A
+plain figure, not printed on the form."""
+
+AGE_AMOUNT_GATE = AmountKind.declare(CATALOG, "age_amount_gate", non_negative=True)
+"""0 where the age amount claimed is 0.00 (a filer under 65, no birth year, or an amount already
+reduced to nothing) and 1 where it is at least one cent, from the `ca-nl/marginal_rate_gate`
+dataset. A plain figure, not printed on the form."""
+
+AGE_REDUCTION_PHASE_OUT_GATE = AmountKind.declare(
+    CATALOG, "age_reduction_phase_out_gate", non_negative=True
+)
+"""1 while the age amount is being reduced (the net income over the age threshold and the age amount
+claimed both above zero), otherwise 0. The product of the two gates, not printed on the form."""
+
+AGE_RATE_FIGURE = AmountKind.declare(CATALOG, "age_rate_figure", non_negative=True)
+"""Worksheet NL428 "Line 58080 - Age amount" line 5 "Applicable rate 15%": the `ca-nl/age_rate`
+dataset as it is, with the cent rounding of the worksheet's line 6 box left off. A rate, not printed
+as its own figure."""
+
+MARGINAL_AGE_REDUCTION_RATE = AmountKind.declare(
+    CATALOG, "marginal_age_reduction_rate", non_negative=True
+)
+"""Fall of the age amount (NL428 line 17) on a further dollar of net income: the age rate while the
+age amount is being reduced, 0 elsewhere. An exact product, not printed on the form."""
+
+MARGINAL_AGE_PHASE_DOWN_NET_INCOME_RATE = AmountKind.declare(
+    CATALOG, "marginal_age_phase_down_net_income_rate", non_negative=True
+)
+"""Fall of the age amount on a further dollar of salary: its fall per dollar of net income times the
+part of the dollar left in the net income. An exact product, not printed on the form."""
+
+MARGINAL_NEWFOUNDLAND_AND_LABRADOR_AGE_CREDIT_RATE = AmountKind.declare(
+    CATALOG, "marginal_newfoundland_and_labrador_age_credit_rate", non_negative=True
+)
+"""Newfoundland and Labrador tax a further dollar of salary adds through the age amount: the fall of
+the age amount times the credit rate (NL428 line 57). An exact product, not printed on the form."""
+
+MARGINAL_NEWFOUNDLAND_AND_LABRADOR_RATE_BEFORE_CREDITS = AmountKind.declare(
+    CATALOG, "marginal_newfoundland_and_labrador_rate_before_credits", non_negative=True
+)
+"""Newfoundland and Labrador rate on a further dollar of salary before the CPP base and EI credits:
+the bracket rate plus the tax the fall of the age amount adds. An exact sum, not printed on the
+form."""
+
 MARGINAL_NEWFOUNDLAND_AND_LABRADOR_RATE_AFTER_CREDITS = AmountKind.declare(
     CATALOG, "marginal_newfoundland_and_labrador_rate_after_credits", non_negative=True
 )

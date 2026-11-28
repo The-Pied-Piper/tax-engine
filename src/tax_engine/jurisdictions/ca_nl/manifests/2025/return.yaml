@@ -33,13 +33,25 @@
 # (`ca-nl/low_income_reduction_rate`, NL428 line 102 "Applicable rate 16%") off the reduction. The
 # two gates are multiplied, the rate follows, and it is multiplied by the net income rate.
 #
+# The age amount (NL428 line 17, Worksheet NL428 "Line 58080 - Age amount") falls by 15%
+# (`ca-nl/age_rate`, worksheet line 5) of the net income over the age threshold (worksheet line 4)
+# until it is 0, and each dollar of that fall is tax at the NL428 credit rate. The worksheet's
+# line 4 and the age amount claimed before the printed maximum check (worksheet line 7 times the
+# aged 65 or older count; NL428 line 17 before the maximum) are read from the forms that export
+# them, and each goes through `ca-nl/marginal_rate_gate`: the fall counts only where line 4 is
+# above zero and an age amount is still claimed (a filer under 65 or with no birth year claims 0).
+# The gates and the rate are multiplied, then the net income rate and the credit rate. A fall of the
+# credit is a credit-type slope like the federal one, so it is added to the bracket rate before the
+# contribution credit comes off (`..._rate_before_credits`), not after the credits beside the
+# low-income reduction, which is a reduction of the tax and not of a credit.
+#
 # The whole provincial part is counted only while NL428 line 105 "Line 94 minus line 104 (if
 # negative, enter "0")", the tax that goes to T1 line 42800, is above zero, through the
 # `ca-nl/marginal_rate_gate` dataset (0 where the amount is 0.00, 1 from one cent). Newfoundland
 # and Labrador has no surtax and no health premium. The rate is the one of a salary-only filer, as
-# the take-home calculator takes only the salary: the optional inputs (the age amount, NL428
-# line 17, and the medical expenses, lines 49 to 53) are left blank there, so their slopes are not
-# built.
+# the take-home calculator takes only the salary and, optionally, the year of birth: the other
+# optional inputs (the medical expenses, lines 49 to 53) are left blank there, so their slopes are
+# not built.
 #
 # The last step adds the federal marginal rate, the Newfoundland and Labrador marginal rate and
 # the contribution rate (CPP base, enhanced and second additional, and EI) with core/sum into
@@ -137,12 +149,92 @@ capabilities:
       rate: ca-nl/marginal_net_income_rate
     produces:
       output: ca-nl/marginal_newfoundland_and_labrador_bracket_rate
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-nl/nl428_worksheet.worksheet_nl428_age_amount_line_4
+    produces:
+      output: ca-nl/age_income_over_threshold_return
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-nl/nl428_credits.nl428_age_amount_claimed_line_17
+    produces:
+      output: ca-nl/age_amount_claimed_return
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca-nl/marginal_rate_gate
+    consumes:
+      base: ca-nl/age_income_over_threshold_return
+    produces:
+      output: ca-nl/age_income_over_threshold_gate
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca-nl/marginal_rate_gate
+    consumes:
+      base: ca-nl/age_amount_claimed_return
+    produces:
+      output: ca-nl/age_amount_gate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-nl/exact_rounding
+    consumes:
+      base: ca-nl/age_income_over_threshold_gate
+      rate: ca-nl/age_amount_gate
+    produces:
+      output: ca-nl/age_reduction_phase_out_gate
+  - name: core/rate_figure
+    unit: core/percent
+    params:
+      rate: ca-nl/age_rate
+    produces:
+      output: ca-nl/age_rate_figure
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-nl/exact_rounding
+    consumes:
+      base: ca-nl/age_reduction_phase_out_gate
+      rate: ca-nl/age_rate_figure
+    produces:
+      output: ca-nl/marginal_age_reduction_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-nl/exact_rounding
+    consumes:
+      base: ca-nl/marginal_age_reduction_rate
+      rate: ca-nl/marginal_net_income_rate
+    produces:
+      output: ca-nl/marginal_age_phase_down_net_income_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-nl/exact_rounding
+    consumes:
+      base: ca-nl/marginal_age_phase_down_net_income_rate
+      rate: ca-nl/marginal_newfoundland_and_labrador_credit_rate
+    produces:
+      output: ca-nl/marginal_newfoundland_and_labrador_age_credit_rate
+  - name: core/sum
+    unit: core/percent
+    params:
+      rounding: ca-nl/exact_rounding
+    consumes:
+      parts:
+        - ca-nl/marginal_newfoundland_and_labrador_bracket_rate
+        - ca-nl/marginal_newfoundland_and_labrador_age_credit_rate
+    produces:
+      output: ca-nl/marginal_newfoundland_and_labrador_rate_before_credits
   - name: core/subtract
     unit: core/percent
     params:
       rounding: ca-nl/exact_rounding
     consumes:
-      amount: ca-nl/marginal_newfoundland_and_labrador_bracket_rate
+      amount: ca-nl/marginal_newfoundland_and_labrador_rate_before_credits
       less: ca-nl/marginal_newfoundland_and_labrador_contribution_credit_rate
     produces:
       output: ca-nl/marginal_newfoundland_and_labrador_rate_after_credits

@@ -41,6 +41,7 @@ EXPORTS = [
     "ca-nl/nl428_tax_on_taxable_income_line_15",
     "ca-nl/nl428_eligible_dependant_amount_line_23",
     "ca-nl/nl428_non_refundable_credits_line_62",
+    "ca-nl/nl428_age_amount_claimed_line_17",
 ]
 
 
@@ -58,7 +59,7 @@ def test_the_form_is_named_titled_as_printed_and_required() -> None:
     assert form["required"] is True
 
 
-def test_the_form_exports_lines_5_8_12_15_23_and_62_in_order() -> None:
+def test_the_form_exports_lines_5_8_12_15_23_62_and_the_age_amount_claimed_in_order() -> None:
     assert _part()["form"]["exports"] == EXPORTS
 
 

@@ -66,3 +66,62 @@ def test_every_step_after_line_167_has_no_title_and_no_reference() -> None:
     for step in _steps()[1:]:
         assert "title" not in step
         assert "reference" not in step
+
+
+def test_the_age_amount_fall_is_read_from_the_forms_that_export_it() -> None:
+    reads = [
+        step["consumes"]["records"]
+        for step in _steps()
+        if step["name"] == "core/record_total"
+        and step["produces"]["output"]
+        in {"ca-nl/age_income_over_threshold_return", "ca-nl/age_amount_claimed_return"}
+    ]
+
+    assert reads == [
+        "ca-nl/nl428_worksheet.worksheet_nl428_age_amount_line_4",
+        "ca-nl/nl428_credits.nl428_age_amount_claimed_line_17",
+    ]
+
+
+def test_the_age_term_is_added_to_the_bracket_rate_before_the_contribution_credit_comes_off() -> (
+    None
+):
+    by_output = {step["produces"]["output"]: step for step in _steps()}
+    before = "ca-nl/marginal_newfoundland_and_labrador_rate_before_credits"
+    after = "ca-nl/marginal_newfoundland_and_labrador_rate_after_credits"
+
+    assert by_output[before]["consumes"] == {
+        "parts": [
+            "ca-nl/marginal_newfoundland_and_labrador_bracket_rate",
+            "ca-nl/marginal_newfoundland_and_labrador_age_credit_rate",
+        ]
+    }
+    assert by_output[after]["consumes"] == {
+        "amount": before,
+        "less": "ca-nl/marginal_newfoundland_and_labrador_contribution_credit_rate",
+    }
+
+
+def test_the_age_term_is_the_fall_rate_times_the_part_left_times_the_credit_rate() -> None:
+    by_output = {step["produces"]["output"]: step for step in _steps()}
+    term = "ca-nl/marginal_newfoundland_and_labrador_age_credit_rate"
+
+    assert by_output["ca-nl/age_reduction_phase_out_gate"]["consumes"] == {
+        "base": "ca-nl/age_income_over_threshold_gate",
+        "rate": "ca-nl/age_amount_gate",
+    }
+    assert by_output["ca-nl/age_rate_figure"]["params"] == {"rate": "ca-nl/age_rate"}
+    assert by_output["ca-nl/marginal_age_reduction_rate"]["consumes"] == {
+        "base": "ca-nl/age_reduction_phase_out_gate",
+        "rate": "ca-nl/age_rate_figure",
+    }
+    assert by_output["ca-nl/marginal_age_phase_down_net_income_rate"]["consumes"] == {
+        "base": "ca-nl/marginal_age_reduction_rate",
+        "rate": "ca-nl/marginal_net_income_rate",
+    }
+    assert by_output[term]["consumes"] == {
+        "base": "ca-nl/marginal_age_phase_down_net_income_rate",
+        "rate": "ca-nl/marginal_newfoundland_and_labrador_credit_rate",
+    }
+    for gate in ("ca-nl/age_income_over_threshold_gate", "ca-nl/age_amount_gate"):
+        assert by_output[gate]["params"] == {"table": "ca-nl/marginal_rate_gate"}
