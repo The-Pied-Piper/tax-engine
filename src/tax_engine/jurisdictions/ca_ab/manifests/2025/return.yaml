@@ -34,12 +34,22 @@
 # 181,481 for 2025, 185,111 for 2026) or on line 12 (table 2, lines 9 to 15, above it); the other is
 # blank. AB428 exports both, each is totalled into the return's own kind with a blank read as 0, and
 # core/sum adds them into the Alberta bracket rate, which is multiplied by the net income rate (the
-# taxable income is the net income less the enhanced CPP deduction) and has the credit on the
-# contributions taken off. The Alberta rate counts only where AB428 line 68 "Line 66 plus line 67",
+# taxable income is the net income less the enhanced CPP deduction), has the fall of the age amount
+# added and has the credit on the contributions taken off. The Alberta rate counts only where AB428 line 68 "Line 66 plus line 67",
 # the Alberta tax after the credits, is above zero, through the `ca-ab/marginal_rate_gate` dataset
 # (0 where the tax is 0.00 and 1 from one cent); line 68 is chosen as the counterpart of ON428 line
 # 86 (Alberta has no LIFT credit): the Alberta tax after the credits and before line 69 (provincial
 # foreign tax credit), line 72 (political contributions) and line 74 (supplemental tax credit).
+# The age amount (AB428 line 17, Worksheet AB428 "Line 58080 - Age amount") falls by the printed
+# rate (line 5, `ca-ab/age_rate`, 15%) of every dollar of net income over the threshold (line 4
+# "Line 2 minus line 3"), until it reaches 0, so each such dollar costs the Alberta credit rate
+# (AB428 line 53) times that rate. AB428 exports line 4 and the age amount before the printed
+# maximum check (line 17's claimed amount), each totalled into the return's own figure; two
+# `ca-ab/marginal_rate_gate` gates (the net income over the threshold is at least one cent, the age
+# amount claimed is at least one cent) switch the fall on only inside the range and for a filer
+# born in 1960 or earlier; the rate, the gates, the part of the dollar left in the net income and
+# the credit rate multiply into the Alberta tax the fall adds, which is added to the bracket rate
+# before the credit on the contributions is taken off, and the line 68 gate governs it like the rest.
 # Payroll (T4127) applies the personal amounts, CPP and EI and the other credits (K1P to K3P); the
 # dividend credit, the minimum tax carry-over and additional minimum tax in lines 63, 64 and 67 are
 # not payroll terms and are zero or blank for the take-home filer. The Alberta supplemental tax
@@ -145,12 +155,92 @@ capabilities:
       rate: ca-ab/marginal_net_income_rate
     produces:
       output: ca-ab/marginal_alberta_bracket_rate
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-ab/ab428_credits.worksheet_ab428_age_amount_line_4
+    produces:
+      output: ca-ab/marginal_age_income_over_threshold
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-ab/ab428_credits.ab428_age_amount_claimed_line_17
+    produces:
+      output: ca-ab/marginal_age_amount_claimed
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca-ab/marginal_rate_gate
+    consumes:
+      base: ca-ab/marginal_age_income_over_threshold
+    produces:
+      output: ca-ab/marginal_age_threshold_gate
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca-ab/marginal_rate_gate
+    consumes:
+      base: ca-ab/marginal_age_amount_claimed
+    produces:
+      output: ca-ab/marginal_age_amount_gate
+  - name: core/rate_figure
+    unit: core/percent
+    params:
+      rate: ca-ab/age_rate
+    produces:
+      output: ca-ab/marginal_age_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-ab/exact_rounding
+    consumes:
+      base: ca-ab/marginal_age_rate
+      rate: ca-ab/marginal_age_threshold_gate
+    produces:
+      output: ca-ab/marginal_age_reduction_rate_over_threshold
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-ab/exact_rounding
+    consumes:
+      base: ca-ab/marginal_age_reduction_rate_over_threshold
+      rate: ca-ab/marginal_age_amount_gate
+    produces:
+      output: ca-ab/marginal_age_reduction_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-ab/exact_rounding
+    consumes:
+      base: ca-ab/marginal_age_reduction_rate
+      rate: ca-ab/marginal_net_income_rate
+    produces:
+      output: ca-ab/marginal_age_phase_down_net_income_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-ab/exact_rounding
+    consumes:
+      base: ca-ab/marginal_age_phase_down_net_income_rate
+      rate: ca-ab/marginal_alberta_credit_rate
+    produces:
+      output: ca-ab/marginal_alberta_age_credit_rate
+  - name: core/sum
+    unit: core/percent
+    params:
+      rounding: ca-ab/exact_rounding
+    consumes:
+      parts:
+        - ca-ab/marginal_alberta_bracket_rate
+        - ca-ab/marginal_alberta_age_credit_rate
+    produces:
+      output: ca-ab/marginal_alberta_rate_before_credits
   - name: core/subtract
     unit: core/percent
     params:
       rounding: ca-ab/exact_rounding
     consumes:
-      amount: ca-ab/marginal_alberta_bracket_rate
+      amount: ca-ab/marginal_alberta_rate_before_credits
       less: ca-ab/marginal_alberta_contribution_credit_rate
     produces:
       output: ca-ab/marginal_alberta_rate_after_credits

@@ -79,6 +79,8 @@ AB428_CREDITS_FORM = dedent("""\
       exports:
         - ca-ab/ab428_bracket_rate_line_5
         - ca-ab/ab428_bracket_rate_line_12
+        - ca-ab/worksheet_ab428_age_amount_line_4
+        - ca-ab/ab428_age_amount_claimed_line_17
     capabilities: []
     """)
 AB428_FORM = dedent("""\
@@ -131,6 +133,8 @@ OTHER_STEPS = [
         ("ca-ab/ab428_credits", "ca-ab/ab428_bracket_rate_line_5"),
         ("ca-ab/ab428_credits", "ca-ab/ab428_bracket_rate_line_12"),
         ("ca-ab/ab428", "ca-ab/ab428_tax_line_68"),
+        ("ca-ab/ab428_credits", "ca-ab/worksheet_ab428_age_amount_line_4"),
+        ("ca-ab/ab428_credits", "ca-ab/ab428_age_amount_claimed_line_17"),
     )
 ]
 
