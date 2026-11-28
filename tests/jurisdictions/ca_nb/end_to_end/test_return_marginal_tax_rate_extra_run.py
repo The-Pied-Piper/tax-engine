@@ -24,8 +24,9 @@ A break is one of two kinds:
 - a break inside the run: the CPP ceiling, a federal or New Brunswick bracket (taxable income is
   the salary less the CPP enhanced and second additional deductions), where the federal basic
   personal amount stops falling, where the New Brunswick tax (NB428 line 97) is first above zero
-  because the low-income tax reduction no longer absorbs it, or where the reduction stops at the
-  single income limit of $48,653 (NB428 line 86 is 0 from a net income of $48,653).
+  because the low-income tax reduction no longer absorbs it, or where the reduction reaches zero
+  (NB428 line 86 is 0 from a net income of $48,653 in 2025, and from $49,624.50 in 2026, where the
+  cent-rounded 3% phase-out reaches the basic reduction).
 
 The cent rounding of the forms' lines moves a difference over a step of $1 by more than the
 tolerance, which is why no step below $10 is used.
@@ -74,6 +75,7 @@ SALARIES = (
     20_000,
     23_100,
     23_300,
+    23_550,
     24_000,
     26_000,
     28_000,
@@ -121,8 +123,11 @@ KNOWN_EXCEPTIONS: dict[tuple[int, int], str] = {
     (2025, 115_750): "the federal bracket at taxable income $114,750",
     (2025, 191_100): "the NB428 bracket at taxable income $190,060",
     (2026, 2_000): "the EI band of T2204 line 16 starts at $2,000 and ends at $2,033",
-    (2026, 23_300): "the New Brunswick tax (NB428 line 97) is first above zero at $23,361.79",
-    (2026, 49_050): "the low-income tax reduction (NB428 line 86) stops at $48,653 of net income",
+    (2026, 23_550): "the New Brunswick tax (NB428 line 97) is first above zero at $23,611.71",
+    (
+        2026,
+        50_000,
+    ): "the low-income tax reduction (NB428 line 86) reaches zero at $49,624.50 of net income",
     (2026, 52_750): "the NB428 bracket at taxable income $52,333",
     (2026, 59_000): "the federal bracket at the second row's start",
     (2026, 105_750): "the NB428 bracket at taxable income $104,666",
@@ -141,8 +146,8 @@ SMALLER_STEPS = {
     (2025, 115_750): (115_750, 25),
     (2025, 191_100): (191_100, 25),
     (2026, 2_000): (2_001, 10),
-    (2026, 23_300): (23_300, 25),
-    (2026, 49_050): (49_050, 25),
+    (2026, 23_550): (23_550, 25),
+    (2026, 50_000): (50_000, 25),
     (2026, 52_750): (52_750, 25),
     (2026, 59_000): (59_000, 25),
     (2026, 105_750): (105_750, 25),

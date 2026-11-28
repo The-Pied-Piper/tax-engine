@@ -28,21 +28,29 @@ UNITS = UnitRegistry()
 PACKAGES.register_units(UNITS)
 SOURCE = YamlParameterSource({Namespace("ca-nb"): NEW_BRUNSWICK_DIR}, PARAMETER_PARSERS, UNITS)
 FAMILY = "ca-nb/low_income_reduction_maximum"
-SOURCES = ("https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5004-c/5004-c-25e.txt",)
+SOURCES = (
+    "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5004-c/5004-c-25e.txt",
+    "https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf",
+)
 PROVISIONAL_HEADER = (
-    "# Provisional: taken from the 2025 form text named in sources; to be confirmed against t"
-    "he 2026 form text when CRA publishes it."
+    "# Provisional: indexed from the 2025 form text named in sources; to be confirmed aga"
+    "inst the 2026 form text when CRA publishes it."
 )
 DERIVATION_HEADER = (
-    "# Derivation: carried forward unchanged from the 2025 form; T4127 (Jan 2026) does not pr"
-    "int this figure and the 2026 form is not yet published, so it is unconfirmed."
+    "# Derivation: NB raised this figure every year (NB428 2016 to 2025), by the index fa"
+    "ctor except that the base amount rose more than the factor in 2021 and 2022 (and the"
+    " limit with it); the 2026 index factor is 2.0%, the factor T4127 (Jan 2026) Table 8."
+    "2 prints for New Brunswick (it takes the 2025 basic personal amount 13,396 to the pr"
+    "inted 13,664): 2 x the indexed basic reduction 818 (the 2025 maximum 1,604 is 2 x 80"
+    "2 and every year 2016 to 2025 is 2 x the basic reduction) = 1,636; unconfirmed, as n"
+    "o 2026 NB428 is published and T4127 (Jan and Jul 2026) does not print it."
 )
 
 
 def test_2026_low_income_reduction_maximum_value() -> None:
     data = SOURCE.get(FAMILY, 2026, AMOUNT)
 
-    assert data.values == Amount(D("1604"))
+    assert data.values == Amount(D("1636"))
 
 
 def test_2026_low_income_reduction_maximum_rounding() -> None:

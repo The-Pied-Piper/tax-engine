@@ -12,8 +12,8 @@ and each rate is the hand-worked figure of `test_return_marginal_tax_rate_values
 salary pins the structure: the gates are 0 or 1 and open with the amounts they read, the provincial
 part is its gate times its rate, and the total is the exact sum of the three parts.
 
-- line 97 is 0.00 at a salary of 23,361.78 and 0.01 at 23,361.79; line 86 is 0.01 at 49,109.08 and
-  0.00 at 49,109.09; in between the provincial part is 9.4% x 0.99 - 9.4% x 0.0658 + 3% x 0.99 =
+- line 97 is 0.00 at a salary of 23,611.70 and 0.01 at 23,611.71; line 86 is 0.01 at 50,090.39 and
+  0.00 at 50,090.40; in between the provincial part is 9.4% x 0.99 - 9.4% x 0.0658 + 3% x 0.99 =
   0.1165748, and after it 0.0868748.
 
 The engine rounds the marginal tax rate half-up to 0.0001 like the average rate
@@ -64,9 +64,9 @@ SALARIES = [
     "2000",
     "11750",
     "19200.18",
-    "23361.79",
+    "23611.71",
     "28000",
-    "49109.09",
+    "50090.40",
     "70000",
     "275000",
 ]
@@ -195,10 +195,10 @@ def test_2026_both_gates_are_open_at_275000() -> None:
 @pytest.mark.parametrize(
     ("salary", "gate", "provincial"),
     [
-        ("23361.78", "0", "0"),
-        ("23361.79", "1", "0.1165748"),
-        ("49109.08", "1", "0.1165748"),
-        ("49109.09", "1", "0.0868748"),
+        ("23611.70", "0", "0"),
+        ("23611.71", "1", "0.1165748"),
+        ("50090.39", "1", "0.1165748"),
+        ("50090.40", "1", "0.0868748"),
     ],
 )
 def test_2026_the_provincial_part_follows_line_97_and_the_reduction_phase_out(
