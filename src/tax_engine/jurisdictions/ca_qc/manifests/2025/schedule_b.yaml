@@ -3,7 +3,9 @@
 # the TP-1. This part names the form; each printed line's capability is a part of its own with the
 # same `form.name`. The spouse lines (12, 33 and the spouse gate of line 20) are left out (line 12
 # has no step or input; line 14 is line 10), as the take-home is a single filer's. Lines 21 to 28 (the other
-# amounts of line 30) are not built. Exports: line 34, the figure TP-1 line 361 reads, and, for the fall of the age amount in the marginal rate (`return.yaml`), line 18 (the net income over the threshold) and line 32 (the amount still claimed).
+# amounts of line 30) are not built. Exports: line 34, the figure TP-1 line 361 reads, and, for the fall of the age amount in the
+# marginal rate (`return.yaml`), line 18 (the net income over the threshold) and line 32 (the amount
+# still claimed).
 form:
   name: ca-qc/schedule_b
   title: "Schedule B: Tax Relief Measures"
@@ -11,5 +13,4 @@ form:
   exports:
     - ca-qc/schedule_b_line_34
     - ca-qc/schedule_b_line_18
-    - ca-qc/schedule_b_line_32
 capabilities: []

@@ -3274,11 +3274,17 @@ MARGINAL_SCHEDULE_B_LINE_18 = AmountKind.declare(
 """Schedule B line 18 "Line 10 minus line 16", the net income over the threshold, totalled into the
 return summary's own artifact, the base of the age threshold gate."""
 
-MARGINAL_SCHEDULE_B_LINE_32 = AmountKind.declare(
-    CATALOG, "marginal_schedule_b_line_32", non_negative=True
+MARGINAL_SCHEDULE_B_LINE_34 = AmountKind.declare(CATALOG, "marginal_schedule_b_line_34")
+"""Schedule B line 34, the age amount (and living-alone amount) still claimed after the reduction
+and after the spouse's line 33, totalled into the return summary's own artifact. Signed: line 34
+prints no floor."""
+
+MARGINAL_SCHEDULE_B_AMOUNT_CLAIMED = AmountKind.declare(
+    CATALOG, "marginal_schedule_b_amount_claimed", non_negative=True
 )
-"""Schedule B line 32, the age amount (and living-alone amount) still claimed after the reduction,
-totalled into the return summary's own artifact, the base of the age amount gate."""
+"""Schedule B line 34 with a negative read as 0.00 (the spouse's line 33 can be more than line 32,
+and line 34 prints no floor), the base of the age amount gate. A plain figure, not printed on any
+form."""
 
 MARGINAL_SCHEDULE_B_THRESHOLD_GATE = AmountKind.declare(
     CATALOG, "marginal_schedule_b_threshold_gate", non_negative=True
@@ -3289,7 +3295,7 @@ the `ca/marginal_rate_gate` dataset. A plain figure, not printed on any form."""
 MARGINAL_SCHEDULE_B_AMOUNT_GATE = AmountKind.declare(
     CATALOG, "marginal_schedule_b_amount_gate", non_negative=True
 )
-"""Age amount gate: 0 where Schedule B line 32 is 0.00 and 1 where it is at least one cent, from
+"""Age amount gate: 0 where Schedule B line 34 is 0.00 and 1 where it is at least one cent, from
 the `ca/marginal_rate_gate` dataset. A plain figure, not printed on any form."""
 
 MARGINAL_SCHEDULE_B_RATE = AmountKind.declare(
