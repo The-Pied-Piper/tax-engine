@@ -63,11 +63,11 @@ FEDERAL = "ca-nb/marginal_federal_rate"
 PROVINCIAL = "ca-nb/new_brunswick_marginal_rate"
 CONTRIBUTION = "ca-nb/marginal_contribution_rate"
 MARGINAL = "ca-nb/marginal_tax_rate"
-AGE_LINE_4 = "ca-nb/age_income_over_threshold_return"
-AGE_CLAIMED = "ca-nb/age_amount_claimed_return"
-AGE_LINE_4_GATE = "ca-nb/age_income_over_threshold_gate"
-AGE_CLAIMED_GATE = "ca-nb/age_amount_claimed_gate"
-AGE_PHASE_DOWN_GATE = "ca-nb/age_phase_down_gate"
+AGE_LINE_4 = "ca-nb/marginal_age_income_over_threshold"
+AGE_CLAIMED = "ca-nb/marginal_age_amount_claimed"
+AGE_LINE_4_GATE = "ca-nb/marginal_age_threshold_gate"
+AGE_CLAIMED_GATE = "ca-nb/marginal_age_amount_gate"
+AGE_REDUCTION_RATE = "ca-nb/marginal_age_reduction_rate"
 AGE_CREDIT_RATE = "ca-nb/marginal_new_brunswick_age_credit_rate"
 
 SALARIES = [
@@ -240,18 +240,18 @@ def _age_summary(salary: str, birth_year: int | None) -> Worksheet:
         "line_4_gate",
         "claimed",
         "claimed_gate",
-        "phase_down_gate",
+        "reduction_rate",
         "credit_rate",
     ),
     [
         # The filer born in 1955 is 71 in 2026, pays no CPP, so the net income is the salary.
         ("45844", "0.00", "0", "6158.00", "1", "0", "0"),
         # 15% of 0.01 is 0.0015, which rounds to 0.00: the amount claimed is still the maximum.
-        ("45844.01", "0.01", "1", "6158.00", "1", "1", "0.0141"),
-        ("50000", "4156.00", "1", "5534.60", "1", "1", "0.0141"),
+        ("45844.01", "0.01", "1", "6158.00", "1", "0.15", "0.0141"),
+        ("50000", "4156.00", "1", "5534.60", "1", "0.15", "0.0141"),
         # 15% of 41,053.29 is 6,157.9935 (6,157.99, 0.01 left); of 41,053.30 it is 6,157.995, which
         # rounds half up to 6,158.00 and leaves nothing.
-        ("86897.29", "41053.29", "1", "0.01", "1", "1", "0.0141"),
+        ("86897.29", "41053.29", "1", "0.01", "1", "0.15", "0.0141"),
         ("86897.30", "41053.30", "1", "0.00", "0", "0", "0"),
     ],
 )
@@ -261,7 +261,7 @@ def test_the_age_gates_open_with_line_4_and_the_amount_claimed_for_a_filer_born_
     line_4_gate: str,
     claimed: str,
     claimed_gate: str,
-    phase_down_gate: str,
+    reduction_rate: str,
     credit_rate: str,
 ) -> None:
     summary = _age_summary(salary, 1955)
@@ -270,7 +270,7 @@ def test_the_age_gates_open_with_line_4_and_the_amount_claimed_for_a_filer_born_
     assert _value(summary, AGE_LINE_4_GATE) == D(line_4_gate)
     assert _value(summary, AGE_CLAIMED) == D(claimed)
     assert _value(summary, AGE_CLAIMED_GATE) == D(claimed_gate)
-    assert _value(summary, AGE_PHASE_DOWN_GATE) == D(phase_down_gate)
+    assert _value(summary, AGE_REDUCTION_RATE) == D(reduction_rate)
     assert _value(summary, AGE_CREDIT_RATE) == D(credit_rate)
 
 
@@ -285,7 +285,7 @@ def test_the_age_amount_is_not_claimed_and_adds_no_rate_for_a_filer_born_in_1980
 
     assert _value(summary, AGE_CLAIMED) == D("0")
     assert _value(summary, AGE_CLAIMED_GATE) == D("0")
-    assert _value(summary, AGE_PHASE_DOWN_GATE) == D("0")
+    assert _value(summary, AGE_REDUCTION_RATE) == D("0")
     assert _value(summary, AGE_CREDIT_RATE) == D("0")
 
 

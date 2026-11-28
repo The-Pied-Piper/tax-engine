@@ -96,14 +96,14 @@ def test_the_age_amount_term_reads_worksheet_line_4_the_claimed_amount_and_the_p
 ):
     by_output = {step["produces"]["output"]: step for step in _steps()}
 
-    assert by_output["ca-nb/age_income_over_threshold_return"]["consumes"] == {
+    assert by_output["ca-nb/marginal_age_income_over_threshold"]["consumes"] == {
         "records": "ca-nb/nb428.worksheet_nb428_age_amount_line_4"
     }
-    assert by_output["ca-nb/age_amount_claimed_return"]["consumes"] == {
+    assert by_output["ca-nb/marginal_age_amount_claimed"]["consumes"] == {
         "records": "ca-nb/nb428.nb428_age_amount_claimed_line_10"
     }
-    assert by_output["ca-nb/age_rate_figure"]["params"] == {"rate": "ca-nb/age_rate"}
-    for gate in ("ca-nb/age_income_over_threshold_gate", "ca-nb/age_amount_claimed_gate"):
+    assert by_output["ca-nb/marginal_age_rate"]["params"] == {"rate": "ca-nb/age_rate"}
+    for gate in ("ca-nb/marginal_age_threshold_gate", "ca-nb/marginal_age_amount_gate"):
         assert by_output[gate]["name"] == "core/amount_by_band_rate"
         assert by_output[gate]["params"] == {"table": "ca-nb/marginal_rate_gate"}
     assert by_output["ca-nb/marginal_new_brunswick_age_credit_rate"]["consumes"] == {

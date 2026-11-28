@@ -37,9 +37,10 @@
 # it adds tax. The worksheet's line 4 and the age amount claimed before the printed maximum check
 # are totalled from NB428, and each goes through the `ca-nb/marginal_rate_gate` dataset (the amount
 # falls only over the threshold and only while an age amount is claimed, which a filer under 65 or
-# with no birth year never has). The two gates are multiplied, the printed rate follows, then the net
-# income rate and the credit rate. The term is added to the rate beside the low-income reduction
-# phase-out, the other slope that raises the tax, so the line 97 gate below governs it too.
+# with no birth year never has). The printed rate is multiplied by each gate in turn, then by the net
+# income rate and the credit rate. The term is added to the other credit-type terms of the rate (its
+# position in the sum is immaterial, because a sum commutes), so the line 97 gate below governs it
+# too. It stops when the claimed amount reaches 0.00: the dollar that reaches 0.00 is not counted.
 #
 # The whole provincial part is counted only while NB428 line 97 "Line 95 minus line 96 (if
 # negative, enter "0")", the tax that goes to T1 line 42800, is above zero, through the
@@ -198,51 +199,51 @@ capabilities:
     consumes:
       records: ca-nb/nb428.worksheet_nb428_age_amount_line_4
     produces:
-      output: ca-nb/age_income_over_threshold_return
+      output: ca-nb/marginal_age_income_over_threshold
   - name: core/record_total
     unit: ca/cad
     consumes:
       records: ca-nb/nb428.nb428_age_amount_claimed_line_10
     produces:
-      output: ca-nb/age_amount_claimed_return
+      output: ca-nb/marginal_age_amount_claimed
   - name: core/amount_by_band_rate
     unit: core/percent
     params:
       table: ca-nb/marginal_rate_gate
     consumes:
-      base: ca-nb/age_income_over_threshold_return
+      base: ca-nb/marginal_age_income_over_threshold
     produces:
-      output: ca-nb/age_income_over_threshold_gate
+      output: ca-nb/marginal_age_threshold_gate
   - name: core/amount_by_band_rate
     unit: core/percent
     params:
       table: ca-nb/marginal_rate_gate
     consumes:
-      base: ca-nb/age_amount_claimed_return
+      base: ca-nb/marginal_age_amount_claimed
     produces:
-      output: ca-nb/age_amount_claimed_gate
-  - name: core/multiply_by_rate
-    unit: core/percent
-    params:
-      rounding: ca-nb/exact_rounding
-    consumes:
-      base: ca-nb/age_income_over_threshold_gate
-      rate: ca-nb/age_amount_claimed_gate
-    produces:
-      output: ca-nb/age_phase_down_gate
+      output: ca-nb/marginal_age_amount_gate
   - name: core/rate_figure
     unit: core/percent
     params:
       rate: ca-nb/age_rate
     produces:
-      output: ca-nb/age_rate_figure
+      output: ca-nb/marginal_age_rate
   - name: core/multiply_by_rate
     unit: core/percent
     params:
       rounding: ca-nb/exact_rounding
     consumes:
-      base: ca-nb/age_phase_down_gate
-      rate: ca-nb/age_rate_figure
+      base: ca-nb/marginal_age_rate
+      rate: ca-nb/marginal_age_threshold_gate
+    produces:
+      output: ca-nb/marginal_age_reduction_rate_over_threshold
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-nb/exact_rounding
+    consumes:
+      base: ca-nb/marginal_age_reduction_rate_over_threshold
+      rate: ca-nb/marginal_age_amount_gate
     produces:
       output: ca-nb/marginal_age_reduction_rate
   - name: core/multiply_by_rate
