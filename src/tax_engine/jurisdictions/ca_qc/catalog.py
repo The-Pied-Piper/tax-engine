@@ -61,12 +61,23 @@ TP1_PENSIONABLE_SALARY_LINE_98_1 = AmountKind.declare(
 """Pensionable salary or wages (QPP), TP-1 line 98.1 "Pensionable salary or wages (QPP). RL-1 slip,
 box G": the figure given, else the salary up to $81,200."""
 
-TP1_QPP_EARNINGS_FOR_LINE_98 = AmountKind.declare(
-    CATALOG, "tp1_qpp_earnings_for_line_98", non_negative=True
+TP1_BASE_QPP_FOR_LINE_98 = AmountKind.declare(
+    CATALOG, "tp1_base_qpp_for_line_98", non_negative=True
 )
-"""The earnings line 98 is computed on when the caller leaves it blank: Schedule 8 line 7, the
-earnings above the basic exemption (prorated by the months of line A) up to the maximum. 0 for a
-filer with no QPP months. The form prints no line of its own for it."""
+"""Schedule 8 line 11, the required base contributions, read by TP-1 line 98 when the caller leaves
+it blank. 0 for a filer with no QPP months. The form prints no line of its own for it."""
+
+TP1_FIRST_ADDITIONAL_QPP_FOR_LINE_98 = AmountKind.declare(
+    CATALOG, "tp1_first_additional_qpp_for_line_98", non_negative=True
+)
+"""Schedule 8 line 12, the required first additional contributions, read by TP-1 line 98 when the
+caller leaves it blank. 0 for a filer with no QPP months. The form prints no line of its own."""
+
+TP1_QPP_COMPUTED_LINE_98 = AmountKind.declare(
+    CATALOG, "tp1_qpp_computed_line_98", non_negative=True
+)
+"""Schedule 8 line 11 plus line 12 (the printed contribution of the salary alone): the figure TP-1
+line 98 takes when the caller leaves it blank. The form prints no line of its own for it."""
 
 TP1_PENSIONABLE_EARNINGS_FOR_LINE_98_1 = AmountKind.declare(
     CATALOG, "tp1_pensionable_earnings_for_line_98_1", non_negative=True
