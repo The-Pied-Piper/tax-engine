@@ -8,8 +8,9 @@ British Columbia and you met any of the following conditions: You were 19 years 
 You had a spouse or common-law partner / You were a parent of a child". The engine models a filer
 with no spouse or child, so a filer under 19 has no sales tax credit and line 45 (the British
 Columbia credits) is 0.00. A filer 19 or older (born 1980) is unchanged, and one born in 1955
-still has the basic line: the basic credit of 75.00 less 2% of the income over 15,000.00, which is
-75.00 at a salary of $10,000, 27.80 at $17,500 and 0.00 at $20,000. The 2026 datasets are
+still has the basic line: the basic credit of 75.00 less 2% of the net income over 15,000.00, which
+is 75.00 at a salary of $10,000, 27.80 at $17,500 (the net income is the salary less the CPP and EI
+the filer pays) and 0.00 at $20,000. The 2026 datasets are
 provisional (the 2026 guide is not yet published)."""
 
 from __future__ import annotations

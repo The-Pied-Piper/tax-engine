@@ -37,7 +37,7 @@ SOURCE = YamlParameterSource(
 FAMILY = "ca/age_19_or_older_conditions"
 YEAR = 2026
 SOURCES = (
-    "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5010-pc/5010-pc-25e.txt",
+    "https://www.canada.ca/content/dam/cra-arc/formspubs/pub/5010-pc/5010-pc-25e.txt",
     "https://www.canada.ca/content/dam/cra-arc/formspubs/pub/5007-pc/5007-pc-25e.txt",
 )
 
