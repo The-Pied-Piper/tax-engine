@@ -2259,6 +2259,15 @@ TP1_LINE_377 = AmountKind.declare(CATALOG, "tp1_line_377")
 367 and 376 are not built). Signed, as its parts are. Produced by one core/sum
 (`tp1_credits_line_377.yaml`)."""
 
+TP1_CREDITS_LINE_377_LINE_359 = AmountKind.declare(CATALOG, "tp1_credits_line_377_line_359")
+"""TP-1 line 359 as line 377 reads it: the export of the split part
+(`ca-qc/tp1_credits_lines_350_to_361`) read through one core/record_total
+(`tp1_credits_line_377.yaml`). Not a line of the form."""
+
+TP1_CREDITS_LINE_377_LINE_361 = AmountKind.declare(CATALOG, "tp1_credits_line_377_line_361")
+"""TP-1 line 361 as line 377 reads it: the split part's export read through one core/record_total
+(`tp1_credits_line_377.yaml`). Not a line of the form."""
+
 
 TP1_LINE_377_1 = AmountKind.declare(CATALOG, "tp1_line_377_1")
 """TP-1 line 377.1 "Multiply line 377 by 14%": line 377 at the printed 14%, rounded half-up to the
@@ -2310,8 +2319,9 @@ through 397, 398 and 398.1"): one optional input a salary-only caller does not g
 a blank as 0 (`tp1_credits_line_399_inputs.yaml`)."""
 
 TP1_LINE_391 = AmountKind.declare(CATALOG, "tp1_line_391", non_negative=True)
-"""TP-1 line 391, one of the lines that line 399 adds: an optional input, read as 0 when blank
-(`tp1_credits_line_399_inputs.yaml`)."""
+"""TP-1 line 391 "Tax credit for career extension. Complete form TP-752.PC-V": the credit of line 50
+of that form, read through one core/record_total over the form's export
+(`tp1_credits_line_391.yaml`); 0.00 for a filer under 65 on December 31 or with no birth year."""
 
 TP1_LINE_392 = AmountKind.declare(CATALOG, "tp1_line_392", non_negative=True)
 """TP-1 line 392, one of the lines that line 399 adds: an optional input, read as 0 when blank
@@ -2332,6 +2342,105 @@ TP1_LINE_398 = AmountKind.declare(CATALOG, "tp1_line_398", non_negative=True)
 TP1_LINE_398_1 = AmountKind.declare(CATALOG, "tp1_line_398_1", non_negative=True)
 """TP-1 line 398.1, one of the lines that line 399 adds: an optional input, read as 0 when blank
 (`tp1_credits_line_399_inputs.yaml`)."""
+
+TP752_PC_AGE_65_OR_OLDER = CountKind.declare(CATALOG, "tp752_pc_age_65_or_older", non_negative=True)
+"""TP-752.PC-V "65 or over on December 31": the T1 identification form's `ca/age_65_or_older` (1 or
+0, blank when no year of birth is given), read through `core/first_record_count`
+(`tp752_pc_line_10.yaml`). Not a line of the form."""
+
+TP752_PC_WORK_CHART_201_LINE_6 = AmountKind.declare(CATALOG, "tp752_pc_work_chart_201_line_6")
+"""Work Chart 201 line 6 as TP-752.PC-V line 10 reads it: the chart's export read through one
+core/record_total (`tp752_pc_line_10.yaml`). Signed, as the line is. Not a line of the form."""
+
+TP752_PC_LINE_10 = AmountKind.declare(CATALOG, "tp752_pc_line_10")
+"""TP-752.PC-V line 10 "Eligible work income": Work Chart 201 line 6 for a filer 65 or over on
+December 31, 0.00 otherwise (blank birth year included), rounded half-up to the cent. Signed, as the
+chart line is. Produced by one core/times_count (`tp752_pc_line_10.yaml`)."""
+
+TP752_PC_LINE_11 = AmountKind.declare(CATALOG, "tp752_pc_line_11", non_negative=True)
+"""TP-752.PC-V line 11 "Amount deducted on lines 293 and 297 of your income tax return for an amount
+included on line 10 or employment income received from a non-arm's length employer ...": an
+optional input, read as 0 when blank (`tp752_pc_line_11_input.yaml`)."""
+
+TP752_PC_LINE_12 = AmountKind.declare(CATALOG, "tp752_pc_line_12")
+"""TP-752.PC-V line 12 "Subtract line 11 from line 10": rounded half-up to the cent. The form prints
+no floor, so the figure is signed. Produced by one core/subtract (`tp752_pc_line_12.yaml`)."""
+
+TP752_PC_LINE_13 = AmountKind.declare(CATALOG, "tp752_pc_line_13", non_negative=True)
+"""TP-752.PC-V line 13 "Portion of the income on line 12 that relates to a previous year
+(retroactive amount)": an optional input, read as 0 when blank (`tp752_pc_line_13_input.yaml`)."""
+
+TP752_PC_LINE_14 = AmountKind.declare(CATALOG, "tp752_pc_line_14")
+"""TP-752.PC-V line 14 "Subtract line 13 from line 12": rounded half-up to the cent, signed as line
+12 is. Produced by one core/subtract (`tp752_pc_line_14.yaml`)."""
+
+TP752_PC_LINE_15 = AmountKind.declare(CATALOG, "tp752_pc_line_15", non_negative=True)
+"""TP-752.PC-V line 15 "- 15 7,655 00" (7,500 00 on the 2025-10 edition): the printed figure,
+claimed whole. Produced by one core/credit_amount (`tp752_pc_line_15.yaml`)."""
+
+TP752_PC_LINE_14_LESS_LINE_15 = AmountKind.declare(CATALOG, "tp752_pc_line_14_less_line_15")
+"""TP-752.PC-V line 16, first step "Subtract $7,655 from line 14": line 14 less line 15, exact and
+signed (the form prints no floor). Not a printed line."""
+
+TP752_PC_LINE_16 = AmountKind.declare(CATALOG, "tp752_pc_line_16")
+"""TP-752.PC-V line 16 "Subtract $7,655 from line 14 (maximum $12,755)": the figure of the step
+before, up to the printed maximum, rounded half-up to the cent. Produced by one core/capped_amount
+(`tp752_pc_line_16.yaml`)."""
+
+TP752_PC_LINE_35 = AmountKind.declare(CATALOG, "tp752_pc_line_35")
+"""TP-752.PC-V line 35 "Multiply line 16 by 14%": rounded half-up to the cent. Produced by one
+core/apply_rate (`tp752_pc_line_35.yaml`)."""
+
+TP752_PC_LINE_36 = AmountKind.declare(CATALOG, "tp752_pc_line_36")
+"""TP-752.PC-V line 36 "Net income (line 275 of your return)": TP-1 line 275, which is signed.
+Produced by one core/record_total over the net income form's export (`tp752_pc_line_36.yaml`)."""
+
+TP752_PC_LINE_37 = AmountKind.declare(CATALOG, "tp752_pc_line_37", non_negative=True)
+"""TP-752.PC-V line 37 "- 37 57,660 00" (56,500 00 on the 2025-10 edition): the printed figure,
+claimed whole. Produced by one core/credit_amount (`tp752_pc_line_37.yaml`)."""
+
+TP752_PC_LINE_38 = AmountKind.declare(CATALOG, "tp752_pc_line_38", non_negative=True)
+"""TP-752.PC-V line 38 "Subtract $57,660 from line 36. If the result is negative, enter 0": rounded
+half-up to the cent. Produced by one core/subtract_not_below_zero (`tp752_pc_line_38.yaml`)."""
+
+TP752_PC_LINE_39 = AmountKind.declare(CATALOG, "tp752_pc_line_39", non_negative=True)
+"""TP-752.PC-V line 39 "Multiply line 38 by 7%": rounded half-up to the cent. Produced by one
+core/apply_rate (`tp752_pc_line_39.yaml`)."""
+
+TP752_PC_LINE_40 = AmountKind.declare(CATALOG, "tp752_pc_line_40", non_negative=True)
+"""TP-752.PC-V line 40 "Subtract line 39 from line 35. If the result is negative, enter 0": rounded
+half-up to the cent. Produced by one core/subtract_not_below_zero (`tp752_pc_line_40.yaml`)."""
+
+TP752_PC_LINE_47 = AmountKind.declare(CATALOG, "tp752_pc_line_47", non_negative=True)
+"""TP-752.PC-V line 47 "Income tax on taxable income (line 401 of your return)": Work Chart 401
+line 8, which line 401 carries (read from the chart so that the form does not read TP-1 itself).
+Produced by one core/record_total over the chart's export (`tp752_pc_line_47.yaml`)."""
+
+TP752_PC_TP1_LINE_359 = AmountKind.declare(CATALOG, "tp752_pc_tp1_line_359")
+"""TP-1 line 359 as TP-752.PC-V line 48 reads it: the split part's export read through one
+core/record_total (`tp752_pc_line_48.yaml`). Signed, as line 359 is. Not a line of the form."""
+
+TP752_PC_TP1_LINE_361 = AmountKind.declare(CATALOG, "tp752_pc_tp1_line_361")
+"""TP-1 line 361 as TP-752.PC-V line 48 reads it: the split part's export read through one
+core/record_total (`tp752_pc_line_48.yaml`). Signed, as line 361 is. Not a line of the form."""
+
+TP752_PC_LINES_359_TO_367 = AmountKind.declare(CATALOG, "tp752_pc_lines_359_to_367")
+"""TP-752.PC-V line 48 "Add lines 359 through 367 of your return": lines 359 and 361, the lines the
+take-home builds (line 367, dependants, is left out), exact. Signed. Not a printed line."""
+
+TP752_PC_LINE_48 = AmountKind.declare(CATALOG, "tp752_pc_line_48")
+"""TP-752.PC-V line 48 "Add lines 359 through 367 of your return. x 14% - 48": that sum at the
+printed 14%, rounded half-up to the cent. Signed, as the sum is. Produced by one core/apply_rate
+(`tp752_pc_line_48.yaml`)."""
+
+TP752_PC_LINE_49 = AmountKind.declare(CATALOG, "tp752_pc_line_49", non_negative=True)
+"""TP-752.PC-V line 49 "Subtract line 48 from line 47. If the result is negative, enter 0": rounded
+half-up to the cent. Produced by one core/subtract_not_below_zero (`tp752_pc_line_49.yaml`)."""
+
+TP752_PC_LINE_50 = AmountKind.declare(CATALOG, "tp752_pc_line_50", non_negative=True)
+"""TP-752.PC-V line 50 "Enter the amount from line 40 or line 49, whichever is less. Carry this
+amount to line 391 of your return. Tax credit for career extension": the lesser of the two. Produced
+by one core/lesser_of (`tp752_pc_line_50.yaml`); the form exports it."""
 
 TP1_NON_REFUNDABLE_TAX_CREDITS_LINE_399 = AmountKind.declare(
     CATALOG, "tp1_non_refundable_tax_credits_line_399"

@@ -1,0 +1,14 @@
+# TP-752.PC-V (2026-10), line 40 "Subtract line 39 from line 35. If the result is negative, enter 0. = 40". One step, core/subtract_not_below_zero, rounded half-up to the cent through ca-qc/cent_rounding.
+form:
+  name: ca-qc/tp752_pc
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "40"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/tp752_pc_line_35
+      less: ca-qc/tp752_pc_line_39
+    produces:
+      output: ca-qc/tp752_pc_line_40

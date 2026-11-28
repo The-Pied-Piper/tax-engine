@@ -1,0 +1,12 @@
+# TP-1 (2025) line 391: "Tax credit for career extension. Complete form TP-752.PC-V." (page 4, Non-refundable tax credits). The figure is line 50 of TP-752.PC-V ("Carry this amount to line 391 of your return"), which that form exports; another form reads an export only as a record list (`ca-qc/tp752_pc.tp752_pc_line_50`), so the one step is core/record_total over those records. 0.00 for a filer under 65 on December 31 or with no year of birth.
+form:
+  name: ca-qc/tp1_credits
+capabilities:
+  - name: core/record_total
+    title: "Tax credit for career extension"
+    reference: "391"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp752_pc.tp752_pc_line_50
+    produces:
+      output: ca-qc/tp1_line_391

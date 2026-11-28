@@ -1,6 +1,6 @@
 # TP-1 (2025) line 399: "Add lines 377.1, 389 through 392, 395 through 397, 398 and 398.1.
 # Non-refundable tax credits = 399" (page 4). Two subtotal steps and a core/sum of both, the printed line rounded half-up to the cent
-# through ca-qc/cent_rounding. The two subtotals are not printed on the form, so they carry their sum unrounded (`ca-qc/exact_rounding`; round only where the form says); the printed line rounds once. Lines 377.1, 389 and 397 are steps; lines 390, 391, 392, 395, 396, 398 and
+# through ca-qc/cent_rounding. The two subtotals are not printed on the form, so they carry their sum unrounded (`ca-qc/exact_rounding`; round only where the form says); the printed line rounds once. Lines 377.1, 389, 391 and 397 are steps; lines 390, 392, 395, 396, 398 and
 # 398.1 are optional inputs, read as 0 when left blank. The form exports line 399 for TP-1 line 406.
 # The sentence of a numbered line stays at 40 words or fewer (tests/jurisdictions/test_trace_english_
 # printed_names.py), so the parts are added in two unprinted subtotals, each titled in plain words
@@ -22,7 +22,6 @@ capabilities:
         - ca-qc/tp1_line_392
     blank:
       ca-qc/tp1_line_390: "0"
-      ca-qc/tp1_line_391: "0"
       ca-qc/tp1_line_392: "0"
     produces:
       output: ca-qc/tp1_credits_lines_377_1_to_392_subtotal

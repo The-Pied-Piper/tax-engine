@@ -1,0 +1,11 @@
+# TP-752.PC-V (2026-10), line 11 "Amount deducted on lines 293 and 297 of your income tax return for an amount included on line 10 or employment income received from a non-arm's length employer or from an employer that is a partnership, if you deal at non-arm's length with one of the partnership's members - 11". A salary-only filer has no such amount, so it is an optional input left blank; line 12 reads a blank as 0.
+form:
+  name: ca-qc/tp752_pc
+inputs:
+  - name: ca-qc/tp752_pc_line_11
+    title: "Amount deducted on lines 293 and 297"
+    reference: "11"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Amount deducted on lines 293 and 297 of your income tax return for an amount included on line 10 or employment income received from a non-arm's length employer or from an employer that is a partnership, if you deal at non-arm's length with one of the partnership's members"

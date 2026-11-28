@@ -1,6 +1,7 @@
-"""TP-1 (2025) lines 390, 391, 392, 395, 396, 398 and 398.1: the lines that line 399 adds besides
-lines 377.1, 389 and 397. The take-home gives none of them, so each is an optional input; a blank
-is read as 0 by line 399.
+"""TP-1 (2025) lines 390, 392, 395, 396, 398 and 398.1: the lines that line 399 adds besides
+lines 377.1, 389, 391 and 397. The take-home gives none of them, so each is an optional input; a
+blank is read as 0 by line 399. Line 391 is no longer one: it reads TP-752.PC-V line 50
+(`test_take_home_tp1_credits_line_391.py`).
 
 The real part is loaded under a test-local header and form declaration over the Quebec package list
 of `support.py`."""
@@ -25,10 +26,6 @@ PRINTED = {
         "Tax credit for volunteer firefighters and search and rescue volunteers. "
         "Specify: 390.1 + 390",
     ),
-    "391": (
-        "Tax credit for career extension",
-        "Tax credit for career extension. Complete form TP-752.PC-V.",
-    ),
     "392": (
         "Tax credit for recent graduates working in remote resource regions",
         "Tax credit for recent graduates working in remote resource regions. "
@@ -48,7 +45,7 @@ PRINTED = {
         "Tax credit for tuition or examination fees transferred by a child",
     ),
 }
-LINES = ("390", "391", "392", "395", "396", "398", "398.1")
+LINES = ("390", "392", "395", "396", "398", "398.1")
 NAMES = {line: f"ca-qc/tp1_line_{line.replace('.', '_')}" for line in LINES}
 HEADER = """\
 jurisdiction: CA-QC
@@ -72,7 +69,7 @@ def _manifest(take_home_service: TakeHomeService, tmp_path: Path) -> Manifest:
     )
 
 
-def test_the_part_declares_exactly_the_seven_lines(
+def test_the_part_declares_exactly_the_six_lines(
     take_home_service: TakeHomeService, tmp_path: Path
 ) -> None:
     inputs = inputs_of(_manifest(take_home_service, tmp_path))

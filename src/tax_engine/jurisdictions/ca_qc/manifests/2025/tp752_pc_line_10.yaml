@@ -1,0 +1,37 @@
+# TP-752.PC-V (2026-10), line 10 "Eligible work income (see the information on page 2)": "Eligible work income is income for which you can claim the deduction for workers (the amount on line 6 of Work Chart 201 of your income tax return)". Three steps, as Schedule B line 22:
+# 1. core/first_record_count reads the "aged 65 or older" flag of the T1 identification form (`ca-qc/t1_birth_year.age_65_or_older`; 1960 or earlier for 2025, 1961 or earlier for 2026; blank passes on), the form being "for you if you were resident in Québec and 65 or over on December 31".
+# 2. core/record_total reads Work Chart 201 line 6 from that form's export.
+# 3. core/times_count of that by the flag: the work income when 65 or over, 0.00 otherwise (a blank flag is read as 0). Rounded half-up to the cent through ca-qc/cent_rounding.
+# Steps 1 and 2 are not lines of the form, so they have no reference.
+form:
+  name: ca-qc/tp752_pc
+capabilities:
+  - name: core/first_record_count
+    title: "Aged 65 or older"
+    consumes:
+      records: ca-qc/t1_birth_year.age_65_or_older
+    blank:
+      records:
+        ca/age_65_or_older: pass_on
+    produces:
+      output: ca-qc/tp752_pc_age_65_or_older
+  - name: core/record_total
+    title: "Work income from Work Chart 201"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/work_chart_201.work_chart_201_total_line_6
+    produces:
+      output: ca-qc/tp752_pc_work_chart_201_line_6
+  - name: core/times_count
+    title: "Eligible work income"
+    reference: "10"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/tp752_pc_work_chart_201_line_6
+      count: ca-qc/tp752_pc_age_65_or_older
+    blank:
+      count: "0"
+    produces:
+      output: ca-qc/tp752_pc_line_10

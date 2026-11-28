@@ -3,7 +3,7 @@
 # floored. Line 358 is an optional input; a blank is read as 0. Rounded half-up to the cent through
 # ca-qc/cent_rounding.
 form:
-  name: ca-qc/tp1_credits
+  name: ca-qc/tp1_credits_lines_350_to_361
 capabilities:
   - name: core/subtract
     reference: "359"

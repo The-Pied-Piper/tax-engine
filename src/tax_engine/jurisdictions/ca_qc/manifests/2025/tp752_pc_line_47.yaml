@@ -1,0 +1,12 @@
+# TP-752.PC-V (2026-10), line 47 "Income tax on taxable income (line 401 of your return) 47". Line 401 is Work Chart 401 line 8 ("Carry the result to line 401 of your return"), so the line reads that chart's export directly, which keeps the form from reading TP-1 (whose line 391 reads this form). One step, core/record_total over the chart's export records.
+form:
+  name: ca-qc/tp752_pc
+capabilities:
+  - name: core/record_total
+    title: "Income tax on taxable income"
+    reference: "47"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/work_chart_401.work_chart_401_income_tax_line_8
+    produces:
+      output: ca-qc/tp752_pc_line_47

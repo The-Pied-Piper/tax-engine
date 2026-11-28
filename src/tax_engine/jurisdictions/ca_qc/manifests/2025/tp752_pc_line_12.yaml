@@ -1,0 +1,16 @@
+# TP-752.PC-V (2026-10), line 12 "Subtract line 11 from line 10. If the result is $7,655 or less, you are not entitled to the tax credit. If it is more than $7,655, continue your calculations. = 12". One step, core/subtract; the form prints no floor, so the result is signed. The "not entitled" test is not a step: a line 14 at or below line 15 gives a line 16 of 0 (see line 16), so lines 35, 40 and 50 are 0. Line 11 is an optional input; a blank is read as 0. Rounded half-up to the cent through ca-qc/cent_rounding.
+form:
+  name: ca-qc/tp752_pc
+capabilities:
+  - name: core/subtract
+    reference: "12"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/tp752_pc_line_10
+      less: ca-qc/tp752_pc_line_11
+    blank:
+      less: "0"
+    produces:
+      output: ca-qc/tp752_pc_line_12

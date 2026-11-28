@@ -20,31 +20,35 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
 )
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
 from tests.jurisdictions.ca_qc.support import quebec_kinds
-from tests.jurisdictions.ca_qc.tp1_credits_support import LINE_359_PARTS, credits_sheet
+from tests.jurisdictions.ca_qc.tp1_credits_support import (
+    LINE_359_PARTS,
+    PART_A_FORM,
+    credits_sheet,
+)
 
 D = Decimal
-FORM = "ca-qc/tp1_credits"
+FORM = PART_A_FORM  # a split part of the TP-1 credits form, read by TP-752.PC-V
 IDENTIFIER = "ca-qc/tp1_line_359"
 EXPORTS = (IDENTIFIER,)
 PART = "tp1_credits_line_359.yaml"
 
 
 def test_line_359_with_line_358_blank_is_line_350(take_home_service: TakeHomeService) -> None:
-    sheet = credits_sheet(take_home_service, EXPORTS, LINE_359_PARTS)
+    sheet = credits_sheet(take_home_service, EXPORTS, LINE_359_PARTS, name=FORM)
 
     assert str(sheet.get(TP1_LINE_359).value) == "18571.00"
 
 
 def test_line_358_is_subtracted(take_home_service: TakeHomeService) -> None:
     given = Artifact(TP1_INCOME_REPLACEMENT_ADJUSTMENT_LINE_358, D("1000.50"))
-    sheet = credits_sheet(take_home_service, EXPORTS, LINE_359_PARTS, given)
+    sheet = credits_sheet(take_home_service, EXPORTS, LINE_359_PARTS, given, name=FORM)
 
     assert str(sheet.get(TP1_LINE_359).value) == "17570.50"
 
 
 def test_a_line_358_above_line_350_is_not_floored(take_home_service: TakeHomeService) -> None:
     given = Artifact(TP1_INCOME_REPLACEMENT_ADJUSTMENT_LINE_358, D("20000"))
-    sheet = credits_sheet(take_home_service, EXPORTS, LINE_359_PARTS, given)
+    sheet = credits_sheet(take_home_service, EXPORTS, LINE_359_PARTS, given, name=FORM)
 
     assert str(sheet.get(TP1_LINE_359).value) == "-1429.00"
 

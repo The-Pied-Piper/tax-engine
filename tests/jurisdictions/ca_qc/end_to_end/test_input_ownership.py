@@ -290,7 +290,14 @@ def test_the_printed_lines_that_read_another_forms_export_are_rounded_to_the_cen
 
 
 def test_every_part_of_the_split_tp1_shares_the_printed_title() -> None:
-    forms = ("tp1_income", "tp1_net_income", "tp1_credits", "tp1_tax", "tp1_totals")
+    forms = (
+        "tp1_income",
+        "tp1_net_income",
+        "tp1_credits",
+        "tp1_credits_lines_350_to_361",
+        "tp1_tax",
+        "tp1_totals",
+    )
 
     for form in forms:
         part = yaml.safe_load((QUEBEC_PARTS / f"{form}.yaml").read_text(encoding="utf-8"))

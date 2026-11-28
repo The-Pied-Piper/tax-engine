@@ -1,0 +1,8 @@
+# TP-752.PC-V (2026-10), line 37 "- 37 57,660 00": the printed figure, taken as printed and claimed whole; half-up to the cent changes nothing.
+family: ca-qc/tp752_pc_line_37
+tax_year: 2026
+kind: credit
+sources:
+  - Revenu Quebec TP-752.PC-V (2026-10)
+rounding: {increment: "0.01", mode: half_up}
+amount: "57660"

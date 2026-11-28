@@ -1,10 +1,11 @@
 """Revenu Quebec TP-1 (2025) line 399, "Add lines 377.1, 389 through 392, 395 through 397, 398 and
 398.1. Non-refundable tax credits", as the Quebec take-home manifest wires it: one `core/sum`,
-rounded half-up to the cent by `ca-qc/cent_rounding`. Lines 377.1, 389 and 397 are steps; lines
-390, 391, 392, 395, 396, 398 and 398.1 are optional inputs, read as 0 when the caller leaves them
-out. The chain runs the real parts of Schedule B and of the forms it reads (see
-`tp1_credits_support.py`). The expected figures are hand-computed from the printed lines, not a
-Revenu Quebec example: line 377.1 is 2,599.94, or 2,897.86 at $20,000 for a person living alone.
+rounded half-up to the cent by `ca-qc/cent_rounding`. Lines 377.1, 389 and 397 are steps; lines 390,
+392, 395, 396, 398 and 398.1 are optional inputs, read as 0 when the caller leaves them out; line
+391 is TP-752.PC-V line 50 (zero for a filer with no birth year). The chain runs the real parts of
+Schedule B and of the forms it reads (see `tp1_credits_support.py`). The expected figures are
+hand-computed from the printed lines, not a Revenu Quebec example: line 377.1 is 2,599.94, or
+2,897.86 at $20,000 for a person living alone.
 """
 
 from __future__ import annotations
@@ -117,7 +118,7 @@ def test_the_part_is_two_subtotals_and_a_sum_with_the_optional_lines_read_as_zer
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": FORM}
     first, last, step = part["capabilities"]
-    optional = [f"ca-qc/tp1_line_{line}" for line in ("390", "391", "392", "395", "396", "398")]
+    optional = [f"ca-qc/tp1_line_{line}" for line in ("390", "392", "395", "396", "398")]
     optional.append("ca-qc/tp1_line_398_1")
     first_parts = [
         "ca-qc/tp1_line_377_1",
