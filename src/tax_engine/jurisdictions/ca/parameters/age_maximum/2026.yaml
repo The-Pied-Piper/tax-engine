@@ -6,5 +6,6 @@ tax_year: 2026
 kind: credit
 sources:
   - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/td1/td1-26e.pdf
 rounding: {increment: "0.01", mode: half_up}
 amount: "9208.00"

@@ -19,6 +19,7 @@ SOURCE = YamlParameterSource(
 )
 FAMILY = "ca/age_maximum"
 CRA_FORM_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt"
+TD1_2026 = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/td1/td1-26e.pdf"
 YEAR = 2026
 
 
@@ -37,4 +38,4 @@ def test_2026_age_maximum_rounds_half_up_to_the_cent() -> None:
 def test_2026_age_maximum_cites_the_form() -> None:
     data = SOURCE.get(FAMILY, YEAR, CREDIT)
 
-    assert data.sources == (CRA_FORM_TEXT,)
+    assert data.sources == (CRA_FORM_TEXT, TD1_2026)
