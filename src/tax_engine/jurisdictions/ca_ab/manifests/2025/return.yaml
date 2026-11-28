@@ -42,14 +42,16 @@
 # foreign tax credit), line 72 (political contributions) and line 74 (supplemental tax credit).
 # The age amount (AB428 line 17, Worksheet AB428 "Line 58080 - Age amount") falls by the printed
 # rate (line 5, `ca-ab/age_rate`, 15%) of every dollar of net income over the threshold (line 4
-# "Line 2 minus line 3"), until it reaches 0, so each such dollar costs the Alberta credit rate
+# "Line 2 minus line 3"), until the claimed amount reaches 0.00 (the dollar that reaches 0.00 is not
+# counted), so each such dollar costs the Alberta credit rate
 # (AB428 line 53) times that rate. AB428 exports line 4 and the age amount before the printed
 # maximum check (line 17's claimed amount), each totalled into the return's own figure; two
 # `ca-ab/marginal_rate_gate` gates (the net income over the threshold is at least one cent, the age
 # amount claimed is at least one cent) switch the fall on only inside the range and for a filer
 # born in 1960 or earlier; the rate, the gates, the part of the dollar left in the net income and
-# the credit rate multiply into the Alberta tax the fall adds, which is added to the bracket rate
-# before the credit on the contributions is taken off, and the line 68 gate governs it like the rest.
+# the credit rate multiply into the Alberta tax the fall adds, which is added to the Alberta
+# credit-type terms (its position in the sum is immaterial because a sum commutes), and the line 68
+# gate governs it like the rest.
 # Payroll (T4127) applies the personal amounts, CPP and EI and the other credits (K1P to K3P); the
 # dividend credit, the minimum tax carry-over and additional minimum tax in lines 63, 64 and 67 are
 # not payroll terms and are zero or blank for the take-home filer. The Alberta supplemental tax

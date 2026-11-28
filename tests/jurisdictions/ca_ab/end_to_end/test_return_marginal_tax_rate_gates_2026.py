@@ -27,6 +27,7 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.personal_amounts import BIRTH_YEAR
 from tests.kinds import bundled_kinds
 
 D = Decimal
@@ -47,16 +48,20 @@ FEDERAL = "ca-ab/marginal_federal_rate"
 ALBERTA_RATE = "ca-ab/alberta_marginal_rate"
 CONTRIBUTION = "ca-ab/marginal_contribution_rate"
 MARGINAL = "ca-ab/marginal_tax_rate"
+AGE_THRESHOLD_GATE = "ca-ab/marginal_age_threshold_gate"
+AGE_AMOUNT_GATE = "ca-ab/marginal_age_amount_gate"
+AGE_CREDIT_RATE = "ca-ab/marginal_alberta_age_credit_rate"
 
 SALARIES = ["0", "100", "2000", "19200.18", "24411.18", "26000", "70000", "275000"]
 
 
-def _summary(salary: str) -> Worksheet:
+def _summary(salary: str, birth_year: int | None = None) -> Worksheet:
     # No fixture: the bundled Alberta manifest, as the calculator loads it, salary the only
     # input.
-    worksheets = build_tax_computation().compute(
-        TaxCalculationRequest(ALBERTA, 2026, (Artifact(EMPLOYMENT_INCOME, D(salary)),))
-    )
+    given: tuple[Artifact[Decimal] | Artifact[int], ...] = (Artifact(EMPLOYMENT_INCOME, D(salary)),)
+    if birth_year is not None:
+        given = (*given, Artifact(BIRTH_YEAR, birth_year))
+    worksheets = build_tax_computation().compute(TaxCalculationRequest(ALBERTA, 2026, given))
     (summary,) = worksheets[RETURN]
     return summary
 
@@ -165,3 +170,59 @@ def test_2026_both_gates_are_open_at_275000() -> None:
     assert _value(summary, FEDERAL) == D("0.33")
     assert _value(summary, ALBERTA_RATE) == D("0.14")
     assert _value(summary, MARGINAL) == D("0.47")
+
+
+# The age amount (AB428 line 17, Worksheet AB428 "Line 58080 - Age amount", printed rate 15%)
+# falls by 15% of the net income over the threshold (47,234) until it is 0 (the maximum, 6,345).
+# Two gates switch the fall on only inside that range: the net income over the threshold
+# (worksheet line 4) is at least one cent, and the age amount claimed is at least one cent. A
+# filer born in 1956 claims the amount (born 1955 or earlier pays no CPP in 2026, so 1956 is the
+# last aged birth year with CPP); one born in 1980, or with no year of birth, does not, and has
+# the amount gate at 0.
+# Salary, then the age threshold gate and the age amount gate of the filer born in 1956.
+AGE_GATES = [
+    ("0", "0", "1"),
+    ("47675.76", "0", "1"),
+    ("47676.77", "1", "1"),
+    ("50000", "1", "1"),
+    ("90660", "1", "1"),
+    ("90661", "1", "0"),
+]
+
+
+@pytest.mark.parametrize(("salary", "threshold_gate", "amount_gate"), AGE_GATES)
+def test_2026_the_age_gates_open_inside_the_range_where_the_age_amount_falls(
+    salary: str, threshold_gate: str, amount_gate: str
+) -> None:
+    summary = _summary(salary, 1956)
+
+    assert _value(summary, AGE_THRESHOLD_GATE) == D(threshold_gate)
+    assert _value(summary, AGE_AMOUNT_GATE) == D(amount_gate)
+
+
+@pytest.mark.parametrize("salary", [row[0] for row in AGE_GATES])
+@pytest.mark.parametrize("birth_year", [1980, None])
+def test_2026_a_filer_born_in_1980_or_with_no_year_has_the_age_gates_and_credit_rate_at_0(
+    salary: str, birth_year: int | None
+) -> None:
+    summary = _summary(salary, birth_year)
+
+    assert _value(summary, AGE_AMOUNT_GATE) == D("0")
+    assert _value(summary, AGE_CREDIT_RATE) == D("0")
+
+
+@pytest.mark.parametrize(
+    ("salary", "age_credit_rate"),
+    [
+        ("47675.76", "0"),
+        ("47676.77", "0.01188"),
+        ("90660", "0.012"),
+        ("90661", "0"),
+    ],
+)
+def test_2026_the_alberta_age_credit_rate_is_the_fall_times_the_credit_rate_inside_the_range(
+    salary: str, age_credit_rate: str
+) -> None:
+    summary = _summary(salary, 1956)
+
+    assert _value(summary, AGE_CREDIT_RATE) == D(age_credit_rate)
