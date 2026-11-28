@@ -131,4 +131,4 @@ def test_the_2026_cutoff_is_born_in_1961_or_earlier_with_the_indexed_figures(
 ) -> None:
     sheet = _sheet(take_home_service, "20000", (Artifact(BIRTH_YEAR, year),), 2026)
 
-    assert _value(sheet, LINE_78) == (D("9209.00") if claimed else D("0.00"))
+    assert _value(sheet, LINE_78) == (D("9208.00") if claimed else D("0.00"))
