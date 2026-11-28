@@ -3,11 +3,10 @@
 With 1 to 11 months typed, the CPP basic exemption (Schedule 8 line E) is prorated, so CPP is
 charged from a salary below $2,000, before any federal or provincial tax is due. The credit on the
 CPP and EI contributions was then larger than the rate before credits, and the subtraction that
-may not go negative raised at $2,000 to $2,033 in every province. Where no
-tax is paid the rate is 0 (the gate), so each such subtraction is floored at zero before the gate
-applies. The Ontario and Quebec rates are pinned by hand in their own end-to-end tests; here every
-province must return a rate in the band at every typed number of months, never less than the rate
-at the same salary with no tax, which is the contributions alone.
+may not go negative raised at $2,000 to $2,033 in every province. Where no tax is paid the rate is
+0 (the gate), so each such subtraction is floored at zero before the gate applies. The Ontario and
+Quebec rates are pinned by hand in their own end-to-end tests; here every province must return a
+rate that is not negative at every typed number of months, in both years.
 """
 
 from __future__ import annotations

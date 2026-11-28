@@ -9,12 +9,13 @@ $2,033 of salary. Where no tax is paid the rate is 0 (the gate), so the differen
 zero before the gate applies. With 11 months the exemption ($3,208.33) is above the band, so no CPP
 is charged and the full-year rates are unchanged.
 
-Hand-computed, salary only, born 1980, no income tax in this range (basic personal amount): at
-$0 nothing; at $1,999 only the QPP base rate (2025 6.40%, 2026 6.30%); at $2,000 the first dollar of
-EI insurable earnings is taken in full, so 1 plus the QPP and QPIP rates (2025 1.0689, 2026
-1.0673); from $2,001 the QPP, EI and QPIP rates (2025 0.0820, 2026 0.0803). With 11 months no QPP:
-$1,999 is 0, $2,000 is 1 plus the QPIP rate (2025 1.0049, 2026 1.0043), then EI and QPIP (2025
-0.0180, 2026 0.0173).
+Hand-computed, salary only, born 1980, no income tax in this range (basic personal amount; T1
+line 114 credit rate, Schedule 8 lines A and E, T2204): at $0 nothing; at $1,999 only the QPP base
+rate (2025 6.40%, 2026 6.30%); at $2,000 the first dollar of EI insurable earnings is taken in
+full, so 1 plus the QPP and QPIP rates (2025 1.0689, 2026 1.0673), which holds a little past
+$2,000 and is over by $2,033; from there the QPP, EI and QPIP rates (2025 0.0820, 2026 0.0803).
+With 11 months no QPP: $1,999 is 0, $2,000 is 1 plus the QPIP rate (2025 1.0049, 2026 1.0043),
+then EI and QPIP (2025 0.0180, 2026 0.0173).
 """
 
 from __future__ import annotations

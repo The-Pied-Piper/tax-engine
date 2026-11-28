@@ -9,7 +9,8 @@ $2,033 of salary. Where no tax is paid the rate is 0 (the gate), so the differen
 zero before the gate applies. With 11 months the exemption ($3,208.33) is above the band, so no CPP
 is charged and the full-year rates are unchanged.
 
-Hand-computed, born 1980, salary only, no income tax in this range: $0 nothing; $1,999 only the
+Hand-computed (T1 line 114 credit rate, Schedule 8 lines A and E, T2204 line 16), born 1980,
+salary only, no income tax in this range: $0 nothing; $1,999 only the
 CPP base rate, 0.0595 (EI starts at $2,000); $2,000 to $2,033 the first dollar of EI insurable
 earnings is taken in full, so 1 plus CPP, 1.0595; $2,034 CPP and EI, 0.0595 + EI 1.63% (2026) or
 1.64% (2025) = 0.0758 or 0.0759. With 11 months no CPP: $1,999 is 0, 1 in the band, then EI alone
