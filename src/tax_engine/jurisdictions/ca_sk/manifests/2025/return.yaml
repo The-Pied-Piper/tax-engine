@@ -131,7 +131,7 @@ capabilities:
       rate: ca-sk/marginal_net_income_rate
     produces:
       output: ca-sk/marginal_saskatchewan_bracket_rate
-  - name: core/subtract
+  - name: core/subtract_not_below_zero
     unit: core/percent
     params:
       rounding: ca-sk/exact_rounding

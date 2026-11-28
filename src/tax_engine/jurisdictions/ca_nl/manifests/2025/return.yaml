@@ -137,7 +137,7 @@ capabilities:
       rate: ca-nl/marginal_net_income_rate
     produces:
       output: ca-nl/marginal_newfoundland_and_labrador_bracket_rate
-  - name: core/subtract
+  - name: core/subtract_not_below_zero
     unit: core/percent
     params:
       rounding: ca-nl/exact_rounding

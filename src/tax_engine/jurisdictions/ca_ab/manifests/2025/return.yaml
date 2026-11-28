@@ -145,7 +145,7 @@ capabilities:
       rate: ca-ab/marginal_net_income_rate
     produces:
       output: ca-ab/marginal_alberta_bracket_rate
-  - name: core/subtract
+  - name: core/subtract_not_below_zero
     unit: core/percent
     params:
       rounding: ca-ab/exact_rounding
