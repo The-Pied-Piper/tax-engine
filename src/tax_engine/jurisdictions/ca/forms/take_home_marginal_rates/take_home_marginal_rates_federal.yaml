@@ -100,7 +100,7 @@ capabilities:
         - ca/marginal_federal_bpa_credit_rate
     produces:
       output: ca/marginal_federal_rate_before_credits
-  - name: core/subtract
+  - name: core/subtract_not_below_zero
     unit: core/percent
     params:
       rounding: ca/exact_rounding

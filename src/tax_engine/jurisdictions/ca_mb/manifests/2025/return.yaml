@@ -301,7 +301,7 @@ capabilities:
       rate: ca-mb/marginal_manitoba_credit_rate
     produces:
       output: ca-mb/marginal_manitoba_contribution_credit_rate
-  - name: core/subtract
+  - name: core/subtract_not_below_zero
     unit: core/percent
     params:
       rounding: ca-mb/exact_rounding

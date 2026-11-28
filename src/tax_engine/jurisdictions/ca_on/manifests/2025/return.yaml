@@ -160,7 +160,7 @@ capabilities:
       rate: ca-on/marginal_net_income_rate
     produces:
       output: ca-on/marginal_ontario_bracket_rate
-  - name: core/subtract
+  - name: core/subtract_not_below_zero
     unit: core/percent
     params:
       rounding: ca-on/exact_rounding

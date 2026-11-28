@@ -113,7 +113,7 @@ capabilities:
       rate: ca-ns/marginal_net_income_rate
     produces:
       output: ca-ns/marginal_nova_scotia_bracket_rate
-  - name: core/subtract
+  - name: core/subtract_not_below_zero
     unit: core/percent
     params:
       rounding: ca-ns/exact_rounding

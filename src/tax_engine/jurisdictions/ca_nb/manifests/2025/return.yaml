@@ -113,7 +113,7 @@ capabilities:
       rate: ca-nb/marginal_net_income_rate
     produces:
       output: ca-nb/marginal_new_brunswick_bracket_rate
-  - name: core/subtract
+  - name: core/subtract_not_below_zero
     unit: core/percent
     params:
       rounding: ca-nb/exact_rounding

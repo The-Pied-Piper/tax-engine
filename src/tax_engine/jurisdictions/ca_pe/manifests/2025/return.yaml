@@ -116,7 +116,7 @@ capabilities:
       rate: ca-pe/marginal_net_income_rate
     produces:
       output: ca-pe/marginal_prince_edward_island_bracket_rate
-  - name: core/subtract
+  - name: core/subtract_not_below_zero
     unit: core/percent
     params:
       rounding: ca-pe/exact_rounding
