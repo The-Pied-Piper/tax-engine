@@ -13,11 +13,13 @@ from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.registry import Namespace
 from tests.jurisdictions.ca_qc.support import (
+    T1_BIRTH_YEAR_PARTS,
     quebec_capabilities,
     quebec_kinds,
     quebec_packages,
     quebec_parameter_parsers,
     quebec_units,
+    real_import,
 )
 
 QUEBEC_PARTS = Path(tax_engine.jurisdictions.ca_qc.__file__).parent / "manifests" / "2025"
@@ -43,6 +45,14 @@ def take_home_service(tmp_path: Path) -> TakeHomeService:
     """
 
     def build(header: str, form: str, *parts: str) -> TaxComputationService:
+        # TP-1 lines 98, 98.1 and 98.2 read Schedule 8 (the months of line A), so a test that
+        # composes them gets the real Schedule 8 import and the birth year parts it reads.
+        if any(part.startswith("tp1_income_line_98") for part in parts):
+            if "ca/schedule_8" not in header:
+                header += ("" if "imports:" in header else "imports:\n") + real_import(
+                    "ca/schedule_8"
+                )
+            parts = (*parts, *T1_BIRTH_YEAR_PARTS)
         folder = tmp_path / "manifests" / "2025"
         folder.mkdir(parents=True)
         (folder / "00_header.yaml").write_text(header, encoding="utf-8")
