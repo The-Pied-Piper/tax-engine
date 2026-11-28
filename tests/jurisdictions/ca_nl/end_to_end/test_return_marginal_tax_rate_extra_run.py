@@ -33,6 +33,7 @@ tolerance, which is why no step below $10 is used.
 from __future__ import annotations
 
 from decimal import Decimal
+from typing import Any
 
 import pytest
 
@@ -41,6 +42,7 @@ from tax_engine.application.models.calculation_request import TaxCalculationRequ
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.personal_amounts import BIRTH_YEAR
 from tests.kinds import bundled_kinds
 
 D = Decimal
@@ -232,3 +234,43 @@ def test_every_known_exception_is_a_salary_of_the_sweep() -> None:
 
 def test_every_known_exception_is_a_salary_with_a_smaller_step() -> None:
     assert set(KNOWN_EXCEPTIONS) == set(SMALLER_STEPS)
+
+
+# A filer born in 1955 claims the age amount, which falls by 15% of the net income over the
+# threshold (38,712 in 2025, 39,138 in 2026) until it is 0, so the marginal rate has the fall as a
+# further term. The salaries are in each part of it (below the threshold, over it, deep in the
+# range, past the end of the Newfoundland and Labrador amount), each a whole run of $100 clear of
+# a break.
+AGE_SALARIES = (30_000, 38_000, 41_000, 46_000, 50_000, 60_000, 75_000, 80_000, 90_000, 100_000)
+
+
+def _born_1955(year: int, salary: Decimal) -> TaxCalculationRequest:
+    given: list[Artifact[Any]] = [
+        Artifact(EMPLOYMENT_INCOME, salary),
+        Artifact(BIRTH_YEAR, 1955),
+    ]
+    return TaxCalculationRequest(NEWFOUNDLAND, year, tuple(given))
+
+
+@pytest.mark.parametrize("year", (2025, 2026))
+@pytest.mark.parametrize("salary", AGE_SALARIES)
+def test_the_marginal_rate_of_a_filer_born_1955_is_the_extra_dollar_change_in_the_deductions(
+    year: int, salary: int
+) -> None:
+    engine = build_tax_computation()
+    kinds = bundled_kinds()
+
+    def run(at: int) -> tuple[Decimal, Decimal]:
+        worksheets = engine.compute(_born_1955(year, D(at)))
+        deductions = D("0")
+        for form, kind in DEDUCTIONS:
+            value = worksheets[form][0].get(kinds.kind(kind)).value
+            assert isinstance(value, Decimal)
+            deductions += value
+        marginal = worksheets[RETURN][0].get(kinds.kind(MARGINAL)).value
+        assert isinstance(marginal, Decimal)
+        return deductions, marginal
+
+    deductions, marginal = run(salary)
+
+    assert abs(marginal - (run(salary + 100)[0] - deductions) / 100) <= TOLERANCE

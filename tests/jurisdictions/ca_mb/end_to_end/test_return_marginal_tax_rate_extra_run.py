@@ -20,11 +20,18 @@ exactly on the lower edge of a band ($2,000 and $3,500) are pinned by value in
 `test_return_marginal_tax_rate_values.py` (the rate at the edge and one cent above it): at an
 exact edge the EI rate is 0 at $2,000, while the CPP rates are on at $3,500 (a CPP band reads its
 own rate from its lower edge), and any run goes into the next band.
+
+For a filer born in 1955, who has the age amount (MB428 line 10), the check also runs at salaries
+(`AGE_SALARIES`) in the range where the amount falls by 15% of each dollar of net income (a net
+income over 27,749.00 up to 52,602.00), each a whole run of $100 clear of a break (the end of the
+family tax benefit at a net income of 45,888.88 for such a filer, and the end of the age amount).
+A filer born in 1955 pays CPP in 2025 and none in 2026.
 """
 
 from __future__ import annotations
 
 from decimal import Decimal
+from typing import Any
 
 import pytest
 
@@ -33,6 +40,7 @@ from tax_engine.application.models.calculation_request import TaxCalculationRequ
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.personal_amounts import BIRTH_YEAR
 from tests.kinds import bundled_kinds
 
 D = Decimal
@@ -140,20 +148,23 @@ EXCEPTION_CASES = [
 ]
 
 
-def _deductions(year: int, salary: Decimal) -> Decimal:
-    worksheets = build_tax_computation().compute(
-        TaxCalculationRequest(MANITOBA, year, (Artifact(EMPLOYMENT_INCOME, salary),))
-    )
+def _request(year: int, salary: Decimal, birth_year: int | None) -> TaxCalculationRequest:
+    given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, salary)]
+    if birth_year is not None:
+        given.append(Artifact(BIRTH_YEAR, birth_year))
+    return TaxCalculationRequest(MANITOBA, year, tuple(given))
+
+
+def _deductions(year: int, salary: Decimal, birth_year: int | None = None) -> Decimal:
+    worksheets = build_tax_computation().compute(_request(year, salary, birth_year))
     kinds = bundled_kinds()
     return sum(
         (worksheets[form][0].get(kinds.kind(kind)).value for form, kind in DEDUCTIONS), D("0")
     )
 
 
-def _marginal_rate(year: int, salary: Decimal) -> Decimal:
-    worksheets = build_tax_computation().compute(
-        TaxCalculationRequest(MANITOBA, year, (Artifact(EMPLOYMENT_INCOME, salary),))
-    )
+def _marginal_rate(year: int, salary: Decimal, birth_year: int | None = None) -> Decimal:
+    worksheets = build_tax_computation().compute(_request(year, salary, birth_year))
     value = worksheets[RETURN][0].get(bundled_kinds().kind(MARGINAL)).value
     assert isinstance(value, Decimal)
     return value
@@ -194,3 +205,30 @@ def test_every_known_exception_is_a_salary_of_the_sweep() -> None:
 
 def test_every_known_exception_is_a_salary_with_a_smaller_step() -> None:
     assert set(KNOWN_EXCEPTIONS) == set(SMALLER_STEPS)
+
+
+# (tax year, salary) for a filer born in 1955: under the age threshold, over it, and past the end
+# of the amount.
+AGE_SALARIES = [
+    (2025, 20_000),
+    (2025, 30_000),
+    (2025, 40_000),
+    (2025, 50_000),
+    (2025, 60_000),
+    (2026, 20_000),
+    (2026, 30_000),
+    (2026, 40_000),
+    (2026, 50_000),
+    (2026, 60_000),
+]
+
+
+@pytest.mark.parametrize(("year", "salary"), AGE_SALARIES)
+def test_the_marginal_rate_of_a_filer_born_in_1955_is_the_extra_dollar_change(
+    year: int, salary: int
+) -> None:
+    extra_run = (
+        _deductions(year, D(salary + 100), 1955) - _deductions(year, D(salary), 1955)
+    ) / 100
+
+    assert abs(_marginal_rate(year, D(salary), 1955) - extra_run) <= TOLERANCE

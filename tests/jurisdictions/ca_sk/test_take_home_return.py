@@ -79,6 +79,8 @@ SK428_CREDITS_FORM = dedent("""\
       required: true
       exports:
         - ca-sk/sk428_bracket_rate_line_5
+        - ca-sk/worksheet_sk428_age_amount_line_4
+        - ca-sk/sk428_age_amount_claimed_line_10
     capabilities: []
     """)
 SK428_FORM = dedent("""\
@@ -145,6 +147,8 @@ OTHER_STEPS = [
         "core/percent",
         "ca/other_employment_income",
     ),
+    ("ca-sk/sk428_credits", "ca-sk/worksheet_sk428_age_amount_line_4", "ca/cad", ""),
+    ("ca-sk/sk428_credits", "ca-sk/sk428_age_amount_claimed_line_10", "ca/cad", ""),
     ("ca-sk/sk428", "ca-sk/sk428_tax_after_credits_line_67", "ca/cad", ""),
 ]
 

@@ -89,6 +89,15 @@ NL428_CREDITS_FORM = dedent("""\
       exports:
         - ca-nl/nl428_bracket_rate_line_5
         - ca-nl/nl428_bracket_rate_line_12
+        - ca-nl/nl428_age_amount_claimed_line_17
+    capabilities: []
+    """)
+NL428_WORKSHEET_FORM = dedent("""\
+    form:
+      name: ca-nl/nl428_worksheet
+      required: true
+      exports:
+        - ca-nl/worksheet_nl428_age_amount_line_4
     capabilities: []
     """)
 NL428_FORM = dedent("""\
@@ -153,6 +162,8 @@ OTHER_STEPS = [
     ("ca/t1_tax_and_credits", "ca/federal_tax_after_credits", "ca/cad"),
     ("ca-nl/nl428_credits", "ca-nl/nl428_bracket_rate_line_5", "core/percent"),
     ("ca-nl/nl428_credits", "ca-nl/nl428_bracket_rate_line_12", "core/percent"),
+    ("ca-nl/nl428_credits", "ca-nl/nl428_age_amount_claimed_line_17", "ca/cad"),
+    ("ca-nl/nl428_worksheet", "ca-nl/worksheet_nl428_age_amount_line_4", "ca/cad"),
     ("ca-nl/nl428", "ca-nl/nl428_line_101", "ca/cad"),
     ("ca-nl/nl428", "ca-nl/nl428_line_104", "ca/cad"),
     ("ca-nl/nl428", "ca-nl/nl428_newfoundland_and_labrador_tax_line_105", "ca/cad"),
@@ -187,13 +198,14 @@ def _other_step(form: str, output: str, unit: str) -> str:
               output: {output}
         """
         return f"form:\n  name: {form}\ncapabilities:\n" + dedent(step)
+    parts = "[]" if "age_amount" in output else "[ca/return_employment_income]"
     step = f"""\
         - name: core/sum
           unit: {unit}
           params:
             rounding: ca/cent_rounding
           consumes:
-            parts: [ca/return_employment_income]
+            parts: {parts}
           produces:
             output: {output}
     """
@@ -212,6 +224,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
         ("03_t1_step.yaml", T1_STEP),
         ("03a_nl428_credits_form.yaml", NL428_CREDITS_FORM),
         ("03a_nl428_form.yaml", NL428_FORM),
+        ("03a_nl428_worksheet_form.yaml", NL428_WORKSHEET_FORM),
         *[
             (f"03b_{number}_salary.yaml", _salary_total(form))
             for number, form in enumerate(

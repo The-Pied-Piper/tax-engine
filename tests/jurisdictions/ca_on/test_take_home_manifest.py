@@ -193,7 +193,7 @@ def test_the_ontario_manifest_declares_the_federal_inputs_by_importing_their_for
     } <= set(inputs_of(_manifest()))
 
 
-def test_on428_exports_lines_90_86_and_80_the_surtax_base_line_65_and_the_line_5_rate() -> None:
+def test_on428_exports_lines_90_86_and_80_line_65_the_line_5_rate_and_the_age_worksheet() -> None:
     (on428,) = (form for form in _manifest().forms if form.name == "ca-on/on428")
 
     assert set(on428.exports) == {
@@ -202,6 +202,8 @@ def test_on428_exports_lines_90_86_and_80_the_surtax_base_line_65_and_the_line_5
         "ca-on/on428_bracket_column_rate_line_5",
         "ca-on/on428_tax_after_lift_credit_line_86",
         "ca-on/on428_ontario_tax_reduction_line_80",
+        "ca-on/worksheet_on428_age_amount_line_4",
+        "ca-on/on428_age_amount_claimed_line_10",
     }
 
 
@@ -237,6 +239,50 @@ def test_the_return_reads_line_65_into_its_own_artifact_and_gives_the_surtax_fac
         {"line_66": "ca-on/surtax_line_66", "line_67": "ca-on/surtax_line_67"},
         {"base": "ca-on/ontario_surtax_base"},
         {"output": "ca-on/ontario_surtax_factor"},
+    ) in steps
+
+
+def test_the_return_reads_the_age_worksheet_line_4_and_the_age_amount_claimed() -> None:
+    steps = _return_steps()
+
+    assert (
+        "core/record_total",
+        {},
+        {"records": "ca-on/on428.worksheet_on428_age_amount_line_4"},
+        {"output": "ca-on/marginal_age_income_over_threshold"},
+    ) in steps
+    assert (
+        "core/record_total",
+        {},
+        {"records": "ca-on/on428.on428_age_amount_claimed_line_10"},
+        {"output": "ca-on/marginal_age_amount_claimed"},
+    ) in steps
+
+
+def test_the_age_credit_rate_is_added_to_the_bracket_rate_before_the_contribution_credit() -> None:
+    # The age amount's fall is tax at the credit rate, so it enters with the credits, before the
+    # surtax factor: bracket rate plus the age credit rate, less the credit on the contributions.
+    steps = _return_steps()
+
+    assert (
+        "core/sum",
+        {"rounding": "ca-on/exact_rounding"},
+        {
+            "parts": (
+                "ca-on/marginal_ontario_bracket_rate",
+                "ca-on/marginal_ontario_age_credit_rate",
+            )
+        },
+        {"output": "ca-on/marginal_ontario_rate_before_credits"},
+    ) in steps
+    assert (
+        "core/subtract",
+        {"rounding": "ca-on/exact_rounding"},
+        {
+            "amount": "ca-on/marginal_ontario_rate_before_credits",
+            "less": "ca-on/marginal_ontario_contribution_credit_rate",
+        },
+        {"output": "ca-on/marginal_ontario_rate_after_credits"},
     ) in steps
 
 

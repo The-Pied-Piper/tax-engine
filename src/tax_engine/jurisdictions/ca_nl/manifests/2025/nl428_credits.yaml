@@ -3,7 +3,10 @@
 # and line 12 (`ca-nl/nl428_bracket_rate_line_12`), the bracket rates the return summary reads for
 # the Newfoundland and Labrador marginal rate; line 8 (`ca-nl/nl428_tax_on_taxable_income_line_8`)
 # and line 15 (`ca-nl/nl428_tax_on_taxable_income_line_15`), which line 63 on the tax form reads;
-# and line 62 (`ca-nl/nl428_non_refundable_credits_line_62`), which line 66 on the tax form reads.
+# line 62 (`ca-nl/nl428_non_refundable_credits_line_62`), which line 66 on the tax form reads; and
+# the age amount claimed before the printed maximum check
+# (`ca-nl/nl428_age_amount_claimed_line_17`), which the return summary's marginal rate reads to tell
+# whether an age amount is still claimed.
 form:
   name: ca-nl/nl428_credits
   title: "Form NL428: Newfoundland and Labrador Tax"
@@ -15,4 +18,5 @@ form:
     - ca-nl/nl428_tax_on_taxable_income_line_15
     - ca-nl/nl428_eligible_dependant_amount_line_23
     - ca-nl/nl428_non_refundable_credits_line_62
+    - ca-nl/nl428_age_amount_claimed_line_17
 capabilities: []

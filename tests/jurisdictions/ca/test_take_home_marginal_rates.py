@@ -108,6 +108,8 @@ def test_every_step_is_a_percent_except_the_dollar_figures_it_reads() -> None:
     dollars = {
         "ca/marginal_salary",
         "ca/marginal_net_income",
+        "ca/marginal_age_income_over_threshold",
+        "ca/marginal_age_amount_claimed",
         "ca/marginal_basic_federal_tax",
         "ca/marginal_cpp_line_2",
         "ca/marginal_cpp_line_5",

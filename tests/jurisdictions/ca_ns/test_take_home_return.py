@@ -105,6 +105,8 @@ NS428_FORM = dedent("""\
         - ca-ns/ns428_bracket_rate_line_5
         - ca-ns/ns428_line_81
         - ca-ns/ns428_low_income_reduction_line_84
+        - ca-ns/worksheet_ns428_age_amount_line_4
+        - ca-ns/ns428_age_amount_claimed_line_10
         - ca-ns/ns428_nova_scotia_tax_line_99
     capabilities: []
     """)
@@ -161,6 +163,8 @@ OTHER_STEPS = [
     ("ca-ns/ns428", "ca-ns/ns428_bracket_rate_line_5", "core/percent"),
     ("ca-ns/ns428", "ca-ns/ns428_line_81", "ca/cad"),
     ("ca-ns/ns428", "ca-ns/ns428_low_income_reduction_line_84", "ca/cad"),
+    ("ca-ns/ns428", "ca-ns/worksheet_ns428_age_amount_line_4", "ca/cad"),
+    ("ca-ns/ns428", "ca-ns/ns428_age_amount_claimed_line_10", "ca/cad"),
     ("ca-ns/ns428", "ca-ns/ns428_nova_scotia_tax_line_99", "ca/cad"),
 ]
 

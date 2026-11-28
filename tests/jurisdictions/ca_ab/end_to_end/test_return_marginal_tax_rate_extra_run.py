@@ -22,11 +22,18 @@ any run goes into the next band. The list is not exhaustive: a sweep from anothe
 offset meets other band edges (the federal brackets near $57,900, $178,900 and $254,400, the EI
 maximum near $65,700, the CPP2 start near $81,200 in 2025 and $85,000 in 2026), each a break of the
 same kind.
+
+For a filer who has the age amount (AB428 line 17), born in 1955 for 2025 and in 1956 for 2026 (a
+filer born in 1955 pays no CPP in 2026), the same check also runs at salaries (`AGE_SALARIES`) under
+the age threshold, in the range where the Alberta and the federal age amounts fall by 15% of each
+dollar of net income, and past the point where the Alberta amount reaches 0; none of them is within
+$100 of a threshold or of the point where an amount reaches 0.
 """
 
 from __future__ import annotations
 
 from decimal import Decimal
+from typing import Any
 
 import pytest
 
@@ -35,6 +42,7 @@ from tax_engine.application.models.calculation_request import TaxCalculationRequ
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.personal_amounts import BIRTH_YEAR
 from tests.kinds import bundled_kinds
 
 D = Decimal
@@ -165,23 +173,56 @@ EXCEPTION_CASES = [
 ]
 
 
-def _deductions(year: int, salary: Decimal) -> Decimal:
-    worksheets = build_tax_computation().compute(
-        TaxCalculationRequest(ALBERTA, year, (Artifact(EMPLOYMENT_INCOME, salary),))
-    )
+def _request(year: int, salary: Decimal, birth_year: int | None) -> TaxCalculationRequest:
+    given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, salary)]
+    if birth_year is not None:
+        given.append(Artifact(BIRTH_YEAR, birth_year))
+    return TaxCalculationRequest(ALBERTA, year, tuple(given))
+
+
+def _deductions(year: int, salary: Decimal, birth_year: int | None = None) -> Decimal:
+    worksheets = build_tax_computation().compute(_request(year, salary, birth_year))
     kinds = bundled_kinds()
     return sum(
         (worksheets[form][0].get(kinds.kind(kind)).value for form, kind in DEDUCTIONS), D("0")
     )
 
 
-def _marginal_rate(year: int, salary: Decimal) -> Decimal:
-    worksheets = build_tax_computation().compute(
-        TaxCalculationRequest(ALBERTA, year, (Artifact(EMPLOYMENT_INCOME, salary),))
-    )
+def _marginal_rate(year: int, salary: Decimal, birth_year: int | None = None) -> Decimal:
+    worksheets = build_tax_computation().compute(_request(year, salary, birth_year))
     value = worksheets[RETURN][0].get(bundled_kinds().kind(MARGINAL)).value
     assert isinstance(value, Decimal)
     return value
+
+
+# (tax year, salary, birth year) of a filer with the age amount: under the age threshold (46,308 in
+# 2025, 47,234 in 2026), in the range where the amounts fall, and past the end of the Alberta amount
+# (87,781 in 2025, 89,533 in 2026) while the federal one is still falling.
+AGE_SALARIES = [
+    (2025, 40_000, 1955),
+    (2025, 47_000, 1955),
+    (2025, 55_000, 1955),
+    (2025, 70_000, 1955),
+    (2025, 80_000, 1955),
+    (2025, 95_000, 1955),
+    (2026, 40_000, 1956),
+    (2026, 48_000, 1956),
+    (2026, 55_000, 1956),
+    (2026, 70_000, 1956),
+    (2026, 80_000, 1956),
+    (2026, 95_000, 1956),
+]
+
+
+@pytest.mark.parametrize(("year", "salary", "birth_year"), AGE_SALARIES)
+def test_the_marginal_rate_of_a_filer_with_the_age_amount_is_the_extra_dollar_change(
+    year: int, salary: int, birth_year: int
+) -> None:
+    extra_run = (
+        _deductions(year, D(salary + 100), birth_year) - _deductions(year, D(salary), birth_year)
+    ) / 100
+
+    assert abs(_marginal_rate(year, D(salary), birth_year) - extra_run) <= TOLERANCE
 
 
 @pytest.mark.parametrize(("year", "salary"), CASES)

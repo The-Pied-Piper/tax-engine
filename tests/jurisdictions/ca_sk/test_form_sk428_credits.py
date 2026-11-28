@@ -1,6 +1,8 @@
-"""The Saskatchewan form `ca-sk/sk428_credits` (Form SK428, lines 1 to 57) and the three kinds it
+"""The Saskatchewan form `ca-sk/sk428_credits` (Form SK428, lines 1 to 57) and the five kinds it
 exports: line 5, the bracket rate (the figure the return summary reads for the marginal tax rate),
-line 8, Saskatchewan tax on taxable income, and line 57, Saskatchewan non-refundable tax credits.
+line 8, Saskatchewan tax on taxable income, line 57, Saskatchewan non-refundable tax credits, and
+the age amount worksheet's line 4 and the age amount claimed (read for the age amount's fall in
+the marginal tax rate).
 
 The part file names the form and its exports; line parts carry the capabilities. The Saskatchewan
 package is not yet listed, so the part is read as YAML and the kinds are taken from the
@@ -31,6 +33,8 @@ EXPORTS = [
     "ca-sk/sk428_bracket_rate_line_5",
     "ca-sk/sk428_tax_on_taxable_income_line_8",
     "ca-sk/sk428_non_refundable_credits_line_57",
+    "ca-sk/worksheet_sk428_age_amount_line_4",
+    "ca-sk/sk428_age_amount_claimed_line_10",
 ]
 
 
@@ -48,7 +52,7 @@ def test_the_form_is_named_titled_as_printed_and_required() -> None:
     assert form["required"] is True
 
 
-def test_the_form_exports_line_5_and_the_two_lines_the_tax_form_reads_in_order() -> None:
+def test_the_form_exports_line_5_the_two_tax_form_lines_and_the_two_age_figures_in_order() -> None:
     assert _part()["form"]["exports"] == EXPORTS
 
 

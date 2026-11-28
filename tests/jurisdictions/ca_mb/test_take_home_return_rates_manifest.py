@@ -65,3 +65,37 @@ def test_every_step_after_line_167_has_no_title_and_no_reference() -> None:
     for step in _steps()[1:]:
         assert "title" not in step
         assert "reference" not in step
+
+
+def test_the_age_amount_term_reads_the_two_mb428_exports_and_joins_the_bracket_rate_sum() -> None:
+    steps = _steps()
+    outputs = [step["produces"]["output"] for step in steps]
+    by_output = {step["produces"]["output"]: step for step in steps}
+
+    assert by_output["ca-mb/marginal_age_income_over_threshold"]["consumes"] == {
+        "records": "ca-mb/mb428_credits.worksheet_mb428_age_amount_line_4"
+    }
+    assert by_output["ca-mb/marginal_age_amount_claimed"]["consumes"] == {
+        "records": "ca-mb/mb428_credits.mb428_age_amount_claimed_line_10"
+    }
+    assert by_output["ca-mb/marginal_age_rate"]["params"] == {"rate": "ca-mb/age_rate"}
+    assert by_output["ca-mb/marginal_age_phase_down_net_income_rate"]["consumes"] == {
+        "base": "ca-mb/marginal_age_reduction_rate",
+        "rate": "ca-mb/marginal_net_income_rate",
+    }
+    assert by_output["ca-mb/marginal_manitoba_age_credit_rate"]["consumes"] == {
+        "base": "ca-mb/marginal_age_phase_down_net_income_rate",
+        "rate": "ca-mb/marginal_manitoba_credit_rate",
+    }
+    assert by_output["ca-mb/manitoba_bracket_rate_with_phase_out"]["consumes"] == {
+        "parts": [
+            "ca-mb/marginal_manitoba_bracket_rate",
+            "ca-mb/marginal_manitoba_phase_out_rate",
+            "ca-mb/marginal_manitoba_family_tax_benefit_rate",
+            "ca-mb/marginal_manitoba_age_credit_rate",
+        ]
+    }
+    # The age term comes before the sum it is a part of.
+    assert outputs.index("ca-mb/marginal_manitoba_age_credit_rate") < outputs.index(
+        "ca-mb/manitoba_bracket_rate_with_phase_out"
+    )

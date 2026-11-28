@@ -60,6 +60,23 @@
 # so it starts at the first cent of line 8, which is within cents of the printed net income of
 # 200,000.
 #
+# The age amount (MB428 line 10, Worksheet MB428 "Line 58080 - Age amount (if you were born in 1960
+# or earlier)") is a credit amount that falls as net income rises, for a filer born in 1960 or
+# earlier (the optional year of birth): worksheet line 4 "Line 2 minus line 3 (if negative, enter
+# "0")" is the net income over 27,749.00, and line 6 takes the printed 15% of it off the maximum of
+# 3,728.00, so a further dollar of net income takes away 15% of a dollar of the credit amount, and
+# each dollar of it is tax at the credit rate of MB428 line 52. It counts only where line 4 is above
+# 0 and only while an amount is still claimed (the age amount claimed on MB428 line 10 before the
+# printed maximum check, which is 0.00 for a filer born after 1960 or with no year of birth, and
+# where line 7 is 0.00): the printed rate of Worksheet MB428 line 5 (`ca-mb/age_rate`, as it is)
+# times the two gates (`ca-mb/marginal_rate_gate`) times the net income rate times the credit rate
+# is the extra Manitoba tax. The age term is added to the other credit-type terms (the basic
+# personal amount's and the family tax benefit's) by the same core/sum into the bracket rate; its
+# position in the sum is immaterial because a sum commutes, and the Manitoba rate gate counts it as
+# it counts them. It stops when the claimed amount reaches 0.00 (the dollar that reaches 0.00 is
+# not counted). The end of the amount at a net income of 52,602.00 is the form's printed "$52,602
+# or more, enter 0" shortcut that MB428 line 10 applies, not only worksheet arithmetic.
+#
 # Credits on the contributions. The CPP base contribution (T1 line 30800, MB428 line 19) and the EI
 # premium (line 31200, MB428 line 21) earn the Manitoba non-refundable credit rate (MB428 line 52,
 # the `ca-mb/credit_rate` dataset), so the credit-earning contribution rate times it is the
@@ -76,14 +93,9 @@
 # rate (the four contribution rates) with core/sum into `ca-mb/marginal_tax_rate`; it is rounded
 # half-up to 0.0001 like the average rate too, is not printed on the form and has no title or line.
 # Manitoba has no surtax or health premium.
-# Limits: the credits that depend on net income and are claimed only by a filer who gives more
-# than a salary are not steps in the marginal rate: the age amount (MB428 line 10, Worksheet MB428
-# line 58080, now worked out when the optional year of birth says born in 1960 or earlier, and
-# phased out at 15% of net income over $27,749) and the medical expense rate of 3% of net income
-# (MB428 line 45). The marginal-rate steps above are unchanged and still assume neither is
-# claimed, so the marginal tax rate would be wrong for a filer born in 1960 or earlier with net
-# income in that phase-out range, or one who claims medical expenses; the tax, the refund or
-# balance owing and the average rate do include the age amount.
+# Limits: the medical expense rate of 3% of net income (MB428 line 45), claimed only by a filer who
+# gives more than a salary, is not a step in the marginal rate, which still assumes no medical
+# expenses are claimed, so the marginal tax rate would be wrong for a filer who claims them.
 capabilities:
   - name: core/record_total
     title: "Refund or balance owing"
@@ -272,6 +284,76 @@ capabilities:
       rate: ca-mb/marginal_net_income_rate
     produces:
       output: ca-mb/marginal_manitoba_family_tax_benefit_rate
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-mb/mb428_credits.worksheet_mb428_age_amount_line_4
+    produces:
+      output: ca-mb/marginal_age_income_over_threshold
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-mb/mb428_credits.mb428_age_amount_claimed_line_10
+    produces:
+      output: ca-mb/marginal_age_amount_claimed
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca-mb/marginal_rate_gate
+    consumes:
+      base: ca-mb/marginal_age_income_over_threshold
+    produces:
+      output: ca-mb/marginal_age_threshold_gate
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca-mb/marginal_rate_gate
+    consumes:
+      base: ca-mb/marginal_age_amount_claimed
+    produces:
+      output: ca-mb/marginal_age_amount_gate
+  - name: core/rate_figure
+    unit: core/percent
+    params:
+      rate: ca-mb/age_rate
+    produces:
+      output: ca-mb/marginal_age_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-mb/exact_rounding
+    consumes:
+      base: ca-mb/marginal_age_rate
+      rate: ca-mb/marginal_age_threshold_gate
+    produces:
+      output: ca-mb/marginal_age_reduction_rate_over_threshold
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-mb/exact_rounding
+    consumes:
+      base: ca-mb/marginal_age_reduction_rate_over_threshold
+      rate: ca-mb/marginal_age_amount_gate
+    produces:
+      output: ca-mb/marginal_age_reduction_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-mb/exact_rounding
+    consumes:
+      base: ca-mb/marginal_age_reduction_rate
+      rate: ca-mb/marginal_net_income_rate
+    produces:
+      output: ca-mb/marginal_age_phase_down_net_income_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-mb/exact_rounding
+    consumes:
+      base: ca-mb/marginal_age_phase_down_net_income_rate
+      rate: ca-mb/marginal_manitoba_credit_rate
+    produces:
+      output: ca-mb/marginal_manitoba_age_credit_rate
   - name: core/multiply_by_rate
     unit: core/percent
     params:
@@ -290,6 +372,7 @@ capabilities:
         - ca-mb/marginal_manitoba_bracket_rate
         - ca-mb/marginal_manitoba_phase_out_rate
         - ca-mb/marginal_manitoba_family_tax_benefit_rate
+        - ca-mb/marginal_manitoba_age_credit_rate
     produces:
       output: ca-mb/manitoba_bracket_rate_with_phase_out
   - name: core/multiply_by_rate

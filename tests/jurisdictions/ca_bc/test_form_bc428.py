@@ -6,9 +6,11 @@ Columbia tax, and supplies line 91 as `ca/provincial_tax.amount`, the name the f
 line 42800. It also exports the figures the return summary reads for the marginal tax rate: the
 bracket rate of line 5 and of line 12 (one of them blank), the tax reduction's line 78 ("Line 76
 multiplied by the percentage from line 77"), line 79 ("British Columbia tax reduction") and line
-80 ("Line 72 minus line 79 (if negative, enter "0")"). Each export is declared as an input of the
-test header: this test loads only the form declaration (`bc428.yaml`), not the line parts, which
-have their own tests.
+80 ("Line 72 minus line 79 (if negative, enter "0")"), and the age amount worksheet's line 4
+("Line 2 minus line 3 (if negative, enter 0)") and the age amount claimed on line 17 before the
+printed maximum check, for the fall of the age amount in the marginal rate. Each export is declared
+as an input of the test header: this test loads only the form declaration (`bc428.yaml`), not the
+line parts, which have their own tests.
 """
 
 from __future__ import annotations
@@ -29,6 +31,8 @@ LINE_12 = "ca-bc/bc428_bracket_rate_line_12"
 LINE_78 = "ca-bc/bc428_reduction_clawback_line_78"
 LINE_79 = "ca-bc/bc428_british_columbia_tax_reduction_line_79"
 LINE_80 = "ca-bc/bc428_tax_after_reduction_line_80"
+AGE_LINE_4 = "ca-bc/worksheet_bc428_age_amount_line_4"
+AGE_LINE_17 = "ca-bc/bc428_age_amount_claimed_line_17"
 LINE_91 = "ca-bc/bc428_british_columbia_tax_line_91"
 
 HEADER = """\
@@ -54,6 +58,10 @@ inputs:
     required: true
   - name: {LINE_80}
     required: true
+  - name: {AGE_LINE_4}
+    required: true
+  - name: {AGE_LINE_17}
+    required: true
   - name: {LINE_91}
     required: true
 """
@@ -76,5 +84,14 @@ def test_the_form_is_declared_with_its_export_and_supply(tmp_path: Path) -> None
     (bc428,) = (form for form in manifest.forms if form.name == "ca-bc/bc428")
     assert bc428.required is True
     assert bc428.title == "Form BC428: British Columbia Tax"
-    assert tuple(bc428.exports) == (LINE_5, LINE_12, LINE_78, LINE_79, LINE_80, LINE_91)
+    assert tuple(bc428.exports) == (
+        LINE_5,
+        LINE_12,
+        LINE_78,
+        LINE_79,
+        LINE_80,
+        AGE_LINE_4,
+        AGE_LINE_17,
+        LINE_91,
+    )
     assert dict(bc428.supplies) == {"ca/provincial_tax.amount": LINE_91}

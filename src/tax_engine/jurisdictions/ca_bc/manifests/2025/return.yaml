@@ -55,6 +55,19 @@
 # cent, so it starts at the first cent of line 78, which is within cents of the printed net income
 # of 25,020.
 #
+# The age amount (BC428 line 17, Worksheet BC428 "Line 58080 - Age amount") is one of the British
+# Columbia credits and falls by the printed 15% (`ca-bc/age_rate`) of the net income over its
+# threshold (worksheet line 4), until it is 0, so a filer born in 1960 or earlier pays more
+# British Columbia tax on a further dollar in that range: the fall of the credit times the British
+# Columbia credit rate. BC428's exports line 4 and the age amount claimed (line 17 before the
+# printed maximum check) are totalled; each is gated through `ca-bc/marginal_rate_gate` (the net
+# income is over the threshold, an age amount is still claimed: 0 for a filer under 65 or with no
+# birth year); the printed rate times both gates, times the net income rate (line 2 follows the
+# net income), times the British Columbia credit rate is the extra rate. It is added to the other
+# credit-type terms of the British Columbia rate (its position in the sum is immaterial, because a
+# sum commutes), so the British Columbia gate on line 80 governs it like the other credits. It stops
+# when the claimed amount reaches 0.00 (the dollar that reaches 0.00 is not counted).
+#
 # The whole British Columbia rate counts only where BC428 line 80 "Line 72 minus line 79 (if
 # negative, enter "0")" is above zero, through the `ca-bc/marginal_rate_gate` dataset (0 where that
 # tax is 0.00 and 1 from one cent): where the credits and the reduction take all the tax a further
@@ -168,6 +181,76 @@ capabilities:
   - name: core/record_total
     unit: ca/cad
     consumes:
+      records: ca-bc/bc428.worksheet_bc428_age_amount_line_4
+    produces:
+      output: ca-bc/british_columbia_age_income_over_threshold_return
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-bc/bc428.bc428_age_amount_claimed_line_17
+    produces:
+      output: ca-bc/british_columbia_age_amount_claimed_return
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca-bc/marginal_rate_gate
+    consumes:
+      base: ca-bc/british_columbia_age_income_over_threshold_return
+    produces:
+      output: ca-bc/british_columbia_age_threshold_gate
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca-bc/marginal_rate_gate
+    consumes:
+      base: ca-bc/british_columbia_age_amount_claimed_return
+    produces:
+      output: ca-bc/british_columbia_age_amount_gate
+  - name: core/rate_figure
+    unit: core/percent
+    params:
+      rate: ca-bc/age_rate
+    produces:
+      output: ca-bc/marginal_british_columbia_age_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-bc/exact_rounding
+    consumes:
+      base: ca-bc/marginal_british_columbia_age_rate
+      rate: ca-bc/british_columbia_age_threshold_gate
+    produces:
+      output: ca-bc/marginal_british_columbia_age_reduction_rate_over_threshold
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-bc/exact_rounding
+    consumes:
+      base: ca-bc/marginal_british_columbia_age_reduction_rate_over_threshold
+      rate: ca-bc/british_columbia_age_amount_gate
+    produces:
+      output: ca-bc/marginal_british_columbia_age_reduction_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-bc/exact_rounding
+    consumes:
+      base: ca-bc/marginal_british_columbia_age_reduction_rate
+      rate: ca-bc/marginal_net_income_rate
+    produces:
+      output: ca-bc/marginal_british_columbia_age_phase_down_net_income_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-bc/exact_rounding
+    consumes:
+      base: ca-bc/marginal_british_columbia_age_phase_down_net_income_rate
+      rate: ca-bc/marginal_british_columbia_credit_rate
+    produces:
+      output: ca-bc/marginal_british_columbia_age_credit_rate
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
       records: ca-bc/bc428.bc428_british_columbia_tax_reduction_line_79
     produces:
       output: ca-bc/british_columbia_tax_reduction_return
@@ -219,6 +302,7 @@ capabilities:
       parts:
         - ca-bc/marginal_british_columbia_rate_after_credits
         - ca-bc/marginal_british_columbia_reduction_rate
+        - ca-bc/marginal_british_columbia_age_credit_rate
     produces:
       output: ca-bc/british_columbia_bracket_rate_with_reduction
   - name: core/record_total

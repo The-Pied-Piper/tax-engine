@@ -31,7 +31,8 @@ from tests.kinds import bundled_kinds
 
 D = Decimal
 # (birth year, salary, rate). Born 1955 at $70,000 is left out: the age amount is still partly
-# allowed there and its phase-out, which the marginal rate does not model yet, adds to the rate.
+# allowed there and its fall adds to the rate (checked against an extra run in
+# `test_return_marginal_tax_rate_age_amount_extra_run.py`).
 CASES = [
     (year, salary, rate)
     for year in (1955, 2010)

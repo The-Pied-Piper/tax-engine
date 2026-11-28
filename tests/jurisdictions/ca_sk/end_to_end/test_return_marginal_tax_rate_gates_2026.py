@@ -30,6 +30,7 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.personal_amounts import BIRTH_YEAR
 from tests.kinds import bundled_kinds
 
 D = Decimal
@@ -50,6 +51,11 @@ FEDERAL = "ca-sk/marginal_federal_rate"
 SASKATCHEWAN_RATE = "ca-sk/saskatchewan_marginal_rate"
 CONTRIBUTION = "ca-sk/marginal_contribution_rate"
 MARGINAL = "ca-sk/marginal_tax_rate"
+THRESHOLD_GATE = "ca-sk/marginal_age_threshold_gate"
+AMOUNT_GATE = "ca-sk/marginal_age_amount_gate"
+# The year of birth of the aged filer: born in 1955 a filer turns 70 during 2025, a year that still
+# has CPP months, so 2025 uses 1950 (no CPP months, the net income being the salary).
+AGED_BIRTH_YEAR = 1955
 
 SALARIES = ["0", "100", "2000", "19200.18", "21827.32", "25000", "70000", "275000"]
 
@@ -59,6 +65,18 @@ def _summary(salary: str) -> Worksheet:
     # input.
     worksheets = build_tax_computation().compute(
         TaxCalculationRequest(SASKATCHEWAN, 2026, (Artifact(EMPLOYMENT_INCOME, D(salary)),))
+    )
+    (summary,) = worksheets[RETURN]
+    return summary
+
+
+def _aged_summary(salary: str) -> Worksheet:
+    worksheets = build_tax_computation().compute(
+        TaxCalculationRequest(
+            SASKATCHEWAN,
+            2026,
+            (Artifact(EMPLOYMENT_INCOME, D(salary)), Artifact(BIRTH_YEAR, AGED_BIRTH_YEAR)),
+        )
     )
     (summary,) = worksheets[RETURN]
     return summary
@@ -171,3 +189,21 @@ def test_2026_both_gates_are_open_at_275000() -> None:
     assert _value(summary, SASKATCHEWAN_GATE) == D("1")
     assert _value(summary, FEDERAL) == D("0.33")
     assert _value(summary, MARGINAL) > D("0.33")
+
+
+@pytest.mark.parametrize(
+    ("salary", "threshold_gate", "amount_gate"),
+    [
+        ("43927", "0", "1"),
+        ("43928", "1", "1"),
+        ("83266", "1", "1"),
+        ("83267", "1", "0"),
+    ],
+)
+def test_born_1955_the_two_gates_open_over_the_threshold_and_while_an_amount_is_claimed(
+    salary: str, threshold_gate: str, amount_gate: str
+) -> None:
+    summary = _aged_summary(salary)
+
+    assert _value(summary, THRESHOLD_GATE) == D(threshold_gate)
+    assert _value(summary, AMOUNT_GATE) == D(amount_gate)

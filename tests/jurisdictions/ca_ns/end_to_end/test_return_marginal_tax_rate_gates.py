@@ -34,6 +34,7 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.personal_amounts import BIRTH_YEAR
 from tests.kinds import bundled_kinds
 
 D = Decimal
@@ -183,3 +184,70 @@ def test_the_provincial_gate_opens_where_line_99_is_first_above_zero(
 
     assert _value(summary, LINE_99) == D(line_99)
     assert _value(summary, TAX_GATE) == D(provincial_gate)
+
+
+# Salary, over the threshold (worksheet line 4), age amount claimed (before the printed maximum
+# check), the two age gates and the age term, for a filer born in 1955 (the Nova Scotia part and
+# the age term are the hand-worked figures of `test_return_marginal_tax_rate_values.py`).
+BORN_1955_GATES = [
+    # 2025: net income = salary less 1% of the salary over 3,500.
+    # $0: nothing yet; the threshold gate is shut and no tax.
+    ("0", "0.00", "5734.00", "0", "1", "0"),
+    # Net income 30,828.00 = the threshold: line 4 is 0.00, no effect.
+    ("31104.04", "0.00", "5734.00", "0", "1", "0"),
+    # Net income 30,828.01: one cent over; the whole 15% starts at once.
+    ("31104.05", "0.01", "5734.00", "1", "1", "0.01305315"),
+    # Net income 30,829.00: $1 over; line 6 is 0.15, line 7 is 5,733.85.
+    ("31105.05", "1.00", "5733.85", "1", "1", "0.01305315"),
+    # Net income 39,635.00: 8,807 over; line 6 is 1,321.05, line 7 is 4,412.95.
+    ("40000", "8807.00", "4412.95", "1", "1", "0.01305315"),
+    # Net income 69,054.63: line 4 is 38,226.63, line 7 is 0.01, the last cent with an amount left.
+    # (Line 6 reaches the maximum 5,734 at line 4 = 38,226.64: 5,733.996 rounds to 5,734.00, and
+    # 38,226.63 gives 5,733.9945, which rounds to 5,733.99.)
+    ("69716.80", "38226.63", "0.01", "1", "1", "0.01305315"),
+    # Net income 69,054.64: line 6 rounds to 5,734.00, nothing is left, the term is off again.
+    ("69716.81", "38226.64", "0.00", "1", "0", "0"),
+]
+
+
+def _born_1955(salary: str) -> Worksheet:
+    worksheets = build_tax_computation().compute(
+        TaxCalculationRequest(
+            NOVA_SCOTIA,
+            YEAR,
+            (Artifact(EMPLOYMENT_INCOME, D(salary)), Artifact(BIRTH_YEAR, 1955)),
+        )
+    )
+    (summary,) = worksheets[RETURN]
+    return summary
+
+
+@pytest.mark.parametrize(
+    ("salary", "over", "claimed", "threshold_gate", "amount_gate", "term"), BORN_1955_GATES
+)
+def test_born_1955_the_age_amount_falls_only_over_the_threshold_and_while_some_is_left(
+    salary: str,
+    over: str,
+    claimed: str,
+    threshold_gate: str,
+    amount_gate: str,
+    term: str,
+) -> None:
+    summary = _born_1955(salary)
+
+    assert _value(summary, "ca-ns/marginal_age_income_over_threshold") == D(over)
+    assert _value(summary, "ca-ns/marginal_age_amount_claimed") == D(claimed)
+    assert _value(summary, "ca-ns/marginal_age_threshold_gate") == D(threshold_gate)
+    assert _value(summary, "ca-ns/marginal_age_amount_gate") == D(amount_gate)
+    assert _value(summary, "ca-ns/marginal_nova_scotia_age_credit_rate") == D(term)
+
+
+@pytest.mark.parametrize("salary", ["31104.05", "40000", "69716.80", "69716.81"])
+def test_born_1955_the_line_99_gate_still_governs_the_age_term(salary: str) -> None:
+    # The age term is inside the provincial part, which is the line 99 gate times the rate.
+    summary = _born_1955(salary)
+
+    assert _value(summary, TAX_GATE) == D("1")
+    assert _value(summary, PROVINCIAL) == _value(summary, TAX_GATE) * _value(
+        summary, REDUCTION_RATE
+    )

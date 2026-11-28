@@ -26,6 +26,18 @@
 # line 47's 8.79%, read as it is by core/rate_figure), which takes that rate times the
 # credit-earning contribution rate off the tax.
 #
+# A filer born in 1960 or earlier also loses the age amount (NS428 line 10) as the net income rises:
+# worksheet line 5 "Applicable rate 15%" (`ca-ns/age_rate`, read as it is by core/rate_figure) of the
+# net income over the threshold (worksheet line 4) comes off the amount, so each further dollar of
+# net income over the threshold, while an age amount is still claimed (line 10 before the printed
+# maximum check), adds that rate times the net income rate times the credit rate to the tax. The two
+# gates (`ca-ns/marginal_rate_gate`) switch it off at or under the threshold and once the amount is
+# used up, and it is zero for a filer under 65 or with no birth year. The age term is added to the
+# province's other credit-type terms (its position in the sum is immaterial because a sum commutes)
+# and it stops when the claimed amount reaches 0.00 (the dollar that reaches 0.00 is not counted).
+# The line 99 gate below governs it as it does the rest of the provincial part. Nova Scotia's basic
+# personal amount is not income-tested from 2025, so it has no slope here.
+#
 # The low-income tax reduction (NS428 lines 65 to 85) is in the rate, because it changes line 99 and
 # so T1 line 43500: while NS428 line 81 (the income over the base amount) and line 84 (the
 # reduction left) are both above zero, a further dollar of net income takes 5%
@@ -113,12 +125,92 @@ capabilities:
       rate: ca-ns/marginal_net_income_rate
     produces:
       output: ca-ns/marginal_nova_scotia_bracket_rate
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-ns/ns428.worksheet_ns428_age_amount_line_4
+    produces:
+      output: ca-ns/marginal_age_income_over_threshold
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-ns/ns428.ns428_age_amount_claimed_line_10
+    produces:
+      output: ca-ns/marginal_age_amount_claimed
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca-ns/marginal_rate_gate
+    consumes:
+      base: ca-ns/marginal_age_income_over_threshold
+    produces:
+      output: ca-ns/marginal_age_threshold_gate
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca-ns/marginal_rate_gate
+    consumes:
+      base: ca-ns/marginal_age_amount_claimed
+    produces:
+      output: ca-ns/marginal_age_amount_gate
+  - name: core/rate_figure
+    unit: core/percent
+    params:
+      rate: ca-ns/age_rate
+    produces:
+      output: ca-ns/marginal_age_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-ns/exact_rounding
+    consumes:
+      base: ca-ns/marginal_age_rate
+      rate: ca-ns/marginal_age_threshold_gate
+    produces:
+      output: ca-ns/marginal_age_reduction_rate_over_threshold
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-ns/exact_rounding
+    consumes:
+      base: ca-ns/marginal_age_reduction_rate_over_threshold
+      rate: ca-ns/marginal_age_amount_gate
+    produces:
+      output: ca-ns/marginal_age_reduction_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-ns/exact_rounding
+    consumes:
+      base: ca-ns/marginal_age_reduction_rate
+      rate: ca-ns/marginal_net_income_rate
+    produces:
+      output: ca-ns/marginal_age_phase_down_net_income_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-ns/exact_rounding
+    consumes:
+      base: ca-ns/marginal_age_phase_down_net_income_rate
+      rate: ca-ns/marginal_nova_scotia_credit_rate
+    produces:
+      output: ca-ns/marginal_nova_scotia_age_credit_rate
+  - name: core/sum
+    unit: core/percent
+    params:
+      rounding: ca-ns/exact_rounding
+    consumes:
+      parts:
+        - ca-ns/marginal_nova_scotia_bracket_rate
+        - ca-ns/marginal_nova_scotia_age_credit_rate
+    produces:
+      output: ca-ns/marginal_nova_scotia_rate_before_credits
   - name: core/subtract
     unit: core/percent
     params:
       rounding: ca-ns/exact_rounding
     consumes:
-      amount: ca-ns/marginal_nova_scotia_bracket_rate
+      amount: ca-ns/marginal_nova_scotia_rate_before_credits
       less: ca-ns/marginal_nova_scotia_contribution_credit_rate
     produces:
       output: ca-ns/marginal_nova_scotia_rate_after_credits

@@ -34,6 +34,7 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.personal_amounts import BIRTH_YEAR
 from tests.kinds import bundled_kinds
 
 D = Decimal
@@ -211,3 +212,32 @@ def test_2026_the_provincial_part_follows_line_97_and_the_reduction_phase_out(
 
     assert _value(summary, TAX_GATE) == D(gate)
     assert _value(summary, PROVINCIAL) == D(provincial)
+
+
+@pytest.mark.parametrize(
+    ("salary", "line_4", "threshold_gate", "claimed", "amount_gate"),
+    [
+        ("36600", "0.00", "0", "6510.00", "1"),
+        ("36601", "1.00", "1", "6509.85", "1"),
+        ("79999.96", "43399.96", "1", "0.01", "1"),
+        ("79999.97", "43399.97", "1", "0.00", "0"),
+    ],
+)
+def test_2026_the_age_gates_open_where_line_4_and_the_amount_claimed_are_first_above_zero(
+    salary: str, line_4: str, threshold_gate: str, claimed: str, amount_gate: str
+) -> None:
+    # A filer born in 1955 claims the age amount; the two gates read worksheet line 4 (net income
+    # over 36,600.00) and the amount claimed.
+    worksheets = build_tax_computation().compute(
+        TaxCalculationRequest(
+            PRINCE_EDWARD_ISLAND,
+            2026,
+            (Artifact(EMPLOYMENT_INCOME, D(salary)), Artifact(BIRTH_YEAR, 1955)),
+        )
+    )
+    (summary,) = worksheets[RETURN]
+
+    assert _value(summary, "ca-pe/marginal_age_income_over_threshold") == D(line_4)
+    assert _value(summary, "ca-pe/marginal_age_threshold_gate") == D(threshold_gate)
+    assert _value(summary, "ca-pe/marginal_age_amount_claimed") == D(claimed)
+    assert _value(summary, "ca-pe/marginal_age_amount_gate") == D(amount_gate)

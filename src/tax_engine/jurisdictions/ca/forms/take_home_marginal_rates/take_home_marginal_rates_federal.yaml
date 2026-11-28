@@ -10,6 +10,13 @@
 # tax a further dollar of contributions takes off. Counted only where the basic federal tax (T1
 # line 42900, read into `ca/marginal_basic_federal_tax`) is above zero: the `ca/marginal_rate_gate`
 # dataset gives 0 where that tax is 0.00 and 1 from one cent.
+# Plus the fall of the age amount (T1 line 78, Federal Worksheet 5000-D1 "Line 30100 - Age
+# amount"): for a filer 65 or over the amount falls by the printed rate (line 5, 15%, `ca/age_rate`)
+# for each dollar of net income over the threshold (line 4 above 0) while an amount is still
+# claimed (above 0), and each dollar of that fall is tax at the federal credit rate. Both
+# conditions are the `ca/marginal_rate_gate` dataset on the T1's worksheet line 4 and claimed
+# amount (T1 exports); the term is 0 for a filer under 65 or with no birth year, and stops when
+# the claimed amount has reached 0.00 (the dollar that reaches 0.00 is not counted).
 form:
   name: ca/take_home_marginal_rates
 capabilities:
@@ -90,6 +97,76 @@ capabilities:
       rate: ca/marginal_federal_credit_rate
     produces:
       output: ca/marginal_federal_bpa_credit_rate
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/t1_tax_and_credits.age_income_over_threshold
+    produces:
+      output: ca/marginal_age_income_over_threshold
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/t1_tax_and_credits.age_amount_claimed
+    produces:
+      output: ca/marginal_age_amount_claimed
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca/marginal_rate_gate
+    consumes:
+      base: ca/marginal_age_income_over_threshold
+    produces:
+      output: ca/marginal_age_threshold_gate
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca/marginal_rate_gate
+    consumes:
+      base: ca/marginal_age_amount_claimed
+    produces:
+      output: ca/marginal_age_amount_gate
+  - name: core/rate_figure
+    unit: core/percent
+    params:
+      rate: ca/age_rate
+    produces:
+      output: ca/marginal_age_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca/exact_rounding
+    consumes:
+      base: ca/marginal_age_rate
+      rate: ca/marginal_age_threshold_gate
+    produces:
+      output: ca/marginal_age_reduction_rate_over_threshold
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca/exact_rounding
+    consumes:
+      base: ca/marginal_age_reduction_rate_over_threshold
+      rate: ca/marginal_age_amount_gate
+    produces:
+      output: ca/marginal_age_reduction_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca/exact_rounding
+    consumes:
+      base: ca/marginal_age_reduction_rate
+      rate: ca/marginal_net_income_rate
+    produces:
+      output: ca/marginal_age_phase_down_net_income_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca/exact_rounding
+    consumes:
+      base: ca/marginal_age_phase_down_net_income_rate
+      rate: ca/marginal_federal_credit_rate
+    produces:
+      output: ca/marginal_federal_age_credit_rate
   - name: core/sum
     unit: core/percent
     params:
@@ -98,6 +175,7 @@ capabilities:
       parts:
         - ca/marginal_federal_bracket_rate
         - ca/marginal_federal_bpa_credit_rate
+        - ca/marginal_federal_age_credit_rate
     produces:
       output: ca/marginal_federal_rate_before_credits
   - name: core/subtract

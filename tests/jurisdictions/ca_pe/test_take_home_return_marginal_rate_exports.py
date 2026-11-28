@@ -77,3 +77,16 @@ def test_the_pe428_form_exports_lines_84_87_and_97(
     assert _value(sheet, "ca-pe/pe428_income_over_base_amount_line_84") == D(line_84)
     assert _value(sheet, "ca-pe/pe428_low_income_tax_reduction_line_87") == D(line_87)
     assert _value(sheet, "ca-pe/pe428_prince_edward_island_tax_line_97") == D(line_97)
+
+
+@pytest.mark.parametrize(
+    ("salary", "line_4", "claimed"),
+    [("20000", "0.00", "0"), ("40000", "3035.00", "0"), ("100000", "62326.00", "0")],
+)
+def test_the_pe428_form_exports_the_age_amount_lines_as_nothing_claimed_without_a_birth_year(
+    salary: str, line_4: str, claimed: str
+) -> None:
+    sheet = _sheet(salary, "ca-pe/pe428")
+
+    assert _value(sheet, "ca-pe/worksheet_pe428_age_amount_line_4") == D(line_4)
+    assert _value(sheet, "ca-pe/pe428_age_amount_claimed_line_10") == D(claimed)

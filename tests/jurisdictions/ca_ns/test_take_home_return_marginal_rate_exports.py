@@ -77,3 +77,15 @@ def test_the_ns428_form_exports_lines_81_84_and_99(
     assert _value(sheet, "ca-ns/ns428_line_81") == D(line_81)
     assert _value(sheet, "ca-ns/ns428_low_income_reduction_line_84") == D(line_84)
     assert _value(sheet, "ca-ns/ns428_nova_scotia_tax_line_99") == D(line_99)
+
+
+@pytest.mark.parametrize(("salary", "line_4"), [("20000", "0.00"), ("40000", "8807.00")])
+def test_the_ns428_form_exports_the_age_amount_figures_of_a_filer_with_no_birth_year(
+    salary: str, line_4: str
+) -> None:
+    # No birth year: the age amount claimed is 0.00 whatever the income. Line 4 is the net income
+    # over the threshold (39,635.00 - 30,828.00 = 8,807.00 at a salary of 40,000).
+    sheet = _sheet(salary, "ca-ns/ns428")
+
+    assert _value(sheet, "ca-ns/ns428_age_amount_claimed_line_10") == D("0.00")
+    assert _value(sheet, "ca-ns/worksheet_ns428_age_amount_line_4") == D(line_4)

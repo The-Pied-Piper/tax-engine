@@ -35,6 +35,11 @@ The check against an extra run of the engine is in `test_return_marginal_tax_rat
 - 2026, $70,000 (over the EI maximum of $68,900): federal 20.5% x 0.99 - 14% x 0.0495 = 0.19602;
   NL 0.1392435; contributions 0.0595: 0.3947635.
 
+The age amount (NL428 line 17) of a filer born in 1960 or earlier falls with the net income over its
+threshold, which adds a term to the rate, worked by hand in `test_return_marginal_tax_rate_gates.py`
+(2025) and `test_return_marginal_tax_rate_gates_2026.py` (2026); the figures here are the resulting
+marginal rates for a filer born in 1955 (the age term) and in 1980 or with no birth year (none).
+
 The engine rounds the marginal rate half-up to 0.0001 like the average rate
 (`ca/take_home_average_rate_rounding`), so the expected values in the parametrization are the exact
 sums derived below rounded half-up to four places (e.g. 0.2098945 is 0.2099).
@@ -43,6 +48,7 @@ sums derived below rounded half-up to four places (e.g. 0.2098945 is 0.2099).
 from __future__ import annotations
 
 from decimal import Decimal
+from typing import Any
 
 import pytest
 
@@ -51,6 +57,7 @@ from tax_engine.application.models.calculation_request import TaxCalculationRequ
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.personal_amounts import BIRTH_YEAR
 from tests.kinds import bundled_kinds
 
 D = Decimal
@@ -90,3 +97,62 @@ def test_the_marginal_rate_is_the_sum_of_the_rates_that_apply_rounded_to_four_de
     (summary,) = worksheets["ca-nl/return"]
 
     assert summary.get(bundled_kinds().kind("ca-nl/marginal_tax_rate")).value == D(rate)
+
+
+@pytest.mark.parametrize(
+    ("year", "salary", "born", "rate"),
+    [
+        (2025, "0", 1955, "0"),
+        (2025, "39067.68", 1955, "0.2903"),
+        (2025, "39067.69", 1955, "0.3032"),
+        (2025, "40000", 1955, "0.3032"),
+        (2025, "46000", 1955, "0.3822"),
+        (2025, "60000", 1955, "0.4416"),
+        (2025, "86879.29", 1955, "0.3848"),
+        (2025, "86879.30", 1955, "0.3718"),
+        (2025, "90000", 1955, "0.3848"),
+        (2025, "0", 1980, "0"),
+        (2025, "40000", 1980, "0.2903"),
+        (2025, "46000", 1980, "0.3477"),
+        (2025, "60000", 1980, "0.4071"),
+        (2025, "86879.29", 1980, "0.35"),
+        (2025, "40000", None, "0.2903"),
+        (2025, "60000", None, "0.4071"),
+        (2026, "0", 1955, "0"),
+        (2026, "39138.00", 1955, "0.2396"),
+        (2026, "39138.01", 1955, "0.2526"),
+        (2026, "40000", 1955, "0.2526"),
+        (2026, "60000", 1955, "0.3966"),
+        (2026, "86751.29", 1955, "0.3841"),
+        (2026, "86751.30", 1955, "0.371"),
+        (2026, "40000", 1980, "0.2856"),
+        (2026, "40000", None, "0.2856"),
+        (2026, "60000", 1980, "0.4074"),
+    ],
+)
+def test_the_marginal_rate_with_the_age_amount_fall_by_year_of_birth(
+    year: int, salary: str, born: int | None, rate: str
+) -> None:
+    given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, D(salary))]
+    if born is not None:
+        given.append(Artifact(BIRTH_YEAR, born))
+    worksheets = build_tax_computation().compute(
+        TaxCalculationRequest(NEWFOUNDLAND, year, tuple(given))
+    )
+    (summary,) = worksheets["ca-nl/return"]
+
+    assert summary.get(bundled_kinds().kind("ca-nl/marginal_tax_rate")).value == D(rate)
+
+
+@pytest.mark.parametrize("year", (2025, 2026))
+def test_a_salary_of_0_has_no_marginal_rate_for_any_birth_year(year: int) -> None:
+    for born in (None, 1955, 1980):
+        given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, D("0"))]
+        if born is not None:
+            given.append(Artifact(BIRTH_YEAR, born))
+        worksheets = build_tax_computation().compute(
+            TaxCalculationRequest(NEWFOUNDLAND, year, tuple(given))
+        )
+        (summary,) = worksheets["ca-nl/return"]
+
+        assert summary.get(bundled_kinds().kind("ca-nl/marginal_tax_rate")).value == D("0")

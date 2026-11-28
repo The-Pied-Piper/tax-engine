@@ -1,14 +1,17 @@
 # Worksheet NL428 (CRA 5001-D) 2025, sections "Line 58080 - Age amount" and "Line 58440 - Disability
 # amount for self". This part names the form and its exports: line 7 of each section
 # (`ca-nl/worksheet_nl428_age_amount_line_7` and `ca-nl/worksheet_nl428_disability_self_line_7`),
-# which the form says to enter on line 58080 and line 58440 of Form NL428. The form has no
-# capabilities; its line parts, if any, carry them.
+# which the form says to enter on line 58080 and line 58440 of Form NL428, the age section's line 1
+# (the printed maximum) and its line 4 (`ca-nl/worksheet_nl428_age_amount_line_4`, the net income over
+# the age threshold, which the return summary's marginal rate reads for the fall of the age amount).
+# The form has no capabilities; its line parts, if any, carry them.
 form:
   name: ca-nl/nl428_worksheet
   title: "Worksheet NL428"
   required: true
   exports:
     - ca-nl/worksheet_nl428_age_amount_maximum_line_1
+    - ca-nl/worksheet_nl428_age_amount_line_4
     - ca-nl/worksheet_nl428_age_amount_line_7
     - ca-nl/worksheet_nl428_disability_self_line_7
 capabilities: []

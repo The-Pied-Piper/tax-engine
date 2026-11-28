@@ -5,7 +5,10 @@
 # (`ca-ab/ab428_tax_on_taxable_income_line_15`), which line 59 on the tax form reads;
 # line 41 rounded to the cent (`ca-ab/ab428_unused_tuition_rounded_line_41`) and line 52 (`ca-ab/ab428_credits_total_line_52`),
 # which Worksheet AB428 reads on its lines 2 and 1; and line 58
-# (`ca-ab/ab428_non_refundable_credits_line_58`), which line 62 on the tax form reads.
+# (`ca-ab/ab428_non_refundable_credits_line_58`), which line 62 on the tax form reads; Worksheet
+# AB428 age amount line 4 (`ca-ab/worksheet_ab428_age_amount_line_4`) and the age amount before the
+# printed maximum check (`ca-ab/ab428_age_amount_claimed_line_17`), which the return summary reads
+# for the fall of the age amount in the Alberta marginal rate.
 form:
   name: ca-ab/ab428_credits
   title: "Form AB428: Alberta Tax and Credits"
@@ -18,4 +21,6 @@ form:
     - ca-ab/ab428_unused_tuition_rounded_line_41
     - ca-ab/ab428_credits_total_line_52
     - ca-ab/ab428_non_refundable_credits_line_58
+    - ca-ab/worksheet_ab428_age_amount_line_4
+    - ca-ab/ab428_age_amount_claimed_line_17
 capabilities: []

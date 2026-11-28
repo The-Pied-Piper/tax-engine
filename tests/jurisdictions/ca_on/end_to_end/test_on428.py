@@ -47,6 +47,7 @@ from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_on.catalog import (
     BASIC_PERSONAL_AMOUNT,
+    ON428_AGE_AMOUNT_CLAIMED_LINE_10,
     ON428_BASIC_REDUCTION_LINE_74,
     ON428_BRACKET_COLUMN_RATE_LINE_5,
     ON428_BRACKET_LOWER_BOUND_LINE_3,
@@ -86,6 +87,7 @@ from tax_engine.jurisdictions.ca_on.catalog import (
     ON428_TAXABLE_INCOME_LINE_1,
     ON428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_4,
     ON428_TOTAL_CREDIT_AMOUNTS_LINE_44,
+    WORKSHEET_ON428_AGE_AMOUNT_LINE_4,
 )
 from tests.federal_forms import form_part_names
 from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService
@@ -283,10 +285,11 @@ def test_the_form_exports_line_90_the_figure_t1_line_42800_reads(
     assert sheet.get(ON428_ONTARIO_TAX_LINE_90).value == D("3911.45")
 
 
-def test_the_form_exports_lines_90_65_5_86_and_80(
+def test_the_form_exports_lines_90_65_5_86_80_and_the_age_worksheet(
     take_home_service: TakeHomeService,
 ) -> None:
-    # Every other line is read only inside the form: the form exports lines 90, 65, 5, 86 and 80.
+    # Every other line is read only inside the form: the form exports lines 90, 65, 5, 86 and 80,
+    # the age worksheet's line 4 and the age amount claimed before the printed maximum.
     service = take_home_service(HEADER, FORM, *PARTS)
     code = JurisdictionCode("CA-ON")
     (form,) = (f for f in service.compose(code, 2025).forms if f.name == "ca-on/on428")
@@ -296,6 +299,8 @@ def test_the_form_exports_lines_90_65_5_86_and_80(
         ON428_BRACKET_COLUMN_RATE_LINE_5.identifier,
         ON428_TAX_AFTER_LIFT_CREDIT_LINE_86.identifier,
         ON428_ONTARIO_TAX_REDUCTION_LINE_80.identifier,
+        WORKSHEET_ON428_AGE_AMOUNT_LINE_4.identifier,
+        ON428_AGE_AMOUNT_CLAIMED_LINE_10.identifier,
     )
 
     worksheets = service.compute(
@@ -308,6 +313,10 @@ def test_the_form_exports_lines_90_65_5_86_and_80(
         D("3311.45"),
         D("0.0915"),
         D("3311.45"),
+        D("0.00"),
+        # Net income 70,000 - 665.00 (CPP enhanced) = 69,335.00, less the 46,330.00 threshold;
+        # no birth year, so no age amount is claimed.
+        D("23005.00"),
         D("0.00"),
     ]
 

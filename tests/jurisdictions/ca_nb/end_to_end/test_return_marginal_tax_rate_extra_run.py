@@ -28,6 +28,13 @@ A break is one of two kinds:
   (NB428 line 86 is 0 from a net income of $48,653 in 2025, and from $49,624.50 in 2026, where the
   cent-rounded 3% phase-out reaches the basic reduction).
 
+For a filer born in 1955, who has the age amount (NB428 line 10 and T1 line 30100), the same check
+also runs at salaries (`AGE_SALARIES`) under the age thresholds, in the range where the New
+Brunswick and the federal age amounts fall by 15% of each dollar of net income, and past the point
+where the New Brunswick amount reaches 0 (86,265 in 2025 and 86,897 in 2026) while the federal one
+is still falling; none of them is within $100 of a threshold or of the point where an amount
+reaches 0.
+
 The cent rounding of the forms' lines moves a difference over a step of $1 by more than the
 tolerance, which is why no step below $10 is used.
 """
@@ -35,6 +42,7 @@ tolerance, which is why no step below $10 is used.
 from __future__ import annotations
 
 from decimal import Decimal
+from typing import Any
 
 import pytest
 
@@ -43,6 +51,7 @@ from tax_engine.application.models.calculation_request import TaxCalculationRequ
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.personal_amounts import BIRTH_YEAR
 from tests.kinds import bundled_kinds
 
 D = Decimal
@@ -166,9 +175,12 @@ EXCEPTION_CASES = [
 ]
 
 
-def _deductions(year: int, salary: Decimal) -> Decimal:
+def _deductions(year: int, salary: Decimal, birth_year: int | None = None) -> Decimal:
+    given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, salary)]
+    if birth_year is not None:
+        given.append(Artifact(BIRTH_YEAR, birth_year))
     worksheets = build_tax_computation().compute(
-        TaxCalculationRequest(NEW_BRUNSWICK, year, (Artifact(EMPLOYMENT_INCOME, salary),))
+        TaxCalculationRequest(NEW_BRUNSWICK, year, tuple(given))
     )
     kinds = bundled_kinds()
     return sum(
@@ -176,13 +188,45 @@ def _deductions(year: int, salary: Decimal) -> Decimal:
     )
 
 
-def _marginal_rate(year: int, salary: Decimal) -> Decimal:
+def _marginal_rate(year: int, salary: Decimal, birth_year: int | None = None) -> Decimal:
+    given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, salary)]
+    if birth_year is not None:
+        given.append(Artifact(BIRTH_YEAR, birth_year))
     worksheets = build_tax_computation().compute(
-        TaxCalculationRequest(NEW_BRUNSWICK, year, (Artifact(EMPLOYMENT_INCOME, salary),))
+        TaxCalculationRequest(NEW_BRUNSWICK, year, tuple(given))
     )
     value = worksheets[RETURN][0].get(bundled_kinds().kind(MARGINAL)).value
     assert isinstance(value, Decimal)
     return value
+
+
+# (tax year, salary) for a filer born in 1955: under the age thresholds, where the age amounts
+# fall, and past the end of the New Brunswick amount.
+AGE_SALARIES = [
+    (2025, 40_000),
+    (2025, 47_000),
+    (2025, 55_000),
+    (2025, 70_000),
+    (2025, 80_000),
+    (2025, 90_000),
+    (2026, 40_000),
+    (2026, 47_000),
+    (2026, 55_000),
+    (2026, 65_000),
+    (2026, 80_000),
+    (2026, 95_000),
+]
+
+
+@pytest.mark.parametrize(("year", "salary"), AGE_SALARIES)
+def test_the_marginal_rate_of_a_filer_born_in_1955_is_the_extra_dollar_change(
+    year: int, salary: int
+) -> None:
+    extra_run = (
+        _deductions(year, D(salary + 100), 1955) - _deductions(year, D(salary), 1955)
+    ) / 100
+
+    assert abs(_marginal_rate(year, D(salary), 1955) - extra_run) <= TOLERANCE
 
 
 @pytest.mark.parametrize(("year", "salary"), CASES)

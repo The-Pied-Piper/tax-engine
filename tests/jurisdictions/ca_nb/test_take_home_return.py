@@ -93,6 +93,8 @@ NB428_FORM = dedent("""\
         - ca-nb/nb428_line_83
         - ca-nb/nb428_line_86
         - ca-nb/nb428_new_brunswick_tax_line_97
+        - ca-nb/worksheet_nb428_age_amount_line_4
+        - ca-nb/nb428_age_amount_claimed_line_10
     capabilities: []
     """)
 CREDITS_INPUT = dedent("""\
@@ -149,6 +151,8 @@ OTHER_STEPS = [
     ("ca-nb/nb428", "ca-nb/nb428_line_83", "ca/cad"),
     ("ca-nb/nb428", "ca-nb/nb428_line_86", "ca/cad"),
     ("ca-nb/nb428", "ca-nb/nb428_new_brunswick_tax_line_97", "ca/cad"),
+    ("ca-nb/nb428", "ca-nb/worksheet_nb428_age_amount_line_4", "ca/cad"),
+    ("ca-nb/nb428", "ca-nb/nb428_age_amount_claimed_line_10", "ca/cad"),
 ]
 
 # salary, credits, line 167: a balance owing and zero (the refund is the trace test below).

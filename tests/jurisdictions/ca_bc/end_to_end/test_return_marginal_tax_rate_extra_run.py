@@ -23,11 +23,22 @@ the band that starts at its lower edge, so $3,500 is not an exception),
 and a salary three dollars under the salary where BC428 line 80 turns positive (2026, $26,753)
 cannot be stepped without the cent rounding; the salaries around each (the chosen list and
 `test_return_marginal_tax_rate_gates.py`) pin them. Every other salary agrees within the tolerance.
+
+For a filer born in 1955, who has the age amount (BC428 line 17 and T1 line 30100), the same check
+also runs at salaries (`AGE_SALARIES`) below, in and above the range where the British Columbia and
+the federal age amounts fall by 15% of each dollar of net income (the British Columbia threshold is
+43,169 in 2025 and 44,119 in 2026, until the credit is 0 at a net income of about 81,829 and
+83,632; the federal threshold is 45,522 and 46,432). In 2026 a filer born in 1955 pays no CPP, so
+the salary is the net income. The step is $100 everywhere and no $100 run crosses a break (the age
+threshold, the point where the credit reaches 0, a bracket edge, the CPP and EI maximums); the
+edges themselves are pinned to the cent in `test_return_marginal_tax_rate_gates.py` and
+`test_return_marginal_tax_rate_gates_2026.py`.
 """
 
 from __future__ import annotations
 
 from decimal import Decimal
+from typing import Any
 
 import pytest
 
@@ -36,6 +47,7 @@ from tax_engine.application.models.calculation_request import TaxCalculationRequ
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.personal_amounts import BIRTH_YEAR
 from tests.kinds import bundled_kinds
 
 D = Decimal
@@ -155,9 +167,12 @@ CASES = [
 ]
 
 
-def _deductions(year: int, salary: Decimal) -> Decimal:
+def _deductions(year: int, salary: Decimal, birth_year: int | None = None) -> Decimal:
+    given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, salary)]
+    if birth_year is not None:
+        given.append(Artifact(BIRTH_YEAR, birth_year))
     worksheets = build_tax_computation().compute(
-        TaxCalculationRequest(BRITISH_COLUMBIA, year, (Artifact(EMPLOYMENT_INCOME, salary),))
+        TaxCalculationRequest(BRITISH_COLUMBIA, year, tuple(given))
     )
     kinds = bundled_kinds()
     return sum(
@@ -165,13 +180,77 @@ def _deductions(year: int, salary: Decimal) -> Decimal:
     )
 
 
-def _marginal_rate(year: int, salary: Decimal) -> Decimal:
+def _marginal_rate(year: int, salary: Decimal, birth_year: int | None = None) -> Decimal:
+    given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, salary)]
+    if birth_year is not None:
+        given.append(Artifact(BIRTH_YEAR, birth_year))
     worksheets = build_tax_computation().compute(
-        TaxCalculationRequest(BRITISH_COLUMBIA, year, (Artifact(EMPLOYMENT_INCOME, salary),))
+        TaxCalculationRequest(BRITISH_COLUMBIA, year, tuple(given))
     )
     value = worksheets[RETURN][0].get(bundled_kinds().kind(MARGINAL)).value
     assert isinstance(value, Decimal)
     return value
+
+
+# Salaries for a filer born in 1955 (tax year: salaries), in and around the age amount's range.
+BORN = 1955
+AGE_SALARIES = {
+    2025: (
+        40_000,
+        43_000,
+        43_700,
+        45_000,
+        47_000,
+        50_000,
+        55_000,
+        57_000,
+        60_000,
+        65_000,
+        70_000,
+        75_000,
+        80_000,
+        82_000,
+        82_800,
+        83_000,
+        90_000,
+    ),
+    2026: (
+        40_000,
+        43_000,
+        44_200,
+        45_000,
+        47_000,
+        50_000,
+        55_000,
+        58_000,
+        60_000,
+        65_000,
+        68_000,
+        70_000,
+        80_000,
+        83_000,
+        83_500,
+        84_000,
+        90_000,
+    ),
+}
+AGE_CASES = [
+    pytest.param(year, salary, id=f"{year}-{salary}-born-{BORN}")
+    for year, salaries in AGE_SALARIES.items()
+    for salary in salaries
+]
+
+
+@pytest.mark.parametrize(("year", "salary"), AGE_CASES)
+def test_the_marginal_rate_of_a_filer_born_in_1955_is_the_extra_dollar_change(
+    year: int, salary: int
+) -> None:
+    step = 100
+    extra_run = (
+        _deductions(year, D(salary + step), BORN) - _deductions(year, D(salary), BORN)
+    ) / step
+
+    assert abs(_marginal_rate(year, D(salary), BORN) - extra_run) <= TOLERANCE
 
 
 @pytest.mark.parametrize(("year", "salary"), CASES)

@@ -183,6 +183,8 @@ def test_the_real_t1_form_header_exports() -> None:
         LINE_43500,
         FEDERAL_BRACKET_COLUMN_RATE_LINE_73,
         FEDERAL_TAX_AFTER_CREDITS,
+        "ca/age_income_over_threshold",
+        "ca/age_amount_claimed",
         "ca/ei_overpayment_line_45000",
         "ca/cwb_line_45300",
         "ca/provincial_credits_line_47900",

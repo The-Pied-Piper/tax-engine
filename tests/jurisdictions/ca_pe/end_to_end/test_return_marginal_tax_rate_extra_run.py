@@ -41,6 +41,7 @@ from tax_engine.application.models.calculation_request import TaxCalculationRequ
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.personal_amounts import BIRTH_YEAR
 from tests.kinds import bundled_kinds
 
 D = Decimal
@@ -158,9 +159,18 @@ EXCEPTION_CASES = [
 ]
 
 
-def _deductions(year: int, salary: Decimal) -> Decimal:
+def _artifacts(
+    salary: Decimal, birth_year: int | None
+) -> tuple[Artifact[Decimal] | Artifact[int], ...]:
+    artifacts: list[Artifact[Decimal] | Artifact[int]] = [Artifact(EMPLOYMENT_INCOME, salary)]
+    if birth_year is not None:
+        artifacts.append(Artifact(BIRTH_YEAR, birth_year))
+    return tuple(artifacts)
+
+
+def _deductions(year: int, salary: Decimal, birth_year: int | None = None) -> Decimal:
     worksheets = build_tax_computation().compute(
-        TaxCalculationRequest(PRINCE_EDWARD_ISLAND, year, (Artifact(EMPLOYMENT_INCOME, salary),))
+        TaxCalculationRequest(PRINCE_EDWARD_ISLAND, year, _artifacts(salary, birth_year))
     )
     kinds = bundled_kinds()
     return sum(
@@ -168,9 +178,9 @@ def _deductions(year: int, salary: Decimal) -> Decimal:
     )
 
 
-def _marginal_rate(year: int, salary: Decimal) -> Decimal:
+def _marginal_rate(year: int, salary: Decimal, birth_year: int | None = None) -> Decimal:
     worksheets = build_tax_computation().compute(
-        TaxCalculationRequest(PRINCE_EDWARD_ISLAND, year, (Artifact(EMPLOYMENT_INCOME, salary),))
+        TaxCalculationRequest(PRINCE_EDWARD_ISLAND, year, _artifacts(salary, birth_year))
     )
     value = worksheets[RETURN][0].get(bundled_kinds().kind(MARGINAL)).value
     assert isinstance(value, Decimal)
@@ -185,6 +195,20 @@ def test_the_marginal_rate_is_the_extra_dollar_change_in_the_take_home_deduction
     extra_run = (_deductions(year, D(salary + step)) - _deductions(year, D(salary))) / step
 
     assert abs(_marginal_rate(year, D(salary)) - extra_run) <= TOLERANCE
+
+
+@pytest.mark.parametrize("year", (2025, 2026))
+@pytest.mark.parametrize("salary", (40_000, 50_000, 60_000, 70_000, 75_000, 90_000))
+def test_the_marginal_rate_of_a_filer_born_in_1955_agrees_with_a_double_run_of_the_engine(
+    year: int, salary: int
+) -> None:
+    # Born in 1955 the filer claims the age amount (PE428 line 10), whose fall is in the rate;
+    # the salaries are inside the amount's fall (net income 36,600.00 to 80,000.00) and past it.
+    extra_run = (
+        _deductions(year, D(salary + 100), 1955) - _deductions(year, D(salary), 1955)
+    ) / 100
+
+    assert abs(_marginal_rate(year, D(salary), 1955) - extra_run) <= TOLERANCE
 
 
 @pytest.mark.parametrize(("year", "salary"), EXCEPTION_CASES)

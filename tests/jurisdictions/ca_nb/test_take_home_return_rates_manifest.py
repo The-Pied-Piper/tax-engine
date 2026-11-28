@@ -65,3 +65,48 @@ def test_every_step_after_line_167_has_no_title_and_no_reference() -> None:
     for step in _steps()[1:]:
         assert "title" not in step
         assert "reference" not in step
+
+
+def test_the_age_amount_term_is_added_beside_the_low_income_phase_out_before_the_line_97_gate() -> (
+    None
+):
+    steps = _steps()
+    outputs = [step["produces"]["output"] for step in steps]
+    (reduction,) = (
+        step
+        for step in steps
+        if step["produces"]["output"] == "ca-nb/marginal_new_brunswick_rate_with_reduction"
+    )
+
+    assert reduction["consumes"]["parts"] == [
+        "ca-nb/marginal_new_brunswick_rate_after_credits",
+        "ca-nb/marginal_low_income_phase_out_rate",
+        "ca-nb/marginal_new_brunswick_age_credit_rate",
+    ]
+    assert outputs.index("ca-nb/marginal_new_brunswick_age_credit_rate") < outputs.index(
+        "ca-nb/marginal_new_brunswick_rate_with_reduction"
+    )
+    assert outputs.index("ca-nb/marginal_new_brunswick_rate_with_reduction") < outputs.index(
+        "ca-nb/new_brunswick_marginal_rate"
+    )
+
+
+def test_the_age_amount_term_reads_worksheet_line_4_the_claimed_amount_and_the_printed_rate() -> (
+    None
+):
+    by_output = {step["produces"]["output"]: step for step in _steps()}
+
+    assert by_output["ca-nb/marginal_age_income_over_threshold"]["consumes"] == {
+        "records": "ca-nb/nb428.worksheet_nb428_age_amount_line_4"
+    }
+    assert by_output["ca-nb/marginal_age_amount_claimed"]["consumes"] == {
+        "records": "ca-nb/nb428.nb428_age_amount_claimed_line_10"
+    }
+    assert by_output["ca-nb/marginal_age_rate"]["params"] == {"rate": "ca-nb/age_rate"}
+    for gate in ("ca-nb/marginal_age_threshold_gate", "ca-nb/marginal_age_amount_gate"):
+        assert by_output[gate]["name"] == "core/amount_by_band_rate"
+        assert by_output[gate]["params"] == {"table": "ca-nb/marginal_rate_gate"}
+    assert by_output["ca-nb/marginal_new_brunswick_age_credit_rate"]["consumes"] == {
+        "base": "ca-nb/marginal_age_phase_down_net_income_rate",
+        "rate": "ca-nb/marginal_new_brunswick_credit_rate",
+    }

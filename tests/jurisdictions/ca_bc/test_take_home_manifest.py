@@ -87,3 +87,72 @@ def test_the_return_still_totals_line_167() -> None:
     assert name == "core/record_total"
     assert consumes == {"records": "ca/t1_tax_and_credits.refund_or_balance_owing"}
     assert produces == {"output": "ca/refund_or_balance_owing"}
+
+
+def test_the_return_totals_the_age_worksheet_line_4_and_the_claimed_age_amount() -> None:
+    steps = _return_steps()
+    totals = {
+        consumes["records"]: produces["output"]
+        for name, _, consumes, produces in steps
+        if name == "core/record_total" and consumes["records"].startswith("ca-bc/bc428.")
+    }
+
+    assert totals["ca-bc/bc428.worksheet_bc428_age_amount_line_4"] == (
+        "ca-bc/british_columbia_age_income_over_threshold_return"
+    )
+    assert totals["ca-bc/bc428.bc428_age_amount_claimed_line_17"] == (
+        "ca-bc/british_columbia_age_amount_claimed_return"
+    )
+
+
+def test_the_age_credit_rate_is_the_fall_of_the_age_amount_times_the_credit_rate() -> None:
+    # The printed 15% (the province's own `ca-bc/age_rate`), the two gates, the net income rate and
+    # the British Columbia credit rate, multiplied in that order; the credit rate joins the rate
+    # with the reduction in the sum the British Columbia gate then governs.
+    steps = _return_steps()
+    products = [
+        (consumes["base"], consumes["rate"], produces["output"])
+        for name, _, consumes, produces in steps
+        if name == "core/multiply_by_rate" and "age" in produces["output"]
+    ]
+    (rate,) = [
+        params["rate"]
+        for name, params, _, produces in steps
+        if name == "core/rate_figure"
+        and produces["output"] == "ca-bc/marginal_british_columbia_age_rate"
+    ]
+    (with_reduction,) = [
+        consumes["parts"]
+        for name, _, consumes, produces in steps
+        if name == "core/sum"
+        and produces["output"] == "ca-bc/british_columbia_bracket_rate_with_reduction"
+    ]
+
+    assert rate == "ca-bc/age_rate"
+    assert products == [
+        (
+            "ca-bc/marginal_british_columbia_age_rate",
+            "ca-bc/british_columbia_age_threshold_gate",
+            "ca-bc/marginal_british_columbia_age_reduction_rate_over_threshold",
+        ),
+        (
+            "ca-bc/marginal_british_columbia_age_reduction_rate_over_threshold",
+            "ca-bc/british_columbia_age_amount_gate",
+            "ca-bc/marginal_british_columbia_age_reduction_rate",
+        ),
+        (
+            "ca-bc/marginal_british_columbia_age_reduction_rate",
+            "ca-bc/marginal_net_income_rate",
+            "ca-bc/marginal_british_columbia_age_phase_down_net_income_rate",
+        ),
+        (
+            "ca-bc/marginal_british_columbia_age_phase_down_net_income_rate",
+            "ca-bc/marginal_british_columbia_credit_rate",
+            "ca-bc/marginal_british_columbia_age_credit_rate",
+        ),
+    ]
+    assert list(with_reduction) == [
+        "ca-bc/marginal_british_columbia_rate_after_credits",
+        "ca-bc/marginal_british_columbia_reduction_rate",
+        "ca-bc/marginal_british_columbia_age_credit_rate",
+    ]

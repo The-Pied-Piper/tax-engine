@@ -81,6 +81,8 @@ BC428_FORM = dedent("""\
         - ca-bc/bc428_reduction_clawback_line_78
         - ca-bc/bc428_british_columbia_tax_reduction_line_79
         - ca-bc/bc428_tax_after_reduction_line_80
+        - ca-bc/worksheet_bc428_age_amount_line_4
+        - ca-bc/bc428_age_amount_claimed_line_17
     capabilities: []
     """)
 CREDITS_INPUT = dedent("""\
@@ -133,6 +135,8 @@ OTHER_STEPS = [
     ("ca-bc/bc428", "ca-bc/bc428_reduction_clawback_line_78", "ca/cad"),
     ("ca-bc/bc428", "ca-bc/bc428_british_columbia_tax_reduction_line_79", "ca/cad"),
     ("ca-bc/bc428", "ca-bc/bc428_tax_after_reduction_line_80", "ca/cad"),
+    ("ca-bc/bc428", "ca-bc/worksheet_bc428_age_amount_line_4", "ca/cad"),
+    ("ca-bc/bc428", "ca-bc/bc428_age_amount_claimed_line_17", "ca/cad"),
 ]
 
 # salary, credits, line 167: a balance owing and zero.

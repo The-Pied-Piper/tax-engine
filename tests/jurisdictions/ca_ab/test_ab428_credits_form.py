@@ -1,4 +1,4 @@
-"""The Alberta form `ca-ab/ab428_credits` (Form AB428, lines 1 to 58) and the seven kinds it
+"""The Alberta form `ca-ab/ab428_credits` (Form AB428, lines 1 to 58) and the nine kinds it
 exports.
 
 The part file names the form and its exports; line parts carry the capabilities. The Alberta
@@ -34,6 +34,8 @@ EXPORTS = [
     "ca-ab/ab428_unused_tuition_rounded_line_41",
     "ca-ab/ab428_credits_total_line_52",
     "ca-ab/ab428_non_refundable_credits_line_58",
+    "ca-ab/worksheet_ab428_age_amount_line_4",
+    "ca-ab/ab428_age_amount_claimed_line_17",
 ]
 
 
@@ -51,7 +53,7 @@ def test_the_form_is_named_titled_as_printed_and_required() -> None:
     assert form["required"] is True
 
 
-def test_the_form_exports_the_seven_lines_other_forms_and_the_return_read_in_order() -> None:
+def test_the_form_exports_the_nine_lines_other_forms_and_the_return_read_in_order() -> None:
     assert _part()["form"]["exports"] == EXPORTS
 
 
