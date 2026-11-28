@@ -1,0 +1,16 @@
+# TP-752.PC-V (2026-10), line 14 "Subtract line 13 from line 12. = 14". One step, core/subtract; the form prints no floor, so the result is signed. Line 13 is an optional input; a blank is read as 0. Rounded half-up to the cent through ca-qc/cent_rounding.
+form:
+  name: ca-qc/tp752_pc
+capabilities:
+  - name: core/subtract
+    reference: "14"
+    unit: ca/cad
+    params:
+      rounding: ca-qc/cent_rounding
+    consumes:
+      amount: ca-qc/tp752_pc_line_12
+      less: ca-qc/tp752_pc_line_13
+    blank:
+      less: "0"
+    produces:
+      output: ca-qc/tp752_pc_line_14

@@ -1,9 +1,11 @@
 """Revenu Quebec TP-1 (2025) line 377, "Add lines 359 through 376", as the Quebec take-home manifest
 wires it: one `core/sum` of lines 359 and 361 (lines 367 and 376 are not built), rounded half-up to
-the cent by `ca-qc/cent_rounding`. The chain runs the real parts of Schedule B and of the forms it
-reads (see `tp1_credits_support.py`). The expected figures are hand-computed from the printed lines,
-not a Revenu Quebec example: line 359 is 18,571.00 and line 361 is 0.00, or 2,128.00 at $20,000 for
-a person living alone.
+the cent by `ca-qc/cent_rounding`. Lines 359 and 361 sit in the split part of the same form
+(`ca-qc/tp1_credits_lines_350_to_361`), so the two unprinted steps before the sum read that form's
+exports, each as a record list totalled by `core/record_total`. The chain runs the real parts of
+Schedule B and of the forms it reads (see `tp1_credits_support.py`). The expected figures are
+hand-computed from the printed lines, not a Revenu Quebec example: line 359 is 18,571.00 and line
+361 is 0.00, or 2,128.00 at $20,000 for a person living alone.
 """
 
 from __future__ import annotations
@@ -55,21 +57,40 @@ def _part() -> dict[str, Any]:
     return part
 
 
-def test_the_part_is_one_sum_of_lines_359_and_361() -> None:
+def _without_title(step: dict[str, Any]) -> dict[str, Any]:
+    return {key: value for key, value in step.items() if key != "title"}
+
+
+def test_the_part_reads_lines_359_and_361_from_the_split_part_then_adds_them() -> None:
     part = _part()
 
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": FORM}
-    (step,) = part["capabilities"]
-    assert step == {
+    read_359, read_361, add = (_without_title(step) for step in part["capabilities"])
+    assert read_359 == {
+        "name": "core/record_total",
+        "unit": "ca/cad",
+        "consumes": {"records": "ca-qc/tp1_credits_lines_350_to_361.tp1_line_359"},
+        "produces": {"output": "ca-qc/tp1_credits_line_377_line_359"},
+    }
+    assert read_361 == {
+        "name": "core/record_total",
+        "unit": "ca/cad",
+        "consumes": {
+            "records": "ca-qc/tp1_credits_lines_350_to_361"
+            ".tp1_age_living_alone_retirement_amount_line_361"
+        },
+        "produces": {"output": "ca-qc/tp1_credits_line_377_line_361"},
+    }
+    assert add == {
         "name": "core/sum",
         "reference": "377",
         "unit": "ca/cad",
         "params": {"rounding": "ca-qc/cent_rounding"},
         "consumes": {
             "parts": [
-                "ca-qc/tp1_line_359",
-                "ca-qc/tp1_age_living_alone_retirement_amount_line_361",
+                "ca-qc/tp1_credits_line_377_line_359",
+                "ca-qc/tp1_credits_line_377_line_361",
             ]
         },
         "produces": {"output": IDENTIFIER},

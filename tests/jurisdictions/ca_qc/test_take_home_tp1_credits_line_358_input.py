@@ -27,7 +27,7 @@ capabilities: []
 """
 FORM = """\
 form:
-  name: ca-qc/tp1_credits
+  name: ca-qc/tp1_credits_lines_350_to_361
   required: true
   exports:
     - ca-qc/tp1_income_replacement_adjustment_line_358

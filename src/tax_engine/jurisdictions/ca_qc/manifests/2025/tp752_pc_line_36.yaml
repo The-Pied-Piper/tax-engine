@@ -1,0 +1,12 @@
+# TP-752.PC-V (2026-10), line 36 "Net income (line 275 of your return; see the information on page 2) 36". The figure is TP-1 line 275, which the net income form exports; another form reads an export only as a record list (`ca-qc/tp1_net_income.tp1_net_income_line_275`), so the one step is core/record_total over those records.
+form:
+  name: ca-qc/tp752_pc
+capabilities:
+  - name: core/record_total
+    title: "Net income"
+    reference: "36"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp1_net_income.tp1_net_income_line_275
+    produces:
+      output: ca-qc/tp752_pc_line_36

@@ -1,11 +1,27 @@
 # TP-1 (2025) line 377: "Add lines 359 through 376. = 377" (page 4, Non-refundable tax credits; the
-# line has no title). One step, core/sum, of the lines the take-home builds: 359 and 361. Lines 367
-# (Schedule A, dependants) and 376 (severe and prolonged impairment) are left out (owner decision on
-# the ticket, 19 Nov 2026), and 376 is added later as an optional input read as 0. Rounded half-up to
-# the cent through ca-qc/cent_rounding.
+# line has no title). Three steps. Lines 359 and 361 sit in the second part of the form
+# (`ca-qc/tp1_credits_lines_350_to_361`, which TP-752.PC-V line 48 also reads), so two unprinted
+# steps read its exports, each as a record list totalled by core/record_total; then core/sum adds
+# them, the lines the take-home builds. Lines 367 (Schedule A, dependants) and 376 (severe and
+# prolonged impairment) are left out (owner decision on the ticket, 19 Nov 2026), and 376 is added
+# later as an optional input read as 0. Rounded half-up to the cent through ca-qc/cent_rounding.
 form:
   name: ca-qc/tp1_credits
 capabilities:
+  - name: core/record_total
+    title: "Line 359"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp1_credits_lines_350_to_361.tp1_line_359
+    produces:
+      output: ca-qc/tp1_credits_line_377_line_359
+  - name: core/record_total
+    title: "Line 361"
+    unit: ca/cad
+    consumes:
+      records: ca-qc/tp1_credits_lines_350_to_361.tp1_age_living_alone_retirement_amount_line_361
+    produces:
+      output: ca-qc/tp1_credits_line_377_line_361
   - name: core/sum
     reference: "377"
     unit: ca/cad
@@ -13,7 +29,7 @@ capabilities:
       rounding: ca-qc/cent_rounding
     consumes:
       parts:
-        - ca-qc/tp1_line_359
-        - ca-qc/tp1_age_living_alone_retirement_amount_line_361
+        - ca-qc/tp1_credits_line_377_line_359
+        - ca-qc/tp1_credits_line_377_line_361
     produces:
       output: ca-qc/tp1_line_377

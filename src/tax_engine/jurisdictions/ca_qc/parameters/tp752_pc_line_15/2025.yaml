@@ -1,0 +1,8 @@
+# TP-752.PC-V (2025-10), line 15 "- 15 7,500 00": the printed figure, taken as printed and claimed whole; half-up to the cent changes nothing.
+family: ca-qc/tp752_pc_line_15
+tax_year: 2025
+kind: credit
+sources:
+  - Revenu Quebec TP-752.PC-V (2025-10)
+rounding: {increment: "0.01", mode: half_up}
+amount: "7500"

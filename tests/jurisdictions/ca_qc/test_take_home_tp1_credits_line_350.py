@@ -13,17 +13,17 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.jurisdictions.ca_qc.catalog import TP1_BASIC_PERSONAL_AMOUNT_LINE_350
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
 from tests.jurisdictions.ca_qc.support import quebec_kinds
-from tests.jurisdictions.ca_qc.tp1_credits_support import credits_sheet
+from tests.jurisdictions.ca_qc.tp1_credits_support import PART_A_FORM, credits_sheet
 from tests.kinds import non_negative
 
-FORM = "ca-qc/tp1_credits"
+FORM = PART_A_FORM  # a split part of the TP-1 credits form, read by TP-752.PC-V
 PART = "tp1_credits_line_350.yaml"
 IDENTIFIER = "ca-qc/tp1_basic_personal_amount_line_350"
 EXPORTS = (IDENTIFIER,)
 
 
 def test_line_350_is_the_printed_18571(take_home_service: TakeHomeService) -> None:
-    sheet = credits_sheet(take_home_service, EXPORTS, (PART,))
+    sheet = credits_sheet(take_home_service, EXPORTS, (PART,), name=FORM)
 
     assert str(sheet.get(TP1_BASIC_PERSONAL_AMOUNT_LINE_350).value) == "18571.00"
 

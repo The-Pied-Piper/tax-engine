@@ -31,9 +31,19 @@ from tax_engine.jurisdictions.ca_qc.catalog import (
     TP1_UNION_DUES_CREDIT_LINE_397,
 )
 from tests.jurisdictions.ca_qc.conftest import QUEBEC_PARTS, TakeHomeService
-from tests.jurisdictions.ca_qc.tp1_credits_support import LINE_399_PARTS, chain_sheet
+from tests.jurisdictions.ca_qc.tp1_credits_support import (
+    LINE_399_PARTS,
+    PART_A_FORM,
+    chain_sheet,
+    chain_sheets,
+)
 
 FORM = (QUEBEC_PARTS / "tp1_credits.yaml").read_text(encoding="utf-8")
+PART_A_KINDS = (
+    TP1_BASIC_PERSONAL_AMOUNT_LINE_350,
+    TP1_LINE_359,
+    TP1_AGE_LIVING_ALONE_RETIREMENT_AMOUNT_LINE_361,
+)
 KINDS = (
     TP1_BASIC_PERSONAL_AMOUNT_LINE_350,
     TP1_LINE_359,
@@ -66,22 +76,28 @@ def _sheet(take_home_service: TakeHomeService, salary: str, alone: int | None) -
     return chain_sheet(take_home_service, salary, (), LINE_399_PARTS, *given, form=FORM)
 
 
+def _values(take_home_service: TakeHomeService, salary: str, alone: int | None) -> tuple[str, ...]:
+    given: list[Artifact[Any]] = []
+    if alone is not None:
+        given.append(Artifact(SCHEDULE_B_LIVED_ALONE_LINE_20, alone))
+    sheets = chain_sheets(take_home_service, salary, (), LINE_399_PARTS, *given, form=FORM)
+    (sheet,) = sheets["ca-qc/tp1_credits"]
+    (part_a,) = sheets[PART_A_FORM]
+    return tuple(str((part_a if kind in PART_A_KINDS else sheet).get(kind).value) for kind in KINDS)
+
+
 @pytest.mark.parametrize(("salary", "alone"), list(EXPECTED))
 def test_the_lines_from_350_to_399(
     take_home_service: TakeHomeService, salary: str, alone: int
 ) -> None:
-    sheet = _sheet(take_home_service, salary, alone)
-
-    assert tuple(str(sheet.get(kind).value) for kind in KINDS) == EXPECTED[(salary, alone)]
+    assert _values(take_home_service, salary, alone) == EXPECTED[(salary, alone)]
 
 
 @pytest.mark.parametrize("salary", ["20000", "70000", "200000"])
 def test_a_caller_who_gives_no_answer_gets_the_default_not_alone(
     take_home_service: TakeHomeService, salary: str
 ) -> None:
-    sheet = _sheet(take_home_service, salary, None)
-
-    assert tuple(str(sheet.get(kind).value) for kind in KINDS) == EXPECTED[(salary, 0)]
+    assert _values(take_home_service, salary, None) == EXPECTED[(salary, 0)]
 
 
 def test_the_form_exports_line_399(take_home_service: TakeHomeService) -> None:

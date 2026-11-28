@@ -2,7 +2,7 @@
 # that the TP-1 income lines and the net income lines do not read each other in a loop: it reads
 # line 101 (the salary, exported by `ca-qc/tp1_income`) and exports line 9, the deduction for workers
 # that TP-1 line 201 reads, and lines 3 and 4 (the net research grants and the WEPP payments), the
-# optional inputs this chart takes once and Schedule P lines 13 and 15 read. Each line's capability is a part of its own with the same `form.name`.
+# optional inputs this chart takes once and Schedule P lines 13 and 15 read, and line 6, the eligible work income TP-752.PC-V line 10 reads. Each line's capability is a part of its own with the same `form.name`.
 form:
   name: ca-qc/work_chart_201
   title: "Work Chart - Deduction for workers"
@@ -10,6 +10,7 @@ form:
   exports:
     - ca-qc/work_chart_201_deduction_for_workers_line_9
     - ca-qc/work_chart_201_deduction_before_maximum
+    - ca-qc/work_chart_201_total_line_6
     - ca-qc/work_chart_201_research_grants_line_3
     - ca-qc/work_chart_201_wepp_payments_line_4
 capabilities: []

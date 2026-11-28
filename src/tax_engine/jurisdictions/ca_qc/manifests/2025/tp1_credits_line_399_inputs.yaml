@@ -1,4 +1,4 @@
-# TP-1 (2025) lines 390, 391, 392, 395, 396, 398 and 398.1: the lines that line 399 adds besides lines
+# TP-1 (2025) lines 390, 392, 395, 396, 398 and 398.1: the lines that line 399 adds besides lines
 # 377.1, 389 and 397 ("Add lines 377.1, 389 through 392, 395 through 397, 398 and 398.1. Non-refundable
 # tax credits = 399", page 4). The take-home gives none of them, so each is an optional input left
 # blank, read as 0 by line 399. They are declared here, with the step that consumes them.
@@ -12,13 +12,6 @@ inputs:
     required: false
     default: null
     basis: "Tax credit for volunteer firefighters and search and rescue volunteers. Specify: 390.1 + 390"
-  - name: ca-qc/tp1_line_391
-    title: "Tax credit for career extension"
-    reference: "391"
-    unit: ca/cad
-    required: false
-    default: null
-    basis: "Tax credit for career extension. Complete form TP-752.PC-V."
   - name: ca-qc/tp1_line_392
     title: "Tax credit for recent graduates working in remote resource regions"
     reference: "392"

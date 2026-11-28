@@ -3,7 +3,7 @@
 # through core/credit_amount, so it is the same at every salary. It is its own kind, not
 # `ca-qc/basic_personal_amount`, which is the federal basic personal amount of 5005-R line 78.
 form:
-  name: ca-qc/tp1_credits
+  name: ca-qc/tp1_credits_lines_350_to_361
 capabilities:
   - name: core/credit_amount
     title: "Basic personal amount"
