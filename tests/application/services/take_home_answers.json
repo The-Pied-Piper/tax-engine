@@ -99,7 +99,7 @@
    },
    {
     "form": "ca/t1_lines_copied_by_provinces",
-    "lines": 13
+    "lines": 14
    },
    {
     "form": "ca/schedule_8",
@@ -146,7 +146,7 @@
     "lines": 34
    }
   ],
-  "trace_sha256": "6068ba8b8b3cb7f4c51edfb9cb3cd01f749008670c28edfdd3cf32570171d389"
+  "trace_sha256": "5e7e04f1aa42730a7dfa0086e637f8416a0a9666c40715fd53925af23bfe57de"
  },
  {
   "jurisdiction": "CA-ON",
@@ -293,7 +293,7 @@
    },
    {
     "form": "ca/t1_lines_copied_by_provinces",
-    "lines": 13
+    "lines": 14
    },
    {
     "form": "ca/schedule_8",
@@ -340,7 +340,7 @@
     "lines": 34
    }
   ],
-  "trace_sha256": "7d5a0c2528591c89a03585a5789cf9d764ed542d8b1f9ba648c1182c3e226cef"
+  "trace_sha256": "e682a98c88c085950c57b061993a197da036b8b7a38870383278e20b421ddd97"
  },
  {
   "jurisdiction": "CA-ON",
@@ -487,7 +487,7 @@
    },
    {
     "form": "ca/t1_lines_copied_by_provinces",
-    "lines": 13
+    "lines": 14
    },
    {
     "form": "ca/schedule_8",
@@ -538,7 +538,7 @@
     "lines": 18
    }
   ],
-  "trace_sha256": "3645ec122603d2dd55e561db10969e0e9a4f145bd40180e629d24dd97a038c94"
+  "trace_sha256": "86550a3e2b3f594ee951f29daddb264c5047163962be8ca8eda3602d4337d125"
  },
  {
   "jurisdiction": "CA-AB",
@@ -685,7 +685,7 @@
    },
    {
     "form": "ca/t1_lines_copied_by_provinces",
-    "lines": 13
+    "lines": 14
    },
    {
     "form": "ca/schedule_8",
@@ -736,7 +736,7 @@
     "lines": 18
    }
   ],
-  "trace_sha256": "1dc7ebc1def1958c8f0a9430265618b6d1edb5be60f0dfc57d48f68400ad1cb7"
+  "trace_sha256": "84b5fce29fe517f0f43a6c1dbadcca3f7016ebb7590cea1e6112668caf6dfb0e"
  },
  {
   "jurisdiction": "CA-AB",
@@ -879,7 +879,7 @@
    },
    {
     "form": "ca/t1_lines_copied_by_provinces",
-    "lines": 13
+    "lines": 14
    },
    {
     "form": "ca/schedule_8",
@@ -891,7 +891,7 @@
    },
    {
     "form": "ca-bc/bc479",
-    "lines": 47
+    "lines": 50
    },
    {
     "form": "ca/schedule_6",
@@ -926,7 +926,7 @@
     "lines": 25
    }
   ],
-  "trace_sha256": "d8716e4a4a5373ceb1093ba05a6b73d0354dc4c43d0c6fcc3da3534a50959be5"
+  "trace_sha256": "a1715add4c2c425ed4660e9c506d37182bc79b2a7e01f5815f3e0236cea118f2"
  },
  {
   "jurisdiction": "CA-BC",
@@ -1069,7 +1069,7 @@
    },
    {
     "form": "ca/t1_lines_copied_by_provinces",
-    "lines": 13
+    "lines": 14
    },
    {
     "form": "ca/schedule_8",
@@ -1081,7 +1081,7 @@
    },
    {
     "form": "ca-bc/bc479",
-    "lines": 47
+    "lines": 50
    },
    {
     "form": "ca/schedule_6",
@@ -1116,7 +1116,7 @@
     "lines": 25
    }
   ],
-  "trace_sha256": "cbdc25dfdcc7f3b88e6504ec9c53628c10f1b92e118bb3ac6a70898c9230851a"
+  "trace_sha256": "ea4f9768eafff342df7393065471b3cbfb27fcd01a60738f6422a3d16b534525"
  },
  {
   "jurisdiction": "CA-BC",
@@ -1267,7 +1267,7 @@
    },
    {
     "form": "ca/t1_lines_copied_by_provinces",
-    "lines": 13
+    "lines": 14
    },
    {
     "form": "ca/schedule_8",
@@ -1283,7 +1283,7 @@
    },
    {
     "form": "ca-mb/mb479",
-    "lines": 72
+    "lines": 75
    },
    {
     "form": "ca-mb/worksheet_mb428",
@@ -1326,7 +1326,7 @@
     "lines": 32
    }
   ],
-  "trace_sha256": "5dd1080508b579e7ba2141314c602953a29f4e40deed1c05c38a89fbfdd0675c"
+  "trace_sha256": "e330b5a75daafac231007b92b2d5fa64129212afbdc8f7e75626f29057518f8a"
  },
  {
   "jurisdiction": "CA-MB",
@@ -1477,7 +1477,7 @@
    },
    {
     "form": "ca/t1_lines_copied_by_provinces",
-    "lines": 13
+    "lines": 14
    },
    {
     "form": "ca/schedule_8",
@@ -1493,7 +1493,7 @@
    },
    {
     "form": "ca-mb/mb479",
-    "lines": 72
+    "lines": 75
    },
    {
     "form": "ca-mb/worksheet_mb428",
@@ -1536,7 +1536,7 @@
     "lines": 32
    }
   ],
-  "trace_sha256": "da92b428f7c6bb968055f0e46a6b9f7e5d4d7e9023afd7054dab8cea4798d418"
+  "trace_sha256": "fbb810191a6820b63f659fcd41a6c971fa78c39638f629cedd77f4d88e091dc8"
  },
  {
   "jurisdiction": "CA-MB",
@@ -1683,7 +1683,7 @@
    },
    {
     "form": "ca/t1_lines_copied_by_provinces",
-    "lines": 13
+    "lines": 14
    },
    {
     "form": "ca/schedule_8",
@@ -1730,7 +1730,7 @@
     "lines": 15
    }
   ],
-  "trace_sha256": "68d1be6af5e1c6b30aa8062fd90635d8dfec77f4904b1bde7aa57e0f027d6d40"
+  "trace_sha256": "c33e943a3fdace3806d9217c63a002110917d4698f4a17314c131b4d54d8e927"
  },
  {
   "jurisdiction": "CA-SK",
@@ -1877,7 +1877,7 @@
    },
    {
     "form": "ca/t1_lines_copied_by_provinces",
-    "lines": 13
+    "lines": 14
    },
    {
     "form": "ca/schedule_8",
@@ -1924,7 +1924,7 @@
     "lines": 15
    }
   ],
-  "trace_sha256": "5f2d2b9874d2e981d8c9746e3bed2376cd07bfcb0aaf94e0ea8356af7808608f"
+  "trace_sha256": "9138e85008a7bb6cdf23d68c138fc1dbeac18422507d6b32fdb79ac0c8243471"
  },
  {
   "jurisdiction": "CA-SK",
@@ -2071,7 +2071,7 @@
    },
    {
     "form": "ca/t1_lines_copied_by_provinces",
-    "lines": 13
+    "lines": 14
    },
    {
     "form": "ca/schedule_8",
@@ -2122,7 +2122,7 @@
     "lines": 27
    }
   ],
-  "trace_sha256": "e07d2b77e97822d7e5e38461c5fc9c56e4868e965e87bb2fec7335d899c81e70"
+  "trace_sha256": "d7fbbfa2fac3af030237018839de091d9022206958cfbaed6a10682b9eb119b9"
  },
  {
   "jurisdiction": "CA-NL",
@@ -2269,7 +2269,7 @@
    },
    {
     "form": "ca/t1_lines_copied_by_provinces",
-    "lines": 13
+    "lines": 14
    },
    {
     "form": "ca/schedule_8",
@@ -2320,7 +2320,7 @@
     "lines": 27
    }
   ],
-  "trace_sha256": "468a8c1d219946976a5d362034b511df298bafc255d125bbb7f67951e276bd89"
+  "trace_sha256": "8f1ac006c8b74dcc2482ed26113861c1db71c4a7b86d2317de4bc2e67379b573"
  },
  {
   "jurisdiction": "CA-NL",
@@ -2467,7 +2467,7 @@
    },
    {
     "form": "ca/t1_lines_copied_by_provinces",
-    "lines": 13
+    "lines": 14
    },
    {
     "form": "ca/schedule_8",
@@ -2510,7 +2510,7 @@
     "lines": 24
    }
   ],
-  "trace_sha256": "6ca4e71881d2bd57d1685de674b1cdd0850ac6d89d1a5b1a9d1caf3d290f93ad"
+  "trace_sha256": "2db711dd15d2f664a128b89a88797d61c42626b5ff5285a79adbbf09d64e35da"
  },
  {
   "jurisdiction": "CA-NS",
@@ -2657,7 +2657,7 @@
    },
    {
     "form": "ca/t1_lines_copied_by_provinces",
-    "lines": 13
+    "lines": 14
    },
    {
     "form": "ca/schedule_8",
@@ -2700,7 +2700,7 @@
     "lines": 24
    }
   ],
-  "trace_sha256": "5223e2047bdb6972b23e797359a84c837a689faa1d4967c06845a16672976ac1"
+  "trace_sha256": "8b6611cfa8a30fcb96358d52ccac9ac13ca908f6959f9838cdb725fb95e6dc3d"
  },
  {
   "jurisdiction": "CA-NS",
@@ -2847,7 +2847,7 @@
    },
    {
     "form": "ca/t1_lines_copied_by_provinces",
-    "lines": 13
+    "lines": 14
    },
    {
     "form": "ca/schedule_8",
@@ -2890,7 +2890,7 @@
     "lines": 24
    }
   ],
-  "trace_sha256": "6ba80166db6dedc7b156939326d1c202e97e51587d97fc99f7dcc66cd91b30b5"
+  "trace_sha256": "4ab6a64c5aeabc8c056c05e351e6ffcd8e6f9932f846271c60bdcba75c37c48a"
  },
  {
   "jurisdiction": "CA-PE",
@@ -3037,7 +3037,7 @@
    },
    {
     "form": "ca/t1_lines_copied_by_provinces",
-    "lines": 13
+    "lines": 14
    },
    {
     "form": "ca/schedule_8",
@@ -3080,7 +3080,7 @@
     "lines": 24
    }
   ],
-  "trace_sha256": "55fa5e132c9bcdcc86d0b783735905e6bf49ae2db649ab9b912dd1b9903385b7"
+  "trace_sha256": "b671c742c510375f9bf374a498b261db87e955e87a24b05464acb75c6c601e73"
  },
  {
   "jurisdiction": "CA-PE",
@@ -3227,7 +3227,7 @@
    },
    {
     "form": "ca/t1_lines_copied_by_provinces",
-    "lines": 13
+    "lines": 14
    },
    {
     "form": "ca/schedule_8",
@@ -3270,7 +3270,7 @@
     "lines": 24
    }
   ],
-  "trace_sha256": "b77c802e25451847b4fba44dec78990ad7ec76000b85f9d48c029372725229ae"
+  "trace_sha256": "16c81b92dbcd722bdfb0210fe5c732b05287a61bb2809e604276ae48af0de919"
  },
  {
   "jurisdiction": "CA-NB",
@@ -3417,7 +3417,7 @@
    },
    {
     "form": "ca/t1_lines_copied_by_provinces",
-    "lines": 13
+    "lines": 14
    },
    {
     "form": "ca/schedule_8",
@@ -3460,7 +3460,7 @@
     "lines": 24
    }
   ],
-  "trace_sha256": "507046af9f576aad5f5c22c31017b2e9f9ac923405cc5c59666deb6d17946ae9"
+  "trace_sha256": "a6ab3322689b495d339981b1b4b73cd2c5da1dfc334f4c484bba43ffc7b64f03"
  },
  {
   "jurisdiction": "CA-NB",

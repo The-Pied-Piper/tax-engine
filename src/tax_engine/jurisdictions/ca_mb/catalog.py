@@ -617,7 +617,22 @@ MB479_BASIC_CREDIT_LINE_7 = AmountKind.declare(
     CATALOG, "mb479_basic_credit_line_7", non_negative=True
 )
 """Basic credit, MB479 line 7 "Line 7: Basic credit 195.00": the basic credit of the Manitoba
-personal tax credits."""
+personal tax credits: the printed claim, or 0.00 for a filer under 19 at the end of the year
+(from the year of birth, `ca/birth_year`; see `MB479_AGE_19_OR_OLDER`)."""
+
+MB479_BASIC_CREDIT_CLAIM_LINE_7 = AmountKind.declare(
+    CATALOG, "mb479_basic_credit_claim_line_7", non_negative=True
+)
+"""Basic credit claim, MB479 line 7 "Basic credit 195.00": the printed figure, from the
+`ca-mb/personal_tax_credit_basic` dataset."""
+
+MB479_AGE_19_OR_OLDER = CountKind.declare(CATALOG, "mb479_age_19_or_older", non_negative=True)
+"""Aged 19 or older at the end of the year as Form MB479 line 7 reads it: the T1's
+`ca/age_19_or_older` (worked out once there from the year of birth), taken from the export of
+`ca/t1_lines_copied_by_provinces` by `core/first_record_count`: 1 or 0, blank when the year is
+blank. The Manitoba guide 5007-PC: a filer under 19 at the end of the year can claim the personal
+tax credit only with a spouse or common-law partner, as a parent, or with the homeowners
+affordability tax credit."""
 
 MB479_PRIMARY_CAREGIVER_CREDIT_LINE_59 = AmountKind.declare(
     CATALOG, "mb479_primary_caregiver_credit_line_59", non_negative=True

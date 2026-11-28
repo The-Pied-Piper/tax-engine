@@ -7,10 +7,11 @@ dataset), is the spouse branch and is not built for a single filer, as line 7's 
 not. Line 11 is one core/sum over line 9, untitled because the form prints no title after the line
 number.
 
-The test composes the real line 9 part and the new `bc479_line_11.yaml`, and types in only the
-salary. Line 9 needs no salary part, so none is composed. The form declaration is made up here,
-exporting only line 11. The figures are hand-computed from the printed form (not a CRA example):
-line 11 is line 9, 75.00, at every salary.
+The test composes the real line 9 part, the T1's copied-lines form (line 9 reads the year of
+birth from it; none is typed in, so line 9 is claimed in full) and the new `bc479_line_11.yaml`, and
+types in only the salary. The form declaration is made up here, exporting only line 11. The figures
+are hand-computed from the printed form (not a CRA example): line 11 is line 9, 75.00, at every
+salary.
 """
 
 from __future__ import annotations
@@ -33,6 +34,7 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca_bc.catalog import BC479_CREDIT_BEFORE_REDUCTION_LINE_11
+from tests.federal_forms import form_parts
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -46,6 +48,7 @@ D = Decimal
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
 LINE_PART = BC_PARTS / "bc479_line_11.yaml"
 PARTS = (
+    *form_parts("t1_lines_copied_by_provinces"),
     BC_PARTS / "bc479_line_9.yaml",
     LINE_PART,
 )

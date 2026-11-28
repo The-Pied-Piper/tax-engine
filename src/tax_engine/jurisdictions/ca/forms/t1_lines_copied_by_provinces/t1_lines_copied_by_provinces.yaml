@@ -24,6 +24,8 @@
 #     left out.
 #   - Aged 65 or older at the end of the tax year (`ca/age_65_or_older`, 1 or 0, blank when the year
 #     is blank), worked out from it once for every age line.
+#   - Aged 19 or older at the end of the tax year (`ca/age_19_or_older`, 1 or 0, blank when the year
+#     is blank), worked out from it once for the BC and Manitoba credits that need it.
 # Each is an optional input read as 0 when blank (the year of birth is blank). `ca/t1_tax_and_credits` reads each as a record list
 # and adds it into the federal sums: lines 87 and 89 into line 96, line 102 into line 106, line 107 into line
 # 110 (medical expenses), line 111 (as line 33199) into line 112 and line 124 into line 125.
@@ -40,4 +42,5 @@ form:
     - ca/minimum_tax_carryover_line_40427
     - ca/birth_year
     - ca/age_65_or_older
+    - ca/age_19_or_older
 capabilities: []
